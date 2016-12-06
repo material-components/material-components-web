@@ -14,14 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html class="mdl-typography">
+<html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDL Select Demo</title>
+    <title>MDC Select Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="assets/material-design-lite.css.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <style type="text/css">
-      .mdl-theme--dark {
+      .mdc-theme--dark {
         background-color: #303030;
       }
 
@@ -31,8 +31,8 @@
       }
 
       /* Hack to work around style-loader asynchronously loading styles. */
-      /* Equivalent to using mdl-typography's subheading2, which is used in the sass file. */
-      .mdl-select {
+      /* Equivalent to using mdc-typography's subheading2, which is used in the sass file. */
+      .mdc-select {
         font-family: Roboto, sans-serif;
         font-size: 1rem;
         font-weight: 400;
@@ -42,30 +42,30 @@
   </head>
   <body>
     <main>
-      <h1>MDL select</h1>
+      <h1>MDC select</h1>
       <section>
         <h2>Fully-Featured Component</h2>
         <section id="demo-wrapper">
-          <div id="js-select" class="mdl-select" role="listbox" tabindex="0">
-            <span class="mdl-select__selected-text">Pick a food group</span>
-            <div class="mdl-simple-menu mdl-select__menu">
-              <ul class="mdl-list mdl-simple-menu__items">
-                <li class="mdl-list-item" role="option" id="grains" tabindex="0">
+          <div id="js-select" class="mdc-select" role="listbox" tabindex="0">
+            <span class="mdc-select__selected-text">Pick a food group</span>
+            <div class="mdc-simple-menu mdc-select__menu">
+              <ul class="mdc-list mdc-simple-menu__items">
+                <li class="mdc-list-item" role="option" id="grains" tabindex="0">
                   Bread, Cereal, Rice, and Pasta
                 </li>
-                <li class="mdl-list-item" role="option" id="vegetables" tabindex="0">
+                <li class="mdc-list-item" role="option" id="vegetables" tabindex="0">
                   Vegetables
                 </li>
-                <li class="mdl-list-item" role="option" id="fruit" tabindex="0">
+                <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
                   Fruit
                 </li>
-                <li class="mdl-list-item" role="option" id="dairy" tabindex="0">
+                <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
                   Milk, Yogurt, and Cheese
                 </li>
-                <li class="mdl-list-item" role="option" id="meat" tabindex="0">
+                <li class="mdc-list-item" role="option" id="meat" tabindex="0">
                   Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
                 </li>
-                <li class="mdl-list-item" role="option" id="fats" tabindex="0">
+                <li class="mdc-list-item" role="option" id="fats" tabindex="0">
                   Fats, Oils, and Sweets
                 </li>
               </ul>
@@ -88,7 +88,7 @@
       </section>
       <section>
         <h2>CSS Only</h2>
-        <select class="mdl-select">
+        <select class="mdc-select">
           <option value="" default selected>Pick a food group</option>
           <option value="grains">Bread, Cereal, Rice, and Pasta</option>
           <option value="vegetables">Vegetables</option>
@@ -106,14 +106,14 @@
         </em>
       </section>
     </main>
-    <script src="assets/material-design-lite.js"></script>
+    <script src="assets/material-components-web.js"></script>
     <script>
       (function() {
-        var MDLSelect = mdl.select.MDLSelect;
+        var MDCSelect = mdc.select.MDCSelect;
         var root = document.getElementById('js-select');
         var currentlySelected = document.getElementById('currently-selected');
-        var select = MDLSelect.attachTo(root);
-        root.addEventListener('MDLSelect:change', function() {
+        var select = MDCSelect.attachTo(root);
+        root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];
           var index = select.selectedIndex;
           currentlySelected.textContent = '"' + item.textContent + '" at index ' + index;
@@ -125,7 +125,7 @@
         var disabledCb = document.getElementById('disabled');
 
         darkThemeCb.addEventListener('change', function() {
-          demoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('mdl-theme--dark');
+          demoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {

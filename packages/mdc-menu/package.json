@@ -1,0 +1,14 @@
+{
+  "name": "@material/menu",
+  "version": "0.1.0",
+  "description": "The Material Components Web menu component",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "dependencies": {
+    "@material/animation": "^0.1.0",
+    "@material/base": "^0.1.0",
+    "@material/elevation": "^0.1.0",
+    "@material/theme": "^0.1.0",
+    "@material/typography": "^0.1.0"
+  }
+}

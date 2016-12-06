@@ -1,0 +1,11 @@
+{
+  "name": "@material/card",
+  "version": "0.1.0",
+  "description": "The Material Components Web card component",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@material/elevation": "^0.1.0",
+    "@material/theme": "^0.1.0",
+    "@material/typography": "^0.1.0"
+  }
+}

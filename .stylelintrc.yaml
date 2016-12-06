@@ -213,7 +213,7 @@ rules:
   # predict the use cases in which users would add a certain type of element into a component.
   # The only hard exception to this are `fieldset` elements, which can be disabled and in that case
   # we want our UI components within that fieldset to be disabled as well.
-  # Other exceptions to this may be in packages/material-design-lite, in which case this rule could
+  # Other exceptions to this may be in packages/material-components-web, in which case this rule could
   # be disabled for that file, with an explanation.
   selector-no-type:
     - true
@@ -221,14 +221,14 @@ rules:
         - fieldset
   # Styles for components should never need the universal selector.
   selector-no-universal: true
-  # Ensure any defined symbols are prefixed with "mdl-"
+  # Ensure any defined symbols are prefixed with "mdc-"
   # TODO: Remove "md-" pattern.
-  custom-media-pattern: ^mdl?-.+
-  custom-property-pattern: ^mdl?-.+
+  custom-media-pattern: ^mdc?-.+
+  custom-property-pattern: ^mdc?-.+
   selector-class-pattern:
-    - ^mdl?-.+
+    - ^mdc?-.+
     - resolveNestedSelectors: true
-  selector-id-pattern: ^mdl?-.+
+  selector-id-pattern: ^mdc?-.+
   # Names are more semantic than numbers
   font-weight-notation: named-where-possible
   # :root is an important enough selector that it always stands on it's own. Also, there is no
@@ -252,16 +252,16 @@ rules:
   plugin/selector-bem-pattern:
     componentName: ^[a-z]+(?:-[a-z]+)*$
     # <namespace>-<block>__<element>*--<modifier>*[<attribute>]*
-    componentSelectors: ^\.mdl?-{componentName}(?:__[a-z]+(?:-[a-z]+)*)*(?:--[a-z]+(?:-[a-z]+)*)*(?:\[.+\])*$
+    componentSelectors: ^\.mdc?-{componentName}(?:__[a-z]+(?:-[a-z]+)*)*(?:--[a-z]+(?:-[a-z]+)*)*(?:\[.+\])*$
     ignoreSelectors:
       - ^fieldset
       - ^\[aria\-disabled=(?:.+)\]
 
   # SCSS naming patterns, just like our CSS conventions above.
   # (note for $-vars we use a leading underscore for "private" variables)
-  scss/dollar-variable-pattern: ^_?mdl?-.+
-  scss/at-function-pattern: ^mdl?-.+
-  scss/at-mixin-pattern: ^mdl?-.+
+  scss/dollar-variable-pattern: ^_?mdc?-.+
+  scss/at-function-pattern: ^mdc?-.+
+  scss/at-mixin-pattern: ^mdc?-.+
   # Prevents unneeded nesting selectors
   scss/selector-no-redundant-nesting-selector: true
   # Since leading underscores are not needed, they can be omitted

@@ -1,0 +1,310 @@
+/**
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import "@material/animation/functions";
+@import "@material/animation/mixins";
+@import "./variables";
+@import "./keyframes";
+
+@function mdc-checkbox-transition($property, $timing-function, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
+  @return $property $duration $timing-function $delay;
+}
+
+@function mdc-checkbox-transition-enter($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
+  @return mdc-animation-enter($property, $duration, $delay);
+}
+
+@function mdc-checkbox-transition-exit($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
+  @return mdc-animation-exit($property, $duration, $delay);
+}
+
+@mixin mdc-checkbox-cover-element {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@mixin mdc-checkbox-outer-box {
+  border-radius: 2px;
+
+  @include mdc-checkbox-cover-element;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* postcss-bem-linter: define checkbox */
+.mdc-checkbox {
+  display: inline-block;
+  position: relative;
+  width: $mdc-checkbox-size;
+  height: $mdc-checkbox-size;
+  line-height: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  vertical-align: bottom;
+
+  &__background {
+    @include mdc-checkbox-outer-box;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      mdc-checkbox-transition-exit(background-color),
+      mdc-checkbox-transition-exit(border-color);
+
+    border: $mdc-checkbox-border-width solid $mdc-checkbox-border-color;
+    background-color: transparent;
+    will-change: background-color, border-color;
+
+    @include mdc-theme-dark(".mdc-checkbox") {
+      border-color: $mdc-checkbox-border-color-dark;
+    }
+
+    /** The frame's ::before element is used as a focus indicator for the checkbox */
+    &::before {
+      @include mdc-checkbox-cover-element;
+
+      transform: scale(0, 0);
+      transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
+      border-radius: 50%;
+      content: "";
+      opacity: 0;
+      pointer-events: none;
+      will-change: opacity, transform;
+
+      @include mdc-theme-prop(background, primary);
+    }
+  }
+
+  &__native-control {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: inherit;
+    opacity: 0;
+  }
+
+  &__checkmark {
+    @include mdc-checkbox-cover-element;
+
+    width: 100%;
+    transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
+    opacity: 0;
+    fill: $mdc-checkbox-mark-color;
+
+    &__path {
+      transition:
+        mdc-checkbox-transition-exit(
+          stroke-dashoffset,
+          0ms,
+          $mdc-checkbox-transition-duration * 2
+        );
+      // !important is needed here because a stroke must be set as an attribute on the SVG in order
+      // for line animation to work properly.
+      stroke: $mdc-checkbox-mark-color !important;
+      stroke-width: $mdc-checkbox-mark-stroke-size * 1.3;
+      stroke-dashoffset: $_mdc-checkbox-mark-path-length;
+      stroke-dasharray: $_mdc-checkbox-mark-path-length;
+    }
+  }
+
+  &__mixedmark {
+    width: 100%;
+    height: floor($mdc-checkbox-mark-stroke-size);
+    transform: scaleX(0) rotate(0deg);
+    transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
+    background-color: $mdc-checkbox-mark-color;
+    opacity: 0;
+  }
+}
+
+.mdc-checkbox__native-control:focus {
+  ~ .mdc-checkbox__background::before {
+    transform: scale(2.75, 2.75);
+    transition:
+      mdc-checkbox-transition-enter(opacity, 0ms, 80ms),
+      mdc-checkbox-transition-enter(transform, 0ms, 80ms);
+    opacity: .26;
+  }
+}
+
+.mdc-checkbox__native-control:checked {
+  ~ .mdc-checkbox__background {
+    transition:
+      mdc-checkbox-transition-enter(border-color),
+      mdc-checkbox-transition-enter(background-color);
+
+    @include mdc-theme-prop(border-color, primary);
+    @include mdc-theme-prop(background-color, primary);
+
+    .mdc-checkbox__checkmark {
+      transition:
+        mdc-checkbox-transition-enter(opacity, 0ms, $mdc-checkbox-transition-duration * 2),
+        mdc-checkbox-transition-enter(transform, 0ms, $mdc-checkbox-transition-duration * 2);
+      opacity: 1;
+
+      &__path {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .mdc-checkbox__mixedmark {
+      transform: scaleX(1) rotate(-45deg);
+    }
+  }
+}
+
+.mdc-checkbox__native-control:indeterminate {
+  ~ .mdc-checkbox__background {
+    @include mdc-theme-prop(border-color, primary);
+    @include mdc-theme-prop(background-color, primary);
+
+    .mdc-checkbox__checkmark {
+      transform: rotate(45deg);
+      transition:
+        mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration),
+        mdc-checkbox-transition-exit(transform, 0ms, $mdc-checkbox-transition-duration);
+      opacity: 0;
+
+      &__path {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .mdc-checkbox__mixedmark {
+      transform: scaleX(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+}
+
+.mdc-checkbox__native-control:disabled,
+fieldset:disabled .mdc-checkbox__native-control,
+[aria-disabled="true"] .mdc-checkbox__native-control {
+  cursor: default;
+
+  /* postcss-bem-linter: ignore */
+  ~ .mdc-checkbox__background {
+    border-color: $mdc-checkbox-disabled-color;
+
+    @include mdc-theme-dark(".mdc-checkbox") {
+      border-color: $mdc-checkbox-disabled-color-dark;
+    }
+  }
+
+  &:checked,
+  &:indeterminate {
+    ~ .mdc-checkbox__background {
+      border-color: transparent;
+      background-color: $mdc-checkbox-disabled-color;
+      /* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+      @include mdc-theme-dark(".mdc-checkbox") {
+        background-color: $mdc-checkbox-disabled-color-dark;
+      }
+      /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
+    }
+  }
+}
+
+.mdc-checkbox--anim {
+  $_mdc-checkbox-indeterminate-change-duration: 500ms;
+
+  &-unchecked-checked,
+  &-unchecked-indeterminate {
+    .mdc-checkbox__background {
+      animation: mdc-checkbox-fade-in-background $mdc-checkbox-transition-duration * 2 linear;
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        animation-name: mdc-checkbox-fade-in-background-dark;
+      }
+    }
+  }
+
+  &-checked-unchecked,
+  &-indeterminate-unchecked {
+    .mdc-checkbox__background {
+      animation: mdc-checkbox-fade-out-background $mdc-checkbox-transition-duration * 2 linear;
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        animation-name: mdc-checkbox-fade-out-background-dark;
+      }
+    }
+  }
+
+  &-unchecked-checked {
+    .mdc-checkbox__checkmark__path {
+      // Instead of delaying the animation, we simply multiply its length by 2 and begin the
+      // animation at 50% in order to prevent a flash of styles applied to a checked checkmark
+      // as the background is fading in before the animation begins.
+      animation: $mdc-checkbox-transition-duration * 2 linear 0s mdc-checkbox-unchecked-checked-checkmark-path;
+      transition: none;
+    }
+  }
+
+  &-unchecked-indeterminate {
+    .mdc-checkbox__mixedmark {
+      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-unchecked-indeterminate-mixedmark;
+      transition: none;
+    }
+  }
+
+  &-checked-unchecked {
+    .mdc-checkbox__checkmark__path {
+      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-unchecked-checkmark-path;
+      transition: none;
+    }
+  }
+
+  &-checked-indeterminate {
+    .mdc-checkbox__checkmark {
+      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-indeterminate-checkmark;
+      transition: none;
+    }
+
+    .mdc-checkbox__mixedmark {
+      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-indeterminate-mixedmark;
+      transition: none;
+    }
+  }
+
+  &-indeterminate-checked {
+    .mdc-checkbox__checkmark {
+      animation: $_mdc-checkbox-indeterminate-change-duration linear 0s mdc-checkbox-indeterminate-checked-checkmark;
+      transition: none;
+    }
+
+    .mdc-checkbox__mixedmark {
+      animation: $_mdc-checkbox-indeterminate-change-duration linear 0s mdc-checkbox-indeterminate-checked-mixedmark;
+      transition: none;
+    }
+  }
+
+  &-indeterminate-unchecked {
+    .mdc-checkbox__mixedmark {
+      animation: $_mdc-checkbox-indeterminate-change-duration * .6 linear 0s mdc-checkbox-indeterminate-unchecked-mixedmark;
+      transition: none;
+    }
+  }
+}
+
+/* postcss-bem-linter: end */

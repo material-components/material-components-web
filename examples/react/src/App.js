@@ -35,7 +35,7 @@ export default class App extends Component {
     const {checked, indeterminate, status, changeEventCount} = this.state;
     return (
       <main>
-        <h1>MDL Checkbox - React Example</h1>
+        <h1>MDC-Web Checkbox - React Example</h1>
         <FormField>
           <Checkbox id="my-checkbox"
                     labelId="my-checkbox-label"

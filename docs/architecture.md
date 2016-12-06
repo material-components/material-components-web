@@ -1,27 +1,27 @@
-# MDL v2 Architecture Overview
+# MDC-Web Architecture Overview
 
-The following is an outline of the MDLv2 architecture. Many of the architectural decisions we made were in response to the problems and feedback the team has received around MDLv1. The goals of the MDLv2 architecture are to not only provide an easy way to provide a material UI for static websites, but for _dynamic websites and frameworks as well_. Essentially, _the goal of MDLv2 is to be the canonical material design implementation for the web platform_. We want MDLv2 to be:
+The following is an outline of the MDC-Web architecture. Many of the architectural decisions we made were in response to the problems and feedback the team has received around Material Design Lite (MDL), the predecessor to MDC-Web. The goals of the MDC-Web architecture are to not only provide an easy way to provide a material UI for static websites, but for _dynamic websites and frameworks as well_. Essentially, _the goal of MDC-Web is to be the canonical material design implementation for the web platform_. We want MDC-Web to be:
 
 * Accurate to the [material design spec](https://material.google.com/) with the highest possible fidelity, with graceful degredation in situations where this cannot be achieved.
-* Plug-and-play for people who just want to add styles to a static site, just like MDLv1.
+* Plug-and-play for people who just want to add styles to a static site, just like [Material Design Lite](https://getmdl.io).
 * Modular and un-invasive for developers who want to create more complex, dynamic sites using Material Design.
 * Easy to integrate into third-party libraries and frameworks, with minimal duplication of effort. There should not be N different material design implementations for N different frameworks. We strive for _one_ universal implementation across the web, and want to facilitate library developers who want material design components for their frameworks.
 
-## No more automatic DOM traversal and rendering
+## No automatic DOM traversal and rendering
 
-The biggest difference between MDLv1 and MDLv2 is how we handle component lifecycles and initialization. Unlike MDLv1, _there is no DOM-wide traversals, no implicit upgrading/downgrading, and no automatic rendering of DOM elements_. All rendering of DOM is left up to the client. In this way, it is very similar to [bootstrap](http://getbootstrap.com). The DOM structure of a component is considered part of its "public API"; any updates to the DOM structure will be considered a breaking change.
+The biggest difference between MDC-Web and other Material Design implementations is how we handle component lifecycles and initialization. In MDC-Web _there is no DOM-wide traversal, no implicit upgrading/downgrading, and no automatic rendering of DOM elements_. All rendering of DOM is left up to the client. In this way, it is very similar to [bootstrap](http://getbootstrap.com). The DOM structure of a component is considered part of its "public API"; any updates to the DOM structure will be considered a breaking change.
 
-In fact, for a lot of components - such as [cards](../packages/mdl-card) - no Javascript is needed _at all_. Javascript is only needed for components which provide advanced interaction patterns (e.g. things with ripples), and dynamic functionality (form controls, etc.).
+In fact, for a lot of components - such as [cards](../packages/mdc-card) - no Javascript is needed _at all_. Javascript is only needed for components which provide advanced interaction patterns (e.g. things with ripples), and dynamic functionality (form controls, etc.).
 
 ## Modular UI Components
 
-Unlike MDLv1, _components are independent of one another_. We'll be providing per-component packages, similar to [angular2](https://github.com/angular/angular), as well as one comprehensive overall package. This means more flexibility and less lock-in for users with more complex setups and use cases.
+In MDC-Web, _components are independent of one another_. We'll be providing per-component packages, similar to [angular2](https://github.com/angular/angular), as well as one comprehensive overall package. This means more flexibility and less lock-in for users with more complex setups and use cases.
 
 ## Component Architecture
 
 ### A little bit of background
 
-As I mentioned above, our goal is to have a single UI library that can be used across the web. In order to this to be successful, we have to be able to integrate nicely with the myriad of frameworks, runtimes, and technologies that comprise the web platform, with _minimal duplication of logic_.
+As mentioned above, our goal is to have a single UI library that can be used across the web. In order to this to be successful, we have to be able to integrate nicely with the myriad of frameworks, runtimes, and technologies that comprise the web platform, with _minimal duplication of logic_.
 
 That last part is where it gets really tricky for us. Material Design contains a lot of intricate and subtle interaction patterns that are at best easy to get wrong, at worst intrinsic knowledge and not really documented in the spec at all. Many of these interactions - especially the ones that deal with dynamic controls - require a non-trivial amount of javascript to implement correctly. It would be a shame to have to push the burden of implementing this onto framework teams, whose job should be to focus on developing framework code. Furthermore, it makes changes to the component behaviors very hard to propagate. _We need to choose an architecture that allows our material components to be integrated eloquently into different frameworks while not requiring those frameworks reinvent the wheel_.
 
@@ -205,7 +205,7 @@ Therefore, if we are provided with an adapter that can do these things, we can r
 ```javascript
 class RGBSquareFoundation {
   /**
-    * All of the MDL foundation classes have a static defaultAdapter getter property, which is
+    * All of the MDC-Web foundation classes have a static defaultAdapter getter property, which is
     * very similar to propTypes within react.
     */
   static get defaultAdapter() {
@@ -324,10 +324,10 @@ To sum it all up, here's a crude diagram of the architecture:
 
 Although this may seem unwieldy at first, since adapters are essentially interfaces it would be easy to reuse common code either through inheritance or composition.
 
-I should also mention that **most of this will be opaque to end users.** We're shipping MDLv2 with vanilla components that are built on top of the foundations, and can be used without requiring any knowledge of foundations, adapters, etc. We designed foundations/adapters with _framework/library authors in mind_, because we're aware of the pain they went through adapting MDLv1 for their frameworks and want to ensure a more ergonomic experience this time around. It's complicated for sure, but the state of the web right now is complicated, and thus mandates the complexity. In the future, as specifications like [Custom Elements](https://developers.google.com/web/fundamentals/primers/customelements/) begin to stabilize and gain adoption, we can start to consider those solutions instead.
+It is also worth mentioning that **most of this will be opaque to end users.** We're shipping MDC-Web with vanilla components that are built on top of the foundations, and can be used without requiring any knowledge of foundations, adapters, etc. We designed foundations/adapters with _framework/library authors in mind_, because we're aware of the pain they went through adapting MDL for their frameworks and want to ensure a more ergonomic experience this time around. It's complicated for sure, but the state of the web right now is complicated, and thus mandates the complexity. In the future, as specifications like [Custom Elements](https://developers.google.com/web/fundamentals/primers/customelements/) begin to stabilize and gain adoption, we can start to consider those solutions instead.
 
 ## Resources
 
-- The [mdl-checkbox](https://github.com/google/material-design-lite/tree/master/packages/mdl-checkbox) component is an example of a complex UI component which requires foundations and adapters. We also have a [react example](https://github.com/google/material-design-lite/tree/master/examples/react) where we create a React component using the foundation class.
-- Our [mdl-base](https://github.com/google/material-design-lite/tree/master/packages/mdl-base) package contains the core Foundation and Component classes which all of our other MDL components derive from. If you're interested in contributing _directly_ to MDL, it's worth a read!
-- As per usual our [contributing docs](https://github.com/google/material-design-lite/blob/master/CONTRIBUTING.md) contain information about how to actually develop MDL v2.
+- The [mdc-checkbox](https://github.com/material-components/material-components-web/tree/master/packages/mdc-checkbox) component is an example of a complex UI component which requires foundations and adapters. We also have a [react example](https://github.com/material-components/material-components-web/tree/master/examples/react) where we create a React component using the foundation class.
+- Our [mdc-base](https://github.com/material-components/material-components-web/tree/master/packages/mdc-base) package contains the core Foundation and Component classes which all of our other MDC-Web components derive from. If you're interested in contributing _directly_ to MDC-Web, it's worth a read!
+- As per usual our [contributing docs](https://github.com/material-components/material-components-web/blob/master/CONTRIBUTING.md) contain information about how to actually develop MDC-Web.

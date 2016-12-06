@@ -32,10 +32,10 @@ import {
 } from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 
-// Since we don't have typings (yet) we require mdl-checkbox manually.
-const {MDLCheckboxFoundation} = require('mdl-checkbox');
+// Since we don't have typings (yet) we require mdc-checkbox manually.
+const {MDCCheckboxFoundation} = require('mdc-checkbox');
 // Use webpack's require function to load the css
-const MDL_CHECKBOX_STYLES = require('mdl-checkbox-styles');
+const MDC_CHECKBOX_STYLES = require('mdc-checkbox-styles');
 
 // Needed for ngModel to work properly.
 export const MD_CHECKBOX_CONTROL_VALUE_ACCESSOR: Provider = {
@@ -48,9 +48,9 @@ type UnlistenerMap = WeakMap<EventListener, Function>;
 
 
 @Component({
-  selector: 'mdl-checkbox',
+  selector: 'mdc-checkbox',
   templateUrl: 'app/components/checkbox/checkbox.html',
-  styles: [String(MDL_CHECKBOX_STYLES)],
+  styles: [String(MDC_CHECKBOX_STYLES)],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [MD_CHECKBOX_CONTROL_VALUE_ACCESSOR]
@@ -60,7 +60,7 @@ export class CheckboxComponent implements AfterViewInit, OnDestroy {
   @Input() indeterminate: boolean = false;
   @Input() labelId: string;
   @Output() change: EventEmitter<Event> = new EventEmitter<Event>();
-  @HostBinding('class') className: string = 'mdl-checkbox';
+  @HostBinding('class') className: string = 'mdc-checkbox';
   @ViewChild('nativeCb') nativeCb: ElementRef;
   // value accessor stuff
   onTouched: () => any = () => {};
@@ -70,7 +70,7 @@ export class CheckboxComponent implements AfterViewInit, OnDestroy {
 
   // Here we instantiate our checkbox adapter, using angular's abstraction mechanisms to interop
   // with the angular2 environment.
-  private _mdlAdapter: MDLCheckboxAdapter = {
+  private _mdcAdapter: MDCCheckboxAdapter = {
     addClass: (className: string) => {
       const {_renderer: renderer, _root: root} = this;
       renderer.setElementClass(root.nativeElement, className, true);
@@ -81,11 +81,11 @@ export class CheckboxComponent implements AfterViewInit, OnDestroy {
     },
     registerAnimationEndHandler: (handler: EventListener) => {
       if (this._root) {
-        this.listen_(MDLCheckboxFoundation.strings.ANIM_END_EVENT_NAME, handler);
+        this.listen_(MDCCheckboxFoundation.strings.ANIM_END_EVENT_NAME, handler);
       }
     },
     deregisterAnimationEndHandler: (handler: EventListener) => {
-      this.unlisten_(MDLCheckboxFoundation.strings.ANIM_END_EVENT_NAME, handler);
+      this.unlisten_(MDCCheckboxFoundation.strings.ANIM_END_EVENT_NAME, handler);
     },
     registerChangeHandler: (handler: EventListener) => {
       if (this._root) {
@@ -113,7 +113,7 @@ export class CheckboxComponent implements AfterViewInit, OnDestroy {
 
   // Now we simply instantiate our foundation given our adapter.
   private _foundation: {init: Function, destroy: Function} =
-      new MDLCheckboxFoundation(this._mdlAdapter);
+      new MDCCheckboxFoundation(this._mdcAdapter);
 
   constructor(private _renderer: Renderer, private _root: ElementRef) {}
 

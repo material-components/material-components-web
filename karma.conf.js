@@ -40,7 +40,7 @@ const SL_LAUNCHERS = {
     platform: 'OS X 10.11'
   },
   // NOTE(traviskaufman): Disabling firefox for now as it has been consistently flaky recently. See
-  // https://github.com/google/material-design-lite/issues/4922
+  // https://github.com/material-components/material-components-web/issues/5
   // 'sl-firefox-stable': {
   //   base: 'SauceLabs',
   //   browserName: 'firefox',
@@ -151,7 +151,7 @@ module.exports = function(config) {
   if (USING_TRAVISCI) {
     config.set({
       sauceLabs: {
-        testName: 'Material Design Lite Unit Tests - CI',
+        testName: 'Material Components Web Unit Tests - CI',
         tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
         startConnect: false
       },

@@ -1,0 +1,7 @@
+{
+  "name": "@material/auto-init",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "description": "data-mdc-auto-init=<globalComponentName>"
+}

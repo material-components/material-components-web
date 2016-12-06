@@ -1,0 +1,11 @@
+{
+  "name": "@material/form-field",
+  "description": "Wrapper styles for laying out form fields and labels next to one another",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@material/rtl": "^0.1.0",
+    "@material/theme": "^0.1.0",
+    "@material/typography": "^0.1.0"
+  }
+}

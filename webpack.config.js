@@ -17,35 +17,36 @@
 'use strict';
 
 const path = require('path');
+const glob = require('glob');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const OUT_PATH = path.resolve('./build');
 // Used with webpack-dev-server
 const PUBLIC_PATH = '/assets/';
-const IS_DEV = process.env.MDL_ENV === 'development';
-const IS_PROD = process.env.MDL_ENV === 'production';
+const IS_DEV = process.env.MDC_ENV === 'development';
+const IS_PROD = process.env.MDC_ENV === 'production';
 
 module.exports = [{
   name: 'js-components',
   entry: {
-    autoInit: [path.resolve('./packages/mdl-auto-init/index.js')],
-    base: [path.resolve('./packages/mdl-base/index.js')],
-    checkbox: [path.resolve('./packages/mdl-checkbox/index.js')],
-    drawer: [path.resolve('./packages/mdl-drawer/index.js')],
-    iconToggle: [path.resolve('./packages/mdl-icon-toggle/index.js')],
-    menu: [path.resolve('./packages/mdl-menu/index.js')],
-    radio: [path.resolve('./packages/mdl-radio/index.js')],
-    ripple: [path.resolve('./packages/mdl-ripple/index.js')],
-    select: [path.resolve('./packages/mdl-select/index.js')],
-    snackbar: [path.resolve('./packages/mdl-snackbar/index.js')],
-    textfield: [path.resolve('./packages/mdl-textfield/index.js')]
+    autoInit: [path.resolve('./packages/mdc-auto-init/index.js')],
+    base: [path.resolve('./packages/mdc-base/index.js')],
+    checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
+    drawer: [path.resolve('./packages/mdc-drawer/index.js')],
+    iconToggle: [path.resolve('./packages/mdc-icon-toggle/index.js')],
+    menu: [path.resolve('./packages/mdc-menu/index.js')],
+    radio: [path.resolve('./packages/mdc-radio/index.js')],
+    ripple: [path.resolve('./packages/mdc-ripple/index.js')],
+    select: [path.resolve('./packages/mdc-select/index.js')],
+    snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
+    textfield: [path.resolve('./packages/mdc-textfield/index.js')]
   },
   output: {
     path: OUT_PATH,
     publicPath: PUBLIC_PATH,
-    filename: 'mdl.[name].' + (IS_PROD ? 'min.' : '') + 'js',
+    filename: 'mdc.[name].' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
-    library: ['mdl', '[name]']
+    library: ['mdc', '[name]']
   },
   devtool: IS_DEV ? 'source-map' : null,
   module: {
@@ -60,13 +61,13 @@ module.exports = [{
   }
 }, {
   name: 'js-all',
-  entry: path.resolve('./packages/material-design-lite/index.js'),
+  entry: path.resolve('./packages/material-components-web/index.js'),
   output: {
     path: OUT_PATH,
     publicPath: PUBLIC_PATH,
-    filename: 'material-design-lite.' + (IS_PROD ? 'min.' : '') + 'js',
+    filename: 'material-components-web.' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
-    library: 'mdl'
+    library: 'mdc'
   },
   devtool: IS_DEV ? 'source-map' : null,
   module: {
@@ -79,26 +80,26 @@ module.exports = [{
 }, {
   name: 'css',
   entry: {
-    'material-design-lite': path.resolve(
-        './packages/material-design-lite/material-design-lite.scss'),
-    'mdl.animation': path.resolve('./packages/mdl-animation/mdl-animation.scss'),
-    'mdl.button': path.resolve('./packages/mdl-button/mdl-button.scss'),
-    'mdl.card': path.resolve('./packages/mdl-card/mdl-card.scss'),
-    'mdl.checkbox': path.resolve('./packages/mdl-checkbox/mdl-checkbox.scss'),
-    'mdl.drawer': path.resolve('./packages/mdl-drawer/mdl-drawer.scss'),
-    'mdl.elevation': path.resolve('./packages/mdl-elevation/mdl-elevation.scss'),
-    'mdl.fab': path.resolve('./packages/mdl-fab/mdl-fab.scss'),
-    'mdl.form-field': path.resolve('./packages/mdl-form-field/mdl-form-field.scss'),
-    'mdl.icon-toggle': path.resolve('./packages/mdl-icon-toggle/mdl-icon-toggle.scss'),
-    'mdl.list': path.resolve('./packages/mdl-list/mdl-list.scss'),
-    'mdl.menu': path.resolve('./packages/mdl-menu/mdl-menu.scss'),
-    'mdl.radio': path.resolve('./packages/mdl-radio/mdl-radio.scss'),
-    'mdl.ripple': path.resolve('./packages/mdl-ripple/mdl-ripple.scss'),
-    'mdl.select': path.resolve('./packages/mdl-select/mdl-select.scss'),
-    'mdl.snackbar': path.resolve('./packages/mdl-snackbar/mdl-snackbar.scss'),
-    'mdl.textfield': path.resolve('./packages/mdl-textfield/mdl-textfield.scss'),
-    'mdl.theme': path.resolve('./packages/mdl-theme/mdl-theme.scss'),
-    'mdl.typography': path.resolve('./packages/mdl-typography/mdl-typography.scss')
+    'material-components-web': path.resolve(
+        './packages/material-components-web/material-components-web.scss'),
+    'mdc.animation': path.resolve('./packages/mdc-animation/mdc-animation.scss'),
+    'mdc.button': path.resolve('./packages/mdc-button/mdc-button.scss'),
+    'mdc.card': path.resolve('./packages/mdc-card/mdc-card.scss'),
+    'mdc.checkbox': path.resolve('./packages/mdc-checkbox/mdc-checkbox.scss'),
+    'mdc.drawer': path.resolve('./packages/mdc-drawer/mdc-drawer.scss'),
+    'mdc.elevation': path.resolve('./packages/mdc-elevation/mdc-elevation.scss'),
+    'mdc.fab': path.resolve('./packages/mdc-fab/mdc-fab.scss'),
+    'mdc.form-field': path.resolve('./packages/mdc-form-field/mdc-form-field.scss'),
+    'mdc.icon-toggle': path.resolve('./packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
+    'mdc.list': path.resolve('./packages/mdc-list/mdc-list.scss'),
+    'mdc.menu': path.resolve('./packages/mdc-menu/mdc-menu.scss'),
+    'mdc.radio': path.resolve('./packages/mdc-radio/mdc-radio.scss'),
+    'mdc.ripple': path.resolve('./packages/mdc-ripple/mdc-ripple.scss'),
+    'mdc.select': path.resolve('./packages/mdc-select/mdc-select.scss'),
+    'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
+    'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
+    'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
+    'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss')
   },
   output: {
     path: OUT_PATH,
@@ -117,12 +118,12 @@ module.exports = [{
           ExtractTextPlugin.extract('css!postcss!sass')
     }]
   },
+  sassLoader: {
+    includePaths: glob.sync('packages/*/node_modules').map(d => path.join(__dirname, d))
+  },
   plugins: [
     new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css')
   ],
-  sassLoader: {
-    includePaths: [path.resolve(__dirname, 'packages')]
-  },
   postcss: function() {
     return [
       require('autoprefixer')

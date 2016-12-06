@@ -1,0 +1,15 @@
+{
+  "name": "@material/snackbar",
+  "description": "A material design snackbar/toast component",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "dependencies": {
+    "@material/animation": "^0.1.0",
+    "@material/base": "^0.1.0",
+    "@material/button": "^0.1.0",
+    "@material/rtl": "^0.1.0",
+    "@material/theme": "^0.1.0",
+    "@material/typography": "^0.1.0"
+  }
+}

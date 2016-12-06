@@ -1,6 +1,6 @@
-# MDL Checkbox Example - Angular2
+# MDC-Web Checkbox Example - Angular2
 
-This folder contains a POC for using mdl-checkbox within Angular2.
+This folder contains a POC for using mdc-checkbox within Angular2.
 
 It is based off of [angular2-seed](https://github.com/angular/angular2-seed)
 

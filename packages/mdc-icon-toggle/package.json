@@ -1,0 +1,13 @@
+{
+  "name": "@material/icon-toggle",
+  "description": "A Material Design Icon Toggle Component",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@material/animation": "^0.1.0",
+    "@material/base": "^0.1.0",
+    "@material/ripple": "^0.1.0",
+    "@material/theme": "^0.1.0"
+  }
+}

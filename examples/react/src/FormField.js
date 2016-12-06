@@ -19,11 +19,11 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import '../../../packages/mdl-form-field/mdl-form-field.scss';
+import '../../../packages/mdc-form-field/mdc-form-field.scss';
 
 export default function FormField({alignEnd, children}) {
   return (
-    <div className={classnames('mdl-form-field', {'mdl-form-field--align-end': alignEnd})}>
+    <div className={classnames('mdc-form-field', {'mdc-form-field--align-end': alignEnd})}>
       {children}
     </div>
   );

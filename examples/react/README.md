@@ -1,6 +1,6 @@
-# MDL Checkbox Example - React
+# MDC-Web Checkbox Example - React
 
-This folder contains an example of using mdl-checkbox within React.
+This folder contains an example of using mdc-checkbox within React.
 
 It is based off of [react-hot-boilerplate](https://github.com/gaearon/react-hot-boilerplate)
 
