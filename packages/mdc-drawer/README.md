@@ -250,3 +250,4 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
+| `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |

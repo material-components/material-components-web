@@ -74,7 +74,8 @@ export class MDCTemporaryDrawer extends MDCComponent {
       saveElementTabState: el => util.saveElementTabState(el),
       restoreElementTabState: el => util.restoreElementTabState(el),
       makeElementUntabbable: el => el.setAttribute('tabindex', -1),
-      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl'
+      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      isDrawer: el => el === this.drawer
     });
   }
 }
