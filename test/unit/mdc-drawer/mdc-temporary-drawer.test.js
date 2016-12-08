@@ -294,3 +294,16 @@ test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from 
   t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
   t.end();
 });
+
+test('adapter#isDrawer returns true for the drawer element', t => {
+  const {root, component} = setupTest();
+  const drawer = root.querySelector(strings.DRAWER_SELECTOR);
+  t.true(component.getDefaultFoundation().adapter_.isDrawer(drawer));
+  t.end();
+});
+
+test('adapter#isDrawer returns false for a non-drawer element', t => {
+  const {root, component} = setupTest();
+  t.false(component.getDefaultFoundation().adapter_.isDrawer(root));
+  t.end();
+});

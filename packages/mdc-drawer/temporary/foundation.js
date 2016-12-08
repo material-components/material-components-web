@@ -51,16 +51,19 @@ export default class MDCTemporaryDrawerFoundation extends MDCFoundation {
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
       isRtl: () => /* boolean */ false,
-      getDrawerWidth: () => /* number */ 0
+      getDrawerWidth: () => /* number */ 0,
+      isDrawer: (/* el: Element */) => /* boolean */ false
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCTemporaryDrawerFoundation.defaultAdapter, adapter));
 
-    this.transitionEndHandler_ = () => {
-      this.adapter_.removeClass(MDCTemporaryDrawerFoundation.cssClasses.ANIMATING);
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    this.transitionEndHandler_ = ev => {
+      if (this.adapter_.isDrawer(ev.target)) {
+        this.adapter_.removeClass(MDCTemporaryDrawerFoundation.cssClasses.ANIMATING);
+        this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+      }
     };
 
     this.inert_ = false;

@@ -55,7 +55,7 @@ test('defaultAdapter returns a complete adapter implementation', t => {
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'updateCssVariable', 'getFocusableElements',
-    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth'
+    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer'
   ]);
   // Test default methods
   methods.forEach(m => t.doesNotThrow(defaultAdapter[m]));
@@ -622,5 +622,15 @@ test('on document keydown does nothing if drawer is not opened', t => {
   foundation.init();
 
   t.true(keydown === undefined);
+  t.end();
+});
+
+test('should not trigger bug #67', t => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isDrawer(td.matchers.isA(Object))).thenReturn(false);
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: null});
+  foundation.close();
+  t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-temporary-drawer--animating'), {times: 0}));
+  t.doesNotThrow(() => td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)), {times: 0}));
   t.end();
 });
