@@ -1,0 +1,12 @@
+{
+  "name": "@material/radio",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "dependencies": {
+    "@material/animation": "^0.1.0",
+    "@material/base": "^0.1.0",
+    "@material/ripple": "^0.1.0",
+    "@material/theme": "^0.1.0"
+  }
+}

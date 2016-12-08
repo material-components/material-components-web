@@ -1,0 +1,80 @@
+/**
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import "./functions";
+
+/*
+  Main theme colors.
+  If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
+*/
+$mdc-theme-primary: #3f51b5 !default; /* Indigo 500 */
+$mdc-theme-accent: #ff4081 !default; /* Pink A200 */
+$mdc-theme-background: #fff !default; /* White */
+
+/* Which set of text colors to use for each main theme color (light or dark) */
+$mdc-theme-primary-tone: mdc-theme-light-or-dark($mdc-theme-primary);
+$mdc-theme-accent-tone: mdc-theme-light-or-dark($mdc-theme-accent);
+$mdc-theme-background-tone: mdc-theme-light-or-dark($mdc-theme-background);
+
+/* Text colors according to light vs dark and text type */
+$mdc-theme-text-colors: (
+  dark: (
+    primary: rgba(black, .87),
+    secondary: rgba(black, .54),
+    hint: rgba(black, .38),
+    disabled: rgba(black, .38),
+    icon: rgba(black, .38)
+  ),
+  light: (
+    primary: white,
+    secondary: rgba(white, .7),
+    hint: rgba(white, .5),
+    disabled: rgba(white, .5),
+    icon: rgba(white, .5)
+  )
+);
+
+/* Primary text colors for each of the theme colors */
+$mdc-theme-property-values: (
+  primary: $mdc-theme-primary,
+  accent: $mdc-theme-accent,
+  background: $mdc-theme-background,
+  text-primary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), primary),
+  text-secondary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), secondary),
+  text-hint-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), hint),
+  text-disabled-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), disabled),
+  text-icon-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), icon),
+  text-primary-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), primary),
+  text-secondary-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), secondary),
+  text-hint-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), hint),
+  text-disabled-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), disabled),
+  text-icon-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), icon),
+  text-primary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), primary),
+  text-secondary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), secondary),
+  text-hint-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), hint),
+  text-disabled-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), disabled),
+  text-icon-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), icon),
+  text-primary-on-light: map-get(map-get($mdc-theme-text-colors, dark), primary),
+  text-secondary-on-light: map-get(map-get($mdc-theme-text-colors, dark), secondary),
+  text-hint-on-light: map-get(map-get($mdc-theme-text-colors, dark), hint),
+  text-disabled-on-light: map-get(map-get($mdc-theme-text-colors, dark), disabled),
+  text-icon-on-light: map-get(map-get($mdc-theme-text-colors, dark), icon),
+  text-primary-on-dark: map-get(map-get($mdc-theme-text-colors, light), primary),
+  text-secondary-on-dark: map-get(map-get($mdc-theme-text-colors, light), secondary),
+  text-hint-on-dark: map-get(map-get($mdc-theme-text-colors, light), hint),
+  text-disabled-on-dark: map-get(map-get($mdc-theme-text-colors, light), disabled),
+  text-icon-on-dark: map-get(map-get($mdc-theme-text-colors, light), icon)
+);

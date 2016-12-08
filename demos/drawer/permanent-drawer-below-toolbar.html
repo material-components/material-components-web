@@ -17,11 +17,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDL Drawer Demo</title>
+    <title>MDC-Web Permanent Drawer (below toolbar) Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="../assets/material-design-lite.css.js" charset="utf-8"></script>
+    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
     <style>
     /* Ensure layout covers the entire screen. */
     html {
@@ -45,7 +45,7 @@
       box-sizing: border-box;
     }
 
-    /* A quick and simple toolbar, while we're waiting for mdl-toolbar. */
+    /* A quick and simple toolbar, while we're waiting for mdc-toolbar. */
     .demo-toolbar {
       display: block;
       width: 100%;
@@ -68,45 +68,45 @@
     }
     </style>
   </head>
-  <body class="mdl-typography demo-body">
-    <div class="demo-toolbar mdl-theme--primary-bg mdl-theme--text-primary-on-primary mdl-typography--title mdl-elevation--z4">Title</div>
+  <body class="mdc-typography demo-body">
+    <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">Title</div>
 
     <div class="demo-content">
-      <nav class="mdl-permanent-drawer">
-        <div class="mdl-list-group">
-          <nav class="mdl-list">
-            <a class="mdl-list-item mdl-permanent-drawer--selected" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      <nav class="mdc-permanent-drawer">
+        <div class="mdc-list-group">
+          <nav class="mdc-list">
+            <a class="mdc-list-item mdc-permanent-drawer--selected" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">star</i>Star
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
             </a>
           </nav>
 
-          <hr class="mdl-list-divider">
+          <hr class="mdc-list-divider">
 
-          <nav class="mdl-list">
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">email</i>All Mail
+          <nav class="mdc-list">
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">delete</i>Trash
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">report</i>Spam
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
             </a>
           </nav>
         </div>
       </nav>
       <main class="demo-main">
-        <h1 class="mdl-typography--display1">Permanent Drawer</h1>
-        <p class="mdl-typography--body1">It sits to the left of this content.</p>
+        <h1 class="mdc-typography--display1">Permanent Drawer</h1>
+        <p class="mdc-typography--body1">It sits to the left of this content.</p>
       </main>
     </div>
   </body>

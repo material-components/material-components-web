@@ -1,12 +1,10 @@
-# Material Design Lite V2
+# Material Components Web (MDC-Web)
 
 > Project status: **pre-alpha**
 
-**NOTE:** This is the experimental, pre-alpha branch for the next version of Material Design Lite. If you are looking for the current stable version, please see the [MDL 1.x branch](https://github.com/google/material-design-lite/tree/mdl-1.x) or visit the [MDL website](https://getmdl.io/).
-
 ## Overview
 
-MDL V2 is the next generation of the MDL component library, incorporating the latest in material design thinking and a new, flexible component architecture under the hood.
+MDC-Web is the next generation of Material Design components for the Web, incorporating the latest in material design thinking and a flexible component architecture under the hood. It is the successor to [Material Design Lite](https://getmdl.io/).
 
 The project has 3 high-level goals:
 
@@ -24,15 +22,14 @@ Please see our [developer's guide](docs/developer.md) for more in-depth informat
 Setup the repo:
 
 ```
-git clone https://github.com/google/material-design-lite.git && cd material-design-lite
-git checkout master
+git clone https://github.com/material-components/material-components-web.git && cd material-components-web
 npm i
 ```
 
 Run the development server (served out of `demos/`):
 
 ```
-cd /path/to/material-design-lite
+cd /path/to/material-components-web
 npm run dev
 open http://localhost:8080
 ```

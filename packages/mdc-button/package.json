@@ -1,0 +1,11 @@
+{
+  "name": "@material/button",
+  "version": "0.1.0",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "@material/animation": "^0.1.0",
+    "@material/elevation": "^0.1.0",
+    "@material/theme": "^0.1.0",
+    "@material/typography": "^0.1.0"
+  }
+}

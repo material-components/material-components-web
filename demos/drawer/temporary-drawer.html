@@ -17,11 +17,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDL Drawer Demo</title>
+    <title>MDC-Web Temporary Drawer Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="../assets/material-design-lite.css.js" charset="utf-8"></script>
+    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
     <style>
     .demo-body {
       padding: 0;
@@ -29,7 +29,7 @@
       box-sizing: border-box;
     }
 
-    /* A quick and simple toolbar, while we're waiting for mdl-toolbar. */
+    /* A quick and simple toolbar, while we're waiting for mdc-toolbar. */
     .demo-toolbar {
       width: 100%;
       height: 56px;
@@ -62,59 +62,59 @@
     }
     </style>
   </head>
-  <body class="mdl-typography demo-body">
-    <div class="demo-toolbar mdl-theme--primary-bg mdl-theme--text-primary-on-primary mdl-typography--title mdl-elevation--z4">
+  <body class="mdc-typography demo-body">
+    <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">
       <button class="demo-menu material-icons">menu</button>
     </div>
 
-    <aside class="mdl-temporary-drawer">
-      <nav class="mdl-temporary-drawer__drawer">
-        <header class="mdl-temporary-drawer__header">
-          <div class="mdl-temporary-drawer__header-content mdl-theme--primary-bg mdl-theme--text-primary-on-primary">
+    <aside class="mdc-temporary-drawer">
+      <nav class="mdc-temporary-drawer__drawer">
+        <header class="mdc-temporary-drawer__header">
+          <div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
             Header here
           </div>
         </header>
-        <nav class="mdl-temporary-drawer__content mdl-list-group">
-          <div id="icon-with-text-demo" class="mdl-list">
-            <a class="mdl-list-item mdl-temporary-drawer--selected" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+        <nav class="mdc-temporary-drawer__content mdc-list-group">
+          <div id="icon-with-text-demo" class="mdc-list">
+            <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">star</i>Star
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
             </a>
           </div>
 
-          <hr class="mdl-list-divider">
+          <hr class="mdc-list-divider">
 
-          <div class="mdl-list">
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">email</i>All Mail
+          <div class="mdc-list">
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">delete</i>Trash
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
             </a>
-            <a class="mdl-list-item" href="#">
-              <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">report</i>Spam
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
             </a>
           </div>
         </nav>
       </nav>
     </aside>
     <main class="demo-main">
-      <h1 class="mdl-typography--display1">Temporary Drawer</h1>
-      <p class="mdl-typography--body1">Click the menu icon above to open.</p>
+      <h1 class="mdc-typography--display1">Temporary Drawer</h1>
+      <p class="mdc-typography--body1">Click the menu icon above to open.</p>
     </main>
 
-    <script src="../assets/material-design-lite.js" charset="utf-8"></script>
+    <script src="../assets/material-components-web.js" charset="utf-8"></script>
     <script>
-      var MDLTemporaryDrawer = mdl.drawer.MDLTemporaryDrawer;
-      var drawer = new MDLTemporaryDrawer(document.querySelector('.mdl-temporary-drawer'));
+      var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
+      var drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
       document.querySelector('.demo-menu').addEventListener('click', function() {
         drawer.open = true;
       });

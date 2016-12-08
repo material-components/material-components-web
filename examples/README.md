@@ -1,6 +1,6 @@
-# MDL Framework Integration Examples
+# MDC-Web Framework Integration Examples
 
-This directory contains examples which show how you can easily integrate MDL components into any
+This directory contains examples which show how you can easily integrate MDC-Web components into any
 framework by using their foundations and providing adapters for them. The examples in this directory
 show how you can wrap a checkbox component.
 

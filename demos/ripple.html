@@ -14,13 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html class="mdl-typography">
+<html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDL Ripple Demo</title>
+    <title>MDC Ripple Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="assets/material-design-lite.css.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <script>
       if (!window.CSS || !window.CSS.supports ||
         !window.CSS.supports('--css-vars', 'yes') && !(window.CSS.supports('color', '#00000000'))) {
@@ -40,7 +40,7 @@
         -webkit-user-select: none;
       }
 
-      .demo-surface[data-mdl-ripple-is-unbounded] {
+      .demo-surface[data-mdc-ripple-is-unbounded] {
         width: 40px;
         height: 40px;
         padding: 0;
@@ -90,16 +90,16 @@
       Please try this in Desktop Chrome or Desktop Firefox.
     </aside>
     <main>
-      <h1>MDL Ripple</h1>
+      <h1>MDC Ripple</h1>
       <section>
         <h2>Bounded</h2>
-        <div class="mdl-ripple-surface demo-surface mdl-elevation--z2" tabindex="0">
+        <div class="mdc-ripple-surface demo-surface mdc-elevation--z2" tabindex="0">
           Interact with me!
         </div>
       </section>
       <section>
         <h2>Unbounded</h2>
-        <div class="mdl-ripple-surface demo-surface material-icons" data-mdl-ripple-is-unbounded
+        <div class="mdc-ripple-surface demo-surface material-icons" data-mdc-ripple-is-unbounded
              aria-label="Favorite" tabindex="0">
           favorite
         </div>
@@ -107,26 +107,26 @@
       <section>
         <h2>Theme Styles</h2>
         <div
-          class="mdl-ripple-surface mdl-ripple-surface--primary
-                 mdl-theme--primary demo-surface mdl-elevation--z2" tabindex="0">
+          class="mdc-ripple-surface mdc-ripple-surface--primary
+                 mdc-theme--primary demo-surface mdc-elevation--z2" tabindex="0">
           Primary
         </div>
         <div
-          class="mdl-ripple-surface mdl-ripple-surface--accent
-                 mdl-theme--accent demo-surface mdl-elevation--z2" tabindex="0">
+          class="mdc-ripple-surface mdc-ripple-surface--accent
+                 mdc-theme--accent demo-surface mdc-elevation--z2" tabindex="0">
           Accent
         </div>
       </section>
       <section>
         <h2>Applied to <code>&lt;button&gt; element</h2>
-          <button type="button" class="mdl-ripple-surface mdl-elevation--z2 demo-surface">button</button>
+          <button type="button" class="mdc-ripple-surface mdc-elevation--z2 demo-surface">button</button>
       </section>
     </main>
-    <script src="assets/material-design-lite.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script>
       (function(global) {
-        [].forEach.call(document.querySelectorAll('.mdl-ripple-surface'), function(surface) {
-          mdl.ripple.MDLRipple.attachTo(surface);
+        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
+          mdc.ripple.MDCRipple.attachTo(surface);
         });
       })(this);
     </script>

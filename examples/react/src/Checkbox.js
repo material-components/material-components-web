@@ -17,7 +17,7 @@
 /* eslint-disable */
 
 /**
- * @fileoverview This file shows how you can easily integrate MDL components into React, using
+ * @fileoverview This file shows how you can easily integrate MDC-Web components into React, using
  * checkbox as an example. Within the constructor, a foundation is initialized and given an adapter that
  * allows it to perform UI operations in a way idiomatic to React.
  */
@@ -26,10 +26,10 @@ import React, {Component, PropTypes} from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {Set as ImmutableSet} from 'immutable';
 // Temporarily using relative reference until we publish on npm.
-import {MDLCheckboxFoundation} from '../../../packages/mdl-checkbox';
-import '../../../packages/mdl-checkbox/mdl-checkbox.scss';
+import {MDCCheckboxFoundation} from '../../../packages/mdc-checkbox';
+import '../../../packages/mdc-checkbox/mdc-checkbox.scss';
 
-const {ANIM_END_EVENT_NAME} = MDLCheckboxFoundation.strings;
+const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.strings;
 
 export default class Checkbox extends Component {
   static propTypes = {
@@ -57,7 +57,7 @@ export default class Checkbox extends Component {
 
   // Here we initialize a foundation class, passing it an adapter which tells it how to
   // work with the React component in an idiomatic way.
-  foundation = new MDLCheckboxFoundation({
+  foundation = new MDCCheckboxFoundation({
     addClass: className => this.setState(prevState => ({
       classes: prevState.classes.add(className)
     })),
@@ -104,13 +104,13 @@ export default class Checkbox extends Component {
   });
 
   render() {
-    // Within render, we generate the html needed to render a proper MDL checkbox.
+    // Within render, we generate the html needed to render a proper MDC-Web checkbox.
     return (
-      <div ref="root" className={`mdl-checkbox ${this.state.classes.toJS().join(' ')}`}>
+      <div ref="root" className={`mdc-checkbox ${this.state.classes.toJS().join(' ')}`}>
         <input ref="nativeCb"
                id={this.props.controlId}
                type="checkbox"
-               className="mdl-checkbox__native-control"
+               className="mdc-checkbox__native-control"
                aria-labelledby={this.props.labelId}
                checked={this.state.checkedInternal}
                onChange={evt => {
@@ -120,17 +120,17 @@ export default class Checkbox extends Component {
                  });
                  this.props.onChange(evt);
                }}/>
-        <div className="mdl-checkbox__background">
+        <div className="mdc-checkbox__background">
           <svg version="1.1"
-               className="mdl-checkbox__checkmark"
+               className="mdc-checkbox__checkmark"
                xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 24 24">
-            <path className="mdl-checkbox__checkmark__path"
+            <path className="mdc-checkbox__checkmark__path"
                   fill="none"
                   stroke="white"
                   d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
           </svg>
-          <div className="mdl-checkbox__mixedmark"></div>
+          <div className="mdc-checkbox__mixedmark"></div>
         </div>
       </div>
     );

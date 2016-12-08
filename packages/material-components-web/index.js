@@ -1,0 +1,53 @@
+/**
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import * as base from '@material/base';
+import * as checkbox from '@material/checkbox';
+import * as iconToggle from '@material/icon-toggle';
+import * as radio from '@material/radio';
+import * as ripple from '@material/ripple';
+import * as drawer from '@material/drawer';
+import * as textfield from '@material/textfield';
+import * as snackbar from '@material/snackbar';
+import * as menu from '@material/menu';
+import * as select from '@material/select';
+import autoInit from '@material/auto-init';
+
+// Register all components
+autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
+autoInit.register('MDCTemporaryDrawer', drawer.MDCTemporaryDrawer);
+autoInit.register('MDCRipple', ripple.MDCRipple);
+autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
+autoInit.register('MDCRadio', radio.MDCRadio);
+autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
+autoInit.register('MDCTextfield', textfield.MDCTextfield);
+autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
+autoInit.register('MDCSelect', select.MDCSelect);
+
+// Export all components.
+export {
+  base,
+  checkbox,
+  iconToggle,
+  radio,
+  ripple,
+  snackbar,
+  drawer,
+  textfield,
+  menu,
+  select,
+  autoInit
+};

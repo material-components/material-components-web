@@ -1,42 +1,42 @@
 
 <template>
 <div>
-  <div class="demo-toolbar mdl-theme--primary-bg mdl-theme--text-primary-on-primary mdl-typography--title mdl-elevation--z4">
+  <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">
     <button class="demo-menu material-icons" @click="$refs.drawer.open()">menu</button>
   </div>
 
   <temporary-drawer ref="drawer" style="z-index: 20;">
-    <div slot="header" class="mdl-temporary-drawer__header-content mdl-theme--primary-bg mdl-them--text-primary-on-primary">
+    <div slot="header" class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-them--text-primary-on-primary">
       Header here
     </div>
 
-    <nav class="mdl-list-group">
-      <div id="icon-with-text-demo" class="mdl-list">
-        <a class="mdl-list-item mdl-temporary-drawer--selected" href="#">
-          <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+    <nav class="mdc-list-group">
+      <div id="icon-with-text-demo" class="mdc-list">
+        <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
+          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
         </a>
-        <a class="mdl-list-item" href="#">
-          <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">star</i>Star
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
         </a>
-        <a class="mdl-list-item" href="#">
-          <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
         </a>
-        <a class="mdl-list-item" href="#">
-          <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
         </a>
       </div>
 
-      <hr class="mdl-list-divider">
+      <hr class="mdc-list-divider">
 
-      <div class="mdl-list">
-        <a class="mdl-list-item" href="#">
-          <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">email</i>All Mail
+      <div class="mdc-list">
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
         </a>
-        <a class="mdl-list-item" href="#">
-          <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">delete</i>Trash
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
         </a>
-        <a class="mdl-list-item" href="#">
-          <i class="material-icons mdl-list-item__start-detail" aria-hidden="true">report</i>Spam
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
         </a>
       </div>
     </nav>
@@ -79,13 +79,13 @@
 </template>
 
 <script lang="babel">
-import Ripple from './v-mdl-ripple/Ripple';
-import Snackbar from './v-mdl-snackbar/Snackbar';
-import Checkbox from './v-mdl-checkbox/Checkbox';
-import IconToggle from './v-mdl-icon-toggle/IconToggle';
-import CheckboxLabel from './v-mdl-checkbox/CheckboxLabel';
-import FormField from './v-mdl-form-field/FormField';
-import TemporaryDrawer from './v-mdl-drawer/TemporaryDrawer';
+import Ripple from './v-mdc-ripple/Ripple';
+import Snackbar from './v-mdc-snackbar/Snackbar';
+import Checkbox from './v-mdc-checkbox/Checkbox';
+import IconToggle from './v-mdc-icon-toggle/IconToggle';
+import CheckboxLabel from './v-mdc-checkbox/CheckboxLabel';
+import FormField from './v-mdc-form-field/FormField';
+import TemporaryDrawer from './v-mdc-drawer/TemporaryDrawer';
 
 export default {
   data () {
@@ -118,10 +118,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'mdl-ripple/mdl-ripple.scss';
-@import 'mdl-elevation/mdl-elevation.scss';
-@import 'mdl-list/mdl-list.scss';
-@import 'mdl-theme/mdl-theme.scss';
+@import 'mdc-ripple/mdc-ripple.scss';
+@import 'mdc-elevation/mdc-elevation.scss';
+@import 'mdc-list/mdc-list.scss';
+@import 'mdc-theme/mdc-theme.scss';
 
 .demo-toolbar {
   width: 100%;
@@ -150,7 +150,7 @@ export default {
 }
 
 .demo-surface {
-  @include mdl-elevation(2);
+  @include mdc-elevation(2);
   width: 150px;
   height: 150px;
 }

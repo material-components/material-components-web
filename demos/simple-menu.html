@@ -17,11 +17,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDL Simple Menu Demo</title>
+    <title>MDC Simple Menu Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="assets/material-design-lite.css.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <style>
       html,
       body,
@@ -38,14 +38,14 @@
         background-color: antiquewhite;
       }
 
-      .mdl-menu-anchor {
+      .mdc-menu-anchor {
         position: absolute;
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>MDL Simple Menu</h1>
+      <h1>MDC Simple Menu</h1>
       <p>
         Button position:
         <label>
@@ -75,34 +75,34 @@
         <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
       </div>
       <div class="demo-content">
-        <div class="mdl-menu-anchor">
+        <div class="mdc-menu-anchor">
           <button class="toggle">Toggle</button>
 
-          <div class="mdl-simple-menu" style="position: absolute;" tabindex="-1">
-            <ul class="mdl-simple-menu__items mdl-list" role="menu" aria-hidden="true">
-              <li class="mdl-list-item" role="menuitem" tabindex="0">Back</li>
-              <li class="mdl-list-item" role="menuitem" tabindex="0">Forward</li>
-              <li class="mdl-list-item" role="menuitem" tabindex="0">Reload</li>
-              <li class="mdl-list-divider" role="separator"></li>
+          <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1">
+            <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
+              <li class="mdc-list-divider" role="separator"></li>
 
-              <li class="mdl-list-item" role="menuitem" tabindex="0">Save As...</li>
-              <li class="mdl-list-item" role="menuitem" tabindex="0">Print...</li>
-              <li class="mdl-list-item" role="menuitem" tabindex="0">Cast...</li>
-              <li class="mdl-list-item" role="menuitem" tabindex="0">Translate to English</li>
-              <li class="mdl-list-divider" role="separator"></li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Print...</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Cast...</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Translate to English</li>
+              <li class="mdc-list-divider" role="separator"></li>
 
-              <li class="mdl-list-item" role="menuitem" tabindex="0">View Page Source</li>
-              <li class="mdl-list-item" role="menuitem" tabindex="0">Inspect</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">View Page Source</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Inspect</li>
             </ul>
           </div>
         </div>
       </div>
     </main>
 
-    <script src="../assets/material-design-lite.js" charset="utf-8"></script>
+    <script src="../assets/material-components-web.js" charset="utf-8"></script>
     <script>
-      var menuEl = document.querySelector('.mdl-simple-menu');
-      var menu = new mdl.menu.MDLSimpleMenu(menuEl);
+      var menuEl = document.querySelector('.mdc-simple-menu');
+      var menu = new mdc.menu.MDCSimpleMenu(menuEl);
       var toggle = document.querySelector('.toggle');
       toggle.addEventListener('click', function() {
         menu.open = !menu.open;
@@ -111,9 +111,9 @@
       var dark = document.querySelector('input[name="dark"]');
       dark.addEventListener('change', function(evt) {
         if (evt.target.checked) {
-          menuEl.classList.add('mdl-simple-menu--theme-dark');
+          menuEl.classList.add('mdc-simple-menu--theme-dark');
         } else {
-          menuEl.classList.remove('mdl-simple-menu--theme-dark');
+          menuEl.classList.remove('mdc-simple-menu--theme-dark');
         }
       });
 
@@ -122,7 +122,7 @@
         radios[i].addEventListener('change', function(evt) {
           if (evt.target.checked) {
             if (evt.target.value) {
-              var anchor = document.querySelector('.mdl-menu-anchor');
+              var anchor = document.querySelector('.mdc-menu-anchor');
               anchor.style.removeAttribute('top');
               anchor.style.removeAttribute('right');
               anchor.style.removeAttribute('bottom');
@@ -138,7 +138,7 @@
       }
 
       var lastSelected = document.getElementById('last-selected');
-      menuEl.addEventListener('MDLSimpleMenu:selected', function(evt) {
+      menuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
         const detail = evt.detail;
         lastSelected.textContent = '"' + detail.item.textContent.trim() +
           '" at index ' + detail.index;

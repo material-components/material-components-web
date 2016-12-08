@@ -1,0 +1,6 @@
+{
+  "name": "@material/rtl",
+  "description": "RTL Scss helpers for Material Components Web",
+  "version": "0.1.0",
+  "license": "Apache-2.0"
+}

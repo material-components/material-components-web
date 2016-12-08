@@ -14,58 +14,58 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html class="mdl-typography">
+<html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDL Snackbar Demo</title>
+    <title>MDC Snackbar Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
-      .mdl-snackbar { transform: translateY(100%); }
+      .mdc-snackbar { transform: translateY(100%); }
     </style>
-    <script src="assets/material-design-lite.css.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body>
     <main>
-      <h1>MDL Snackbar</h1>
+      <h1>MDC Snackbar</h1>
       <section>
         <h2>Basic Example</h2>
         <div>
-          <div class="mdl-checkbox-wrapper">
-            <div class="mdl-checkbox-wrapper__layout">
-              <div class="mdl-checkbox">
+          <div class="mdc-checkbox-wrapper">
+            <div class="mdc-checkbox-wrapper__layout">
+              <div class="mdc-checkbox">
                 <input type="checkbox"
-                       class="mdl-checkbox__native-control"
+                       class="mdc-checkbox__native-control"
                        id="multiline"
                        aria-labelledby="multiline-label" />
-                <div class="mdl-checkbox__background">
-                  <svg version="1.1" class="mdl-checkbox__checkmark"
+                <div class="mdc-checkbox__background">
+                  <svg version="1.1" class="mdc-checkbox__checkmark"
                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                        xml:space="preserve">
-                    <path class="mdl-checkbox__checkmark__path" fill="none" stroke="white"
+                    <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                   </svg>
-                <div class="mdl-checkbox__mixedmark"></div>
+                <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
             <label for="multiline" id="multiline-label">Multiline</label>
           </div>
 
-          <div class="mdl-checkbox-wrapper">
-            <div class="mdl-checkbox-wrapper__layout">
-              <div class="mdl-checkbox">
+          <div class="mdc-checkbox-wrapper">
+            <div class="mdc-checkbox-wrapper__layout">
+              <div class="mdc-checkbox">
                 <input type="checkbox"
-                       class="mdl-checkbox__native-control"
+                       class="mdc-checkbox__native-control"
                        id="action-on-bottom"
                        aria-labelledby="action-on-bottom-label" />
-                <div class="mdl-checkbox__background">
-                  <svg version="1.1" class="mdl-checkbox__checkmark"
+                <div class="mdc-checkbox__background">
+                  <svg version="1.1" class="mdc-checkbox__checkmark"
                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                        xml:space="preserve">
-                    <path class="mdl-checkbox__checkmark__path" fill="none" stroke="white"
+                    <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                   </svg>
-                <div class="mdl-checkbox__mixedmark"></div>
+                <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
             <label for="action-on-bottom" id="action-on-bottom-label">Action On Bottom</label>
@@ -85,37 +85,37 @@
         <button type="button" id="show-snackbar">Show</button>
         <button type="button" id="show-rtl-snackbar">Show RTL</button>
 
-        <div id="mdl-js-snackbar"
-             class="mdl-snackbar"
+        <div id="mdc-js-snackbar"
+             class="mdc-snackbar"
              aria-live="assertive"
              aria-atomic="true"
              aria-hidden="true">
-          <div class="mdl-snackbar__text"></div>
-          <div class="mdl-snackbar__action-wrapper">
-            <button type="button" class="mdl-button mdl-snackbar__action-button"></button>
+          <div class="mdc-snackbar__text"></div>
+          <div class="mdc-snackbar__action-wrapper">
+            <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
           </div>
         </div>
         <div dir="rtl">
-          <div id="mdl-rtl-js-snackbar"
-               class="mdl-snackbar"
+          <div id="mdc-rtl-js-snackbar"
+               class="mdc-snackbar"
                aria-live="assertive"
                aria-atomic="true"
                aria-hidden="true">
-            <div class="mdl-snackbar__text"></div>
-            <div class="mdl-snackbar__action-wrapper">
-              <button type="button" class="mdl-button mdl-snackbar__action-button"></button>
+            <div class="mdc-snackbar__text"></div>
+            <div class="mdc-snackbar__action-wrapper">
+              <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
             </div>
           </div>
         </div>
       </section>
     </main>
-    <script src="assets/material-design-lite.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script>
       (function(global) {
         'use strict';
-        var MDLSnackbar = global.mdl.snackbar.MDLSnackbar;
-        var snackbar = new MDLSnackbar(document.getElementById('mdl-js-snackbar'));
-        var rtlSnackbar = new MDLSnackbar(document.getElementById('mdl-rtl-js-snackbar'));
+        var MDCSnackbar = global.mdc.snackbar.MDCSnackbar;
+        var snackbar = new MDCSnackbar(document.getElementById('mdc-js-snackbar'));
+        var rtlSnackbar = new MDCSnackbar(document.getElementById('mdc-rtl-js-snackbar'));
         var messageInput = document.getElementById('message');
         var actionInput = document.getElementById('action');
         var multilineInput = document.getElementById('multiline');

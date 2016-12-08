@@ -1,5 +1,5 @@
 {
-  "name": "v-mdl-example",
+  "name": "v-mdc-example",
   "version": "0.1.0",
   "scripts": {
     "start": "node build/dev-server.js"

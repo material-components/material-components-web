@@ -1,4 +1,4 @@
-# MDLv2 with aurelia-skeleton-webpack
+# MDC-Web with aurelia-skeleton-webpack
 
 ## Running the app
 

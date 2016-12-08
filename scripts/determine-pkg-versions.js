@@ -34,7 +34,7 @@
  * bump.
  *
  * This script will output each package which has deemed to have been changed, along with its new version
- * and the commit that caused it to change. It will also output the new version for the 'material-design-lite'
+ * and the commit that caused it to change. It will also output the new version for the 'material-components-web'
  * package based off the most significant change type within the subpackages. Additionally, it will write the
  * component/version info to a human-readable text file .new-versions.log within the script's CWD.
  *
@@ -85,22 +85,22 @@ const commitMatches = childProcess
     };
   })
   .filter(info => Boolean(info) && affectsPackage(info.scope));
-const componentPkgs = updatedPkgs.filter(({name}) => name !== 'material-design-lite');
-const mdlPkg = updatedPkgs.find(({name}) => name === 'material-design-lite');
+const componentPkgs = updatedPkgs.filter(({name}) => name !== 'material-components-web');
+const mdcPkg = updatedPkgs.find(({name}) => name === 'material-components-web');
 const newPkgVersions = collectNewPkgVersions(componentPkgs, commitMatches);
-const newMDLVersion = {
-  name: 'material-design-lite',
-  version: collectMDLVersion(mdlPkg, newPkgVersions),
+const newMDCVersion = {
+  name: 'material-components-web',
+  version: collectMDCVersion(mdcPkg, newPkgVersions),
   changeType: 'N/A',
   causedByCommit: 'N/A'
 };
 
-const allPkgVersions = [newMDLVersion].concat(newPkgVersions);
+const allPkgVersions = [newMDCVersion].concat(newPkgVersions);
 writeSummaryToScreen(allPkgVersions);
 writeSummaryToFile(allPkgVersions);
 
 function affectsPackage(commitScope) {
-  return fs.existsSync(path.join(PKGS_PATH, `mdl-${commitScope}`));
+  return fs.existsSync(path.join(PKGS_PATH, `mdc-${commitScope}`));
 }
 
 function collectNewPkgVersions(updatedPkgs, commitInfos) {
@@ -133,7 +133,7 @@ function determineVersion(pkg, commitInfos) {
 function pickBestVersionInfo(pkg) {
   return (currentBest, commitInfo) => {
     const {version, changeType} = currentBest;
-    const pkgComponent = pkg.name.match(/^mdl\-(.+)$/)[1];
+    const pkgComponent = pkg.name.match(/^mdc\-(.+)$/)[1];
     if (commitInfo.scope !== pkgComponent) {
       return currentBest;
     }
@@ -161,11 +161,11 @@ function pickBestVersionInfo(pkg) {
   };
 }
 
-function collectMDLVersion(mdlPkg, newPkgVersions) {
-  const currentVersion = semver.valid(mdlPkg.version);
+function collectMDCVersion(mdcPkg, newPkgVersions) {
+  const currentVersion = semver.valid(mdcPkg.version);
   if (!currentVersion) {
     throw new Error(
-      `Invalid material-design-lite version ${mdlPkg.version}. This MUST change before release.`
+      `Invalid material-components-web version ${mdcPkg.version}. This MUST change before release.`
     );
   }
   const changeTypes = new Set(newPkgVersions.map(({changeType}) => changeType));

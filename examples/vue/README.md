@@ -1,6 +1,6 @@
-# MDL Example - Vue
+# MDC-Web Example - Vue
 
-This folder contains an example of using mdl-checkbox within Vue v2.0+. Huge thank you to
+This folder contains an example of using mdc-checkbox within Vue v2.0+. Huge thank you to
 @petejohanson for creating this!
 
 ## Setup

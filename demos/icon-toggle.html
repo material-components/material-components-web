@@ -11,30 +11,30 @@
   See the License for the specific language governing permissions and
   limitations under the License
   -->
-<html class="mdl-typography">
+<html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDL Icon Toggle Demo</title>
+    <title>MDC Icon Toggle Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
     <style>
-      .mdl-theme--dark {
+      .mdc-theme--dark {
         background: #303030;
         padding: 1rem;
         padding-top: 0;
       }
     </style>
-    <script src="assets/material-design-lite.css.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body>
     <main>
-      <h1>MDL Icon Toggle</h1>
+      <h1>MDC Icon Toggle</h1>
       <section>
         <h2>Using material-icons</h2>
         <i id="add-to-favorites"
-           class="mdl-icon-toggle material-icons"
+           class="mdc-icon-toggle material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -48,7 +48,7 @@
       </section>
       <section>
         <h2>Using Font Awesome</h2>
-        <span class="mdl-icon-toggle mdl-icon-toggle--on"
+        <span class="mdc-icon-toggle mdc-icon-toggle--on"
            role="button"
            aria-label="Unstar this item"
            aria-pressed="true"
@@ -59,10 +59,10 @@
           <i class="fa fa-star" aria-hidden="true"></i>
         </span>
       </section>
-      <section class="mdl-theme--dark">
-        <h2 class="mdl-theme--text-primary-on-dark">Dark Theme</h2>
+      <section class="mdc-theme--dark">
+        <h2 class="mdc-theme--text-primary-on-dark">Dark Theme</h2>
         <i id="add-to-favorites"
-           class="mdl-icon-toggle material-icons"
+           class="mdc-icon-toggle material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -75,7 +75,7 @@
       <section>
         <h2>Primary Colored Icons</h2>
         <i id="add-to-favorites"
-           class="mdl-icon-toggle mdl-icon-toggle--primary material-icons"
+           class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -88,7 +88,7 @@
       <section>
         <h2>Accent Colored Icons</h2>
         <i id="add-to-favorites"
-           class="mdl-icon-toggle mdl-icon-toggle--accent material-icons"
+           class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -101,7 +101,7 @@
       <section>
         <h2>Disabled Icons</h2>
         <i id="add-to-favorites"
-           class="mdl-icon-toggle mdl-icon-toggle--disabled material-icons"
+           class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -111,9 +111,9 @@
            data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
           favorite_border
         </i>
-        <div class="mdl-theme--dark">
+        <div class="mdc-theme--dark">
           <i id="add-to-favorites"
-             class="mdl-icon-toggle mdl-icon-toggle--disabled material-icons"
+             class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
              role="button"
              aria-label="Add to favorites"
              aria-pressed="false"
@@ -126,19 +126,19 @@
         </div>
       </section>
     </main>
-    <script src="assets/material-design-lite.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script>
       (function() {
         'use strict';
 
-        var nodes = document.querySelectorAll('.mdl-icon-toggle');
+        var nodes = document.querySelectorAll('.mdc-icon-toggle');
         for (var i = 0, node; node = nodes[i]; i++) {
-          mdl.iconToggle.MDLIconToggle.attachTo(node);
+          mdc.iconToggle.MDCIconToggle.attachTo(node);
         }
 
         var addToFavorites = document.getElementById('add-to-favorites');
         var favoritedStatus = document.getElementById('favorited-status');
-        addToFavorites.addEventListener('MDLIconToggle:change', function(evt) {
+        addToFavorites.addEventListener('MDCIconToggle:change', function(evt) {
           var newStatus = evt.detail.isOn ? 'yes' : 'no';
           favoritedStatus.textContent = newStatus;
         });

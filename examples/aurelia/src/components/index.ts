@@ -1,8 +1,8 @@
 export function configure(config) {
     const components = [
-        './button/mdl-button',
-        './checkbox/mdl-checkbox',
-        './ripple/mdl-ripple'
+        './button/mdc-button',
+        './checkbox/mdc-checkbox',
+        './ripple/mdc-ripple'
     ];
     config.globalResources(components);
 }

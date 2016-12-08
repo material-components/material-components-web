@@ -25,10 +25,10 @@ const cpFile = require('cp-file');
 const toSlugCase = require('to-slug-case');
 const {sync: globSync} = require('glob');
 
-const PKG_RE = /(?:material\-design\-lite)|(?:mdl\.[a-zA-Z\-]+)/;
+const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
 
 const isValidCwd = (
-  path.basename(process.cwd()) === 'material-design-lite' &&
+  path.basename(process.cwd()) === 'material-components-web' &&
   fs.existsSync('packages') &&
   fs.existsSync('build')
 );
@@ -43,12 +43,12 @@ if (!isValidCwd) {
 
 function getAssetEntry(asset) {
   const [entryName] = path.parse(asset).name.match(PKG_RE);
-  const [MDL, componentName] = entryName.split('.');
-  const dealingWithSubpackage = Boolean(MDL && componentName);
+  const [MDC, componentName] = entryName.split('.');
+  const dealingWithSubpackage = Boolean(MDC && componentName);
   if (!dealingWithSubpackage) {
     return entryName;
   }
-  return [MDL, toSlugCase(componentName)].join('-');
+  return [MDC, toSlugCase(componentName)].join('-');
 }
 
 function cpAsset(asset) {

@@ -1,14 +1,14 @@
 {
   "private": true,
-  "description": "Material Design Lite",
+  "description": "Material Components Web",
   "license": "Apache-2.0",
   "scripts": {
     "build": "mkdirp build && webpack --progress --colors",
-    "build:min": "mkdirp build && cross-env MDL_ENV=production webpack -p --progress --colors",
-    "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-design-lite/package.json -w",
+    "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
+    "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json -w",
     "clean": "del-cli build/**",
     "dist": "npm run clean && npm run build && npm run build:min",
-    "dev": "npm run clean && cross-env MDL_ENV=development webpack-dev-server --content-base demos --inline --hot --host 0.0.0.0",
+    "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --content-base demos --inline --hot --host 0.0.0.0",
     "fix:js": "eslint --fix packages test webpack.config.js karma.conf.js",
     "fix:css": "stylefmt -R packages",
     "fix": "npm-run-all --parallel fix:*",

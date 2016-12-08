@@ -1,9 +1,9 @@
-<mdl-form-field>
-  <mdl-checkbox [(ngModel)]="isChecked"
+<mdc-form-field>
+  <mdc-checkbox [(ngModel)]="isChecked"
                [indeterminate]="isIndeterminate"
-               (change)="handleChange()"></mdl-checkbox>
-  <label mdl-checkbox-label [id]="labelId">The checkbox is {{status}}</label>
-</mdl-form-field>
+               (change)="handleChange()"></mdc-checkbox>
+  <label mdc-checkbox-label [id]="labelId">The checkbox is {{status}}</label>
+</mdc-form-field>
 <div style="padding-top: 12px;">
   <button type="button" (click)="isIndeterminate = true">Make Indeterminate</button>
 </div>

@@ -16,17 +16,17 @@
 
 import {Component, HostBinding, Input, ViewEncapsulation} from '@angular/core';
 
-const MDL_FORM_FIELD_STYLES = require('mdl-form-field-styles');
+const MDC_FORM_FIELD_STYLES = require('mdc-form-field-styles');
 
 @Component({
-  selector: 'mdl-form-field',
-  styles: [String(MDL_FORM_FIELD_STYLES)],
+  selector: 'mdc-form-field',
+  styles: [String(MDC_FORM_FIELD_STYLES)],
   template: `<ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None
 })
 export class FormFieldComponent {
   @Input() alignEnd: boolean = false;
   @HostBinding('class') get className(): string {
-    return `mdl-form-field${this.alignEnd ? ' mdl-form-field--align-end' : ''}`;
+    return `mdc-form-field${this.alignEnd ? ' mdc-form-field--align-end' : ''}`;
   }
 }

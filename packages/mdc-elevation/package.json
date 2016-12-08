@@ -1,0 +1,10 @@
+{
+  "name": "@material/elevation",
+  "description": "SASS mixins + CSS Classes for adding Material Design elevation to elements",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "dependencies": {
+    "@material/animation": "^0.1.0"
+  }
+}

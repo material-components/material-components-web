@@ -62,9 +62,9 @@ var webpackConfig = {
 
   resolve: {
     alias: {
-      'mdl-checkbox': path.resolve('../../packages/mdl-checkbox/index.js'),
-      'mdl-checkbox-styles': path.resolve('../../packages/mdl-checkbox/mdl-checkbox.scss'),
-      'mdl-form-field-styles': path.resolve('../../packages/mdl-form-field/mdl-form-field.scss')
+      'mdc-checkbox': path.resolve('../../packages/mdc-checkbox/index.js'),
+      'mdc-checkbox-styles': path.resolve('../../packages/mdc-checkbox/mdc-checkbox.scss'),
+      'mdc-form-field-styles': path.resolve('../../packages/mdc-form-field/mdc-form-field.scss')
     }
   }
 };
