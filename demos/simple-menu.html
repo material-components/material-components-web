@@ -123,15 +123,15 @@
           if (evt.target.checked) {
             if (evt.target.value) {
               var anchor = document.querySelector('.mdc-menu-anchor');
-              anchor.style.removeAttribute('top');
-              anchor.style.removeAttribute('right');
-              anchor.style.removeAttribute('bottom');
-              anchor.style.removeAttribute('left');
+              anchor.style.removeProperty('top');
+              anchor.style.removeProperty('right');
+              anchor.style.removeProperty('bottom');
+              anchor.style.removeProperty('left');
 
               var vertical = evt.target.value.split(' ')[0];
               var horizontal = evt.target.value.split(' ')[1];
-              anchor.style.setAttribute(vertical, '0');
-              anchor.style.setAttribute(horizontal, '0');
+              anchor.style.setProperty(vertical, '0');
+              anchor.style.setProperty(horizontal, '0');
             }
           }
         });
