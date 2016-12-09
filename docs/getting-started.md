@@ -38,6 +38,9 @@ development server that will automatically reload when changes are made.
 npm install --global live-server
 ```
 
+> NOTE: You may need to use `sudo` to install npm packages globally, depending on how your node
+installation is configured.
+
 The `--global` flag tells npm to install the package globally, so that the `live-server` program
 will be available on your `$PATH`.
 
