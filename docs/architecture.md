@@ -328,6 +328,6 @@ It is also worth mentioning that **most of this will be opaque to end users.** W
 
 ## Resources
 
-- The [mdc-checkbox](https://github.com/material-components/material-components-web/tree/master/packages/mdc-checkbox) component is an example of a complex UI component which requires foundations and adapters. We also have a [react example](https://github.com/material-components/material-components-web/tree/master/examples/react) where we create a React component using the foundation class.
+- The [mdc-checkbox](https://github.com/material-components/material-components-web/tree/master/packages/mdc-checkbox) component is an example of a complex UI component which requires foundations and adapters. We also have a [react example](https://github.com/material-components/material-components-web/tree/master/framework-examples/react) where we create a React component using the foundation class.
 - Our [mdc-base](https://github.com/material-components/material-components-web/tree/master/packages/mdc-base) package contains the core Foundation and Component classes which all of our other MDC-Web components derive from. If you're interested in contributing _directly_ to MDC-Web, it's worth a read!
 - As per usual our [contributing docs](https://github.com/material-components/material-components-web/blob/master/CONTRIBUTING.md) contain information about how to actually develop MDC-Web.
