@@ -21,19 +21,10 @@ We'd love for you to contribute to our source code and to make Material Componen
 
 ## Code of Conduct
 
-As contributors and maintainers of the Material Components Web project, we pledge to respect everyone who contributes by posting issues, updating documentation, submitting pull requests, providing feedback in comments, and any other activities.
-
-Communication through any of Material Components Web's channels (GitHub, StackOverflow, Google+, Twitter, etc.) must be constructive and never resort to personal attacks, trolling, public or private harassment, insults, or other unprofessional conduct.
-
-We promise to extend courtesy and respect to everyone involved in this project regardless of gender, gender identity, sexual orientation, disability, age, race, ethnicity, religion, or level of experience. We expect anyone contributing to the Material Components Web project to do the same.
-
-If any member of the community violates this code of conduct, the maintainers of the Material Components Web project may take action, removing issues, comments, and PRs or blocking accounts as deemed appropriate.
-
-If you are subject to or witness unacceptable behavior, or have any other concerns, please drop us a line at sgomes@google.com.
+We follow the [Material Components Code of Conduct](https://github.com/material-components/material-components/blob/develop/CONDUCT.md), and expect the same from all of our
+community members.
 
 ## Development Process
-
-> NOTE: As we are still in **pre-alpha** for this project, this section may be incomplete, in flux, and/or lacking some info. We hope to stabilize it by the time we reach alpha. If you have additional follow-up questions about our development process or find something confusing / ambiguous, reach out to us on [TODO](https://) and we may be able to help.
 
 We strive to make developing Material Components Web as frictionless as possible, both for ourselves and for our community. This section should get you up and running working on the MDC-Web codebase. Before beginning development, you may want to read through our brief [developer guide](./docs/developer.md) to get a better understanding of our overall architecture.
 
