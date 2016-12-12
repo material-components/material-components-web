@@ -9,8 +9,8 @@ frameworks.
 
 ## Examples
 
-Our [examples](../examples) directory contains sample applications built in various frameworks,
-such as [react](../examples/react) and [angular2](../examples/angular2) that show how to wrap our
+Our [framework-examples](../framework-examples) directory contains sample applications built in various frameworks,
+such as [react](../framework-examples/react) and [angular2](../framework-examples/angular2) that show how to wrap our
 components. If there's an example framework you'd like to see, or if you're a framework author who
 wants to provide an example, please consider letting us know and we'll work with you to have it
 contributed!
@@ -85,7 +85,7 @@ are working as hard as we can to make writing adapters as easy and predictable a
 - We plan on creating Type Definitions for our adapters in the future so that TypeScript users can
   validate that their interface conforms correctly to the adapter's specification.
 
-Our [examples](../examples) directory contains sample code for various frameworks showing how
+Our [framework-examples](../framework-examples) directory contains sample code for various frameworks showing how
 adapters can be implemented. We encourage you to take a look through those applications to get a
 sense of how you might build your own.
 

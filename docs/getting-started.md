@@ -269,7 +269,7 @@ how to easily add components to a page, and how to customize and theme MDC-Web t
 
 If you're looking to incorporate MDC-Web Components into a framework like Angular or React, check our
 [framework integration guide](./integrating-into-frameworks.md). You can also take a look at our
-[examples](../examples) directory which contains examples integrating MDC-Web components into popular
+[framework examples](../framework-examples) directory which contains examples integrating MDC-Web components into popular
 front-end frameworks. It also shows how you can use our source ES2015 and SCSS files directly within
 your own code, for maximum flexibility, modularity, and code size reduction.
 
