@@ -58,6 +58,8 @@ Each component requires the following items in order to be complete:
 - A **set of unit tests** within `test/unit/` with adequate coverage (which we enforce automatically).
 - A **demo page** within `demos/` that shows example usage of the component.
 
+You can find much more information with respect to building components within our [authoring components guide](./docs/authoring-components.md)
+
 ### Running the development server
 
 ```
