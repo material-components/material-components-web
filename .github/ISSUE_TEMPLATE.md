@@ -1,6 +1,16 @@
 ** PLEASE READ THIS BEFORE FILING AN ISSUE **
 
-## Feature Requests / Breaking Changes
+## Feature Requests
+
+> If you're interested in requesting a new component or proposing UX changes to an existing
+> component, please read our Component Request Policy (_Coming Soon_) before opening an issue.
+
+If you have an idea for a new feature, we'd love to hear about it! Please provide enough
+information regarding the feature such that we'll be able to evaluate the appropriateness and
+feasibility of your request. Try to be as specific as possible regarding your motivation, use-case,
+and potential API or affects on other APIs (where applicable). The more detailed your proposal is,
+the easier it will be for us to understand and evaluate it. [This Meta.SE answer](http://meta.stackexchange.com/a/259196) also contains great general guidelines for writing
+feature requests.
 
 While we are in the early stages of development of MDC-Web, you can see our current progress on [master](https://github.com/material-components/material-components-web/tree/master) as well as an overview of the direction we're headed in our [developer guide](https://github.com/material-components/material-components-web/blob/master/docs/DEVELOPER.md).
 
@@ -8,24 +18,39 @@ If you're interested in information for a specific component, check out our [com
 
 ## Bugs
 
-Please include the following information with your bug report:
+Follow the template below to ensure the quickest and most accurate response to your issue.
 
-> What MDC-Web Version are you using? (please be specific, e.g. _major.minor.patch_)
+### What MDC-Web Version are you using?
 
+> Please be specific, e.g. _major.minor.patch_
 
-> What browser(s) is this bug affecting (including version)?
+### What browser(s) is this bug affecting?
 
+> Please include the browser version. A user-agent string is also quite helpful.
 
-> What OS (and version) are you using?
+### What OS are you using?
 
+> Please include the OS version.
 
-> What are the steps to reproduce the bug? Can you create a plunker/codepen/jsfiddle which reproduces it?
+### What are the steps to reproduce the bug?
 
+> Please write the steps which need to be taken in order to reproduce the bug. These steps should be
+> as detailed as possible, e.g.
+>
+> 1. run the demo server
+> 2. go to localhost:8080/textfield.html
+> 3. Tab-focus on the first text field
+> 4. Observe the component's behavior
+>
+> If you can create a plunker/codepen/jsfiddle which reproduces it, that's even better!
 
-> What is the expected behavior?
+### What is the expected behavior?
 
+> Please describe what the component/code should be doing that it's not.
 
-> What is the actual behavior?
+### What is the actual behavior?
 
+> Please describe what the component/code is actually doing that's different from what it should be
+doing.
 
-> Any other information you believe would be useful?
+### Any other information you believe would be useful?
