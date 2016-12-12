@@ -275,4 +275,4 @@ your own code, for maximum flexibility, modularity, and code size reduction.
 
 If you'd like to contribute to
 MDC-Web and build your own components, or extend one of ours to fit your own purposes, check out our
-guide on [how to build a component](./how-to-build-a-component.md).
+guide on [authoring components](./authoring-components.md).
