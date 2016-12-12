@@ -21,7 +21,7 @@ There are several key design decisions that underpin MDC-Web Foundation:
 
 The aim being to push forward a clear separation of concerns, with the Foundation code being entirely about UI-related matters - as opposed to data-binding, templating, key/input handling, etc. In the case of Vanilla, we take a plain JS approach towards wrapping Foundation and providing the necessary code to make things usable out-of-the-box.
 
-For a tutorial on how to get started building components, check out [How to Build a Component](./how-to-build-a-component.md)
+For a tutorial on how to get started building components, check out [Authoring Components](./authoring-components.md)
 
 For an in-depth look at MDC-Web's architecture, check out [architecture.md](./architecture.md)
 
