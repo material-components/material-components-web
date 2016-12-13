@@ -1,21 +1,23 @@
-# Material Components Web (MDC-Web)
+# Material Components for the web
 
-> Project status: **pre-alpha**
+Material Components for the web (MDC-Web) help developers execute [Material Design](https://www.material.io). 
+Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
 
-## Overview
-
-MDC-Web is the next generation of Material Design components for the Web, incorporating the latest in material design thinking and a flexible component architecture under the hood. It is the successor to [Material Design Lite](https://getmdl.io/).
-
-The project has 3 high-level goals:
+Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
 
 - Production-ready components consumable in an a-la-carte fashion
-- Best-in-class performance and adherence to the [material design guidelines](https://material.google.com)
+- Best-in-class performance and adherence to the [Material Design guidelines](https://material.google.com)
 - Seamless integration with other JS frameworks and libraries
 
-In order to achieve these goals, we are planning a complete re-architecture of the original MDL component library, alongside new tooling and infrastructure.
+## Useful Links
 
-Please see our [developer's guide](docs/developer.md) for more in-depth information.
-
+- [Developer's Guide](docs/developer.md)
+- [All Components](packages/)
+- [Demos](demos/)
+- [Framework Integration Examples](framework-examples/)
+- [Contributing](CONTRIBUTING.md)
+- [Material.io](https://www.material.io) (external site)
+- [Material Design Guidelines](https://material.google.com) (external site)
 
 ## Getting Started
 
@@ -41,17 +43,3 @@ open http://localhost:8080
 - Firefox
 - IE 11/Edge
 - Opera
-
-
-## Contributing
-
-We welcome early feedback from the community, though we recommend waiting until an alpha release before opening any pull requests.
-
-See also our [contributing guidelines](CONTRIBUTING.md).
-
-
-## License
-
-© Google, 2016. Licensed under an
-[Apache-2](LICENSE)
-license.
