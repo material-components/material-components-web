@@ -110,7 +110,7 @@ Alternatively, you can run `npm run test:watch` and manually open browsers / use
 
 ### Coding Style
 
-Our entire coding style is enforced automatically through the use of linters. Check out our [eslint config](https://github.com/material-components/material-components-web/blob/master/.eslintrc.yaml) (heavily influenced by [Google's Javascript Styleguide](js-style-guide)) as well as our [stylelint config](css-style-guide) (heavily annotated, with justifications for each rule) for further details.
+Our entire coding style is enforced automatically through the use of linters. Check out our [eslint config](https://github.com/material-components/material-components-web/blob/master/.eslintrc.yaml) (heavily influenced by [Google's Javascript Styleguide][js-style-guide]) as well as our [stylelint config][css-style-guide] (heavily annotated, with justifications for each rule) for further details.
 
 ### Signing the CLA
 
@@ -189,7 +189,7 @@ Each tracker story contains a link to its corresponding GH issue within its desc
 [github]: https://github.com/material-components/material-components-web
 [individual-cla]: http://code.google.com/legal/individual-cla-v1.0.html
 [corporate-cla]: http://code.google.com/legal/corporate-cla-v1.0.html
-[js-style-guide]: https://github.com/material-components/material-components-web/blob/master/.eslintrc.yaml
+[js-style-guide]: https://google.github.io/styleguide/jsguide.html
 [css-style-guide]: https://github.com/material-components/material-components-web/blob/master/.stylelintrc.yaml
 [jsbin]: http://jsbin.com/
 [stackoverflow]: http://stackoverflow.com/questions/tagged/material-components-web
