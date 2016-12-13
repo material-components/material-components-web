@@ -18,6 +18,7 @@
 
 const path = require('path');
 const glob = require('glob');
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const OUT_PATH = path.resolve('./build');
@@ -25,6 +26,17 @@ const OUT_PATH = path.resolve('./build');
 const PUBLIC_PATH = '/assets/';
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
+
+const createBannerPlugin = () => new webpack.BannerPlugin([
+  '/*!',
+  ' Material Components for web',
+  ` Copyright (c) ${new Date().getFullYear()} Google Inc.`,
+  ' License: Apache-2.0',
+  '*/',
+].join('\n'), {
+  raw: true,
+  entryOnly: true,
+});
 
 module.exports = [{
   name: 'js-components',
@@ -59,6 +71,9 @@ module.exports = [{
       loader: 'json-loader',
     }],
   },
+  plugins: [
+    createBannerPlugin(),
+  ],
 }, {
   name: 'js-all',
   entry: path.resolve('./packages/material-components-web/index.js'),
@@ -77,6 +92,9 @@ module.exports = [{
       loader: 'babel-loader',
     }],
   },
+  plugins: [
+    createBannerPlugin(),
+  ],
 }, {
   name: 'css',
   entry: {
@@ -123,6 +141,7 @@ module.exports = [{
   },
   plugins: [
     new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css'),
+    createBannerPlugin(),
   ],
   postcss: function() {
     return [
