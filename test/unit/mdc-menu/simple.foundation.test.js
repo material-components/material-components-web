@@ -873,3 +873,16 @@ test('on spacebar keydown prevents default on the event', t => {
   clock.uninstall();
   t.end();
 });
+
+testFoundation('should cancel animation after destroy', t => {
+  const {foundation, mockAdapter, mockRaf} = t.data;
+  foundation.init();
+  mockRaf.flush();
+  foundation.open();
+  foundation.destroy();
+  mockRaf.flush();
+  mockRaf.flush();
+
+  t.doesNotThrow(() => td.verify(mockAdapter.setScale(td.matchers.anything(), td.matchers.anything()), {times: 0}));
+  t.end();
+});

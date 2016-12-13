@@ -83,6 +83,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     this.scaleY_ = 0;
     this.running_ = false;
     this.selectedTriggerTimerId_ = 0;
+    this.animationRequestId_ = 0;
   }
 
   init() {
@@ -107,6 +108,8 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
 
   destroy() {
     clearTimeout(this.selectedTriggerTimerId_);
+    // Cancel any currently running animations.
+    cancelAnimationFrame(this.animationRequestId_);
     this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
     this.adapter_.deregisterInteractionHandler('keyup', this.keyupHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
@@ -186,8 +189,9 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
 
     // Stop animation when we've covered the entire 0 - 1 range of time.
     if (currentTime < 1) {
-      requestAnimationFrame(() => this.animationLoop_());
+      this.animationRequestId_ = requestAnimationFrame(() => this.animationLoop_());
     } else {
+      this.animationRequestId_ = 0;
       this.running_ = false;
       this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
     }
@@ -203,7 +207,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
 
     if (!this.running_) {
       this.running_ = true;
-      requestAnimationFrame(() => this.animationLoop_());
+      this.animationRequestId_ = requestAnimationFrame(() => this.animationLoop_());
     }
   }
 
@@ -360,7 +364,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
   open({focusIndex = null} = {}) {
     this.adapter_.saveFocus();
     this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
-    requestAnimationFrame(() => {
+    this.animationRequestId_ = requestAnimationFrame(() => {
       this.dimensions_ = this.adapter_.getInnerDimensions();
       this.applyTransitionDelays_();
       this.autoPosition_();
