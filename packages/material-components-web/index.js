@@ -49,5 +49,5 @@ export {
   textfield,
   menu,
   select,
-  autoInit
+  autoInit,
 };

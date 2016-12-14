@@ -40,19 +40,19 @@ function setupTest() {
   return {root, component};
 }
 
-test('attachTo initializes and returns a MDCSnackbar instance', t => {
+test('attachTo initializes and returns a MDCSnackbar instance', (t) => {
   t.true(MDCSnackbar.attachTo(getFixture()) instanceof MDCSnackbar);
   t.end();
 });
 
-test('foundationAdapter#addClass adds a class to the root element', t => {
+test('foundationAdapter#addClass adds a class to the root element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   t.true(root.classList.contains('foo'));
   t.end();
 });
 
-test('adapter#removeClass removes a class from the root element', t => {
+test('adapter#removeClass removes a class from the root element', (t) => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
@@ -60,14 +60,14 @@ test('adapter#removeClass removes a class from the root element', t => {
   t.end();
 });
 
-test('foundationAdapter#setAriaHidden adds aria-hidden="true" to the root element', t => {
+test('foundationAdapter#setAriaHidden adds aria-hidden="true" to the root element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setAriaHidden();
   t.true(root.getAttribute('aria-hidden'));
   t.end();
 });
 
-test('foundationAdapter#unsetAriaHidden removes "aria-hidden" from the root element', t => {
+test('foundationAdapter#unsetAriaHidden removes "aria-hidden" from the root element', (t) => {
   const {root, component} = setupTest();
   root.setAttribute('aria-hidden', true);
   component.getDefaultFoundation().adapter_.unsetAriaHidden();
@@ -75,28 +75,28 @@ test('foundationAdapter#unsetAriaHidden removes "aria-hidden" from the root elem
   t.end();
 });
 
-test('foundationAdapter#setMessageText sets the text content of the text element', t => {
+test('foundationAdapter#setMessageText sets the text content of the text element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setMessageText('Message Deleted');
   t.equal(root.querySelector(strings.TEXT_SELECTOR).textContent, 'Message Deleted');
   t.end();
 });
 
-test('foundationAdapter#setActionText sets the text content of the action button element', t => {
+test('foundationAdapter#setActionText sets the text content of the action button element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setActionText('Undo');
   t.equal(root.querySelector(strings.ACTION_BUTTON_SELECTOR).textContent, 'Undo');
   t.end();
 });
 
-test('foundationAdapter#setActionAriaHidden adds aria-hidden="true" to the action button element', t => {
+test('foundationAdapter#setActionAriaHidden adds aria-hidden="true" to the action button element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setActionAriaHidden();
   t.true(root.querySelector(strings.ACTION_BUTTON_SELECTOR).getAttribute('aria-hidden'));
   t.end();
 });
 
-test('foundationAdapter#unsetActionAriaHidden removes "aria-hidden" from the action button element', t => {
+test('foundationAdapter#unsetActionAriaHidden removes "aria-hidden" from the action button element', (t) => {
   const {root, component} = setupTest();
   const actionButton = root.querySelector(strings.ACTION_BUTTON_SELECTOR);
   actionButton.setAttribute('aria-hidden', true);
@@ -105,7 +105,7 @@ test('foundationAdapter#unsetActionAriaHidden removes "aria-hidden" from the act
   t.end();
 });
 
-test('foundationAdapter#registerActionClickHandler adds the handler to be called when action is clicked', t => {
+test('foundationAdapter#registerActionClickHandler adds the handler to be called when action is clicked', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('clickHandler');
 
@@ -116,7 +116,7 @@ test('foundationAdapter#registerActionClickHandler adds the handler to be called
   t.end();
 });
 
-test('foundationAdapter#deregisterActionClickHandler removes the handler to be called when action is clicked', t => {
+test('foundationAdapter#deregisterActionClickHandler removes the handler to be called when action is clicked', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('clickHandler');
   const actionButton = root.querySelector(strings.ACTION_BUTTON_SELECTOR);
@@ -131,7 +131,7 @@ test('foundationAdapter#deregisterActionClickHandler removes the handler to be c
   t.end();
 });
 
-test('foundationAdapter#registerTransitionEndHandler adds an event listener to the root', t => {
+test('foundationAdapter#registerTransitionEndHandler adds an event listener to the root', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('transitionEndHandler');
 
@@ -142,7 +142,7 @@ test('foundationAdapter#registerTransitionEndHandler adds an event listener to t
   t.end();
 });
 
-test('foundationAdapter#deregisterTransitionEndHandler adds an event listener to the root', t => {
+test('foundationAdapter#deregisterTransitionEndHandler adds an event listener to the root', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('transitionEndHandler');
 

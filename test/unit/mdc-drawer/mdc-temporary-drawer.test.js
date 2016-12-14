@@ -38,12 +38,12 @@ function setupTest() {
   return {root, component};
 }
 
-test('attachTo initializes and returns a MDCTemporaryDrawer instance', t => {
+test('attachTo initializes and returns a MDCTemporaryDrawer instance', (t) => {
   t.true(MDCTemporaryDrawer.attachTo(getFixture()) instanceof MDCTemporaryDrawer);
   t.end();
 });
 
-test('get/set open', t => {
+test('get/set open', (t) => {
   const {root, component} = setupTest();
   component.open = true;
   t.true(root.classList.contains('mdc-temporary-drawer--open'));
@@ -55,14 +55,14 @@ test('get/set open', t => {
   t.end();
 });
 
-test('foundationAdapter#addClass adds a class to the root element', t => {
+test('foundationAdapter#addClass adds a class to the root element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   t.true(root.classList.contains('foo'));
   t.end();
 });
 
-test('adapter#removeClass removes a class from the root element', t => {
+test('adapter#removeClass removes a class from the root element', (t) => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
@@ -70,26 +70,26 @@ test('adapter#removeClass removes a class from the root element', t => {
   t.end();
 });
 
-test('adapter#hasClass returns true if the root element has specified class', t => {
+test('adapter#hasClass returns true if the root element has specified class', (t) => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   t.true(component.getDefaultFoundation().adapter_.hasClass('foo'));
   t.end();
 });
 
-test('adapter#hasClass returns false if the root element does not have specified class', t => {
+test('adapter#hasClass returns false if the root element does not have specified class', (t) => {
   const {component} = setupTest();
   t.false(component.getDefaultFoundation().adapter_.hasClass('foo'));
   t.end();
 });
 
-test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', t => {
+test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', (t) => {
   const {component} = setupTest();
   t.true(component.getDefaultFoundation().adapter_.hasNecessaryDom());
   t.end();
 });
 
-test('adapter#hasNecessaryDom returns false if the DOM does not include a drawer', t => {
+test('adapter#hasNecessaryDom returns false if the DOM does not include a drawer', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   root.removeChild(drawer);
@@ -97,7 +97,7 @@ test('adapter#hasNecessaryDom returns false if the DOM does not include a drawer
   t.end();
 });
 
-test('adapter#registerInteractionHandler adds an event listener to the root element', t => {
+test('adapter#registerInteractionHandler adds an event listener to the root element', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('eventHandler');
 
@@ -108,7 +108,7 @@ test('adapter#registerInteractionHandler adds an event listener to the root elem
   t.end();
 });
 
-test('adapter#deregisterInteractionHandler removes an event listener from the root element', t => {
+test('adapter#deregisterInteractionHandler removes an event listener from the root element', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('eventHandler');
   root.addEventListener('click', handler);
@@ -120,7 +120,7 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
   t.end();
 });
 
-test('adapter#registerDrawerInteractionHandler adds an event listener to the root element', t => {
+test('adapter#registerDrawerInteractionHandler adds an event listener to the root element', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   const handler = td.func('eventHandler');
@@ -132,7 +132,7 @@ test('adapter#registerDrawerInteractionHandler adds an event listener to the roo
   t.end();
 });
 
-test('adapter#deregisterDrawerInteractionHandler removes an event listener from the root element', t => {
+test('adapter#deregisterDrawerInteractionHandler removes an event listener from the root element', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   const handler = td.func('eventHandler');
@@ -145,7 +145,7 @@ test('adapter#deregisterDrawerInteractionHandler removes an event listener from 
   t.end();
 });
 
-test('adapter#registerTransitionEndHandler adds a transition end event listener on the drawer element', t => {
+test('adapter#registerTransitionEndHandler adds a transition end event listener on the drawer element', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   const handler = td.func('transitionEndHandler');
@@ -156,7 +156,7 @@ test('adapter#registerTransitionEndHandler adds a transition end event listener 
   t.end();
 });
 
-test('adapter#deregisterTransitionEndHandler removes a transition end event listener on the drawer element', t => {
+test('adapter#deregisterTransitionEndHandler removes a transition end event listener on the drawer element', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   const handler = td.func('transitionEndHandler');
@@ -169,14 +169,14 @@ test('adapter#deregisterTransitionEndHandler removes a transition end event list
   t.end();
 });
 
-test('adapter#getDrawerWidth returns the width of the drawer element', t => {
+test('adapter#getDrawerWidth returns the width of the drawer element', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   t.equal(component.getDefaultFoundation().adapter_.getDrawerWidth(), drawer.offsetWidth);
   t.end();
 });
 
-test('adapter#setTranslateX sets the correct transform on the drawer', t => {
+test('adapter#setTranslateX sets the correct transform on the drawer', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   component.getDefaultFoundation().adapter_.setTranslateX(42);
@@ -184,7 +184,7 @@ test('adapter#setTranslateX sets the correct transform on the drawer', t => {
   t.end();
 });
 
-test('adapter#setTranslateX sets translateX to null when given the null value', t => {
+test('adapter#setTranslateX sets translateX to null when given the null value', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   component.getDefaultFoundation().adapter_.setTranslateX(null);
@@ -196,7 +196,7 @@ test('adapter#setTranslateX sets translateX to null when given the null value', 
   t.end();
 });
 
-test('adapter#updateCssVariable sets custom property on root', t => {
+test('adapter#updateCssVariable sets custom property on root', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.updateCssVariable('0');
   if (supportsCssCustomProperties()) {
@@ -205,7 +205,7 @@ test('adapter#updateCssVariable sets custom property on root', t => {
   t.end();
 });
 
-test('adapter#getFocusableElements returns all the focusable elements in the drawer', t => {
+test('adapter#getFocusableElements returns all the focusable elements in the drawer', (t) => {
   const root = bel`
     <aside class="mdc-temporary-drawer">
       <nav class="mdc-temporary-drawer__drawer">
@@ -222,7 +222,7 @@ test('adapter#getFocusableElements returns all the focusable elements in the dra
   t.end();
 });
 
-test('adapter#makeElementUntabbable sets a tab index of -1 on the element', t => {
+test('adapter#makeElementUntabbable sets a tab index of -1 on the element', (t) => {
   const root = bel`
     <aside class="mdc-temporary-drawer mdc-temporary-drawer--open">
       <nav class="mdc-temporary-drawer__drawer">
@@ -237,7 +237,7 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', t =>
   t.end();
 });
 
-test('adapter#isRtl returns true for RTL documents', t => {
+test('adapter#isRtl returns true for RTL documents', (t) => {
   const root = bel`
     <aside dir="rtl" class="mdc-temporary-drawer">
       <nav class="mdc-temporary-drawer__drawer">
@@ -250,7 +250,7 @@ test('adapter#isRtl returns true for RTL documents', t => {
   t.end();
 });
 
-test('adapter#isRtl returns false for explicit LTR documents', t => {
+test('adapter#isRtl returns false for explicit LTR documents', (t) => {
   const root = bel`
     <aside dir="ltr" class="mdc-temporary-drawer">
       <nav class="mdc-temporary-drawer__drawer">
@@ -263,7 +263,7 @@ test('adapter#isRtl returns false for explicit LTR documents', t => {
   t.end();
 });
 
-test('adapter#isRtl returns false for implicit LTR documents', t => {
+test('adapter#isRtl returns false for implicit LTR documents', (t) => {
   const root = bel`
     <aside class="mdc-temporary-drawer">
       <nav class="mdc-temporary-drawer__drawer">
@@ -276,7 +276,7 @@ test('adapter#isRtl returns false for implicit LTR documents', t => {
   t.end();
 });
 
-test('adapter#registerDocumentKeydownHandler attaches a "keydown" handler to the document', t => {
+test('adapter#registerDocumentKeydownHandler attaches a "keydown" handler to the document', (t) => {
   const {component} = setupTest();
   const handler = td.func('keydownHandler');
   component.getDefaultFoundation().adapter_.registerDocumentKeydownHandler(handler);
@@ -285,7 +285,7 @@ test('adapter#registerDocumentKeydownHandler attaches a "keydown" handler to the
   t.end();
 });
 
-test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from the document', t => {
+test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from the document', (t) => {
   const {component} = setupTest();
   const handler = td.func('keydownHandler');
   document.addEventListener('keydown', handler);
@@ -295,14 +295,14 @@ test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from 
   t.end();
 });
 
-test('adapter#isDrawer returns true for the drawer element', t => {
+test('adapter#isDrawer returns true for the drawer element', (t) => {
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   t.true(component.getDefaultFoundation().adapter_.isDrawer(drawer));
   t.end();
 });
 
-test('adapter#isDrawer returns false for a non-drawer element', t => {
+test('adapter#isDrawer returns false for a non-drawer element', (t) => {
   const {root, component} = setupTest();
   t.false(component.getDefaultFoundation().adapter_.isDrawer(root));
   t.end();

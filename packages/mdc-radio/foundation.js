@@ -22,13 +22,13 @@ export default class MDCRadioFoundation extends MDCFoundation {
   static get cssClasses() {
     return {
       ROOT,
-      DISABLED: `${ROOT}--disabled`
+      DISABLED: `${ROOT}--disabled`,
     };
   }
 
   static get strings() {
     return {
-      NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`
+      NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
     };
   }
 
@@ -36,7 +36,7 @@ export default class MDCRadioFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      getNativeControl: () => /* HTMLInputElement */ {}
+      getNativeControl: () => /* HTMLInputElement */ {},
     };
   }
 
@@ -65,7 +65,7 @@ export default class MDCRadioFoundation extends MDCFoundation {
   getNativeControl_() {
     return this.adapter_.getNativeControl() || {
       checked: false,
-      disabled: false
+      disabled: false,
     };
   }
 }

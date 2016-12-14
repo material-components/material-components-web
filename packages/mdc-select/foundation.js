@@ -20,7 +20,7 @@ const ROOT = 'mdc-select';
 const OPENER_KEYS = [
   {key: 'ArrowUp', keyCode: 38, forType: 'keydown'},
   {key: 'ArrowDown', keyCode: 40, forType: 'keydown'},
-  {key: 'Space', keyCode: 32, forType: 'keyup'}
+  {key: 'Space', keyCode: 32, forType: 'keyup'},
 ];
 
 export default class MDCSelectFoundation extends MDCFoundation {
@@ -28,7 +28,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       ROOT,
       OPEN: `${ROOT}--open`,
-      DISABLED: `${ROOT}--disabled`
+      DISABLED: `${ROOT}--disabled`,
     };
   }
 
@@ -48,7 +48,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       setStyle: (/* propertyName: string, value: string */) => {},
       create2dRenderingContext: () => /* {font: string, measureText: (string) => {width: number}} */ ({
         font: '',
-        measureText: () => ({width: 0})
+        measureText: () => ({width: 0}),
       }),
       setMenuElStyle: (/* propertyName: string, value: string */) => {},
       setMenuElAttr: (/* attr: string, value: string */) => {},
@@ -65,7 +65,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       registerMenuInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterMenuInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyChange: () => {},
-      getWindowInnerHeight: () => /* number */ 0
+      getWindowInnerHeight: () => /* number */ 0,
     };
   }
 
@@ -74,13 +74,13 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.ctx_ = null;
     this.selectedIndex_ = -1;
     this.disabled_ = false;
-    this.displayHandler_ = evt => {
+    this.displayHandler_ = (evt) => {
       evt.preventDefault();
       if (!this.adapter_.isMenuOpen()) {
         this.open_();
       }
     };
-    this.displayViaKeyboardHandler_ = evt => this.handleDisplayViaKeyboard_(evt);
+    this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
     this.selectionHandler_ = ({detail}) => {
       const {index} = detail;
       this.close_();
@@ -208,7 +208,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       left: `${left}px`,
       top: `${adjustedTop}px`,
-      transformOrigin: `center ${itemOffsetTop}px`
+      transformOrigin: `center ${itemOffsetTop}px`,
     };
   }
 

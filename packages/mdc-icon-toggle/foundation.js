@@ -22,7 +22,7 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
   static get cssClasses() {
     return {
       ROOT,
-      DISABLED: `${ROOT}--disabled`
+      DISABLED: `${ROOT}--disabled`,
     };
   }
 
@@ -32,7 +32,7 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
       DATA_TOGGLE_OFF: 'data-toggle-off',
       ARIA_PRESSED: 'aria-pressed',
       ARIA_DISABLED: 'aria-disabled',
-      ARIA_LABEL: 'aria-label'
+      ARIA_LABEL: 'aria-label',
     };
   }
 
@@ -48,7 +48,7 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
       getAttr: (/* name: string */) => /* string */ '',
       setAttr: (/* name: string, value: string */) => {},
       rmAttr: (/* name: string */) => {},
-      notifyChange: (/* evtData: {isOn: boolean} */) => {}
+      notifyChange: (/* evtData: {isOn: boolean} */) => {},
     };
   }
 
@@ -61,13 +61,13 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
     this.toggleOffData_ = null;
     this.clickHandler_ = () => this.toggleFromEvt_();
     this.isHandlingKeydown_ = false;
-    this.keydownHandler_ = evt => {
+    this.keydownHandler_ = (evt) => {
       if (isSpace(evt)) {
         this.isHandlingKeydown_ = true;
         return evt.preventDefault();
       }
     };
-    this.keyupHandler_ = evt => {
+    this.keyupHandler_ = (evt) => {
       if (isSpace(evt)) {
         this.isHandlingKeydown_ = false;
         this.toggleFromEvt_();

@@ -42,8 +42,8 @@ export class MDCRadio extends MDCComponent {
     this.foundation_.setDisabled(disabled);
   }
 
-  constructor() {
-    super(...arguments);
+  constructor(...args) {
+    super(...args);
     this.ripple_ = this.initRipple_();
   }
 
@@ -64,9 +64,9 @@ export class MDCRadio extends MDCComponent {
           right: left + DIM,
           bottom: top + DIM,
           width: DIM,
-          height: DIM
+          height: DIM,
         };
-      }
+      },
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
@@ -83,9 +83,9 @@ export class MDCRadio extends MDCComponent {
 
   getDefaultFoundation() {
     return new MDCRadioFoundation({
-      addClass: className => this.root_.classList.add(className),
-      removeClass: className => this.root_.classList.remove(className),
-      getNativeControl: () => this.root_.querySelector(MDCRadioFoundation.strings.NATIVE_CONTROL_SELECTOR)
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      getNativeControl: () => this.root_.querySelector(MDCRadioFoundation.strings.NATIVE_CONTROL_SELECTOR),
     });
   }
 }

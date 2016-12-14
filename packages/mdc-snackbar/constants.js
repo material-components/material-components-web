@@ -23,7 +23,7 @@ export const cssClasses = {
   ACTION_BUTTON: `${ROOT}__action-button`,
   ACTIVE: `${ROOT}--active`,
   MULTILINE: `${ROOT}--multiline`,
-  ACTION_ON_BOTTOM: `${ROOT}--action-on-bottom`
+  ACTION_ON_BOTTOM: `${ROOT}--action-on-bottom`,
 };
 
 export const strings = {
@@ -46,9 +46,9 @@ export const strings = {
 
   get ACTION_BUTTON_SELECTOR() {
     return `.${cssClasses.ACTION_BUTTON}`;
-  }
+  },
 };
 
 export const numbers = {
-  MESSAGE_TIMEOUT: 2750
+  MESSAGE_TIMEOUT: 2750,
 };

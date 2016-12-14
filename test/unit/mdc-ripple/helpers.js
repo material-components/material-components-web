@@ -36,7 +36,7 @@ export function testFoundation(desc, isCssVarsSupported, runTests) {
     isCssVarsSupported = true;
   }
 
-  test(desc, t => {
+  test(desc, (t) => {
     const {adapter, foundation} = setupTest(isCssVarsSupported);
     const mockRaf = createMockRaf();
     // eslint-tape-plugin complains when we reference an unknown member on t,

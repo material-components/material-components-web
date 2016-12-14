@@ -19,17 +19,17 @@ import td from 'testdouble';
 import {testFoundation, captureHandlers} from './helpers';
 import {cssClasses, strings} from '../../../packages/mdc-ripple/constants';
 
-testFoundation('re-lays out the component on resize event', t => {
+testFoundation('re-lays out the component on resize event', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({
     width: 100,
-    height: 200
+    height: 200,
   }, {
     width: 50,
-    height: 100
+    height: 100,
   });
   let resizeHandler = null;
-  td.when(adapter.registerResizeHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(adapter.registerResizeHandler(td.matchers.isA(Function))).thenDo((handler) => {
     resizeHandler = handler;
   });
   foundation.init();
@@ -59,17 +59,17 @@ testFoundation('re-lays out the component on resize event', t => {
   t.end();
 });
 
-testFoundation('debounces layout within the same frame on resize', t => {
+testFoundation('debounces layout within the same frame on resize', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({
     width: 100,
-    height: 200
+    height: 200,
   }, {
     width: 50,
-    height: 100
+    height: 100,
   });
   let resizeHandler = null;
-  td.when(adapter.registerResizeHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(adapter.registerResizeHandler(td.matchers.isA(Function))).thenDo((handler) => {
     resizeHandler = handler;
   });
   foundation.init();
@@ -87,13 +87,13 @@ testFoundation('debounces layout within the same frame on resize', t => {
   mockRaf.flush();
   t.doesNotThrow(
     () => td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, td.matchers.isA(String)), {
-      times: 2
+      times: 2,
     })
   );
   t.end();
 });
 
-testFoundation('activates the background on focus', t => {
+testFoundation('activates the background on focus', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -105,7 +105,7 @@ testFoundation('activates the background on focus', t => {
   t.end();
 });
 
-testFoundation('deactivates the background on blur', t => {
+testFoundation('deactivates the background on blur', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();

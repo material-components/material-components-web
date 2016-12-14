@@ -39,26 +39,26 @@ module.exports = [{
     ripple: [path.resolve('./packages/mdc-ripple/index.js')],
     select: [path.resolve('./packages/mdc-select/index.js')],
     snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
-    textfield: [path.resolve('./packages/mdc-textfield/index.js')]
+    textfield: [path.resolve('./packages/mdc-textfield/index.js')],
   },
   output: {
     path: OUT_PATH,
     publicPath: PUBLIC_PATH,
     filename: 'mdc.[name].' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
-    library: ['mdc', '[name]']
+    library: ['mdc', '[name]'],
   },
   devtool: IS_DEV ? 'source-map' : null,
   module: {
     loaders: [{
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'babel-loader'
+      loader: 'babel-loader',
     }, {
       test: /\.json$/,
-      loader: 'json-loader'
-    }]
-  }
+      loader: 'json-loader',
+    }],
+  },
 }, {
   name: 'js-all',
   entry: path.resolve('./packages/material-components-web/index.js'),
@@ -67,16 +67,16 @@ module.exports = [{
     publicPath: PUBLIC_PATH,
     filename: 'material-components-web.' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
-    library: 'mdc'
+    library: 'mdc',
   },
   devtool: IS_DEV ? 'source-map' : null,
   module: {
     loaders: [{
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'babel-loader'
-    }]
-  }
+      loader: 'babel-loader',
+    }],
+  },
 }, {
   name: 'css',
   entry: {
@@ -99,7 +99,7 @@ module.exports = [{
     'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
     'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
     'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
-    'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss')
+    'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
   },
   output: {
     path: OUT_PATH,
@@ -107,7 +107,7 @@ module.exports = [{
     // In development, these are emitted as js files to facilitate hot module replacement. In
     // all other cases, ExtractTextPlugin is used to generate the final css, so this is given a
     // dummy ".css-entry" extension.
-    filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry')
+    filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry'),
   },
   devtool: IS_DEV ? 'source-map' : null,
   module: {
@@ -115,18 +115,18 @@ module.exports = [{
       test: /\.scss$/,
       loader: IS_DEV ?
           'style!css?sourceMap!postcss!sass?sourceMap' :
-          ExtractTextPlugin.extract('css!postcss!sass')
-    }]
+          ExtractTextPlugin.extract('css!postcss!sass'),
+    }],
   },
   sassLoader: {
-    includePaths: glob.sync('packages/*/node_modules').map(d => path.join(__dirname, d))
+    includePaths: glob.sync('packages/*/node_modules').map((d) => path.join(__dirname, d)),
   },
   plugins: [
-    new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css')
+    new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css'),
   ],
   postcss: function() {
     return [
-      require('autoprefixer')
+      require('autoprefixer'),
     ];
-  }
+  },
 }];

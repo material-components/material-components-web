@@ -27,7 +27,7 @@ export const cssClasses = {
   BG_BOUNDED_ACTIVE_FILL: `${UPGRADED}--background-bounded-active-fill`,
   FG_BOUNDED_ACTIVE_FILL: `${UPGRADED}--foreground-bounded-active-fill`,
   FG_UNBOUNDED_ACTIVATION: `${UPGRADED}--foreground-unbounded-activation`,
-  FG_UNBOUNDED_DEACTIVATION: `${UPGRADED}--foreground-unbounded-deactivation`
+  FG_UNBOUNDED_DEACTIVATION: `${UPGRADED}--foreground-unbounded-deactivation`,
 };
 
 export const strings = {
@@ -48,7 +48,7 @@ export const strings = {
   TRANSITION_END_EVENT: (() => {
     const d = document.createElement('div');
     return 'webkitTransition' in d.style ? 'webkitTransitionEnd' : 'transitionend';
-  })()
+  })(),
 };
 
 export const numbers = {
@@ -56,5 +56,5 @@ export const numbers = {
   OPACITY_DURATION_DIVISOR: 3,
   ACTIVE_OPACITY_DURATION_MS: 110,
   MIN_OPACITY_DURATION_MS: 200,
-  UNBOUNDED_TRANSFORM_DURATION_MS: 200
+  UNBOUNDED_TRANSFORM_DURATION_MS: 200,
 };

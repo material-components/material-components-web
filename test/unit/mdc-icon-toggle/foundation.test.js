@@ -23,33 +23,33 @@ import MDCIconToggleFoundation from '../../../packages/mdc-icon-toggle/foundatio
 
 const {strings, cssClasses} = MDCIconToggleFoundation;
 
-test('exports strings', t => {
+test('exports strings', (t) => {
   t.true('strings' in MDCIconToggleFoundation);
   t.end();
 });
 
-test('exports cssClasses', t => {
+test('exports cssClasses', (t) => {
   t.true('cssClasses' in MDCIconToggleFoundation);
   t.end();
 });
 
-test('defaultAdapter returns a complete adapter implementation', t => {
+test('defaultAdapter returns a complete adapter implementation', (t) => {
   verifyDefaultAdapter(MDCIconToggleFoundation, [
     'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
-    'setText', 'getTabIndex', 'setTabIndex', 'getAttr', 'setAttr', 'rmAttr', 'notifyChange'
+    'setText', 'getTabIndex', 'setTabIndex', 'getAttr', 'setAttr', 'rmAttr', 'notifyChange',
   ], t);
   t.end();
 });
 
 const setupTest = () => setupFoundationTest(MDCIconToggleFoundation);
 
-test('#constructor sets on to false', t => {
+test('#constructor sets on to false', (t) => {
   const {foundation} = setupTest();
   t.false(foundation.isOn());
   t.end();
 });
 
-test('#toggle flips on', t => {
+test('#toggle flips on', (t) => {
   const {foundation} = setupTest();
   foundation.init();
 
@@ -60,7 +60,7 @@ test('#toggle flips on', t => {
   t.end();
 });
 
-test('#toggle accepts boolean argument denoting toggle state', t => {
+test('#toggle accepts boolean argument denoting toggle state', (t) => {
   const {foundation} = setupTest();
   foundation.init();
 
@@ -71,7 +71,7 @@ test('#toggle accepts boolean argument denoting toggle state', t => {
   t.end();
 });
 
-test('#toggle sets "aria-pressed" to true when toggled on', t => {
+test('#toggle sets "aria-pressed" to true when toggled on', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
@@ -80,7 +80,7 @@ test('#toggle sets "aria-pressed" to true when toggled on', t => {
   t.end();
 });
 
-test('#toggle removes cssClass in "data-toggle-off" if specified when toggled on', t => {
+test('#toggle removes cssClass in "data-toggle-off" if specified when toggled on', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const cssClass = 'toggle-off-css-class';
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF)).thenReturn(JSON.stringify({cssClass}));
@@ -91,7 +91,7 @@ test('#toggle removes cssClass in "data-toggle-off" if specified when toggled on
   t.end();
 });
 
-test('#toggle adds cssClass in "data-toggle-on" if specified when toggled on', t => {
+test('#toggle adds cssClass in "data-toggle-on" if specified when toggled on', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const cssClass = 'toggle-on-css-class';
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON)).thenReturn(JSON.stringify({cssClass}));
@@ -102,7 +102,7 @@ test('#toggle adds cssClass in "data-toggle-on" if specified when toggled on', t
   t.end();
 });
 
-test('#toggle sets text to content in "data-toggle-on" if specified when toggled on', t => {
+test('#toggle sets text to content in "data-toggle-on" if specified when toggled on', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const content = 'toggle on content';
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON)).thenReturn(JSON.stringify({content}));
@@ -113,7 +113,7 @@ test('#toggle sets text to content in "data-toggle-on" if specified when toggled
   t.end();
 });
 
-test('#toggle sets aria-label to label in "data-toggle-on" if specified when toggled on', t => {
+test('#toggle sets aria-label to label in "data-toggle-on" if specified when toggled on', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const label = 'toggle on label';
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON)).thenReturn(JSON.stringify({label}));
@@ -124,7 +124,7 @@ test('#toggle sets aria-label to label in "data-toggle-on" if specified when tog
   t.end();
 });
 
-test('#toggle sets "aria-pressed" to false when toggled off', t => {
+test('#toggle sets "aria-pressed" to false when toggled off', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
@@ -133,7 +133,7 @@ test('#toggle sets "aria-pressed" to false when toggled off', t => {
   t.end();
 });
 
-test('#toggle removes cssClass in "data-toggle-on" if specified when toggled off', t => {
+test('#toggle removes cssClass in "data-toggle-on" if specified when toggled off', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const cssClass = 'toggle-on-css-class';
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON)).thenReturn(JSON.stringify({cssClass}));
@@ -144,7 +144,7 @@ test('#toggle removes cssClass in "data-toggle-on" if specified when toggled off
   t.end();
 });
 
-test('#toggle adds cssClass in "data-toggle-off" if specified when toggled off', t => {
+test('#toggle adds cssClass in "data-toggle-off" if specified when toggled off', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const cssClass = 'toggle-off-css-class';
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF)).thenReturn(JSON.stringify({cssClass}));
@@ -155,7 +155,7 @@ test('#toggle adds cssClass in "data-toggle-off" if specified when toggled off',
   t.end();
 });
 
-test('#toggle sets text to content in "data-toggle-off" if specified when toggled off', t => {
+test('#toggle sets text to content in "data-toggle-off" if specified when toggled off', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const content = 'toggle off content';
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF)).thenReturn(JSON.stringify({content}));
@@ -166,7 +166,7 @@ test('#toggle sets text to content in "data-toggle-off" if specified when toggle
   t.end();
 });
 
-test('#toggle sets aria-label to label in "data-toggle-off" if specified when toggled off', t => {
+test('#toggle sets aria-label to label in "data-toggle-off" if specified when toggled off', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const label = 'toggle off label';
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF)).thenReturn(JSON.stringify({label}));
@@ -177,7 +177,7 @@ test('#toggle sets aria-label to label in "data-toggle-off" if specified when to
   t.end();
 });
 
-test('#setDisabled updates the disabled state', t => {
+test('#setDisabled updates the disabled state', (t) => {
   const {foundation} = setupTest();
   foundation.setDisabled(true);
   t.true(foundation.isDisabled());
@@ -186,28 +186,28 @@ test('#setDisabled updates the disabled state', t => {
   t.end();
 });
 
-test('#setDisabled sets the tabindex to -1 when disabled', t => {
+test('#setDisabled sets the tabindex to -1 when disabled', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   t.doesNotThrow(() => td.verify(mockAdapter.setTabIndex(-1)));
   t.end();
 });
 
-test('#setDisabled sets "aria-disabled" to true when disabled', t => {
+test('#setDisabled sets "aria-disabled" to true when disabled', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   t.doesNotThrow(() => td.verify(mockAdapter.setAttr(strings.ARIA_DISABLED, 'true')));
   t.end();
 });
 
-test('#setDisabled adds "mdc-icon-toggle--disabled" class when disabled', t => {
+test('#setDisabled adds "mdc-icon-toggle--disabled" class when disabled', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.DISABLED)));
   t.end();
 });
 
-test('#setDisabled restores the previously set tab index when enabled', t => {
+test('#setDisabled restores the previously set tab index when enabled', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const tabIndex = 5;
   td.when(mockAdapter.getTabIndex()).thenReturn(tabIndex);
@@ -218,27 +218,27 @@ test('#setDisabled restores the previously set tab index when enabled', t => {
   t.end();
 });
 
-test('#setDisabled removes "aria-disabled" when enabled', t => {
+test('#setDisabled removes "aria-disabled" when enabled', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   t.doesNotThrow(() => td.verify(mockAdapter.rmAttr(strings.ARIA_DISABLED)));
   t.end();
 });
 
-test('#setDisabled removes "mdc-icon-toggle--disabled" class when enabled', t => {
+test('#setDisabled removes "mdc-icon-toggle--disabled" class when enabled', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.DISABLED)));
   t.end();
 });
 
-test('#refreshToggleData syncs the foundation state with data-toggle-on, data-toggle-off', t => {
+test('#refreshToggleData syncs the foundation state with data-toggle-on, data-toggle-off', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON)).thenReturn(JSON.stringify({
-    cssClass: 'first-class-on'
+    cssClass: 'first-class-on',
   }));
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF)).thenReturn(JSON.stringify({
-    cssClass: 'first-class-off'
+    cssClass: 'first-class-off',
   }));
   foundation.init();
 
@@ -247,10 +247,10 @@ test('#refreshToggleData syncs the foundation state with data-toggle-on, data-to
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass('first-class-off')), 'data-toggle-off sanity check');
 
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON)).thenReturn(JSON.stringify({
-    cssClass: 'second-class-on'
+    cssClass: 'second-class-on',
   }));
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF)).thenReturn(JSON.stringify({
-    cssClass: 'second-class-off'
+    cssClass: 'second-class-off',
   }));
   foundation.refreshToggleData();
 
@@ -260,7 +260,7 @@ test('#refreshToggleData syncs the foundation state with data-toggle-on, data-to
   t.end();
 });
 
-test('#destroy deregisters all interaction handlers', t => {
+test('#destroy deregisters all interaction handlers', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
   foundation.destroy();
@@ -270,9 +270,9 @@ test('#destroy deregisters all interaction handlers', t => {
   t.end();
 });
 
-const captureHandlers = adapter => baseCaptureHandlers(adapter, 'registerInteractionHandler');
+const captureHandlers = (adapter) => baseCaptureHandlers(adapter, 'registerInteractionHandler');
 
-test('updates toggle state on click', t => {
+test('updates toggle state on click', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   foundation.init();
@@ -287,7 +287,7 @@ test('updates toggle state on click', t => {
   t.end();
 });
 
-test('broadcasts change notification on click', t => {
+test('broadcasts change notification on click', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   foundation.init();
@@ -299,7 +299,7 @@ test('broadcasts change notification on click', t => {
   t.end();
 });
 
-test('prevents default action on spacebar keydown', t => {
+test('prevents default action on spacebar keydown', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   const evt = {preventDefault: td.func('evt.preventDefault'), key: 'Space'};
@@ -310,7 +310,7 @@ test('prevents default action on spacebar keydown', t => {
   t.end();
 });
 
-test('prevents default action on spacebar keydown using keyCode', t => {
+test('prevents default action on spacebar keydown using keyCode', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   const evt = {preventDefault: td.func('evt.preventDefault'), keyCode: 32};
@@ -321,7 +321,7 @@ test('prevents default action on spacebar keydown using keyCode', t => {
   t.end();
 });
 
-test('flips isKeyboardActivated() to true on spacebar keydown', t => {
+test('flips isKeyboardActivated() to true on spacebar keydown', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   const evt = {preventDefault: td.func('evt.preventDefault'), key: 'Space'};
@@ -332,7 +332,7 @@ test('flips isKeyboardActivated() to true on spacebar keydown', t => {
   t.end();
 });
 
-test('flips isKeyboardActivated() to true on spacebar keydown using keyCode', t => {
+test('flips isKeyboardActivated() to true on spacebar keydown using keyCode', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   const evt = {preventDefault: td.func('evt.preventDefault'), keyCode: 32};
@@ -343,7 +343,7 @@ test('flips isKeyboardActivated() to true on spacebar keydown using keyCode', t 
   t.end();
 });
 
-test('triggers toggle on spacebar keyup', t => {
+test('triggers toggle on spacebar keyup', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   foundation.init();
@@ -356,7 +356,7 @@ test('triggers toggle on spacebar keyup', t => {
   t.end();
 });
 
-test('triggers toggle on spacebar keyup using keyCode', t => {
+test('triggers toggle on spacebar keyup using keyCode', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   foundation.init();
@@ -369,7 +369,7 @@ test('triggers toggle on spacebar keyup using keyCode', t => {
   t.end();
 });
 
-test('flips isKeyboardActivated() back to false on spacebar keydown', t => {
+test('flips isKeyboardActivated() back to false on spacebar keydown', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   const evt = {preventDefault: td.func('evt.preventDefault'), key: 'Space'};
@@ -383,7 +383,7 @@ test('flips isKeyboardActivated() back to false on spacebar keydown', t => {
   t.end();
 });
 
-test('flips isKeyboardActivated() back to false on spacebar keydown using keyCode', t => {
+test('flips isKeyboardActivated() back to false on spacebar keydown using keyCode', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter);
   const evt = {preventDefault: td.func('evt.preventDefault'), keyCode: 32};

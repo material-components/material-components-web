@@ -23,36 +23,36 @@ import MDCTextfieldFoundation from '../../../packages/mdc-textfield/foundation';
 
 const {cssClasses} = MDCTextfieldFoundation;
 
-test('exports strings', t => {
+test('exports strings', (t) => {
   t.true('strings' in MDCTextfieldFoundation);
   t.end();
 });
 
-test('exports cssClasses', t => {
+test('exports cssClasses', (t) => {
   t.true('cssClasses' in MDCTextfieldFoundation);
   t.end();
 });
 
-test('defaultAdapter returns a complete adapter implementation', t => {
+test('defaultAdapter returns a complete adapter implementation', (t) => {
   verifyDefaultAdapter(MDCTextfieldFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputFocusHandler', 'deregisterInputFocusHandler',
     'registerInputBlurHandler', 'deregisterInputBlurHandler',
-    'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput'
+    'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
   ], t);
   t.end();
 });
 
 const setupTest = () => setupFoundationTest(MDCTextfieldFoundation);
 
-test('#constructor sets disabled to false', t => {
+test('#constructor sets disabled to false', (t) => {
   const {foundation} = setupTest();
   t.false(foundation.isDisabled());
   t.end();
 });
 
-test('#setDisabled flips disabled when a native input is given', t => {
+test('#setDisabled flips disabled when a native input is given', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {disabled: false};
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
@@ -61,14 +61,14 @@ test('#setDisabled flips disabled when a native input is given', t => {
   t.end();
 });
 
-test('#setDisabled has no effect when no native input is provided', t => {
+test('#setDisabled has no effect when no native input is provided', (t) => {
   const {foundation} = setupTest();
   foundation.setDisabled(true);
   t.false(foundation.isDisabled());
   t.end();
 });
 
-test('#setDisabled set the disabled property on the native input when there is one', t => {
+test('#setDisabled set the disabled property on the native input when there is one', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {disabled: false};
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
@@ -77,59 +77,59 @@ test('#setDisabled set the disabled property on the native input when there is o
   t.end();
 });
 
-test('#setDisabled handles no native input being returned gracefully', t => {
+test('#setDisabled handles no native input being returned gracefully', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeInput()).thenReturn(null);
   t.doesNotThrow(() => foundation.setDisabled(true));
   t.end();
 });
 
-test('#setDisabled adds mdc-textfield--disabled when set to true', t => {
+test('#setDisabled adds mdc-textfield--disabled when set to true', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.DISABLED)));
   t.end();
 });
 
-test('#setDisabled removes mdc-textfield--disabled when set to false', t => {
+test('#setDisabled removes mdc-textfield--disabled when set to false', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.DISABLED)));
   t.end();
 });
 
-test('#init adds mdc-textfield--upgraded class', t => {
+test('#init adds mdc-textfield--upgraded class', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.UPGRADED)));
   t.end();
 });
 
-test('#destroy removes mdc-textfield--upgraded class', t => {
+test('#destroy removes mdc-textfield--upgraded class', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.UPGRADED)));
   t.end();
 });
 
-test('#destroy deregisters focus handler', t => {
+test('#destroy deregisters focus handler', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
   t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputFocusHandler(td.matchers.isA(Function))));
   t.end();
 });
 
-test('#destroy deregisters blur handler', t => {
+test('#destroy deregisters blur handler', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
   t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputBlurHandler(td.matchers.isA(Function))));
   t.end();
 });
 
-test('on focus adds mdc-textfield--focused class', t => {
+test('on focus adds mdc-textfield--focused class', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
-  td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
     focus = handler;
   });
   foundation.init();
@@ -138,10 +138,10 @@ test('on focus adds mdc-textfield--focused class', t => {
   t.end();
 });
 
-test('on focus adds mdc-textfield__label--float-above class', t => {
+test('on focus adds mdc-textfield__label--float-above class', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
-  td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
     focus = handler;
   });
   foundation.init();
@@ -150,10 +150,10 @@ test('on focus adds mdc-textfield__label--float-above class', t => {
   t.end();
 });
 
-test('on focus removes aria-hidden from helptext', t => {
+test('on focus removes aria-hidden from helptext', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
-  td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
     focus = handler;
   });
   foundation.init();
@@ -165,13 +165,13 @@ test('on focus removes aria-hidden from helptext', t => {
 const setupBlurTest = () => {
   const {foundation, mockAdapter} = setupTest();
   let blur;
-  td.when(mockAdapter.registerInputBlurHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerInputBlurHandler(td.matchers.isA(Function))).thenDo((handler) => {
     console.log('got handler', handler);
     blur = handler;
   });
   const nativeInput = {
     value: '',
-    checkValidity: () => true
+    checkValidity: () => true,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
@@ -179,21 +179,21 @@ const setupBlurTest = () => {
   return {foundation, mockAdapter, blur, nativeInput};
 };
 
-test('on blur removes mdc-textfield--focused class', t => {
+test('on blur removes mdc-textfield--focused class', (t) => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.FOCUSED)));
   t.end();
 });
 
-test('on blur removes mdc-textfield__label--float-above when no input value present', t => {
+test('on blur removes mdc-textfield__label--float-above when no input value present', (t) => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   t.doesNotThrow(() => td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE)));
   t.end();
 });
 
-test('on blur does not remove mdc-textfield__label--float-above if input has a value', t => {
+test('on blur does not remove mdc-textfield__label--float-above if input has a value', (t) => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.value = 'non-empty value';
   blur();
@@ -201,14 +201,14 @@ test('on blur does not remove mdc-textfield__label--float-above if input has a v
   t.end();
 });
 
-test('on blur removes mdc-textfield--invalid if input.checkValidity() returns true', t => {
+test('on blur removes mdc-textfield--invalid if input.checkValidity() returns true', (t) => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.INVALID)));
   t.end();
 });
 
-test('on blur adds mdc-textfied--invalid if input.checkValidity() returns false', t => {
+test('on blur adds mdc-textfied--invalid if input.checkValidity() returns false', (t) => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.checkValidity = () => false;
   blur();
@@ -217,7 +217,7 @@ test('on blur adds mdc-textfied--invalid if input.checkValidity() returns false'
 });
 
 test('on blur adds role="alert" to helptext if input is invalid and helptext is being used ' +
-     'as a validation message', t => {
+     'as a validation message', (t) => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.checkValidity = () => false;
   td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
@@ -226,21 +226,21 @@ test('on blur adds role="alert" to helptext if input is invalid and helptext is 
   t.end();
 });
 
-test('on blur remove role="alert" if input is valid', t => {
+test('on blur remove role="alert" if input is valid', (t) => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   t.doesNotThrow(() => td.verify(mockAdapter.removeHelptextAttr('role')));
   t.end();
 });
 
-test('on blur sets aria-hidden="true" on help text by default', t => {
+test('on blur sets aria-hidden="true" on help text by default', (t) => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   t.doesNotThrow(() => td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true')));
   t.end();
 });
 
-test('on blur does not set aria-hidden on help text when it is persistent', t => {
+test('on blur does not set aria-hidden on help text when it is persistent', (t) => {
   const {mockAdapter, blur} = setupBlurTest();
   td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_PERSISTENT)).thenReturn(true);
   blur();
@@ -248,7 +248,7 @@ test('on blur does not set aria-hidden on help text when it is persistent', t =>
   t.end();
 });
 
-test('on blur does not set aria-hidden if input is invalid and help text is validation message', t => {
+test('on blur does not set aria-hidden if input is invalid and help text is validation message', (t) => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
   nativeInput.checkValidity = () => false;
@@ -257,7 +257,7 @@ test('on blur does not set aria-hidden if input is invalid and help text is vali
   t.end();
 });
 
-test('on blur sets aria-hidden=true if input is valid and help text is validation message', t => {
+test('on blur sets aria-hidden=true if input is valid and help text is validation message', (t) => {
   const {mockAdapter, blur} = setupBlurTest();
   td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
   blur();
@@ -265,7 +265,7 @@ test('on blur sets aria-hidden=true if input is valid and help text is validatio
   t.end();
 });
 
-test('on blur handles getNativeInput() not returning anything gracefully', t => {
+test('on blur handles getNativeInput() not returning anything gracefully', (t) => {
   const {mockAdapter, blur} = setupBlurTest();
   td.when(mockAdapter.getNativeInput()).thenReturn(null);
   t.doesNotThrow(blur);

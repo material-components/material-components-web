@@ -26,18 +26,18 @@ const SL_LAUNCHERS = {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'latest',
-    platform: 'OS X 10.11'
+    platform: 'OS X 10.11',
   },
   'sl-chrome-beta': {
     base: 'SauceLabs',
     browserName: 'chrome',
-    version: 'beta'
+    version: 'beta',
   },
   'sl-chrome-previous': {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'latest-1',
-    platform: 'OS X 10.11'
+    platform: 'OS X 10.11',
   },
   // NOTE(traviskaufman): Disabling firefox for now as it has been consistently flaky recently. See
   // https://github.com/material-components/material-components-web/issues/5
@@ -57,13 +57,13 @@ const SL_LAUNCHERS = {
     base: 'SauceLabs',
     browserName: 'internet explorer',
     version: '11',
-    platform: 'Windows 8.1'
+    platform: 'Windows 8.1',
   },
   'sl-android-stable': {
     base: 'SauceLabs',
     browserName: 'android',
-    version: '5.0'
-  }
+    version: '5.0',
+  },
   // NOTE(traviskaufman): Temporarily disabling these browsers as they are consistently flaky using
   // Sauce Labs and almost always yield false negatives.
   // 'sl-edge': {
@@ -102,10 +102,10 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['tap'],
     files: [
-      'test/unit/index.js'
+      'test/unit/index.js',
     ],
     preprocessors: {
-      'test/unit/index.js': ['webpack', 'sourcemap']
+      'test/unit/index.js': ['webpack', 'sourcemap'],
     },
     reporters: ['dots', 'coverage'],
     port: 9876,
@@ -122,14 +122,14 @@ module.exports = function(config) {
       dir: 'coverage',
       reporters: [
         {type: 'json', subdir: '.', file: 'coverage.json'},
-        {type: 'html'}
-      ]
+        {type: 'html'},
+      ],
     },
 
     webpack: Object.assign({}, webpackConfig, {
       devtool: 'inline-source-map',
       node: {
-        fs: 'empty'
+        fs: 'empty',
       },
       module: Object.assign({}, webpackConfig.module, {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
@@ -137,14 +137,14 @@ module.exports = function(config) {
         loaders: webpackConfig.module.loaders.concat([config.singleRun ? {
           test: /\.js$/,
           include: path.resolve('./packages'),
-          loader: 'isparta'
-        } : undefined]).filter(Boolean)
-      })
+          loader: 'isparta',
+        } : undefined]).filter(Boolean),
+      }),
     }),
 
     webpackMiddleware: {
-      noInfo: true
-    }
+      noInfo: true,
+    },
   });
 
   // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
@@ -153,11 +153,11 @@ module.exports = function(config) {
       sauceLabs: {
         testName: 'Material Components Web Unit Tests - CI',
         tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-        startConnect: false
+        startConnect: false,
       },
       // Attempt to de-flake Sauce Labs tests on TravisCI.
       transports: ['polling'],
-      browserDisconnectTolerance: 3
+      browserDisconnectTolerance: 3,
     });
   }
 };

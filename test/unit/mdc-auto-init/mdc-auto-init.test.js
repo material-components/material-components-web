@@ -41,7 +41,7 @@ const setupTest = () => {
   return createFixture();
 };
 
-test('calls attachTo() on components registered for identifier on nodes w/ data-mdc-auto-init attr', t => {
+test('calls attachTo() on components registered for identifier on nodes w/ data-mdc-auto-init attr', (t) => {
   const root = setupTest();
   mdcAutoInit(root);
 
@@ -49,7 +49,7 @@ test('calls attachTo() on components registered for identifier on nodes w/ data-
   t.end();
 });
 
-test('passes the node where "data-mdc-auto-init" was found to attachTo()', t => {
+test('passes the node where "data-mdc-auto-init" was found to attachTo()', (t) => {
   const root = setupTest();
   mdcAutoInit(root);
 
@@ -58,7 +58,7 @@ test('passes the node where "data-mdc-auto-init" was found to attachTo()', t => 
   t.end();
 });
 
-test('throws when no constructor name is specified within "data-mdc-auto-init"', t => {
+test('throws when no constructor name is specified within "data-mdc-auto-init"', (t) => {
   const root = setupTest();
   root.querySelector('.mdc-fake').dataset.mdcAutoInit = '';
 
@@ -66,7 +66,7 @@ test('throws when no constructor name is specified within "data-mdc-auto-init"',
   t.end();
 });
 
-test('throws when constructor is not registered', t => {
+test('throws when constructor is not registered', (t) => {
   const root = setupTest();
   root.querySelector('.mdc-fake').dataset.mdcAutoInit = 'MDCUnregisteredComponent';
 
@@ -74,7 +74,7 @@ test('throws when constructor is not registered', t => {
   t.end();
 });
 
-test('warns when autoInit called multiple times on a node', t => {
+test('warns when autoInit called multiple times on a node', (t) => {
   const root = setupTest();
   const warn = td.func('warn');
   const {contains} = td.matchers;
@@ -86,12 +86,12 @@ test('warns when autoInit called multiple times on a node', t => {
   t.end();
 });
 
-test('#register throws when Ctor is not a function', t => {
+test('#register throws when Ctor is not a function', (t) => {
   t.throws(() => mdcAutoInit.register('not-a-function', 'Not a function'));
   t.end();
 });
 
-test('#register warns when registered key is being overridden', t => {
+test('#register warns when registered key is being overridden', (t) => {
   const warn = td.func('warn');
   const {contains} = td.matchers;
 

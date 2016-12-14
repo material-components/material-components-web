@@ -32,25 +32,25 @@ export class MDCSnackbar extends MDCComponent {
     const {
       TRANS_END_EVENT_NAME,
       TEXT_SELECTOR,
-      ACTION_BUTTON_SELECTOR
+      ACTION_BUTTON_SELECTOR,
     } = MDCSnackbarFoundation.strings;
     const getText = () => this.root_.querySelector(TEXT_SELECTOR);
     const getActionButton = () => this.root_.querySelector(ACTION_BUTTON_SELECTOR);
 
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
-      addClass: className => this.root_.classList.add(className),
-      removeClass: className => this.root_.classList.remove(className),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
       setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
       unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
       setActionAriaHidden: () => getActionButton().setAttribute('aria-hidden', 'true'),
       unsetActionAriaHidden: () => getActionButton().removeAttribute('aria-hidden'),
-      setActionText: text => { getActionButton().textContent = text; },
-      setMessageText: text => { getText().textContent = text; },
-      registerActionClickHandler: handler => getActionButton().addEventListener('click', handler),
-      deregisterActionClickHandler: handler => getActionButton().removeEventListener('click', handler),
-      registerTransitionEndHandler: handler => this.root_.addEventListener(TRANS_END_EVENT_NAME, handler),
-      deregisterTransitionEndHandler: handler => this.root_.removeEventListener(TRANS_END_EVENT_NAME, handler)
+      setActionText: (text) => { getActionButton().textContent = text; },
+      setMessageText: (text) => { getText().textContent = text; },
+      registerActionClickHandler: (handler) => getActionButton().addEventListener('click', handler),
+      deregisterActionClickHandler: (handler) => getActionButton().removeEventListener('click', handler),
+      registerTransitionEndHandler: (handler) => this.root_.addEventListener(TRANS_END_EVENT_NAME, handler),
+      deregisterTransitionEndHandler: (handler) => this.root_.removeEventListener(TRANS_END_EVENT_NAME, handler),
     });
   }
 }

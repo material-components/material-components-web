@@ -22,11 +22,11 @@ export const cssClasses = {
   ANIMATING: `${ROOT}--animating`,
   TOP_RIGHT: `${ROOT}--open-from-top-right`,
   BOTTOM_LEFT: `${ROOT}--open-from-bottom-left`,
-  BOTTOM_RIGHT: `${ROOT}--open-from-bottom-right`
+  BOTTOM_RIGHT: `${ROOT}--open-from-bottom-right`,
 };
 
 export const strings = {
-  ITEMS_SELECTOR: `.${ROOT}__items`
+  ITEMS_SELECTOR: `.${ROOT}__items`,
 };
 
 export const numbers = {
@@ -44,5 +44,5 @@ export const numbers = {
   TRANSITION_X1: 0,
   TRANSITION_Y1: 0,
   TRANSITION_X2: 0.2,
-  TRANSITION_Y2: 1
+  TRANSITION_Y2: 1,
 };

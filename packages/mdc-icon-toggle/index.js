@@ -26,8 +26,8 @@ export class MDCIconToggle extends MDCComponent {
     return new MDCIconToggle(root);
   }
 
-  constructor() {
-    super(...arguments);
+  constructor(...args) {
+    super(...args);
     this.ripple_ = this.initRipple_();
   }
 
@@ -49,9 +49,9 @@ export class MDCIconToggle extends MDCComponent {
           width: dim,
           height: dim,
           right: left + dim,
-          bottom: left + dim
+          bottom: left + dim,
         };
-      }
+      },
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
@@ -64,21 +64,21 @@ export class MDCIconToggle extends MDCComponent {
 
   getDefaultFoundation() {
     return new MDCIconToggleFoundation({
-      addClass: className => this.iconEl_.classList.add(className),
-      removeClass: className => this.iconEl_.classList.remove(className),
+      addClass: (className) => this.iconEl_.classList.add(className),
+      removeClass: (className) => this.iconEl_.classList.remove(className),
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      setText: text => {
+      setText: (text) => {
         this.iconEl_.textContent = text;
       },
       getTabIndex: () => /* number */ this.root_.tabIndex,
-      setTabIndex: tabIndex => {
+      setTabIndex: (tabIndex) => {
         this.root_.tabIndex = tabIndex;
       },
       getAttr: (name, value) => this.root_.getAttribute(name, value),
       setAttr: (name, value) => this.root_.setAttribute(name, value),
       rmAttr: (name, value) => this.root_.removeAttribute(name, value),
-      notifyChange: evtData => this.emit('MDCIconToggle:change', evtData)
+      notifyChange: (evtData) => this.emit('MDCIconToggle:change', evtData),
     });
   }
 

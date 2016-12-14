@@ -23,35 +23,35 @@ import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 import * as util from '../../../packages/mdc-ripple/util';
 
-test('attachTo initializes and returns a ripple', t => {
+test('attachTo initializes and returns a ripple', (t) => {
   const root = bel`<div></div>`;
   const component = MDCRipple.attachTo(root);
   t.true(component instanceof MDCRipple);
   t.end();
 });
 
-test('attachTo makes ripple unbounded when given as an option', t => {
+test('attachTo makes ripple unbounded when given as an option', (t) => {
   const root = bel`<div></div>`;
   const component = MDCRipple.attachTo(root, {isUnbounded: true});
   t.true(component.unbounded);
   t.end();
 });
 
-test('attachTo does not override unbounded data attr when omitted', t => {
+test('attachTo does not override unbounded data attr when omitted', (t) => {
   const root = bel`<div data-mdc-ripple-is-unbounded></div>`;
   const component = MDCRipple.attachTo(root);
   t.true(component.unbounded);
   t.end();
 });
 
-test('attachTo overrides unbounded data attr when explicitly specified', t => {
+test('attachTo overrides unbounded data attr when explicitly specified', (t) => {
   const root = bel`<div data-mdc-ripple-is-unbounded></div>`;
   const component = MDCRipple.attachTo(root, {isUnbounded: false});
   t.false(component.unbounded);
   t.end();
 });
 
-test('createAdapter() returns the same adapter used by default for the ripple', t => {
+test('createAdapter() returns the same adapter used by default for the ripple', (t) => {
   const root = bel`<div></div>`;
   const component = MDCRipple.attachTo(root);
   t.deepEqual(Object.keys(MDCRipple.createAdapter()), Object.keys(component.foundation_.adapter_));
@@ -64,14 +64,14 @@ function setupTest() {
   return {root, component};
 }
 
-test(`set unbounded() adds ${cssClasses.UNBOUNDED} when truthy`, t => {
+test(`set unbounded() adds ${cssClasses.UNBOUNDED} when truthy`, (t) => {
   const {root, component} = setupTest();
   component.unbounded = true;
   t.true(root.classList.contains(cssClasses.UNBOUNDED));
   t.end();
 });
 
-test(`set unbounded() removes ${cssClasses.UNBOUNDED} when falsy`, t => {
+test(`set unbounded() removes ${cssClasses.UNBOUNDED} when falsy`, (t) => {
   const {root, component} = setupTest();
   root.classList.add(cssClasses.UNBOUNDED);
   component.unbounded = false;
@@ -79,7 +79,7 @@ test(`set unbounded() removes ${cssClasses.UNBOUNDED} when falsy`, t => {
   t.end();
 });
 
-test('adapter#browserSupportsCssVars delegates to util', t => {
+test('adapter#browserSupportsCssVars delegates to util', (t) => {
   const {component} = setupTest();
   t.equal(
     component.getDefaultFoundation().adapter_.browserSupportsCssVars(window),
@@ -88,14 +88,14 @@ test('adapter#browserSupportsCssVars delegates to util', t => {
   t.end();
 });
 
-test('adapter#isUnbounded delegates to unbounded getter', t => {
+test('adapter#isUnbounded delegates to unbounded getter', (t) => {
   const {component} = setupTest();
   component.unbounded = true;
   t.true(component.getDefaultFoundation().adapter_.isUnbounded());
   t.end();
 });
 
-test('adapter#isSurfaceActive calls the correct :matches API method on the root element', t => {
+test('adapter#isSurfaceActive calls the correct :matches API method on the root element', (t) => {
   const {root, component} = setupTest();
   const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
   const matches = td.func('root.<matches>');
@@ -105,14 +105,14 @@ test('adapter#isSurfaceActive calls the correct :matches API method on the root 
   t.end();
 });
 
-test('adapter#addClass adds a class to the root', t => {
+test('adapter#addClass adds a class to the root', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   t.true(root.classList.contains('foo'));
   t.end();
 });
 
-test('adapter#removeClass removes a class from the root', t => {
+test('adapter#removeClass removes a class from the root', (t) => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
@@ -120,7 +120,7 @@ test('adapter#removeClass removes a class from the root', t => {
   t.end();
 });
 
-test('adapter#registerInteractionHandler proxies to addEventListener', t => {
+test('adapter#registerInteractionHandler proxies to addEventListener', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
@@ -129,7 +129,7 @@ test('adapter#registerInteractionHandler proxies to addEventListener', t => {
   t.end();
 });
 
-test('adapter#deregisterInteractionHandler proxies to removeEventListener', t => {
+test('adapter#deregisterInteractionHandler proxies to removeEventListener', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   root.addEventListener('foo', handler);
@@ -139,7 +139,7 @@ test('adapter#deregisterInteractionHandler proxies to removeEventListener', t =>
   t.end();
 });
 
-test('adapter#registerResizeHandler uses the handler as a window resize listener', t => {
+test('adapter#registerResizeHandler uses the handler as a window resize listener', (t) => {
   const {component} = setupTest();
   const handler = td.func('resizeHandler');
   component.getDefaultFoundation().adapter_.registerResizeHandler(handler);
@@ -149,7 +149,7 @@ test('adapter#registerResizeHandler uses the handler as a window resize listener
   t.end();
 });
 
-test('adapter#registerResizeHandler unlistens the handler for window resize', t => {
+test('adapter#registerResizeHandler unlistens the handler for window resize', (t) => {
   const {component} = setupTest();
   const handler = td.func('resizeHandler');
   window.addEventListener('resize', handler);
@@ -162,7 +162,7 @@ test('adapter#registerResizeHandler unlistens the handler for window resize', t 
 });
 
 if (util.supportsCssVariables(window)) {
-  test('adapter#updateCssVariable calls setProperty on root style with varName and value', t => {
+  test('adapter#updateCssVariable calls setProperty on root style with varName and value', (t) => {
     const {root, component} = setupTest();
     component.getDefaultFoundation().adapter_.updateCssVariable('--foo', 'red');
     t.equal(root.style.getPropertyValue('--foo'), 'red');
@@ -170,7 +170,7 @@ if (util.supportsCssVariables(window)) {
   });
 }
 
-test('adapter#computeBoundingRect calls getBoundingClientRect() on root', t => {
+test('adapter#computeBoundingRect calls getBoundingClientRect() on root', (t) => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   t.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
@@ -178,11 +178,11 @@ test('adapter#computeBoundingRect calls getBoundingClientRect() on root', t => {
   t.end();
 });
 
-test('adapter#getWindowPageOffset returns page{X,Y}Offset as {x,y} respectively', t => {
+test('adapter#getWindowPageOffset returns page{X,Y}Offset as {x,y} respectively', (t) => {
   const {component} = setupTest();
   t.deepEqual(component.getDefaultFoundation().adapter_.getWindowPageOffset(), {
     x: window.pageXOffset,
-    y: window.pageYOffset
+    y: window.pageYOffset,
   });
   t.end();
 });

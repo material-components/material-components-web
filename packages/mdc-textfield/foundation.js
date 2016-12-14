@@ -28,14 +28,14 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       INVALID: `${ROOT}--invalid`,
       HELPTEXT_PERSISTENT: `${ROOT}-helptext--persistent`,
       HELPTEXT_VALIDATION_MSG: `${ROOT}-helptext--validation-msg`,
-      LABEL_FLOAT_ABOVE: `${ROOT}__label--float-above`
+      LABEL_FLOAT_ABOVE: `${ROOT}__label--float-above`,
     };
   }
 
   static get strings() {
     return {
       ARIA_HIDDEN: 'aria-hidden',
-      ROLE: 'role'
+      ROLE: 'role',
     };
   }
 
@@ -54,7 +54,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       deregisterInputBlurHandler: (/* handler: EventListener */) => {},
       setHelptextAttr: (/* name: string, value: string */) => {},
       removeHelptextAttr: (/* name: string, value: string */) => {},
-      getNativeInput: () => /* HTMLInputElement */ ({})
+      getNativeInput: () => /* HTMLInputElement */ ({}),
     };
   }
 
@@ -147,7 +147,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     return this.adapter_.getNativeInput() || {
       checkValidity: () => true,
       value: '',
-      disabled: false
+      disabled: false,
     };
   }
 }

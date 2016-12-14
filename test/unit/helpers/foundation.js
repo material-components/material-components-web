@@ -23,12 +23,12 @@ import td from 'testdouble';
 // Every foundation test suite include this verification.
 export function verifyDefaultAdapter(FoundationClass, expectedMethods, t) {
   const {defaultAdapter} = FoundationClass;
-  const methods = Object.keys(defaultAdapter).filter(k => typeof defaultAdapter[k] === 'function');
+  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
   t.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   t.deepEqual(methods, expectedMethods);
   // Test default methods
-  methods.forEach(m => t.doesNotThrow(defaultAdapter[m]));
+  methods.forEach((m) => t.doesNotThrow(defaultAdapter[m]));
 }
 
 // Returns an object that intercepts calls to an adapter method used to register event handlers, and adds
@@ -36,7 +36,7 @@ export function verifyDefaultAdapter(FoundationClass, expectedMethods, t) {
 // preferred way of testing interaction handlers.
 //
 // ```javascript
-// test('#init adds a click listener which adds a "foo" class', t => {
+// test('#init adds a click listener which adds a "foo" class', (t) => {
 //   const {foundation, mockAdapter} = setupTest();
 //   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
 //   foundation.init();

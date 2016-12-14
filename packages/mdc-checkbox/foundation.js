@@ -42,7 +42,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       deregisterChangeHandler: (/* handler: EventListener */) => {},
       getNativeControl: () => /* HTMLInputElement */ {},
       forceLayout: () => {},
-      isAttachedToDOM: () => /* boolean */ {}
+      isAttachedToDOM: () => /* boolean */ {},
     };
   }
 
@@ -100,19 +100,19 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     const nativeCb = this.getNativeControl_();
     const cbProto = Object.getPrototypeOf(nativeCb);
 
-    CB_PROTO_PROPS.forEach(controlState => {
+    CB_PROTO_PROPS.forEach((controlState) => {
       const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
       // We have to check for this descriptor, since some browsers (Safari) don't support its return.
       // See: https://bugs.webkit.org/show_bug.cgi?id=49739
       if (validDescriptor(desc)) {
         Object.defineProperty(nativeCb, controlState, {
           get: desc.get,
-          set: state => {
+          set: (state) => {
             desc.set.call(nativeCb, state);
             this.transitionCheckState_();
           },
           configurable: desc.configurable,
-          enumerable: desc.enumerable
+          enumerable: desc.enumerable,
         });
       }
     });
@@ -122,7 +122,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     const nativeCb = this.getNativeControl_();
     const cbProto = Object.getPrototypeOf(nativeCb);
 
-    CB_PROTO_PROPS.forEach(controlState => {
+    CB_PROTO_PROPS.forEach((controlState) => {
       const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
       if (validDescriptor(desc)) {
         Object.defineProperty(nativeCb, controlState, desc);
@@ -164,7 +164,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     const {
       TRANSITION_STATE_INDETERMINATE,
       TRANSITION_STATE_CHECKED,
-      TRANSITION_STATE_UNCHECKED
+      TRANSITION_STATE_UNCHECKED,
     } = strings;
 
     if (nativeCb.indeterminate) {
@@ -177,7 +177,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     const {
       TRANSITION_STATE_INIT,
       TRANSITION_STATE_CHECKED,
-      TRANSITION_STATE_UNCHECKED
+      TRANSITION_STATE_UNCHECKED,
     } = strings;
 
     const {
@@ -186,7 +186,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       ANIM_CHECKED_UNCHECKED,
       ANIM_CHECKED_INDETERMINATE,
       ANIM_INDETERMINATE_CHECKED,
-      ANIM_INDETERMINATE_UNCHECKED
+      ANIM_INDETERMINATE_UNCHECKED,
     } = MDCCheckboxFoundation.cssClasses;
 
     switch (oldState) {
@@ -210,7 +210,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     return this.adapter_.getNativeControl() || {
       checked: false,
       indeterminate: false,
-      disabled: false
+      disabled: false,
     };
   }
 }

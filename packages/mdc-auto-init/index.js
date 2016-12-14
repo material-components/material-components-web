@@ -46,7 +46,7 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
       value: component,
       writable: false,
       enumerable: false,
-      configurable: true
+      configurable: true,
     });
   }
 }
