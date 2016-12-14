@@ -16,6 +16,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 - [Demos](demos/)
 - [Framework Integration Examples](framework-examples/)
 - [Contributing](CONTRIBUTING.md)
+- [MDC-Web on Stack Overflow](https://stackoverflow.com/questions/tagged/material-components+web)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.google.com) (external site)
 
