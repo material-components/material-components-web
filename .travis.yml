@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - node # stable
-  - '4' # LTS
+  - '--lts' # LTS: See https://github.com/creationix/nvm/pull/1070
 branches:
   only:
     - master
