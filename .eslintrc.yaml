@@ -5,6 +5,9 @@ env:
   browser: true
 plugins:
   - tape
+parserOptions:
+  ecmaVersion: 2015
+  sourceType: module
 rules:
   max-len: [error, 120]
   no-new: warn
