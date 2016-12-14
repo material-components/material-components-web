@@ -28,7 +28,7 @@ const DESC_UNDEFINED = {
   get: undefined,
   set: undefined,
   enumerable: false,
-  configurable: true
+  configurable: true,
 };
 
 function setupTest() {
@@ -44,13 +44,13 @@ function setupTest() {
 function withMockCheckboxDescriptorReturning(descriptor, runTests) {
   const originalDesc = Object.getOwnPropertyDescriptor(Object, 'getOwnPropertyDescriptor');
   const mockGetOwnPropertyDescriptor = td.func('.getOwnPropertyDescriptor');
-  const oneOf = (...validArgs) => td.matchers.argThat(x => validArgs.indexOf(x) >= 0);
+  const oneOf = (...validArgs) => td.matchers.argThat((x) => validArgs.indexOf(x) >= 0);
 
   td.when(mockGetOwnPropertyDescriptor(HTMLInputElement.prototype, oneOf('checked', 'indeterminate')))
     .thenReturn(descriptor);
 
   Object.defineProperty(Object, 'getOwnPropertyDescriptor', Object.assign({}, originalDesc, {
-    value: mockGetOwnPropertyDescriptor
+    value: mockGetOwnPropertyDescriptor,
   }));
   runTests(mockGetOwnPropertyDescriptor);
   Object.defineProperty(Object, 'getOwnPropertyDescriptor', originalDesc);
@@ -77,7 +77,7 @@ function setupChangeHandlerTest() {
 
   foundation.init();
 
-  const change = newState => {
+  const change = (newState) => {
     td.when(mockAdapter.getNativeControl()).thenReturn(newState);
     changeHandler();
   };
@@ -87,7 +87,7 @@ function setupChangeHandlerTest() {
 
 function testChangeHandler(desc, changes, expectedClass, verificationOpts) {
   changes = Array.isArray(changes) ? changes : [changes];
-  test(`changeHandler: ${desc}`, t => {
+  test(`changeHandler: ${desc}`, (t) => {
     const {mockAdapter, change} = setupChangeHandlerTest();
     changes.forEach(change);
     t.doesNotThrow(() => {
@@ -98,32 +98,32 @@ function testChangeHandler(desc, changes, expectedClass, verificationOpts) {
   });
 }
 
-test('exports strings', t => {
+test('exports strings', (t) => {
   t.deepEqual(MDCCheckboxFoundation.strings, strings);
   t.end();
 });
 
-test('exports cssClasses', t => {
+test('exports cssClasses', (t) => {
   t.deepEqual(MDCCheckboxFoundation.cssClasses, cssClasses);
   t.end();
 });
 
-test('exports numbers', t => {
+test('exports numbers', (t) => {
   t.deepEqual(MDCCheckboxFoundation.numbers, numbers);
   t.end();
 });
 
-test('defaultAdapter returns a complete adapter implementation', t => {
+test('defaultAdapter returns a complete adapter implementation', (t) => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
     'addClass', 'removeClass', 'registerAnimationEndHandler', 'deregisterAnimationEndHandler',
     'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl', 'forceLayout',
-    'isAttachedToDOM'
+    'isAttachedToDOM',
   ], t);
 
   t.end();
 });
 
-test('#init calls adapter.registerChangeHandler() with a change handler function', t => {
+test('#init calls adapter.registerChangeHandler() with a change handler function', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -132,14 +132,14 @@ test('#init calls adapter.registerChangeHandler() with a change handler function
   t.end();
 });
 
-test('#init handles case where getNativeControl() does not return anything', t => {
+test('#init handles case where getNativeControl() does not return anything', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(undefined);
   t.doesNotThrow(() => foundation.init());
   t.end();
 });
 
-test('#init handles case when WebIDL attrs cannot be overridden (Safari)', t => {
+test('#init handles case when WebIDL attrs cannot be overridden (Safari)', (t) => {
   const {foundation, nativeControl} = setupTest();
   withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
     t.doesNotThrow(() => {
@@ -150,7 +150,7 @@ test('#init handles case when WebIDL attrs cannot be overridden (Safari)', t => 
   t.end();
 });
 
-test('#init handles case when property descriptors are not returned at all (Android Browser)', t => {
+test('#init handles case when property descriptors are not returned at all (Android Browser)', (t) => {
   const {foundation} = setupTest();
   withMockCheckboxDescriptorReturning(undefined, () => {
     t.doesNotThrow(() => foundation.init());
@@ -158,7 +158,7 @@ test('#init handles case when property descriptors are not returned at all (Andr
   t.end();
 });
 
-test('#destroy calls adapter.deregisterChangeHandler() with a registerChangeHandler function', t => {
+test('#destroy calls adapter.deregisterChangeHandler() with a registerChangeHandler function', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -174,7 +174,7 @@ test('#destroy calls adapter.deregisterChangeHandler() with a registerChangeHand
   t.end();
 });
 
-test('#destroy handles case where getNativeControl() does not return anything', t => {
+test('#destroy handles case where getNativeControl() does not return anything', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
@@ -184,7 +184,7 @@ test('#destroy handles case where getNativeControl() does not return anything', 
   t.end();
 });
 
-test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', t => {
+test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', (t) => {
   const {foundation} = setupTest();
   withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
     t.doesNotThrow(() => foundation.init(), 'init sanity check');
@@ -193,7 +193,7 @@ test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', t 
   t.end();
 });
 
-test('#setChecked updates the value of nativeControl.checked', t => {
+test('#setChecked updates the value of nativeControl.checked', (t) => {
   const {foundation, nativeControl} = setupTest();
   foundation.setChecked(true);
   t.true(foundation.isChecked());
@@ -204,21 +204,21 @@ test('#setChecked updates the value of nativeControl.checked', t => {
   t.end();
 });
 
-test('#setChecked works when no native control is returned', t => {
+test('#setChecked works when no native control is returned', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
   t.doesNotThrow(() => foundation.setChecked(true));
   t.end();
 });
 
-test('#isChecked returns false when no native control is returned', t => {
+test('#isChecked returns false when no native control is returned', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
   t.false(foundation.isChecked());
   t.end();
 });
 
-test('#setIndeterminate updates the value of nativeControl.indeterminate', t => {
+test('#setIndeterminate updates the value of nativeControl.indeterminate', (t) => {
   const {foundation, nativeControl} = setupTest();
   foundation.setIndeterminate(true);
   t.true(foundation.isIndeterminate());
@@ -229,21 +229,21 @@ test('#setIndeterminate updates the value of nativeControl.indeterminate', t => 
   t.end();
 });
 
-test('#setIndeterminate works when no native control is returned', t => {
+test('#setIndeterminate works when no native control is returned', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
   t.doesNotThrow(() => foundation.setIndeterminate(true));
   t.end();
 });
 
-test('#isIndeterminate returns false when no native control is returned', t => {
+test('#isIndeterminate returns false when no native control is returned', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
   t.false(foundation.isIndeterminate());
   t.end();
 });
 
-test('#setDisabled updates the value of nativeControl.disabled', t => {
+test('#setDisabled updates the value of nativeControl.disabled', (t) => {
   const {foundation, nativeControl} = setupTest();
   foundation.setDisabled(true);
   t.true(foundation.isDisabled());
@@ -254,14 +254,14 @@ test('#setDisabled updates the value of nativeControl.disabled', t => {
   t.end();
 });
 
-test('#isDisabled returns false when no native control is returned', t => {
+test('#isDisabled returns false when no native control is returned', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
   t.false(foundation.isDisabled());
   t.end();
 });
 
-test('#setDisabled works when no native control is returned', t => {
+test('#setDisabled works when no native control is returned', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
   t.doesNotThrow(() => foundation.setDisabled(true));
@@ -270,70 +270,70 @@ test('#setDisabled works when no native control is returned', t => {
 
 testChangeHandler('unchecked -> checked animation class', {
   checked: true,
-  indeterminate: false
+  indeterminate: false,
 }, cssClasses.ANIM_UNCHECKED_CHECKED);
 
 testChangeHandler('unchecked -> indeterminate animation class', {
   checked: false,
-  indeterminate: true
+  indeterminate: true,
 }, cssClasses.ANIM_UNCHECKED_INDETERMINATE);
 
 testChangeHandler('checked -> unchecked animation class', [
   {
     checked: true,
-    indeterminate: false
+    indeterminate: false,
   },
   {
     checked: false,
-    indeterminate: false
-  }
+    indeterminate: false,
+  },
 ], cssClasses.ANIM_CHECKED_UNCHECKED);
 
 testChangeHandler('checked -> indeterminate animation class', [
   {
     checked: true,
-    indeterminate: false
+    indeterminate: false,
   },
   {
     checked: true,
-    indeterminate: true
-  }
+    indeterminate: true,
+  },
 ], cssClasses.ANIM_CHECKED_INDETERMINATE);
 
 testChangeHandler('indeterminate -> checked animation class', [
   {
     checked: false,
-    indeterminate: true
+    indeterminate: true,
   },
   {
     checked: true,
-    indeterminate: false
-  }
+    indeterminate: false,
+  },
 ], cssClasses.ANIM_INDETERMINATE_CHECKED);
 
 testChangeHandler('indeterminate -> unchecked animation class', [
   {
     checked: true,
-    indeterminate: true
+    indeterminate: true,
   },
   {
     checked: false,
-    indeterminate: false
-  }
+    indeterminate: false,
+  },
 ], cssClasses.ANIM_INDETERMINATE_UNCHECKED);
 
 testChangeHandler('no transition classes applied when no state change', [
   {
     checked: true,
-    indeterminate: false
+    indeterminate: false,
   },
   {
     checked: true,
-    indeterminate: false
-  }
+    indeterminate: false,
+  },
 ], cssClasses.ANIM_UNCHECKED_CHECKED, {times: 1});
 
-test('animation end handler one-off removes animation class after short delay', t => {
+test('animation end handler one-off removes animation class after short delay', (t) => {
   const clock = lolex.install();
   const {mockAdapter, change} = setupChangeHandlerTest();
   const {isA} = td.matchers;
@@ -358,7 +358,7 @@ test('animation end handler one-off removes animation class after short delay', 
   t.end();
 });
 
-test('change handler debounces changes within the animation end delay period', t => {
+test('change handler debounces changes within the animation end delay period', (t) => {
   const clock = lolex.install();
   const {mockAdapter, change} = setupChangeHandlerTest();
   const {isA} = td.matchers;
@@ -392,7 +392,7 @@ test('change handler debounces changes within the animation end delay period', t
   t.end();
 });
 
-test('change handler triggers layout for changes within the same frame to correctly restart anims', t => {
+test('change handler triggers layout for changes within the same frame to correctly restart anims', (t) => {
   const {mockAdapter, change} = setupChangeHandlerTest();
 
   change({checked: true, indeterminate: false});
@@ -404,7 +404,7 @@ test('change handler triggers layout for changes within the same frame to correc
   t.end();
 });
 
-test('change handler does not add animation classes when isAttachedToDOM() is falsy', t => {
+test('change handler does not add animation classes when isAttachedToDOM() is falsy', (t) => {
   const {mockAdapter, change} = setupChangeHandlerTest();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(false);
 
@@ -414,7 +414,7 @@ test('change handler does not add animation classes when isAttachedToDOM() is fa
   t.end();
 });
 
-test('change handler does not add animation classes for bogus changes (init -> unchecked)', t => {
+test('change handler does not add animation classes for bogus changes (init -> unchecked)', (t) => {
   const {mockAdapter, change} = setupChangeHandlerTest();
 
   change({checked: false, indeterminate: false});
@@ -422,13 +422,13 @@ test('change handler does not add animation classes for bogus changes (init -> u
   t.end();
 });
 
-test('change handler gracefully exits when getNativeControl() returns nothing', t => {
+test('change handler gracefully exits when getNativeControl() returns nothing', (t) => {
   const {change} = setupChangeHandlerTest();
   t.doesNotThrow(() => change(undefined));
   t.end();
 });
 
-test('"checked" property change hook works correctly', t => {
+test('"checked" property change hook works correctly', (t) => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
   const clock = lolex.install();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
@@ -437,12 +437,12 @@ test('"checked" property change hook works correctly', t => {
     get: () => {},
     set: () => {},
     enumerable: false,
-    configurable: true
+    configurable: true,
   }, () => {
     foundation.init();
     td.when(mockAdapter.getNativeControl()).thenReturn({
       checked: true,
-      indeterminate: false
+      indeterminate: false,
     });
     nativeControl.checked = !nativeControl.checked;
     t.doesNotThrow(() => {
@@ -454,7 +454,7 @@ test('"checked" property change hook works correctly', t => {
   t.end();
 });
 
-test('"indeterminate" property change hook works correctly', t => {
+test('"indeterminate" property change hook works correctly', (t) => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
   const clock = lolex.install();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
@@ -463,12 +463,12 @@ test('"indeterminate" property change hook works correctly', t => {
     get: () => {},
     set: () => {},
     enumerable: false,
-    configurable: true
+    configurable: true,
   }, () => {
     foundation.init();
     td.when(mockAdapter.getNativeControl()).thenReturn({
       checked: false,
-      indeterminate: true
+      indeterminate: true,
     });
     nativeControl.indeterminate = !nativeControl.indeterminate;
     t.doesNotThrow(() => {

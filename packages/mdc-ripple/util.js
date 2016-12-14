@@ -32,8 +32,8 @@ export function supportsCssVariables(windowObj) {
 
 export function getMatchesProperty(HTMLElementPrototype) {
   return [
-    'webkitMatchesSelector', 'msMatchesSelector', 'matches'
-  ].filter(p => p in HTMLElementPrototype).pop();
+    'webkitMatchesSelector', 'msMatchesSelector', 'matches',
+  ].filter((p) => p in HTMLElementPrototype).pop();
 }
 
 export function animateWithClass(rippleAdapter, cls, endEvent) {

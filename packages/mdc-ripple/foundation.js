@@ -24,7 +24,7 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
   pointerup: 'pointerdown',
   touchend: 'touchstart',
   keyup: 'keydown',
-  blur: 'focus'
+  blur: 'focus',
 };
 
 export default class MDCRippleFoundation extends MDCFoundation {
@@ -53,7 +53,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       deregisterResizeHandler: (/* handler: EventListener */) => {},
       updateCssVariable: (/* varName: string, value: string */) => {},
       computeBoundingRect: () => /* ClientRect */ {},
-      getWindowPageOffset: () => /* {x: number, y: number} */ {}
+      getWindowPageOffset: () => /* {x: number, y: number} */ {},
     };
   }
 
@@ -77,17 +77,17 @@ export default class MDCRippleFoundation extends MDCFoundation {
       {activate: 'pointerdown', deactivate: 'pointerup'},
       {activate: 'mousedown', deactivate: 'mouseup'},
       {activate: 'keydown', deactivate: 'keyup'},
-      {focus: 'focus', blur: 'blur'}
+      {focus: 'focus', blur: 'blur'},
     ];
     this.listeners_ = {
-      activate: e => this.activate_(e),
-      deactivate: e => this.deactivate_(e),
+      activate: (e) => this.activate_(e),
+      deactivate: (e) => this.deactivate_(e),
       focus: () => requestAnimationFrame(
         () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_ACTIVE)
       ),
       blur: () => requestAnimationFrame(
         () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_ACTIVE)
-      )
+      ),
     };
     this.unboundedOpacityFadeTimer_ = 0;
     this.resizeHandler_ = () => this.layout();
@@ -102,7 +102,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       wasActivatedByPointer: false,
       wasElementMadeActive: false,
       activationStartTime: 0,
-      activationEvent: null
+      activationEvent: null,
     };
   }
 
@@ -123,8 +123,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
   }
 
   addEventListeners_() {
-    this.listenerInfos_.forEach(info => {
-      Object.keys(info).forEach(k => {
+    this.listenerInfos_.forEach((info) => {
+      Object.keys(info).forEach((k) => {
         this.adapter_.registerInteractionHandler(info[k], this.listeners_[k]);
       });
     });
@@ -163,15 +163,15 @@ export default class MDCRippleFoundation extends MDCFoundation {
   animateActivation_() {
     const {
       BG_ACTIVE, BG_BOUNDED_ACTIVE_FILL,
-      FG_UNBOUNDED_DEACTIVATION, FG_BOUNDED_ACTIVE_FILL
+      FG_UNBOUNDED_DEACTIVATION, FG_BOUNDED_ACTIVE_FILL,
     } = MDCRippleFoundation.cssClasses;
 
     // If ripple is currently deactivating, cancel those animations.
     [
       BG_BOUNDED_ACTIVE_FILL,
       FG_UNBOUNDED_DEACTIVATION,
-      FG_BOUNDED_ACTIVE_FILL
-    ].forEach(c => this.adapter_.removeClass(c));
+      FG_BOUNDED_ACTIVE_FILL,
+    ].forEach((c) => this.adapter_.removeClass(c));
     this.cancelBgBounded_();
     this.cancelFgBounded_();
     this.cancelFgUnbounded_();
@@ -197,7 +197,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     } else {
       startPoint = {
         left: this.frame_.width / 2,
-        top: this.frame_.height / 2
+        top: this.frame_.height / 2,
       };
     }
     const {left, top} = startPoint;
@@ -252,12 +252,12 @@ export default class MDCRippleFoundation extends MDCFoundation {
   animateUnboundedDeactivation_({opacityDuration, transformDuration, approxCurScale}) {
     const {
       FG_UNBOUNDED_ACTIVATION,
-      FG_UNBOUNDED_DEACTIVATION
+      FG_UNBOUNDED_DEACTIVATION,
     } = MDCRippleFoundation.cssClasses;
     const {
       VAR_FG_UNBOUNDED_OPACITY_DURATION,
       VAR_FG_UNBOUNDED_TRANSFORM_DURATION,
-      VAR_FG_APPROX_XF
+      VAR_FG_APPROX_XF,
     } = MDCRippleFoundation.strings;
     this.adapter_.updateCssVariable(VAR_FG_APPROX_XF, `scale(${approxCurScale})`);
     this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_OPACITY_DURATION, `${opacityDuration}ms`);
@@ -275,7 +275,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     const {
       FG_TRANSFORM_DELAY_MS, OPACITY_DURATION_DIVISOR,
       ACTIVE_OPACITY_DURATION_MS, UNBOUNDED_TRANSFORM_DURATION_MS,
-      MIN_OPACITY_DURATION_MS
+      MIN_OPACITY_DURATION_MS,
     } = MDCRippleFoundation.numbers;
 
     let approxCurScale = 0;
@@ -301,7 +301,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     } else {
       startPoint = {
         left: this.frame_.width / 2,
-        top: this.frame_.height / 2
+        top: this.frame_.height / 2,
       };
     }
     const {left, top} = startPoint;
@@ -328,8 +328,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
   }
 
   removeEventListeners_() {
-    this.listenerInfos_.forEach(info => {
-      Object.keys(info).forEach(k => {
+    this.listenerInfos_.forEach((info) => {
+      Object.keys(info).forEach((k) => {
         this.adapter_.deregisterInteractionHandler(info[k], this.listeners_[k]);
       });
     });
@@ -338,7 +338,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
 
   removeCssVars_() {
     const {strings} = MDCRippleFoundation;
-    Object.keys(strings).forEach(k => {
+    Object.keys(strings).forEach((k) => {
       if (k.indexOf('VAR_') === 0) {
         this.adapter_.updateCssVariable(strings[k], null);
       }
@@ -370,7 +370,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     const fgSize = this.maxRadius_ * 2;
     const {
       VAR_SURFACE_WIDTH, VAR_SURFACE_HEIGHT, VAR_FG_SIZE,
-      VAR_FG_UNBOUNDED_TRANSFORM_DURATION, VAR_LEFT, VAR_TOP
+      VAR_FG_UNBOUNDED_TRANSFORM_DURATION, VAR_LEFT, VAR_TOP,
     } = MDCRippleFoundation.strings;
 
     this.adapter_.updateCssVariable(VAR_SURFACE_WIDTH, `${this.frame_.width}px`);

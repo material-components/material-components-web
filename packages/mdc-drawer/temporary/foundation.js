@@ -52,14 +52,14 @@ export default class MDCTemporaryDrawerFoundation extends MDCFoundation {
       makeElementUntabbable: (/* el: Element */) => {},
       isRtl: () => /* boolean */ false,
       getDrawerWidth: () => /* number */ 0,
-      isDrawer: (/* el: Element */) => /* boolean */ false
+      isDrawer: (/* el: Element */) => /* boolean */ false,
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCTemporaryDrawerFoundation.defaultAdapter, adapter));
 
-    this.transitionEndHandler_ = ev => {
+    this.transitionEndHandler_ = (ev) => {
       if (this.adapter_.isDrawer(ev.target)) {
         this.adapter_.removeClass(MDCTemporaryDrawerFoundation.cssClasses.ANIMATING);
         this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
@@ -69,11 +69,11 @@ export default class MDCTemporaryDrawerFoundation extends MDCFoundation {
     this.inert_ = false;
 
     this.componentClickHandler_ = () => this.close();
-    this.drawerClickHandler_ = evt => evt.stopPropagation();
-    this.componentTouchStartHandler_ = evt => this.handleTouchStart_(evt);
-    this.componentTouchMoveHandler_ = evt => this.handleTouchMove_(evt);
-    this.componentTouchEndHandler_ = evt => this.handleTouchEnd_(evt);
-    this.documentKeydownHandler_ = evt => {
+    this.drawerClickHandler_ = (evt) => evt.stopPropagation();
+    this.componentTouchStartHandler_ = (evt) => this.handleTouchStart_(evt);
+    this.componentTouchMoveHandler_ = (evt) => this.handleTouchMove_(evt);
+    this.componentTouchEndHandler_ = (evt) => this.handleTouchEnd_(evt);
+    this.documentKeydownHandler_ = (evt) => {
       if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
         this.close();
       }

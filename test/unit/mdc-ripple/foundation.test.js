@@ -22,38 +22,38 @@ import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constan
 
 import {testFoundation} from './helpers';
 
-test('cssClasses returns constants.cssClasses', t => {
+test('cssClasses returns constants.cssClasses', (t) => {
   t.deepEqual(MDCRippleFoundation.cssClasses, cssClasses);
   t.end();
 });
 
-test('strings returns constants.strings', t => {
+test('strings returns constants.strings', (t) => {
   t.deepEqual(MDCRippleFoundation.strings, strings);
   t.end();
 });
 
-test('numbers returns constants.numbers', t => {
+test('numbers returns constants.numbers', (t) => {
   t.deepEqual(MDCRippleFoundation.numbers, numbers);
   t.end();
 });
 
-test('defaultAdapter returns a complete adapter implementation', t => {
+test('defaultAdapter returns a complete adapter implementation', (t) => {
   const {defaultAdapter} = MDCRippleFoundation;
-  const methods = Object.keys(defaultAdapter).filter(k => typeof defaultAdapter[k] === 'function');
+  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
   t.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   t.deepEqual(methods, [
     'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'addClass', 'removeClass',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'registerResizeHandler',
-    'deregisterResizeHandler', 'updateCssVariable', 'computeBoundingRect', 'getWindowPageOffset'
+    'deregisterResizeHandler', 'updateCssVariable', 'computeBoundingRect', 'getWindowPageOffset',
   ]);
   // Test default methods
-  methods.forEach(m => t.doesNotThrow(defaultAdapter[m]));
+  methods.forEach((m) => t.doesNotThrow(defaultAdapter[m]));
 
   t.end();
 });
 
-testFoundation(`#init calls adapter.addClass("${cssClasses.ROOT}")`, t => {
+testFoundation(`#init calls adapter.addClass("${cssClasses.ROOT}")`, (t) => {
   const {adapter, foundation, mockRaf} = t.data;
   foundation.init();
   mockRaf.flush();
@@ -62,7 +62,7 @@ testFoundation(`#init calls adapter.addClass("${cssClasses.ROOT}")`, t => {
   t.end();
 });
 
-testFoundation('#init adds unbounded class when adapter indicates unbounded', t => {
+testFoundation('#init adds unbounded class when adapter indicates unbounded', (t) => {
   const {adapter, foundation, mockRaf} = t.data;
   td.when(adapter.isUnbounded()).thenReturn(true);
   foundation.init();
@@ -72,7 +72,7 @@ testFoundation('#init adds unbounded class when adapter indicates unbounded', t 
   t.end();
 });
 
-testFoundation('#init does not add unbounded class when adapter does not indicate unbounded (default)', t => {
+testFoundation('#init does not add unbounded class when adapter does not indicate unbounded (default)', (t) => {
   const {adapter, foundation, mockRaf} = t.data;
   foundation.init();
   mockRaf.flush();
@@ -81,7 +81,7 @@ testFoundation('#init does not add unbounded class when adapter does not indicat
   t.end();
 });
 
-testFoundation('#init gracefully exits when css variables are not supported', false, t => {
+testFoundation('#init gracefully exits when css variables are not supported', false, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   foundation.init();
   mockRaf.flush();
@@ -90,7 +90,7 @@ testFoundation('#init gracefully exits when css variables are not supported', fa
   t.end();
 });
 
-testFoundation(`#init sets ${strings.VAR_SURFACE_WIDTH} css variable to the clientRect's width`, t => {
+testFoundation(`#init sets ${strings.VAR_SURFACE_WIDTH} css variable to the clientRect's width`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
   foundation.init();
@@ -100,7 +100,7 @@ testFoundation(`#init sets ${strings.VAR_SURFACE_WIDTH} css variable to the clie
   t.end();
 });
 
-testFoundation(`#init sets ${strings.VAR_SURFACE_HEIGHT} css variable to the clientRect's height`, t => {
+testFoundation(`#init sets ${strings.VAR_SURFACE_HEIGHT} css variable to the clientRect's height`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
   foundation.init();
@@ -110,7 +110,7 @@ testFoundation(`#init sets ${strings.VAR_SURFACE_HEIGHT} css variable to the cli
   t.end();
 });
 
-testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`, t => {
+testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
   foundation.init();
@@ -121,7 +121,7 @@ testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's
   t.end();
 });
 
-testFoundation(`#init sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based on the max radius`, t => {
+testFoundation(`#init sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based on the max radius`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
   foundation.init();
@@ -135,7 +135,7 @@ testFoundation(`#init sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based 
   t.end();
 });
 
-testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`, t => {
+testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 200});
   td.when(adapter.isUnbounded()).thenReturn(true);
@@ -149,24 +149,24 @@ testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} whe
   t.end();
 });
 
-testFoundation('#init registers events for all types of common interactions', t => {
+testFoundation('#init registers events for all types of common interactions', (t) => {
   const {foundation, adapter} = t.data;
   const expectedEvents = [
     'mousedown', 'mouseup',
     'touchstart', 'touchend',
     'pointerdown', 'pointerup',
     'keydown', 'keyup',
-    'focus', 'blur'
+    'focus', 'blur',
   ];
   foundation.init();
 
-  expectedEvents.forEach(evt => {
+  expectedEvents.forEach((evt) => {
     t.doesNotThrow(() => td.verify(adapter.registerInteractionHandler(evt, td.matchers.isA(Function))));
   });
   t.end();
 });
 
-testFoundation('#init registers an event for when a resize occurs', t => {
+testFoundation('#init registers an event for when a resize occurs', (t) => {
   const {foundation, adapter} = t.data;
   foundation.init();
 
@@ -174,7 +174,7 @@ testFoundation('#init registers an event for when a resize occurs', t => {
   t.end();
 });
 
-testFoundation('#destroy unregisters all bound interaction handlers', t => {
+testFoundation('#destroy unregisters all bound interaction handlers', (t) => {
   const {foundation, adapter} = t.data;
   const handlers = {};
 
@@ -186,16 +186,16 @@ testFoundation('#destroy unregisters all bound interaction handlers', t => {
   foundation.init();
   foundation.destroy();
 
-  Object.keys(handlers).forEach(type => {
+  Object.keys(handlers).forEach((type) => {
     t.doesNotThrow(() => td.verify(adapter.deregisterInteractionHandler(type, handlers[type])));
   });
   t.end();
 });
 
-testFoundation('#destroy unregisters the resize handler', t => {
+testFoundation('#destroy unregisters the resize handler', (t) => {
   const {foundation, adapter} = t.data;
   let resizeHandler;
-  td.when(adapter.registerResizeHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(adapter.registerResizeHandler(td.matchers.isA(Function))).thenDo((handler) => {
     resizeHandler = handler;
   });
   foundation.init();
@@ -205,7 +205,7 @@ testFoundation('#destroy unregisters the resize handler', t => {
   t.end();
 });
 
-testFoundation(`#destroy removes ${cssClasses.ROOT}`, t => {
+testFoundation(`#destroy removes ${cssClasses.ROOT}`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   foundation.destroy();
   mockRaf.flush();
@@ -213,7 +213,7 @@ testFoundation(`#destroy removes ${cssClasses.ROOT}`, t => {
   t.end();
 });
 
-testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, t => {
+testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   foundation.destroy();
   mockRaf.flush();
@@ -221,18 +221,18 @@ testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, t => {
   t.end();
 });
 
-testFoundation('#destroy removes all CSS variables', t => {
-  const cssVars = Object.keys(strings).filter(s => s.indexOf('VAR_') === 0).map(s => strings[s]);
+testFoundation('#destroy removes all CSS variables', (t) => {
+  const cssVars = Object.keys(strings).filter((s) => s.indexOf('VAR_') === 0).map((s) => strings[s]);
   const {foundation, adapter, mockRaf} = t.data;
   foundation.destroy();
   mockRaf.flush();
-  cssVars.forEach(cssVar => {
+  cssVars.forEach((cssVar) => {
     t.doesNotThrow(() => td.verify(adapter.updateCssVariable(cssVar, null)));
   });
   t.end();
 });
 
-testFoundation(`#layout sets ${strings.VAR_SURFACE_WIDTH} css variable to the clientRect's width`, t => {
+testFoundation(`#layout sets ${strings.VAR_SURFACE_WIDTH} css variable to the clientRect's width`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
   foundation.layout();
@@ -242,7 +242,7 @@ testFoundation(`#layout sets ${strings.VAR_SURFACE_WIDTH} css variable to the cl
   t.end();
 });
 
-testFoundation(`#layout sets ${strings.VAR_SURFACE_HEIGHT} css variable to the clientRect's height`, t => {
+testFoundation(`#layout sets ${strings.VAR_SURFACE_HEIGHT} css variable to the clientRect's height`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
   foundation.layout();
@@ -252,7 +252,7 @@ testFoundation(`#layout sets ${strings.VAR_SURFACE_HEIGHT} css variable to the c
   t.end();
 });
 
-testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`, t => {
+testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
   foundation.layout();
@@ -263,7 +263,7 @@ testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle
   t.end();
 });
 
-testFoundation(`#layout sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based on the max radius`, t => {
+testFoundation(`#layout sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based on the max radius`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
   foundation.layout();
@@ -277,7 +277,7 @@ testFoundation(`#layout sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} base
   t.end();
 });
 
-testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`, t => {
+testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 200});
   td.when(adapter.isUnbounded()).thenReturn(true);
@@ -291,7 +291,7 @@ testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} w
   t.end();
 });
 
-testFoundation('#layout debounces calls within the same frame', t => {
+testFoundation('#layout debounces calls within the same frame', (t) => {
   const {foundation, mockRaf} = t.data;
   foundation.layout();
   foundation.layout();
@@ -300,7 +300,7 @@ testFoundation('#layout debounces calls within the same frame', t => {
   t.end();
 });
 
-testFoundation('#layout resets debounce latch when layout frame is run', t => {
+testFoundation('#layout resets debounce latch when layout frame is run', (t) => {
   const {foundation, mockRaf} = t.data;
   foundation.layout();
   mockRaf.flush();

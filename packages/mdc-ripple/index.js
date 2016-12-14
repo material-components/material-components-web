@@ -37,15 +37,15 @@ export class MDCRipple extends MDCComponent {
       browserSupportsCssVars: () => supportsCssVariables(window),
       isUnbounded: () => instance.unbounded,
       isSurfaceActive: () => instance.root_[MATCHES](':active'),
-      addClass: className => instance.root_.classList.add(className),
-      removeClass: className => instance.root_.classList.remove(className),
+      addClass: (className) => instance.root_.classList.add(className),
+      removeClass: (className) => instance.root_.classList.remove(className),
       registerInteractionHandler: (evtType, handler) => instance.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => instance.root_.removeEventListener(evtType, handler),
-      registerResizeHandler: handler => window.addEventListener('resize', handler),
-      deregisterResizeHandler: handler => window.removeEventListener('resize', handler),
+      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
+      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       updateCssVariable: (varName, value) => instance.root_.style.setProperty(varName, value),
       computeBoundingRect: () => instance.root_.getBoundingClientRect(),
-      getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset})
+      getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
     };
   }
 

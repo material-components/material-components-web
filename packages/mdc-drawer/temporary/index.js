@@ -46,9 +46,9 @@ export class MDCTemporaryDrawer extends MDCComponent {
     const {FOCUSABLE_ELEMENTS, OPACITY_VAR_NAME} = MDCTemporaryDrawerFoundation.strings;
 
     return new MDCTemporaryDrawerFoundation({
-      addClass: className => this.root_.classList.add(className),
-      removeClass: className => this.root_.classList.remove(className),
-      hasClass: className => this.root_.classList.contains(className),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.drawer),
       registerInteractionHandler: (evt, handler) =>
           this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
@@ -58,24 +58,24 @@ export class MDCTemporaryDrawer extends MDCComponent {
           this.drawer.addEventListener(util.remapEvent(evt), handler),
       deregisterDrawerInteractionHandler: (evt, handler) =>
           this.drawer.removeEventListener(util.remapEvent(evt), handler),
-      registerTransitionEndHandler: handler => this.drawer.addEventListener('transitionend', handler),
-      deregisterTransitionEndHandler: handler => this.drawer.removeEventListener('transitionend', handler),
-      registerDocumentKeydownHandler: handler => document.addEventListener('keydown', handler),
-      deregisterDocumentKeydownHandler: handler => document.removeEventListener('keydown', handler),
+      registerTransitionEndHandler: (handler) => this.drawer.addEventListener('transitionend', handler),
+      deregisterTransitionEndHandler: (handler) => this.drawer.removeEventListener('transitionend', handler),
+      registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
+      deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       getDrawerWidth: () => this.drawer.offsetWidth,
-      setTranslateX: value => this.drawer.style.setProperty(
+      setTranslateX: (value) => this.drawer.style.setProperty(
           util.getTransformPropertyName(), value === null ? null : `translateX(${value}px)`),
-      updateCssVariable: value => {
+      updateCssVariable: (value) => {
         if (util.supportsCssCustomProperties()) {
           this.root_.style.setProperty(OPACITY_VAR_NAME, value);
         }
       },
       getFocusableElements: () => this.drawer.querySelectorAll(FOCUSABLE_ELEMENTS),
-      saveElementTabState: el => util.saveElementTabState(el),
-      restoreElementTabState: el => util.restoreElementTabState(el),
-      makeElementUntabbable: el => el.setAttribute('tabindex', -1),
+      saveElementTabState: (el) => util.saveElementTabState(el),
+      restoreElementTabState: (el) => util.restoreElementTabState(el),
+      makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      isDrawer: el => el === this.drawer
+      isDrawer: (el) => el === this.drawer,
     });
   }
 }

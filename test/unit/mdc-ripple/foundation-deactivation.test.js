@@ -20,7 +20,7 @@ import lolex from 'lolex';
 import {testFoundation, captureHandlers} from './helpers';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
 
-testFoundation('runs deactivation UX on touchend after touchstart', t => {
+testFoundation('runs deactivation UX on touchend after touchstart', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -45,7 +45,7 @@ testFoundation('runs deactivation UX on touchend after touchstart', t => {
   t.end();
 });
 
-testFoundation('runs deactivation UX on pointerup after pointerdown', t => {
+testFoundation('runs deactivation UX on pointerup after pointerdown', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -62,7 +62,7 @@ testFoundation('runs deactivation UX on pointerup after pointerdown', t => {
   t.end();
 });
 
-testFoundation('runs deactivation UX on mouseup after mousedown', t => {
+testFoundation('runs deactivation UX on mouseup after mousedown', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -79,7 +79,7 @@ testFoundation('runs deactivation UX on mouseup after mousedown', t => {
   t.end();
 });
 
-testFoundation('only re-activates when there are no additional pointer events to be processed', t => {
+testFoundation('only re-activates when there are no additional pointer events to be processed', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -126,7 +126,7 @@ testFoundation('only re-activates when there are no additional pointer events to
   t.end();
 });
 
-testFoundation('sets FG position to the coords within surface on pointer deactivation', t => {
+testFoundation('sets FG position to the coords within surface on pointer deactivation', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 50, top: 50});
@@ -143,7 +143,7 @@ testFoundation('sets FG position to the coords within surface on pointer deactiv
   t.end();
 });
 
-testFoundation('takes scroll offset into account when computing position', t => {
+testFoundation('takes scroll offset into account when computing position', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 25, top: 25});
@@ -161,7 +161,7 @@ testFoundation('takes scroll offset into account when computing position', t => 
   t.end();
 });
 
-testFoundation('sets unbounded FG position to center on non-pointer deactivation', t => {
+testFoundation('sets unbounded FG position to center on non-pointer deactivation', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 50, top: 50});
@@ -179,7 +179,7 @@ testFoundation('sets unbounded FG position to center on non-pointer deactivation
   t.end();
 });
 
-testFoundation('triggers unbounded deactivation based on time it took to activate', t => {
+testFoundation('triggers unbounded deactivation based on time it took to activate', (t) => {
   const clock = lolex.install();
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
@@ -221,7 +221,7 @@ testFoundation('triggers unbounded deactivation based on time it took to activat
   t.end();
 });
 
-testFoundation('clamps opacity duration to minimum value for unbounded deactivation', t => {
+testFoundation('clamps opacity duration to minimum value for unbounded deactivation', (t) => {
   const clock = lolex.install();
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
@@ -242,7 +242,7 @@ testFoundation('clamps opacity duration to minimum value for unbounded deactivat
   t.end();
 });
 
-testFoundation('clamps opacity duration to max value for unbounded deactivation', t => {
+testFoundation('clamps opacity duration to max value for unbounded deactivation', (t) => {
   const clock = lolex.install();
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
@@ -256,7 +256,7 @@ testFoundation('clamps opacity duration to max value for unbounded deactivation'
   handlers.mouseup();
   mockRaf.flush();
 
-  const about333ms = td.matchers.argThat(duration => {
+  const about333ms = td.matchers.argThat((duration) => {
     const ms = parseFloat(duration);
     return ms.toFixed(2) === '333.33';
   });
@@ -267,7 +267,7 @@ testFoundation('clamps opacity duration to max value for unbounded deactivation'
   t.end();
 });
 
-testFoundation('toggles unbounded activation classes', t => {
+testFoundation('toggles unbounded activation classes', (t) => {
   const clock = lolex.install();
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
@@ -289,7 +289,7 @@ testFoundation('toggles unbounded activation classes', t => {
   t.end();
 });
 
-testFoundation('cancels unbounded deactivation class removal on deactivation', t => {
+testFoundation('cancels unbounded deactivation class removal on deactivation', (t) => {
   const clock = lolex.install();
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
@@ -312,7 +312,7 @@ testFoundation('cancels unbounded deactivation class removal on deactivation', t
   t.end();
 });
 
-testFoundation('ensures pointer event deactivation occurs even if activation rAF not run', t => {
+testFoundation('ensures pointer event deactivation occurs even if activation rAF not run', (t) => {
   const clock = lolex.install();
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);

@@ -62,11 +62,11 @@ export function createMockRaf() {
           return;
         }
       }
-    }
+    },
   };
 
-  window.requestAnimationFrame = fn => mockRaf.requestAnimationFrame(fn);
-  window.cancelAnimationFrame = id => mockRaf.cancelAnimationFrame(id);
+  window.requestAnimationFrame = (fn) => mockRaf.requestAnimationFrame(fn);
+  window.cancelAnimationFrame = (id) => mockRaf.cancelAnimationFrame(id);
 
   return mockRaf;
 }

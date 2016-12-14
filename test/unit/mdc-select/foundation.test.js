@@ -22,12 +22,12 @@ import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 
-test('exports cssClasses', t => {
+test('exports cssClasses', (t) => {
   t.true('cssClasses' in MDCSelectFoundation);
   t.end();
 });
 
-test('default adapter returns a complete adapter implementation', t => {
+test('default adapter returns a complete adapter implementation', (t) => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'setAttr', 'rmAttr', 'computeBoundingRect',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'focus', 'makeTabbable',
@@ -36,7 +36,7 @@ test('default adapter returns a complete adapter implementation', t => {
     'isMenuOpen', 'setSelectedTextContent', 'getNumberOfOptions', 'getTextForOptionAtIndex',
     'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex', 'getOffsetTopForOptionAtIndex',
     'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler', 'notifyChange',
-    'getWindowInnerHeight'
+    'getWindowInnerHeight',
   ], t);
   t.end();
 });
@@ -45,13 +45,13 @@ function setupTest() {
   return setupFoundationTest(MDCSelectFoundation);
 }
 
-test('#getSelectedIndex returns -1 if never set', t => {
+test('#getSelectedIndex returns -1 if never set', (t) => {
   const {foundation} = setupTest();
   t.equal(foundation.getSelectedIndex(), -1);
   t.end();
 });
 
-test('#setSelectedIndex updates the selected index', t => {
+test('#setSelectedIndex updates the selected index', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
   td.when(mockAdapter.getTextForOptionAtIndex(1)).thenReturn('');
@@ -60,7 +60,7 @@ test('#setSelectedIndex updates the selected index', t => {
   t.end();
 });
 
-test('#setSelectedIndex sets the trimmed text content of the selected item as selected text content', t => {
+test('#setSelectedIndex sets the trimmed text content of the selected item as selected text content', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
   td.when(mockAdapter.getTextForOptionAtIndex(1)).thenReturn('   \nselected text ');
@@ -69,7 +69,7 @@ test('#setSelectedIndex sets the trimmed text content of the selected item as se
   t.end();
 });
 
-test('#setSelectedIndex sets aria-selected to "true" on the selected item', t => {
+test('#setSelectedIndex sets aria-selected to "true" on the selected item', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
   td.when(mockAdapter.getTextForOptionAtIndex(1)).thenReturn('');
@@ -78,7 +78,7 @@ test('#setSelectedIndex sets aria-selected to "true" on the selected item', t =>
   t.end();
 });
 
-test('#setSelectedIndex removes aria-selected from the previously selected item, if any', t => {
+test('#setSelectedIndex removes aria-selected from the previously selected item, if any', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
   td.when(mockAdapter.getTextForOptionAtIndex(0)).thenReturn('');
@@ -89,7 +89,7 @@ test('#setSelectedIndex removes aria-selected from the previously selected item,
   t.end();
 });
 
-test('#setSelectedIndex clears the select if given index is < 0', t => {
+test('#setSelectedIndex clears the select if given index is < 0', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
   foundation.setSelectedIndex(-15);
@@ -98,7 +98,7 @@ test('#setSelectedIndex clears the select if given index is < 0', t => {
   t.end();
 });
 
-test('#setSelectedIndex clears the select if given index is >= the number of options', t => {
+test('#setSelectedIndex clears the select if given index is >= the number of options', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
   foundation.setSelectedIndex(2);
@@ -107,73 +107,73 @@ test('#setSelectedIndex clears the select if given index is >= the number of opt
   t.end();
 });
 
-test('#isDisabled returns false by default', t => {
+test('#isDisabled returns false by default', (t) => {
   const {foundation} = setupTest();
   t.false(foundation.isDisabled());
   t.end();
 });
 
-test('#setDisabled sets disabled to true when true', t => {
+test('#setDisabled sets disabled to true when true', (t) => {
   const {foundation} = setupTest();
   foundation.setDisabled(true);
   t.true(foundation.isDisabled());
   t.end();
 });
 
-test('#setDisabled adds the disabled class when true', t => {
+test('#setDisabled adds the disabled class when true', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   t.doesNotThrow(() => td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED)));
   t.end();
 });
 
-test('#setDisabled adds aria-disabled="true" when true', t => {
+test('#setDisabled adds aria-disabled="true" when true', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   t.doesNotThrow(() => td.verify(mockAdapter.setAttr('aria-disabled', 'true')));
   t.end();
 });
 
-test('#setDisabled makes the select unfocusable when true', t => {
+test('#setDisabled makes the select unfocusable when true', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   t.doesNotThrow(() => td.verify(mockAdapter.makeUntabbable()));
   t.end();
 });
 
-test('#setDisabled sets disabled to false when false', t => {
+test('#setDisabled sets disabled to false when false', (t) => {
   const {foundation} = setupTest();
   foundation.setDisabled(false);
   t.false(foundation.isDisabled());
   t.end();
 });
 
-test('#setDisabled removes the disabled class when false', t => {
+test('#setDisabled removes the disabled class when false', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED)));
   t.end();
 });
 
-test('#setDisabled removes the aria-disabled attr when false', t => {
+test('#setDisabled removes the aria-disabled attr when false', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   t.doesNotThrow(() => td.verify(mockAdapter.rmAttr('aria-disabled')));
   t.end();
 });
 
-test('#setDisabled makes the select focusable when false', t => {
+test('#setDisabled makes the select focusable when false', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   t.doesNotThrow(() => td.verify(mockAdapter.makeTabbable()));
   t.end();
 });
 
-test('#resize resizes the element to the longest-length option', t => {
+test('#resize resizes the element to the longest-length option', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const ctx = td.object({
     font: 'default font',
-    measureText: () => {}
+    measureText: () => {},
   });
   td.when(mockAdapter.create2dRenderingContext()).thenReturn(ctx);
   td.when(mockAdapter.getComputedStyleValue('font')).thenReturn('16px Roboto');
@@ -197,11 +197,11 @@ test('#resize resizes the element to the longest-length option', t => {
   t.end();
 });
 
-test('#resize falls back to font-{family,size} if shorthand is not supported', t => {
+test('#resize falls back to font-{family,size} if shorthand is not supported', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const ctx = td.object({
     font: 'default font',
-    measureText: () => {}
+    measureText: () => {},
   });
   td.when(mockAdapter.create2dRenderingContext()).thenReturn(ctx);
   td.when(mockAdapter.getComputedStyleValue('font')).thenReturn(null);
@@ -227,7 +227,7 @@ test('#resize falls back to font-{family,size} if shorthand is not supported', t
   t.end();
 });
 
-test('#destroy deregisters all events registered within init()', t => {
+test('#destroy deregisters all events registered within init()', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.create2dRenderingContext()).thenReturn({});
   td.when(mockAdapter.getComputedStyleValue('font')).thenReturn('16px Times');
@@ -235,13 +235,13 @@ test('#destroy deregisters all events registered within init()', t => {
   const menuHandlers = captureHandlers(mockAdapter, 'registerMenuInteractionHandler');
   foundation.init();
   foundation.destroy();
-  Object.keys(handlers).forEach(type => {
+  Object.keys(handlers).forEach((type) => {
     t.doesNotThrow(
       () => td.verify(mockAdapter.deregisterInteractionHandler(type, td.matchers.isA(Function))),
       `Deregisters ${type} interaction handler`
     );
   });
-  Object.keys(menuHandlers).forEach(type => {
+  Object.keys(menuHandlers).forEach((type) => {
     t.doesNotThrow(
       () => td.verify(mockAdapter.deregisterMenuInteractionHandler(type, td.matchers.isA(Function))),
       `Deregisters ${type} menu interaction handler`

@@ -30,24 +30,24 @@ function setupTest() {
   return {foundation, mockAdapter};
 }
 
-test('exports strings', t => {
+test('exports strings', (t) => {
   t.deepEqual(MDCTemporaryDrawerFoundation.strings, strings);
   t.end();
 });
 
-test('exports cssClasses', t => {
+test('exports cssClasses', (t) => {
   t.deepEqual(MDCTemporaryDrawerFoundation.cssClasses, cssClasses);
   t.end();
 });
 
-test('exports numbers', t => {
+test('exports numbers', (t) => {
   t.deepEqual(MDCTemporaryDrawerFoundation.numbers, numbers);
   t.end();
 });
 
-test('defaultAdapter returns a complete adapter implementation', t => {
+test('defaultAdapter returns a complete adapter implementation', (t) => {
   const {defaultAdapter} = MDCTemporaryDrawerFoundation;
-  const methods = Object.keys(defaultAdapter).filter(k => typeof defaultAdapter[k] === 'function');
+  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
   t.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   t.deepEqual(methods, [
@@ -55,15 +55,15 @@ test('defaultAdapter returns a complete adapter implementation', t => {
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'updateCssVariable', 'getFocusableElements',
-    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer'
+    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer',
   ]);
   // Test default methods
-  methods.forEach(m => t.doesNotThrow(defaultAdapter[m]));
+  methods.forEach((m) => t.doesNotThrow(defaultAdapter[m]));
 
   t.end();
 });
 
-test('#init throws error when the root class is not present', t => {
+test('#init throws error when the root class is not present', (t) => {
   const mockAdapter = td.object(MDCTemporaryDrawerFoundation.defaultAdapter);
   td.when(mockAdapter.hasClass('mdc-temporary-drawer')).thenReturn(false);
 
@@ -72,7 +72,7 @@ test('#init throws error when the root class is not present', t => {
   t.end();
 });
 
-test('#init throws error when the necessary DOM is not present', t => {
+test('#init throws error when the necessary DOM is not present', (t) => {
   const mockAdapter = td.object(MDCTemporaryDrawerFoundation.defaultAdapter);
   td.when(mockAdapter.hasClass('mdc-temporary-drawer')).thenReturn(true);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(false);
@@ -82,7 +82,7 @@ test('#init throws error when the necessary DOM is not present', t => {
   t.end();
 });
 
-test('#init calls component and drawer event registrations', t => {
+test('#init calls component and drawer event registrations', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -95,7 +95,7 @@ test('#init calls component and drawer event registrations', t => {
   t.end();
 });
 
-test('#destroy calls component and drawer event deregistrations', t => {
+test('#destroy calls component and drawer event deregistrations', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -109,7 +109,7 @@ test('#destroy calls component and drawer event deregistrations', t => {
   t.end();
 });
 
-test('#destroy ensures any currently attached document keydown handler is cleaned up', t => {
+test('#destroy ensures any currently attached document keydown handler is cleaned up', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.destroy();
@@ -117,7 +117,7 @@ test('#destroy ensures any currently attached document keydown handler is cleane
   t.end();
 });
 
-test('#open adds the animation class to start an animation', t => {
+test('#open adds the animation class to start an animation', (t) => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
@@ -125,7 +125,7 @@ test('#open adds the animation class to start an animation', t => {
   t.end();
 });
 
-test('#open adds the open class to show the open drawer', t => {
+test('#open adds the open class to show the open drawer', (t) => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
@@ -133,7 +133,7 @@ test('#open adds the open class to show the open drawer', t => {
   t.end();
 });
 
-test('#open makes elements tabbable again', t => {
+test('#open makes elements tabbable again', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(false);
   td.when(mockAdapter.getFocusableElements()).thenReturn(['foo', 'bar']);
@@ -145,7 +145,7 @@ test('#open makes elements tabbable again', t => {
   t.end();
 });
 
-test('#close adds the animation class to start an animation', t => {
+test('#close adds the animation class to start an animation', (t) => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.close();
@@ -153,7 +153,7 @@ test('#close adds the animation class to start an animation', t => {
   t.end();
 });
 
-test('#close removes the open class to show the closed drawer', t => {
+test('#close removes the open class to show the closed drawer', (t) => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.close();
@@ -161,7 +161,7 @@ test('#close removes the open class to show the closed drawer', t => {
   t.end();
 });
 
-test('#close saves tab state and makes elements untabbable', t => {
+test('#close saves tab state and makes elements untabbable', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getFocusableElements()).thenReturn(['foo', 'bar']);
@@ -175,7 +175,7 @@ test('#close saves tab state and makes elements untabbable', t => {
   t.end();
 });
 
-test('#close works when there are no elements to make untabbable', t => {
+test('#close works when there are no elements to make untabbable', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getFocusableElements()).thenReturn(null);
@@ -184,7 +184,7 @@ test('#close works when there are no elements to make untabbable', t => {
   t.end();
 });
 
-test('#close cleans up the document keydown handler', t => {
+test('#close cleans up the document keydown handler', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.close();
@@ -192,7 +192,7 @@ test('#close cleans up the document keydown handler', t => {
   t.end();
 });
 
-test('#isOpen returns true when the drawer is open', t => {
+test('#isOpen returns true when the drawer is open', (t) => {
   const {foundation} = setupTest();
 
   foundation.open();
@@ -200,7 +200,7 @@ test('#isOpen returns true when the drawer is open', t => {
   t.end();
 });
 
-test('#isOpen returns false when the drawer is closed', t => {
+test('#isOpen returns false when the drawer is closed', (t) => {
   const {foundation} = setupTest();
 
   foundation.close();
@@ -208,7 +208,7 @@ test('#isOpen returns false when the drawer is closed', t => {
   t.end();
 });
 
-test('#isOpen returns true when the drawer is initiated with the open class present', t => {
+test('#isOpen returns true when the drawer is initiated with the open class present', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
 
@@ -217,7 +217,7 @@ test('#isOpen returns true when the drawer is initiated with the open class pres
   t.end();
 });
 
-test('#isOpen returns false when the drawer is initiated without the open class present', t => {
+test('#isOpen returns false when the drawer is initiated without the open class present', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(false);
 
@@ -226,7 +226,7 @@ test('#isOpen returns false when the drawer is initiated without the open class 
   t.end();
 });
 
-test('on touch start updates the drawer to the touch target coordinates', t => {
+test('on touch start updates the drawer to the touch target coordinates', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const raf = createMockRaf();
@@ -235,7 +235,7 @@ test('on touch start updates the drawer to the touch target coordinates', t => {
   foundation.init();
 
   handlers.touchstart({
-    touches: [{pageX: 50}]
+    touches: [{pageX: 50}],
   });
   raf.flush();
   t.doesNotThrow(() => td.verify(mockAdapter.setTranslateX(0)));
@@ -245,7 +245,7 @@ test('on touch start updates the drawer to the touch target coordinates', t => {
   t.end();
 });
 
-test('on touch start does not update the drawer when drawer not open', t => {
+test('on touch start does not update the drawer when drawer not open', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const raf = createMockRaf();
@@ -254,7 +254,7 @@ test('on touch start does not update the drawer when drawer not open', t => {
   foundation.init();
 
   handlers.touchstart({
-    touches: [{pageX: 50}]
+    touches: [{pageX: 50}],
   });
   raf.flush();
   t.doesNotThrow(() => td.verify(mockAdapter.setTranslateX(0), {times: 0}));
@@ -264,7 +264,7 @@ test('on touch start does not update the drawer when drawer not open', t => {
   t.end();
 });
 
-test('on touch start works for pointer events', t => {
+test('on touch start works for pointer events', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const raf = createMockRaf();
@@ -274,7 +274,7 @@ test('on touch start works for pointer events', t => {
 
   handlers.touchstart({
     pointerType: 'touch',
-    pageX: 50
+    pageX: 50,
   });
   raf.flush();
   t.doesNotThrow(() => td.verify(mockAdapter.setTranslateX(0)));
@@ -284,7 +284,7 @@ test('on touch start works for pointer events', t => {
   t.end();
 });
 
-test('on touch start does not update the drawer when pointertype != touch', t => {
+test('on touch start does not update the drawer when pointertype != touch', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const raf = createMockRaf();
@@ -294,7 +294,7 @@ test('on touch start does not update the drawer when pointertype != touch', t =>
 
   handlers.touchstart({
     pointerType: 'not touch',
-    pageX: 50
+    pageX: 50,
   });
   raf.flush();
   t.doesNotThrow(() => td.verify(mockAdapter.setTranslateX(0), {times: 0}));
@@ -304,7 +304,7 @@ test('on touch start does not update the drawer when pointertype != touch', t =>
   t.end();
 });
 
-test('on touch move updates currentX causing the drawer to update', t => {
+test('on touch move updates currentX causing the drawer to update', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -314,13 +314,13 @@ test('on touch move updates currentX causing the drawer to update', t => {
   foundation.init();
 
   drawerHandlers.touchstart({
-    touches: [{pageX: 500}]
+    touches: [{pageX: 500}],
   });
   raf.flush();
 
   handlers.touchmove({
     touches: [{pageX: 490}],
-    preventDefault: () => {}
+    preventDefault: () => {},
   });
   raf.flush();
 
@@ -329,7 +329,7 @@ test('on touch move updates currentX causing the drawer to update', t => {
 
   handlers.touchmove({
     touches: [{pageX: 495}],
-    preventDefault: () => {}
+    preventDefault: () => {},
   });
   raf.flush();
 
@@ -339,7 +339,7 @@ test('on touch move updates currentX causing the drawer to update', t => {
   t.end();
 });
 
-test('on touch move does not allow the drawer to move past its width', t => {
+test('on touch move does not allow the drawer to move past its width', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -349,13 +349,13 @@ test('on touch move does not allow the drawer to move past its width', t => {
   foundation.init();
 
   drawerHandlers.touchstart({
-    touches: [{pageX: 500}]
+    touches: [{pageX: 500}],
   });
   raf.flush();
 
   handlers.touchmove({
     touches: [{pageX: 510}],
-    preventDefault: () => {}
+    preventDefault: () => {},
   });
   raf.flush();
 
@@ -365,7 +365,7 @@ test('on touch move does not allow the drawer to move past its width', t => {
   t.end();
 });
 
-test('on touch move works for pointer events', t => {
+test('on touch move works for pointer events', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -376,14 +376,14 @@ test('on touch move works for pointer events', t => {
 
   drawerHandlers.touchstart({
     pointerType: 'touch',
-    pageX: 500
+    pageX: 500,
   });
   raf.flush();
 
   handlers.touchmove({
     pointerType: 'touch',
     pageX: 490,
-    preventDefault: () => {}
+    preventDefault: () => {},
   });
   raf.flush();
   t.doesNotThrow(() => td.verify(mockAdapter.setTranslateX(-10)));
@@ -393,7 +393,7 @@ test('on touch move works for pointer events', t => {
   t.end();
 });
 
-test('on touch move does not update the drawer when pointertype != touch', t => {
+test('on touch move does not update the drawer when pointertype != touch', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -404,13 +404,13 @@ test('on touch move does not update the drawer when pointertype != touch', t => 
 
   drawerHandlers.touchstart({
     pointerType: 'touch',
-    pageX: 500
+    pageX: 500,
   });
   raf.flush();
 
   handlers.touchmove({
     pointerType: 'not touch',
-    pageX: 490
+    pageX: 490,
   });
   raf.flush();
   t.doesNotThrow(() => td.verify(mockAdapter.setTranslateX(-10), {times: 0}));
@@ -420,7 +420,7 @@ test('on touch move does not update the drawer when pointertype != touch', t => 
   t.end();
 });
 
-test('on touch end resets touch update styles', t => {
+test('on touch end resets touch update styles', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -430,7 +430,7 @@ test('on touch end resets touch update styles', t => {
   foundation.init();
 
   drawerHandlers.touchstart({
-    touches: [{pageX: 500}]
+    touches: [{pageX: 500}],
   });
   raf.flush();
 
@@ -441,7 +441,7 @@ test('on touch end resets touch update styles', t => {
   t.end();
 });
 
-test('on touch end closes the drawer if moved more than 50%', t => {
+test('on touch end closes the drawer if moved more than 50%', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -451,13 +451,13 @@ test('on touch end closes the drawer if moved more than 50%', t => {
   foundation.init();
 
   drawerHandlers.touchstart({
-    touches: [{pageX: 500}]
+    touches: [{pageX: 500}],
   });
   raf.flush();
 
   handlers.touchmove({
     touches: [{pageX: 100}],
-    preventDefault: () => {}
+    preventDefault: () => {},
   });
 
   handlers.touchend({});
@@ -466,7 +466,7 @@ test('on touch end closes the drawer if moved more than 50%', t => {
   t.end();
 });
 
-test('on touch end keeps the drawer open if moved less than 50%', t => {
+test('on touch end keeps the drawer open if moved less than 50%', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -476,13 +476,13 @@ test('on touch end keeps the drawer open if moved less than 50%', t => {
   foundation.init();
 
   drawerHandlers.touchstart({
-    touches: [{pageX: 500}]
+    touches: [{pageX: 500}],
   });
   raf.flush();
 
   handlers.touchmove({
     touches: [{pageX: 300}],
-    preventDefault: () => {}
+    preventDefault: () => {},
   });
 
   handlers.touchend({});
@@ -491,7 +491,7 @@ test('on touch end keeps the drawer open if moved less than 50%', t => {
   t.end();
 });
 
-test('on touch end works with pointer events', t => {
+test('on touch end works with pointer events', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -502,25 +502,25 @@ test('on touch end works with pointer events', t => {
 
   drawerHandlers.touchstart({
     pointerType: 'touch',
-    pageX: 500
+    pageX: 500,
   });
   raf.flush();
 
   handlers.touchmove({
     pointerType: 'touch',
     pageX: 300,
-    preventDefault: () => {}
+    preventDefault: () => {},
   });
 
   handlers.touchend({
-    pointerType: 'touch'
+    pointerType: 'touch',
   });
   t.doesNotThrow(() => td.verify(mockAdapter.addClass('mdc-temporary-drawer--open')));
   raf.restore();
   t.end();
 });
 
-test('on touch does nothing for non touch pointer events', t => {
+test('on touch does nothing for non touch pointer events', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -531,92 +531,92 @@ test('on touch does nothing for non touch pointer events', t => {
 
   drawerHandlers.touchstart({
     pointerType: 'touch',
-    pageX: 500
+    pageX: 500,
   });
   raf.flush();
 
   handlers.touchmove({
     pointerType: 'touch',
     pageX: 300,
-    preventDefault: () => {}
+    preventDefault: () => {},
   });
 
   handlers.touchend({
-    pointerType: 'not touch'
+    pointerType: 'not touch',
   });
   t.doesNotThrow(() => td.verify(mockAdapter.addClass('mdc-temporary-drawer--open'), {times: 0}));
   raf.restore();
   t.end();
 });
 
-test('on document keydown closes the drawer via the escape key', t => {
+test('on document keydown closes the drawer via the escape key', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();
   foundation.open();
 
   keydown({
-    key: 'Escape'
+    key: 'Escape',
   });
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-temporary-drawer--open')));
   t.end();
 });
 
-test('on document keydown closes the drawer via the escape keyCode when key prop not available', t => {
+test('on document keydown closes the drawer via the escape keyCode when key prop not available', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();
   foundation.open();
 
   keydown({
-    keyCode: 27
+    keyCode: 27,
   });
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-temporary-drawer--open')));
   t.end();
 });
 
-test('on document keydown does nothing when key present but not "Escape"', t => {
+test('on document keydown does nothing when key present but not "Escape"', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();
   foundation.open();
 
   keydown({
-    key: 'Enter'
+    key: 'Enter',
   });
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-temporary-drawer--open'), {times: 0}));
   t.end();
 });
 
-test('on document keydown does nothing when key prop not present and keyCode is not 27', t => {
+test('on document keydown does nothing when key prop not present and keyCode is not 27', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();
   foundation.open();
 
   keydown({
-    keyCode: 32
+    keyCode: 32,
   });
   t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-temporary-drawer--open'), {times: 0}));
   t.end();
 });
 
-test('on document keydown does nothing if drawer is not opened', t => {
+test('on document keydown does nothing if drawer is not opened', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo(handler => {
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();
@@ -625,7 +625,7 @@ test('on document keydown does nothing if drawer is not opened', t => {
   t.end();
 });
 
-test('should not trigger bug #67', t => {
+test('should not trigger bug #67', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isDrawer(td.matchers.isA(Object))).thenReturn(false);
   td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: null});

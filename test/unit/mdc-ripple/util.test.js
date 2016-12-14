@@ -18,22 +18,22 @@ import test from 'tape';
 import td from 'testdouble';
 import * as util from '../../../packages/mdc-ripple/util';
 
-test('#supportsCssVariables returns true when CSS.supports() returns true for css vars', t => {
+test('#supportsCssVariables returns true when CSS.supports() returns true for css vars', (t) => {
   const windowObj = {
     CSS: {
-      supports: td.func('.supports')
-    }
+      supports: td.func('.supports'),
+    },
   };
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(true);
   t.true(util.supportsCssVariables(windowObj));
   t.end();
 });
 
-test('#supportsCssVariables returns true when feature-detecting its way around Safari < 10', t => {
+test('#supportsCssVariables returns true when feature-detecting its way around Safari < 10', (t) => {
   const windowObj = {
     CSS: {
-      supports: td.func('.supports')
-    }
+      supports: td.func('.supports'),
+    },
   };
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(false);
   td.when(windowObj.CSS.supports(td.matchers.contains('(--css-vars:'))).thenReturn(true);
@@ -50,43 +50,43 @@ test('#supportsCssVariables returns true when feature-detecting its way around S
   t.end();
 });
 
-test('#supportsCssVariables returns false when CSS.supports() returns false for css vars', t => {
+test('#supportsCssVariables returns false when CSS.supports() returns false for css vars', (t) => {
   const windowObj = {
     CSS: {
-      supports: td.function('.supports')
-    }
+      supports: td.function('.supports'),
+    },
   };
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(false);
   t.false(util.supportsCssVariables(windowObj));
   t.end();
 });
 
-test('#supportsCssVariables returns false when CSS.supports is not a function', t => {
+test('#supportsCssVariables returns false when CSS.supports is not a function', (t) => {
   const windowObj = {
     CSS: {
-      supports: 'nope'
-    }
+      supports: 'nope',
+    },
   };
   t.false(util.supportsCssVariables(windowObj));
   t.end();
 });
 
-test('#supportsCssVariables returns false when CSS is not an object', t => {
+test('#supportsCssVariables returns false when CSS is not an object', (t) => {
   const windowObj = {
-    CSS: null
+    CSS: null,
   };
   t.false(util.supportsCssVariables(windowObj));
   t.end();
 });
 
-test('#getMatchesProperty returns the correct property for selector matching', t => {
+test('#getMatchesProperty returns the correct property for selector matching', (t) => {
   t.equal(util.getMatchesProperty({matches: () => {}}), 'matches');
   t.equal(util.getMatchesProperty({webkitMatchesSelector: () => {}}), 'webkitMatchesSelector');
   t.equal(util.getMatchesProperty({msMatchesSelector: () => {}}), 'msMatchesSelector');
   t.end();
 });
 
-test('#getMatchesProperty returns the standard function if more than one method is present', t => {
+test('#getMatchesProperty returns the standard function if more than one method is present', (t) => {
   t.equal(util.getMatchesProperty({matches: () => {}, webkitMatchesSelector: () => {}}), 'matches');
   t.end();
 });
@@ -117,7 +117,7 @@ function setupAnimateWithClassTest() {
   return {adapter, className, endEvent};
 }
 
-test('#animateWithClass attaches class and handler which removes class once specified event is fired', t => {
+test('#animateWithClass attaches class and handler which removes class once specified event is fired', (t) => {
   const {adapter, className, endEvent} = setupAnimateWithClassTest();
   util.animateWithClass(adapter, className, endEvent);
   t.doesNotThrow(() => td.verify(adapter.addClass(className)));
@@ -130,7 +130,7 @@ test('#animateWithClass attaches class and handler which removes class once spec
   t.end();
 });
 
-test('#animateWithClass removes the event listener it used for the end event', t => {
+test('#animateWithClass removes the event listener it used for the end event', (t) => {
   const {adapter, className, endEvent} = setupAnimateWithClassTest();
   util.animateWithClass(adapter, className, endEvent);
   t.doesNotThrow(() => td.verify(adapter.addClass(className)));
@@ -144,7 +144,7 @@ test('#animateWithClass removes the event listener it used for the end event', t
   t.end();
 });
 
-test('#animateWithClass returns a function which allows you to manually remove class/unlisten', t => {
+test('#animateWithClass returns a function which allows you to manually remove class/unlisten', (t) => {
   const {adapter, className, endEvent} = setupAnimateWithClassTest();
   const cancel = util.animateWithClass(adapter, className, endEvent);
 
@@ -160,7 +160,7 @@ test('#animateWithClass returns a function which allows you to manually remove c
   t.end();
 });
 
-test('#animateWithClass return function can only be called once', t => {
+test('#animateWithClass return function can only be called once', (t) => {
   const {adapter, className, endEvent} = setupAnimateWithClassTest();
   const cancel = util.animateWithClass(adapter, className, endEvent);
 
@@ -175,26 +175,26 @@ test('#animateWithClass return function can only be called once', t => {
   t.end();
 });
 
-test('#getNormalizedEventCoords maps event coords into the relative coordinates of the given rect', t => {
+test('#getNormalizedEventCoords maps event coords into the relative coordinates of the given rect', (t) => {
   const ev = {type: 'mouseup', pageX: 70, pageY: 70};
   const pageOffset = {x: 10, y: 10};
   const clientRect = {left: 50, top: 50};
 
   t.deepEqual(util.getNormalizedEventCoords(ev, pageOffset, clientRect), {
     left: 10,
-    top: 10
+    top: 10,
   });
   t.end();
 });
 
-test('#getNormalizedEventCoords works with touchend events', t => {
+test('#getNormalizedEventCoords works with touchend events', (t) => {
   const ev = {type: 'touchend', changedTouches: [{pageX: 70, pageY: 70}]};
   const pageOffset = {x: 10, y: 10};
   const clientRect = {left: 50, top: 50};
 
   t.deepEqual(util.getNormalizedEventCoords(ev, pageOffset, clientRect), {
     left: 10,
-    top: 10
+    top: 10,
   });
   t.end();
 });

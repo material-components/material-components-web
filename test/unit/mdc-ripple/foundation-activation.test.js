@@ -19,7 +19,7 @@ import td from 'testdouble';
 import {testFoundation, captureHandlers} from './helpers';
 import {cssClasses, strings} from '../../../packages/mdc-ripple/constants';
 
-testFoundation(`adds ${cssClasses.BG_ACTIVE} on mousedown`, t => {
+testFoundation(`adds ${cssClasses.BG_ACTIVE} on mousedown`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -31,7 +31,7 @@ testFoundation(`adds ${cssClasses.BG_ACTIVE} on mousedown`, t => {
   t.end();
 });
 
-testFoundation(`adds ${cssClasses.BG_ACTIVE} on touchstart`, t => {
+testFoundation(`adds ${cssClasses.BG_ACTIVE} on touchstart`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -43,7 +43,7 @@ testFoundation(`adds ${cssClasses.BG_ACTIVE} on touchstart`, t => {
   t.end();
 });
 
-testFoundation(`adds ${cssClasses.BG_ACTIVE} on pointerdown`, t => {
+testFoundation(`adds ${cssClasses.BG_ACTIVE} on pointerdown`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -55,7 +55,7 @@ testFoundation(`adds ${cssClasses.BG_ACTIVE} on pointerdown`, t => {
   t.end();
 });
 
-testFoundation(`adds ${cssClasses.BG_ACTIVE} on keydown when surface is made active`, t => {
+testFoundation(`adds ${cssClasses.BG_ACTIVE} on keydown when surface is made active`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.isSurfaceActive()).thenReturn(true);
@@ -69,7 +69,7 @@ testFoundation(`adds ${cssClasses.BG_ACTIVE} on keydown when surface is made act
   t.end();
 });
 
-testFoundation('does not redundantly add classes on touchstart followed by mousedown', t => {
+testFoundation('does not redundantly add classes on touchstart followed by mousedown', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -83,7 +83,7 @@ testFoundation('does not redundantly add classes on touchstart followed by mouse
   t.end();
 });
 
-testFoundation('does not redundantly add classes on touchstart followed by pointerstart', t => {
+testFoundation('does not redundantly add classes on touchstart followed by pointerstart', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -97,7 +97,7 @@ testFoundation('does not redundantly add classes on touchstart followed by point
   t.end();
 });
 
-testFoundation('removes deactivation classes on activate to ensure ripples can be retriggered', t => {
+testFoundation('removes deactivation classes on activate to ensure ripples can be retriggered', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   foundation.init();
@@ -116,7 +116,7 @@ testFoundation('removes deactivation classes on activate to ensure ripples can b
   t.end();
 });
 
-testFoundation('displays the foreground ripple on activation when unbounded', t => {
+testFoundation('displays the foreground ripple on activation when unbounded', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 0, top: 0});
@@ -131,7 +131,7 @@ testFoundation('displays the foreground ripple on activation when unbounded', t 
   t.end();
 });
 
-testFoundation('sets unbounded FG xf origin to the coords within surface on pointer activation', t => {
+testFoundation('sets unbounded FG xf origin to the coords within surface on pointer activation', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 50, top: 50});
@@ -147,7 +147,7 @@ testFoundation('sets unbounded FG xf origin to the coords within surface on poin
   t.end();
 });
 
-testFoundation('takes scroll offset into account when computing transform origin', t => {
+testFoundation('takes scroll offset into account when computing transform origin', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 25, top: 25});
@@ -164,7 +164,7 @@ testFoundation('takes scroll offset into account when computing transform origin
   t.end();
 });
 
-testFoundation('sets unbounded FG xf origin to center on non-pointer activation', t => {
+testFoundation('sets unbounded FG xf origin to center on non-pointer activation', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 50, top: 50});

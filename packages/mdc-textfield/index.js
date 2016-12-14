@@ -27,8 +27,8 @@ export class MDCTextfield extends MDCComponent {
     return new MDCTextfield(root);
   }
 
-  constructor() {
-    super(...arguments);
+  constructor(...args) {
+    super(...args);
     const input = this.input_;
     this.helptextElement = input.hasAttribute('aria-controls') ?
       document.getElementById(input.getAttribute('aria-controls')) : null;
@@ -56,46 +56,46 @@ export class MDCTextfield extends MDCComponent {
 
   getDefaultFoundation() {
     return new MDCTextfieldFoundation(Object.assign({
-      addClass: className => this.root_.classList.add(className),
-      removeClass: className => this.root_.classList.remove(className),
-      addClassToLabel: className => {
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      addClassToLabel: (className) => {
         const label = this.label_;
         if (label) {
           label.classList.add(className);
         }
       },
-      removeClassFromLabel: className => {
+      removeClassFromLabel: (className) => {
         const label = this.label_;
         if (label) {
           label.classList.remove(className);
         }
-      }
+      },
     }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_()));
   }
 
   getInputAdapterMethods_() {
     return {
-      registerInputFocusHandler: handler => this.input_.addEventListener('focus', handler),
-      registerInputBlurHandler: handler => this.input_.addEventListener('blur', handler),
-      deregisterInputFocusHandler: handler => this.input_.removeEventListener('focus', handler),
-      deregisterInputBlurHandler: handler => this.input_.removeEventListener('blur', handler),
-      getNativeInput: () => this.input_
+      registerInputFocusHandler: (handler) => this.input_.addEventListener('focus', handler),
+      registerInputBlurHandler: (handler) => this.input_.addEventListener('blur', handler),
+      deregisterInputFocusHandler: (handler) => this.input_.removeEventListener('focus', handler),
+      deregisterInputBlurHandler: (handler) => this.input_.removeEventListener('blur', handler),
+      getNativeInput: () => this.input_,
     };
   }
 
   getHelptextAdapterMethods_() {
     return {
-      addClassToHelptext: className => {
+      addClassToHelptext: (className) => {
         if (this.helptextElement) {
           this.helptextElement.classList.add(className);
         }
       },
-      removeClassFromHelptext: className => {
+      removeClassFromHelptext: (className) => {
         if (this.helptextElement) {
           this.helptextElement.classList.remove(className);
         }
       },
-      helptextHasClass: className => {
+      helptextHasClass: (className) => {
         if (!this.helptextElement) {
           return false;
         }
@@ -106,11 +106,11 @@ export class MDCTextfield extends MDCComponent {
           this.helptextElement.setAttribute(name, value);
         }
       },
-      removeHelptextAttr: name => {
+      removeHelptextAttr: (name) => {
         if (this.helptextElement) {
           this.helptextElement.removeAttribute(name);
         }
-      }
+      },
     };
   }
 }

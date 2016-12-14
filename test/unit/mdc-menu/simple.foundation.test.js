@@ -38,7 +38,7 @@ function setupTest(isCssVarsSupported = true) {
 }
 
 function testFoundation(desc, runTests) {
-  test(desc, t => {
+  test(desc, (t) => {
     const {mockAdapter, foundation} = setupTest();
     const mockRaf = createMockRaf();
     // eslint-tape-plugin complains when we reference an unknown member on t,
@@ -56,34 +56,34 @@ function testFoundation(desc, runTests) {
   });
 }
 
-test('exports strings', t => {
+test('exports strings', (t) => {
   t.deepEqual(MDCSimpleMenuFoundation.strings, strings);
   t.end();
 });
 
-test('exports cssClasses', t => {
+test('exports cssClasses', (t) => {
   t.deepEqual(MDCSimpleMenuFoundation.cssClasses, cssClasses);
   t.end();
 });
 
-test('exports numbers', t => {
+test('exports numbers', (t) => {
   t.deepEqual(MDCSimpleMenuFoundation.numbers, numbers);
   t.end();
 });
 
-test('defaultAdapter returns a complete adapter implementation', t => {
+test('defaultAdapter returns a complete adapter implementation', (t) => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getInnerDimensions', 'hasAnchor',
     'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale', 'getNumberOfItems',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'registerDocumentClickHandler',
     'deregisterDocumentClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
     'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
-    'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition'
+    'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition',
   ], t);
   t.end();
 });
 
-test('#init throws error when the root class is not present', t => {
+test('#init throws error when the root class is not present', (t) => {
   const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
   td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(false);
 
@@ -92,7 +92,7 @@ test('#init throws error when the root class is not present', t => {
   t.end();
 });
 
-test('#init throws error when the necessary DOM is not present', t => {
+test('#init throws error when the necessary DOM is not present', (t) => {
   const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
   td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(true);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(false);
@@ -102,7 +102,7 @@ test('#init throws error when the necessary DOM is not present', t => {
   t.end();
 });
 
-testFoundation('#open adds the animation class to start an animation', t => {
+testFoundation('#open adds the animation class to start an animation', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
 
   foundation.open();
@@ -112,7 +112,7 @@ testFoundation('#open adds the animation class to start an animation', t => {
   t.end();
 });
 
-testFoundation('#open adds the open class to the menu', t => {
+testFoundation('#open adds the open class to the menu', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
 
@@ -123,7 +123,7 @@ testFoundation('#open adds the open class to the menu', t => {
   t.end();
 });
 
-testFoundation('#open removes the animation class at the end of the animation', t => {
+testFoundation('#open removes the animation class at the end of the animation', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
@@ -145,7 +145,7 @@ testFoundation('#open removes the animation class at the end of the animation', 
   t.end();
 });
 
-testFoundation('#open focuses the menu at the end of the animation', t => {
+testFoundation('#open focuses the menu at the end of the animation', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
@@ -165,7 +165,7 @@ testFoundation('#open focuses the menu at the end of the animation', t => {
   t.end();
 });
 
-testFoundation('#open anchors the menu on the top left in LTR, given enough room', t => {
+testFoundation('#open anchors the menu on the top left in LTR, given enough room', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
@@ -176,7 +176,7 @@ testFoundation('#open anchors the menu on the top left in LTR, given enough room
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
   td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-    height: 20, width: 40, top: 20, bottom: 40, left: 20, right: 60
+    height: 20, width: 40, top: 20, bottom: 40, left: 20, right: 60,
   });
   td.when(mockNow()).thenReturn(0);
 
@@ -193,7 +193,7 @@ testFoundation('#open anchors the menu on the top left in LTR, given enough room
   t.end();
 });
 
-testFoundation('#open anchors the menu on the top right in LTR when close to the right edge', t => {
+testFoundation('#open anchors the menu on the top right in LTR when close to the right edge', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
@@ -204,7 +204,7 @@ testFoundation('#open anchors the menu on the top right in LTR when close to the
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
   td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-    height: 20, width: 40, top: 20, bottom: 40, left: 950, right: 990
+    height: 20, width: 40, top: 20, bottom: 40, left: 950, right: 990,
   });
   td.when(mockNow()).thenReturn(0);
 
@@ -221,7 +221,7 @@ testFoundation('#open anchors the menu on the top right in LTR when close to the
   t.end();
 });
 
-testFoundation('#open anchors the menu on the top right in RTL, given enough room', t => {
+testFoundation('#open anchors the menu on the top right in RTL, given enough room', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
@@ -232,7 +232,7 @@ testFoundation('#open anchors the menu on the top right in RTL, given enough roo
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
   td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-    height: 20, width: 40, top: 20, bottom: 40, left: 500, right: 540
+    height: 20, width: 40, top: 20, bottom: 40, left: 500, right: 540,
   });
   td.when(mockNow()).thenReturn(0);
 
@@ -249,7 +249,7 @@ testFoundation('#open anchors the menu on the top right in RTL, given enough roo
   t.end();
 });
 
-testFoundation('#open anchors the menu on the top left in RTL when close to the left edge', t => {
+testFoundation('#open anchors the menu on the top left in RTL when close to the left edge', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
@@ -260,7 +260,7 @@ testFoundation('#open anchors the menu on the top left in RTL when close to the 
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
   td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-    height: 20, width: 40, top: 20, bottom: 40, left: 10, right: 50
+    height: 20, width: 40, top: 20, bottom: 40, left: 10, right: 50,
   });
   td.when(mockNow()).thenReturn(0);
 
@@ -277,7 +277,7 @@ testFoundation('#open anchors the menu on the top left in RTL when close to the 
   t.end();
 });
 
-testFoundation('#open anchors the menu on the bottom left in LTR when close to the bottom edge', t => {
+testFoundation('#open anchors the menu on the bottom left in LTR when close to the bottom edge', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
@@ -288,7 +288,7 @@ testFoundation('#open anchors the menu on the bottom left in LTR when close to t
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
   td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-    height: 20, width: 40, top: 900, bottom: 920, left: 10, right: 50
+    height: 20, width: 40, top: 900, bottom: 920, left: 10, right: 50,
   });
   td.when(mockNow()).thenReturn(0);
 
@@ -305,7 +305,7 @@ testFoundation('#open anchors the menu on the bottom left in LTR when close to t
   t.end();
 });
 
-testFoundation('#close adds the animation class to start an animation', t => {
+testFoundation('#close adds the animation class to start an animation', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
 
   foundation.close();
@@ -315,7 +315,7 @@ testFoundation('#close adds the animation class to start an animation', t => {
   t.end();
 });
 
-testFoundation('#close removes the open class from the menu', t => {
+testFoundation('#close removes the open class from the menu', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
   td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-left')).thenReturn(true);
@@ -327,7 +327,7 @@ testFoundation('#close removes the open class from the menu', t => {
   t.end();
 });
 
-testFoundation('#close removes the animation class at the end of the animation', t => {
+testFoundation('#close removes the animation class at the end of the animation', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
@@ -350,7 +350,7 @@ testFoundation('#close removes the animation class at the end of the animation',
   t.end();
 });
 
-test('#isOpen returns true when the menu is open', t => {
+test('#isOpen returns true when the menu is open', (t) => {
   const {foundation} = setupTest();
 
   foundation.open();
@@ -358,7 +358,7 @@ test('#isOpen returns true when the menu is open', t => {
   t.end();
 });
 
-test('#isOpen returns false when the menu is closed', t => {
+test('#isOpen returns false when the menu is closed', (t) => {
   const {foundation} = setupTest();
 
   foundation.close();
@@ -366,7 +366,7 @@ test('#isOpen returns false when the menu is closed', t => {
   t.end();
 });
 
-test('#isOpen returns true when the menu is initiated with the open class present', t => {
+test('#isOpen returns true when the menu is initiated with the open class present', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
 
@@ -375,7 +375,7 @@ test('#isOpen returns true when the menu is initiated with the open class presen
   t.end();
 });
 
-test('#isOpen returns false when the menu is initiated without the open class present', t => {
+test('#isOpen returns false when the menu is initiated without the open class present', (t) => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(false);
 
@@ -384,7 +384,7 @@ test('#isOpen returns false when the menu is initiated without the open class pr
   t.end();
 });
 
-test('on click notifies user of selection after allowing time for selection UX to run', t => {
+test('on click notifies user of selection after allowing time for selection UX to run', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -406,7 +406,7 @@ test('on click notifies user of selection after allowing time for selection UX t
   t.end();
 });
 
-test('on click closes the menu', t => {
+test('on click closes the menu', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -425,7 +425,7 @@ test('on click closes the menu', t => {
   t.end();
 });
 
-test('on click does not trigger selected if non menu item clicked', t => {
+test('on click does not trigger selected if non menu item clicked', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -441,7 +441,7 @@ test('on click does not trigger selected if non menu item clicked', t => {
   t.end();
 });
 
-test('on click does not trigger selected if selection is already queued up', t => {
+test('on click does not trigger selected if selection is already queued up', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -458,7 +458,7 @@ test('on click does not trigger selected if selection is already queued up', t =
   t.end();
 });
 
-test('on ctrl+spacebar keyup does nothing', t => {
+test('on ctrl+spacebar keyup does nothing', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const target = {};
@@ -474,7 +474,7 @@ test('on ctrl+spacebar keyup does nothing', t => {
   t.end();
 });
 
-test('on spacebar keyup notifies user of selection after allowing time for selection UX to run', t => {
+test('on spacebar keyup notifies user of selection after allowing time for selection UX to run', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -496,7 +496,7 @@ test('on spacebar keyup notifies user of selection after allowing time for selec
   t.end();
 });
 
-test('on spacebar keyup closes the menu', t => {
+test('on spacebar keyup closes the menu', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -515,7 +515,7 @@ test('on spacebar keyup closes the menu', t => {
   t.end();
 });
 
-test('on spacebar keyup does not trigger selected if non menu item clicked', t => {
+test('on spacebar keyup does not trigger selected if non menu item clicked', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -531,7 +531,7 @@ test('on spacebar keyup does not trigger selected if non menu item clicked', t =
   t.end();
 });
 
-test('on spacebar keyup does not trigger selected if selection is already queued up', t => {
+test('on spacebar keyup does not trigger selected if selection is already queued up', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -548,7 +548,7 @@ test('on spacebar keyup does not trigger selected if selection is already queued
   t.end();
 });
 
-test('on spacebar keyup does works if DOM3 keyboard events are not supported', t => {
+test('on spacebar keyup does works if DOM3 keyboard events are not supported', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -564,7 +564,7 @@ test('on spacebar keyup does works if DOM3 keyboard events are not supported', t
   t.end();
 });
 
-test('on enter keyup notifies user of selection after allowing time for selection UX to run', t => {
+test('on enter keyup notifies user of selection after allowing time for selection UX to run', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -586,7 +586,7 @@ test('on enter keyup notifies user of selection after allowing time for selectio
   t.end();
 });
 
-test('on enter keyup closes the menu', t => {
+test('on enter keyup closes the menu', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -605,7 +605,7 @@ test('on enter keyup closes the menu', t => {
   t.end();
 });
 
-test('on enter keyup does not trigger selected if non menu item clicked', t => {
+test('on enter keyup does not trigger selected if non menu item clicked', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -621,7 +621,7 @@ test('on enter keyup does not trigger selected if non menu item clicked', t => {
   t.end();
 });
 
-test('on enter keyup does not trigger selected if selection is already queued up', t => {
+test('on enter keyup does not trigger selected if selection is already queued up', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -638,7 +638,7 @@ test('on enter keyup does not trigger selected if selection is already queued up
   t.end();
 });
 
-test('on enter keyup does works if DOM3 keyboard events are not supported', t => {
+test('on enter keyup does works if DOM3 keyboard events are not supported', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -654,7 +654,7 @@ test('on enter keyup does works if DOM3 keyboard events are not supported', t =>
   t.end();
 });
 
-test('on escape keyup closes the menu and sends cancel event', t => {
+test('on escape keyup closes the menu and sends cancel event', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -674,7 +674,7 @@ test('on escape keyup closes the menu and sends cancel event', t => {
   t.end();
 });
 
-test('on Ctrl+Tab keydown does nothing', t => {
+test('on Ctrl+Tab keydown does nothing', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const target = {};
@@ -691,7 +691,7 @@ test('on Ctrl+Tab keydown does nothing', t => {
   t.end();
 });
 
-test('on Tab keydown on the last element, it moves to the first', t => {
+test('on Tab keydown on the last element, it moves to the first', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -711,7 +711,7 @@ test('on Tab keydown on the last element, it moves to the first', t => {
   t.end();
 });
 
-test('on Shift+Tab keydown on the first element, it moves to the last', t => {
+test('on Shift+Tab keydown on the first element, it moves to the last', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -731,7 +731,7 @@ test('on Shift+Tab keydown on the first element, it moves to the last', t => {
   t.end();
 });
 
-test('on ArrowDown keydown on the last element, it moves to the first', t => {
+test('on ArrowDown keydown on the last element, it moves to the first', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -751,7 +751,7 @@ test('on ArrowDown keydown on the last element, it moves to the first', t => {
   t.end();
 });
 
-test('on ArrowDown keydown on the first element, it moves to the second', t => {
+test('on ArrowDown keydown on the first element, it moves to the second', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -771,7 +771,7 @@ test('on ArrowDown keydown on the first element, it moves to the second', t => {
   t.end();
 });
 
-test('on ArrowDown keydown prevents default on the event', t => {
+test('on ArrowDown keydown prevents default on the event', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -792,7 +792,7 @@ test('on ArrowDown keydown prevents default on the event', t => {
   t.end();
 });
 
-test('on ArrowUp keydown on the first element, it moves to the last', t => {
+test('on ArrowUp keydown on the first element, it moves to the last', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -812,7 +812,7 @@ test('on ArrowUp keydown on the first element, it moves to the last', t => {
   t.end();
 });
 
-test('on ArrowUp keydown on the last element, it moves to the previous', t => {
+test('on ArrowUp keydown on the last element, it moves to the previous', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -832,7 +832,7 @@ test('on ArrowUp keydown on the last element, it moves to the previous', t => {
   t.end();
 });
 
-test('on ArrowUp keydown prevents default on the event', t => {
+test('on ArrowUp keydown prevents default on the event', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -853,7 +853,7 @@ test('on ArrowUp keydown prevents default on the event', t => {
   t.end();
 });
 
-test('on spacebar keydown prevents default on the event', t => {
+test('on spacebar keydown prevents default on the event', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -874,7 +874,7 @@ test('on spacebar keydown prevents default on the event', t => {
   t.end();
 });
 
-testFoundation('should cancel animation after destroy', t => {
+testFoundation('should cancel animation after destroy', (t) => {
   const {foundation, mockAdapter, mockRaf} = t.data;
   foundation.init();
   mockRaf.flush();

@@ -64,7 +64,7 @@ export class MDCSelect extends MDCComponent {
     return null;
   }
 
-  initialize(menuFactory = el => new MDCSimpleMenu(el)) {
+  initialize(menuFactory = (el) => new MDCSimpleMenu(el)) {
     this.menuEl_ = this.root_.querySelector('.mdc-select__menu');
     this.menu_ = menuFactory(this.menuEl_);
     this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
@@ -72,8 +72,8 @@ export class MDCSelect extends MDCComponent {
 
   getDefaultFoundation() {
     return new MDCSelectFoundation({
-      addClass: className => this.root_.classList.add(className),
-      removeClass: className => this.root_.classList.remove(className),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
@@ -86,27 +86,27 @@ export class MDCSelect extends MDCComponent {
       makeUntabbable: () => {
         this.root_.tabIndex = -1;
       },
-      getComputedStyleValue: prop => window.getComputedStyle(this.root_).getPropertyValue(prop),
+      getComputedStyleValue: (prop) => window.getComputedStyle(this.root_).getPropertyValue(prop),
       setStyle: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
       create2dRenderingContext: () => document.createElement('canvas').getContext('2d'),
       setMenuElStyle: (propertyName, value) => this.menuEl_.style.setProperty(propertyName, value),
       setMenuElAttr: (attr, value) => this.menuEl_.setAttribute(attr, value),
-      rmMenuElAttr: attr => this.menuEl_.removeAttribute(attr),
+      rmMenuElAttr: (attr) => this.menuEl_.removeAttribute(attr),
       getMenuElOffsetHeight: () => this.menuEl_.offsetHeight,
-      openMenu: focusIndex => this.menu_.show({focusIndex}),
+      openMenu: (focusIndex) => this.menu_.show({focusIndex}),
       isMenuOpen: () => this.menu_.open,
-      setSelectedTextContent: selectedTextContent => {
+      setSelectedTextContent: (selectedTextContent) => {
         this.selectedText_.textContent = selectedTextContent;
       },
       getNumberOfOptions: () => this.options.length,
-      getTextForOptionAtIndex: index => this.options[index].textContent,
+      getTextForOptionAtIndex: (index) => this.options[index].textContent,
       setAttrForOptionAtIndex: (index, attr, value) => this.options[index].setAttribute(attr, value),
       rmAttrForOptionAtIndex: (index, attr) => this.options[index].removeAttribute(attr),
-      getOffsetTopForOptionAtIndex: index => this.options[index].offsetTop,
+      getOffsetTopForOptionAtIndex: (index) => this.options[index].offsetTop,
       registerMenuInteractionHandler: (type, handler) => this.menu_.listen(type, handler),
       deregisterMenuInteractionHandler: (type, handler) => this.menu_.unlisten(type, handler),
       notifyChange: () => this.emit('MDCSelect:change', this),
-      getWindowInnerHeight: () => window.innerHeight
+      getWindowInnerHeight: () => window.innerHeight,
     });
   }
 

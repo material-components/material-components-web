@@ -41,12 +41,12 @@ function setupTest(open = false) {
   return {root, component};
 }
 
-test('attachTo initializes and returns a MDCSimpleMenu instance', t => {
+test('attachTo initializes and returns a MDCSimpleMenu instance', (t) => {
   t.true(MDCSimpleMenu.attachTo(getFixture()) instanceof MDCSimpleMenu);
   t.end();
 });
 
-test('get/set open', t => {
+test('get/set open', (t) => {
   const {component} = setupTest();
   component.open = true;
   t.true(component.open);
@@ -56,21 +56,21 @@ test('get/set open', t => {
   t.end();
 });
 
-test('items returns all menu items', t => {
+test('items returns all menu items', (t) => {
   const {root, component} = setupTest();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
   t.deepEqual(component.items, items);
   t.end();
 });
 
-test('foundationAdapter#addClass adds a class to the root element', t => {
+test('foundationAdapter#addClass adds a class to the root element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   t.true(root.classList.contains('foo'));
   t.end();
 });
 
-test('adapter#removeClass removes a class from the root element', t => {
+test('adapter#removeClass removes a class from the root element', (t) => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
@@ -78,26 +78,26 @@ test('adapter#removeClass removes a class from the root element', t => {
   t.end();
 });
 
-test('adapter#hasClass returns true if the root element has specified class', t => {
+test('adapter#hasClass returns true if the root element has specified class', (t) => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   t.true(component.getDefaultFoundation().adapter_.hasClass('foo'));
   t.end();
 });
 
-test('adapter#hasClass returns false if the root element does not have specified class', t => {
+test('adapter#hasClass returns false if the root element does not have specified class', (t) => {
   const {component} = setupTest();
   t.false(component.getDefaultFoundation().adapter_.hasClass('foo'));
   t.end();
 });
 
-test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', t => {
+test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', (t) => {
   const {component} = setupTest();
   t.true(component.getDefaultFoundation().adapter_.hasNecessaryDom());
   t.end();
 });
 
-test('adapter#hasNecessaryDom returns false if the DOM does not include the items container', t => {
+test('adapter#hasNecessaryDom returns false if the DOM does not include the items container', (t) => {
   const {root, component} = setupTest();
   const items = root.querySelector(strings.ITEMS_SELECTOR);
   root.removeChild(items);
@@ -105,7 +105,7 @@ test('adapter#hasNecessaryDom returns false if the DOM does not include the item
   t.end();
 });
 
-test('adapter#getInnerDimensions returns the dimensions of the items container', t => {
+test('adapter#getInnerDimensions returns the dimensions of the items container', (t) => {
   const {root, component} = setupTest();
   const items = root.querySelector(strings.ITEMS_SELECTOR);
   t.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().width, items.offsetWidth);
@@ -113,14 +113,14 @@ test('adapter#getInnerDimensions returns the dimensions of the items container',
   t.end();
 });
 
-test('adapter#setScale sets the correct transform on the menu element', t => {
+test('adapter#setScale sets the correct transform on the menu element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setScale(0.42, 0.84);
   t.equal(root.style.getPropertyValue(getTransformPropertyName(window)), 'scale(0.42, 0.84)');
   t.end();
 });
 
-test('adapter#setInnerScale sets the correct transform on the items container', t => {
+test('adapter#setInnerScale sets the correct transform on the items container', (t) => {
   const {root, component} = setupTest();
   const items = root.querySelector(strings.ITEMS_SELECTOR);
   component.getDefaultFoundation().adapter_.setInnerScale(0.42, 0.84);
@@ -128,14 +128,14 @@ test('adapter#setInnerScale sets the correct transform on the items container', 
   t.end();
 });
 
-test('adapter#getNumberOfItems returns the number of item elements within the items container', t => {
+test('adapter#getNumberOfItems returns the number of item elements within the items container', (t) => {
   const {root, component} = setupTest();
   const numberOfItems = root.querySelectorAll('[role="menuitem"]').length;
   t.equal(component.getDefaultFoundation().adapter_.getNumberOfItems(), numberOfItems);
   t.end();
 });
 
-test('adapter#registerInteractionHandler proxies to addEventListener', t => {
+test('adapter#registerInteractionHandler proxies to addEventListener', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
@@ -144,7 +144,7 @@ test('adapter#registerInteractionHandler proxies to addEventListener', t => {
   t.end();
 });
 
-test('adapter#deregisterInteractionHandler proxies to removeEventListener', t => {
+test('adapter#deregisterInteractionHandler proxies to removeEventListener', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   root.addEventListener('foo', handler);
@@ -154,7 +154,7 @@ test('adapter#deregisterInteractionHandler proxies to removeEventListener', t =>
   t.end();
 });
 
-test('adapter#registerDocumentClickHandler proxies to addEventListener', t => {
+test('adapter#registerDocumentClickHandler proxies to addEventListener', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   document.body.appendChild(root);
@@ -165,7 +165,7 @@ test('adapter#registerDocumentClickHandler proxies to addEventListener', t => {
   t.end();
 });
 
-test('adapter#deregisterDocumentClickHandler proxies to removeEventListener', t => {
+test('adapter#deregisterDocumentClickHandler proxies to removeEventListener', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   document.body.appendChild(root);
@@ -177,13 +177,13 @@ test('adapter#deregisterDocumentClickHandler proxies to removeEventListener', t 
   t.end();
 });
 
-test('adapter#getYParamsForItemAtIndex returns the height and top of the item at the provided index', t => {
+test('adapter#getYParamsForItemAtIndex returns the height and top of the item at the provided index', (t) => {
   const {root, component} = setupTest();
   const items = root.querySelector(strings.ITEMS_SELECTOR);
   Object.assign(items.children[0].style, {
     position: 'absolute',
     top: '50px',
-    height: '100px'
+    height: '100px',
   });
   document.body.appendChild(root);
   t.deepEqual(
@@ -195,14 +195,14 @@ test('adapter#getYParamsForItemAtIndex returns the height and top of the item at
 });
 
 test('adapter#setTransitionDelayForItemAtIndex sets the correct transition-delay for the element ' +
-     'at the provided index', t => {
+     'at the provided index', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setTransitionDelayForItemAtIndex(0, '0.42s');
   t.equal(root.querySelector(strings.ITEMS_SELECTOR).children[0].style.transitionDelay, '0.42s');
   t.end();
 });
 
-test('adapter#getIndexForEventTarget returns the item index of the event target', t => {
+test('adapter#getIndexForEventTarget returns the item index of the event target', (t) => {
   const {root, component} = setupTest();
   const target = root.querySelectorAll('[role="menuitem"]')[1];
   t.equal(component.getDefaultFoundation().adapter_.getIndexForEventTarget(target), 1);
@@ -210,12 +210,12 @@ test('adapter#getIndexForEventTarget returns the item index of the event target'
   t.end();
 });
 
-test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with the item and index', t => {
+test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with the item and index', (t) => {
   const {root, component} = setupTest();
   const item = root.querySelectorAll('[role="menuitem"]')[0];
   const handler = td.func('notifySelected handler');
   let evtData = null;
-  td.when(handler(td.matchers.isA(Object))).thenDo(evt => {
+  td.when(handler(td.matchers.isA(Object))).thenDo((evt) => {
     evtData = evt.detail;
   });
   root.addEventListener('MDCSimpleMenu:selected', handler);
@@ -223,12 +223,12 @@ test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with
   t.true(evtData !== null);
   t.deepEqual(evtData, {
     item,
-    index: 0
+    index: 0,
   });
   t.end();
 });
 
-test('adapter#notifyCancel fires an "MDCSimpleMenu:cancel" custom event', t => {
+test('adapter#notifyCancel fires an "MDCSimpleMenu:cancel" custom event', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('notifyCancel handler');
   root.addEventListener('MDCSimpleMenu:cancel', handler);
@@ -237,7 +237,7 @@ test('adapter#notifyCancel fires an "MDCSimpleMenu:cancel" custom event', t => {
   t.end();
 });
 
-test('adapter#restoreFocus restores the focus saved by adapter#saveFocus', t => {
+test('adapter#restoreFocus restores the focus saved by adapter#saveFocus', (t) => {
   const {root, component} = setupTest(true);
   const button = bel`<button>Foo</button>`;
   document.body.appendChild(button);
@@ -252,7 +252,7 @@ test('adapter#restoreFocus restores the focus saved by adapter#saveFocus', t => 
   t.end();
 });
 
-test('adapter#isFocused returns whether the menu is focused', t => {
+test('adapter#isFocused returns whether the menu is focused', (t) => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   root.focus();
@@ -261,7 +261,7 @@ test('adapter#isFocused returns whether the menu is focused', t => {
   t.end();
 });
 
-test('adapter#focus focuses the menu', t => {
+test('adapter#focus focuses the menu', (t) => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.focus();
@@ -270,7 +270,7 @@ test('adapter#focus focuses the menu', t => {
   t.end();
 });
 
-test('adapter#getFocusedItemIndex returns the item index of the focused menu element', t => {
+test('adapter#getFocusedItemIndex returns the item index of the focused menu element', (t) => {
   const {root, component} = setupTest(true);
   const item = root.querySelectorAll('[role="menuitem"]')[1];
   document.body.appendChild(root);
@@ -282,7 +282,7 @@ test('adapter#getFocusedItemIndex returns the item index of the focused menu ele
   t.end();
 });
 
-test('adapter#focusItemAtIndex focuses the right menu element', t => {
+test('adapter#focusItemAtIndex focuses the right menu element', (t) => {
   const {root, component} = setupTest(true);
   const item1 = root.querySelectorAll('[role="menuitem"]')[1];
   const item2 = root.querySelectorAll('[role="menuitem"]')[0];
@@ -295,7 +295,7 @@ test('adapter#focusItemAtIndex focuses the right menu element', t => {
   t.end();
 });
 
-test('adapter#hasAnchor returns true if it has an anchor', t => {
+test('adapter#hasAnchor returns true if it has an anchor', (t) => {
   const anchor = bel`<div class="mdc-menu-anchor"></div>`;
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
@@ -303,7 +303,7 @@ test('adapter#hasAnchor returns true if it has an anchor', t => {
   t.end();
 });
 
-test('adapter#hasAnchor returns false if it does not have an anchor', t => {
+test('adapter#hasAnchor returns false if it does not have an anchor', (t) => {
   const notAnAnchor = bel`<div></div>`;
   const {root, component} = setupTest(true);
   notAnAnchor.appendChild(root);
@@ -311,7 +311,7 @@ test('adapter#hasAnchor returns false if it does not have an anchor', t => {
   t.end();
 });
 
-test('adapter#getAnchorDimensions returns the dimensions of the anchor container', t => {
+test('adapter#getAnchorDimensions returns the dimensions of the anchor container', (t) => {
   const anchor = bel`<div class="mdc-menu-anchor" style="height: 21px; width: 42px;"></div>`;
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
@@ -322,7 +322,7 @@ test('adapter#getAnchorDimensions returns the dimensions of the anchor container
   t.end();
 });
 
-test('adapter#getWindowDimensions returns the dimensions of the window', t => {
+test('adapter#getWindowDimensions returns the dimensions of the window', (t) => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   t.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().height, window.innerHeight);
@@ -331,7 +331,7 @@ test('adapter#getWindowDimensions returns the dimensions of the window', t => {
   t.end();
 });
 
-test('adapter#isRtl returns true for RTL documents', t => {
+test('adapter#isRtl returns true for RTL documents', (t) => {
   const anchor = bel`<div dir="rtl" class="mdc-menu-anchor"></div>`;
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
@@ -341,7 +341,7 @@ test('adapter#isRtl returns true for RTL documents', t => {
   t.end();
 });
 
-test('adapter#isRtl returns false for explicit LTR documents', t => {
+test('adapter#isRtl returns false for explicit LTR documents', (t) => {
   const anchor = bel`<div dir="ltr" class="mdc-menu-anchor"></div>`;
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
@@ -351,7 +351,7 @@ test('adapter#isRtl returns false for explicit LTR documents', t => {
   t.end();
 });
 
-test('adapter#isRtl returns false for implicit LTR documents', t => {
+test('adapter#isRtl returns false for implicit LTR documents', (t) => {
   const anchor = bel`<div class="mdc-menu-anchor"></div>`;
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
@@ -361,7 +361,7 @@ test('adapter#isRtl returns false for implicit LTR documents', t => {
   t.end();
 });
 
-test('adapter#setTransformOrigin sets the correct transform origin on the menu element', t => {
+test('adapter#setTransformOrigin sets the correct transform origin on the menu element', (t) => {
   const {root, component} = setupTest();
   // Write expected value and read canonical value from browser.
   root.style.webkitTransformOrigin = root.style.transformOrigin = 'left top 10px';
@@ -374,7 +374,7 @@ test('adapter#setTransformOrigin sets the correct transform origin on the menu e
   t.end();
 });
 
-test('adapter#setPosition sets the correct position on the menu element', t => {
+test('adapter#setPosition sets the correct position on the menu element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setPosition({top: '10px', left: '11px'});
   t.equal(root.style.top, '10px');

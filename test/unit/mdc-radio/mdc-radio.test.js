@@ -43,7 +43,7 @@ function setupTest() {
 }
 
 if (supportsCssVariables(window)) {
-  test('#constructor initializes the root element with a ripple', t => {
+  test('#constructor initializes the root element with a ripple', (t) => {
     const raf = createMockRaf();
     const {root} = setupTest();
     raf.flush();
@@ -52,7 +52,7 @@ if (supportsCssVariables(window)) {
     t.end();
   });
 
-  test('#destroy removes the ripple', t => {
+  test('#destroy removes the ripple', (t) => {
     const raf = createMockRaf();
     const {root, component} = setupTest();
     raf.flush();
@@ -63,7 +63,7 @@ if (supportsCssVariables(window)) {
   });
 }
 
-test('get/set checked updates the checked value of the native radio element', t => {
+test('get/set checked updates the checked value of the native radio element', (t) => {
   const {root, component} = setupTest();
   const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
   component.checked = true;
@@ -72,7 +72,7 @@ test('get/set checked updates the checked value of the native radio element', t 
   t.end();
 });
 
-test('get/set disabled updates the disabled value of the native radio element', t => {
+test('get/set disabled updates the disabled value of the native radio element', (t) => {
   const {root, component} = setupTest();
   const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
   component.disabled = true;
@@ -81,7 +81,7 @@ test('get/set disabled updates the disabled value of the native radio element', 
   t.end();
 });
 
-test('#adapter.getNativeControl() returns the native radio element', t => {
+test('#adapter.getNativeControl() returns the native radio element', (t) => {
   const {root, component} = setupTest();
   t.equal(
     component.getDefaultFoundation().adapter_.getNativeControl(), root.querySelector(NATIVE_CONTROL_SELECTOR)

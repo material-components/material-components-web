@@ -26,7 +26,7 @@ class FakeMenu {
     this.items = [
       bel`<div id="item-1">Item 1</div>`,
       bel`<div id="item-2">Item 2</div>`,
-      bel`<div id="item-3">Item 3</div>`
+      bel`<div id="item-3">Item 3</div>`,
     ];
     this.listen = td.func('menu.listen');
     this.unlisten = td.func('menu.unlisten');
@@ -49,7 +49,7 @@ function getFixture() {
   `;
 }
 
-test('attachTo returns a component instance', t => {
+test('attachTo returns a component instance', (t) => {
   t.true(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
   t.end();
 });
@@ -62,13 +62,13 @@ function setupTest() {
   return {menu, menuEl, fixture, component};
 }
 
-test('options returns the menu items', t => {
+test('options returns the menu items', (t) => {
   const {menu, component} = setupTest();
   t.equal(component.options, menu.items);
   t.end();
 });
 
-test('selectOptions returns a NodeList containing the node with "aria-selected" as an attr', t => {
+test('selectOptions returns a NodeList containing the node with "aria-selected" as an attr', (t) => {
   const {component, fixture} = setupTest();
   const option = fixture.querySelector('[role="option"]');
   t.equal(component.selectedOptions.length, 0, 'No selected options when none selected');
@@ -78,7 +78,7 @@ test('selectOptions returns a NodeList containing the node with "aria-selected" 
   t.end();
 });
 
-test('#get/setSelectedIndex', t => {
+test('#get/setSelectedIndex', (t) => {
   const {component} = setupTest();
   t.equal(component.selectedIndex, -1);
   component.selectedIndex = 1;
@@ -86,7 +86,7 @@ test('#get/setSelectedIndex', t => {
   t.end();
 });
 
-test('#get/setDisabled', t => {
+test('#get/setDisabled', (t) => {
   const {component} = setupTest();
   t.equal(component.disabled, false);
   component.disabled = true;
@@ -94,25 +94,25 @@ test('#get/setDisabled', t => {
   t.end();
 });
 
-test('#item returns the menu item at the specified index', t => {
+test('#item returns the menu item at the specified index', (t) => {
   const {menu, component} = setupTest();
   t.equal(component.item(1), menu.items[1]);
   t.end();
 });
 
-test('#item returns null if index out of bounds', t => {
+test('#item returns null if index out of bounds', (t) => {
   const {component} = setupTest();
   t.equal(component.item(100), null);
   t.end();
 });
 
-test('#nameditem returns the item whose id matches the given key', t => {
+test('#nameditem returns the item whose id matches the given key', (t) => {
   const {menu, component} = setupTest();
   t.equal(component.nameditem('item-1'), menu.items[0]);
   t.end();
 });
 
-test('#nameditem returns the item whose "name" key matches the given key', t => {
+test('#nameditem returns the item whose "name" key matches the given key', (t) => {
   const {menu, component} = setupTest();
   const item = menu.items[0];
   const name = item.id;
@@ -123,13 +123,13 @@ test('#nameditem returns the item whose "name" key matches the given key', t => 
   t.end();
 });
 
-test('#nameditem returns null when no id or name matches the given key', t => {
+test('#nameditem returns null when no id or name matches the given key', (t) => {
   const {component} = setupTest();
   t.equal(component.nameditem('nonexistant'), null);
   t.end();
 });
 
-test('#initialSyncWithDOM sets the selected index if a menu item contains an aria-selected attribute', t => {
+test('#initialSyncWithDOM sets the selected index if a menu item contains an aria-selected attribute', (t) => {
   const menu = new FakeMenu();
   const fixture = getFixture();
   // Insert menu item into fixture to pretend like the fake menu items are part of the component under test.
@@ -141,7 +141,7 @@ test('#initialSyncWithDOM sets the selected index if a menu item contains an ari
   t.end();
 });
 
-test('#initialSyncWithDOM disables the menu if aria-disabled="true" is found on the element', t => {
+test('#initialSyncWithDOM disables the menu if aria-disabled="true" is found on the element', (t) => {
   const fixture = getFixture();
   fixture.setAttribute('aria-disabled', 'true');
   const component = new MDCSelect(fixture);
@@ -149,14 +149,14 @@ test('#initialSyncWithDOM disables the menu if aria-disabled="true" is found on 
   t.end();
 });
 
-test('adapter#addClass adds a class to the root element', t => {
+test('adapter#addClass adds a class to the root element', (t) => {
   const {component, fixture} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   t.true(fixture.classList.contains('foo'));
   t.end();
 });
 
-test('adapter#removeClass removes a class from the root element', t => {
+test('adapter#removeClass removes a class from the root element', (t) => {
   const {component, fixture} = setupTest();
   fixture.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
@@ -164,14 +164,14 @@ test('adapter#removeClass removes a class from the root element', t => {
   t.end();
 });
 
-test('adapter#setAttr sets an attribute with a given value on the root element', t => {
+test('adapter#setAttr sets an attribute with a given value on the root element', (t) => {
   const {component, fixture} = setupTest();
   component.getDefaultFoundation().adapter_.setAttr('aria-disabled', 'true');
   t.equal(fixture.getAttribute('aria-disabled'), 'true');
   t.end();
 });
 
-test('adapter#rmAttr removes an attribute from the root element', t => {
+test('adapter#rmAttr removes an attribute from the root element', (t) => {
   const {component, fixture} = setupTest();
   fixture.setAttribute('aria-disabled', 'true');
   component.getDefaultFoundation().adapter_.rmAttr('aria-disabled');
@@ -179,7 +179,7 @@ test('adapter#rmAttr removes an attribute from the root element', t => {
   t.end();
 });
 
-test('adapter#computeBoundingRect returns the result of getBoundingClientRect() on the root element', t => {
+test('adapter#computeBoundingRect returns the result of getBoundingClientRect() on the root element', (t) => {
   const {component, fixture} = setupTest();
   t.deepEqual(
     component.getDefaultFoundation().adapter_.computeBoundingRect(),
@@ -188,7 +188,7 @@ test('adapter#computeBoundingRect returns the result of getBoundingClientRect() 
   t.end();
 });
 
-test('adapter#registerInteractionHandler adds an event listener to the root element', t => {
+test('adapter#registerInteractionHandler adds an event listener to the root element', (t) => {
   const {component, fixture} = setupTest();
   const listener = td.func('eventlistener');
   component.getDefaultFoundation().adapter_.registerInteractionHandler('click', listener);
@@ -197,7 +197,7 @@ test('adapter#registerInteractionHandler adds an event listener to the root elem
   t.end();
 });
 
-test('adapter#deregisterInteractionHandler removes an event listener from the root element', t => {
+test('adapter#deregisterInteractionHandler removes an event listener from the root element', (t) => {
   const {component, fixture} = setupTest();
   const listener = td.func('eventlistener');
   fixture.addEventListener('click', listener);
@@ -207,7 +207,7 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
   t.end();
 });
 
-test('adapter#focus focuses on the root element', t => {
+test('adapter#focus focuses on the root element', (t) => {
   const {component, fixture} = setupTest();
   const handler = td.func('fixture focus handler');
   fixture.addEventListener('focus', handler);
@@ -220,7 +220,7 @@ test('adapter#focus focuses on the root element', t => {
   t.end();
 });
 
-test('adapter#makeTabbable sets the root element\'s tabindex to 0', t => {
+test('adapter#makeTabbable sets the root element\'s tabindex to 0', (t) => {
   const {component, fixture} = setupTest();
   fixture.tabIndex = -1;
   component.getDefaultFoundation().adapter_.makeTabbable();
@@ -228,7 +228,7 @@ test('adapter#makeTabbable sets the root element\'s tabindex to 0', t => {
   t.end();
 });
 
-test('adapter#makeUntabbable sets the root element\'s tabindex to -1', t => {
+test('adapter#makeUntabbable sets the root element\'s tabindex to -1', (t) => {
   const {component, fixture} = setupTest();
   fixture.tabIndex = 0;
   component.getDefaultFoundation().adapter_.makeUntabbable();
@@ -236,7 +236,7 @@ test('adapter#makeUntabbable sets the root element\'s tabindex to -1', t => {
   t.end();
 });
 
-test('adapter#getComputedStyleValue gets the computed style value of the prop from the root element', t => {
+test('adapter#getComputedStyleValue gets the computed style value of the prop from the root element', (t) => {
   const {component, fixture} = setupTest();
   document.body.appendChild(fixture);
   fixture.style.width = '500px';
@@ -248,18 +248,18 @@ test('adapter#getComputedStyleValue gets the computed style value of the prop fr
   t.end();
 });
 
-test('adapter#setStyle sets the given style propertyName to the given value', t => {
+test('adapter#setStyle sets the given style propertyName to the given value', (t) => {
   const {component, fixture} = setupTest();
   component.getDefaultFoundation().adapter_.setStyle('font-size', '13px');
   t.equal(fixture.style.getPropertyValue('font-size'), '13px');
   t.end();
 });
 
-test('adapter#create2dRenderingContext returns a CanvasRenderingContext2d instance', t => {
+test('adapter#create2dRenderingContext returns a CanvasRenderingContext2d instance', (t) => {
   const {component} = setupTest();
   const fakeCtx = {};
   const fakeCanvas = {
-    getContext: td.func('canvas.getContext')
+    getContext: td.func('canvas.getContext'),
   };
   const origCreateElement = document.createElement;
   document.createElement = td.func('document.createElement');
@@ -274,21 +274,21 @@ test('adapter#create2dRenderingContext returns a CanvasRenderingContext2d instan
   t.end();
 });
 
-test('adapter#setMenuElStyle sets a style property on the menu element', t => {
+test('adapter#setMenuElStyle sets a style property on the menu element', (t) => {
   const {component, menuEl} = setupTest();
   component.getDefaultFoundation().adapter_.setMenuElStyle('font-size', '10px');
   t.equal(menuEl.style.fontSize, '10px');
   t.end();
 });
 
-test('adapter#setMenuElAttr sets an attribute on the menu element', t => {
+test('adapter#setMenuElAttr sets an attribute on the menu element', (t) => {
   const {component, menuEl} = setupTest();
   component.getDefaultFoundation().adapter_.setMenuElAttr('aria-hidden', 'true');
   t.equal(menuEl.getAttribute('aria-hidden'), 'true');
   t.end();
 });
 
-test('adapter#rmMenuElAttr removes an attribute from the menu element', t => {
+test('adapter#rmMenuElAttr removes an attribute from the menu element', (t) => {
   const {component, menuEl} = setupTest();
   menuEl.setAttribute('aria-hidden', 'true');
   component.getDefaultFoundation().adapter_.rmMenuElAttr('aria-hidden');
@@ -296,20 +296,20 @@ test('adapter#rmMenuElAttr removes an attribute from the menu element', t => {
   t.end();
 });
 
-test('adapter#getMenuElOffsetHeight returns the menu element\'s offsetHeight', t => {
+test('adapter#getMenuElOffsetHeight returns the menu element\'s offsetHeight', (t) => {
   const {component, menuEl} = setupTest();
   t.equal(component.getDefaultFoundation().adapter_.getMenuElOffsetHeight(), menuEl.offsetHeight);
   t.end();
 });
 
-test('adapter#openMenu shows the menu with the given focusIndex', t => {
+test('adapter#openMenu shows the menu with the given focusIndex', (t) => {
   const {component, menu} = setupTest();
   component.getDefaultFoundation().adapter_.openMenu(1);
   t.doesNotThrow(() => td.verify(menu.show({focusIndex: 1})));
   t.end();
 });
 
-test('adapter#isMenuOpen returns whether or not the menu is open', t => {
+test('adapter#isMenuOpen returns whether or not the menu is open', (t) => {
   const {component, menu} = setupTest();
   const {adapter_: adapter} = component.getDefaultFoundation();
   menu.open = true;
@@ -319,20 +319,20 @@ test('adapter#isMenuOpen returns whether or not the menu is open', t => {
   t.end();
 });
 
-test('adapter#setSelectedTextContent sets the textContent of the selected text el', t => {
+test('adapter#setSelectedTextContent sets the textContent of the selected text el', (t) => {
   const {component, fixture} = setupTest();
   component.getDefaultFoundation().adapter_.setSelectedTextContent('content');
   t.equal(fixture.querySelector('.mdc-select__selected-text').textContent, 'content');
   t.end();
 });
 
-test('adapter#getNumberOfOptions returns the length of the component\'s options property', t => {
+test('adapter#getNumberOfOptions returns the length of the component\'s options property', (t) => {
   const {component} = setupTest();
   t.equal(component.getDefaultFoundation().adapter_.getNumberOfOptions(), component.options.length);
   t.end();
 });
 
-test('adapter#getTextForOptionAtIndex gets the text content for the option at the given index', t => {
+test('adapter#getTextForOptionAtIndex gets the text content for the option at the given index', (t) => {
   const {component} = setupTest();
   t.equal(
     component.getDefaultFoundation().adapter_.getTextForOptionAtIndex(1),
@@ -342,14 +342,14 @@ test('adapter#getTextForOptionAtIndex gets the text content for the option at th
 });
 
 test('adapter#setAttrForOptionAtIndex sets an attribute to the given value for the option at the ' +
-     'given index', t => {
+     'given index', (t) => {
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.setAttrForOptionAtIndex(1, 'aria-disabled', 'true');
   t.equal(component.options[1].getAttribute('aria-disabled'), 'true');
   t.end();
 });
 
-test('adapter#rmAttrForOptionAtIndex removes the given attribute for the option at the given index', t => {
+test('adapter#rmAttrForOptionAtIndex removes the given attribute for the option at the given index', (t) => {
   const {component} = setupTest();
   component.options[1].setAttribute('aria-disabled', 'true');
   component.getDefaultFoundation().adapter_.rmAttrForOptionAtIndex(1, 'aria-disabled');
@@ -357,7 +357,7 @@ test('adapter#rmAttrForOptionAtIndex removes the given attribute for the option 
   t.end();
 });
 
-test('adapter#getOffsetTopForOptionAtIndex returns the offsetTop for the option at the given index', t => {
+test('adapter#getOffsetTopForOptionAtIndex returns the offsetTop for the option at the given index', (t) => {
   const {component, menu} = setupTest();
   t.equal(
     component.getDefaultFoundation().adapter_.getOffsetTopForOptionAtIndex(1),
@@ -366,7 +366,7 @@ test('adapter#getOffsetTopForOptionAtIndex returns the offsetTop for the option 
   t.end();
 });
 
-test('adapter#registerMenuInteractionHandler listens for an interaction handler on the menu', t => {
+test('adapter#registerMenuInteractionHandler listens for an interaction handler on the menu', (t) => {
   const {component, menu} = setupTest();
   const handler = () => {};
   component.getDefaultFoundation().adapter_.registerMenuInteractionHandler('evt', handler);
@@ -374,7 +374,7 @@ test('adapter#registerMenuInteractionHandler listens for an interaction handler 
   t.end();
 });
 
-test('adapter#deregisterMenuInteractionHandler unlistens for an interaction handler on the menu', t => {
+test('adapter#deregisterMenuInteractionHandler unlistens for an interaction handler on the menu', (t) => {
   const {component, menu} = setupTest();
   const handler = () => {};
   component.getDefaultFoundation().adapter_.deregisterMenuInteractionHandler('evt', handler);
@@ -382,7 +382,7 @@ test('adapter#deregisterMenuInteractionHandler unlistens for an interaction hand
   t.end();
 });
 
-test('adapter#notifyChange emits an "MDCSelect:change" custom event from the root element', t => {
+test('adapter#notifyChange emits an "MDCSelect:change" custom event from the root element', (t) => {
   const {component, fixture} = setupTest();
   const handler = td.func('MDCSelect:change handler');
   fixture.addEventListener('MDCSelect:change', handler);
@@ -390,7 +390,7 @@ test('adapter#notifyChange emits an "MDCSelect:change" custom event from the roo
   t.end();
 });
 
-test('adapter#getWindowInnerHeight returns window.innerHeight', t => {
+test('adapter#getWindowInnerHeight returns window.innerHeight', (t) => {
   const {component} = setupTest();
   t.equal(component.getDefaultFoundation().adapter_.getWindowInnerHeight(), window.innerHeight);
   t.end();

@@ -32,7 +32,7 @@ class FakeComponent extends MDCComponent {
   getDefaultFoundation() {
     return td.object({
       isDefaultFoundation: true,
-      init: () => {}
+      init: () => {},
     });
   }
 
@@ -46,21 +46,21 @@ class FakeComponent extends MDCComponent {
   }
 }
 
-test('provides a static attachTo() method that returns a basic instance with the specified root', t => {
+test('provides a static attachTo() method that returns a basic instance with the specified root', (t) => {
   const root = document.createElement('div');
   const b = MDCComponent.attachTo(root);
   t.true(b instanceof MDCComponent);
   t.end();
 });
 
-test('takes a root node constructor param and assigns it to the "root_" property', t => {
+test('takes a root node constructor param and assigns it to the "root_" property', (t) => {
   const root = document.createElement('div');
   const f = new FakeComponent(root);
   t.equal(f.root, root);
   t.end();
 });
 
-test('takes an optional foundation constructor param and assigns it to the "foundation_" property', t => {
+test('takes an optional foundation constructor param and assigns it to the "foundation_" property', (t) => {
   const root = document.createElement('div');
   const foundation = {init: () => {}};
   const f = new FakeComponent(root, foundation);
@@ -68,14 +68,14 @@ test('takes an optional foundation constructor param and assigns it to the "foun
   t.end();
 });
 
-test('assigns the result of "getDefaultFoundation()" to "foundation_" by default', t => {
+test('assigns the result of "getDefaultFoundation()" to "foundation_" by default', (t) => {
   const root = document.createElement('div');
   const f = new FakeComponent(root);
   t.true(f.foundation.isDefaultFoundation);
   t.end();
 });
 
-test("calls the foundation's init() method within the constructor", t => {
+test("calls the foundation's init() method within the constructor", (t) => {
   const root = document.createElement('div');
   const foundation = td.object({init: () => {}});
   // Testing side effects of constructor
@@ -85,25 +85,25 @@ test("calls the foundation's init() method within the constructor", t => {
   t.end();
 });
 
-test('throws an error if getDefaultFoundation() is not overridden', t => {
+test('throws an error if getDefaultFoundation() is not overridden', (t) => {
   const root = document.createElement('div');
   t.throws(() => new MDCComponent(root));
   t.end();
 });
 
-test('calls initialSyncWithDOM() when initialized', t => {
+test('calls initialSyncWithDOM() when initialized', (t) => {
   const root = document.createElement('div');
   const f = new FakeComponent(root);
   t.true(f.synced);
   t.end();
 });
 
-test('provides a default initialSyncWithDOM() no-op if none provided by subclass', t => {
+test('provides a default initialSyncWithDOM() no-op if none provided by subclass', (t) => {
   t.doesNotThrow(MDCComponent.prototype.initialSyncWithDOM.bind({}));
   t.end();
 });
 
-test("provides a default destroy() method which calls the foundation's destroy() method", t => {
+test("provides a default destroy() method which calls the foundation's destroy() method", (t) => {
   const root = document.createElement('div');
   const foundation = td.object({init: () => {}, destroy: () => {}});
   const f = new FakeComponent(root, foundation);
@@ -112,19 +112,19 @@ test("provides a default destroy() method which calls the foundation's destroy()
   t.end();
 });
 
-test('#initialize is called within constructor and passed any additional positional component args', t => {
+test('#initialize is called within constructor and passed any additional positional component args', (t) => {
   const f = new FakeComponent(document.createElement('div'), /* foundation */ undefined, 'foo', 42);
   t.deepEqual(f.initializeArgs, ['foo', 42]);
   t.end();
 });
 
-test('#initialize is called before getDefaultFoundation()', t => {
+test('#initialize is called before getDefaultFoundation()', (t) => {
   const f = new FakeComponent(document.createElement('div'));
   t.true(f.initializeComesBeforeFoundation);
   t.end();
 });
 
-test('#listen adds an event listener to the root element', t => {
+test('#listen adds an event listener to the root element', (t) => {
   const root = document.createElement('div');
   const f = new FakeComponent(root);
   const handler = td.func('eventHandler');
@@ -134,7 +134,7 @@ test('#listen adds an event listener to the root element', t => {
   t.end();
 });
 
-test('#unlisten removes an event listener from the root element', t => {
+test('#unlisten removes an event listener from the root element', (t) => {
   const root = document.createElement('div');
   const f = new FakeComponent(root);
   const handler = td.func('eventHandler');
@@ -145,12 +145,12 @@ test('#unlisten removes an event listener from the root element', t => {
   t.end();
 });
 
-test('#emit dispatches a custom event with the supplied data', t => {
+test('#emit dispatches a custom event with the supplied data', (t) => {
   const root = document.createElement('div');
   const f = new FakeComponent(root);
   const handler = td.func('eventHandler');
   let evt = null;
-  td.when(handler(td.matchers.isA(Object))).thenDo(evt_ => {
+  td.when(handler(td.matchers.isA(Object))).thenDo((evt_) => {
     evt = evt_;
   });
   const data = {evtData: true};

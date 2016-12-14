@@ -39,7 +39,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       registerActionClickHandler: (/* handler: EventListener */) => {},
       deregisterActionClickHandler: (/* handler: EventListener */) => {},
       registerTransitionEndHandler: (/* handler: EventListener */) => {},
-      deregisterTransitionEndHandler: (/* handler: EventListener */) => {}
+      deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
     };
   }
 

@@ -26,7 +26,7 @@ export const cssClasses = {
   ANIM_CHECKED_UNCHECKED: `${ANIM}-checked-unchecked`,
   ANIM_CHECKED_INDETERMINATE: `${ANIM}-checked-indeterminate`,
   ANIM_INDETERMINATE_CHECKED: `${ANIM}-indeterminate-checked`,
-  ANIM_INDETERMINATE_UNCHECKED: `${ANIM}-indeterminate-unchecked`
+  ANIM_INDETERMINATE_UNCHECKED: `${ANIM}-indeterminate-unchecked`,
 };
 
 export const strings = {
@@ -42,9 +42,9 @@ export const strings = {
   TRANSITION_STATE_INIT: 'init',
   TRANSITION_STATE_CHECKED: 'checked',
   TRANSITION_STATE_UNCHECKED: 'unchecked',
-  TRANSITION_STATE_INDETERMINATE: 'indeterminate'
+  TRANSITION_STATE_INDETERMINATE: 'indeterminate',
 };
 
 export const numbers = {
-  ANIM_END_LATCH_MS: 100
+  ANIM_END_LATCH_MS: 100,
 };

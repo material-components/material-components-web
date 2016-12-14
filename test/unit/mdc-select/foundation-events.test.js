@@ -30,12 +30,12 @@ function setupTest() {
   td.when(mockAdapter.getTextForOptionAtIndex(td.matchers.isA(Number))).thenReturn('text');
   td.when(mockAdapter.create2dRenderingContext()).thenReturn({
     font: '',
-    measureText: () => ({width: 100})
+    measureText: () => ({width: 100}),
   });
   td.when(mockAdapter.getComputedStyleValue('font')).thenReturn('16px Times');
   td.when(mockAdapter.computeBoundingRect()).thenReturn({
     left: 100,
-    top: 100
+    top: 100,
   });
   td.when(mockAdapter.getWindowInnerHeight()).thenReturn(500);
   td.when(mockAdapter.getMenuElOffsetHeight()).thenReturn(100);
@@ -50,7 +50,7 @@ function createEvent(data) {
   return Object.assign({preventDefault: td.func('.preventDefault')}, data);
 }
 
-test('on click opens the menu', t => {
+test('on click opens the menu', (t) => {
   const {mockAdapter, handlers} = setupTest();
   handlers.click(createEvent());
   t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.OPEN)), 'adds the open class');
@@ -60,7 +60,7 @@ test('on click opens the menu', t => {
   t.end();
 });
 
-test('on click opens the menu focused at the selected index, if any', t => {
+test('on click opens the menu focused at the selected index, if any', (t) => {
   const {foundation, mockAdapter, handlers} = setupTest();
   foundation.setSelectedIndex(1);
   handlers.click(createEvent());
@@ -68,7 +68,7 @@ test('on click opens the menu focused at the selected index, if any', t => {
   t.end();
 });
 
-test('on click cancels the event to prevent it from propagating', t => {
+test('on click cancels the event to prevent it from propagating', (t) => {
   const {handlers} = setupTest();
   const evt = createEvent();
   handlers.click(evt);
@@ -76,7 +76,7 @@ test('on click cancels the event to prevent it from propagating', t => {
   t.end();
 });
 
-test('on ArrowUp keydown on the select itself opens the menu', t => {
+test('on ArrowUp keydown on the select itself opens the menu', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'ArrowUp', eventPhase: Event.AT_TARGET});
   handlers.keydown(evt);
@@ -88,7 +88,7 @@ test('on ArrowUp keydown on the select itself opens the menu', t => {
   t.end();
 });
 
-test('on ArrowUp keydown works with keyCode', t => {
+test('on ArrowUp keydown works with keyCode', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({keyCode: 38, eventPhase: Event.AT_TARGET});
   handlers.keydown(evt);
@@ -96,7 +96,7 @@ test('on ArrowUp keydown works with keyCode', t => {
   t.end();
 });
 
-test('on ArrowUp keydown does not open the menu on bubbled events', t => {
+test('on ArrowUp keydown does not open the menu on bubbled events', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'ArrowUp', eventPhase: Event.BUBBLING_PHASE});
   handlers.keydown(evt);
@@ -104,7 +104,7 @@ test('on ArrowUp keydown does not open the menu on bubbled events', t => {
   t.end();
 });
 
-test('on ArrowDown keydown on the select itself opens the menu', t => {
+test('on ArrowDown keydown on the select itself opens the menu', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'ArrowDown', eventPhase: Event.AT_TARGET});
   handlers.keydown(evt);
@@ -116,7 +116,7 @@ test('on ArrowDown keydown on the select itself opens the menu', t => {
   t.end();
 });
 
-test('on ArrowDown keydown works with keyCode', t => {
+test('on ArrowDown keydown works with keyCode', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({keyCode: 40, eventPhase: Event.AT_TARGET});
   handlers.keydown(evt);
@@ -124,7 +124,7 @@ test('on ArrowDown keydown works with keyCode', t => {
   t.end();
 });
 
-test('on ArrowDown keydown does not open the menu on bubbled events', t => {
+test('on ArrowDown keydown does not open the menu on bubbled events', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'ArrowDown', eventPhase: Event.BUBBLING_PHASE});
   handlers.keydown(evt);
@@ -132,7 +132,7 @@ test('on ArrowDown keydown does not open the menu on bubbled events', t => {
   t.end();
 });
 
-test('on Space keydown prevents default to prevent page from scrolling', t => {
+test('on Space keydown prevents default to prevent page from scrolling', (t) => {
   const {handlers} = setupTest();
   const evt = createEvent({key: 'Space', eventPhase: Event.AT_TARGET});
   handlers.keydown(evt);
@@ -140,7 +140,7 @@ test('on Space keydown prevents default to prevent page from scrolling', t => {
   t.end();
 });
 
-test('on Space keydown works with keyCode', t => {
+test('on Space keydown works with keyCode', (t) => {
   const {handlers} = setupTest();
   const evt = createEvent({keyCode: 32, eventPhase: Event.AT_TARGET});
   handlers.keydown(evt);
@@ -148,7 +148,7 @@ test('on Space keydown works with keyCode', t => {
   t.end();
 });
 
-test('on Space keyup on the select itself opens the menu', t => {
+test('on Space keyup on the select itself opens the menu', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'Space', eventPhase: Event.AT_TARGET});
   handlers.keyup(evt);
@@ -160,7 +160,7 @@ test('on Space keyup on the select itself opens the menu', t => {
   t.end();
 });
 
-test('on Space keyup works with keyCode', t => {
+test('on Space keyup works with keyCode', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({keyCode: 32, eventPhase: Event.AT_TARGET});
   handlers.keyup(evt);
@@ -168,7 +168,7 @@ test('on Space keyup works with keyCode', t => {
   t.end();
 });
 
-test('on Space keyup does not open the menu on bubbled events', t => {
+test('on Space keyup does not open the menu on bubbled events', (t) => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'Space', eventPhase: Event.BUBBLING_PHASE});
   handlers.keydown(evt);
@@ -176,7 +176,7 @@ test('on Space keyup does not open the menu on bubbled events', t => {
   t.end();
 });
 
-test('on MDCSimpleMenu:selected updates the selected index to that given by the event', t => {
+test('on MDCSimpleMenu:selected updates the selected index to that given by the event', (t) => {
   const {foundation, menuHandlers} = setupTest();
   const selected = menuHandlers['MDCSimpleMenu:selected'];
   selected(createEvent({detail: {index: 1}}));
@@ -184,7 +184,7 @@ test('on MDCSimpleMenu:selected updates the selected index to that given by the 
   t.end();
 });
 
-test('on MDCSimpleMenu:selected fires a change event', t => {
+test('on MDCSimpleMenu:selected fires a change event', (t) => {
   const {mockAdapter, menuHandlers} = setupTest();
   const selected = menuHandlers['MDCSimpleMenu:selected'];
   selected(createEvent({detail: {index: 1}}));
@@ -192,7 +192,7 @@ test('on MDCSimpleMenu:selected fires a change event', t => {
   t.end();
 });
 
-test('on MDCSimpleMenu:selected does not fire change event if the index is already the selected index', t => {
+test('on MDCSimpleMenu:selected does not fire change event if the index is already the selected index', (t) => {
   const {foundation, mockAdapter, menuHandlers} = setupTest();
   const selected = menuHandlers['MDCSimpleMenu:selected'];
   foundation.setSelectedIndex(1);
@@ -201,7 +201,7 @@ test('on MDCSimpleMenu:selected does not fire change event if the index is alrea
   t.end();
 });
 
-test('on MDCSimpleMenu:selected closes the menu', t => {
+test('on MDCSimpleMenu:selected closes the menu', (t) => {
   const {mockAdapter, menuHandlers} = setupTest();
   const selected = menuHandlers['MDCSimpleMenu:selected'];
   selected(createEvent({detail: {index: 1}}));
@@ -209,7 +209,7 @@ test('on MDCSimpleMenu:selected closes the menu', t => {
   t.end();
 });
 
-test('on MDCSimpleMenu:selected refocuses on the select element', t => {
+test('on MDCSimpleMenu:selected refocuses on the select element', (t) => {
   const {mockAdapter, menuHandlers} = setupTest();
   const selected = menuHandlers['MDCSimpleMenu:selected'];
   selected(createEvent({detail: {index: 1}}));
@@ -217,7 +217,7 @@ test('on MDCSimpleMenu:selected refocuses on the select element', t => {
   t.end();
 });
 
-test('on MDCSimpleMenu:cancel closes the menu', t => {
+test('on MDCSimpleMenu:cancel closes the menu', (t) => {
   const {mockAdapter, menuHandlers} = setupTest();
   const cancel = menuHandlers['MDCSimpleMenu:cancel'];
   cancel(createEvent());
@@ -225,7 +225,7 @@ test('on MDCSimpleMenu:cancel closes the menu', t => {
   t.end();
 });
 
-test('on MDCSimpleMenu:cancel re-focuses the select element', t => {
+test('on MDCSimpleMenu:cancel re-focuses the select element', (t) => {
   const {mockAdapter, menuHandlers} = setupTest();
   const cancel = menuHandlers['MDCSimpleMenu:cancel'];
   cancel(createEvent());
@@ -234,7 +234,7 @@ test('on MDCSimpleMenu:cancel re-focuses the select element', t => {
 });
 
 // NOTE: For purposes of brevity, positioning tests are only done for the click handler.
-test('when opened the select positions the menu such that the selected option is over the select', t => {
+test('when opened the select positions the menu such that the selected option is over the select', (t) => {
   const {foundation, mockAdapter, handlers} = setupTest();
   const mockLocation = mockAdapter.computeBoundingRect();
   foundation.setSelectedIndex(1);
@@ -246,7 +246,7 @@ test('when opened the select positions the menu such that the selected option is
   t.end();
 });
 
-test('when opened sets the transform-origin y-coord to be the offset top of the selected item', t => {
+test('when opened sets the transform-origin y-coord to be the offset top of the selected item', (t) => {
   const {foundation, mockAdapter, handlers} = setupTest();
   foundation.setSelectedIndex(1);
   td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(20);
@@ -257,7 +257,7 @@ test('when opened sets the transform-origin y-coord to be the offset top of the 
 });
 
 test('when opened clamps the menu position to the top of the window if it would be ' +
-     'positioned above the window', t => {
+     'positioned above the window', (t) => {
   const {foundation, mockAdapter, handlers} = setupTest();
   const mockLocation = mockAdapter.computeBoundingRect();
   foundation.setSelectedIndex(1);
@@ -270,7 +270,7 @@ test('when opened clamps the menu position to the top of the window if it would 
 });
 
 test('when opened clamps the menu position to the bottom of the window if it would be ' +
-          'positioned below the window', t => {
+          'positioned below the window', (t) => {
   const {foundation, mockAdapter, handlers} = setupTest();
   const mockInnerHeight = mockAdapter.getWindowInnerHeight();
   const mockMenuHeight = mockAdapter.getMenuElOffsetHeight();
@@ -278,7 +278,7 @@ test('when opened clamps the menu position to the bottom of the window if it wou
   foundation.setSelectedIndex(1);
   td.when(mockAdapter.computeBoundingRect()).thenReturn({
     left: 100,
-    top: mockInnerHeight
+    top: mockInnerHeight,
   });
   td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(20);
   handlers.click(createEvent());
@@ -292,7 +292,7 @@ test('when opened clamps the menu position to the bottom of the window if it wou
 });
 
 test('when opened clamps the menu position to the top of the window if it cannot ' +
-          'find a suitable menu position', t => {
+          'find a suitable menu position', (t) => {
   const {foundation, mockAdapter, handlers} = setupTest();
   const mockMenuHeight = mockAdapter.getMenuElOffsetHeight();
 

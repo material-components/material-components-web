@@ -62,16 +62,16 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
       focusItemAtIndex: (/* index: number */) => {},
       isRtl: () => /* boolean */ false,
       setTransformOrigin: (/* origin: string */) => {},
-      setPosition: (/* position: { top: string, right: string, bottom: string, left: string } */) => {}
+      setPosition: (/* position: { top: string, right: string, bottom: string, left: string } */) => {},
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCSimpleMenuFoundation.defaultAdapter, adapter));
-    this.clickHandler_ = evt => this.handlePossibleSelected_(evt);
-    this.keydownHandler_ = evt => this.handleKeyboardDown_(evt);
-    this.keyupHandler_ = evt => this.handleKeyboardUp_(evt);
-    this.documentClickHandler_ = evt => {
+    this.clickHandler_ = (evt) => this.handlePossibleSelected_(evt);
+    this.keydownHandler_ = (evt) => this.handleKeyboardDown_(evt);
+    this.keyupHandler_ = (evt) => this.handleKeyboardUp_(evt);
+    this.documentClickHandler_ = (evt) => {
       this.adapter_.notifyCancel();
       this.close();
     };
@@ -353,7 +353,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
 
     const position = {
       [horizontal]: '0',
-      [vertical]: '0'
+      [vertical]: '0',
     };
 
     this.adapter_.setTransformOrigin(`${vertical} ${horizontal}`);

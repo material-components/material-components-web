@@ -35,13 +35,13 @@ function setupTest({useInnerIconElement = false} = {}) {
   return {root, component};
 }
 
-test('attachTo initializes and returns a MDCIconToggle instance', t => {
+test('attachTo initializes and returns a MDCIconToggle instance', (t) => {
   t.true(MDCIconToggle.attachTo(document.createElement('i')) instanceof MDCIconToggle);
   t.end();
 });
 
 if (supportsCssVariables(window)) {
-  test('#constructor initializes the ripple on the root element', t => {
+  test('#constructor initializes the ripple on the root element', (t) => {
     const raf = createMockRaf();
     const {root} = setupTest();
     raf.flush();
@@ -50,7 +50,7 @@ if (supportsCssVariables(window)) {
     t.end();
   });
 
-  test('#destroy removes the ripple', t => {
+  test('#destroy removes the ripple', (t) => {
     const raf = createMockRaf();
     const {root, component} = setupTest();
     raf.flush();
@@ -62,7 +62,7 @@ if (supportsCssVariables(window)) {
   });
 }
 
-test('set/get on', t => {
+test('set/get on', (t) => {
   const {root, component} = setupTest();
   component.on = true;
   t.true(component.on);
@@ -74,7 +74,7 @@ test('set/get on', t => {
   t.end();
 });
 
-test('set/get disabled', t => {
+test('set/get disabled', (t) => {
   const {root, component} = setupTest();
   component.disabled = true;
   t.true(component.disabled);
@@ -88,7 +88,7 @@ test('set/get disabled', t => {
   t.end();
 });
 
-test('#refreshToggleData proxies to foundation.refreshToggleData()', t => {
+test('#refreshToggleData proxies to foundation.refreshToggleData()', (t) => {
   const root = document.createElement('i');
   const foundation = td.object(MDCIconToggleFoundation);
   const component = new MDCIconToggle(root, foundation);
@@ -97,35 +97,35 @@ test('#refreshToggleData proxies to foundation.refreshToggleData()', t => {
   t.end();
 });
 
-test('intially set to on if root has aria-pressed=true', t => {
+test('intially set to on if root has aria-pressed=true', (t) => {
   const root = bel`<i class="mdc-icon-toggle" aria-pressed="true"></i>`;
   const component = new MDCIconToggle(root);
   t.true(component.on);
   t.end();
 });
 
-test('intially set to disabled if root has aria-disabled=true', t => {
+test('intially set to disabled if root has aria-disabled=true', (t) => {
   const root = bel`<i class="mdc-icon-toggle" aria-disabled="true"></i>`;
   const component = new MDCIconToggle(root);
   t.true(component.disabled);
   t.end();
 });
 
-test('#adapter.addClass adds a class to the root element', t => {
+test('#adapter.addClass adds a class to the root element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   t.true(root.classList.contains('foo'));
   t.end();
 });
 
-test('#adapter.addClass adds a class to the inner icon element when used', t => {
+test('#adapter.addClass adds a class to the inner icon element when used', (t) => {
   const {root, component} = setupTest({useInnerIconElement: true});
   component.getDefaultFoundation().adapter_.addClass('foo');
   t.true(root.querySelector('#icon').classList.contains('foo'));
   t.end();
 });
 
-test('#adapter.removeClass removes a class from the root element', t => {
+test('#adapter.removeClass removes a class from the root element', (t) => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
@@ -133,7 +133,7 @@ test('#adapter.removeClass removes a class from the root element', t => {
   t.end();
 });
 
-test('#adapter.removeClass adds a class to the inner icon element when used', t => {
+test('#adapter.removeClass adds a class to the inner icon element when used', (t) => {
   const {root, component} = setupTest({useInnerIconElement: true});
   root.querySelector('#icon').classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
@@ -141,7 +141,7 @@ test('#adapter.removeClass adds a class to the inner icon element when used', t 
   t.end();
 });
 
-test('#adapter.registerInteractionHandler adds an event listener for (type, handler)', t => {
+test('#adapter.registerInteractionHandler adds an event listener for (type, handler)', (t) => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const handler = td.func('clickHandler');
@@ -152,7 +152,7 @@ test('#adapter.registerInteractionHandler adds an event listener for (type, hand
   t.end();
 });
 
-test('#adapter.deregisterInteractionHandler removes an event listener for (type, hander)', t => {
+test('#adapter.deregisterInteractionHandler removes an event listener for (type, hander)', (t) => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const handler = td.func('clickHandler');
@@ -165,28 +165,28 @@ test('#adapter.deregisterInteractionHandler removes an event listener for (type,
   t.end();
 });
 
-test('#adapter.setText sets the text content of the root element', t => {
+test('#adapter.setText sets the text content of the root element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setText('foo');
   t.equal(root.textContent, 'foo');
   t.end();
 });
 
-test('#adapter.setText sets the text content of the inner icon element when used', t => {
+test('#adapter.setText sets the text content of the inner icon element when used', (t) => {
   const {root, component} = setupTest({useInnerIconElement: true});
   component.getDefaultFoundation().adapter_.setText('foo');
   t.equal(root.querySelector('#icon').textContent, 'foo');
   t.end();
 });
 
-test('#adapter.getTabIndex returns the tabIndex of the element', t => {
+test('#adapter.getTabIndex returns the tabIndex of the element', (t) => {
   const {root, component} = setupTest();
   root.tabIndex = 4;
   t.equal(component.getDefaultFoundation().adapter_.getTabIndex(), 4);
   t.end();
 });
 
-test('#adapter.setTabIndex sets the tabIndex of the element', t => {
+test('#adapter.setTabIndex sets the tabIndex of the element', (t) => {
   const {root, component} = setupTest();
   root.tabIndex = 4;
   component.getDefaultFoundation().adapter_.setTabIndex(2);
@@ -194,21 +194,21 @@ test('#adapter.setTabIndex sets the tabIndex of the element', t => {
   t.end();
 });
 
-test('#adapter.getAttr retrieves an attribute from the root element', t => {
+test('#adapter.getAttr retrieves an attribute from the root element', (t) => {
   const {root, component} = setupTest();
   root.setAttribute('aria-label', 'hello');
   t.equal(component.getDefaultFoundation().adapter_.getAttr('aria-label'), 'hello');
   t.end();
 });
 
-test('#adapter.setAttr sets an attribute on the root element', t => {
+test('#adapter.setAttr sets an attribute on the root element', (t) => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setAttr('aria-label', 'hello');
   t.equal(root.getAttribute('aria-label'), 'hello');
   t.end();
 });
 
-test('#adapter.rmAttr removes an attribute from the root element', t => {
+test('#adapter.rmAttr removes an attribute from the root element', (t) => {
   const {root, component} = setupTest();
   root.setAttribute('aria-label', 'hello');
   component.getDefaultFoundation().adapter_.rmAttr('aria-label');
@@ -216,7 +216,7 @@ test('#adapter.rmAttr removes an attribute from the root element', t => {
   t.end();
 });
 
-test('#adapter.notifyChange broadcasts a "MDCIconToggle:change" custom event', t => {
+test('#adapter.notifyChange broadcasts a "MDCIconToggle:change" custom event', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('custom event handler');
   root.addEventListener('MDCIconToggle:change', handler);
