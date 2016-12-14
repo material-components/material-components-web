@@ -56,6 +56,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
     &::placeholder {
       @include mdc-theme-prop(color, text-hint-on-light);
+
       transition: mdc-textfield-transition(color);
       opacity: 1;
     }
@@ -120,7 +121,6 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   position: relative;
   box-sizing: border-box;
   align-items: flex-end;
-
   margin-top: 16px;
 
   &:not(.mdc-textfield--multiline) {
@@ -152,6 +152,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 .mdc-textfield--focused {
   @mixin mdc-textfield-after-styles {
     @include mdc-theme-prop(background-color, primary);
+
     transform: translateY(100%) scaleY(2);
     transition: mdc-textfield-transition(transform);
   }
@@ -221,6 +222,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   .mdc-textfield__input {
     padding-bottom: 7px;
   }
+
   border-bottom: 1px dotted $mdc-textfield-disabled-border-on-light;
 
   @include mdc-theme-dark(".mdc-textfield", true) {

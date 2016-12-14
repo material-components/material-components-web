@@ -78,6 +78,7 @@
   &__text {
     @include mdc-typography(body1);
     @include mdc-rtl-reflexive-box(margin, right, auto, ".mdc-snackbar");
+
     display: flex;
     align-items: center;
     height: 48px;
@@ -103,13 +104,13 @@
     min-width: auto;
     height: inherit;
     transition: mdc-animation-exit(opacity, .3s);
-
     opacity: 0;
     visibility: hidden;
 
     &::-moz-focus-inner {
       border: 0;
     }
+
     &:not([aria-hidden]) {
       visibility: inherit;
     }

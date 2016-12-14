@@ -33,6 +33,7 @@
 
   // Resets for <select> element
   appearance: none;
+
   &::-ms-expand {
     display: none;
   }
@@ -44,7 +45,6 @@
   transition:
     mdc-animation-exit(border-bottom-color, 150ms),
     mdc-animation-exit(background-color, 150ms);
-
   border: none;
   border-bottom: 1px solid rgba(black, .12);
   border-radius: 0;
@@ -60,6 +60,7 @@
 
   &:focus {
     @include mdc-theme-prop(border-bottom-color, primary);
+
     outline: none;
     background-color: rgba(black, .06);
   }
@@ -71,10 +72,12 @@
   @include mdc-theme-dark {
     @include mdc-theme-prop(color, text-primary-on-dark);
     @include mdc-select-dd-arrow-svg-bg_(ffffff);
+
     border-bottom: 1px solid rgba(white, .12);
 
     &:focus {
       @include mdc-theme-prop(border-bottom-color, primary);
+
       background-color: rgba(white, .09);
     }
   }
@@ -109,6 +112,7 @@
 .mdc-select[disabled] {
   @include mdc-theme-prop(color, text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
+
   border-bottom-style: dotted;
   cursor: default;
   pointer-events: none;
@@ -118,6 +122,7 @@
   @include mdc-theme-dark(".mdc-select", true) {
     @include mdc-theme-prop(color, text-disabled-on-dark);
     @include mdc-select-dd-arrow-svg-bg_(ffffff, .38);
+
     border-bottom: 1px dotted rgba(white, .38);
   }
 }
@@ -149,6 +154,7 @@
 
   .mdc-list-group {
     @include mdc-theme-prop(color, text-hint-on-light);
+
     font-weight: normal;
 
     .mdc-list-item {
