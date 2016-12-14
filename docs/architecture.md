@@ -2,7 +2,7 @@
 
 The following is an outline of the MDC-Web architecture. Many of the architectural decisions we made were in response to the problems and feedback the team has received around Material Design Lite (MDL), the predecessor to MDC-Web. The goals of the MDC-Web architecture are to not only provide an easy way to provide a material UI for static websites, but for _dynamic websites and frameworks as well_. Essentially, _the goal of MDC-Web is to be the canonical material design implementation for the web platform_. We want MDC-Web to be:
 
-* Accurate to the [material design spec](https://material.google.com/) with the highest possible fidelity, with graceful degredation in situations where this cannot be achieved.
+* Accurate to the [material design spec](https://material.google.com/) with the highest possible fidelity, with graceful degradation in situations where this cannot be achieved.
 * Plug-and-play for people who just want to add styles to a static site, just like [Material Design Lite](https://getmdl.io).
 * Modular and un-invasive for developers who want to create more complex, dynamic sites using Material Design.
 * Easy to integrate into third-party libraries and frameworks, with minimal duplication of effort. There should not be N different material design implementations for N different frameworks. We strive for _one_ universal implementation across the web, and want to facilitate library developers who want material design components for their frameworks.
@@ -11,7 +11,7 @@ The following is an outline of the MDC-Web architecture. Many of the architectur
 
 The biggest difference between MDC-Web and other Material Design implementations is how we handle component lifecycles and initialization. In MDC-Web _there is no DOM-wide traversal, no implicit upgrading/downgrading, and no automatic rendering of DOM elements_. All rendering of DOM is left up to the client. In this way, it is very similar to [bootstrap](http://getbootstrap.com). The DOM structure of a component is considered part of its "public API"; any updates to the DOM structure will be considered a breaking change.
 
-In fact, for a lot of components - such as [cards](../packages/mdc-card) - no Javascript is needed _at all_. Javascript is only needed for components which provide advanced interaction patterns (e.g. things with ripples), and dynamic functionality (form controls, etc.).
+In fact, for a lot of components - such as [cards](../packages/mdc-card) - no Javascript is needed _at all_. Javascript is only needed for components which provide advanced interaction patterns (e.g. elements with ripples), and dynamic functionality (form controls, etc.).
 
 ## Modular UI Components
 
