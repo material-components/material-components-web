@@ -22,6 +22,7 @@
 
 .mdc-icon-toggle {
   @include mdc-theme-prop(color, text-secondary-on-light);
+
   display: flex;
   position: relative;
   box-sizing: border-box;
@@ -41,7 +42,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-
     transform: scale(0, 0);
     transition: mdc-animation-exit(opacity, 80ms), mdc-animation-exit(transform, 80ms);
     border-radius: 50%;
@@ -83,6 +83,7 @@
 
 .mdc-icon-toggle--disabled {
   @include mdc-theme-prop(color, text-disabled-on-light);
+
   pointer-events: none;
 
   @include mdc-theme-dark(".mdc-icon-toggle", true) {

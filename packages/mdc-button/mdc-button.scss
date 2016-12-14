@@ -25,6 +25,7 @@
 .mdc-button {
   @include mdc-typography(body2);
   @include mdc-theme-prop(color, text-primary-on-light);
+
   display: inline-block;
   position: relative;
   min-width: 64px;
@@ -185,6 +186,7 @@
   fieldset:disabled &--raised,
   &--raised:disabled {
     @include mdc-elevation(0);
+
     background-color: rgba(0, 0, 0, .12);
     pointer-events: none;
 

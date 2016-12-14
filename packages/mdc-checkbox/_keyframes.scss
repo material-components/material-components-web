@@ -100,6 +100,7 @@
 @keyframes mdc-checkbox-checked-unchecked-checkmark-path {
   from {
     @include mdc-animation-fast-out-linear-in;
+
     opacity: 1;
     stroke-dashoffset: 0;
   }

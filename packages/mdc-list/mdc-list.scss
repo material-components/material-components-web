@@ -127,6 +127,7 @@
 
     &__start-detail {
       @include mdc-list-start-detail-size_(40px);
+
       border-radius: 50%;
     }
   }
@@ -168,6 +169,7 @@
   $mdc-list-divider-inset-amt: /* text offset */ 72px - /* padding offset */ 16px;
 
   @include mdc-rtl-reflexive-box(margin, left, $mdc-list-divider-inset-amt, ".mdc-list-group");
+
   width: calc(100% - #{$mdc-list-divider-inset-amt});
 }
 

@@ -63,7 +63,6 @@
 @mixin mdc-elevation-transition(
   $duration: $mdc-elevation-transition-duration,
   $easing: $mdc-elevation-transition-timing-function) {
-
   transition: mdc-elevation-transition-rule($duration, $easing);
   will-change: $mdc-elevation-property;
 }

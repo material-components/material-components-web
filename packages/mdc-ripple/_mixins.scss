@@ -40,6 +40,7 @@
   --mdc-ripple-fg-unbounded-opacity-duration: 0ms;
   --mdc-ripple-fg-unbounded-transform-duration: 0ms;
   --mdc-ripple-fg-approx-xf: 0;
+
   will-change: transition, opacity;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -99,6 +100,7 @@
   @if ($pseudo) {
     &#{$pseudo} {
       @include mdc-ripple-bg-base_($config);
+
       content: "";
     }
   } @else {
@@ -153,6 +155,7 @@
   @if ($pseudo) {
     &#{$pseudo} {
       @include mdc-ripple-fg-base_($config);
+
       content: "";
     }
   } @else {

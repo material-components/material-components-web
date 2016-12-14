@@ -43,6 +43,7 @@
   border-radius: 2px;
 
   @include mdc-checkbox-cover-element;
+
   box-sizing: border-box;
   pointer-events: none;
 }
@@ -67,7 +68,6 @@
     transition:
       mdc-checkbox-transition-exit(background-color),
       mdc-checkbox-transition-exit(border-color);
-
     border: $mdc-checkbox-border-width solid $mdc-checkbox-border-color;
     background-color: transparent;
     will-change: background-color, border-color;
