@@ -60,7 +60,7 @@ function cpAsset(asset) {
   return cpFile(asset, destDir).then(() => console.log(`cp ${asset} -> ${destDir}`));
 }
 
-Promise.all(globSync('build/*.{css,js}').map(cpAsset)).catch(err => {
+Promise.all(globSync('build/*.{css,js}').map(cpAsset)).catch((err) => {
   console.error(`Error encountered copying assets: ${err}`);
   process.exit(1);
 });

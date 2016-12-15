@@ -61,7 +61,7 @@ const PKGS_PATH = path.resolve(__dirname, '../packages');
 const VersionType = {
   MAJOR: 'major',
   MINOR: 'minor',
-  PATCH: 'patch'
+  PATCH: 'patch',
 };
 
 const updatedPkgs = getUpdatedPkgs();
@@ -74,17 +74,17 @@ const commitMatches = childProcess
   .execSync(GIT_LOG_CMD)
   .toString()
   .split(MAGICAL_DELIMITER)
-  .map(c => {
+  .map((c) => {
     const trimmedCommit = c.trim();
     const m = trimmedCommit.match(COMMIT_MSG_RE);
     return m && {
       commit: trimmedCommit,
       type: m[1],
       scope: m[2],
-      hasBreakingChange: trimmedCommit.split('\n').some(l => BREAKING_CHANGE_RE.test(l))
+      hasBreakingChange: trimmedCommit.split('\n').some((l) => BREAKING_CHANGE_RE.test(l)),
     };
   })
-  .filter(info => Boolean(info) && affectsPackage(info.scope));
+  .filter((info) => Boolean(info) && affectsPackage(info.scope));
 const componentPkgs = updatedPkgs.filter(({name}) => name !== 'material-components-web');
 const mdcPkg = updatedPkgs.find(({name}) => name === 'material-components-web');
 const newPkgVersions = collectNewPkgVersions(componentPkgs, commitMatches);
@@ -92,7 +92,7 @@ const newMDCVersion = {
   name: 'material-components-web',
   version: collectMDCVersion(mdcPkg, newPkgVersions),
   changeType: 'N/A',
-  causedByCommit: 'N/A'
+  causedByCommit: 'N/A',
 };
 
 const allPkgVersions = [newMDCVersion].concat(newPkgVersions);
@@ -104,13 +104,13 @@ function affectsPackage(commitScope) {
 }
 
 function collectNewPkgVersions(updatedPkgs, commitInfos) {
-  return updatedPkgs.map(p => {
+  return updatedPkgs.map((p) => {
     const {version, changeType, causedByCommit} = determineVersion(p, commitInfos);
     return {
       name: p.name,
       version,
       changeType,
-      causedByCommit
+      causedByCommit,
     };
   });
 }
@@ -126,7 +126,7 @@ function determineVersion(pkg, commitInfos) {
   return commitInfos.reduce(pickBestVersionInfo(pkg), {
     version: currentVersion,
     changeType: '',
-    causedByCommit: ''
+    causedByCommit: '',
   });
 }
 
@@ -156,7 +156,7 @@ function pickBestVersionInfo(pkg) {
     return {
       version: possibleNewVersion,
       changeType: possibleNewChangeType,
-      causedByCommit: commitInfo.commit
+      causedByCommit: commitInfo.commit,
     };
   };
 }
@@ -172,7 +172,7 @@ function collectMDCVersion(mdcPkg, newPkgVersions) {
   const versionRanks = {
     [VersionType.PATCH]: 0,
     [VersionType.MINOR]: 1,
-    [VersionType.MAJOR]: 2
+    [VersionType.MAJOR]: 2,
   };
   const overallChangeType = [...changeTypes]
     .sort((ct1, ct2) => versionRanks[ct1] - versionRanks[ct2])
@@ -184,7 +184,7 @@ function writeSummary(pkgVersions, performWrite) {
   const title = 'New Package Versions';
   const headers = ['Package', 'Version', 'Change Type', 'Associated Commit Subject'];
   const rows = pkgVersions.map(({name, version, changeType, causedByCommit}) => [
-    name, version, changeType, causedByCommit.split('\n').shift()
+    name, version, changeType, causedByCommit.split('\n').shift(),
   ]);
 
   performWrite(title, headers, rows);
@@ -193,7 +193,7 @@ function writeSummary(pkgVersions, performWrite) {
 function writeSummaryToScreen(pkgVersions) {
   writeSummary(pkgVersions, (title, headers, rows) => {
     const table = new CliTable({
-      head: headers
+      head: headers,
     });
     table.push(...rows);
     console.log(`*** ${title} ***`);
@@ -206,7 +206,7 @@ function writeSummaryToFile(pkgVersions) {
     const table = AsciiTable.factory({
       title,
       heading: headers,
-      rows
+      rows,
     });
     const outFile = path.join(process.cwd(), '.new-versions.log');
     fs.writeFileSync(outFile, table.toString());

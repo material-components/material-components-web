@@ -43,7 +43,7 @@ module.exports = function() {
     get: () => null,
     set: () => {},
     enumerable: true,
-    configurable: true
+    configurable: true,
   });
 
   const updates = collector.getUpdates();
@@ -51,5 +51,5 @@ module.exports = function() {
   Object.defineProperty(progressBar, 'bar', origBarDescriptor);
   lernaLogger.info = origInfoFn;
 
-  return updates.map(u => u.package);
+  return updates.map((u) => u.package);
 };
