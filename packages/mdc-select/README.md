@@ -12,7 +12,9 @@ in conjunction with the browser's native element. Both are fully accessible, and
 
 ## Installation
 
-> NOTE: Installation will be available via npm post-alpha.
+```
+npm install --save @material/select
+```
 
 ## Usage
 

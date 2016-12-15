@@ -1,9 +1,10 @@
 # Contributing to Material Components Web (MDC-Web)
 
-We'd love for you to contribute to our source code and to make Material Components Web even better than it is today! Here are the guidelines we'd like you to follow:
+We'd love for you to contribute and make Material Components for the web even better than it is today!
+Here are the guidelines we'd like you to follow:
 
 
-- [Code of Conduct](#code-of-conduct)
+- [General Contributing Guidelines](#general-contributing-guidelines)
 - [Development Process](#development-process)
   - [Setting up your development environment](#setting-up-your-development-environment)
   - [Building Components](#building-components)
@@ -12,17 +13,13 @@ We'd love for you to contribute to our source code and to make Material Componen
   - [Linting / Testing / Coverage Enforcement](#linting--testing--coverage-enforcement)
     - [Running Tests across browsers](#running-tests-across-browsers)
   - [Coding Style](#coding-style)
-  - [Signing the CLA](#signing-the-cla)
   - [Submitting Pull Requests](#submitting-pull-requests)
   - [Releasing MDC-Web](#releasing-mdc-web)
-- [Questions / Problems](#questions--problems)
-- [Issues / Bugs](#issues--bugs)
 - ["What's the core team up to?"](#whats-the-core-team-up-to)
 
-## Code of Conduct
+## General Contributing Guidelines
 
-We follow the [Material Components Code of Conduct](https://github.com/material-components/material-components/blob/develop/CONDUCT.md), and expect the same from all of our
-community members.
+The Material Components contributing policies and procedures can be found in the main Material Components documentation repository’s [contributing page](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md).
 
 ## Development Process
 
@@ -103,19 +100,9 @@ Alternatively, you can run `npm run test:watch` and manually open browsers / use
 
 Our entire coding style is enforced automatically through the use of linters. Check out our [eslint config](https://github.com/material-components/material-components-web/blob/master/.eslintrc.yaml) (heavily influenced by [Google's Javascript Styleguide][js-style-guide]) as well as our [stylelint config][css-style-guide] (heavily annotated, with justifications for each rule) for further details.
 
-### Signing the CLA
-
-Please sign our Contributor License Agreement (CLA) before sending pull requests. For any code
-changes to be accepted, the CLA must be signed. It's a quick process, we promise!
-
-* For individuals we have a [simple click-through form][individual-cla].
-* For corporations we'll need you to
-  [print, sign and one of scan+email, fax or mail the form][corporate-cla].
-
-
 ### Submitting Pull Requests
 
-We prefer small, incremental changes over large, sweeping ones, so please try to adhere to this when submitting PRs. Also, make sure you're following our commit message conventions (which are the same as [angular's](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit)); our `commit-msg` hook should automatically enforce this. We also support [commitizen](https://www.npmjs.com/package/commitizen), which you can
+When submitting PRs, make sure you're following our commit message conventions (which are the same as [angular's](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit)); our `commit-msg` hook should automatically enforce this. We also support [commitizen](https://www.npmjs.com/package/commitizen), which you can
 use to auto-format commit messages for you.
 
 If you've done some experimental work on your branch/fork and committed these via `git commit --no-verify`, you can rebase them into one correctly-formatted commit before submitting.
@@ -123,10 +110,6 @@ If you've done some experimental work on your branch/fork and committed these vi
 Finally, it helps to make sure that your branch/fork is up to date with what's currently on master. You can ensure this by running `git pull --rebase origin master` on your branch.
 
 > **NOTE**: Please do _not merge_ master into your branch. _Always_ `pull --rebase` instead. This ensures a linear history by always putting the work you've done after the work that's already on master, regardless of the date in which those commits were made.
-
-To submit code, open a PR for your fork/branch against `master`.
-
-Once you've submitted a PR, it'll be assigned to a core team member for review. If all CI tests pass and you get a `LGTM` from a reviewer, your code will be merged into master.
 
 ### Releasing MDC-Web
 
@@ -148,28 +131,6 @@ To release MDC-Web, you should perform the following steps.
    current release of the overarching `material-components-web` library, and commit those changes.
 4. Push the changelog changes to master, and call it a day!
 
-## Questions / Problems
-
-If you have questions about how to use Material Components Web, please direct these to [StackOverflow][stackoverflow] and use the `material-components-web` tag.
-
-If you feel that we're missing an important bit of documentation, feel free to
-file an issue so we can help. Here's an example to get you started:
-
-```
-Component (if any):
-
-What are you trying to do or find out more about?
-
-Where have you looked?
-
-Where did you expect to find this information?
-```
-
-## Issues / Bugs
-
-If you find a bug in the source code or a mistake in the documentation, you can help us by
-submitting an issue to our [GitHub Repository][github]. Even better, you can submit a Pull Request with a fix. Before submitting issues, please ensure that you've read through our [issue template](https://github.com/material-components/material-components-web/blob/master/.github/ISSUE_TEMPLATE.md) to ensure a fast and helpful response from the maintainers.
-
 ## "What's the core team up to?"
 
 The core team maintains a [public Pivotal Tracker](https://www.pivotaltracker.com/n/projects/1664011) (**tracker** for short) which details all the items we're working on within our current two-week [iteration](https://www.agilealliance.org/glossary/iteration/). This tracker mirrors in what's in our GH issues. It is used _purely for planning and prioritization purposes, **not** for discussions or community issue filing_. That being said, it's a great place to look at the overall state of our project as well as some the big ticket issues we're working on.
@@ -177,11 +138,5 @@ The core team maintains a [public Pivotal Tracker](https://www.pivotaltracker.co
 Each tracker story contains a link to its corresponding GH issue within its description. Each GH issue present in tracker is tagged with an `in-tracker` label. This will hopefully make it easy to move between the two if so desired.
 
 
-[github]: https://github.com/material-components/material-components-web
-[individual-cla]: http://code.google.com/legal/individual-cla-v1.0.html
-[corporate-cla]: http://code.google.com/legal/corporate-cla-v1.0.html
 [js-style-guide]: https://google.github.io/styleguide/jsguide.html
 [css-style-guide]: https://github.com/material-components/material-components-web/blob/master/.stylelintrc.yaml
-[jsbin]: http://jsbin.com/
-[stackoverflow]: http://stackoverflow.com/questions/tagged/material-components-web
-[global-gitignore]: https://help.github.com/articles/ignoring-files/#create-a-global-gitignore

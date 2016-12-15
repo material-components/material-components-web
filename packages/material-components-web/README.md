@@ -5,7 +5,9 @@ sibling packages up into one comprehensive library for convenience.
 
 ## Installation
 
-> Installation via npm will be available post-alpha.
+```
+npm install --save material-components-web
+```
 
 ## Usage
 

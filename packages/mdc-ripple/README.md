@@ -44,7 +44,9 @@ Given this, it is important that you _provide gracefully degraded interaction st
 
 ## Installation
 
-> NOTE: Installation via npm will be available after our alpha release.
+```
+npm install --save @material/ripple
+```
 
 ## Usage
 

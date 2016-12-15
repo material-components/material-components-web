@@ -5,7 +5,9 @@ designed to work with any icon set.
 
 ## Installation
 
-> NOTE: Installation via npm will be available post-alpha.
+```
+npm install --save @material/icon-toggle
+```
 
 ## Usage
 

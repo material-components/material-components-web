@@ -1,9 +1,13 @@
 {
   "name": "material-components-web",
-  "description": "Production-quality UI components for the web platform",
+  "description": "Modular and customizable Material Design UI components for the web",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web"
+  },
   "dependencies": {
     "@material/animation": "^0.1.0",
     "@material/auto-init": "^0.1.0",

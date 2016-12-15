@@ -24,8 +24,9 @@ The text contrast colors are automatically calculated at the Sass level and expo
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
-
+```
+npm install --save @material/theme
+```
 
 ## Usage
 

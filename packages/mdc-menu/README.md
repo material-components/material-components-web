@@ -7,7 +7,9 @@ first render.
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
+```
+npm install --save @material/menu
+```
 
 ## Simple menu usage
 

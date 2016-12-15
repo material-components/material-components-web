@@ -6,7 +6,9 @@ that any MDC-Web component that needs RTL support leverage this package.
 
 ## Installation
 
-> Installation via npm will be available post-alpha
+```
+npm install --save @material/rtl
+```
 
 ## Usage
 
