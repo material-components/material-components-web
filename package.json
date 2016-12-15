@@ -12,7 +12,7 @@
     "fix:js": "eslint --fix packages test webpack.config.js karma.conf.js",
     "fix:css": "stylefmt -R packages",
     "fix": "npm-run-all --parallel fix:*",
-    "lint:js": "eslint packages test webpack.config.js karma.conf.js",
+    "lint:js": "eslint packages test scripts webpack.config.js karma.conf.js",
     "lint:css": "stylelint packages/**/*.scss",
     "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
