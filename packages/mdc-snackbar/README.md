@@ -6,7 +6,9 @@ It requires JavaScript the trigger the display and hide of the snackbar.
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
+```
+npm install --save @material/snackbar
+```
 
 ## Usage
 

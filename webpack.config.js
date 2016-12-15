@@ -29,7 +29,7 @@ const IS_PROD = process.env.MDC_ENV === 'production';
 
 const createBannerPlugin = () => new webpack.BannerPlugin([
   '/*!',
-  ' Material Components for web',
+  ' Material Components for the web',
   ` Copyright (c) ${new Date().getFullYear()} Google Inc.`,
   ' License: Apache-2.0',
   '*/',

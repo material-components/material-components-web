@@ -6,7 +6,9 @@ It works without JavaScript with basic functionality for all states. If you use 
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
+```
+npm install --save @material/checkbox
+```
 
 ## Usage
 

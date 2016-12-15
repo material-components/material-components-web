@@ -1,6 +1,6 @@
 # Material Components for the web
 
-Material Components for the web (MDC-Web) help developers execute [Material Design](https://www.material.io). 
+Material Components for the web (MDC-Web) help developers execute [Material Design](https://www.material.io).
 Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
 
 Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
@@ -9,18 +9,114 @@ Material Components for the web is the successor to [Material Design Lite](https
 - Best-in-class performance and adherence to the [Material Design guidelines](https://material.google.com)
 - Seamless integration with other JS frameworks and libraries
 
-## Useful Links
+## Quick start
 
-- [Developer's Guide](docs/developer.md)
-- [All Components](packages/)
-- [Demos](demos/)
-- [Framework Integration Examples](framework-examples/)
-- [Contributing](CONTRIBUTING.md)
-- [MDC-Web on Stack Overflow](https://stackoverflow.com/questions/tagged/material-components+web)
-- [Material.io](https://www.material.io) (external site)
-- [Material Design Guidelines](https://material.google.com) (external site)
+Install the library
 
-## Getting Started
+```
+npm install --save material-components-web
+```
+
+Then simply include the correct files, write some HTML, and call `mdc.autoInit()` within a closing
+`<script>` tag.
+
+```html
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <title>Material Components for the web</title>
+    <link rel="stylesheet"
+          href="node_modules/material-components-web/dist/material-components-web.css">
+  </head>
+  <body>
+    <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
+    <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
+      <input type="text" class="mdc-textfield__input" id="demo-input">
+      <label for="demo-input" class="mdc-textfield__label">Tell us how you feel!</label>
+    </div>
+    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <script>mdc.autoInit()</script>
+  </body>
+</html>
+```
+
+That's all there is to it! This is the easiest way to get up and running with Material Components
+for web. Check out our [Getting Started guide](./docs/getting-started.md) for a more in-depth
+introduction to the library.
+
+## Installing invidual components
+
+MDC-Web is modular by design. Each component lives within its own packages under the
+[@material npm scope](https://www.npmjs.com/~material).
+
+```
+npm install --save @material/button @material/card @material/textfield @material/typography
+```
+
+All our components can be found in the [packages](./packages) directory. Each component has a
+README documenting installation and usage.
+
+## Including components
+
+### Javascript
+
+If you are using a module loader such as Webpack or SystemJS to load your JS modules, you can simply
+`import` every component you need from `material-components-web` and use it as such.
+
+```js
+import {checkbox as mdcCheckbox} from 'material-components-web';
+
+const {MDCCheckbox, MDCCheckboxFoundation} = mdcCheckbox;
+// Use MDCCheckbox and/or MDCCheckboxFoundation
+```
+
+You can do the same with individual components
+
+```js
+import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
+// Use MDCCheckbox and/or MDCCheckboxFoundation
+```
+
+We also provide [UMD](http://bob.yexley.net/umd-javascript-that-runs-anywhere/) bundles for both `material-components-web` as
+well as all individual components.
+
+```js
+const {checkbox: mdcCheckbox} = require('material-components-web/dist/material-components-web');
+// Use mdcCheckbox
+
+const {MDCCheckbox, MDCCheckboxFoundation} = require('@material/checkbox/dist/mdc.checkbox');
+// Use MDCCheckbox, MDCCheckboxFoundation
+```
+
+When no module system is used, every component is added under the global `mdc` namespace. This
+occurs regardless of whether or not the entire library or the individual components are used.
+
+Every component also ships with a minified version of its UMD bundle, which can be found at
+`dist/mdc.COMPONENT.min.js`.
+
+### CSS
+
+All components which include styles provide them at `dist/mdc.COMPONENT.css`, as well as a
+complementary minified version at `dist/mdc.COMPONENT.min.css`. Note that _CSS files for a
+component's dependencies are not included within the component's CSS file_, so if you are using
+individual components you'll have to include each separately.
+
+Each component also comes with a Sass source file that can be included in your application's Sass
+
+```scss
+// Using the whole library
+@import 'material-components-web';
+
+// Using individual components / mixins
+@import '@material/checkbox';
+@import '@material/typography';
+@import '@material/elevation/mixins'; // Mixins for elevation.
+```
+
+> NOTE: The components' sass files expect that the `node_modules` directory containing the
+`@material` scope folder is present on the sass include path.
+
+## Running the demos
 
 Setup the repo:
 
@@ -36,6 +132,16 @@ cd /path/to/material-components-web
 npm run dev
 open http://localhost:8080
 ```
+
+## Useful Links
+
+- [Developer's Guide](docs/developer.md)
+- [All Components](packages/)
+- [Demos](demos/)
+- [Framework Integration Examples](framework-examples/)
+- [Contributing](CONTRIBUTING.md)
+- [Material.io](https://www.material.io) (external site)
+- [Material Design Guidelines](https://material.google.com) (external site)
 
 ## Browser Support
 

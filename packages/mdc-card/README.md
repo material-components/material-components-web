@@ -6,8 +6,9 @@ developers as a set of CSS classes.
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
-
+```
+npm install --save @material/card
+```
 
 ## Usage
 

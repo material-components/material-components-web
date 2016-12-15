@@ -6,7 +6,9 @@ interaction UX as well as a component-level API for state modification.
 
 ## Installation
 
-> NOTE: Installation via NPM will be available post-alpha.
+```
+npm install --save @material/radio
+```
 
 ## Usage
 
