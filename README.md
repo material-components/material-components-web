@@ -44,7 +44,7 @@ That's all there is to it! This is the easiest way to get up and running with Ma
 for web. Check out our [Getting Started guide](./docs/getting-started.md) for a more in-depth
 introduction to the library.
 
-## Installing invidual components
+## Installing individual components
 
 MDC-Web is modular by design. Each component lives within its own packages under the
 [@material npm scope](https://www.npmjs.com/~material).
