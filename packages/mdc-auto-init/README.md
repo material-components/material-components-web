@@ -8,7 +8,9 @@ appropriate.
 
 ## Installation
 
-> NOTE: Installation via npm will be available post-alpha
+```
+npm install --save @material/auto-init
+```
 
 ## Usage
 
