@@ -56,6 +56,28 @@ test('get/set open', (t) => {
   t.end();
 });
 
+test('show opens the menu', (t) => {
+  const {component} = setupTest();
+  component.show();
+  t.true(component.open);
+  t.end();
+});
+
+test('show with a focus index opens the menu', (t) => {
+  const {component} = setupTest();
+  component.show({focusIndex: 1});
+  t.true(component.open);
+  t.end();
+});
+
+test('hide closes the menu', (t) => {
+  const {component} = setupTest();
+  component.open = true;
+  component.hide();
+  t.false(component.open);
+  t.end();
+});
+
 test('items returns all menu items', (t) => {
   const {root, component} = setupTest();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
@@ -379,5 +401,8 @@ test('adapter#setPosition sets the correct position on the menu element', (t) =>
   component.getDefaultFoundation().adapter_.setPosition({top: '10px', left: '11px'});
   t.equal(root.style.top, '10px');
   t.equal(root.style.left, '11px');
+  component.getDefaultFoundation().adapter_.setPosition({bottom: '10px', right: '11px'});
+  t.equal(root.style.bottom, '10px');
+  t.equal(root.style.right, '11px');
   t.end();
 });
