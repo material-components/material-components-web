@@ -365,6 +365,33 @@ test('on touch move does not allow the drawer to move past its width', (t) => {
   t.end();
 });
 
+test('on touch move does not allow the drawer to move past its width in RTL', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const raf = createMockRaf();
+  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
+  td.when(mockAdapter.isRtl()).thenReturn(true);
+  foundation.init();
+
+  drawerHandlers.touchstart({
+    touches: [{pageX: 500}],
+  });
+  raf.flush();
+
+  handlers.touchmove({
+    touches: [{pageX: 490}],
+    preventDefault: () => {},
+  });
+  raf.flush();
+
+  t.doesNotThrow(() => td.verify(mockAdapter.setTranslateX(0)));
+  t.doesNotThrow(() => td.verify(mockAdapter.updateCssVariable(1)));
+  raf.restore();
+  t.end();
+});
+
 test('on touch move works for pointer events', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
@@ -482,6 +509,58 @@ test('on touch end keeps the drawer open if moved less than 50%', (t) => {
 
   handlers.touchmove({
     touches: [{pageX: 300}],
+    preventDefault: () => {},
+  });
+
+  handlers.touchend({});
+  t.doesNotThrow(() => td.verify(mockAdapter.addClass('mdc-temporary-drawer--open')));
+  raf.restore();
+  t.end();
+});
+
+test('on touch end closes the drawer if moved more than 50% in RTL', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const raf = createMockRaf();
+  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
+  td.when(mockAdapter.isRtl()).thenReturn(true);
+  foundation.init();
+
+  drawerHandlers.touchstart({
+    touches: [{pageX: 100}],
+  });
+  raf.flush();
+
+  handlers.touchmove({
+    touches: [{pageX: 500}],
+    preventDefault: () => {},
+  });
+
+  handlers.touchend({});
+  t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-temporary-drawer--open')));
+  raf.restore();
+  t.end();
+});
+
+test('on touch end keeps the drawer open if moved less than 50% in RTL', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const raf = createMockRaf();
+  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
+  td.when(mockAdapter.isRtl()).thenReturn(true);
+  foundation.init();
+
+  drawerHandlers.touchstart({
+    touches: [{pageX: 300}],
+  });
+  raf.flush();
+
+  handlers.touchmove({
+    touches: [{pageX: 500}],
     preventDefault: () => {},
   });
 
@@ -622,6 +701,15 @@ test('on document keydown does nothing if drawer is not opened', (t) => {
   foundation.init();
 
   t.true(keydown === undefined);
+  t.end();
+});
+
+test('should clean up transition handlers after drawer close', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isDrawer(td.matchers.isA(Object))).thenReturn(true);
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  foundation.close();
+  t.doesNotThrow(() => td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function))));
   t.end();
 });
 
