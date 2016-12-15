@@ -4,9 +4,6 @@ MDC-Web was designed to be integrated as easily as possible into any and all web
 document will walk you through strategies for integrating components into various types of
 frameworks.
 
-> NOTE: If you are interested in using MDC-Web components with custom elements, check out
-> our [Integrating into custom elements](./integrating-into-custom-elements.md) guide.
-
 ## Examples
 
 Our [framework-examples](../framework-examples) directory contains sample applications built in various frameworks,
