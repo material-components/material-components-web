@@ -259,9 +259,12 @@ rules:
 
   # SCSS naming patterns, just like our CSS conventions above.
   # (note for $-vars we use a leading underscore for "private" variables)
-  scss/dollar-variable-pattern: ^_?mdc?-.+
-  scss/at-function-pattern: ^mdc?-.+
-  scss/at-mixin-pattern: ^mdc?-.+
+  scss/dollar-variable-pattern:
+    - ^_?mdc-.+
+    -
+      ignore: local
+  scss/at-function-pattern: ^mdc-.+
+  scss/at-mixin-pattern: ^mdc-.+
   # Prevents unneeded nesting selectors
   scss/selector-no-redundant-nesting-selector: true
   # Since leading underscores are not needed, they can be omitted

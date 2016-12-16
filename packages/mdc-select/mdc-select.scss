@@ -27,9 +27,11 @@
 
 // postcss-bem-linter: define select
 .mdc-select {
+  $dd-arrow-padding: 24px;
+
   @include mdc-typography(subheading2);
   @include mdc-theme-prop(color, text-primary-on-light);
-  @include mdc-rtl-reflexive-box(padding, right, 24px);
+  @include mdc-rtl-reflexive-box(padding, right, $dd-arrow-padding);
 
   // Resets for <select> element
   appearance: none;
@@ -41,6 +43,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
+  max-width: calc(100% - #{$dd-arrow-padding});
   height: 32px;
   transition:
     mdc-animation-exit(border-bottom-color, 150ms),
@@ -95,6 +98,8 @@
     transition:
       mdc-animation-exit(opacity, 125ms),
       mdc-animation-exit(transform, 125ms);
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 
