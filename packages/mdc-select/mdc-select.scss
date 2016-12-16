@@ -177,3 +177,59 @@
     }
   }
 }
+
+/* postcss-bem-linter: define multi-select */
+.mdc-multi-select {
+  appearance: none;
+  padding: 0;
+  border: 1px solid rgba(black, .1);
+  outline: none;
+}
+
+.mdc-multi-select .mdc-list-item,
+.mdc-multi-select .mdc-list-group {
+  margin: 0;
+  padding: 0;
+}
+
+.mdc-multi-select .mdc-list-group {
+  margin-top: 12px;
+  padding-left: 16px;
+  font-weight: normal;
+  color: rgba(black, .38);
+}
+
+.mdc-multi-select .mdc-list-group .mdc-list-item {
+  color: rgba(black, .87);
+}
+
+.mdc-multi-select .mdc-list-group > .mdc-list-item:first-child {
+  margin-top: 12px;
+}
+
+.mdc-multi-select .mdc-list-item {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.mdc-multi-select .mdc-list-group .mdc-list-item {
+  margin-left: -16px;
+}
+
+.mdc-multi-select .mdc-list-item:checked {
+  background-color: rgba(black, .12);
+}
+
+.mdc-multi-select:focus .mdc-list-item:checked {
+  background-color: rgba(black, .26) !important;
+}
+
+/** 
+ * height for option elements cannot be controlled 
+ * with CSS use the font-size rule instead.
+ */
+.mdc-list-divider {
+  font-size: 0;
+}
+
+/* postcss-bem-linter: end */
