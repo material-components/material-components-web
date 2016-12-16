@@ -3,7 +3,7 @@
 ## Feature Requests
 
 > If you're interested in requesting a new component or proposing UX changes to an existing
-> component, please read our Component Request Policy (_Coming Soon_) before opening an issue.
+> component, please read our [Component Request Policy](https://github.com/material-components/material-components/blob/develop/COMPONENTS_REQUEST_POLICY.md) before opening an issue.
 
 If you have an idea for a new feature, we'd love to hear about it! Please provide enough
 information regarding the feature such that we'll be able to evaluate the appropriateness and
@@ -42,7 +42,9 @@ Follow the template below to ensure the quickest and most accurate response to y
 > 3. Tab-focus on the first text field
 > 4. Observe the component's behavior
 >
-> If you can create a plunker/codepen/jsfiddle which reproduces it, that's even better!
+> We also have a [template on CodePen](http://codepen.io/traviskaufman/pen/pNQmRp) which we encourage you to use to create a reproduction of
+> the issue. The less time it takes for us to repro the issue, the less time it takes to verify and
+> fix it!
 
 ### What is the expected behavior?
 
