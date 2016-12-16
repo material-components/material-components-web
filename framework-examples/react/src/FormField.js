@@ -19,7 +19,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import '../../../packages/mdc-form-field/mdc-form-field.scss';
+import '@material/form-field/dist/mdc.form-field.css';
 
 export default function FormField({alignEnd, children}) {
   return (

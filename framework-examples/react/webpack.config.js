@@ -37,25 +37,12 @@ module.exports = {
       test: /\.js$/,
       loaders: ['react-hot', 'babel'],
       include: [
-        path.join(__dirname, 'src')
+        path.join(__dirname, 'src'),
+        path.join(__dirname, 'node_modules', '@material')
       ]
     }, {
-      test: /\.js$/,
-      loaders: ['babel'],
-      include: [
-        path.resolve('../../packages')
-      ]
-    }, {
-      test: /\.scss$/,
-      loaders: ['style', 'css', 'postcss', 'sass']
+      test: /\.css$/,
+      loaders: ['style', 'css']
     }]
   },
-  sassLoader: {
-    includePaths: [path.resolve('../../packages')]
-  },
-  postcss: function() {
-    return [
-      require('autoprefixer')
-    ];
-  }
 };
