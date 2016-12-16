@@ -6,7 +6,9 @@ Lists are design to be accessible and RTL aware.
 
 ## Installation
 
-> NOTE: Installation via npm will be available post-alpha.
+```
+npm install --save @material/list
+```
 
 ## Usage
 

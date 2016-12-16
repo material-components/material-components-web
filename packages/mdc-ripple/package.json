@@ -1,9 +1,13 @@
 {
   "name": "@material/ripple",
-  "description": "Material Ink Ripple effects for web element interactions",
+  "description": "The Material Components for the web Ink Ripple effect for web element interactions",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
   "dependencies": {
     "@material/animation": "^0.1.0",
     "@material/base": "^0.1.0",

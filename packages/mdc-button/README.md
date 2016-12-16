@@ -7,7 +7,9 @@ The MDC Button component is a spec-aligned button component adhering to the
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
+```
+npm install --save @material/button
+```
 
 ## Usage
 

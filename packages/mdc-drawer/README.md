@@ -7,8 +7,9 @@ temporary drawers require JavaScript to function, in order to respond to user in
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
-
+```
+npm install --save @material/drawer
+```
 
 ## Permanent drawer usage
 

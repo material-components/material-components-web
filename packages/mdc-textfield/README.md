@@ -6,7 +6,9 @@ not require any javascript.
 
 ## Installation
 
-> NOTE: Installation via npm will be available post-alpha.
+```
+npm install --save @material/textfield
+```
 
 ## Usage
 

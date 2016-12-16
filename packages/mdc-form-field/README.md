@@ -5,7 +5,9 @@ form field + label combos.
 
 ## Installation
 
-> NOTE: Installation will be available via npm post-alpha.
+```
+npm install --save @material/form-field
+```
 
 ## Usage
 
