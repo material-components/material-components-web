@@ -58,7 +58,7 @@ README documenting installation and usage.
 
 ## Including components
 
-### Javascript
+### JavaScript
 
 If you are using a module loader such as Webpack or SystemJS to load your JS modules, you can simply
 `import` every component you need from `material-components-web` and use it as such.
@@ -113,8 +113,8 @@ Each component also comes with a Sass source file that can be included in your a
 @import '@material/elevation/mixins'; // Mixins for elevation.
 ```
 
-> NOTE: The components' sass files expect that the `node_modules` directory containing the
-`@material` scope folder is present on the sass include path.
+> NOTE: The components' Sass files expect that the `node_modules` directory containing the
+`@material` scope folder is present on the Sass include path.
 
 ## Running the demos
 
