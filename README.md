@@ -137,7 +137,7 @@ open http://localhost:8080
 
 - [Developer's Guide](docs/developer.md)
 - [All Components](packages/)
-- [Demos](demos/)
+- [Demos](https://material-components-web.appspot.com)
 - [Framework Integration Examples](framework-examples/)
 - [Contributing](CONTRIBUTING.md)
 - [Material.io](https://www.material.io) (external site)

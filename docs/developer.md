@@ -36,6 +36,18 @@ For an in-depth look at MDC-Web's architecture, check out [architecture.md](./ar
 
 Check out our `webpack.config.js` for more details!
 
+### Deployment
+
+Demo pages of Material Components for Web are deployed in Google Cloud. Request an access to project id: material-components-web to get deployment permissions to app engine.
+
+    # Login to Google Cloud account and choose material-components-web project id.
+    gcluod init
+    # Build the packages
+    npm build
+    # Deploy it to Google Cloud
+    gcloud app deploy
+    # Go to [material-components-web.appspot.com](https://material-components-web.appspot.com) to access live demo pages.
+
 ### A-la-carte Components
 
 We use [Lerna JS](https://lernajs.io/) to allow individual components to co-exist and be built within the same repository. Builds via webpack will produce artifacts for each component, which can then be used independently or via the umbrella package (`material-components-web`).
