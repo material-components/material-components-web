@@ -94,5 +94,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "stylelint-scss": "^1.4.1"
   }
 }
