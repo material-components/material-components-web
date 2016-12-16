@@ -17,7 +17,9 @@ which was created in collaboration with the designers on the Material Design tea
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
+```
+npm install --save @material/elevation
+```
 
 ## Usage
 

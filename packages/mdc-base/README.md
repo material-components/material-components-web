@@ -8,7 +8,9 @@ Most of the time, you shouldn't need to depend on `mdc-base` directly. It is use
 
 First install the module:
 
-> NOTE: Installation via the npm registry will be available after alpha.
+```
+npm install --save @material/base
+```
 
 Then include it in your code in one of the following ways:
 

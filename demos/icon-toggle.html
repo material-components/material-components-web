@@ -22,8 +22,56 @@
     <style>
       .mdc-theme--dark {
         background: #303030;
+      }
+
+      .mdc-theme--dark:not(.demo-color-combo) {
         padding: 1rem;
         padding-top: 0;
+      }
+
+      #demo-color-combos {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      .demo-color-combo {
+        width: 250px;
+        padding: 1rem;
+        border-radius: 4px;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+      }
+
+      .demo-color-combo > p {
+        margin: 0;
+      }
+
+      #light-on-bg {
+        background-color: #3e82f7;
+      }
+      #light-on-bg .mdc-icon-toggle {
+        color: white;
+      }
+      #light-on-bg .mdc-icon-toggle.mdc-ripple-upgraded::before,
+      #light-on-bg .mdc-icon-toggle.mdc-ripple-upgraded::after {
+        background-color: rgba(255, 255, 255, .3);
+      }
+
+      #dark-on-bg {
+        background-color: #00bcd6;
+      }
+
+      #custom-on-dark .mdc-icon-toggle {
+        color: #de442c;
+      }
+      #custom-on-dark .mdc-icon-toggle.mdc-ripple-upgraded::before,
+      #custom-on-dark .mdc-icon-toggle.mdc-ripple-upgraded::after {
+        /* #de442c - opacity .16 */
+        background-color: rgba(222, 68, 44, .26);
       }
     </style>
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
@@ -61,8 +109,7 @@
       </section>
       <section class="mdc-theme--dark">
         <h2 class="mdc-theme--text-primary-on-dark">Dark Theme</h2>
-        <i id="add-to-favorites"
-           class="mdc-icon-toggle material-icons"
+        <i class="mdc-icon-toggle material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -74,8 +121,7 @@
       </section>
       <section>
         <h2>Primary Colored Icons</h2>
-        <i id="add-to-favorites"
-           class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
+        <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -87,8 +133,7 @@
       </section>
       <section>
         <h2>Accent Colored Icons</h2>
-        <i id="add-to-favorites"
-           class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
+        <i class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -100,8 +145,7 @@
       </section>
       <section>
         <h2>Disabled Icons</h2>
-        <i id="add-to-favorites"
-           class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
+        <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
            role="button"
            aria-label="Add to favorites"
            aria-pressed="false"
@@ -112,8 +156,7 @@
           favorite_border
         </i>
         <div class="mdc-theme--dark">
-          <i id="add-to-favorites"
-             class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
+          <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
              role="button"
              aria-label="Add to favorites"
              aria-pressed="false"
@@ -123,6 +166,53 @@
              data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
             favorite_border
           </i>
+        </div>
+      </section>
+      <section>
+        <h2>Additional Color Combinations</h2>
+        <div id="demo-color-combos">
+          <div id="light-on-bg" class="demo-color-combo">
+            <div>
+              <i class="mdc-icon-toggle material-icons mdc-theme--text-primary-on-primary"
+                 role="button"
+                 aria-label="Add to favorites"
+                 aria-pressed="false"
+                 tabindex="0"
+                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                favorite_border
+              </i>
+            </div>
+            <p class="mdc-theme--text-primary-on-primary">Light icon on background</p>
+          </div>
+          <div id="dark-on-bg" class="demo-color-combo">
+            <div class="mdc-theme--primary">
+              <i class="mdc-icon-toggle material-icons"
+                 role="button"
+                 aria-label="Add to favorites"
+                 aria-pressed="false"
+                 tabindex="0"
+                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                favorite_border
+              </i>
+            </div>
+            <p>Dark icon on background</p>
+          </div>
+          <div id="custom-on-dark" class="demo-color-combo mdc-theme--dark">
+            <div>
+              <i class="mdc-icon-toggle material-icons"
+                 role="button"
+                 aria-label="Add to favorites"
+                 aria-pressed="false"
+                 tabindex="0"
+                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                favorite_border
+              </i>
+            </div>
+            <p class="mdc-theme--text-primary-on-dark">Custom color on dark background</p>
+          </div>
         </div>
       </section>
     </main>

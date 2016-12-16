@@ -1,13 +1,15 @@
 # MDC FAB
 
 The MDC FAB component is a spec-aligned button component adhering to the
- [Material Design FAB requirements](https://material.google.com/components/buttons-floating-action-button.html).
- It works without JavaScript with basic functionality for all states.
- If you initiate the JavaScript object for a button, then it will be enhanced with ripple effects. (Not yet implemented)
+[Material Design FAB requirements](https://material.google.com/components/buttons-floating-action-button.html).
+It works without JavaScript with basic functionality for all states.
+If you initiate the JavaScript object for a button, then it will be enhanced with ripple effects. (Not yet implemented)
 
 ## Installation
 
-> Note: Installation via the npm registry will be available after alpha.
+```
+npm install --save @material/fab
+```
 
 ## Usage
 
