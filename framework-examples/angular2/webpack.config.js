@@ -17,6 +17,7 @@
 /* eslint-disable */
 var webpack = require('webpack');
 var path = require('path');
+var MDC_DIR = path.resolve(__dirname, 'node_modules', '@material');
 
 
 // Webpack Config
@@ -43,29 +44,21 @@ var webpackConfig = {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [
-          path.resolve('../../packages')
+          MDC_DIR
         ]
       },
       {
         test: /\.scss$/,
         loader: 'css-loader!postcss-loader!sass-loader',
         include: [
-          path.resolve('../../packages')
+          MDC_DIR
         ]
       }
     ]
   },
 
   sassLoader: {
-    includePaths: [path.resolve('../../packages')]
-  },
-
-  resolve: {
-    alias: {
-      'mdc-checkbox': path.resolve('../../packages/mdc-checkbox/index.js'),
-      'mdc-checkbox-styles': path.resolve('../../packages/mdc-checkbox/mdc-checkbox.scss'),
-      'mdc-form-field-styles': path.resolve('../../packages/mdc-form-field/mdc-form-field.scss')
-    }
+    includePaths: [path.resolve('./node_modules')]
   }
 };
 
