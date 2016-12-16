@@ -1,6 +1,3 @@
-> NOTE: We have yet to publish our initial release to npm. However, once we do, the installation
-instructions will work.
-
 # Getting started
 
 This guide will help you get started using MDC-Web on your own sites and within your own projects.
@@ -19,20 +16,17 @@ components we have to offer.
 
 ### Setting up the project
 
-Before setting up the project, you will need to have a recent version of [NodeJS](https://nodejs.org/). Install it with the [NodeJS installer](https://nodejs.org/en/download/) or through [nvm](https://github.com/creationix/nvm). The [npm](https://www.npmjs.com/) command should made be available on your `$PATH`.
-
-Let's begin creating the project by first creating the directory for the app and add MDC-Web.
-This will install MDC-Web into the `node_modules` folder inside of the `greeting-app` directory.
+Create a directory for the project where we'll serve our application out of.
 
 ```
 mkdir greeting-app
 cd greeting-app
-npm init -y  # adds a package.json file into the directory
-npm install --save material-components-web
 ```
 
-We recommend installing and using [live-server](http://tapiov.net/live-server/) as the local
-development server that will automatically reload when changes are made.
+Additionally, if you have [NodeJS](https://nodejs.org) installed, we recommend installing and using
+[live-server](http://tapiov.net/live-server/) as your local development server. Live-server is
+simple to use and will reload the page whenever you make a change to your HTML. You can install it
+via [npm](https://www.npmjs.com/) by typing the following:
 
 ```
 npm install --global live-server
@@ -46,7 +40,7 @@ will be available on your `$PATH`.
 
 ### Creating the skeleton index.html file
 
-Now that you have the environment set up, create a simple `index.html` file, and include
+Now that you have a directory set up, create a simple `index.html` file, and include
 the assets needed for MDC-Web. Put the following within `index.html` in the `greeting-app` directory:
 
 ```html
@@ -56,7 +50,9 @@ the assets needed for MDC-Web. Put the following within `index.html` in the `gre
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Greeting App</title>
-    <link rel="stylesheet" href="/node_modules/material-components-web/dist/material-components-web.css">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   </head>
   <body>
     <h1 class="mdc-typography--display1">Hello, World!</h1>
@@ -67,14 +63,13 @@ the assets needed for MDC-Web. Put the following within `index.html` in the `gre
 </html>
 ```
 
-View this page by running `live-server` within the `greeting-app` directory. This will open up your
-browser to the URL which is serving our `index.html` file. You can leave `live-server` running for
-the duration of this guide.
+View this page by running `live-server` (or the web server of your choice) within the
+`greeting-app` directory.
 
-```
-cd greeting-app
-live-server
-```
+If you're using `live-server`, this will open up your browser to the URL which is serving our
+`index.html` file. You can leave `live-server` running for the duration of this guide. If you're
+not using `live-server`, navigate to the web server's base URL and view the page. Also be sure to
+refresh after every change you make!
 
 Let's take a look at a few aspects of the above HTML.
 
@@ -142,7 +137,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
   <p class="mdc-typography--headline" id="greeting"></p>
 </main>
 
-<script src="/node_modules/material-components-web/dist/material-components-web.js"></script>
+<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"></script>
 <script>window.mdc.autoInit();</script>
 ```
 
@@ -239,7 +234,7 @@ If you are using any modern browser besides Edge (which is currently [working on
 fields are now a nice, dark shade of blue.
 
 > Note that using CSS Variables is just one way of theming using MDC-Web. Check out our
-[theming documentation](./theming.md) _(coming soon!)_ for more info.
+[theming documentation](./theming.md) for more info.
 
 ### Finishing touches: adding custom styles
 
