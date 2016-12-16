@@ -16,20 +16,18 @@
 
 /* eslint-disable */
 
-import React, {Component, PropTypes} from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
+import React, {PureComponent, PropTypes} from 'react';
 
 import Checkbox from './Checkbox';
 import CheckboxLabel from './CheckboxLabel';
 import FormField from './FormField';
 
-export default class App extends Component {
+export default class App extends PureComponent {
   state = {
     checked: false,
     indeterminate: false,
     changeEventCount: 0
   }
-  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
 
   render() {
     const {checked, indeterminate, status, changeEventCount} = this.state;
