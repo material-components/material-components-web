@@ -1,8 +1,10 @@
 import {bindable, customAttribute, inject, DOM} from 'aurelia-framework';
 
 // Use webpack's require function to load the css
-const MDC_BUTTON_STYLES = require('mdc-button-styles');
-DOM.injectStyles(MDC_BUTTON_STYLES);
+// const MDC_BUTTON_STYLES = require('mdc-button-styles');
+import '@material/button/dist/mdc.button.css';
+
+// DOM.injectStyles(MDC_BUTTON_STYLES);
 
 @customAttribute('mdc-button')
 @inject(Element)

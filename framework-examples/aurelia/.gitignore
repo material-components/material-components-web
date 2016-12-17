@@ -1,3 +1,11 @@
-.awcache/
-.vscode/settings.json
+node_modules
+.DS_STORE
+npm-debug.log*
+/dist
+/build
+/typings
+/.awcache
+/electron.js*
+/release
+/test/coverage
 yarn.lock
