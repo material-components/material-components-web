@@ -36,17 +36,9 @@ For an in-depth look at MDC-Web's architecture, check out [architecture.md](./ar
 
 Check out our `webpack.config.js` for more details!
 
-### Deployment
+### Hosting
 
-Demo pages of Material Components for Web are deployed in Google Cloud App Engine.
-
-    # Login to Google Cloud account and choose material-components-web project id.
-    gcloud init
-    # Build the packages
-    npm run build
-    # Deploy it to Google Cloud
-    gcloud app deploy
-    # Go to [material-components-web.appspot.com](https://material-components-web.appspot.com) to access live demo pages.
+Demo pages of Material Components for Web are hosted in Google Cloud App Engine.
 
 ### A-la-carte Components
 
