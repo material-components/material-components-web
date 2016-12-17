@@ -38,12 +38,12 @@ Check out our `webpack.config.js` for more details!
 
 ### Deployment
 
-Demo pages of Material Components for Web are deployed in Google Cloud. Request an access to project id: material-components-web to get deployment permissions to app engine.
+Demo pages of Material Components for Web are deployed in Google Cloud App Engine.
 
     # Login to Google Cloud account and choose material-components-web project id.
     gcloud init
     # Build the packages
-    npm build
+    npm run build
     # Deploy it to Google Cloud
     gcloud app deploy
     # Go to [material-components-web.appspot.com](https://material-components-web.appspot.com) to access live demo pages.
