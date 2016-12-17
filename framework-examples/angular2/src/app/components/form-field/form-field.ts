@@ -16,7 +16,7 @@
 
 import {Component, HostBinding, Input, ViewEncapsulation} from '@angular/core';
 
-const MDC_FORM_FIELD_STYLES = require('mdc-form-field-styles');
+const MDC_FORM_FIELD_STYLES = require('@material/form-field/mdc-form-field.scss');
 
 @Component({
   selector: 'mdc-form-field',
