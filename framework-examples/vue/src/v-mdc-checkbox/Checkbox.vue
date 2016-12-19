@@ -20,7 +20,7 @@
 </template>
 
 <script lang="babel">
-import { MDCCheckboxFoundation } from 'mdc-checkbox';
+import { MDCCheckboxFoundation } from '@material/checkbox';
 
 const { ANIM_END_EVENT_NAME } = MDCCheckboxFoundation.strings;
 
@@ -86,6 +86,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'mdc-checkbox/mdc-checkbox.scss';
-
+@import '@material/checkbox/mdc-checkbox';
 </style>

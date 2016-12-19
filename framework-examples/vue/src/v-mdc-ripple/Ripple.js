@@ -1,4 +1,4 @@
-import {MDCRipple} from 'mdc-ripple';
+import {MDCRipple} from '@material/ripple';
 
 export default {
   bind (el, context) {

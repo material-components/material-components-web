@@ -118,10 +118,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'mdc-ripple/mdc-ripple.scss';
-@import 'mdc-elevation/mdc-elevation.scss';
-@import 'mdc-list/mdc-list.scss';
-@import 'mdc-theme/mdc-theme.scss';
+@import '@material/ripple/mdc-ripple';
+@import '@material/elevation/mdc-elevation';
+@import '@material/list/mdc-list';
+@import '@material/theme/mdc-theme';
 
 .demo-toolbar {
   width: 100%;

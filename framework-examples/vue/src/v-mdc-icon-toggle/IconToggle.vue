@@ -9,7 +9,7 @@
 </template>
 
 <script lang="babel">
-import { MDCIconToggleFoundation } from 'mdc-icon-toggle';
+import { MDCIconToggleFoundation } from '@material/icon-toggle';
 
 export default {
   props: ['toggleOn', 'toggleOff', 'value'],
@@ -99,6 +99,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'mdc-icon-toggle/mdc-icon-toggle.scss';
-
+@import '@material/icon-toggle/mdc-icon-toggle';
 </style>
