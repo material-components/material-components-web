@@ -3,8 +3,8 @@
 We'd love for you to contribute and make Material Components for the web even better than it is today!
 Here are the guidelines we'd like you to follow:
 
-- [Finding an Issue to Work On](#finding-an-issue-to-work-on)
 - [General Contributing Guidelines](#general-contributing-guidelines)
+- [Finding an Issue to Work On](#finding-an-issue-to-work-on)
 - [Development Process](#development-process)
   - [Setting up your development environment](#setting-up-your-development-environment)
   - [Building Components](#building-components)
