@@ -3,8 +3,8 @@
 We'd love for you to contribute and make Material Components for the web even better than it is today!
 Here are the guidelines we'd like you to follow:
 
-
 - [General Contributing Guidelines](#general-contributing-guidelines)
+- [Finding an Issue to Work On](#finding-an-issue-to-work-on)
 - [Development Process](#development-process)
   - [Setting up your development environment](#setting-up-your-development-environment)
   - [Building Components](#building-components)
@@ -20,6 +20,10 @@ Here are the guidelines we'd like you to follow:
 ## General Contributing Guidelines
 
 The Material Components contributing policies and procedures can be found in the main Material Components documentation repository’s [contributing page](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md).
+
+## Finding an Issue to Work On
+
+Material Components Web uses GitHub to file and track issues. To find an issue you'd like to work on, filter the issues list by the [help wanted](https://github.com/material-components/material-components-web/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) label. If you have found a bug, or would like to request a feature not represented in the list of GitHub issues, please refer to the documentation for [Contributing](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md#issues-and-bugs)
 
 ## Development Process
 
