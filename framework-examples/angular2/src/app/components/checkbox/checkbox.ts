@@ -33,9 +33,9 @@ import {
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 
 // Since we don't have typings (yet) we require mdc-checkbox manually.
-const {MDCCheckboxFoundation} = require('mdc-checkbox');
+const {MDCCheckboxFoundation} = require('@material/checkbox');
 // Use webpack's require function to load the css
-const MDC_CHECKBOX_STYLES = require('mdc-checkbox-styles');
+const MDC_CHECKBOX_STYLES = require('@material/checkbox/mdc-checkbox.scss');
 
 // Needed for ngModel to work properly.
 export const MD_CHECKBOX_CONTROL_VALUE_ACCESSOR: Provider = {

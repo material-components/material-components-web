@@ -137,7 +137,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
   <p class="mdc-typography--headline" id="greeting"></p>
 </main>
 
-<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"></script>
+<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 <script>window.mdc.autoInit();</script>
 ```
 

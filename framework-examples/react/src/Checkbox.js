@@ -25,8 +25,8 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {Set as ImmutableSet} from 'immutable';
 // Temporarily using relative reference until we publish on npm.
-import {MDCCheckboxFoundation} from '../../../packages/mdc-checkbox';
-import '../../../packages/mdc-checkbox/mdc-checkbox.scss';
+import {MDCCheckboxFoundation} from '@material/checkbox';
+import '@material/checkbox/dist/mdc.checkbox.css';
 
 const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.strings;
 
