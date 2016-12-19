@@ -23,7 +23,7 @@ The Material Components contributing policies and procedures can be found in the
 
 ## Finding an Issue to Work On
 
-Material Components Web uses GitHub to file and track issues. To find an issue you'd like to work on, filter the issues list by the `help wanted` label, or [click here](https://github.com/material-components/material-components-web/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22). If you have found a bug, or would like to request a feature not represented in the list of GitHub issues, please refer to the documentation for [Contributing](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md#issues-and-bugs)
+Material Components Web uses GitHub to file and track issues. To find an issue you'd like to work on, filter the issues list by the [help wanted](https://github.com/material-components/material-components-web/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) label. If you have found a bug, or would like to request a feature not represented in the list of GitHub issues, please refer to the documentation for [Contributing](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md#issues-and-bugs)
 
 ## Development Process
 
