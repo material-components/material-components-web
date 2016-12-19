@@ -1,0 +1,22 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+skip_files:
+- (?!^(demos|build))
+- ^.*.swp$
+- ^.*.swo$
+- ^.DS_Store$
+
+handlers:
+- url: /
+  static_files: demos/index.html
+  upload: demos/index.html
+
+- url: /assets/(.*)
+  static_files: build/\1
+  upload: build/(.*)
+
+- url: /(.*)
+  static_files: demos/\1
+  upload: demos/(.*)

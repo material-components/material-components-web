@@ -129,7 +129,11 @@ To release MDC-Web, you should perform the following steps.
    to those specified versions in order to minimize human error_.
 3. Run `./scripts/post-release.sh`. This will update our `CHANGELOG.md` with information for the
    current release of the overarching `material-components-web` library, and commit those changes.
-4. Push the changelog changes to master, and call it a day!
+4. Run `gcloud app deploy`. This will deploy demo pages to Google Cloud [App Engine](https://material-components-web.appspot.com). Please request an access to App Engine project `material-components-web` to deploy.
+
+    > NOTE: `gcloud` is cli tool provided by [Cloud SDK](https://cloud.google.com/sdk/). Please run `gcloud init` command to login to your Google Cloud account and choose `material-components-web` project before running deploy command as mentioned above.
+
+5. Push the changelog changes to master, and call it a day!
 
 ## "What's the core team up to?"
 
