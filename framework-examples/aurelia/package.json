@@ -38,10 +38,6 @@
         "webpack": "cross-env TS_NODE_PROJECT=tsconfig.tsnode.json TS_NODE_FAST=true ./node_modules/.bin/webpack",
         "webpack-dev-server": "cross-env TS_NODE_PROJECT=tsconfig.tsnode.json TS_NODE_FAST=true ./node_modules/.bin/webpack-dev-server"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com/aurelia/skeleton-navigation.git"
-    },
     "private": true,
     "aurelia": {
         "build": {
