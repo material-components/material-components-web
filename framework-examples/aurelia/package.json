@@ -1,7 +1,7 @@
 {
-    "name": "aurelia2",
+    "name": "mdc-framework-example-aurelia",
     "version": "1.1.2",
-    "description": "A starter kit for building a standard navigation-style app with Aurelia and webpack.",
+    "description": "Example implementation of Aurelia components for MDC.",
     "main": "dist/main.js",
     "scripts": {
         "pretest": "del-cli \"test/coverage\"",
@@ -42,26 +42,7 @@
         "type": "git",
         "url": "git+ssh://git@github.com/aurelia/skeleton-navigation.git"
     },
-    "keywords": [
-        "aurelia",
-        "skeleton",
-        "navigation",
-        "webpack"
-    ],
-    "license": "CC0-1.0",
-    "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
-    "contributors": [
-        {
-            "name": "Arjen de Blok"
-        },
-        {
-            "name": "Bazyli Brzóska <bazyli.brzoska@gmail.com> (https://invent.life)"
-        }
-    ],
-    "bugs": {
-        "url": "https://github.com/aurelia/skeleton-navigation/issues"
-    },
-    "homepage": "https://github.com/aurelia/skeleton-navigation#readme",
+    "private": true,
     "aurelia": {
         "build": {
             "resources": []
