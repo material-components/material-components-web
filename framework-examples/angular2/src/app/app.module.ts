@@ -4,7 +4,7 @@ import { BrowserModule }  from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { SeedApp } from './seed-app';
-import { appRoutes } from './app.routs';
+import { appRoutes } from './app.routes';
 import { Home } from './components/home';
 import { FormFieldModule } from './components/form-field';
 import { CheckboxModule } from './components/checkbox';

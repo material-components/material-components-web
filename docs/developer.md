@@ -2,7 +2,7 @@
 
 ## Overview
 
-Material Design Lite (MDL), the predecessor to Material Components Web, was originally envisioned as UI component library with minimal dependencies, providing an easy way to add a Material Design look and feel to any website. Following the spirit of MDL, MDC-Web strives to seamlessly incorporate into an even wider range of usage contexts, from simple static websites to complex, Javascript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate material components into your site in a lightweight, idiomatic fashion.
+Material Design Lite (MDL), the predecessor to Material Components Web, was originally envisioned as UI component library with minimal dependencies, providing an easy way to add a Material Design look and feel to any website. Following the spirit of MDL, MDC-Web strives to seamlessly incorporate into an even wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate material components into your site in a lightweight, idiomatic fashion.
 
 To make this possible, our new component library is internally split into two parts:
 
@@ -31,7 +31,7 @@ For an in-depth look at MDC-Web's architecture, check out [architecture.md](./ar
 
 [Webpack](https://webpack.github.io/) is our build system of choice, which provides:
 
-- Bundling of SASS/JS into umbrella or per-component distributions
+- Bundling of Sass/JS into umbrella or per-component distributions
 - Fast, modern development environment (incremental compilation, source maps, live reloading, etc.)
 
 Check out our `webpack.config.js` for more details!
