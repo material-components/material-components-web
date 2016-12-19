@@ -34,7 +34,7 @@ A simple menu is usually closed, appearing when opened. It is appropriate for an
   focused instead, remove `tabindex="-1"` from the root element.
 
 ```js
-let menu = new mdc.menu.SimpleMenu(document.querySelector('.mdc-simple-menu'));
+let menu = new mdc.menu.MDCSimpleMenu(document.querySelector('.mdc-simple-menu'));
 // Add event listener to some button to toggle the menu on and off.
 document.querySelector('.some-button').addEventListener('click', () => menu.open = !menu.open);
 ```
