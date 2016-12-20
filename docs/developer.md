@@ -36,6 +36,10 @@ For an in-depth look at MDC-Web's architecture, check out [architecture.md](./ar
 
 Check out our `webpack.config.js` for more details!
 
+### Hosting
+
+Demo pages of Material Components for Web are hosted in Google Cloud App Engine.
+
 ### A-la-carte Components
 
 We use [Lerna JS](https://lernajs.io/) to allow individual components to co-exist and be built within the same repository. Builds via webpack will produce artifacts for each component, which can then be used independently or via the umbrella package (`material-components-web`).

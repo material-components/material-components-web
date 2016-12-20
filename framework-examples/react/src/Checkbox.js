@@ -22,8 +22,7 @@
  * allows it to perform UI operations in a way idiomatic to React.
  */
 
-import React, {Component, PropTypes} from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
+import React, {PureComponent, PropTypes} from 'react';
 import {Set as ImmutableSet} from 'immutable';
 // Temporarily using relative reference until we publish on npm.
 import {MDCCheckboxFoundation} from '@material/checkbox';
@@ -31,7 +30,7 @@ import '@material/checkbox/dist/mdc.checkbox.css';
 
 const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.strings;
 
-export default class Checkbox extends Component {
+export default class Checkbox extends PureComponent {
   static propTypes = {
     id: PropTypes.string,
     labelId: PropTypes.string,
@@ -53,7 +52,6 @@ export default class Checkbox extends Component {
   }
   classesToAdd = new ImmutableSet();
   classesToRemove = new ImmutableSet();
-  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 
   // Here we initialize a foundation class, passing it an adapter which tells it how to
   // work with the React component in an idiomatic way.
