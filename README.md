@@ -135,6 +135,7 @@ open http://localhost:8080
 
 ## Useful Links
 
+- [Getting Started Guide](docs/getting-started.md)
 - [Developer's Guide](docs/developer.md)
 - [All Components](packages/)
 - [Demos](https://material-components-web.appspot.com)
