@@ -1,5 +1,6 @@
 {
   "name": "v-mdc-example",
+  "private": true,
   "version": "0.1.0",
   "scripts": {
     "start": "node build/dev-server.js"
@@ -47,5 +48,17 @@
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.2",
     "webpack-merge": "^0.14.1"
+  },
+  "dependencies": {
+    "@material/checkbox": "^0.1.0",
+    "@material/drawer": "^0.1.0",
+    "@material/elevation": "^0.1.0",
+    "@material/form-field": "^0.1.0",
+    "@material/icon-toggle": "^0.1.0",
+    "@material/list": "^0.1.0",
+    "@material/ripple": "^0.1.0",
+    "@material/snackbar": "^0.1.0",
+    "@material/theme": "^0.1.0",
+    "@material/typography": "^0.1.0"
   }
 }

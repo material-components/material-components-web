@@ -11,5 +11,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "mdc-form-field/mdc-form-field.scss";
+@import "@material/form-field/mdc-form-field";
 </style>

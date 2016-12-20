@@ -3,7 +3,6 @@ var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
 
-
 module.exports = {
   entry: {
     app: './src/main.js'
@@ -16,15 +15,14 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.vue'],
     fallback: [
-      path.join(__dirname, '../node_modules'),
-      path.join(__dirname, '../../../packages')
+      path.join(__dirname, '../node_modules')
     ],
     alias: {
       'src': path.resolve(__dirname, '../src')
     }
   },
   sassLoader: {
-    includePaths: [path.resolve(__dirname, '../../../packages')]
+    includePaths: [path.resolve(__dirname, '../node_modules')]
   },
   resolveLoader: {
     fallback: [path.join(__dirname, '../node_modules')]
@@ -52,13 +50,13 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
-        include: projectRoot,
-	exclude: /node_modules/
+        include: path.join(__dirname, '../node_modules/@material')
       },
       {
         test: /\.js$/,
         loader: 'babel',
-        include: path.join(__dirname, '../../../packages')
+        include: projectRoot,
+        exclude: /node_modules/
       },
       {
         test: /\.json$/,

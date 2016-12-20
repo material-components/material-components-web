@@ -8,7 +8,7 @@
 </template>
 
 <script lang="babel">
-import { MDCSnackbarFoundation } from 'mdc-snackbar';
+import { MDCSnackbarFoundation } from '@material/snackbar';
 
 const { TRANS_END_EVENT_NAME } = MDCSnackbarFoundation.strings;
 
@@ -96,7 +96,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'mdc-button/mdc-button.scss';
-@import 'mdc-snackbar/mdc-snackbar.scss';
-
+@import '@material/button/mdc-button';
+@import '@material/snackbar/mdc-snackbar';
 </style>

@@ -15,6 +15,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'mdc-checkbox/mdc-checkbox.scss';
-
+@import '@material/checkbox/mdc-checkbox';
 </style>

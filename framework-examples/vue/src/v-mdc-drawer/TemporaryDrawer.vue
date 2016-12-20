@@ -18,8 +18,8 @@
 </template>
 
 <script lang="babel">
-import { MDCTemporaryDrawerFoundation } from 'mdc-drawer';
-import * as utils from 'mdc-drawer/util';
+import { MDCTemporaryDrawerFoundation } from '@material/drawer';
+import * as utils from '@material/drawer/util';
 
 export default {
   props: ['toolbarSpacer'],
@@ -115,5 +115,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'mdc-drawer/mdc-drawer.scss';
+@import '@material/drawer/mdc-drawer';
 </style>
