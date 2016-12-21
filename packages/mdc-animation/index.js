@@ -34,6 +34,10 @@ const eventTypeMap = {
 };
 
 const cssPropertyMap = {
+  animation: {
+    noPrefix: 'animation',
+    webkitPrefix: '-webkit-animation',
+  },
   transform: {
     noPrefix: 'transform',
     webkitPrefix: '-webkit-transform',
@@ -42,42 +46,56 @@ const cssPropertyMap = {
     noPrefix: 'transition',
     webkitPrefix: '-webkit-transition',
   },
-  animation: {
-    noPrefix: 'animation',
-    webkitPrefix: '-webkit-prefix',
-  },
 };
 
-function isNode(obj) {
-  return (
-    typeof Node === "object" ? 
-      obj instanceof Node : 
-      obj && typeof obj === "object" && 
-      typeof obj.nodeType === "number" && 
-      typeof obj.nodeName==="string"
-  );
+function hasNode(windowObj) {
+  return (windowObj.document !== undefined && windowObj.document.createElement !== undefined);
+}
+
+function eventFound(eventType) {
+  return (eventType in eventTypeMap || eventType in cssPropertyMap);
+}
+
+// If 'animation' or 'transition' exist as style property, webkit prefix isn't necessary. Since we are unable to
+// see the event types on the element, we must rely on its corresponding style object properties.
+function getJavaScriptEventName(eventType, map, el) {
+  switch (eventType) {
+    case 'animationstart':
+    case 'animationend':
+    case 'animationiteration':
+      return 'animation' in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
+    case 'transitionend':
+      return 'transition' in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
+    default:
+      return map[eventType].noPrefix;
+  }
 }
 
 // Helper function to determine browser prefix for CSS3 animation events
 // and property names
-// 
-// Parameters:
-// windowObject: Object -- Contains Document with a `createElement()` method 
-// eventType: string -- The type of animation
-// mapType: string -- Map to source. Can be jsEvent or cssProperty
 //
-// returns the value of the event as a string, prefixed if
-// necessary. If proper arguments are not supplied, this function will return
+// Parameters:
+// windowObject: Object -- Contains Document with a `createElement()` method
+// eventType: string -- The type of animation
+//
+// returns the value of the event as a string, prefixed if necessary.
+// If proper arguments are not supplied, this function will return
 // the property or event type without webkit prefix.
 //
 export function getAnimationEventName(windowObj, eventType) {
-  const map = eventType in eventTypeMap ? eventTypeMap : cssPropertyMap;
-  
-  if (windowObj !== window || isNode(windowObj.document)) {
-    return map[eventType].noPrefix;
+  if (!hasNode(windowObj) || !eventFound(eventType)) {
+    return eventType;
   }
 
+  const map = eventType in eventTypeMap ? eventTypeMap : cssPropertyMap;
   const el = windowObj.document.createElement('div');
-  
-  return eventType in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
+  let eventName = '';
+
+  if (map === eventTypeMap) {
+    eventName = getJavaScriptEventName(eventType, map, el);
+  } else {
+    eventName = map[eventType].noPrefix in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
+  }
+
+  return eventName;
 }
