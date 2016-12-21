@@ -4,7 +4,7 @@ This document serves as a reference for developing components either directly fo
 external components that would like to interface with the MDC-Web ecosystem.
 
 > Please note that since this project is still in its early stages of development, these practices
-may be subject to change. They will stabilize as we near towards a full release. 
+may be subject to change. They will stabilize as we near towards a full release.
 
 * [Who this document is for](#who-this-document-is-for)
 * [How to build a component](#how-to-build-a-component)
@@ -194,11 +194,12 @@ class RedblueTogglePrototype {
 
   toggle(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
-    const toggled = wasToggledExplicitlySet ? isToggled : !this.toggled_;
+    this.toggled_ = wasToggledExplicitlySet ? isToggled : !this.toggled_;
+
     let toggleColor;
 
-    SOMEHOW_SET_ATTRIBUTE('aria-pressed', String(toggled));
-    if (toggled) {
+    SOMEHOW_SET_ATTRIBUTE('aria-pressed', String(this.toggled_));
+    if (this.toggled_) {
       toggleColor = 'Red';
       SOMEHOW_ADD_CLASS('redblue-toggle--toggled');
     } else {
@@ -243,13 +244,13 @@ from.
 class RedblueToggleFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return {
-      getAttr(/* attr: string */) => /* string */ '',
-      setAttr(/* attr: string, value: string */) => {},
-      addClass(/* className: string */) => {},
-      removeClass(/* className: string */) => {},
-      setToggleColorTextContent(/* textContent: string */) => {},
-      registerInteractionHandler(/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler(/* type: string, handler: EventListener */) => {}
+      getAttr: (/* attr: string */) => /* string */ '',
+      setAttr: (/* attr: string, value: string */) => {},
+      addClass: (/* className: string */) => {},
+      removeClass: (/* className: string */) => {},
+      setToggleColorTextContent: (/* textContent: string */) => {},
+      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
+      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {}
     };
   }
 
@@ -273,11 +274,12 @@ class RedblueToggleFoundation extends MDCFoundation {
 
   toggle(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
-    const toggled = wasToggledExplicitlySet ? isToggled : !this.toggled_;
+    this.toggled_ = wasToggledExplicitlySet ? isToggled : !this.toggled_;
+
     let toggleColor;
 
-    this.adapter_.setAttr('aria-pressed', String(toggled));
-    if (toggled) {
+    this.adapter_.setAttr('aria-pressed', String(this.toggled_));
+    if (this.toggled_) {
       toggleColor = 'Red';
       this.adapter_.addClass('redblue-toggle--toggled');
     } else {
@@ -330,7 +332,7 @@ class RedblueToggle extends MDCComponent {
 }
 ```
 
-You can view a [finished example on CodePen](COMING_SOON_WHEN_WE_RELEASE).
+You can view a [finished example on CodePen](http://codepen.io/traviskaufman/pen/gLExme?editors=0010).
 
 ## What makes a good component
 
