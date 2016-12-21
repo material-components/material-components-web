@@ -15,8 +15,6 @@
  */
 
 import test from 'tape';
-// import bel from 'bel';
-// import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {getAnimationEventName} from '../../../packages/mdc-animation';
