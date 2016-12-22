@@ -17,7 +17,8 @@
 import test from 'tape';
 import td from 'testdouble';
 
-import {getAnimationEventName} from '../../../packages/mdc-animation';
+import {getCorrectEventName} from '../../../packages/mdc-animation';
+import {getCorrectPropertyName} from '../../../packages/mdc-animation';
 
 // Has no properties without a prefix
 const legacyWindowObj = td.object({
@@ -32,45 +33,57 @@ const legacyWindowObj = td.object({
   },
 });
 
-test('#getAnimationEventName does not prefix events and properties when not necessary', (t) => {
-  const windowObj = window;
+test('#getCorrectEventName does not prefix events when not necessary', (t) => {
+  const windowObj = td.object(window);
 
   t.equal(
-    getAnimationEventName(windowObj, 'transform'),
-    'transform',
+    getCorrectEventName(windowObj, 'animationstart'),
+    'animationstart',
     'no prefix'
   );
 
   t.end();
 });
 
-test('#getAnimationEventName does not prefix events if window not window with DOM node', (t) => {
-  const windowObj = {};
+test('#getCorrectEventName does not prefix events if window does not contain a DOM node', (t) => {
+  const windowObj = td.object({});
 
   t.equal(
-    getAnimationEventName(windowObj, 'transform'),
-    'transform',
+    getCorrectEventName(windowObj, 'animationstart'),
+    'animationstart',
     'no prefix'
   );
 
   t.end();
 });
 
-test('#getAnimationEventName prefixes css properties when required', (t) => {
+test('#getCorrectPropertyName does not prefix events if window does not contain a DOM node', (t) => {
+  const windowObj = td.object({});
+
   t.equal(
-    getAnimationEventName(legacyWindowObj, 'animation'),
+    getCorrectPropertyName(windowObj, 'transition'),
+    'transition',
+    'no prefix'
+  );
+
+  t.end();
+});
+
+test('#getCorrectPropertyName prefixes css properties when required', (t) => {
+  t.equal(
+    getCorrectPropertyName(legacyWindowObj, 'animation'),
     '-webkit-animation',
     'added prefix'
   );
 
   t.equal(
-    getAnimationEventName(legacyWindowObj, 'transform'),
+    getCorrectPropertyName(legacyWindowObj, 'transform'),
     '-webkit-transform',
     'added prefix'
   );
 
   t.equal(
-    getAnimationEventName(legacyWindowObj, 'transition'),
+    getCorrectPropertyName(legacyWindowObj, 'transition'),
     '-webkit-transition',
     'added prefix'
   );
@@ -78,27 +91,27 @@ test('#getAnimationEventName prefixes css properties when required', (t) => {
   t.end();
 });
 
-test('#getAnimationEventName prefixes javascript events when required', (t) => {
+test('#getCorrectEventName prefixes javascript events when required', (t) => {
   t.equal(
-    getAnimationEventName(legacyWindowObj, 'animationstart'),
+    getCorrectEventName(legacyWindowObj, 'animationstart'),
     'webkitAnimationStart',
     'added prefix'
   );
 
   t.equal(
-    getAnimationEventName(legacyWindowObj, 'animationend'),
+    getCorrectEventName(legacyWindowObj, 'animationend'),
     'webkitAnimationEnd',
     'added prefix'
   );
 
   t.equal(
-    getAnimationEventName(legacyWindowObj, 'animationiteration'),
+    getCorrectEventName(legacyWindowObj, 'animationiteration'),
     'webkitAnimationIteration',
     'added prefix'
   );
 
   t.equal(
-    getAnimationEventName(legacyWindowObj, 'transitionend'),
+    getCorrectEventName(legacyWindowObj, 'transitionend'),
     'webkitTransitionEnd',
     'added prefix'
   );

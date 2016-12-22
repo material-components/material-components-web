@@ -48,8 +48,8 @@ const cssPropertyMap = {
   },
 };
 
-function hasNode(windowObj) {
-  return (windowObj.document !== undefined && windowObj.document.createElement !== undefined);
+function hasProperShape(windowObj) {
+  return (windowObj.document !== undefined && typeof windowObj.document.createElement === 'function');
 }
 
 function eventFoundInMaps(eventType) {
@@ -82,8 +82,8 @@ function getJavaScriptEventName(eventType, map, el) {
 // If proper arguments are not supplied, this function will return
 // the property or event type without webkit prefix.
 //
-export function getAnimationEventName(windowObj, eventType) {
-  if (!hasNode(windowObj) || !eventFoundInMaps(eventType)) {
+function getAnimationName(windowObj, eventType) {
+  if (!hasProperShape(windowObj) || !eventFoundInMaps(eventType)) {
     return eventType;
   }
 
@@ -98,4 +98,32 @@ export function getAnimationEventName(windowObj, eventType) {
   }
 
   return eventName;
+}
+
+// Public function to access getAnimationName() for JavaScript events.
+//
+// Parameters:
+// windowObject: Object -- Contains Document with a `createElement()` method
+// eventType: string -- The type of animation
+//
+// returns the value of the event as a string, prefixed if necessary.
+// If proper arguments are not supplied, this function will return
+// the property or event type without webkit prefix.
+//
+export function getCorrectEventName(windowObj, eventType) {
+  return getAnimationName(windowObj, eventType);
+}
+
+// Public function to access getAnimationName() for CSS properties.
+//
+// Parameters:
+// windowObject: Object -- Contains Document with a `createElement()` method
+// eventType: string -- The type of animation
+//
+// returns the value of the event as a string, prefixed if necessary.
+// If proper arguments are not supplied, this function will return
+// the property or event type without webkit prefix.
+//
+export function getCorrectPropertyName(windowObj, eventType) {
+  return getAnimationName(windowObj, eventType);
 }
