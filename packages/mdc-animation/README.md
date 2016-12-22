@@ -108,7 +108,7 @@ To use:
 ```js
 import {getCorrectEventName} from '@material/mdc-animation';
 
-const eventToListenFor = getCorrectEventName('animationstart');
+const eventToListenFor = getCorrectEventName(window, 'animationstart');
 ```
 
 | Method Signature | Description |
