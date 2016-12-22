@@ -19,6 +19,7 @@ import td from 'testdouble';
 
 import {getAnimationEventName} from '../../../packages/mdc-animation';
 
+// Has no properties without a prefix
 const legacyWindowObj = td.object({
   document: {
     createElement: (str) => {
@@ -43,7 +44,7 @@ test('#getAnimationEventName does not prefix events and properties when not nece
   t.end();
 });
 
-test('#getAnimationEventName does not prefix events if errors', (t) => {
+test('#getAnimationEventName does not prefix events if window not window with DOM node', (t) => {
   const windowObj = {};
 
   t.equal(

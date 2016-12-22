@@ -1,6 +1,6 @@
 # mdc-animation
 
-mdc-animation is a Sass / CSS / JavaScript library which provides variables, mixins, and classes for Material Design animation, based off of the [motion guidelines](https://material.google.com/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves.
+mdc-animation is a Sass / CSS library which provides variables, mixins, and classes for Material Design animation, based off of the [motion guidelines](https://material.google.com/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves, but will be expanded in the future. If you are interested in contributing to MDC Web's animation library, take a look at the [contributing page](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md).
 
 ## Installation
 

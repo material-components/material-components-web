@@ -52,12 +52,12 @@ function hasNode(windowObj) {
   return (windowObj.document !== undefined && windowObj.document.createElement !== undefined);
 }
 
-function eventFound(eventType) {
+function eventFoundInMaps(eventType) {
   return (eventType in eventTypeMap || eventType in cssPropertyMap);
 }
 
 // If 'animation' or 'transition' exist as style property, webkit prefix isn't necessary. Since we are unable to
-// see the event types on the element, we must rely on its corresponding style object properties.
+// see the event types on the element, we must rely on the corresponding style properties.
 function getJavaScriptEventName(eventType, map, el) {
   switch (eventType) {
     case 'animationstart':
@@ -83,7 +83,7 @@ function getJavaScriptEventName(eventType, map, el) {
 // the property or event type without webkit prefix.
 //
 export function getAnimationEventName(windowObj, eventType) {
-  if (!hasNode(windowObj) || !eventFound(eventType)) {
+  if (!hasNode(windowObj) || !eventFoundInMaps(eventType)) {
     return eventType;
   }
 
