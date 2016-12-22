@@ -85,7 +85,7 @@ const commitMatches = childProcess
     };
   })
   .filter((info) => Boolean(info) && affectsPackage(info.scope));
-const componentPkgs = updatedPkgs.filter(({name}) => name !== 'material-components-web');
+const componentPkgs = updatedPkgs.filter(({name}) => name.indexOf('@material') === 0);
 const mdcPkg = updatedPkgs.find(({name}) => name === 'material-components-web');
 const newPkgVersions = collectNewPkgVersions(componentPkgs, commitMatches);
 const newMDCVersion = {
@@ -133,7 +133,7 @@ function determineVersion(pkg, commitInfos) {
 function pickBestVersionInfo(pkg) {
   return (currentBest, commitInfo) => {
     const {version, changeType} = currentBest;
-    const pkgComponent = pkg.name.match(/^mdc\-(.+)$/)[1];
+    const pkgComponent = pkg.name.split('/')[1];
     if (commitInfo.scope !== pkgComponent) {
       return currentBest;
     }
@@ -143,7 +143,8 @@ function pickBestVersionInfo(pkg) {
       possibleNewChangeType = semver.major(pkg.version) === 0 ? VersionType.MINOR : VersionType.MAJOR;
     } else if (commitInfo.type === 'feat') {
       possibleNewChangeType = VersionType.MINOR;
-    } else if (commitInfo.type === 'fix') {
+    } else {
+      // fix, docs, style (refers to coding style), refactor (non-breaking change), chore, ...
       possibleNewChangeType = VersionType.PATCH;
     }
     // Note that we assume that pkg.version is valid by the time we get here.
