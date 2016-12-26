@@ -4,37 +4,21 @@
   "version": "1.0.0",
   "description": "MDC-Web Framework Integration Example for React",
   "scripts": {
-    "start": "node server.js",
-    "lint": "eslint src"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "autoprefixer": "^6.3.6",
-    "babel-core": "^6.0.20",
-    "babel-eslint": "^4.1.3",
-    "babel-loader": "^6.0.1",
-    "babel-preset-es2015": "^6.0.15",
-    "babel-preset-react": "^6.0.15",
-    "babel-preset-stage-0": "^6.0.15",
-    "css-loader": "^0.23.1",
-    "react-hot-loader": "^1.3.0",
-    "style-loader": "^0.13.1",
-    "webpack": "^1.12.2",
-    "webpack-dev-server": "^1.12.1"
+    "react-scripts": "0.8.4"
   },
   "dependencies": {
     "@material/checkbox": "^0.1.0",
     "@material/form-field": "^0.1.0",
     "classnames": "^2.2.5",
     "immutable": "^3.8.1",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0"
-  },
-  "babel": {
-    "presets": [
-      "es2015",
-      "stage-0",
-      "react"
-    ]
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
   }
 }
