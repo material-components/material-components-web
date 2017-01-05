@@ -112,10 +112,10 @@ function getAnimationName(windowObj, eventType) {
 // the property or event type without webkit prefix.
 //
 export const domUtil = {
-  getCorrectEventName(windowObj, eventType) {
+  getCorrectEventName: (windowObj, eventType) => {
     return getAnimationName(windowObj, eventType);
   },
-  getCorrectPropertyName(windowObj, eventType) {
+  getCorrectPropertyName: (windowObj, eventType) => {
     return getAnimationName(windowObj, eventType);
   },
 };
