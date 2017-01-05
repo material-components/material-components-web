@@ -49,7 +49,6 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCCheckboxFoundation.defaultAdapter, adapter));
 
-    this.windowObj = adapter.windowObj;
     this.currentCheckState_ = strings.TRANSITION_STATE_INIT;
     this.currentAnimationClass_ = '';
     this.animEndLatchTimer_ = 0;
