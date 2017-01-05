@@ -32,10 +32,6 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     return numbers;
   }
 
-  static get windowObj() {
-    return window;
-  }
-
   static get defaultAdapter() {
     return {
       addClass: (/* className: string */) => {},
