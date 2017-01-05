@@ -117,7 +117,7 @@ test('defaultAdapter returns a complete adapter implementation', (t) => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
     'addClass', 'removeClass', 'registerAnimationEndHandler', 'deregisterAnimationEndHandler',
     'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl', 'forceLayout',
-    'isAttachedToDOM',
+    'isAttachedToDOM', 'windowObj',
   ], t);
 
   t.end();

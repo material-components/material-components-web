@@ -32,6 +32,10 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     return numbers;
   }
 
+  static get windowObj() {
+    return window;
+  }
+
   static get defaultAdapter() {
     return {
       addClass: (/* className: string */) => {},
@@ -43,12 +47,14 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       getNativeControl: () => /* HTMLInputElement */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
+      windowObj: () => /* window object */ {},
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCCheckboxFoundation.defaultAdapter, adapter));
 
+    this.windowObj = adapter.windowObj || window || {};
     this.currentCheckState_ = strings.TRANSITION_STATE_INIT;
     this.currentAnimationClass_ = '';
     this.animEndLatchTimer_ = 0;
