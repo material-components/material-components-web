@@ -27,15 +27,6 @@ export const cssClasses = {
 };
 
 export const strings = {
-  get TRANS_END_EVENT_NAME() {
-    const el = document.createElement('div');
-    // NOTE: We can immediately assume that the prefix is 'webkit' in browsers that don't
-    // support unprefixed transtions since the only browsers up to two major versions back that
-    // don't support unprefixed names are mobile Safari and Android native browser, both of
-    // which use the 'webkit' prefix.
-    return 'transition' in el.style ? 'transitionend' : 'webkitTransitionEnd';
-  },
-
   get TEXT_SELECTOR() {
     return `.${cssClasses.TEXT}`;
   },
