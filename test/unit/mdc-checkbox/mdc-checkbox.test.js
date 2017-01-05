@@ -21,7 +21,7 @@ import td from 'testdouble';
 
 import {MDCCheckbox} from '../../../packages/mdc-checkbox';
 import {strings} from '../../../packages/mdc-checkbox/constants';
-import {domUtil} from '../../../packages/mdc-animation';
+import {getCorrectEventName} from '../../../packages/mdc-animation';
 
 function getFixture() {
   return bel`
@@ -113,7 +113,7 @@ test('adapter#registerAnimationEndHandler adds an animation end event listener o
   const {root, component} = setupTest();
   const handler = td.func('animationEndHandler');
   component.getDefaultFoundation().adapter_.registerAnimationEndHandler(handler);
-  domEvents.emit(root, domUtil.getCorrectEventName(windowObj, 'animation'));
+  domEvents.emit(root, getCorrectEventName(windowObj, 'animation'));
 
   t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
   t.end();

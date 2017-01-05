@@ -100,7 +100,7 @@ function getAnimationName(windowObj, eventType) {
   return eventName;
 }
 
-// Public function to access getAnimationName() for JavaScript events or CSS
+// Public functions to access getAnimationName() for JavaScript events or CSS
 // property names.
 //
 // Parameters:
@@ -111,11 +111,10 @@ function getAnimationName(windowObj, eventType) {
 // If proper arguments are not supplied, this function will return
 // the property or event type without webkit prefix.
 //
-export const domUtil = {
-  getCorrectEventName: (windowObj, eventType) => {
-    return getAnimationName(windowObj, eventType);
-  },
-  getCorrectPropertyName: (windowObj, eventType) => {
-    return getAnimationName(windowObj, eventType);
-  },
-};
+export function getCorrectEventName(windowObj, eventType) {
+  return getAnimationName(windowObj, eventType);
+}
+
+export function getCorrectPropertyName(windowObj, eventType) {
+  return getAnimationName(windowObj, eventType);
+}
