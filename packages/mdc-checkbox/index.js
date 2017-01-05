@@ -30,7 +30,7 @@ export class MDCCheckbox extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.strings;
+    const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.dom;
     return new MDCCheckboxFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),

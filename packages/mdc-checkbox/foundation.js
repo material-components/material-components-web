@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings, numbers, dom} from './constants';
 
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
@@ -26,6 +26,11 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
 
   static get strings() {
     return strings;
+  }
+
+  static get dom() {
+    delete MDCCheckboxFoundation.dom;
+    return MDCCheckboxFoundation.dom = dom();
   }
 
   static get numbers() {

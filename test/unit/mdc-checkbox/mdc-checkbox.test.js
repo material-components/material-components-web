@@ -20,7 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCCheckbox} from '../../../packages/mdc-checkbox';
-import {strings} from '../../../packages/mdc-checkbox/constants';
+import {strings, dom} from '../../../packages/mdc-checkbox/constants';
 
 function getFixture() {
   return bel`
@@ -102,7 +102,7 @@ test('adapter#registerAnimationEndHandler adds an animation end event listener o
   const {root, component} = setupTest();
   const handler = td.func('animationEndHandler');
   component.getDefaultFoundation().adapter_.registerAnimationEndHandler(handler);
-  domEvents.emit(root, strings.ANIM_END_EVENT_NAME);
+  domEvents.emit(root, dom().ANIM_END_EVENT_NAME);
 
   t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
   t.end();
@@ -111,10 +111,10 @@ test('adapter#registerAnimationEndHandler adds an animation end event listener o
 test('adapter#deregisterAnimationEndHandler removes an animation end event listener on the root el', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('animationEndHandler');
-  root.addEventListener(strings.ANIM_END_EVENT_NAME, handler);
+  root.addEventListener(dom().ANIM_END_EVENT_NAME, handler);
 
   component.getDefaultFoundation().adapter_.deregisterAnimationEndHandler(handler);
-  domEvents.emit(root, strings.ANIM_END_EVENT_NAME);
+  domEvents.emit(root, dom().ANIM_END_EVENT_NAME);
 
   t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
   t.end();
