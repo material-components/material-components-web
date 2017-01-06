@@ -41,14 +41,6 @@ export const strings = {
   VAR_XF_ORIGIN_X: `--${ROOT}-xfo-x`,
   VAR_XF_ORIGIN_Y: `--${ROOT}-xfo-y`,
   VAR_FG_APPROX_XF: `--${ROOT}-fg-approx-xf`,
-  ANIMATION_END_EVENT: (() => {
-    const d = document.createElement('div');
-    return 'webkitAnimation' in d.style ? 'webkitAnimationEnd' : 'animationend';
-  })(),
-  TRANSITION_END_EVENT: (() => {
-    const d = document.createElement('div');
-    return 'webkitTransition' in d.style ? 'webkitTransitionEnd' : 'transitionend';
-  })(),
 };
 
 export const numbers = {
