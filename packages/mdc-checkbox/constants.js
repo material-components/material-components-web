@@ -30,14 +30,6 @@ export const cssClasses = {
 };
 
 export const strings = {
-  ANIM_END_EVENT_NAME: (() => {
-    const el = document.createElement('div');
-    // NOTE: We can immediately assume that the prefix is 'webkit' in browsers that don't
-    // support unprefixed animations since the only browsers up to two major versions back that
-    // don't support unprefixed names are mobile Safari and Android native browser, both of
-    // which use the 'webkit' prefix.
-    return 'animation' in el.style ? 'animationend' : 'webkitAnimationEnd';
-  })(),
   NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
   TRANSITION_STATE_INIT: 'init',
   TRANSITION_STATE_CHECKED: 'checked',

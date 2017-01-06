@@ -33,14 +33,14 @@ const legacyWindowObj = td.object({
 
 test('#getCorrectEventName does not prefix events when not necessary', (t) => {
   const windowObj = td.object({
-  document: {
-    createElement: (str) => ({
-      style: {
-        animation: 'none',
-      },
-    }),
-  },
-});
+    document: {
+      createElement: (str) => ({
+        style: {
+          animation: 'none',
+        },
+      }),
+    },
+  });
 
   t.equal(
     getCorrectEventName(windowObj, 'animationstart'),
