@@ -25,10 +25,10 @@ export default class MDCComponent {
     return new MDCComponent(root, new MDCFoundation());
   }
 
-  constructor(root, foundation, ...args) {
+  constructor(root, foundation = this.getDefaultFoundation(), ...args) {
     this.root_ = root;
     this.initialize(...args);
-    this.foundation_ = foundation === undefined ? this.getDefaultFoundation() : foundation;
+    this.foundation_ = foundation;
     this.foundation_.init();
     this.initialSyncWithDOM();
   }
