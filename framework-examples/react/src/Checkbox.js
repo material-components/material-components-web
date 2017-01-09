@@ -98,7 +98,7 @@ export default class Checkbox extends PureComponent {
         this.refs.nativeCb.offsetWidth;
       }
     },
-    isAttachedToDOM: () => Boolean(this.refs.nativeCb)
+    isAttachedToDOM: () => Boolean(this.refs.nativeCb),
   });
 
   render() {

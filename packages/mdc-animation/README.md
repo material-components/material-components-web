@@ -1,6 +1,6 @@
 # mdc-animation
 
-mdc-animation is a sass / css library which provides variables, mixins, and classes for Material Design animation, based off of the [motion guidelines](https://material.google.com/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves.
+mdc-animation is a Sass / CSS / JavaScript library which provides a toolbelt for Material Design animation, based off of the [motion guidelines](https://material.google.com/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves.
 
 ## Installation
 
@@ -97,3 +97,21 @@ CSS Classes have the exact same name as their mixin counterparts.
 
 All animation variables are marked with `!default`, thus they can be overridden should the need
 arise.
+
+### JavaScript
+
+MDC Web ships with a set of utility functions designed to make animations easier to implement.
+
+### Using Utility Functions
+
+To use:
+```js
+import {getCorrectEventName} from '@material/mdc-animation';
+
+const eventToListenFor = getCorrectEventName(window, 'animationstart');
+```
+
+| Method Signature | Description |
+| --- | --- |
+| `getCorrectEventName(windowObj: Object, eventType: string)` | Returns a JavaScript event name. Prefixed if necessary. |
+| `getCorrectPropertyName(windowObj: Object, eventType: string)` | Returns a CSS property name. Prefixed if necessary. |

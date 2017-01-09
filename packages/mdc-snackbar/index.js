@@ -16,6 +16,7 @@
 
 import {MDCComponent} from '@material/base';
 import MDCSnackbarFoundation from './foundation';
+import {getCorrectEventName} from '@material/animation';
 
 export {MDCSnackbarFoundation};
 
@@ -30,7 +31,6 @@ export class MDCSnackbar extends MDCComponent {
 
   getDefaultFoundation() {
     const {
-      TRANS_END_EVENT_NAME,
       TEXT_SELECTOR,
       ACTION_BUTTON_SELECTOR,
     } = MDCSnackbarFoundation.strings;
@@ -49,8 +49,10 @@ export class MDCSnackbar extends MDCComponent {
       setMessageText: (text) => { getText().textContent = text; },
       registerActionClickHandler: (handler) => getActionButton().addEventListener('click', handler),
       deregisterActionClickHandler: (handler) => getActionButton().removeEventListener('click', handler),
-      registerTransitionEndHandler: (handler) => this.root_.addEventListener(TRANS_END_EVENT_NAME, handler),
-      deregisterTransitionEndHandler: (handler) => this.root_.removeEventListener(TRANS_END_EVENT_NAME, handler),
+      registerTransitionEndHandler:
+        (handler) => this.root_.addEventListener(getCorrectEventName(window, 'transitionend'), handler),
+      deregisterTransitionEndHandler:
+        (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'transitionend'), handler),
     });
   }
 }

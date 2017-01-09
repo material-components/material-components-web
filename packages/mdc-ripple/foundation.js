@@ -16,6 +16,7 @@
 
 import {MDCFoundation} from '@material/base';
 
+import {getCorrectEventName} from '@material/animation';
 import {cssClasses, strings, numbers} from './constants';
 import {animateWithClass, getNormalizedEventCoords} from './util';
 
@@ -305,12 +306,16 @@ export default class MDCRippleFoundation extends MDCFoundation {
       };
     }
     const {left, top} = startPoint;
-    const {VAR_LEFT, VAR_TOP, TRANSITION_END_EVENT, ANIMATION_END_EVENT} = MDCRippleFoundation.strings;
+    const {VAR_LEFT, VAR_TOP} = MDCRippleFoundation.strings;
     const {BG_BOUNDED_ACTIVE_FILL, FG_BOUNDED_ACTIVE_FILL} = MDCRippleFoundation.cssClasses;
     this.adapter_.updateCssVariable(VAR_LEFT, `${left}px`);
     this.adapter_.updateCssVariable(VAR_TOP, `${top}px`);
-    this.cancelBgBounded_ = animateWithClass(this.adapter_, BG_BOUNDED_ACTIVE_FILL, TRANSITION_END_EVENT);
-    this.cancelFgBounded_ = animateWithClass(this.adapter_, FG_BOUNDED_ACTIVE_FILL, ANIMATION_END_EVENT);
+    this.cancelBgBounded_ = animateWithClass(this.adapter_,
+                                             BG_BOUNDED_ACTIVE_FILL,
+                                            getCorrectEventName(window, 'transitionend'));
+    this.cancelFgBounded_ = animateWithClass(this.adapter_,
+                                             FG_BOUNDED_ACTIVE_FILL,
+                                             getCorrectEventName(window, 'animationend'));
   }
 
   destroy() {

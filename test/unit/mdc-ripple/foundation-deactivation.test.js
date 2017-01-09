@@ -19,6 +19,18 @@ import lolex from 'lolex';
 
 import {testFoundation, captureHandlers} from './helpers';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
+import {getCorrectEventName} from '../../../packages/mdc-animation';
+
+const windowObj = td.object({
+  document: {
+    createElement: (str) => ({
+      style: {
+        animation: 'none',
+        transition: 'none',
+      },
+    }),
+  },
+});
 
 testFoundation('runs deactivation UX on touchend after touchstart', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
@@ -36,10 +48,10 @@ testFoundation('runs deactivation UX on touchend after touchstart', (t) => {
   t.doesNotThrow(() => td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL)));
 
   // Test removal of classes on end event
-  handlers[strings.TRANSITION_END_EVENT]();
+  handlers[getCorrectEventName(windowObj, 'transitionend')]();
   mockRaf.flush();
   t.doesNotThrow(() => td.verify(adapter.removeClass(cssClasses.BG_BOUNDED_ACTIVE_FILL), {times: 2}));
-  handlers[strings.ANIMATION_END_EVENT]();
+  handlers[getCorrectEventName(windowObj, 'animationend')]();
   mockRaf.flush();
   t.doesNotThrow(() => td.verify(adapter.removeClass(cssClasses.FG_BOUNDED_ACTIVE_FILL), {times: 2}));
   t.end();

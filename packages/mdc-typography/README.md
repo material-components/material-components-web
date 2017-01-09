@@ -95,10 +95,10 @@ property on UI elements such as buttons may cause them to be positioned incorrec
 settings, without defining any particular font size or style.
 
 
-### mdc-typography-style
+### mdc-typography
 
 ```scss
-@include mdc-typography-style(display4);
+@include mdc-typography(display4);
 ```
 
 Applies one of the typography styles. Note that this includes the font family and aliasing definitions; you don't need
@@ -120,7 +120,7 @@ The full list of styles:
 ### mdc-typography-adjust-margin
 
 ```scss
-@include mdc-typography-style(display4);
+@include mdc-typography(display4);
 @include mdc-typography-adjust-margin(display4);
 ```
 
@@ -134,7 +134,7 @@ This means that while text will be correctly styled, it may not be correctly pos
 applied to, in order to align text correctly. Because of this, it should only be used in a text context; using this
 property on UI elements such as buttons may cause them to be positioned incorrectly.
 
-The list of styles is the same as for `mdc-typography-style`:
+The list of styles is the same as for the `mdc-typography` mixin:
 - `display4`
 - `display3`
 - `display2`

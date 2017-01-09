@@ -21,7 +21,7 @@ import {captureHandlers} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTemporaryDrawerFoundation from '../../../packages/mdc-drawer/temporary/foundation';
-import {cssClasses, strings, numbers} from '../../../packages/mdc-drawer/temporary/constants';
+import {cssClasses, strings} from '../../../packages/mdc-drawer/temporary/constants';
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCTemporaryDrawerFoundation);
@@ -37,11 +37,6 @@ test('exports strings', (t) => {
 
 test('exports cssClasses', (t) => {
   t.deepEqual(MDCTemporaryDrawerFoundation.cssClasses, cssClasses);
-  t.end();
-});
-
-test('exports numbers', (t) => {
-  t.deepEqual(MDCTemporaryDrawerFoundation.numbers, numbers);
   t.end();
 });
 
