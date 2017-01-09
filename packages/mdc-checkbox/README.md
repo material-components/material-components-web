@@ -48,6 +48,7 @@ easily position checkboxes and their labels.
 <div class="mdc-form-field">
   <div class="mdc-checkbox">
     <input type="checkbox"
+           id="my-checkbox"
            class="mdc-checkbox__native-control"/>
     <div class="mdc-checkbox__background">
       <svg version="1.1"
