@@ -484,6 +484,16 @@ demos
 When contributing a new component, we encourage you to look at existing components to get a better
 sense of our conventions. Your new component should "blend in" with all existing components.
 
+Additionally, all new components require the following within their `package.json`:
+
+```
+"publishConfig": {
+  "access": "public"
+}
+```
+
+This is needed so that lerna will be able to automatically publish new scoped packages.
+
 ### License Stanzas
 
 We are required to put the following at the _top_ of _every source code file_, including tests,
