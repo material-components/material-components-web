@@ -131,7 +131,8 @@ testFoundation('displays the foreground ripple on activation when unbounded', (t
   t.end();
 });
 
-testFoundation('sets unbounded FG xf origin to the coords within surface on pointer activation', (t) => {
+testFoundation('sets unbounded FG xf origin to the coords within surface on pointer activation, ' +
+               'accounting for FG ripple offset', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
   td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 50, top: 50});
@@ -142,8 +143,8 @@ testFoundation('sets unbounded FG xf origin to the coords within surface on poin
   handlers.mousedown({pageX: 100, pageY: 75});
   mockRaf.flush();
 
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_X, '50px')));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_Y, '25px')));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_X, '71px')));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_Y, '46px')));
   t.end();
 });
 
@@ -159,8 +160,8 @@ testFoundation('takes scroll offset into account when computing transform origin
   handlers.mousedown({pageX: 100, pageY: 75});
   mockRaf.flush();
 
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_X, '50px')));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_Y, '25px')));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_X, '71px')));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_Y, '46px')));
   t.end();
 });
 
@@ -176,7 +177,7 @@ testFoundation('sets unbounded FG xf origin to center on non-pointer activation'
   handlers.keydown();
   mockRaf.flush();
 
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_X, '50px')));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_Y, '50px')));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_X, '71px')));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_XF_ORIGIN_Y, '71px')));
   t.end();
 });
