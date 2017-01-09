@@ -168,7 +168,7 @@ const MDCRipple = mdc.ripple.MDCRipple;
 const MDCRippleFoundation = mdc.ripple.MDCRippleFoundation;
 ```
 
-Then, simply attach initialize the ripple with the correct DOM.
+Then, simply initialize the ripple with the correct DOM element.
 
 ```javascript
 const surface = document.querySelector('.surface');

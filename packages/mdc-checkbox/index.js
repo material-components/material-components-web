@@ -15,6 +15,7 @@
  */
 
 import {MDCComponent} from '@material/base';
+import {getCorrectEventName} from '@material/animation';
 import MDCCheckboxFoundation from './foundation';
 
 export {MDCCheckboxFoundation};
@@ -30,12 +31,13 @@ export class MDCCheckbox extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.strings;
     return new MDCCheckboxFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      registerAnimationEndHandler: (handler) => this.root_.addEventListener(ANIM_END_EVENT_NAME, handler),
-      deregisterAnimationEndHandler: (handler) => this.root_.removeEventListener(ANIM_END_EVENT_NAME, handler),
+      registerAnimationEndHandler:
+        (handler) => this.root_.addEventListener(getCorrectEventName(window, 'animation'), handler),
+      deregisterAnimationEndHandler:
+        (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'animation'), handler),
       registerChangeHandler: (handler) => this.nativeCb_.addEventListener('change', handler),
       deregisterChangeHandler: (handler) => this.nativeCb_.removeEventListener('change', handler),
       getNativeControl: () => this.nativeCb_,

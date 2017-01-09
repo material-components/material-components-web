@@ -25,7 +25,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {Set as ImmutableSet} from 'immutable';
 // Temporarily using relative reference until we publish on npm.
-import {MDCCheckboxFoundation} from '@material/checkbox';
+import {MDCCheckboxFoundation} from '@material/checkbox/dist/mdc.checkbox';
 import '@material/checkbox/dist/mdc.checkbox.css';
 
 const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.strings;
@@ -98,7 +98,7 @@ export default class Checkbox extends PureComponent {
         this.refs.nativeCb.offsetWidth;
       }
     },
-    isAttachedToDOM: () => Boolean(this.refs.nativeCb)
+    isAttachedToDOM: () => Boolean(this.refs.nativeCb),
   });
 
   render() {

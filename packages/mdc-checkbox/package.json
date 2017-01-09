@@ -1,7 +1,7 @@
 {
   "name": "@material/checkbox",
   "description": "The Material Components for the web checkbox component",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "Apache-2.0",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.1.0",
+    "@material/animation": "^0.1.1",
     "@material/base": "^0.1.0",
     "@material/theme": "^0.1.0"
   }

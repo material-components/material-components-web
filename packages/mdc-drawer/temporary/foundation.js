@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings} from './constants';
 
 export default class MDCTemporaryDrawerFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -24,10 +24,6 @@ export default class MDCTemporaryDrawerFoundation extends MDCFoundation {
 
   static get strings() {
     return strings;
-  }
-
-  static get numbers() {
-    return numbers;
   }
 
   static get defaultAdapter() {
