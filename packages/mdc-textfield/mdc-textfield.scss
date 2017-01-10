@@ -32,6 +32,15 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   @return #{$property} 180ms $mdc-animation-fast-out-slow-in-timing-function;
 }
 
+input:-webkit-autofill + label,
+input:-webkit-autofill:hover + label, 
+input:-webkit-autofill:focus + label
+input:-webkit-autofill + label {
+  color: transparent;
+  background-color: transparent;
+}
+
+
 /* postcss-bem-linter: define textfield */
 .mdc-textfield {
   @include mdc-typography-base;
