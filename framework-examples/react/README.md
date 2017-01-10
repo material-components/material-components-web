@@ -2,13 +2,13 @@
 
 This folder contains an example of using mdc-checkbox within React.
 
-It is based off of [react-hot-boilerplate](https://github.com/gaearon/react-hot-boilerplate)
+It is bootstrapped with [create-react-app](https://github.com/facebookincubator/create-react-app)
 
 ## Setup
 
 1. Run `npm install` within this folder
 2. Run `npm start` to start the demo server
-3. Navigate to http://localhost:3000 to view the demo.
+3. If your browser has not been opened automatically, then navigate to the location written on the console to view the demo
 
 ## Notes
 

@@ -19,13 +19,18 @@ npm install --save @material/checkbox
   <input type="checkbox"
          class="mdc-checkbox__native-control"/>
   <div class="mdc-checkbox__background">
-    <svg version="1.1" class="mdc-checkbox__checkmark"
-         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+    <svg version="1.1"
+         class="mdc-checkbox__checkmark"
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 24 24"
          xml:space="preserve">
-      <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
+      <path class="mdc-checkbox__checkmark__path"
+            fill="none"
+            stroke="white"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
     </svg>
-  <div class="mdc-checkbox__mixedmark"></div>
+    <div class="mdc-checkbox__mixedmark"></div>
+  </div>
 </div>
 ```
 
@@ -43,16 +48,21 @@ easily position checkboxes and their labels.
 <div class="mdc-form-field">
   <div class="mdc-checkbox">
     <input type="checkbox"
-           class="mdc-checkbox__native-control"
-           id="my-checkbox"/>
+           id="my-checkbox"
+           class="mdc-checkbox__native-control"/>
     <div class="mdc-checkbox__background">
-      <svg version="1.1" class="mdc-checkbox__checkmark"
-           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      <svg version="1.1"
+           class="mdc-checkbox__checkmark"
+           xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 24 24"
            xml:space="preserve">
-        <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
+        <path class="mdc-checkbox__checkmark__path"
+              fill="none"
+              stroke="white"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
-    <div class="mdc-checkbox__mixedmark"></div>
+      <div class="mdc-checkbox__mixedmark"></div>
+    </div>
   </div>
 
   <label for="my-checkbox">My Checkbox Label</label>
