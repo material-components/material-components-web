@@ -102,13 +102,13 @@ use [mdc-elevation](https://github.com/material-components/material-components-w
 
 #### Adding the ripple Sass
 
-When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple` class to that element. Therefore, to add a ripple to our surface, first we include the proper Sass mixins within our surface's styles when it contains this class. We also add a few additional properties that ensure the ripple's UX is correct.
+When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. Therefore, to add a ripple to our surface, first we include the proper Sass mixins within our surface's styles when it contains this class. We also add a few additional properties that ensure the ripple's UX is correct.
 
 ```scss
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
 
-.surface.mdc-ripple {
+.surface.mdc-ripple-upgraded {
   @include mdc-ripple-base;
   @include mdc-ripple-bg((pseudo: "::before"));
   @include mdc-ripple-fg((pseudo: "::after"));
