@@ -131,8 +131,6 @@
  * trying to flip the values, use mdc-rtl-reflexive-property().
  */
 @mixin mdc-rtl-reflexive-box($base-property, $default-direction, $value, $root-selector: null) {
-  /* stylelint-disable scss/dollar-variable-pattern */
-
   @if (index((right, left), $default-direction) == null) {
     @error "Invalid default direction #{default-direction}. Please specifiy either right or left";
   }
@@ -146,8 +144,6 @@
   }
 
   @include mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector);
-
-  /* stylelint-enable scss/dollar-variable-pattern */
 }
 
 /**
@@ -177,14 +173,10 @@
  * A 4th optional $root-selector argument can be given, which will be passed to `mdc-rtl`.
  */
 @mixin mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector: null) {
-  /* stylelint-disable scss/dollar-variable-pattern */
-
   $prop-left: #{$base-property}-left;
   $prop-right: #{$base-property}-right;
 
   @include mdc-rtl-reflexive_($prop-left, $left-value, $prop-right, $right-value, $root-selector);
-
-  /* stylelint-enable scss/dollar-variable-pattern */
 }
 
 /**
@@ -215,8 +207,6 @@
  * An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
  */
 @mixin mdc-rtl-reflexive-position($pos, $value, $root-selector: null) {
-  /* stylelint-disable scss/dollar-variable-pattern */
-
   @if (index((right, left), $pos) == null) {
     @error "Invalid position #{pos}. Please specifiy either right or left";
   }
@@ -230,8 +220,6 @@
   }
 
   @include mdc-rtl-reflexive_(left, $left-value, right, $right-value, $root-selector);
-
-  /* stylelint-enable scss/dollar-variable-pattern */
 }
 
 @mixin mdc-rtl-reflexive_(

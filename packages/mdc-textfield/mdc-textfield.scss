@@ -274,11 +274,9 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 }
 
 .mdc-textfield--multiline {
-  /* stylelint-disable scss/dollar-variable-pattern */
   $padding-inset: 4px;
   $label-offset-y: $padding-inset + 2;
   $label-offset-x: $padding-inset;
-  /* stylelint-enable scss/dollar-variable-pattern */
 
   display: flex;
   height: initial;
