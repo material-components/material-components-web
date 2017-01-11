@@ -45,6 +45,25 @@ npm install --save @material/button
 </button>
 ```
 
+### Adding ripples to buttons
+
+To add the ink ripple effect to a button, attach a [ripple](../packages/mdc-ripple) instance to the
+button element.
+
+```js
+mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
+```
+
+You can also do this declaratively when using the [material-components-web](../packages/material-components-web) package.
+
+```html
+<button class="mdc-button" data-mdc-auto-init="MDCRipple">
+  Flat button
+</button>
+```
+
+Buttons are fully aware of ripple styles, so no DOM or CSS changes are required to use them.
+
 ## Classes
 
 ### Block

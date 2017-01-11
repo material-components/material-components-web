@@ -1,27 +1,27 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+//
+// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 
 @import "@material/animation/variables";
 @import "@material/animation/functions";
 @import "@material/elevation/mixins";
+@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
-/* postcss-bem-linter: define button */
-/* stylelint-disable declaration-property-unit-whitelist */
+// postcss-bem-linter: define button
 .mdc-button {
   @include mdc-typography(body2);
   @include mdc-theme-prop(color, text-primary-on-light);
@@ -35,9 +35,9 @@
   border-radius: 2px;
   outline: none;
   background: transparent;
-  font-size: 14px; /* Override font to specifically be px as spec defined pt */
+  font-size: 14px; // Override font to specifically be px as spec defined pt
   font-weight: 500;
-  line-height: 36px; /* Override line-height so text aligns centered */
+  line-height: 36px; // Override line-height so text aligns centered
   text-align: center;
   text-transform: uppercase;
   vertical-align: middle;
@@ -49,7 +49,7 @@
     @include mdc-theme-prop(color, text-primary-on-dark);
   }
 
-  /* postcss-bem-linter: ignore */
+  // postcss-bem-linter: ignore
   &::before {
     position: absolute;
     top: 0;
@@ -71,11 +71,9 @@
   &:active::before {
     transition: mdc-animation-enter(opacity, 120ms);
 
-    /*
-      Slightly darker value for visual distinction.
-      This allows a full base that has distinct modes.
-      Progressive enhancement with ripples will provide complete button spec alignment.
-    */
+    // Slightly darker value for visual distinction.
+    // This allows a full base that has distinct modes.
+    // Progressive enhancement with ripples will provide complete button spec alignment.
     opacity: .18;
   }
 
@@ -98,7 +96,7 @@
 
   &--dense {
     height: 32px;
-    font-size: .8125rem; /* 13sp */
+    font-size: .8125rem; // 13sp
     line-height: 32px;
   }
 
@@ -115,15 +113,12 @@
     @include mdc-theme-dark(".mdc-button") {
       @include mdc-theme-prop(background-color, primary);
 
-      /* postcss-bem-linter: ignore */
+      // postcss-bem-linter: ignore
       &::before {
-        /*
-          We are explicitly not fully adhering to Material Design here.
-          This should be the 700-shade when active instead of a black shade.
-          Due to the complexity involved in adhering fully it is being ignored.
-          Instead re-using the existing architecture for shading works just fine.
-          - With <3 from Garbee
-        */
+        // We are explicitly not fully adhering to Material Design here.
+        // This should be the 700-shade when active instead of a black shade.
+        // Due to the complexity involved in adhering fully it is being ignored.
+        // Instead re-using the existing architecture for shading works just fine.
         color: black;
       }
     }
@@ -136,12 +131,12 @@
       @include mdc-theme-prop(color, primary);
     }
 
-    /* postcss-bem-linter: ignore */
+    // postcss-bem-linter: ignore
     &.mdc-button--raised {
       @include mdc-theme-prop(background-color, primary);
       @include mdc-theme-prop(color, text-primary-on-primary);
 
-      /* postcss-bem-linter: ignore */
+      // postcss-bem-linter: ignore
       &::before {
         color: black;
       }
@@ -155,12 +150,12 @@
       @include mdc-theme-prop(color, accent);
     }
 
-    /* postcss-bem-linter: ignore */
+    // postcss-bem-linter: ignore
     &.mdc-button--raised {
       @include mdc-theme-prop(background-color, accent);
       @include mdc-theme-prop(color, text-primary-on-accent);
 
-      /* postcss-bem-linter: ignore */
+      // postcss-bem-linter: ignore
       &::before {
         color: black;
       }
@@ -171,7 +166,6 @@
     padding: 0 8px;
   }
 
-  /* stylelint-disable selector-no-type */
   fieldset:disabled &,
   &:disabled {
     color: rgba(0, 0, 0, .26);
@@ -196,4 +190,33 @@
   }
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
+
+.mdc-button.mdc-ripple-upgraded {
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before"));
+  @include mdc-ripple-fg((pseudo: "::after"));
+
+  overflow: hidden;
+
+  @include mdc-theme-dark(".mdc-button", true) {
+    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
+    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
+  }
+
+  @each $theme-style in (primary, accent) {
+    &.mdc-button--#{$theme-style} {
+      @include mdc-ripple-bg((pseudo: "::before", theme-style: $theme-style, opacity: .12));
+      @include mdc-ripple-fg((pseudo: "::after", theme-style: $theme-style, opacity: .12));
+    }
+  }
+}
+
+.mdc-button--raised.mdc-ripple-upgraded {
+  @each $theme-style in (primary, accent) {
+    &.mdc-button--#{$theme-style} {
+      @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
+      @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
+    }
+  }
+}
