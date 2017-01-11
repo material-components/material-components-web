@@ -259,10 +259,9 @@
   }
 }
 
-/*
-  height for option elements cannot be controlled
-  with CSS. Use the font-size rule instead.
-*/
+// height for option elements cannot be controlled
+// with CSS. Use the font-size rule instead.
+
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-list-divider {
   margin-bottom: 8px;
