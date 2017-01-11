@@ -16,9 +16,6 @@
 
 @import "./constants";
 
-/* All variables are local, so disable pattern checking. */
-/* stylelint-disable scss/dollar-variable-pattern */
-
 /**
  * Calculate the luminance for a color.
  * See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
@@ -60,5 +57,3 @@
     @return "light";
   }
 }
-
-/* stylelint-enable scss/dollar-variable-pattern */

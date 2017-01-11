@@ -38,7 +38,7 @@ log "Determining package versions..."
 node scripts/determine-pkg-versions.js
 echo ""
 
-log "Pre-release steps done! You should now commit the changelog and then run " \
+log "Pre-release steps done! You should now run " \
     "\$(npm bin)/lerna publish, followed by ./scripts/post-release.sh"
 log "Please use the package versions specified above to increment the different package versions " \
     "When prompted by lerna. Or, override those versions if need be."

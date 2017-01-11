@@ -33,16 +33,12 @@
  * the spec.
  */
 @mixin mdc-list-start-detail-size_($size) {
-  /* stylelint-disable scss/dollar-variable-pattern */
-
   $text-offset: 72px;
   $side-padding: 16px;
   $margin-value: $text-offset - $side-padding - $size;
 
   @include mdc-list-detail-size_($size);
   @include mdc-rtl-reflexive-box(margin, right, $margin-value, ".mdc-list-item");
-
-  /* stylelint-enable scss/dollar-variable-pattern */
 }
 
 /* postcss-bem-linter: define list */

@@ -19,9 +19,6 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
-/* All variables are local, so disable pattern checking. */
-/* stylelint-disable scss/dollar-variable-pattern */
-
 @mixin mdc-drawer-toolbar-spacer_() {
   &__toolbar-spacer {
     display: flex;
@@ -141,5 +138,3 @@
   @include mdc-drawer-header_;
   @include mdc-drawer-list_;
 }
-
-/* stylelint-enable scss/dollar-variable-pattern */

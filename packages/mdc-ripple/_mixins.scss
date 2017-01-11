@@ -46,7 +46,6 @@
 }
 
 @mixin mdc-ripple-color_($config) {
-  /* stylelint-disable scss/dollar-variable-pattern */
   $base-color: map-get($config, base-color);
   $opacity: map-get($config, opacity);
   $theme-style: map-get($config, theme-style);
@@ -55,7 +54,6 @@
   @if ($theme-style) {
     $theme-value: map-get($mdc-theme-property-values, $theme-style);
     $css-var: var(--mdc-theme-#{$theme-style}, $theme-value);
-    /* stylelint-enable scss/dollar-variable-pattern */
 
     background-color: rgba($theme-value, $opacity);
 
@@ -72,9 +70,7 @@
 }
 
 @mixin mdc-ripple-bg-base_($config) {
-  /* stylelint-disable scss/dollar-variable-pattern */
   $radius: map-get($config, radius);
-  /* stylelint-enable scss/dollar-variable-pattern */
 
   @include mdc-ripple-color_($config);
 
@@ -91,10 +87,8 @@
 }
 
 @mixin mdc-ripple-bg($config: ()) {
-  /* stylelint-disable scss/dollar-variable-pattern */
   $config: map-merge(mdc-ripple-default-config_(), $config);
   $pseudo: map-get($config, pseudo);
-  /* stylelint-enable scss/dollar-variable-pattern */
 
   /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
   @if ($pseudo) {
@@ -146,10 +140,8 @@
 }
 
 @mixin mdc-ripple-fg($config: ()) {
-  /* stylelint-disable scss/dollar-variable-pattern */
   $config: map-merge(mdc-ripple-default-config_(), $config);
   $pseudo: map-get($config, pseudo);
-  /* stylelint-enable scss/dollar-variable-pattern */
 
   /* stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after */
   @if ($pseudo) {
