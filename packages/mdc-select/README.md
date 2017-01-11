@@ -135,15 +135,41 @@ on a mobile device. It does not require any javascript, nor any CSS for `mdc-men
 
 ```html
 <select class="mdc-select">
-  <option value="" default selected>Pick a food group</option>
+  <option value="" default selected>Pick a food</option>
   <option value="grains">Bread, Cereal, Rice, and Pasta</option>
   <option value="vegetables">Vegetables</option>
-  <option value="fruit">Fruit</option>
+  <optgroup label="Fruits">
+    <option value="apple">Apple</option>
+    <option value="oranges">Orange</option>
+    <option value="banana">Banana</option>
+  </optgroup>
   <option value="dairy">Milk, Yogurt, and Cheese</option>
   <option value="meat">Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts</option>
   <option value="fats">Fats, Oils, and Sweets</option>
 </select>
 ```
+
+Select elements take a `size` attribute to determine the height of the select box.
+
+If you'd like to maintain the width or height outside of the attribute, you'll need to set it in your styles:
+
+```css
+.my-select-container .mdc-select {
+  width: 300px;
+  height: 550px;
+}
+```
+
+#### Classes
+
+| Class                    | Description                                     |
+| ------------------------ | ----------------------------------------------- |
+| `mdc-select`             | A pure css `select` element                     |
+| `mdc-list-group`         | A group of options.                             |
+| `mdc-list-item`          | A list item.                                    |
+| `mdc-list-divider`       | A divider.                                      |
+
+It is advised that dividers also set `role="presentation"` to disable selection and not cloud accessibility.
 
 ### MDC Select Component API
 
@@ -358,3 +384,23 @@ selects.native.addEventListener('change', changeHandler);
 ```
 
 We are looking into building this functionality into `MDCSelect` in the future.
+
+## Multi Select
+MDC-Web implements multi-select on top of the <select multiple> element.
+
+```html
+<select multiple size="6" class="mdc-multi-select mdl-list" >
+  <optgroup class="mdc-list-group" label="Starches">
+    <option class="mdc-list-item">
+      Potato 
+    </option>
+    <option class="mdc-list-item">
+      Cereal 
+    </option>
+  </optgroup>
+  <option class="mdc-list-divider" role="presentation" disabled />
+  <option>
+    misc... 
+  </option>
+</select>
+```
