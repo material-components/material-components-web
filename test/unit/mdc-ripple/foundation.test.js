@@ -144,8 +144,8 @@ testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} whe
 
   const expectedDiameter = Math.sqrt(2) * 200;
   const offset = (expectedDiameter / 2);
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, `${-offset + 50}px`)));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, `${-offset + 100}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, `${Math.round(-offset + 50)}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, `${Math.round(-offset + 100)}px`)));
   t.end();
 });
 
@@ -286,8 +286,8 @@ testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} w
 
   const expectedDiameter = Math.sqrt(2) * 200;
   const offset = (expectedDiameter / 2);
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, `${-offset + 50}px`)));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, `${-offset + 100}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, `${Math.round(-offset + 50)}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, `${Math.round(-offset + 100)}px`)));
   t.end();
 });
 

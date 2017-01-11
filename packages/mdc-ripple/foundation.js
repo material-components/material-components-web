@@ -95,6 +95,10 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.cancelBgBounded_ = () => {};
     this.cancelFgBounded_ = () => {};
     this.cancelFgUnbounded_ = () => {};
+    this.unboundedCoords_ = {
+      left: 0,
+      top: 0,
+    };
   }
 
   defaultActivationState_() {
@@ -203,8 +207,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
     const {left, top} = startPoint;
     const {VAR_XF_ORIGIN_X, VAR_XF_ORIGIN_Y} = MDCRippleFoundation.strings;
-    this.adapter_.updateCssVariable(VAR_XF_ORIGIN_X, `${left}px`);
-    this.adapter_.updateCssVariable(VAR_XF_ORIGIN_Y, `${top}px`);
+    this.adapter_.updateCssVariable(VAR_XF_ORIGIN_X, `${left - this.unboundedCoords_.left}px`);
+    this.adapter_.updateCssVariable(VAR_XF_ORIGIN_Y, `${top - this.unboundedCoords_.top}px`);
     this.adapter_.addClass(FG_UNBOUNDED_ACTIVATION);
   }
 
@@ -384,10 +388,12 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_TRANSFORM_DURATION, `${this.xfDuration_}ms`);
 
     if (this.adapter_.isUnbounded()) {
-      const left = -(fgSize / 2) + (this.frame_.width / 2);
-      const top = -(fgSize / 2) + (this.frame_.height / 2);
-      this.adapter_.updateCssVariable(VAR_LEFT, `${left}px`);
-      this.adapter_.updateCssVariable(VAR_TOP, `${top}px`);
+      this.unboundedCoords_ = {
+        left: Math.round(-(fgSize / 2) + (this.frame_.width / 2)),
+        top: Math.round(-(fgSize / 2) + (this.frame_.height / 2)),
+      };
+      this.adapter_.updateCssVariable(VAR_LEFT, `${this.unboundedCoords_.left}px`);
+      this.adapter_.updateCssVariable(VAR_TOP, `${this.unboundedCoords_.top}px`);
     }
   }
 }
