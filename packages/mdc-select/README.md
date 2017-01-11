@@ -388,7 +388,8 @@ We are looking into building this functionality into `MDCSelect` in the future.
 
 ## Multi Select
 
-Currently MDC Web only supports the HTML implementation of Multi Select.
+Currently MDC Web supports the CSS only implementation of Multi Select. Add the `multple` attribute
+to the `<select>` element to initialize multi mode.
 
 ```html
 <select multiple size="6" class="mdc-multi-select mdl-list" >
@@ -400,16 +401,18 @@ Currently MDC Web only supports the HTML implementation of Multi Select.
       Cereal 
     </option>
   </optgroup>
+  <option class="mdc-list-divider" role="presentation" disabled />
   <option>
     misc... 
   </option>
 </select>
 ```
 
-
-#### Classes
+#### Classnames
 
 | Class                    | Description                                     |
 | ------------------------ | ----------------------------------------------- |
 | `mdc-multi-select`       | A pure css `<select multiple>` element          |
-
+| `mdc-list-group`         | A group of select options                       |
+| `mdc-list-item`          | A select option                                 |
+| `mdc-list-divider`       | A dividing line used to group options           |

@@ -179,57 +179,64 @@
 }
 
 /* postcss-bem-linter: define multi-select */
+
+/* stylelint-disable plugin/selector-bem-pattern */
 .mdc-multi-select {
   appearance: none;
+  width: 250px;
   padding: 0;
   border: 1px solid rgba(black, .1);
+  border-bottom: 1px solid rgba(black, .1);
   outline: none;
-}
 
-.mdc-multi-select .mdc-list-item,
-.mdc-multi-select .mdc-list-group {
-  margin: 0;
-  padding: 0;
-}
+  .mdc-list-group {
+    margin: 16px 0 0;
+    padding: 0 0 0 16px;
+    color: rgba(black, .38);
+    font-weight: normal;
 
-.mdc-multi-select .mdc-list-group {
-  margin-top: 12px;
-  padding-left: 16px;
-  font-weight: normal;
-  color: rgba(black, .38);
-}
+    &:last-child {
+      margin-bottom: 16px;
+    }
 
-.mdc-multi-select .mdc-list-group .mdc-list-item {
-  color: rgba(black, .87);
-}
+    .mdc-list-divider {
+      margin-left: -16px;
+    }
+  }
 
-.mdc-multi-select .mdc-list-group > .mdc-list-item:first-child {
-  margin-top: 12px;
-}
+  .mdc-list-item {
+    margin: 0 0 0 -16px;
+    padding: 0 16px;
+    color: rgba(black, .87);
 
-.mdc-multi-select .mdc-list-item {
-  padding-left: 16px;
-  padding-right: 16px;
-}
+    &:first-child {
+      margin-top: 12px;
+    }
 
-.mdc-multi-select .mdc-list-group .mdc-list-item {
-  margin-left: -16px;
-}
+    &:last-child {
+      margin-bottom: 8px;
+    }
+  }
 
-.mdc-multi-select .mdc-list-item:checked {
-  background-color: rgba(black, .12);
+  .mdc-list-item:checked {
+    background-color: rgba(black, .12);
+  }
+
 }
 
 .mdc-multi-select:focus .mdc-list-item:checked {
-  background-color: rgba(black, .26) !important;
+  background-color: rgba(black, .26);
 }
 
-/** 
- * height for option elements cannot be controlled 
- * with CSS use the font-size rule instead.
+/**
+ * height for option elements cannot be controlled
+ * with CSS. Use the font-size rule instead.
  */
 .mdc-list-divider {
+  margin-bottom: 8px;
+  padding-top: 8px;
   font-size: 0;
 }
+/* stylelint-enable plugin/selector-bem-pattern */
 
 /* postcss-bem-linter: end */
