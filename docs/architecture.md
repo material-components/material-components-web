@@ -21,19 +21,19 @@ In MDC-Web, _components are independent of one another_. We'll be providing per-
 
 ### A little bit of background
 
-As mentioned above, our goal is to have a single UI library that can be used across the web. In order to this to be successful, we have to be able to integrate nicely with the myriad of frameworks, runtimes, and technologies that comprise the web platform, with _minimal duplication of logic_.
+As mentioned above, our goal is to have a single UI library that can be used across the web. In order for this to be successful, we have to be able to integrate nicely with the myriad of frameworks, runtimes, and technologies that comprise the web platform, with _minimal duplication of logic_.
 
 That last part is where it gets really tricky for us. Material Design contains a lot of intricate and subtle interaction patterns that are at best easy to get wrong, at worst intrinsic knowledge and not really documented in the spec at all. Many of these interactions - especially the ones that deal with dynamic controls - require a non-trivial amount of javascript to implement correctly. It would be a shame to have to push the burden of implementing this onto framework teams, whose job should be to focus on developing framework code. Furthermore, it makes changes to the component behaviors very hard to propagate. _We need to choose an architecture that allows our material components to be integrated eloquently into different frameworks while not requiring those frameworks reinvent the wheel_.
 
 ###  Components, Foundations, Adapters
 
-In order to do achieve this goal, we've factored our components into three major parts: the component itself, its foundation, and its adapter.
+In order to achieve this goal, we've factored our components into three major parts: the component itself, its foundation, and its adapter.
 
 * A **component** is a class which is part of a **host platform**. A host platform usually refers to a framework/UI library such as React, Angular, Ember, VueJS, etc. It could also mean a certain type of environment, such as the Vanilla DOM (essentially no framework), or shadow DOM, or within the context of a custom element. It could even be something like a server rendering html, or even a hybrid platform like ionic. Basically, it's an entity which is part of a runtime that uses web technologies for user interfaces.
 
 * A **foundation** is a class which contains the core business logic of a UI component. It doesn't know anything about its **host platform** (e.g. whether it's being used as a react component, an angular component, in shadow DOM, in plain "light" DOM, etc), and therefore cannot make any assumptions about it.
 
-* An **adapter** is an object (or a class) which is _contains methods that foundations use to interact with their host environment_. Adapters can almost be thought of as proxies which interact with a host platform on behalf of the foundation.
+* An **adapter** is an object (or a class) which _contains methods that foundations use to interact with their host environment_. Adapters can almost be thought of as proxies which interact with a host platform on behalf of the foundation.
 
 #### Example: An RGB Square
 
