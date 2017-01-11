@@ -385,7 +385,6 @@ selects.native.addEventListener('change', changeHandler);
 
 We are looking into building this functionality into `MDCSelect` in the future.
 
-
 ## Multi Select
 
 Currently MDC Web supports the CSS only implementation of Multi Select. Add the `multple` attribute
@@ -407,12 +406,3 @@ to the `<select>` element to initialize multi mode.
   </option>
 </select>
 ```
-
-#### Classnames
-
-| Class                    | Description                                     |
-| ------------------------ | ----------------------------------------------- |
-| `mdc-multi-select`       | A pure css `<select multiple>` element          |
-| `mdc-list-group`         | A group of select options                       |
-| `mdc-list-item`          | A select option                                 |
-| `mdc-list-divider`       | A dividing line used to group options           |
