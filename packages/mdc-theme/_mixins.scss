@@ -16,9 +16,6 @@
 
 @import "./variables";
 
-/* All variables are local, so disable pattern checking. */
-/* stylelint-disable scss/dollar-variable-pattern */
-
 /**
  * Applies the correct theme color style to the specified property.
  * $property is typically color or background-color, but can be any CSS property that accepts color values.
@@ -100,5 +97,3 @@
     }
   }
 }
-
-/* stylelint-enable scss/dollar-variable-pattern */

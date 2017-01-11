@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-// All variables are local, so disable pattern checking.
-// stylelint-disable scss/dollar-variable-pattern
-
 @import "./variables";
 
 @mixin mdc-typography-base {
