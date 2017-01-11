@@ -386,9 +386,7 @@ selects.native.addEventListener('change', changeHandler);
 We are looking into building this functionality into `MDCSelect` in the future.
 
 ## Multi Select
-
-Currently MDC Web supports the CSS only implementation of Multi Select. Add the `multple` attribute
-to the `<select>` element to initialize multi mode.
+MDC-Web implements multi-select on top of the <select multiple> element.
 
 ```html
 <select multiple size="6" class="mdc-multi-select mdl-list" >

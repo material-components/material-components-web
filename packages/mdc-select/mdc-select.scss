@@ -178,21 +178,32 @@
   }
 }
 
-/* postcss-bem-linter: define multi-select */
-
-/* stylelint-disable plugin/selector-bem-pattern */
+// postcss-bem-linter: define multi-select
 .mdc-multi-select {
   appearance: none;
   width: 250px;
   padding: 0;
-  border: 1px solid rgba(black, .1);
-  border-bottom: 1px solid rgba(black, .1);
+  border: 1px solid;
+
+  @include mdc-theme-prop(border-color, text-hint-on-light);
+
+  @include mdc-theme-dark {
+    @include mdc-theme-prop(border-color, text-hint-on-dark);
+  }
+
   outline: none;
 
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-group {
     margin: 16px 0 0;
     padding: 0 0 0 16px;
-    color: rgba(black, .38);
+
+    @include mdc-theme-prop(color, text-hint-on-light);
+
+    @include mdc-theme-dark {
+      @include mdc-theme-prop(color, text-hint-on-dark);
+    }
+
     font-weight: normal;
 
     &:last-child {
@@ -203,11 +214,18 @@
       margin-left: -16px;
     }
   }
+  // stylelint-enable plugin/selector-bem-pattern
 
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-item {
     margin: 0 0 0 -16px;
     padding: 0 16px;
-    color: rgba(black, .87);
+
+    @include mdc-theme-prop(color, text-primary-on-light);
+
+    @include mdc-theme-dark {
+      @include mdc-theme-prop(color, text-primary-on-dark);
+    }
 
     &:first-child {
       margin-top: 12px;
@@ -217,26 +235,40 @@
       margin-bottom: 8px;
     }
   }
+  // stylelint-enable plugin/selector-bem-pattern
 
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-item:checked {
     background-color: rgba(black, .12);
-  }
 
+    @include mdc-theme-prop(background-color, background);
+
+    @include mdc-theme-dark {
+      @include mdc-theme-prop(background-color, text-primary-on-dark);
+    }
+
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-multi-select:focus .mdc-list-item:checked {
-  background-color: rgba(black, .26);
+  @include mdc-theme-prop(background-color, primary);
+
+  @include mdc-theme-dark {
+    @include mdc-theme-prop(background-color, text-primary-on-dark);
+  }
 }
 
-/**
- * height for option elements cannot be controlled
- * with CSS. Use the font-size rule instead.
- */
+/*
+  height for option elements cannot be controlled
+  with CSS. Use the font-size rule instead.
+*/
+// stylelint-disable plugin/selector-bem-pattern
 .mdc-list-divider {
   margin-bottom: 8px;
   padding-top: 8px;
   font-size: 0;
 }
-/* stylelint-enable plugin/selector-bem-pattern */
+// stylelint-enable plugin/selector-bem-pattern
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
