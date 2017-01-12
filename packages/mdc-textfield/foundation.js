@@ -65,21 +65,16 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   init() {
+    const input = this.getNativeInput_();
+
     this.adapter_.addClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
     this.adapter_.registerInputFocusHandler(this.inputFocusHandler_);
     this.adapter_.registerInputBlurHandler(this.inputBlurHandler_);
-
-    const input = this.getNativeInput_();
-
-    this.registerOnAutoComplete_(input)
+    this.registerAutoCompleteHandler_(input)
       .then((element) => {
-        console.log("element change: ", element);
+        this.activateFocus_();
       });
-    // TODO: Remove this too, duh
-    this.timeoutThenFill()
-
   }
-  
 
   destroy() {
     this.adapter_.removeClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
@@ -96,7 +91,8 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
   showHelptext_() {
     const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
-    this.adapter_.removeHelptextAttr(ARIA_HIDDEN); }
+    this.adapter_.removeHelptextAttr(ARIA_HIDDEN);
+  }
 
   deactivateFocus_() {
     const {FOCUSED, INVALID, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
@@ -161,29 +157,20 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     };
   }
 
-  registerOnAutoComplete_(el) {
+  registerAutoCompleteHandler_(input) {
     return new Promise((resolve, reject) => {
       let hasKeyInteraction = false;
 
-      el.addEventListener('input', (e) => {
-        if (hasKeyInteraction === false) {
-          resolve(e)
+      input.addEventListener('input', (e) => {
+        if (!hasKeyInteraction) {
+          resolve(e);
         }
       });
 
-      el.addEventListener('keydown', (e) => {
+      input.addEventListener('keydown', function(e) {
         hasKeyInteraction = true;
-      })
-    })
-  } 
-
-
-// TODO: remove this obvi
-  timeoutThenFill() {
-    const input = document.querySelector('input[name=email]');
-
-    setTimeout(()=>{
-      input.value = "hello"
-    }, 1000);
+      });
+    });
   }
+
 }

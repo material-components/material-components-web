@@ -53,7 +53,7 @@ export class MDCTextfield extends MDCComponent {
   get label_() {
     return this.root_.querySelector(`.${cssClasses.ROOT}__label`);
   }
-  
+
   getDefaultFoundation() {
     return new MDCTextfieldFoundation(Object.assign({
       addClass: (className) => this.root_.classList.add(className),

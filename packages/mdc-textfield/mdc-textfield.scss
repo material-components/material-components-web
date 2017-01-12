@@ -32,16 +32,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   @return #{$property} 180ms $mdc-animation-fast-out-slow-in-timing-function;
 }
 
-input:-webkit-autofill + label,
-input:-webkit-autofill:hover + label, 
-input:-webkit-autofill:focus + label
-input:-webkit-autofill + label {
-  color: transparent;
-  background-color: transparent;
-}
-
-
-/* postcss-bem-linter: define textfield */
+// postcss-bem-linter: define textfield
 .mdc-textfield {
   @include mdc-typography-base;
   // We use only a subset of the MDC typography values here as changing things such as line-height
@@ -94,6 +85,13 @@ input:-webkit-autofill + label {
         @include mdc-theme-prop(color, text-secondary-on-dark);
       }
     }
+
+    // stylelint-disable plugin/selector-bem-pattern
+    &:-webkit-autofill + .mdc-textfield__label {
+      transform: translateY(-100%) scale(.75, .75);
+      cursor: auto;
+    }
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
   &__label {
@@ -106,13 +104,13 @@ input:-webkit-autofill + label {
     transition: mdc-textfield-transition(transform), mdc-textfield-transition(color);
     cursor: text;
 
-    /* stylelint-disable plugin/selector-bem-pattern */
+    // stylelint-disable plugin/selector-bem-pattern
     @include mdc-rtl(".mdc-textfield") {
       right: 0;
       left: auto;
       transform-origin: right top;
     }
-    /* stylelint-enable plugin/selector-bem-pattern */
+    // stylelint-enable plugin/selector-bem-pattern
 
     @include mdc-theme-dark(".mdc-textfield") {
       @include mdc-theme-prop(color, text-hint-on-dark);
@@ -238,13 +236,13 @@ input:-webkit-autofill + label {
     border-bottom: 1px dotted $mdc-textfield-disabled-border-on-dark;
   }
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield__input,
   .mdc-textfield__label,
   & + .mdc-textfield-helptext {
     @include mdc-theme-prop(color, text-disabled-on-light);
   }
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-textfield__input,
   .mdc-textfield__label {
@@ -254,11 +252,11 @@ input:-webkit-autofill + label {
   }
 
   @include mdc-theme-dark(".mdc-textfield", true) {
-    /* stylelint-disable plugin/selector-bem-pattern */
+    // stylelint-disable plugin/selector-bem-pattern
     + .mdc-textfield-helptext {
       @include mdc-theme-prop(colr, text-disabled-on-dark);
     }
-    /* stylelint-enable plugin/selector-bem-pattern */
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
   .mdc-textfield__label {
@@ -295,7 +293,7 @@ input:-webkit-autofill + label {
     content: initial;
   }
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
 
   .mdc-textfield__input {
     padding: $padding-inset;
@@ -351,7 +349,7 @@ input:-webkit-autofill + label {
       }
     }
   }
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-textfield--fullwidth {
@@ -363,7 +361,7 @@ input:-webkit-autofill + label {
   border-bottom: 1px solid $mdc-textfield-divider-on-light;
   outline: none;
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
 
   &:not(.mdc-textfield--multiline) {
     height: 56px;
@@ -401,7 +399,7 @@ input:-webkit-autofill + label {
     }
   }
 
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-textfield__input {
     width: 100%;
@@ -457,9 +455,9 @@ input:-webkit-autofill + label {
   }
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
 
-/* postcss-bem-linter: define textfield-helptext */
+// postcss-bem-linter: define textfield-helptext
 
 .mdc-textfield-helptext {
   @include mdc-theme-prop(color, text-hint-on-light);
@@ -474,7 +472,7 @@ input:-webkit-autofill + label {
     @include mdc-theme-prop(color, text-hint-on-dark);
   }
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield + & {
     margin-bottom: 8px;
   }
@@ -487,7 +485,7 @@ input:-webkit-autofill + label {
     opacity: 1;
   }
 
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-textfield-helptext--persistent {
@@ -496,7 +494,7 @@ input:-webkit-autofill + label {
   will-change: initial;
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
 
 .mdc-textfield--invalid {
   + .mdc-textfield-helptext--validation-msg {
@@ -512,8 +510,8 @@ input:-webkit-autofill + label {
 }
 
 // mdc-form-field tweaks to align text field label correctly
-/* stylelint-disable selector-no-type */
+// stylelint-disable selector-no-type
 .mdc-form-field > .mdc-textfield + label {
   align-self: flex-start;
 }
-/* stylelint-enable selector-no-type */
+// stylelint-enable selector-no-type
