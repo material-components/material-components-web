@@ -98,6 +98,32 @@ test('#setDisabled removes mdc-textfield--disabled when set to false', (t) => {
   t.end();
 });
 
+test('#registerAutoCompleteHandler returns Promise to resolve input event', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  let input;
+
+  td.when(foundation.registerAutoCompleteHandler(td.matchers.isA(Promise)))
+    .thenResolve({
+      input.addEventListener('input', (e) => {
+        resolve(e);
+      });
+    });
+
+  foundation.registerAutoCompleteHandler_().then(function (value) {
+    console.log(value)
+  });
+});
+
+//  const {foundation, mockAdapter} = setupTest();
+//  let focus;
+//  td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
+//    focus = handler;
+//  });
+//  foundation.init();
+//  focus();
+//  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.FOCUSED)));
+//  t.end();
+
 test('#init adds mdc-textfield--upgraded class', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
