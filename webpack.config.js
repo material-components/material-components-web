@@ -41,6 +41,7 @@ const createBannerPlugin = () => new webpack.BannerPlugin([
 module.exports = [{
   name: 'js-components',
   entry: {
+    animation: [path.resolve('./packages/mdc-animation/index.js')],
     autoInit: [path.resolve('./packages/mdc-auto-init/index.js')],
     base: [path.resolve('./packages/mdc-base/index.js')],
     checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
