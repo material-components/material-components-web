@@ -85,13 +85,6 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
         @include mdc-theme-prop(color, text-secondary-on-dark);
       }
     }
-
-    // stylelint-disable plugin/selector-bem-pattern
-    &:-webkit-autofill + .mdc-textfield__label {
-      transform: translateY(-100%) scale(.75, .75);
-      cursor: auto;
-    }
-    // stylelint-enable plugin/selector-bem-pattern
   }
 
   &__label {
@@ -121,6 +114,16 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       cursor: auto;
     }
   }
+}
+
+// Move label when textfield gets autofilled in Chrome
+.mdc-textfield__input {
+  // stylelint-disable plugin/selector-bem-pattern
+  &:-webkit-autofill + .mdc-textfield__label {
+    transform: translateY(-100%) scale(.75, .75);
+    cursor: auto;
+  }
+  // stylelint-enable plugin/selector-bem-pattern  
 }
 
 .mdc-textfield--upgraded:not(.mdc-textfield--fullwidth) {

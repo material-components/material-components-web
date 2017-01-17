@@ -98,31 +98,23 @@ test('#setDisabled removes mdc-textfield--disabled when set to false', (t) => {
   t.end();
 });
 
-test('#registerAutoCompleteHandler returns Promise to resolve input event', (t) => {
-  const {foundation, mockAdapter} = setupTest();
-  let input;
-
-  td.when(foundation.registerAutoCompleteHandler(td.matchers.isA(Promise)))
-    .thenResolve({
-      input.addEventListener('input', (e) => {
-        resolve(e);
-      });
-    });
-
-  foundation.registerAutoCompleteHandler_().then(function (value) {
-    console.log(value)
-  });
+test('#registerAutoCompleteHandler returns promise', (t) => {
+  const {foundation} = setupTest();
+  td.when(foundation.registerAutoCompleteHandler_(td.matchers.isA(Promise)));
+  t.end();
 });
 
-//  const {foundation, mockAdapter} = setupTest();
-//  let focus;
-//  td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
-//    focus = handler;
-//  });
-//  foundation.init();
-//  focus();
-//  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.FOCUSED)));
-//  t.end();
+test('#registerAutoCompleteHandler resolves and calls function to focus input', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  const input = document.createElement('input');
+
+  td.when(foundation.registerAutoCompleteHandler_(input)).thenResolve(input);
+  foundation.registerAutoCompleteHandler_().then((e) => {
+    t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOAT_ABOVE)));
+  });
+
+  t.end();
+});
 
 test('#init adds mdc-textfield--upgraded class', (t) => {
   const {foundation, mockAdapter} = setupTest();
