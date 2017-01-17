@@ -32,7 +32,7 @@ export class MDCTextfield extends MDCComponent {
     const input = this.input_;
     this.helptextElement = input.hasAttribute('aria-controls') ?
       document.getElementById(input.getAttribute('aria-controls')) : null;
-   }
+  }
 
   initialSyncWithDom() {
     this.disabled = this.input_.disabled;
