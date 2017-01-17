@@ -128,6 +128,8 @@ Since MDC Radio is primarily driven by its native control, the adapter API is ex
 | Method Signature | Description |
 | --- | --- |
 | `getNativeControl() => HTMLInputElement?` | Returns the native radio control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
+| `addClass(className: string) => void` | Adds a class to the root element. |
+| `removeClass(className: string) => void` | Removes a class from the root element. |
 
 #### The full foundation API
 
