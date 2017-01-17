@@ -14,7 +14,7 @@ npm install --save @material/fab
 ## Usage
 
 The demonstrations use the [Material Design Icon Font](https://design.google.com/icons/).
-You may include this to use them as shown or use any other icon method you wish. 
+You may include this to use them as shown or use any other icon method you wish.
 
 ### Default
 
@@ -81,6 +81,27 @@ Developers must position it as-needed within their applications designs.
 
 > **Note** In this example we are using an SVG icon. When you are using SVG icons do _not_ specifiy the `fill` attribute. Fill is set by the components where SVGs may be used.
 
+### Adding ripples to FABs
+
+To add the ink ripple effect to a FAB, attach a [ripple](../packages/mdc-ripple) instance to the
+FAB element.
+
+```js
+mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-fab'));
+```
+
+You can also do this declaratively when using the [material-components-web](../packages/material-components-web) package.
+
+```html
+<button class="mdc-fab material-icons" aria-label="Favorite" data-mdc-auto-init="MDCRipple">
+  <span class="mdc-fab__icon">
+    favorite
+  </span>
+</button>
+```
+
+FABs are fully aware of ripple styles, so no DOM or CSS changes are required to use them.
+
 ## Classes
 
 ### Block
@@ -88,7 +109,7 @@ Developers must position it as-needed within their applications designs.
 The block class is `mdc-fab`. This defines the top-level button element.
 
 ### Element
-The button component has a single `span` element added as a child of the button due to buttons not adhering to flexbox rules 
+The button component has a single `span` element added as a child of the button due to buttons not adhering to flexbox rules
 in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35466231/revisions) for details.
 
 ### Modifier

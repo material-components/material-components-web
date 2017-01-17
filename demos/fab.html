@@ -104,5 +104,26 @@
       </section>
     </main>
     <script src="assets/material-components-web.js" charset="utf-8"></script>
+    <script>
+      // Because we load our CSS via webpack, we need to ensure that all of the correct styles
+      // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
+      // elements before our CSS is applied, leading to improper UX.
+      (function() {
+        var pollId = 0;
+        pollId = setInterval(function() {
+          var pos = getComputedStyle(document.querySelector('.mdc-fab.material-icons')).position;
+          if (pos === 'relative') {
+            init();
+            clearInterval(pollId);
+          }
+        }, 250);
+        function init() {
+          var fabs = document.querySelectorAll('.mdc-fab');
+          for (var i = 0, fab; fab = fabs[i]; i++) {
+            mdc.ripple.MDCRipple.attachTo(fab);
+          }
+        }
+      })();
+    </script>
   </body>
 </html>
