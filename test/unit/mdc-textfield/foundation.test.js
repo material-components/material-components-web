@@ -39,6 +39,8 @@ test('defaultAdapter returns a complete adapter implementation', (t) => {
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputFocusHandler', 'deregisterInputFocusHandler',
     'registerInputBlurHandler', 'deregisterInputBlurHandler',
+    'registerInputInputHandler', 'deregisterInputInputHandler',
+    'registerInputKeydownHandler', 'deregisterInputKeydownHandler',
     'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
   ], t);
   t.end();
@@ -98,28 +100,23 @@ test('#setDisabled removes mdc-textfield--disabled when set to false', (t) => {
   t.end();
 });
 
-test('#registerAutoCompleteHandler returns promise', (t) => {
-  const {foundation} = setupTest();
-  td.when(foundation.registerAutoCompleteHandler_(td.matchers.isA(Promise)));
-  t.end();
-});
-
-test('#registerAutoCompleteHandler resolves and calls function to focus input', (t) => {
-  const {foundation, mockAdapter} = setupTest();
-  const input = document.createElement('input');
-
-  td.when(foundation.registerAutoCompleteHandler_(input)).thenResolve(input);
-  foundation.registerAutoCompleteHandler_().then((e) => {
-    t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOAT_ABOVE)));
-  });
-
-  t.end();
-});
-
 test('#init adds mdc-textfield--upgraded class', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.UPGRADED)));
+  t.end();
+});
+
+test('#setKeyInteraction sets keyInteractionOccurred to true', (t) => {
+  const {foundation} = setupTest();
+  foundation.setKeyInteraction_();
+  t.true(foundation.keyInteractionOccurred);
+  t.end();
+});
+
+test('#autoCompleteFocus does nothing if key interaction occurs', (t) => {
+  const {foundation} = setupTest();
+  td.when(foundation.autoCompleteFocus_(true)).thenReturn(null);
   t.end();
 });
 
@@ -141,6 +138,34 @@ test('#destroy deregisters blur handler', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
   t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputBlurHandler(td.matchers.isA(Function))));
+  t.end();
+});
+
+test('#destroy deregisters input handler', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputInputHandler(td.matchers.isA(Function))));
+  t.end();
+});
+
+test('#destroy deregisters keydown handler', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputKeydownHandler(td.matchers.isA(Function))));
+  t.end();
+});
+
+test('#destroyAutoCompleteHandlers deregisters input handler', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputInputHandler(td.matchers.isA(Function))));
+  t.end();
+});
+
+test('#destroyAutoCompleteHandlers deregisters keydown handler', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputKeydownHandler(td.matchers.isA(Function))));
   t.end();
 });
 
@@ -289,3 +314,4 @@ test('on blur handles getNativeInput() not returning anything gracefully', (t) =
   t.doesNotThrow(blur);
   t.end();
 });
+

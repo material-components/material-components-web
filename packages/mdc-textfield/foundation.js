@@ -52,6 +52,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       deregisterInputFocusHandler: (/* handler: EventListener */) => {},
       registerInputBlurHandler: (/* handler: EventListener */) => {},
       deregisterInputBlurHandler: (/* handler: EventListener */) => {},
+      registerInputInputHandler: (/* handler: EventListener */) => {},
+      deregisterInputInputHandler: (/* handler: EventListener */) => {},
+      registerInputKeydownHandler: (/* handler: EventListener */) => {},
+      deregisterInputKeydownHandler: (/* handler: EventListener */) => {},
       setHelptextAttr: (/* name: string, value: string */) => {},
       removeHelptextAttr: (/* name: string, value: string */) => {},
       getNativeInput: () => /* HTMLInputElement */ ({}),
@@ -60,26 +64,33 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
   constructor(adapter = {}) {
     super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
+
+    this.keyInteractionOccurred = false;
     this.inputFocusHandler_ = () => this.activateFocus_();
     this.inputBlurHandler_ = () => this.deactivateFocus_();
+    this.inputInputHandler_ = () => this.autoCompleteFocus_(this.keyInteractionOccurred);
+    this.inputKeydownHandler_ = () => this.setKeyInteraction_();
   }
 
   init() {
-    const input = this.getNativeInput_();
-
     this.adapter_.addClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
     this.adapter_.registerInputFocusHandler(this.inputFocusHandler_);
     this.adapter_.registerInputBlurHandler(this.inputBlurHandler_);
-    this.registerAutoCompleteHandler_(input)
-      .then((element) => {
-        this.activateFocus_();
-      });
+    this.adapter_.registerInputInputHandler(this.inputInputHandler_);
+    this.adapter_.registerInputKeydownHandler(this.inputKeydownHandler_);
   }
 
   destroy() {
     this.adapter_.removeClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
     this.adapter_.deregisterInputFocusHandler(this.inputFocusHandler_);
     this.adapter_.deregisterInputBlurHandler(this.inputBlurHandler_);
+    this.adapter_.deregisterInputInputHandler(this.inputInputHandler_);
+    this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
+  }
+
+  destroyAutoCompleteHandlers_() {
+    this.adapter_.deregisterInputInputHandler(this.inputInputHandler_);
+    this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
   }
 
   activateFocus_() {
@@ -87,6 +98,16 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.showHelptext_();
+  }
+
+  autoCompleteFocus_(keyInteraction) {
+    if (!keyInteraction) {
+      this.activateFocus_();
+    }
+  }
+
+  setKeyInteraction_() {
+    this.keyInteractionOccurred = true;
   }
 
   showHelptext_() {
@@ -155,21 +176,5 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       value: '',
       disabled: false,
     };
-  }
-
-  registerAutoCompleteHandler_(input) {
-    return new Promise((resolve, reject) => {
-      let hasKeyInteraction = false;
-
-      input.addEventListener('input', (e) => {
-        if (!hasKeyInteraction) {
-          resolve(e);
-        }
-      });
-
-      input.addEventListener('keydown', function(e) {
-        hasKeyInteraction = true;
-      });
-    });
   }
 }
