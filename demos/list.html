@@ -966,6 +966,55 @@
             </div>
           </section>
         </section>
+        <section>
+          <h2>Interactive Lists (with ink ripple)</h2>
+          <section>
+            <h3>Example - Interactive List</h3>
+            <nav class="mdc-list" data-demo-interactive-list>
+              <a href="#" class="mdc-list-item">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+                  network_wifi
+                </i>
+                Wi-Fi
+              </a>
+              <a href="#" class="mdc-list-item">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+                  bluetooth
+                </i>
+                Bluetooth
+              </a>
+              <a href="#" class="mdc-list-item">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+                  data_usage
+                </i>
+                Data Usage
+              </a>
+            </nav>
+          </section>
+          <section class="mdc-theme--dark">
+            <h3>Example - Interactive List (Dark Theme)</h3>
+            <nav class="mdc-list" data-demo-interactive-list>
+              <a href="#" class="mdc-list-item">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+                  network_wifi
+                </i>
+                Wi-Fi
+              </a>
+              <a href="#" class="mdc-list-item">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+                  bluetooth
+                </i>
+                Bluetooth
+              </a>
+              <a href="#" class="mdc-list-item">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+                  data_usage
+                </i>
+                Data Usage
+              </a>
+            </nav>
+          </section>
+        </section>
       </div>
     </main>
     <script src="/assets/material-components-web.js"></script>
@@ -980,6 +1029,22 @@
             demoWrapper.removeAttribute('dir');
           }
         });
+
+        // Delay initialization within development until styles have loaded
+        setTimeout(initInteractiveLists, 250);
+
+        function initInteractiveLists() {
+          var interactiveListItems = document.querySelectorAll(
+            '[data-demo-interactive-list] .mdc-list-item'
+          );
+          for (var i = 0, li; li = interactiveListItems[i]; i++) {
+            mdc.ripple.MDCRipple.attachTo(li);
+            // Prevent link clicks from jumping demo to the top of the page
+            li.addEventListener('click', function(evt) {
+              evt.preventDefault();
+            });
+          }
+        }
       })();
     </script>
   </body>
