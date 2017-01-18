@@ -1,12 +1,6 @@
 # MDC Select
 
-> **Status:**
-> - [x] Pure CSS Select
-> - [x] Initial Functionality / Styles for JS Select
-> - [x] Select Menu Auto-positioning
-> - [ ] Multi-select
-
-MDC Select provides a material design single-option select menu. It functions analogously to the
+MDC Select provides material design single-option and multi-option select menus. It functions analogously to the
 browser's native `<select>` element, and includes a gracefully degraded version that can be used
 in conjunction with the browser's native element. Both are fully accessible, and fully RTL-aware.
 
@@ -146,6 +140,27 @@ on a mobile device. It does not require any javascript, nor any CSS for `mdc-men
   <option value="dairy">Milk, Yogurt, and Cheese</option>
   <option value="meat">Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts</option>
   <option value="fats">Fats, Oils, and Sweets</option>
+</select>
+```
+
+### Multi Select
+
+MDC-Web implements multi-select on top of the <select multiple> element.
+
+```html
+<select multiple size="6" class="mdc-multi-select mdl-list" >
+  <optgroup class="mdc-list-group" label="Starches">
+    <option class="mdc-list-item">
+      Potato
+    </option>
+    <option class="mdc-list-item">
+      Cereal
+    </option>
+  </optgroup>
+  <option class="mdc-list-divider" role="presentation" disabled />
+  <option>
+    misc...
+  </option>
 </select>
 ```
 
@@ -384,23 +399,3 @@ selects.native.addEventListener('change', changeHandler);
 ```
 
 We are looking into building this functionality into `MDCSelect` in the future.
-
-## Multi Select
-MDC-Web implements multi-select on top of the <select multiple> element.
-
-```html
-<select multiple size="6" class="mdc-multi-select mdl-list" >
-  <optgroup class="mdc-list-group" label="Starches">
-    <option class="mdc-list-item">
-      Potato 
-    </option>
-    <option class="mdc-list-item">
-      Cereal 
-    </option>
-  </optgroup>
-  <option class="mdc-list-divider" role="presentation" disabled />
-  <option>
-    misc... 
-  </option>
-</select>
-```
