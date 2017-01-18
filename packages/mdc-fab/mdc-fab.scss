@@ -35,7 +35,7 @@
   fill: currentColor;
   -moz-appearance: none;
   -webkit-appearance: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
 
   @include mdc-theme-prop(background-color, accent);
   @include mdc-theme-prop(color, text-primary-on-accent);
