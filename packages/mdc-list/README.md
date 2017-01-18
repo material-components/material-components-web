@@ -17,11 +17,11 @@ npm install --save @material/list
 A basic lists consists simply of the list itself, and list items taking up one line.
 
 ```html
-<div class="mdc-list">
+<ul class="mdc-list">
   <li class="mdc-list-item">Single-line item</li>
   <li class="mdc-list-item">Single-line item</li>
   <li class="mdc-list-item">Single-line item</li>
-</div>
+</ul>
 ```
 
 #### RTL Support
