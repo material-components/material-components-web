@@ -145,7 +145,7 @@ on a mobile device. It does not require any javascript, nor any CSS for `mdc-men
 
 ### Multi Select
 
-MDC-Web implements multi-select on top of the <select multiple> element.
+MDC-Web implements multi-select on top of the `<select multiple>` element.
 
 ```html
 <select multiple size="6" class="mdc-multi-select mdl-list" >
