@@ -1,47 +1,44 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
+@import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 
-/**
- * Sets the width and height of a detail element to the specified dimension.
- */
+$mdc-list-side-padding: 16px;
+
+// Sets the width and height of a detail element to the specified dimension.
 @mixin mdc-list-detail-size_($size) {
   width: $size;
   height: $size;
 }
 
-/**
- * Sets the width and height of the start detail element, as well as calculates the margins for
- * the start detail element such that the text is always offset by 72px, which is defined within
- * the spec.
- */
+// Sets the width and height of the start detail element, as well as calculates the margins for
+// the start detail element such that the text is always offset by 72px, which is defined within
+// the spec.
 @mixin mdc-list-start-detail-size_($size) {
   $text-offset: 72px;
-  $side-padding: 16px;
+  $side-padding: $mdc-list-side-padding;
   $margin-value: $text-offset - $side-padding - $size;
 
   @include mdc-list-detail-size_($size);
   @include mdc-rtl-reflexive-box(margin, right, $margin-value, ".mdc-list-item");
 }
 
-/* postcss-bem-linter: define list */
+// postcss-bem-linter: define list
 
 .mdc-list {
   @include mdc-typography(subheading2);
@@ -52,10 +49,10 @@
   }
 
   margin: 0;
-  padding: 8px 16px 0;
+  padding: 8px $mdc-list-side-padding 0;
 
-  /* According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
-   * same as for subheading1. */
+  // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
+  // same as for subheading1.
   line-height: map-get(map-get($mdc-typography-styles, subheading1), line-height);
   list-style-type: none;
 }
@@ -65,9 +62,9 @@
   font-size: .812rem;
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
 
-/* postcss-bem-linter: define list-item */
+// postcss-bem-linter: define list-item
 
 .mdc-list-item {
   display: flex;
@@ -81,7 +78,7 @@
 
   &__end-detail {
     @include mdc-list-detail-size_(24px);
-    @include mdc-rtl-reflexive-property(margin, auto, 16px, ".mdc-list-item");
+    @include mdc-rtl-reflexive-property(margin, auto, $mdc-list-side-padding, ".mdc-list-item");
   }
 
   &__text {
@@ -96,16 +93,16 @@
         @include mdc-theme-prop(color, text-secondary-on-dark);
       }
 
-      /* Match the font size to the primary text when dense */
-      /* stylelint-disable plugin/selector-bem-pattern */
+      // Match the font size to the primary text when dense
+      // stylelint-disable plugin/selector-bem-pattern
       .mdc-list--dense & {
         font-size: inherit;
       }
-      /* stylelint-enable plugin/selector-bem-pattern */
+      // stylelint-enable plugin/selector-bem-pattern
     }
   }
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list--dense & {
     height: 40px;
 
@@ -143,12 +140,43 @@
   .mdc-list--two-line.mdc-list--dense & {
     height: 60px;
   }
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end //
 
-/* postcss-bem-linter: define list-divider */
+// Override anchor tag styles for the use-case of a list being used for navigation
+// stylelint-disable selector-no-type,selector-no-qualifying-type
+a.mdc-list-item {
+  color: inherit;
+  text-decoration: none;
+}
+// stylelint-enable selector-no-type,selector-no-qualifying-type
+
+.mdc-list-item.mdc-ripple-upgraded {
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before"));
+  @include mdc-ripple-fg((pseudo: "::after"));
+
+  position: relative;
+  // Cause the upgraded list item to cover the entirety of the list, causing ripples to emanate
+  // across the entire list element.
+  left: $mdc-list-side-padding * -1;
+  width: calc(100% + #{$mdc-list-side-padding * 2});
+  padding: 0 $mdc-list-side-padding;
+  overflow: hidden;
+
+  &:focus {
+    outline: none;
+  }
+
+  @include mdc-theme-dark(".mdc-list") {
+    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .12));
+    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .12));
+  }
+}
+
+// postcss-bem-linter: define list-divider
 
 .mdc-list-divider {
   height: 0;
@@ -162,19 +190,19 @@
 }
 
 .mdc-list-divider--inset {
-  $mdc-list-divider-inset-amt: /* text offset */ 72px - /* padding offset */ 16px;
+  $mdc-list-divider-inset-amt: /* text offset */ 72px - /* padding offset */ $mdc-list-side-padding;
 
   @include mdc-rtl-reflexive-box(margin, left, $mdc-list-divider-inset-amt, ".mdc-list-group");
 
   width: calc(100% - #{$mdc-list-divider-inset-amt});
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
 
-/* postcss-bem-linter: define list-group */
+// postcss-bem-linter: define list-group
 
 .mdc-list-group {
-  padding: 0 16px;
+  padding: 0 $mdc-list-side-padding;
 
   &__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
@@ -192,12 +220,12 @@
     margin: $mdc-list-subheader-margin 0;
   }
 
-  /* Reset padding on mdc-list since it's already accounted for by the list group. */
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // Reset padding on mdc-list since it's already accounted for by the list group.
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list {
     padding: 0;
   }
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end

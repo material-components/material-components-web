@@ -174,6 +174,37 @@ details can be configured.
 > NOTE: If using controls such as a switch (_TK!_) within a list detail, you may need to override
 > the width and height styles set on the detail element.
 
+### Using ink ripples for interactive lists
+
+MDC List supports adding ripples to `mdc-list-item` elements, for example in the case of a nav menu.
+To add ripples to lists, simply attach a ripple to all list items. Note that this can be easily done
+via `mdc-auto-init` when using the [material-components-web](../packages/material-components-web).
+
+```html
+<nav class="mdc-list">
+  <a href="/wifi" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+      network_wifi
+    </i>
+    Wi-Fi
+  </a>
+  <a href="/bluetooth" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+      bluetooth
+    </i>
+    Bluetooth
+  </a>
+  <a href="/data-usage" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+      data_usage
+    </i>
+    Data Usage
+  </a>
+</nav>
+<script>
+  mdc.autoInit();
+</script>
+```
 
 ### List Dividers
 
