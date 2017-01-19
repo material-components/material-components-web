@@ -107,17 +107,36 @@ test('#init adds mdc-textfield--upgraded class', (t) => {
   t.end();
 });
 
-test('#autoCompleteFocus does nothing if key interaction occurs', (t) => {
-  const {foundation} = setupTest();
-  td.when(foundation.autoCompleteFocus_(true)).thenReturn(null);
+test('#autoCompleteFocus focuses if input event exclusively occurs', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  let input;
+
+  td.when(mockAdapter.registerInputInputHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    input = handler;
+  });
+  foundation.init();
+  input();
+  t.doesNotThrow(() => td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE)));
+
   t.end();
 });
 
-test('#autoCompleteFocus focuses if input event exclusively occurs', (t) => {
+test('#autoCompleteFocus does nothing if input event preceded by keydown event', (t) => {
   const {foundation, mockAdapter} = setupTest();
+  let keydown;
+  let input;
+
+  td.when(mockAdapter.registerInputKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    keydown = handler;
+  });
+  td.when(mockAdapter.registerInputInputHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    input = handler;
+  });
+
   foundation.init();
-  foundation.autoCompleteFocus_(false);
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.FOCUSED)));
+  keydown();
+  td.when(input()).thenReturn(null);
+
   t.end();
 });
 
