@@ -88,11 +88,6 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
   }
 
-  destroyAutoCompleteHandlers_() {
-    this.adapter_.deregisterInputInputHandler(this.inputInputHandler_);
-    this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
-  }
-
   activateFocus_() {
     const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
