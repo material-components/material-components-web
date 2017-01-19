@@ -107,16 +107,17 @@ test('#init adds mdc-textfield--upgraded class', (t) => {
   t.end();
 });
 
-test('#setKeyInteraction sets keyInteractionOccurred to true', (t) => {
-  const {foundation} = setupTest();
-  foundation.setKeyInteraction_();
-  t.true(foundation.keyInteractionOccurred);
-  t.end();
-});
-
 test('#autoCompleteFocus does nothing if key interaction occurs', (t) => {
   const {foundation} = setupTest();
   td.when(foundation.autoCompleteFocus_(true)).thenReturn(null);
+  t.end();
+});
+
+test('#autoCompleteFocus focuses if input event exclusively occurs', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  foundation.autoCompleteFocus_(false);
+  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.FOCUSED)));
   t.end();
 });
 
@@ -149,20 +150,6 @@ test('#destroy deregisters input handler', (t) => {
 });
 
 test('#destroy deregisters keydown handler', (t) => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.destroy();
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputKeydownHandler(td.matchers.isA(Function))));
-  t.end();
-});
-
-test('#destroyAutoCompleteHandlers deregisters input handler', (t) => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.destroy();
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputInputHandler(td.matchers.isA(Function))));
-  t.end();
-});
-
-test('#destroyAutoCompleteHandlers deregisters keydown handler', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
   t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputKeydownHandler(td.matchers.isA(Function))));

@@ -65,10 +65,16 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   constructor(adapter = {}) {
     super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
 
-    this.keyInteractionOccurred = false;
+    let receivedUserInput = false;
+
+    this.getKeyInteractionState = () => receivedUserInput;
+    this.setKeyInteractionState = (state) => {
+      receivedUserInput = state;
+    };
+
     this.inputFocusHandler_ = () => this.activateFocus_();
     this.inputBlurHandler_ = () => this.deactivateFocus_();
-    this.inputInputHandler_ = () => this.autoCompleteFocus_(this.keyInteractionOccurred);
+    this.inputInputHandler_ = () => this.autoCompleteFocus_();
     this.inputKeydownHandler_ = () => this.setKeyInteraction_();
   }
 
@@ -100,14 +106,14 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.showHelptext_();
   }
 
-  autoCompleteFocus_(keyInteraction) {
-    if (!keyInteraction) {
+  autoCompleteFocus_() {
+    if (!this.getKeyInteractionState()) {
       this.activateFocus_();
     }
   }
 
   setKeyInteraction_() {
-    this.keyInteractionOccurred = true;
+    this.setKeyInteractionState(true);
   }
 
   showHelptext_() {
@@ -123,6 +129,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.removeClass(FOCUSED);
     if (!input.value) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+      this.setKeyInteractionState(false);
     }
     if (isValid) {
       this.adapter_.removeClass(INVALID);
