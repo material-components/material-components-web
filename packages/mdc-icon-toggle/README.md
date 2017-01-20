@@ -190,7 +190,7 @@ toggle on if true, off if false.
 
 Returns true if the foundation's state is disabled, false otherwise.
 
-##### MDCIconToggleFoundation.toggle(isDisabled: boolean) => void
+##### MDCIconToggleFoundation.setDisabled(isDisabled: boolean) => void
 
 Enables / disables the foundation's state, updating the component via the adapter methods.
 
