@@ -107,7 +107,7 @@ test('#init adds mdc-textfield--upgraded class', (t) => {
   t.end();
 });
 
-test('#autoCompleteFocus focuses if input event exclusively occurs', (t) => {
+test('#on input focuses if input event occurs without any other events', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let input;
 
@@ -121,22 +121,20 @@ test('#autoCompleteFocus focuses if input event exclusively occurs', (t) => {
   t.end();
 });
 
-test('#autoCompleteFocus does nothing if input event preceded by keydown event', (t) => {
+test('#on input does nothing if input event preceded by keydown event', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
   let input;
-
   td.when(mockAdapter.registerInputKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   td.when(mockAdapter.registerInputInputHandler(td.matchers.isA(Function))).thenDo((handler) => {
     input = handler;
   });
-
   foundation.init();
   keydown();
-  td.when(input()).thenReturn(null);
-
+  input();
+  t.doesNotThrow(() => td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0}));
   t.end();
 });
 
