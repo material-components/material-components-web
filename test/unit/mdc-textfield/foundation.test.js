@@ -107,7 +107,7 @@ test('#init adds mdc-textfield--upgraded class', (t) => {
   t.end();
 });
 
-test('#on input focuses if input event occurs without any other events', (t) => {
+test('on input focuses if input event occurs without any other events', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let input;
 
@@ -121,7 +121,7 @@ test('#on input focuses if input event occurs without any other events', (t) => 
   t.end();
 });
 
-test('#on input does nothing if input event preceded by keydown event', (t) => {
+test('on input does nothing if input event preceded by keydown event', (t) => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
   let input;
