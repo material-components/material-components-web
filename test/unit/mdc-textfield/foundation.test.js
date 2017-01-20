@@ -39,6 +39,8 @@ test('defaultAdapter returns a complete adapter implementation', (t) => {
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputFocusHandler', 'deregisterInputFocusHandler',
     'registerInputBlurHandler', 'deregisterInputBlurHandler',
+    'registerInputInputHandler', 'deregisterInputInputHandler',
+    'registerInputKeydownHandler', 'deregisterInputKeydownHandler',
     'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
   ], t);
   t.end();
@@ -105,6 +107,37 @@ test('#init adds mdc-textfield--upgraded class', (t) => {
   t.end();
 });
 
+test('on input focuses if input event occurs without any other events', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  let input;
+
+  td.when(mockAdapter.registerInputInputHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    input = handler;
+  });
+  foundation.init();
+  input();
+  t.doesNotThrow(() => td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE)));
+
+  t.end();
+});
+
+test('on input does nothing if input event preceded by keydown event', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+  let input;
+  td.when(mockAdapter.registerInputKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    keydown = handler;
+  });
+  td.when(mockAdapter.registerInputInputHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    input = handler;
+  });
+  foundation.init();
+  keydown();
+  input();
+  t.doesNotThrow(() => td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0}));
+  t.end();
+});
+
 test('#destroy removes mdc-textfield--upgraded class', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
@@ -123,6 +156,20 @@ test('#destroy deregisters blur handler', (t) => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
   t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputBlurHandler(td.matchers.isA(Function))));
+  t.end();
+});
+
+test('#destroy deregisters input handler', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputInputHandler(td.matchers.isA(Function))));
+  t.end();
+});
+
+test('#destroy deregisters keydown handler', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInputKeydownHandler(td.matchers.isA(Function))));
   t.end();
 });
 
@@ -271,3 +318,4 @@ test('on blur handles getNativeInput() not returning anything gracefully', (t) =
   t.doesNotThrow(blur);
   t.end();
 });
+

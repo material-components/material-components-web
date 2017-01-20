@@ -158,6 +158,46 @@ test('#adapter.deregisterInputBlurHandler removes a "blur" event handler from th
   t.end();
 });
 
+test('#adapter.registerInputInputHandler adds an "input" event handler on the input element', (t) => {
+  const {root, component} = setupTest();
+  const handler = td.func('inputHandler');
+  component.getDefaultFoundation().adapter_.registerInputInputHandler(handler);
+  domEvents.emit(root.querySelector('.mdc-textfield__input'), 'input');
+  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
+  t.end();
+});
+
+test('#adapter.deregisterInputInputHandler removes an "input" event handler from the input element', (t) => {
+  const {root, component} = setupTest();
+  const input = root.querySelector('.mdc-textfield__input');
+  const handler = td.func('inputHandler');
+  input.addEventListener('input', handler);
+  component.getDefaultFoundation().adapter_.deregisterInputInputHandler(handler);
+  domEvents.emit(input, 'input');
+  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
+  t.end();
+});
+
+test('#adapter.registerInputKeydownHandler adds a "keydown" event handler on the input element', (t) => {
+  const {root, component} = setupTest();
+  const handler = td.func('inputHandler');
+  component.getDefaultFoundation().adapter_.registerInputKeydownHandler(handler);
+  domEvents.emit(root.querySelector('.mdc-textfield__input'), 'keydown');
+  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
+  t.end();
+});
+
+test('#adapter.deregisterInputInputHandler removes a "keydown" event handler from the input element', (t) => {
+  const {root, component} = setupTest();
+  const input = root.querySelector('.mdc-textfield__input');
+  const handler = td.func('keydownHandler');
+  input.addEventListener('keydown', handler);
+  component.getDefaultFoundation().adapter_.deregisterInputKeydownHandler(handler);
+  domEvents.emit(input, 'keydown');
+  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
+  t.end();
+});
+
 test('#adapter.getNativeInput returns the component input element', (t) => {
   const {root, component} = setupTest();
   t.equal(

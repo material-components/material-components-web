@@ -276,6 +276,10 @@ complicated.
 | deregisterInputFocusHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "focus" event |
 | registerInputBlurHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "blur" event |
 | deregisterInputBlurHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "blur" event |
+| registerInputInputHandler(handler: EventListener) => void | Registers an event listener on the native input element for an "input" event |
+| deregisterInputInputHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for an "input" event |
+| registerInputKeydownHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "keydown" event |
+| deregisterInputKeydownHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "keydown" event |
 | getNativeInput() => {value: string, disabled: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value` and `disabled` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 
 #### The full foundation API

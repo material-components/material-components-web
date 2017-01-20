@@ -52,6 +52,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       deregisterInputFocusHandler: (/* handler: EventListener */) => {},
       registerInputBlurHandler: (/* handler: EventListener */) => {},
       deregisterInputBlurHandler: (/* handler: EventListener */) => {},
+      registerInputInputHandler: (/* handler: EventListener */) => {},
+      deregisterInputInputHandler: (/* handler: EventListener */) => {},
+      registerInputKeydownHandler: (/* handler: EventListener */) => {},
+      deregisterInputKeydownHandler: (/* handler: EventListener */) => {},
       setHelptextAttr: (/* name: string, value: string */) => {},
       removeHelptextAttr: (/* name: string, value: string */) => {},
       getNativeInput: () => /* HTMLInputElement */ ({}),
@@ -60,20 +64,28 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
   constructor(adapter = {}) {
     super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
+
+    this.receivedUserInput_ = false;
     this.inputFocusHandler_ = () => this.activateFocus_();
     this.inputBlurHandler_ = () => this.deactivateFocus_();
+    this.inputInputHandler_ = () => this.autoCompleteFocus_();
+    this.inputKeydownHandler_ = () => this.receivedUserInput_ = true;
   }
 
   init() {
     this.adapter_.addClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
     this.adapter_.registerInputFocusHandler(this.inputFocusHandler_);
     this.adapter_.registerInputBlurHandler(this.inputBlurHandler_);
+    this.adapter_.registerInputInputHandler(this.inputInputHandler_);
+    this.adapter_.registerInputKeydownHandler(this.inputKeydownHandler_);
   }
 
   destroy() {
     this.adapter_.removeClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
     this.adapter_.deregisterInputFocusHandler(this.inputFocusHandler_);
     this.adapter_.deregisterInputBlurHandler(this.inputBlurHandler_);
+    this.adapter_.deregisterInputInputHandler(this.inputInputHandler_);
+    this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
   }
 
   activateFocus_() {
@@ -81,6 +93,12 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.showHelptext_();
+  }
+
+  autoCompleteFocus_() {
+    if (!this.receivedUserInput_) {
+      this.activateFocus_();
+    }
   }
 
   showHelptext_() {
@@ -96,6 +114,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.removeClass(FOCUSED);
     if (!input.value) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+      this.receivedUserInput_ = false;
     }
     if (isValid) {
       this.adapter_.removeClass(INVALID);

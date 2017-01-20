@@ -77,8 +77,12 @@ export class MDCTextfield extends MDCComponent {
     return {
       registerInputFocusHandler: (handler) => this.input_.addEventListener('focus', handler),
       registerInputBlurHandler: (handler) => this.input_.addEventListener('blur', handler),
+      registerInputInputHandler: (handler) => this.input_.addEventListener('input', handler),
+      registerInputKeydownHandler: (handler) => this.input_.addEventListener('keydown', handler),
       deregisterInputFocusHandler: (handler) => this.input_.removeEventListener('focus', handler),
       deregisterInputBlurHandler: (handler) => this.input_.removeEventListener('blur', handler),
+      deregisterInputInputHandler: (handler) => this.input_.removeEventListener('input', handler),
+      deregisterInputKeydownHandler: (handler) => this.input_.removeEventListener('keydown', handler),
       getNativeInput: () => this.input_,
     };
   }

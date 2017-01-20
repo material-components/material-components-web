@@ -32,7 +32,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   @return #{$property} 180ms $mdc-animation-fast-out-slow-in-timing-function;
 }
 
-/* postcss-bem-linter: define textfield */
+// postcss-bem-linter: define textfield
 .mdc-textfield {
   @include mdc-typography-base;
   // We use only a subset of the MDC typography values here as changing things such as line-height
@@ -97,13 +97,13 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     transition: mdc-textfield-transition(transform), mdc-textfield-transition(color);
     cursor: text;
 
-    /* stylelint-disable plugin/selector-bem-pattern */
+    // stylelint-disable plugin/selector-bem-pattern
     @include mdc-rtl(".mdc-textfield") {
       right: 0;
       left: auto;
       transform-origin: right top;
     }
-    /* stylelint-enable plugin/selector-bem-pattern */
+    // stylelint-enable plugin/selector-bem-pattern
 
     @include mdc-theme-dark(".mdc-textfield") {
       @include mdc-theme-prop(color, text-hint-on-dark);
@@ -114,6 +114,16 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       cursor: auto;
     }
   }
+}
+
+// Move label when textfield gets autofilled in Chrome
+.mdc-textfield__input {
+  // stylelint-disable plugin/selector-bem-pattern
+  &:-webkit-autofill + .mdc-textfield__label {
+    transform: translateY(-100%) scale(.75, .75);
+    cursor: auto;
+  }
+  // stylelint-enable plugin/selector-bem-pattern  
 }
 
 .mdc-textfield--upgraded:not(.mdc-textfield--fullwidth) {
@@ -229,13 +239,13 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     border-bottom: 1px dotted $mdc-textfield-disabled-border-on-dark;
   }
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield__input,
   .mdc-textfield__label,
   & + .mdc-textfield-helptext {
     @include mdc-theme-prop(color, text-disabled-on-light);
   }
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-textfield__input,
   .mdc-textfield__label {
@@ -245,11 +255,11 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   }
 
   @include mdc-theme-dark(".mdc-textfield", true) {
-    /* stylelint-disable plugin/selector-bem-pattern */
+    // stylelint-disable plugin/selector-bem-pattern
     + .mdc-textfield-helptext {
       @include mdc-theme-prop(colr, text-disabled-on-dark);
     }
-    /* stylelint-enable plugin/selector-bem-pattern */
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
   .mdc-textfield__label {
@@ -286,7 +296,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     content: initial;
   }
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
 
   .mdc-textfield__input {
     padding: $padding-inset;
@@ -342,7 +352,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       }
     }
   }
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-textfield--fullwidth {
@@ -354,7 +364,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   border-bottom: 1px solid $mdc-textfield-divider-on-light;
   outline: none;
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
 
   &:not(.mdc-textfield--multiline) {
     height: 56px;
@@ -392,7 +402,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     }
   }
 
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-textfield__input {
     width: 100%;
@@ -448,9 +458,9 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   }
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
 
-/* postcss-bem-linter: define textfield-helptext */
+// postcss-bem-linter: define textfield-helptext
 
 .mdc-textfield-helptext {
   @include mdc-theme-prop(color, text-hint-on-light);
@@ -465,7 +475,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     @include mdc-theme-prop(color, text-hint-on-dark);
   }
 
-  /* stylelint-disable plugin/selector-bem-pattern */
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield + & {
     margin-bottom: 8px;
   }
@@ -478,7 +488,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     opacity: 1;
   }
 
-  /* stylelint-enable plugin/selector-bem-pattern */
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-textfield-helptext--persistent {
@@ -487,7 +497,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   will-change: initial;
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
 
 .mdc-textfield--invalid {
   + .mdc-textfield-helptext--validation-msg {
@@ -503,8 +513,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 }
 
 // mdc-form-field tweaks to align text field label correctly
-/* stylelint-disable selector-no-type */
+// stylelint-disable selector-no-type
 .mdc-form-field > .mdc-textfield + label {
   align-self: flex-start;
 }
-/* stylelint-enable selector-no-type */
+// stylelint-enable selector-no-type
