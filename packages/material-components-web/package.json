@@ -1,7 +1,7 @@
 {
   "name": "material-components-web",
   "description": "Modular and customizable Material Design UI components for the web",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "Apache-2.0",
   "main": "index.js",
   "repository": {
@@ -9,25 +9,25 @@
     "url": "https://github.com/material-components/material-components-web"
   },
   "dependencies": {
-    "@material/animation": "^0.1.1",
+    "@material/animation": "^0.1.3",
     "@material/auto-init": "^0.1.0",
-    "@material/base": "^0.1.0",
-    "@material/button": "^0.1.1",
-    "@material/card": "^0.1.1",
-    "@material/checkbox": "^0.1.1",
-    "@material/drawer": "^0.1.1",
-    "@material/elevation": "^0.1.1",
-    "@material/fab": "^0.2.0",
-    "@material/form-field": "^0.1.0",
-    "@material/icon-toggle": "^0.1.1",
-    "@material/list": "^0.1.0",
-    "@material/menu": "^0.1.1",
-    "@material/radio": "^0.1.1",
-    "@material/ripple": "^0.1.1",
-    "@material/select": "^0.1.1",
-    "@material/snackbar": "^0.1.1",
-    "@material/textfield": "^0.1.1",
-    "@material/theme": "^0.1.0",
-    "@material/typography": "^0.1.0"
+    "@material/base": "^0.1.1",
+    "@material/button": "^0.2.0",
+    "@material/card": "^0.1.2",
+    "@material/checkbox": "^0.1.2",
+    "@material/drawer": "^0.1.2",
+    "@material/elevation": "^0.1.2",
+    "@material/fab": "^0.3.0",
+    "@material/form-field": "^0.1.1",
+    "@material/icon-toggle": "^0.1.2",
+    "@material/list": "^0.2.0",
+    "@material/menu": "^0.1.2",
+    "@material/radio": "^0.1.2",
+    "@material/ripple": "^0.1.2",
+    "@material/select": "^0.2.0",
+    "@material/snackbar": "^0.1.2",
+    "@material/textfield": "^0.2.0",
+    "@material/theme": "^0.1.1",
+    "@material/typography": "^0.1.1"
   }
 }
