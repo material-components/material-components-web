@@ -59,13 +59,3 @@
     transform: scale(1.1);
   }
 }
-
-@keyframes mdc-ripple-fg-unbounded-constrained-transform-deactivate {
-  from {
-    transform: var(--mdc-ripple-fg-approx-xf);
-  }
-
-  to {
-    transform: scale(1.4);
-  }
-}

@@ -41,10 +41,11 @@
 }
 
 @mixin mdc-checkbox-outer-box {
-  border-radius: 2px;
-
   @include mdc-checkbox-cover-element;
 
+  top: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
+  left: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
+  border-radius: 2px;
   box-sizing: border-box;
   pointer-events: none;
 }
@@ -55,6 +56,7 @@
   position: relative;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
+  padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
   line-height: 0;
   white-space: nowrap;
   cursor: pointer;
@@ -66,8 +68,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    width: $mdc-checkbox-ui-pct;
+    height: $mdc-checkbox-ui-pct;
+    box-sizing: border-box;
     transition:
       mdc-checkbox-transition-exit(background-color),
       mdc-checkbox-transition-exit(border-color);
@@ -83,6 +86,8 @@
     &::before {
       @include mdc-checkbox-cover-element;
 
+      width: 100%;
+      height: 100%;
       transform: scale(0, 0);
       transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
       border-radius: 50%;
@@ -309,15 +314,14 @@ fieldset:disabled .mdc-checkbox__native-control,
     }
   }
 }
+// postcss-bem-linter: end
 
 .mdc-checkbox.mdc-ripple-upgraded {
   @include mdc-ripple-base;
   @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .3));
-  @include mdc-ripple-fg-constrained((pseudo: "::after", theme-style: primary, opacity: .3));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .3));
 
   .mdc-checkbox__background::before {
     content: none;
   }
 }
-
-// postcss-bem-linter: end

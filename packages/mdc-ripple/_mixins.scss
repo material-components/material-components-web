@@ -8,8 +8,7 @@
 //      http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// distributed under the License is distributed on an "AS IS" BASIS, // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
@@ -184,18 +183,5 @@
     animation:
       mdc-ripple-fg-unbounded-opacity-deactivate var(--mdc-ripple-fg-unbounded-opacity-duration) linear,
       mdc-ripple-fg-unbounded-transform-deactivate var(--mdc-ripple-fg-unbounded-transform-duration) $mdc-ripple-easing-fn;
-  }
-}
-
-@mixin mdc-ripple-fg-constrained($config: ()) {
-  $config: map-merge(mdc-ripple-default-config_(), $config);
-  $pseudo: map-get($config, pseudo);
-
-  @include mdc-ripple-fg((pseudo: $pseudo, theme-style: primary, opacity: .3));
-
-  &.mdc-ripple-upgraded--unbounded.mdc-ripple-upgraded--foreground-unbounded-deactivation#{$pseudo} {
-    animation:
-      mdc-ripple-fg-unbounded-opacity-deactivate var(--mdc-ripple-fg-unbounded-opacity-duration) linear,
-      mdc-ripple-fg-unbounded-constrained-transform-deactivate var(--mdc-ripple-fg-unbounded-transform-duration) $mdc-ripple-easing-fn;
   }
 }

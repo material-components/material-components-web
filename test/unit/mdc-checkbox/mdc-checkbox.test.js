@@ -19,6 +19,8 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
+import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
+import {createMockRaf} from '../helpers/raf';
 import {MDCCheckbox} from '../../../packages/mdc-checkbox';
 import {strings} from '../../../packages/mdc-checkbox/constants';
 import {getCorrectEventName} from '../../../packages/mdc-animation';
@@ -60,6 +62,27 @@ function setupTest() {
   const root = getFixture();
   const component = new MDCCheckbox(root);
   return {root, component};
+}
+
+if (supportsCssVariables(window)) {
+  test('#constructor initializes the root element with a ripple', (t) => {
+    const raf = createMockRaf();
+    const {root} = setupTest();
+    raf.flush();
+    t.true(root.classList.contains('mdc-ripple-upgraded'));
+    raf.restore();
+    t.end();
+  });
+
+  test('#destroy removes the ripple', (t) => {
+    const raf = createMockRaf();
+    const {root, component} = setupTest();
+    raf.flush();
+    component.destroy();
+    raf.flush();
+    t.false(root.classList.contains('mdc-ripple-upgraded'));
+    t.end();
+  });
 }
 
 test('attachTo initializes and returns a MDCCheckbox instance', (t) => {

@@ -45,7 +45,7 @@ export class MDCCheckbox extends MDCComponent {
       deregisterInteractionHandler: (type, handler) => this.nativeCb_.removeEventListener(type, handler),
       computeBoundingRect: () => {
         const {left, top} = this.root_.getBoundingClientRect();
-        const DIM = 18;
+        const DIM = 40;
         return {
           top,
           left,
@@ -98,6 +98,11 @@ export class MDCCheckbox extends MDCComponent {
 
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
+  }
+
+  destroy() {
+    this.ripple_.destroy();
+    super.destroy();
   }
 
 }
