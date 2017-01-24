@@ -40,7 +40,6 @@ export class MDCCheckbox extends MDCComponent {
   initRipple_() {
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
       isUnbounded: () => true,
-      isSurfaceActive: () => false,
       registerInteractionHandler: (type, handler) => this.nativeCb_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.nativeCb_.removeEventListener(type, handler),
       computeBoundingRect: () => {
