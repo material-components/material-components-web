@@ -318,8 +318,8 @@ fieldset:disabled .mdc-checkbox__native-control,
 
 .mdc-checkbox.mdc-ripple-upgraded {
   @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .3));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .3));
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
 
   .mdc-checkbox__background::before {
     content: none;
