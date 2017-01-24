@@ -15,7 +15,9 @@
  */
 
 import {MDCComponent} from '@material/base';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 import {getCorrectEventName} from '@material/animation';
+
 import MDCCheckboxFoundation from './foundation';
 
 export {MDCCheckboxFoundation};
@@ -28,6 +30,33 @@ export class MDCCheckbox extends MDCComponent {
   get nativeCb_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
     return this.root_.querySelector(NATIVE_CONTROL_SELECTOR);
+  }
+
+  constructor(...args) {
+    super(...args);
+    this.ripple_ = this.initRipple_();
+  }
+
+  initRipple_() {
+    const adapter = Object.assign(MDCRipple.createAdapter(this), {
+      isUnbounded: () => true,
+      registerInteractionHandler: (type, handler) => this.nativeCb_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.nativeCb_.removeEventListener(type, handler),
+      computeBoundingRect: () => {
+        const {left, top} = this.root_.getBoundingClientRect();
+        const DIM = 40;
+        return {
+          top,
+          left,
+          right: left + DIM,
+          bottom: top + DIM,
+          width: DIM,
+          height: DIM,
+        };
+      },
+    });
+    const foundation = new MDCRippleFoundation(adapter);
+    return new MDCRipple(this.root_, foundation);
   }
 
   getDefaultFoundation() {
@@ -69,4 +98,10 @@ export class MDCCheckbox extends MDCComponent {
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
+
+  destroy() {
+    this.ripple_.destroy();
+    super.destroy();
+  }
+
 }
