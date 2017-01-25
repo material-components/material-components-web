@@ -20,12 +20,12 @@
 
 @keyframes mdc-ripple-fg-radius-in {
   from {
-    transform: scale(0);
+    transform: scale(1);
     animation-timing-function: $mdc-ripple-easing-fn;
   }
 
   to {
-    transform: scale(1.5);
+    transform: scale(var(--mdc-ripple-fg-scale));
   }
 }
 
@@ -56,6 +56,6 @@
   }
 
   to {
-    transform: scale(1.01);
+    transform: scale(var(--mdc-ripple-fg-scale));
   }
 }
