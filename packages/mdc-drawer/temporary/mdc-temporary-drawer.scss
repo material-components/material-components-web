@@ -32,6 +32,7 @@
   pointer-events: none;
   box-sizing: border-box;
   contain: strict;
+  z-index: 3;
 
   /* Shaded background */
   &::before {
