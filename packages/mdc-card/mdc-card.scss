@@ -1,24 +1,24 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// 
+// Copyright 2016 Google Inc. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//      http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
-/* postcss-bem-linter: define card */
+// postcss-bem-linter: define card
 .mdc-card {
   @include mdc-elevation(2);
 
@@ -31,12 +31,12 @@
   &__primary {
     padding: 16px;
 
-    /* Add extra space before large title. */
+    // Add extra space before large title.
     .mdc-card__title--large {
       padding-top: 8px;
     }
 
-    /* Add extra padding if this is the last block. */
+    // Add extra padding if this is the last block.
     &:last-child {
       padding-bottom: 24px;
     }
@@ -53,13 +53,13 @@
       @include mdc-theme-prop(color, text-primary-on-dark);
     }
 
-    /* Remove top padding if immediately preceded by a primary block. */
+    // Remove top padding if immediately preceded by a primary block.
     .mdc-card__primary + & {
       margin-top: -8px;
       padding-top: 0;
     }
 
-    /* Add extra padding if this is the last block. */
+    // Add extra padding if this is the last block.
     &:last-child {
       padding-bottom: 24px;
     }
@@ -70,12 +70,12 @@
     padding: 8px;
     box-sizing: border-box;
 
-    /* Adjust text color for dark theme. */
+    // Adjust text color for dark theme.
     @include mdc-theme-dark(".mdc-card") {
       @include mdc-theme-prop(color, text-primary-on-dark);
     }
 
-    /* Tweak button paddings and margins when they're used as actions */
+    // Tweak button paddings and margins when they're used as actions
     .mdc-card__action {
       margin: 0 8px 0 0;
     }
@@ -84,7 +84,7 @@
       margin-right: 0;
     }
 
-    /* Vertical actions (one per line) */
+    // Vertical actions (one per line)
     &--vertical {
       flex-flow: column;
       align-items: flex-start;
@@ -127,12 +127,12 @@
     @include mdc-typography(body2);
     @include mdc-theme-prop(color, text-primary-on-background);
 
-    /* Adjust text color for dark theme. */
+    // Adjust text color for dark theme.
     @include mdc-theme-dark(".mdc-card") {
       @include mdc-theme-prop(color, text-primary-on-dark);
     }
 
-    margin: -.063rem 0; /* -1sp 0 */
+    margin: -.063rem 0; // -1sp 0
   }
 
   &__title--large {
@@ -145,12 +145,12 @@
     @include mdc-typography(body1);
     @include mdc-theme-prop(color, text-primary-on-background);
 
-    /* Adjust text color for dark theme. */
+    // Adjust text color for dark theme.
     @include mdc-theme-dark(".mdc-card") {
       @include mdc-theme-prop(color, text-primary-on-dark);
     }
 
-    margin: -.063rem 0; /* -1sp 0 */
+    margin: -.063rem 0; // -1sp 0
   }
 
   &__horizontal-block {
@@ -170,10 +170,11 @@
       margin-left: 16px;
     }
 
-    &:last-child .mdc-card__media-item {
+    // postcss-bem-linter: ignore
+    .mdc-card__media-item--3x {
       margin-bottom: 16px;
     }
   }
 }
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
