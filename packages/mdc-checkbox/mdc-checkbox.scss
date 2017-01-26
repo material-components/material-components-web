@@ -1,20 +1,21 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// 
+// Copyright 2016 Google Inc. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//      http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 
 @import "@material/animation/functions";
+@import "@material/ripple/mixins";
 @import "@material/animation/mixins";
 @import "./variables";
 @import "./keyframes";
@@ -40,20 +41,22 @@
 }
 
 @mixin mdc-checkbox-outer-box {
-  border-radius: 2px;
-
   @include mdc-checkbox-cover-element;
 
+  top: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
+  left: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
+  border-radius: 2px;
   box-sizing: border-box;
   pointer-events: none;
 }
 
-/* postcss-bem-linter: define checkbox */
+// postcss-bem-linter: define checkbox
 .mdc-checkbox {
   display: inline-block;
   position: relative;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
+  padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
   line-height: 0;
   white-space: nowrap;
   cursor: pointer;
@@ -65,6 +68,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: $mdc-checkbox-ui-pct;
+    height: $mdc-checkbox-ui-pct;
+    box-sizing: border-box;
     transition:
       mdc-checkbox-transition-exit(background-color),
       mdc-checkbox-transition-exit(border-color);
@@ -76,10 +82,12 @@
       border-color: $mdc-checkbox-border-color-dark;
     }
 
-    /** The frame's ::before element is used as a focus indicator for the checkbox */
+    // The frame's ::before element is used as a focus indicator for the checkbox
     &::before {
       @include mdc-checkbox-cover-element;
 
+      width: 100%;
+      height: 100%;
       transform: scale(0, 0);
       transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
       border-radius: 50%;
@@ -203,7 +211,7 @@ fieldset:disabled .mdc-checkbox__native-control,
 [aria-disabled="true"] .mdc-checkbox__native-control {
   cursor: default;
 
-  /* postcss-bem-linter: ignore */
+  // postcss-bem-linter: ignore
   ~ .mdc-checkbox__background {
     border-color: $mdc-checkbox-disabled-color;
 
@@ -217,11 +225,11 @@ fieldset:disabled .mdc-checkbox__native-control,
     ~ .mdc-checkbox__background {
       border-color: transparent;
       background-color: $mdc-checkbox-disabled-color;
-      /* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+      // stylelint-disable selector-max-compound-selectors, selector-max-specificity
       @include mdc-theme-dark(".mdc-checkbox") {
         background-color: $mdc-checkbox-disabled-color-dark;
       }
-      /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
+      // stylelint-enable selector-max-compound-selectors, selector-max-specificity
     }
   }
 }
@@ -306,5 +314,14 @@ fieldset:disabled .mdc-checkbox__native-control,
     }
   }
 }
+// postcss-bem-linter: end
 
-/* postcss-bem-linter: end */
+.mdc-checkbox.mdc-ripple-upgraded {
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
+
+  .mdc-checkbox__background::before {
+    content: none;
+  }
+}
