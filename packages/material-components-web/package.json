@@ -20,6 +20,7 @@
     "@material/fab": "^0.3.0",
     "@material/form-field": "^0.1.1",
     "@material/icon-toggle": "^0.1.2",
+    "@material/layout-grid": "^0.1.0",
     "@material/list": "^0.2.0",
     "@material/menu": "^0.1.2",
     "@material/radio": "^0.1.2",
