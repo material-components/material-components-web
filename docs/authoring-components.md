@@ -79,6 +79,9 @@ When first starting out on a component, start by building a prototype using vani
 HTML/CSS/Javascript, without worrying about any foundations or adapters. Below is the prototype code
 for our redblue-toggle, which you may also [view on codepen](http://codepen.io/traviskaufman/pen/jVxdNo).
 
+> **TIP**: When prototyping your own components, you can use [this Codepen template](http://codepen.io/traviskaufman/pen/pNQmRp) as a starting
+point.
+
 Start out by experimenting with a DOM structure, and writing a simple prototype component to test
 out the dynamic functionality.
 
