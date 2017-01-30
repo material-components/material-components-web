@@ -50,7 +50,8 @@ The full list of styles:
 - `mdc-typography--display1`
 - `mdc-typography--headline`
 - `mdc-typography--title`
-- `mdc-typography--subheading`
+- `mdc-typography--subheading2`
+- `mdc-typography--subheading1`
 - `mdc-typography--body2`
 - `mdc-typography--body1`
 - `mdc-typography--caption`
@@ -111,7 +112,8 @@ The full list of styles:
 - `display1`
 - `headline`
 - `title`
-- `subheading`
+- `subheading2`
+- `subheading1`
 - `body2`
 - `body1`
 - `caption`
@@ -141,7 +143,8 @@ The list of styles is the same as for the `mdc-typography` mixin:
 - `display1`
 - `headline`
 - `title`
-- `subheading`
+- `subheading2`
+- `subheading1`
 - `body2`
 - `body1`
 - `caption`
