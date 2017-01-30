@@ -48,16 +48,6 @@ function getFixture() {
   `;
 }
 
-const windowObj = td.object({
-  document: {
-    createElement: (str) => ({
-      style: {
-        animation: 'none',
-      },
-    }),
-  },
-});
-
 function setupTest() {
   const root = getFixture();
   const component = new MDCCheckbox(root);
@@ -136,7 +126,7 @@ test('adapter#registerAnimationEndHandler adds an animation end event listener o
   const {root, component} = setupTest();
   const handler = td.func('animationEndHandler');
   component.getDefaultFoundation().adapter_.registerAnimationEndHandler(handler);
-  domEvents.emit(root, getCorrectEventName(windowObj, 'animation'));
+  domEvents.emit(root, getCorrectEventName(window, 'animationend'));
 
   t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
   t.end();
@@ -145,10 +135,11 @@ test('adapter#registerAnimationEndHandler adds an animation end event listener o
 test('adapter#deregisterAnimationEndHandler removes an animation end event listener on the root el', (t) => {
   const {root, component} = setupTest();
   const handler = td.func('animationEndHandler');
-  root.addEventListener(strings.ANIM_END_EVENT_NAME, handler);
+  const animEndEvtName = getCorrectEventName(window, 'animationend');
+  root.addEventListener(animEndEvtName, handler);
 
   component.getDefaultFoundation().adapter_.deregisterAnimationEndHandler(handler);
-  domEvents.emit(root, strings.ANIM_END_EVENT_NAME);
+  domEvents.emit(root, animEndEvtName);
 
   t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
   t.end();

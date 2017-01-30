@@ -64,9 +64,9 @@ export class MDCCheckbox extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       registerAnimationEndHandler:
-        (handler) => this.root_.addEventListener(getCorrectEventName(window, 'animation'), handler),
+        (handler) => this.root_.addEventListener(getCorrectEventName(window, 'animationend'), handler),
       deregisterAnimationEndHandler:
-        (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'animation'), handler),
+        (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'animationend'), handler),
       registerChangeHandler: (handler) => this.nativeCb_.addEventListener('change', handler),
       deregisterChangeHandler: (handler) => this.nativeCb_.removeEventListener('change', handler),
       getNativeControl: () => this.nativeCb_,
