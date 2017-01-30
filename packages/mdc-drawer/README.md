@@ -91,7 +91,6 @@ for any display size.
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
       </a>
-      </a>
     </nav>
   </nav>
 </aside>
@@ -122,7 +121,6 @@ very useful for visual alignment and consistency. Note that you can place conten
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
       </a>
-      </a>
     </nav>
   </nav>
 </aside>
@@ -149,7 +147,6 @@ for placing the actual content, which will be bottom-aligned.
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
-      </a>
       </a>
     </nav>
   </nav>

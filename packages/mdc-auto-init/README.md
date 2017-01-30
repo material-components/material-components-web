@@ -147,7 +147,7 @@ function used to warn users when a component is initialized multiple times. By d
 `console.warn()`. However, to skip over already-initialized components without logging a
 warning, you could simply pass in a nop.
 
-```js
+```html
 <script>window.mdc.autoInit(/* root */ document, () => {});</script>
 ```
 

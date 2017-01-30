@@ -180,7 +180,7 @@ const MDCSimpleMenuFoundation = mdc.Menu.MDCSimpleMenuFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the simple menu, simply call `attachTo()` and pass it a
-DOM element.  
+DOM element.
 
 ```javascript
 mdc.MDCSimpleMenu.attachTo(document.querySelector('.mdc-simple-menu'));
@@ -245,3 +245,17 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `setTransformOrigin(value: string) => void` | Sets the transform origin for the menu element. |
 | `setPosition(position: { top: string, right: string, bottom: string, left: string }) => void` | Sets the position of the menu element. |
+
+### The full foundation API
+
+#### MDCSimpleMenuFoundation.open({focusIndex: number} = {}) => void
+
+Opens the menu. Takes an options object containing a `focusIndex` property that specifies the index of the menu item to be focused. If the options object or `focusIndex` is omitted, no menu item will be focused.
+
+#### MDCSimpleMenuFoundation.close() => void
+
+Closes the menu.
+
+#### MDCSimpleMenuFoundation.isOpen() => boolean
+
+Returns whether or not the menu is open.
