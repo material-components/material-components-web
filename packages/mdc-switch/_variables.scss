@@ -1,6 +1,3 @@
-$mdc-switch-track-width: 34px;
-$mdc-switch-track-height: 14px;
-$mdc-switch-knob-diameter: 20px;
 // 
 // Copyright 2016 Google Inc. All Rights Reserved.
 // 
@@ -17,6 +14,9 @@ $mdc-switch-knob-diameter: 20px;
 // limitations under the License.
 // 
 
+$mdc-switch-track-width: 34px;
+$mdc-switch-track-height: 14px;
+$mdc-switch-knob-diameter: 20px;
 $mdc-switch-focus-ring-diameter: 48px;
 $mdc-switch-knob-active-margin: $mdc-switch-track-width - $mdc-switch-knob-diameter;
 
