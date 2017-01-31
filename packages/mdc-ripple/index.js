@@ -20,7 +20,7 @@ import {supportsCssVariables, getMatchesProperty} from './util';
 
 const MATCHES = getMatchesProperty(HTMLElement.prototype);
 
-export {MDCRippleFoundation};
+export {MDCRippleFoundation, getMatchesProperty};
 
 export class MDCRipple extends MDCComponent {
   static attachTo(root, {isUnbounded = undefined} = {}) {
