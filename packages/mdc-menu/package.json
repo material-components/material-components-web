@@ -3,6 +3,12 @@
   "version": "0.1.2",
   "description": "The Material Components for the web menu component",
   "license": "Apache-2.0",
+	"keywords": [
+	  "material components",
+		"material",
+		"menu",
+    "scss"
+	],
   "main": "index.js",
   "repository": {
     "type": "git",

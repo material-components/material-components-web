@@ -3,6 +3,13 @@
   "description": "Material Components for the web RTL Scss helpers",
   "version": "0.1.1",
   "license": "Apache-2.0",
+	"keywords": [
+	  "material components",
+		"material",
+		"rtl",
+		"right to left",
+    "scss"
+	],
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

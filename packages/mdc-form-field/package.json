@@ -3,6 +3,12 @@
   "description": "Material Components for the web wrapper styles for laying out form fields and labels next to one another",
   "version": "0.1.1",
   "license": "Apache-2.0",
+	"keywords": [
+	  "material components",
+		"material",
+		"form",
+    "scss"
+	],
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

@@ -3,6 +3,12 @@
   "description": "Material Components for the web mixins + CSS Classes for Material Design elevation",
   "version": "0.1.2",
   "license": "Apache-2.0",
+	"keywords": [
+	  "material components",
+		"material",
+		"elevation",
+    "scss"
+	],
   "main": "index.js",
   "repository": {
     "type": "git",
