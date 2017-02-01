@@ -2,13 +2,13 @@
   "private": true,
   "description": "Material Components Web",
   "license": "Apache-2.0",
-	"keywords": [
-	  "material components",
-	  "material design",
-	  "design components",
-		"material components web",
-		"scss"
-	],
+  "keywords": [
+    "material components",
+    "material design",
+    "design components",
+    "material components web",
+    "scss"
+  ],
   "scripts": {
     "build": "mkdirp build && webpack --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",

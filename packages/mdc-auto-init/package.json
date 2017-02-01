@@ -4,9 +4,9 @@
   "version": "0.1.1",
   "main": "index.js",
   "license": "Apache-2.0",
-	"keywords": [
-	  "material components"
-	],
+  "keywords": [
+    "material components"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

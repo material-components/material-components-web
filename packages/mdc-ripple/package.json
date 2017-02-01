@@ -3,13 +3,13 @@
   "description": "The Material Components for the web Ink Ripple effect for web element interactions",
   "version": "0.2.0",
   "license": "Apache-2.0",
-	"keywords": [
-	  "material components",
-		"material",
-		"ripple",
-		"javascript",
+  "keywords": [
+    "material components",
+    "material",
+    "ripple",
+    "javascript",
     "scss"
-	],
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",
