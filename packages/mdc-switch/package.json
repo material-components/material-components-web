@@ -12,7 +12,7 @@
     "@material/elevation": "^0.1.2",
     "@material/theme": "^0.1.1"
   },
- 	"publishConfig": {
-  	"access": "public"
-	}
+  "publishConfig": {
+    "access": "public"
+  }
 }
