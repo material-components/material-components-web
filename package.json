@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "ascii-table": "0.0.9",
-    "autoprefixer": "^6.3.6",
+    "autoprefixer": "^6.7.2",
     "babel-core": "^6.0.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-object-assign": "^6.8.0",

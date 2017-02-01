@@ -110,6 +110,7 @@ module.exports = [{
     'mdc.fab': path.resolve('./packages/mdc-fab/mdc-fab.scss'),
     'mdc.form-field': path.resolve('./packages/mdc-form-field/mdc-form-field.scss'),
     'mdc.icon-toggle': path.resolve('./packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
+    'mdc.layout-grid': path.resolve('./packages/mdc-layout-grid/mdc-layout-grid.scss'),
     'mdc.list': path.resolve('./packages/mdc-list/mdc-list.scss'),
     'mdc.menu': path.resolve('./packages/mdc-menu/mdc-menu.scss'),
     'mdc.radio': path.resolve('./packages/mdc-radio/mdc-radio.scss'),
@@ -146,7 +147,7 @@ module.exports = [{
   ],
   postcss: function() {
     return [
-      require('autoprefixer'),
+      require('autoprefixer')({grid: false}),
     ];
   },
 }];
