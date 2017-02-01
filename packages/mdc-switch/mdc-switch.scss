@@ -48,7 +48,7 @@
     user-select: none;
 
     @include mdc-theme-dark(".mdc-checkbox") {
-      @include mdc-theme-prop(background-color, text-hint-on-dark);
+      background-color: transparent;
     }
 
     &::before {
@@ -62,9 +62,15 @@
         mdc-checkbox-transition(opacity, $mdc-switch-transition-curve),
         mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
       border-radius: 7px;
-      background-color: $mdc-switch-unchecked-background-color;
+      background-color: $mdc-switch-unchecked-track-color;
       content: "";
-      opacity: .28;
+      opacity: .38;
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        background-color: $mdc-switch-unchecked-track-color-dark;
+        opacity: .3;
+      }
+
     }
 
     // postcss-bem-linter: ignore
@@ -82,7 +88,11 @@
       border-radius: $mdc-switch-knob-diameter / 2;
       background-color: $mdc-switch-unchecked-knob-color;
 
-      @include mdc-elevation(1);
+      @include mdc-theme-dark(".mdc-checkbox") {
+        background-color: $mdc-switch-unchecked-knob-color-dark;
+      }
+
+      @include mdc-elevation(2);
 
       z-index: 1;
 
@@ -121,7 +131,8 @@
       background-color: $mdc-switch-unchecked-focus-ring-color;
 
       @include mdc-theme-dark(".mdc-checkbox") {
-        background-color: $mdc-switch-unchecked-knob-color;
+        background-color: $mdc-switch-unchecked-focus-ring-color-dark;
+        opacity: .14;
       }
 
     }
@@ -157,46 +168,27 @@
 
 // postcss-bem-linter: end
 
-.mdc-switch--disabled {
+.mdc-switch__native-control:disabled {
   cursor: initial;
+}
 
-  .mdc-switch__native-control {
-    cursor: initial;
-  }
+.mdc-switch__native-control:disabled ~ .mdc-switch__background {
 
-  .mdc-switch__background {
-    cursor: initial;
+  &::before {
+    background-color: $mdc-switch-unchecked-track-color;
+    opacity: .12;
 
-    &::before {
+    @include mdc-theme-dark(".mdc-checkbox") {
       background-color: $mdc-switch-unchecked-track-color-dark;
-
-      @include mdc-theme-dark(".mdc-checkbox") {
-        background-color: $mdc-switch-unchecked-track-color-dark;
-      }
-
-    }
-
-    .mdc-switch__knob {
-      background-color: $mdc-switch-unchecked-knob-color;
-
-      @include mdc-theme-dark(".mdc-checkbox") {
-        background-color: $mdc-switch-unchecked-knob-color-dark;
-      }
-
+      opacity: .1;
     }
   }
 
-  .mdc-switch__native-control:focus ~ .mdc-switch__knob::before {
-    transform: scale(1);
-    transition:
-      mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
-      mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
-    background-color: $mdc-switch-disabled-focus-ring-color;
-    opacity: .1;
+  .mdc-switch__knob {
+    background-color: $mdc-switch-disabled-knob-color;
+
+    @include mdc-theme-dark(".mdc-checkbox") {
+      background-color: $mdc-switch-disabled-knob-color-dark;
+    }
   }
 }
-
-.mdc-switch-label {
-  margin-left: 10px;
-}
-

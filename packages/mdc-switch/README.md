@@ -12,7 +12,6 @@ npm install --save @material/switch
 
 ## Usage
 
-### CSS Only
 ```html
 <div class="mdc-switch">    
   <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
@@ -23,7 +22,7 @@ npm install --save @material/switch
 <label for="basic-switch" class="mdc-switch-label">off/on</label>
 ```
 
-### CSS Only - Disabled
+### Disabled
 ```html
 <div class="mdc-switch mdc-switch--disabled">    
   <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" disabled />
@@ -46,4 +45,4 @@ The provided modifiers are:
 
 | Class                 | Description                                  |
 | ----------------------| -------------------------------------------- |
-| `mdc-fab--disabled`   | Applies disabled style to disabled switches. |
+| `mdc-switch--disabled`   | Applies disabled style to disabled switches. |

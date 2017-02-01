@@ -20,13 +20,14 @@ $mdc-switch-knob-diameter: 20px;
 $mdc-switch-focus-ring-diameter: 48px;
 $mdc-switch-knob-active-margin: $mdc-switch-track-width - $mdc-switch-knob-diameter;
 
-$mdc-switch-unchecked-background-color: #221f1f;
-$mdc-switch-unchecked-knob-color: #f1f1f1;
+$mdc-switch-unchecked-track-color: #000;
+$mdc-switch-unchecked-knob-color: #fafafa;
 $mdc-switch-unchecked-focus-ring-color: #9e9e9e;
-$mdc-switch-disabled-focus-ring-color: #000;
-$mdc-switch-unchecked-disabled-knob-color: #bdbdbd;
-$mdc-switch-unchecked-knob-color-dark: #424242;
-$mdc-switch-unchecked-track-color-dark: #484848;
+$mdc-switch-unchecked-knob-color-dark: #bdbdbd;
+$mdc-switch-unchecked-track-color-dark: #fff;
+$mdc-switch-unchecked-focus-ring-color-dark: #f1f1f1;
+$mdc-switch-disabled-knob-color: #bdbdbd;
+$mdc-switch-disabled-knob-color-dark: #424242;
 
 $mdc-switch-transition-duration: 175ms;
 $mdc-switch-transition-curve: cubic-bezier(.4, 0, .2, 1);
