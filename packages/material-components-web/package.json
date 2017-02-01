@@ -8,7 +8,8 @@
 	  "material design",
 	  "design components",
 		"material components web",
-		"SCSS"
+		"scss",
+    "css"
 	],
   "main": "index.js",
   "repository": {
