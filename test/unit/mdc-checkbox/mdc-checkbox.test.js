@@ -24,6 +24,7 @@ import {createMockRaf} from '../helpers/raf';
 import {MDCCheckbox} from '../../../packages/mdc-checkbox';
 import {strings} from '../../../packages/mdc-checkbox/constants';
 import {getCorrectEventName} from '../../../packages/mdc-animation';
+import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
   return bel`
@@ -71,6 +72,26 @@ if (supportsCssVariables(window)) {
     component.destroy();
     raf.flush();
     t.false(root.classList.contains('mdc-ripple-upgraded'));
+    raf.restore();
+    t.end();
+  });
+
+  test('(regression) activates ripple on keydown when the input element surface is active', (t) => {
+    const raf = createMockRaf();
+    const {root} = setupTest();
+    const input = root.querySelector('input');
+    raf.flush();
+
+    const fakeMatches = td.func('.matches');
+    td.when(fakeMatches(':active')).thenReturn(true);
+    input[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
+
+    t.true(root.classList.contains('mdc-ripple-upgraded'));
+    domEvents.emit(input, 'keydown');
+    raf.flush();
+
+    t.true(root.classList.contains('mdc-ripple-upgraded--background-active'));
+    raf.restore();
     t.end();
   });
 }

@@ -16,6 +16,7 @@
 
 import {MDCComponent} from '@material/base';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+import {getMatchesProperty} from '@material/ripple/util';
 import {getCorrectEventName} from '@material/animation';
 
 import MDCCheckboxFoundation from './foundation';
@@ -38,8 +39,10 @@ export class MDCCheckbox extends MDCComponent {
   }
 
   initRipple_() {
+    const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
       isUnbounded: () => true,
+      isSurfaceActive: () => this.nativeCb_[MATCHES](':active'),
       registerInteractionHandler: (type, handler) => this.nativeCb_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.nativeCb_.removeEventListener(type, handler),
       computeBoundingRect: () => {
