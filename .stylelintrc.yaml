@@ -245,6 +245,14 @@ rules:
     - severity: warning
   # Part of google's style guide
   number-leading-zero: never
+  # No unknown unit
+  unit-no-unknown:
+    - true
+    # Temporary rule to ignore CSS Grid `fr` unit while stylelint doesn't support it.
+    # See https://github.com/stylelint/stylelint/issues/2307
+    # TODO(sgomes): remove once fixed in stylelint
+    - ignoreUnits:
+        - fr
 
   # We use Harry Roberts' BEM dialect as our preferred way to format classes.
   # See: http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/

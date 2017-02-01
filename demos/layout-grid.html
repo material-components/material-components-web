@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Layout Grid Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+
+    <style>
+    .demo-grid {
+      background-color: #DDDDDD;
+      margin-bottom: 32px;
+    }
+
+    .demo-cell {
+      box-sizing: border-box;
+      background-color: #666666;
+      height: 200px;
+      padding: 8px;
+      color: white;
+
+      font-size: 1.5em;
+    }
+
+    .demo-grid.max-width {
+      max-width: 1600px;
+    }
+
+    .demo-grid.left-align {
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    .demo-grid-legend {
+      margin: 16px 0 8px 0;
+    }
+
+    .demo-ruler {
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      bottom: 0;
+      left: 0;
+      height: 20px;
+      width: 100%;
+      margin: 0;
+      background: black;
+      color: white;
+    }
+
+    .demo-controls {
+      display: none;
+      margin-bottom: 8px;
+    }
+    .demo-warning::after {
+      content: "This browser does not support custom properties, so margins and gutters cannot be changed at runtime.";
+    }
+
+    @supports (--foo: green) {
+      .demo-controls {
+        display: block;
+      }
+
+      .demo-warning::after {
+        content: "";
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <main class="mdc-typography">
+      <h1>MDC Layout Grid</h1>
+
+      <div class="demo-controls">
+        Margin:
+        <select id="margin">
+          <option value="8px">8px</option>
+          <option value="16px" selected>16px</option>
+          <option value="24px">24px</option>
+          <option value="40px">40px</option>
+        </select>
+
+        <br>
+
+        Gutter:
+        <select id="gutter">
+          <option value="8px">8px</option>
+          <option value="16px" selected>16px</option>
+          <option value="24px">24px</option>
+          <option value="40px">40px</option>
+        </select>
+      </div>
+      <div class="demo-warning"></div>
+
+
+      <div class="demo-grid-legend">Grid of 1 column wide items</div>
+      <div class="demo-grid mdc-layout-grid">
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+      </div>
+
+      <div class="demo-grid-legend">Grid of 4 column wide items</div>
+      <div class="demo-grid mdc-layout-grid">
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+      </div>
+
+      <div class="demo-grid-legend">Grid of differently sized items</div>
+      <div class="demo-grid mdc-layout-grid">
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6">6</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2">2</div>
+      </div>
+
+      <div class="demo-grid-legend">Grid of items with tweaks at different screen sizes</div>
+      <div class="demo-grid mdc-layout-grid">
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">6 (8 tablet)</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-6-tablet">4 (6 tablet)</div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-4-phone">2 (4 phone)</div>
+      </div>
+
+      <div class="demo-grid-legend">Grid with max width and center alignment</div>
+      <div class="demo-grid mdc-layout-grid max-width">
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+      </div>
+
+      <div class="demo-grid-legend">Grid with max width and left alignment</div>
+      <div class="demo-grid mdc-layout-grid max-width left-align">
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+      </div>
+
+      <div class="demo-ruler"><div id="current"></div></div>
+    </main>
+
+    <script>
+      (function(global) {
+        'use strict';
+        var marginSelect = document.querySelector('#margin');
+        marginSelect.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-margin', marginSelect.value);
+        });
+
+        var gutterSelect = document.querySelector('#gutter');
+        gutterSelect.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-gutter', gutterSelect.value);
+        });
+
+        var current = document.querySelector('#current');
+        var update = function() {
+          var size = '(phone)';
+          if (window.innerWidth >= 840) {
+            size = '(desktop)';
+          } else if (window.innerWidth >= 480) {
+            size = '(tablet)';
+          }
+          current.textContent = window.innerWidth + 'px ' + size;
+        };
+        window.addEventListener('resize', update);
+        update();
+      })(this);
+    </script>
+  </body>
+</html>
