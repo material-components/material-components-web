@@ -21,6 +21,6 @@ Then run the demo server:
 npm run dev
 ```
 
-This will spin up a server that can be accessed at 127.0.0.1:8080
+This will spin up a server that can be accessed at localhost:8080
 
 Pop open any major browser and enjoy!
