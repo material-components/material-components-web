@@ -117,6 +117,7 @@ module.exports = [{
     'mdc.ripple': path.resolve('./packages/mdc-ripple/mdc-ripple.scss'),
     'mdc.select': path.resolve('./packages/mdc-select/mdc-select.scss'),
     'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
+    'mdc.switch': path.resolve('./packages/mdc-switch/mdc-switch.scss'),
     'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
     'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
     'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),

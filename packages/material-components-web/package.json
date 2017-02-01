@@ -27,6 +27,7 @@
     "@material/ripple": "^0.1.2",
     "@material/select": "^0.2.0",
     "@material/snackbar": "^0.1.2",
+    "@material/switch": "^0.1.0",
     "@material/textfield": "^0.2.0",
     "@material/theme": "^0.1.1",
     "@material/typography": "^0.1.1"

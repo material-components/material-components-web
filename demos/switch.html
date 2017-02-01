@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Switch Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      /* Make the demo look a little bit better */
+      section {
+        margin-bottom: 0.5rem;
+        margin: 16px;
+        padding: 40px;
+        background-color: #eee;
+      }
+  
+      h2 {
+        margin: 0;
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-size: 16px;
+      }
+      
+      .mdc-theme--dark {
+        background-color: #333;
+      }
+
+      .mdc-theme--dark > h2 {
+        color: white;
+      }
+
+      .mdc-theme--dark > label {
+        color: white;
+      }
+    </style>
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+  </head>
+  <body class="mdc-typography">
+    <main>
+      <h1>MDC Switch - CSS Only</h1>
+
+      <section>
+        <h2>Switch on Light Theme</h2>
+        <div class="mdc-switch">    
+          <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
+          <div class="mdc-switch__background">
+            <div class="mdc-switch__knob"></div>
+          </div>
+        </div>
+        <label for="basic-switch" class="mdc-switch-label">off/on</label>
+      </section>
+      <section>
+        <h2>Switch on Light Theme - Disabled</h2>
+        <div class="mdc-switch">    
+          <input type="checkbox" 
+                 id="basic-switch--disabled" 
+                 class="mdc-switch__native-control" 
+                 disabled />
+          <div class="mdc-switch__background">
+            <div class="mdc-switch__knob"></div>
+          </div>
+        </div>
+        <label for="basic-switch--disabled" class="mdc-switch-label">off/on</label>
+      </section>
+      
+      <section class="mdc-theme--dark">
+        <h2>Switch on Dark Theme</h2>
+        <div class="mdc-switch">    
+          <input type="checkbox" 
+                 id="basic-switch--dark" 
+                 class="mdc-switch__native-control"/>
+          <div class="mdc-switch__background">
+            <div class="mdc-switch__knob"></div>
+          </div>
+        </div>
+        <label for="basic-switch--dark" class="mdc-switch-label">off/on</label>
+      </section>
+      
+      <section class="mdc-theme--dark">
+        <h2>Switch on Light Theme - Disabled</h2>
+        <div class="mdc-switch">    
+          <input type="checkbox" 
+                 id="basic-switch--dark--disabled" 
+                 class="mdc-switch__native-control"
+                 disabled />
+          <div class="mdc-switch__background">
+            <div class="mdc-switch__knob"></div>
+          </div>
+        </div>
+        <label for="basic-switch--dark--disabled" class="mdc-switch-label">off/on</label>
+      </section>
+
+    </main>
+    <script src="assets/material-components-web.js" charset="utf-8"></script>
+  </body>
+</html>
