@@ -15,8 +15,5 @@
     "@material/rtl": "^0.1.1",
     "@material/theme": "^0.1.1",
     "@material/typography": "^0.1.1"
-  },
- 	"publishConfig": {
-  	"access": "public"
-	} 
+  } 
 }
