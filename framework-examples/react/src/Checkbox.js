@@ -57,7 +57,7 @@ export default class Checkbox extends PureComponent {
 
   state = {
     classes: new ImmutableSet(),
-    css: new ImmutableMap(),
+    rippleCss: new ImmutableMap(),
     checkedInternal: false,
     indeterminateInternal: false
   }
@@ -113,7 +113,7 @@ export default class Checkbox extends PureComponent {
   // For browser compatibility we extend the default adapter which checks for css variable support.
   rippleFoundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
     isUnbounded: () => true,
-    isSurfaceActive: () => this.refs.root[MATCHES](':active'),
+    isSurfaceActive: () => this.refs.nativeCb[MATCHES](':active'),
     addClass: className => {
       this.setState(prevState => ({
         classes: prevState.classes.add(className)
@@ -132,7 +132,7 @@ export default class Checkbox extends PureComponent {
     },
     updateCssVariable: (varName, value) => {
       this.setState(prevState => ({
-        css: prevState.css.set(varName, value)
+        rippleCss: prevState.rippleCss.set(varName, value)
       }));
     },
     computeBoundingRect: () => {
@@ -212,7 +212,7 @@ export default class Checkbox extends PureComponent {
     }
     // To make the ripple animation work we update the css properties after React finished building the DOM.
     if (this.refs.root) {
-      this.state.css.forEach((v, k) => {
+      this.state.rippleCss.forEach((v, k) => {
         this.refs.root.style.setProperty(k, v);
       });
     }
