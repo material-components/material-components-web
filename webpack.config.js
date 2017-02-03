@@ -110,12 +110,14 @@ module.exports = [{
     'mdc.fab': path.resolve('./packages/mdc-fab/mdc-fab.scss'),
     'mdc.form-field': path.resolve('./packages/mdc-form-field/mdc-form-field.scss'),
     'mdc.icon-toggle': path.resolve('./packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
+    'mdc.layout-grid': path.resolve('./packages/mdc-layout-grid/mdc-layout-grid.scss'),
     'mdc.list': path.resolve('./packages/mdc-list/mdc-list.scss'),
     'mdc.menu': path.resolve('./packages/mdc-menu/mdc-menu.scss'),
     'mdc.radio': path.resolve('./packages/mdc-radio/mdc-radio.scss'),
     'mdc.ripple': path.resolve('./packages/mdc-ripple/mdc-ripple.scss'),
     'mdc.select': path.resolve('./packages/mdc-select/mdc-select.scss'),
     'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
+    'mdc.switch': path.resolve('./packages/mdc-switch/mdc-switch.scss'),
     'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
     'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
     'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
@@ -146,7 +148,7 @@ module.exports = [{
   ],
   postcss: function() {
     return [
-      require('autoprefixer'),
+      require('autoprefixer')({grid: false}),
     ];
   },
 }];

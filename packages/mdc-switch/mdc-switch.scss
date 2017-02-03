@@ -1,0 +1,194 @@
+// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@import "@material/animation/functions";
+@import "@material/animation/variables";
+@import "@material/elevation/mixins";
+@import "@material/theme/mixins";
+@import "./mixins";
+@import "./variables";
+
+// postcss-bem-linter: define switch
+.mdc-switch {
+  display: inline-block;
+  position: relative;
+
+  &__native-control {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $mdc-switch-track-width;
+    height: $mdc-switch-track-height;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  &__background {
+    display: block;
+    position: relative;
+    width: $mdc-switch-track-width;
+    height: $mdc-switch-track-height;
+    border-radius: 7px;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+
+    @include mdc-theme-dark(".mdc-checkbox") {
+      background-color: transparent;
+    }
+
+    &::before {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transition:
+        mdc-checkbox-transition(opacity, $mdc-switch-transition-curve),
+        mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+      border-radius: 7px;
+      background-color: $mdc-switch-unchecked-track-color;
+      content: "";
+      opacity: .38;
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        background-color: $mdc-switch-unchecked-track-color-dark;
+        opacity: .3;
+      }
+
+    }
+
+    // postcss-bem-linter: ignore
+    .mdc-switch__knob {
+      display: block;
+      position: absolute;
+      top: -3px;
+      left: 0;
+      width: $mdc-switch-knob-diameter;
+      height: $mdc-switch-knob-diameter;
+      transform: translateX(0);
+      transition:
+        mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
+        mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+      border-radius: $mdc-switch-knob-diameter / 2;
+      background-color: $mdc-switch-unchecked-knob-color;
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        background-color: $mdc-switch-unchecked-knob-color-dark;
+      }
+
+      @include mdc-elevation(2);
+
+      z-index: 1;
+
+      // postcss-bem-linter: ignore
+      &::before {
+        position: absolute;
+        top: -14px;
+        left: -14px;
+        width: $mdc-switch-focus-ring-diameter;
+        height: $mdc-switch-focus-ring-diameter;
+        transform: scale(0);
+        transition:
+          mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
+          mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+        border-radius: $mdc-switch-focus-ring-diameter / 2;
+        background-color: transparent;
+        content: "";
+        opacity: .2;
+      }
+    }
+  }
+}
+
+.mdc-switch__native-control:focus ~ .mdc-switch__background {
+
+  .mdc-switch__knob {
+    &::before {
+      position: absolute;
+      width: $mdc-switch-focus-ring-diameter;
+      height: $mdc-switch-focus-ring-diameter;
+      transform: scale(1);
+      transition:
+        mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
+        mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+      border-radius: $mdc-switch-focus-ring-diameter / 2;
+      background-color: $mdc-switch-unchecked-focus-ring-color;
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        background-color: $mdc-switch-unchecked-focus-ring-color-dark;
+        opacity: .14;
+      }
+
+    }
+  }
+}
+
+.mdc-switch__native-control:checked ~ .mdc-switch__background {
+
+  &::before {
+    @include mdc-theme-prop(background-color, primary);
+    opacity: .5;
+  }
+
+  .mdc-switch__knob {
+    transform: translateX($mdc-switch-track-width - $mdc-switch-knob-diameter);
+    transition:
+      mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
+      mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+
+    @include mdc-theme-prop(background-color, primary);
+
+    &::before {
+      @include mdc-theme-prop(background-color, primary);
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        @include mdc-theme-prop(background-color, primary);
+      }
+
+      opacity: .15;
+    }
+  }
+}
+
+// postcss-bem-linter: end
+
+.mdc-switch__native-control:disabled {
+  cursor: initial;
+}
+
+.mdc-switch__native-control:disabled ~ .mdc-switch__background {
+
+  &::before {
+    background-color: $mdc-switch-unchecked-track-color;
+    opacity: .12;
+
+    @include mdc-theme-dark(".mdc-checkbox") {
+      background-color: $mdc-switch-unchecked-track-color-dark;
+      opacity: .1;
+    }
+  }
+
+  .mdc-switch__knob {
+    background-color: $mdc-switch-disabled-knob-color;
+
+    @include mdc-theme-dark(".mdc-checkbox") {
+      background-color: $mdc-switch-disabled-knob-color-dark;
+    }
+  }
+}
