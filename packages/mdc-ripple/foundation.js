@@ -72,7 +72,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.frame_ = {width: 0, height: 0};
     this.activationState_ = this.defaultActivationState_();
     this.xfDuration_ = 0;
-    this.maxRadius = 0;
+    this.initialSize_ = 0;
+    this.maxRadius_ = 0;
     this.listenerInfos_ = [
       {activate: 'touchstart', deactivate: 'touchend'},
       {activate: 'pointerdown', deactivate: 'pointerup'},
@@ -99,6 +100,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       left: 0,
       top: 0,
     };
+    this.fgScale_ = 0;
   }
 
   defaultActivationState_() {
@@ -193,22 +195,6 @@ export default class MDCRippleFoundation extends MDCFoundation {
 
   animateUnboundedActivation_() {
     const {FG_UNBOUNDED_ACTIVATION} = MDCRippleFoundation.cssClasses;
-    let startPoint;
-    if (this.activationState_.wasActivatedByPointer) {
-      startPoint = getNormalizedEventCoords(
-        this.activationState_.activationEvent, this.adapter_.getWindowPageOffset(),
-        this.adapter_.computeBoundingRect()
-      );
-    } else {
-      startPoint = {
-        left: this.frame_.width / 2,
-        top: this.frame_.height / 2,
-      };
-    }
-    const {left, top} = startPoint;
-    const {VAR_XF_ORIGIN_X, VAR_XF_ORIGIN_Y} = MDCRippleFoundation.strings;
-    this.adapter_.updateCssVariable(VAR_XF_ORIGIN_X, `${left - this.unboundedCoords_.left}px`);
-    this.adapter_.updateCssVariable(VAR_XF_ORIGIN_Y, `${top - this.unboundedCoords_.top}px`);
     this.adapter_.addClass(FG_UNBOUNDED_ACTIVATION);
   }
 
@@ -285,7 +271,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
 
     let approxCurScale = 0;
     if (msElapsed > FG_TRANSFORM_DELAY_MS) {
-      approxCurScale = Math.min((msElapsed - FG_TRANSFORM_DELAY_MS) / this.xfDuration_, 1);
+      const percentComplete = Math.min((msElapsed - FG_TRANSFORM_DELAY_MS) / this.xfDuration_, 1);
+      approxCurScale = percentComplete * this.fgScale_;
     }
 
     const transformDuration = UNBOUNDED_TRANSFORM_DURATION_MS;
@@ -368,30 +355,37 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.frame_ = this.adapter_.computeBoundingRect();
 
     const maxDim = Math.max(this.frame_.height, this.frame_.width);
+    const surfaceDiameter = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
 
-    // Sqrt(2) * square length == diameter
-    this.maxRadius_ = Math.sqrt(2) * maxDim / 2;
+    // 60% of the largest dimension of the surface
+    this.initialSize_ = maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE;
+
+    // Diameter of the surface + 10px
+    this.maxRadius_ = surfaceDiameter + MDCRippleFoundation.numbers.PADDING;
+    this.fgScale_ = this.maxRadius_ / this.initialSize_;
     this.xfDuration_ = 1000 * Math.sqrt(this.maxRadius_ / 1024);
     this.updateLayoutCssVars_();
   }
 
   updateLayoutCssVars_() {
-    const fgSize = this.maxRadius_ * 2;
     const {
       VAR_SURFACE_WIDTH, VAR_SURFACE_HEIGHT, VAR_FG_SIZE,
-      VAR_FG_UNBOUNDED_TRANSFORM_DURATION, VAR_LEFT, VAR_TOP,
+      VAR_FG_UNBOUNDED_TRANSFORM_DURATION, VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
     } = MDCRippleFoundation.strings;
 
     this.adapter_.updateCssVariable(VAR_SURFACE_WIDTH, `${this.frame_.width}px`);
     this.adapter_.updateCssVariable(VAR_SURFACE_HEIGHT, `${this.frame_.height}px`);
-    this.adapter_.updateCssVariable(VAR_FG_SIZE, `${fgSize}px`);
+    this.adapter_.updateCssVariable(VAR_FG_SIZE, `${this.initialSize_}px`);
     this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_TRANSFORM_DURATION, `${this.xfDuration_}ms`);
+    this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
 
     if (this.adapter_.isUnbounded()) {
       this.unboundedCoords_ = {
-        left: Math.round(-(fgSize / 2) + (this.frame_.width / 2)),
-        top: Math.round(-(fgSize / 2) + (this.frame_.height / 2)),
+        left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
+        top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
       };
+
+
       this.adapter_.updateCssVariable(VAR_LEFT, `${this.unboundedCoords_.left}px`);
       this.adapter_.updateCssVariable(VAR_TOP, `${this.unboundedCoords_.top}px`);
     }

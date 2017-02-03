@@ -112,23 +112,26 @@ testFoundation(`#init sets ${strings.VAR_SURFACE_HEIGHT} css variable to the cli
 
 testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
+  const size = 200;
+  td.when(adapter.computeBoundingRect()).thenReturn({width: size, height: size / 2});
   foundation.init();
   mockRaf.flush();
+  const initialSize = size * numbers.INITIAL_ORIGIN_SCALE;
 
-  const expectedDiameter = Math.sqrt(2) * 200;
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${expectedDiameter}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`)));
   t.end();
 });
 
 testFoundation(`#init sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based on the max radius`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
+  const width = 200;
+  const height = 100;
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height});
   foundation.init();
   mockRaf.flush();
 
-  const expectedDiameter = Math.sqrt(2) * 200;
-  const expectedRadius = expectedDiameter / 2;
+  const expectedDiameter = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+  const expectedRadius = expectedDiameter + numbers.PADDING;
   const expectedDuration = 1000 * Math.sqrt(expectedRadius / 1024);
   const {VAR_FG_UNBOUNDED_TRANSFORM_DURATION: expectedCssVar} = strings;
   t.doesNotThrow(() => td.verify(adapter.updateCssVariable(expectedCssVar, `${expectedDuration}ms`)));
@@ -137,15 +140,20 @@ testFoundation(`#init sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based 
 
 testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 200});
+  const width = 200;
+  const height = 100;
+  const maxSize = Math.max(width, height);
+  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height});
   td.when(adapter.isUnbounded()).thenReturn(true);
   foundation.init();
   mockRaf.flush();
 
-  const expectedDiameter = Math.sqrt(2) * 200;
-  const offset = (expectedDiameter / 2);
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, `${Math.round(-offset + 50)}px`)));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, `${Math.round(-offset + 100)}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
+      `${Math.round((width / 2) - (initialSize / 2))}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP,
+      `${Math.round((height / 2) - (initialSize / 2))}px`)));
   t.end();
 });
 
@@ -254,24 +262,52 @@ testFoundation(`#layout sets ${strings.VAR_SURFACE_HEIGHT} css variable to the c
 
 testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
+  const width = 200;
+  const height = 100;
+  const maxSize = Math.max(width, height);
+  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height});
   foundation.layout();
   mockRaf.flush();
 
-  const expectedDiameter = Math.sqrt(2) * 200;
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${expectedDiameter}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`)));
+  t.end();
+});
+
+testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference between the ` +
+               'proportion of the max radius and the initial size', (t) => {
+  const {foundation, adapter, mockRaf} = t.data;
+  const width = 200;
+  const height = 100;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height});
+  foundation.layout();
+  mockRaf.flush();
+
+  const maxSize = Math.max(width, height);
+  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+  const surfaceDiameter = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+  const maxRadius = surfaceDiameter + numbers.PADDING;
+  const fgScale = maxRadius / initialSize;
+
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_SCALE, fgScale)));
   t.end();
 });
 
 testFoundation(`#layout sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based on the max radius`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
+  const width = 200;
+  const height = 100;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height});
   foundation.layout();
   mockRaf.flush();
 
-  const expectedDiameter = Math.sqrt(2) * 200;
-  const expectedRadius = expectedDiameter / 2;
+  const expectedDiameter = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+  const expectedRadius = expectedDiameter + numbers.PADDING;
   const expectedDuration = 1000 * Math.sqrt(expectedRadius / 1024);
+
   const {VAR_FG_UNBOUNDED_TRANSFORM_DURATION: expectedCssVar} = strings;
   t.doesNotThrow(() => td.verify(adapter.updateCssVariable(expectedCssVar, `${expectedDuration}ms`)));
   t.end();
@@ -279,15 +315,20 @@ testFoundation(`#layout sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} base
 
 testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`, (t) => {
   const {foundation, adapter, mockRaf} = t.data;
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 200});
+  const width = 200;
+  const height = 100;
+  const maxSize = Math.max(width, height);
+  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height});
   td.when(adapter.isUnbounded()).thenReturn(true);
   foundation.layout();
   mockRaf.flush();
 
-  const expectedDiameter = Math.sqrt(2) * 200;
-  const offset = (expectedDiameter / 2);
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, `${Math.round(-offset + 50)}px`)));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, `${Math.round(-offset + 100)}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
+      `${Math.round((width / 2) - (initialSize / 2))}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP,
+      `${Math.round((height / 2) - (initialSize / 2))}px`)));
   t.end();
 });
 

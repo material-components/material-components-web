@@ -38,9 +38,8 @@ export const strings = {
   VAR_FG_UNBOUNDED_TRANSFORM_DURATION: `--${ROOT}-fg-unbounded-transform-duration`,
   VAR_LEFT: `--${ROOT}-left`,
   VAR_TOP: `--${ROOT}-top`,
-  VAR_XF_ORIGIN_X: `--${ROOT}-xfo-x`,
-  VAR_XF_ORIGIN_Y: `--${ROOT}-xfo-y`,
   VAR_FG_APPROX_XF: `--${ROOT}-fg-approx-xf`,
+  VAR_FG_SCALE: `--${ROOT}-fg-scale`,
 };
 
 export const numbers = {
@@ -49,4 +48,6 @@ export const numbers = {
   ACTIVE_OPACITY_DURATION_MS: 110,
   MIN_OPACITY_DURATION_MS: 200,
   UNBOUNDED_TRANSFORM_DURATION_MS: 200,
+  PADDING: 10,
+  INITIAL_ORIGIN_SCALE: 0.6,
 };

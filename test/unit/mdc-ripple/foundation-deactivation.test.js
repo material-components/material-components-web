@@ -195,8 +195,9 @@ testFoundation('triggers unbounded deactivation based on time it took to activat
   const clock = lolex.install();
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
+  const size = 100;
   td.when(adapter.isUnbounded()).thenReturn(true);
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 0, top: 0});
+  td.when(adapter.computeBoundingRect()).thenReturn({width: size, height: size, left: 0, top: 0});
   foundation.init();
   mockRaf.flush();
 
@@ -210,10 +211,13 @@ testFoundation('triggers unbounded deactivation based on time it took to activat
   handlers.mouseup();
   mockRaf.flush();
 
-  const maxRadius = Math.sqrt(2) * 50;
+  const surfaceDiameter = Math.sqrt(Math.pow(size, 2) + Math.pow(size, 2));
+  const initialSize = size * numbers.INITIAL_ORIGIN_SCALE;
+  const maxRadius = surfaceDiameter + numbers.PADDING;
+  const fgScale = maxRadius / initialSize;
   const xfDuration = 1000 * Math.sqrt(maxRadius / 1024);
 
-  const scaleVal = baseElapsedTime / xfDuration;
+  const scaleVal = baseElapsedTime / xfDuration * fgScale;
   t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_APPROX_XF, `scale(${scaleVal})`)));
   t.doesNotThrow(
     () => td.verify(
