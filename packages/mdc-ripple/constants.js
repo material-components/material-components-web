@@ -38,8 +38,11 @@ export const strings = {
   VAR_FG_UNBOUNDED_TRANSFORM_DURATION: `--${ROOT}-fg-unbounded-transform-duration`,
   VAR_LEFT: `--${ROOT}-left`,
   VAR_TOP: `--${ROOT}-top`,
+  VAR_TRANSLATE_END: `--${ROOT}-translate-end`,
   VAR_FG_APPROX_XF: `--${ROOT}-fg-approx-xf`,
   VAR_FG_SCALE: `--${ROOT}-fg-scale`,
+  VAR_FG_TRANSLATE_START: `--${ROOT}-fg-translate-start`,
+  VAR_FG_TRANSLATE_END: `--${ROOT}-fg-translate-end`,
 };
 
 export const numbers = {
