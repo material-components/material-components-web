@@ -117,7 +117,7 @@ class RedblueTogglePrototype {
 
   toggle(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
-    const toggled = wasToggledExplicitlySet ? isToggled : !this.toggled_;
+    const toggled = wasToggledExplicitlySet ? isToggled : !this.toggled;
     const toggleColorEl = this.root.querySelector('.redblue-toggle__color');
     let toggleColor;
 
@@ -182,7 +182,6 @@ class RedblueTogglePrototype {
 
   constructor(root) {
     this.root = root;
-    this.toggled_ = false;
     this.clickHandler_ = () => this.toggle();
     this.initialize();
   }
@@ -197,12 +196,12 @@ class RedblueTogglePrototype {
 
   toggle(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
-    this.toggled_ = wasToggledExplicitlySet ? isToggled : !this.toggled_;
+    const toggled = wasToggledExplicitlySet ? isToggled : !this.toggled;
 
     let toggleColor;
 
-    SOMEHOW_SET_ATTRIBUTE('aria-pressed', String(this.toggled_));
-    if (this.toggled_) {
+    SOMEHOW_SET_ATTRIBUTE('aria-pressed', String(toggled));
+    if (toggled) {
       toggleColor = 'Red';
       SOMEHOW_ADD_CLASS('redblue-toggle--toggled');
     } else {
