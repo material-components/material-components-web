@@ -57,7 +57,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       registerInputKeydownHandler: (/* handler: EventListener */) => {},
       deregisterInputKeydownHandler: (/* handler: EventListener */) => {},
       setHelptextAttr: (/* name: string, value: string */) => {},
-      removeHelptextAttr: (/* name: string, value: string */) => {},
+      removeHelptextAttr: (/* name: string */) => {},
       getNativeInput: () => /* HTMLInputElement */ ({}),
     };
   }
