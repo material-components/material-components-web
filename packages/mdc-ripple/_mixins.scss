@@ -16,7 +16,6 @@
 @import "@material/animation/variables";
 @import "@material/theme/variables";
 @import "./keyframes";
-@import "./variables";
 
 @function mdc-ripple-default-config_() {
   @return (

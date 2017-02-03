@@ -17,7 +17,6 @@
 /** MDC Ripple keyframes are split into their own file so that _mixins.scss can rely on them. */
 
 @import "@material/animation/variables";
-@import "./variables";
 
 @keyframes mdc-ripple-fg-radius-in {
   from {
