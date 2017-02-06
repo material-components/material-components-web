@@ -66,7 +66,7 @@ module.exports = [{
   },
   devtool: IS_DEV ? 'source-map' : false,
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       exclude: /node_modules/,
       loader: 'babel-loader',
@@ -90,7 +90,7 @@ module.exports = [{
   },
   devtool: IS_DEV ? 'source-map' : false,
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       include: [path.resolve(__dirname, 'packages/material-components-web')],
       exclude: /node_modules/,
