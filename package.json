@@ -54,7 +54,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-tap": "^2.1.4",
     "karma-webpack": "^1.7.0",
-    "lerna": "2.0.0-beta.30",
+    "lerna": "2.0.0-beta.36",
     "lolex": "^1.5.0",
     "mkdirp": "^0.5.1",
     "node-sass": "^3.7.0",
