@@ -21,22 +21,21 @@
  * for exposing a public API at https://github.com/lerna/lerna/issues/167.
  */
 
-const path = require('path');
-
-const PackageUtilities = require('lerna/lib/PackageUtilities');
+const Repository = require('lerna/lib/Repository');
 const UpdatedPackagesCollector = require('lerna/lib/UpdatedPackagesCollector');
 const lernaLogger = require('lerna/lib/logger');
 const progressBar = require('lerna/lib/progressBar');
 
-const PKGS_PATH = path.resolve(__dirname, '../../packages');
-
 module.exports = function() {
-  const packages = PackageUtilities.getPackages(PKGS_PATH);
-  const packageGraph = PackageUtilities.getPackageGraph(packages);
+  const repository = new Repository();
   const origInfoFn = lernaLogger.info;
   const origBarDescriptor = Object.getOwnPropertyDescriptor(progressBar, 'bar');
-  const collector = new UpdatedPackagesCollector(
-    packages, packageGraph, {} /* flags (unused) */, {} /* publishConfig (unused) */);
+  const lernaCommand = {
+    repository,
+    getOptions: () => ({}),
+    publishConfig: {},
+  };
+  const collector = new UpdatedPackagesCollector(lernaCommand);
 
   lernaLogger.info = () => {};
   Object.defineProperty(progressBar, 'bar', {
@@ -45,7 +44,6 @@ module.exports = function() {
     enumerable: true,
     configurable: true,
   });
-
   const updates = collector.getUpdates();
 
   Object.defineProperty(progressBar, 'bar', origBarDescriptor);

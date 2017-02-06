@@ -88,12 +88,10 @@ const commitMatches = childProcess
 const componentPkgs = updatedPkgs.filter(({name}) => name.indexOf('@material') === 0);
 const mdcPkg = updatedPkgs.find(({name}) => name === 'material-components-web');
 const newPkgVersions = collectNewPkgVersions(componentPkgs, commitMatches);
-const newMDCVersion = {
+const newMDCVersion = Object.assign(collectMDCVersion(mdcPkg, newPkgVersions), {
   name: 'material-components-web',
-  version: collectMDCVersion(mdcPkg, newPkgVersions),
-  changeType: 'N/A',
   causedByCommit: 'N/A',
-};
+});
 
 const allPkgVersions = [newMDCVersion].concat(newPkgVersions);
 writeSummaryToScreen(allPkgVersions);
@@ -125,8 +123,8 @@ function determineVersion(pkg, commitInfos) {
 
   return commitInfos.reduce(pickBestVersionInfo(pkg), {
     version: currentVersion,
-    changeType: '',
-    causedByCommit: '',
+    changeType: 'patch',
+    causedByCommit: '(dependency update - part of packages to be updated but no explicit commits referencing it)',
   });
 }
 
@@ -175,10 +173,13 @@ function collectMDCVersion(mdcPkg, newPkgVersions) {
     [VersionType.MINOR]: 1,
     [VersionType.MAJOR]: 2,
   };
-  const overallChangeType = [...changeTypes]
-    .sort((ct1, ct2) => versionRanks[ct1] - versionRanks[ct2])
-    .pop();
-  return semver.inc(currentVersion, overallChangeType) || '(no update needed)';
+  const overallChangeTypes = [...changeTypes]
+    .sort((ct1, ct2) => versionRanks[ct1] - versionRanks[ct2]);
+  const overallChangeType = overallChangeTypes.pop();
+  return {
+    version: semver.inc(currentVersion, overallChangeType) || '(no update needed)',
+    changeType: overallChangeType,
+  };
 }
 
 function writeSummary(pkgVersions, performWrite) {
