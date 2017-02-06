@@ -499,14 +499,37 @@ This is needed so that lerna will be able to automatically publish new scoped pa
 We also require a list of keywords for each package. This list should always include `material components` and `material design`, followed by the component name:
 
 ```
-"keywords": {
+"keywords": [
   "material components",
   "material design",
   <COMPONENT_NAME>
-}
+]
 ```
 
 For example, if you are building a checkbox component, `keywords` would include `material components`, `material design`, and `checkbox`
+
+**Below is an example of what a full `package.json` should look like for a new component:**
+
+```json
+{
+  "name": "@material/example",
+  "version": "0.0.0",
+  "description": "The Material Components for the web example component",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "keywords": [
+    "material components",
+    "material design",
+    "example"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
+```
 
 ### License Stanzas
 
