@@ -27,13 +27,16 @@ const PUBLIC_PATH = '/assets/';
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
 
-const createBannerPlugin = () => new webpack.BannerPlugin([
+const banner = [
   '/*!',
   ' Material Components for the web',
   ` Copyright (c) ${new Date().getFullYear()} Google Inc.`,
   ' License: Apache-2.0',
   '*/',
-].join('\n'), {
+].join('\n');
+
+const createBannerPlugin = () => new webpack.BannerPlugin({
+  banner: banner,
   raw: true,
   entryOnly: true,
 });
@@ -61,15 +64,15 @@ module.exports = [{
     libraryTarget: 'umd',
     library: ['mdc', '[name]'],
   },
-  devtool: IS_DEV ? 'source-map' : null,
+  devtool: IS_DEV ? 'source-map' : false,
   module: {
     loaders: [{
       test: /\.js$/,
       exclude: /node_modules/,
       loader: 'babel-loader',
-    }, {
-      test: /\.json$/,
-      loader: 'json-loader',
+      options: {
+        cacheDirectory: true,
+      },
     }],
   },
   plugins: [
@@ -85,12 +88,16 @@ module.exports = [{
     libraryTarget: 'umd',
     library: 'mdc',
   },
-  devtool: IS_DEV ? 'source-map' : null,
+  devtool: IS_DEV ? 'source-map' : false,
   module: {
     loaders: [{
       test: /\.js$/,
+      include: [path.resolve(__dirname, 'packages/material-components-web')],
       exclude: /node_modules/,
       loader: 'babel-loader',
+      options: {
+        cacheDirectory: true,
+      },
     }],
   },
   plugins: [
@@ -130,25 +137,47 @@ module.exports = [{
     // dummy ".css-entry" extension.
     filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry'),
   },
-  devtool: IS_DEV ? 'source-map' : null,
+  devtool: IS_DEV ? 'source-map' : false,
   module: {
-    loaders: [{
+    rules: [{
       test: /\.scss$/,
-      loader: IS_DEV ?
-          'style!css?sourceMap!postcss!sass?sourceMap' :
-          ExtractTextPlugin.extract('css!postcss!sass'),
+      use: IS_DEV ? [{
+          loader: 'style-loader',
+        },
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true,
+          },
+        },
+        {
+          loader: 'postcss-loader',
+        },
+        {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true,
+          },
+        }] : ExtractTextPlugin.extract('css-loader!postcss-loader!sass-loader'),
     }],
-  },
-  sassLoader: {
-    includePaths: glob.sync('packages/*/node_modules').map((d) => path.join(__dirname, d)),
   },
   plugins: [
     new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css'),
     createBannerPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      debug: true,
+      options: {
+        context: __dirname,
+        output: {
+          path: OUT_PATH,
+        },
+        postcss: {
+          plugins: () =>[require('autoprefixer')({grid: false})],
+        },
+        sassLoader: {
+          includePaths: glob.sync('packages/*/node_modules').map((d) => path.join(__dirname, d)),
+        },
+      },
+    }),
   ],
-  postcss: function() {
-    return [
-      require('autoprefixer')({grid: false}),
-    ];
-  },
 }];
