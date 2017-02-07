@@ -16,16 +16,16 @@
 
 /** MDC Ripple keyframes are split into their own file so that _mixins.scss can rely on them. */
 
-@import "./variables";
+@import "@material/animation/variables";
 
 @keyframes mdc-ripple-fg-radius-in {
   from {
-    transform: scale(1);
-    animation-timing-function: $mdc-ripple-easing-fn;
+    transform: translate(var(--mdc-ripple-fg-translate-start)) scale(1);
+    animation-timing-function: $mdc-animation-fast-out-slow-in-timing-function;
   }
 
   to {
-    transform: scale(var(--mdc-ripple-fg-scale));
+    transform: translate(var(--mdc-ripple-fg-translate-end)) scale(var(--mdc-ripple-fg-scale));
   }
 }
 

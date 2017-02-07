@@ -53,19 +53,19 @@ export function animateWithClass(rippleAdapter, cls, endEvent) {
 
 export function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   const {x, y} = pageOffset;
-  const documentLeft = x + clientRect.left;
-  const documentTop = y + clientRect.top;
+  const documentX = x + clientRect.left;
+  const documentY = y + clientRect.top;
 
-  let normalizedLeft;
-  let normalizedTop;
+  let normalizedX;
+  let normalizedY;
   // Determine touch point relative to the ripple container.
   if (ev.type === 'touchend') {
-    normalizedLeft = ev.changedTouches[0].pageX - documentLeft;
-    normalizedTop = ev.changedTouches[0].pageY - documentTop;
+    normalizedX = ev.changedTouches[0].pageX - documentX;
+    normalizedY = ev.changedTouches[0].pageY - documentY;
   } else {
-    normalizedLeft = ev.pageX - documentLeft;
-    normalizedTop = ev.pageY - documentTop;
+    normalizedX = ev.pageX - documentX;
+    normalizedY = ev.pageY - documentY;
   }
 
-  return {left: normalizedLeft, top: normalizedTop};
+  return {x: normalizedX, y: normalizedY};
 }

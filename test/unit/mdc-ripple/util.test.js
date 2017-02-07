@@ -181,8 +181,8 @@ test('#getNormalizedEventCoords maps event coords into the relative coordinates 
   const clientRect = {left: 50, top: 50};
 
   t.deepEqual(util.getNormalizedEventCoords(ev, pageOffset, clientRect), {
-    left: 10,
-    top: 10,
+    x: 10,
+    y: 10,
   });
   t.end();
 });
@@ -193,8 +193,8 @@ test('#getNormalizedEventCoords works with touchend events', (t) => {
   const clientRect = {left: 50, top: 50};
 
   t.deepEqual(util.getNormalizedEventCoords(ev, pageOffset, clientRect), {
-    left: 10,
-    top: 10,
+    x: 10,
+    y: 10,
   });
   t.end();
 });
