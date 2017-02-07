@@ -121,6 +121,8 @@ module.exports = [{
     'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
     'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
     'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
+    'mdc.range-slider':
+    path.resolve('./packages/mdc-range-slider/mdc-range-slider.scss'),
   },
   output: {
     path: OUT_PATH,
