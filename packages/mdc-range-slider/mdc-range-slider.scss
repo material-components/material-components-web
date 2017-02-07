@@ -15,7 +15,7 @@ limitations under the License. */
 @import "variables";
 @import "mixins";
 
-[type="range"].mdc-range-slider {
+.mdc-range-slider {
   -webkit-appearance: none;
   margin: $mdc-range-slider-input-height / 2 0;
   background: transparent;
