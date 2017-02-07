@@ -3,6 +3,12 @@
   "description": "The Material Components for the web floating action button component",
   "version": "0.3.1",
   "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "floating action button",
+    "fab"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

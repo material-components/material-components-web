@@ -3,6 +3,11 @@
   "description": "The Material Components for the web checkbox component",
   "version": "0.2.0",
   "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "checkbox"
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",

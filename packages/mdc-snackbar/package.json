@@ -3,6 +3,11 @@
   "description": "The Material Components for the web snackbar component",
   "version": "0.1.3",
   "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "snackbar"
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",
