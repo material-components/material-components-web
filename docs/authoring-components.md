@@ -506,7 +506,7 @@ We also require a list of keywords for each package. This list should always inc
 }
 ```
 
-For example, if we are building a checkbox component, `keywords` would include `material components`, `material design`, and `checkbox`
+For example, if you are building a checkbox component, `keywords` would include `material components`, `material design`, and `checkbox`
 
 ### License Stanzas
 
