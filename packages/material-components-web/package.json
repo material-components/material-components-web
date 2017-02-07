@@ -3,6 +3,10 @@
   "description": "Modular and customizable Material Design UI components for the web",
   "version": "0.4.0",
   "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design"
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",

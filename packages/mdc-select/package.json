@@ -3,6 +3,12 @@
   "description": "The Material Components web select (textfield drop-down) component",
   "version": "0.2.1",
   "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "select",
+    "multi select"
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",
