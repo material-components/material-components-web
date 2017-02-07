@@ -79,6 +79,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
 
     .mdc-simple-menu--animating & {
       overflow-y: hidden;
+
       > * {
         transition-duration: $mdc-simple-menu-item-fade-duration;
         transition-property: opacity;
