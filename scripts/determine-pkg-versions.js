@@ -122,7 +122,7 @@ function determineVersion(pkg, commitInfos) {
   }
 
   return commitInfos.reduce(pickBestVersionInfo(pkg), {
-    version: currentVersion,
+    version: semver.inc(currentVersion, 'patch'),
     changeType: 'patch',
     causedByCommit: '(dependency update - part of packages to be updated but no explicit commits referencing it)',
   });
