@@ -120,6 +120,7 @@ module.exports = [{
     'mdc.switch': path.resolve('./packages/mdc-switch/mdc-switch.scss'),
     'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
     'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
+    'mdc.toolbar': path.resolve('./packages/mdc-toolbar/mdc-toolbar.scss'),
     'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
   },
   output: {

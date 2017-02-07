@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Toolbar Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      .mdc-toolbar-demo {
+        margin: 0px;
+      }
+      .demo-paragraph {
+        margin: 0px;
+        padding: 20px 16px;
+      }
+      .material-icons {
+        text-decoration: none;
+        cursor: pointer;
+        padding: 0px 8px 0px 0px;
+      }
+      [dir='rtl'] .material-icons {
+        padding-left: 8px;
+      }
+    </style>
+    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
+  </head>
+  <body class="mdc-typography mdc-toolbar-demo">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <a class="material-icons">menu</a>
+        <span class="mdc-toolbar__title">Title</span>
+      </section>
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
+        <a class="material-icons" aria-label="Download" alt="Download">file_download</a>
+        <a class="material-icons" aria-label="Print this page" alt="Print this page">print</a>
+        <a class="material-icons" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+      </section>
+    </header>
+    <main>
+
+      <div class="mdc-toolbar__fixed-adjust">
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+      </div>
+    </main>
+  </body>
+</html>

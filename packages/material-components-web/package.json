@@ -30,6 +30,7 @@
     "@material/switch": "^0.1.0",
     "@material/textfield": "^0.2.0",
     "@material/theme": "^0.1.1",
+    "@material/toolbar": "^0.0.0",
     "@material/typography": "^0.1.1"
   }
 }
