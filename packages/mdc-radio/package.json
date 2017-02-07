@@ -5,10 +5,8 @@
   "license": "Apache-2.0",
   "keywords": [
     "material components",
-    "material",
-    "radio",
-    "javascript",
-    "scss"
+    "material design",
+    "radio"
   ],
   "main": "index.js",
   "repository": {

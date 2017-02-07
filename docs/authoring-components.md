@@ -496,6 +496,17 @@ Additionally, all new components require the following within their `package.jso
 
 This is needed so that lerna will be able to automatically publish new scoped packages.
 
+```
+"keywords": {
+  "material components",
+  "material design",
+  <COMPONENT_NAME>
+}
+```
+
+For example, if we are building a checkbox component, `keywords` would include `material components`, `material design`, and `checkbox`
+
+
 ### License Stanzas
 
 We are required to put the following at the _top_ of _every source code file_, including tests,

@@ -5,9 +5,8 @@
   "license": "Apache-2.0",
   "keywords": [
     "material components",
-    "material",
-    "menu",
-    "scss"
+    "material design",
+    "menu"
   ],
   "main": "index.js",
   "repository": {

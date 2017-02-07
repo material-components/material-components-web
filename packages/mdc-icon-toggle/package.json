@@ -7,8 +7,7 @@
   "keywords": [
     "material components",
     "material design",
-    "icon",
-    "toggle"
+    "icon toggle"
   ],
   "main": "index.js",
   "repository": {

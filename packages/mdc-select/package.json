@@ -5,10 +5,9 @@
   "license": "Apache-2.0",
   "keywords": [
     "material components",
-    "material",
+    "material design",
     "select",
-    "multi select",
-    "scss"
+    "multi select"
   ],
   "main": "index.js",
   "repository": {
