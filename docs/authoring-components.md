@@ -684,11 +684,12 @@ the [mdc-base README](../packages/mdc-base).
 Whenever you create a new component, it's important to notify the proper tools and packages of it.
 Concretely:
 
-- Ensure that an entry for it exists in `webpack.config.js` for the `all-js` module
+- Ensure that an entry for it exists in `webpack.config.js` for the `js-components` and `css` module
 - Ensure that it is added as a dependency of `material-components-web`. If the component contains
   styles, ensure that they are `@import`ed within `material-components-web.scss`. If the component
   contains javascript, ensure that its component namespace is exported within
-  `material-components-web`, and it is registered with `mdc-auto-init`.
+  `material-components-web`, and it is registered with `mdc-auto-init`. Lastly, remember to add it
+  to `package.json` of `material-components-web`.
 
 ### Testing
 
