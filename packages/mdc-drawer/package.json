@@ -5,9 +5,8 @@
   "license": "Apache-2.0",
   "keywords": [
     "material components",
-    "material",
-    "drawer",
-    "scss"
+    "material design",
+    "drawer"
   ],
   "main": "index.js",
   "repository": {

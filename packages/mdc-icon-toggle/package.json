@@ -6,11 +6,9 @@
   "license": "Apache-2.0",
   "keywords": [
     "material components",
-    "material",
-    "toggle",
+    "material design",
     "icon",
-    "javascript",
-    "scss"
+    "toggle"
   ],
   "main": "index.js",
   "repository": {

@@ -4,10 +4,7 @@
   "license": "Apache-2.0",
   "keywords": [
     "material components",
-    "material design",
-    "design components",
-    "material components web",
-    "scss"
+    "material design"
   ],
   "scripts": {
     "build": "mkdirp build && webpack --progress --colors",

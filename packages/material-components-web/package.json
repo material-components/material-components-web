@@ -5,10 +5,7 @@
   "license": "Apache-2.0",
   "keywords": [
     "material components",
-    "material design",
-    "design components",
-    "material components web",
-    "scss"
+    "material design"
   ],
   "main": "index.js",
   "repository": {

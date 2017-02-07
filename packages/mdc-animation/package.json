@@ -5,8 +5,8 @@
   "license": "Apache-2.0",
   "keywords": [
     "material components",
-    "animation",
-    "SCSS"
+    "material design",
+    "animation"
   ],
   "main": "index.js",
   "repository": {
