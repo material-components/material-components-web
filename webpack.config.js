@@ -41,6 +41,11 @@ const createBannerPlugin = () => new webpack.BannerPlugin({
   entryOnly: true,
 });
 
+const LIFECYCLE_EVENT = process.env.npm_lifecycle_event;
+if (LIFECYCLE_EVENT == 'test' || LIFECYCLE_EVENT == 'test:watch') {
+  process.env.BABEL_ENV = 'test';
+}
+
 module.exports = [{
   name: 'js-components',
   entry: {
@@ -92,7 +97,6 @@ module.exports = [{
   module: {
     rules: [{
       test: /\.js$/,
-      include: [path.resolve(__dirname, 'packages/material-components-web')],
       exclude: /node_modules/,
       loader: 'babel-loader',
       options: {
