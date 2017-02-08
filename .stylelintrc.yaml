@@ -6,6 +6,7 @@ ignoreFiles:
 plugins:
   - stylelint-selector-bem-pattern
   - stylelint-scss
+  - stylelint-order
 rules:
   # Follow best practices
   font-family-name-quotes: always-where-recommended
@@ -18,7 +19,7 @@ rules:
   # attribute strings are normally quoted within the DOM.
   string-quotes: double
   # https://github.com/sasstools/sass-lint/blob/develop/lib/config/property-sort-orders/smacss.yml
-  declaration-block-properties-order:
+  order/declaration-block-properties-specified-order:
     - display
     - position
     - top
@@ -231,9 +232,6 @@ rules:
   selector-id-pattern: ^mdc?-.+
   # Names are more semantic than numbers
   font-weight-notation: named-where-possible
-  # :root is an important enough selector that it always stands on it's own. Also, there is no
-  # reason to make root a compound selector (?)
-  selector-root-no-composition: true
   # http://www.paulirish.com/2010/the-protocol-relative-url/
   function-url-no-scheme-relative: true
   # TODO: and FIXME: warnings are super useful because they remind us that we should address these
@@ -245,14 +243,6 @@ rules:
     - severity: warning
   # Part of google's style guide
   number-leading-zero: never
-  # No unknown unit
-  unit-no-unknown:
-    - true
-    # Temporary rule to ignore CSS Grid `fr` unit while stylelint doesn't support it.
-    # See https://github.com/stylelint/stylelint/issues/2307
-    # TODO(sgomes): remove once fixed in stylelint
-    - ignoreUnits:
-        - fr
 
   # We use Harry Roberts' BEM dialect as our preferred way to format classes.
   # See: http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/

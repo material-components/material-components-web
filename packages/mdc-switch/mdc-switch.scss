@@ -70,7 +70,6 @@
         background-color: $mdc-switch-unchecked-track-color-dark;
         opacity: .3;
       }
-
     }
 
     // postcss-bem-linter: ignore
@@ -117,7 +116,6 @@
 }
 
 .mdc-switch__native-control:focus ~ .mdc-switch__background {
-
   .mdc-switch__knob {
     &::before {
       position: absolute;
@@ -134,15 +132,14 @@
         background-color: $mdc-switch-unchecked-focus-ring-color-dark;
         opacity: .14;
       }
-
     }
   }
 }
 
 .mdc-switch__native-control:checked ~ .mdc-switch__background {
-
   &::before {
     @include mdc-theme-prop(background-color, primary);
+
     opacity: .5;
   }
 
@@ -173,7 +170,6 @@
 }
 
 .mdc-switch__native-control:disabled ~ .mdc-switch__background {
-
   &::before {
     background-color: $mdc-switch-unchecked-track-color;
     opacity: .12;

@@ -67,7 +67,6 @@
   align-items: stretch;
   margin: 0 auto;
   box-sizing: border-box;
-
   padding: $margin - $gutter / 2;
   padding: calc(var(--mdc-layout-grid-margin, #{$margin}) - var(--mdc-layout-grid-gutter, #{$gutter}) / 2);
 
@@ -79,7 +78,6 @@
     display: grid;
     grid-gap: $gutter;
     grid-gap: var(--mdc-layout-grid-gutter, $gutter);
-
     padding: $margin;
     padding: var(--mdc-layout-grid-margin, #{$margin});
 
