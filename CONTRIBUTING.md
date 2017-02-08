@@ -120,24 +120,38 @@ Finally, it helps to make sure that your branch/fork is up to date with what's c
 > NOTE: This section is for collaborators only. Contributors without repo write access can ignore
 > this section.
 
-To release MDC-Web, you should perform the following steps.
+#### Pre-requisites
+
+Before releasing MDC-Web, ensure that you have the following:
+
+- Write access to the material-components-web repo
+- Correct credentials for npm
+- The [Google Cloud SDK](https://cloud.google.com/sdk/) installed. Please run `gcloud init` command
+to login to your Google Cloud account and choose `material-components-web` if this is your first
+time working with the SDK.
+- Access to the `material-components-web` Google Cloud project
+
+You should ping a core team member regarding any/all of these items if you're unsure whether or not
+they are all set up.
+
+#### Performing the release.
+
+To release MDC-Web, you perform the following steps.
 
 1. Run `./scripts/pre-release.sh`. This will run `npm test`, build MDC-Web, copy the built assets over
    to each module's `dist/` folder, and then print out a summary of all of the new versions that
    should be used for changed components. The summary is printed out to both the console, as well
    as a `.new-versions.log` file in the repo root. This information should be used within the
    following steps.
-2. Run `lerna publish`. When prompted for versions for each component, you should use the
+1. From the root directory of the repo, run `$(npm bin)/lerna publish -m "chore: Publish"`. When prompted for versions for each component, you should use the
    version info output above. In some cases, e.g. repo-wide refactors that cause all component
    versions to be updated, you can ignore this info. However, _it is strongly recommended to adhere
    to those specified versions in order to minimize human error_.
-3. Run `./scripts/post-release.sh`. This will update our `CHANGELOG.md` with information for the
-   current release of the overarching `material-components-web` library, and commit those changes.
-4. Run `MDC_ENV=development npm run build && gcloud app deploy`. This will deploy demo pages to Google Cloud [App Engine](https://material-components-web.appspot.com). Please request access to the App Engine project `material-components-web` to deploy.
-
-    > NOTE: `gcloud` is cli tool provided by [Cloud SDK](https://cloud.google.com/sdk/). Please run `gcloud init` command to login to your Google Cloud account and choose `material-components-web` project before running deploy command as mentioned above.
-
-5. Push the changelog changes to master, and call it a day!
+1. Run `./scripts/post-release.sh`. This will update our `CHANGELOG.md` with information for the
+   current release of the overarching `material-components-web` library, and commit those changes. It will also generate a `vX.Y.Z` semver tag for the entire repo, and commit the tag as such.
+1. Run `git push && git push --tags` to push the changelog changes and semver tag to master.
+1. Run `MDC_ENV=development npm run build && gcloud app deploy`. This will deploy demo pages to our [App Engine demo site](https://material-components-web.appspot.com).
+1. Call it a day! :tada: :rocket: :package:
 
 ## "What's the core team up to?"
 
