@@ -1,5 +1,5 @@
 <a name="0.4.0"></a>
-# [0.4.0](https://github.com/material-components/material-components-web/compare/v0.1.1...v0.4.0) (2017-02-06)
+# [0.4.0](https://github.com/material-components/material-components-web/compare/v0.3.0...v0.4.0) (2017-02-06)
 
 
 ### Bug Fixes
@@ -26,7 +26,7 @@
 
 
 <a name="0.3.0"></a>
-# [0.3.0](https://github.com/material-components/material-components-web/compare/v0.1.1...v0.3.0) (2017-01-23)
+# [0.3.0](https://github.com/material-components/material-components-web/compare/v0.2.0...v0.3.0) (2017-01-23)
 
 
 ### Bug Fixes
@@ -57,16 +57,6 @@
 ### BREAKING CHANGES
 
 * textfield: Adapter API for textfields contains two new methods. `registerInputInputHandler` and `registerInputKeydownHandler`. To upgrade add these methods to your adapter.
-* fab: Button implementations in certain browsers such as Mobile Safari and IE11 do not adhere to flexbox rules. To center icons in all supported browsers, add a span element as a child of the button and give it a class of `mdc-fab__icon`
-
-example:
-```html```
-<button class="mdc-fab material-icons">
-  <span class="mdc-fab__icon">
-    favorite_border
-  </span>
-</button>
-```
 
 
 
@@ -91,7 +81,7 @@ example:
 * fab: Button implementations in certain browsers such as Mobile Safari and IE11 do not adhere to flexbox rules. To center icons in all supported browsers, add a span element as a child of the button and give it a class of `mdc-fab__icon`
 
 example:
-```html```
+```html
 <button class="mdc-fab material-icons">
   <span class="mdc-fab__icon">
     favorite_border

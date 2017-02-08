@@ -25,6 +25,7 @@ const Repository = require('lerna/lib/Repository');
 const UpdatedPackagesCollector = require('lerna/lib/UpdatedPackagesCollector');
 const lernaLogger = require('lerna/lib/logger');
 const progressBar = require('lerna/lib/progressBar');
+const lernaJson = require('../../lerna.json');
 
 module.exports = function() {
   const repository = new Repository();
@@ -32,8 +33,7 @@ module.exports = function() {
   const origBarDescriptor = Object.getOwnPropertyDescriptor(progressBar, 'bar');
   const lernaCommand = {
     repository,
-    getOptions: () => ({}),
-    publishConfig: {},
+    getOptions: () => lernaJson.publishConfig,
   };
   const collector = new UpdatedPackagesCollector(lernaCommand);
 
