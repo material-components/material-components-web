@@ -91,6 +91,22 @@ testFoundation('runs deactivation UX on mouseup after mousedown', (t) => {
   t.end();
 });
 
+testFoundation('runs deactivation UX on public deactivate() call', (t) => {
+  const {foundation, adapter, mockRaf} = t.data;
+  foundation.init();
+  mockRaf.flush();
+
+  foundation.activate();
+  mockRaf.flush();
+  foundation.deactivate();
+  mockRaf.flush();
+
+  t.doesNotThrow(() => td.verify(adapter.removeClass(cssClasses.BG_ACTIVE)));
+  t.doesNotThrow(() => td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL)));
+  t.doesNotThrow(() => td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL)));
+  t.end();
+});
+
 testFoundation('only re-activates when there are no additional pointer events to be processed', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
