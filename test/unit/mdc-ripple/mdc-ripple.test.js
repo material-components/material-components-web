@@ -79,6 +79,22 @@ test(`set unbounded() removes ${cssClasses.UNBOUNDED} when falsy`, (t) => {
   t.end();
 });
 
+test('activate() delegates to the foundation', (t) => {
+  const {component} = setupTest();
+  component.foundation_.activate = td.function();
+  component.activate();
+  t.doesNotThrow(() => td.verify(component.foundation_.activate()));
+  t.end();
+});
+
+test('deactivate() delegates to the foundation', (t) => {
+  const {component} = setupTest();
+  component.foundation_.deactivate = td.function();
+  component.deactivate();
+  t.doesNotThrow(() => td.verify(component.foundation_.deactivate()));
+  t.end();
+});
+
 test('adapter#browserSupportsCssVars delegates to util', (t) => {
   const {component} = setupTest();
   t.equal(
