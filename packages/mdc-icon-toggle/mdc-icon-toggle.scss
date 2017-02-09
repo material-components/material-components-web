@@ -20,22 +20,6 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 
-@mixin mdc-icon-toggle-default-ripple {
-  // stylelint-disable plugin/selector-bem-pattern
-  &.mdc-ripple-upgraded--unbounded::before,
-  &.mdc-ripple-upgraded--unbounded::after,
-  &::before,
-  &::after {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
 .mdc-icon-toggle {
   @include mdc-theme-prop(color, text-secondary-on-light);
   @include mdc-ripple-base;
@@ -60,7 +44,6 @@
   @include mdc-theme-dark(".mdc-icon-toggle", true) {
     @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
     @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
-    @include mdc-icon-toggle-default-ripple;
   }
 
   // For some reason, GPU layer promotion makes ripples look terrible on Chrome
@@ -78,8 +61,6 @@
   cursor: pointer;
   user-select: none;
 
-  @include mdc-icon-toggle-default-ripple;
-
   &::after {
     position: absolute;
     border-radius: 50%;
@@ -90,10 +71,6 @@
 
   @include mdc-theme-dark {
     @include mdc-theme-prop(color, text-primary-on-dark);
-
-    &:focus::after {
-      opacity: .3;
-    }
   }
 }
 
@@ -101,21 +78,12 @@
   @include mdc-theme-prop(color, primary);
   @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
   @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
-  @include mdc-icon-toggle-default-ripple;
 }
 
 .mdc-icon-toggle--accent {
   @include mdc-theme-prop(color, accent);
   @include mdc-ripple-bg((pseudo: "::before", theme-style: accent, opacity: .14));
   @include mdc-ripple-fg((pseudo: "::after", theme-style: accent, opacity: .14));
-  @include mdc-icon-toggle-default-ripple;
-}
-
-.mdc-icon-toggle--primary,
-.mdc-icon-toggle--accent {
-  &:focus::after {
-    opacity: .26;
-  }
 }
 
 .mdc-icon-toggle--disabled {

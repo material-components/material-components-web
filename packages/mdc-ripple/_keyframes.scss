@@ -56,6 +56,6 @@
   }
 
   to {
-    transform: scale(1.2);
+    transform: scale(var(--mdc-ripple-fg-scale));
   }
 }
