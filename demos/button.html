@@ -75,38 +75,38 @@
           </div>
         </fieldset>
         <fieldset>
-          <legend>Graceful degraded buttons</legend>
-          <button class="mdc-button" no-js>
+          <legend>Buttons - CSS Only</legend>
+          <button class="mdc-button" data-demo-no-js>
             Default
           </button>
-          <button class="mdc-button mdc-button--raised" no-js>
+          <button class="mdc-button mdc-button--raised" data-demo-no-js>
             Raised
           </button>
-          <button class="mdc-button mdc-button--dense" no-js>
+          <button class="mdc-button mdc-button--dense" data-demo-no-js>
             Dense Default
           </button>
-          <button class="mdc-button mdc-button--raised mdc-button--dense" no-js>
+          <button class="mdc-button mdc-button--raised mdc-button--dense" data-demo-no-js>
             Dense Raised
           </button>
-          <button class="mdc-button mdc-button--compact" no-js>
+          <button class="mdc-button mdc-button--compact" data-demo-no-js>
             Compact
           </button>
-          <button class="mdc-button mdc-button--raised mdc-button--compact" no-js>
+          <button class="mdc-button mdc-button--raised mdc-button--compact" data-demo-no-js>
             Compact Raised
           </button>
-          <button class="mdc-button mdc-button--primary" no-js>
+          <button class="mdc-button mdc-button--primary" data-demo-no-js>
             Default with Primary
           </button>
-          <button class="mdc-button mdc-button--raised mdc-button--primary" no-js>
+          <button class="mdc-button mdc-button--raised mdc-button--primary" data-demo-no-js>
             Raised with Primary
           </button>
-          <button class="mdc-button mdc-button--accent" no-js>
+          <button class="mdc-button mdc-button--accent" data-demo-no-js>
             Default with Accent
           </button>
-          <button class="mdc-button mdc-button--raised mdc-button--accent" no-js>
+          <button class="mdc-button mdc-button--raised mdc-button--accent" data-demo-no-js>
             Raised with Accent
           </button>
-          <div class="mdc-button mdc-button--raised" tabindex="0" role="button" no-js>
+          <div class="mdc-button mdc-button--raised" tabindex="0" role="button" data-demo-no-js>
             Div
           </div>
         </fieldset>
@@ -220,38 +220,38 @@
           </div>
         </fieldset>
         <fieldset>
-          <legend>Graceful degraded buttons</legend>
-          <button class="mdc-button" no-js>
+          <legend>Buttons - CSS Only</legend>
+          <button class="mdc-button" data-demo-no-js>
             Default
           </button>
-          <button class="mdc-button mdc-button--raised" no-js>
+          <button class="mdc-button mdc-button--raised" data-demo-no-js>
             Raised
           </button>
-          <button class="mdc-button mdc-button--dense" no-js>
+          <button class="mdc-button mdc-button--dense" data-demo-no-js>
             Dense Default
           </button>
-          <button class="mdc-button mdc-button--raised mdc-button--dense" no-js>
+          <button class="mdc-button mdc-button--raised mdc-button--dense" data-demo-no-js>
             Dense Raised
           </button>
-          <button class="mdc-button mdc-button--compact" no-js>
+          <button class="mdc-button mdc-button--compact" data-demo-no-js>
             Compact
           </button>
-          <button class="mdc-button mdc-button--raised mdc-button--compact" no-js>
+          <button class="mdc-button mdc-button--raised mdc-button--compact" data-demo-no-js>
             Compact Raised
           </button>
-          <button class="mdc-button mdc-button--primary" no-js>
+          <button class="mdc-button mdc-button--primary" data-demo-no-js>
             Default with Primary
           </button>
-          <button class="mdc-button mdc-button--raised mdc-button--primary" no-js>
+          <button class="mdc-button mdc-button--raised mdc-button--primary" data-demo-no-js>
             Raised with Primary
           </button>
-          <button class="mdc-button mdc-button--accent" no-js>
+          <button class="mdc-button mdc-button--accent" data-demo-no-js>
             Default with Accent
           </button>
-          <button class="mdc-button mdc-button--raised mdc-button--accent" no-js>
+          <button class="mdc-button mdc-button--raised mdc-button--accent" data-demo-no-js>
             Raised with Accent
           </button>
-          <div class="mdc-button mdc-button--raised" tabindex="0" role="button" no-js>
+          <div class="mdc-button mdc-button--raised" tabindex="0" role="button" data-demo-no-js>
             Div
           </div>
         </fieldset>
@@ -310,7 +310,7 @@
         function init() {
           var btns = document.querySelectorAll('.mdc-button');
           for (var i = 0, btn; btn = btns[i]; i++) {
-            if (!btn.hasAttribute('no-js')) {
+            if (!btn.hasAttribute('data-demo-no-js')) {
               mdc.ripple.MDCRipple.attachTo(btn);
             }
           }

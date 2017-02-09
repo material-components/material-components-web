@@ -30,7 +30,7 @@
 
   overflow: hidden;
 
-  @include mdc-theme-dark(".mdc-button", true) {
+  @include mdc-theme-dark(".mdc-button") {
     @include mdc-ripple-base;
     @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
     @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
@@ -45,6 +45,7 @@
   }
 }
 
+/* TODO(cristobalchao): Disable ink wash on hover and alter elevation instead for raised surfaces. */
 .mdc-button--raised {
   @each $theme-style in (primary, accent) {
     &.mdc-button--#{$theme-style} {

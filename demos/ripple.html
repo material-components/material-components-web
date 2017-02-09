@@ -59,7 +59,7 @@
       section {
         align-items: center;
         display: flex;
-
+        margin-left: 10px;
       }
 
       section > div {
@@ -89,6 +89,13 @@
         user-select: none;
         -webkit-user-select: none;
       }
+
+      @media (max-width: 565px) {
+        section {
+          flex-direction: column;
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
@@ -106,8 +113,8 @@
           </div>
         </div>
         <div>
-          <h2>Bounded - Graceful degraded</h2>
-          <div class="mdc-ripple-surface demo-surface mdc-elevation--z2" no-js tabindex="0">
+          <h2>Bounded - CSS Only</h2>
+          <div class="mdc-ripple-surface demo-surface mdc-elevation--z2" data-demo-no-js tabindex="0">
             Interact with me!
           </div>
         </div>
@@ -121,9 +128,9 @@
           </div>
         </div>
         <div>
-          <h2>Unbounded - Graceful degraded</h2>
+          <h2>Unbounded - CSS Only</h2>
           <div class="mdc-ripple-surface demo-surface material-icons" data-mdc-ripple-is-unbounded
-               aria-label="Favorite" no-js tabindex="0">
+               aria-label="Favorite" data-demo-no-js tabindex="0">
             favorite
           </div>
         </div>
@@ -143,15 +150,15 @@
           </div>
         </div>
         <div>
-          <h2>Theme Styles - Graceful degraded</h2>
+          <h2>Theme Styles - CSS Only</h2>
           <div
             class="mdc-ripple-surface mdc-ripple-surface--primary
-                   mdc-theme--primary demo-surface mdc-elevation--z2" no-js tabindex="0">
+                   mdc-theme--primary demo-surface mdc-elevation--z2" data-demo-no-js tabindex="0">
             Primary
           </div>
           <div
             class="mdc-ripple-surface mdc-ripple-surface--accent
-                   mdc-theme--accent demo-surface mdc-elevation--z2" no-js tabindex="0">
+                   mdc-theme--accent demo-surface mdc-elevation--z2" data-demo-no-js tabindex="0">
             Accent
           </div>
         </div>
@@ -163,8 +170,8 @@
           <button type="button" class="mdc-ripple-surface mdc-elevation--z2 demo-surface">button</button>
         </div>
         <div>
-          <h2>Applied to <code>&lt;button&gt; element - Graceful degraded</h2>
-          <button type="button" class="mdc-ripple-surface mdc-elevation--z2 demo-surface" no-js>button</button>
+          <h2>Applied to <code>&lt;button&gt; element - CSS Only</h2>
+          <button type="button" class="mdc-ripple-surface mdc-elevation--z2 demo-surface" data-demo-no-js>button</button>
         </div>
 
       </section>
@@ -173,7 +180,7 @@
     <script>
       (function(global) {
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
-          if (!surface.hasAttribute('no-js')) {
+          if (!surface.hasAttribute('data-demo-no-js')) {
             mdc.ripple.MDCRipple.attachTo(surface);
           }
         });

@@ -25,13 +25,10 @@
   - [Caveat: Safari](#caveat-safari)
   - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
 
-MDC Ripple provides the Javascript and CSS required
-to provide components (or any element at all) with a
-material "ink ripple" interaction effect. It is designed to be efficient, un-invasive, and usable
-without adding any extra DOM to your elements.
+MDC Ripple provides the Javascript and CSS required to provide components (or any element at all) with a
+material "ink ripple" interaction effect. It is designed to be efficient, un-invasive, and usable without adding any extra DOM to your elements.
 
-and includes a gracefully degraded version that can be used
-in conjunction with the browser's native element
+MDC Ripple also works without javascript, where it gracefully degrades to a simpler CSS-Only implementation.
 
 ### An aside regarding browser support
 
@@ -79,7 +76,7 @@ use [mdc-elevation](https://github.com/material-components/material-components-w
 
 #### Adding the ripple Sass
 
-To add a ripple to our surface, first we include the proper Sass mixins within our surface's styles when it contains this class. We also add a few additional properties that ensure the ripple's UX is correct.
+To add a ripple to our surface, first we include the proper Sass mixins within our surface's styles. We also add a few additional properties that ensure the ripple's UX is correct.
 
 ```scss
 @import "@material/elevation/mixins";
@@ -98,7 +95,7 @@ To add a ripple to our surface, first we include the proper Sass mixins within o
 
 This code sets up `.surface` with the correct css variables as well as `will-change` properties to support the ripple. It then dynamically generates the correct selectors such that the surface's `::before` element functions as a background ripple, and the surface's `::after` element functions as a foreground ripple.
 
-When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple is not initialized but Sass misins are included within our surface, the ripple would be on a graceful degraded state.
+When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple is not initialized but Sass misins are included within our surface, the ripple will still work, but it would use a simpler, CSS-Only implementation which relies on `::hover`, `::active`, and `::focus`.
 
 ##### The full Sass API
 
