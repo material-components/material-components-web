@@ -67,6 +67,7 @@
     height: 100%;
     transition: mdc-animation-exit(opacity, 120ms);
     border-radius: inherit;
+    background: rgba(0, 0, 0, .2);
     content: "";
     opacity: 0;
   }

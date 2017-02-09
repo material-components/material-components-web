@@ -187,10 +187,8 @@
     <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script>
       (function(global) {
-        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
-          if (!surface.hasAttribute('data-demo-no-js')) {
-            mdc.ripple.MDCRipple.attachTo(surface);
-          }
+        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface:not([data-demo-no-js]'), function(surface) {
+          mdc.ripple.MDCRipple.attachTo(surface);
         });
       })(this);
     </script>

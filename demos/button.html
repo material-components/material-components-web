@@ -308,11 +308,9 @@
           }
         }, 250);
         function init() {
-          var btns = document.querySelectorAll('.mdc-button');
+          var btns = document.querySelectorAll('.mdc-button:not([data-demo-no-js]');
           for (var i = 0, btn; btn = btns[i]; i++) {
-            if (!btn.hasAttribute('data-demo-no-js')) {
-              mdc.ripple.MDCRipple.attachTo(btn);
-            }
+            mdc.ripple.MDCRipple.attachTo(btn);
           }
         }
       })();
