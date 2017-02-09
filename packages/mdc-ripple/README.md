@@ -182,6 +182,23 @@ ripple.
 MDCRipple.attachTo(document.querySelector('.surface'));
 ```
 
+### Ripple API
+
+The component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
+components. This is used for making form field labels trigger the ripples in their corresponding input elements, for
+example.
+
+#### MDCRipple.activate()
+
+Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction,
+such as a `mousedown` or a `pointerdown` event). It expands from the center.
+
+#### MDCRipple.deactivate()
+
+Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via
+interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
+
+
 ### Unbounded Ripples
 
 If you'd like to use _unbounded_ ripples, such as those used for checkboxes and radio buttons, you

@@ -69,6 +69,19 @@ testFoundation(`adds ${cssClasses.BG_ACTIVE} on keydown when surface is made act
   t.end();
 });
 
+testFoundation(`adds ${cssClasses.BG_ACTIVE} on public activate() call`, (t) => {
+  const {foundation, adapter, mockRaf} = t.data;
+  td.when(adapter.isSurfaceActive()).thenReturn(true);
+  foundation.init();
+  mockRaf.flush();
+
+  foundation.activate();
+  mockRaf.flush();
+
+  t.doesNotThrow(() => td.verify(adapter.addClass(cssClasses.BG_ACTIVE)));
+  t.end();
+});
+
 testFoundation('does not redundantly add classes on touchstart followed by mousedown', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
@@ -130,4 +143,3 @@ testFoundation('displays the foreground ripple on activation when unbounded', (t
   t.doesNotThrow(() => td.verify(adapter.addClass(cssClasses.FG_UNBOUNDED_ACTIVATION)));
   t.end();
 });
-
