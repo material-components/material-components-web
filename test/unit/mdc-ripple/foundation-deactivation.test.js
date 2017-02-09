@@ -273,12 +273,11 @@ testFoundation('triggers unbounded deactivation based on time it took to activat
   mockRaf.flush();
 
   const surfaceDiameter = Math.sqrt(Math.pow(size, 2) + Math.pow(size, 2));
-  const initialSize = size * numbers.INITIAL_ORIGIN_SCALE;
   const maxRadius = surfaceDiameter + numbers.PADDING;
-  const fgScale = maxRadius / initialSize;
   const xfDuration = 1000 * Math.sqrt(maxRadius / 1024);
+  const scaleVal = baseElapsedTime / xfDuration;
 
-  const scaleVal = baseElapsedTime / xfDuration * fgScale;
+
   td.verify(adapter.updateCssVariable(strings.VAR_FG_APPROX_XF, `scale(${scaleVal})`));
   td.verify(adapter.updateCssVariable(
     strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION, `${numbers.UNBOUNDED_TRANSFORM_DURATION_MS}ms`

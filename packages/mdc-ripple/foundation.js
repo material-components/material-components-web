@@ -265,6 +265,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       VAR_FG_UNBOUNDED_TRANSFORM_DURATION,
       VAR_FG_APPROX_XF,
     } = MDCRippleFoundation.strings;
+
     this.adapter_.updateCssVariable(VAR_FG_APPROX_XF, `scale(${approxCurScale})`);
     this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_OPACITY_DURATION, `${opacityDuration}ms`);
     this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_TRANSFORM_DURATION, `${transformDuration}ms`);
@@ -287,7 +288,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
     let approxCurScale = 0;
     if (msElapsed > FG_TRANSFORM_DELAY_MS) {
       const percentComplete = Math.min((msElapsed - FG_TRANSFORM_DELAY_MS) / this.xfDuration_, 1);
-      approxCurScale = percentComplete * this.fgScale_;
+      // approxCurScale = percentComplete * this.fgScale_;
+      approxCurScale = percentComplete;
     }
 
     const transformDuration = UNBOUNDED_TRANSFORM_DURATION_MS;

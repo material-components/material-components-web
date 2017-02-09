@@ -47,6 +47,14 @@
         border-radius: 50%;
       }
 
+      .mdc-ripple-surface[data-mdc-ripple-is-unbounded]::before,
+      .mdc-ripple-surface[data-mdc-ripple-is-unbounded]::after {
+        height: 100%;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
       button.demo-surface {
         display: inline-block; /* Safari does not center button text otherwise :( */
         background: none;

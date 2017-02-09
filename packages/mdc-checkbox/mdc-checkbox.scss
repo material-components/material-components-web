@@ -64,6 +64,9 @@
   vertical-align: bottom;
 
   &__background {
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
+    @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
     @include mdc-checkbox-outer-box;
 
     display: inline-flex;
@@ -329,13 +332,3 @@ fieldset:disabled .mdc-checkbox__native-control,
   }
 }
 // postcss-bem-linter: end
-
-.mdc-checkbox.mdc-ripple-upgraded {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
-
-  .mdc-checkbox__background::before {
-    content: none;
-  }
-}
