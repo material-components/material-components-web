@@ -115,7 +115,7 @@
       left: calc(50% - #{$radius});
       width: $radius * 2;
       height: $radius * 2;
-      transform: scale(0); // fallback for browsers that don't support custom properties
+      transform: scale(0);
       transform: scale(var(--mdc-ripple-fg-scale, 0));
       transition-duration: 0ms;
     }
@@ -152,13 +152,9 @@
   }
 
   &.mdc-ripple-upgraded--unbounded#{$pseudo} {
-    top: calc(50% - #{$radius / 2}); // fallback for browsers that don't support custom properties
     top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
-    left: calc(50% - #{$radius / 2}); // fallback for browsers that don't support custom properties
     left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
-    width: $radius; // fallback for browsers that don't support custom properties
     width: var(--mdc-ripple-fg-size, $radius);
-    height: $radius; // fallback for browsers that don't support custom properties
     height: var(--mdc-ripple-fg-size, $radius);
     transform: scale(1);
   }
@@ -201,11 +197,8 @@
     &#{$pseudo} {
       top: 0;
       left: 0;
-      width: $radius; // fallback for browsers that don't support custom properties
       width: var(--mdc-ripple-fg-size, $radius);
-      height: $radius; // fallback for browsers that don't support custom properties
       height: var(--mdc-ripple-fg-size, $radius);
-      transform: scale(1); // fallback for browsers that don't support custom properties
       transform: scale(var(--mdc-ripple-fg-scale, 1));
       transform-origin: center center;
       transition: none;

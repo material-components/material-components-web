@@ -27,36 +27,6 @@
   @include mdc-ripple-base;
   @include mdc-ripple-bg((pseudo: "::before"));
   @include mdc-ripple-fg((pseudo: "::after"));
-
-  overflow: hidden;
-
-  @include mdc-theme-dark {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
-  }
-
-  @each $theme-style in (primary, accent) {
-    &.mdc-button--#{$theme-style} {
-      @include mdc-ripple-base;
-      @include mdc-ripple-bg((pseudo: "::before", theme-style: $theme-style, opacity: .12));
-      @include mdc-ripple-fg((pseudo: "::after", theme-style: $theme-style, opacity: .12));
-    }
-  }
-}
-
-// TODO(cristobalchao): Disable ink wash on hover and alter elevation instead for raised surfaces.
-.mdc-button--raised {
-  @each $theme-style in (primary, accent) {
-    &.mdc-button--#{$theme-style} {
-      @include mdc-ripple-base;
-      @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
-      @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
-    }
-  }
-}
-
-.mdc-button {
   @include mdc-typography(body2);
   @include mdc-theme-prop(color, text-primary-on-light);
 
@@ -75,6 +45,7 @@
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+  overflow: hidden;
   vertical-align: middle;
   user-select: none;
   box-sizing: border-box;
@@ -82,9 +53,20 @@
   -webkit-tap-highlight-color: rgba(black, .18);
 
   @include mdc-theme-dark {
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
+    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
     @include mdc-theme-prop(color, text-primary-on-dark);
 
     -webkit-tap-highlight-color: rgba(white, .18);
+  }
+
+  @each $theme-style in (primary, accent) {
+    &.mdc-button--#{$theme-style} {
+      @include mdc-ripple-base;
+      @include mdc-ripple-bg((pseudo: "::before", theme-style: $theme-style, opacity: .12));
+      @include mdc-ripple-fg((pseudo: "::after", theme-style: $theme-style, opacity: .12));
+    }
   }
 
   // postcss-bem-linter: ignore
@@ -107,6 +89,7 @@
     line-height: 32px;
   }
 
+  // TODO(cristobalchao): Disable ink wash on hover and alter elevation instead for raised surfaces.
   &--raised {
     @include mdc-elevation(2);
     @include mdc-elevation-transition;
@@ -115,6 +98,14 @@
 
     &:active {
       @include mdc-elevation(8);
+    }
+
+    @each $theme-style in (primary, accent) {
+      &.mdc-button--#{$theme-style} {
+        @include mdc-ripple-base;
+        @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
+        @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
+      }
     }
 
     @include mdc-theme-dark(".mdc-button") {
