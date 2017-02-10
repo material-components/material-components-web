@@ -1,8 +1,13 @@
 {
   "name": "@material/list",
   "description": "The Material Components for the web list component",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "list"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
@@ -10,7 +15,7 @@
   "dependencies": {
     "@material/rtl": "^0.1.1",
     "@material/typography": "^0.1.1",
-    "@material/ripple": "^0.1.2",
+    "@material/ripple": "^0.2.0",
     "@material/theme": "^0.1.1"
   }
 }

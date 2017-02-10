@@ -244,7 +244,6 @@
     @include mdc-theme-dark {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
     }
-
   }
   // stylelint-enable plugin/selector-bem-pattern
 }

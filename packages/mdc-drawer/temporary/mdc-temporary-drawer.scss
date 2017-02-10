@@ -67,6 +67,7 @@
     width: calc(100% - 56px);
     max-width: 280px;
     height: 100%;
+    transform: translateX(-107%);
     transform: translateX(calc(-100% - 20px));
     will-change: transform;
     box-sizing: border-box;
@@ -74,6 +75,7 @@
     touch-action: none;
 
     @include mdc-rtl(".mdc-temporary-drawer") {
+      transform: translateX(107%);
       transform: translateX(calc(100% + 20px));
     }
 
@@ -96,6 +98,7 @@
 
   &__footer {
     @include mdc-elevation(2);
+
     flex-shrink: 0;
   }
 

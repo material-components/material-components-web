@@ -146,8 +146,12 @@ open http://localhost:8080
 
 ## Browser Support
 
+We officially support the last two versions of every major browser. Specifically, we test on the following browsers:
+
 - Chrome
-- Safari 8+
+- Safari
 - Firefox
 - IE 11/Edge
 - Opera
+- Mobile Safari
+- Chrome on Android

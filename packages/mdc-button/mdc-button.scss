@@ -42,12 +42,14 @@
   text-decoration: none;
   text-transform: uppercase;
   vertical-align: middle;
+  user-select: none;
   box-sizing: border-box;
   -webkit-appearance: none;
   -webkit-tap-highlight-color: rgba(black, .18);
 
   @include mdc-theme-dark {
     @include mdc-theme-prop(color, text-primary-on-dark);
+
     -webkit-tap-highlight-color: rgba(white, .18);
   }
 

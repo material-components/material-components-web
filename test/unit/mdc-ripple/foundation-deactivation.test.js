@@ -138,45 +138,96 @@ testFoundation('only re-activates when there are no additional pointer events to
   t.end();
 });
 
-testFoundation('sets FG position to the coords within surface on pointer deactivation', (t) => {
+testFoundation('sets FG position from the coords to the center within surface on pointer deactivation', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 50, top: 50});
+  const left = 50;
+  const top = 50;
+  const width = 200;
+  const height = 100;
+  const maxSize = Math.max(width, height);
+  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+  const pageX = 100;
+  const pageY = 75;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height, left, top});
   foundation.init();
   mockRaf.flush();
 
   handlers.mousedown();
   mockRaf.flush();
-  handlers.mouseup({pageX: 100, pageY: 75});
+  handlers.mouseup({pageX, pageY});
   mockRaf.flush();
 
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, '50px')));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, '25px')));
+  const startPosition = {
+    x: pageX - left - (initialSize / 2),
+    y: pageY - top - (initialSize / 2),
+  };
+
+  const endPosition = {
+    x: (width / 2) - (initialSize / 2),
+    y: (height / 2) - (initialSize / 2),
+  };
+
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_START,
+      `${startPosition.x}px, ${startPosition.y}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_END,
+      `${endPosition.x}px, ${endPosition.y}px`)));
   t.end();
 });
 
 testFoundation('takes scroll offset into account when computing position', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 25, top: 25});
-  td.when(adapter.getWindowPageOffset()).thenReturn({x: 25, y: 25});
+  const left = 50;
+  const top = 50;
+  const width = 200;
+  const height = 100;
+  const x = 25;
+  const y = 25;
+  const maxSize = Math.max(width, height);
+  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+  const pageX = 100;
+  const pageY = 75;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height, left, top});
+  td.when(adapter.getWindowPageOffset()).thenReturn({x, y});
   foundation.init();
   mockRaf.flush();
 
   handlers.mousedown();
   mockRaf.flush();
-  handlers.mouseup({pageX: 100, pageY: 75});
+  handlers.mouseup({pageX, pageY});
   mockRaf.flush();
 
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, '50px')));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, '25px')));
+  const startPosition = {
+    x: pageX - left - x - (initialSize / 2),
+    y: pageY - top - y - (initialSize / 2),
+  };
+
+  const endPosition = {
+    x: (width / 2) - (initialSize / 2),
+    y: (height / 2) - (initialSize / 2),
+  };
+
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_START,
+      `${startPosition.x}px, ${startPosition.y}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_END,
+      `${endPosition.x}px, ${endPosition.y}px`)));
   t.end();
 });
 
 testFoundation('sets unbounded FG position to center on non-pointer deactivation', (t) => {
   const {foundation, adapter, mockRaf} = t.data;
   const handlers = captureHandlers(adapter);
-  td.when(adapter.computeBoundingRect()).thenReturn({width: 100, height: 100, left: 50, top: 50});
+  const left = 50;
+  const top = 50;
+  const width = 200;
+  const height = 100;
+  const maxSize = Math.max(width, height);
+  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height, left, top});
   td.when(adapter.isSurfaceActive()).thenReturn(true, false);
   foundation.init();
   mockRaf.flush();
@@ -186,8 +237,15 @@ testFoundation('sets unbounded FG position to center on non-pointer deactivation
   handlers.keyup();
   mockRaf.flush();
 
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_LEFT, '50px')));
-  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_TOP, '50px')));
+  const position = {
+    x: (width / 2) - (initialSize / 2),
+    y: (height / 2) - (initialSize / 2),
+  };
+
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_START,
+      `${position.x}px, ${position.y}px`)));
+  t.doesNotThrow(() => td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_END,
+      `${position.x}px, ${position.y}px`)));
   t.end();
 });
 

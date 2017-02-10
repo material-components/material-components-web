@@ -292,15 +292,25 @@ export default class MDCRippleFoundation extends MDCFoundation {
       );
     } else {
       startPoint = {
-        left: this.frame_.width / 2,
-        top: this.frame_.height / 2,
+        x: this.frame_.width / 2,
+        y: this.frame_.height / 2,
       };
     }
-    const {left, top} = startPoint;
-    const {VAR_LEFT, VAR_TOP} = MDCRippleFoundation.strings;
+
+    startPoint = {
+      x: startPoint.x - (this.initialSize_ / 2),
+      y: startPoint.y - (this.initialSize_ / 2),
+    };
+
+    const endPoint = {
+      x: (this.frame_.width / 2) - (this.initialSize_ / 2),
+      y: (this.frame_.height / 2) - (this.initialSize_ / 2),
+    };
+
+    const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
     const {BG_BOUNDED_ACTIVE_FILL, FG_BOUNDED_ACTIVE_FILL} = MDCRippleFoundation.cssClasses;
-    this.adapter_.updateCssVariable(VAR_LEFT, `${left}px`);
-    this.adapter_.updateCssVariable(VAR_TOP, `${top}px`);
+    this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, `${startPoint.x}px, ${startPoint.y}px`);
+    this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, `${endPoint.x}px, ${endPoint.y}px`);
     this.cancelBgBounded_ = animateWithClass(this.adapter_,
                                              BG_BOUNDED_ACTIVE_FILL,
                                             getCorrectEventName(window, 'transitionend'));
@@ -384,7 +394,6 @@ export default class MDCRippleFoundation extends MDCFoundation {
         left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
         top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
       };
-
 
       this.adapter_.updateCssVariable(VAR_LEFT, `${this.unboundedCoords_.left}px`);
       this.adapter_.updateCssVariable(VAR_TOP, `${this.unboundedCoords_.top}px`);

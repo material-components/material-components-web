@@ -19,12 +19,11 @@ npm install --save @material/toolbar
 Wrap the items with `mdc-toolbar` class in following way:
 
 ```html
-<div class="mdc-toolbar">
-  <div class="mdc-toolbar__section">
-    <div class="mdc-toolbar__section mdc-toolbar__section--align-start">
-      <span class="mdc-toolbar__title">Title</span>
-    </div>
-  </div>
+<header class="mdc-toolbar">
+  <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+    <a class="material-icons">menu</a>
+    <span class="mdc-toolbar__title">Title</span>
+  </section>
 </div>
 ```
 
@@ -42,9 +41,9 @@ toolbar will not overlay any of the element's content.
 
 ```html
 <header class="mdc-toolbar mdc-toolbar--fixed">
-  <div class="mdc-toolbar__section mdc-toolbar__section--align-start">
+  <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
     <span class="mdc-toolbar__title">Title</span>
-  </div>
+  </section>
 </header>
 <main class="mdc-toolbar-fixed-adjust">
   <p class="demo-paragraph">
@@ -61,17 +60,17 @@ behavior by applying `mdc-toolbar__section--align-start` or
 of the toolbar (respectively).
 
 ```html
-<div class="mdc-toolbar">
-  <div class="mdc-toolbar__section mdc-toolbar__section--align-start">
+<header class="mdc-toolbar">
+  <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
     Section aligns to start.
-  </div>
-  <div class="mdc-toolbar__section">
+  </section>
+  <section class="mdc-toolbar__section">
     Section aligns to center.
-  </div>
-  <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
+  </section>
+  <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
     Section aligns to end.
-  </div>
-</div>
+  </section>
+</header>
 ```
 
 Toolbar sections are laid out using flexbox. Each section will take up an equal
@@ -83,11 +82,11 @@ You can use the `mdc-toolbar__title` element to style toolbar text representing
 a page's title, or an application name.
 
 ```html
-<div class="mdc-toolbar">
-  <div class="mdc-toolbar__section">
+<header class="mdc-toolbar">
+  <section class="mdc-toolbar__section">
     <span class="mdc-toolbar__title">Title</span>
-  </div>
-</div>
+  </section>
+</header>
 ```
 
 ### RTL Support
@@ -116,4 +115,3 @@ The provided modifiers are:
 | `mdc-toolbar--fixed`                 | Make toolbar fixed to top of screen.    |
 | `mdc-toolbar__section--align-start`  | Makes section aligns to the start.      |
 | `mdc-toolbar__section--align-end`    | Makes section aligns to the end.        |
-

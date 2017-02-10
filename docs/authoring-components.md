@@ -496,6 +496,41 @@ Additionally, all new components require the following within their `package.jso
 
 This is needed so that lerna will be able to automatically publish new scoped packages.
 
+We also require a list of keywords for each package. This list should always include `material components` and `material design`, followed by the component name:
+
+```
+"keywords": [
+  "material components",
+  "material design",
+  <COMPONENT_NAME>
+]
+```
+
+For example, if you are building a checkbox component, `keywords` would include `material components`, `material design`, and `checkbox`
+
+**Below is an example of what a full `package.json` should look like for a new component:**
+
+```json
+{
+  "name": "@material/example",
+  "version": "0.0.0",
+  "description": "The Material Components for the web example component",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "keywords": [
+    "material components",
+    "material design",
+    "example"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
+```
+
 ### License Stanzas
 
 We are required to put the following at the _top_ of _every source code file_, including tests,
@@ -684,11 +719,12 @@ the [mdc-base README](../packages/mdc-base).
 Whenever you create a new component, it's important to notify the proper tools and packages of it.
 Concretely:
 
-- Ensure that an entry for it exists in `webpack.config.js` for the `all-js` module
+- Ensure that an entry for it exists in `webpack.config.js` for the `js-components` and `css` module
 - Ensure that it is added as a dependency of `material-components-web`. If the component contains
   styles, ensure that they are `@import`ed within `material-components-web.scss`. If the component
   contains javascript, ensure that its component namespace is exported within
-  `material-components-web`, and it is registered with `mdc-auto-init`.
+  `material-components-web`, and it is registered with `mdc-auto-init`. Lastly, remember to add it
+  to `package.json` of `material-components-web`.
 
 ### Testing
 

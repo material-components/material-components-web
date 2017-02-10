@@ -13,9 +13,9 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
 @import "@material/theme/variables";
 @import "./keyframes";
-@import "./variables";
 
 @function mdc-ripple-default-config_() {
   @return (
@@ -129,6 +129,8 @@
   @include mdc-ripple-color_($config);
 
   position: absolute;
+  top: 0;
+  left: 0;
   width: var(--mdc-ripple-fg-size);
   height: var(--mdc-ripple-fg-size);
   transform: scale(0);
@@ -155,8 +157,6 @@
   // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
 
   &:not(.mdc-ripple-upgraded--unbounded)#{$pseudo} {
-    top: calc(var(--mdc-ripple-top) - var(--mdc-ripple-fg-size) / 2);
-    left: calc(var(--mdc-ripple-left) - var(--mdc-ripple-fg-size) / 2);
     transform-origin: center center;
   }
 
@@ -168,7 +168,7 @@
 
   &.mdc-ripple-upgraded--foreground-bounded-active-fill#{$pseudo} {
     animation-fill-mode: forwards;
-    animation: 800ms mdc-ripple-fg-radius-in, 400ms mdc-ripple-fg-opacity-out;
+    animation: 300ms mdc-ripple-fg-radius-in, 400ms mdc-ripple-fg-opacity-out;
   }
 
   &.mdc-ripple-upgraded--unbounded.mdc-ripple-upgraded--foreground-unbounded-activation#{$pseudo} {
@@ -182,6 +182,6 @@
   &.mdc-ripple-upgraded--unbounded.mdc-ripple-upgraded--foreground-unbounded-deactivation#{$pseudo} {
     animation:
       mdc-ripple-fg-unbounded-opacity-deactivate var(--mdc-ripple-fg-unbounded-opacity-duration) linear,
-      mdc-ripple-fg-unbounded-transform-deactivate var(--mdc-ripple-fg-unbounded-transform-duration) $mdc-ripple-easing-fn;
+      mdc-ripple-fg-unbounded-transform-deactivate var(--mdc-ripple-fg-unbounded-transform-duration) $mdc-animation-fast-out-slow-in-timing-function;
   }
 }
