@@ -15,18 +15,18 @@
  */
 
 const ROOT = 'mdc-checkbox';
-const ANIM = `${ROOT}--anim`;
 
 export const cssClasses = {
-  ROOT,
-  CHECKED: `${ROOT}--checked`,
-  INDETERMINATE: `${ROOT}--indeterminate`,
-  ANIM_UNCHECKED_CHECKED: `${ANIM}-unchecked-checked`,
-  ANIM_UNCHECKED_INDETERMINATE: `${ANIM}-unchecked-indeterminate`,
-  ANIM_CHECKED_UNCHECKED: `${ANIM}-checked-unchecked`,
-  ANIM_CHECKED_INDETERMINATE: `${ANIM}-checked-indeterminate`,
-  ANIM_INDETERMINATE_CHECKED: `${ANIM}-indeterminate-checked`,
-  ANIM_INDETERMINATE_UNCHECKED: `${ANIM}-indeterminate-unchecked`,
+  ROOT: 'mdc-checkbox',
+  UPGRADED: 'mdc-checkbox--upgraded',
+  CHECKED: 'mdc-checkbox--checked',
+  INDETERMINATE: 'mdc-checkbox--indeterminate',
+  ANIM_UNCHECKED_CHECKED: 'mdc-checkbox--anim-unchecked-checked',
+  ANIM_UNCHECKED_INDETERMINATE: 'mdc-checkbox--anim-unchecked-indeterminate',
+  ANIM_CHECKED_UNCHECKED: 'mdc-checkbox--anim-checked-unchecked',
+  ANIM_CHECKED_INDETERMINATE: 'mdc-checkbox--anim-checked-indeterminate',
+  ANIM_INDETERMINATE_CHECKED: 'mdc-checkbox--anim-indeterminate-checked',
+  ANIM_INDETERMINATE_UNCHECKED: 'mdc-checkbox--anim-indeterminate-unchecked',
 };
 
 export const strings = {
