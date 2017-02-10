@@ -1,0 +1,20 @@
+{
+  "name": "@material/tabs",
+  "version": "0.1.2",
+  "description": "The Material Components for the web tabs component",
+  "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "tabs"
+  ],
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "dependencies": {
+    "@material/base": "^0.1.1",
+    "@material/ripple": "^0.2.0"
+  }
+}

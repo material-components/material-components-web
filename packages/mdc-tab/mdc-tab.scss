@@ -1,0 +1,83 @@
+@import "@material/ripple/mixins";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+
+// TODO:
+// - differentiate between small view and big view
+// - text wrap: seems impossible for now
+// - scrolling tabs
+
+.mdc-tabs {
+    display: block;
+    width: 100%;
+}
+
+.mdc-tabs__tab-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.mdc-tabs__tab {
+    @include mdc-typography(body2);
+    @include mdc-theme-prop(background-color, primary);
+    color: rgba(255, 255, 255, 0.7);
+
+    display: block;
+    float: left;
+
+    // only if fixed tab
+    width: 100%;
+
+    height: 48px;
+    padding: 0 24px;
+
+    max-width: 264px;
+    min-width: 160px;
+
+    text-align: center;
+    line-height: 48px;
+    text-transform: uppercase;
+    text-decoration: none;
+    vertical-align: middle;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    // to include padding and border into size calculation
+    box-sizing: border-box;
+
+    &--active {
+        @include mdc-theme-prop(color, text-primary-on-primary);
+        @include mdc-theme-prop(border-bottom-color, accent);
+
+        border-bottom-width: 2px;
+        border-bottom-style: solid;
+    }
+
+    &:active::before {
+        transition: mdc-animation-enter(opacity, 120ms);
+
+        // Slightly darker value for visual distinction.
+        // This allows a full base that has distinct modes.
+        // Progressive enhancement with ripples will provide complete button spec alignment.
+        opacity: .18;
+    }
+}
+
+.mdc-tabs__tab-bar.mdc-ripple-upgraded {
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg((pseudo: "::before"));
+    @include mdc-ripple-fg((pseudo: "::after"));
+
+    overflow: hidden;
+}
+
+.mdc-tabs__panel {
+    display: none;
+
+    &--active {
+        display: inline-block;
+    }
+}
