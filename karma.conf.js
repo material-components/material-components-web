@@ -134,10 +134,10 @@ module.exports = function(config) {
       module: Object.assign({}, webpackConfig.module, {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
         // uncluttered source maps.
-        loaders: webpackConfig.module.loaders.concat([config.singleRun ? {
+        rules: webpackConfig.module.rules.concat([config.singleRun ? {
           test: /\.js$/,
           include: path.resolve('./packages'),
-          loader: 'isparta',
+          loader: 'isparta-loader',
         } : undefined]).filter(Boolean),
       }),
     }),

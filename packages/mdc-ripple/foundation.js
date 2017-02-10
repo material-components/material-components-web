@@ -145,8 +145,9 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
 
     activationState.isActivated = true;
+    activationState.isProgrammatic = e === null;
     activationState.activationEvent = e;
-    activationState.wasActivatedByPointer = (
+    activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : (
       e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown'
     );
 
@@ -157,7 +158,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       // event handling code:
       // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
       // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
-      activationState.wasElementMadeActive = e.type === 'keydown' ? this.adapter_.isSurfaceActive() : true;
+      activationState.wasElementMadeActive = (e && e.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
       if (activationState.wasElementMadeActive) {
         this.animateActivation_();
       } else {
@@ -165,6 +166,10 @@ export default class MDCRippleFoundation extends MDCFoundation {
         this.activationState_ = this.defaultActivationState_();
       }
     });
+  }
+
+  activate() {
+    this.activate_(null);
   }
 
   animateActivation_() {
@@ -204,6 +209,12 @@ export default class MDCRippleFoundation extends MDCFoundation {
     if (!activationState.isActivated) {
       return;
     }
+    // Programmatic deactivation.
+    if (activationState.isProgrammatic) {
+      requestAnimationFrame(() => this.animateDeactivation_(null, Object.assign({}, activationState)));
+      this.activationState_ = this.defaultActivationState_();
+      return;
+    }
     const actualActivationType = DEACTIVATION_ACTIVATION_PAIRS[e.type];
     const expectedActivationType = activationState.activationEvent.type;
     // NOTE: Pointer events are tricky - https://patrickhlauke.github.io/touch/tests/results/
@@ -216,7 +227,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       needsActualDeactivation = e.type === 'mouseup';
     }
 
-    const state = Object.assign({}, this.activationState_);
+    const state = Object.assign({}, activationState);
     if (needsDeactivationUX) {
       requestAnimationFrame(() => this.animateDeactivation_(e, state));
     }
@@ -225,11 +236,15 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
   }
 
-  animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive, activationStartTime}) {
+  deactivate() {
+    this.deactivate_(null);
+  }
+
+  animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive, activationStartTime, isProgrammatic}) {
     const {BG_ACTIVE} = MDCRippleFoundation.cssClasses;
     if (wasActivatedByPointer || wasElementMadeActive) {
       this.adapter_.removeClass(BG_ACTIVE);
-      const isPointerEvent = (
+      const isPointerEvent = isProgrammatic ? false : (
         e.type === 'touchend' || e.type === 'pointerup' || e.type === 'mouseup'
       );
       if (this.adapter_.isUnbounded()) {
