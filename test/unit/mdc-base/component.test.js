@@ -33,6 +33,7 @@ class FakeComponent extends MDCComponent {
     return td.object({
       isDefaultFoundation: true,
       init: () => {},
+      rootElementAtTimeOfCall: this.root_,
     });
   }
 
@@ -161,5 +162,12 @@ test('#emit dispatches a custom event with the supplied data', (t) => {
   t.true(evt !== null);
   t.equal(evt.type, type);
   t.deepEqual(evt.detail, data);
+  t.end();
+});
+
+test('(regression) ensures that this.root_ is available for use within getDefaultFoundation()', (t) => {
+  const root = document.createElement('div');
+  const f = new FakeComponent(root);
+  t.equal(f.foundation.rootElementAtTimeOfCall, root);
   t.end();
 });
