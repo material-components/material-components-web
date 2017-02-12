@@ -54,6 +54,7 @@
 .mdc-checkbox {
   display: inline-block;
   position: relative;
+  box-sizing: content-box;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
   padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
