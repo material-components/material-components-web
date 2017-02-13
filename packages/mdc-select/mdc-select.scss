@@ -121,12 +121,16 @@
   pointer-events: none;
   // Imitate native disabled functionality
   user-select: none;
+}
 
-  @include mdc-theme-dark(".mdc-select", true) {
-    @include mdc-theme-prop(color, text-disabled-on-dark);
-    @include mdc-select-dd-arrow-svg-bg_(ffffff, .38);
+@each $sel in ("mdc-select--disabled", "mdc-select[disabled]") {
+  .#{$sel} {
+    @include mdc-theme-dark(".mdc-select", true) {
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+      @include mdc-select-dd-arrow-svg-bg_(ffffff, .38);
 
-    border-bottom: 1px dotted rgba(white, .38);
+      border-bottom: 1px dotted rgba(white, .38);
+    }
   }
 }
 

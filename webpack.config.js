@@ -46,6 +46,28 @@ if (LIFECYCLE_EVENT == 'test' || LIFECYCLE_EVENT == 'test:watch') {
   process.env.BABEL_ENV = 'test';
 }
 
+const CSS_LOADER_CONFIG = [
+  {
+    loader: 'css-loader',
+    options: {
+      sourceMap: true,
+    },
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: () =>[require('autoprefixer')({grid: false})],
+    },
+  },
+  {
+    loader: 'sass-loader',
+    options: {
+      sourceMap: true,
+      includePaths: glob.sync('packages/*/node_modules').map((d) => path.join(__dirname, d)),
+    },
+  },
+];
+
 module.exports = [{
   name: 'js-components',
   entry: {
@@ -145,43 +167,14 @@ module.exports = [{
   module: {
     rules: [{
       test: /\.scss$/,
-      use: IS_DEV ? [{
-          loader: 'style-loader',
-        },
-        {
-          loader: 'css-loader',
-          options: {
-            sourceMap: true,
-          },
-        },
-        {
-          loader: 'postcss-loader',
-        },
-        {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-          },
-        }] : ExtractTextPlugin.extract('css-loader!postcss-loader!sass-loader'),
+      use: IS_DEV ? [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG) : ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: CSS_LOADER_CONFIG,
+      }),
     }],
   },
   plugins: [
     new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css'),
     createBannerPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      debug: true,
-      options: {
-        context: __dirname,
-        output: {
-          path: OUT_PATH,
-        },
-        postcss: {
-          plugins: () =>[require('autoprefixer')({grid: false})],
-        },
-        sassLoader: {
-          includePaths: glob.sync('packages/*/node_modules').map((d) => path.join(__dirname, d)),
-        },
-      },
-    }),
   ],
 }];
