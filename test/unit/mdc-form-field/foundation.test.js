@@ -14,28 +14,24 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import td from 'testdouble';
 
 import MDCFormFieldFoundation from '../../../packages/mdc-form-field/foundation';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
-test('exports cssClasses', (t) => {
-  t.true('cssClasses' in MDCFormFieldFoundation);
-  t.end();
+test('exports cssClasses', () => {
+  assert.isOk('cssClasses' in MDCFormFieldFoundation);
 });
 
-test('exports strings', (t) => {
-  t.true('strings' in MDCFormFieldFoundation);
-  t.end();
+test('exports strings', () => {
+  assert.isOk('strings' in MDCFormFieldFoundation);
 });
 
-test('defaultAdapter returns a complete adapter implementation', (t) => {
+test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCFormFieldFoundation, [
     'registerInteractionHandler', 'deregisterInteractionHandler', 'activateInputRipple', 'deactivateInputRipple',
-  ], t);
-
-  t.end();
+  ]);
 });
 
 function setupTest() {
@@ -44,21 +40,19 @@ function setupTest() {
   return {foundation, mockAdapter};
 }
 
-test('#init calls event registrations', (t) => {
+test('#init calls event registrations', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
   foundation.init();
-  t.doesNotThrow(() => td.verify(mockAdapter.registerInteractionHandler('click', isA(Function))));
-  t.end();
+  td.verify(mockAdapter.registerInteractionHandler('click', isA(Function)));
 });
 
-test('#destroy calls event deregistrations', (t) => {
+test('#destroy calls event deregistrations', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
   foundation.init();
   foundation.destroy();
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterInteractionHandler('click', isA(Function))));
-  t.end();
+  td.verify(mockAdapter.deregisterInteractionHandler('click', isA(Function)));
 });

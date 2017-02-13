@@ -17,7 +17,7 @@
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import test from 'tape';
+import {assert} from 'chai';
 
 import {MDCTextfield, MDCTextfieldFoundation} from '../../../packages/mdc-textfield';
 
@@ -30,22 +30,22 @@ const getFixture = () => bel`
   </div>
 `;
 
-test('attachTo returns an MDCTextfield instance', (t) => {
-  t.true(MDCTextfield.attachTo(getFixture()) instanceof MDCTextfield);
-  t.end();
+suite('MDCTextfield');
+
+test('attachTo returns an MDCTextfield instance', () => {
+  assert.isOk(MDCTextfield.attachTo(getFixture()) instanceof MDCTextfield);
 });
 
 const getHelptext = () => bel`<p id="helptext">help text</p>`;
 
-test('#constructor assigns helptextElement to the id specified in the input aria-controls if present', (t) => {
+test('#constructor assigns helptextElement to the id specified in the input aria-controls if present', () => {
   const root = getFixture();
   root.querySelector('.mdc-textfield__input').setAttribute('aria-controls', 'helptext');
   const helptext = getHelptext();
   document.body.appendChild(helptext);
   const component = new MDCTextfield(root);
-  t.equal(component.helptextElement, helptext);
+  assert.equal(component.helptextElement, helptext);
   document.body.removeChild(helptext);
-  t.end();
 });
 
 function setupTest() {
@@ -54,233 +54,206 @@ function setupTest() {
   return {root, component};
 }
 
-test('get/set disabled updates the input element', (t) => {
+test('get/set disabled updates the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
   component.disabled = true;
-  t.true(input.disabled);
+  assert.isOk(input.disabled);
   component.disabled = false;
-  t.false(input.disabled);
-  t.end();
+  assert.isNotOk(input.disabled);
 });
 
-test('get/set disabled updates the component styles', (t) => {
+test('get/set disabled updates the component styles', () => {
   const {root, component} = setupTest();
   component.disabled = true;
-  t.true(root.classList.contains(cssClasses.DISABLED));
+  assert.isOk(root.classList.contains(cssClasses.DISABLED));
   component.disabled = false;
-  t.false(root.classList.contains(cssClasses.DISABLED));
-  t.end();
+  assert.isNotOk(root.classList.contains(cssClasses.DISABLED));
 });
 
-test('#adapter.addClass adds a class to the root element', (t) => {
+test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  t.true(root.classList.contains('foo'));
-  t.end();
+  assert.isOk(root.classList.contains('foo'));
 });
 
-test('#adapter.removeClass removes a class from the root element', (t) => {
+test('#adapter.removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  t.false(root.classList.contains('foo'));
-  t.end();
+  assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('#adapter.addClassToLabel adds a class to the label element', (t) => {
+test('#adapter.addClassToLabel adds a class to the label element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClassToLabel('foo');
-  t.true(root.querySelector('.mdc-textfield__label').classList.contains('foo'));
-  t.end();
+  assert.isOk(root.querySelector('.mdc-textfield__label').classList.contains('foo'));
 });
 
-test('#adapter.addClassToLabel does nothing if no label element present', (t) => {
+test('#adapter.addClassToLabel does nothing if no label element present', () => {
   const {root, component} = setupTest();
   root.removeChild(root.querySelector('.mdc-textfield__label'));
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToLabel('foo'));
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToLabel('foo'));
 });
 
-test('#adapter.removeClassFromLabel removes a class from the label element', (t) => {
+test('#adapter.removeClassFromLabel removes a class from the label element', () => {
   const {root, component} = setupTest();
   const label = root.querySelector('.mdc-textfield__label');
   label.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClassFromLabel('foo');
-  t.false(label.classList.contains('foo'));
-  t.end();
+  assert.isNotOk(label.classList.contains('foo'));
 });
 
-test('#adapter.removeClassFromLabel does nothing if no label element present', (t) => {
+test('#adapter.removeClassFromLabel does nothing if no label element present', () => {
   const {root, component} = setupTest();
   root.removeChild(root.querySelector('.mdc-textfield__label'));
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLabel('foo'));
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLabel('foo'));
 });
 
-test('#adapter.registerInputFocusHandler adds a "focus" event handler on the input element', (t) => {
+test('#adapter.registerInputFocusHandler adds a "focus" event handler on the input element', () => {
   const {root, component} = setupTest();
   const handler = td.func('focusHandler');
   component.getDefaultFoundation().adapter_.registerInputFocusHandler(handler);
   domEvents.emit(root.querySelector('.mdc-textfield__input'), 'focus');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInputFocusHandler removes a "focus" event handler from the input element', (t) => {
+test('#adapter.deregisterInputFocusHandler removes a "focus" event handler from the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
   const handler = td.func('focusHandler');
   input.addEventListener('focus', handler);
   component.getDefaultFoundation().adapter_.deregisterInputFocusHandler(handler);
   domEvents.emit(input, 'focus');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.registerInputBlurHandler adds a "blur" event handler on the input element', (t) => {
+test('#adapter.registerInputBlurHandler adds a "blur" event handler on the input element', () => {
   const {root, component} = setupTest();
   const handler = td.func('blurHandler');
   component.getDefaultFoundation().adapter_.registerInputBlurHandler(handler);
   domEvents.emit(root.querySelector('.mdc-textfield__input'), 'blur');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInputBlurHandler removes a "blur" event handler from the input element', (t) => {
+test('#adapter.deregisterInputBlurHandler removes a "blur" event handler from the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
   const handler = td.func('blurHandler');
   input.addEventListener('blur', handler);
   component.getDefaultFoundation().adapter_.deregisterInputBlurHandler(handler);
   domEvents.emit(input, 'blur');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.registerInputInputHandler adds an "input" event handler on the input element', (t) => {
+test('#adapter.registerInputInputHandler adds an "input" event handler on the input element', () => {
   const {root, component} = setupTest();
   const handler = td.func('inputHandler');
   component.getDefaultFoundation().adapter_.registerInputInputHandler(handler);
   domEvents.emit(root.querySelector('.mdc-textfield__input'), 'input');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInputInputHandler removes an "input" event handler from the input element', (t) => {
+test('#adapter.deregisterInputInputHandler removes an "input" event handler from the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
   const handler = td.func('inputHandler');
   input.addEventListener('input', handler);
   component.getDefaultFoundation().adapter_.deregisterInputInputHandler(handler);
   domEvents.emit(input, 'input');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.registerInputKeydownHandler adds a "keydown" event handler on the input element', (t) => {
+test('#adapter.registerInputKeydownHandler adds a "keydown" event handler on the input element', () => {
   const {root, component} = setupTest();
   const handler = td.func('inputHandler');
   component.getDefaultFoundation().adapter_.registerInputKeydownHandler(handler);
   domEvents.emit(root.querySelector('.mdc-textfield__input'), 'keydown');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInputInputHandler removes a "keydown" event handler from the input element', (t) => {
+test('#adapter.deregisterInputInputHandler removes a "keydown" event handler from the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
   const handler = td.func('keydownHandler');
   input.addEventListener('keydown', handler);
   component.getDefaultFoundation().adapter_.deregisterInputKeydownHandler(handler);
   domEvents.emit(input, 'keydown');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.getNativeInput returns the component input element', (t) => {
+test('#adapter.getNativeInput returns the component input element', () => {
   const {root, component} = setupTest();
-  t.equal(
+  assert.equal(
     component.getDefaultFoundation().adapter_.getNativeInput(),
     root.querySelector('.mdc-textfield__input')
   );
-  t.end();
 });
 
-test('#adapter.addClassToHelptext does nothing if no help text element present', (t) => {
+test('#adapter.addClassToHelptext does nothing if no help text element present', () => {
   const {component} = setupTest();
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToHelptext('foo'));
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToHelptext('foo'));
 });
 
-test('#adapter.addClassToHelptext adds a class to the helptext element when present', (t) => {
+test('#adapter.addClassToHelptext adds a class to the helptext element when present', () => {
   const {component} = setupTest();
   component.helptextElement = getHelptext();
   component.getDefaultFoundation().adapter_.addClassToHelptext('foo');
-  t.true(component.helptextElement.classList.contains('foo'));
-  t.end();
+  assert.isOk(component.helptextElement.classList.contains('foo'));
 });
 
-test('#adapter.removeClassFromHelptext does nothing if no help text element present', (t) => {
+test('#adapter.removeClassFromHelptext does nothing if no help text element present', () => {
   const {component} = setupTest();
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToHelptext('foo'));
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToHelptext('foo'));
 });
 
-test('#adapter.removeClassFromHelptext removes a class from the helptext element when present', (t) => {
+test('#adapter.removeClassFromHelptext removes a class from the helptext element when present', () => {
   const {component} = setupTest();
   const helptext = getHelptext();
   component.helptextElement = helptext;
   helptext.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClassFromHelptext('foo');
-  t.false(helptext.classList.contains('foo'));
-  t.end();
+  assert.isNotOk(helptext.classList.contains('foo'));
 });
 
-test('#adapter.helptextHasClass does nothing if no help text element present', (t) => {
+test('#adapter.helptextHasClass does nothing if no help text element present', () => {
   const {component} = setupTest();
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.helptextHasClass('foo'));
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.helptextHasClass('foo'));
 });
 
-test('#adapter.helptextHasClass returns whether or not the help text contains a certain class', (t) => {
+test('#adapter.helptextHasClass returns whether or not the help text contains a certain class', () => {
   const {component} = setupTest();
   const helptext = getHelptext();
   component.helptextElement = helptext;
   helptext.classList.add('foo');
-  t.true(component.getDefaultFoundation().adapter_.helptextHasClass('foo'));
+  assert.isOk(component.getDefaultFoundation().adapter_.helptextHasClass('foo'));
   helptext.classList.remove('foo');
-  t.false(component.getDefaultFoundation().adapter_.helptextHasClass('foo'));
-  t.end();
+  assert.isNotOk(component.getDefaultFoundation().adapter_.helptextHasClass('foo'));
 });
 
-test('#adapter.setHelptextAttr does nothing if no help text element present', (t) => {
+test('#adapter.setHelptextAttr does nothing if no help text element present', () => {
   const {component} = setupTest();
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.helptextHasClass('foo'));
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.helptextHasClass('foo'));
 });
 
-test('#adapter.setHelptextAttr sets an attribute to a certain value on the help text element', (t) => {
+test('#adapter.setHelptextAttr sets an attribute to a certain value on the help text element', () => {
   const {component} = setupTest();
   const helptext = getHelptext();
   component.helptextElement = helptext;
   component.getDefaultFoundation().adapter_.setHelptextAttr('aria-label', 'foo');
-  t.equal(helptext.getAttribute('aria-label'), 'foo');
-  t.end();
+  assert.equal(helptext.getAttribute('aria-label'), 'foo');
 });
 
-test('#adapter.removeHelptextAttr does nothing if no help text element present', (t) => {
+test('#adapter.removeHelptextAttr does nothing if no help text element present', () => {
   const {component} = setupTest();
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeHelptextAttr('aria-label'));
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeHelptextAttr('aria-label'));
 });
 
-test('#adapter.removeHelptextAttr removes an attribute on the help text element', (t) => {
+test('#adapter.removeHelptextAttr removes an attribute on the help text element', () => {
   const {component} = setupTest();
   const helptext = getHelptext();
   helptext.setAttribute('aria-label', 'foo');
   component.helptextElement = helptext;
   component.getDefaultFoundation().adapter_.removeHelptextAttr('aria-label');
-  t.false(helptext.hasAttribute('aria-label'));
-  t.end();
+  assert.isNotOk(helptext.hasAttribute('aria-label'));
 });

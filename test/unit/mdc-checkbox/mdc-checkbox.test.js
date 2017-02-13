@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
@@ -55,28 +55,28 @@ function setupTest() {
   return {root, component};
 }
 
+suite('MDCCheckbox');
+
 if (supportsCssVariables(window)) {
-  test('#constructor initializes the root element with a ripple', (t) => {
+  test('#constructor initializes the root element with a ripple', () => {
     const raf = createMockRaf();
     const {root} = setupTest();
     raf.flush();
-    t.true(root.classList.contains('mdc-ripple-upgraded'));
+    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
     raf.restore();
-    t.end();
   });
 
-  test('#destroy removes the ripple', (t) => {
+  test('#destroy removes the ripple', () => {
     const raf = createMockRaf();
     const {root, component} = setupTest();
     raf.flush();
     component.destroy();
     raf.flush();
-    t.false(root.classList.contains('mdc-ripple-upgraded'));
+    assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
     raf.restore();
-    t.end();
   });
 
-  test('(regression) activates ripple on keydown when the input element surface is active', (t) => {
+  test('(regression) activates ripple on keydown when the input element surface is active', () => {
     const raf = createMockRaf();
     const {root} = setupTest();
     const input = root.querySelector('input');
@@ -86,74 +86,66 @@ if (supportsCssVariables(window)) {
     td.when(fakeMatches(':active')).thenReturn(true);
     input[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
 
-    t.true(root.classList.contains('mdc-ripple-upgraded'));
+    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
     domEvents.emit(input, 'keydown');
     raf.flush();
 
-    t.true(root.classList.contains('mdc-ripple-upgraded--background-active'));
+    assert.isOk(root.classList.contains('mdc-ripple-upgraded--background-active'));
     raf.restore();
-    t.end();
   });
 }
 
-test('attachTo initializes and returns a MDCCheckbox instance', (t) => {
-  t.true(MDCCheckbox.attachTo(getFixture()) instanceof MDCCheckbox);
-  t.end();
+test('attachTo initializes and returns a MDCCheckbox instance', () => {
+  assert.isOk(MDCCheckbox.attachTo(getFixture()) instanceof MDCCheckbox);
 });
 
-test('get/set checked updates the checked property on the native checkbox element', (t) => {
+test('get/set checked updates the checked property on the native checkbox element', () => {
   const {root, component} = setupTest();
   const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
   component.checked = true;
-  t.true(cb.checked);
-  t.equal(component.checked, cb.checked);
-  t.end();
+  assert.isOk(cb.checked);
+  assert.equal(component.checked, cb.checked);
 });
 
-test('get/set indeterminate updates the indeterminate property on the native checkbox element', (t) => {
+test('get/set indeterminate updates the indeterminate property on the native checkbox element', () => {
   const {root, component} = setupTest();
   const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
   component.indeterminate = true;
-  t.true(cb.indeterminate);
-  t.equal(component.indeterminate, cb.indeterminate);
-  t.end();
+  assert.isOk(cb.indeterminate);
+  assert.equal(component.indeterminate, cb.indeterminate);
 });
 
-test('get/set disabled updates the indeterminate property on the native checkbox element', (t) => {
+test('get/set disabled updates the indeterminate property on the native checkbox element', () => {
   const {root, component} = setupTest();
   const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
   component.disabled = true;
-  t.true(cb.disabled);
-  t.equal(component.disabled, cb.disabled);
-  t.end();
+  assert.isOk(cb.disabled);
+  assert.equal(component.disabled, cb.disabled);
 });
 
-test('adapter#addClass adds a class to the root element', (t) => {
+test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  t.true(root.classList.contains('foo'));
-  t.end();
+  assert.isOk(root.classList.contains('foo'));
 });
 
-test('adapter#removeClass removes a class from the root element', (t) => {
+test('adapter#removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  t.false(root.classList.contains('foo'));
-  t.end();
+  assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('adapter#registerAnimationEndHandler adds an animation end event listener on the root element', (t) => {
+test('adapter#registerAnimationEndHandler adds an animation end event listener on the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('animationEndHandler');
   component.getDefaultFoundation().adapter_.registerAnimationEndHandler(handler);
   domEvents.emit(root, getCorrectEventName(window, 'animationend'));
 
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterAnimationEndHandler removes an animation end event listener on the root el', (t) => {
+test('adapter#deregisterAnimationEndHandler removes an animation end event listener on the root el', () => {
   const {root, component} = setupTest();
   const handler = td.func('animationEndHandler');
   const animEndEvtName = getCorrectEventName(window, 'animationend');
@@ -162,11 +154,10 @@ test('adapter#deregisterAnimationEndHandler removes an animation end event liste
   component.getDefaultFoundation().adapter_.deregisterAnimationEndHandler(handler);
   domEvents.emit(root, animEndEvtName);
 
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerChangeHandler adds a change event listener to the native checkbox element', (t) => {
+test('adapter#registerChangeHandler adds a change event listener to the native checkbox element', () => {
   const {root, component} = setupTest();
   const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
   const handler = td.func('changeHandler');
@@ -174,11 +165,10 @@ test('adapter#registerChangeHandler adds a change event listener to the native c
   component.getDefaultFoundation().adapter_.registerChangeHandler(handler);
   domEvents.emit(nativeCb, 'change');
 
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterChangeHandler adds a change event listener to the native checkbox element', (t) => {
+test('adapter#deregisterChangeHandler adds a change event listener to the native checkbox element', () => {
   const {root, component} = setupTest();
   const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
   const handler = td.func('changeHandler');
@@ -187,18 +177,16 @@ test('adapter#deregisterChangeHandler adds a change event listener to the native
   component.getDefaultFoundation().adapter_.deregisterChangeHandler(handler);
   domEvents.emit(nativeCb, 'change');
 
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#getNativeControl returns the native checkbox element', (t) => {
+test('adapter#getNativeControl returns the native checkbox element', () => {
   const {root, component} = setupTest();
   const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-  t.equal(component.getDefaultFoundation().adapter_.getNativeControl(), nativeCb);
-  t.end();
+  assert.equal(component.getDefaultFoundation().adapter_.getNativeControl(), nativeCb);
 });
 
-test('adapter#forceLayout touches "offsetWidth" on the root in order to force layout', (t) => {
+test('adapter#forceLayout touches "offsetWidth" on the root in order to force layout', () => {
   const {root, component} = setupTest();
   const mockGetter = td.func('.offsetWidth');
   Object.defineProperty(root, 'offsetWidth', {
@@ -209,20 +197,17 @@ test('adapter#forceLayout touches "offsetWidth" on the root in order to force la
   });
 
   component.getDefaultFoundation().adapter_.forceLayout();
-  t.doesNotThrow(() => td.verify(mockGetter()));
-  t.end();
+  td.verify(mockGetter());
 });
 
-test('adapter#isAttachedToDOM returns true when root is attached to DOM', (t) => {
+test('adapter#isAttachedToDOM returns true when root is attached to DOM', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
-  t.true(component.getDefaultFoundation().adapter_.isAttachedToDOM());
+  assert.isOk(component.getDefaultFoundation().adapter_.isAttachedToDOM());
   document.body.removeChild(root);
-  t.end();
 });
 
-test('adapter#isAttachedToDOM returns false when root is not attached to DOM', (t) => {
+test('adapter#isAttachedToDOM returns false when root is not attached to DOM', () => {
   const {component} = setupTest();
-  t.false(component.getDefaultFoundation().adapter_.isAttachedToDOM());
-  t.end();
+  assert.isNotOk(component.getDefaultFoundation().adapter_.isAttachedToDOM());
 });

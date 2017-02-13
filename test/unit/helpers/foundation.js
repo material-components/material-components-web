@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import {assert} from 'chai';
 import td from 'testdouble';
 
 // Sanity tests to ensure the following:
@@ -21,14 +22,14 @@ import td from 'testdouble';
 // - All expected adapter functions are accounted for
 // - Invoking any of the default methods does not throw an error.
 // Every foundation test suite include this verification.
-export function verifyDefaultAdapter(FoundationClass, expectedMethods, t) {
+export function verifyDefaultAdapter(FoundationClass, expectedMethods) {
   const {defaultAdapter} = FoundationClass;
   const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
-  t.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  t.deepEqual(methods, expectedMethods);
+  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
+  assert.deepEqual(methods, expectedMethods);
   // Test default methods
-  methods.forEach((m) => t.doesNotThrow(defaultAdapter[m]));
+  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 }
 
 // Returns an object that intercepts calls to an adapter method used to register event handlers, and adds

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import lolex from 'lolex';
 import td from 'testdouble';
 import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
@@ -38,40 +38,29 @@ function setupTest(isCssVarsSupported = true) {
 }
 
 function testFoundation(desc, runTests) {
-  test(desc, (t) => {
+  test(desc, () => {
     const {mockAdapter, foundation} = setupTest();
     const mockRaf = createMockRaf();
-    // eslint-tape-plugin complains when we reference an unknown member on t,
-    // so we disable that so we can supplement t.
-    // eslint-disable-next-line tape/use-t-well
-    t.data = {mockAdapter, foundation, mockRaf};
-
-    // Override end so that animation frame functions are always restored.
-    const {end} = t;
-    t.end = function(...args) {
-      mockRaf.restore();
-      end.apply(t, args);
-    };
-    runTests(t, {mockAdapter, foundation, mockRaf});
+    runTests({mockAdapter, foundation, mockRaf});
+    mockRaf.restore();
   });
 }
 
-test('exports strings', (t) => {
-  t.deepEqual(MDCSimpleMenuFoundation.strings, strings);
-  t.end();
+suite('MDCSimpleMenuFoundation');
+
+test('exports strings', () => {
+  assert.deepEqual(MDCSimpleMenuFoundation.strings, strings);
 });
 
-test('exports cssClasses', (t) => {
-  t.deepEqual(MDCSimpleMenuFoundation.cssClasses, cssClasses);
-  t.end();
+test('exports cssClasses', () => {
+  assert.deepEqual(MDCSimpleMenuFoundation.cssClasses, cssClasses);
 });
 
-test('exports numbers', (t) => {
-  t.deepEqual(MDCSimpleMenuFoundation.numbers, numbers);
-  t.end();
+test('exports numbers', () => {
+  assert.deepEqual(MDCSimpleMenuFoundation.numbers, numbers);
 });
 
-test('defaultAdapter returns a complete adapter implementation', (t) => {
+test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getInnerDimensions', 'hasAnchor',
     'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale', 'getNumberOfItems',
@@ -79,52 +68,44 @@ test('defaultAdapter returns a complete adapter implementation', (t) => {
     'deregisterDocumentClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
     'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
     'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition',
-  ], t);
-  t.end();
+  ]);
 });
 
-test('#init throws error when the root class is not present', (t) => {
+test('#init throws error when the root class is not present', () => {
   const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
   td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(false);
 
   const foundation = new MDCSimpleMenuFoundation(mockAdapter);
-  t.throws(() => foundation.init());
-  t.end();
+  assert.throws(() => foundation.init());
 });
 
-test('#init throws error when the necessary DOM is not present', (t) => {
+test('#init throws error when the necessary DOM is not present', () => {
   const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
   td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(true);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(false);
 
   const foundation = new MDCSimpleMenuFoundation(mockAdapter);
-  t.throws(() => foundation.init());
-  t.end();
+  assert.throws(() => foundation.init());
 });
 
-testFoundation('#open adds the animation class to start an animation', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
-
+testFoundation('#open adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass('mdc-simple-menu--animating')));
-  t.end();
+  td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
 });
 
-testFoundation('#open adds the open class to the menu', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#open adds the open class to the menu', ({foundation, mockAdapter, mockRaf}) => {
   td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
 
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass('mdc-simple-menu--open')));
-  t.end();
+  td.verify(mockAdapter.addClass('mdc-simple-menu--open'));
 });
 
-testFoundation('#open removes the animation class at the end of the animation', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#open removes the animation class at the end of the animation',
+    ({foundation, mockAdapter, mockRaf}) => {
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
   window.performance.now = mockNow;
@@ -135,18 +116,16 @@ testFoundation('#open removes the animation class at the end of the animation', 
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass('mdc-simple-menu--animating')), 'sanity check');
+  td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
 
   td.when(mockNow()).thenReturn(500);
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-simple-menu--animating')));
+  td.verify(mockAdapter.removeClass('mdc-simple-menu--animating'));
 
   window.performance.now = now;
-  t.end();
 });
 
-testFoundation('#open focuses the menu at the end of the animation', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#open focuses the menu at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
   window.performance.now = mockNow;
@@ -159,14 +138,13 @@ testFoundation('#open focuses the menu at the end of the animation', (t) => {
 
   td.when(mockNow()).thenReturn(500);
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.focus()));
+  td.verify(mockAdapter.focus());
 
   window.performance.now = now;
-  t.end();
 });
 
-testFoundation('#open anchors the menu on the top left in LTR, given enough room', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#open anchors the menu on the top left in LTR, given enough room',
+    ({foundation, mockAdapter, mockRaf}) => {
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
   window.performance.now = mockNow;
@@ -186,15 +164,14 @@ testFoundation('#open anchors the menu on the top left in LTR, given enough room
 
   td.when(mockNow()).thenReturn(500);
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.setTransformOrigin('top left')));
-  t.doesNotThrow(() => td.verify(mockAdapter.setPosition({left: '0', top: '0'})));
+  td.verify(mockAdapter.setTransformOrigin('top left'));
+  td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
 
   window.performance.now = now;
-  t.end();
 });
 
-testFoundation('#open anchors the menu on the top right in LTR when close to the right edge', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#open anchors the menu on the top right in LTR when close to the right edge',
+    ({foundation, mockAdapter, mockRaf}) => {
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
   window.performance.now = mockNow;
@@ -214,15 +191,14 @@ testFoundation('#open anchors the menu on the top right in LTR when close to the
 
   td.when(mockNow()).thenReturn(500);
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.setTransformOrigin('top right')));
-  t.doesNotThrow(() => td.verify(mockAdapter.setPosition({right: '0', top: '0'})));
+  td.verify(mockAdapter.setTransformOrigin('top right'));
+  td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
 
   window.performance.now = now;
-  t.end();
 });
 
-testFoundation('#open anchors the menu on the top right in RTL, given enough room', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#open anchors the menu on the top right in RTL, given enough room',
+    ({foundation, mockAdapter, mockRaf}) => {
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
   window.performance.now = mockNow;
@@ -242,15 +218,14 @@ testFoundation('#open anchors the menu on the top right in RTL, given enough roo
 
   td.when(mockNow()).thenReturn(500);
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.setTransformOrigin('top right')));
-  t.doesNotThrow(() => td.verify(mockAdapter.setPosition({right: '0', top: '0'})));
+  td.verify(mockAdapter.setTransformOrigin('top right'));
+  td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
 
   window.performance.now = now;
-  t.end();
 });
 
-testFoundation('#open anchors the menu on the top left in RTL when close to the left edge', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#open anchors the menu on the top left in RTL when close to the left edge',
+    ({foundation, mockAdapter, mockRaf}) => {
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
   window.performance.now = mockNow;
@@ -270,15 +245,14 @@ testFoundation('#open anchors the menu on the top left in RTL when close to the 
 
   td.when(mockNow()).thenReturn(500);
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.setTransformOrigin('top left')));
-  t.doesNotThrow(() => td.verify(mockAdapter.setPosition({left: '0', top: '0'})));
+  td.verify(mockAdapter.setTransformOrigin('top left'));
+  td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
 
   window.performance.now = now;
-  t.end();
 });
 
-testFoundation('#open anchors the menu on the bottom left in LTR when close to the bottom edge', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#open anchors the menu on the bottom left in LTR when close to the bottom edge',
+    ({foundation, mockAdapter, mockRaf}) => {
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
   window.performance.now = mockNow;
@@ -298,37 +272,31 @@ testFoundation('#open anchors the menu on the bottom left in LTR when close to t
 
   td.when(mockNow()).thenReturn(500);
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.setTransformOrigin('bottom left')));
-  t.doesNotThrow(() => td.verify(mockAdapter.setPosition({left: '0', bottom: '0'})));
+  td.verify(mockAdapter.setTransformOrigin('bottom left'));
+  td.verify(mockAdapter.setPosition({left: '0', bottom: '0'}));
 
   window.performance.now = now;
-  t.end();
 });
 
-testFoundation('#close adds the animation class to start an animation', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
-
+testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
   foundation.close();
   mockRaf.flush();
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass('mdc-simple-menu--animating')));
-  t.end();
+  td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
 });
 
-testFoundation('#close removes the open class from the menu', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#close removes the open class from the menu', ({foundation, mockAdapter, mockRaf}) => {
   td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
   td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-left')).thenReturn(true);
 
   foundation.close();
   mockRaf.flush();
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-simple-menu--open')));
-  t.end();
+  td.verify(mockAdapter.removeClass('mdc-simple-menu--open'));
 });
 
-testFoundation('#close removes the animation class at the end of the animation', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('#close removes the animation class at the end of the animation',
+    ({foundation, mockAdapter, mockRaf}) => {
   const {now} = window.performance;
   const mockNow = td.func('window.performance.now');
   window.performance.now = mockNow;
@@ -340,51 +308,46 @@ testFoundation('#close removes the animation class at the end of the animation',
   foundation.close();
   mockRaf.flush();
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass('mdc-simple-menu--animating')), 'sanity check');
+  td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
 
   td.when(mockNow()).thenReturn(500);
   mockRaf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass('mdc-simple-menu--animating')));
+  td.verify(mockAdapter.removeClass('mdc-simple-menu--animating'));
 
   window.performance.now = now;
-  t.end();
 });
 
-test('#isOpen returns true when the menu is open', (t) => {
+test('#isOpen returns true when the menu is open', () => {
   const {foundation} = setupTest();
 
   foundation.open();
-  t.true(foundation.isOpen());
-  t.end();
+  assert.isOk(foundation.isOpen());
 });
 
-test('#isOpen returns false when the menu is closed', (t) => {
+test('#isOpen returns false when the menu is closed', () => {
   const {foundation} = setupTest();
 
   foundation.close();
-  t.false(foundation.isOpen());
-  t.end();
+  assert.isNotOk(foundation.isOpen());
 });
 
-test('#isOpen returns true when the menu is initiated with the open class present', (t) => {
+test('#isOpen returns true when the menu is initiated with the open class present', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
 
   foundation.init();
-  t.true(foundation.isOpen());
-  t.end();
+  assert.isOk(foundation.isOpen());
 });
 
-test('#isOpen returns false when the menu is initiated without the open class present', (t) => {
+test('#isOpen returns false when the menu is initiated without the open class present', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(false);
 
   foundation.init();
-  t.false(foundation.isOpen());
-  t.end();
+  assert.isNotOk(foundation.isOpen());
 });
 
-test('on click notifies user of selection after allowing time for selection UX to run', (t) => {
+test('on click notifies user of selection after allowing time for selection UX to run', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -394,19 +357,15 @@ test('on click notifies user of selection after allowing time for selection UX t
 
   foundation.init();
   handlers.click({target});
-  t.doesNotThrow(
-    () => td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0}),
-    'No notification before delay for selection UX'
-  );
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected({index: expectedIndex})));
+  td.verify(mockAdapter.notifySelected({index: expectedIndex}));
 
   clock.uninstall();
-  t.end();
 });
 
-test('on click closes the menu', (t) => {
+test('on click closes the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -418,14 +377,13 @@ test('on click closes the menu', (t) => {
   handlers.click({target});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.OPEN)));
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on click does not trigger selected if non menu item clicked', (t) => {
+test('on click does not trigger selected if non menu item clicked', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -435,13 +393,12 @@ test('on click does not trigger selected if non menu item clicked', (t) => {
   foundation.init();
   handlers.click({target});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0}));
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 
   clock.uninstall();
-  t.end();
 });
 
-test('on click does not trigger selected if selection is already queued up', (t) => {
+test('on click does not trigger selected if selection is already queued up', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -452,13 +409,12 @@ test('on click does not trigger selected if selection is already queued up', (t)
   handlers.click({target});
   handlers.click({target});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected({index: 0}), {times: 1}));
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
 
   clock.uninstall();
-  t.end();
 });
 
-test('on ctrl+spacebar keyup does nothing', (t) => {
+test('on ctrl+spacebar keyup does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const target = {};
@@ -467,14 +423,10 @@ test('on ctrl+spacebar keyup does nothing', (t) => {
 
   foundation.init();
   handlers.keyup({target, key: 'Space', ctrlKey: true});
-  t.doesNotThrow(
-    () => td.verify(mockAdapter.getIndexForEventTarget(target), {times: 0}),
-    'Nothing is done on the item'
-  );
-  t.end();
+  td.verify(mockAdapter.notifySelected({index: expectedIndex}), {times: 0});
 });
 
-test('on spacebar keyup notifies user of selection after allowing time for selection UX to run', (t) => {
+test('on spacebar keyup notifies user of selection after allowing time for selection UX to run', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -484,19 +436,15 @@ test('on spacebar keyup notifies user of selection after allowing time for selec
 
   foundation.init();
   handlers.keyup({target, key: 'Space'});
-  t.doesNotThrow(
-    () => td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0}),
-    'No notification before delay for selection UX'
-  );
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected({index: expectedIndex})));
+  td.verify(mockAdapter.notifySelected({index: expectedIndex}));
 
   clock.uninstall();
-  t.end();
 });
 
-test('on spacebar keyup closes the menu', (t) => {
+test('on spacebar keyup closes the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -508,14 +456,13 @@ test('on spacebar keyup closes the menu', (t) => {
   handlers.keyup({target, key: 'Space'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.OPEN)));
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on spacebar keyup does not trigger selected if non menu item clicked', (t) => {
+test('on spacebar keyup does not trigger selected if non menu item clicked', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -525,13 +472,12 @@ test('on spacebar keyup does not trigger selected if non menu item clicked', (t)
   foundation.init();
   handlers.keyup({target, key: 'Space'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0}));
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 
   clock.uninstall();
-  t.end();
 });
 
-test('on spacebar keyup does not trigger selected if selection is already queued up', (t) => {
+test('on spacebar keyup does not trigger selected if selection is already queued up', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -542,13 +488,12 @@ test('on spacebar keyup does not trigger selected if selection is already queued
   handlers.keyup({target, key: 'Space'});
   handlers.keyup({target, key: 'Space'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected({index: 0}), {times: 1}));
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
 
   clock.uninstall();
-  t.end();
 });
 
-test('on spacebar keyup does works if DOM3 keyboard events are not supported', (t) => {
+test('on spacebar keyup does works if DOM3 keyboard events are not supported', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -558,13 +503,12 @@ test('on spacebar keyup does works if DOM3 keyboard events are not supported', (
   foundation.init();
   handlers.keyup({target, keyCode: 32});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected({index: 0})));
+  td.verify(mockAdapter.notifySelected({index: 0}));
 
   clock.uninstall();
-  t.end();
 });
 
-test('on enter keyup notifies user of selection after allowing time for selection UX to run', (t) => {
+test('on enter keyup notifies user of selection after allowing time for selection UX to run', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -574,19 +518,15 @@ test('on enter keyup notifies user of selection after allowing time for selectio
 
   foundation.init();
   handlers.keyup({target, key: 'Enter'});
-  t.doesNotThrow(
-    () => td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0}),
-    'No notification before delay for selection UX'
-  );
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected({index: expectedIndex})));
+  td.verify(mockAdapter.notifySelected({index: expectedIndex}));
 
   clock.uninstall();
-  t.end();
 });
 
-test('on enter keyup closes the menu', (t) => {
+test('on enter keyup closes the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -598,14 +538,13 @@ test('on enter keyup closes the menu', (t) => {
   handlers.keyup({target, key: 'Enter'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.OPEN)));
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on enter keyup does not trigger selected if non menu item clicked', (t) => {
+test('on enter keyup does not trigger selected if non menu item clicked', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -615,13 +554,12 @@ test('on enter keyup does not trigger selected if non menu item clicked', (t) =>
   foundation.init();
   handlers.keyup({target, key: 'Enter'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0}));
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 
   clock.uninstall();
-  t.end();
 });
 
-test('on enter keyup does not trigger selected if selection is already queued up', (t) => {
+test('on enter keyup does not trigger selected if selection is already queued up', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -632,13 +570,12 @@ test('on enter keyup does not trigger selected if selection is already queued up
   handlers.keyup({target, key: 'Enter'});
   handlers.keyup({target, key: 'Enter'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected({index: 0}), {times: 1}));
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
 
   clock.uninstall();
-  t.end();
 });
 
-test('on enter keyup does works if DOM3 keyboard events are not supported', (t) => {
+test('on enter keyup does works if DOM3 keyboard events are not supported', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -648,13 +585,12 @@ test('on enter keyup does works if DOM3 keyboard events are not supported', (t) 
   foundation.init();
   handlers.keyup({target, keyCode: 13});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  t.doesNotThrow(() => td.verify(mockAdapter.notifySelected({index: 0})));
+  td.verify(mockAdapter.notifySelected({index: 0}));
 
   clock.uninstall();
-  t.end();
 });
 
-test('on escape keyup closes the menu and sends cancel event', (t) => {
+test('on escape keyup closes the menu and sends cancel event', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -666,15 +602,14 @@ test('on escape keyup closes the menu and sends cancel event', (t) => {
   handlers.keyup({target, key: 'Escape'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.OPEN)));
-  t.doesNotThrow(() => td.verify(mockAdapter.notifyCancel()));
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+  td.verify(mockAdapter.notifyCancel());
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on Ctrl+Tab keydown does nothing', (t) => {
+test('on Ctrl+Tab keydown does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const target = {};
@@ -683,15 +618,10 @@ test('on Ctrl+Tab keydown does nothing', (t) => {
 
   foundation.init();
   handlers.keydown({target, key: 'Tab', ctrlKey: true, preventDefault: () => {}});
-  t.doesNotThrow(
-    () => td.verify(mockAdapter.getIndexForEventTarget(target), {times: 0}),
-    'Nothing is done on the item'
-  );
-
-  t.end();
+  td.verify(mockAdapter.getIndexForEventTarget(target), {times: 0});
 });
 
-test('on Tab keydown on the last element, it moves to the first', (t) => {
+test('on Tab keydown on the last element, it moves to the first', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -704,14 +634,13 @@ test('on Tab keydown on the last element, it moves to the first', (t) => {
   handlers.keydown({target, key: 'Tab', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.focusItemAtIndex(0)));
+  td.verify(mockAdapter.focusItemAtIndex(0));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on Shift+Tab keydown on the first element, it moves to the last', (t) => {
+test('on Shift+Tab keydown on the first element, it moves to the last', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -724,14 +653,13 @@ test('on Shift+Tab keydown on the first element, it moves to the last', (t) => {
   handlers.keydown({target, key: 'Tab', shiftKey: true, preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.focusItemAtIndex(2)));
+  td.verify(mockAdapter.focusItemAtIndex(2));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on ArrowDown keydown on the last element, it moves to the first', (t) => {
+test('on ArrowDown keydown on the last element, it moves to the first', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -744,14 +672,13 @@ test('on ArrowDown keydown on the last element, it moves to the first', (t) => {
   handlers.keydown({target, key: 'ArrowDown', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.focusItemAtIndex(0)));
+  td.verify(mockAdapter.focusItemAtIndex(0));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on ArrowDown keydown on the first element, it moves to the second', (t) => {
+test('on ArrowDown keydown on the first element, it moves to the second', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -764,14 +691,13 @@ test('on ArrowDown keydown on the first element, it moves to the second', (t) =>
   handlers.keydown({target, key: 'ArrowDown', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.focusItemAtIndex(1)));
+  td.verify(mockAdapter.focusItemAtIndex(1));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on ArrowDown keydown prevents default on the event', (t) => {
+test('on ArrowDown keydown prevents default on the event', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -785,14 +711,13 @@ test('on ArrowDown keydown prevents default on the event', (t) => {
   handlers.keydown({target, key: 'ArrowDown', preventDefault});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(preventDefault()));
+  td.verify(preventDefault());
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on ArrowUp keydown on the first element, it moves to the last', (t) => {
+test('on ArrowUp keydown on the first element, it moves to the last', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -805,14 +730,13 @@ test('on ArrowUp keydown on the first element, it moves to the last', (t) => {
   handlers.keydown({target, key: 'ArrowUp', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.focusItemAtIndex(2)));
+  td.verify(mockAdapter.focusItemAtIndex(2));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on ArrowUp keydown on the last element, it moves to the previous', (t) => {
+test('on ArrowUp keydown on the last element, it moves to the previous', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -825,14 +749,13 @@ test('on ArrowUp keydown on the last element, it moves to the previous', (t) => 
   handlers.keydown({target, key: 'ArrowUp', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(mockAdapter.focusItemAtIndex(1)));
+  td.verify(mockAdapter.focusItemAtIndex(1));
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on ArrowUp keydown prevents default on the event', (t) => {
+test('on ArrowUp keydown prevents default on the event', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -846,14 +769,13 @@ test('on ArrowUp keydown prevents default on the event', (t) => {
   handlers.keydown({target, key: 'ArrowUp', preventDefault});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(preventDefault()));
+  td.verify(preventDefault());
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-test('on spacebar keydown prevents default on the event', (t) => {
+test('on spacebar keydown prevents default on the event', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -867,15 +789,13 @@ test('on spacebar keydown prevents default on the event', (t) => {
   handlers.keydown({target, key: 'Space', preventDefault});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  t.doesNotThrow(() => td.verify(preventDefault()));
+  td.verify(preventDefault());
 
   raf.restore();
   clock.uninstall();
-  t.end();
 });
 
-testFoundation('should cancel animation after destroy', (t) => {
-  const {foundation, mockAdapter, mockRaf} = t.data;
+testFoundation('should cancel animation after destroy', ({foundation, mockAdapter, mockRaf}) => {
   foundation.init();
   mockRaf.flush();
   foundation.open();
@@ -883,6 +803,8 @@ testFoundation('should cancel animation after destroy', (t) => {
   mockRaf.flush();
   mockRaf.flush();
 
-  t.doesNotThrow(() => td.verify(mockAdapter.setScale(td.matchers.anything(), td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(
+    mockAdapter.setScale(td.matchers.anything(), td.matchers.anything()),
+    {times: 0}
+  );
 });
