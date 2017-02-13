@@ -63,6 +63,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   init() {
+    this.adapter_.addClass(cssClasses.UPGRADED);
     this.adapter_.registerChangeHandler(this.changeHandler_);
     this.installPropertyChangeHooks_();
   }
