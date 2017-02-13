@@ -123,6 +123,14 @@ test('defaultAdapter returns a complete adapter implementation', (t) => {
   t.end();
 });
 
+test('#init adds the upgraded class to the root element', (t) => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.init();
+  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.UPGRADED)));
+  t.end();
+});
+
 test('#init calls adapter.registerChangeHandler() with a change handler function', (t) => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
@@ -406,19 +414,21 @@ test('change handler triggers layout for changes within the same frame to correc
 
 test('change handler does not add animation classes when isAttachedToDOM() is falsy', (t) => {
   const {mockAdapter, change} = setupChangeHandlerTest();
+  const animClassArg = td.matchers.argThat((cls) => cls.indexOf('mdc-checkbox--anim') >= 0);
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(false);
 
   change({checked: true, indeterminate: false});
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(td.matchers.anything()), {times: 0}));
+  t.doesNotThrow(() => td.verify(mockAdapter.addClass(animClassArg), {times: 0}));
 
   t.end();
 });
 
 test('change handler does not add animation classes for bogus changes (init -> unchecked)', (t) => {
   const {mockAdapter, change} = setupChangeHandlerTest();
+  const animClassArg = td.matchers.argThat((cls) => cls.indexOf('mdc-checkbox--anim') >= 0);
 
   change({checked: false, indeterminate: false});
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(td.matchers.anything()), {times: 0}));
+  t.doesNotThrow(() => td.verify(mockAdapter.addClass(animClassArg), {times: 0}));
   t.end();
 });
 
