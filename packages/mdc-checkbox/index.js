@@ -78,6 +78,10 @@ export class MDCCheckbox extends MDCComponent {
     });
   }
 
+  get ripple() {
+    return this.ripple_;
+  }
+
   get checked() {
     return this.foundation_.isChecked();
   }

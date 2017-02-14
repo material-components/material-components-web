@@ -172,9 +172,18 @@
     <script>
       (function(global) {
         'use strict';
-        var radios = document.querySelectorAll('.mdc-radio:not([data-demo-no-js])');
-        for (var i = 0, radio; radio = radios[i]; i++) {
-          global.mdc.radio.MDCRadio.attachTo(radio);
+        var MDCFormField = global.mdc.formField.MDCFormField;
+        var MDCRadio = global.mdc.radio.MDCRadio;
+
+        var formFields = document.querySelectorAll('.mdc-form-field');
+        for (var i = 0, formField; formField = formFields[i]; i++) {
+          var formFieldInstance = new MDCFormField(formField);
+
+          var radio = formField.querySelector('.mdc-radio:not([data-demo-no-js])');
+          if (radio) {
+            var radioInstance = new MDCRadio(radio);
+            formFieldInstance.input = radioInstance;
+          }
         }
       })(this);
     </script>

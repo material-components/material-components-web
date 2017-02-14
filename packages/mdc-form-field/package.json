@@ -1,6 +1,6 @@
 {
   "name": "@material/form-field",
-  "description": "Material Components for the web wrapper styles for laying out form fields and labels next to one another",
+  "description": "Material Components for the web wrapper for laying out form fields and labels next to one another",
   "version": "0.1.1",
   "license": "Apache-2.0",
   "keywords": [
@@ -8,11 +8,13 @@
     "material design",
     "form"
   ],
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
+    "@material/base": "^0.1.1",
     "@material/rtl": "^0.1.1",
     "@material/theme": "^0.1.1",
     "@material/typography": "^0.1.1"
