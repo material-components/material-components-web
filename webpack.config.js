@@ -76,6 +76,7 @@ module.exports = [{
     base: [path.resolve('./packages/mdc-base/index.js')],
     checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
     drawer: [path.resolve('./packages/mdc-drawer/index.js')],
+    formField: [path.resolve('./packages/mdc-form-field/index.js')],
     iconToggle: [path.resolve('./packages/mdc-icon-toggle/index.js')],
     menu: [path.resolve('./packages/mdc-menu/index.js')],
     radio: [path.resolve('./packages/mdc-radio/index.js')],
