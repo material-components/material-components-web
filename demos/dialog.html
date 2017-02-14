@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC-Web Dialog Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
+    <style>
+    .demo-body {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    </style>
+  </head>
+  <body class="mdc-typography demo-body">
+		<aside id="mdc-dialog-one" class="mdc-dialog">
+		  <div class="mdc-dialog-surface">
+		    <section class="mdc-dialog-header">
+		      <h2 class="mdc-dialog-header__title">
+		        Use Google's location service?
+		      </h2>
+		    </section>
+		    <section class="mdc-dialog-body">
+		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+		    </section>
+		    <section class="mdc-dialog-footer">
+		      <button type="button" id="cancel-button" class="mdc-dialog-footer__btn mdc-dialog-footer__btn-cancel">DECLINE</button>
+		      <button type="button" id="accept-button" class="mdc-dialog-footer__btn mdc-dialog-footer__btn-accept">ACCEPT</button>
+		    </section>
+		  </div>
+		  <div class="mdc-dialog-backdrop"></div>
+		</aside>
+		
+		<aside id="mdc-dialog-two" class="mdc-dialog">
+		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
+		    <section class="mdc-dialog-header">
+		      <button id="mdc-dialog-header__navigation-cancel" class="mdc-button mdc-dialog_header__navigation-close">
+		         <i class="material-icons">close</i>
+		      </button>
+		      <h2 class="mdc-dialog-header__title">
+		        Use Google?
+		      </h2>
+		      <button id="mdc-dialog-header__navigation-accept" class="mdc-button dialog_header__navigation-save">SAVE</button>
+		    </section>
+		    <section class="mdc-dialog-body">
+		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+		    </section>
+		    <section class="mdc-dialog-footer">
+		      <button type="button" id="mdc-cancel-button__navigation" class="mdc-dialog-footer__btn dialog-footer__btn-cancel">CLOSE</button>
+		      <button type="button" id="mdc-accept-button__navigation" class="mdc-dialog-footer__btn dialog-footer__btn-accept">SAVE</button>
+		    </section>
+		  </div>
+		  <div class="mdc-dialog-backdrop"></div>
+		  <div id="mdc-dialog-confirmation-action" class="mdc-dialog-confirmation">
+		    <div class="mdc-dialog-confirmation--surface">
+		      <section class="mdc-dialog-confirmation--header">Are you sure?</section>
+		      <section class="mdc-dialog-confirmation--buttons">
+		        <button id="mdc-dialog-confirmation--buttons__cancel" class="mdc-button mdc-button--accent">Cancel</button>
+		        <button id="mdc-dialog-confirmation--buttons__accept" class="mdc-button mdc-button--accent mdc-button--raised">Continue</button>
+		      </section>
+		    </div>
+		  </div>
+		</aside>
+		
+		<aside id="mdc-dialog-three" class="mdc-dialog">
+		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
+		    
+		    <section class="mdc-dialog-header">
+		      <button id="mdc-dialog-header__autosave-back" class="mdc-button dialog_header__back">
+		         <i class="material-icons">arrow_back</i>
+		      </button>
+		      <h2 class="mdc-dialog-header__title">
+		        Use Google?
+		      </h2>
+		    </section>
+		    
+		    <section class="mdc-dialog-body">
+		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+		    </section>
+		    <section class="mdc-dialog-footer">
+		      <button type="button" id="mdc-accept-button__navigation-back" class="mdc-dialog-footer__btn mdc-dialog-footer__btn-accept">BACK</button>
+		    </section>
+		  </div>
+		  <div class="mdc-dialog-backdrop"></div>
+		  <div class="mdc-dialog-confirmation">
+		    <section class="mdc-dialog-confirmation--header">Are you sure?</section>
+		    <section class="mdc-dialog-confirmation--buttons">
+		      <button class="mdc-button mdc-button--accent">Cancel</button>
+		      <button class="mdc-button mdc-button--accent mdc-button--raised">Continue</button>
+		    </section>
+		  </div>
+		</aside>
+		
+		<aside id="mdc-dialog-four" class="mdc-dialog">
+		  <div class="mdc-dialog-surface">
+		    <section class="mdc-dialog-header">
+		      <h2 class="mdc-dialog-header__title">
+		        Choose a Ringtone
+		      </h2>
+		    </section>
+		    <section class="mdc-dialog-body mdc-dialog-body__scrollable">
+		     
+					<!-- Start content here. Section will handle overflow: scroll--> 
+					<ul class="mdc-dialog-body__list">
+		        <li class="dialog-body__list-item">None</li>
+		        <li class="dialog-body__list-item">Callisto</li>
+		        <li class="dialog-body__list-item">Ganymede</li>
+		        <li class="dialog-body__list-item">Luna</li>
+		        <li class="dialog-body__list-item">Marimba</li>
+		        <li class="dialog-body__list-item">Schwifty</li>
+		        <li class="dialog-body__list-item">Callisto</li>
+		        <li class="dialog-body__list-item">Ganymede</li>
+		        <li class="dialog-body__list-item">Luna</li>
+		        <li class="dialog-body__list-item">Marimba</li>
+		        <li class="dialog-body__list-item">Schwifty</li>
+		      <ul>
+					<!-- End content-->
+
+		    </section>
+		    <section class="mdc-dialog-footer">
+		      <button type="button" id="mdc-cancel-button__scrolling" class="mdc-dialog-footer__btn dialog-footer__btn-cancel">DECLINE</button>
+		      <button type="button" id="mdc-accept-button__scrolling" class="mdc-dialog-footer__btn dialog-footer__btn-accept">ACCEPT</button>
+		    </section>
+		  </div>
+		  <div class="mdc-dialog-backdrop"></div> 
+		</aside>
+		
+		<section class="user-content">
+		  <div>
+		    <h2>Content</h2>
+		    <p>Here is some content that a user might have on their page</p>
+		  </div>
+		  <button id="dialog-activation" class="mdc-button mdc-button--accent mdc-button--raised">Show Dialog</button>
+		  <button id="dialog-activation__navigation" class="mdc-button mdc-button--accent mdc-button--raised">Show Dialog with Nav</button>
+		  <button id="dialog-activation__navigation-autosave" class="mdc-button mdc-button--accent mdc-button--raised">Show Dialog with Back Nav</button>
+		  <button id="dialog-activation__scrolling" class="mdc-button mdc-button--accent mdc-button--raised">Show Scrolling Dialog</button>
+		</section>
+
+    <script src="../assets/material-components-web.js" charset="utf-8"></script>
+    <script>
+      var dialog = new MDCDialog(document.querySelector('#mdc-dialog-one'));
+    </script>
+  </body>
+</html>
