@@ -21,13 +21,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <style>
-    .demo-body {
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
+    	.demo-body {
+    	  padding: 24px;
+    	  margin: 0;
+    	  box-sizing: border-box;
+    	}
     </style>
   </head>
   <body class="mdc-typography demo-body">
@@ -42,8 +42,8 @@
 		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
 		    </section>
 		    <section class="mdc-dialog-footer">
-		      <button type="button" id="cancel-button" class="mdc-dialog-footer__btn mdc-dialog-footer__btn-cancel">DECLINE</button>
-		      <button type="button" id="accept-button" class="mdc-dialog-footer__btn mdc-dialog-footer__btn-accept">ACCEPT</button>
+		      <button type="button" id="mdc-dialog-cancel" class="mdc-button">DECLINE</button>
+		      <button type="button" id="mdc-dialog-accept" class="mdc-button">ACCEPT</button>
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div>
@@ -52,20 +52,20 @@
 		<aside id="mdc-dialog-two" class="mdc-dialog">
 		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
 		    <section class="mdc-dialog-header">
-		      <button id="mdc-dialog-header__navigation-cancel" class="mdc-button mdc-dialog_header__navigation-close">
+		      <button id="mdc-dialog-navigation-cancel" class="mdc-button mdc-dialog_header__navigation-close">
 		         <i class="material-icons">close</i>
 		      </button>
 		      <h2 class="mdc-dialog-header__title">
 		        Use Google?
 		      </h2>
-		      <button id="mdc-dialog-header__navigation-accept" class="mdc-button dialog_header__navigation-save">SAVE</button>
+		      <button id="mdc-dialog-navigation-accept" class="mdc-button dialog_header__navigation-save">SAVE</button>
 		    </section>
 		    <section class="mdc-dialog-body">
 		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
 		    </section>
 		    <section class="mdc-dialog-footer">
-		      <button type="button" id="mdc-cancel-button__navigation" class="mdc-dialog-footer__btn dialog-footer__btn-cancel">CLOSE</button>
-		      <button type="button" id="mdc-accept-button__navigation" class="mdc-dialog-footer__btn dialog-footer__btn-accept">SAVE</button>
+		      <button type="button" id="mdc-dialog-cancel" class="mdc-button">CLOSE</button>
+		      <button type="button" id="mdc-dialog-accept" class="mdc-button">SAVE</button>
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div>
@@ -73,8 +73,8 @@
 		    <div class="mdc-dialog-confirmation--surface">
 		      <section class="mdc-dialog-confirmation--header">Are you sure?</section>
 		      <section class="mdc-dialog-confirmation--buttons">
-		        <button id="mdc-dialog-confirmation--buttons__cancel" class="mdc-button mdc-button--accent">Cancel</button>
-		        <button id="mdc-dialog-confirmation--buttons__accept" class="mdc-button mdc-button--accent mdc-button--raised">Continue</button>
+		        <button id="mdc-dialog-confirmation-cancel" class="mdc-button">Cancel</button>
+		        <button id="mdc-dialog-confirmation-accept" class="mdc-button">Continue</button>
 		      </section>
 		    </div>
 		  </div>
@@ -84,7 +84,7 @@
 		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
 		    
 		    <section class="mdc-dialog-header">
-		      <button id="mdc-dialog-header__autosave-back" class="mdc-button dialog_header__back">
+		      <button id="mdc-dialog-navigation-cancel" class="mdc-button dialog_header__back">
 		         <i class="material-icons">arrow_back</i>
 		      </button>
 		      <h2 class="mdc-dialog-header__title">
@@ -96,17 +96,10 @@
 		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
 		    </section>
 		    <section class="mdc-dialog-footer">
-		      <button type="button" id="mdc-accept-button__navigation-back" class="mdc-dialog-footer__btn mdc-dialog-footer__btn-accept">BACK</button>
+		      <button type="button" id="mdc-accept" class="mdc-button">BACK</button>
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div>
-		  <div class="mdc-dialog-confirmation">
-		    <section class="mdc-dialog-confirmation--header">Are you sure?</section>
-		    <section class="mdc-dialog-confirmation--buttons">
-		      <button class="mdc-button mdc-button--accent">Cancel</button>
-		      <button class="mdc-button mdc-button--accent mdc-button--raised">Continue</button>
-		    </section>
-		  </div>
 		</aside>
 		
 		<aside id="mdc-dialog-four" class="mdc-dialog">
@@ -136,8 +129,8 @@
 
 		    </section>
 		    <section class="mdc-dialog-footer">
-		      <button type="button" id="mdc-cancel-button__scrolling" class="mdc-dialog-footer__btn dialog-footer__btn-cancel">DECLINE</button>
-		      <button type="button" id="mdc-accept-button__scrolling" class="mdc-dialog-footer__btn dialog-footer__btn-accept">ACCEPT</button>
+		      <button type="button" id="mdc-dialog-cancel" class="mdc-button">DECLINE</button>
+		      <button type="button" id="mdc-dialog-accept" class="mdc-button">ACCEPT</button>
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div> 
@@ -148,15 +141,32 @@
 		    <h2>Content</h2>
 		    <p>Here is some content that a user might have on their page</p>
 		  </div>
-		  <button id="dialog-activation" class="mdc-button mdc-button--accent mdc-button--raised">Show Dialog</button>
-		  <button id="dialog-activation__navigation" class="mdc-button mdc-button--accent mdc-button--raised">Show Dialog with Nav</button>
-		  <button id="dialog-activation__navigation-autosave" class="mdc-button mdc-button--accent mdc-button--raised">Show Dialog with Back Nav</button>
-		  <button id="dialog-activation__scrolling" class="mdc-button mdc-button--accent mdc-button--raised">Show Scrolling Dialog</button>
+		  <button id="dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog</button>
+		  <button id="dialog-activation__navigation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog with Nav</button>
+		  <button id="dialog-activation__autosave" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog with Back Nav</button>
+		  <button id="dialog-activation__scrollable" class="mdc-button mdc-button--primary mdc-button--raised">Show Scrolling Dialog</button>
 		</section>
 
-    <script src="../assets/material-components-web.js" charset="utf-8"></script>
-    <script>
-      var dialog = new MDCDialog(document.querySelector('#mdc-dialog-one'));
+    <script src="assets/material-components-web.js" charset="utf-8"></script>
+    
+		<script>
+      var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-one'));
+      var dialogNavigation= new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-two'));
+      var dialogAutosave = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-three'));
+      var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-four'));
+
+			document.querySelector('#dialog-activation').addEventListener('click', function () {
+				dialog.open = true;
+			})
+			document.querySelector('#dialog-activation__navigation').addEventListener('click', function () {
+				dialogNavigation.open = true;
+			})
+			document.querySelector('#dialog-activation__autosave').addEventListener('click', function () {
+				dialogAutosave.open = true;
+			})
+			document.querySelector('#dialog-activation__scrollable').addEventListener('click', function () {
+				dialogScrollable.open = true;
+			})
     </script>
   </body>
 </html>

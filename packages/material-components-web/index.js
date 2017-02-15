@@ -21,6 +21,7 @@ import * as gridList from '@material/grid-list';
 import * as iconToggle from '@material/icon-toggle';
 import * as radio from '@material/radio';
 import * as ripple from '@material/ripple';
+import * as dialog from '@material/dialog';
 import * as drawer from '@material/drawer';
 import * as textfield from '@material/textfield';
 import * as snackbar from '@material/snackbar';
@@ -30,6 +31,7 @@ import autoInit from '@material/auto-init';
 
 // Register all components
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
+autoInit.register('MDCDialog', dialog.MDCDialog);
 autoInit.register('MDCTemporaryDrawer', drawer.MDCTemporaryDrawer);
 autoInit.register('MDCRipple', ripple.MDCRipple);
 autoInit.register('MDCGridList', gridList.MDCGridList);
@@ -50,6 +52,7 @@ export {
   radio,
   ripple,
   snackbar,
+  dialog,
   drawer,
   textfield,
   menu,

@@ -30,11 +30,74 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return {};
   }
 
+	static get isOpen() {
+		return this.isOpen_;
+	}
+
+	static get defaultAdapter() {
+    return {
+      addClass: (/* className: string */) => {},
+      removeClass: (/* className: string */) => {},
+      hasClass: (/* className: string */) => {},
+      hasNecessaryDom: () => /* boolean */ false,
+
+      registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
+      deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
+
+			registerAcceptHandler: () => {},
+			deregisterAcceptHandler: () => {},
+			registerCancelHandler: () => {},
+			deregisterCancelHandler: () => {},
+			registerNavigationCancelHandler: () => {},
+			deregisterNavigationCancelHandler: () => {},
+			registerNavigationAcceptHandler: () => {},
+			deregisterNavigationAcceptHandler: () => {},
+
+	//  this.navigation_ = adapter.navigation;
+  //  this.navigationAutoSave_ = adapter.navigationAutoSave;
+  //  this.activationButton_ = adapter.activationButton;
+  //  this.acceptButton_ = adapter.acceptButton;
+  //  this.cancelButton_ = adapter.cancelButton;
+  //  this.navigationCancelButton_ = adapter.navigationCancelButton;
+  //  this.navigationAcceptButton_ = adapter.navigationAcceptButton;
+  //  this.confirmationDialog_ = adapter.confirmationDialog,
+  //  this.confirmationAcceptButton_ = adapter.confirmationAcceptButton,
+  //  this.confirmationCancelButton_ = adapter.confirmationCancelButton,
+  //  
+	//	this.activationHandler_ = () => this.showDialog_();
+  //  this.acceptHandler_ = () => this.accept_();
+  //  this.cancelHandler_ = () => this.cancel_();
+  //  
+	//	this.acceptEventHandler_ = adapter.registerAcceptHandler;
+  //  this.cancelEventHandler_ = adapter.registerCancelHandler;	
+
+      
+
+			setTranslateY: (/* value: number | null */) => {},
+      updateCssVariable: (/* value: string */) => {},
+      getFocusableElements: () => /* NodeList */ {},
+      saveElementTabState: (/* el: Element */) => {},
+      restoreElementTabState: (/* el: Element */) => {},
+      makeElementUntabbable: (/* el: Element */) => {},
+      isRtl: () => /* boolean */ false,
+      isDialog: (/* el: Element */) => /* boolean */ false,
+
+			hasNavigation: () => /* boolean */ false,
+			hasAutosave: () => /* boolean */ false,
+			willConfirmCancel: () => /* boolean */ false,
+    };
+  }
+
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
 
-    this.inert_ = false;
     this.dialog_ = adapter.dialog;
+    this.inert_ = false;
+		this.isOpen_ = false;
     this.navigation_ = adapter.navigation;
     this.navigationAutoSave_ = adapter.navigationAutoSave;
     this.activationButton_ = adapter.activationButton;
@@ -46,44 +109,54 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.confirmationAcceptButton_ = adapter.confirmationAcceptButton,
     this.confirmationCancelButton_ = adapter.confirmationCancelButton,
     
-		this.activationHandler_ = () => this.showDialog_();
+    this.activationHandler_ = () => this.showDialog_();
     this.acceptHandler_ = () => this.accept_();
     this.cancelHandler_ = () => this.cancel_();
     
-		this.acceptEventHandler_ = adapter.registerAcceptHandler;
+    this.acceptEventHandler_ = adapter.registerAcceptHandler;
     this.cancelEventHandler_ = adapter.registerCancelHandler;
   }
 
   init() {
     const {ROOT, OPEN} = MDCDialogFoundation.cssClasses;
 
-		this.activationButton_.addEventListener('click', this.activationHandler_);
-    this.acceptButton_.addEventListener('click', this.acceptHandler_);
+    // this.acceptButton_.addEventListener('click', this.acceptHandler_);
 
-    if (!this.navigationAutoSave_) {
-      this.cancelButton_.addEventListener('click', this.cancelHandler_);
-    }
-    
-    if (this.navigation_ && !this.navigationAutoSave_) {
-      this.navigationAcceptButton_.addEventListener('click', this.acceptHandler_);
-      this.navigationCancelButton_.addEventListener('click', this.showConfirmation_.bind(this));
-      this.confirmationAcceptButton_.addEventListener('click', this.acceptHandler_);
-      this.confirmationCancelButton_.addEventListener('click', this.cancelHandler_);
-    }
+    // if (!this.navigationAutoSave_) {
+    //   this.cancelButton_.addEventListener('click', this.cancelHandler_);
+    // }
+    // 
+    // if (this.navigation_ && !this.navigationAutoSave_) {
+    //   this.navigationAcceptButton_.addEventListener('click', this.acceptHandler_);
+    //   this.navigationCancelButton_.addEventListener('click', this.showConfirmation_.bind(this));
+    //   this.confirmationAcceptButton_.addEventListener('click', this.acceptHandler_);
+    //   this.confirmationCancelButton_.addEventListener('click', this.cancelHandler_);
+    // }
   }
 
   destroy() {}
 
-  open() {}
+  open() {
+		console.log(this.adapter_);
+    this.adapter_.updateCssVariable('');
+    this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
 
-  close() {}
+    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
+    
+		this.unlockTab_();
+    this.isOpen_ = true;
+	}
+
+  close() {
+		console.log('close dialog');
+	}
   
   isOpen() {
     return this.isOpen_;
   }
 
   /**
-   *  Render all children of the drawer inert when it's closed.
+   *  Render all children of the dialog inert when it's closed.
    */
   lockTab_() {
     if (this.inert_) {

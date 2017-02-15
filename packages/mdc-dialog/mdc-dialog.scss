@@ -1,18 +1,6 @@
 $animation-curve: cubic-bezier(.4, 0, .2, 1);
 
-body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.user-content {
-  button {
-    margin-bottom: 4px;
-  }
-}
-
-.dialog-backdrop {
+.mdc-dialog-backdrop {
   position: fixed;
   display: flex;
   align-items: center;
@@ -25,7 +13,7 @@ body {
   z-index: -1;
 }
 
-.dialog-confirmation {
+.mdc-dialog-confirmation {
   position: absolute;
   display: flex;
   align-items: center;
@@ -38,7 +26,7 @@ body {
   opacity: 0;
   z-inde: -1;
   
-  .dialog-confirmation--surface {
+  .mdc-dialog-confirmation--surface {
     padding: 24px;
     width: 100%;
     max-width: 450px;
@@ -49,13 +37,13 @@ body {
       0px 9px 46px 8px rgba(0, 0, 0, 0.12);
   }
   
-  .dialog-confirmation--header {
+  .mdc-dialog-confirmation--header {
     font-family: Roboto, sans-serif;
     font-size: 16px;
     color: rgba(0, 0, 0, 0.54);
   }
   
-  .dialog-confirmation--buttons {
+  .mdc-dialog-confirmation--buttons {
     display: flex;
     justify-content: flex-end;
     padding-top: 20px;
@@ -69,7 +57,7 @@ body {
   }
 }
 
-.dialog {
+.mdc-dialog {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,7 +65,7 @@ body {
   visibility: hidden;
   z-index: -1;
 
-  .dialog-surface {
+  .mdc-dialog-surface {
     display: inline-flex;
     position: absolute;
     top: 0px;
@@ -105,18 +93,16 @@ body {
     height: 100%;
     z-index: 2;
     
-    .dialog-surface {
+    .mdc-dialog-surface {
       top: 200px;
-      //transform: translateY(200px);
       transition: transform 1000ms $animation-curve;
     }
   }
   
-  .dialog-surface__navigation {
+  .mdc-dialog-surface__navigation {
     
-    .dialog_header__navigation-close,
-    .dialog_header__back,
-    .dialog_header__navigation-save {
+		.mdc-dialog-navigation-cancel,
+    .mdc-dialog-navigation-accept {
       display: none;
     }
   }
@@ -126,11 +112,11 @@ body {
   .dialog {
     min-width: 280px;
     
-    .dialog-surface {
+    .mdc-dialog-surface {
       min-width: 280px;
     }
     
-    .dialog-surface__full-screen {
+    .mdc-dialog-surface__full-screen {
       position: fixed;
       top: 0;
       left: 0;
@@ -139,31 +125,30 @@ body {
       height: 100vh;
     }
     
-    .dialog-surface__navigation {
+    .mdc-dialog-surface__navigation {
       
-      .dialog-header {
+      .mdc-dialog-header {
         padding: 24px 0;
         background-color: #ff4081;
         color: white;
       }
       
-      .dialog_header__navigation-close,
-      .dialog_header__back,
-      .dialog_header__navigation-save {
+      .mdc-dialog-navigation-accept,
+      .mdc-dialog-navigation-cancel {
         display: flex;
         font-size: 14px;
         font-weight: 600;
         color: white;
       }
       
-      .dialog-footer {
+      .mdc-dialog-footer {
         display: none;
       }
     }
   }
 }
 
-.dialog-header {
+.mdc-dialog-header {
   padding: 24px 24px 0 24px;
   display: flex;
   align-items: center;
@@ -171,16 +156,10 @@ body {
   &__empty {
     padding: 0;
   }
-  
-  // TODO: Remove this in package scss
-  h2 {
-    margin: 0;
-  }
 }
 
-.dialog-header__title {
+.mdc-dialog-header__title {
   margin: 0;
-  /* Title typographic styles */
   font-size: 20px;
   line-height: 20px;
   letter-spacing: 0.02em;
@@ -188,7 +167,7 @@ body {
   flex: 1;
 }
 
-.dialog-body {
+.mdc-dialog-body {
   margin-top: 20px;
   padding: 0 24px 24px 24px;
   color: rgba(0, 0, 0, 0.54);
@@ -218,12 +197,12 @@ body {
 }
 
 @media (max-width: 640px) {
-  .dialog-body {
+  .mdc-dialog-body {
     line-height: 24px;
   }
 }
 
-.dialog-footer {
+.mdc-dialog-footer {
   padding: 8px;
   display: flex;
   flex-wrap: wrap;
@@ -231,23 +210,8 @@ body {
   align-items: center;
 }
 
-.dialog-footer-buttons__right {
+.mdc-dialog-footer-buttons__right {
   flex: 1;
   display: flex;
   justify-content: flex-end;
-}
-
-.dialog-footer__btn {
-  appearance: none;
-  background: none;
-  border: none;
-  margin-right: 8px;
-    /* "Button" typography, essentially body2 with medium font-weight and upcase */
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 0.04em;
-  font-weight: 500;
-  text-transform: uppercase;
-  color: #2196f3;
-  cursor: pointer;
 }

@@ -16,13 +16,13 @@
 
 import {MDCComponent} from '@material/base';
 import MDCDialogFoundation from './foundation';
-import * as util from '../util';
+import * as util from 'util';
 
 export {MDCDialogFoundation};
 
-export class MDCTemporaryDrawer extends MDCComponent {
+export class MDCDialog extends MDCComponent {
   static attachTo(root) {
-    return new MDCTemporaryDrawer(root);
+    return new MDCDialog(root);
   }
 
   get open() {
@@ -37,14 +37,61 @@ export class MDCTemporaryDrawer extends MDCComponent {
     }
   }
 
-  /* Return the drawer element inside the component. */
   get dialog() {
     return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SELECTOR);
   }
 
-  getDefaultFoundation() {
-    const {FOCUSABLE_ELEMENTS} = MDCDialogFoundation.strings;
+	get acceptButton() {
+		return this.root_.querySelector(MDCDialogFoundation.strings.ACCEPT_SELECTOR);
+	}
+	
+	get cancelButton() {
+		return this.root_.querySelector(MDCDialogFoundation.strings.CANCEL_SELECTOR);
+	}
+	
+	get navigationAcceptButton() {
+		return this.root_.querySelector(MDCDialogFoundation.strings.NAV_ACCEPT_SELECTOR);
+	}
+	
+	get navigationCancelButton() {
+		return this.root_.querySelector(MDCDialogFoundation.strings.NAV_CANCEL_SELECTOR);
+	}
 
-    return new MDCDialogFoundation({});
+	get confirmationAcceptButton() {
+		return this.root_.querySelector(MDCDialogFoundation.strings.CONFIRMATION_ACCEPT_SELECTOR);
+	}
+	
+	get confirmationCancelButton() {
+		return this.root_.querySelector(MDCDialogFoundation.strings.CONFIRMATION_CANCEL_SELECTOR);
+	}
+
+
+  getDefaultFoundation() {
+		const {FOCUSABLE_ELEMENTS, OPACITY_VAR_NAME} = MDCDialogFoundation.strings;
+
+		return new MDCDialogFoundation({
+			addClass: (className) => this.root_.classList.add(className),
+			removeClass: (className) => this.root_.classList.remove(className),
+			hasClass: (className) => this.root_.classList.contains(className),
+			hasNecessaryDom: () => Boolean(this.dialog),
+			registerInteractionHandler: (evt, handler) =>
+			  this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+			deregisterInteractionHandler: (evt, handler) =>
+			 this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+			registerDialogInteractionHandler: (evt, handler) =>
+			  this.dialog.addEventListener(util.remapEvent(evt), handler),
+			deregisterDialogInteractionHandler: (evt, handler) =>
+			this.dialog.removeEventListener(util.remapEvent(evt), handler),
+			registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
+			deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
+			setTranslateY: (value) => this.dialog.style.setProperty(
+			util.getTransformPropertyName(), value === null ? null : `translateY(${value}px)`),
+			getFocusableElements: () => this.dialog.querySelectorAll(FOCUSABLE_ELEMENTS),
+			saveElementTabState: (el) => util.saveElementTabState(el),
+			restoreElementTabState: (el) => util.restoreElementTabState(el),
+			makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
+			isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+			isDialog: (el) => el === this.dialog,
+		})
   }
 }

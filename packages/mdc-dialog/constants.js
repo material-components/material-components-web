@@ -26,6 +26,13 @@ export const cssClasses = {
 
 export const strings = {
   DIALOG_SELECTOR: `.${ROOT}__dialog`,
+	ACCEPT_SELECTOR: `.${ROOT}-accept`,
+	CANCEL_SELECTOR: `.${ROOT}-cancel`,
+ 	NAV_ACCEPT_SELECTOR: `.${ROOT}-navigation-accept`,
+	NAV_CANCEL_SELECTOR: `.${ROOT}-navigation-cancel`,
+	CONFIRMATION_ACCEPT_SELECTOR: `.${ROOT}-confirmation-accept`,
+	CONFIRMATION_CANCEL_SELECTOR: `.${ROOT}-confirmation-cancel`,
+ 	OPACITY_VAR_NAME: `--${ROOT}-opacity`,
   FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
       'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',
 };

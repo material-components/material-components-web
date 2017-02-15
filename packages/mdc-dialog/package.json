@@ -6,7 +6,8 @@
   "keywords": [
     "material components",
     "material design",
-    "dialog"
+    "dialog",
+    "modal"
   ],
   "main": "index.js",
   "repository": {
