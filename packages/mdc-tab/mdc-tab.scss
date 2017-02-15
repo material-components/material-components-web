@@ -35,6 +35,8 @@
     max-width: 264px;
     min-width: 160px;
 
+    font-size: 14px;
+
     text-align: center;
     line-height: 48px;
     text-transform: uppercase;
@@ -50,12 +52,17 @@
     // to include padding and border into size calculation
     box-sizing: border-box;
 
+    transition: box-shadow 0.5s ease-in-out;
+    box-shadow: inset 0px -2px 0px 0px $mdc-theme-primary;
+
     &--active {
         @include mdc-theme-prop(color, text-primary-on-primary);
-        @include mdc-theme-prop(border-bottom-color, accent);
+        //@include mdc-theme-prop(border-bottom-color, accent);
 
-        border-bottom-width: 2px;
-        border-bottom-style: solid;
+        //border-bottom-width: 2px;
+        //border-bottom-style: solid;
+
+        box-shadow: inset 0px -2px 0px 0px $mdc-theme-accent;
     }
 }
 
