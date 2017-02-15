@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Toolbar Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      .demo-container {
+        height: 500px;
+        margin: 0px;
+        font-size: 16px;
+        overflow: scroll;
+      }
+    </style>
+    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
+  </head>
+  <body class="mdc-typography">
+    <main>
+      <small>To best show the functionality of toolbars, we put both demos in iframes. Click the links above the iframe to view the demo in a full browser window.</small>
+      <h2>Normal Toolbar <button type="button" onclick="toggleRTL(0)">Toggle RTL</button></h2>
+      <p><a href="./default-toolbar.html" target="_blank">View in separate window</a></p>
+      <iframe class="demo-container" src="./default-toolbar.html"></iframe>
+      <h2>Fixed Toolbar <button type="button" onclick="toggleRTL(1)">Toggle RTL</button></h2>
+      <p><a href="./fixed-top-toolbar.html" target="_blank">View in separate window</a></p>
+      <iframe class="demo-container" src="./fixed-top-toolbar.html"></iframe>
+    </main>
+    <script>
+      function toggleRTL(iframe_number) {
+        var iframeMainEl = document.querySelectorAll('iframe')[iframe_number].contentWindow.document.querySelector('body');
+        iframeMainEl.getAttribute('dir') === 'rtl' ? iframeMainEl.setAttribute('dir', 'ltr') : iframeMainEl.setAttribute('dir', 'rtl');
+      }
+    </script>
+  </body>
+</html>
