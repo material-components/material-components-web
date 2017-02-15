@@ -64,29 +64,32 @@ export class MDCTabs extends MDCComponent {
 
   initRipple_() {
     const MATCHES = getMatchesProperty(HTMLElement.prototype);
-    const adapter = Object.assign(MDCRipple.createAdapter(this.tabsBar_), {
-      isUnbounded: () => false,
-      isSurfaceActive: () => this.tabsBar_[MATCHES](':active'),
-      addClass: (className) => this.tabsBar_.classList.add(className),
-      removeClass: (className) => this.tabsBar_.classList.remove(className),
-      registerInteractionHandler: (type, handler) => this.tabsBar_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.tabsBar_.removeEventListener(type, handler),
-      updateCssVariable: (varName, value) => this.tabsBar_.style.setProperty(varName, value),
-      computeBoundingRect: () => {
-        const {left, top} = this.tabsBar_.getBoundingClientRect();
-        const DIM = 40;
-        return {
-          top,
-          left,
-          right: left + DIM,
-          bottom: top + DIM,
-          width: DIM,
-          height: DIM,
-        };
-      },
+
+    return this.tabs.map(tab => {
+      const adapter = Object.assign(MDCRipple.createAdapter(tab), {
+        isUnbounded: () => false,
+        isSurfaceActive: () => tab[MATCHES](':active'),
+        addClass: (className) => tab.classList.add(className),
+        removeClass: (className) => tab.classList.remove(className),
+        registerInteractionHandler: (type, handler) => tab.addEventListener(type, handler),
+        deregisterInteractionHandler: (type, handler) => tab.removeEventListener(type, handler),
+        updateCssVariable: (varName, value) => tab.style.setProperty(varName, value),
+        computeBoundingRect: () => {
+          const {left, top} = tab.getBoundingClientRect();
+          const DIM = 40;
+          return {
+            top,
+            left,
+            right: left + DIM,
+            bottom: top + DIM,
+            width: DIM,
+            height: DIM,
+          };
+        },
+      });
+      const foundation = new MDCRippleFoundation(adapter);
+      return new MDCRipple(tab, foundation);
     });
-    const foundation = new MDCRippleFoundation(adapter);
-    return new MDCRipple(this.tabsBar_, foundation);
   }
 
   getDefaultFoundation() {
@@ -115,7 +118,9 @@ export class MDCTabs extends MDCComponent {
   }
 
   destroy() {
-    this.ripple_.destroy();
+    thos.ripple_.forEach(ripple => {
+      ripple.destroy();
+    });
     super.destroy();
   }
 }
