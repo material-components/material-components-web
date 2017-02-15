@@ -84,7 +84,7 @@ module.exports = [{
     select: [path.resolve('./packages/mdc-select/index.js')],
     snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
     textfield: [path.resolve('./packages/mdc-textfield/index.js')],
-    tabs: [path.resolve('./packages/mdc-tab/index.js')],
+    tabs: [path.resolve('./packages/mdc-tabs/index.js')],
   },
   output: {
     path: OUT_PATH,
@@ -157,7 +157,7 @@ module.exports = [{
     'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
     'mdc.toolbar': path.resolve('./packages/mdc-toolbar/mdc-toolbar.scss'),
     'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
-    'mdc.tab': path.resolve('./packages/mdc-tab/mdc-tab.scss'),
+    'mdc.tabs': path.resolve('./packages/mdc-tabs/mdc-tabs.scss'),
   },
   output: {
     path: OUT_PATH,
