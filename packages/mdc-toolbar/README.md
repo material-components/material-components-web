@@ -24,7 +24,7 @@ Wrap the items with `mdc-toolbar` class in following way:
     <a class="material-icons">menu</a>
     <span class="mdc-toolbar__title">Title</span>
   </section>
-</div>
+</header>
 ```
 
 ### Fixed toolbars
