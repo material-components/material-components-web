@@ -24,7 +24,7 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
   height: 0;
   background-color: rgba(0, 0, 0, .35);
   opacity: 0;
-  z-inde: -1;
+  z-index: -1;
   
   .mdc-dialog-confirmation--surface {
     padding: 24px;
@@ -101,28 +101,19 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
   
   .mdc-dialog-surface__navigation {
     
-		.mdc-dialog-navigation-cancel,
-    .mdc-dialog-navigation-accept {
+		.mdc-dialog-header__navigation-close,
+    .mdc-dialog-header__navigation-save {
       display: none;
     }
   }
 }
 
 @media (max-width: 640px) {
-  .dialog {
+  .mdc-dialog {
     min-width: 280px;
     
     .mdc-dialog-surface {
       min-width: 280px;
-    }
-    
-    .mdc-dialog-surface__full-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      min-width: 0;
-      height: 100vh;
     }
     
     .mdc-dialog-surface__navigation {
@@ -132,9 +123,14 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
         background-color: #ff4081;
         color: white;
       }
+
+      .mdc-dialog-header__navigation-close {
+        display: flex;
+        align-items: center;
+      }
       
-      .mdc-dialog-navigation-accept,
-      .mdc-dialog-navigation-cancel {
+      .mdc-dialog-header__navigation-save,
+      .mdc-dialog-header__navigation-close {
         display: flex;
         font-size: 14px;
         font-weight: 600;
@@ -144,6 +140,15 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
       .mdc-dialog-footer {
         display: none;
       }
+    }
+
+    .mdc-dialog-surface__full-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      min-width: 0;
+      height: 100vh;
     }
   }
 }

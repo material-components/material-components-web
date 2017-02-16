@@ -52,13 +52,13 @@
 		<aside id="mdc-dialog-two" class="mdc-dialog">
 		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
 		    <section class="mdc-dialog-header">
-		      <button id="mdc-dialog-navigation-cancel" class="mdc-button mdc-dialog_header__navigation-close">
+		      <button id="mdc-dialog-navigation-cancel" class="mdc-button mdc-dialog-header__navigation-close">
 		         <i class="material-icons">close</i>
 		      </button>
 		      <h2 class="mdc-dialog-header__title">
 		        Use Google?
 		      </h2>
-		      <button id="mdc-dialog-navigation-accept" class="mdc-button dialog_header__navigation-save">SAVE</button>
+		      <button id="mdc-dialog-navigation-accept" class="mdc-button mdc-dialog-header__navigation-save">SAVE</button>
 		    </section>
 		    <section class="mdc-dialog-body">
 		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
@@ -69,7 +69,7 @@
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div>
-		  <div id="mdc-dialog-confirmation-action" class="mdc-dialog-confirmation">
+		  <div class="mdc-dialog-confirmation">
 		    <div class="mdc-dialog-confirmation--surface">
 		      <section class="mdc-dialog-confirmation--header">Are you sure?</section>
 		      <section class="mdc-dialog-confirmation--buttons">
@@ -80,11 +80,11 @@
 		  </div>
 		</aside>
 		
-		<aside id="mdc-dialog-three" class="mdc-dialog">
+		<!--aside id="mdc-dialog-three" class="mdc-dialog">
 		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
 		    
 		    <section class="mdc-dialog-header">
-		      <button id="mdc-dialog-navigation-cancel" class="mdc-button dialog_header__back">
+		      <button id="mdc-dialog-navigation-cancel" class="mdc-button mdc-dialog-header__back">
 		         <i class="material-icons">arrow_back</i>
 		      </button>
 		      <h2 class="mdc-dialog-header__title">
@@ -100,9 +100,9 @@
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div>
-		</aside>
+		</aside-->
 		
-		<aside id="mdc-dialog-four" class="mdc-dialog">
+		<!--aside id="mdc-dialog-four" class="mdc-dialog">
 		  <div class="mdc-dialog-surface">
 		    <section class="mdc-dialog-header">
 		      <h2 class="mdc-dialog-header__title">
@@ -111,7 +111,6 @@
 		    </section>
 		    <section class="mdc-dialog-body mdc-dialog-body__scrollable">
 		     
-					<!-- Start content here. Section will handle overflow: scroll--> 
 					<ul class="mdc-dialog-body__list">
 		        <li class="dialog-body__list-item">None</li>
 		        <li class="dialog-body__list-item">Callisto</li>
@@ -125,7 +124,6 @@
 		        <li class="dialog-body__list-item">Marimba</li>
 		        <li class="dialog-body__list-item">Schwifty</li>
 		      <ul>
-					<!-- End content-->
 
 		    </section>
 		    <section class="mdc-dialog-footer">
@@ -134,7 +132,7 @@
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div> 
-		</aside>
+		</aside-->
 		
 		<section class="user-content">
 		  <div>
@@ -152,8 +150,8 @@
 		<script>
       var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-one'));
       var dialogNavigation= new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-two'));
-      var dialogAutosave = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-three'));
-      var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-four'));
+      //var dialogAutosave = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-three'));
+      //var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-four'));
 
 			document.querySelector('#dialog-activation').addEventListener('click', function () {
 				dialog.open = true;
@@ -161,12 +159,12 @@
 			document.querySelector('#dialog-activation__navigation').addEventListener('click', function () {
 				dialogNavigation.open = true;
 			})
-			document.querySelector('#dialog-activation__autosave').addEventListener('click', function () {
-				dialogAutosave.open = true;
-			})
-			document.querySelector('#dialog-activation__scrollable').addEventListener('click', function () {
-				dialogScrollable.open = true;
-			})
+			//document.querySelector('#dialog-activation__autosave').addEventListener('click', function () {
+			//	dialogAutosave.open = true;
+			//})
+			//document.querySelector('#dialog-activation__scrollable').addEventListener('click', function () {
+			//	dialogScrollable.open = true;
+			//})
     </script>
   </body>
 </html>

@@ -40,7 +40,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
       hasNecessaryDom: () => /* boolean */ false,
-
+      navigation: () => false,
+      navigationAutoSave: () => false,
       registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
@@ -48,34 +49,19 @@ export default class MDCDialogFoundation extends MDCFoundation {
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
 
-			registerAcceptHandler: () => {},
-			deregisterAcceptHandler: () => {},
-			registerCancelHandler: () => {},
-			deregisterCancelHandler: () => {},
-			registerNavigationCancelHandler: () => {},
-			deregisterNavigationCancelHandler: () => {},
-			registerNavigationAcceptHandler: () => {},
-			deregisterNavigationAcceptHandler: () => {},
-
-	//  this.navigation_ = adapter.navigation;
-  //  this.navigationAutoSave_ = adapter.navigationAutoSave;
-  //  this.activationButton_ = adapter.activationButton;
-  //  this.acceptButton_ = adapter.acceptButton;
-  //  this.cancelButton_ = adapter.cancelButton;
-  //  this.navigationCancelButton_ = adapter.navigationCancelButton;
-  //  this.navigationAcceptButton_ = adapter.navigationAcceptButton;
-  //  this.confirmationDialog_ = adapter.confirmationDialog,
-  //  this.confirmationAcceptButton_ = adapter.confirmationAcceptButton,
-  //  this.confirmationCancelButton_ = adapter.confirmationCancelButton,
-  //  
-	//	this.activationHandler_ = () => this.showDialog_();
-  //  this.acceptHandler_ = () => this.accept_();
-  //  this.cancelHandler_ = () => this.cancel_();
-  //  
-	//	this.acceptEventHandler_ = adapter.registerAcceptHandler;
-  //  this.cancelEventHandler_ = adapter.registerCancelHandler;	
-
-      
+      registerAcceptHandler: () => {},
+      deregisterAcceptHandler: () => {},
+      registerCancelHandler: () => {},
+      deregisterCancelHandler: () => {},
+      registerNavigationAcceptHandler: () => {},
+      deregisterNavigationAcceptHandler: () => {},
+      registerNavigationCancelHandler: () => {},
+      deregisterNavigationCancelHandler: () => {},
+      registerConfirmationAcceptHandler: () => {},
+      deregisterConfirmationAcceptHandler: () => {},
+      registerConfirmationCancelHandler: () => {},
+      deregisterConfirmationCancelHandler: () => {},
+      acceptAction: () => {},
 
 			setTranslateY: (/* value: number | null */) => {},
       updateCssVariable: (/* value: string */) => {},
@@ -95,62 +81,77 @@ export default class MDCDialogFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
 
-    this.dialog_ = adapter.dialog;
     this.inert_ = false;
-		this.isOpen_ = false;
-    this.navigation_ = adapter.navigation;
-    this.navigationAutoSave_ = adapter.navigationAutoSave;
-    this.activationButton_ = adapter.activationButton;
-    this.acceptButton_ = adapter.acceptButton;
-    this.cancelButton_ = adapter.cancelButton;
-    this.navigationCancelButton_ = adapter.navigationCancelButton;
-    this.navigationAcceptButton_ = adapter.navigationAcceptButton;
-    this.confirmationDialog_ = adapter.confirmationDialog,
-    this.confirmationAcceptButton_ = adapter.confirmationAcceptButton,
-    this.confirmationCancelButton_ = adapter.confirmationCancelButton,
-    
-    this.activationHandler_ = () => this.showDialog_();
-    this.acceptHandler_ = () => this.accept_();
-    this.cancelHandler_ = () => this.cancel_();
-    
-    this.acceptEventHandler_ = adapter.registerAcceptHandler;
-    this.cancelEventHandler_ = adapter.registerCancelHandler;
+    this.isOpen_ = false;
+    this.acceptHandler_ = () => { this.accept() };
+    this.cancelHandler_ = () => { this.close() };
+    this.confirmationHandler_ = () => { this.openConfirmation() };
+    this.confirmationAcceptHandler_ = () => { this.confirmationAccept() };
+    this.confirmationCancelHandler_ = () => { this.closeConfirmation() };
   }
 
   init() {
     const {ROOT, OPEN} = MDCDialogFoundation.cssClasses;
 
-    // this.acceptButton_.addEventListener('click', this.acceptHandler_);
+    this.adapter_.registerAcceptHandler(this.acceptHandler_);
 
-    // if (!this.navigationAutoSave_) {
-    //   this.cancelButton_.addEventListener('click', this.cancelHandler_);
-    // }
-    // 
-    // if (this.navigation_ && !this.navigationAutoSave_) {
-    //   this.navigationAcceptButton_.addEventListener('click', this.acceptHandler_);
-    //   this.navigationCancelButton_.addEventListener('click', this.showConfirmation_.bind(this));
-    //   this.confirmationAcceptButton_.addEventListener('click', this.acceptHandler_);
-    //   this.confirmationCancelButton_.addEventListener('click', this.cancelHandler_);
-    // }
+    if (!this.adapter_.navigationAutoSave()) {
+      this.adapter_.registerCancelHandler(this.cancelHandler_);
+    }
+
+    if (this.adapter_.navigation() && !this.adapter_.navigationAutoSave()) {
+      this.adapter_.registerNavigationAcceptHandler(this.acceptHandler_);
+      this.adapter_.registerNavigationCancelHandler(this.confirmationHandler_);
+      this.adapter_.registerConfirmationAcceptHandler(this.confirmationAcceptHandler_);
+      this.adapter_.registerConfirmationCancelHandler(this.confirmationCancelHandler_);
+    }
   }
 
-  destroy() {}
+  destroy() {
+    this.adapter_.deregisterAcceptHandler(this.acceptHandler_);
+    this.adapter_.deregisterCancelHandler(this.cancelHandler_);
+    this.adapter_.deregisterNavigationAcceptHandler(this.acceptHandler_);
+    this.adapter_.deregisterNavigationCancelHandler(this.confirmationHandler_);
+    this.adapter_.deregisterConfirmationAcceptHandler(this.confirmationAcceptHandler_);
+    this.adapter_.deregisterConfirmationCancelHandler(this.confirmationCancelHandler_);
+  }
 
   open() {
-		console.log(this.adapter_);
     this.adapter_.updateCssVariable('');
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
-
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
-    
-		this.unlockTab_();
+    this.unlockTab_();
     this.isOpen_ = true;
-	}
+  }
 
   close() {
-		console.log('close dialog');
+    this.adapter_.updateCssVariable('');
+    this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
+    this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ACTIVE);
+		this.lockTab_();
+    this.isOpen_ = false;
 	}
-  
+ 
+  openConfirmation() {
+    this.adapter_.addConfirmClass(MDCDialogFoundation.cssClasses.CONFIRMATION_ACTIVE);
+  }
+
+  closeConfirmation() {
+    this.adapter_.removeConfirmClass(MDCDialogFoundation.cssClasses.CONFIRMATION_ACTIVE)
+    this.adapter_.deregisterConfirmationAcceptHandler(this.acceptHandler_);
+    this.adapter_.deregisterConfirmationCancelHandler(this.cancelHandler_);
+  } 
+
+  accept() {
+    this.adapter_.acceptAction();
+    this.close();
+  }
+
+  confirmationAccept() {
+    this.close();
+    this.closeConfirmation();
+  }
+
   isOpen() {
     return this.isOpen_;
   }
