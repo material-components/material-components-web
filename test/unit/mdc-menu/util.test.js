@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import * as utils from '../../../packages/mdc-menu/util';
 
-test('getTransformPropertyName returns "transform" for browsers that support it', (t) => {
+suite('MDCMenu - util');
+
+test('getTransformPropertyName returns "transform" for browsers that support it', () => {
   const mockWindow = {
     document: {
       createElement: function() {
@@ -25,11 +27,10 @@ test('getTransformPropertyName returns "transform" for browsers that support it'
       },
     },
   };
-  t.equal(utils.getTransformPropertyName(mockWindow, true), 'transform');
-  t.end();
+  assert.equal(utils.getTransformPropertyName(mockWindow, true), 'transform');
 });
 
-test('getTransformPropertyName returns "webkitTransform" for browsers that do not support "transform"', (t) => {
+test('getTransformPropertyName returns "webkitTransform" for browsers that do not support "transform"', () => {
   const mockWindow = {
     document: {
       createElement: function() {
@@ -37,72 +38,65 @@ test('getTransformPropertyName returns "webkitTransform" for browsers that do no
       },
     },
   };
-  t.equal(utils.getTransformPropertyName(mockWindow, true), 'webkitTransform');
-  t.end();
+  assert.equal(utils.getTransformPropertyName(mockWindow, true), 'webkitTransform');
 });
 
-test('getTransformPropertyName caches the property name if forceRefresh 2nd arg is not given', (t) => {
+test('getTransformPropertyName caches the property name if forceRefresh 2nd arg is not given', () => {
   const mockElement = {style: {transform: null}};
   const mockWindow = {
     document: {
       createElement: () => mockElement,
     },
   };
-  t.equal(utils.getTransformPropertyName(mockWindow, true), 'transform', 'sanity check');
-  t.equal(utils.getTransformPropertyName(mockWindow), 'transform', 'sanity check no force refresh');
+  assert.equal(utils.getTransformPropertyName(mockWindow, true), 'transform', 'sanity check');
+  assert.equal(utils.getTransformPropertyName(mockWindow), 'transform', 'sanity check no force refresh');
 
   delete mockElement.style.transform;
-  t.equal(utils.getTransformPropertyName(mockWindow), 'transform');
-  t.equal(utils.getTransformPropertyName(mockWindow, true), 'webkitTransform');
-  t.end();
+  assert.equal(utils.getTransformPropertyName(mockWindow), 'transform');
+  assert.equal(utils.getTransformPropertyName(mockWindow, true), 'webkitTransform');
 });
 
-test('clamp clamps values lower than 0 to 0', (t) => {
-  t.equal(utils.clamp(-0.8), 0);
-  t.equal(utils.clamp(-0.42), 0);
-  t.equal(utils.clamp(-0.111111), 0);
-  t.end();
+test('clamp clamps values lower than 0 to 0', () => {
+  assert.equal(utils.clamp(-0.8), 0);
+  assert.equal(utils.clamp(-0.42), 0);
+  assert.equal(utils.clamp(-0.111111), 0);
 });
 
-test('clamp clamps values higer than 1 to 1', (t) => {
-  t.equal(utils.clamp(1.8), 1);
-  t.equal(utils.clamp(1.42), 1);
-  t.equal(utils.clamp(1.111111), 1);
-  t.end();
+test('clamp clamps values higer than 1 to 1', () => {
+  assert.equal(utils.clamp(1.8), 1);
+  assert.equal(utils.clamp(1.42), 1);
+  assert.equal(utils.clamp(1.111111), 1);
 });
 
-test('clamp does not modify values between 0 and 1', (t) => {
-  t.equal(utils.clamp(0.8), 0.8);
-  t.equal(utils.clamp(0.42), 0.42);
-  t.equal(utils.clamp(0.111111), 0.111111);
-  t.end();
+test('clamp does not modify values between 0 and 1', () => {
+  assert.equal(utils.clamp(0.8), 0.8);
+  assert.equal(utils.clamp(0.42), 0.42);
+  assert.equal(utils.clamp(0.111111), 0.111111);
 });
 
-test('clamp correctly clamps with a provided minimum value', (t) => {
-  t.equal(utils.clamp(-0.8, 0.2), 0.2);
-  t.equal(utils.clamp(-0.42, -0.5), -0.42);
-  t.equal(utils.clamp(0.111111, 1), 1);
-  t.end();
+test('clamp correctly clamps with a provided minimum value', () => {
+  assert.equal(utils.clamp(-0.8, 0.2), 0.2);
+  assert.equal(utils.clamp(-0.42, -0.5), -0.42);
+  assert.equal(utils.clamp(0.111111, 1), 1);
 });
 
-test('clamp correctly clamps with provided minimum and maximum values', (t) => {
-  t.equal(utils.clamp(-0.8, 0.2, 0.3), 0.2);
-  t.equal(utils.clamp(0.42, 0.3, 0.5), 0.42);
-  t.equal(utils.clamp(5.111111, 1, 5), 5);
-  t.end();
+test('clamp correctly clamps with provided minimum and maximum values', () => {
+  assert.equal(utils.clamp(-0.8, 0.2, 0.3), 0.2);
+  assert.equal(utils.clamp(0.42, 0.3, 0.5), 0.42);
+  assert.equal(utils.clamp(5.111111, 1, 5), 5);
 });
 
-function testBezier(t, curve, expected) {
+function testBezier(curve, expected) {
   Object.keys(expected).forEach((time) => {
     // Compare values rounded to 3 decimal places.
     const raw = utils.bezierProgress(parseFloat(time), curve.x1, curve.y1, curve.x2, curve.y2);
     const actual = parseFloat(raw.toFixed(3));
     const value = expected[time];
-    t.equal(actual, value, `At time ${time}: value ${actual} should be ${value}`);
+    assert.equal(actual, value, `At time ${time}: value ${actual} should be ${value}`);
   });
 }
 
-test('bezierProgress returns the right values for a linear curve', (t) => {
+test('bezierProgress returns the right values for a linear curve', () => {
   const curve = {x1: 0, y1: 0, x2: 1, y2: 1};
   const expected = {
     0: 0,
@@ -111,11 +105,10 @@ test('bezierProgress returns the right values for a linear curve', (t) => {
     0.8: 0.8,
     1: 1,
   };
-  testBezier(t, curve, expected);
-  t.end();
+  testBezier(curve, expected);
 });
 
-test('bezierProgress returns the right values for an ease curve', (t) => {
+test('bezierProgress returns the right values for an ease curve', () => {
   const curve = {x1: 0.25, y1: 0.1, x2: 0.25, y2: 1};
   const expected = {
     0: 0,
@@ -124,11 +117,10 @@ test('bezierProgress returns the right values for an ease curve', (t) => {
     0.8: 0.976,
     1: 1,
   };
-  testBezier(t, curve, expected);
-  t.end();
+  testBezier(curve, expected);
 });
 
-test('bezierProgress returns the right values for a (1, 0, 0, 1) curve', (t) => {
+test('bezierProgress returns the right values for a (1, 0, 0, 1) curve', () => {
   const curve = {x1: 1, y1: 0, x2: 0, y2: 1};
   const expected = {
     0: 0,
@@ -137,6 +129,5 @@ test('bezierProgress returns the right values for a (1, 0, 0, 1) curve', (t) => 
     0.8: 0.983,
     1: 1,
   };
-  testBezier(t, curve, expected);
-  t.end();
+  testBezier(curve, expected);
 });

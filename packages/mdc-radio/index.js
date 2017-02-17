@@ -42,6 +42,10 @@ export class MDCRadio extends MDCComponent {
     this.foundation_.setDisabled(disabled);
   }
 
+  get ripple() {
+    return this.ripple_;
+  }
+
   constructor(...args) {
     super(...args);
     this.ripple_ = this.initRipple_();

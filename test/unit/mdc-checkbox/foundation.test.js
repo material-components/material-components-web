@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import bel from 'bel';
 import lolex from 'lolex';
 import td from 'testdouble';
@@ -87,86 +87,74 @@ function setupChangeHandlerTest() {
 
 function testChangeHandler(desc, changes, expectedClass, verificationOpts) {
   changes = Array.isArray(changes) ? changes : [changes];
-  test(`changeHandler: ${desc}`, (t) => {
+  test(`changeHandler: ${desc}`, () => {
     const {mockAdapter, change} = setupChangeHandlerTest();
     changes.forEach(change);
-    t.doesNotThrow(() => {
-      td.verify(mockAdapter.addClass(expectedClass), verificationOpts);
-    });
-
-    t.end();
+    td.verify(mockAdapter.addClass(expectedClass), verificationOpts);
   });
 }
 
-test('exports strings', (t) => {
-  t.deepEqual(MDCCheckboxFoundation.strings, strings);
-  t.end();
+suite('MDCCheckboxFoundation');
+
+test('exports strings', () => {
+  assert.deepEqual(MDCCheckboxFoundation.strings, strings);
 });
 
-test('exports cssClasses', (t) => {
-  t.deepEqual(MDCCheckboxFoundation.cssClasses, cssClasses);
-  t.end();
+test('exports cssClasses', () => {
+  assert.deepEqual(MDCCheckboxFoundation.cssClasses, cssClasses);
 });
 
-test('exports numbers', (t) => {
-  t.deepEqual(MDCCheckboxFoundation.numbers, numbers);
-  t.end();
+test('exports numbers', () => {
+  assert.deepEqual(MDCCheckboxFoundation.numbers, numbers);
 });
 
-test('defaultAdapter returns a complete adapter implementation', (t) => {
+test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
     'addClass', 'removeClass', 'registerAnimationEndHandler', 'deregisterAnimationEndHandler',
     'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl', 'forceLayout',
     'isAttachedToDOM',
-  ], t);
-
-  t.end();
+  ]);
 });
 
-test('#init adds the upgraded class to the root element', (t) => {
+test('#init adds the upgraded class to the root element', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.UPGRADED)));
-  t.end();
+  td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
 
-test('#init calls adapter.registerChangeHandler() with a change handler function', (t) => {
+test('#init calls adapter.registerChangeHandler() with a change handler function', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
   foundation.init();
-  t.doesNotThrow(() => td.verify(mockAdapter.registerChangeHandler(isA(Function))));
-  t.end();
+  td.verify(mockAdapter.registerChangeHandler(isA(Function)));
 });
 
-test('#init handles case where getNativeControl() does not return anything', (t) => {
+test('#init handles case where getNativeControl() does not return anything', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(undefined);
-  t.doesNotThrow(() => foundation.init());
-  t.end();
+  assert.doesNotThrow(() => foundation.init());
 });
 
-test('#init handles case when WebIDL attrs cannot be overridden (Safari)', (t) => {
+test('#init handles case when WebIDL attrs cannot be overridden (Safari)', () => {
   const {foundation, nativeControl} = setupTest();
   withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
-    t.doesNotThrow(() => {
+    assert.doesNotThrow(() => {
       foundation.init();
       nativeControl.checked = !nativeControl.checked;
     });
   });
-  t.end();
 });
 
-test('#init handles case when property descriptors are not returned at all (Android Browser)', (t) => {
+test('#init handles case when property descriptors are not returned at all (Android Browser)', () => {
   const {foundation} = setupTest();
   withMockCheckboxDescriptorReturning(undefined, () => {
-    t.doesNotThrow(() => foundation.init());
+    assert.doesNotThrow(() => foundation.init());
   });
-  t.end();
 });
 
-test('#destroy calls adapter.deregisterChangeHandler() with a registerChangeHandler function', (t) => {
+test('#destroy calls adapter.deregisterChangeHandler() with a registerChangeHandler function', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -177,103 +165,89 @@ test('#destroy calls adapter.deregisterChangeHandler() with a registerChangeHand
   foundation.init();
 
   foundation.destroy();
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterChangeHandler(changeHandler)));
-
-  t.end();
+  td.verify(mockAdapter.deregisterChangeHandler(changeHandler));
 });
 
-test('#destroy handles case where getNativeControl() does not return anything', (t) => {
+test('#destroy handles case where getNativeControl() does not return anything', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
   td.when(mockAdapter.getNativeControl()).thenReturn(undefined);
-  t.doesNotThrow(() => foundation.destroy());
-
-  t.end();
+  assert.doesNotThrow(() => foundation.destroy());
 });
 
-test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', (t) => {
+test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', () => {
   const {foundation} = setupTest();
   withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
-    t.doesNotThrow(() => foundation.init(), 'init sanity check');
-    t.doesNotThrow(() => foundation.destroy());
+    assert.doesNotThrow(() => foundation.init(), 'init sanity check');
+    assert.doesNotThrow(() => foundation.destroy());
   });
-  t.end();
 });
 
-test('#setChecked updates the value of nativeControl.checked', (t) => {
+test('#setChecked updates the value of nativeControl.checked', () => {
   const {foundation, nativeControl} = setupTest();
   foundation.setChecked(true);
-  t.true(foundation.isChecked());
-  t.true(nativeControl.checked);
+  assert.isOk(foundation.isChecked());
+  assert.isOk(nativeControl.checked);
   foundation.setChecked(false);
-  t.false(foundation.isChecked());
-  t.false(nativeControl.checked);
-  t.end();
+  assert.isNotOk(foundation.isChecked());
+  assert.isNotOk(nativeControl.checked);
 });
 
-test('#setChecked works when no native control is returned', (t) => {
+test('#setChecked works when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.doesNotThrow(() => foundation.setChecked(true));
-  t.end();
+  assert.doesNotThrow(() => foundation.setChecked(true));
 });
 
-test('#isChecked returns false when no native control is returned', (t) => {
+test('#isChecked returns false when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.false(foundation.isChecked());
-  t.end();
+  assert.isNotOk(foundation.isChecked());
 });
 
-test('#setIndeterminate updates the value of nativeControl.indeterminate', (t) => {
+test('#setIndeterminate updates the value of nativeControl.indeterminate', () => {
   const {foundation, nativeControl} = setupTest();
   foundation.setIndeterminate(true);
-  t.true(foundation.isIndeterminate());
-  t.true(nativeControl.indeterminate);
+  assert.isOk(foundation.isIndeterminate());
+  assert.isOk(nativeControl.indeterminate);
   foundation.setIndeterminate(false);
-  t.false(foundation.isIndeterminate());
-  t.false(nativeControl.indeterminate);
-  t.end();
+  assert.isNotOk(foundation.isIndeterminate());
+  assert.isNotOk(nativeControl.indeterminate);
 });
 
-test('#setIndeterminate works when no native control is returned', (t) => {
+test('#setIndeterminate works when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.doesNotThrow(() => foundation.setIndeterminate(true));
-  t.end();
+  assert.doesNotThrow(() => foundation.setIndeterminate(true));
 });
 
-test('#isIndeterminate returns false when no native control is returned', (t) => {
+test('#isIndeterminate returns false when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.false(foundation.isIndeterminate());
-  t.end();
+  assert.isNotOk(foundation.isIndeterminate());
 });
 
-test('#setDisabled updates the value of nativeControl.disabled', (t) => {
+test('#setDisabled updates the value of nativeControl.disabled', () => {
   const {foundation, nativeControl} = setupTest();
   foundation.setDisabled(true);
-  t.true(foundation.isDisabled());
-  t.true(nativeControl.disabled);
+  assert.isOk(foundation.isDisabled());
+  assert.isOk(nativeControl.disabled);
   foundation.setDisabled(false);
-  t.false(foundation.isDisabled());
-  t.false(nativeControl.disabled);
-  t.end();
+  assert.isNotOk(foundation.isDisabled());
+  assert.isNotOk(nativeControl.disabled);
 });
 
-test('#isDisabled returns false when no native control is returned', (t) => {
+test('#isDisabled returns false when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.false(foundation.isDisabled());
-  t.end();
+  assert.isNotOk(foundation.isDisabled());
 });
 
-test('#setDisabled works when no native control is returned', (t) => {
+test('#setDisabled works when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.doesNotThrow(() => foundation.setDisabled(true));
-  t.end();
+  assert.doesNotThrow(() => foundation.setDisabled(true));
 });
 
 testChangeHandler('unchecked -> checked animation class', {
@@ -341,7 +315,7 @@ testChangeHandler('no transition classes applied when no state change', [
   },
 ], cssClasses.ANIM_UNCHECKED_CHECKED, {times: 1});
 
-test('animation end handler one-off removes animation class after short delay', (t) => {
+test('animation end handler one-off removes animation class after short delay', () => {
   const clock = lolex.install();
   const {mockAdapter, change} = setupChangeHandlerTest();
   const {isA} = td.matchers;
@@ -352,21 +326,20 @@ test('animation end handler one-off removes animation class after short delay', 
   });
 
   change({checked: true, indeterminate: false});
-  t.true(animEndHandler instanceof Function, 'animationend handler registeration sanity test');
+  assert.isOk(animEndHandler instanceof Function, 'animationend handler registeration sanity test');
 
   animEndHandler();
   const {ANIM_UNCHECKED_CHECKED} = cssClasses;
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 0}));
+  td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 0});
 
   clock.tick(numbers.ANIM_END_LATCH_MS);
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED)));
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler)));
+  td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED));
+  td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler));
 
   clock.uninstall();
-  t.end();
 });
 
-test('change handler debounces changes within the animation end delay period', (t) => {
+test('change handler debounces changes within the animation end delay period', () => {
   const clock = lolex.install();
   const {mockAdapter, change} = setupChangeHandlerTest();
   const {isA} = td.matchers;
@@ -377,7 +350,7 @@ test('change handler debounces changes within the animation end delay period', (
   });
 
   change({checked: true, indeterminate: false});
-  t.true(animEndHandler instanceof Function, 'animationend handler registeration sanity test');
+  assert.isOk(animEndHandler instanceof Function, 'animationend handler registeration sanity test');
   // Queue up initial timer
   animEndHandler();
 
@@ -385,60 +358,53 @@ test('change handler debounces changes within the animation end delay period', (
 
   change({checked: true, indeterminate: true});
   // Without ticking the clock, check that the prior class has been removed.
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED)));
+  td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED));
   // The animation end handler should not yet have been removed.
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler), {times: 0}));
+  td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler), {times: 0});
 
   // Call animEndHandler again, and tick the clock. The original timer should have been cleared, and the
   // current timer should remove the correct, latest animation class, along with deregistering the handler.
   animEndHandler();
   clock.tick(numbers.ANIM_END_LATCH_MS);
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(ANIM_CHECKED_INDETERMINATE), {times: 1}));
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler), {times: 1}));
+  td.verify(mockAdapter.removeClass(ANIM_CHECKED_INDETERMINATE), {times: 1});
+  td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler), {times: 1});
 
   clock.uninstall();
-  t.end();
 });
 
-test('change handler triggers layout for changes within the same frame to correctly restart anims', (t) => {
+test('change handler triggers layout for changes within the same frame to correctly restart anims', () => {
   const {mockAdapter, change} = setupChangeHandlerTest();
 
   change({checked: true, indeterminate: false});
-  t.doesNotThrow(() => td.verify(mockAdapter.forceLayout(), {times: 0}));
+  td.verify(mockAdapter.forceLayout(), {times: 0});
 
   change({checked: true, indeterminate: true});
-  t.doesNotThrow(() => td.verify(mockAdapter.forceLayout()));
-
-  t.end();
+  td.verify(mockAdapter.forceLayout());
 });
 
-test('change handler does not add animation classes when isAttachedToDOM() is falsy', (t) => {
+test('change handler does not add animation classes when isAttachedToDOM() is falsy', () => {
   const {mockAdapter, change} = setupChangeHandlerTest();
   const animClassArg = td.matchers.argThat((cls) => cls.indexOf('mdc-checkbox--anim') >= 0);
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(false);
 
   change({checked: true, indeterminate: false});
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(animClassArg), {times: 0}));
-
-  t.end();
+  td.verify(mockAdapter.addClass(animClassArg), {times: 0});
 });
 
-test('change handler does not add animation classes for bogus changes (init -> unchecked)', (t) => {
+test('change handler does not add animation classes for bogus changes (init -> unchecked)', () => {
   const {mockAdapter, change} = setupChangeHandlerTest();
   const animClassArg = td.matchers.argThat((cls) => cls.indexOf('mdc-checkbox--anim') >= 0);
 
   change({checked: false, indeterminate: false});
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(animClassArg), {times: 0}));
-  t.end();
+  td.verify(mockAdapter.addClass(animClassArg), {times: 0});
 });
 
-test('change handler gracefully exits when getNativeControl() returns nothing', (t) => {
+test('change handler gracefully exits when getNativeControl() returns nothing', () => {
   const {change} = setupChangeHandlerTest();
-  t.doesNotThrow(() => change(undefined));
-  t.end();
+  assert.doesNotThrow(() => change(undefined));
 });
 
-test('"checked" property change hook works correctly', (t) => {
+test('"checked" property change hook works correctly', () => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
   const clock = lolex.install();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
@@ -455,16 +421,13 @@ test('"checked" property change hook works correctly', (t) => {
       indeterminate: false,
     });
     nativeControl.checked = !nativeControl.checked;
-    t.doesNotThrow(() => {
-      td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_CHECKED));
-    });
+    td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_CHECKED));
   });
 
   clock.uninstall();
-  t.end();
 });
 
-test('"indeterminate" property change hook works correctly', (t) => {
+test('"indeterminate" property change hook works correctly', () => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
   const clock = lolex.install();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
@@ -481,11 +444,8 @@ test('"indeterminate" property change hook works correctly', (t) => {
       indeterminate: true,
     });
     nativeControl.indeterminate = !nativeControl.indeterminate;
-    t.doesNotThrow(() => {
-      td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_INDETERMINATE));
-    });
+    td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_INDETERMINATE));
   });
 
   clock.uninstall();
-  t.end();
 });

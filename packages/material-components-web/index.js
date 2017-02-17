@@ -16,6 +16,7 @@
 
 import * as base from '@material/base';
 import * as checkbox from '@material/checkbox';
+import * as formField from '@material/form-field';
 import * as iconToggle from '@material/icon-toggle';
 import * as radio from '@material/radio';
 import * as ripple from '@material/ripple';
@@ -41,6 +42,7 @@ autoInit.register('MDCSelect', select.MDCSelect);
 export {
   base,
   checkbox,
+  formField,
   iconToggle,
   radio,
   ripple,

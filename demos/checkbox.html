@@ -141,7 +141,16 @@
       (function(global) {
         'use strict';
         var MDCCheckbox = global.mdc.checkbox.MDCCheckbox;
-        var checkbox = new MDCCheckbox(document.getElementById('mdc-js-checkbox'));
+        var MDCFormField = global.mdc.formField.MDCFormField;
+
+        var checkbox = document.getElementById('mdc-js-checkbox');
+        var checkboxInstance = new MDCCheckbox(document.getElementById('mdc-js-checkbox'));
+
+        var formField = checkbox.parentElement;
+        var formFieldInstance = new MDCFormField(formField);
+
+        formFieldInstance.input = checkboxInstance;
+
         document.getElementById('make-ind').addEventListener('click', function() {
           checkbox.indeterminate = true;
         });

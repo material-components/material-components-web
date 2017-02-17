@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import td from 'testdouble';
 import * as util from '../../../packages/mdc-ripple/util';
 
-test('#supportsCssVariables returns true when CSS.supports() returns true for css vars', (t) => {
+suite('MDCRipple - util');
+
+test('#supportsCssVariables returns true when CSS.supports() returns true for css vars', () => {
   const windowObj = {
     CSS: {
       supports: td.func('.supports'),
     },
   };
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(true);
-  t.true(util.supportsCssVariables(windowObj));
-  t.end();
+  assert.isOk(util.supportsCssVariables(windowObj));
 });
 
-test('#supportsCssVariables returns true when feature-detecting its way around Safari < 10', (t) => {
+test('#supportsCssVariables returns true when feature-detecting its way around Safari < 10', () => {
   const windowObj = {
     CSS: {
       supports: td.func('.supports'),
@@ -38,57 +39,50 @@ test('#supportsCssVariables returns true when feature-detecting its way around S
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(false);
   td.when(windowObj.CSS.supports(td.matchers.contains('(--css-vars:'))).thenReturn(true);
   td.when(windowObj.CSS.supports('color', '#00000000')).thenReturn(true);
-  t.true(util.supportsCssVariables(windowObj), 'true iff both CSS Vars and #rgba are supported');
+  assert.isOk(util.supportsCssVariables(windowObj), 'true iff both CSS Vars and #rgba are supported');
 
   td.when(windowObj.CSS.supports(td.matchers.contains('(--css-vars:'))).thenReturn(false);
-  t.false(util.supportsCssVariables(windowObj), 'false if CSS Vars are supported but not #rgba');
+  assert.isNotOk(util.supportsCssVariables(windowObj), 'false if CSS Vars are supported but not #rgba');
   td.when(windowObj.CSS.supports(td.matchers.contains('(--css-vars:'))).thenReturn(true);
 
   td.when(windowObj.CSS.supports('color', '#00000000')).thenReturn(false);
-  t.false(util.supportsCssVariables(windowObj), 'false if #rgba is supported but not CSS Vars');
-
-  t.end();
+  assert.isNotOk(util.supportsCssVariables(windowObj), 'false if #rgba is supported but not CSS Vars');
 });
 
-test('#supportsCssVariables returns false when CSS.supports() returns false for css vars', (t) => {
+test('#supportsCssVariables returns false when CSS.supports() returns false for css vars', () => {
   const windowObj = {
     CSS: {
       supports: td.function('.supports'),
     },
   };
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(false);
-  t.false(util.supportsCssVariables(windowObj));
-  t.end();
+  assert.isNotOk(util.supportsCssVariables(windowObj));
 });
 
-test('#supportsCssVariables returns false when CSS.supports is not a function', (t) => {
+test('#supportsCssVariables returns false when CSS.supports is not a function', () => {
   const windowObj = {
     CSS: {
       supports: 'nope',
     },
   };
-  t.false(util.supportsCssVariables(windowObj));
-  t.end();
+  assert.isNotOk(util.supportsCssVariables(windowObj));
 });
 
-test('#supportsCssVariables returns false when CSS is not an object', (t) => {
+test('#supportsCssVariables returns false when CSS is not an object', () => {
   const windowObj = {
     CSS: null,
   };
-  t.false(util.supportsCssVariables(windowObj));
-  t.end();
+  assert.isNotOk(util.supportsCssVariables(windowObj));
 });
 
-test('#getMatchesProperty returns the correct property for selector matching', (t) => {
-  t.equal(util.getMatchesProperty({matches: () => {}}), 'matches');
-  t.equal(util.getMatchesProperty({webkitMatchesSelector: () => {}}), 'webkitMatchesSelector');
-  t.equal(util.getMatchesProperty({msMatchesSelector: () => {}}), 'msMatchesSelector');
-  t.end();
+test('#getMatchesProperty returns the correct property for selector matching', () => {
+  assert.equal(util.getMatchesProperty({matches: () => {}}), 'matches');
+  assert.equal(util.getMatchesProperty({webkitMatchesSelector: () => {}}), 'webkitMatchesSelector');
+  assert.equal(util.getMatchesProperty({msMatchesSelector: () => {}}), 'msMatchesSelector');
 });
 
-test('#getMatchesProperty returns the standard function if more than one method is present', (t) => {
-  t.equal(util.getMatchesProperty({matches: () => {}, webkitMatchesSelector: () => {}}), 'matches');
-  t.end();
+test('#getMatchesProperty returns the standard function if more than one method is present', () => {
+  assert.equal(util.getMatchesProperty({matches: () => {}, webkitMatchesSelector: () => {}}), 'matches');
 });
 
 class FakeRippleAdapter {
@@ -117,84 +111,78 @@ function setupAnimateWithClassTest() {
   return {adapter, className, endEvent};
 }
 
-test('#animateWithClass attaches class and handler which removes class once specified event is fired', (t) => {
+test('#animateWithClass attaches class and handler which removes class once specified event is fired', () => {
   const {adapter, className, endEvent} = setupAnimateWithClassTest();
   util.animateWithClass(adapter, className, endEvent);
-  t.doesNotThrow(() => td.verify(adapter.addClass(className)));
-  t.equal(adapter.eventType, endEvent);
-  t.true(typeof adapter.interactionHandler === 'function');
+  td.verify(adapter.addClass(className));
+  assert.equal(adapter.eventType, endEvent);
+  assert.isOk(typeof adapter.interactionHandler === 'function');
 
   adapter.interactionHandler();
 
-  t.doesNotThrow(() => td.verify(adapter.removeClass(className)));
-  t.end();
+  td.verify(adapter.removeClass(className));
 });
 
-test('#animateWithClass removes the event listener it used for the end event', (t) => {
+test('#animateWithClass removes the event listener it used for the end event', () => {
   const {adapter, className, endEvent} = setupAnimateWithClassTest();
   util.animateWithClass(adapter, className, endEvent);
-  t.doesNotThrow(() => td.verify(adapter.addClass(className)));
-  t.equal(adapter.eventType, endEvent);
-  t.true(typeof adapter.interactionHandler === 'function');
+  td.verify(adapter.addClass(className));
+  assert.equal(adapter.eventType, endEvent);
+  assert.isOk(typeof adapter.interactionHandler === 'function');
 
   adapter.interactionHandler();
 
-  t.equal(adapter.eventType, '');
-  t.equal(adapter.interactionHandler, null);
-  t.end();
+  assert.equal(adapter.eventType, '');
+  assert.equal(adapter.interactionHandler, null);
 });
 
-test('#animateWithClass returns a function which allows you to manually remove class/unlisten', (t) => {
+test('#animateWithClass returns a function which allows you to manually remove class/unlisten', () => {
   const {adapter, className, endEvent} = setupAnimateWithClassTest();
   const cancel = util.animateWithClass(adapter, className, endEvent);
 
-  t.doesNotThrow(() => td.verify(adapter.addClass(className)), 'addClass sanity check');
-  t.equal(adapter.eventType, endEvent, 'event registration sanity check (type)');
-  t.true(typeof adapter.interactionHandler === 'function', 'event registration sanity check (handler)');
+  td.verify(adapter.addClass(className));
+  assert.equal(adapter.eventType, endEvent, 'event registration sanity check (type)');
+  assert.isOk(typeof adapter.interactionHandler === 'function', 'event registration sanity check (handler)');
 
   cancel();
 
-  t.doesNotThrow(() => td.verify(adapter.removeClass(className)));
-  t.equal(adapter.eventType, '');
-  t.equal(adapter.interactionHandler, null);
-  t.end();
+  td.verify(adapter.removeClass(className));
+  assert.equal(adapter.eventType, '');
+  assert.equal(adapter.interactionHandler, null);
 });
 
-test('#animateWithClass return function can only be called once', (t) => {
+test('#animateWithClass return function can only be called once', () => {
   const {adapter, className, endEvent} = setupAnimateWithClassTest();
   const cancel = util.animateWithClass(adapter, className, endEvent);
 
-  t.doesNotThrow(() => td.verify(adapter.addClass(className)), 'addClass sanity check');
-  t.equal(adapter.eventType, endEvent, 'event registration sanity check (type)');
-  t.true(typeof adapter.interactionHandler === 'function', 'event registration sanity check (handler)');
+  td.verify(adapter.addClass(className));
+  assert.equal(adapter.eventType, endEvent, 'event registration sanity check (type)');
+  assert.isOk(typeof adapter.interactionHandler === 'function', 'event registration sanity check (handler)');
 
   cancel();
   cancel();
 
-  t.doesNotThrow(() => td.verify(adapter.removeClass(className), {times: 1}));
-  t.end();
+  td.verify(adapter.removeClass(className), {times: 1});
 });
 
-test('#getNormalizedEventCoords maps event coords into the relative coordinates of the given rect', (t) => {
+test('#getNormalizedEventCoords maps event coords into the relative coordinates of the given rect', () => {
   const ev = {type: 'mouseup', pageX: 70, pageY: 70};
   const pageOffset = {x: 10, y: 10};
   const clientRect = {left: 50, top: 50};
 
-  t.deepEqual(util.getNormalizedEventCoords(ev, pageOffset, clientRect), {
+  assert.deepEqual(util.getNormalizedEventCoords(ev, pageOffset, clientRect), {
     x: 10,
     y: 10,
   });
-  t.end();
 });
 
-test('#getNormalizedEventCoords works with touchend events', (t) => {
+test('#getNormalizedEventCoords works with touchend events', () => {
   const ev = {type: 'touchend', changedTouches: [{pageX: 70, pageY: 70}]};
   const pageOffset = {x: 10, y: 10};
   const clientRect = {left: 50, top: 50};
 
-  t.deepEqual(util.getNormalizedEventCoords(ev, pageOffset, clientRect), {
+  assert.deepEqual(util.getNormalizedEventCoords(ev, pageOffset, clientRect), {
     x: 10,
     y: 10,
   });
-  t.end();
 });
