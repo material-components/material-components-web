@@ -118,6 +118,7 @@ export class MDCDialog extends MDCComponent {
         this.confirmationCancelButton_.removeEventListener('click', handler),
 
       acceptAction: (handler) => console.log('Accept Dialog'),
+      cancelAction: (handler) => console.log('Cancel Dialog'),
 
 			registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
 			deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),

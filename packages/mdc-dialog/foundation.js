@@ -62,6 +62,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       registerConfirmationCancelHandler: () => {},
       deregisterConfirmationCancelHandler: () => {},
       acceptAction: () => {},
+      cancelAction: () => {},
 
 			setTranslateY: (/* value: number | null */) => {},
       updateCssVariable: (/* value: string */) => {},
@@ -84,7 +85,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.inert_ = false;
     this.isOpen_ = false;
     this.acceptHandler_ = () => { this.accept() };
-    this.cancelHandler_ = () => { this.close() };
+    this.cancelHandler_ = () => { this.cancel() };
     this.confirmationHandler_ = () => { this.openConfirmation() };
     this.confirmationAcceptHandler_ = () => { this.confirmationAccept() };
     this.confirmationCancelHandler_ = () => { this.closeConfirmation() };
@@ -147,8 +148,13 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.close();
   }
 
-  confirmationAccept() {
+  cancel() {
+    this.adapter_.cancelAction();
     this.close();
+  }
+
+  confirmationAccept() {
+    this.cancel();
     this.closeConfirmation();
   }
 
