@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,13 +42,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
       hasNecessaryDom: () => /* boolean */ false,
       navigation: () => false,
       navigationAutoSave: () => false,
-      registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      // registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      // deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      // registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      // deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
-
       registerAcceptHandler: () => {},
       deregisterAcceptHandler: () => {},
       registerCancelHandler: () => {},
@@ -63,16 +62,16 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterConfirmationCancelHandler: () => {},
       acceptAction: () => {},
       cancelAction: () => {},
-
 			setTranslateY: (/* value: number | null */) => {},
       updateCssVariable: (/* value: string */) => {},
+      
       getFocusableElements: () => /* NodeList */ {},
       saveElementTabState: (/* el: Element */) => {},
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
+      
       isRtl: () => /* boolean */ false,
       isDialog: (/* el: Element */) => /* boolean */ false,
-
 			hasNavigation: () => /* boolean */ false,
 			hasAutosave: () => /* boolean */ false,
 			willConfirmCancel: () => /* boolean */ false,
@@ -89,23 +88,39 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.confirmationHandler_ = () => { this.openConfirmation() };
     this.confirmationAcceptHandler_ = () => { this.confirmationAccept() };
     this.confirmationCancelHandler_ = () => { this.closeConfirmation() };
+    this.documentKeydownHandler_ = (evt) => {
+      if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
+        this.cancel();
+      }
+    };
   }
 
   init() {
-    const {ROOT, OPEN} = MDCDialogFoundation.cssClasses;
+    const {ROOT, ACTIVE, OPEN} = MDCDialogFoundation.cssClasses;
 
     this.adapter_.registerAcceptHandler(this.acceptHandler_);
-
+ 
     if (!this.adapter_.navigationAutoSave()) {
       this.adapter_.registerCancelHandler(this.cancelHandler_);
+    } 
+
+    //if (this.adapter_.navigationAutoSave() && this.adapter_.navigationAutoSave()) {
+    //  this.adapter_.registerNavigationAcceptHandler(this.acceptHandler_);
+    //}
+    //
+    //if (this.adapter_.navigationAutoSave() && !this.adapter_.navigationAutoSave()) {
+    //  this.adapter_.registerNavigationCancelHandler(this.confirmationHandler_);
+    //  this.adapter_.registerConfirmationAcceptHandler(this.confirmationAcceptHandler_);
+    //  this.adapter_.registerConfirmationCancelHandler(this.confirmationCancelHandler_);
+    //}
+
+    if (this.adapter_.hasClass(ACTIVE)) {
+      this.isOpen_ = true;
+    } else {
+      this.lockTab_();
+      this.isOpen_ = false;
     }
 
-    if (this.adapter_.navigation() && !this.adapter_.navigationAutoSave()) {
-      this.adapter_.registerNavigationAcceptHandler(this.acceptHandler_);
-      this.adapter_.registerNavigationCancelHandler(this.confirmationHandler_);
-      this.adapter_.registerConfirmationAcceptHandler(this.confirmationAcceptHandler_);
-      this.adapter_.registerConfirmationCancelHandler(this.confirmationCancelHandler_);
-    }
   }
 
   destroy() {

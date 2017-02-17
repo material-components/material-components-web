@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2016 Google Inc. All rights reserved.
+  Copyright 2017 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -84,11 +84,11 @@
 		  </div>
 		</aside>
 		
-		<!--aside id="mdc-dialog-three" class="mdc-dialog">
+		<aside id="mdc-dialog-three" class="mdc-dialog">
 		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
 		    
 		    <section class="mdc-dialog-header">
-		      <button id="mdc-dialog-navigation-cancel" class="mdc-button mdc-dialog-header__back">
+		      <button id="mdc-dialog-navigation-accept" class="mdc-button mdc-dialog-header__navigation-close">
 		         <i class="material-icons">arrow_back</i>
 		      </button>
 		      <h2 class="mdc-dialog-header__title">
@@ -100,13 +100,13 @@
 		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
 		    </section>
 		    <section class="mdc-dialog-footer">
-		      <button type="button" id="mdc-accept" class="mdc-button">BACK</button>
+		      <button type="button" id="mdc-dialog-accept" class="mdc-button">BACK</button>
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div>
-		</aside-->
+		</aside>
 		
-		<!--aside id="mdc-dialog-four" class="mdc-dialog">
+		<aside id="mdc-dialog-four" class="mdc-dialog">
 		  <div class="mdc-dialog-surface">
 		    <section class="mdc-dialog-header">
 		      <h2 class="mdc-dialog-header__title">
@@ -136,7 +136,7 @@
 		    </section>
 		  </div>
 		  <div class="mdc-dialog-backdrop"></div> 
-		</aside-->
+		</aside>
 		
 		<section class="user-content">
 		  <div>
@@ -145,8 +145,69 @@
 		  </div>
 		  <button id="dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog</button>
 		  <button id="dialog-activation__navigation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog with Nav</button>
-		  <button id="dialog-activation__autosave" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog with Back Nav</button>
+		  <button id="dialog-activation__autosave" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog with Auto Save Nav</button>
 		  <button id="dialog-activation__scrollable" class="mdc-button mdc-button--primary mdc-button--raised">Show Scrolling Dialog</button>
+      <ul>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+        <li>one</li>
+      </ul>
 		</section>
 
     <script src="assets/material-components-web.js" charset="utf-8"></script>
@@ -154,8 +215,8 @@
 		<script>
       var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-one'));
       var dialogNavigation= new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-two'));
-      //var dialogAutosave = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-three'));
-      //var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-four'));
+      var dialogAutosave = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-three'));
+      var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-four'));
 
 			document.querySelector('#dialog-activation').addEventListener('click', function () {
 				dialog.open = true;
@@ -163,12 +224,12 @@
 			document.querySelector('#dialog-activation__navigation').addEventListener('click', function () {
 				dialogNavigation.open = true;
 			})
-			//document.querySelector('#dialog-activation__autosave').addEventListener('click', function () {
-			//	dialogAutosave.open = true;
-			//})
-			//document.querySelector('#dialog-activation__scrollable').addEventListener('click', function () {
-			//	dialogScrollable.open = true;
-			//})
+			document.querySelector('#dialog-activation__autosave').addEventListener('click', function () {
+				dialogAutosave.open = true;
+			})
+			document.querySelector('#dialog-activation__scrollable').addEventListener('click', function () {
+				dialogScrollable.open = true;
+			})
     </script>
   </body>
 </html>

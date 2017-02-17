@@ -58,10 +58,10 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
 }
 
 .mdc-dialog {
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
   visibility: hidden;
   z-index: -1;
 
