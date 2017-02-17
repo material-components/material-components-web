@@ -4,7 +4,7 @@ globals:
 env:
   browser: true
 plugins:
-  - tape
+  - mocha
 parserOptions:
   ecmaVersion: 2015
   sourceType: module
@@ -23,25 +23,14 @@ rules:
   valid-jsdoc: off
   prefer-const: error
 
-  # tape rules
-  # see: https://github.com/atabel/eslint-plugin-tape/blob/master/index.js
-  tape/assertion-message:
-    - off
-    - always
-  tape/max-asserts:
-    - off
-    - 5
-  tape/no-identical-title: error
-  tape/no-ignored-test-files: error
-  tape/no-only-test: error
-  tape/no-skip-assert: error
-  tape/no-skip-test: error
-  tape/no-statement-after-end: error
-  tape/no-unknown-modifiers: error
-  tape/test-ended: error
-  tape/test-title:
-    - error
-    - if-multiple
-  tape/use-t-well: error
-  tape/use-t: error
-  tape/use-test: error
+  # Rules for our mocha unit tests. Note that even though we use mocha, we model our unit tests
+  # after frameworks such as tape and ava, which encourage modern paradigms, seek to minimize
+  # shared state across tests, and try and make tests look as simple as possible.
+  mocha/handle-done-callback: error
+  mocha/no-exclusive-tests: error
+  mocha/no-hooks: error
+  mocha/no-identical-title: error
+  mocha/no-nested-tests: error
+  mocha/no-pending-tests: error
+  mocha/no-skipped-tests: error
+  mocha/valid-suite-description: [error, ^MDC.+]

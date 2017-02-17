@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import td from 'testdouble';
 
 import {getCorrectEventName} from '../../../packages/mdc-animation';
@@ -31,7 +31,9 @@ const legacyWindowObj = td.object({
   },
 });
 
-test('#getCorrectEventName does not prefix events when not necessary', (t) => {
+suite('MDCAnimation');
+
+test('#getCorrectEventName does not prefix events when not necessary', () => {
   const windowObj = td.object({
     document: {
       createElement: (str) => ({
@@ -42,85 +44,75 @@ test('#getCorrectEventName does not prefix events when not necessary', (t) => {
     },
   });
 
-  t.equal(
+  assert.equal(
     getCorrectEventName(windowObj, 'animationstart'),
     'animationstart',
     'no prefix'
   );
-
-  t.end();
 });
 
-test('#getCorrectEventName does not prefix events if window does not contain a DOM node', (t) => {
+test('#getCorrectEventName does not prefix events if window does not contain a DOM node', () => {
   const windowObj = td.object({});
 
-  t.equal(
+  assert.equal(
     getCorrectEventName(windowObj, 'animationstart'),
     'animationstart',
     'no prefix'
   );
-
-  t.end();
 });
 
-test('#getCorrectPropertyName does not prefix events if window does not contain a DOM node', (t) => {
+test('#getCorrectPropertyName does not prefix events if window does not contain a DOM node', () => {
   const windowObj = td.object({});
 
-  t.equal(
+  assert.equal(
     getCorrectPropertyName(windowObj, 'transition'),
     'transition',
     'no prefix'
   );
-
-  t.end();
 });
 
-test('#getCorrectPropertyName prefixes css properties when required', (t) => {
-  t.equal(
+test('#getCorrectPropertyName prefixes css properties when required', () => {
+  assert.equal(
     getCorrectPropertyName(legacyWindowObj, 'animation'),
     '-webkit-animation',
     'added prefix'
   );
 
-  t.equal(
+  assert.equal(
     getCorrectPropertyName(legacyWindowObj, 'transform'),
     '-webkit-transform',
     'added prefix'
   );
 
-  t.equal(
+  assert.equal(
     getCorrectPropertyName(legacyWindowObj, 'transition'),
     '-webkit-transition',
     'added prefix'
   );
-
-  t.end();
 });
 
-test('#getCorrectEventName prefixes javascript events when required', (t) => {
-  t.equal(
+test('#getCorrectEventName prefixes javascript events when required', () => {
+  assert.equal(
     getCorrectEventName(legacyWindowObj, 'animationstart'),
     'webkitAnimationStart',
     'added prefix'
   );
 
-  t.equal(
+  assert.equal(
     getCorrectEventName(legacyWindowObj, 'animationend'),
     'webkitAnimationEnd',
     'added prefix'
   );
 
-  t.equal(
+  assert.equal(
     getCorrectEventName(legacyWindowObj, 'animationiteration'),
     'webkitAnimationIteration',
     'added prefix'
   );
 
-  t.equal(
+  assert.equal(
     getCorrectEventName(legacyWindowObj, 'transitionend'),
     'webkitTransitionEnd',
     'added prefix'
   );
-
-  t.end();
 });

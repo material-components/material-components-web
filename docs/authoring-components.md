@@ -728,6 +728,10 @@ Concretely:
 
 ### Testing
 
+The following guidelines should be used to help write tests for MDC-Web code. Our tests are written
+using [mocha](https://mochajs.org/) with the [qunit UI](https://mochajs.org/#qunit), and are driven by [karma](https://karma-runner.github.io/1.0/index.html). We use the [chai assert API](http://chaijs.com/api/assert/)
+for assertions, and [testdouble](https://github.com/testdouble/testdouble.js/) for mocking and stubbing.
+
 #### Verify foundation's adapters
 When testing foundations, ensure that at least one of your test cases uses the
 `verifyDefaultAdapter` method defined with our [foundation helpers](../test/unit/helpers/foundation.js). This is done to ensure that adapter interfaces do not

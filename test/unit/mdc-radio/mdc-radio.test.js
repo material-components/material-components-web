@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import bel from 'bel';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
@@ -42,49 +42,46 @@ function setupTest() {
   return {root, component};
 }
 
+suite('MDCRadio');
+
 if (supportsCssVariables(window)) {
-  test('#constructor initializes the root element with a ripple', (t) => {
+  test('#constructor initializes the root element with a ripple', () => {
     const raf = createMockRaf();
     const {root} = setupTest();
     raf.flush();
-    t.true(root.classList.contains('mdc-ripple-upgraded'));
+    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
     raf.restore();
-    t.end();
   });
 
-  test('#destroy removes the ripple', (t) => {
+  test('#destroy removes the ripple', () => {
     const raf = createMockRaf();
     const {root, component} = setupTest();
     raf.flush();
     component.destroy();
     raf.flush();
-    t.false(root.classList.contains('mdc-ripple-upgraded'));
-    t.end();
+    assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
   });
 }
 
-test('get/set checked updates the checked value of the native radio element', (t) => {
+test('get/set checked updates the checked value of the native radio element', () => {
   const {root, component} = setupTest();
   const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
   component.checked = true;
-  t.true(radio.checked);
-  t.equal(component.checked, radio.checked);
-  t.end();
+  assert.isOk(radio.checked);
+  assert.equal(component.checked, radio.checked);
 });
 
-test('get/set disabled updates the disabled value of the native radio element', (t) => {
+test('get/set disabled updates the disabled value of the native radio element', () => {
   const {root, component} = setupTest();
   const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
   component.disabled = true;
-  t.true(radio.disabled);
-  t.equal(component.disabled, radio.disabled);
-  t.end();
+  assert.isOk(radio.disabled);
+  assert.equal(component.disabled, radio.disabled);
 });
 
-test('#adapter.getNativeControl() returns the native radio element', (t) => {
+test('#adapter.getNativeControl() returns the native radio element', () => {
   const {root, component} = setupTest();
-  t.equal(
+  assert.equal(
     component.getDefaultFoundation().adapter_.getNativeControl(), root.querySelector(NATIVE_CONTROL_SELECTOR)
   );
-  t.end();
 });

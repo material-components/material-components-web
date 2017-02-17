@@ -14,40 +14,39 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import td from 'testdouble';
 import bel from 'bel';
 
 import * as utils from '../../../packages/mdc-drawer/util';
 
-test('remapEvent returns the provided event name for non-mapped events', (t) => {
-  t.equal(utils.remapEvent('change'), 'change');
-  t.end();
+suite('MDCDrawer - util');
+
+test('remapEvent returns the provided event name for non-mapped events', () => {
+  assert.equal(utils.remapEvent('change'), 'change');
 });
 
-test('remapEvent returns the provided event name for mapped events, if browser supports touch events', (t) => {
+test('remapEvent returns the provided event name for mapped events, if browser supports touch events', () => {
   const mockWindow = {
     document: {
       ontouchstart: function() {},
     },
   };
-  t.equal(utils.remapEvent('touchstart', mockWindow), 'touchstart');
-  t.equal(utils.remapEvent('touchmove', mockWindow), 'touchmove');
-  t.equal(utils.remapEvent('touchend', mockWindow), 'touchend');
-  t.end();
+  assert.equal(utils.remapEvent('touchstart', mockWindow), 'touchstart');
+  assert.equal(utils.remapEvent('touchmove', mockWindow), 'touchmove');
+  assert.equal(utils.remapEvent('touchend', mockWindow), 'touchend');
 });
 
-test('remapEvent returns the mapped event name for mapped events, if browser does not support touch events', (t) => {
+test('remapEvent returns the mapped event name for mapped events, if browser does not support touch events', () => {
   const mockWindow = {
     document: {},
   };
-  t.equal(utils.remapEvent('touchstart', mockWindow), 'pointerdown');
-  t.equal(utils.remapEvent('touchmove', mockWindow), 'pointermove');
-  t.equal(utils.remapEvent('touchend', mockWindow), 'pointerup');
-  t.end();
+  assert.equal(utils.remapEvent('touchstart', mockWindow), 'pointerdown');
+  assert.equal(utils.remapEvent('touchmove', mockWindow), 'pointermove');
+  assert.equal(utils.remapEvent('touchend', mockWindow), 'pointerup');
 });
 
-test('getTransformPropertyName returns "transform" for browsers that support it', (t) => {
+test('getTransformPropertyName returns "transform" for browsers that support it', () => {
   const mockWindow = {
     document: {
       createElement: function() {
@@ -55,11 +54,10 @@ test('getTransformPropertyName returns "transform" for browsers that support it'
       },
     },
   };
-  t.equal(utils.getTransformPropertyName(mockWindow, true), 'transform');
-  t.end();
+  assert.equal(utils.getTransformPropertyName(mockWindow, true), 'transform');
 });
 
-test('getTransformPropertyName returns "-webkit-transform" for browsers that do not support "transform"', (t) => {
+test('getTransformPropertyName returns "-webkit-transform" for browsers that do not support "transform"', () => {
   const mockWindow = {
     document: {
       createElement: function() {
@@ -67,31 +65,28 @@ test('getTransformPropertyName returns "-webkit-transform" for browsers that do 
       },
     },
   };
-  t.equal(utils.getTransformPropertyName(mockWindow, true), '-webkit-transform');
-  t.end();
+  assert.equal(utils.getTransformPropertyName(mockWindow, true), '-webkit-transform');
 });
 
-test('supportsCssCustomProperties returns true for browsers that support them', (t) => {
+test('supportsCssCustomProperties returns true for browsers that support them', () => {
   const supports = td.function('supports');
   td.when(supports('(--color: red)')).thenReturn(true);
   const mockWindow = {
     CSS: {supports: supports},
   };
-  t.true(utils.supportsCssCustomProperties(mockWindow));
-  t.end();
+  assert.isOk(utils.supportsCssCustomProperties(mockWindow));
 });
 
-test('supportsCssCustomProperties returns dalse for browsers that do not support them', (t) => {
+test('supportsCssCustomProperties returns dalse for browsers that do not support them', () => {
   const supports = td.function('supports');
   td.when(supports('(--color: red)')).thenReturn(false);
   const mockWindow = {
     CSS: {supports: supports},
   };
-  t.false(utils.supportsCssCustomProperties(mockWindow));
-  t.end();
+  assert.isNotOk(utils.supportsCssCustomProperties(mockWindow));
 });
 
-test('applyPassive returns an options object for browsers that support passive event listeners', (t) => {
+test('applyPassive returns an options object for browsers that support passive event listeners', () => {
   const mockWindow = {
     document: {
       addEventListener: function(name, method, options) {
@@ -99,11 +94,10 @@ test('applyPassive returns an options object for browsers that support passive e
       },
     },
   };
-  t.deepEqual(utils.applyPassive(mockWindow, true), {passive: true});
-  t.end();
+  assert.deepEqual(utils.applyPassive(mockWindow, true), {passive: true});
 });
 
-test('applyPassive returns false for browsers that do not support passive event listeners', (t) => {
+test('applyPassive returns false for browsers that do not support passive event listeners', () => {
   const mockWindow = {
     document: {
       addEventListener: function() {
@@ -111,40 +105,35 @@ test('applyPassive returns false for browsers that do not support passive event 
       },
     },
   };
-  t.false(utils.applyPassive(mockWindow, true));
-  t.end();
+  assert.isNotOk(utils.applyPassive(mockWindow, true));
 });
 
-test('saveElementTabState saves the tab index of an element', (t) => {
+test('saveElementTabState saves the tab index of an element', () => {
   const el = bel`<div id="foo" tabindex="42"></div>`;
   utils.saveElementTabState(el);
-  t.equal(el.getAttribute('data-mdc-tabindex'), '42');
-  t.equal(el.getAttribute('data-mdc-tabindex-handled'), 'true');
-  t.end();
+  assert.equal(el.getAttribute('data-mdc-tabindex'), '42');
+  assert.equal(el.getAttribute('data-mdc-tabindex-handled'), 'true');
 });
 
-test('saveElementTabState marks an element as handled, as long as it is tabbable', (t) => {
+test('saveElementTabState marks an element as handled, as long as it is tabbable', () => {
   const el = bel`<a id="foo" href="foo"></a>`;
   utils.saveElementTabState(el);
-  t.equal(el.getAttribute('data-mdc-tabindex'), null);
-  t.equal(el.getAttribute('data-mdc-tabindex-handled'), 'true');
-  t.end();
+  assert.equal(el.getAttribute('data-mdc-tabindex'), null);
+  assert.equal(el.getAttribute('data-mdc-tabindex-handled'), 'true');
 });
 
-test('restoreElementTabState restores the tab index of an element that was saved earlier', (t) => {
+test('restoreElementTabState restores the tab index of an element that was saved earlier', () => {
   const el = bel`<a id="foo" href="foo" data-mdc-tabindex="42" data-mdc-tabindex-handled="true"></a>`;
   utils.restoreElementTabState(el);
-  t.equal(el.getAttribute('tabindex'), '42');
-  t.equal(el.getAttribute('data-mdc-tabindex'), null);
-  t.equal(el.getAttribute('data-mdc-tabindex-handled'), null);
-  t.end();
+  assert.equal(el.getAttribute('tabindex'), '42');
+  assert.equal(el.getAttribute('data-mdc-tabindex'), null);
+  assert.equal(el.getAttribute('data-mdc-tabindex-handled'), null);
 });
 
-test('restoreElementTabState removes the temporary tabindex of an implicitly tabbable element', (t) => {
+test('restoreElementTabState removes the temporary tabindex of an implicitly tabbable element', () => {
   const el = bel`<a id="foo" href="foo" data-mdc-tabindex-handled="true"></a>`;
   utils.restoreElementTabState(el);
-  t.equal(el.getAttribute('tabindex'), null);
-  t.equal(el.getAttribute('data-mdc-tabindex'), null);
-  t.equal(el.getAttribute('data-mdc-tabindex-handled'), null);
-  t.end();
+  assert.equal(el.getAttribute('tabindex'), null);
+  assert.equal(el.getAttribute('data-mdc-tabindex'), null);
+  assert.equal(el.getAttribute('data-mdc-tabindex-handled'), null);
 });

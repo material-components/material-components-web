@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import bel from 'bel';
 import td from 'testdouble';
 import domEvents from 'dom-events';
@@ -40,83 +40,75 @@ function setupTest() {
   return {root, component};
 }
 
-test('attachTo initializes and returns a MDCSnackbar instance', (t) => {
-  t.true(MDCSnackbar.attachTo(getFixture()) instanceof MDCSnackbar);
-  t.end();
+suite('MDCSnackbar');
+
+test('attachTo initializes and returns a MDCSnackbar instance', () => {
+  assert.isOk(MDCSnackbar.attachTo(getFixture()) instanceof MDCSnackbar);
 });
 
-test('foundationAdapter#addClass adds a class to the root element', (t) => {
+test('foundationAdapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  t.true(root.classList.contains('foo'));
-  t.end();
+  assert.isOk(root.classList.contains('foo'));
 });
 
-test('adapter#removeClass removes a class from the root element', (t) => {
+test('adapter#removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  t.false(root.classList.contains('foo'));
-  t.end();
+  assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('foundationAdapter#setAriaHidden adds aria-hidden="true" to the root element', (t) => {
+test('foundationAdapter#setAriaHidden adds aria-hidden="true" to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setAriaHidden();
-  t.true(root.getAttribute('aria-hidden'));
-  t.end();
+  assert.isOk(root.getAttribute('aria-hidden'));
 });
 
-test('foundationAdapter#unsetAriaHidden removes "aria-hidden" from the root element', (t) => {
+test('foundationAdapter#unsetAriaHidden removes "aria-hidden" from the root element', () => {
   const {root, component} = setupTest();
   root.setAttribute('aria-hidden', true);
   component.getDefaultFoundation().adapter_.unsetAriaHidden();
-  t.false(root.getAttribute('aria-hidden'));
-  t.end();
+  assert.isNotOk(root.getAttribute('aria-hidden'));
 });
 
-test('foundationAdapter#setMessageText sets the text content of the text element', (t) => {
+test('foundationAdapter#setMessageText sets the text content of the text element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setMessageText('Message Deleted');
-  t.equal(root.querySelector(strings.TEXT_SELECTOR).textContent, 'Message Deleted');
-  t.end();
+  assert.equal(root.querySelector(strings.TEXT_SELECTOR).textContent, 'Message Deleted');
 });
 
-test('foundationAdapter#setActionText sets the text content of the action button element', (t) => {
+test('foundationAdapter#setActionText sets the text content of the action button element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setActionText('Undo');
-  t.equal(root.querySelector(strings.ACTION_BUTTON_SELECTOR).textContent, 'Undo');
-  t.end();
+  assert.equal(root.querySelector(strings.ACTION_BUTTON_SELECTOR).textContent, 'Undo');
 });
 
-test('foundationAdapter#setActionAriaHidden adds aria-hidden="true" to the action button element', (t) => {
+test('foundationAdapter#setActionAriaHidden adds aria-hidden="true" to the action button element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setActionAriaHidden();
-  t.true(root.querySelector(strings.ACTION_BUTTON_SELECTOR).getAttribute('aria-hidden'));
-  t.end();
+  assert.isOk(root.querySelector(strings.ACTION_BUTTON_SELECTOR).getAttribute('aria-hidden'));
 });
 
-test('foundationAdapter#unsetActionAriaHidden removes "aria-hidden" from the action button element', (t) => {
+test('foundationAdapter#unsetActionAriaHidden removes "aria-hidden" from the action button element', () => {
   const {root, component} = setupTest();
   const actionButton = root.querySelector(strings.ACTION_BUTTON_SELECTOR);
   actionButton.setAttribute('aria-hidden', true);
   component.getDefaultFoundation().adapter_.unsetActionAriaHidden();
-  t.false(actionButton.getAttribute('aria-hidden'));
-  t.end();
+  assert.isNotOk(actionButton.getAttribute('aria-hidden'));
 });
 
-test('foundationAdapter#registerActionClickHandler adds the handler to be called when action is clicked', (t) => {
+test('foundationAdapter#registerActionClickHandler adds the handler to be called when action is clicked', () => {
   const {root, component} = setupTest();
   const handler = td.func('clickHandler');
 
   component.getDefaultFoundation().adapter_.registerActionClickHandler(handler);
 
   root.querySelector(strings.ACTION_BUTTON_SELECTOR).click();
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('foundationAdapter#deregisterActionClickHandler removes the handler to be called when action is clicked', (t) => {
+test('foundationAdapter#deregisterActionClickHandler removes the handler to be called when action is clicked', () => {
   const {root, component} = setupTest();
   const handler = td.func('clickHandler');
   const actionButton = root.querySelector(strings.ACTION_BUTTON_SELECTOR);
@@ -127,22 +119,20 @@ test('foundationAdapter#deregisterActionClickHandler removes the handler to be c
 
   actionButton.click();
 
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('foundationAdapter#registerTransitionEndHandler adds an event listener to the root', (t) => {
+test('foundationAdapter#registerTransitionEndHandler adds an event listener to the root', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionEndHandler');
 
   component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
 
   domEvents.emit(root, 'transitionend');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('foundationAdapter#deregisterTransitionEndHandler adds an event listener to the root', (t) => {
+test('foundationAdapter#deregisterTransitionEndHandler adds an event listener to the root', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionEndHandler');
 
@@ -150,6 +140,5 @@ test('foundationAdapter#deregisterTransitionEndHandler adds an event listener to
   component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
 
   domEvents.emit(root, 'transitionend');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
