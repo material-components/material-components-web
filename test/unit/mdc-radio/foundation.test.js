@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import td from 'testdouble';
 
 import MDCRadioFoundation from '../../../packages/mdc-radio/foundation';
 
-test('exports cssClasses', (t) => {
-  t.true('cssClasses' in MDCRadioFoundation);
-  t.end();
+suite('MDCRadioFoundation');
+
+test('exports cssClasses', () => {
+  assert.isOk('cssClasses' in MDCRadioFoundation);
 });
 
-test('exports strings', (t) => {
-  t.true('strings' in MDCRadioFoundation);
-  t.end();
+test('exports strings', () => {
+  assert.isOk('strings' in MDCRadioFoundation);
 });
 
-test('defaultAdapter returns a complete adapter implementation', (t) => {
+test('defaultAdapter returns a complete adapter implementation', () => {
   const {defaultAdapter} = MDCRadioFoundation;
   const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
-  t.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  t.deepEqual(methods, ['addClass', 'removeClass', 'getNativeControl']);
-  methods.forEach((m) => t.doesNotThrow(defaultAdapter[m]));
-
-  t.end();
+  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
+  assert.deepEqual(methods, ['addClass', 'removeClass', 'getNativeControl']);
+  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
 function setupTest() {
@@ -46,80 +44,70 @@ function setupTest() {
   return {foundation, mockAdapter};
 }
 
-test('#isChecked returns the value of nativeControl.checked', (t) => {
+test('#isChecked returns the value of nativeControl.checked', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn({checked: true});
-  t.true(foundation.isChecked());
-  t.end();
+  assert.isOk(foundation.isChecked());
 });
 
-test('#isChecked returns false if getNativeControl() does not return anything', (t) => {
+test('#isChecked returns false if getNativeControl() does not return anything', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.false(foundation.isChecked());
-  t.end();
+  assert.isNotOk(foundation.isChecked());
 });
 
-test('#setChecked sets the value of nativeControl.checked', (t) => {
+test('#setChecked sets the value of nativeControl.checked', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeControl = {checked: false};
   td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   foundation.setChecked(true);
-  t.true(nativeControl.checked);
-  t.end();
+  assert.isOk(nativeControl.checked);
 });
 
-test('#setChecked exits gracefully if getNativeControl() does not return anything', (t) => {
+test('#setChecked exits gracefully if getNativeControl() does not return anything', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.doesNotThrow(() => foundation.setChecked(true));
-  t.end();
+  assert.doesNotThrow(() => foundation.setChecked(true));
 });
 
-test('#isDisabled returns the value of nativeControl.disabled', (t) => {
+test('#isDisabled returns the value of nativeControl.disabled', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn({disabled: true});
-  t.true(foundation.isDisabled());
-  t.end();
+  assert.isOk(foundation.isDisabled());
 });
 
-test('#isDisabled returns false if getNativeControl() does not return anything', (t) => {
+test('#isDisabled returns false if getNativeControl() does not return anything', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.false(foundation.isDisabled());
-  t.end();
+  assert.isNotOk(foundation.isDisabled());
 });
 
-test('#setDisabled sets the value of nativeControl.disabled', (t) => {
+test('#setDisabled sets the value of nativeControl.disabled', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeControl = {disabled: false};
   td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   foundation.setDisabled(true);
-  t.true(nativeControl.disabled);
-  t.end();
+  assert.isOk(nativeControl.disabled);
 });
 
-test('#setDisabled adds mdc-radio--disabled to the radio element when set to true', (t) => {
+test('#setDisabled adds mdc-radio--disabled to the radio element when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeControl = {disabled: false};
   td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   foundation.setDisabled(true);
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(MDCRadioFoundation.cssClasses.DISABLED)));
-  t.end();
+  td.verify(mockAdapter.addClass(MDCRadioFoundation.cssClasses.DISABLED));
 });
 
-test('#setDisabled removes mdc-radio--disabled from the radio element when set to false', (t) => {
+test('#setDisabled removes mdc-radio--disabled from the radio element when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeControl = {disabled: true};
   td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   foundation.setDisabled(false);
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(MDCRadioFoundation.cssClasses.DISABLED)));
-  t.end();
+  td.verify(mockAdapter.removeClass(MDCRadioFoundation.cssClasses.DISABLED));
 });
 
-test('#setDisabled exits gracefully if getNativeControl() does not return anything', (t) => {
+test('#setDisabled exits gracefully if getNativeControl() does not return anything', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  t.doesNotThrow(() => foundation.setDisabled(true));
-  t.end();
+  assert.doesNotThrow(() => foundation.setDisabled(true));
 });

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
@@ -23,39 +23,36 @@ import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 import * as util from '../../../packages/mdc-ripple/util';
 
-test('attachTo initializes and returns a ripple', (t) => {
+suite('MDCRipple');
+
+test('attachTo initializes and returns a ripple', () => {
   const root = bel`<div></div>`;
   const component = MDCRipple.attachTo(root);
-  t.true(component instanceof MDCRipple);
-  t.end();
+  assert.isOk(component instanceof MDCRipple);
 });
 
-test('attachTo makes ripple unbounded when given as an option', (t) => {
+test('attachTo makes ripple unbounded when given as an option', () => {
   const root = bel`<div></div>`;
   const component = MDCRipple.attachTo(root, {isUnbounded: true});
-  t.true(component.unbounded);
-  t.end();
+  assert.isOk(component.unbounded);
 });
 
-test('attachTo does not override unbounded data attr when omitted', (t) => {
+test('attachTo does not override unbounded data attr when omitted', () => {
   const root = bel`<div data-mdc-ripple-is-unbounded></div>`;
   const component = MDCRipple.attachTo(root);
-  t.true(component.unbounded);
-  t.end();
+  assert.isOk(component.unbounded);
 });
 
-test('attachTo overrides unbounded data attr when explicitly specified', (t) => {
+test('attachTo overrides unbounded data attr when explicitly specified', () => {
   const root = bel`<div data-mdc-ripple-is-unbounded></div>`;
   const component = MDCRipple.attachTo(root, {isUnbounded: false});
-  t.false(component.unbounded);
-  t.end();
+  assert.isNotOk(component.unbounded);
 });
 
-test('createAdapter() returns the same adapter used by default for the ripple', (t) => {
+test('createAdapter() returns the same adapter used by default for the ripple', () => {
   const root = bel`<div></div>`;
   const component = MDCRipple.attachTo(root);
-  t.deepEqual(Object.keys(MDCRipple.createAdapter()), Object.keys(component.foundation_.adapter_));
-  t.end();
+  assert.deepEqual(Object.keys(MDCRipple.createAdapter()), Object.keys(component.foundation_.adapter_));
 });
 
 function setupTest() {
@@ -64,141 +61,125 @@ function setupTest() {
   return {root, component};
 }
 
-test(`set unbounded() adds ${cssClasses.UNBOUNDED} when truthy`, (t) => {
+test(`set unbounded() adds ${cssClasses.UNBOUNDED} when truthy`, () => {
   const {root, component} = setupTest();
   component.unbounded = true;
-  t.true(root.classList.contains(cssClasses.UNBOUNDED));
-  t.end();
+  assert.isOk(root.classList.contains(cssClasses.UNBOUNDED));
 });
 
-test(`set unbounded() removes ${cssClasses.UNBOUNDED} when falsy`, (t) => {
+test(`set unbounded() removes ${cssClasses.UNBOUNDED} when falsy`, () => {
   const {root, component} = setupTest();
   root.classList.add(cssClasses.UNBOUNDED);
   component.unbounded = false;
-  t.false(root.classList.contains(cssClasses.UNBOUNDED));
-  t.end();
+  assert.isNotOk(root.classList.contains(cssClasses.UNBOUNDED));
 });
 
-test('activate() delegates to the foundation', (t) => {
+test('activate() delegates to the foundation', () => {
   const {component} = setupTest();
   component.foundation_.activate = td.function();
   component.activate();
-  t.doesNotThrow(() => td.verify(component.foundation_.activate()));
-  t.end();
+  td.verify(component.foundation_.activate());
 });
 
-test('deactivate() delegates to the foundation', (t) => {
+test('deactivate() delegates to the foundation', () => {
   const {component} = setupTest();
   component.foundation_.deactivate = td.function();
   component.deactivate();
-  t.doesNotThrow(() => td.verify(component.foundation_.deactivate()));
-  t.end();
+  td.verify(component.foundation_.deactivate());
 });
 
-test('adapter#browserSupportsCssVars delegates to util', (t) => {
+test('adapter#browserSupportsCssVars delegates to util', () => {
   const {component} = setupTest();
-  t.equal(
+  assert.equal(
     component.getDefaultFoundation().adapter_.browserSupportsCssVars(window),
     util.supportsCssVariables(window)
   );
-  t.end();
 });
 
-test('adapter#isUnbounded delegates to unbounded getter', (t) => {
+test('adapter#isUnbounded delegates to unbounded getter', () => {
   const {component} = setupTest();
   component.unbounded = true;
-  t.true(component.getDefaultFoundation().adapter_.isUnbounded());
-  t.end();
+  assert.isOk(component.getDefaultFoundation().adapter_.isUnbounded());
 });
 
-test('adapter#isSurfaceActive calls the correct :matches API method on the root element', (t) => {
+test('adapter#isSurfaceActive calls the correct :matches API method on the root element', () => {
   const {root, component} = setupTest();
   const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
   const matches = td.func('root.<matches>');
   td.when(matches(':active')).thenReturn(true);
   root[MATCHES] = matches;
-  t.true(component.getDefaultFoundation().adapter_.isSurfaceActive());
-  t.end();
+  assert.isOk(component.getDefaultFoundation().adapter_.isSurfaceActive());
 });
 
-test('adapter#addClass adds a class to the root', (t) => {
+test('adapter#addClass adds a class to the root', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  t.true(root.classList.contains('foo'));
-  t.end();
+  assert.isOk(root.classList.contains('foo'));
 });
 
-test('adapter#removeClass removes a class from the root', (t) => {
+test('adapter#removeClass removes a class from the root', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  t.false(root.classList.contains('foo'));
-  t.end();
+  assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('adapter#registerInteractionHandler proxies to addEventListener', (t) => {
+test('adapter#registerInteractionHandler proxies to addEventListener', () => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
   domEvents.emit(root, 'foo');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterInteractionHandler proxies to removeEventListener', (t) => {
+test('adapter#deregisterInteractionHandler proxies to removeEventListener', () => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   root.addEventListener('foo', handler);
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('foo', handler);
   domEvents.emit(root, 'foo');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerResizeHandler uses the handler as a window resize listener', (t) => {
+test('adapter#registerResizeHandler uses the handler as a window resize listener', () => {
   const {component} = setupTest();
   const handler = td.func('resizeHandler');
   component.getDefaultFoundation().adapter_.registerResizeHandler(handler);
   domEvents.emit(window, 'resize');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
+  td.verify(handler(td.matchers.anything()));
   window.removeEventListener('resize', handler);
-  t.end();
 });
 
-test('adapter#registerResizeHandler unlistens the handler for window resize', (t) => {
+test('adapter#registerResizeHandler unlistens the handler for window resize', () => {
   const {component} = setupTest();
   const handler = td.func('resizeHandler');
   window.addEventListener('resize', handler);
   component.getDefaultFoundation().adapter_.deregisterResizeHandler(handler);
   domEvents.emit(window, 'resize');
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
+  td.verify(handler(td.matchers.anything()), {times: 0});
   // Just to be safe
   window.removeEventListener('resize', handler);
-  t.end();
 });
 
 if (util.supportsCssVariables(window)) {
-  test('adapter#updateCssVariable calls setProperty on root style with varName and value', (t) => {
+  test('adapter#updateCssVariable calls setProperty on root style with varName and value', () => {
     const {root, component} = setupTest();
     component.getDefaultFoundation().adapter_.updateCssVariable('--foo', 'red');
-    t.equal(root.style.getPropertyValue('--foo'), 'red');
-    t.end();
+    assert.equal(root.style.getPropertyValue('--foo'), 'red');
   });
 }
 
-test('adapter#computeBoundingRect calls getBoundingClientRect() on root', (t) => {
+test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
-  t.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
+  assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
   document.body.removeChild(root);
-  t.end();
 });
 
-test('adapter#getWindowPageOffset returns page{X,Y}Offset as {x,y} respectively', (t) => {
+test('adapter#getWindowPageOffset returns page{X,Y}Offset as {x,y} respectively', () => {
   const {component} = setupTest();
-  t.deepEqual(component.getDefaultFoundation().adapter_.getWindowPageOffset(), {
+  assert.deepEqual(component.getDefaultFoundation().adapter_.getWindowPageOffset(), {
     x: window.pageXOffset,
     y: window.pageYOffset,
   });
-  t.end();
 });

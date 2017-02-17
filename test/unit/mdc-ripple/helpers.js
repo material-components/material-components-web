@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import test from 'tape';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
@@ -36,21 +35,11 @@ export function testFoundation(desc, isCssVarsSupported, runTests) {
     isCssVarsSupported = true;
   }
 
-  test(desc, (t) => {
+  test(desc, () => {
     const {adapter, foundation} = setupTest(isCssVarsSupported);
     const mockRaf = createMockRaf();
-    // eslint-tape-plugin complains when we reference an unknown member on t,
-    // so we disable that so we can supplement t.
-    // eslint-disable-next-line tape/use-t-well
-    t.data = {adapter, foundation, mockRaf};
-
-    // Override end so that animation frame functions are always restored.
-    const {end} = t;
-    t.end = function(...args) {
-      mockRaf.restore();
-      end.apply(t, args);
-    };
-    runTests(t, {adapter, foundation, mockRaf});
+    runTests({adapter, foundation, mockRaf});
+    mockRaf.restore();
   });
 }
 

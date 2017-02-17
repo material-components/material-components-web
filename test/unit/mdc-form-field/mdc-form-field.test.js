@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
@@ -36,22 +36,20 @@ function setupTest() {
   return {root, component};
 }
 
-test('attachTo initializes and returns an MDCFormField instance', (t) => {
-  t.true(MDCFormField.attachTo(getFixture()) instanceof MDCFormField);
-  t.end();
+test('attachTo initializes and returns an MDCFormField instance', () => {
+  assert.isOk(MDCFormField.attachTo(getFixture()) instanceof MDCFormField);
 });
 
-test('get/set input', (t) => {
+test('get/set input', () => {
   const {component} = setupTest();
   const input = {};
 
   component.input = input;
 
-  t.true(component.input == input);
-  t.end();
+  assert.isOk(component.input == input);
 });
 
-test('adapter#registerInteractionHandler adds an event listener to the label element', (t) => {
+test('adapter#registerInteractionHandler adds an event listener to the label element', () => {
   const {root, component} = setupTest();
   const handler = td.func('eventHandler');
   const label = root.querySelector('label');
@@ -59,11 +57,10 @@ test('adapter#registerInteractionHandler adds an event listener to the label ele
   component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
   domEvents.emit(label, 'click');
 
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything())));
-  t.end();
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterInteractionHandler removes an event listener from the root element', (t) => {
+test('adapter#deregisterInteractionHandler removes an event listener from the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('eventHandler');
   const label = root.querySelector('label');
@@ -72,11 +69,10 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
   domEvents.emit(label, 'click');
 
-  t.doesNotThrow(() => td.verify(handler(td.matchers.anything()), {times: 0}));
-  t.end();
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#activateInputRipple calls activate on the input ripple', (t) => {
+test('adapter#activateInputRipple calls activate on the input ripple', () => {
   const {component} = setupTest();
   const ripple = td.object();
   const input = {ripple: ripple};
@@ -84,28 +80,25 @@ test('adapter#activateInputRipple calls activate on the input ripple', (t) => {
   component.input = input;
   component.getDefaultFoundation().adapter_.activateInputRipple();
 
-  t.doesNotThrow(() => td.verify(ripple.activate()));
-  t.end();
+  td.verify(ripple.activate());
 });
 
-test('adapter#activateInputRipple does not throw if there is no input', (t) => {
+test('adapter#activateInputRipple does not throw if there is no input', () => {
   const {component} = setupTest();
 
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.activateInputRipple());
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.activateInputRipple());
 });
 
-test('adapter#activateInputRipple does not throw if the input has no ripple getter', (t) => {
+test('adapter#activateInputRipple does not throw if the input has no ripple getter', () => {
   const {component} = setupTest();
   const input = {};
 
   component.input = input;
 
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.activateInputRipple());
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.activateInputRipple());
 });
 
-test('adapter#deactivateInputRipple calls deactivate on the input ripple', (t) => {
+test('adapter#deactivateInputRipple calls deactivate on the input ripple', () => {
   const {component} = setupTest();
   const ripple = td.object();
   const input = {ripple: ripple};
@@ -113,23 +106,20 @@ test('adapter#deactivateInputRipple calls deactivate on the input ripple', (t) =
   component.input = input;
   component.getDefaultFoundation().adapter_.deactivateInputRipple();
 
-  t.doesNotThrow(() => td.verify(ripple.deactivate()));
-  t.end();
+  assert.doesNotThrow(() => td.verify(ripple.deactivate()));
 });
 
-test('adapter#deactivateInputRipple does not throw if there is no input', (t) => {
+test('adapter#deactivateInputRipple does not throw if there is no input', () => {
   const {component} = setupTest();
 
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.deactivateInputRipple());
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.deactivateInputRipple());
 });
 
-test('adapter#deactivateInputRipple does not throw if the input has no ripple getter', (t) => {
+test('adapter#deactivateInputRipple does not throw if the input has no ripple getter', () => {
   const {component} = setupTest();
   const input = {};
 
   component.input = input;
 
-  t.doesNotThrow(() => component.getDefaultFoundation().adapter_.deactivateInputRipple());
-  t.end();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.deactivateInputRipple());
 });

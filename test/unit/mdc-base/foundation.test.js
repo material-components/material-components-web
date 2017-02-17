@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import {MDCFoundation} from '../../../packages/mdc-base';
 
 class FakeFoundation extends MDCFoundation {
@@ -23,47 +23,41 @@ class FakeFoundation extends MDCFoundation {
   }
 }
 
-test('cssClasses getter returns an empty object', (t) => {
-  t.deepEqual(MDCFoundation.cssClasses, {});
-  t.end();
+suite('MDCFoundation');
+
+test('cssClasses getter returns an empty object', () => {
+  assert.deepEqual(MDCFoundation.cssClasses, {});
 });
 
-test('strings getter returns an empty object', (t) => {
-  t.deepEqual(MDCFoundation.strings, {});
-  t.end();
+test('strings getter returns an empty object', () => {
+  assert.deepEqual(MDCFoundation.strings, {});
 });
 
-test('numbers getter returns an empty object', (t) => {
-  t.deepEqual(MDCFoundation.numbers, {});
-  t.end();
+test('numbers getter returns an empty object', () => {
+  assert.deepEqual(MDCFoundation.numbers, {});
 });
 
-test('defaultAdapter getter returns an empty object', (t) => {
-  t.deepEqual(MDCFoundation.defaultAdapter, {});
-  t.end();
+test('defaultAdapter getter returns an empty object', () => {
+  assert.deepEqual(MDCFoundation.defaultAdapter, {});
 });
 
-test('takes an adapter object in its constructor, assigns it to "adapter_"', (t) => {
+test('takes an adapter object in its constructor, assigns it to "adapter_"', () => {
   const adapter = {adapter: true};
   const f = new FakeFoundation(adapter);
-  t.deepEqual(f.adapter, adapter);
-  t.end();
+  assert.deepEqual(f.adapter, adapter);
 });
 
-test('assigns adapter to an empty object when none given', (t) => {
+test('assigns adapter to an empty object when none given', () => {
   const f = new FakeFoundation();
-  t.deepEqual(f.adapter, {});
-  t.end();
+  assert.deepEqual(f.adapter, {});
 });
 
-test('provides an init() lifecycle method, which defaults to a no-op', (t) => {
+test('provides an init() lifecycle method, which defaults to a no-op', () => {
   const f = new FakeFoundation();
-  t.doesNotThrow(() => f.init());
-  t.end();
+  assert.doesNotThrow(() => f.init());
 });
 
-test('provides a destroy() lifecycle method, which defaults to a no-op', (t) => {
+test('provides a destroy() lifecycle method, which defaults to a no-op', () => {
   const f = new FakeFoundation();
-  t.doesNotThrow(() => f.destroy());
-  t.end();
+  assert.doesNotThrow(() => f.destroy());
 });

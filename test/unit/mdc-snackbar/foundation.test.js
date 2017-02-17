@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import test from 'tape';
+import {assert} from 'chai';
 import lolex from 'lolex';
 import td from 'testdouble';
 import MDCSnackbarFoundation from '../../../packages/mdc-snackbar/foundation';
@@ -27,43 +27,40 @@ function setupTest() {
   return {foundation, mockAdapter};
 }
 
-test('exports strings', (t) => {
-  t.deepEqual(MDCSnackbarFoundation.strings, strings);
-  t.end();
+suite('MDCSnackbarFoundation');
+
+test('exports strings', () => {
+  assert.deepEqual(MDCSnackbarFoundation.strings, strings);
 });
 
-test('exports cssClasses', (t) => {
-  t.deepEqual(MDCSnackbarFoundation.cssClasses, cssClasses);
-  t.end();
+test('exports cssClasses', () => {
+  assert.deepEqual(MDCSnackbarFoundation.cssClasses, cssClasses);
 });
 
-test('defaultAdapter returns a complete adapter implementation', (t) => {
+test('defaultAdapter returns a complete adapter implementation', () => {
   const {defaultAdapter} = MDCSnackbarFoundation;
   const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
-  t.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  t.deepEqual(methods, [
+  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
+  assert.deepEqual(methods, [
     'addClass', 'removeClass', 'setAriaHidden', 'unsetAriaHidden', 'setMessageText',
     'setActionText', 'setActionAriaHidden', 'unsetActionAriaHidden',
     'registerActionClickHandler', 'deregisterActionClickHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
   ]);
   // Test default methods
-  methods.forEach((m) => t.doesNotThrow(defaultAdapter[m]));
-
-  t.end();
+  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
-test('#init calls adapter.registerActionClickHandler() with a action click handler function', (t) => {
+test('#init calls adapter.registerActionClickHandler() with a action click handler function', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
   foundation.init();
-  t.doesNotThrow(() => td.verify(mockAdapter.registerActionClickHandler(isA(Function))));
-  t.end();
+  td.verify(mockAdapter.registerActionClickHandler(isA(Function)));
 });
 
-test('#destroy calls adapter.deregisterActionClickHandler() with a registerActionClickHandler function', (t) => {
+test('#destroy calls adapter.deregisterActionClickHandler() with a registerActionClickHandler function', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -74,44 +71,38 @@ test('#destroy calls adapter.deregisterActionClickHandler() with a registerActio
   foundation.init();
 
   foundation.destroy();
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterActionClickHandler(changeHandler)));
-
-  t.end();
+  td.verify(mockAdapter.deregisterActionClickHandler(changeHandler));
 });
 
-test('#init calls adapter.setAriaHidden to ensure snackbar starts hidden', (t) => {
+test('#init calls adapter.setAriaHidden to ensure snackbar starts hidden', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
-  t.doesNotThrow(() => td.verify(mockAdapter.setAriaHidden()));
-  t.end();
+  td.verify(mockAdapter.setAriaHidden());
 });
 
-test('#init calls adapter.setActionAriaHidden to ensure snackbar action starts hidden', (t) => {
+test('#init calls adapter.setActionAriaHidden to ensure snackbar action starts hidden', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
-  t.doesNotThrow(() => td.verify(mockAdapter.setActionAriaHidden()));
-  t.end();
+  td.verify(mockAdapter.setActionAriaHidden());
 });
 
-test('#show without a data object throws an error', (t) => {
+test('#show without a data object throws an error', () => {
   const {foundation} = setupTest();
 
   foundation.init();
-  t.throws(() => foundation.show(), Error);
-  t.end();
+  assert.throws(() => foundation.show(), Error);
 });
 
-test('#show without a message throws an error', (t) => {
+test('#show without a message throws an error', () => {
   const {foundation} = setupTest();
 
   foundation.init();
-  t.throws(() => foundation.show({}), Error);
-  t.end();
+  assert.throws(() => foundation.show({}), Error);
 });
 
-test('#show with an actionHandler but no actionText throws an error', (t) => {
+test('#show with an actionHandler but no actionText throws an error', () => {
   const {foundation} = setupTest();
 
   foundation.init();
@@ -119,47 +110,42 @@ test('#show with an actionHandler but no actionText throws an error', (t) => {
     message: 'Message Deleted',
     actionHandler: () => {},
   };
-  t.throws(() => foundation.show(data), Error);
-  t.end();
+  assert.throws(() => foundation.show(data), Error);
 });
 
-test('#show should add the active class', (t) => {
+test('#show should add the active class', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
   foundation.show({message: 'Message Deleted'});
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.ACTIVE)));
-  t.end();
+  td.verify(mockAdapter.addClass(cssClasses.ACTIVE));
 });
 
-test('#show should call foundation#unsetAriaHidden() to show the snackbar', (t) => {
+test('#show should call foundation#unsetAriaHidden() to show the snackbar', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
   foundation.show({message: 'Message Deleted'});
-  t.doesNotThrow(() => td.verify(mockAdapter.unsetAriaHidden()));
-  t.end();
+  td.verify(mockAdapter.unsetAriaHidden());
 });
 
-test('#show should set the message text', (t) => {
+test('#show should set the message text', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
   foundation.show({message: 'Message Deleted'});
-  t.doesNotThrow(() => td.verify(mockAdapter.setMessageText('Message Deleted')));
-  t.end();
+  td.verify(mockAdapter.setMessageText('Message Deleted'));
 });
 
-test('#show should make the foundation active', (t) => {
+test('#show should make the foundation active', () => {
   const {foundation} = setupTest();
 
   foundation.init();
   foundation.show({message: 'Message Deleted'});
-  t.equals(foundation.active, true);
-  t.end();
+  assert.equal(foundation.active, true);
 });
 
-test('#show with action text and handler should set the action text', (t) => {
+test('#show with action text and handler should set the action text', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
@@ -169,11 +155,10 @@ test('#show with action text and handler should set the action text', (t) => {
     actionHandler: () => {},
   });
 
-  t.doesNotThrow(() => td.verify(mockAdapter.setActionText('Undo')));
-  t.end();
+  td.verify(mockAdapter.setActionText('Undo'));
 });
 
-test('#show with action text and handler should unset action aria-hidden', (t) => {
+test('#show with action text and handler should unset action aria-hidden', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
@@ -183,20 +168,18 @@ test('#show with action text and handler should unset action aria-hidden', (t) =
     actionHandler: () => {},
   });
 
-  t.doesNotThrow(() => td.verify(mockAdapter.unsetActionAriaHidden()));
-  t.end();
+  td.verify(mockAdapter.unsetActionAriaHidden());
 });
 
-test('#show({ mutliline: true }) should add multiline modifier', (t) => {
+test('#show({ mutliline: true }) should add multiline modifier', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
   foundation.show({message: 'Message Deleted', multiline: true});
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.MULTILINE)));
-  t.end();
+  td.verify(mockAdapter.addClass(cssClasses.MULTILINE));
 });
 
-test('#show({ mutliline: true, actionOnBottom: true }) should add action-on-bottom modifier', (t) => {
+test('#show({ mutliline: true, actionOnBottom: true }) should add action-on-bottom modifier', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
@@ -206,11 +189,10 @@ test('#show({ mutliline: true, actionOnBottom: true }) should add action-on-bott
     actionOnBottom: true,
   });
 
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.ACTION_ON_BOTTOM)));
-  t.end();
+  td.verify(mockAdapter.addClass(cssClasses.ACTION_ON_BOTTOM));
 });
 
-test('#show({ mutliline: false, actionOnBottom: true }) does not add action-on-bottom modifier', (t) => {
+test('#show({ mutliline: false, actionOnBottom: true }) does not add action-on-bottom modifier', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
@@ -219,11 +201,10 @@ test('#show({ mutliline: false, actionOnBottom: true }) does not add action-on-b
     actionOnBottom: true,
   });
 
-  t.doesNotThrow(() => td.verify(mockAdapter.addClass(cssClasses.ACTION_ON_BOTTOM), {times: 0}));
-  t.end();
+  td.verify(mockAdapter.addClass(cssClasses.ACTION_ON_BOTTOM), {times: 0});
 });
 
-test('#show while snackbar is already showing will queue the data object.', (t) => {
+test('#show while snackbar is already showing will queue the data object.', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
@@ -235,11 +216,10 @@ test('#show while snackbar is already showing will queue the data object.', (t) 
     message: 'Message Archived',
   });
 
-  t.doesNotThrow(() => td.verify(mockAdapter.setMessageText('Message Archived'), {times: 0}));
-  t.end();
+  td.verify(mockAdapter.setMessageText('Message Archived'), {times: 0});
 });
 
-test('#show while snackbar is already showing will show after the timeout and transition end', (t) => {
+test('#show while snackbar is already showing will show after the timeout and transition end', () => {
   const clock = lolex.install();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
@@ -263,12 +243,11 @@ test('#show while snackbar is already showing will show after the timeout and tr
   clock.tick(numbers.MESSAGE_TIMEOUT);
   transEndHandler();
 
-  t.doesNotThrow(() => td.verify(mockAdapter.setMessageText('Message Archived')));
+  td.verify(mockAdapter.setMessageText('Message Archived'));
   clock.uninstall();
-  t.end();
 });
 
-test('#show will remove active class after the timeout', (t) => {
+test('#show will remove active class after the timeout', () => {
   const clock = lolex.install();
   const {foundation, mockAdapter} = setupTest();
 
@@ -280,12 +259,11 @@ test('#show will remove active class after the timeout', (t) => {
 
   clock.tick(numbers.MESSAGE_TIMEOUT);
 
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.ACTIVE)));
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
   clock.uninstall();
-  t.end();
 });
 
-test('#show will add an transition end handler after the timeout', (t) => {
+test('#show will add an transition end handler after the timeout', () => {
   const clock = lolex.install();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
@@ -298,12 +276,11 @@ test('#show will add an transition end handler after the timeout', (t) => {
 
   clock.tick(numbers.MESSAGE_TIMEOUT);
 
-  t.doesNotThrow(() => td.verify(mockAdapter.registerTransitionEndHandler(isA(Function))));
+  td.verify(mockAdapter.registerTransitionEndHandler(isA(Function)));
   clock.uninstall();
-  t.end();
 });
 
-test('#show will clean up snackbar after the timeout and transition end', (t) => {
+test('#show will clean up snackbar after the timeout and transition end', () => {
   const clock = lolex.install();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
@@ -327,12 +304,11 @@ test('#show will clean up snackbar after the timeout and transition end', (t) =>
   clock.tick(numbers.MESSAGE_TIMEOUT);
   transEndHandler();
 
-  t.doesNotThrow(() => td.verify(mockAdapter.setMessageText(null)));
-  t.doesNotThrow(() => td.verify(mockAdapter.setActionText(null)));
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.MULTILINE)));
-  t.doesNotThrow(() => td.verify(mockAdapter.removeClass(cssClasses.ACTION_ON_BOTTOM)));
-  t.doesNotThrow(() => td.verify(mockAdapter.deregisterTransitionEndHandler(transEndHandler)));
+  td.verify(mockAdapter.setMessageText(null));
+  td.verify(mockAdapter.setActionText(null));
+  td.verify(mockAdapter.removeClass(cssClasses.MULTILINE));
+  td.verify(mockAdapter.removeClass(cssClasses.ACTION_ON_BOTTOM));
+  td.verify(mockAdapter.deregisterTransitionEndHandler(transEndHandler));
 
   clock.uninstall();
-  t.end();
 });

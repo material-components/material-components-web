@@ -16,7 +16,7 @@
 
 import bel from 'bel';
 import td from 'testdouble';
-import test from 'tape';
+import {assert} from 'chai';
 import mdcAutoInit from '../../../packages/mdc-auto-init';
 
 class FakeComponent {
@@ -41,40 +41,38 @@ const setupTest = () => {
   return createFixture();
 };
 
-test('calls attachTo() on components registered for identifier on nodes w/ data-mdc-auto-init attr', (t) => {
+suite('MDCAutoInit');
+
+test('calls attachTo() on components registered for identifier on nodes w/ data-mdc-auto-init attr', () => {
   const root = setupTest();
   mdcAutoInit(root);
 
-  t.true(root.querySelector('.mdc-fake').FakeComponent instanceof FakeComponent);
-  t.end();
+  assert.isOk(root.querySelector('.mdc-fake').FakeComponent instanceof FakeComponent);
 });
 
-test('passes the node where "data-mdc-auto-init" was found to attachTo()', (t) => {
+test('passes the node where "data-mdc-auto-init" was found to attachTo()', () => {
   const root = setupTest();
   mdcAutoInit(root);
 
   const fake = root.querySelector('.mdc-fake');
-  t.equal(fake.FakeComponent.node, fake);
-  t.end();
+  assert.equal(fake.FakeComponent.node, fake);
 });
 
-test('throws when no constructor name is specified within "data-mdc-auto-init"', (t) => {
+test('throws when no constructor name is specified within "data-mdc-auto-init"', () => {
   const root = setupTest();
   root.querySelector('.mdc-fake').dataset.mdcAutoInit = '';
 
-  t.throws(() => mdcAutoInit(root));
-  t.end();
+  assert.throws(() => mdcAutoInit(root));
 });
 
-test('throws when constructor is not registered', (t) => {
+test('throws when constructor is not registered', () => {
   const root = setupTest();
   root.querySelector('.mdc-fake').dataset.mdcAutoInit = 'MDCUnregisteredComponent';
 
-  t.throws(() => mdcAutoInit(root));
-  t.end();
+  assert.throws(() => mdcAutoInit(root));
 });
 
-test('warns when autoInit called multiple times on a node', (t) => {
+test('warns when autoInit called multiple times on a node', () => {
   const root = setupTest();
   const warn = td.func('warn');
   const {contains} = td.matchers;
@@ -82,21 +80,18 @@ test('warns when autoInit called multiple times on a node', (t) => {
   mdcAutoInit(root, warn);
   mdcAutoInit(root, warn);
 
-  t.doesNotThrow(() => td.verify(warn(contains('(mdc-auto-init) Component already initialized'))));
-  t.end();
+  td.verify(warn(contains('(mdc-auto-init) Component already initialized')));
 });
 
-test('#register throws when Ctor is not a function', (t) => {
-  t.throws(() => mdcAutoInit.register('not-a-function', 'Not a function'));
-  t.end();
+test('#register throws when Ctor is not a function', () => {
+  assert.throws(() => mdcAutoInit.register('not-a-function', 'Not a function'));
 });
 
-test('#register warns when registered key is being overridden', (t) => {
+test('#register warns when registered key is being overridden', () => {
   const warn = td.func('warn');
   const {contains} = td.matchers;
 
   mdcAutoInit.register('FakeComponent', () => ({overridden: true}), warn);
 
-  t.doesNotThrow(() => td.verify(warn(contains('(mdc-auto-init) Overriding registration'))));
-  t.end();
+  td.verify(warn(contains('(mdc-auto-init) Overriding registration')));
 });
