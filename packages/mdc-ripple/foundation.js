@@ -28,6 +28,8 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
   blur: 'focus',
 };
 
+const DEACTIVATION_TIMEOUT = 100;
+
 export default class MDCRippleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
@@ -151,6 +153,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     );
 
     activationState.activationStartTime = Date.now();
+    this.deactivateOnHold_(e);
     requestAnimationFrame(() => {
       // This needs to be wrapped in an rAF call b/c web browsers
       // report active states inconsistently when they're called within
@@ -196,6 +199,37 @@ export default class MDCRippleFoundation extends MDCFoundation {
   animateUnboundedActivation_() {
     const {FG_UNBOUNDED_ACTIVATION} = MDCRippleFoundation.cssClasses;
     this.adapter_.addClass(FG_UNBOUNDED_ACTIVATION);
+  }
+
+  deactivateOnHold_(e) {
+    const {activationState_: activationState} = this;
+
+    // Ripple gets deactivated on hold
+    if (Date.now() - activationState.activationStartTime > DEACTIVATION_TIMEOUT) {
+      // Shallow event cloning
+      const newEvent = {};
+      for (const key in e) {
+        if (e.hasOwnProperty(key)) {
+          newEvent[key] = e[key];
+        }
+      }
+
+      // Reversing activation/event types
+      for (const key in DEACTIVATION_ACTIVATION_PAIRS) {
+        if (DEACTIVATION_ACTIVATION_PAIRS[key] === e.type) {
+          newEvent.type = key;
+          break;
+        }
+      }
+
+      this.deactivate_(newEvent);
+      activationState.isActivated = false;
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      this.deactivateOnHold_(e);
+    });
   }
 
   deactivate_(e) {
