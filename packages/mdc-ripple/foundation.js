@@ -223,8 +223,9 @@ export default class MDCRippleFoundation extends MDCFoundation {
       return;
     }
     // Programmatic deactivation.
-    if (activationState.isProgrammatic) {
-      requestAnimationFrame(() => this.animateDeactivation_(null, Object.assign({}, activationState)));
+    if (activationState.isProgrammatic || activationState.isTimeoutDeactivated) {
+      const evtObject = activationState.isTimeoutDeactivated ? e : null;
+      requestAnimationFrame(() => this.animateDeactivation_(evtObject, Object.assign({}, activationState)));
       this.activationState_ = this.defaultActivationState_();
       return;
     }
@@ -235,11 +236,10 @@ export default class MDCRippleFoundation extends MDCFoundation {
     // Essentially, what we need to do here is decouple the deactivation UX from the actual
     // deactivation state itself. This way, touch/pointer events in sequence do not trample one
     // another.
-    const needsDeactivationUX = actualActivationType === expectedActivationType ||
-                                activationState.isTimeoutDeactivated;
+    const needsDeactivationUX = actualActivationType === expectedActivationType;
     let needsActualDeactivation = needsDeactivationUX;
     if (activationState.wasActivatedByPointer) {
-      needsActualDeactivation = activationState.isTimeoutDeactivated || e.type === 'mouseup';
+      needsActualDeactivation = e.type === 'mouseup';
     }
 
     const state = Object.assign({}, activationState);

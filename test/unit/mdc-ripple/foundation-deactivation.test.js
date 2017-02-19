@@ -101,7 +101,7 @@ testFoundation('runs deactivation UX on public deactivate() call', ({foundation,
   td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
 });
 
-testFoundation('runs deactivation UX mousedown pressed for longer than deactivation timeout',
+testFoundation('runs deactivation UX mousedown when pressed for longer than deactivation timeout',
       ({foundation, adapter, mockRaf}) => {
   const handlers = captureHandlers(adapter);
   const clock = lolex.install();
@@ -112,6 +112,106 @@ testFoundation('runs deactivation UX mousedown pressed for longer than deactivat
   mockRaf.flush();
 
   clock.tick(numbers.DEACTIVATION_TIMEOUT_MS);
+  mockRaf.flush();
+
+  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
+  td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
+  td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
+
+  clock.uninstall();
+});
+
+testFoundation('does not run deactivation UX mousedown when pressed for longer than deactivation timeout ' +
+               'for unbounded surfaces',
+      ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  const clock = lolex.install();
+  const left = 50;
+  const top = 50;
+  const width = 200;
+  const height = 100;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height, left, top});
+  td.when(adapter.isSurfaceActive()).thenReturn(true, false);
+
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.mousedown();
+  mockRaf.flush();
+
+  clock.tick(numbers.DEACTIVATION_TIMEOUT_MS);
+  mockRaf.flush();
+
+  td.verify(adapter.removeClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
+  td.verify(adapter.removeClass(cssClasses.FG_UNBOUNDED_DEACTIVATION));
+  td.verify(adapter.removeClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
+
+  clock.uninstall();
+});
+
+testFoundation('runs deactivation UX keydown when pressed for longer than deactivation timeout',
+      ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  const clock = lolex.install();
+  const left = 50;
+  const top = 50;
+  const width = 200;
+  const height = 100;
+
+  td.when(adapter.computeBoundingRect()).thenReturn({width, height, left, top});
+  td.when(adapter.isSurfaceActive()).thenReturn(true, false);
+
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.keydown();
+  mockRaf.flush();
+
+  clock.tick(numbers.DEACTIVATION_TIMEOUT_MS);
+  mockRaf.flush();
+
+  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
+  td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
+  td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
+
+  clock.uninstall();
+});
+
+testFoundation('runs deactivation UX pointerdown when pressed for longer than deactivation timeout',
+      ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  const clock = lolex.install();
+
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.pointerdown();
+  mockRaf.flush();
+
+  clock.tick(numbers.DEACTIVATION_TIMEOUT_MS);
+  mockRaf.flush();
+
+  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
+  td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
+  td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
+
+  clock.uninstall();
+});
+
+testFoundation('runs deactivation UX touchstart when pressed for longer than deactivation timeout',
+      ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  const clock = lolex.install();
+
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.touchstart();
+  mockRaf.flush();
+
+  clock.tick(numbers.DEACTIVATION_TIMEOUT_MS);
+  mockRaf.flush();
 
   td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
   td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
