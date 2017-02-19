@@ -28,6 +28,8 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
   blur: 'focus',
 };
 
+const DEACTIVATION_TIMEOUT_MS = 200;
+
 export default class MDCRippleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
@@ -110,6 +112,9 @@ export default class MDCRippleFoundation extends MDCFoundation {
       wasElementMadeActive: false,
       activationStartTime: 0,
       activationEvent: null,
+      isProgrammatic: false,
+      isTimeoutDeactivated: false,
+      deactivationTimeout: null,
     };
   }
 
@@ -146,12 +151,20 @@ export default class MDCRippleFoundation extends MDCFoundation {
 
     activationState.isActivated = true;
     activationState.isProgrammatic = e === null;
+    activationState.isTimeoutDeactivated = false;
     activationState.activationEvent = e;
     activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : (
       e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown'
     );
 
     activationState.activationStartTime = Date.now();
+
+    activationState.deactivationTimeout = setTimeout(() => {
+       activationState.isTimeoutDeactivated = true;
+       this.deactivate_(e);
+       activationState.isActivated = false;
+    }, DEACTIVATION_TIMEOUT_MS);
+
     requestAnimationFrame(() => {
       // This needs to be wrapped in an rAF call b/c web browsers
       // report active states inconsistently when they're called within
@@ -215,16 +228,18 @@ export default class MDCRippleFoundation extends MDCFoundation {
       this.activationState_ = this.defaultActivationState_();
       return;
     }
+
     const actualActivationType = DEACTIVATION_ACTIVATION_PAIRS[e.type];
     const expectedActivationType = activationState.activationEvent.type;
     // NOTE: Pointer events are tricky - https://patrickhlauke.github.io/touch/tests/results/
     // Essentially, what we need to do here is decouple the deactivation UX from the actual
     // deactivation state itself. This way, touch/pointer events in sequence do not trample one
     // another.
-    const needsDeactivationUX = actualActivationType === expectedActivationType;
+    const needsDeactivationUX = actualActivationType === expectedActivationType ||
+                                activationState.isTimeoutDeactivated;
     let needsActualDeactivation = needsDeactivationUX;
     if (activationState.wasActivatedByPointer) {
-      needsActualDeactivation = e.type === 'mouseup';
+      needsActualDeactivation = activationState.isTimeoutDeactivated || e.type === 'mouseup';
     }
 
     const state = Object.assign({}, activationState);
@@ -234,22 +249,30 @@ export default class MDCRippleFoundation extends MDCFoundation {
     if (needsActualDeactivation) {
       this.activationState_ = this.defaultActivationState_();
     }
+
+    clearTimeout(activationState.deactivationTimeout);
   }
 
   deactivate() {
     this.deactivate_(null);
   }
 
-  animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive, activationStartTime, isProgrammatic}) {
+  animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive, activationStartTime, isProgrammatic,
+      isTimeoutDeactivated}) {
     const {BG_ACTIVE} = MDCRippleFoundation.cssClasses;
     if (wasActivatedByPointer || wasElementMadeActive) {
       this.adapter_.removeClass(BG_ACTIVE);
-      const isPointerEvent = isProgrammatic ? false : (
-        e.type === 'touchend' || e.type === 'pointerup' || e.type === 'mouseup'
-      );
+
+
       if (this.adapter_.isUnbounded()) {
         this.animateUnboundedDeactivation_(this.getUnboundedDeactivationInfo_(activationStartTime));
       } else {
+        const isPointerEventOnDeactivation = isTimeoutDeactivated &&
+            (e.type === 'touchstart' || e.type === 'pointerdown' || e.type === 'mousedown');
+
+        const isPointerEvent = isProgrammatic ? false : (
+          e.type === 'touchend' || e.type === 'pointerup' || e.type === 'mouseup' || isPointerEventOnDeactivation
+        );
         this.animateBoundedDeactivation_(e, isPointerEvent);
       }
     }

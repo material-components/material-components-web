@@ -101,6 +101,43 @@ testFoundation('runs deactivation UX on public deactivate() call', ({foundation,
   td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
 });
 
+testFoundation('runs deactivation UX mousedown pressed for longer than deactivation timeout',
+      ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.mousedown();
+  mockRaf.flush();
+
+  setTimeout(() => {
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
+    td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
+    td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
+  }, foundation.DEACTIVATION_TIMEOUT_MS);
+});
+
+testFoundation('does not run deactivation UX on mouseup after mousedown pressed for longer than deactivation timeout',
+      ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.mousedown();
+  mockRaf.flush();
+
+  setTimeout(() => {
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
+    td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
+    td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
+    handlers.mouseup();
+    mockRaf.flush();
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
+    td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
+    td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
+  }, foundation.DEACTIVATION_TIMEOUT_MS);
+});
+
 testFoundation('only re-activates when there are no additional pointer events to be processed',
     ({foundation, adapter, mockRaf}) => {
   const handlers = captureHandlers(adapter);
