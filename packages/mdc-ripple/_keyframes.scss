@@ -20,14 +20,23 @@
 
 @keyframes mdc-ripple-fg-radius-in {
   from {
-    transform: translate(0) scale(1);
-    transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
+    transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(0);
     animation-timing-function: $mdc-animation-fast-out-slow-in-timing-function;
   }
 
   to {
-    transform: translate(0) scale(0);
-    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 0));
+    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+  }
+}
+
+@keyframes mdc-ripple-fg-opacity-in {
+  from {
+    opacity: 0;
+    animation-timing-function: linear;
+  }
+
+  to {
+    opacity: 1;
   }
 }
 

@@ -129,7 +129,7 @@
   // Therefore, we adjust the transition duration for the correct "wind-
   // up" animation.
   &.mdc-ripple-upgraded--background-active:active#{$pseudo} {
-    transition-duration: 600ms;
+    transition-duration: 300ms;
   }
 
   &.mdc-ripple-upgraded--background-bounded-active-fill#{$pseudo} {
@@ -216,8 +216,13 @@
   }
 
   &.mdc-ripple-upgraded--foreground-bounded-active-fill#{$pseudo} {
-    animation-fill-mode: forwards;
-    animation: 300ms mdc-ripple-fg-radius-in, 400ms mdc-ripple-fg-opacity-out;
+    animation: 300ms mdc-ripple-fg-radius-in forwards, 83ms mdc-ripple-fg-opacity-in forwards;
+  }
+
+  &.mdc-ripple-upgraded--foreground-bounded-deactivation#{$pseudo} {
+    // Retain transform from mdc-ripple-fg-radius-in activation
+    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+    animation: 250ms mdc-ripple-fg-opacity-out;
   }
 
   &.mdc-ripple-upgraded--unbounded.mdc-ripple-upgraded--foreground-unbounded-activation#{$pseudo} {
