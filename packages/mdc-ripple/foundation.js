@@ -28,8 +28,6 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
   blur: 'focus',
 };
 
-export const DEACTIVATION_TIMEOUT_MS = 200;
-
 export default class MDCRippleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
@@ -164,7 +162,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
         activationState.isTimeoutDeactivated = true;
         this.deactivate_(e);
         activationState.isActivated = false;
-      }, DEACTIVATION_TIMEOUT_MS);
+      }, numbers.DEACTIVATION_TIMEOUT_MS);
     }
 
     requestAnimationFrame(() => {

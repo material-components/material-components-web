@@ -19,7 +19,6 @@ import lolex from 'lolex';
 
 import {testFoundation, captureHandlers} from './helpers';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
-import {DEACTIVATION_TIMEOUT_MS} from '../../../packages/mdc-ripple/foundation';
 import {getCorrectEventName} from '../../../packages/mdc-animation';
 
 const windowObj = td.object({
@@ -112,7 +111,7 @@ testFoundation('runs deactivation UX mousedown pressed for longer than deactivat
   handlers.mousedown();
   mockRaf.flush();
 
-  clock.tick(DEACTIVATION_TIMEOUT_MS);
+  clock.tick(numbers.DEACTIVATION_TIMEOUT_MS);
 
   td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
   td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
