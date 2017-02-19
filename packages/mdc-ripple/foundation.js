@@ -209,12 +209,16 @@ export default class MDCRippleFoundation extends MDCFoundation {
   deactivateOnHold_(e) {
     const {activationState_: activationState} = this;
 
+    if (activationState.isProgrammatic) {
+      return;
+    }
+
     // Ripple gets deactivated on hold
     if (Date.now() - activationState.activationStartTime > DEACTIVATION_TIMEOUT) {
       // Shallow event cloning
       const newEvent = {};
       for (const key in e) {
-        if (e.hasOwnProperty(key)) {
+        if (e[key] !== null) {
           newEvent[key] = e[key];
         }
       }
