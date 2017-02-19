@@ -19,6 +19,7 @@ import lolex from 'lolex';
 
 import {testFoundation, captureHandlers} from './helpers';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
+import {DEACTIVATION_TIMEOUT_MS} from '../../../packages/mdc-ripple/foundation';
 import {getCorrectEventName} from '../../../packages/mdc-animation';
 
 const windowObj = td.object({
@@ -104,38 +105,20 @@ testFoundation('runs deactivation UX on public deactivate() call', ({foundation,
 testFoundation('runs deactivation UX mousedown pressed for longer than deactivation timeout',
       ({foundation, adapter, mockRaf}) => {
   const handlers = captureHandlers(adapter);
+  const clock = lolex.install();
   foundation.init();
   mockRaf.flush();
 
   handlers.mousedown();
   mockRaf.flush();
 
-  setTimeout(() => {
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
-    td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
-    td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
-  }, foundation.DEACTIVATION_TIMEOUT_MS);
-});
+  clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-testFoundation('does not run deactivation UX on mouseup after mousedown pressed for longer than deactivation timeout',
-      ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
-  foundation.init();
-  mockRaf.flush();
+  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
+  td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
+  td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
 
-  handlers.mousedown();
-  mockRaf.flush();
-
-  setTimeout(() => {
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
-    td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
-    td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
-    handlers.mouseup();
-    mockRaf.flush();
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
-    td.verify(adapter.addClass(cssClasses.BG_BOUNDED_ACTIVE_FILL));
-    td.verify(adapter.addClass(cssClasses.FG_BOUNDED_ACTIVE_FILL));
-  }, foundation.DEACTIVATION_TIMEOUT_MS);
+  clock.uninstall();
 });
 
 testFoundation('only re-activates when there are no additional pointer events to be processed',

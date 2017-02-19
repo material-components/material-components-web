@@ -28,7 +28,7 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
   blur: 'focus',
 };
 
-const DEACTIVATION_TIMEOUT_MS = 200;
+export const DEACTIVATION_TIMEOUT_MS = 200;
 
 export default class MDCRippleFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -159,11 +159,13 @@ export default class MDCRippleFoundation extends MDCFoundation {
 
     activationState.activationStartTime = Date.now();
 
-    activationState.deactivationTimeout = setTimeout(() => {
-       activationState.isTimeoutDeactivated = true;
-       this.deactivate_(e);
-       activationState.isActivated = false;
-    }, DEACTIVATION_TIMEOUT_MS);
+    if (!this.adapter_.isUnbounded()) {
+      activationState.deactivationTimeout = setTimeout(() => {
+        activationState.isTimeoutDeactivated = true;
+        this.deactivate_(e);
+        activationState.isActivated = false;
+      }, DEACTIVATION_TIMEOUT_MS);
+    }
 
     requestAnimationFrame(() => {
       // This needs to be wrapped in an rAF call b/c web browsers
