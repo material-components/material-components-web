@@ -19,82 +19,77 @@ const webpackConfig = require('./webpack.config')[0];
 
 const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
-const IS_SECURE = Boolean(process.env.SECURE);
 
 const SL_LAUNCHERS = {
   'sl-chrome-stable': {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'latest',
-    platform: 'OS X 10.11',
+    platform: 'macOS 10.12',
   },
   'sl-chrome-beta': {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'beta',
+    platform: 'macOS 10.12',
   },
   'sl-chrome-previous': {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'latest-1',
-    platform: 'OS X 10.11',
+    platform: 'macOS 10.12',
   },
-  // NOTE(traviskaufman): Disabling firefox for now as it has been consistently flaky recently. See
-  // https://github.com/material-components/material-components-web/issues/5
-  // 'sl-firefox-stable': {
-  //   base: 'SauceLabs',
-  //   browserName: 'firefox',
-  //   version: 'latest',
-  //   platform: 'Windows 10'
-  // },
-  // 'sl-firefox-previous': {
-  //   base: 'SauceLabs',
-  //   browserName: 'firefox',
-  //   version: 'latest-1',
-  //   platform: 'Windows 10'
-  // },
+  'sl-firefox-stable': {
+    base: 'SauceLabs',
+    browserName: 'firefox',
+    version: 'latest',
+    platform: 'Windows 10',
+  },
+  'sl-firefox-previous': {
+    base: 'SauceLabs',
+    browserName: 'firefox',
+    version: 'latest-1',
+    platform: 'Windows 10',
+  },
   'sl-ie': {
     base: 'SauceLabs',
     browserName: 'internet explorer',
     version: '11',
     platform: 'Windows 8.1',
   },
-  'sl-android-stable': {
-    base: 'SauceLabs',
-    browserName: 'android',
-    version: '5.0',
-  },
-  // NOTE(traviskaufman): Temporarily disabling these browsers as they are consistently flaky using
-  // Sauce Labs and almost always yield false negatives.
+  // TODO(sgomes): Re-enable Edge and Safari after Sauce Labs problems are fixed.
   // 'sl-edge': {
   //   base: 'SauceLabs',
   //   browserName: 'microsoftedge',
   //   version: 'latest',
-  //   platform: 'Windows 10'
+  //   platform: 'Windows 10',
   // },
   // 'sl-safari-stable': {
   //   base: 'SauceLabs',
   //   browserName: 'safari',
-  //   version: '9',
-  //   platform: 'OS X 10.11'
+  //   version: 'latest',
+  //   platform: 'macOS 10.12',
   // },
   // 'sl-safari-previous': {
   //   base: 'SauceLabs',
   //   browserName: 'safari',
-  //   version: '8',
-  //   platform: 'OS X 10.10'
+  //   version: '9.0',
+  //   platform: 'OS X 10.11',
   // },
-  // 'sl-ios-safari-latest': {
-  //   base: 'SauceLabs',
-  //   browserName: 'iphone',
-  //   platform: 'OS X 10.10',
-  //   version: '9.1'
-  // },
+  'sl-ios-safari-latest': {
+    base: 'SauceLabs',
+    deviceName: 'iPhone Simulator',
+    platformVersion: '10.0',
+    platformName: 'iOS',
+    browserName: 'Safari',
+  },
   // 'sl-ios-safari-previous': {
   //   base: 'SauceLabs',
-  //   browserName: 'iphone',
-  //   version: '8.4'
-  // }
+  //   deviceName: 'iPhone Simulator',
+  //   platformVersion: '9.3',
+  //   platformName: 'iOS',
+  //   browserName: 'Safari',
+  // },
 };
 
 module.exports = function(config) {
@@ -113,7 +108,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
     browsers: determineBrowsers(),
     browserDisconnectTimeout: 40000,
-    browserNoActivityTimeout: 480000,
+    browserNoActivityTimeout: 120000,
     captureTimeout: 240000,
     concurrency: USING_SL ? 4 : Infinity,
     customLaunchers: SL_LAUNCHERS,
@@ -158,6 +153,8 @@ module.exports = function(config) {
       sauceLabs: {
         testName: 'Material Components Web Unit Tests - CI',
         tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+        username: process.env.SAUCE_USERNAME,
+        accessKey: process.env.SAUCE_ACCESS_KEY,
         startConnect: false,
       },
       // Attempt to de-flake Sauce Labs tests on TravisCI.
@@ -168,13 +165,5 @@ module.exports = function(config) {
 };
 
 function determineBrowsers() {
-  let browsers = USING_SL ? Object.keys(SL_LAUNCHERS) : ['Chrome'];
-  if (USING_TRAVISCI && !IS_SECURE) {
-    console.warn(
-      'NOTICE: Falling back to firefox browser, as travis-ci JWT addon is currently not working ' +
-      'with Sauce Labs. See - https://github.com/travis-ci/travis-ci/issues/6569'
-    );
-    browsers = ['Firefox'];
-  }
-  return browsers;
+  return USING_SL ? Object.keys(SL_LAUNCHERS) : ['Chrome'];
 }
