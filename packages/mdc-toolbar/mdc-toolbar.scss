@@ -74,6 +74,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1;
 
   @include mdc-elevation(4);
 }
