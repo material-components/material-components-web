@@ -45,33 +45,32 @@ export class MDCDialog extends MDCComponent {
     return this.root_.querySelector(MDCDialogFoundation.strings.CONFIRMATION_DIALOG_SELECTOR);
   }
 
-	get acceptButton_() {
-		return this.root_.querySelector(MDCDialogFoundation.strings.ACCEPT_SELECTOR);
-	}
-	
-	get cancelButton_() {
-		return this.root_.querySelector(MDCDialogFoundation.strings.CANCEL_SELECTOR);
-	}
-	
-	get navigationAcceptButton_() {
-		return this.root_.querySelector(MDCDialogFoundation.strings.NAV_ACCEPT_SELECTOR);
-	}
-	
-	get navigationCancelButton_() {
-		return this.root_.querySelector(MDCDialogFoundation.strings.NAV_CANCEL_SELECTOR);
-	}
+  get acceptButton_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.ACCEPT_SELECTOR);
+  }
 
-	get confirmationAcceptButton_() {
-		return this.root_.querySelector(MDCDialogFoundation.strings.CONFIRMATION_ACCEPT_SELECTOR);
-	}
-	
-	get confirmationCancelButton_() {
-		return this.root_.querySelector(MDCDialogFoundation.strings.CONFIRMATION_CANCEL_SELECTOR);
-	}
+  get cancelButton_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.CANCEL_SELECTOR);
+  }
 
+  get navigationAcceptButton_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.NAV_ACCEPT_SELECTOR);
+  }
+
+  get navigationCancelButton_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.NAV_CANCEL_SELECTOR);
+  }
+
+  get confirmationAcceptButton_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.CONFIRMATION_ACCEPT_SELECTOR);
+  }
+
+  get confirmationCancelButton_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.CONFIRMATION_CANCEL_SELECTOR);
+  }
 
   getDefaultFoundation() {
-		const {FOCUSABLE_ELEMENTS, OPACITY_VAR_NAME} = MDCDialogFoundation.strings;
+    const {FOCUSABLE_ELEMENTS, OPACITY_VAR_NAME, SCROLL_LOCK_TARGET} = MDCDialogFoundation.strings;
 
     /**
      * All Dialog types share the same props except for auto save dialogs.
@@ -79,22 +78,24 @@ export class MDCDialog extends MDCComponent {
      * we supplement our adapter with the standard dialog properties.
      */
     const adapter = {
-			addClass: (className) => this.root_.classList.add(className),
-			removeClass: (className) => this.root_.classList.remove(className),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
       addConfirmClass: (classname) => this.confirmationDialog_.classList.add(classname),
       removeConfirmClass: (classname) => this.confirmationDialog_.classList.remove(classname),
-			hasClass: (className) => this.root_.classList.contains(className),
-			hasNecessaryDom: () => Boolean(this.dialog_),
-      navigation: () => Boolean(this.navigationAcceptButton_),
-      navigationAutoSave: () => (Boolean(this.navigationAcceptButton_) && !Boolean(this.navigationCancelButton_)),
+      addScrollLockClass: (className) => document.querySelector(SCROLL_LOCK_TARGET).classList.add(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
+      removeScrollLockClass: (className) => document.querySelector(SCROLL_LOCK_TARGET).classList.remove(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
+      hasClass: (className) => this.root_.classList.contains(className),
+      hasNecessaryDom: () => Boolean(this.dialog_),
+      hasNavigation: () => Boolean(this.navigationAcceptButton_),
+      hasNavigationAutoSave: () => (Boolean(this.navigationAcceptButton_) && !Boolean(this.navigationCancelButton_)),
       registerInteractionHandler: (evt, handler) =>
-			  this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
-			deregisterInteractionHandler: (evt, handler) =>
-			  this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
-			registerDialogInteractionHandler: (evt, handler) =>
-			  this.dialog_.addEventListener(util.remapEvent(evt), handler),
-			deregisterDialogInteractionHandler: (evt, handler) =>
-			  this.dialog_.removeEventListener(util.remapEvent(evt), handler),
+        this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+      deregisterInteractionHandler: (evt, handler) =>
+        this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+      registerDialogInteractionHandler: (evt, handler) =>
+        this.dialog_.addEventListener(util.remapEvent(evt), handler),
+      deregisterDialogInteractionHandler: (evt, handler) =>
+        this.dialog_.removeEventListener(util.remapEvent(evt), handler),
       registerAcceptHandler: (handler) => this.acceptButton_.addEventListener('click', handler),
       deregisterAcceptHandler: (handler) => this.acceptButton_.removeEventListener('click', handler),
       registerNavigationAcceptHandler: (handler) => 
@@ -102,16 +103,17 @@ export class MDCDialog extends MDCComponent {
       deregisterNavigationAcceptHandler: (handler) => 
         this.navigationAcceptButton_.removeEventListener('click', handler),
       acceptAction: (handler) => console.log('Accept Dialog'),
-			registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
-			deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
-			setTranslateY: (value) => this.dialog_.style.setProperty(
-			util.getTransformPropertyName(), value === null ? null : `translateY(${value}px)`),
+      registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
+      deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
+      setTranslateY: (value) => this.dialog_.style.setProperty(
+      util.getTransformPropertyName(), value === null ? null : `translateY(${value}px)`),
       getFocusableElements: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS),
-			saveElementTabState: (el) => util.saveElementTabState(el),
+      saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
-			makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
+      makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-			isDialog: (el) => el === this.dialog_,
+      isDialog: (el) => el === this.dialog_,
+			
     }
 
     const stdDialogAdapterProps = {
@@ -128,7 +130,6 @@ export class MDCDialog extends MDCComponent {
         this.navigationCancelButton_.addEventListener('click', handler),
       deregisterNavigationCancelHandler: (handler) => 
         this.navigationCancelButton_.removeEventListener('click', handler),
- 
       cancelAction: (handler) => console.log('Cancel Dialog'),
     }
 
@@ -138,10 +139,10 @@ export class MDCDialog extends MDCComponent {
      * The user is responsible for handling any auto save functionality that
      * happens within the context of the dialog
      */
-    if (!this.navigationCancelButton_) {
-		  Object.assign(adapter, stdDialogAdapterProps);
+    if (!adapter.hasNavigationAutoSave()) {
+      Object.assign(adapter, stdDialogAdapterProps);
     }
 
-		return new MDCDialogFoundation(adapter);
+    return new MDCDialogFoundation(adapter);
   }
 }

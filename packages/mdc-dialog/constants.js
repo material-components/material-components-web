@@ -21,7 +21,8 @@ export const cssClasses = {
 	ACTIVE: `${ROOT}__open`,
   CONFIRMATION_ACTIVE: `${ROOT}-confirmation__open`,
   BACKDROP: `${ROOT}--backdrop`,
-  ANIMATING: `${ROOT}--animating`
+  ANIMATING: `${ROOT}--animating`,
+	SCROLL_LOCK: `${ROOT}__scroll-lock`
 };
 
 export const strings = {
@@ -36,4 +37,5 @@ export const strings = {
  	OPACITY_VAR_NAME: `--${ROOT}-opacity`,
   FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
       'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',
+	SCROLL_LOCK_TARGET: `body`
 };

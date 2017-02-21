@@ -40,12 +40,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
       hasNecessaryDom: () => /* boolean */ false,
-      navigation: () => false,
-      navigationAutoSave: () => false,
-      // registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      // deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      // registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      // deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      hasNavigation: () => false,
+      hasNavigationAutoSave: () => false,
+      registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
       registerAcceptHandler: () => {},
@@ -83,8 +83,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
     this.inert_ = false;
     this.isOpen_ = false;
-    this.acceptHandler_ = () => { this.accept() };
-    this.cancelHandler_ = () => { this.cancel() };
+    this.componentClickHandler_ = () => this.cancel();
+    this.dialogClickHandler_ = (evt) => evt.stopPropagation();
+    this.acceptHandler_ = () => this.accept();
+    this.cancelHandler_ = () => this.cancel();
     this.confirmationHandler_ = () => { this.openConfirmation() };
     this.confirmationAcceptHandler_ = () => { this.confirmationAccept() };
     this.confirmationCancelHandler_ = () => { this.closeConfirmation() };
@@ -92,27 +94,29 @@ export default class MDCDialogFoundation extends MDCFoundation {
       if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
         this.cancel();
       }
-    };
+    }
   }
 
   init() {
     const {ROOT, ACTIVE, OPEN} = MDCDialogFoundation.cssClasses;
 
+    this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
+    this.adapter_.registerDialogInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerAcceptHandler(this.acceptHandler_);
  
-    if (!this.adapter_.navigationAutoSave()) {
+    if (this.adapter_.hasNavigation()) {
+      this.adapter_.registerNavigationAcceptHandler(this.acceptHandler_);
+    }
+
+    if (!this.adapter_.hasNavigationAutoSave()) {
       this.adapter_.registerCancelHandler(this.cancelHandler_);
     } 
 
-    //if (this.adapter_.navigationAutoSave() && this.adapter_.navigationAutoSave()) {
-    //  this.adapter_.registerNavigationAcceptHandler(this.acceptHandler_);
-    //}
-    //
-    //if (this.adapter_.navigationAutoSave() && !this.adapter_.navigationAutoSave()) {
-    //  this.adapter_.registerNavigationCancelHandler(this.confirmationHandler_);
-    //  this.adapter_.registerConfirmationAcceptHandler(this.confirmationAcceptHandler_);
-    //  this.adapter_.registerConfirmationCancelHandler(this.confirmationCancelHandler_);
-    //}
+    if (this.adapter_.hasNavigation() && !this.adapter_.hasNavigationAutoSave()) {
+      this.adapter_.registerNavigationCancelHandler(this.confirmationHandler_);
+      this.adapter_.registerConfirmationAcceptHandler(this.confirmationAcceptHandler_);
+      this.adapter_.registerConfirmationCancelHandler(this.confirmationCancelHandler_);
+    }
 
     if (this.adapter_.hasClass(ACTIVE)) {
       this.isOpen_ = true;
@@ -137,14 +141,16 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
     this.unlockTab_();
+		this.disableScroll_();
     this.isOpen_ = true;
-  }
+	}
 
   close() {
     this.adapter_.updateCssVariable('');
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ACTIVE);
 		this.lockTab_();
+		this.enableScroll_();
     this.isOpen_ = false;
 	}
  
@@ -213,5 +219,13 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
     this.inert_ = false;
   }
-  
+
+	disableScroll_() {
+		this.adapter_.addScrollLockClass();
+	}
+
+	enableScroll_() {
+		this.adapter_.removeScrollLockClass();
+	}
+ 
 }

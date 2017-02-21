@@ -220,3 +220,8 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
   display: flex;
   justify-content: flex-end;
 }
+
+.mdc-dialog__scroll-lock {
+	height: 100vh;
+	overflow: hidden;
+}
