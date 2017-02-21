@@ -34,7 +34,7 @@ the top of the screen, add an `mdc-toolbar--fixed` class to the toolbar element.
 
 **Adjusting sibling elements of fixed toolbars**
 
-When using `mdc-toolbar--fixed`, you can add the `mdc-toolbar__fixed-adjust`
+When using `mdc-toolbar--fixed`, you can add the `mdc-toolbar-fixed-adjust`
 helper class to the toolbar's adjacent sibling element, which will ensure that
 the sibling element's top margin will be large enough such that the fixed
 toolbar will not overlay any of the element's content.
@@ -45,7 +45,7 @@ toolbar will not overlay any of the element's content.
     <span class="mdc-toolbar__title">Title</span>
   </section>
 </header>
-<main class="mdc-toolbar__fixed-adjust">
+<main class="mdc-toolbar-fixed-adjust">
   <p class="demo-paragraph">
     A demo paragraph here.
   </p>
