@@ -228,7 +228,7 @@ const MDCTextfieldFoundation = mdc.textfield.MDCTextfieldFoundation;
 #### Automatic Instantiation
 
 ```javascript
-mdc.textfield.attachTo(document.querySelector('.mdc-textfield'));
+mdc.textfield.MDCTextfield.attachTo(document.querySelector('.mdc-textfield'));
 ```
 
 #### Manual Instantiation
