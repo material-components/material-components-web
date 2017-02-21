@@ -79,7 +79,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   @include mdc-elevation(4);
 }
 
-.mdc-toolbar__fixed-adjust {
+.mdc-toolbar-fixed-adjust {
   margin-top: $mdc-toolbar-height;
 
   @media (max-width: 599px) {
