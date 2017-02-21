@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$mdc-typography-font-family: Roboto, sans-serif;
+$mdc-typography-font-family: Roboto, sans-serif !default;
 
 $mdc-typography-font-weight-values: (
   thin: 100,
@@ -22,7 +22,7 @@ $mdc-typography-font-weight-values: (
   medium: 500,
   bold: 700,
   black: 900
-);
+) !default;
 
 /* TODO(sgomes): Figure out what to do about desktop font sizes. */
 
@@ -106,4 +106,4 @@ $mdc-typography-styles: (
     letter-spacing: .08em,
     margin: -.5rem 0 1rem -.04em /* -8sp 0 16sp -.04em */
   )
-);
+) !default;
