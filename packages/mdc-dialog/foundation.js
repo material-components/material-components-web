@@ -46,6 +46,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      registerConfirmationInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterConfirmationInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
       registerAcceptHandler: () => {},
@@ -62,34 +64,33 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterConfirmationCancelHandler: () => {},
       acceptAction: () => {},
       cancelAction: () => {},
+      acceptButton: () => {},
 			setTranslateY: (/* value: number | null */) => {},
       updateCssVariable: (/* value: string */) => {},
-      
       getFocusableElements: () => /* NodeList */ {},
       saveElementTabState: (/* el: Element */) => {},
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
-      
       isRtl: () => /* boolean */ false,
       isDialog: (/* el: Element */) => /* boolean */ false,
-			hasNavigation: () => /* boolean */ false,
-			hasAutosave: () => /* boolean */ false,
-			willConfirmCancel: () => /* boolean */ false,
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
-
+    
+    this.lastFocusEl_ = document.activeElement;
+    this.defaultFocusElement_ = this.adapter_.acceptButton();
     this.inert_ = false;
     this.isOpen_ = false;
     this.componentClickHandler_ = () => this.cancel();
     this.dialogClickHandler_ = (evt) => evt.stopPropagation();
+    this.confirmationClickHandler_ = (evt) => evt.stopPropagation();
     this.acceptHandler_ = () => this.accept();
     this.cancelHandler_ = () => this.cancel();
-    this.confirmationHandler_ = () => { this.openConfirmation() };
-    this.confirmationAcceptHandler_ = () => { this.confirmationAccept() };
-    this.confirmationCancelHandler_ = () => { this.closeConfirmation() };
+    this.confirmationHandler_ = () => this.openConfirmation();
+    this.confirmationAcceptHandler_ = () => this.confirmationAccept();
+    this.confirmationCancelHandler_ = () => this.closeConfirmation();
     this.documentKeydownHandler_ = (evt) => {
       if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
         this.cancel();
@@ -116,6 +117,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.adapter_.registerNavigationCancelHandler(this.confirmationHandler_);
       this.adapter_.registerConfirmationAcceptHandler(this.confirmationAcceptHandler_);
       this.adapter_.registerConfirmationCancelHandler(this.confirmationCancelHandler_);
+      
+      this.adapter_.registerConfirmationInteractionHandler('click', this.confirmationClickHandler_);
     }
 
     if (this.adapter_.hasClass(ACTIVE)) {
@@ -134,12 +137,14 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterNavigationCancelHandler(this.confirmationHandler_);
     this.adapter_.deregisterConfirmationAcceptHandler(this.confirmationAcceptHandler_);
     this.adapter_.deregisterConfirmationCancelHandler(this.confirmationCancelHandler_);
+    this.adapter_.deregisterConfirmationInteractionHandler(this.confirmationClickHandler_);
   }
 
   open() {
     this.adapter_.updateCssVariable('');
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
+    this.setDefaultFocus();
     this.unlockTab_();
 		this.disableScroll_();
     this.isOpen_ = true;
@@ -181,6 +186,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   isOpen() {
     return this.isOpen_;
+  }
+
+  setDefaultFocus() {
+    this.defaultFocusElement_.focus();
   }
 
   /**

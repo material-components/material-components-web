@@ -96,13 +96,18 @@ export class MDCDialog extends MDCComponent {
         this.dialog_.addEventListener(util.remapEvent(evt), handler),
       deregisterDialogInteractionHandler: (evt, handler) =>
         this.dialog_.removeEventListener(util.remapEvent(evt), handler),
+      registerConfirmationInteractionHandler: (evt, handler) =>
+        this.confirmationDialog_ ? this.confirmationDialog_.addEventListener(util.remapEvent(evt), handler) : null,
+      deregisterConfirmationInteractionHandler: (evt, handler) =>
+        this.confirmationDialog_ ? this.confirmationDialog_.removeEventListener(util.remapEvent(evt), handler) : null,
       registerAcceptHandler: (handler) => this.acceptButton_.addEventListener('click', handler),
       deregisterAcceptHandler: (handler) => this.acceptButton_.removeEventListener('click', handler),
       registerNavigationAcceptHandler: (handler) => 
         this.navigationAcceptButton_.addEventListener('click', handler),
       deregisterNavigationAcceptHandler: (handler) => 
         this.navigationAcceptButton_.removeEventListener('click', handler),
-      acceptAction: (handler) => console.log('Accept Dialog'),
+      acceptAction: (handler) => console.log('Accept'),
+      acceptButton: () => this.acceptButton_,
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       setTranslateY: (value) => this.dialog_.style.setProperty(
@@ -113,7 +118,6 @@ export class MDCDialog extends MDCComponent {
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       isDialog: (el) => el === this.dialog_,
-			
     }
 
     const stdDialogAdapterProps = {
@@ -130,7 +134,7 @@ export class MDCDialog extends MDCComponent {
         this.navigationCancelButton_.addEventListener('click', handler),
       deregisterNavigationCancelHandler: (handler) => 
         this.navigationCancelButton_.removeEventListener('click', handler),
-      cancelAction: (handler) => console.log('Cancel Dialog'),
+      cancelAction: (handler) => console.log('Cancel'),
     }
 
     /**
