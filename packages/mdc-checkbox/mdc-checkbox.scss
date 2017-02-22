@@ -52,6 +52,10 @@
 
 // postcss-bem-linter: define checkbox
 .mdc-checkbox {
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
+
   display: inline-block;
   position: relative;
   box-sizing: content-box;
@@ -62,6 +66,22 @@
   white-space: nowrap;
   cursor: pointer;
   vertical-align: bottom;
+
+  &::before,
+  &::after {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  &.mdc-ripple-upgraded--unbounded {
+    .mdc-checkbox__background::before {
+      content: none;
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 
   &__background {
     @include mdc-checkbox-outer-box;
@@ -329,13 +349,3 @@ fieldset:disabled .mdc-checkbox__native-control,
   }
 }
 // postcss-bem-linter: end
-
-.mdc-checkbox.mdc-ripple-upgraded {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
-
-  .mdc-checkbox__background::before {
-    content: none;
-  }
-}

@@ -75,6 +75,42 @@
           </div>
         </fieldset>
         <fieldset>
+          <legend>Buttons - CSS Only</legend>
+          <button class="mdc-button" data-demo-no-js>
+            Default
+          </button>
+          <button class="mdc-button mdc-button--raised" data-demo-no-js>
+            Raised
+          </button>
+          <button class="mdc-button mdc-button--dense" data-demo-no-js>
+            Dense Default
+          </button>
+          <button class="mdc-button mdc-button--raised mdc-button--dense" data-demo-no-js>
+            Dense Raised
+          </button>
+          <button class="mdc-button mdc-button--compact" data-demo-no-js>
+            Compact
+          </button>
+          <button class="mdc-button mdc-button--raised mdc-button--compact" data-demo-no-js>
+            Compact Raised
+          </button>
+          <button class="mdc-button mdc-button--primary" data-demo-no-js>
+            Default with Primary
+          </button>
+          <button class="mdc-button mdc-button--raised mdc-button--primary" data-demo-no-js>
+            Raised with Primary
+          </button>
+          <button class="mdc-button mdc-button--accent" data-demo-no-js>
+            Default with Accent
+          </button>
+          <button class="mdc-button mdc-button--raised mdc-button--accent" data-demo-no-js>
+            Raised with Accent
+          </button>
+          <div class="mdc-button mdc-button--raised" tabindex="0" role="button" data-demo-no-js>
+            Div
+          </div>
+        </fieldset>
+        <fieldset>
           <legend>Links with Button Style</legend>
           <a href="/button.html" class="mdc-button">
             Default
@@ -183,6 +219,42 @@
             Div
           </div>
         </fieldset>
+        <fieldset>
+          <legend>Buttons - CSS Only</legend>
+          <button class="mdc-button" data-demo-no-js>
+            Default
+          </button>
+          <button class="mdc-button mdc-button--raised" data-demo-no-js>
+            Raised
+          </button>
+          <button class="mdc-button mdc-button--dense" data-demo-no-js>
+            Dense Default
+          </button>
+          <button class="mdc-button mdc-button--raised mdc-button--dense" data-demo-no-js>
+            Dense Raised
+          </button>
+          <button class="mdc-button mdc-button--compact" data-demo-no-js>
+            Compact
+          </button>
+          <button class="mdc-button mdc-button--raised mdc-button--compact" data-demo-no-js>
+            Compact Raised
+          </button>
+          <button class="mdc-button mdc-button--primary" data-demo-no-js>
+            Default with Primary
+          </button>
+          <button class="mdc-button mdc-button--raised mdc-button--primary" data-demo-no-js>
+            Raised with Primary
+          </button>
+          <button class="mdc-button mdc-button--accent" data-demo-no-js>
+            Default with Accent
+          </button>
+          <button class="mdc-button mdc-button--raised mdc-button--accent" data-demo-no-js>
+            Raised with Accent
+          </button>
+          <div class="mdc-button mdc-button--raised" tabindex="0" role="button" data-demo-no-js>
+            Div
+          </div>
+        </fieldset>
         <fieldset disabled>
           <legend>Disabled Buttons</legend>
           <button class="mdc-button">
@@ -236,7 +308,7 @@
           }
         }, 250);
         function init() {
-          var btns = document.querySelectorAll('.mdc-button');
+          var btns = document.querySelectorAll('.mdc-button:not([data-demo-no-js]');
           for (var i = 0, btn; btn = btns[i]; i++) {
             mdc.ripple.MDCRipple.attachTo(btn);
           }

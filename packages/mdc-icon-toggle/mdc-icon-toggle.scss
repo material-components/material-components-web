@@ -22,78 +22,6 @@
 
 .mdc-icon-toggle {
   @include mdc-theme-prop(color, text-secondary-on-light);
-
-  display: flex;
-  position: relative;
-  box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  padding: 12px;
-  outline: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  user-select: none;
-
-  &::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transform: scale(0, 0);
-    transition: mdc-animation-exit(opacity, 80ms), mdc-animation-exit(transform, 80ms);
-    border-radius: 50%;
-    background-color: currentColor;
-    content: "";
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  &:focus::after {
-    transform: scale(1.3, 1.3);
-    transition: mdc-animation-enter(opacity, 80ms), mdc-animation-enter(transform, 80ms);
-    opacity: .12;
-  }
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
-    &:focus::after {
-      opacity: .3;
-    }
-  }
-}
-
-.mdc-icon-toggle--primary {
-  @include mdc-theme-prop(color, primary);
-}
-
-.mdc-icon-toggle--accent {
-  @include mdc-theme-prop(color, accent);
-}
-
-.mdc-icon-toggle--primary,
-.mdc-icon-toggle--accent {
-  &:focus::after {
-    opacity: .26;
-  }
-}
-
-.mdc-icon-toggle--disabled {
-  @include mdc-theme-prop(color, text-disabled-on-light);
-
-  pointer-events: none;
-
-  @include mdc-theme-dark(".mdc-icon-toggle", true) {
-    @include mdc-theme-prop(color, text-disabled-on-dark);
-  }
-}
-
-/** postcss-bem-linter: end */
-
-.mdc-icon-toggle.mdc-ripple-upgraded {
   @include mdc-ripple-base;
   // NOTE: The spec denotes specific opacity values to use for different styles of icon buttons,
   // either "light", "dark", or "color". Because ripples are made up of two distinct elements,
@@ -120,14 +48,52 @@
 
   // For some reason, GPU layer promotion makes ripples look terrible on Chrome
   will-change: initial;
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  outline: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+
+  &::after {
+    position: absolute;
+    border-radius: 50%;
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @include mdc-theme-dark {
+    @include mdc-theme-prop(color, text-primary-on-dark);
+  }
 }
 
-.mdc-icon-toggle--primary.mdc-ripple-upgraded {
+.mdc-icon-toggle--primary {
+  @include mdc-theme-prop(color, primary);
   @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
   @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
 }
 
-.mdc-icon-toggle--accent.mdc-ripple-upgraded {
+.mdc-icon-toggle--accent {
+  @include mdc-theme-prop(color, accent);
   @include mdc-ripple-bg((pseudo: "::before", theme-style: accent, opacity: .14));
   @include mdc-ripple-fg((pseudo: "::after", theme-style: accent, opacity: .14));
 }
+
+.mdc-icon-toggle--disabled {
+  @include mdc-theme-prop(color, text-disabled-on-light);
+
+  pointer-events: none;
+
+  @include mdc-theme-dark(".mdc-icon-toggle", true) {
+    @include mdc-theme-prop(color, text-disabled-on-dark);
+  }
+}
+
+/** postcss-bem-linter: end */
