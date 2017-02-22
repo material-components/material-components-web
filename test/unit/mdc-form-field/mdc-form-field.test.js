@@ -74,7 +74,7 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
 
 test('adapter#activateInputRipple calls activate on the input ripple', () => {
   const {component} = setupTest();
-  const ripple = td.object();
+  const ripple = {activate: td.func('activate')};
   const input = {ripple: ripple};
 
   component.input = input;
@@ -100,7 +100,7 @@ test('adapter#activateInputRipple does not throw if the input has no ripple gett
 
 test('adapter#deactivateInputRipple calls deactivate on the input ripple', () => {
   const {component} = setupTest();
-  const ripple = td.object();
+  const ripple = {deactivate: td.func('deactivate')};
   const input = {ripple: ripple};
 
   component.input = input;
