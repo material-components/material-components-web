@@ -64,7 +64,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterConfirmationCancelHandler: () => {},
       acceptAction: () => {},
       cancelAction: () => {},
-      acceptButton: () => {},
 			setTranslateY: (/* value: number | null */) => {},
       updateCssVariable: (/* value: string */) => {},
       getFocusableElements: () => /* NodeList */ {},
@@ -73,14 +72,17 @@ export default class MDCDialogFoundation extends MDCFoundation {
       makeElementUntabbable: (/* el: Element */) => {},
       isRtl: () => /* boolean */ false,
       isDialog: (/* el: Element */) => /* boolean */ false,
+      acceptButton: () => {},
+      dialogEl: () => {},
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
     
-    this.lastFocusEl_ = document.activeElement;
-    this.defaultFocusElement_ = this.adapter_.acceptButton();
+    this.lastFocusEl_;
+    this.dialogEl_ = this.adapter_.dialogEl();
+    this.defaultFocusElement_ = this.adapter_.cancelButton();
     this.inert_ = false;
     this.isOpen_ = false;
     this.componentClickHandler_ = () => this.cancel();
@@ -117,8 +119,9 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.adapter_.registerNavigationCancelHandler(this.confirmationHandler_);
       this.adapter_.registerConfirmationAcceptHandler(this.confirmationAcceptHandler_);
       this.adapter_.registerConfirmationCancelHandler(this.confirmationCancelHandler_);
-      
       this.adapter_.registerConfirmationInteractionHandler('click', this.confirmationClickHandler_);
+    	
+			//this.defaultFocusElement_ = this.adapter_.navigationCancelButton();
     }
 
     if (this.adapter_.hasClass(ACTIVE)) {
@@ -141,6 +144,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   open() {
+    this.lastFocusEl_ = document.activeElement;
     this.adapter_.updateCssVariable('');
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
@@ -148,6 +152,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.unlockTab_();
 		this.disableScroll_();
     this.isOpen_ = true;
+    document.querySelector('body').setAttribute('aria-hidden', 'true')
 	}
 
   close() {
@@ -157,6 +162,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
 		this.lockTab_();
 		this.enableScroll_();
     this.isOpen_ = false;
+    this.lastFocusEl_.focus();
 	}
  
   openConfirmation() {
@@ -190,6 +196,15 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   setDefaultFocus() {
     this.defaultFocusElement_.focus();
+
+    document.addEventListener('focus', (evt) => {
+			console.log(this.dialogEl_.contains(evt.target), evt.target)
+     	 
+			if (!this.dialogEl_.contains(evt.target)) {
+        evt.stopPropagation();
+    		this.defaultFocusElement_.focus();
+      }
+    }, true)
   }
 
   /**
@@ -202,8 +217,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
     const elements = this.adapter_.getFocusableElements();
     if (elements) {
-      for (let i = 0; i < elements.length; i++) {
-        this.adapter_.saveElementTabState(elements[i]);
+      for (let i = 0; i < elements.length; i++) { this.adapter_.saveElementTabState(elements[i]);
         this.adapter_.makeElementUntabbable(elements[i]);
       }
     }

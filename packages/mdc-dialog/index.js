@@ -107,7 +107,6 @@ export class MDCDialog extends MDCComponent {
       deregisterNavigationAcceptHandler: (handler) => 
         this.navigationAcceptButton_.removeEventListener('click', handler),
       acceptAction: (handler) => console.log('Accept'),
-      acceptButton: () => this.acceptButton_,
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       setTranslateY: (value) => this.dialog_.style.setProperty(
@@ -118,6 +117,9 @@ export class MDCDialog extends MDCComponent {
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       isDialog: (el) => el === this.dialog_,
+      acceptButton: () => this.acceptButton_,
+      cancelButton: () => this.cancelButton_,
+      dialogEl: () => this.root_,
     }
 
     const stdDialogAdapterProps = {

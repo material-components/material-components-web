@@ -116,12 +116,21 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
   }
   
   .mdc-dialog-surface__navigation {
-    
+  	&:button {
+			display: none;
+		}
+
 		.mdc-dialog-header__navigation-close,
     .mdc-dialog-header__navigation-save {
       display: none;
     }
   }
+
+	.mdc-dialog-confirmation {
+ 		&:button {
+			display: none;
+		}
+	}
 }
 
 @media (max-width: 640px) {
@@ -155,6 +164,10 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
       
       .mdc-dialog-footer {
         display: none;
+
+				&:button {
+					display: none;
+				}
       }
     }
 
