@@ -119,6 +119,7 @@ export class MDCSimpleMenu extends MDCComponent {
         this.root_.style.top = 'top' in position ? position.top : null;
         this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
       },
+      getAccurateTime: () => window.performance.now(),
     });
   }
 }

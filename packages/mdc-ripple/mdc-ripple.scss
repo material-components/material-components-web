@@ -21,6 +21,10 @@
 // postcss-bem-linter: define ripple-surface
 
 .mdc-ripple-surface {
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before"));
+  @include mdc-ripple-fg((pseudo: "::after"));
+
   position: relative;
   outline: none;
   overflow: hidden;
@@ -29,51 +33,24 @@
     overflow: visible;
   }
 
-  &::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: mdc-animation-exit(opacity, 120ms);
-    border-radius: inherit;
-    background: currentColor;
-    content: "";
-    opacity: 0;
-  }
-
-  &:focus::before {
-    opacity: .12;
-  }
-
-  &:active::before {
-    opacity: .18;
-  }
-
-  &.mdc-ripple-upgraded {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before"));
-    @include mdc-ripple-fg((pseudo: "::after"));
-  }
-
-  &--primary.mdc-ripple-upgraded {
+  &--primary {
     &::before,
     &::after {
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
-    @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
+    @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16));
+    @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16));
   }
 
-  &--accent.mdc-ripple-upgraded {
+  &--accent {
     &::before,
     &::after {
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-bg((pseudo: "::before", theme-style: accent, opacity: .14));
-    @include mdc-ripple-fg((pseudo: "::after", theme-style: accent, opacity: .14));
+    @include mdc-ripple-bg((pseudo: "::before", theme-style: accent, opacity: .16));
+    @include mdc-ripple-fg((pseudo: "::after", theme-style: accent, opacity: .16));
   }
 }
 

@@ -67,7 +67,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerInteractionHandler', 'deregisterInteractionHandler', 'registerDocumentClickHandler',
     'deregisterDocumentClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
     'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
-    'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition',
+    'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition', 'getAccurateTime',
   ]);
 });
 
@@ -106,11 +106,7 @@ testFoundation('#open adds the open class to the menu', ({foundation, mockAdapte
 
 testFoundation('#open removes the animation class at the end of the animation',
     ({foundation, mockAdapter, mockRaf}) => {
-  const {now} = window.performance;
-  const mockNow = td.func('window.performance.now');
-  window.performance.now = mockNow;
-
-  td.when(mockNow()).thenReturn(0);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
   td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-top-right')).thenReturn(true);
 
   foundation.open();
@@ -118,37 +114,26 @@ testFoundation('#open removes the animation class at the end of the animation',
   mockRaf.flush();
   td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
 
-  td.when(mockNow()).thenReturn(500);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+  mockRaf.flush();
   mockRaf.flush();
   td.verify(mockAdapter.removeClass('mdc-simple-menu--animating'));
-
-  window.performance.now = now;
 });
 
 testFoundation('#open focuses the menu at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
-  const {now} = window.performance;
-  const mockNow = td.func('window.performance.now');
-  window.performance.now = mockNow;
-
-  td.when(mockNow()).thenReturn(0);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
 
-  td.when(mockNow()).thenReturn(500);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.focus());
-
-  window.performance.now = now;
 });
 
 testFoundation('#open anchors the menu on the top left in LTR, given enough room',
     ({foundation, mockAdapter, mockRaf}) => {
-  const {now} = window.performance;
-  const mockNow = td.func('window.performance.now');
-  window.performance.now = mockNow;
-
   td.when(mockAdapter.hasAnchor()).thenReturn(true);
   td.when(mockAdapter.isRtl()).thenReturn(false);
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
@@ -156,26 +141,20 @@ testFoundation('#open anchors the menu on the top left in LTR, given enough room
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
     height: 20, width: 40, top: 20, bottom: 40, left: 20, right: 60,
   });
-  td.when(mockNow()).thenReturn(0);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
 
-  td.when(mockNow()).thenReturn(500);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.setTransformOrigin('top left'));
   td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
-
-  window.performance.now = now;
 });
 
 testFoundation('#open anchors the menu on the top right in LTR when close to the right edge',
     ({foundation, mockAdapter, mockRaf}) => {
-  const {now} = window.performance;
-  const mockNow = td.func('window.performance.now');
-  window.performance.now = mockNow;
-
   td.when(mockAdapter.hasAnchor()).thenReturn(true);
   td.when(mockAdapter.isRtl()).thenReturn(false);
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
@@ -183,26 +162,20 @@ testFoundation('#open anchors the menu on the top right in LTR when close to the
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
     height: 20, width: 40, top: 20, bottom: 40, left: 950, right: 990,
   });
-  td.when(mockNow()).thenReturn(0);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
 
-  td.when(mockNow()).thenReturn(500);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.setTransformOrigin('top right'));
   td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
-
-  window.performance.now = now;
 });
 
 testFoundation('#open anchors the menu on the top right in RTL, given enough room',
     ({foundation, mockAdapter, mockRaf}) => {
-  const {now} = window.performance;
-  const mockNow = td.func('window.performance.now');
-  window.performance.now = mockNow;
-
   td.when(mockAdapter.hasAnchor()).thenReturn(true);
   td.when(mockAdapter.isRtl()).thenReturn(true);
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
@@ -210,26 +183,20 @@ testFoundation('#open anchors the menu on the top right in RTL, given enough roo
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
     height: 20, width: 40, top: 20, bottom: 40, left: 500, right: 540,
   });
-  td.when(mockNow()).thenReturn(0);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
 
-  td.when(mockNow()).thenReturn(500);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.setTransformOrigin('top right'));
   td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
-
-  window.performance.now = now;
 });
 
 testFoundation('#open anchors the menu on the top left in RTL when close to the left edge',
     ({foundation, mockAdapter, mockRaf}) => {
-  const {now} = window.performance;
-  const mockNow = td.func('window.performance.now');
-  window.performance.now = mockNow;
-
   td.when(mockAdapter.hasAnchor()).thenReturn(true);
   td.when(mockAdapter.isRtl()).thenReturn(true);
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
@@ -237,26 +204,20 @@ testFoundation('#open anchors the menu on the top left in RTL when close to the 
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
     height: 20, width: 40, top: 20, bottom: 40, left: 10, right: 50,
   });
-  td.when(mockNow()).thenReturn(0);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
 
-  td.when(mockNow()).thenReturn(500);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.setTransformOrigin('top left'));
   td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
-
-  window.performance.now = now;
 });
 
 testFoundation('#open anchors the menu on the bottom left in LTR when close to the bottom edge',
     ({foundation, mockAdapter, mockRaf}) => {
-  const {now} = window.performance;
-  const mockNow = td.func('window.performance.now');
-  window.performance.now = mockNow;
-
   td.when(mockAdapter.hasAnchor()).thenReturn(true);
   td.when(mockAdapter.isRtl()).thenReturn(false);
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
@@ -264,18 +225,16 @@ testFoundation('#open anchors the menu on the bottom left in LTR when close to t
   td.when(mockAdapter.getAnchorDimensions()).thenReturn({
     height: 20, width: 40, top: 900, bottom: 920, left: 10, right: 50,
   });
-  td.when(mockNow()).thenReturn(0);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
 
-  td.when(mockNow()).thenReturn(500);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.setTransformOrigin('bottom left'));
   td.verify(mockAdapter.setPosition({left: '0', bottom: '0'}));
-
-  window.performance.now = now;
 });
 
 testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
@@ -297,11 +256,7 @@ testFoundation('#close removes the open class from the menu', ({foundation, mock
 
 testFoundation('#close removes the animation class at the end of the animation',
     ({foundation, mockAdapter, mockRaf}) => {
-  const {now} = window.performance;
-  const mockNow = td.func('window.performance.now');
-  window.performance.now = mockNow;
-
-  td.when(mockNow()).thenReturn(0);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
   td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
   td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
 
@@ -310,11 +265,9 @@ testFoundation('#close removes the animation class at the end of the animation',
   mockRaf.flush();
   td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
 
-  td.when(mockNow()).thenReturn(500);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.removeClass('mdc-simple-menu--animating'));
-
-  window.performance.now = now;
 });
 
 test('#isOpen returns true when the menu is open', () => {

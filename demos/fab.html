@@ -78,6 +78,29 @@
             </span>
           </button>
         </fieldset>
+        <fieldset>
+          <legend>CSS Only FABs</legend>
+          <button class="mdc-fab material-icons" aria-label="Favorite" data-demo-no-js>
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite" data-demo-no-js>
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite" data-demo-no-js>
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+        </fieldset>
         <fieldset disabled>
           <legend>Disabled FABs</legend>
           <button class="mdc-fab material-icons" aria-label="Favorite">
@@ -118,7 +141,7 @@
           }
         }, 250);
         function init() {
-          var fabs = document.querySelectorAll('.mdc-fab');
+          var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
           for (var i = 0, fab; fab = fabs[i]; i++) {
             mdc.ripple.MDCRipple.attachTo(fab);
           }

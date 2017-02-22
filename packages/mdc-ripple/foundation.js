@@ -265,6 +265,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       VAR_FG_UNBOUNDED_TRANSFORM_DURATION,
       VAR_FG_APPROX_XF,
     } = MDCRippleFoundation.strings;
+
     this.adapter_.updateCssVariable(VAR_FG_APPROX_XF, `scale(${approxCurScale})`);
     this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_OPACITY_DURATION, `${opacityDuration}ms`);
     this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_TRANSFORM_DURATION, `${transformDuration}ms`);

@@ -25,10 +25,9 @@
   - [Caveat: Safari](#caveat-safari)
   - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
 
-MDC Ripple provides the Javascript and CSS required
-to provide components (or any element at all) with a
-material "ink ripple" interaction effect. It is designed to be efficient, un-invasive, and usable
-without adding any extra DOM to your elements.
+MDC Ripple provides the Javascript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
+
+MDC Ripple also works without javascript, where it gracefully degrades to a simpler CSS-Only implementation.
 
 ### An aside regarding browser support
 
@@ -38,8 +37,6 @@ Because we rely on scoped, dynamic CSS variables, static pre-processors such as 
 
 [Most modern browsers](http://caniuse.com/#feat=css-variables) support CSS variables, so MDC ripple will work just fine. In other cases, MDC ripple will _still work_ if you include it in your codebase. It will simply check if CSS variables are supported upon initialization and if they aren't, gracefully exit. The only exception to this rule is Safari, which does support CSS variables
 but unfortunately ripples are disabled for (see [below](#caveat-safari) for an explanation).
-
-Given this, it is important that you _provide gracefully degraded interaction states_ for browsers in which the ripple is not supported. We do this for all of our components.
 
 
 ## Installation
@@ -74,41 +71,17 @@ use [mdc-elevation](https://github.com/material-components/material-components-w
   text-align: center;
   /* Indicate to user element is interactive. */
   cursor: pointer;
-
-
-  /* Use the surface's ::before pseudo-element as a basic interaction indicator */
-
-  &::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    pointer-events: none;
-    background-color: black;
-    transition: opacity 110ms ease;
-    will-change: opacity;
-  }
-
-  &:active::before {
-    opacity: .18;
-  }
-
-  &:focus::before {
-    opacity: .06;
-  }
-}
 ```
 
 #### Adding the ripple Sass
 
-When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. Therefore, to add a ripple to our surface, first we include the proper Sass mixins within our surface's styles when it contains this class. We also add a few additional properties that ensure the ripple's UX is correct.
+To add a ripple to our surface, first we include the proper Sass mixins within our surface's styles. We also add a few additional properties that ensure the ripple's UX is correct.
 
 ```scss
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
 
-.surface.mdc-ripple-upgraded {
+.surface {
   @include mdc-ripple-base;
   @include mdc-ripple-bg((pseudo: "::before"));
   @include mdc-ripple-fg((pseudo: "::after"));
@@ -120,6 +93,8 @@ When a ripple is successfully initialized on an element, it dynamically adds a `
 ```
 
 This code sets up `.surface` with the correct css variables as well as `will-change` properties to support the ripple. It then dynamically generates the correct selectors such that the surface's `::before` element functions as a background ripple, and the surface's `::after` element functions as a foreground ripple.
+
+When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple is not initialized but Sass misins are included within our surface, the ripple will still work, but it would use a simpler, CSS-Only implementation which relies on `:hover`, `:active`, and `:focus`.
 
 ##### The full Sass API
 
