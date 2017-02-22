@@ -63,6 +63,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
       isRtl: () => /* boolean */ false,
       setTransformOrigin: (/* origin: string */) => {},
       setPosition: (/* position: { top: string, right: string, bottom: string, left: string } */) => {},
+      getAccurateTime: () => /* number */ 0,
     };
   }
 
@@ -147,7 +148,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
 
   // Animate menu opening or closing.
   animationLoop_() {
-    const time = window.performance.now();
+    const time = this.adapter_.getAccurateTime();
     const {TRANSITION_DURATION_MS, TRANSITION_X1, TRANSITION_Y1, TRANSITION_X2, TRANSITION_Y2,
         TRANSITION_SCALE_ADJUSTMENT_X, TRANSITION_SCALE_ADJUSTMENT_Y} = MDCSimpleMenuFoundation.numbers;
     const currentTime = clamp((time - this.startTime_) / TRANSITION_DURATION_MS);
@@ -199,7 +200,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
 
   // Starts the open or close animation.
   animateMenu_() {
-    this.startTime_ = window.performance.now();
+    this.startTime_ = this.adapter_.getAccurateTime();
     this.startScaleX_ = this.scaleX_;
     this.startScaleY_ = this.scaleY_;
 

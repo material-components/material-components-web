@@ -245,6 +245,7 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `setTransformOrigin(value: string) => void` | Sets the transform origin for the menu element. |
 | `setPosition(position: { top: string, right: string, bottom: string, left: string }) => void` | Sets the position of the menu element. |
+| `getAccurateTime() => number` | Returns a number representing the number of milliseconds (and fractional milliseconds, as the decimal part) since a given point in time, which should remain constant during the component's lifecycle. Ideally, this should be provided by `window.performance.now()`, which has enough precision for high frequency animation calculations. Using `Date.now()` or equivalent may result in some aliasing in animations. |
 
 ### The full foundation API
 
