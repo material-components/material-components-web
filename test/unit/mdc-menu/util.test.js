@@ -131,3 +131,15 @@ test('bezierProgress returns the right values for a (1, 0, 0, 1) curve', () => {
   };
   testBezier(curve, expected);
 });
+
+test('bezierProgress returns the right values for a (0.99, 0.36, 0, 0.75) curve', () => {
+  const curve = {x1: 0.99, y1: 0.36, x2: 0, y2: 0.75};
+  const expected = {
+    0: 0,
+    0.2: 0.086,
+    0.5: 0.634,
+    0.8: 0.939,
+    1: 1,
+  };
+  testBezier(curve, expected);
+});
