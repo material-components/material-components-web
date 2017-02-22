@@ -47,6 +47,14 @@
         border-radius: 50%;
       }
 
+      .mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
+      .mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
+        height: 100%;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
       button.demo-surface {
         display: inline-block; /* Safari does not center button text otherwise :( */
         background: none;
@@ -57,7 +65,14 @@
       }
 
       section {
-        margin: 48px;
+        align-items: center;
+        display: flex;
+        margin-left: 10px;
+      }
+
+      section > div {
+        margin: 48px 0;
+        width: 400px;
       }
 
       body {
@@ -82,6 +97,13 @@
         user-select: none;
         -webkit-user-select: none;
       }
+
+      @media (max-width: 565px) {
+        section {
+          flex-direction: column;
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
@@ -92,40 +114,80 @@
     <main>
       <h1>MDC Ripple</h1>
       <section>
-        <h2>Bounded</h2>
-        <div class="mdc-ripple-surface demo-surface mdc-elevation--z2" tabindex="0">
-          Interact with me!
+        <div>
+          <h2>Bounded</h2>
+          <div class="mdc-ripple-surface demo-surface mdc-elevation--z2" tabindex="0">
+            Interact with me!
+          </div>
+        </div>
+        <div>
+          <h2>Bounded - CSS Only</h2>
+          <div class="mdc-ripple-surface demo-surface mdc-elevation--z2" data-demo-no-js tabindex="0">
+            Interact with me!
+          </div>
         </div>
       </section>
       <section>
-        <h2>Unbounded</h2>
-        <div class="mdc-ripple-surface demo-surface material-icons" data-mdc-ripple-is-unbounded
-             aria-label="Favorite" tabindex="0">
-          favorite
+        <div>
+          <h2>Unbounded</h2>
+          <div class="mdc-ripple-surface demo-surface material-icons" data-mdc-ripple-is-unbounded
+               aria-label="Favorite" tabindex="0">
+            favorite
+          </div>
+        </div>
+        <div>
+          <h2>Unbounded - CSS Only</h2>
+          <div class="mdc-ripple-surface demo-surface material-icons" data-mdc-ripple-is-unbounded
+               aria-label="Favorite" data-demo-no-js tabindex="0">
+            favorite
+          </div>
         </div>
       </section>
       <section>
-        <h2>Theme Styles</h2>
-        <div
-          class="mdc-ripple-surface mdc-ripple-surface--primary
-                 mdc-theme--primary demo-surface mdc-elevation--z2" tabindex="0">
-          Primary
+        <div>
+          <h2>Theme Styles</h2>
+          <div
+            class="mdc-ripple-surface mdc-ripple-surface--primary
+                   mdc-theme--primary demo-surface mdc-elevation--z2" tabindex="0">
+            Primary
+          </div>
+          <div
+            class="mdc-ripple-surface mdc-ripple-surface--accent
+                   mdc-theme--accent demo-surface mdc-elevation--z2" tabindex="0">
+            Accent
+          </div>
         </div>
-        <div
-          class="mdc-ripple-surface mdc-ripple-surface--accent
-                 mdc-theme--accent demo-surface mdc-elevation--z2" tabindex="0">
-          Accent
+        <div>
+          <h2>Theme Styles - CSS Only</h2>
+          <div
+            class="mdc-ripple-surface mdc-ripple-surface--primary
+                   mdc-theme--primary demo-surface mdc-elevation--z2" data-demo-no-js tabindex="0">
+            Primary
+          </div>
+          <div
+            class="mdc-ripple-surface mdc-ripple-surface--accent
+                   mdc-theme--accent demo-surface mdc-elevation--z2" data-demo-no-js tabindex="0">
+            Accent
+          </div>
         </div>
+
       </section>
       <section>
-        <h2>Applied to <code>&lt;button&gt; element</h2>
+        <div>
+          <h2>Applied to <code>&lt;button&gt; element</h2>
           <button type="button" class="mdc-ripple-surface mdc-elevation--z2 demo-surface">button</button>
+        </div>
+        <div>
+          <h2>Applied to <code>&lt;button&gt; element - CSS Only</h2>
+          <button type="button" class="mdc-ripple-surface mdc-elevation--z2 demo-surface" data-demo-no-js>button</button>
+        </div>
+
       </section>
     </main>
     <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script>
       (function(global) {
-        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
+        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface:not([data-demo-no-js]'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
         });
       })(this);

@@ -279,6 +279,8 @@ testFoundation('triggers unbounded deactivation based on time it took to activat
   const xfDuration = 1000 * Math.sqrt(maxRadius / 1024);
 
   const scaleVal = baseElapsedTime / xfDuration * fgScale;
+
+
   td.verify(adapter.updateCssVariable(strings.VAR_FG_APPROX_XF, `scale(${scaleVal})`));
   td.verify(adapter.updateCssVariable(
     strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION, `${numbers.UNBOUNDED_TRANSFORM_DURATION_MS}ms`

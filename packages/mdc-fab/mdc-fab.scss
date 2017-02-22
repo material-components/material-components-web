@@ -20,6 +20,10 @@
 
 // postcss-bem-linter: define fab
 .mdc-fab {
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
+  @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
+
   display: inline-flex;
   position: relative;
   justify-content: center;
@@ -36,6 +40,7 @@
   -moz-appearance: none;
   -webkit-appearance: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
+  overflow: hidden;
 
   @include mdc-theme-prop(background-color, accent);
   @include mdc-theme-prop(color, text-primary-on-accent);
@@ -50,6 +55,8 @@
     background-color: white;
 
     @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-ripple-bg((pseudo: "::before"));
+    @include mdc-ripple-fg((pseudo: "::after"));
   }
 
   &::before {
@@ -60,7 +67,7 @@
     height: 100%;
     transition: mdc-animation-exit(opacity, 120ms);
     border-radius: inherit;
-    background: black;
+    background: rgba(0, 0, 0, .2);
     content: "";
     opacity: 0;
   }
@@ -124,16 +131,3 @@
 }
 
 // postcss-bem-linter: end
-
-.mdc-fab.mdc-ripple-upgraded {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
-  @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
-
-  overflow: hidden;
-}
-
-.mdc-fab--plain.mdc-ripple-upgraded {
-  @include mdc-ripple-bg((pseudo: "::before"));
-  @include mdc-ripple-fg((pseudo: "::after"));
-}
