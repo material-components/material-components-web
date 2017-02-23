@@ -27,7 +27,6 @@ class FakeMenu {
       bel`<div id="item-1">Item 1</div>`,
       bel`<div id="item-2">Item 2</div>`,
       bel`<div id="item-3">Item 3</div>`,
-      bel`<div>Item 4 no id</div>`,
     ];
     this.listen = td.func('menu.listen');
     this.unlisten = td.func('menu.unlisten');
@@ -90,15 +89,6 @@ test('#get/setDisabled', () => {
   assert.equal(component.disabled, false);
   component.disabled = true;
   assert.isOk(component.disabled);
-});
-
-test('#get value', () => {
-  const {component} = setupTest();
-  assert.equal(component.value, '');
-  component.selectedIndex = 1;
-  assert.equal(component.value, 'item-2');
-  component.selectedIndex = 3;
-  assert.equal(component.value, 'Item 4 no id');
 });
 
 test('#item returns the menu item at the specified index', () => {
@@ -365,15 +355,4 @@ test('adapter#notifyChange emits an "MDCSelect:change" custom event from the roo
 test('adapter#getWindowInnerHeight returns window.innerHeight', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getWindowInnerHeight(), window.innerHeight);
-});
-
-test('adapter#getValueForOptionAtIndex returns the id of the option at the given index', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getValueForOptionAtIndex(1), 'item-2');
-});
-
-test('adapter#getValueForOptionAtIndex returns the textContent of the option at given index when ' +
-     'no id value present', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getValueForOptionAtIndex(3), 'Item 4 no id');
 });
