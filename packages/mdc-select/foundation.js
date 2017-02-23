@@ -59,6 +59,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       setSelectedTextContent: (/* textContent: string */) => {},
       getNumberOfOptions: () => /* number */ 0,
       getTextForOptionAtIndex: (/* index: number */) => /* string */ '',
+      getValueForOptionAtIndex: (/* index: number */) => /* string */ '',
       setAttrForOptionAtIndex: (/* index: number, attr: string, value: string */) => {},
       rmAttrForOptionAtIndex: (/* index: number, attr: string */) => {},
       getOffsetTopForOptionAtIndex: (/* index: number */) => /* number */ 0,
@@ -112,6 +113,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('keyup', this.displayViaKeyboardHandler_);
     this.adapter_.deregisterMenuInteractionHandler('MDCSimpleMenu:selected', this.selectionHandler_);
     this.adapter_.deregisterMenuInteractionHandler('MDCSimpleMenu:cancel', this.cancelHandler_);
+  }
+
+  getValue() {
+    return this.selectedIndex_ >= 0 ? this.adapter_.getValueForOptionAtIndex(this.selectedIndex_) : '';
   }
 
   getSelectedIndex() {
