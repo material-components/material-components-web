@@ -32,7 +32,7 @@ export class MDCTabs extends MDCComponent {
   }
 
   get tabsContainer_() {
-    return this.root_.querySelector(MDCTabsFoundation.strings.TABS_SELECTOR);
+    return this.root_.querySelector(MDCTabsFoundation.strings.TAB_BAR_SELECTOR);
   }
 
   get tabs() {
@@ -60,6 +60,7 @@ export class MDCTabs extends MDCComponent {
   constructor(...args) {
     super(...args);
     this.ripple_ = this.initRipple_();
+    this.inkBar_ = this.initInkBar_();
   }
 
   initRipple_() {
@@ -92,6 +93,13 @@ export class MDCTabs extends MDCComponent {
     });
   }
 
+  initInkBar_() {
+    let inkBar = document.createElement('div');
+    inkBar.classList.add('mdc-tabs__ink-bar');
+    this.root_.insertBefore(inkBar, this.tabsBar_.nextSibling);
+    return inkBar;
+  }
+
   getDefaultFoundation() {
     return new MDCTabsFoundation({
       hasClass: (className) => this.root_.classList.contains(className),
@@ -106,6 +114,9 @@ export class MDCTabs extends MDCComponent {
       getNumberOfTabs: () => this.tabs.length,
       addClassForPanelAtIndex: (index, className) => this.panels[index].classList.add(className),
       removeClassForPanelAtIndex: (index, className) => this.panels[index].classList.remove(className),
+      getWidthForTabAtIndex: (index) => this.tabs[index].offsetWidth,
+      getPositionForTabAtIndex: (index) => this.tabs[index].offsetLeft,
+      setCSSForInkBar: (attr, value) => this.inkBar_.style.setProperty(attr, value),
     });
   }
 
@@ -118,7 +129,7 @@ export class MDCTabs extends MDCComponent {
   }
 
   destroy() {
-    thos.ripple_.forEach(ripple => {
+    this.ripple_.forEach(ripple => {
       ripple.destroy();
     });
     super.destroy();

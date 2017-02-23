@@ -36,6 +36,7 @@
     min-width: 160px;
 
     font-size: 14px;
+    font-weight: 500;
 
     text-align: center;
     line-height: 48px;
@@ -52,17 +53,8 @@
     // to include padding and border into size calculation
     box-sizing: border-box;
 
-    transition: box-shadow 0.5s ease-in-out;
-    box-shadow: inset 0px -2px 0px 0px $mdc-theme-primary;
-
     &--active {
         @include mdc-theme-prop(color, text-primary-on-primary);
-        //@include mdc-theme-prop(border-bottom-color, accent);
-
-        //border-bottom-width: 2px;
-        //border-bottom-style: solid;
-
-        box-shadow: inset 0px -2px 0px 0px $mdc-theme-accent;
     }
 }
 
@@ -78,4 +70,12 @@
     &--active {
         display: inline-block;
     }
+}
+
+.mdc-tabs__ink-bar {
+    @include mdc-theme-prop(background-color, accent);
+    height: 2px;
+    display: block;
+    position: absolute;
+    transition: left 0.25s ease-in-out, right 0.75s ease-in-out;
 }

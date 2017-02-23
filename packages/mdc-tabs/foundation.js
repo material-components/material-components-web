@@ -27,7 +27,8 @@ export default class MDCTabsFoundation extends MDCFoundation {
 
   static get strings() {
     return {
-      TABS_SELECTOR: `.${ROOT}__tab-bar`,
+      TAB_CONTAINER_SELECTOR: `.${ROOT}`,
+      TAB_BAR_SELECTOR: `.${ROOT}__tab-bar`,
     };
   }
 
@@ -45,6 +46,9 @@ export default class MDCTabsFoundation extends MDCFoundation {
       setAttrForTabAtIndex: (/* index: int, attr: string, value: string */) => {},
       rmAttrForTabAtIndex: (/* index: int, attr: string */) => {},
       getNumberOfTabs: () => {},
+      getWidthForTabAtIndex: (/* index: int */) => {},
+      getPositionForTabAtIndex: (/* index: int */) => {},
+      setCSSForInkBar: (/* attr: string, value: string */) => {},
     };
   }
 
@@ -56,6 +60,7 @@ export default class MDCTabsFoundation extends MDCFoundation {
       evt.preventDefault();
       const index = this.adapter_.getIndexForEventTarget(evt.target);
       this.setSelectedIndex(index);
+      this.updateInkBar()
     };
   }
 
@@ -93,5 +98,13 @@ export default class MDCTabsFoundation extends MDCFoundation {
       this.adapter_.addClassForTabAtIndex(this.selectedIndex_, 'mdc-tabs__tab--active');
       this.adapter_.addClassForPanelAtIndex(this.selectedIndex_, 'mdc-tabs__panel--active');
     }
+  }
+
+  updateInkBar() {
+    let width = this.adapter_.getWidthForTabAtIndex(this.selectedIndex_);
+    let position = this.adapter_.getPositionForTabAtIndex(this.selectedIndex_);
+    this.adapter_.setCSSForInkBar('width', `${width}px`);
+    this.adapter_.setCSSForInkBar('left', `${position}px`);
+    this.adapter_.setCSSForInkBar('right', `${position+width}px`)
   }
 }
