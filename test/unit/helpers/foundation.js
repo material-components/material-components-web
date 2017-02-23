@@ -27,8 +27,7 @@ export function verifyDefaultAdapter(FoundationClass, expectedMethods) {
   const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  // Test for equality without requiring that the array be in a specific order
-  assert.deepEqual(methods.slice().sort(), expectedMethods.slice().sort());
+  assert.deepEqual(methods, expectedMethods);
   // Test default methods
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 }
