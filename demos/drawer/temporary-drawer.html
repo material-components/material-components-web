@@ -29,22 +29,6 @@
       box-sizing: border-box;
     }
 
-    /* A quick and simple toolbar, while we're waiting for mdc-toolbar. */
-    .demo-toolbar {
-      width: 100%;
-      height: 56px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding: 0 16px;
-      box-sizing: border-box;
-    }
-    @media (min-width: 600px) {
-      .demo-toolbar {
-        height: 64px;
-      }
-    }
-
     /* A simple menu button. */
     .demo-menu {
       background: none;
@@ -59,12 +43,15 @@
 
     .demo-main {
       padding-left: 16px;
+      overflow: auto;
     }
     </style>
   </head>
   <body class="mdc-typography demo-body">
-    <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">
-      <button class="demo-menu material-icons">menu</button>
+    <div class="mdc-toolbar mdc-toolbar--fixed">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <button class="demo-menu material-icons">menu</button>
+      </section>
     </div>
 
     <aside class="mdc-temporary-drawer">
@@ -106,7 +93,7 @@
         </nav>
       </nav>
     </aside>
-    <main class="demo-main">
+    <main class="demo-main mdc-toolbar-fixed-adjust">
       <h1 class="mdc-typography--display1">Temporary Drawer</h1>
       <p class="mdc-typography--body1">Click the menu icon above to open.</p>
     </main>

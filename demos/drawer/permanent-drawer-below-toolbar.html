@@ -45,33 +45,19 @@
       box-sizing: border-box;
     }
 
-    /* A quick and simple toolbar, while we're waiting for mdc-toolbar. */
-    .demo-toolbar {
-      display: block;
-      width: 100%;
-      height: 56px;
-      line-height: 56px;
-      padding: 0 16px;
-      box-sizing: border-box;
-      /* Place drawer under toolbar shadow. */
-      z-index: 2;
-    }
-    @media (min-width: 600px) {
-      .demo-toolbar {
-        height: 64px;
-        line-height: 64px;
-      }
-    }
-
     .demo-main {
       padding-left: 16px;
     }
     </style>
   </head>
   <body class="mdc-typography demo-body">
-    <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">Title</div>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <span class="mdc-toolbar__title">Title</span>
+      </section>
+    </header>
 
-    <div class="demo-content">
+    <div class="demo-content mdc-toolbar-fixed-adjust">
       <nav class="mdc-permanent-drawer">
         <div class="mdc-list-group">
           <nav class="mdc-list">

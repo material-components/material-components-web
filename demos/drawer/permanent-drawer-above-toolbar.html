@@ -48,22 +48,6 @@
       box-sizing: border-box;
     }
 
-    /* A quick and simple toolbar, while we're waiting for mdc-toolbar. */
-    .demo-toolbar {
-      display: block;
-      width: 100%;
-      height: 56px;
-      line-height: 56px;
-      padding: 0 16px;
-      box-sizing: border-box;
-    }
-    @media (min-width: 600px) {
-      .demo-toolbar {
-        height: 64px;
-        line-height: 64px;
-      }
-    }
-
     /* Place drawer above toolbar shadow. */
     .mdc-permanent-drawer {
       z-index: 2;
@@ -109,7 +93,12 @@
         </div>
     </nav>
     <div class="demo-content">
-      <div class="demo-toolbar mdc-theme--primary-bg mdc-theme--text-primary-on-primary mdc-typography--title mdc-elevation--z4">Title</div>
+      <!-- TODO: #324 - Should switch to .mdc-toolbar--fixed -->
+      <header class="mdc-toolbar mdc-elevation--z4">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="mdc-toolbar__title">Title</span>
+        </section>
+      </header>
 
       <main class="demo-main">
         <h1 class="mdc-typography--display1">Permanent Drawer</h1>
