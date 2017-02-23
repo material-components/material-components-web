@@ -109,8 +109,6 @@ export class MDCDialog extends MDCComponent {
       acceptAction: (handler) => console.log('Accept'),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
-      setTranslateY: (value) => this.dialog_.style.setProperty(
-      util.getTransformPropertyName(), value === null ? null : `translateY(${value}px)`),
       getFocusableElements: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
@@ -119,7 +117,15 @@ export class MDCDialog extends MDCComponent {
       isDialog: (el) => el === this.dialog_,
       acceptButton: () => this.acceptButton_,
       cancelButton: () => this.cancelButton_,
+      navigationAcceptButton: () => this.navigationAcceptButton_,
+      navigationCancelButton: () => this.navigationCancelButton_,
+      confirmationCancelButton: () => this.confirmationCancelButton_,
       dialogEl: () => this.root_,
+      confirmationDialogEl: () => this.confirmationDialog_,
+			setBackgroundAriaAttribute: () => document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', 'true'),
+
+			registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
+			deregisterFocusTrappingHandler: (handler) => document.addEventListener('focus', handler),
     }
 
     const stdDialogAdapterProps = {

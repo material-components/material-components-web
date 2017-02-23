@@ -33,9 +33,7 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
   }
   
   .mdc-dialog-confirmation--buttons {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 20px;
+    display: none;
   }
   
   &__open {
@@ -48,6 +46,12 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
       opacity: 1;
       transform: scale(1);
       transition: transform 175ms $animation-curve, opacity 175ms $animation-curve;
+    }
+
+    .mdc-dialog-confirmation--buttons {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 20px;
     }
   }
 }
@@ -165,7 +169,7 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
       .mdc-dialog-footer {
         display: none;
 
-				&:button {
+				.mdc-dialog-footer-button {
 					display: none;
 				}
       }

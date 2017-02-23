@@ -42,7 +42,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       hasNecessaryDom: () => /* boolean */ false,
       hasNavigation: () => false,
       hasNavigationAutoSave: () => false,
-      registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+			registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
@@ -64,7 +64,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterConfirmationCancelHandler: () => {},
       acceptAction: () => {},
       cancelAction: () => {},
-			setTranslateY: (/* value: number | null */) => {},
       updateCssVariable: (/* value: string */) => {},
       getFocusableElements: () => /* NodeList */ {},
       saveElementTabState: (/* el: Element */) => {},
@@ -73,7 +72,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
       isRtl: () => /* boolean */ false,
       isDialog: (/* el: Element */) => /* boolean */ false,
       acceptButton: () => {},
+      cancelButton: () => {},
+      navigationAcceptButton: () => {},
+      navigationCancelButton: () => {},
+      confirmationCancelButton: () => {},
       dialogEl: () => {},
+      confirmationDialogEl: () => {},
     };
   }
 
@@ -81,13 +85,18 @@ export default class MDCDialogFoundation extends MDCFoundation {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
     
     this.lastFocusEl_;
-    this.dialogEl_ = this.adapter_.dialogEl();
-    this.defaultFocusElement_ = this.adapter_.cancelButton();
+		this.activeDialog_;
+    this.defaultFocusElement_;
     this.inert_ = false;
     this.isOpen_ = false;
     this.componentClickHandler_ = () => this.cancel();
     this.dialogClickHandler_ = (evt) => evt.stopPropagation();
-    this.confirmationClickHandler_ = (evt) => evt.stopPropagation();
+		
+
+		this.dialogFocusHandler_ = (evt) => {return this.passFocus(evt);}
+    
+
+		this.confirmationClickHandler_ = (evt) => evt.stopPropagation();
     this.acceptHandler_ = () => this.accept();
     this.cancelHandler_ = () => this.cancel();
     this.confirmationHandler_ = () => this.openConfirmation();
@@ -106,22 +115,28 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
     this.adapter_.registerDialogInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerAcceptHandler(this.acceptHandler_);
- 
-    if (this.adapter_.hasNavigation()) {
-      this.adapter_.registerNavigationAcceptHandler(this.acceptHandler_);
-    }
+    this.defaultFocusElement_ = this.adapter_.cancelButton();
 
     if (!this.adapter_.hasNavigationAutoSave()) {
       this.adapter_.registerCancelHandler(this.cancelHandler_);
     } 
+ 
+    if (this.adapter_.hasNavigation()) {
+      this.adapter_.registerNavigationAcceptHandler(this.acceptHandler_);
+    	this.defaultFocusElement_ = this.adapter_.navigationCancelButton();
+    }
+
+		if (this.adapter_.hasNavigationAutoSave() && !window.matchMedia("(min-width: 640px)").matches) {
+    	this.defaultFocusElement_ = this.adapter_.navigationAcceptButton();
+		} else if (this.adapter_.hasNavigationAutoSave() && window.matchMedia("(min-width: 640px)").matches) {
+    	this.defaultFocusElement_ = this.adapter_.acceptButton();
+		}
 
     if (this.adapter_.hasNavigation() && !this.adapter_.hasNavigationAutoSave()) {
       this.adapter_.registerNavigationCancelHandler(this.confirmationHandler_);
       this.adapter_.registerConfirmationAcceptHandler(this.confirmationAcceptHandler_);
       this.adapter_.registerConfirmationCancelHandler(this.confirmationCancelHandler_);
       this.adapter_.registerConfirmationInteractionHandler('click', this.confirmationClickHandler_);
-    	
-			//this.defaultFocusElement_ = this.adapter_.navigationCancelButton();
     }
 
     if (this.adapter_.hasClass(ACTIVE)) {
@@ -130,7 +145,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.lockTab_();
       this.isOpen_ = false;
     }
-
   }
 
   destroy() {
@@ -145,17 +159,21 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   open() {
     this.lastFocusEl_ = document.activeElement;
+		this.activeDialog_ = this.adapter_.dialogEl();
     this.adapter_.updateCssVariable('');
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
-    this.setDefaultFocus();
     this.unlockTab_();
 		this.disableScroll_();
     this.isOpen_ = true;
-    document.querySelector('body').setAttribute('aria-hidden', 'true')
+		this.adapter_.setBackgroundAriaAttribute();
+		
+		this.defaultFocusElement_.focus();
+    this.adapter_.registerFocusTrappingHandler(this.dialogFocusHandler_);
 	}
 
   close() {
+		this.resetDefaultFocus();
     this.adapter_.updateCssVariable('');
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ACTIVE);
@@ -166,14 +184,44 @@ export default class MDCDialogFoundation extends MDCFoundation {
 	}
  
   openConfirmation() {
+		this.activeDialog_ = this.adapter_.confirmationDialogEl();
+    this.defaultFocusElement_ = this.adapter_.confirmationCancelButton();
     this.adapter_.addConfirmClass(MDCDialogFoundation.cssClasses.CONFIRMATION_ACTIVE);
-  }
+    
+ 		this.defaultFocusElement_.focus();
+    this.adapter_.registerFocusTrappingHandler(this.dialogFocusHandler_);
+ }
 
   closeConfirmation() {
     this.adapter_.removeConfirmClass(MDCDialogFoundation.cssClasses.CONFIRMATION_ACTIVE)
     this.adapter_.deregisterConfirmationAcceptHandler(this.acceptHandler_);
     this.adapter_.deregisterConfirmationCancelHandler(this.cancelHandler_);
-  } 
+		this.resetDefaultFocus();
+  }
+
+	passFocus(evt) {
+		if (!this.activeDialog_.contains(evt.target)) {
+      evt.stopPropagation();
+    	this.defaultFocusElement_.focus();
+    }
+	}
+
+	resetDefaultFocus() {
+    this.defaultFocusElement_ = this.adapter_.cancelButton();
+ 
+    if (this.adapter_.hasNavigation()) {
+    	this.defaultFocusElement_ = this.adapter_.navigationCancelButton();
+    }
+
+		if (this.adapter_.hasNavigationAutoSave() && !window.matchMedia("(min-width: 640px)").matches) {
+    	this.defaultFocusElement_ = this.adapter_.navigationAcceptButton();
+		} else if (this.adapter_.hasNavigationAutoSave() && window.matchMedia("(min-width: 640px)").matches) {
+    	this.defaultFocusElement_ = this.adapter_.acceptButton();
+		}
+
+		this.activeDialog_ = this.adapter_.dialogEl();
+		this.setDefaultFocus();
+	}
 
   accept() {
     this.adapter_.acceptAction();
@@ -192,19 +240,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   isOpen() {
     return this.isOpen_;
-  }
-
-  setDefaultFocus() {
-    this.defaultFocusElement_.focus();
-
-    document.addEventListener('focus', (evt) => {
-			console.log(this.dialogEl_.contains(evt.target), evt.target)
-     	 
-			if (!this.dialogEl_.contains(evt.target)) {
-        evt.stopPropagation();
-    		this.defaultFocusElement_.focus();
-      }
-    }, true)
   }
 
   /**
