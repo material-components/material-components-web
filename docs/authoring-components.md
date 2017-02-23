@@ -725,6 +725,10 @@ Concretely:
   contains javascript, ensure that its component namespace is exported within
   `material-components-web`, and it is registered with `mdc-auto-init`. Lastly, remember to add it
   to `package.json` of `material-components-web`.
+- Ensure that the correct **commit subject** for the package is added to the
+  `config.validate-commit-msg.scope.allowed` array within the top-level `package.json` at the root
+  of the repo. The commit subject is the _name the component, without the `mdc-`/`@material/`_.
+  E.g., for `mdc-icon-toggle`, the correct subject is `icon-toggle`.
 
 ### Testing
 

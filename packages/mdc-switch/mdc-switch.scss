@@ -19,6 +19,10 @@
 @import "./mixins";
 @import "./variables";
 
+@function mdc-switch-transition($property) {
+  @return $property 90ms $mdc-switch-transition-curve;
+}
+
 // postcss-bem-linter: define switch
 .mdc-switch {
   display: inline-block;
@@ -47,7 +51,7 @@
     cursor: pointer;
     user-select: none;
 
-    @include mdc-theme-dark(".mdc-checkbox") {
+    @include mdc-theme-dark(".mdc-switch") {
       background-color: transparent;
     }
 
@@ -59,14 +63,14 @@
       bottom: 0;
       left: 0;
       transition:
-        mdc-checkbox-transition(opacity, $mdc-switch-transition-curve),
-        mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+        mdc-switch-transition(opacity),
+        mdc-switch-transition(background-color);
       border-radius: 7px;
       background-color: $mdc-switch-unchecked-track-color;
       content: "";
       opacity: .38;
 
-      @include mdc-theme-dark(".mdc-checkbox") {
+      @include mdc-theme-dark(".mdc-switch") {
         background-color: $mdc-switch-unchecked-track-color-dark;
         opacity: .3;
       }
@@ -82,12 +86,12 @@
       height: $mdc-switch-knob-diameter;
       transform: translateX(0);
       transition:
-        mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
-        mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+        mdc-switch-transition(transform),
+        mdc-switch-transition(background-color);
       border-radius: $mdc-switch-knob-diameter / 2;
       background-color: $mdc-switch-unchecked-knob-color;
 
-      @include mdc-theme-dark(".mdc-checkbox") {
+      @include mdc-theme-dark(".mdc-switch") {
         background-color: $mdc-switch-unchecked-knob-color-dark;
       }
 
@@ -104,8 +108,8 @@
         height: $mdc-switch-focus-ring-diameter;
         transform: scale(0);
         transition:
-          mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
-          mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+          mdc-switch-transition(transform),
+          mdc-switch-transition(background-color);
         border-radius: $mdc-switch-focus-ring-diameter / 2;
         background-color: transparent;
         content: "";
@@ -123,12 +127,12 @@
       height: $mdc-switch-focus-ring-diameter;
       transform: scale(1);
       transition:
-        mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
-        mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+        mdc-switch-transition(transform),
+        mdc-switch-transition(background-color);
       border-radius: $mdc-switch-focus-ring-diameter / 2;
       background-color: $mdc-switch-unchecked-focus-ring-color;
 
-      @include mdc-theme-dark(".mdc-checkbox") {
+      @include mdc-theme-dark(".mdc-switch") {
         background-color: $mdc-switch-unchecked-focus-ring-color-dark;
         opacity: .14;
       }
@@ -146,15 +150,15 @@
   .mdc-switch__knob {
     transform: translateX($mdc-switch-track-width - $mdc-switch-knob-diameter);
     transition:
-      mdc-checkbox-transition(transform, $mdc-switch-transition-curve),
-      mdc-checkbox-transition(background-color, $mdc-switch-transition-curve);
+      mdc-switch-transition(transform),
+      mdc-switch-transition(background-color);
 
     @include mdc-theme-prop(background-color, primary);
 
     &::before {
       @include mdc-theme-prop(background-color, primary);
 
-      @include mdc-theme-dark(".mdc-checkbox") {
+      @include mdc-theme-dark(".mdc-switch") {
         @include mdc-theme-prop(background-color, primary);
       }
 
@@ -174,7 +178,7 @@
     background-color: $mdc-switch-unchecked-track-color;
     opacity: .12;
 
-    @include mdc-theme-dark(".mdc-checkbox") {
+    @include mdc-theme-dark(".mdc-switch") {
       background-color: $mdc-switch-unchecked-track-color-dark;
       opacity: .1;
     }
@@ -183,7 +187,7 @@
   .mdc-switch__knob {
     background-color: $mdc-switch-disabled-knob-color;
 
-    @include mdc-theme-dark(".mdc-checkbox") {
+    @include mdc-theme-dark(".mdc-switch") {
       background-color: $mdc-switch-disabled-knob-color-dark;
     }
   }

@@ -33,9 +33,9 @@
     "chai": "^3.5.0",
     "cli-table": "^0.3.1",
     "cp-file": "^4.1.0",
-    "cross-env": "^2.0.0",
+    "cross-env": "^3.1.4",
     "css-loader": "0.14.5",
-    "cz-conventional-changelog": "^1.1.6",
+    "cz-conventional-changelog": "^2.0.0",
     "del-cli": "^0.2.0",
     "dom-events": "^0.1.1",
     "eslint": "^3.6.1",
@@ -101,7 +101,40 @@
   },
   "config": {
     "validate-commit-msg": {
-      "helpMessage": "\nNOTE: Please see angular's commit message guidelines (https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit) for information on how to format commit messages.\n\nAs an example, here is a valid commit message: 'docs(slider): Document slider public api'\n\nIf this commit is on a development / WIP branch, you can disable this by running `git commit --no-verify`."
+      "helpMessage": "\nNOTE: Please see angular's commit message guidelines (https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit) for information on how to format commit messages.\n\nAs an example, here is a valid commit message: 'docs(slider): Document slider public api'\n\nIf this commit is on a development / WIP branch, you can disable this by running `git commit --no-verify`.",
+      "scope": {
+        "allowed": [
+          "animation",
+          "auto-init",
+          "base",
+          "button",
+          "card",
+          "checkbox",
+          "drawer",
+          "elevation",
+          "fab",
+          "form-field",
+          "grid-list",
+          "icon-toggle",
+          "layout-grid",
+          "list",
+          "menu",
+          "radio",
+          "ripple",
+          "rtl",
+          "select",
+          "snackbar",
+          "switch",
+          "textfield",
+          "theme",
+          "toolbar",
+          "typography",
+          "demos",
+          "framework-examples",
+          "infrastructure"
+        ],
+        "validate": true
+      }
     },
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
