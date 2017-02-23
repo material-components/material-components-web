@@ -173,6 +173,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
 	}
 
   close() {
+    this.adapter_.deregisterFocusTrappingHandler(this.dialogFocusHandler_);
 		this.resetDefaultFocus();
     this.adapter_.updateCssVariable('');
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
@@ -196,6 +197,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.removeConfirmClass(MDCDialogFoundation.cssClasses.CONFIRMATION_ACTIVE)
     this.adapter_.deregisterConfirmationAcceptHandler(this.acceptHandler_);
     this.adapter_.deregisterConfirmationCancelHandler(this.cancelHandler_);
+    this.adapter_.deregisterFocusTrappingHandler(this.dialogFocusHandler_);
 		this.resetDefaultFocus();
   }
 
@@ -208,7 +210,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
 	resetDefaultFocus() {
     this.defaultFocusElement_ = this.adapter_.cancelButton();
- 
+    
     if (this.adapter_.hasNavigation()) {
     	this.defaultFocusElement_ = this.adapter_.navigationCancelButton();
     }
@@ -219,8 +221,9 @@ export default class MDCDialogFoundation extends MDCFoundation {
     	this.defaultFocusElement_ = this.adapter_.acceptButton();
 		}
 
-		this.activeDialog_ = this.adapter_.dialogEl();
-		this.setDefaultFocus();
+    this.activeDialog_ = this.adapter_.dialogEl();
+    this.defaultFocusElement_.focus();
+    this.adapter_.registerFocusTrappingHandler(this.dialogFocusHandler_);
 	}
 
   accept() {
