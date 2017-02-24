@@ -43,7 +43,7 @@ export default class MDCTabsFoundation extends MDCFoundation {
       registerResizeHandler: (/* handler: EventListener */) => {},
       deregisterResizeHandler: (/* handler: EventListener */) => {},
       registerLoadHandler: (/* handler: EventListener */) => {},
-      deregisterLoadHandler: (handler/* handler: EventListener */) => {},
+      deregisterLoadHandler: (/* handler: EventListener */) => {},
       getIndexForEventTarget: (/* target: EventTarget */) => {},
       addClassForTabAtIndex: (/* index: int, className: string */) => {},
       removeClassForTabAtIndex: (/* index: int, className: string */) => {},
