@@ -55,59 +55,6 @@
 		</aside>
 		
 		<aside id="mdc-dialog-two" class="mdc-dialog" role="alertdialog"  aria-labelledby="mdc-dialog-label" aria-describedby="mdc-dialog-description">
-		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
-		    <section class="mdc-dialog-header">
-		      <button id="mdc-dialog-navigation-cancel" class="mdc-button mdc-dialog-header__navgation-button mdc-dialog-header__navigation-close material-icons">
-		         close
-		      </button>
-		      <h2 id="mdc-dialog-label" class="mdc-dialog-header__title">
-		        Use Google?
-		      </h2>
-		      <button id="mdc-dialog-navigation-accept" class="mdc-button mdc-dialog-header__navgation-button mdc-dialog-header__navigation-save">SAVE</button>
-		    </section>
-		    <section id="mdc-dialog-description" class="mdc-dialog-body">
-		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
-		    </section>
-		    <section class="mdc-dialog-footer">
-		      <button type="button" id="mdc-dialog-cancel" class="mdc-button mdc-dialog-footer-button">CLOSE</button>
-		      <button type="button" id="mdc-dialog-accept" class="mdc-button mdc-dialog-footer-button">SAVE</button>
-		    </section>
-		  </div>
-		  <div class="mdc-dialog-backdrop"></div>
-		  <div class="mdc-dialog-confirmation">
-		    <div class="mdc-dialog-confirmation--surface">
-		      <section class="mdc-dialog-confirmation--header">Are you sure?</section>
-		      <section class="mdc-dialog-confirmation--buttons">
-		        <button id="mdc-dialog-confirmation-cancel" class="mdc-button">Cancel</button>
-		        <button id="mdc-dialog-confirmation-accept" class="mdc-button">Continue</button>
-		      </section>
-		    </div>
-		  </div>
-		</aside>
-		
-		<aside id="mdc-dialog-three" class="mdc-dialog" role="alertdialog"  aria-labelledby="mdc-dialog-label" aria-describedby="mdc-dialog-description">
-		  <div class="mdc-dialog-surface mdc-dialog-surface__full-screen mdc-dialog-surface__navigation">
-		    
-		    <section class="mdc-dialog-header">
-		      <button id="mdc-dialog-navigation-accept" class="mdc-button mdc-dialog-header__navgation-button mdc-dialog-header__navigation-close">
-		         <i class="material-icons">arrow_back</i>
-		      </button>
-		      <h2 id="mdc-dialog-label" class="mdc-dialog-header__title">
-		        Use Google?
-		      </h2>
-		    </section>
-		    
-		    <section id="mdc-dialog-description" class="mdc-dialog-body">
-		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
-		    </section>
-		    <section class="mdc-dialog-footer">
-		      <button type="button" id="mdc-dialog-accept" class="mdc-button mdc-dialog-footer-button">BACK</button>
-		    </section>
-		  </div>
-		  <div class="mdc-dialog-backdrop"></div>
-		</aside>
-		
-		<aside id="mdc-dialog-four" class="mdc-dialog" role="alertdialog"  aria-labelledby="mdc-dialog-label" aria-describedby="mdc-dialog-description">
 		  <div class="mdc-dialog-surface">
 		    <section class="mdc-dialog-header">
 		      <h2 id="mdc-dialog-label" class="mdc-dialog-header__title">
@@ -215,19 +162,12 @@
     
 		<script>
       var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-one'));
-      var dialogNavigation= new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-two'));
-      var dialogAutosave = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-three'));
-      var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-four'));
+      var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-two'));
 
 			document.querySelector('#dialog-activation').addEventListener('click', function () {
 				dialog.open = true;
 			})
-			document.querySelector('#dialog-activation__navigation').addEventListener('click', function () {
-				dialogNavigation.open = true;
-			})
-			document.querySelector('#dialog-activation__autosave').addEventListener('click', function () {
-				dialogAutosave.open = true;
-			})
+
 			document.querySelector('#dialog-activation__scrollable').addEventListener('click', function () {
 				dialogScrollable.open = true;
 			})
