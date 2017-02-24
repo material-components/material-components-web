@@ -59,8 +59,11 @@ export class MDCTabs extends MDCComponent {
 
   constructor(...args) {
     super(...args);
-    this.ripple_ = this.initRipple_();
+  }
+
+  initialize(...args) {
     this.inkBar_ = this.initInkBar_();
+    this.ripple_ = this.initRipple_();
   }
 
   initRipple_() {
@@ -106,6 +109,10 @@ export class MDCTabs extends MDCComponent {
       hasNecessaryDom: () => Boolean(this.tabsContainer_),
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
+      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
+      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
+      registerLoadHandler: (handler) => window.addEventListener('load', handler),
+      deregisterLoadHandler: (handler) => window.removeEventListener('load', handler),
       getIndexForEventTarget: (target) => this.tabs.indexOf(target),
       addClassForTabAtIndex: (index, className) => this.tabs[index].classList.add(className),
       removeClassForTabAtIndex: (index, className) => this.tabs[index].classList.remove(className),
@@ -114,7 +121,7 @@ export class MDCTabs extends MDCComponent {
       getNumberOfTabs: () => this.tabs.length,
       addClassForPanelAtIndex: (index, className) => this.panels[index].classList.add(className),
       removeClassForPanelAtIndex: (index, className) => this.panels[index].classList.remove(className),
-      getWidthForTabAtIndex: (index) => this.tabs[index].offsetWidth,
+      getWidthForTabAtIndex: (index) =>  this.tabs[index].offsetWidth,
       getPositionForTabAtIndex: (index) => this.tabs[index].offsetLeft,
       setCSSForInkBar: (attr, value) => this.inkBar_.style.setProperty(attr, value),
     });

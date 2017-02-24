@@ -10,6 +10,7 @@
 .mdc-tabs {
     display: block;
     width: 100%;
+    overflow: hidden;
 }
 
 .mdc-tabs__tab-bar {
@@ -20,8 +21,9 @@
 
 .mdc-tabs__tab {
     @include mdc-typography(body2);
-    @include mdc-theme-prop(background-color, primary);
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(0, 0, 0, .26);
+
+    background: transparent;
 
     position: relative;
     display: inline-block;
@@ -53,8 +55,17 @@
     // to include padding and border into size calculation
     box-sizing: border-box;
 
+    @include mdc-theme-dark {
+        @include mdc-theme-prop(background-color, primary);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
     &--active {
-        @include mdc-theme-prop(color, text-primary-on-primary);
+        @include mdc-theme-prop(color, text-primary-on-light);
+
+        @include mdc-theme-dark {
+            @include mdc-theme-prop(color, text-primary-on-dark);
+        }
     }
 }
 
@@ -64,11 +75,37 @@
     @include mdc-ripple-fg((pseudo: "::after"));
 }
 
-.mdc-tabs__panel {
-    display: none;
+.mdc-tabs__content {
+    position: relative;
+}
 
-    &--active {
-        display: inline-block;
+@keyframes mdc-tab-content-hide {
+  0% { opacity: 1; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.mdc-tabs__panel {
+    transition: transform 0.5s ease-in-out;
+
+    transform: translate3d(0, 0, 0);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    &--left:not(.mdc-tabs__panel--active)  {
+        transform: translate(-100%);
+        animation: 1s mdc-tab-content-hide;
+        opacity:0;
+    }
+
+    &--right:not(.mdc-tabs__panel--active) {
+        transform: translate(+100%);
+        animation: 1s mdc-tab-content-hide;
+        opacity:0;
     }
 }
 

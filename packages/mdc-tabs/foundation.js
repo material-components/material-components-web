@@ -40,12 +40,18 @@ export default class MDCTabsFoundation extends MDCFoundation {
       hasNecessaryDom: () => {},
       registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
+      registerResizeHandler: (/* handler: EventListener */) => {},
+      deregisterResizeHandler: (/* handler: EventListener */) => {},
+      registerLoadHandler: (/* handler: EventListener */) => {},
+      deregisterLoadHandler: (handler/* handler: EventListener */) => {},
       getIndexForEventTarget: (/* target: EventTarget */) => {},
       addClassForTabAtIndex: (/* index: int, className: string */) => {},
       removeClassForTabAtIndex: (/* index: int, className: string */) => {},
       setAttrForTabAtIndex: (/* index: int, attr: string, value: string */) => {},
       rmAttrForTabAtIndex: (/* index: int, attr: string */) => {},
       getNumberOfTabs: () => {},
+      addClassForPanelAtIndex: (/* index: int, className: string */) => {},
+      removeClassForPanelAtIndex: (/* index: int, className: string */) => {},
       getWidthForTabAtIndex: (/* index: int */) => {},
       getPositionForTabAtIndex: (/* index: int */) => {},
       setCSSForInkBar: (/* attr: string, value: string */) => {},
@@ -59,9 +65,15 @@ export default class MDCTabsFoundation extends MDCFoundation {
     this.clickHandler_ = (evt) => {
       evt.preventDefault();
       const index = this.adapter_.getIndexForEventTarget(evt.target);
-      this.setSelectedIndex(index);
-      this.updateInkBar()
+      if (index >= 0) {
+        this.setSelectedIndex(index);
+      }
     };
+
+    this.resizeHandler_ = (evt) => {
+      evt.preventDefault();
+      this.updateInkBar();
+    }
   }
 
   init() {
@@ -74,10 +86,14 @@ export default class MDCTabsFoundation extends MDCFoundation {
     }
 
     this.adapter_.registerInteractionHandler('click', this.clickHandler_);
+    this.adapter_.registerResizeHandler(this.resizeHandler_);
+    this.adapter_.registerLoadHandler(this.resizeHandler_);
   }
 
   destroy() {
     this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
+    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+    this.adapter_.deregisterLoadHandler(this.resizeHandler_);
   }
 
   getSelectedIndex() {
@@ -85,19 +101,23 @@ export default class MDCTabsFoundation extends MDCFoundation {
   }
 
   setSelectedIndex(index) {
-    const prevSelectedIndex = this.selectedIndex_;
-    if (prevSelectedIndex >= 0) {
-      this.adapter_.rmAttrForTabAtIndex(prevSelectedIndex, 'aria-selected');
-      this.adapter_.removeClassForTabAtIndex(prevSelectedIndex, 'mdc-tabs__tab--active');
-      this.adapter_.removeClassForPanelAtIndex(this.selectedIndex_, 'mdc-tabs__panel--active');
+    this.prevSelectedIndex_ = this.selectedIndex_;
+    this.selectedIndex_ = index >= 0 && index < this.adapter_.getNumberOfTabs() ? index : -1;
+
+    if (this.prevSelectedIndex_ >= 0) {
+      this.adapter_.rmAttrForTabAtIndex(this.prevSelectedIndex_, 'aria-selected');
+      this.adapter_.removeClassForTabAtIndex(this.prevSelectedIndex_, 'mdc-tabs__tab--active');
+      this.adapter_.removeClassForPanelAtIndex(this.prevSelectedIndex_, 'mdc-tabs__panel--active');
     }
 
-    this.selectedIndex_ = index >= 0 && index < this.adapter_.getNumberOfTabs() ? index : -1;
     if (this.selectedIndex_ >= 0) {
       this.adapter_.setAttrForTabAtIndex(this.selectedIndex_, 'aria-selected', 'true');
       this.adapter_.addClassForTabAtIndex(this.selectedIndex_, 'mdc-tabs__tab--active');
       this.adapter_.addClassForPanelAtIndex(this.selectedIndex_, 'mdc-tabs__panel--active');
     }
+
+    this.updateInkBar()
+    this.updateContent()
   }
 
   updateInkBar() {
@@ -106,5 +126,21 @@ export default class MDCTabsFoundation extends MDCFoundation {
     this.adapter_.setCSSForInkBar('width', `${width}px`);
     this.adapter_.setCSSForInkBar('left', `${position}px`);
     this.adapter_.setCSSForInkBar('right', `${position+width}px`)
+  }
+
+  updateContent() {
+    this.adapter_.removeClassForPanelAtIndex(this.selectedIndex_, "mdc-tabs__panel--left");
+    this.adapter_.removeClassForPanelAtIndex(this.selectedIndex_, "mdc-tabs__panel--right");
+
+    for (let i = 0; i < this.adapter_.getNumberOfTabs(); i++) {
+      this.adapter_.removeClassForPanelAtIndex(i, "mdc-tabs__panel--left");
+      this.adapter_.removeClassForPanelAtIndex(i, "mdc-tabs__panel--right");
+      if (i > this.selectedIndex_) {
+        this.adapter_.addClassForPanelAtIndex(i, "mdc-tabs__panel--right");
+      }
+      if (i < this.selectedIndex_) {
+        this.adapter_.addClassForPanelAtIndex(i, "mdc-tabs__panel--left");
+      }
+    }
   }
 }

@@ -28,6 +28,16 @@
          .mdc-theme--dark fieldset {
              background-color: #333;
          }
+         .mdc-tabs__content {
+             margin: 1px;
+             height: 500px;
+         }
+         .mdc-tabs__panel {
+             padding: 10px;
+         }
+         .mdc-theme--dark .mdc-tabs__panel {
+             color: #ccc;
+         }
          legend {
              background: white;
          }
@@ -60,39 +70,95 @@
                                     Contact
                                 </a>
                             </div>
-
-                            <div class="mdc-tabs__panel mdc-tabs__panel--active" id="tab1">
-                                <p><b>The Beatles</b> were a four-piece musical group from Liverpool, England.
-                                    Formed in 1960, their career spanned just over a decade, yet they are widely
-                                    regarded as the most influential band in history.</p>
-                                <p>Their songs are among the best-loved music of all time. It is said that every
-                                    minute of every day, a radio station somewhere is playing a Beatles song.</p>
-                            </div>
-                            <div class="mdc-tabs__panel" id="tab2">
-                                <p>The Beatles' members were:</p>
-                                <ul>
-                                    <li>John Lennon (1940-1980)</li>
-                                    <li>Paul McCartney (1942-)</li>
-                                    <li>George Harrison (1943-2001)</li>
-                                    <li>Ringo Starr (1940-)</li>
-                                </ul>
-                            </div>
-                            <div class="mdc-tabs__panel" id="tab3">
-                            </div>
-                            <div class="mdc-tabs__panel" id="tab4">
+                            <div class="mdc-tabs__content mdc-elevation--z1">
+                                <div class="mdc-tabs__panel mdc-tabs__panel--active" id="tab1">
+                                    <p><b>The Beatles</b> were a four-piece musical group from Liverpool, England.
+                                        Formed in 1960, their career spanned just over a decade, yet they are widely
+                                        regarded as the most influential band in history.</p>
+                                    <p>Their songs are among the best-loved music of all time. It is said that every
+                                        minute of every day, a radio station somewhere is playing a Beatles song.</p>
+                                </div>
+                                <div class="mdc-tabs__panel" id="tab2">
+                                    <p>The Beatles' members were:</p>
+                                    <ul>
+                                        <li>John Lennon (1940-1980)</li>
+                                        <li>Paul McCartney (1942-)</li>
+                                        <li>George Harrison (1943-2001)</li>
+                                        <li>Ringo Starr (1940-)</li>
+                                    </ul>
+                                </div>
+                                <div class="mdc-tabs__panel" id="tab3">
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tristique ultrices faucibus. Quisque tortor elit, pretium et tortor lobortis, ullamcorper molestie ante. Donec in mi dui. Vestibulum feugiat felis vitae urna dictum aliquam et ut purus. Quisque volutpat turpis sodales mauris iaculis, sed pellentesque magna tincidunt. Nullam finibus leo in quam volutpat, et auctor orci ultricies. Fusce vulputate hendrerit libero id efficitur. Ut lorem est, rhoncus ac augue ac, lobortis condimentum nibh. Ut nec libero id enim egestas iaculis.
+                                    </p>
+                                </div>
+                                <div class="mdc-tabs__panel" id="tab4">
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tristique ultrices faucibus. Quisque tortor elit, pretium et tortor lobortis, ullamcorper molestie ante. Donec in mi dui. Vestibulum feugiat felis vitae urna dictum aliquam et ut purus. Quisque volutpat turpis sodales mauris iaculis, sed pellentesque magna tincidunt. Nullam finibus leo in quam volutpat, et auctor orci ultricies. Fusce vulputate hendrerit libero id efficitur. Ut lorem est, rhoncus ac augue ac, lobortis condimentum nibh. Ut nec libero id enim egestas iaculis.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </fieldset>
             </section>
+            <section class="mdc-theme--dark">
+                    <fieldset>
+                    <legend>Dark Tabs</legend>
+                    <div class="tabs">
+                        <div id="js-dark-tabs" class="mdc-tabs">
+                            <div class="mdc-tabs__tab-bar">
+                                <a href="#tab1" class="mdc-tabs__tab mdc-tabs__tab--active" role="tab">
+                                    Info
+                                </a>
+                                <a href="#tab2" class="mdc-tabs__tab" role="tab">
+                                    Band Members
+                                </a>
+                                <a href="#tab3" class="mdc-tabs__tab" role="tab">
+                                    Band History
+                                </a>
+                                <a href="#tab4" class="mdc-tabs__tab" role="tab">
+                                    Contact
+                                </a>
+                            </div>
+                            <div class="mdc-tabs__content mdc-elevation--z1">
+                                <div class="mdc-tabs__panel mdc-tabs__panel--active" id="tab1">
+                                    <p><b>The Beatles</b> were a four-piece musical group from Liverpool, England.
+                                        Formed in 1960, their career spanned just over a decade, yet they are widely
+                                        regarded as the most influential band in history.</p>
+                                    <p>Their songs are among the best-loved music of all time. It is said that every
+                                        minute of every day, a radio station somewhere is playing a Beatles song.</p>
+                                </div>
+                                <div class="mdc-tabs__panel" id="tab2">
+                                    <p>The Beatles' members were:</p>
+                                    <ul>
+                                        <li>John Lennon (1940-1980)</li>
+                                        <li>Paul McCartney (1942-)</li>
+                                        <li>George Harrison (1943-2001)</li>
+                                        <li>Ringo Starr (1940-)</li>
+                                    </ul>
+                                </div>
+                                <div class="mdc-tabs__panel" id="tab3">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tristique ultrices faucibus. Quisque tortor elit, pretium et tortor lobortis, ullamcorper molestie ante. Donec in mi dui. Vestibulum feugiat felis vitae urna dictum aliquam et ut purus. Quisque volutpat turpis sodales mauris iaculis, sed pellentesque magna tincidunt. Nullam finibus leo in quam volutpat, et auctor orci ultricies. Fusce vulputate hendrerit libero id efficitur. Ut lorem est, rhoncus ac augue ac, lobortis condimentum nibh. Ut nec libero id enim egestas iaculis.</p>
+                                </div>
+                                <div class="mdc-tabs__panel" id="tab4">
+                                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tristique ultrices faucibus. Quisque tortor elit, pretium et tortor lobortis, ullamcorper molestie ante. Donec in mi dui. Vestibulum feugiat felis vitae urna dictum aliquam et ut purus. Quisque volutpat turpis sodales mauris iaculis, sed pellentesque magna tincidunt. Nullam finibus leo in quam volutpat, et auctor orci ultricies. Fusce vulputate hendrerit libero id efficitur. Ut lorem est, rhoncus ac augue ac, lobortis condimentum nibh. Ut nec libero id enim egestas iaculis.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </fieldset>
+                </section>
         </main>
         <script src="assets/material-components-web.js" charset="utf-8"></script>
         <script src="assets/mdc.tabs.js" charset="utf-8"></script>
         <script>
          (function() {
              var MDCTabs = mdc.tabs.MDCTabs;
-             var root = document.getElementById('js-tabs');
-             var tabs = MDCTabs.attachTo(root);
+             var tabs = document.getElementById('js-tabs');
+             MDCTabs.attachTo(tabs);
+             var darkTabs = document.getElementById('js-dark-tabs');
+             MDCTabs.attachTo(darkTabs);
          })();
         </script>
     </body>
