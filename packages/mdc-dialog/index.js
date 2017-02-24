@@ -85,7 +85,6 @@ export class MDCDialog extends MDCComponent {
       addScrollLockClass: (className) => document.querySelector(SCROLL_LOCK_TARGET).classList.add(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
       removeScrollLockClass: (className) => document.querySelector(SCROLL_LOCK_TARGET).classList.remove(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
       hasClass: (className) => this.root_.classList.contains(className),
-      hasNecessaryDom: () => Boolean(this.dialog_),
       hasNavigation: () => Boolean(this.navigationAcceptButton_),
       hasNavigationAutoSave: () => (Boolean(this.navigationAcceptButton_) && !Boolean(this.navigationCancelButton_)),
       registerInteractionHandler: (evt, handler) =>
@@ -113,8 +112,6 @@ export class MDCDialog extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      isDialog: (el) => el === this.dialog_,
       acceptButton: () => this.acceptButton_,
       cancelButton: () => this.cancelButton_,
       navigationAcceptButton: () => this.navigationAcceptButton_,
@@ -123,7 +120,6 @@ export class MDCDialog extends MDCComponent {
       dialogEl: () => this.root_,
       confirmationDialogEl: () => this.confirmationDialog_,
 			setBackgroundAriaAttribute: () => document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', 'true'),
-
 			registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
 			deregisterFocusTrappingHandler: (handler) => document.addEventListener('focus', handler),
     }

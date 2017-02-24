@@ -1,51 +1,52 @@
-$animation-curve: cubic-bezier(.4, 0, .2, 1);
+@import "@material/animation/functions";
+@import "@material/elevation/mixins";
 
 .mdc-dialog-confirmation {
-  position: absolute;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
   top: 0;
   left: 0;
+  align-items: center;
+  justify-content: center;
   width: 0;
   height: 0;
   background-color: rgba(0, 0, 0, .35);
   opacity: 0;
   z-index: -1;
-  
+
   .mdc-dialog-confirmation--surface {
-    padding: 24px;
     width: 100%;
     max-width: 450px;
     margin: 30px;
+    padding: 24px;
+
+    @include mdc-elevation(2);
+
+    transform: scale(.8);
     background-color: white;
-    box-shadow: /* 24dp */ 0px 11px 15px -7px rgba(0, 0, 0, 0.2),
-      0px 24px 38px 3px rgba(0, 0, 0, 0.14),
-      0px 9px 46px 8px rgba(0, 0, 0, 0.12);
     opacity: 0;
-    transform: scale(0.4);
   }
-  
+
   .mdc-dialog-confirmation--header {
+    color: rgba(0, 0, 0, .54);
     font-family: Roboto, sans-serif;
     font-size: 16px;
-    color: rgba(0, 0, 0, 0.54);
   }
-  
+
   .mdc-dialog-confirmation--buttons {
     display: none;
   }
-  
+
   &__open {
-    opacity: 1;
-    z-index: 2;
     width: 100%;
     height: 100%;
+    opacity: 1;
+    z-index: 2;
 
     .mdc-dialog-confirmation--surface {
-      opacity: 1;
       transform: scale(1);
-      transition: transform 175ms $animation-curve, opacity 175ms $animation-curve;
+      transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
+      opacity: 1;
     }
 
     .mdc-dialog-confirmation--buttons {
@@ -57,11 +58,11 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
 }
 
 .mdc-dialog {
-  position: fixed;
   display: flex;
+  position: fixed;
   align-items: center;
   justify-content: center;
-  visibility: hidden;
+  opacity: 0;
   z-index: -1;
 
   .mdc-dialog-surface {
@@ -69,58 +70,58 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
     position: absolute;
     bottom: 50vh;
     flex-direction: column;
-    box-shadow: /* 24dp */ 0px 11px 15px -7px rgba(0, 0, 0, 0.2),
-      0px 24px 38px 3px rgba(0, 0, 0, 0.14),
-      0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+
+    @include mdc-elevation(2);
+
     width: calc(100% - 30px);
     min-width: 640px;
     max-width: 865px;
-    font-family: Roboto, sans-serif;
+    transform: translateY(150px) scale(.8);
+    transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
     background-color: white;
+    font-family: Roboto, sans-serif;
     opacity: 0;
-    transform: translateY(150px) scale(0.4);
-    transition: transform 275ms $animation-curve, opacity 175ms $animation-curve;
   }
 
   .mdc-dialog-backdrop {
-    position: fixed;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed;
     top: 0;
     left: 0;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    opacity: 0;
     background-color: black;
+    opacity: 0;
     z-index: -1;
   }
 
   &__open {
     display: flex;
-    align-items: center;
-    justify-content: center;
     top: 0;
     left: 0;
-    visibility: visible;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
+    opacity: 1;
     z-index: 2;
-    
+
     .mdc-dialog-surface {
+      transform: translateY(0) scale(1);
+      transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
       opacity: 1;
-      transform: translateY(0px) scale(1);
-      transition: transform 275ms $animation-curve, opacity 175ms $animation-curve;
     }
 
     .mdc-dialog-backdrop {
+      transition: mdc-animation-enter(opacity, 120ms);
       opacity: .3;
-      transition: opacity 175ms $animation-curve;
     }
   }
-  
+
   .mdc-dialog-surface__navigation {
-  	&:button {
+  	.mdc-dialog-header__navigation-button {
 			display: none;
 		}
 
@@ -131,7 +132,7 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
   }
 
 	.mdc-dialog-confirmation {
- 		&:button {
+ 		.mdc-dialog-confirmation-button {
 			display: none;
 		}
 	}
@@ -140,13 +141,13 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
 @media (max-width: 640px) {
   .mdc-dialog {
     min-width: 280px;
-    
+
     .mdc-dialog-surface {
       min-width: 280px;
     }
-    
+
     .mdc-dialog-surface__navigation {
-      
+
       .mdc-dialog-header {
         padding: 24px 0;
         background-color: #ff4081;
@@ -157,7 +158,7 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
         display: flex;
         align-items: center;
       }
-      
+
       .mdc-dialog-header__navigation-save,
       .mdc-dialog-header__navigation-close {
         display: flex;
@@ -165,7 +166,7 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
         font-weight: 600;
         color: white;
       }
-      
+
       .mdc-dialog-footer {
         display: none;
 
@@ -190,7 +191,7 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
   padding: 24px 24px 0 24px;
   display: flex;
   align-items: center;
-  
+
   &__empty {
     padding: 0;
   }
@@ -222,13 +223,13 @@ $animation-curve: cubic-bezier(.4, 0, .2, 1);
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
-  
+
   &__list {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  
+
   &__list-item {
     padding: 10px;
   }
