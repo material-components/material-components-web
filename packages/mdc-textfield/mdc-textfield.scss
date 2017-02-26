@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-@import "@material/animation/variables";
-@import "@material/rtl/mixins";
-@import "@material/theme/variables";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
-@import "@material/typography/variables";
+@import "~@material/animation/variables";
+@import "~@material/rtl/mixins";
+@import "~@material/theme/variables";
+@import "~@material/theme/mixins";
+@import "~@material/typography/mixins";
+@import "~@material/typography/variables";
 
 $mdc-textfield-error-on-light: #d50000;
 $mdc-textfield-error-on-dark: #ff6e6e;

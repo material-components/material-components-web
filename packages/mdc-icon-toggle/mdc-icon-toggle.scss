@@ -16,9 +16,9 @@
 
 /** postcss-bem-linter: define icon-toggle */
 
-@import "@material/animation/functions";
-@import "@material/ripple/mixins";
-@import "@material/theme/mixins";
+@import "~@material/animation/functions";
+@import "~@material/ripple/mixins";
+@import "~@material/theme/mixins";
 
 .mdc-icon-toggle {
   @include mdc-theme-prop(color, text-secondary-on-light);

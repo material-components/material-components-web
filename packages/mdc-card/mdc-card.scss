@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-@import "@material/elevation/mixins";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
+@import "~@material/elevation/mixins";
+@import "~@material/theme/mixins";
+@import "~@material/typography/mixins";
 
 // postcss-bem-linter: define card
 .mdc-card {

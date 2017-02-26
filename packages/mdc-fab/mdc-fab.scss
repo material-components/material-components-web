@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import "@material/animation/functions";
-@import "@material/animation/variables";
-@import "@material/elevation/mixins";
-@import "@material/ripple/mixins";
-@import "@material/theme/mixins";
+@import "~@material/animation/functions";
+@import "~@material/animation/variables";
+@import "~@material/elevation/mixins";
+@import "~@material/ripple/mixins";
+@import "~@material/theme/mixins";
 
 // postcss-bem-linter: define fab
 .mdc-fab {

@@ -17,7 +17,6 @@
 'use strict';
 
 const path = require('path');
-const glob = require('glob');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -63,7 +62,6 @@ const CSS_LOADER_CONFIG = [
     loader: 'sass-loader',
     options: {
       sourceMap: true,
-      includePaths: glob.sync('packages/*/node_modules').map((d) => path.join(__dirname, d)),
     },
   },
 ];

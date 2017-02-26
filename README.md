@@ -108,13 +108,12 @@ Each component also comes with a Sass source file that can be included in your a
 @import 'material-components-web';
 
 // Using individual components / mixins
-@import '@material/checkbox';
-@import '@material/typography';
-@import '@material/elevation/mixins'; // Mixins for elevation.
+@import '~@material/checkbox';
+@import '~@material/typography';
+@import '~@material/elevation/mixins'; // Mixins for elevation.
 ```
 
-> NOTE: The components' Sass files expect that the `node_modules` directory containing the
-`@material` scope folder is present on the Sass include path.
+> NOTE: "~" this advanced mechanism to resolve files by webpack documentation in [here](https://github.com/webpack-contrib/sass-loader#imports)
 
 ## Running the demos
 
