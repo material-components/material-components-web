@@ -16,19 +16,17 @@
 
 import {MDCFoundation} from '@material/base';
 
-const ROOT = 'mdc-textfield';
-
 export default class MDCTextfieldFoundation extends MDCFoundation {
   static get cssClasses() {
     return {
-      ROOT,
-      UPGRADED: `${ROOT}--upgraded`,
-      DISABLED: `${ROOT}--disabled`,
-      FOCUSED: `${ROOT}--focused`,
-      INVALID: `${ROOT}--invalid`,
-      HELPTEXT_PERSISTENT: `${ROOT}-helptext--persistent`,
-      HELPTEXT_VALIDATION_MSG: `${ROOT}-helptext--validation-msg`,
-      LABEL_FLOAT_ABOVE: `${ROOT}__label--float-above`,
+      ROOT: 'mdc-textfield',
+      UPGRADED: 'mdc-textfield--upgraded',
+      DISABLED: 'mdc-textfield--disabled',
+      FOCUSED: 'mdc-textfield--focused',
+      INVALID: 'mdc-textfield--invalid',
+      HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
+      HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
+      LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
     };
   }
 
