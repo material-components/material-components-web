@@ -137,7 +137,8 @@
         root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];
           var index = select.selectedIndex;
-          currentlySelected.textContent = '"' + item.textContent + '" at index ' + index;
+          currentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
+           ' with value "' + select.value + '"';
         });
 
         var demoWrapper = document.getElementById('demo-wrapper');

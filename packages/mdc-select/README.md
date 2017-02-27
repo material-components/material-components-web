@@ -49,7 +49,8 @@ import {MDCSelect} from 'mdc-select';
 
 const select = new MDCSelect(document.querySelector('.mdc-select'));
 select.listen('MDCSelect:change', () => {
-  alert(`Selected "${select.selectedOptions[0].textContent}" at index ${select.selectedIndex}"`);
+  alert(`Selected "${select.selectedOptions[0].textContent}" at index ${select.selectedIndex} ` +
+        `with value "${select.value}"`);
 });
 ```
 
@@ -195,6 +196,7 @@ is outlined below.
 
 | Property Name | Type | Description |
 | --- | --- | --- |
+| `value` | `string` | _(read-only)_ The `id` of the currently selected option. If no `id` is present on the selected option, its `textContent` is used. Returns an empty string when no option is selected. |
 | `options` | `HTMLElement[]` | _(read-only)_ An _array_ of menu items comprising the select's options. |
 | `selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element. |
 | `selectedOptions` | `HTMLElement[]` | _(read-only)_ A NodeList of either the currently selected option, or no elements if nothing is selected. |
@@ -237,7 +239,7 @@ need it nonetheless.
 MDC Select ships with a foundation class that framework authors can use to integrate MDC Select
 into their custom components. Note that due to the nature of MDC Select, the adapter is quite
 complex. We try to provide as much guidance as possible, but we encourage developers to reach out
-to use via GH Issues or on Gitter if they run into problems.
+to us via GH Issues if they run into problems.
 
 ### Notes for component implementors
 
@@ -285,6 +287,8 @@ within `componentDidUpdate`.
 | `setSelectedTextContent(selectedTextContent: string) => void` | Sets the text content of the `.mdc-select__selected-text` element to `selectedTextContent`. |
 | `getNumberOfOptions() => number` | Returns the number of options contained in the select's menu. |
 | `getTextForOptionAtIndex(index: number) => string` | Returns the text content for the option at the specified index within the select's menu. |
+| `getValueForOptionAtIndex(index: number) => string` | Returns the value for the option at the specified index within the select's menu. We adhere to the conventions of `HTMLSelectElement` -
+as described above - returning the value of the selected option's `id` in place of a `value` attribute and falling back to its `textContent`. Framework implementations may want to customize this method to suit their needs. |
 | `setAttrForOptionAtIndex(index: number, attr: string, value: string) => void` | Sets an attribute `attr` to value `value` for the option at the specified index within the select's menu. |
 | `rmAttrForOptionAtIndex(index: number, attr: string) => void` | Removes an attribute `attr` for the option at the specified index within the select's menu. |
 | `registerMenuInteractionHandler(type: string, handler: EventListener) => void` | Registers an event listener on the menu component's root element. Note that we will always listen for `MDCSimpleMenu:selected` for change events, and `MDCSimpleMenu:cancel` to know that we need to close the menu. If you are using a different events system, you could check the event type for either one of these strings and take the necessary steps to wire it up. |
@@ -292,6 +296,10 @@ within `componentDidUpdate`.
 | `getWindowInnerHeight() => number` | Returns the `innerHeight` property of the `window` element. |
 
 ### The full foundation API
+
+#### MDCSelectFoundation.getValue() => string
+
+Returns the value of the currently selected option, or an empty string if no option is selected.
 
 #### MDCSelectFoundation.getSelectedIndex() => number
 
