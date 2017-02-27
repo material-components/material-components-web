@@ -76,6 +76,11 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.registerInputBlurHandler(this.inputBlurHandler_);
     this.adapter_.registerInputInputHandler(this.inputInputHandler_);
     this.adapter_.registerInputKeydownHandler(this.inputKeydownHandler_);
+
+    // Ensure label does not collide with any pre-filled value.
+    if (this.getNativeInput_().value) {
+      this.adapter_.addClassToLabel(MDCTextfieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
+    }
   }
 
   destroy() {

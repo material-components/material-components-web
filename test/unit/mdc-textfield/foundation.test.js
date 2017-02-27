@@ -98,6 +98,28 @@ test('#init adds mdc-textfield--upgraded class', () => {
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
 
+test('#init adds mdc-textfield__label--float-above class if the input contains a value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    value: 'Pre-filled value',
+    disabled: false,
+    checkValidity: () => true,
+  });
+  foundation.init();
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
+});
+
+test('#init does not add mdc-textfield__label--float-above class if the input does not contain a value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    value: '',
+    disabled: false,
+    checkValidity: () => true,
+  });
+  foundation.init();
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
 test('on input focuses if input event occurs without any other events', () => {
   const {foundation, mockAdapter} = setupTest();
   let input;
