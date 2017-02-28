@@ -61,6 +61,7 @@
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
   @if ($theme-style) {
     $theme-value: map-get($mdc-theme-property-values, $theme-style);
+    $css-var: $theme-value;
     $css-var: var(--mdc-theme-#{$theme-style}, $theme-value);
 
     background-color: rgba($theme-value, $opacity);
@@ -116,6 +117,7 @@
     left: calc(50% - #{$radius});
     width: $radius * 2;
     height: $radius * 2;
+    transform: scale(0);
     transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
 
@@ -136,10 +138,15 @@
   }
 
   &.mdc-ripple-upgraded--unbounded#{$pseudo} {
+    top: calc(50% - #{$radius / 2});
     top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
+    left: calc(50% - #{$radius / 2});
     left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
+    width: $radius;
     width: var(--mdc-ripple-fg-size, $radius);
+    height: $radius;
     height: var(--mdc-ripple-fg-size, $radius);
+    transform: scale(0);
     transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
 }
@@ -181,7 +188,9 @@
     &#{$pseudo} {
       top: 0;
       left: 0;
+      width: $radius;
       width: var(--mdc-ripple-fg-size, $radius);
+      height: $radius;
       height: var(--mdc-ripple-fg-size, $radius);
       transform: scale(0);
       transform-origin: center center;
@@ -194,9 +203,13 @@
   }
 
   &.mdc-ripple-upgraded--unbounded#{$pseudo} {
+    top: 0;
     top: var(--mdc-ripple-top, 0);
+    left: 0;
     left: var(--mdc-ripple-left, 0);
+    width: $radius;
     width: var(--mdc-ripple-fg-size, $radius);
+    height: $radius;
     height: var(--mdc-ripple-fg-size, $radius);
     transform: scale(0);
     transform-origin: center center;
@@ -208,7 +221,11 @@
   }
 
   &.mdc-ripple-upgraded--unbounded.mdc-ripple-upgraded--foreground-unbounded-activation#{$pseudo} {
+    transform: scale(0);
     transform: scale(var(--mdc-ripple-fg-scale, 0));
+    transition:
+      opacity 110ms linear,
+      transform 0 linear 80ms;
     transition:
       opacity 110ms linear,
       transform var(--mdc-ripple-fg-unbounded-transform-duration, 0) linear 80ms;
@@ -216,6 +233,9 @@
   }
 
   &.mdc-ripple-upgraded--unbounded.mdc-ripple-upgraded--foreground-unbounded-deactivation#{$pseudo} {
+    animation:
+      mdc-ripple-fg-unbounded-opacity-deactivate 0 linear,
+      mdc-ripple-fg-unbounded-transform-deactivate 0 $mdc-animation-fast-out-slow-in-timing-function;
     animation:
       mdc-ripple-fg-unbounded-opacity-deactivate var(--mdc-ripple-fg-unbounded-opacity-duration, 0) linear,
       mdc-ripple-fg-unbounded-transform-deactivate var(--mdc-ripple-fg-unbounded-transform-duration, 0) $mdc-animation-fast-out-slow-in-timing-function;
