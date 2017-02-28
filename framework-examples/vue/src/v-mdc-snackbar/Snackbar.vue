@@ -4,6 +4,7 @@
   <div class="mdc-snackbar__text">{{message}}</div>
   <div class="mdc-snackbar__action-wrapper">
     <button type="button" @click="actionClicked" class="mdc-button mdc-snackbar__action-button" :aria-hidden="actionHidden">{{actionText}}</button>
+  </div>
 </div>
 </template>
 
