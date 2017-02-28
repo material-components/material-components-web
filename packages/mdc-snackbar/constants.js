@@ -27,17 +27,9 @@ export const cssClasses = {
 };
 
 export const strings = {
-  get TEXT_SELECTOR() {
-    return `.${cssClasses.TEXT}`;
-  },
-
-  get ACTION_WRAPPER_SELECTOR() {
-    return `.${cssClasses.ACTION_WRAPPER}`;
-  },
-
-  get ACTION_BUTTON_SELECTOR() {
-    return `.${cssClasses.ACTION_BUTTON}`;
-  },
+  TEXT_SELECTOR: `.${cssClasses.TEXT}`,
+  ACTION_WRAPPER_SELECTOR: `.${cssClasses.ACTION_WRAPPER}`,
+  ACTION_BUTTON_SELECTOR: `.${cssClasses.ACTION_BUTTON}`,
 };
 
 export const numbers = {

@@ -153,6 +153,32 @@ test('#emit dispatches a custom event with the supplied data', () => {
   assert.deepEqual(evt.detail, data);
 });
 
+test('#emit dispatches a custom event with the supplied data where custom events aren\'t available', () => {
+  const root = document.createElement('div');
+  const f = new FakeComponent(root);
+  const handler = td.func('eventHandler');
+  let evt = null;
+  td.when(handler(td.matchers.isA(Object))).thenDo((evt_) => {
+    evt = evt_;
+  });
+  const data = {evtData: true};
+  const type = 'customeventtype';
+
+  root.addEventListener(type, handler);
+
+  const {CustomEvent} = window;
+  window.CustomEvent = undefined;
+  try {
+    f.emit(type, data);
+  } finally {
+    window.CustomEvent = CustomEvent;
+  }
+
+  assert.isOk(evt !== null);
+  assert.equal(evt.type, type);
+  assert.deepEqual(evt.detail, data);
+});
+
 test('(regression) ensures that this.root_ is available for use within getDefaultFoundation()', () => {
   const root = document.createElement('div');
   const f = new FakeComponent(root);
