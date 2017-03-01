@@ -37,10 +37,9 @@ export class MDCDialog extends MDCComponent {
     }
   }
 
-  get lastFocusedTarget() {
-    return this.foundation_.lastFocusedElement_;
-  }
-
+  /**
+  * The element used to activate the dialog
+  */
   set lastFocusedTarget(element) {
     this.foundation_.setLastFocusTarget(element);
   }

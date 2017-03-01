@@ -26,8 +26,8 @@ export const cssClasses = {
 
 export const strings = {
   DIALOG_SURFACE_SELECTOR: `.${ROOT}__surface`,
-  ACCEPT_SELECTOR: `#${ROOT}--accept`,
-  CANCEL_SELECTOR: `#${ROOT}--cancel`,
+  ACCEPT_SELECTOR: `.${ROOT}--accept`,
+  CANCEL_SELECTOR: `.${ROOT}--cancel`,
   OPACITY_VAR_NAME: `--${ROOT}-opacity`,
   FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
       'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',

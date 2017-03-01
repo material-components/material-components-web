@@ -30,10 +30,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return this.isOpen_;
   }
 
-  static get lastFocusedTarget() {
-    return this.lastFocusedElement_;
-  }
-
 	static get defaultAdapter() {
     return {
       dialogEl: () => {},
@@ -64,7 +60,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
     
-    this.lastFocusedElement_ = null;
+    this.lastFocusedElement_;
     this.inert_ = false;
     this.isOpen_ = false;
     this.componentClickHandler_ = () => this.cancel();
@@ -79,10 +75,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     }
   }
 
-  /**
-   * The default button to focus on for a dialog changes based on 
-   * type of dialog and width of window in some cases
-   */
   init() {
     const {ROOT, ACTIVE, OPEN} = MDCDialogFoundation.cssClasses;
 
@@ -119,7 +111,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.disableScroll_();
     this.isOpen_ = true;
     this.adapter_.setBackgroundAriaAttribute();
-    this.lastFocusedElement_ = 
     this.adapter_.acceptButton().focus();
     this.adapter_.registerFocusTrappingHandler(this.dialogFocusHandler_);
   }
@@ -133,9 +124,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   passFocus(evt) {
+    console.log(evt)
     if (!this.adapter_.dialogEl().contains(evt.target)) {
-      evt.stopPropagation();
-      this.adapter_.cancelButton().focus();
+    //  evt.stopPropagation();
+    //  this.adapter_.cancelButton().focus();
     }
   }
 
