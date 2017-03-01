@@ -36,54 +36,62 @@
   </head>
   <body class="mdc-typography demo-body">
 
-		<aside id="mdc-dialog-one" class="mdc-dialog" role="alertdialog" aria-hidden="true" aria-labelledby="mdc-dialog-label" aria-describedby="mdc-dialog-description">
-		  <div class="mdc-dialog-surface">
-		    <section class="mdc-dialog-header">
-		      <h2 id="mdc-dialog-label" class="mdc-dialog-header__title">
+    <aside id="mdc-dialog-one"
+      class="mdc-dialog"
+      role="alertdialog"
+      aria-hidden="true"
+      aria-labelledby="mdc-dialog__label"
+      aria-describedby="mdc-dialog__description">
+		  <div class="mdc-dialog__surface">
+		    <header class="mdc-dialog__header">
+		      <h2 id="mdc-dialog__label" class="mdc-dialog__header__title">
 		        Use Google's location service?
 		      </h2>
-		    </section>
-		    <section id="mdc-dialog-description" class="mdc-dialog-body">
+		    </header>
+		    <section id="mdc-dialog__description" class="mdc-dialog__body">
 		      Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
 		    </section>
-		    <section class="mdc-dialog-footer">
-		      <button type="button" id="mdc-dialog-cancel" class="mdc-button mdc-dialog-footer-button">DECLINE</button>
-		      <button type="button" id="mdc-dialog-accept" class="mdc-button mdc-dialog-footer-button">ACCEPT</button>
-		    </section>
+		    <footer class="mdc-dialog__footer">
+		      <button type="button" id="mdc-dialog--cancel" class="mdc-button mdc-dialog__footer__button">DECLINE</button>
+		      <button type="button" id="mdc-dialog--accept" class="mdc-button mdc-dialog__footer__button">ACCEPT</button>
+		    </footer>
 		  </div>
-		  <div class="mdc-dialog-backdrop"></div>
+		  <div class="mdc-dialog__backdrop"></div>
 		</aside>
-		
-		<aside id="mdc-dialog-two" class="mdc-dialog" role="alertdialog"  aria-labelledby="mdc-dialog-label" aria-describedby="mdc-dialog-description">
-		  <div class="mdc-dialog-surface">
-		    <section class="mdc-dialog-header">
-		      <h2 id="mdc-dialog-label" class="mdc-dialog-header__title">
+
+		<aside id="mdc-dialog-two"
+      class="mdc-dialog"
+      role="alertdialog"
+      aria-hidden="true"
+      aria-labelledby="mdc-dialog__label"
+      aria-describedby="mdc-dialog__description">
+      <div class="mdc-dialog__surface">
+		    <section class="mdc-dialog__header">
+		      <h2 id="mdc-dialog__label" class="mdc-dialog__header__title">
 		        Choose a Ringtone
 		      </h2>
 		    </section>
-		    <section id="mdc-dialog-description" class="mdc-dialog-body mdc-dialog-body__scrollable">
-		     
-					<ul class="mdc-dialog-body__list">
-		        <li class="dialog-body__list-item">None</li>
-		        <li class="dialog-body__list-item">Callisto</li>
-		        <li class="dialog-body__list-item">Ganymede</li>
-		        <li class="dialog-body__list-item">Luna</li>
-		        <li class="dialog-body__list-item">Marimba</li>
-		        <li class="dialog-body__list-item">Schwifty</li>
-		        <li class="dialog-body__list-item">Callisto</li>
-		        <li class="dialog-body__list-item">Ganymede</li>
-		        <li class="dialog-body__list-item">Luna</li>
-		        <li class="dialog-body__list-item">Marimba</li>
-		        <li class="dialog-body__list-item">Schwifty</li>
+		    <section id="mdc-dialog__description" class="mdc-dialog__body mdc-dialog__body--scrollable">
+					<ul class="mdc-dialog__body__list">
+		        <li class="mdc-dialog__body__list-item">None</li>
+		        <li class="mdc-dialog__body__list-item">Callisto</li>
+		        <li class="mdc-dialog__body__list-item">Ganymede</li>
+		        <li class="mdc-dialog__body__list-item">Luna</li>
+		        <li class="mdc-dialog__body__list-item">Marimba</li>
+		        <li class="mdc-dialog__body__list-item">Schwifty</li>
+		        <li class="mdc-dialog__body__list-item">Callisto</li>
+		        <li class="mdc-dialog__body__list-item">Ganymede</li>
+		        <li class="mdc-dialog__body__list-item">Luna</li>
+		        <li class="mdc-dialog__body__list-item">Marimba</li>
+		        <li class="mdc-dialog__body__list-item">Schwifty</li>
 		      <ul>
-
 		    </section>
-		    <section class="mdc-dialog-footer">
-		      <button type="button" id="mdc-dialog-cancel" class="mdc-button mdc-dialog-footer-button">DECLINE</button>
-		      <button type="button" id="mdc-dialog-accept" class="mdc-button mdc-dialog-footer-button">ACCEPT</button>
+		    <section class="mdc-dialog__footer">
+		      <button type="button" id="mdc-dialog--cancel" class="mdc-button mdc-dialog__footer__button">DECLINE</button>
+		      <button type="button" id="mdc-dialog--accept" class="mdc-button mdc-dialog__footer__button">ACCEPT</button>
 		    </section>
 		  </div>
-		  <div class="mdc-dialog-backdrop"></div> 
+		  <div class="mdc-dialog__backdrop"></div> 
 		</aside>
 		
 		<section class="user-content">
@@ -92,9 +100,7 @@
 		    <p>Here is some content that a user might have on their page</p>
 		  </div>
 		  <button id="dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog</button>
-		  <button id="dialog-activation__navigation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog with Nav</button>
-		  <button id="dialog-activation__autosave" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog with Auto Save Nav</button>
-		  <button id="dialog-activation__scrollable" class="mdc-button mdc-button--primary mdc-button--raised">Show Scrolling Dialog</button>
+		  <button id="dialog-activation--scrollable" class="mdc-button mdc-button--primary mdc-button--raised">Show Scrolling Dialog</button>
       <ul>
         <li>one</li>
         <li>one</li>
@@ -164,12 +170,14 @@
       var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-one'));
       var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-two'));
 
-			document.querySelector('#dialog-activation').addEventListener('click', function () {
+			document.querySelector('#dialog-activation').addEventListener('click', function (evt) {
 				dialog.open = true;
+        dialog.lastFocusedTarget = evt.target;
 			})
 
-			document.querySelector('#dialog-activation__scrollable').addEventListener('click', function () {
+			document.querySelector('#dialog-activation--scrollable').addEventListener('click', function (evt) {
 				dialogScrollable.open = true;
+        dialog.lastFocusedTarget = evt.target;
 			})
     </script>
   </body>

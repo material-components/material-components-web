@@ -19,21 +19,15 @@ const ROOT = 'mdc-dialog';
 export const cssClasses = {
   ROOT,
   ACTIVE: `${ROOT}__open`,
-  CONFIRMATION_ACTIVE: `${ROOT}-confirmation__open`,
-  BACKDROP: `${ROOT}--backdrop`,
+  BACKDROP: `${ROOT}__backdrop`,
   ANIMATING: `${ROOT}--animating`,
   SCROLL_LOCK: `${ROOT}__scroll-lock`,
 };
 
 export const strings = {
-  DIALOG_SURFACE_SELECTOR: `.${ROOT}-surface`,
-  CONFIRMATION_DIALOG_SELECTOR: `.${ROOT}-confirmation`,
-  ACCEPT_SELECTOR: `#${ROOT}-accept`,
-  CANCEL_SELECTOR: `#${ROOT}-cancel`,
- 	NAV_ACCEPT_SELECTOR: `#${ROOT}-navigation-accept`,
-  NAV_CANCEL_SELECTOR: `#${ROOT}-navigation-cancel`,
-  CONFIRMATION_ACCEPT_SELECTOR: `#${ROOT}-confirmation-accept`,
-  CONFIRMATION_CANCEL_SELECTOR: `#${ROOT}-confirmation-cancel`,
+  DIALOG_SURFACE_SELECTOR: `.${ROOT}__surface`,
+  ACCEPT_SELECTOR: `#${ROOT}--accept`,
+  CANCEL_SELECTOR: `#${ROOT}--cancel`,
   OPACITY_VAR_NAME: `--${ROOT}-opacity`,
   FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
       'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',

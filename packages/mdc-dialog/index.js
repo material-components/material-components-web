@@ -37,6 +37,14 @@ export class MDCDialog extends MDCComponent {
     }
   }
 
+  get lastFocusedTarget() {
+    return this.foundation_.lastFocusedElement_;
+  }
+
+  set lastFocusedTarget(element) {
+    this.foundation_.setLastFocusTarget(element);
+  }
+
   get dialog_() {
     return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SURFACE_SELECTOR);
   }
@@ -77,10 +85,9 @@ export class MDCDialog extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-			setBackgroundAriaAttribute: () => document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', 'true'),
-			registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
-			deregisterFocusTrappingHandler: (handler) => document.addEventListener('focus', handler),
-
+      setBackgroundAriaAttribute: () => document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', 'true'),
+      registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
+      deregisterFocusTrappingHandler: (handler) => document.addEventListener('focus', handler),
       acceptButton: () => this.acceptButton_,
       cancelButton: () => this.cancelButton_,
       acceptAction: (handler) => console.log('Accept'),

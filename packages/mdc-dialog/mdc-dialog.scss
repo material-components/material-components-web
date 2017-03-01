@@ -1,62 +1,6 @@
 @import "@material/animation/functions";
 @import "@material/elevation/mixins";
 
-.mdc-dialog-confirmation {
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  width: 0;
-  height: 0;
-  background-color: rgba(0, 0, 0, .35);
-  opacity: 0;
-  z-index: -1;
-
-  .mdc-dialog-confirmation--surface {
-    width: 100%;
-    max-width: 450px;
-    margin: 30px;
-    padding: 24px;
-
-    @include mdc-elevation(2);
-
-    transform: scale(.8);
-    background-color: white;
-    opacity: 0;
-  }
-
-  .mdc-dialog-confirmation--header {
-    color: rgba(0, 0, 0, .54);
-    font-family: Roboto, sans-serif;
-    font-size: 16px;
-  }
-
-  .mdc-dialog-confirmation--buttons {
-    display: none;
-  }
-
-  &__open {
-    width: 100%;
-    height: 100%;
-    opacity: 1;
-    z-index: 2;
-
-    .mdc-dialog-confirmation--surface {
-      transform: scale(1);
-      transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
-      opacity: 1;
-    }
-
-    .mdc-dialog-confirmation--buttons {
-      display: flex;
-      justify-content: flex-end;
-      padding-top: 20px;
-    }
-  }
-}
-
 .mdc-dialog {
   display: flex;
   position: fixed;
@@ -65,13 +9,13 @@
   opacity: 0;
   z-index: -1;
 
-  .mdc-dialog-surface {
+  &__surface {
     display: inline-flex;
     position: absolute;
     bottom: 50vh;
     flex-direction: column;
 
-    @include mdc-elevation(2);
+    @include mdc-elevation(24);
 
     width: calc(100% - 30px);
     min-width: 640px;
@@ -83,7 +27,7 @@
     opacity: 0;
   }
 
-  .mdc-dialog-backdrop {
+  &__backdrop {
     display: flex;
     position: fixed;
     top: 0;
@@ -108,86 +52,30 @@
     opacity: 1;
     z-index: 2;
 
-    .mdc-dialog-surface {
+    .mdc-dialog__surface {
       transform: translateY(0) scale(1);
       transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
       opacity: 1;
     }
 
-    .mdc-dialog-backdrop {
+    .mdc-dialog__backdrop {
       transition: mdc-animation-enter(opacity, 120ms);
       opacity: .3;
     }
   }
-
-  .mdc-dialog-surface__navigation {
-  	.mdc-dialog-header__navigation-button {
-			display: none;
-		}
-
-		.mdc-dialog-header__navigation-close,
-    .mdc-dialog-header__navigation-save {
-      display: none;
-    }
-  }
-
-	.mdc-dialog-confirmation {
- 		.mdc-dialog-confirmation-button {
-			display: none;
-		}
-	}
 }
 
 @media (max-width: 640px) {
   .mdc-dialog {
     min-width: 280px;
 
-    .mdc-dialog-surface {
+    &__surface {
       min-width: 280px;
-    }
-
-    .mdc-dialog-surface__navigation {
-
-      .mdc-dialog-header {
-        padding: 24px 0;
-        background-color: #ff4081;
-        color: white;
-      }
-
-      .mdc-dialog-header__navigation-close {
-        display: flex;
-        align-items: center;
-      }
-
-      .mdc-dialog-header__navigation-save,
-      .mdc-dialog-header__navigation-close {
-        display: flex;
-        font-size: 14px;
-        font-weight: 600;
-        color: white;
-      }
-
-      .mdc-dialog-footer {
-        display: none;
-
-				.mdc-dialog-footer-button {
-					display: none;
-				}
-      }
-    }
-
-    .mdc-dialog-surface__full-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      min-width: 0;
-      height: 100vh;
     }
   }
 }
 
-.mdc-dialog-header {
+.mdc-dialog__header {
   padding: 24px 24px 0 24px;
   display: flex;
   align-items: center;
@@ -197,7 +85,7 @@
   }
 }
 
-.mdc-dialog-header__title {
+.mdc-dialog__header__title {
   margin: 0;
   font-size: 20px;
   line-height: 20px;
@@ -206,18 +94,18 @@
   flex: 1;
 }
 
-.mdc-dialog-body {
+.mdc-dialog__body {
   margin-top: 20px;
   padding: 0 24px 24px 24px;
   color: rgba(0, 0, 0, 0.54);
-  /* body2 typographic styles */
   font-size: 16px;
   line-height: 23px;
   letter-spacing: 0.04em;
   
-  &__scrollable {
+  &--scrollable {
     max-height: 195px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     font-size: 18px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -236,12 +124,12 @@
 }
 
 @media (max-width: 640px) {
-  .mdc-dialog-body {
+  .mdc-dialog__body {
     line-height: 24px;
   }
 }
 
-.mdc-dialog-footer {
+.mdc-dialog__footer {
   padding: 8px;
   display: flex;
   flex-wrap: wrap;
@@ -249,11 +137,11 @@
   align-items: center;
 }
 
-.mdc-dialog-footer-buttons__right {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-}
+//.mdc-dialog__footer__buttons__right {
+//  flex: 1;
+//  display: flex;
+//  justify-content: flex-end;
+//}
 
 .mdc-dialog__scroll-lock {
 	height: 100vh;

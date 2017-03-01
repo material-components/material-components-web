@@ -26,9 +26,13 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return strings;
   }
 
-	static get isOpen() {
-		return this.isOpen_;
-	}
+  static get isOpen() {
+    return this.isOpen_;
+  }
+
+  static get lastFocusedTarget() {
+    return this.lastFocusedElement_;
+  }
 
 	static get defaultAdapter() {
     return {
@@ -36,7 +40,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-			registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
@@ -60,14 +64,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
     
-    this.lastFocusEl_;
-		this.activeDialog_;
-    this.defaultFocusElement_;
+    this.lastFocusedElement_ = null;
     this.inert_ = false;
     this.isOpen_ = false;
     this.componentClickHandler_ = () => this.cancel();
     this.dialogClickHandler_ = (evt) => evt.stopPropagation();
-		this.dialogFocusHandler_ = (evt) => {return this.passFocus(evt);}
+		this.dialogFocusHandler_ = (evt) => this.passFocus(evt);
     this.acceptHandler_ = () => this.accept();
     this.cancelHandler_ = () => this.cancel();
     this.documentKeydownHandler_ = (evt) => {
@@ -89,8 +91,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerAcceptHandler(this.acceptHandler_);
     this.adapter_.registerCancelHandler(this.cancelHandler_);
     
-    this.defaultFocusElement_ = this.adapter_.cancelButton();
- 
     if (this.adapter_.hasClass(ACTIVE)) {
       this.isOpen_ = true;
     } else {
@@ -104,36 +104,40 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterDialogInteractionHandler(this.dialogClickHandler_);
     this.adapter_.deregisterAcceptHandler(this.acceptHandler_);
     this.adapter_.deregisterCancelHandler(this.cancelHandler_);
+    this.adapter_.deregisterFocusTrappingHandler(this.dialogFocusHandler_);
+    this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
+  }
+
+  setLastFocusTarget(element) {
+    this.lastFocusedElement_ = element;
   }
 
   open() {
-    this.lastFocusEl_ = document.activeElement;
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
     this.unlockTab_();
-		this.disableScroll_();
+    this.disableScroll_();
     this.isOpen_ = true;
-		this.adapter_.setBackgroundAriaAttribute();
-		this.defaultFocusElement_.focus();
+    this.adapter_.setBackgroundAriaAttribute();
+    this.lastFocusedElement_ = 
+    this.adapter_.acceptButton().focus();
     this.adapter_.registerFocusTrappingHandler(this.dialogFocusHandler_);
-	}
+  }
 
   close() {
-    this.adapter_.deregisterFocusTrappingHandler(this.dialogFocusHandler_);
-    this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
+    this.lastFocusedElement_.focus();
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ACTIVE);
     this.lockTab_();
     this.enableScroll_();
     this.isOpen_ = false;
-    this.lastFocusEl_.focus();
   }
- 
-	passFocus(evt) {
-		if (!this.adapter_.dialogEl.contains(evt.target)) {
+
+  passFocus(evt) {
+    if (!this.adapter_.dialogEl().contains(evt.target)) {
       evt.stopPropagation();
-    	this.defaultFocusElement_.focus();
+      this.adapter_.cancelButton().focus();
     }
-	}
+  }
 
   accept() {
     this.adapter_.acceptAction();
@@ -143,10 +147,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
   cancel() {
     this.adapter_.cancelAction();
     this.close();
-  }
-
-  isOpen() {
-    return this.isOpen_;
   }
 
   /**
@@ -192,5 +192,4 @@ export default class MDCDialogFoundation extends MDCFoundation {
 	enableScroll_() {
 		this.adapter_.removeScrollLockClass();
 	}
- 
 }
