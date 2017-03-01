@@ -20,12 +20,14 @@
 
 @keyframes mdc-ripple-fg-radius-in {
   from {
-    transform: translate(var(--mdc-ripple-fg-translate-start)) scale(1);
+    transform: translate(0) scale(1);
+    transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
     animation-timing-function: $mdc-animation-fast-out-slow-in-timing-function;
   }
 
   to {
-    transform: translate(var(--mdc-ripple-fg-translate-end)) scale(var(--mdc-ripple-fg-scale));
+    transform: translate(0) scale(0);
+    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 0));
   }
 }
 
@@ -52,10 +54,12 @@
 
 @keyframes mdc-ripple-fg-unbounded-transform-deactivate {
   from {
-    transform: var(--mdc-ripple-fg-approx-xf);
+    transform: 0;
+    transform: var(--mdc-ripple-fg-approx-xf, 0);
   }
 
   to {
-    transform: scale(var(--mdc-ripple-fg-scale));
+    transform: scale(0);
+    transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
 }
