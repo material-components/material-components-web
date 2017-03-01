@@ -1,10 +1,6 @@
-# MDC-Web Developer's Guide
+# Developing MDC-Web Components
 
-## Overview
-
-Material Design Lite (MDL), the predecessor to Material Components Web, was originally envisioned as UI component library with minimal dependencies, providing an easy way to add a Material Design look and feel to any website. Following the spirit of MDL, MDC-Web strives to seamlessly incorporate into an even wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate material components into your site in a lightweight, idiomatic fashion.
-
-To make this possible, our new component library is internally split into two parts:
+MDC-Web strives to seamlessly incorporate into a wide range of usage contexts - from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. To make this possible, our new component library is internally split into two parts:
 
 - **MDC-Web Vanilla**: ready-to-use components (what the majority of our current users are interested in)
 - **MDC-Web Foundation**: shared UI code (for lower-level usage by other frameworks or complex rendering scenarios)

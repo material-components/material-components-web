@@ -9,6 +9,8 @@ Material Components for the web is the successor to [Material Design Lite](https
 - Best-in-class performance and adherence to the [Material Design guidelines](https://material.google.com)
 - Seamless integration with other JS frameworks and libraries
 
+MDC-Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
+
 ## Quick start
 
 Install the library
@@ -136,11 +138,11 @@ open http://localhost:8080
 ## Useful Links
 
 - [Getting Started Guide](docs/getting-started.md)
-- [Developer's Guide](docs/developer.md)
 - [All Components](packages/)
 - [Demos](demos/)
 - [Framework Integration Examples](framework-examples/)
 - [Contributing](CONTRIBUTING.md)
+- [Developing MDC-Web Components](docs/developer.md)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.google.com) (external site)
 
