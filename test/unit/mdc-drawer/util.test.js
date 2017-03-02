@@ -77,12 +77,17 @@ test('supportsCssCustomProperties returns true for browsers that support them', 
   assert.isOk(utils.supportsCssCustomProperties(mockWindow));
 });
 
-test('supportsCssCustomProperties returns dalse for browsers that do not support them', () => {
+test('supportsCssCustomProperties returns false for browsers that do not support them', () => {
   const supports = td.function('supports');
   td.when(supports('(--color: red)')).thenReturn(false);
   const mockWindow = {
     CSS: {supports: supports},
   };
+  assert.isNotOk(utils.supportsCssCustomProperties(mockWindow));
+});
+
+test('supportsCssCustomProperties returns false for browsers that do not support CSS.supports', () => {
+  const mockWindow = {};
   assert.isNotOk(utils.supportsCssCustomProperties(mockWindow));
 });
 

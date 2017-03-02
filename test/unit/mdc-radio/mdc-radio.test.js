@@ -20,6 +20,7 @@ import bel from 'bel';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
 import {MDCRadio, MDCRadioFoundation} from '../../../packages/mdc-radio';
+import {MDCRipple} from '../../../packages/mdc-ripple';
 
 const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
 
@@ -43,6 +44,10 @@ function setupTest() {
 }
 
 suite('MDCRadio');
+
+test('attachTo initializes and returns a MDCRadio instance', () => {
+  assert.isOk(MDCRadio.attachTo(getFixture()) instanceof MDCRadio);
+});
 
 if (supportsCssVariables(window)) {
   test('#constructor initializes the root element with a ripple', () => {
@@ -77,6 +82,11 @@ test('get/set disabled updates the disabled value of the native radio element', 
   component.disabled = true;
   assert.isOk(radio.disabled);
   assert.equal(component.disabled, radio.disabled);
+});
+
+test('get ripple returns a MDCRipple instance', () => {
+  const {component} = setupTest();
+  assert.isOk(component.ripple instanceof MDCRipple);
 });
 
 test('#adapter.getNativeControl() returns the native radio element', () => {
