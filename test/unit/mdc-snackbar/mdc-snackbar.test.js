@@ -52,7 +52,7 @@ test('foundationAdapter#addClass adds a class to the root element', () => {
   assert.isOk(root.classList.contains('foo'));
 });
 
-test('adapter#removeClass removes a class from the root element', () => {
+test('foundationAdapter#removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
