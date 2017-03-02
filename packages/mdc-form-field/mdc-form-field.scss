@@ -41,8 +41,8 @@ $mdc-form-field-item-spacing: 4px;
 
   @include mdc-rtl {
     > label {
-      padding-right: $mdc-form-field-item-spacing;
       margin-left: auto;
+      padding-right: $mdc-form-field-item-spacing;
     }
   }
 }
@@ -50,8 +50,8 @@ $mdc-form-field-item-spacing: 4px;
 .mdc-form-field--align-end {
   > label {
     order: -1;
-    padding-right: $mdc-form-field-item-spacing;
     margin-left: auto;
+    padding-right: $mdc-form-field-item-spacing;
   }
 
   @include mdc-rtl {
