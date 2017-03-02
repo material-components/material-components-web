@@ -32,10 +32,13 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
+      backgroundEl: (/* el: Element */) => {},
       dialogEl: (/* el: Element */) => {},
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      addScrollLockClass: (/* className: string */) => {},
+      removeScrollLockClass: (/* className: string */) => {},
       registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
@@ -46,14 +49,17 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterAcceptHandler: (/* handler: EventListener */) => {},
       registerCancelHandler: (/* handler: EventListener */) => {},
       deregisterCancelHandler: (/* handler: EventListener */) => {},
+      registerFocusTrappingHandler: (/* handler: EventListener */) => {},
+      deregisterFocusTrappingHandler: (/* handler: EventListener */) => {},
       getFocusableElements: (/* handler: EventListener */) => /* NodeList */ {},
       saveElementTabState: (/* el: Element */) => {},
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
+      setAttribute: (/* elem: Element, attr: String, val: Boolean */) => {},
       acceptButton: (/* el: Element */) => {},
       cancelButton: (/* el: Element */) => {},
-      acceptAction: (/* function: Function */) => {},
-      cancelAction: (/* function: Function */) => {},
+      acceptAction: () => {/* accept function */},
+      cancelAction: () => {/* cancel function */},
     };
   }
 
@@ -78,7 +84,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
   init() {
     const {ACTIVE} = MDCDialogFoundation.cssClasses;
 
-  
+
     if (this.adapter_.hasClass(ACTIVE)) {
       this.isOpen_ = true;
     } else {
@@ -100,14 +106,13 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.registerFocusTrappingHandler(this.dialogFocusHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-    
+
     this.unlockTab_();
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
     this.isOpen_ = true;
     this.disableScroll_();
     this.adapter_.setAttribute(this.adapter_.dialogEl(), 'aria-hidden', false);
     this.adapter_.setAttribute(this.adapter_.backgroundEl(), 'aria-hidden', true);
-    this.adapter_.setBackgroundAriaAttribute(true);
     this.adapter_.acceptButton().focus();
   }
 
@@ -118,14 +123,13 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.deregisterFocusTrappingHandler(this.dialogFocusHandler_);
     this.adapter_.deregisterInteractionHandler(this.componentClickHandler_);
-    
+
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ACTIVE);
     this.lockTab_();
     this.enableScroll_();
     this.isOpen_ = false;
     this.adapter_.setAttribute(this.adapter_.dialogEl(), 'aria-hidden', true);
     this.adapter_.setAttribute(this.adapter_.backgroundEl(), 'aria-hidden', false);
-    this.adapter_.setBackgroundAriaAttribute(false);
     this.lastFocusedElement_.focus();
   }
 
@@ -160,7 +164,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
     const elements = this.adapter_.getFocusableElements();
     if (elements) {
-      for (let i = 0; i < elements.length; i++) { this.adapter_.saveElementTabState(elements[i]);
+      for (let i = 0; i < elements.length; i++) {
+        this.adapter_.saveElementTabState(elements[i]);
         this.adapter_.makeElementUntabbable(elements[i]);
       }
     }

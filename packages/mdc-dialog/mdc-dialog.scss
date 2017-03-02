@@ -25,9 +25,9 @@
     max-width: 865px;
     transform: translateY(150px) scale(.8);
     transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
-    
+
     @include mdc-theme-prop(background-color, background);
-    
+
     @include mdc-theme-dark {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
     }
@@ -77,7 +77,7 @@
     display: flex;
     align-items: center;
     padding: 24px 24px 0;
-  
+
     &__empty {
       padding: 0;
     }
@@ -94,16 +94,16 @@
   &__body {
     margin-top: 20px;
     padding: 0 24px 24px;
-    
+
     @include mdc-theme-prop(color, text-secondary-on-light);
-   
+
     @include mdc-theme-dark {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
-   
+
     font-size: 16px;
     line-height: 23px;
-  
+
     &--scrollable {
       max-height: 195px;
       border-top: 1px solid rgba(0, 0, 0, .1);
@@ -113,13 +113,13 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-  
+
     &__list {
       margin: 0;
       padding: 0;
       list-style: none;
     }
-  
+
     &__list-item {
       padding: 10px;
     }

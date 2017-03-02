@@ -38,7 +38,7 @@ export class MDCDialog extends MDCComponent {
   }
 
   /**
-  * The button used to activate the dialog. We 
+  * The button used to activate the dialog. We
   * return focus to this element when dialog is
   * dismissed.
   */
@@ -67,9 +67,9 @@ export class MDCDialog extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      addScrollLockClass: (className) => 
+      addScrollLockClass: (className) =>
         document.querySelector(SCROLL_LOCK_TARGET).classList.add(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
-      removeScrollLockClass: (className) => 
+      removeScrollLockClass: (className) =>
         document.querySelector(SCROLL_LOCK_TARGET).classList.remove(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
       registerInteractionHandler: (evt, handler) =>
         this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
@@ -79,20 +79,19 @@ export class MDCDialog extends MDCComponent {
         this.dialog_.addEventListener(util.remapEvent(evt), handler),
       deregisterDialogInteractionHandler: (evt, handler) =>
         this.dialog_.removeEventListener(util.remapEvent(evt), handler),
+      registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
+      deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       registerAcceptHandler: (handler) => this.acceptButton_.addEventListener('click', handler),
       deregisterAcceptHandler: (handler) => this.acceptButton_.removeEventListener('click', handler),
       registerCancelHandler: (handler) => this.cancelButton_.addEventListener('click', handler),
       deregisterCancelHandler: (handler) => this.cancelButton_.removeEventListener('click', handler),
-      registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
-      deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
+      registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
+      deregisterFocusTrappingHandler: (handler) => document.removeEventListener('focus', handler, true),
       getFocusableElements: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-      setBackgroundAriaAttribute: (val) => document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', val),
       setAttribute: (elem, attr, val) => elem.setAttribute(attr, val),
-      registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
-      deregisterFocusTrappingHandler: (handler) => document.removeEventListener('focus', handler, true),
       acceptButton: () => this.acceptButton_,
       cancelButton: () => this.cancelButton_,
       acceptAction: () => console.log('Accept'),
