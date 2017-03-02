@@ -1,5 +1,8 @@
 @import "@material/animation/functions";
+@import "@material/typography/variables";
 @import "@material/elevation/mixins";
+@import "@material/theme/mixins";
+@import "@material/rtl/mixins";
 
 .mdc-dialog {
   display: flex;
@@ -22,7 +25,13 @@
     max-width: 865px;
     transform: translateY(150px) scale(.8);
     transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
-    background-color: white;
+    
+    @include mdc-theme-prop(background-color, background);
+    
+    @include mdc-theme-dark {
+      @include mdc-theme-prop(background-color, text-primary-on-dark);
+    }
+
     font-family: Roboto, sans-serif;
     opacity: 0;
   }
@@ -63,6 +72,71 @@
       opacity: .3;
     }
   }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 24px 24px 0;
+  
+    &__empty {
+      padding: 0;
+    }
+  }
+
+  &__header__title {
+    flex: 1;
+    margin: 0;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 20px;
+  }
+
+  &__body {
+    margin-top: 20px;
+    padding: 0 24px 24px;
+    
+    @include mdc-theme-prop(color, text-secondary-on-light);
+   
+    @include mdc-theme-dark {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
+   
+    font-size: 16px;
+    line-height: 23px;
+  
+    &--scrollable {
+      max-height: 195px;
+      border-top: 1px solid rgba(0, 0, 0, .1);
+      border-bottom: 1px solid rgba(0, 0, 0, .1);
+      font-size: 18px;
+      overflow-y: scroll;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  
+    &__list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  
+    &__list-item {
+      padding: 10px;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 8px;
+  }
+
+  &__scroll-lock {
+    height: 100vh;
+    overflow: hidden;
+  }
 }
 
 @media (max-width: 640px) {
@@ -72,78 +146,9 @@
     &__surface {
       min-width: 280px;
     }
+
+    &__body {
+      line-height: 24px;
+    }
   }
-}
-
-.mdc-dialog__header {
-  padding: 24px 24px 0 24px;
-  display: flex;
-  align-items: center;
-
-  &__empty {
-    padding: 0;
-  }
-}
-
-.mdc-dialog__header__title {
-  margin: 0;
-  font-size: 20px;
-  line-height: 20px;
-  letter-spacing: 0.02em;
-  font-weight: 400;
-  flex: 1;
-}
-
-.mdc-dialog__body {
-  margin-top: 20px;
-  padding: 0 24px 24px 24px;
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 16px;
-  line-height: 23px;
-  letter-spacing: 0.04em;
-  
-  &--scrollable {
-    max-height: 195px;
-    overflow-y: scroll;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    font-size: 18px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  &__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  &__list-item {
-    padding: 10px;
-  }
-}
-
-@media (max-width: 640px) {
-  .mdc-dialog__body {
-    line-height: 24px;
-  }
-}
-
-.mdc-dialog__footer {
-  padding: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-//.mdc-dialog__footer__buttons__right {
-//  flex: 1;
-//  display: flex;
-//  justify-content: flex-end;
-//}
-
-.mdc-dialog__scroll-lock {
-	height: 100vh;
-	overflow: hidden;
 }

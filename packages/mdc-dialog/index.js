@@ -38,7 +38,9 @@ export class MDCDialog extends MDCComponent {
   }
 
   /**
-  * The element used to activate the dialog
+  * The button used to activate the dialog. We 
+  * return focus to this element when dialog is
+  * dismissed.
   */
   set lastFocusedTarget(element) {
     this.foundation_.setLastFocusTarget(element);
@@ -57,15 +59,18 @@ export class MDCDialog extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {FOCUSABLE_ELEMENTS, OPACITY_VAR_NAME, SCROLL_LOCK_TARGET} = MDCDialogFoundation.strings;
+    const {FOCUSABLE_ELEMENTS, SCROLL_LOCK_TARGET} = MDCDialogFoundation.strings;
 
     return new MDCDialogFoundation({
+      backgroundEl: () => document.querySelector(SCROLL_LOCK_TARGET),
       dialogEl: () => this.root_,
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      addScrollLockClass: (className) => document.querySelector(SCROLL_LOCK_TARGET).classList.add(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
-      removeScrollLockClass: (className) => document.querySelector(SCROLL_LOCK_TARGET).classList.remove(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
+      addScrollLockClass: (className) => 
+        document.querySelector(SCROLL_LOCK_TARGET).classList.add(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
+      removeScrollLockClass: (className) => 
+        document.querySelector(SCROLL_LOCK_TARGET).classList.remove(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
       registerInteractionHandler: (evt, handler) =>
         this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       deregisterInteractionHandler: (evt, handler) =>
@@ -84,13 +89,14 @@ export class MDCDialog extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-      setBackgroundAriaAttribute: () => document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', 'true'),
+      setBackgroundAriaAttribute: (val) => document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', val),
+      setAttribute: (elem, attr, val) => elem.setAttribute(attr, val),
       registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
-      deregisterFocusTrappingHandler: (handler) => document.addEventListener('focus', handler),
+      deregisterFocusTrappingHandler: (handler) => document.removeEventListener('focus', handler, true),
       acceptButton: () => this.acceptButton_,
       cancelButton: () => this.cancelButton_,
-      acceptAction: (handler) => console.log('Accept'),
-      cancelAction: (handler) => console.log('Cancel'),
+      acceptAction: () => console.log('Accept'),
+      cancelAction: () => console.log('Cancel'),
     });
   }
 }
