@@ -21,42 +21,42 @@ const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
 const SL_LAUNCHERS = {
-  'sl-chrome-stable': {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    version: 'latest',
-    platform: 'macOS 10.12',
-  },
-  'sl-chrome-beta': {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    version: 'beta',
-    platform: 'macOS 10.12',
-  },
-  'sl-chrome-previous': {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    version: 'latest-1',
-    platform: 'macOS 10.12',
-  },
-  'sl-firefox-stable': {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    version: 'latest',
-    platform: 'Windows 10',
-  },
-  'sl-firefox-previous': {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    version: 'latest-1',
-    platform: 'Windows 10',
-  },
-  'sl-ie': {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
-    version: '11',
-    platform: 'Windows 8.1',
-  },
+  // 'sl-chrome-stable': {
+  //   base: 'SauceLabs',
+  //   browserName: 'chrome',
+  //   version: 'latest',
+  //   platform: 'macOS 10.12',
+  // },
+  // 'sl-chrome-beta': {
+  //   base: 'SauceLabs',
+  //   browserName: 'chrome',
+  //   version: 'beta',
+  //   platform: 'macOS 10.12',
+  // },
+  // 'sl-chrome-previous': {
+  //   base: 'SauceLabs',
+  //   browserName: 'chrome',
+  //   version: 'latest-1',
+  //   platform: 'macOS 10.12',
+  // },
+  // 'sl-firefox-stable': {
+  //   base: 'SauceLabs',
+  //   browserName: 'firefox',
+  //   version: 'latest',
+  //   platform: 'Windows 10',
+  // },
+  // 'sl-firefox-previous': {
+  //   base: 'SauceLabs',
+  //   browserName: 'firefox',
+  //   version: 'latest-1',
+  //   platform: 'Windows 10',
+  // },
+  // 'sl-ie': {
+  //   base: 'SauceLabs',
+  //   browserName: 'internet explorer',
+  //   version: '11',
+  //   platform: 'Windows 8.1',
+  // },
   // TODO(sgomes): Re-enable Edge and Safari after Sauce Labs problems are fixed.
   // 'sl-edge': {
   //   base: 'SauceLabs',
@@ -64,25 +64,25 @@ const SL_LAUNCHERS = {
   //   version: 'latest',
   //   platform: 'Windows 10',
   // },
-  // 'sl-safari-stable': {
-  //   base: 'SauceLabs',
-  //   browserName: 'safari',
-  //   version: 'latest',
-  //   platform: 'macOS 10.12',
-  // },
+  'sl-safari-stable': {
+    base: 'SauceLabs',
+    browserName: 'safari',
+    version: 'latest',
+    platform: 'macOS 10.12',
+  },
   // 'sl-safari-previous': {
   //   base: 'SauceLabs',
   //   browserName: 'safari',
   //   version: '9.0',
   //   platform: 'OS X 10.11',
   // },
-  'sl-ios-safari-latest': {
-    base: 'SauceLabs',
-    deviceName: 'iPhone Simulator',
-    platformVersion: '10.0',
-    platformName: 'iOS',
-    browserName: 'Safari',
-  },
+  // 'sl-ios-safari-latest': {
+  //   base: 'SauceLabs',
+  //   deviceName: 'iPhone Simulator',
+  //   platformVersion: '10.0',
+  //   platformName: 'iOS',
+  //   browserName: 'Safari',
+  // },
   // 'sl-ios-safari-previous': {
   //   base: 'SauceLabs',
   //   deviceName: 'iPhone Simulator',
@@ -125,6 +125,7 @@ module.exports = function(config) {
       mocha: {
         reporter: 'html',
         ui: 'qunit',
+        timeout: 20000,
       },
     },
 
