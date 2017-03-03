@@ -36,13 +36,13 @@ $mdc-form-field-item-spacing: 4px;
   > label {
     order: 0;
     margin-right: auto;
-    margin-left: $mdc-form-field-item-spacing;
+    padding-left: $mdc-form-field-item-spacing;
   }
 
   @include mdc-rtl {
     > label {
-      margin-right: $mdc-form-field-item-spacing;
       margin-left: auto;
+      padding-right: $mdc-form-field-item-spacing;
     }
   }
 }
@@ -50,14 +50,14 @@ $mdc-form-field-item-spacing: 4px;
 .mdc-form-field--align-end {
   > label {
     order: -1;
-    margin-right: $mdc-form-field-item-spacing;
     margin-left: auto;
+    padding-right: $mdc-form-field-item-spacing;
   }
 
   @include mdc-rtl {
     > label {
       margin-right: auto;
-      margin-left: $mdc-form-field-item-spacing;
+      padding-left: $mdc-form-field-item-spacing;
     }
   }
 }
