@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-@import "@material/rtl/mixins";
-@import "@material/theme/mixins";
+@import "~@material/rtl/mixins";
+@import "~@material/theme/mixins";
 @import "../mixins";
 
 $mdc-permanent-drawer-width: 240px;

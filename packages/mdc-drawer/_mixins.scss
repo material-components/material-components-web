@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-@import "@material/animation/functions";
-@import "@material/animation/variables";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
+@import "~@material/animation/functions";
+@import "~@material/animation/variables";
+@import "~@material/theme/mixins";
+@import "~@material/typography/mixins";
 
 @mixin mdc-drawer-toolbar-spacer_() {
   &__toolbar-spacer {

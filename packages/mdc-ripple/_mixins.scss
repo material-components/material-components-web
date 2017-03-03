@@ -13,8 +13,8 @@
 // limitations under the License.
 //
 
-@import "@material/animation/variables";
-@import "@material/theme/variables";
+@import "~@material/animation/variables";
+@import "~@material/theme/variables";
 @import "./keyframes";
 
 @function mdc-ripple-default-config_() {

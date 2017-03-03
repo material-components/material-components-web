@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-@import "@material/elevation/mixins";
-@import "@material/rtl/mixins";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
+@import "~@material/elevation/mixins";
+@import "~@material/rtl/mixins";
+@import "~@material/theme/mixins";
+@import "~@material/typography/mixins";
 
 $mdc-toolbar-height: 64px;
 $mdc-toolbar-mobile-height: 56px;

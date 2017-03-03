@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-@import "@material/animation/functions";
-@import "@material/ripple/mixins";
-@import "@material/theme/mixins";
+@import "~@material/animation/functions";
+@import "~@material/ripple/mixins";
+@import "~@material/theme/mixins";
 
 $mdc-radio-touch-area: 40px;
 $mdc-radio-ui-size: 20px;

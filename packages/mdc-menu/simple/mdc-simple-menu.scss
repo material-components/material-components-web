@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-@import "@material/animation/variables";
-@import "@material/elevation/mixins";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
+@import "~@material/animation/variables";
+@import "~@material/elevation/mixins";
+@import "~@material/theme/mixins";
+@import "~@material/typography/mixins";
 
 $mdc-simple-menu-fade-duration: .2s;
 $mdc-simple-menu-item-fade-duration: .3s;
