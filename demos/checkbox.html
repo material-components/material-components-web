@@ -89,7 +89,7 @@
         <div class="mdc-form-field">
           <div id="mdc-js-checkbox" class="mdc-checkbox">
             <input type="checkbox"
-                   id="my-checkbox"
+                   id="native-js-checkbox"
                    class="mdc-checkbox__native-control"/>
             <div class="mdc-checkbox__background">
               <svg version="1.1"
@@ -106,7 +106,7 @@
 
             </div>
           </div>
-          <label for="my-checkbox" id="my-checkbox-label">This is my checkbox</label>
+          <label for="native-js-checkbox" id="my-checkbox-label">This is my checkbox</label>
         </div>
         <button type="button" id="make-ind">Make indeterminate</button>
       </section>
@@ -144,15 +144,14 @@
         var MDCFormField = global.mdc.formField.MDCFormField;
 
         var checkbox = document.getElementById('mdc-js-checkbox');
-        var checkboxInstance = new MDCCheckbox(document.getElementById('mdc-js-checkbox'));
+        var checkboxInstance = new MDCCheckbox(checkbox);
 
         var formField = checkbox.parentElement;
         var formFieldInstance = new MDCFormField(formField);
-
         formFieldInstance.input = checkboxInstance;
 
         document.getElementById('make-ind').addEventListener('click', function() {
-          checkbox.indeterminate = true;
+          checkboxInstance.indeterminate = true;
         });
       })(this);
     </script>
