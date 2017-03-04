@@ -15,8 +15,9 @@
 //
 
 @import "@material/animation/functions";
-@import "@material/ripple/mixins";
 @import "@material/animation/mixins";
+@import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
 @import "./variables";
 @import "./keyframes";
 
@@ -38,16 +39,6 @@
   right: 0;
   bottom: 0;
   left: 0;
-}
-
-@mixin mdc-checkbox-outer-box {
-  @include mdc-checkbox-cover-element;
-
-  top: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
-  left: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
-  border-radius: 2px;
-  box-sizing: border-box;
-  pointer-events: none;
 }
 
 // postcss-bem-linter: define checkbox
@@ -84,18 +75,23 @@
   // stylelint-enable plugin/selector-bem-pattern
 
   &__background {
-    @include mdc-checkbox-outer-box;
+    @include mdc-checkbox-cover-element;
+    @include mdc-rtl-reflexive-position(
+      left, ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2, ".mdc-checkbox");
 
     display: inline-flex;
+    top: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
+    pointer-events: none;
     width: $mdc-checkbox-ui-pct;
     height: $mdc-checkbox-ui-pct;
-    box-sizing: border-box;
     transition:
       mdc-checkbox-transition-exit(background-color),
       mdc-checkbox-transition-exit(border-color);
     border: $mdc-checkbox-border-width solid $mdc-checkbox-border-color;
+    border-radius: 2px;
     background-color: transparent;
     will-change: background-color, border-color;
 

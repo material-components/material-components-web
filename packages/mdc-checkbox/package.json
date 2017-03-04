@@ -17,6 +17,7 @@
     "@material/animation": "^0.1.4",
     "@material/base": "^0.1.2",
     "@material/ripple": "^0.3.0",
+    "@material/rtl": "^0.1.2",
     "@material/theme": "^0.1.2"
   }
 }
