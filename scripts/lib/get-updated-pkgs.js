@@ -33,7 +33,7 @@ module.exports = function() {
   const origBarDescriptor = Object.getOwnPropertyDescriptor(progressBar, 'bar');
   const lernaCommand = {
     repository,
-    getOptions: () => lernaJson.publishConfig,
+    getOptions: () => lernaJson.commands.publish,
   };
   const collector = new UpdatedPackagesCollector(lernaCommand);
 
