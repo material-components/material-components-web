@@ -1,7 +1,7 @@
 {
   "name": "@material/textfield",
   "description": "The Material Components for the web text field component",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
