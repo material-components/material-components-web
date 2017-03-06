@@ -26,10 +26,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return strings;
   }
 
-  static get isOpen() {
-    return this.isOpen_;
-  }
-
   static get defaultAdapter() {
     return {
       backgroundEl: (/* el: Element */) => {},
@@ -130,7 +126,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.isOpen_ = false;
     this.adapter_.setAttribute(this.adapter_.dialogEl(), 'aria-hidden', true);
     this.adapter_.setAttribute(this.adapter_.backgroundEl(), 'aria-hidden', false);
-    this.lastFocusedElement_.focus();
+    // this.lastFocusedElement_.focus();
   }
 
   setAttribute(elem, attr, val) {
@@ -197,5 +193,9 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   enableScroll_() {
     this.adapter_.removeScrollLockClass();
+  }
+
+  isOpen() {
+    return this.isOpen_;
   }
 }

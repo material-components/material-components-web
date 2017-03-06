@@ -18,10 +18,9 @@ const ROOT = 'mdc-dialog';
 
 export const cssClasses = {
   ROOT,
-  ACTIVE: `${ROOT}__open`,
+  ACTIVE: `${ROOT}--open`,
   BACKDROP: `${ROOT}__backdrop`,
-  ANIMATING: `${ROOT}--animating`,
-  SCROLL_LOCK: `${ROOT}__scroll-lock`,
+  SCROLL_LOCK: `${ROOT}--scroll-lock`,
 };
 
 export const strings = {

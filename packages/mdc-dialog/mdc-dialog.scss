@@ -50,7 +50,7 @@
     z-index: -1;
   }
 
-  &__open {
+  &--open {
     display: flex;
     top: 0;
     left: 0;
@@ -133,7 +133,7 @@
     padding: 8px;
   }
 
-  &__scroll-lock {
+  &--scroll-lock {
     height: 100vh;
     overflow: hidden;
   }
