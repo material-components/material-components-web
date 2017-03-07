@@ -138,6 +138,7 @@ they are all set up.
 
 To release MDC-Web, you perform the following steps.
 
+1. Ensure you are on master, and you have the latest changes: run `git fetch && git fetch --tags && git pull` to be sure.
 1. Run `./scripts/pre-release.sh`. This will run `npm test`, build MDC-Web, copy the built assets over
    to each module's `dist/` folder, and then print out a summary of all of the new versions that
    should be used for changed components. The summary is printed out to both the console, as well
@@ -152,6 +153,40 @@ To release MDC-Web, you perform the following steps.
 1. Run `git push && git push --tags` to push the changelog changes and semver tag to master.
 1. Run `MDC_ENV=development npm run build && gcloud app deploy`. This will deploy demo pages to our [App Engine demo site](https://material-components-web.appspot.com).
 1. Call it a day! :tada: :rocket: :package:
+
+#### Aborting from a release
+
+Sometimes, things go wrong :upside_down_face:. A stale repo, misconfigured environment, or
+dependency update may cause something in the release pipeline to fail. This will almost always
+happen while running lerna's `publish` command. If that does happen, you probably need to reset your
+repo to a clean state in order to be able to re-run the command.
+
+**If you make a mistake while inputting new component versions into the lerna prompt**:
+
+Simply `Ctrl+C` / abort the lerna command. No changes should have been made locally.
+
+**If something goes wrong while lerna is creating its publish commit**:
+
+1. After the lerna command fails, run `git reset HEAD`
+1. Run `git co -- .`. This will restore the repo to its state before lerna attempted to bump
+   versions and commit.
+1. Re-run the publish command. Note that the new component versions are saved to `.new-versions.log`
+   in the repo's root directory, which you can use to re-enter the new versions.
+
+**If something goes wrong while lerna is publishing to npm**:
+
+1. `Ctrl+C` / abort the lerna command. Your repo now has a newly created commit and tags that you
+   have to get rid of in order to re-run the lerna command successfully.
+1. Remove the publish commit by running `git reset --hard HEAD~1`.
+1. Re-sync all of the local tags in your repo to only reflect the tags on GitHub by running
+   `git tag | xargs -n1 git tag -d && git fetch --tags` (taken from [this StackOverflow response](http://stackoverflow.com/a/10644209/1509082))
+1. Re-run the publish command. Note that the new component versions are saved to `.new-versions.log`
+   in the repo's root directory, which you can use to re-enter the new versions.
+
+**If something goes wrong while lerna is pushing the published changes / tags to GitHub**:
+
+1. `Ctrl+C` / abort the lerna command.
+1. Run `git push && git push --tags`. This does the equivalent of what lerna would have done.
 
 ## "What's the core team up to?"
 
