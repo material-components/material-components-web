@@ -109,7 +109,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.disableScroll_();
     this.adapter_.setAttribute(this.adapter_.dialogEl(), 'aria-hidden', false);
     this.adapter_.setAttribute(this.adapter_.backgroundEl(), 'aria-hidden', true);
-    this.adapter_.acceptButton().focus();
+    this.adapter_.acceptButton() ? this.adapter_.acceptButton().focus() : null;
   }
 
   close() {
@@ -126,7 +126,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.isOpen_ = false;
     this.adapter_.setAttribute(this.adapter_.dialogEl(), 'aria-hidden', true);
     this.adapter_.setAttribute(this.adapter_.backgroundEl(), 'aria-hidden', false);
-    // this.lastFocusedElement_.focus();
+    this.lastFocusedElement_ ? this.lastFocusedElement_.focus() : null;
   }
 
   setAttribute(elem, attr, val) {

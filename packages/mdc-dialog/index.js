@@ -67,9 +67,9 @@ export class MDCDialog extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      addScrollLockClass: (className) =>
+      addScrollLockClass: () =>
         document.querySelector(SCROLL_LOCK_TARGET).classList.add(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
-      removeScrollLockClass: (className) =>
+      removeScrollLockClass: () =>
         document.querySelector(SCROLL_LOCK_TARGET).classList.remove(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
       registerInteractionHandler: (evt, handler) =>
         this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
@@ -94,8 +94,8 @@ export class MDCDialog extends MDCComponent {
       setAttribute: (elem, attr, val) => elem.setAttribute(attr, val),
       acceptButton: () => this.acceptButton_,
       cancelButton: () => this.cancelButton_,
-      acceptAction: () => console.log('Accept'),
-      cancelAction: () => console.log('Cancel'),
+      acceptAction: (callback) => callback(),
+      cancelAction: (callback) => callback(),
     });
   }
 }

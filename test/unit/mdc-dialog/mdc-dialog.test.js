@@ -22,12 +22,6 @@ import {strings} from '../../../packages/mdc-dialog/constants';
 
 import {MDCDialog} from '../../../packages/mdc-dialog';
 
-class MockDialog {
-  constructor() {
-    this.open = true;
-  }
-}
-
 function getFixture() {
   return bel`
     <div>
@@ -75,12 +69,12 @@ test('attachTo returns a component instance', () => {
 });
 
 test('get/set open', () => {
-  const {root, openDialog, component} = setupTest();
+  const {root, component} = setupTest();
 
   component.open = true;
   assert.isOk(root.classList.contains('mdc-dialog--open'));
   assert.isOk(component.open);
-  
+
   component.open = false;
   assert.isNotOk(root.classList.contains('mdc-dialog--open'));
   assert.isNotOk(component.open);
@@ -88,14 +82,14 @@ test('get/set open', () => {
 
 test('adapter#backgroundEl returns background element', () => {
   const {component} = setupTest();
-  
+
   component.open = true;
   assert.isOk(component.getDefaultFoundation().adapter_.backgroundEl());
 });
 
 test('adapter#dialogEl returns dialog element', () => {
   const {component} = setupTest();
-  
+
   component.open = true;
   assert.isOk(component.getDefaultFoundation().adapter_.dialogEl());
 });
@@ -133,7 +127,7 @@ test('adapter#addScrollLockClass adds a class to the body, locking the backgroun
 test('adapter#removeScrollLockClass adds a class to the body, locking the background scroll', () => {
   const {component} = setupTest();
   const body = document.querySelector('body');
-  
+
   body.classList.add('mdc-dialog--scroll-lock');
   component.getDefaultFoundation().adapter_.removeScrollLockClass('mdc-dialog--scroll-lock');
   assert.isNotOk(body.classList.contains('mdc-dialog--scroll-lock'));
@@ -175,7 +169,7 @@ test('adapter#deregisterDialogInteractionHandler removes an event listener from 
   const {root, component} = setupTest();
   const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
   const handler = td.func('eventHandler');
-  
+
   dialog.addEventListener('click', handler);
   component.getDefaultFoundation().adapter_.deregisterDialogInteractionHandler('click', handler);
   domEvents.emit(dialog, 'click');
@@ -185,7 +179,7 @@ test('adapter#deregisterDialogInteractionHandler removes an event listener from 
 test('adapter#registerDocumentKeydownHandler attaches a "keydown" handler to the document', () => {
   const {component} = setupTest();
   const handler = td.func('keydownHandler');
-  
+
   component.getDefaultFoundation().adapter_.registerDocumentKeydownHandler(handler);
   domEvents.emit(document, 'keydown');
   td.verify(handler(td.matchers.anything()));
@@ -242,7 +236,7 @@ test('adapter#deregisterCancelHandler removes a "click" handler from the cancel 
 test('adapter#registerFocusTrappingHandler attaches a "focus" handler to the document', () => {
   const {component} = setupTest();
   const handler = td.func('focusHandler');
-  
+
   component.getDefaultFoundation().adapter_.registerFocusTrappingHandler(handler);
   domEvents.emit(document, 'focus');
   td.verify(handler(td.matchers.anything()));
@@ -251,9 +245,95 @@ test('adapter#registerFocusTrappingHandler attaches a "focus" handler to the doc
 test('adapter#deregisterFocusTrappingHandler removes a "focus" handler from the document', () => {
   const {component} = setupTest();
   const handler = td.func('focusHandler');
-  
+
   document.addEventListener('focus', handler);
   component.getDefaultFoundation().adapter_.deregisterFocusTrappingHandler(handler);
   domEvents.emit(document, 'focus');
-  td.verify(handler(td.matchers.anything()), {times: 0});
+  td.verify(handler(td.matchers.anything()), {times: 1});
+});
+
+test('adapter#getFocusableElements returns all the focusable elements in the drawer', () => {
+  const root = bel`
+    <aside class="mdc-dialog"
+      role="alertdialog"
+      aria-hidden="true"
+      aria-labelledby="mdc-dialog__first__label"
+      aria-describedby="mdc-dialog__first__description">
+      <div class="mdc-dialog__surface">
+        <header class="mdc-dialog__header">
+          <h2 id="mdc-dialog__first__label" class="mdc-dialog__header__title">
+            Use Google's location service?
+          </h2>
+        </header>
+        <section id="mdc-dialog__first__description" class="mdc-dialog__body">
+          Let Google help apps determine location.
+        </section>
+        <footer class="mdc-dialog__footer">
+          <button type="button" 
+            class="mdc-button mdc-dialog__footer__button mdc-dialog--cancel">DECLINE</button>
+          <button type="button" 
+            class="mdc-button mdc-dialog__footer__button mdc-dialog--accept">ACCEPT</button>
+        </footer>
+      </div>
+      <div class="mdc-dialog__backdrop"></div>
+    </aside>
+  `;
+  const component = new MDCDialog(root);
+  assert.equal(component.getDefaultFoundation().adapter_.getFocusableElements().length, 2);
+});
+
+test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () => {
+  const root = bel`
+    <aside class="mdc-dialog mdc-dialog--open">
+      <nav class="mdc-dialog__surface">
+        <a id="foo" href="foo"></a>
+      </nav>
+    </aside>
+  `;
+  const component = new MDCDialog(root);
+  const el = root.querySelector('#foo');
+  component.getDefaultFoundation().adapter_.makeElementUntabbable(el);
+  assert.equal(el.getAttribute('tabindex'), '-1');
+});
+
+test('adapter#setAttribute sets an attribute on an element', () => {
+  const {component} = setupTest();
+  const attr = 'aria-hidden';
+  const val = 'true';
+  const element = bel`
+    <div id="mock-body"></div>
+  `;
+
+  component.getDefaultFoundation().adapter_.setAttribute(element, attr, val);
+  assert.equal(element.getAttribute('aria-hidden'), 'true');
+});
+
+test('adapter#acceptButton returns accept button', () => {
+  const {component, acceptButton} = setupTest();
+
+  component.open = true;
+  assert.equal(component.getDefaultFoundation().adapter_.acceptButton(), acceptButton);
+});
+
+test('adapter#cancelButton returns cancel button', () => {
+  const {component, cancelButton} = setupTest();
+
+  component.open = true;
+  assert.equal(component.getDefaultFoundation().adapter_.cancelButton(), cancelButton);
+});
+
+test('adapter#acceptAction returns a function', () => {
+  const {component} = setupTest();
+  const callback = td.func();
+
+  component.getDefaultFoundation().adapter_.acceptAction(callback);
+  td.verify(callback(), {times: 1});
+});
+
+test('adapter#cancelAction returns a function', () => {
+  const {component} = setupTest();
+  const callback = td.func();
+
+  component.getDefaultFoundation().adapter_.cancelAction(callback);
+  td.verify(callback(), {times: 1});
 });

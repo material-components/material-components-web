@@ -15,10 +15,9 @@
  */
 
 import {assert} from 'chai';
-// import td from 'testdouble';
+import td from 'testdouble';
 
-// import {setupFoundationTest} from '../helpers/setup';
-// import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
+import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import MDCDialogFoundation from '../../../packages/mdc-dialog/foundation';
@@ -45,49 +44,157 @@ test('default adapter returns a complete adapter implementation', () => {
   ]);
 });
 
-// function setupTest() {
-//   return setupFoundationTest(MDCDialogFoundation);
-// }
+function setupTest() {
+  return setupFoundationTest(MDCDialogFoundation);
+}
 
-// test('#close deregisters all events registered within open()', () => {
-//   const {foundation, mockAdapter} = setupTest();
-//   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
-//   const dialogHandlers = captureHandlers(mockAdapter, 'registerDialogInteractionHandler');
-//   const documentKeydownHandlers = captureHandlers(mockAdapter, 'registerDocumentKeydownHandler');
-//   const acceptHandlers = captureHandlers(mockAdapter, 'registerAcceptHandler');
-//   const cancelHandlers = captureHandlers(mockAdapter, 'registerCancelHandler');
-//   const focusTrappingHandlers = captureHandlers(mockAdapter, 'registerFocusTrappingHandler');
-//
-// 	foundation.init();
-// 	foundation.open();
-//  foundation.close();
-//
-// 	Object.keys(handlers).forEach((type) => {
-//     td.verify(mockAdapter.deregisterInteractionHandler(type, td.matchers.isA(Function)));
-//   });
-//   Object.keys(dialogHandlers).forEach((type) => {
-//     td.verify(
-//       mockAdapter.deregisterDialogInteractionHandler(type, td.matchers.isA(Function))
-//     );
-//   });
-//   Object.keys(documentKeydownHandlers).forEach((type) => {
-//     td.verify(
-//       mockAdapter.deregisterDocumentKeydownHandler(type, td.matchers.isA(Function))
-//     );
-//   });
-//   Object.keys(acceptHandlers).forEach((type) => {
-//     td.verify(
-//       mockAdapter.deregisterAcceptHandler(type, td.matchers.isA(Function))
-//     );
-//   });
-//   Object.keys(cancelHandlers).forEach((type) => {
-//     td.verify(
-//       mockAdapter.deregisterCancelHandler(type, td.matchers.isA(Function))
-//     );
-//   });
-//   Object.keys(focusTrappingHandlers).forEach((type) => {
-//     td.verify(
-//       mockAdapter.deregisterFocusTrappingHandler(type, td.matchers.isA(Function))
-//     );
-//   });
-// });
+test('#isOpen returns true when the dialog is open', () => {
+  const {foundation} = setupTest();
+
+  foundation.open();
+  assert.isOk(foundation.isOpen());
+});
+
+test('#isOpen returns false when the dialog is closed', () => {
+  const {foundation} = setupTest();
+
+  foundation.close();
+  assert.isNotOk(foundation.isOpen());
+});
+
+test('#open registers all events registered within open()', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+	foundation.open();
+
+  td.verify(mockAdapter.registerAcceptHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerCancelHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerDialogInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
+});
+
+test('#close deregisters all events registered within open()', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  foundation.close();
+
+  td.verify(mockAdapter.deregisterAcceptHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterCancelHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterDialogInteractionHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterDocumentKeydownHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterFocusTrappingHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInteractionHandler(td.matchers.isA(Function)));
+});
+
+test('#open adds the open class to reveal the dialog', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.verify(mockAdapter.addClass('mdc-dialog--open'));
+});
+
+test('#close removes the open class to hide the dialog', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.close();
+  td.verify(mockAdapter.removeClass('mdc-dialog--open'));
+});
+
+test('#open adds the scroll lock class to dialog background', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.verify(mockAdapter.addScrollLockClass());
+});
+
+test('#close removes the scroll lock class from dialog background', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.close();
+  td.verify(mockAdapter.removeScrollLockClass());
+});
+
+test('#open makes elements tabbable', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass('mdc-dialog--open')).thenReturn(false);
+  td.when(mockAdapter.getFocusableElements()).thenReturn(['foo', 'bar']);
+
+  foundation.init();
+  foundation.open();
+  td.verify(mockAdapter.restoreElementTabState('foo'));
+  td.verify(mockAdapter.restoreElementTabState('bar'));
+});
+
+test('#close makes elements untabbable', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass('mdc-dialog--open')).thenReturn(true);
+  td.when(mockAdapter.getFocusableElements()).thenReturn(['foo', 'bar']);
+
+  foundation.open();
+  foundation.close();
+  td.verify(mockAdapter.makeElementUntabbable('foo'));
+  td.verify(mockAdapter.makeElementUntabbable('bar'));
+});
+
+test('#open sets aria attributes for dialog', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.verify(mockAdapter.setAttribute(undefined, 'aria-hidden', false), {times: 1});
+  td.verify(mockAdapter.setAttribute(undefined, 'aria-hidden', true), {times: 1});
+})
+
+test('#open sets aria attributes for dialog', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.verify(mockAdapter.setAttribute(undefined, 'aria-hidden', true), {times: 1});
+  td.verify(mockAdapter.setAttribute(undefined, 'aria-hidden', false), {times: 1});
+})
+
+test('#accept accepts the terms of the dialog', () => {
+   const {foundation, mockAdapter} = setupTest();
+
+  foundation.accept();
+  td.verify(mockAdapter.acceptAction());
+});
+
+test('#cancel rejects the terms of the dialog', () => {
+   const {foundation, mockAdapter} = setupTest();
+
+  foundation.cancel();
+  td.verify(mockAdapter.cancelAction());
+});
+
+test('on document keydown closes the dialog when escape key is pressed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    keydown = handler;
+  });
+  foundation.init();
+  foundation.open();
+
+  keydown({
+    key: 'Escape',
+  });
+  td.verify(mockAdapter.removeClass('mdc-dialog--open'));
+});
+
+test('on document keydown does nothing when key other than escape is pressed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    keydown = handler;
+  });
+  foundation.init();
+  foundation.open();
+
+  keydown({
+    key: 'Enter',
+  });
+  td.verify(mockAdapter.removeClass('mdc-dialog--open'), {times: 0});
+});
