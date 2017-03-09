@@ -167,4 +167,3 @@ The adapter for dialog must provide the following functions, with correct signat
 | `cancelButton: (el: Element) => void` | This is your cancel button |
 | `acceptAction: () => {}` | This function will be called when accept is selected |
 | `cancelAction: () => {}` | This function will be called when cancel is selected or the backdrop is clicked |
-| `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |

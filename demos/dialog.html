@@ -34,8 +34,7 @@
       }
     </style>
   </head>
-  <body class="mdc-typography demo-body">
-
+  <body class="mdc-typography demo-body"> 
     <aside id="mdc-dialog-one"
       class="mdc-dialog"
       role="alertdialog"
@@ -101,6 +100,19 @@
       </div>
       <button id="dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog</button>
       <button id="dialog-activation--scrollable" class="mdc-button mdc-button--primary mdc-button--raised">Show Scrolling Dialog</button>
+
+			<div class="mdc-form-field">
+        <div id="mdc-js-checkbox" class="mdc-checkbox mdc-checkbox--upgraded mdc-ripple-upgraded mdc-ripple-upgraded--unbounded mdc-ripple-upgraded--foreground-unbounded-activation" style="--mdc-ripple-surface-width:40px; --mdc-ripple-surface-height:40px; --mdc-ripple-fg-size:24px; --mdc-ripple-fg-unbounded-transform-duration:254.967ms; --mdc-ripple-fg-scale:2.77369; --mdc-ripple-left:8px; --mdc-ripple-top:8px;">
+          <input type="checkbox" id="toggle-rtl" class="mdc-checkbox__native-control">
+          <div class="mdc-checkbox__background">
+            <svg version="1.1" class="mdc-checkbox__checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" xml:space="preserve">
+              <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+        </div>
+        <label for="native-js-checkbox" id="my-checkbox-label">Make RTL</label>
+      </div> 
     </section>
 
     <script src="assets/material-components-web.js" charset="utf-8"></script>
@@ -115,6 +127,20 @@
         dialogScrollable.lastFocusedTarget = evt.target;
         dialogScrollable.open = true;
       })
+    </script>
+		
+		<script>
+      (function() {
+        mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
+        const demoWrapper = document.querySelector('.demo-body');
+        document.getElementById('toggle-rtl').addEventListener('change', function() {
+          if (this.checked) {
+            demoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            demoWrapper.removeAttribute('dir');
+          }
+        });
+      })();
     </script>
   </body>
 </html>

@@ -20,43 +20,6 @@ const TAB_DATA_HANDLED = 'data-mdc-tabindex-handled';
 let storedTransformPropertyName_;
 let supportsPassive_;
 
-// Remap touch events to pointer events, if the browser doesn't support touch events.
-export function remapEvent(eventName, globalObj = window) {
-  if (!('ontouchstart' in globalObj.document)) {
-    switch (eventName) {
-      case 'touchstart':
-        return 'pointerdown';
-      case 'touchmove':
-        return 'pointermove';
-      case 'touchend':
-        return 'pointerup';
-      default:
-        return eventName;
-    }
-  }
-
-  return eventName;
-}
-
-// Choose the correct transform property to use on the current browser.
-export function getTransformPropertyName(globalObj = window, forceRefresh = false) {
-  if (storedTransformPropertyName_ === undefined || forceRefresh) {
-    const el = globalObj.document.createElement('div');
-    const transformPropertyName = ('transform' in el.style ? 'transform' : '-webkit-transform');
-    storedTransformPropertyName_ = transformPropertyName;
-  }
-
-  return storedTransformPropertyName_;
-}
-
-// Determine whether the current browser supports CSS properties.
-export function supportsCssCustomProperties(globalObj = window) {
-  if ('CSS' in globalObj) {
-    return globalObj.CSS.supports('(--color: red)');
-  }
-  return false;
-}
-
 // Determine whether the current browser supports passive event listeners, and if so, use them.
 export function applyPassive(globalObj = window, forceRefresh = false) {
   if (supportsPassive_ === undefined || forceRefresh) {

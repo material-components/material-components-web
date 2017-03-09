@@ -81,6 +81,11 @@
     &__empty {
       padding: 0;
     }
+
+    @include mdc-rtl {
+      text-align: right; 
+    }
+
   }
 
   &__header__title {
@@ -94,6 +99,7 @@
   &__body {
     margin-top: 20px;
     padding: 0 24px 24px;
+    text-align: left; 
 
     @include mdc-theme-prop(color, text-secondary-on-light);
 
@@ -122,6 +128,10 @@
 
     &__list-item {
       padding: 10px;
+    }
+
+    @include mdc-rtl {
+      text-align: right; 
     }
   }
 

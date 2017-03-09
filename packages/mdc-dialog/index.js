@@ -72,13 +72,13 @@ export class MDCDialog extends MDCComponent {
       removeScrollLockClass: () =>
         document.querySelector(SCROLL_LOCK_TARGET).classList.remove(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
       registerInteractionHandler: (evt, handler) =>
-        this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+        this.root_.addEventListener(evt, handler, util.applyPassive()),
       deregisterInteractionHandler: (evt, handler) =>
-        this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+        this.root_.removeEventListener(evt, handler, util.applyPassive()),
       registerDialogInteractionHandler: (evt, handler) =>
-        this.dialog_.addEventListener(util.remapEvent(evt), handler),
+        this.dialog_.addEventListener(evt, handler),
       deregisterDialogInteractionHandler: (evt, handler) =>
-        this.dialog_.removeEventListener(util.remapEvent(evt), handler),
+        this.dialog_.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       registerAcceptHandler: (handler) => this.acceptButton_.addEventListener('click', handler),
@@ -94,8 +94,8 @@ export class MDCDialog extends MDCComponent {
       setAttribute: (elem, attr, val) => elem.setAttribute(attr, val),
       acceptButton: () => this.acceptButton_,
       cancelButton: () => this.cancelButton_,
-      acceptAction: (callback) => callback(),
-      cancelAction: (callback) => callback(),
+      acceptAction: (callback) => callback() ? callback() : true,
+      cancelAction: (callback) => callback() ? callback() : false,
     });
   }
 }
