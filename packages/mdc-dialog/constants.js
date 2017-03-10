@@ -24,6 +24,7 @@ export const cssClasses = {
 };
 
 export const strings = {
+  ACTIVE_DIALOG_SELECTOR: `.${ROOT}--open`,
   DIALOG_SURFACE_SELECTOR: `.${ROOT}__surface`,
   ACCEPT_SELECTOR: `.${ROOT}--accept`,
   CANCEL_SELECTOR: `.${ROOT}--cancel`,

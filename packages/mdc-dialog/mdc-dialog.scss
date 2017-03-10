@@ -28,8 +28,12 @@
 
     @include mdc-theme-prop(background-color, background);
 
-    @include mdc-theme-dark {
+    @include mdc-theme-dark(".mdc-dialog") {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
+    }
+
+    @include mdc-rtl(".mdc-dialog") {
+      text-align: right; 
     }
 
     font-family: Roboto, sans-serif;
@@ -99,7 +103,6 @@
   &__body {
     margin-top: 20px;
     padding: 0 24px 24px;
-    text-align: left; 
 
     @include mdc-theme-prop(color, text-secondary-on-light);
 
@@ -130,9 +133,7 @@
       padding: 10px;
     }
 
-    @include mdc-rtl {
-      text-align: right; 
-    }
+
   }
 
   &__footer {

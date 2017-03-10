@@ -28,8 +28,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
-      backgroundEl: (/* el: Element */) => {},
-      dialogEl: (/* el: Element */) => {},
+      setBackgroundAriaHidden: (/* el: Element */) => {},
+      setDialogAriaHidden: (/* el: Element */) => {},
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
@@ -52,10 +52,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
       setAttribute: (/* elem: Element, attr: String, val: Boolean */) => {},
-      acceptButton: (/* el: Element */) => {},
-      cancelButton: (/* el: Element */) => {},
       acceptAction: () => {/* accept function */},
       cancelAction: () => {/* cancel function */},
+      getFocusedElement: () => {},
+      setFocusedElement: () => {},
     };
   }
 
@@ -63,11 +63,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
 
     this.lastFocusedElement_;
-    this.inert_ = false;
+    this.inert_ = true;
     this.isOpen_ = false;
     this.componentClickHandler_ = () => this.cancel();
     this.dialogClickHandler_ = (evt) => evt.stopPropagation();
-    this.dialogFocusHandler_ = (evt) => this.passFocus(evt);
     this.acceptHandler_ = () => this.accept();
     this.cancelHandler_ = () => this.cancel();
     this.documentKeydownHandler_ = (evt) => {
@@ -80,7 +79,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
   init() {
     const {ACTIVE} = MDCDialogFoundation.cssClasses;
 
-
     if (this.adapter_.hasClass(ACTIVE)) {
       this.isOpen_ = true;
     } else {
@@ -91,53 +89,44 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   destroy() {}
 
-  setLastFocusTarget(element) {
-    this.lastFocusedElement_ = element;
+  getLastFocusTarget() {
+    return this.lastFocusedElement_;
   }
 
   open() {
+    this.lastFocusedElement_ = this.adapter_.getFocusedElement();
+    this.unlockTab_();
     this.adapter_.registerAcceptHandler(this.acceptHandler_);
     this.adapter_.registerCancelHandler(this.cancelHandler_);
     this.adapter_.registerDialogInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.registerFocusTrappingHandler(this.dialogFocusHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-
-    this.unlockTab_();
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
     this.isOpen_ = true;
+    this.adapter_.registerFocusTrappingHandler();
     this.disableScroll_();
-    this.adapter_.setAttribute(this.adapter_.dialogEl(), 'aria-hidden', false);
-    this.adapter_.setAttribute(this.adapter_.backgroundEl(), 'aria-hidden', true);
-    this.adapter_.acceptButton() ? this.adapter_.acceptButton().focus() : null;
+    this.adapter_.setDialogAriaHidden(false);
+    this.adapter_.setBackgroundAriaHidden(true);
   }
 
   close() {
+    this.lockTab_();
     this.adapter_.deregisterAcceptHandler(this.acceptHandler_);
     this.adapter_.deregisterCancelHandler(this.cancelHandler_);
     this.adapter_.deregisterDialogInteractionHandler(this.dialogClickHandler_);
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.deregisterFocusTrappingHandler(this.dialogFocusHandler_);
     this.adapter_.deregisterInteractionHandler(this.componentClickHandler_);
-
+    this.adapter_.deregisterFocusTrappingHandler();
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ACTIVE);
-    this.lockTab_();
-    this.enableScroll_();
     this.isOpen_ = false;
-    this.adapter_.setAttribute(this.adapter_.dialogEl(), 'aria-hidden', true);
-    this.adapter_.setAttribute(this.adapter_.backgroundEl(), 'aria-hidden', false);
-    this.lastFocusedElement_ ? this.lastFocusedElement_.focus() : null;
+    this.enableScroll_();
+    this.adapter_.setDialogAriaHidden(true);
+    this.adapter_.setBackgroundAriaHidden(false);
+    this.adapter_.setFocusedElement(this.lastFocusedElement_);
   }
 
   setAttribute(elem, attr, val) {
     elem.setAttribute(attr, val);
-  }
-
-  passFocus(evt) {
-    if (!this.adapter_.dialogEl().contains(evt.target)) {
-      evt.stopPropagation();
-      this.adapter_.cancelButton().focus();
-    }
   }
 
   accept() {

@@ -26,7 +26,7 @@ function getFixture() {
   return bel`
     <div>
       <button class="open-dialog">click</button>
-      <aside class="mdc-dialog"
+      <aside class="mdc-dialog mdc-dialog--open"
         role="alertdialog"
         aria-hidden="true"
         aria-labelledby="mdc-dialog__first__label"
@@ -80,24 +80,9 @@ test('get/set open', () => {
   assert.isNotOk(component.open);
 });
 
-test('adapter#backgroundEl returns background element', () => {
-  const {component} = setupTest();
-
-  component.open = true;
-  assert.isOk(component.getDefaultFoundation().adapter_.backgroundEl());
-});
-
-test('adapter#dialogEl returns dialog element', () => {
-  const {component} = setupTest();
-
-  component.open = true;
-  assert.isOk(component.getDefaultFoundation().adapter_.dialogEl());
-});
-
 test('adapter#hasClass returns true if the root element has specified class', () => {
   const {root, component} = setupTest();
-  root.classList.add('foo');
-  assert.isOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
+  root.classList.add('foo'); assert.isOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
 test('adapter#hasClass returns false if the root element does not have specified class', () => {
@@ -235,11 +220,11 @@ test('adapter#deregisterCancelHandler removes a "click" handler from the cancel 
 
 test('adapter#registerFocusTrappingHandler attaches a "focus" handler to the document', () => {
   const {component} = setupTest();
-  const handler = td.func('focusHandler');
 
-  component.getDefaultFoundation().adapter_.registerFocusTrappingHandler(handler);
+  component.getDefaultFoundation().adapter_.registerFocusTrappingHandler(); 
   domEvents.emit(document, 'focus');
-  td.verify(handler(td.matchers.anything()));
+
+  td.verify(component.getDefaultFoundation().adapter_.nextTabFocus);
 });
 
 test('adapter#deregisterFocusTrappingHandler removes a "focus" handler from the document', () => {
@@ -308,32 +293,14 @@ test('adapter#setAttribute sets an attribute on an element', () => {
   assert.equal(element.getAttribute('aria-hidden'), 'true');
 });
 
-test('adapter#acceptButton returns accept button', () => {
-  const {component, acceptButton} = setupTest();
-
-  component.open = true;
-  assert.equal(component.getDefaultFoundation().adapter_.acceptButton(), acceptButton);
-});
-
-test('adapter#cancelButton returns cancel button', () => {
-  const {component, cancelButton} = setupTest();
-
-  component.open = true;
-  assert.equal(component.getDefaultFoundation().adapter_.cancelButton(), cancelButton);
-});
-
-test('adapter#acceptAction returns a function', () => {
+test('adapter#acceptAction returns true', () => {
   const {component} = setupTest();
-  const callback = td.func();
 
-  component.getDefaultFoundation().adapter_.acceptAction(callback);
-  td.verify(callback(), {times: 1});
+  assert.equal(component.getDefaultFoundation().adapter_.acceptAction(), true);
 });
 
-test('adapter#cancelAction returns a function', () => {
+test('adapter#cancelAction returns false', () => {
   const {component} = setupTest();
-  const callback = td.func();
 
-  component.getDefaultFoundation().adapter_.cancelAction(callback);
-  td.verify(callback(), {times: 1});
+  assert.equal(component.getDefaultFoundation().adapter_.cancelAction(), false);
 });

@@ -143,8 +143,8 @@ The adapter for dialog must provide the following functions, with correct signat
 
 | Method Signature | Description |
 | --- | --- |
-| `dialogEl: (el: Element) => void` | This is your dialog element |
-| `backgroundEl: (el: Element) => void` | This is your background element |
+| `setBackgroundAriaHidden: (ariaHidden: Bool) => void` | Sets the `aria-hidden` attribute on the background content |
+| `setDialogAriaHidden: (ariaHidden: Bool) => void` | Sets the `aria-hidden` attribute on the dialog surface |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |

@@ -34,17 +34,7 @@ export class MDCDialog extends MDCComponent {
       this.foundation_.open();
     } else {
       this.foundation_.close();
-    }
-  }
-
-  /**
-  * The button used to activate the dialog. We
-  * return focus to this element when dialog is
-  * dismissed.
-  */
-  set lastFocusedTarget(element) {
-    this.foundation_.setLastFocusTarget(element);
-  }
+    } }
 
   get dialog_() {
     return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SURFACE_SELECTOR);
@@ -58,12 +48,25 @@ export class MDCDialog extends MDCComponent {
     return this.root_.querySelector(MDCDialogFoundation.strings.CANCEL_SELECTOR);
   }
 
+  nextTabFocus(evt) {
+    const {FOCUSABLE_ELEMENTS, ACTIVE_DIALOG_SELECTOR} = MDCDialogFoundation.strings;
+    
+    const dialog = this.querySelector(ACTIVE_DIALOG_SELECTOR);
+    const tabbable = this.querySelectorAll(FOCUSABLE_ELEMENTS);
+
+    if (dialog && !dialog.contains(evt.target)) {
+      evt.stopPropagation();
+      tabbable[0].focus();
+    } 
+  }
+
   getDefaultFoundation() {
     const {FOCUSABLE_ELEMENTS, SCROLL_LOCK_TARGET} = MDCDialogFoundation.strings;
 
     return new MDCDialogFoundation({
-      backgroundEl: () => document.querySelector(SCROLL_LOCK_TARGET),
-      dialogEl: () => this.root_,
+      setBackgroundAriaHidden: (ariaHidden) => 
+        document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', ariaHidden),
+      setDialogAriaHidden: (ariaHidden) => this.dialog_.setAttribute('aria-hidden', ariaHidden),
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -85,17 +88,20 @@ export class MDCDialog extends MDCComponent {
       deregisterAcceptHandler: (handler) => this.acceptButton_.removeEventListener('click', handler),
       registerCancelHandler: (handler) => this.cancelButton_.addEventListener('click', handler),
       deregisterCancelHandler: (handler) => this.cancelButton_.removeEventListener('click', handler),
-      registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
-      deregisterFocusTrappingHandler: (handler) => document.removeEventListener('focus', handler, true),
+      registerFocusTrappingHandler: () => {
+        document.addEventListener('focus', this.nextTabFocus, true);
+        this.acceptButton_.focus();
+      },
+      deregisterFocusTrappingHandler: () => document.removeEventListener('focus', this.nextTabFocus, true),
       getFocusableElements: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
       setAttribute: (elem, attr, val) => elem.setAttribute(attr, val),
-      acceptButton: () => this.acceptButton_,
-      cancelButton: () => this.cancelButton_,
-      acceptAction: (callback) => callback() ? callback() : true,
-      cancelAction: (callback) => callback() ? callback() : false,
+      getFocusedElement: () => document.activeElement,
+      setFocusedElement: (element) => element.focus(),
+      acceptAction: () => true,
+      cancelAction: () => false,
     });
   }
 }

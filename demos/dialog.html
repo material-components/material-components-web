@@ -34,7 +34,8 @@
       }
     </style>
   </head>
-  <body class="mdc-typography demo-body"> 
+  <body class="mdc-typography"> 
+    <div class="demo-body">
     <aside id="mdc-dialog-one"
       class="mdc-dialog"
       role="alertdialog"
@@ -92,7 +93,7 @@
       </div>
       <div class="mdc-dialog__backdrop"></div> 
     </aside>
-
+    </div>
     <section class="user-content">
       <div>
         <h2>MDC Web Dialog</h2>
@@ -131,7 +132,7 @@
 		
 		<script>
       (function() {
-        mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
+        mdc.dialog.MDCDialog.attachTo(document.querySelector('.mdc-dialog'));
         const demoWrapper = document.querySelector('.demo-body');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
           if (this.checked) {

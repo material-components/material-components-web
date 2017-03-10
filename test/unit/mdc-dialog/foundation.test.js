@@ -30,8 +30,8 @@ test('exports cssClasses', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
-    'backgroundEl', 'dialogEl', 'hasClass', 'addClass', 'removeClass',
-    'addScrollLockClass', 'removeScrollLockClass',
+    'setBackgroundAriaHidden', 'setDialogAriaHidden', 'hasClass', 'addClass',
+    'removeClass', 'addScrollLockClass', 'removeScrollLockClass',
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerDialogInteractionHandler', 'deregisterDialogInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
@@ -39,8 +39,8 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerCancelHandler', 'deregisterCancelHandler',
     'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler',
     'getFocusableElements', 'saveElementTabState', 'restoreElementTabState',
-    'makeElementUntabbable', 'setAttribute', 'acceptButton', 'cancelButton',
-    'acceptAction', 'cancelAction',
+    'makeElementUntabbable', 'setAttribute', 'acceptAction', 'cancelAction',
+    'getFocusedElement', 'setFocusedElement',
   ]);
 });
 
@@ -71,8 +71,8 @@ test('#open registers all events registered within open()', () => {
   td.verify(mockAdapter.registerCancelHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerDialogInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerFocusTrappingHandler());
 });
 
 test('#close deregisters all events registered within open()', () => {
@@ -85,8 +85,8 @@ test('#close deregisters all events registered within open()', () => {
   td.verify(mockAdapter.deregisterCancelHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterDialogInteractionHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterDocumentKeydownHandler(td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterFocusTrappingHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterFocusTrappingHandler());
 });
 
 test('#open adds the open class to reveal the dialog', () => {
@@ -143,16 +143,16 @@ test('#open sets aria attributes for dialog', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
-  td.verify(mockAdapter.setAttribute(undefined, 'aria-hidden', false), {times: 1});
-  td.verify(mockAdapter.setAttribute(undefined, 'aria-hidden', true), {times: 1});
+  td.verify(mockAdapter.setDialogAriaHidden(false), {times: 1});
+  td.verify(mockAdapter.setBackgroundAriaHidden(true), {times: 1});
 })
 
-test('#open sets aria attributes for dialog', () => {
+test('#close sets aria attributes for dialog', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  foundation.open();
-  td.verify(mockAdapter.setAttribute(undefined, 'aria-hidden', true), {times: 1});
-  td.verify(mockAdapter.setAttribute(undefined, 'aria-hidden', false), {times: 1});
+  foundation.close();
+  td.verify(mockAdapter.setDialogAriaHidden(true), {times: 1});
+  td.verify(mockAdapter.setBackgroundAriaHidden(false), {times: 1});
 })
 
 test('#accept accepts the terms of the dialog', () => {
