@@ -17,6 +17,7 @@
 import * as base from '@material/base';
 import * as checkbox from '@material/checkbox';
 import * as formField from '@material/form-field';
+import * as gridList from '@material/grid-list';
 import * as iconToggle from '@material/icon-toggle';
 import * as radio from '@material/radio';
 import * as ripple from '@material/ripple';
@@ -31,6 +32,7 @@ import autoInit from '@material/auto-init';
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCTemporaryDrawer', drawer.MDCTemporaryDrawer);
 autoInit.register('MDCRipple', ripple.MDCRipple);
+autoInit.register('MDCGridList', gridList.MDCGridList);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
@@ -43,6 +45,7 @@ export {
   base,
   checkbox,
   formField,
+  gridList,
   iconToggle,
   radio,
   ripple,

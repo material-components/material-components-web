@@ -23,6 +23,7 @@
     "@material/elevation": "^0.1.3",
     "@material/fab": "^0.3.3",
     "@material/form-field": "^0.2.1",
+    "@material/grid-list": "^0.0.0",
     "@material/icon-toggle": "^0.1.5",
     "@material/layout-grid": "^0.1.1",
     "@material/list": "^0.2.3",
