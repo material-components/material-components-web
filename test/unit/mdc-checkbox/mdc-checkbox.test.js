@@ -22,6 +22,7 @@ import td from 'testdouble';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
 import {MDCCheckbox} from '../../../packages/mdc-checkbox';
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {strings} from '../../../packages/mdc-checkbox/constants';
 import {getCorrectEventName} from '../../../packages/mdc-animation';
 import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
@@ -121,6 +122,11 @@ test('get/set disabled updates the indeterminate property on the native checkbox
   component.disabled = true;
   assert.isOk(cb.disabled);
   assert.equal(component.disabled, cb.disabled);
+});
+
+test('get ripple returns a MDCRipple instance', () => {
+  const {component} = setupTest();
+  assert.isOk(component.ripple instanceof MDCRipple);
 });
 
 test('adapter#addClass adds a class to the root element', () => {

@@ -37,7 +37,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'isMenuOpen', 'setSelectedTextContent', 'getNumberOfOptions', 'getTextForOptionAtIndex',
     'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex', 'getOffsetTopForOptionAtIndex',
     'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler', 'notifyChange',
-    'getWindowInnerHeight',
+    'getWindowInnerHeight', 'getValueForOptionAtIndex',
   ]);
 });
 
@@ -225,4 +225,21 @@ test('#destroy deregisters all events registered within init()', () => {
       mockAdapter.deregisterMenuInteractionHandler(type, td.matchers.isA(Function))
     );
   });
+});
+
+test('#getValue() returns the value of the option at the selected index', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const opts = ['a', 'SELECTED', 'b'];
+  const selectedIndex = 1;
+  td.when(mockAdapter.getNumberOfOptions()).thenReturn(opts.length);
+  td.when(mockAdapter.getValueForOptionAtIndex(selectedIndex)).thenReturn(opts[selectedIndex]);
+  td.when(mockAdapter.getTextForOptionAtIndex(selectedIndex)).thenReturn(`${opts[selectedIndex]} text`);
+
+  foundation.setSelectedIndex(selectedIndex);
+  assert.equal(foundation.getValue(), opts[selectedIndex]);
+});
+
+test('#getValue() returns an empty string if selected index < 0', () => {
+  const {foundation} = setupTest();
+  assert.equal(foundation.getValue(), '');
 });

@@ -26,6 +26,10 @@ export class MDCSelect extends MDCComponent {
     return new MDCSelect(root);
   }
 
+  get value() {
+    return this.foundation_.getValue();
+  }
+
   get options() {
     return this.menu_.items;
   }
@@ -100,6 +104,7 @@ export class MDCSelect extends MDCComponent {
       },
       getNumberOfOptions: () => this.options.length,
       getTextForOptionAtIndex: (index) => this.options[index].textContent,
+      getValueForOptionAtIndex: (index) => this.options[index].id || this.options[index].textContent,
       setAttrForOptionAtIndex: (index, attr, value) => this.options[index].setAttribute(attr, value),
       rmAttrForOptionAtIndex: (index, attr) => this.options[index].removeAttribute(attr),
       getOffsetTopForOptionAtIndex: (index) => this.options[index].offsetTop,

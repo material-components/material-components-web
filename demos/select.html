@@ -75,7 +75,7 @@
         <p>Currently selected: <span id="currently-selected">(none)</span></p>
         <div>
           <input type="checkbox" id="dark-theme">
-          <label for="dark-mode">Dark Theme</label>
+          <label for="dark-theme">Dark Theme</label>
         </div>
         <div>
           <input type="checkbox" id="rtl">
@@ -137,7 +137,8 @@
         root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];
           var index = select.selectedIndex;
-          currentlySelected.textContent = '"' + item.textContent + '" at index ' + index;
+          currentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
+           ' with value "' + select.value + '"';
         });
 
         var demoWrapper = document.getElementById('demo-wrapper');

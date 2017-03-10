@@ -1,7 +1,7 @@
 {
   "name": "@material/form-field",
   "description": "Material Components for the web wrapper for laying out form fields and labels next to one another",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
