@@ -15,7 +15,6 @@
  */
 
 import {assert} from 'chai';
-import td from 'testdouble';
 import bel from 'bel';
 
 import * as utils from '../../../packages/mdc-dialog/util';

@@ -34,28 +34,28 @@ export class MDCDialog extends MDCComponent {
       this.foundation_.open();
     } else {
       this.foundation_.close();
-    } 
+    }
   }
 
-  get dialog_() {
-    return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SURFACE_SELECTOR);
-  }
-
-  get acceptButton_() {
+  get acceptButton() {
     return this.root_.querySelector(MDCDialogFoundation.strings.ACCEPT_SELECTOR);
   }
 
-  get cancelButton_() {
+  get cancelButton() {
     return this.root_.querySelector(MDCDialogFoundation.strings.CANCEL_SELECTOR);
+  }
+
+  get dialog() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SURFACE_SELECTOR);
   }
 
   getDefaultFoundation() {
     const {FOCUSABLE_ELEMENTS, SCROLL_LOCK_TARGET} = MDCDialogFoundation.strings;
 
     return new MDCDialogFoundation({
-      setBackgroundAriaHidden: (ariaHidden) => 
+      setBackgroundAriaHidden: (ariaHidden) =>
         document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', ariaHidden),
-      setDialogAriaHidden: (ariaHidden) => this.dialog_.setAttribute('aria-hidden', ariaHidden),
+      setDialogAriaHidden: (ariaHidden) => this.dialog.setAttribute('aria-hidden', ariaHidden),
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -68,21 +68,21 @@ export class MDCDialog extends MDCComponent {
       deregisterInteractionHandler: (evt, handler) =>
         this.root_.removeEventListener(evt, handler, util.applyPassive()),
       registerDialogInteractionHandler: (evt, handler) =>
-        this.dialog_.addEventListener(evt, handler),
+        this.dialog.addEventListener(evt, handler),
       deregisterDialogInteractionHandler: (evt, handler) =>
-        this.dialog_.removeEventListener(evt, handler),
+        this.dialog.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
-      registerAcceptHandler: (handler) => this.acceptButton_.addEventListener('click', handler),
-      deregisterAcceptHandler: (handler) => this.acceptButton_.removeEventListener('click', handler),
-      registerCancelHandler: (handler) => this.cancelButton_.addEventListener('click', handler),
-      deregisterCancelHandler: (handler) => this.cancelButton_.removeEventListener('click', handler),
+      registerAcceptHandler: (handler) => this.acceptButton.addEventListener('click', handler),
+      deregisterAcceptHandler: (handler) => this.acceptButton.removeEventListener('click', handler),
+      registerCancelHandler: (handler) => this.cancelButton.addEventListener('click', handler),
+      deregisterCancelHandler: (handler) => this.cancelButton.removeEventListener('click', handler),
       registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
       deregisterFocusTrappingHandler: (handler) => document.removeEventListener('focus', handler, true),
-      numFocusableElements: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS).length,
-      resetDialogFocus: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS)[0].focus(), 
-      setDefaultFocus: () => this.acceptButton_.focus(),
-      getFocusableElements: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS),
+      numFocusableElements: () => this.dialog.querySelectorAll(FOCUSABLE_ELEMENTS).length,
+      resetDialogFocus: () => this.dialog.querySelectorAll(FOCUSABLE_ELEMENTS)[0].focus(),
+      setDefaultFocus: () => this.acceptButton.focus(),
+      getFocusableElements: () => this.dialog.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),

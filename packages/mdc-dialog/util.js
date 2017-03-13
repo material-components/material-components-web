@@ -16,7 +16,7 @@
 const TAB_DATA = 'data-mdc-tabindex';
 const TAB_DATA_HANDLED = 'data-mdc-tabindex-handled';
 
-let storedTransformPropertyName_; let supportsPassive_;
+let supportsPassive_;
 
 // Determine whether the current browser supports passive event listeners, and if so, use them.
 export function applyPassive(globalObj = window, forceRefresh = false) {

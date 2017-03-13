@@ -33,7 +33,7 @@
     }
 
     @include mdc-rtl(".mdc-dialog") {
-      text-align: right; 
+      text-align: right;
     }
 
     font-family: Roboto, sans-serif;
@@ -87,9 +87,8 @@
     }
 
     @include mdc-rtl {
-      text-align: right; 
+      text-align: right;
     }
-
   }
 
   &__header__title {
@@ -132,8 +131,6 @@
     &__list-item {
       padding: 10px;
     }
-
-
   }
 
   &__footer {

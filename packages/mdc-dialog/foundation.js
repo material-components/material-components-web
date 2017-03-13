@@ -16,7 +16,6 @@
 
 import {MDCFoundation} from '@material/base';
 import {cssClasses, strings} from './constants';
-import * as util from './util';
 
 export default class MDCDialogFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -105,13 +104,13 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerDialogInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
-    this.isOpen_ = true;
     this.adapter_.registerFocusTrappingHandler(this.focusHandler_);
     this.adapter_.setDefaultFocus();
     this.disableScroll_();
     this.adapter_.setDialogAriaHidden(false);
     this.adapter_.setBackgroundAriaHidden(true);
+    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
+    this.isOpen_ = true;
   }
 
   close() {
@@ -123,17 +122,19 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler(this.componentClickHandler_);
     this.adapter_.deregisterFocusTrappingHandler(this.focusHandler_);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ACTIVE);
-    this.isOpen_ = false;
     this.enableScroll_();
     this.adapter_.setDialogAriaHidden(true);
     this.adapter_.setBackgroundAriaHidden(false);
+    this.isOpen_ = false;
     this.adapter_.setFocusedElement(this.lastFocusedElement_);
   }
 
   setAttribute(elem, attr, val) {
     elem.setAttribute(attr, val);
-  } 
-  accept() { this.adapter_.acceptAction();
+  }
+
+  accept() {
+    this.adapter_.acceptAction();
     this.close();
   }
 
@@ -181,10 +182,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   setFocus_() {
     const numTabbable = this.adapter_.numFocusableElements();
-   
+
     if (this.currentFocusedElIndex_ > -1) {
       this.currentFocusedElIndex_++;
-      
+
       if (this.currentFocusedElIndex_ >= numTabbable) {
         this.adapter_.resetDialogFocus();
         this.currentFocusedElIndex_ = 0;

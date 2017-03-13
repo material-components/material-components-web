@@ -144,7 +144,7 @@ test('#open sets aria attributes for dialog', () => {
   foundation.open();
   td.verify(mockAdapter.setDialogAriaHidden(false), {times: 1});
   td.verify(mockAdapter.setBackgroundAriaHidden(true), {times: 1});
-})
+});
 
 test('#close sets aria attributes for dialog', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -152,14 +152,14 @@ test('#close sets aria attributes for dialog', () => {
   foundation.close();
   td.verify(mockAdapter.setDialogAriaHidden(true), {times: 1});
   td.verify(mockAdapter.setBackgroundAriaHidden(false), {times: 1});
-})
+});
 
 test('#open sets default focus', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
   td.verify(mockAdapter.setDefaultFocus());
-})
+});
 
 test('#accept accepts the terms of the dialog', () => {
    const {foundation, mockAdapter} = setupTest();
@@ -209,32 +209,32 @@ test('setFocus sets current focus index to number of tabbable elements if curren
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.numFocusableElements()).thenReturn(2);
-  
+
   foundation.currentFocusedElIndex_ = -1;
   foundation.setFocus_();
 
-  assert.equal(foundation.currentFocusedElIndex_, 2)
- 
-})
+  assert.equal(foundation.currentFocusedElIndex_, 2);
+});
 
 test('setFocus increments currentFocusedElIndex if it is smaller than number of tabbable elements', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.numFocusableElements()).thenReturn(4);
-  
+
   foundation.currentFocusedElIndex_ = 1;
   foundation.setFocus_();
 
-  assert.equal(foundation.currentFocusedElIndex_, 2)
+  assert.equal(foundation.currentFocusedElIndex_, 2);
 });
 
-test('setFocus sets currentFocusedElIndex to 0 if it is greater than or equal to the number of tabbable elements', () => {
+test('setFocus sets currentFocusedElIndex to 0 if it is' +
+      ' greater than or equal to the number of tabbable elements', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.numFocusableElements()).thenReturn(4);
-  
+
   foundation.currentFocusedElIndex_ = 4;
   foundation.setFocus_();
 
-  assert.equal(foundation.currentFocusedElIndex_, 0)
+  assert.equal(foundation.currentFocusedElIndex_, 0);
 });
