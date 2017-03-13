@@ -34,7 +34,8 @@ export class MDCDialog extends MDCComponent {
       this.foundation_.open();
     } else {
       this.foundation_.close();
-    } }
+    } 
+  }
 
   get dialog_() {
     return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SURFACE_SELECTOR);
@@ -46,18 +47,6 @@ export class MDCDialog extends MDCComponent {
 
   get cancelButton_() {
     return this.root_.querySelector(MDCDialogFoundation.strings.CANCEL_SELECTOR);
-  }
-
-  nextTabFocus(evt) {
-    const {FOCUSABLE_ELEMENTS, ACTIVE_DIALOG_SELECTOR} = MDCDialogFoundation.strings;
-    
-    const dialog = this.querySelector(ACTIVE_DIALOG_SELECTOR);
-    const tabbable = this.querySelectorAll(FOCUSABLE_ELEMENTS);
-
-    if (dialog && !dialog.contains(evt.target)) {
-      evt.stopPropagation();
-      tabbable[0].focus();
-    } 
   }
 
   getDefaultFoundation() {
@@ -88,11 +77,11 @@ export class MDCDialog extends MDCComponent {
       deregisterAcceptHandler: (handler) => this.acceptButton_.removeEventListener('click', handler),
       registerCancelHandler: (handler) => this.cancelButton_.addEventListener('click', handler),
       deregisterCancelHandler: (handler) => this.cancelButton_.removeEventListener('click', handler),
-      registerFocusTrappingHandler: () => {
-        document.addEventListener('focus', this.nextTabFocus, true);
-        this.acceptButton_.focus();
-      },
-      deregisterFocusTrappingHandler: () => document.removeEventListener('focus', this.nextTabFocus, true),
+      registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
+      deregisterFocusTrappingHandler: (handler) => document.removeEventListener('focus', handler, true),
+      numFocusableElements: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS).length,
+      resetDialogFocus: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS)[0].focus(), 
+      setDefaultFocus: () => this.acceptButton_.focus(),
       getFocusableElements: () => this.dialog_.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),

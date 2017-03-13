@@ -16,6 +16,7 @@
 
 import {MDCFoundation} from '@material/base';
 import {cssClasses, strings} from './constants';
+import * as util from './util';
 
 export default class MDCDialogFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -47,9 +48,11 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterCancelHandler: (/* handler: EventListener */) => {},
       registerFocusTrappingHandler: (/* handler: EventListener */) => {},
       deregisterFocusTrappingHandler: (/* handler: EventListener */) => {},
+      numFocusableElements: () => {/* number of focusable elements */},
+      resetDialogFocus: () => {/* sets focus on first element in dialog */},
+      setDefaultFocus: () => /* sets focus */ {},
       getFocusableElements: (/* handler: EventListener */) => /* NodeList */ {},
-      saveElementTabState: (/* el: Element */) => {},
-      restoreElementTabState: (/* el: Element */) => {},
+      saveElementTabState: (/* el: Element */) => {}, restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
       setAttribute: (/* elem: Element, attr: String, val: Boolean */) => {},
       acceptAction: () => {/* accept function */},
@@ -63,12 +66,13 @@ export default class MDCDialogFoundation extends MDCFoundation {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
 
     this.lastFocusedElement_;
+    this.currentFocusedElIndex_ = -1;
     this.inert_ = true;
     this.isOpen_ = false;
-    this.componentClickHandler_ = () => this.cancel();
-    this.dialogClickHandler_ = (evt) => evt.stopPropagation();
+    this.componentClickHandler_ = () => this.cancel(); this.dialogClickHandler_ = (evt) => evt.stopPropagation();
     this.acceptHandler_ = () => this.accept();
     this.cancelHandler_ = () => this.cancel();
+    this.focusHandler_ = () => this.setFocus_();
     this.documentKeydownHandler_ = (evt) => {
       if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
         this.cancel();
@@ -103,7 +107,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ACTIVE);
     this.isOpen_ = true;
-    this.adapter_.registerFocusTrappingHandler();
+    this.adapter_.registerFocusTrappingHandler(this.focusHandler_);
+    this.adapter_.setDefaultFocus();
     this.disableScroll_();
     this.adapter_.setDialogAriaHidden(false);
     this.adapter_.setBackgroundAriaHidden(true);
@@ -116,7 +121,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterDialogInteractionHandler(this.dialogClickHandler_);
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.deregisterInteractionHandler(this.componentClickHandler_);
-    this.adapter_.deregisterFocusTrappingHandler();
+    this.adapter_.deregisterFocusTrappingHandler(this.focusHandler_);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ACTIVE);
     this.isOpen_ = false;
     this.enableScroll_();
@@ -127,10 +132,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   setAttribute(elem, attr, val) {
     elem.setAttribute(attr, val);
-  }
-
-  accept() {
-    this.adapter_.acceptAction();
+  } 
+  accept() { this.adapter_.acceptAction();
     this.close();
   }
 
@@ -159,7 +162,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   /**
-   *  Make all children of the drawer tabbable again when it's open.
+   *  Make all children of the dialog tabbable again when it's open.
    */
   unlockTab_() {
     if (!this.inert_) {
@@ -174,6 +177,21 @@ export default class MDCDialogFoundation extends MDCFoundation {
     }
 
     this.inert_ = false;
+  }
+
+  setFocus_() {
+    const numTabbable = this.adapter_.numFocusableElements();
+   
+    if (this.currentFocusedElIndex_ > -1) {
+      this.currentFocusedElIndex_++;
+      
+      if (this.currentFocusedElIndex_ >= numTabbable) {
+        this.adapter_.resetDialogFocus();
+        this.currentFocusedElIndex_ = 0;
+      }
+    } else {
+      this.currentFocusedElIndex_ = numTabbable;
+    }
   }
 
   disableScroll_() {

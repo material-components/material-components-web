@@ -10,8 +10,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * See the License for the specific language governing permissions and * limitations under the License.
  */
 
 import {assert} from 'chai';
@@ -37,10 +36,10 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
     'registerAcceptHandler', 'deregisterAcceptHandler',
     'registerCancelHandler', 'deregisterCancelHandler',
-    'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler',
+    'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler', 'setDefaultFocus',
     'getFocusableElements', 'saveElementTabState', 'restoreElementTabState',
     'makeElementUntabbable', 'setAttribute', 'acceptAction', 'cancelAction',
-    'getFocusedElement', 'setFocusedElement',
+    'getFocusedElement', 'setFocusedElement', 'numFocusableElements', 'resetDialogFocus',
   ]);
 });
 
@@ -72,7 +71,7 @@ test('#open registers all events registered within open()', () => {
   td.verify(mockAdapter.registerDialogInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerFocusTrappingHandler());
+  td.verify(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function)));
 });
 
 test('#close deregisters all events registered within open()', () => {
@@ -86,7 +85,7 @@ test('#close deregisters all events registered within open()', () => {
   td.verify(mockAdapter.deregisterDialogInteractionHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler(td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterFocusTrappingHandler());
+  td.verify(mockAdapter.deregisterFocusTrappingHandler(td.matchers.isA(Function)));
 });
 
 test('#open adds the open class to reveal the dialog', () => {
@@ -155,6 +154,13 @@ test('#close sets aria attributes for dialog', () => {
   td.verify(mockAdapter.setBackgroundAriaHidden(false), {times: 1});
 })
 
+test('#open sets default focus', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.verify(mockAdapter.setDefaultFocus());
+})
+
 test('#accept accepts the terms of the dialog', () => {
    const {foundation, mockAdapter} = setupTest();
 
@@ -197,4 +203,38 @@ test('on document keydown does nothing when key other than escape is pressed', (
     key: 'Enter',
   });
   td.verify(mockAdapter.removeClass('mdc-dialog--open'), {times: 0});
+});
+
+test('setFocus sets current focus index to number of tabbable elements if current focused index is -1', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.numFocusableElements()).thenReturn(2);
+  
+  foundation.currentFocusedElIndex_ = -1;
+  foundation.setFocus_();
+
+  assert.equal(foundation.currentFocusedElIndex_, 2)
+ 
+})
+
+test('setFocus increments currentFocusedElIndex if it is smaller than number of tabbable elements', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.numFocusableElements()).thenReturn(4);
+  
+  foundation.currentFocusedElIndex_ = 1;
+  foundation.setFocus_();
+
+  assert.equal(foundation.currentFocusedElIndex_, 2)
+});
+
+test('setFocus sets currentFocusedElIndex to 0 if it is greater than or equal to the number of tabbable elements', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.numFocusableElements()).thenReturn(4);
+  
+  foundation.currentFocusedElIndex_ = 4;
+  foundation.setFocus_();
+
+  assert.equal(foundation.currentFocusedElIndex_, 0)
 });

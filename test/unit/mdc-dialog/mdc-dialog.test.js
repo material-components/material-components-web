@@ -220,24 +220,25 @@ test('adapter#deregisterCancelHandler removes a "click" handler from the cancel 
 
 test('adapter#registerFocusTrappingHandler attaches a "focus" handler to the document', () => {
   const {component} = setupTest();
+  const handler = td.func('eventHandler');
 
-  component.getDefaultFoundation().adapter_.registerFocusTrappingHandler(); 
+  component.getDefaultFoundation().adapter_.registerFocusTrappingHandler(handler);
   domEvents.emit(document, 'focus');
-
-  td.verify(component.getDefaultFoundation().adapter_.nextTabFocus);
+  td.verify(handler(td.matchers.anything()));
 });
 
 test('adapter#deregisterFocusTrappingHandler removes a "focus" handler from the document', () => {
   const {component} = setupTest();
-  const handler = td.func('focusHandler');
+  const handler = td.func('eventHandler');
 
-  document.addEventListener('focus', handler);
+  component.getDefaultFoundation().adapter_.registerFocusTrappingHandler(handler);
   component.getDefaultFoundation().adapter_.deregisterFocusTrappingHandler(handler);
   domEvents.emit(document, 'focus');
-  td.verify(handler(td.matchers.anything()), {times: 1});
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#getFocusableElements returns all the focusable elements in the drawer', () => {
+test('adapter#getFocusableElements returns all the focusable elements in the dialog', () => {
   const root = bel`
     <aside class="mdc-dialog"
       role="alertdialog"
@@ -275,6 +276,7 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () =
       </nav>
     </aside>
   `;
+
   const component = new MDCDialog(root);
   const el = root.querySelector('#foo');
   component.getDefaultFoundation().adapter_.makeElementUntabbable(el);
