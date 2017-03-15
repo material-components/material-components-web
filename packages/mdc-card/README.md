@@ -57,8 +57,8 @@ Cards can use a dark theme by either having the `mdc-card--theme-dark` option di
     <h2 class="mdc-card__subtitle">Subtitle here</h2>
   </section>
   <section class="mdc-card__actions">
-    <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-    <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+    <button class="mdc-button mdc-button--theme-dark mdc-button--compact mdc-card__action">Action 1</button>
+    <button class="mdc-button mdc-button--theme-dark mdc-button--compact mdc-card__action">Action 2</button>
   </section>
 </div>
 ```
