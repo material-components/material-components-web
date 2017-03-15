@@ -86,7 +86,7 @@ export class MDCDialog extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-      setAttribute: (elem, attr, val) => elem.setAttribute(attr, val),
+      setAttr: (elem, attr, val) => elem.setAttribute(attr, val),
       getFocusedElement: () => document.activeElement,
       setFocusedElement: (element) => element.focus(),
       acceptAction: () => true,

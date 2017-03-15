@@ -45,28 +45,54 @@ Dialogs inform users about a specific task and may contain critical information 
 In the example above, we've created a dialog box in an `aside` element. Note that you can place content inside 
 the dialog. There are two types: dialog & dialogs with scrollable content. These are declared using CSS classes.
 
-CSS classes:
+Some dialogs will not be tall enough to accomodate everything you would like to display in them. For this there is a 
+`mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
 
-| Class                                  | Description                                                                     |
-| -------------------------------------- | ------------------------------------------------------------------------------- |
-| `mdc-dialog`                           | Mandatory. Needs to be set on the root element of the component.                |
-| `mdc-dialog__surface`                  | Mandatory. This element contains all of your dialog content.                    |
-| `mdc-dialog__backdrop`                 | Mandatory. This element creates a semi-opaque scrim behind the dialog surface.  |
-| `mdc-dialog__header`                   | Mandatory. This element is the dialog header.                                   |
-| `mdc-dialog__header__title`            | Mandatory. This element is the dialog label and is used by aria.                |
-| `mdc-dialog__body`                     | Mandatory. This element is the dialog's main content area and is used by aria.  |
-| `mdc-dialog__footer`                   | Mandatory. This element is the ancestor of the accept and cancel buttons.       |
-| `mdc-dialog--cancel`                   | Mandatory. This element is the accept button.                                   |
-| `mdc-dialog--accept`                   | Mandatory. This element is the cancel button.                                   |
+```html
+  <aside id="mdc-dialog-with-list"
+    class="mdc-dialog"
+    role="alertdialog"
+    aria-hidden="true"
+    aria-labelledby="mdc-dialog-with-list-label"
+    aria-describedby="mdc-dialog-with-list-description">
+    <div class="mdc-dialog__surface">
+      <header class="mdc-dialog__header">
+        <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+          Choose a Ringtone
+        </h2>
+      </header>
+      <section id="mdc-dialog-with-list-description" class="mdc-dialog__body mdc-dialog__body--scrollable">
+       	<ul class="mdc-list">
+          <li class="mdc-list-item">None</li>
+          <li class="mdc-list-item">Callisto</li>
+          <li class="mdc-list-item">Ganymede</li>
+          <li class="mdc-list-item">Luna</li>
+          <li class="mdc-list-item">Marimba</li>
+          <li class="mdc-list-item">Schwifty</li>
+          <li class="mdc-list-item">Callisto</li>
+          <li class="mdc-list-item">Ganymede</li>
+          <li class="mdc-list-item">Luna</li>
+          <li class="mdc-list-item">Marimba</li>
+          <li class="mdc-list-item">Schwifty</li>
+        </ul> 
+      </section>
+      <footer class="mdc-dialog__footer">
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">decline</button>
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">accept</button>
+      </footer>
+    </div>
+    <div class="mdc-dialog__backdrop"></div> 
+  </aside>
+```
 
 
-In the example, we also set some aria attributes with corresponding IDs on some elements.
+In these examples, we set a few aria attributes with corresponding IDs on some elements.
 
 Element attributes:
 
 | Attribute                              | Description                                                                     |
 | -------------------------------------- | ------------------------------------------------------------------------------- |
-| `aria-hidden`                          | Initially set to true on root of the component.                                 |
+| `aria-hidden`                          | Initially set to true on the root of the component.                             |
 | `aria-labelledby`                      | Set on the root, the value must be the ID of `.mdc-dialog__header__title`       |
 | `aria-describedBy`                     | Set on the root, the value must be the ID of `.mdc-dialog__body`                |
 
@@ -74,9 +100,11 @@ Element IDs:
 
 | ID                                     | Description                                                                     |
 | -------------------------------------- | ------------------------------------------------------------------------------- |
-| `mdc-dialog__label`                    | Mandatory. Corresponds to the value of `aira-labelledby` on the root element.   |
-| `mdc-dialog__description`              | Mandatory. Corresponds to the value of `aira-describedby` on the root element.  |
+| `mdc-dialog__label`                    | Corresponds to the value of `aira-labelledby` on the root element.   |
+| `mdc-dialog__description`              | Corresponds to the value of `aira-describedby` on the root element.  |
 
+Note that these specific id names, unlike the css classnames, do not have to be _exactly_ the same as listed above.
+They only need to match the values set for their corresponding aria attributes.
 
 ### Using the Component
 
@@ -139,31 +167,67 @@ const dialog = new MDCDialog(document.querySelector('#my-mdc-dialog'));
 
 MDC Dialog ships with an `MDCDialogFoundation` class that external frameworks and libraries can
 use to integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for dialog must provide the following functions, with correct signatures:
+
+To interact with the dialog, there are two functions which you should override: `acceptAction` and `cancelAction`.
+`acceptAction` occurs whenever the accept button is clicked, and `cancelAction` occurs whenever the cancel button or the background is clicked. 
+
+
+### Adapter API
 
 | Method Signature | Description |
 | --- | --- |
 | `setBackgroundAriaHidden: (ariaHidden: Bool) => void` | Sets the `aria-hidden` attribute on the background content |
 | `setDialogAriaHidden: (ariaHidden: Bool) => void` | Sets the `aria-hidden` attribute on the dialog surface |
+| `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
-| `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
-| `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
 | `addScrollLockClass(className: string) => void` | Adds a class to prevent scrolling the dialog background when open. |
 | `removeScrollLockClass(className: string) => void` | Removes a class which prevents scrolling the dialog background when open. |
+| `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
+| `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
 | `registerDialogInteractionHandler: (evt: string, handler: EventListener) => void` | Registers an event handler to prevent pointer events from propagating past the dialog surface. |
 | `deregisterDialogInteractionHandler: (evt: string, handler: EventListener) => void` | Deregisters an event handler to prevent pointer events from propagating past the dialog surface. |
 | `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
 | `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
+| `registerAcceptHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
+| `deregisterAcceptHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
+| `registerCancelHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
+| `deregisterCancelHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
 | `registerFocusTrappingHandler: (handler: EventListener) => void` | Registers an event handler to help with focus trapping. |
 | `deregisterFocusTrappingHandler: (handler: EventListener) => void` | Deregisters an event handler to help with focus trapping. |
+| `numFocusableElements: () => Number` | The number of focusable elements in the dialog |
+| `resetDialogFocus: () => void` | resets focus to the first focusable element in the dialog |
+| `setDefaultFocus: () => void` | sets focus on the `accept` button |
 | `getFocusableElements() => NodeList` | Returns the node list of focusable elements inside the drawer. |
 | `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
-| `setAttribute: (elem: Element, attr: String, val: Boolean) => void`
-| `acceptButton: (el: Element) => void` | This is your accept button |
-| `cancelButton: (el: Element) => void` | This is your cancel button |
+| `setAttr: (elem: Element, attr: String, val: Boolean) => void`
+| `getFocusedElement: () => Element` | gets currently focused element |
+| `setFocusedElement: (element: Element) => void` | sets focus on the `accept` button |
 | `acceptAction: () => {}` | This function will be called when accept is selected |
 | `cancelAction: () => {}` | This function will be called when cancel is selected or the backdrop is clicked |
+
+
+
+### The full foundation API
+
+#### MDCDialogFoundation.open() => void 
+
+Opens the dialog, registers appropriate event listners, sets aria attributes, focuses elements.
+
+#### MDCDialogFoundation.close() => void 
+
+Closes the dialog, deregisters appropriate event listners, resets aria attributes, focuses elements.
+
+#### MDCDialogFoundation.accept() => void 
+
+Calls `acceptAction`, closes dialog
+
+#### MDCDialogFoundation.cancel() => void 
+
+Calls `cancelAction`, closes dialog
+
+#### MDCDialogFoundation.isOpen() => Boolean 
+
+Returns true if the dialog is open

@@ -19,7 +19,6 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 import {strings} from '../../../packages/mdc-dialog/constants';
-
 import {MDCDialog} from '../../../packages/mdc-dialog';
 
 function getFixture() {
@@ -42,9 +41,9 @@ function getFixture() {
           </section>
           <footer class="mdc-dialog__footer">
             <button type="button" 
-              class="mdc-button mdc-dialog__footer__button mdc-dialog--cancel">DECLINE</button>
+              class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">DECLINE</button>
             <button type="button" 
-              class="mdc-button mdc-dialog__footer__button mdc-dialog--accept">ACCEPT</button>
+              class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">ACCEPT</button>
           </footer>
         </div>
         <div class="mdc-dialog__backdrop"></div>
@@ -57,8 +56,8 @@ function setupTest() {
   const openDialog = fixture.querySelector('.open-dialog');
   const root = fixture.querySelector('.mdc-dialog');
   const component = new MDCDialog(root);
-  const acceptButton = fixture.querySelector('.mdc-dialog--accept');
-  const cancelButton = fixture.querySelector('.mdc-dialog--cancel');
+  const acceptButton = fixture.querySelector('.mdc-dialog__footer__button--accept');
+  const cancelButton = fixture.querySelector('.mdc-dialog__footer__button--cancel');
   return {openDialog, root, acceptButton, cancelButton, component};
 }
 
@@ -281,18 +280,6 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () =
   const el = root.querySelector('#foo');
   component.getDefaultFoundation().adapter_.makeElementUntabbable(el);
   assert.equal(el.getAttribute('tabindex'), '-1');
-});
-
-test('adapter#setAttribute sets an attribute on an element', () => {
-  const {component} = setupTest();
-  const attr = 'aria-hidden';
-  const val = 'true';
-  const element = bel`
-    <div id="mock-body"></div>
-  `;
-
-  component.getDefaultFoundation().adapter_.setAttribute(element, attr, val);
-  assert.equal(element.getAttribute('aria-hidden'), 'true');
 });
 
 test('adapter#acceptAction returns true', () => {

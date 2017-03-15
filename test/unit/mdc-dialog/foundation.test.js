@@ -36,10 +36,11 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
     'registerAcceptHandler', 'deregisterAcceptHandler',
     'registerCancelHandler', 'deregisterCancelHandler',
-    'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler', 'setDefaultFocus',
+    'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler',
+    'numFocusableElements', 'resetDialogFocus', 'setDefaultFocus',
     'getFocusableElements', 'saveElementTabState', 'restoreElementTabState',
-    'makeElementUntabbable', 'setAttribute', 'acceptAction', 'cancelAction',
-    'getFocusedElement', 'setFocusedElement', 'numFocusableElements', 'resetDialogFocus',
+    'makeElementUntabbable', 'setAttr', 'acceptAction', 'cancelAction',
+    'getFocusedElement', 'setFocusedElement',
   ]);
 });
 
@@ -64,7 +65,7 @@ test('#isOpen returns false when the dialog is closed', () => {
 test('#open registers all events registered within open()', () => {
   const {foundation, mockAdapter} = setupTest();
 
-	foundation.open();
+  foundation.open();
 
   td.verify(mockAdapter.registerAcceptHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerCancelHandler(td.matchers.isA(Function)));
