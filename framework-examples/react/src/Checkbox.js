@@ -154,7 +154,7 @@ export default class Checkbox extends PureComponent {
     return (
       <div ref="root" className={`mdc-checkbox ${this.state.classes.toJS().join(' ')}`}>
         <input ref="nativeCb"
-               id={this.props.controlId}
+               id={this.props.id}
                type="checkbox"
                className="mdc-checkbox__native-control"
                aria-labelledby={this.props.labelId}
