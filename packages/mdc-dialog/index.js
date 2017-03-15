@@ -53,9 +53,6 @@ export class MDCDialog extends MDCComponent {
     const {FOCUSABLE_ELEMENTS, SCROLL_LOCK_TARGET} = MDCDialogFoundation.strings;
 
     return new MDCDialogFoundation({
-      setBackgroundAriaHidden: (ariaHidden) =>
-        document.querySelector(SCROLL_LOCK_TARGET).setAttribute('aria-hidden', ariaHidden),
-      setDialogAriaHidden: (ariaHidden) => this.dialog.setAttribute('aria-hidden', ariaHidden),
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -86,7 +83,8 @@ export class MDCDialog extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-      setAttr: (elem, attr, val) => elem.setAttribute(attr, val),
+      setBackgroundAttr: (attr, val) => document.querySelector(SCROLL_LOCK_TARGET).setAttribute(attr, val),
+      setDialogAttr: (attr, val) => this.root_.setAttribute(attr, val),
       getFocusedElement: () => document.activeElement,
       setFocusedElement: (element) => element.focus(),
       acceptAction: () => true,

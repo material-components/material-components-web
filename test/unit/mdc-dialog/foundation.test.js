@@ -29,8 +29,8 @@ test('exports cssClasses', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
-    'setBackgroundAriaHidden', 'setDialogAriaHidden', 'hasClass', 'addClass',
-    'removeClass', 'addScrollLockClass', 'removeScrollLockClass',
+    'hasClass', 'addClass', 'removeClass',
+    'addScrollLockClass', 'removeScrollLockClass',
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerDialogInteractionHandler', 'deregisterDialogInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
@@ -39,8 +39,8 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler',
     'numFocusableElements', 'resetDialogFocus', 'setDefaultFocus',
     'getFocusableElements', 'saveElementTabState', 'restoreElementTabState',
-    'makeElementUntabbable', 'setAttr', 'acceptAction', 'cancelAction',
-    'getFocusedElement', 'setFocusedElement',
+    'makeElementUntabbable', 'setBackgroundAttr', 'setDialogAttr',
+    'acceptAction', 'cancelAction', 'getFocusedElement', 'setFocusedElement',
   ]);
 });
 
@@ -143,16 +143,16 @@ test('#open sets aria attributes for dialog', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
-  td.verify(mockAdapter.setDialogAriaHidden(false), {times: 1});
-  td.verify(mockAdapter.setBackgroundAriaHidden(true), {times: 1});
+  td.verify(mockAdapter.setDialogAttr('aria-hidden', false), {times: 1});
+  td.verify(mockAdapter.setBackgroundAttr('aria-hidden', true), {times: 1});
 });
 
 test('#close sets aria attributes for dialog', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.close();
-  td.verify(mockAdapter.setDialogAriaHidden(true), {times: 1});
-  td.verify(mockAdapter.setBackgroundAriaHidden(false), {times: 1});
+  td.verify(mockAdapter.setDialogAttr('aria-hidden', true), {times: 1});
+  td.verify(mockAdapter.setBackgroundAttr('aria-hidden', false), {times: 1});
 });
 
 test('#open sets default focus', () => {

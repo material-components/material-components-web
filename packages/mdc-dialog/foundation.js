@@ -28,8 +28,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
-      setBackgroundAriaHidden: (/* el: Element */) => {},
-      setDialogAriaHidden: (/* el: Element */) => {},
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
@@ -54,7 +52,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
       saveElementTabState: (/* el: Element */) => {},
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
-      setAttr: (/* elem: Element, attr: String, val: Boolean */) => {},
+      setBackgroundAttr: (/* attr: String, val: Boolean */) => {},
+      setDialogAttr: (/* attr: String, val: Boolean */) => {},
       acceptAction: () => {/* accept function */},
       cancelAction: () => {/* cancel function */},
       getFocusedElement: () => {},
@@ -109,8 +108,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerFocusTrappingHandler(this.focusHandler_);
     this.adapter_.setDefaultFocus();
     this.disableScroll_();
-    this.adapter_.setDialogAriaHidden(false);
-    this.adapter_.setBackgroundAriaHidden(true);
+    this.adapter_.setBackgroundAttr('aria-hidden', true);
+    this.adapter_.setDialogAttr('aria-hidden', false);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
     this.isOpen_ = true;
   }
@@ -125,8 +124,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterFocusTrappingHandler(this.focusHandler_);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
     this.enableScroll_();
-    this.adapter_.setDialogAriaHidden(true);
-    this.adapter_.setBackgroundAriaHidden(false);
+    this.adapter_.setBackgroundAttr('aria-hidden', false);
+    this.adapter_.setDialogAttr('aria-hidden', true);
     this.isOpen_ = false;
     this.adapter_.setFocusedElement(this.lastFocusedElement_);
   }

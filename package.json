@@ -110,6 +110,7 @@
           "button",
           "card",
           "checkbox",
+          "dialog",
           "drawer",
           "elevation",
           "fab",
