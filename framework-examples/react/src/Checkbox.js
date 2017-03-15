@@ -45,12 +45,14 @@ export default class Checkbox extends PureComponent {
     id: PropTypes.string,
     labelId: PropTypes.string,
     checked: PropTypes.bool,
+    disabled: PropTypes.bool,
     indeterminate: PropTypes.bool,
     onChange: PropTypes.func
   }
 
   static defaultProps = {
     checked: false,
+    disabled: false,
     indeterminate: false,
     onChange: () => {}
   }
@@ -59,6 +61,7 @@ export default class Checkbox extends PureComponent {
     classes: new ImmutableSet(),
     rippleCss: new ImmutableMap(),
     checkedInternal: this.props.checked,
+    disabledInternal: this.props.disabled,
     indeterminateInternal: this.props.indeterminate
   }
 
@@ -159,6 +162,7 @@ export default class Checkbox extends PureComponent {
                className="mdc-checkbox__native-control"
                aria-labelledby={this.props.labelId}
                checked={this.state.checkedInternal}
+               disabled={this.state.disabledInternal}
                onChange={evt => {
                  this.setState({
                    checkedInternal: this.refs.nativeCb.checked,
@@ -200,6 +204,9 @@ export default class Checkbox extends PureComponent {
     }
     if (props.indeterminate !== this.props.indeterminate) {
       this.setState({indeterminateInternal: props.indeterminate});
+    }
+    if (props.disabled !== this.props.disabled) {
+      this.setState({disabledInternal: props.disabled});
     }
   }
 
