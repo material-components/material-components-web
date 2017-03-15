@@ -202,7 +202,8 @@ To interact with the dialog, there are two functions which you should override: 
 | `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
-| `setAttr: (elem: Element, attr: String, val: Boolean) => void`
+| `setBackgroundAttr: (attr: String, val: Boolean) => void` | Sets `aria-hidden` on the background content. Used by both `open()` and `close()` |
+| `setDialogAttr: (attr: String, val: Boolean) => void` | Sets `aria-hidden` on the `dialog`. Used by both `open()` and `close()` |
 | `getFocusedElement: () => Element` | gets currently focused element |
 | `setFocusedElement: (element: Element) => void` | sets focus on the `accept` button |
 | `acceptAction: () => {}` | This function will be called when accept is selected |
