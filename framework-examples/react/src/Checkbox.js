@@ -58,8 +58,8 @@ export default class Checkbox extends PureComponent {
   state = {
     classes: new ImmutableSet(),
     rippleCss: new ImmutableMap(),
-    checkedInternal: false,
-    indeterminateInternal: false
+    checkedInternal: this.props.checked,
+    indeterminateInternal: this.props.indeterminate
   }
 
   // Here we initialize a foundation class, passing it an adapter which tells it how to
