@@ -51,7 +51,7 @@ export default class App extends PureComponent {
         </FormField>
         <div style={{paddingTop: '12px'}}>
           <button onClick={() => this.setState({indeterminate: true})}>Make Indeterminate</button>
-          <button onClick={() => this.setState({disabled: !disabled})}>Disable</button>
+          <button onClick={() => this.setState({disabled: !disabled})}>Toggle Disabled</button>
         </div>
         <p>{changeEventCount} change events so far</p>
       </main>
