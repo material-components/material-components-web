@@ -1,8 +1,25 @@
+/**
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 @import "@material/animation/functions";
-@import "@material/typography/variables";
 @import "@material/elevation/mixins";
-@import "@material/theme/mixins";
 @import "@material/rtl/mixins";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+@import "@material/typography/variables";
 
 .mdc-dialog {
   display: flex;
@@ -28,7 +45,7 @@
 
     @include mdc-theme-prop(background-color, background);
 
-    @include mdc-theme-dark(".mdc-dialog") {
+    @include mdc-theme-dark(".mdc-dialog", true) {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
     }
 
@@ -36,7 +53,6 @@
       text-align: right;
     }
 
-    font-family: Roboto, sans-serif;
     opacity: 0;
   }
 
@@ -86,7 +102,7 @@
       padding: 0;
     }
 
-    @include mdc-rtl {
+    @include mdc-rtl(".mdc-dialog") {
       text-align: right;
     }
   }
@@ -94,9 +110,8 @@
   &__header__title {
     flex: 1;
     margin: 0;
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 20px;
+
+    @include mdc-typography(title);
   }
 
   &__body {
@@ -105,31 +120,19 @@
 
     @include mdc-theme-prop(color, text-secondary-on-light);
 
-    @include mdc-theme-dark {
+    @include mdc-theme-dark(".mdc-dialog", true) {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
 
-    font-size: 16px;
-    line-height: 23px;
+    @include mdc-typography(body1);
 
     &--scrollable {
       max-height: 195px;
       border-top: 1px solid rgba(0, 0, 0, .1);
       border-bottom: 1px solid rgba(0, 0, 0, .1);
-      font-size: 18px;
       overflow-y: scroll;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-    }
-
-    &__list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    &__list-item {
-      padding: 10px;
     }
   }
 

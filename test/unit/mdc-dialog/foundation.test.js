@@ -32,15 +32,15 @@ test('default adapter returns a complete adapter implementation', () => {
     'hasClass', 'addClass', 'removeClass',
     'addScrollLockClass', 'removeScrollLockClass',
     'registerInteractionHandler', 'deregisterInteractionHandler',
-    'registerDialogInteractionHandler', 'deregisterDialogInteractionHandler',
+    'registerDialogSurfaceInteractionHandler', 'deregisterDialogSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
     'registerAcceptHandler', 'deregisterAcceptHandler',
     'registerCancelHandler', 'deregisterCancelHandler',
     'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler',
-    'numFocusableElements', 'resetDialogFocus', 'setDefaultFocus',
+    'numFocusableElements', 'setDialogFocusFirstTarget', 'setInitialFocus',
     'getFocusableElements', 'saveElementTabState', 'restoreElementTabState',
     'makeElementUntabbable', 'setBackgroundAttr', 'setDialogAttr',
-    'acceptAction', 'cancelAction', 'getFocusedElement', 'setFocusedElement',
+    'getFocusedElement', 'setFocusedElement', 'acceptAction', 'cancelAction',
   ]);
 });
 
@@ -69,7 +69,7 @@ test('#open registers all events registered within open()', () => {
 
   td.verify(mockAdapter.registerAcceptHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerCancelHandler(td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerDialogInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerDialogSurfaceInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function)));
@@ -83,7 +83,7 @@ test('#close deregisters all events registered within open()', () => {
 
   td.verify(mockAdapter.deregisterAcceptHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterCancelHandler(td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterDialogInteractionHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterDialogSurfaceInteractionHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterFocusTrappingHandler(td.matchers.isA(Function)));
@@ -159,7 +159,7 @@ test('#open sets default focus', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
-  td.verify(mockAdapter.setDefaultFocus());
+  td.verify(mockAdapter.setInitialFocus());
 });
 
 test('#accept accepts the terms of the dialog', () => {

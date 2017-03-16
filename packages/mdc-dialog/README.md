@@ -34,8 +34,8 @@ Dialogs inform users about a specific task and may contain critical information 
       Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
     </section>
     <footer class="mdc-dialog__footer">
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog--cancel">DECLINE</button>
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog--accept">ACCEPT</button>
+      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog--cancel">Decline</button>
+      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog--accept">Accept</button>
     </footer>
   </div>
   <div class="mdc-dialog__backdrop"></div>
@@ -77,8 +77,8 @@ Some dialogs will not be tall enough to accomodate everything you would like to 
         </ul> 
       </section>
       <footer class="mdc-dialog__footer">
-        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">decline</button>
-        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">accept</button>
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
       </footer>
     </div>
     <div class="mdc-dialog__backdrop"></div> 
@@ -185,8 +185,8 @@ To interact with the dialog, there are two functions which you should override: 
 | `removeScrollLockClass(className: string) => void` | Removes a class which prevents scrolling the dialog background when open. |
 | `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
 | `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
-| `registerDialogInteractionHandler: (evt: string, handler: EventListener) => void` | Registers an event handler to prevent pointer events from propagating past the dialog surface. |
-| `deregisterDialogInteractionHandler: (evt: string, handler: EventListener) => void` | Deregisters an event handler to prevent pointer events from propagating past the dialog surface. |
+| `registerDialogSurfaceInteractionHandler: (evt: string, handler: EventListener) => void` | Registers an event handler to prevent pointer events from propagating past the dialog surface. |
+| `deregisterDialogSurfaceInteractionHandler: (evt: string, handler: EventListener) => void` | Deregisters an event handler to prevent pointer events from propagating past the dialog surface. |
 | `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
 | `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
 | `registerAcceptHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
@@ -196,8 +196,8 @@ To interact with the dialog, there are two functions which you should override: 
 | `registerFocusTrappingHandler: (handler: EventListener) => void` | Registers an event handler to help with focus trapping. |
 | `deregisterFocusTrappingHandler: (handler: EventListener) => void` | Deregisters an event handler to help with focus trapping. |
 | `numFocusableElements: () => Number` | The number of focusable elements in the dialog |
-| `resetDialogFocus: () => void` | resets focus to the first focusable element in the dialog |
-| `setDefaultFocus: () => void` | sets focus on the `accept` button |
+| `setDialogFocusFirstTarget: () => void` | resets focus to the first focusable element in the dialog |
+| `setInitialFocus: () => void` | sets focus on the `accept` button |
 | `getFocusableElements() => NodeList` | Returns the node list of focusable elements inside the drawer. |
 | `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |

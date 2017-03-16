@@ -138,24 +138,24 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerDialogInteractionHandler adds an event listener to the root element', () => {
+test('adapter#registerDialogSurfaceInteractionHandler adds an event listener to the root element', () => {
   const {root, component} = setupTest();
   const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
   const handler = td.func('eventHandler');
 
-  component.getDefaultFoundation().adapter_.registerDialogInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.registerDialogSurfaceInteractionHandler('click', handler);
   domEvents.emit(dialog, 'click');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterDialogInteractionHandler removes an event listener from the root element', () => {
+test('adapter#deregisterDialogSurfaceInteractionHandler removes an event listener from the root element', () => {
   const {root, component} = setupTest();
   const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
   const handler = td.func('eventHandler');
 
   dialog.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterDialogInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterDialogSurfaceInteractionHandler('click', handler);
   domEvents.emit(dialog, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
@@ -282,14 +282,14 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () =
   assert.equal(el.getAttribute('tabindex'), '-1');
 });
 
-test('adapter#acceptAction returns true', () => {
+test('adapter#acceptAction returns noop', () => {
   const {component} = setupTest();
 
-  assert.equal(component.getDefaultFoundation().adapter_.acceptAction(), true);
+  assert.equal(component.getDefaultFoundation().adapter_.acceptAction(), undefined);
 });
 
-test('adapter#cancelAction returns false', () => {
+test('adapter#cancelAction returns noop', () => {
   const {component} = setupTest();
 
-  assert.equal(component.getDefaultFoundation().adapter_.cancelAction(), false);
+  assert.equal(component.getDefaultFoundation().adapter_.cancelAction(), undefined);
 });

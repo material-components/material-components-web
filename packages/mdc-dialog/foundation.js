@@ -35,8 +35,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
       removeScrollLockClass: (/* className: string */) => {},
       registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      registerDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterDialogInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      registerDialogSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterDialogSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
       registerAcceptHandler: (/* handler: EventListener */) => {},
@@ -46,25 +46,25 @@ export default class MDCDialogFoundation extends MDCFoundation {
       registerFocusTrappingHandler: (/* handler: EventListener */) => {},
       deregisterFocusTrappingHandler: (/* handler: EventListener */) => {},
       numFocusableElements: () => {/* number of focusable elements */},
-      resetDialogFocus: () => {/* sets focus on first element in dialog */},
-      setDefaultFocus: () => /* sets focus */ {},
+      setDialogFocusFirstTarget: () => {/* sets focus on first element in dialog */},
+      setInitialFocus: () => /* sets focus on the accept button when dialog opens */ {},
       getFocusableElements: (/* handler: EventListener */) => /* NodeList */ {},
       saveElementTabState: (/* el: Element */) => {},
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
       setBackgroundAttr: (/* attr: String, val: Boolean */) => {},
       setDialogAttr: (/* attr: String, val: Boolean */) => {},
+      getFocusedElement: () => /* gets the element used to open the dialog */ {},
+      setFocusedElement: (/* target: Element */) => /*  */ {},
       acceptAction: () => {/* accept function */},
       cancelAction: () => {/* cancel function */},
-      getFocusedElement: () => {},
-      setFocusedElement: () => {},
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
 
-    this.lastFocusedElement_;
+    this.lastFocusedElement_ = null;
     this.currentFocusedElIndex_ = -1;
     this.inert_ = true;
     this.isOpen_ = false;
@@ -86,12 +86,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
     if (this.adapter_.hasClass(OPEN)) {
       this.isOpen_ = true;
     } else {
-      this.lockTab_();
+      this.makeUntabbable_();
       this.isOpen_ = false;
     }
   }
-
-  destroy() {}
 
   getLastFocusTarget() {
     return this.lastFocusedElement_;
@@ -99,14 +97,14 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   open() {
     this.lastFocusedElement_ = this.adapter_.getFocusedElement();
-    this.unlockTab_();
+    this.makeTabbable_();
     this.adapter_.registerAcceptHandler(this.acceptHandler_);
     this.adapter_.registerCancelHandler(this.cancelHandler_);
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.registerDialogInteractionHandler('click', this.dialogClickHandler_);
+    this.adapter_.registerDialogSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
     this.adapter_.registerFocusTrappingHandler(this.focusHandler_);
-    this.adapter_.setDefaultFocus();
+    this.adapter_.setInitialFocus();
     this.disableScroll_();
     this.adapter_.setBackgroundAttr('aria-hidden', true);
     this.adapter_.setDialogAttr('aria-hidden', false);
@@ -115,10 +113,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   close() {
-    this.lockTab_();
+    this.makeUntabbable_();
     this.adapter_.deregisterAcceptHandler(this.acceptHandler_);
     this.adapter_.deregisterCancelHandler(this.cancelHandler_);
-    this.adapter_.deregisterDialogInteractionHandler(this.dialogClickHandler_);
+    this.adapter_.deregisterDialogSurfaceInteractionHandler(this.dialogClickHandler_);
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.deregisterInteractionHandler(this.componentClickHandler_);
     this.adapter_.deregisterFocusTrappingHandler(this.focusHandler_);
@@ -142,8 +140,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   /**
    *  Render all children of the dialog inert when it's closed.
+   *  Since there is no implied order of elements there is no need
+   *  to keep track of their indexes.
    */
-  lockTab_() {
+  makeUntabbable_() {
     if (this.inert_) {
       return;
     }
@@ -162,7 +162,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
   /**
    *  Make all children of the dialog tabbable again when it's open.
    */
-  unlockTab_() {
+  makeTabbable_() {
     if (!this.inert_) {
       return;
     }
@@ -184,7 +184,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.currentFocusedElIndex_++;
 
       if (this.currentFocusedElIndex_ >= numTabbable) {
-        this.adapter_.resetDialogFocus();
+        this.adapter_.setDialogFocusFirstTarget();
         this.currentFocusedElIndex_ = 0;
       }
     } else {

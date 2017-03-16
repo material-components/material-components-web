@@ -34,7 +34,6 @@ export function applyPassive(globalObj = window, forceRefresh = false) {
   return supportsPassive_ ? {passive: true} : false;
 }
 
-// Save the tab state for an element.
 export function saveElementTabState(el) {
   if (el.hasAttribute('tabindex')) {
     el.setAttribute(TAB_DATA, el.getAttribute('tabindex'));
@@ -42,7 +41,6 @@ export function saveElementTabState(el) {
   el.setAttribute(TAB_DATA_HANDLED, true);
 }
 
-// Restore the tab state for an element, if it was saved.
 export function restoreElementTabState(el) {
   // Only modify elements we've already handled, in case anything was dynamically added since we saved state.
   if (el.hasAttribute(TAB_DATA_HANDLED)) {
