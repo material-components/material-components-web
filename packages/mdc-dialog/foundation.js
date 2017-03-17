@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+   */
 
 import {MDCFoundation} from '@material/base';
 import {cssClasses, strings} from './constants';
@@ -45,7 +45,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterCancelHandler: (/* handler: EventListener */) => {},
       registerFocusTrappingHandler: (/* handler: EventListener */) => {},
       deregisterFocusTrappingHandler: (/* handler: EventListener */) => {},
-      numFocusableElements: () => {/* number of focusable elements */},
+      numFocusableTargets: () => {/* number of focusable elements */},
       setDialogFocusFirstTarget: () => {/* sets focus on first element in dialog */},
       setInitialFocus: () => /* sets focus on the accept button when dialog opens */ {},
       getFocusableElements: (/* handler: EventListener */) => /* NodeList */ {},
@@ -54,8 +54,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
       makeElementUntabbable: (/* el: Element */) => {},
       setBackgroundAttr: (/* attr: String, val: Boolean */) => {},
       setDialogAttr: (/* attr: String, val: Boolean */) => {},
-      getFocusedElement: () => /* gets the element used to open the dialog */ {},
-      setFocusedElement: (/* target: Element */) => /*  */ {},
+      getFocusedTarget: () => /* gets the element used to open the dialog */ {},
+      setFocusedTarget: (/* target: Element */) => {},
       acceptAction: () => {/* accept function */},
       cancelAction: () => {/* cancel function */},
     };
@@ -96,15 +96,15 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   open() {
-    this.lastFocusedElement_ = this.adapter_.getFocusedElement();
+    this.lastFocusedElement_ = this.adapter_.getFocusedTarget();
     this.makeTabbable_();
     this.adapter_.registerAcceptHandler(this.acceptHandler_);
     this.adapter_.registerCancelHandler(this.cancelHandler_);
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.registerDialogSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-    this.adapter_.registerFocusTrappingHandler(this.focusHandler_);
     this.adapter_.setInitialFocus();
+    this.adapter_.registerFocusTrappingHandler(this.focusHandler_);
     this.disableScroll_();
     this.adapter_.setBackgroundAttr('aria-hidden', true);
     this.adapter_.setDialogAttr('aria-hidden', false);
@@ -125,7 +125,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.setBackgroundAttr('aria-hidden', false);
     this.adapter_.setDialogAttr('aria-hidden', true);
     this.isOpen_ = false;
-    this.adapter_.setFocusedElement(this.lastFocusedElement_);
+    this.adapter_.setFocusedTarget(this.lastFocusedElement_);
   }
 
   accept() {
@@ -178,7 +178,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   setFocus_() {
-    const numTabbable = this.adapter_.numFocusableElements();
+    const numTabbable = this.adapter_.numFocusableTargets();
 
     if (this.currentFocusedElIndex_ > -1) {
       this.currentFocusedElIndex_++;

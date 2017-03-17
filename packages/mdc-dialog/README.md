@@ -195,7 +195,7 @@ To interact with the dialog, there are two functions which you should override: 
 | `deregisterCancelHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
 | `registerFocusTrappingHandler: (handler: EventListener) => void` | Registers an event handler to help with focus trapping. |
 | `deregisterFocusTrappingHandler: (handler: EventListener) => void` | Deregisters an event handler to help with focus trapping. |
-| `numFocusableElements: () => Number` | The number of focusable elements in the dialog |
+| `numFocusableTargets: () => Number` | The number of focusable elements in the dialog |
 | `setDialogFocusFirstTarget: () => void` | resets focus to the first focusable element in the dialog |
 | `setInitialFocus: () => void` | sets focus on the `accept` button |
 | `getFocusableElements() => NodeList` | Returns the node list of focusable elements inside the drawer. |
@@ -204,8 +204,8 @@ To interact with the dialog, there are two functions which you should override: 
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
 | `setBackgroundAttr: (attr: String, val: Boolean) => void` | Sets `aria-hidden` on the background content. Used by both `open()` and `close()` |
 | `setDialogAttr: (attr: String, val: Boolean) => void` | Sets `aria-hidden` on the `dialog`. Used by both `open()` and `close()` |
-| `getFocusedElement: () => Element` | gets currently focused element |
-| `setFocusedElement: (element: Element) => void` | sets focus on the `accept` button |
+| `getFocusedTarget: () => Element` | gets currently focused element |
+| `setFocusedTarget: (target: Element) => void` | sets focus on the `accept` button |
 | `acceptAction: () => {}` | This function will be called when accept is selected |
 | `cancelAction: () => {}` | This function will be called when cancel is selected or the backdrop is clicked |
 

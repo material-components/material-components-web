@@ -37,10 +37,10 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerAcceptHandler', 'deregisterAcceptHandler',
     'registerCancelHandler', 'deregisterCancelHandler',
     'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler',
-    'numFocusableElements', 'setDialogFocusFirstTarget', 'setInitialFocus',
+    'numFocusableTargets', 'setDialogFocusFirstTarget', 'setInitialFocus',
     'getFocusableElements', 'saveElementTabState', 'restoreElementTabState',
     'makeElementUntabbable', 'setBackgroundAttr', 'setDialogAttr',
-    'getFocusedElement', 'setFocusedElement', 'acceptAction', 'cancelAction',
+    'getFocusedTarget', 'setFocusedTarget', 'acceptAction', 'cancelAction',
   ]);
 });
 
@@ -206,10 +206,10 @@ test('on document keydown does nothing when key other than escape is pressed', (
   td.verify(mockAdapter.removeClass('mdc-dialog--open'), {times: 0});
 });
 
-test('setFocus sets current focus index to number of tabbable elements if current focused index is -1', () => {
+test('#setFocus sets current focus index to number of tabbable elements if current focused index is -1', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.numFocusableElements()).thenReturn(2);
+  td.when(mockAdapter.numFocusableTargets()).thenReturn(2);
 
   foundation.currentFocusedElIndex_ = -1;
   foundation.setFocus_();
@@ -217,10 +217,10 @@ test('setFocus sets current focus index to number of tabbable elements if curren
   assert.equal(foundation.currentFocusedElIndex_, 2);
 });
 
-test('setFocus increments currentFocusedElIndex if it is smaller than number of tabbable elements', () => {
+test('#setFocus increments currentFocusedElIndex if it is smaller than number of tabbable elements', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.numFocusableElements()).thenReturn(4);
+  td.when(mockAdapter.numFocusableTargets()).thenReturn(4);
 
   foundation.currentFocusedElIndex_ = 1;
   foundation.setFocus_();
@@ -228,14 +228,32 @@ test('setFocus increments currentFocusedElIndex if it is smaller than number of 
   assert.equal(foundation.currentFocusedElIndex_, 2);
 });
 
-test('setFocus sets currentFocusedElIndex to 0 if it is' +
+test('#setFocus sets currentFocusedElIndex to 0 if it is' +
       ' greater than or equal to the number of tabbable elements', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.numFocusableElements()).thenReturn(4);
+  td.when(mockAdapter.numFocusableTargets()).thenReturn(4);
 
   foundation.currentFocusedElIndex_ = 4;
   foundation.setFocus_();
 
   assert.equal(foundation.currentFocusedElIndex_, 0);
+});
+
+test('#open regisers focus trapping handler after initial focus is assigned', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let setInitialFocusCalledBeforeFocusHandlerRegistered = false;
+  let registerFocusTrappingHandlerCalled = false;
+
+  td.when(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function))).thenDo(() => {
+    registerFocusTrappingHandlerCalled = true;
+  });
+
+  td.when(mockAdapter.setInitialFocus()).thenDo(() => {
+     setInitialFocusCalledBeforeFocusHandlerRegistered = !registerFocusTrappingHandlerCalled;
+  });
+
+  foundation.open();
+
+  assert.isTrue(setInitialFocusCalledBeforeFocusHandlerRegistered);
 });
