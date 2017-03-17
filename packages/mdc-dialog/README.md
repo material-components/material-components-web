@@ -255,17 +255,17 @@ Opens the dialog, registers appropriate event listners, sets aria attributes, fo
 
 Closes the dialog, deregisters appropriate event listners, resets aria attributes, focuses elements.
 
-#### MDCDialogFoundation.accept() => void 
+#### MDCDialogFoundation.accept(notifyChange = false) => void 
 
-Calls `acceptAction`, closes dialog
+Closes the dialog. If `notifyChange` is true, calls the adapter's `notifyAccept()` method.
 
-#### MDCDialogFoundation.cancel() => void 
+#### MDCDialogFoundation.cancel(notifyChange = false) => void 
 
-Calls `cancelAction`, closes dialog
+Closes the dialog. If `notifyChange` is true, calls the adapter's `notifyCancel()` method.
 
 #### MDCDialogFoundation.isOpen() => Boolean 
 
-Returns true if the dialog is open
+Returns true if the dialog is open, false otherwise.
 
 ## Theming - Dark Theme Considerations
 
