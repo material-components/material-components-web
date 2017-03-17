@@ -18,6 +18,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
+import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
 import {MDCDialog} from '../../../packages/mdc-dialog';
 
@@ -67,16 +68,41 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCDialog.attachTo(getFixture().querySelector('.mdc-dialog')) instanceof MDCDialog);
 });
 
-test('get/set open', () => {
-  const {root, component} = setupTest();
+test('#initialize attaches ripple elements to all footer buttons', () => {
+  const raf = createMockRaf();
+  const {acceptButton, cancelButton} = setupTest();
+  raf.flush();
 
-  component.open = true;
-  assert.isOk(root.classList.contains('mdc-dialog--open'));
-  assert.isOk(component.open);
+  assert.isTrue(acceptButton.classList.contains('mdc-ripple-upgraded'));
+  assert.isTrue(cancelButton.classList.contains('mdc-ripple-upgraded'));
+  raf.restore();
+});
 
-  component.open = false;
-  assert.isNotOk(root.classList.contains('mdc-dialog--open'));
-  assert.isNotOk(component.open);
+test('#destroy cleans up all ripples on footer buttons', () => {
+  const raf = createMockRaf();
+  const {component, acceptButton, cancelButton} = setupTest();
+  raf.flush();
+
+  component.destroy();
+  raf.flush();
+
+  assert.isFalse(acceptButton.classList.contains('mdc-ripple-upgraded'));
+  assert.isFalse(cancelButton.classList.contains('mdc-ripple-upgraded'));
+  raf.restore();
+});
+
+test('#show opens the dialog', () => {
+  const {component} = setupTest();
+
+  component.show();
+  assert.isTrue(component.open);
+});
+
+test('#close hides the dialog', () => {
+  const {component} = setupTest();
+
+  component.close();
+  assert.isFalse(component.open);
 });
 
 test('adapter#hasClass returns true if the root element has specified class', () => {
@@ -179,42 +205,13 @@ test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerAcceptHandler attaches a "click" handler to the accept button', () => {
-  const {acceptButton, component} = setupTest();
-  const handler = td.func('eventHandler');
+test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
+  const {component} = setupTest();
+  const target = bel`<div class="existent-class"></div>`;
+  const {adapter_: adapter} = component.getDefaultFoundation();
 
-  component.getDefaultFoundation().adapter_.registerAcceptHandler(handler);
-  domEvents.emit(acceptButton, 'click');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterAcceptHandler removes a "click" handler from the accept button', () => {
-  const {acceptButton, component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  acceptButton.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterAcceptHandler(handler);
-  domEvents.emit(document, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerCancelHandler attaches a "click" handler to the cancel button', () => {
-  const {cancelButton, component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  component.getDefaultFoundation().adapter_.registerCancelHandler(handler);
-  domEvents.emit(cancelButton, 'click');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterCancelHandler removes a "click" handler from the cancel button', () => {
-  const {cancelButton, component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  cancelButton.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterCancelHandler(handler);
-  domEvents.emit(document, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
+  assert.isTrue(adapter.eventTargetHasClass(target, 'existent-class'));
+  assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
 });
 
 test('adapter#registerFocusTrappingHandler attaches a "focus" handler to the document', () => {
@@ -282,14 +279,35 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () =
   assert.equal(el.getAttribute('tabindex'), '-1');
 });
 
-test('adapter#acceptAction returns noop', () => {
+test('adapter#notifyAccept emits MDCDialog:accept', () => {
   const {component} = setupTest();
 
-  assert.equal(component.getDefaultFoundation().adapter_.acceptAction(), undefined);
+  const handler = td.func('acceptHandler');
+
+  component.listen('MDCDialog:accept', handler);
+  component.getDefaultFoundation().adapter_.notifyAccept();
+
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#cancelAction returns noop', () => {
+test('adapter#notifyCancel emits MDCDialog:cancel', () => {
   const {component} = setupTest();
 
-  assert.equal(component.getDefaultFoundation().adapter_.cancelAction(), undefined);
+  const handler = td.func('cancelHandler');
+
+  component.listen('MDCDialog:cancel', handler);
+  component.getDefaultFoundation().adapter_.notifyCancel();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#setFocusedTarget focuses the target given to it', () => {
+  const {component} = setupTest();
+  const target = {
+    focus: td.func('focus'),
+  };
+
+  component.getDefaultFoundation().adapter_.setFocusedTarget(target);
+
+  td.verify(target.focus());
 });

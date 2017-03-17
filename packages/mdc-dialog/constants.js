@@ -19,14 +19,14 @@ export const cssClasses = {
   OPEN: 'mdc-dialog--open',
   BACKDROP: 'mdc-dialog__backdrop',
   SCROLL_LOCK: 'mdc-dialog--scroll-lock',
+  ACCEPT_BTN: 'mdc-dialog__footer__button--accept',
+  CANCEL_BTN: 'mdc-dialog__footer__button--cancel',
 };
 
 export const strings = {
   OPEN_DIALOG_SELECTOR: '.mdc-dialog--open',
   DIALOG_SURFACE_SELECTOR: '.mdc-dialog__surface',
   ACCEPT_SELECTOR: '.mdc-dialog__footer__button--accept',
-  CANCEL_SELECTOR: '.mdc-dialog__footer__button--cancel',
-  OPACITY_VAR_NAME: '--mdc-dialog-opacity',
   FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
       'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',
   SCROLL_LOCK_TARGET: 'body',

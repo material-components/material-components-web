@@ -126,17 +126,28 @@
     <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script>
       (function() {
-      	var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-default'));
+
+        var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-default'));
+        
+        dialog.listen('MDCDialog:accept', () => {
+          console.log('accepted');
+        });
+        
+        dialog.listen('MDCDialog:cancel', () => {
+          console.log('canceled');
+        });
+        
+        document.querySelector('#default-dialog-activation').addEventListener('click', function (evt) {
+          dialog.lastFocusedTarget = evt.target;
+          dialog.show();
+        });
+
       	var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-with-list'));
-      	document.querySelector('#default-dialog-activation').addEventListener('click', function (evt) {
-      	  dialog.lastFocusedTarget = evt.target;
-      	  dialog.open = true;
-      	})
+
       	document.querySelector('#dialog-with-list-activation').addEventListener('click', function (evt) {
       	  dialogScrollable.lastFocusedTarget = evt.target;
-      	  dialogScrollable.open = true;
-      	})
-
+          dialogScrollable.show();
+      	});
       })();
     </script>
     <script>
@@ -150,6 +161,9 @@
             demoWrapper.removeAttribute('dir');
           }
         });
+
+        mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));
+        mdc.ripple.MDCRipple.attachTo(document.querySelector('#dialog-with-list-activation'));
       })();
     </script>
   </body>

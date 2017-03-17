@@ -15,6 +15,8 @@
  */
 
 import {MDCComponent} from '@material/base';
+import {MDCRipple} from '@material/ripple';
+
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
 
@@ -29,24 +31,34 @@ export class MDCDialog extends MDCComponent {
     return this.foundation_.isOpen();
   }
 
-  set open(value) {
-    if (value) {
-      this.foundation_.open();
-    } else {
-      this.foundation_.close();
-    }
-  }
-
   get acceptButton_() {
     return this.root_.querySelector(MDCDialogFoundation.strings.ACCEPT_SELECTOR);
   }
 
-  get cancelButton_() {
-    return this.root_.querySelector(MDCDialogFoundation.strings.CANCEL_SELECTOR);
-  }
-
   get dialogSurface_() {
     return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SURFACE_SELECTOR);
+  }
+
+  initialize() {
+    this.lastFocusedTarget = null;
+    this.footerBtnRipples_ = [];
+
+    const footerBtns = this.root_.querySelectorAll('.mdc-dialog__footer__button');
+    for (let i = 0, footerBtn; footerBtn = footerBtns[i]; i++) {
+      this.footerBtnRipples_.push(new MDCRipple(footerBtn));
+    }
+  }
+
+  destroy() {
+    this.footerBtnRipples_.forEach((ripple) => ripple.destroy());
+  }
+
+  show() {
+    this.foundation_.open();
+  }
+
+  close() {
+    this.foundation_.close();
   }
 
   getDefaultFoundation() {
@@ -60,6 +72,7 @@ export class MDCDialog extends MDCComponent {
         document.querySelector(SCROLL_LOCK_TARGET).classList.add(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
       removeScrollLockClass: () =>
         document.querySelector(SCROLL_LOCK_TARGET).classList.remove(MDCDialogFoundation.cssClasses.SCROLL_LOCK),
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerInteractionHandler: (evt, handler) =>
         this.root_.addEventListener(evt, handler, util.applyPassive()),
       deregisterInteractionHandler: (evt, handler) =>
@@ -70,10 +83,6 @@ export class MDCDialog extends MDCComponent {
         this.dialogSurface_.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
-      registerAcceptHandler: (handler) => this.acceptButton_.addEventListener('click', handler),
-      deregisterAcceptHandler: (handler) => this.acceptButton_.removeEventListener('click', handler),
-      registerCancelHandler: (handler) => this.cancelButton_.addEventListener('click', handler),
-      deregisterCancelHandler: (handler) => this.cancelButton_.removeEventListener('click', handler),
       registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
       deregisterFocusTrappingHandler: (handler) => document.removeEventListener('focus', handler, true),
       numFocusableTargets: () => this.dialogSurface_.querySelectorAll(FOCUSABLE_ELEMENTS).length,
@@ -87,8 +96,8 @@ export class MDCDialog extends MDCComponent {
       setDialogAttr: (attr, val) => this.root_.setAttribute(attr, val),
       getFocusedTarget: () => document.activeElement,
       setFocusedTarget: (target) => target.focus(),
-      acceptAction: () => {},
-      cancelAction: () => {},
+      notifyAccept: () => this.emit('MDCDialog:accept'),
+      notifyCancel: () => this.emit('MDCDialog:cancel'),
     });
   }
 }
