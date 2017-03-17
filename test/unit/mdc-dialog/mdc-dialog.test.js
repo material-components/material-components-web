@@ -21,6 +21,7 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
 import {MDCDialog} from '../../../packages/mdc-dialog';
+import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
   return bel`
@@ -68,28 +69,30 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCDialog.attachTo(getFixture().querySelector('.mdc-dialog')) instanceof MDCDialog);
 });
 
-test('#initialize attaches ripple elements to all footer buttons', () => {
-  const raf = createMockRaf();
-  const {acceptButton, cancelButton} = setupTest();
-  raf.flush();
+if (supportsCssVariables(window)) {
+  test('#initialize attaches ripple elements to all footer buttons', () => {
+    const raf = createMockRaf();
+    const {acceptButton, cancelButton} = setupTest();
+    raf.flush();
 
-  assert.isTrue(acceptButton.classList.contains('mdc-ripple-upgraded'));
-  assert.isTrue(cancelButton.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
-});
+    assert.isTrue(acceptButton.classList.contains('mdc-ripple-upgraded'));
+    assert.isTrue(cancelButton.classList.contains('mdc-ripple-upgraded'));
+    raf.restore();
+  });
 
-test('#destroy cleans up all ripples on footer buttons', () => {
-  const raf = createMockRaf();
-  const {component, acceptButton, cancelButton} = setupTest();
-  raf.flush();
+  test('#destroy cleans up all ripples on footer buttons', () => {
+    const raf = createMockRaf();
+    const {component, acceptButton, cancelButton} = setupTest();
+    raf.flush();
 
-  component.destroy();
-  raf.flush();
+    component.destroy();
+    raf.flush();
 
-  assert.isFalse(acceptButton.classList.contains('mdc-ripple-upgraded'));
-  assert.isFalse(cancelButton.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
-});
+    assert.isFalse(acceptButton.classList.contains('mdc-ripple-upgraded'));
+    assert.isFalse(cancelButton.classList.contains('mdc-ripple-upgraded'));
+    raf.restore();
+  });
+}
 
 test('#show opens the dialog', () => {
   const {component} = setupTest();
