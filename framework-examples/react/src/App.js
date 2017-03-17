@@ -25,18 +25,20 @@ import FormField from './FormField';
 export default class App extends PureComponent {
   state = {
     checked: false,
+    disabled: false,
     indeterminate: false,
     changeEventCount: 0
   }
 
   render() {
-    const {checked, indeterminate, status, changeEventCount} = this.state;
+    const {checked, disabled, indeterminate, status, changeEventCount} = this.state;
     return (
       <main>
         <h1>MDC-Web Checkbox - React Example</h1>
         <FormField>
           <Checkbox id="my-checkbox"
                     labelId="my-checkbox-label"
+                    disabled={disabled}
                     indeterminate={indeterminate}
                     onChange={({target}) => this.setState({
                       changeEventCount: changeEventCount + 1,
@@ -49,6 +51,7 @@ export default class App extends PureComponent {
         </FormField>
         <div style={{paddingTop: '12px'}}>
           <button onClick={() => this.setState({indeterminate: true})}>Make Indeterminate</button>
+          <button onClick={() => this.setState({disabled: !disabled})}>Toggle Disabled</button>
         </div>
         <p>{changeEventCount} change events so far</p>
       </main>
