@@ -32,6 +32,10 @@
       .demo-content > button {
         margin-bottom: 6px;
       }
+
+      .mdc-theme--dark {
+        background-color: #303030;
+      }
     </style>
   </head>
   <body class="mdc-typography"> 
@@ -117,10 +121,33 @@
                     stroke="white"
                     d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
             </svg>
-          <div class="mdc-checkbox__mixedmark"></div>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
         </div>
+        <label for="toggle-rtl">Toggle RTL</label>
       </div>
-      <label for="my-checkbox">Make RTL</label>
+
+      <div class="mdc-form-field">
+        <div class="mdc-checkbox">
+          <input type="checkbox"
+                 id="toggle-dark"
+                 class="mdc-checkbox__native-control"/>
+          <div class="mdc-checkbox__background">
+            <svg version="1.1"
+                 class="mdc-checkbox__checkmark"
+                 xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
+                 xml:space="preserve">
+              <path class="mdc-checkbox__checkmark__path"
+                    fill="none"
+                    stroke="white"
+                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+        </div>
+        <label for="toggle-dark">Toggle Dark</label>
+      </div>
     </section>
 
     <script src="assets/material-components-web.js" charset="utf-8"></script>
@@ -160,6 +187,9 @@
           } else {
             demoWrapper.removeAttribute('dir');
           }
+        });
+        document.getElementById('toggle-dark').addEventListener('change', function(evt) {
+          document.body.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
 
         mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));

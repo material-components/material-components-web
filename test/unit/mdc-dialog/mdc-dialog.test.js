@@ -128,18 +128,18 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('adapter#addScrollLockClass adds a class to the body, locking the background scroll', () => {
+test('adapter#addBodyClass adds a class to the body, locking the background scroll', () => {
   const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.addScrollLockClass('mdc-dialog--scroll-lock');
+  component.getDefaultFoundation().adapter_.addBodyClass('mdc-dialog--scroll-lock');
   assert.isOk(document.querySelector('body').classList.contains('mdc-dialog--scroll-lock'));
 });
 
-test('adapter#removeScrollLockClass adds a class to the body, locking the background scroll', () => {
+test('adapter#removeBodyClass adds a class to the body, locking the background scroll', () => {
   const {component} = setupTest();
   const body = document.querySelector('body');
 
   body.classList.add('mdc-dialog--scroll-lock');
-  component.getDefaultFoundation().adapter_.removeScrollLockClass('mdc-dialog--scroll-lock');
+  component.getDefaultFoundation().adapter_.removeBodyClass('mdc-dialog--scroll-lock');
   assert.isNotOk(body.classList.contains('mdc-dialog--scroll-lock'));
 });
 
@@ -164,24 +164,24 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerDialogSurfaceInteractionHandler adds an event listener to the root element', () => {
+test('adapter#registerSurfaceInteractionHandler adds an event listener to the root element', () => {
   const {root, component} = setupTest();
   const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
   const handler = td.func('eventHandler');
 
-  component.getDefaultFoundation().adapter_.registerDialogSurfaceInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.registerSurfaceInteractionHandler('click', handler);
   domEvents.emit(dialog, 'click');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterDialogSurfaceInteractionHandler removes an event listener from the root element', () => {
+test('adapter#deregisterSurfaceInteractionHandler removes an event listener from the root element', () => {
   const {root, component} = setupTest();
   const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
   const handler = td.func('eventHandler');
 
   dialog.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterDialogSurfaceInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterSurfaceInteractionHandler('click', handler);
   domEvents.emit(dialog, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
@@ -310,4 +310,26 @@ test('adapter#setFocusedTarget focuses the target given to it', () => {
   component.getDefaultFoundation().adapter_.setFocusedTarget(target);
 
   td.verify(target.focus());
+});
+
+test('adapter#setBodyAttr sets an attribute to the given value on the body', () => {
+  const {component} = setupTest();
+
+  component.getDefaultFoundation().adapter_.setBodyAttr('aria-hidden', 'true');
+  assert.equal(document.body.getAttribute('aria-hidden'), 'true');
+  document.body.removeAttribute('aria-hidden');
+});
+
+test('adapter#rmBodyAttr removes an attribute from the body', () => {
+  const {component} = setupTest();
+
+  document.body.setAttribute('aria-hidden', 'true');
+  component.getDefaultFoundation().adapter_.rmBodyAttr('aria-hidden');
+  assert.isFalse(document.body.hasAttribute('aria-hidden'));
+});
+
+test('adapter#setAttr sets an attribute to the given value on the root element', () => {
+  const {component, root} = setupTest();
+  component.getDefaultFoundation().adapter_.setAttr('aria-hidden', 'true');
+  assert.equal(root.getAttribute('aria-hidden'), 'true');
 });

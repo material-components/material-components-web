@@ -31,14 +31,14 @@ test('exports cssClasses', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
     'hasClass', 'addClass', 'removeClass',
-    'addScrollLockClass', 'removeScrollLockClass', 'eventTargetHasClass',
+    'addBodyClass', 'removeBodyClass', 'eventTargetHasClass',
     'registerInteractionHandler', 'deregisterInteractionHandler',
-    'registerDialogSurfaceInteractionHandler', 'deregisterDialogSurfaceInteractionHandler',
+    'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
     'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler',
     'numFocusableTargets', 'setDialogFocusFirstTarget', 'setInitialFocus',
     'getFocusableElements', 'saveElementTabState', 'restoreElementTabState',
-    'makeElementUntabbable', 'setBackgroundAttr', 'setDialogAttr',
+    'makeElementUntabbable', 'setBodyAttr', 'rmBodyAttr', 'setAttr',
     'getFocusedTarget', 'setFocusedTarget', 'notifyAccept', 'notifyCancel',
   ]);
 });
@@ -73,7 +73,7 @@ test('#open registers all events registered within open()', () => {
 
   foundation.open();
 
-  td.verify(mockAdapter.registerDialogSurfaceInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerSurfaceInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function)));
@@ -85,7 +85,7 @@ test('#close deregisters all events registered within open()', () => {
   foundation.open();
   foundation.close();
 
-  td.verify(mockAdapter.deregisterDialogSurfaceInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterSurfaceInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterFocusTrappingHandler(td.matchers.isA(Function)));
@@ -105,18 +105,18 @@ test('#close removes the open class to hide the dialog', () => {
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-test('#open adds the scroll lock class to dialog background', () => {
+test('#open adds scroll lock class to the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
-  td.verify(mockAdapter.addScrollLockClass());
+  td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
 });
 
 test('#close removes the scroll lock class from dialog background', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.close();
-  td.verify(mockAdapter.removeScrollLockClass());
+  td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
 });
 
 test('#open makes elements tabbable', () => {
@@ -145,16 +145,16 @@ test('#open sets aria attributes for dialog', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
-  td.verify(mockAdapter.setDialogAttr('aria-hidden', false), {times: 1});
-  td.verify(mockAdapter.setBackgroundAttr('aria-hidden', true), {times: 1});
+  td.verify(mockAdapter.setAttr('aria-hidden', 'false'));
+  td.verify(mockAdapter.setBodyAttr('aria-hidden', 'true'));
 });
 
 test('#close sets aria attributes for dialog', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.close();
-  td.verify(mockAdapter.setDialogAttr('aria-hidden', true), {times: 1});
-  td.verify(mockAdapter.setBackgroundAttr('aria-hidden', false), {times: 1});
+  td.verify(mockAdapter.setAttr('aria-hidden', 'true'));
+  td.verify(mockAdapter.rmBodyAttr('aria-hidden'));
 });
 
 test('#open sets default focus', () => {
@@ -194,7 +194,7 @@ test('#cancel calls notifyCancel when shouldNotify is set to true', () => {
 
 test('on dialog surface click calls evt.stopPropagation() to prevent click from propagating to background el', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerDialogSurfaceInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
   const evt = {
     stopPropagation: td.func('evt.stopPropagation'),
     target: {},
@@ -208,7 +208,7 @@ test('on dialog surface click calls evt.stopPropagation() to prevent click from 
 
 test('on dialog surface click closes and notifies acceptance if event target is the accept button', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerDialogSurfaceInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
   const evt = {
     stopPropagation: () => {},
     target: {},
@@ -223,7 +223,7 @@ test('on dialog surface click closes and notifies acceptance if event target is 
 
 test('on dialog surface click closes and notifies cancellation if event target is the cancel button', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerDialogSurfaceInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
   const evt = {
     stopPropagation: () => {},
     target: {},
@@ -239,7 +239,7 @@ test('on dialog surface click closes and notifies cancellation if event target i
 test('on dialog surface click does not close or notify if the event target is not the ' +
      'accept or cancel button', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerDialogSurfaceInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
   const evt = {
     target: {},
     stopPropagation: () => {},

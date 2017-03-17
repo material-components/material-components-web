@@ -18,7 +18,7 @@ export const cssClasses = {
   ROOT: 'mdc-dialog',
   OPEN: 'mdc-dialog--open',
   BACKDROP: 'mdc-dialog__backdrop',
-  SCROLL_LOCK: 'mdc-dialog--scroll-lock',
+  SCROLL_LOCK: 'mdc-dialog-scroll-lock',
   ACCEPT_BTN: 'mdc-dialog__footer__button--accept',
   CANCEL_BTN: 'mdc-dialog__footer__button--cancel',
 };
@@ -29,5 +29,4 @@ export const strings = {
   ACCEPT_SELECTOR: '.mdc-dialog__footer__button--accept',
   FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
       'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',
-  SCROLL_LOCK_TARGET: 'body',
 };

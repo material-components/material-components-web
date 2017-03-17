@@ -215,39 +215,34 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 
 | Method Signature | Description |
 | --- | --- |
-| `setBackgroundAriaHidden: (ariaHidden: Bool) => void` | Sets the `aria-hidden` attribute on the background content |
-| `setDialogAriaHidden: (ariaHidden: Bool) => void` | Sets the `aria-hidden` attribute on the dialog surface |
-| `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
+| `hasClass(className: string) => boolean` | Returns boolean indicating whether the root has a given class. |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `addScrollLockClass(className: string) => void` | Adds a class to prevent scrolling the dialog background when open. |
-| `removeScrollLockClass(className: string) => void` | Removes a class which prevents scrolling the dialog background when open. |
+| `setAttr(attr: string, val: string) => void` | Sets the given attribute to the given value on the root element. |
+| `addBodyClass(className: string) => void` | Adds a class to the body. |
+| `removeBodyClass(className: string) => void` | Removes a class from the body. |
+| `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. |
 | `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
 | `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
-| `registerDialogSurfaceInteractionHandler: (evt: string, handler: EventListener) => void` | Registers an event handler to prevent pointer events from propagating past the dialog surface. |
-| `deregisterDialogSurfaceInteractionHandler: (evt: string, handler: EventListener) => void` | Deregisters an event handler to prevent pointer events from propagating past the dialog surface. |
+| `registerSurfaceInteractionHandler(evt: string, handler: EventListener) => void` | Registers an event handler on the dialog surface element. |
+| `deregisterSurfaceInteractionHandler(evt: string, handler: EventListener) => void` | Deregisters an event handler from the dialog surface element. |
 | `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
 | `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
-| `registerAcceptHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
-| `deregisterAcceptHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
-| `registerCancelHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
-| `deregisterCancelHandler: (handler: EventListener) => void` | Registers an event handler when accept action occurs |
-| `registerFocusTrappingHandler: (handler: EventListener) => void` | Registers an event handler to help with focus trapping. |
-| `deregisterFocusTrappingHandler: (handler: EventListener) => void` | Deregisters an event handler to help with focus trapping. |
-| `numFocusableTargets: () => Number` | The number of focusable elements in the dialog |
-| `setDialogFocusFirstTarget: () => void` | resets focus to the first focusable element in the dialog |
-| `setInitialFocus: () => void` | sets focus on the `accept` button |
-| `getFocusableElements() => NodeList` | Returns the node list of focusable elements inside the drawer. |
-| `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
+| `registerFocusTrappingHandler(handler: EventListener) => void` | Registers a focus event listener with a given handler at the capture phase on the document. |
+| `deregisterFocusTrappingHandler(handler: EventListener) => void` | Deregisters a focus event listener from a given handler at the capture phase on the document. |
+| `numFocusableTargets() => number` | Returns the number of focusable elements in the dialog |
+| `setDialogFocusFirstTarget() => void` | Resets focus to the first focusable element in the dialog |
+| `setInitialFocus() => void` | Sets focus on the `mdc-dialog__footer__button--accept` element. |
+| `getFocusableElements() => Array<Element>` | Returns the list of focusable elements inside the dialog. |
+| `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a way which it can be retrieved later on. |
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
-| `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
-| `setBackgroundAttr: (attr: String, val: Boolean) => void` | Sets `aria-hidden` on the background content. Used by both `open()` and `close()` |
-| `setDialogAttr: (attr: String, val: Boolean) => void` | Sets `aria-hidden` on the `dialog`. Used by both `open()` and `close()` |
-| `getFocusedTarget: () => Element` | gets currently focused element |
-| `setFocusedTarget: (target: Element) => void` | sets focus on the `accept` button |
-| `acceptAction: () => {}` | This function will be called when accept is selected |
-| `cancelAction: () => {}` | This function will be called when cancel is selected or the backdrop is clicked |
-
+| `makeElementUntabbable(el: Element) => void` | Makes an element untabbable, e.g. by setting the `tabindex` to `-1`. |
+| `setBodyAttr(attr: string, val: string) => void` | Sets the given attribute to the given value on the body element. |
+| `rmBodyAttr(attr: string) => void` | Removes the given attribute from the body element. |
+| `getFocusedTarget() => Element` | Returns the currently focused element, e.g. `document.activeElement`. |
+| `setFocusedTarget(target: EventTarget) => void` | Sets focus on the given target, e.g. by calling `focus()` |
+| `notifyAccept() => {}` | Broadcasts an event denoting that the user has accepted the dialog. |
+| `notifyCancel() => {}` | Broadcasts an event denoting that the user has cancelled the dialog. |
 
 
 ### The full foundation API
@@ -271,3 +266,15 @@ Calls `cancelAction`, closes dialog
 #### MDCDialogFoundation.isOpen() => Boolean 
 
 Returns true if the dialog is open
+
+## Theming - Dark Theme Considerations
+
+When using `mdc-theme--dark` / `mdc-dialog--theme-dark`, the dialog by default sets its background color to `#303030`. You can override this by either overridding the
+`--mdc-dialog-dark-theme-bg-color`, overridding the `$mdc-dialog-dark-theme-bg-color` sass variable, or directly in CSS:
+
+```css
+.mdc-theme--dark .mdc-dialog__surface,
+.mdc-dialog--theme-dark .mdc-dialog__surface {
+  background-color: /* custom bg color */;
+}
+```
