@@ -10,8 +10,7 @@
 
 <script lang="babel">
 import { MDCSnackbarFoundation } from '@material/snackbar';
-
-const { TRANS_END_EVENT_NAME } = MDCSnackbarFoundation.strings;
+import { getCorrectEventName } from '@material/animation';
 
 export default {
   props: {
@@ -72,10 +71,10 @@ export default {
         }
       },
       registerTransitionEndHandler (handler) {
-        vm.$refs.root.addEventListener(TRANS_END_EVENT_NAME, handler);
+        vm.$refs.root.addEventListener(getCorrectEventName(window, 'transitionend'), handler);
       },
       deregisterTransitionEndHandler (handler) {
-        vm.$refs.root.removeEventListener(TRANS_END_EVENT_NAME, handler);
+        vm.$refs.root.removeEventListener(getCorrectEventName(window, 'transitionend'), handler);
       }
     });
     this.foundation.init();
