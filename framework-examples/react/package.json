@@ -11,12 +11,12 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "react-scripts": "0.8.4"
+    "react-scripts": "0.9.5"
   },
   "dependencies": {
-    "@material/checkbox": "^0.1.2",
-    "@material/form-field": "^0.1.0",
-    "@material/ripple": "^0.1.2",
+    "@material/checkbox": "^0.2.2",
+    "@material/form-field": "^0.2.1",
+    "@material/ripple": "^0.4.0",
     "classnames": "^2.2.5",
     "immutable": "^3.8.1",
     "react": "^15.4.1",
