@@ -20,14 +20,27 @@
 
 @keyframes mdc-ripple-fg-radius-in {
   from {
-    transform: translate(0) scale(1);
+    // NOTE: For these keyframes, we do not need custom property fallbacks because they are only
+    // used in conjunction with `.mdc-ripple-upgraded`. Since MDCRippleFoundation checks to ensure
+    // that custom properties are supported within the browser before adding this class, we can
+    // safely use them without a fallback.
     transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
     animation-timing-function: $mdc-animation-fast-out-slow-in-timing-function;
   }
 
   to {
-    transform: translate(0) scale(0);
-    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 0));
+    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+  }
+}
+
+@keyframes mdc-ripple-fg-opacity-in {
+  from {
+    opacity: 0;
+    animation-timing-function: linear;
+  }
+
+  to {
+    opacity: 1;
   }
 }
 
@@ -39,27 +52,5 @@
 
   to {
     opacity: 0;
-  }
-}
-
-@keyframes mdc-ripple-fg-unbounded-opacity-deactivate {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes mdc-ripple-fg-unbounded-transform-deactivate {
-  from {
-    transform: 0;
-    transform: var(--mdc-ripple-fg-approx-xf, 0);
-  }
-
-  to {
-    transform: scale(0);
-    transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
 }
