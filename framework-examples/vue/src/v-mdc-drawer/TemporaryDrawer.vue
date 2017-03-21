@@ -102,7 +102,7 @@ export default {
     });
     this.foundation.init();
   },
-  beforeUnmount () {
+  beforeDestroy () {
     this.foundation.destroy();
   },
   methods: {

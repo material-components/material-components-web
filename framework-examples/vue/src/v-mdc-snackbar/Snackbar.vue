@@ -83,7 +83,7 @@ export default {
       this.foundation.show(data)
     });
   },
-  beforeUnmount () {
+  beforeDestroy () {
     this.foundation.destroy();
   },
   methods: {
