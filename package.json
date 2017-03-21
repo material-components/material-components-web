@@ -32,6 +32,7 @@
     "bel": "^4.4.3",
     "chai": "^3.5.0",
     "cli-table": "^0.3.1",
+    "codecov": "^2.1.0",
     "cp-file": "^4.1.0",
     "cross-env": "^3.1.4",
     "css-loader": "0.14.5",
