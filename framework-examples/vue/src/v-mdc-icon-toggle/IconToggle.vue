@@ -73,7 +73,7 @@ export default {
     this.foundation.init();
     this.foundation.toggle(this.value);
   },
-  beforeUnmount () {
+  beforeDestroy () {
     this.foundation.destroy();
   },
   watch: {
