@@ -174,7 +174,7 @@ correct drawer behaviors into idiomatic components.
 ##### ES2015
 
 ```javascript
-import {MDCTemporaryDrawer, MDCTemporaryDrawerFoundation} from 'mdc-drawer';
+import {MDCTemporaryDrawer, MDCTemporaryDrawerFoundation, util} from 'mdc-drawer';
 ```
 
 ##### CommonJS
@@ -183,6 +183,7 @@ import {MDCTemporaryDrawer, MDCTemporaryDrawerFoundation} from 'mdc-drawer';
 const mdcDrawer = require('mdc-drawer');
 const MDCTemporaryDrawer = mdcDrawer.MDCTemporaryDrawer;
 const MDCTemporaryDrawerFoundation = mdcDrawer.MDCTemporaryDrawerFoundation;
+const util = mdcDrawer.util;
 ```
 
 ##### AMD
@@ -191,6 +192,7 @@ const MDCTemporaryDrawerFoundation = mdcDrawer.MDCTemporaryDrawerFoundation;
 require(['path/to/mdc-drawer'], mdcDrawer => {
   const MDCTemporaryDrawer = mdcDrawer.MDCTemporaryDrawer;
   const MDCTemporaryDrawerFoundation = mdcDrawer.MDCTemporaryDrawerFoundation;
+  const util = mdcDrawer.util;
 });
 ```
 
@@ -199,6 +201,7 @@ require(['path/to/mdc-drawer'], mdcDrawer => {
 ```javascript
 const MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
 const MDCTemporaryDrawerFoundation = mdc.drawer.MDCTemporaryDrawerFoundation;
+const util = mdc.drawer.util;
 ```
 
 #### Automatic Instantiation
@@ -249,3 +252,30 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |
+
+### The util API
+External frameworks and libraries can use the following utility methods when integrating a component.
+
+#### util.remapEvent(eventName, globalObj = window) => String
+
+Remap touch events to pointer events, if the browser doesn't support touch events.
+
+#### util.getTransformPropertyName(globalObj = window, forceRefresh = false) => String
+
+Choose the correct transform property to use on the current browser.
+
+#### util.supportsCssCustomProperties(globalObj = window) => Boolean
+
+Determine whether the current browser supports CSS properties.
+
+#### util.applyPassive(globalObj = window, forceRefresh = false) => object
+
+Determine whether the current browser supports passive event listeners, and if so, use them.
+
+#### util.saveElementTabState(el) => void
+
+Save the tab state for an element.
+
+#### util.restoreElementTabState(el) => void
+
+Restore the tab state for an element, if it was saved.
