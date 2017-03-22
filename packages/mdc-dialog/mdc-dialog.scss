@@ -42,11 +42,11 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     @include mdc-elevation(24);
 
     width: calc(100% - 30px);
-    border-radius: 2px;
     min-width: 640px;
     max-width: 865px;
     transform: translateY(150px) scale(.8);
     transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
+    border-radius: 2px;
 
     @include mdc-theme-prop(background-color, background);
 
