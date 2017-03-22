@@ -37,8 +37,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
   &__surface {
     display: inline-flex;
-    position: absolute;
-    bottom: 50vh;
     flex-direction: column;
 
     @include mdc-elevation(24);
@@ -48,6 +46,7 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     max-width: 865px;
     transform: translateY(150px) scale(.8);
     transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
+    border-radius: 2px;
 
     @include mdc-theme-prop(background-color, background);
 
