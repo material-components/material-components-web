@@ -38,7 +38,7 @@
       }
     </style>
   </head>
-  <body class="mdc-typography"> 
+  <body class="mdc-typography">
     <div class="demo-body">
     	<aside id="mdc-dialog-default"
     	  class="mdc-dialog"
@@ -88,14 +88,14 @@
               <li class="mdc-list-item">Luna</li>
               <li class="mdc-list-item">Marimba</li>
               <li class="mdc-list-item">Schwifty</li>
-            </ul> 
+            </ul>
     	    </section>
     	    <footer class="mdc-dialog__footer">
     	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
     	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
     	    </footer>
     	  </div>
-    	  <div class="mdc-dialog__backdrop"></div> 
+    	  <div class="mdc-dialog__backdrop"></div>
     	</aside>
   	</div>
     <section class="demo-content">
@@ -155,15 +155,15 @@
       (function() {
 
         var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-default'));
-        
-        dialog.listen('MDCDialog:accept', () => {
+
+        dialog.listen('MDCDialog:accept', function() {
           console.log('accepted');
         });
-        
-        dialog.listen('MDCDialog:cancel', () => {
+
+        dialog.listen('MDCDialog:cancel', function() {
           console.log('canceled');
         });
-        
+
         document.querySelector('#default-dialog-activation').addEventListener('click', function (evt) {
           dialog.lastFocusedTarget = evt.target;
           dialog.show();

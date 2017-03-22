@@ -37,7 +37,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
   &__surface {
     display: inline-flex;
-    position: absolute;
     flex-direction: column;
 
     @include mdc-elevation(24);
