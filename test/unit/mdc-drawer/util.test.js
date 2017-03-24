@@ -46,6 +46,14 @@ test('remapEvent returns the mapped event name for mapped events, if browser doe
   assert.equal(utils.remapEvent('touchend', mockWindow), 'pointerup');
 });
 
+test('remapEvent returns the original event name if browser does not support touch event name is not a ' +
+     'known touch event', () => {
+  const mockWindow = {
+    document: {},
+  };
+  assert.equal(utils.remapEvent('notAPointerEvent', mockWindow), 'notAPointerEvent');
+});
+
 test('getTransformPropertyName returns "transform" for browsers that support it', () => {
   const mockWindow = {
     document: {

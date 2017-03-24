@@ -748,6 +748,25 @@ test('on spacebar keydown prevents default on the event', () => {
   clock.uninstall();
 });
 
+testFoundation('on document click cancels and closes the menu', ({foundation, mockAdapter, mockRaf}) => {
+  let documentClickHandler;
+  td.when(mockAdapter.registerDocumentClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    documentClickHandler = handler;
+  });
+
+  foundation.init();
+  foundation.open();
+  mockRaf.flush();
+
+  documentClickHandler();
+  mockRaf.flush();
+
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+  td.verify(mockAdapter.notifyCancel());
+
+  mockRaf.restore();
+});
+
 testFoundation('should cancel animation after destroy', ({foundation, mockAdapter, mockRaf}) => {
   foundation.init();
   mockRaf.flush();
