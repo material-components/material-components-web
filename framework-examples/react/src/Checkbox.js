@@ -171,9 +171,7 @@ export default class Checkbox extends PureComponent {
                  this.props.onChange(evt);
                }}/>
         <div className="mdc-checkbox__background">
-          <svg version="1.1"
-               className="mdc-checkbox__checkmark"
-               xmlns="http://www.w3.org/2000/svg"
+          <svg className="mdc-checkbox__checkmark"
                viewBox="0 0 24 24">
             <path className="mdc-checkbox__checkmark__path"
                   fill="none"
