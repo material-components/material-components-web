@@ -18,7 +18,7 @@ import {MDCComponent} from '@material/base';
 import MDCRippleFoundation from './foundation';
 import {supportsCssVariables, getMatchesProperty} from './util';
 
-const MATCHES = getMatchesProperty(HTMLElement.prototype);
+let MATCHES;
 
 export {MDCRippleFoundation};
 
@@ -33,6 +33,9 @@ export class MDCRipple extends MDCComponent {
   }
 
   static createAdapter(instance) {
+    // Allow server side rendering rendering by calling HTMLElement, only when
+    // it's needed
+    MATCHES = MATCHES || getMatchesProperty(HTMLElement.prototype);
     return {
       browserSupportsCssVars: () => supportsCssVariables(window),
       isUnbounded: () => instance.unbounded,
