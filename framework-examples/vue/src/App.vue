@@ -62,8 +62,16 @@
     </div>
     <button type="button" @click="showSnackbar">Show Snackbar</button>
     <snackbar event='mailSent'></snackbar>
-
+    <div>
+      <p>
+        <form-field :align-end='alignEnd'>
+          <checkbox v-model="showIcon" label="Show toggle" id="my-show" label-id="my-show-label"></checkbox>
+          <checkbox-label id="my-show-label" for="my-show" :label="showLabel"></checkbox-label>
+        </form-field>
+      </p>
+    </div>
     <icon-toggle v-model="favorited"
+                 v-if="showIcon"
                  :toggle-on="{'label': favoritedLabel, 'content': 'favorite'}"
                  :toggle-off="{'label': 'Add to favorites', 'content': 'favorite_border'}">
     </icon-toggle>
@@ -95,7 +103,9 @@ export default {
       alignEnd: false,
       changeCount: 0,
       favorited: true,
-      favoritedLabel: 'Remove from favorites'
+      favoritedLabel: 'Remove from favorites',
+      showIcon: true,
+      showLabel: 'Hide icon toggle'
     }
   },
   components: { FormField, Checkbox, CheckboxLabel, IconToggle, Snackbar, TemporaryDrawer },

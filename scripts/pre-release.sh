@@ -22,6 +22,41 @@ function log() {
   echo '\033[36m[pre-release]\033[0m' "$@"
 }
 
+log "Running pre-flight sanity checks..."
+
+log "Checking that you can publish to npm..."
+NPM_USER=$(npm whoami)
+if ! npm team ls material:developers | grep -q $NPM_USER; then
+  echo "FAILURE: You are not (yet?) part of the material:developers org. Please get in touch" \
+       "with the MDC-Web core team to rectify this"
+  exit 1
+fi
+
+log "Checking that you can access GitHub via SSH..."
+if ! ssh -T git@github.com 2>&1 | grep -q "You've successfully authenticated"; then
+  echo "FAILURE: It does not look like you can access github. Please ensure that the command" \
+       "ssh -T git@github.com works for you"
+  exit 1
+fi
+
+log "Checking that you can deploy the MDC-Web demo site..."
+if ! gcloud config get-value project 2>/dev/null | grep -q material-components-web; then
+  echo "FAILURE: Your gcloud project is not configured for mdc-web. Please run gcloud config set" \
+       "project material-components-web and ensure it exits successfully"
+  exit 1
+fi
+
+log "Checking that all packages have correct accessConfig rules within their package.json files..."
+for f in $(find packages -name 'package.json' -not -path "*/node_modules/*"); do
+  log "\tChecking $f"
+  if ! node scripts/check-pkg-for-release.js "$f"; then
+    echo "FAILURE: Did not find publishConfig.access: 'public' in $f. Please consult our" \
+         "docs/authoring-components.md file and ensure that the new component's package.json"\
+         "is well-formed."
+    exit 1
+  fi
+done
+
 log "Running npm test to ensure no breakages..."
 npm test
 echo ""

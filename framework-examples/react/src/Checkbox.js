@@ -45,12 +45,14 @@ export default class Checkbox extends PureComponent {
     id: PropTypes.string,
     labelId: PropTypes.string,
     checked: PropTypes.bool,
+    disabled: PropTypes.bool,
     indeterminate: PropTypes.bool,
     onChange: PropTypes.func
   }
 
   static defaultProps = {
     checked: false,
+    disabled: false,
     indeterminate: false,
     onChange: () => {}
   }
@@ -58,8 +60,9 @@ export default class Checkbox extends PureComponent {
   state = {
     classes: new ImmutableSet(),
     rippleCss: new ImmutableMap(),
-    checkedInternal: false,
-    indeterminateInternal: false
+    checkedInternal: this.props.checked,
+    disabledInternal: this.props.disabled,
+    indeterminateInternal: this.props.indeterminate
   }
 
   // Here we initialize a foundation class, passing it an adapter which tells it how to
@@ -154,11 +157,12 @@ export default class Checkbox extends PureComponent {
     return (
       <div ref="root" className={`mdc-checkbox ${this.state.classes.toJS().join(' ')}`}>
         <input ref="nativeCb"
-               id={this.props.controlId}
+               id={this.props.id}
                type="checkbox"
                className="mdc-checkbox__native-control"
                aria-labelledby={this.props.labelId}
                checked={this.state.checkedInternal}
+               disabled={this.state.disabledInternal}
                onChange={evt => {
                  this.setState({
                    checkedInternal: this.refs.nativeCb.checked,
@@ -167,9 +171,7 @@ export default class Checkbox extends PureComponent {
                  this.props.onChange(evt);
                }}/>
         <div className="mdc-checkbox__background">
-          <svg version="1.1"
-               className="mdc-checkbox__checkmark"
-               xmlns="http://www.w3.org/2000/svg"
+          <svg className="mdc-checkbox__checkmark"
                viewBox="0 0 24 24">
             <path className="mdc-checkbox__checkmark__path"
                   fill="none"
@@ -200,6 +202,9 @@ export default class Checkbox extends PureComponent {
     }
     if (props.indeterminate !== this.props.indeterminate) {
       this.setState({indeterminateInternal: props.indeterminate});
+    }
+    if (props.disabled !== this.props.disabled) {
+      this.setState({disabledInternal: props.disabled});
     }
   }
 

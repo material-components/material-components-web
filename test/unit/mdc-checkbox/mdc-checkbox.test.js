@@ -36,8 +36,7 @@ function getFixture() {
              aria-labelledby="my-checkbox-label"/>
       <div class="mdc-checkbox__frame"></div>
       <div class="mdc-checkbox__background">
-        <svg version="1.1"
-             class="mdc-checkbox__checkmark"
+        <svg class="mdc-checkbox__checkmark"
              viewBox="0 0 24 24">
           <path class="mdc-checkbox__checkmark__path"
                 fill="none"

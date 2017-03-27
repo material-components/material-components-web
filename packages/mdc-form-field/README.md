@@ -46,11 +46,8 @@ checkbox:
            id="my-checkbox"
            class="mdc-checkbox__native-control"/>
     <div class="mdc-checkbox__background">
-      <svg version="1.1"
-           class="mdc-checkbox__checkmark"
-           xmlns="http://www.w3.org/2000/svg"
-           viewBox="0 0 24 24"
-           xml:space="preserve">
+      <svg class="mdc-checkbox__checkmark"
+           viewBox="0 0 24 24">
         <path class="mdc-checkbox__checkmark__path"
               fill="none"
               stroke="white"
