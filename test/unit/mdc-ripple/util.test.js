@@ -85,88 +85,8 @@ test('#getMatchesProperty returns the standard function if more than one method 
   assert.equal(util.getMatchesProperty({matches: () => {}, webkitMatchesSelector: () => {}}), 'matches');
 });
 
-class FakeRippleAdapter {
-  constructor() {
-    this.addClass = td.func('.addClass');
-    this.removeClass = td.func('.removeClass');
-    this.eventType = '';
-    this.interactionHandler = null;
-  }
-  registerInteractionHandler(type, handler) {
-    this.eventType = type;
-    this.interactionHandler = handler;
-  }
-  deregisterInteractionHandler(type, handler) {
-    if (type === this.eventType && handler === this.interactionHandler) {
-      this.eventType = '';
-      this.interactionHandler = null;
-    }
-  }
-}
-
-function setupAnimateWithClassTest() {
-  const adapter = new FakeRippleAdapter();
-  const className = 'className';
-  const endEvent = 'endEvent';
-  return {adapter, className, endEvent};
-}
-
-test('#animateWithClass attaches class and handler which removes class once specified event is fired', () => {
-  const {adapter, className, endEvent} = setupAnimateWithClassTest();
-  util.animateWithClass(adapter, className, endEvent);
-  td.verify(adapter.addClass(className));
-  assert.equal(adapter.eventType, endEvent);
-  assert.isOk(typeof adapter.interactionHandler === 'function');
-
-  adapter.interactionHandler();
-
-  td.verify(adapter.removeClass(className));
-});
-
-test('#animateWithClass removes the event listener it used for the end event', () => {
-  const {adapter, className, endEvent} = setupAnimateWithClassTest();
-  util.animateWithClass(adapter, className, endEvent);
-  td.verify(adapter.addClass(className));
-  assert.equal(adapter.eventType, endEvent);
-  assert.isOk(typeof adapter.interactionHandler === 'function');
-
-  adapter.interactionHandler();
-
-  assert.equal(adapter.eventType, '');
-  assert.equal(adapter.interactionHandler, null);
-});
-
-test('#animateWithClass returns a function which allows you to manually remove class/unlisten', () => {
-  const {adapter, className, endEvent} = setupAnimateWithClassTest();
-  const cancel = util.animateWithClass(adapter, className, endEvent);
-
-  td.verify(adapter.addClass(className));
-  assert.equal(adapter.eventType, endEvent, 'event registration sanity check (type)');
-  assert.isOk(typeof adapter.interactionHandler === 'function', 'event registration sanity check (handler)');
-
-  cancel();
-
-  td.verify(adapter.removeClass(className));
-  assert.equal(adapter.eventType, '');
-  assert.equal(adapter.interactionHandler, null);
-});
-
-test('#animateWithClass return function can only be called once', () => {
-  const {adapter, className, endEvent} = setupAnimateWithClassTest();
-  const cancel = util.animateWithClass(adapter, className, endEvent);
-
-  td.verify(adapter.addClass(className));
-  assert.equal(adapter.eventType, endEvent, 'event registration sanity check (type)');
-  assert.isOk(typeof adapter.interactionHandler === 'function', 'event registration sanity check (handler)');
-
-  cancel();
-  cancel();
-
-  td.verify(adapter.removeClass(className), {times: 1});
-});
-
 test('#getNormalizedEventCoords maps event coords into the relative coordinates of the given rect', () => {
-  const ev = {type: 'mouseup', pageX: 70, pageY: 70};
+  const ev = {type: 'mousedown', pageX: 70, pageY: 70};
   const pageOffset = {x: 10, y: 10};
   const clientRect = {left: 50, top: 50};
 
@@ -176,8 +96,8 @@ test('#getNormalizedEventCoords maps event coords into the relative coordinates 
   });
 });
 
-test('#getNormalizedEventCoords works with touchend events', () => {
-  const ev = {type: 'touchend', changedTouches: [{pageX: 70, pageY: 70}]};
+test('#getNormalizedEventCoords works with touchstart events', () => {
+  const ev = {type: 'touchstart', changedTouches: [{pageX: 70, pageY: 70}]};
   const pageOffset = {x: 10, y: 10};
   const clientRect = {left: 50, top: 50};
 

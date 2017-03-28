@@ -14,7 +14,6 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.1.4",
     "@material/base": "^0.1.2",
     "@material/theme": "^0.1.2"
   }

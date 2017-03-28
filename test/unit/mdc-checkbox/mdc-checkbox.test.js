@@ -86,11 +86,11 @@ if (supportsCssVariables(window)) {
     td.when(fakeMatches(':active')).thenReturn(true);
     input[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
 
-    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
+    assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
     domEvents.emit(input, 'keydown');
     raf.flush();
 
-    assert.isOk(root.classList.contains('mdc-ripple-upgraded--background-active'));
+    assert.isTrue(root.classList.contains('mdc-ripple-upgraded--foreground-activation'));
     raf.restore();
   });
 }
