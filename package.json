@@ -68,7 +68,7 @@
     "sass-loader": "^4.1.1",
     "semver": "^5.3.0",
     "standard-changelog": "0.0.1",
-    "style-loader": "^0.13.1",
+    "style-loader": "^0.16.1",
     "stylefmt": "^5.0.2",
     "stylelint": "^7.8.0",
     "stylelint-config-standard": "^16.0.0",
