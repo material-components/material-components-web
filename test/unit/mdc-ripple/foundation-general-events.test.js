@@ -94,7 +94,7 @@ testFoundation('activates the background on focus', ({foundation, adapter, mockR
 
   handlers.focus();
   mockRaf.flush();
-  td.verify(adapter.addClass(cssClasses.BG_ACTIVE));
+  td.verify(adapter.addClass(cssClasses.BG_FOCUSED));
 });
 
 testFoundation('deactivates the background on blur', ({foundation, adapter, mockRaf}) => {
@@ -104,5 +104,5 @@ testFoundation('deactivates the background on blur', ({foundation, adapter, mock
 
   handlers.blur();
   mockRaf.flush();
-  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE));
+  td.verify(adapter.removeClass(cssClasses.BG_FOCUSED));
 });

@@ -44,5 +44,6 @@ export function testFoundation(desc, isCssVarsSupported, runTests) {
 }
 
 export function captureHandlers(adapter) {
-  return baseCaptureHandlers(adapter, 'registerInteractionHandler');
+  const handlers = baseCaptureHandlers(adapter, 'registerInteractionHandler');
+  return handlers;
 }

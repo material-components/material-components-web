@@ -14,43 +14,31 @@
  * limitations under the License.
  */
 
-export const ROOT = 'mdc-ripple';
-export const UPGRADED = `${ROOT}-upgraded`;
-
 export const cssClasses = {
   // Ripple is a special case where the "root" component is really a "mixin" of sorts,
   // given that it's an 'upgrade' to an existing component. That being said it is the root
   // CSS class that all other CSS classes derive from.
-  ROOT: UPGRADED,
-  UNBOUNDED: `${UPGRADED}--unbounded`,
-  BG_ACTIVE: `${UPGRADED}--background-active`,
-  BG_BOUNDED_ACTIVE_FILL: `${UPGRADED}--background-bounded-active-fill`,
-  FG_BOUNDED_ACTIVE_FILL: `${UPGRADED}--foreground-bounded-active-fill`,
-  FG_UNBOUNDED_ACTIVATION: `${UPGRADED}--foreground-unbounded-activation`,
-  FG_UNBOUNDED_DEACTIVATION: `${UPGRADED}--foreground-unbounded-deactivation`,
+  ROOT: 'mdc-ripple-upgraded',
+  UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
+  BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
+  BG_ACTIVE_FILL: 'mdc-ripple-upgraded--background-active-fill',
+  FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
+  FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
 };
 
 export const strings = {
-  VAR_SURFACE_WIDTH: `--${ROOT}-surface-width`,
-  VAR_SURFACE_HEIGHT: `--${ROOT}-surface-height`,
-  VAR_FG_SIZE: `--${ROOT}-fg-size`,
-  VAR_FG_UNBOUNDED_OPACITY_DURATION: `--${ROOT}-fg-unbounded-opacity-duration`,
-  VAR_FG_UNBOUNDED_TRANSFORM_DURATION: `--${ROOT}-fg-unbounded-transform-duration`,
-  VAR_LEFT: `--${ROOT}-left`,
-  VAR_TOP: `--${ROOT}-top`,
-  VAR_TRANSLATE_END: `--${ROOT}-translate-end`,
-  VAR_FG_APPROX_XF: `--${ROOT}-fg-approx-xf`,
-  VAR_FG_SCALE: `--${ROOT}-fg-scale`,
-  VAR_FG_TRANSLATE_START: `--${ROOT}-fg-translate-start`,
-  VAR_FG_TRANSLATE_END: `--${ROOT}-fg-translate-end`,
+  VAR_SURFACE_WIDTH: '--mdc-ripple-surface-width',
+  VAR_SURFACE_HEIGHT: '--mdc-ripple-surface-height',
+  VAR_FG_SIZE: '--mdc-ripple-fg-size',
+  VAR_LEFT: '--mdc-ripple-left',
+  VAR_TOP: '--mdc-ripple-top',
+  VAR_FG_SCALE: '--mdc-ripple-fg-scale',
+  VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
+  VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
 };
 
 export const numbers = {
-  FG_TRANSFORM_DELAY_MS: 80,
-  OPACITY_DURATION_DIVISOR: 3,
-  ACTIVE_OPACITY_DURATION_MS: 110,
-  MIN_OPACITY_DURATION_MS: 200,
-  UNBOUNDED_TRANSFORM_DURATION_MS: 200,
   PADDING: 10,
   INITIAL_ORIGIN_SCALE: 0.6,
+  DEACTIVATION_TIMEOUT_MS: 300,
 };
