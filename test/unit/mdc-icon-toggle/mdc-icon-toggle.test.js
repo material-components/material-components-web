@@ -86,8 +86,9 @@ test('set/get disabled', () => {
 });
 
 test('#refreshToggleData proxies to foundation.refreshToggleData()', () => {
+  const MockIconToggleFoundation = td.constructor(MDCIconToggleFoundation);
   const root = document.createElement('i');
-  const foundation = td.object(MDCIconToggleFoundation);
+  const foundation = new MockIconToggleFoundation();
   const component = new MDCIconToggle(root, foundation);
   component.refreshToggleData();
   td.verify(foundation.refreshToggleData());
