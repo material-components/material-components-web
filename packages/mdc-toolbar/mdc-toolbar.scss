@@ -19,9 +19,9 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
-$mdc-toolbar-height: 64px;
-$mdc-toolbar-mobile-height: 56px;
-$mdc-toolbar-padding: 24px 16px;
+$mdc-toolbar-row-height: 64px;
+$mdc-toolbar-mobile-row-height: 56px;
+$mdc-toolbar-padding: 20px 28px;
 $mdc-toolbar-mobile-padding: 16px;
 
 $mdc-toolbar-mobile-breakpoint: 599px;
@@ -30,27 +30,35 @@ $mdc-toolbar-mobile-breakpoint: 599px;
 .mdc-toolbar {
   display: flex;
   position: relative;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: $mdc-toolbar-height;
-  padding: $mdc-toolbar-padding;
   box-sizing: border-box;
 
   @include mdc-theme-prop(background-color, primary);
   @include mdc-theme-prop(color, text-primary-on-primary);
 
-  // TODO: refactor this out when #23 is implemented
-  @media (max-width: $mdc-toolbar-mobile-breakpoint) {
-    height: $mdc-toolbar-mobile-height;
-    padding: $mdc-toolbar-mobile-padding;
+  &__row {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: $mdc-toolbar-row-height;
+    padding: $mdc-toolbar-padding;
+    box-sizing: border-box;
+
+    // TODO: refactor this out when #23 is implemented
+    @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+      height: $mdc-toolbar-mobile-row-height;
+      padding: $mdc-toolbar-mobile-padding;
+    }
   }
 
   &__section {
     display: inline-flex;
     flex: 1;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    z-index: 1;
 
     &--align-start {
       justify-content: flex-start;
@@ -61,12 +69,13 @@ $mdc-toolbar-mobile-breakpoint: 599px;
       justify-content: flex-end;
       order: 1;
     }
+  }
 
-    .mdc-toolbar__title {
-      @include mdc-typography(title);
+  &__title {
+    @include mdc-typography(title);
 
-      margin: 0;
-    }
+    margin: 0;
+    line-height: 1.5rem;
   }
 }
 
@@ -82,9 +91,9 @@ $mdc-toolbar-mobile-breakpoint: 599px;
 // postcss-bem-linter: end
 
 .mdc-toolbar-fixed-adjust {
-  margin-top: $mdc-toolbar-height;
+  margin-top: $mdc-toolbar-row-height;
 
   @media (max-width: 599px) {
-    margin-top: $mdc-toolbar-mobile-height;
+    margin-top: $mdc-toolbar-mobile-row-height;
   }
 }
