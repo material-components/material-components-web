@@ -94,8 +94,6 @@ Now that we've gotten the gist of MDC-Web, let us continue to build our greeting
 The app consists of two input fields and a submit button. Material Design text input
 fields and buttons contain a lot of dynamism and animation that require the usage of JavaScript.
 
-> Note that we currently have an [issue out](https://github.com/material-components/material-components-web/issues/20) to integrate ripples directly into buttons.
-
 Replace the contents of the `<body>` tag in `index.html` with the following:
 
 ```html
