@@ -109,6 +109,10 @@ Our entire coding style is enforced automatically through the use of linters. Ch
 When submitting PRs, make sure you're following our commit message conventions (which are the same as [angular's](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit)); our `commit-msg` hook should automatically enforce this. We also support [commitizen](https://www.npmjs.com/package/commitizen), which you can
 use to auto-format commit messages for you.
 
+When submitting PRs for large changes, be sure to include an adequate background in the description
+so that reviewers of the PR know what the changes entail at a high-level, the motivations for making
+these changes, and what they affect.
+
 If you've done some experimental work on your branch/fork and committed these via `git commit --no-verify`, you can rebase them into one correctly-formatted commit before submitting.
 
 Finally, it helps to make sure that your branch/fork is up to date with what's currently on master. You can ensure this by running `git pull --rebase origin master` on your branch.
