@@ -1,10 +1,9 @@
 # MDC Toolbar
 
-MDC Toolbar provides a RTL-aware Material Design toolbar component adhering to the
-[Material Design toolbar spec](https://www.google.com/design/spec/components/toolbars.html)
-Toolbars scroll with content by default, but supports fixed on
-top as well. Currently, this component does not yet support the "Waterfall" or
-"Flexible Header" patterns.
+MDC Toolbar acts as a container for multiple rows containing items such as
+application title, navigation menu, and tabs, among other things. Toolbars
+scroll with content by default, but supports fixed on top as well. Currently,
+this component does not yet support the "Waterfall" or "Flexible Header" patterns.
 
 
 ## Installation
@@ -20,12 +19,31 @@ Wrap the items with `mdc-toolbar` class in following way:
 
 ```html
 <header class="mdc-toolbar">
-  <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-    <a class="material-icons">menu</a>
-    <span class="mdc-toolbar__title">Title</span>
-  </section>
+  <div class="mdc-toolbar__row">
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+      <a class="material-icons">menu</a>
+      <span class="mdc-toolbar__title">Title</span>
+    </section>
+  </div>
 </header>
 ```
+
+MDC Toolbars can accommodate multiple rows using the wrapper `mdc-toolbar__row`:
+
+```html
+<header class="mdc-toolbar">
+  <div class="mdc-toolbar__row">
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+      <a class="material-icons">menu</a>
+      <span class="mdc-toolbar__title">Title</span>
+    </section>
+  </div>
+  <div class="mdc-toolbar__row">
+    ...
+  </div>
+</header>
+```
+
 
 ### Fixed toolbars
 
@@ -41,9 +59,11 @@ toolbar will not overlay any of the element's content.
 
 ```html
 <header class="mdc-toolbar mdc-toolbar--fixed">
-  <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-    <span class="mdc-toolbar__title">Title</span>
-  </section>
+  <div class="mdc-toolbar__row">
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+      <span class="mdc-toolbar__title">Title</span>
+    </section>
+  </div>
 </header>
 <main class="mdc-toolbar-fixed-adjust">
   <p class="demo-paragraph">
@@ -61,15 +81,17 @@ of the toolbar (respectively).
 
 ```html
 <header class="mdc-toolbar">
-  <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-    Section aligns to start.
-  </section>
-  <section class="mdc-toolbar__section">
-    Section aligns to center.
-  </section>
-  <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
-    Section aligns to end.
-  </section>
+  <div class="mdc-toolbar__row">
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+      Section aligns to start.
+    </section>
+    <section class="mdc-toolbar__section">
+      Section aligns to center.
+    </section>
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
+      Section aligns to end.
+    </section>
+  </div>
 </header>
 ```
 
@@ -83,9 +105,11 @@ a page's title, or an application name.
 
 ```html
 <header class="mdc-toolbar">
-  <section class="mdc-toolbar__section">
-    <span class="mdc-toolbar__title">Title</span>
-  </section>
+  <div class="mdc-toolbar__row">
+    <section class="mdc-toolbar__section">
+      <span class="mdc-toolbar__title">Title</span>
+    </section>
+  </div>
 </header>
 ```
 
