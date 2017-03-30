@@ -281,18 +281,18 @@ within `componentDidUpdate`.
 | `setMenuElAttr(attr: string, value: string) => void` | Sets attribute `attr` to value `value` on the menu element. |
 | `rmMenuElAttr(attr: string) => void` | Removes attribute `attr` from the menu element. |
 | `getMenuElOffsetHeight() => number` | Returns the `offsetHeight` of the menu element. |
-| `getOffsetTopForOptionAtIndex(index: number) => number` | Returns the `offsetTop` of the option element at the specified index. The index is guaranteed to be in bounds. |
 | `openMenu(focusIndex: string) => void` | Opens the select's menu with focus on the option at the given `focusIndex`. The focusIndex is guaranteed to be in bounds. |
 | `isMenuOpen() => boolean` | Returns true if the menu is open, false otherwise. |
 | `setSelectedTextContent(selectedTextContent: string) => void` | Sets the text content of the `.mdc-select__selected-text` element to `selectedTextContent`. |
 | `getNumberOfOptions() => number` | Returns the number of options contained in the select's menu. |
 | `getTextForOptionAtIndex(index: number) => string` | Returns the text content for the option at the specified index within the select's menu. |
-| `getValueForOptionAtIndex(index: number) => string` | Returns the value for the option at the specified index within the select's menu. We adhere to the conventions of `HTMLSelectElement` -
-as described above - returning the value of the selected option's `id` in place of a `value` attribute and falling back to its `textContent`. Framework implementations may want to customize this method to suit their needs. |
+| `getValueForOptionAtIndex(index: number) => string` | Returns the value for the option at the specified index within the select's menu. We adhere to the conventions of `HTMLSelectElement` - as described above - returning the value of the selected option's `id` in place of a `value` attribute and falling back to its `textContent`. Framework implementations may want to customize this method to suit their needs. |
 | `setAttrForOptionAtIndex(index: number, attr: string, value: string) => void` | Sets an attribute `attr` to value `value` for the option at the specified index within the select's menu. |
 | `rmAttrForOptionAtIndex(index: number, attr: string) => void` | Removes an attribute `attr` for the option at the specified index within the select's menu. |
+| `getOffsetTopForOptionAtIndex(index: number) => number` | Returns the `offsetTop` of the option element at the specified index. The index is guaranteed to be in bounds. |
 | `registerMenuInteractionHandler(type: string, handler: EventListener) => void` | Registers an event listener on the menu component's root element. Note that we will always listen for `MDCSimpleMenu:selected` for change events, and `MDCSimpleMenu:cancel` to know that we need to close the menu. If you are using a different events system, you could check the event type for either one of these strings and take the necessary steps to wire it up. |
 | `deregisterMenuInteractionHandler(type: string, handler: EventListener) => void` | Opposite of `registerMenuInteractionHandler`. |
+| `notifyChange() => void` | Broadcast a change event, similar to the `change` event emitted by an `HTMLSelectElement`. While we use custom events in our implementation for this, you can use any mechanism desired for notifications, such as callbacks, reactive streams, etc. Note that you can also pass data within your event if you'd like via `foundation.getValue()` and `foundation.getSelectedIndex()`. |
 | `getWindowInnerHeight() => number` | Returns the `innerHeight` property of the `window` element. |
 
 ### The full foundation API
