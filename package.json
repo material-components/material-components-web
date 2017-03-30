@@ -35,7 +35,7 @@
     "codecov": "^2.1.0",
     "cp-file": "^4.1.0",
     "cross-env": "^3.1.4",
-    "css-loader": "^0.26.1",
+    "css-loader": "^0.28.0",
     "cz-conventional-changelog": "^2.0.0",
     "del-cli": "^0.2.0",
     "dom-events": "^0.1.1",
