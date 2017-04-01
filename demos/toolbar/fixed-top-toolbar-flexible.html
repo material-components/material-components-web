@@ -21,6 +21,11 @@
       .mdc-toolbar-demo {
         margin: 0px;
       }
+      .mdc-toolbar__row:first-child::after {
+        background-image: url("../images/4-3-2.jpg");
+        background-size: cover;
+        background-position: center;
+      }
       .demo-paragraph {
         margin: 0px;
         padding: 20px 28px;
@@ -38,11 +43,19 @@
           padding: 16px;
         }
       }
+      footer {
+        position: fixed;
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+        color: red;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
     </style>
     <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body class="mdc-typography mdc-toolbar-demo">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--flexible mdc-toolbar--flexible-default-behavior">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <a class="material-icons">menu</a>
@@ -56,7 +69,11 @@
       </div>
     </header>
     <main>
+
       <div class="mdc-toolbar-fixed-adjust">
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
         <p class="demo-paragraph">
           Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
         </p>
@@ -65,12 +82,20 @@
         </p>
       </div>
     </main>
+    <footer>
+      <span>Flexible Expansion Ratio: <span id="ratio">0</span></span>
+    </footer>
     <script src="../assets/material-components-web.js" charset="utf-8"></script>
     <script type="text/javascript">
       setTimeout(function() {
+        const ratioSpan = document.querySelector("#ratio");
         const toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
+        toolbar.listen('MDCToolbar:change', function(flexibleExpansionRatio) {
+          ratioSpan.innerHTML = flexibleExpansionRatio.detail.toFixed(2);
+          console.log(flexibleExpansionRatio);
+        });
         toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
-      }, 250);
+      }, 1000);
     </script>
   </body>
 </html>

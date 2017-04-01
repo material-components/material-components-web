@@ -143,5 +143,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "material-components-web": "^0.7.0"
   }
 }
