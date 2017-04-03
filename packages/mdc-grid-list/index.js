@@ -28,8 +28,12 @@ export class MDCGridList extends MDCComponent {
   getDefaultFoundation() {
     return new MDCGridListFoundation({
       getOffsetWidth: () => this.root_.offsetWidth,
+      isEmpty: () => {
+        return this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR).length == 0;
+      },
       getOffsetWidthForTileAtIndex: (index) => {
-        return this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR)[index].offsetWidth;
+        const tile = this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR)[index];
+        return tile ? tile.offsetWidth : 0;
       },
       setStyleForTilesElement: (property, value) => {
         this.root_.querySelector(MDCGridListFoundation.strings.TILES_SELECTOR).style[property] = value;
