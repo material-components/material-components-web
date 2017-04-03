@@ -25,21 +25,20 @@ import MDCDialogFoundation from '../../../packages/mdc-dialog/foundation';
 suite('MDCDialogFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCDialogFoundation);
+  assert.isTrue('cssClasses' in MDCDialogFoundation);
+});
+
+test('exports strings', () => {
+  assert.isTrue('strings' in MDCDialogFoundation);
 });
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
-    'hasClass', 'addClass', 'removeClass',
-    'addBodyClass', 'removeBodyClass', 'eventTargetHasClass',
-    'registerInteractionHandler', 'deregisterInteractionHandler',
+    'addClass', 'removeClass', 'setStyle', 'addBodyClass', 'removeBodyClass',
+    'eventTargetHasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
-    'registerFocusTrappingHandler', 'deregisterFocusTrappingHandler',
-    'numFocusableTargets', 'setDialogFocusFirstTarget', 'setInitialFocus',
-    'getFocusableElements', 'saveElementTabState', 'restoreElementTabState',
-    'makeElementUntabbable', 'setBodyAttr', 'rmBodyAttr', 'setAttr',
-    'getFocusedTarget', 'setFocusedTarget', 'notifyAccept', 'notifyCancel',
+    'notifyAccept', 'notifyCancel', 'trapFocusOnSurface', 'untrapFocusOnSurface',
   ]);
 });
 
@@ -83,19 +82,32 @@ test('#open registers all events registered within open()', () => {
   td.verify(mockAdapter.registerSurfaceInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function)));
 });
 
 test('#close deregisters all events registered within open()', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  foundation.open();
   foundation.close();
 
   td.verify(mockAdapter.deregisterSurfaceInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterFocusTrappingHandler(td.matchers.isA(Function)));
+});
+
+test('#open makes the dialog visible', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+
+  td.verify(mockAdapter.setStyle('visibility', 'visible'));
+});
+
+test('#close makes the dialog hidden', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.close();
+
+  td.verify(mockAdapter.setStyle('visibility', 'hidden'));
 });
 
 test('#open adds the open class to reveal the dialog', () => {
@@ -119,56 +131,27 @@ test('#open adds scroll lock class to the body', () => {
   td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
 });
 
-test('#close removes the scroll lock class from dialog background', () => {
+test('#close removes the scroll lock class from the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.close();
   td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
 });
 
-test('#open makes elements tabbable', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(false);
-  td.when(mockAdapter.getFocusableElements()).thenReturn(['foo', 'bar']);
-
-  foundation.init();
-  foundation.open();
-  td.verify(mockAdapter.restoreElementTabState('foo'));
-  td.verify(mockAdapter.restoreElementTabState('bar'));
-});
-
-test('#close makes elements untabbable', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
-  td.when(mockAdapter.getFocusableElements()).thenReturn(['foo', 'bar']);
-
-  foundation.open();
-  foundation.close();
-  td.verify(mockAdapter.makeElementUntabbable('foo'));
-  td.verify(mockAdapter.makeElementUntabbable('bar'));
-});
-
-test('#open sets aria attributes for dialog', () => {
+test('#open activates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
-  td.verify(mockAdapter.setAttr('aria-hidden', 'false'));
-  td.verify(mockAdapter.setBodyAttr('aria-hidden', 'true'));
+
+  td.verify(mockAdapter.trapFocusOnSurface());
 });
 
-test('#close sets aria attributes for dialog', () => {
+test('#close deactivates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.close();
-  td.verify(mockAdapter.setAttr('aria-hidden', 'true'));
-  td.verify(mockAdapter.rmBodyAttr('aria-hidden'));
-});
 
-test('#open sets default focus', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.open();
-  td.verify(mockAdapter.setInitialFocus());
+  td.verify(mockAdapter.untrapFocusOnSurface());
 });
 
 test('#accept closes the dialog', () => {
@@ -331,125 +314,4 @@ test('on document keydown does nothing when key other than escape is pressed', (
     key: 'Enter',
   });
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
-});
-
-test('on focus does not call setDialogFocusFirstTarget if previous focus target is not last target', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let focusTrappingHandler;
-  const focusEvent = {
-    relatedTarget: {},
-  };
-
-  td.when(mockAdapter.numFocusableTargets()).thenReturn(2);
-  td.when(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    focusTrappingHandler = handler;
-  });
-
-  foundation.open();
-  focusTrappingHandler(focusEvent);
-  focusTrappingHandler(focusEvent);
-
-  td.verify(mockAdapter.setDialogFocusFirstTarget());
-});
-
-test('on focus resets focus to first target when last focus target was previously focused', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let focusTrappingHandler;
-  const focusEvent = {
-    relatedTarget: {},
-  };
-
-  td.when(mockAdapter.numFocusableTargets()).thenReturn(2);
-  td.when(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    focusTrappingHandler = handler;
-  });
-
-  foundation.open();
-  focusTrappingHandler(focusEvent);
-
-  td.verify(mockAdapter.setDialogFocusFirstTarget());
-});
-
-test('on focus does not increment the focus element index when `relatedTarget` is absent from the event', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let focusTrappingHandler;
-  const focusEvent = {
-    relatedTarget: null,
-  };
-
-  td.when(mockAdapter.numFocusableTargets()).thenReturn(2);
-  td.when(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    focusTrappingHandler = handler;
-  });
-
-  foundation.open();
-  focusTrappingHandler(focusEvent);
-
-  td.verify(mockAdapter.setDialogFocusFirstTarget(), {times: 0});
-});
-
-test('on focus ensures redundant focus events do not trample the index', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let focusTrappingHandler;
-  const focusEvent = {
-    relatedTarget: {},
-  };
-  let timesSetDialogFocusFirstTargetWasCalled = 0;
-
-  td.when(mockAdapter.numFocusableTargets()).thenReturn(1);
-  td.when(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    focusTrappingHandler = handler;
-  });
-
-  foundation.open();
-
-  // Call additional focus() event within setDialogFocus...(), simulating the focus handler being
-  // triggered by the manual focusing of that element. Also manually increment the amount of times
-  // this method was called so that we don't need to call it an additional time when verifying.
-  td.when(mockAdapter.setDialogFocusFirstTarget()).thenDo(() => {
-    timesSetDialogFocusFirstTargetWasCalled++;
-    focusTrappingHandler(focusEvent);
-  });
-
-  // Ensure that additional focus() event did not lead to additional calls to
-  // setDialogFocusFirstTarget.
-  focusTrappingHandler(focusEvent);
-  assert.equal(timesSetDialogFocusFirstTargetWasCalled, 1);
-});
-
-test('#open regisers focus trapping handler after initial focus is assigned', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let setInitialFocusCalledBeforeFocusHandlerRegistered = false;
-  let registerFocusTrappingHandlerCalled = false;
-
-  td.when(mockAdapter.registerFocusTrappingHandler(td.matchers.isA(Function))).thenDo(() => {
-    registerFocusTrappingHandlerCalled = true;
-  });
-
-  td.when(mockAdapter.setInitialFocus()).thenDo(() => {
-     setInitialFocusCalledBeforeFocusHandlerRegistered = !registerFocusTrappingHandlerCalled;
-  });
-
-  foundation.open();
-
-  assert.isTrue(setInitialFocusCalledBeforeFocusHandlerRegistered);
-});
-
-test('#close does not call setFocusedTarget if there is no lastFocusedTarget ', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.close();
-
-  td.verify(mockAdapter.setFocusedTarget(td.matchers.anything()), {times: 0});
-});
-
-test('#close calls setFocusedTarget if lastFocusedTarget evaluates to true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const lastFocusedTarget = {};
-
-  td.when(mockAdapter.getFocusedTarget()).thenReturn(lastFocusedTarget);
-  foundation.open();
-  foundation.close();
-
-  td.verify(mockAdapter.setFocusedTarget(lastFocusedTarget));
 });

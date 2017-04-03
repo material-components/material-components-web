@@ -41,6 +41,7 @@
   <body class="mdc-typography">
     <div class="demo-body">
     	<aside id="mdc-dialog-default"
+          style="visibility:hidden;"
     	  class="mdc-dialog"
     	  role="alertdialog"
     	  aria-hidden="true"
@@ -64,6 +65,7 @@
     	</aside>
 
     	<aside id="mdc-dialog-with-list"
+        style="visibility:hidden;"
     	  class="mdc-dialog"
     	  role="alertdialog"
     	  aria-hidden="true"
@@ -186,8 +188,11 @@
           document.body.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
 
-        mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));
-        mdc.ripple.MDCRipple.attachTo(document.querySelector('#dialog-with-list-activation'));
+        // Hack to work around style-loader async loading styles
+        setTimeout(function() {
+          mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));
+          mdc.ripple.MDCRipple.attachTo(document.querySelector('#dialog-with-list-activation'));
+        }, 200);
       })();
     </script>
   </body>
