@@ -58,14 +58,21 @@ test('#isOpen returns true when the dialog is open', () => {
   const {foundation} = setupTest();
 
   foundation.open();
-  assert.isOk(foundation.isOpen());
+  assert.isTrue(foundation.isOpen());
 });
 
 test('#isOpen returns false when the dialog is closed', () => {
   const {foundation} = setupTest();
 
   foundation.close();
-  assert.isNotOk(foundation.isOpen());
+  assert.isFalse(foundation.isOpen());
+});
+
+test('#isOpen returns false when the dialog is closed after being open', () => {
+  const {foundation} = setupTest();
+  foundation.open();
+  foundation.close();
+  assert.isFalse(foundation.isOpen());
 });
 
 test('#open registers all events registered within open()', () => {

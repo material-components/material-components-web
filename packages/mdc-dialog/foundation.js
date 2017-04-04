@@ -82,6 +82,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   open() {
+    this.isOpen_ = true;
     this.lastFocusedTarget_ = this.adapter_.getFocusedTarget();
     this.makeTabbable_();
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
@@ -93,11 +94,11 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.setBodyAttr('aria-hidden', 'true');
     this.adapter_.setAttr('aria-hidden', 'false');
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
-    this.isOpen_ = true;
     this.currentFocusedElIndex_ = this.adapter_.numFocusableTargets() - 1;
   }
 
   close() {
+    this.isOpen_ = false;
     this.makeUntabbable_();
     this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
