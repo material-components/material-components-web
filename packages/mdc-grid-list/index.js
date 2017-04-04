@@ -28,6 +28,9 @@ export class MDCGridList extends MDCComponent {
   getDefaultFoundation() {
     return new MDCGridListFoundation({
       getOffsetWidth: () => this.root_.offsetWidth,
+      getNumberOfTiles: () => {
+        return this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR).length;
+      },
       getOffsetWidthForTileAtIndex: (index) => {
         return this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR)[index].offsetWidth;
       },
