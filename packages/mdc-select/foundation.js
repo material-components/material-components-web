@@ -200,17 +200,17 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.rmMenuElAttr('aria-hidden');
 
     let adjustedTop = top - itemOffsetTop;
-    const overflowsTop = adjustedTop < pageYOffset;
-    const overflowsBottom = adjustedTop + menuHeight + pageYOffset > innerHeight;
-    if (overflowsTop && top >= pageYOffset) {
-      adjustedTop = pageYOffset;
-    } else if (overflowsBottom && top <= innerHeight + pageYOffset) {
-      adjustedTop = Math.max(0, innerHeight + pageYOffset - menuHeight);
+    const overflowsTop = adjustedTop < 0;
+    const overflowsBottom = adjustedTop + menuHeight > innerHeight;
+    if (overflowsTop && top >= 0) {
+      adjustedTop = 0;
+    } else if (overflowsBottom && top <= innerHeight) {
+      adjustedTop = Math.max(0, innerHeight - menuHeight);
     };
 
     this.adapter_.setMenuElStyle('left', `${left}px`);
-    this.adapter_.setMenuElStyle('top', `${adjustedTop}px`);
-    this.adapter_.setMenuElStyle('transformOrigin', `center ${itemOffsetTop}px`);
+    this.adapter_.setMenuElStyle('top', `${adjustedTop + pageYOffset}px`);
+    this.adapter_.setMenuElStyle('transform-origin', `center ${itemOffsetTop}px`);
   }
 
   close_() {
@@ -241,3 +241,4 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 }
+
