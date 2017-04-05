@@ -26,8 +26,8 @@ export default class MDCTemporaryDrawerFoundation extends MDCMovableDrawerFounda
     return strings;
   }
 
-  static get defaultAdapter() { 
-    let defaultAdapter = MDCMovableDrawerFoundation.defaultAdapter;
+  static get defaultAdapter() {
+    const defaultAdapter = MDCMovableDrawerFoundation.defaultAdapter;
     defaultAdapter.updateCssVariable = (/* value: string */) => {};
     return defaultAdapter;
   }
@@ -52,9 +52,9 @@ export default class MDCTemporaryDrawerFoundation extends MDCMovableDrawerFounda
 
   init() {
     super.init();
-     
-    // Make browser aware of custom property being used in this element.   
-    // Workaround for certain types of hard-to-reproduce heisenbugs.    
+
+    // Make browser aware of custom property being used in this element.
+    // Workaround for certain types of hard-to-reproduce heisenbugs.
     this.adapter_.updateCssVariable(0);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
   }
@@ -66,14 +66,14 @@ export default class MDCTemporaryDrawerFoundation extends MDCMovableDrawerFounda
   }
 
   open() {
-    // Make sure custom property values are cleared before starting.    
+    // Make sure custom property values are cleared before starting.
     this.adapter_.updateCssVariable('');
 
     super.open();
   }
 
   close() {
-    // Make sure custom property values are cleared before making any changes.    
+    // Make sure custom property values are cleared before making any changes.
     this.adapter_.updateCssVariable('');
 
     super.close();
@@ -89,7 +89,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCMovableDrawerFounda
   updateDrawer_() {
     super.updateDrawer_();
 
-    let newOpacity = Math.max(0, 1 + this.direction_ * (this.newPos / this.drawerWidth_));
+    const newOpacity = Math.max(0, 1 + this.direction_ * (this.newPos / this.drawerWidth_));
     this.adapter_.updateCssVariable(newOpacity);
   }
 }

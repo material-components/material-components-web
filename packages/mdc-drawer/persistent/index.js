@@ -43,7 +43,7 @@ export class MDCPersistentDrawer extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {FOCUSABLE_ELEMENTS, OPACITY_VAR_NAME} = MDCPersistentDrawerFoundation.strings;
+    const {FOCUSABLE_ELEMENTS} = MDCPersistentDrawerFoundation.strings;
 
     return new MDCPersistentDrawerFoundation({
       addClass: (className) => this.root_.classList.add(className),

@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
-export const focusableElements = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
-      'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
+export const focusableElements =
+	'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
+	'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';

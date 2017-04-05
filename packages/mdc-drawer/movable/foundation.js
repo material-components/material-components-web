@@ -69,19 +69,19 @@ export class MDCMovableDrawerFoundation extends MDCFoundation {
   get rootCssClass() {
     // Classes extending MDCMovableDrawerFoundation should implement this method to return a string
     // CSS class for the drawer. e.g. 'mdc-temporary-drawer'
-    return "";
+    return '';
   }
 
   get animatingCssClass() {
     // Classes extending MDCMovableDrawerFoundation should implement this method to return a string
     // CSS class for when the drawer is animating. e.g. 'mdc-temporary-drawer--animating'
-    return "";
+    return '';
   }
 
   get openCssClass() {
     // Classes extending MDCMovableDrawerFoundation should implement this method to return a string
     // CSS class for when the drawer is animating. e.g. 'mdc-temporary-drawer--open'
-    return "";
+    return '';
   }
 
   init() {
