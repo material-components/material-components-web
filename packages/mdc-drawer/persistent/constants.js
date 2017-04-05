@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
+import {focusableElements} from '../movable';
+
 const ROOT = 'mdc-persistent-drawer';
 
 export const cssClasses = {
   ROOT,
   OPEN: `${ROOT}--open`,
   ANIMATING: `${ROOT}--animating`,
+};
+
+export const strings = {
+  FOCUSABLE_ELEMENTS: focusableElements,
 };

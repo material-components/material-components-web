@@ -15,12 +15,8 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {strings} from './constants';
 
 export class MDCMovableDrawerFoundation extends MDCFoundation {
-  static get strings() {
-    return strings;
-  }
 
   static get defaultAdapter() {
     return {
@@ -230,13 +226,7 @@ export class MDCMovableDrawerFoundation extends MDCFoundation {
     }
   }
 
-  updateDrawer_() {
-    if (!this.touchingSideNav_) {
-      return;
-    }
-
-    requestAnimationFrame(this.updateDrawer_.bind(this));
-
+  get newPos() {
     let newPos = null;
 
     if (this.direction_ === 1) {
@@ -245,6 +235,15 @@ export class MDCMovableDrawerFoundation extends MDCFoundation {
       newPos = Math.max(0, this.currentX_ - this.startX_);
     }
 
-    this.adapter_.setTranslateX(newPos);
+    return newPos;
+  }
+
+  updateDrawer_() {
+    if (!this.touchingSideNav_) {
+      return;
+    }
+
+    requestAnimationFrame(this.updateDrawer_.bind(this));
+    this.adapter_.setTranslateX(this.newPos);
   }
 }

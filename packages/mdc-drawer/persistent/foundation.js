@@ -15,11 +15,15 @@
  */
 
 import {MDCMovableDrawerFoundation} from '../movable';
-import {cssClasses} from './constants';
+import {cssClasses, strings} from './constants';
 
 export default class MDCPersistentDrawerFoundation extends MDCMovableDrawerFoundation {
   static get cssClasses() {
     return cssClasses;
+  }
+
+  static get strings() {
+    return strings;
   }
 
   get rootCssClass() {

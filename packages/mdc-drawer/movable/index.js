@@ -14,4 +14,5 @@
  * limitations under the License.
  */
 
+export {focusableElements} from './constants';
 export {MDCMovableDrawerFoundation} from './foundation';

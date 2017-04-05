@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import {focusableElements} from '../movable';
+
 const ROOT = 'mdc-temporary-drawer';
 
 export const cssClasses = {
@@ -26,6 +28,5 @@ export const cssClasses = {
 export const strings = {
   DRAWER_SELECTOR: `.${ROOT}__drawer`,
   OPACITY_VAR_NAME: `--${ROOT}-opacity`,
-  FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
-      'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',
+  FOCUSABLE_ELEMENTS: focusableElements,
 };
