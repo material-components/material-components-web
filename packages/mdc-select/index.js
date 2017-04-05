@@ -14,262 +14,117 @@
  * limitations under the License.
  */
 
-@import "@material/animation/functions";
-@import "@material/typography/mixins";
-@import "@material/theme/mixins";
-@import "@material/rtl/mixins";
+import {MDCComponent} from '@material/base';
+import {MDCSimpleMenu} from '@material/menu';
 
-@mixin mdc-select-dd-arrow-svg-bg_($fill-hex-number: 000000, $opacity: .54) {
-  background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E);
-}
+import MDCSelectFoundation from './foundation';
 
-// postcss-bem-linter: define select
-.mdc-select {
-  $dd-arrow-padding: 24px;
+export {MDCSelectFoundation};
 
-  @include mdc-typography(subheading2);
-  @include mdc-theme-prop(color, text-primary-on-light);
-  @include mdc-rtl-reflexive-box(padding, right, $dd-arrow-padding);
-
-  // Resets for <select> element
-  appearance: none;
-
-  &::-ms-expand {
-    display: none;
+export class MDCSelect extends MDCComponent {
+  static attachTo(root) {
+    return new MDCSelect(root);
   }
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  max-width: calc(100% - #{$dd-arrow-padding});
-  height: 32px;
-  transition:
-    mdc-animation-exit(border-bottom-color, 150ms),
-    mdc-animation-exit(background-color, 150ms);
-  border: none;
-  border-bottom: 1px solid rgba(black, .12);
-  border-radius: 0;
-  background: none;
-  background-repeat: no-repeat;
-  background-position: right center;
-
-  @include mdc-select-dd-arrow-svg-bg_;
-
-  font-family: Roboto, sans-serif;
-  font-size: .936rem;
-  cursor: pointer;
-
-  &:focus {
-    @include mdc-theme-prop(border-bottom-color, primary);
-
-    outline: none;
-    background-color: rgba(black, .06);
+  get value() {
+    return this.foundation_.getValue();
   }
 
-  @include mdc-rtl {
-    background-position: left center;
+  get options() {
+    return this.menu_.items;
   }
 
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-    @include mdc-select-dd-arrow-svg-bg_(ffffff);
-
-    border-bottom: 1px solid rgba(white, .12);
-
-    &:focus {
-      @include mdc-theme-prop(border-bottom-color, primary);
-
-      background-color: rgba(white, .09);
-    }
+  get selectedOptions() {
+    return this.root_.querySelectorAll('[aria-selected]');
   }
 
-  &__menu {
-    position: absolute;
-    top: 0;
-    left: 0;
-    max-height: 100%;
-    transform-origin: center center;
-    overflow-y: scroll;
-    z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
+  get selectedIndex() {
+    return this.foundation_.getSelectedIndex();
   }
 
-  &__selected-text {
-    transition:
-      mdc-animation-exit(opacity, 125ms),
-      mdc-animation-exit(transform, 125ms);
-    white-space: nowrap;
-    overflow: hidden;
+  set selectedIndex(selectedIndex) {
+    this.foundation_.setSelectedIndex(selectedIndex);
   }
-}
 
-.mdc-select--open {
-  .mdc-select__selected-text {
-    transform: translateY(8px);
-    transition:
-      mdc-animation-enter(opacity, 125ms, 125ms),
-      mdc-animation-enter(transform, 125ms, 125ms);
-    opacity: 0;
+  get disabled() {
+    return this.foundation_.isDisabled();
   }
-}
 
-.mdc-select--disabled,
-.mdc-select[disabled] {
-  @include mdc-theme-prop(color, text-disabled-on-light);
-  @include mdc-select-dd-arrow-svg-bg_(000000, .38);
-
-  border-bottom-style: dotted;
-  cursor: default;
-  pointer-events: none;
-  // Imitate native disabled functionality
-  user-select: none;
-}
-
-@each $sel in ("mdc-select--disabled", "mdc-select[disabled]") {
-  .#{$sel} {
-    @include mdc-theme-dark(".mdc-select", true) {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-      @include mdc-select-dd-arrow-svg-bg_(ffffff, .38);
-
-      border-bottom: 1px dotted rgba(white, .38);
-    }
+  set disabled(disabled) {
+    this.foundation_.setDisabled(disabled);
   }
-}
 
-// postcss-bem-linter: end
+  item(index) {
+    return this.options[index] || null;
+  }
 
-.mdc-select__menu {
-  .mdc-list-item {
-    @include mdc-typography(subheading2);
-    @include mdc-theme-prop(color, text-secondary-on-light);
-
-    &[aria-selected="true"] {
-      @include mdc-theme-prop(color, text-primary-on-light);
-    }
-
-    @include mdc-theme-dark(".mdc-select") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-
-      &[aria-selected="true"] {
-        @include mdc-theme-prop(color, text-primary-on-dark);
+  nameditem(key) {
+    // NOTE: IE11 precludes us from using Array.prototype.find
+    for (let i = 0, options = this.options, option; (option = options[i]); i++) {
+      if (option.id === key || option.getAttribute('name') === key) {
+        return option;
       }
     }
+    return null;
   }
 
-  .mdc-list-group,
-  .mdc-list-group > .mdc-list-item:first-child {
-    margin-top: 12px;
+  initialize(menuFactory = (el) => new MDCSimpleMenu(el)) {
+    this.menuEl_ = this.root_.querySelector('.mdc-select__menu');
+    this.menu_ = menuFactory(this.menuEl_);
+    this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
   }
 
-  .mdc-list-group {
-    @include mdc-theme-prop(color, text-hint-on-light);
+  getDefaultFoundation() {
+    return new MDCSelectFoundation({
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
+      rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
+      computeBoundingRect: () => this.root_.getBoundingClientRect(),
+      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
+      focus: () => this.root_.focus(),
+      makeTabbable: () => {
+        this.root_.tabIndex = 0;
+      },
+      makeUntabbable: () => {
+        this.root_.tabIndex = -1;
+      },
+      getComputedStyleValue: (prop) => window.getComputedStyle(this.root_).getPropertyValue(prop),
+      setStyle: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
+      create2dRenderingContext: () => document.createElement('canvas').getContext('2d'),
+      setMenuElStyle: (propertyName, value) => this.menuEl_.style.setProperty(propertyName, value),
+      setMenuElAttr: (attr, value) => this.menuEl_.setAttribute(attr, value),
+      rmMenuElAttr: (attr) => this.menuEl_.removeAttribute(attr),
+      getMenuElOffsetHeight: () => this.menuEl_.offsetHeight,
+      openMenu: (focusIndex) => this.menu_.show({focusIndex}),
+      isMenuOpen: () => this.menu_.open,
+      setSelectedTextContent: (selectedTextContent) => {
+        this.selectedText_.textContent = selectedTextContent;
+      },
+      getNumberOfOptions: () => this.options.length,
+      getTextForOptionAtIndex: (index) => this.options[index].textContent,
+      getValueForOptionAtIndex: (index) => this.options[index].id || this.options[index].textContent,
+      setAttrForOptionAtIndex: (index, attr, value) => this.options[index].setAttribute(attr, value),
+      rmAttrForOptionAtIndex: (index, attr) => this.options[index].removeAttribute(attr),
+      getOffsetTopForOptionAtIndex: (index) => this.options[index].offsetTop,
+      registerMenuInteractionHandler: (type, handler) => this.menu_.listen(type, handler),
+      deregisterMenuInteractionHandler: (type, handler) => this.menu_.unlisten(type, handler),
+      notifyChange: () => this.emit('MDCSelect:change', this),
+      getWindowInnerHeight: () => window.innerHeight,
+      getPageYOffset: () => window.pageYOffset,
+    });
+  }
 
-    font-weight: normal;
-
-    .mdc-list-item {
-      @include mdc-theme-prop(color, text-primary-on-light);
+  initialSyncWithDOM() {
+    const selectedOption = this.selectedOptions[0];
+    const idx = selectedOption ? this.options.indexOf(selectedOption) : -1;
+    if (idx >= 0) {
+      this.selectedIndex = idx;
     }
-  }
 
-  @include mdc-theme-dark(".mdc-select") {
-    .mdc-list-group {
-      @include mdc-theme-prop(color, text-hint-on-dark);
-
-      .mdc-list-item {
-        @include mdc-theme-prop(color, text-primary-on-dark);
-      }
+    if (this.root_.getAttribute('aria-disabled') === 'true') {
+      this.disabled = true;
     }
   }
 }
-
-// postcss-bem-linter: define multi-select
-.mdc-multi-select {
-  appearance: none;
-  width: 250px;
-  padding: 0;
-  border: 1px solid;
-
-  @include mdc-theme-prop(border-color, text-hint-on-light);
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(border-color, text-hint-on-dark);
-  }
-
-  outline: none;
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-group {
-    margin: 16px 0 0;
-    padding: 0 0 0 16px;
-
-    @include mdc-theme-prop(color, text-hint-on-light);
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-hint-on-dark);
-    }
-
-    font-weight: normal;
-
-    &:last-child {
-      margin-bottom: 16px;
-    }
-
-    .mdc-list-divider {
-      margin-left: -16px;
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-item {
-    margin: 0 0 0 -16px;
-    padding: 0 16px;
-
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    &:first-child {
-      margin-top: 12px;
-    }
-
-    &:last-child {
-      margin-bottom: 8px;
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-item:checked {
-    background-color: rgba(black, .12);
-
-    @include mdc-theme-prop(background-color, background);
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(background-color, text-primary-on-dark);
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
-.mdc-multi-select:focus .mdc-list-item:checked {
-  @include mdc-theme-prop(background-color, primary);
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(background-color, text-primary-on-dark);
-  }
-}
-
-// height for option elements cannot be controlled
-// with CSS. Use the font-size rule instead.
-
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-list-divider {
-  margin-bottom: 8px;
-  padding-top: 8px;
-  font-size: 0;
-}
-// stylelint-enable plugin/selector-bem-pattern
-
-// postcss-bem-linter: end
