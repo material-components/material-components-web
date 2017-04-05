@@ -67,7 +67,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       deregisterMenuInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyChange: () => {},
       getWindowInnerHeight: () => /* number */ 0,
-      getPageYoffset: () =>  /* number */ 0,
+      getPageYOffset: () =>  /* number */ 0,
     };
   }
 
