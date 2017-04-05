@@ -38,6 +38,7 @@ function setupTest() {
     top: 100,
   });
   td.when(mockAdapter.getWindowInnerHeight()).thenReturn(500);
+  td.when(mockAdapter.getPageYOffset()).thenReturn(0);
   td.when(mockAdapter.getMenuElOffsetHeight()).thenReturn(100);
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const menuHandlers = captureHandlers(mockAdapter, 'registerMenuInteractionHandler');
