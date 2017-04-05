@@ -71,7 +71,7 @@ While in theory you can add any number of "lines" to a list item, you can use th
 <ul class="mdc-list mdc-list--two-line">
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
-      <span class="mdc-list-item__text">Two-line item</span>
+      Two-line item
       <span class="mdc-list-item__text__secondary">Secondary text</span>
     </span>
   </li>
