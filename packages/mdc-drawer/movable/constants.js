@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import * as util from './util';
-export {MDCMovableDrawerFoundation} from './movable';
-export {MDCTemporaryDrawer, MDCTemporaryDrawerFoundation} from './temporary';
-export {MDCPersistentDrawer, MDCPersistentDrawerFoundation} from './persistent';
-export {util};
+export const strings = {
+  FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
+      'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',
+};
