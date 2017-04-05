@@ -207,23 +207,20 @@ export class MDCMovableDrawerFoundation extends MDCFoundation {
       return;
     }
 
-    this.touchingSideNav_ = false;
-    this.adapter_.setTranslateX(null);
-
-    let newPos = null;
-    if (this.direction_ === 1) {
-      newPos = Math.min(0, this.currentX_ - this.startX_);
-    } else {
-      newPos = Math.max(0, this.currentX_ - this.startX_);
-    }
+    this.prepareForTouchEnd();
 
     // Did the user close the drawer by more than 50%?
-    if (Math.abs(newPos / this.drawerWidth_) >= 0.5) {
+    if (Math.abs(this.newPos / this.drawerWidth_) >= 0.5) {
       this.close();
     } else {
       // Triggering an open here means we'll get a nice animation back to the fully open state.
       this.open();
     }
+  }
+
+  prepareForTouchEnd() {
+    this.touchingSideNav_ = false;
+    this.adapter_.setTranslateX(null);
   }
 
   get newPos() {
