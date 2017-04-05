@@ -190,7 +190,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   setMenuStylesForOpenAtIndex_(index) {
     const innerHeight = this.adapter_.getWindowInnerHeight();
     const {left, top} = this.adapter_.computeBoundingRect();
-    const pageYOffset = this.adapter_.getPageYoffset();
+    const pageYOffset = this.adapter_.getPageYOffset();
 
     this.adapter_.setMenuElAttr('aria-hidden', 'true');
     this.adapter_.setMenuElStyle('display', 'block');
