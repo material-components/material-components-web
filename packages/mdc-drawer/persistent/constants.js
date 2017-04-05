@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
-@import "./persistent/mdc-persistent-drawer";
-@import "./permanent/mdc-permanent-drawer";
-@import "./temporary/mdc-temporary-drawer";
+const ROOT = 'mdc-persistent-drawer';
+
+export const cssClasses = {
+  ROOT,
+  OPEN: `${ROOT}--open`,
+  ANIMATING: `${ROOT}--animating`,
+};
+
+export const strings = {
+  FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
+      'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',
+};
