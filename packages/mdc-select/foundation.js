@@ -207,7 +207,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     } else if (overflowsBottom && top <= innerHeight + pageYOffset) {
       adjustedTop = Math.max(0, innerHeight + pageYOffset - menuHeight);
     };
-    
+
     this.adapter_.setMenuElStyle('left', `${left}px`);
     this.adapter_.setMenuElStyle('top', `${adjustedTop}px`);
     this.adapter_.setMenuElStyle('transformOrigin', `center ${itemOffsetTop}px`);
