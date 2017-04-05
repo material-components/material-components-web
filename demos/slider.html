@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html class="mdc-typography">
+
+<head>
+  <meta charset="utf-8">
+  <title>MDC Slider Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+  <style type="text/css">
+    .mdc-theme--dark {
+      background-color: #303030;
+    }
+
+    .demo-container {
+      max-width: 500px;
+    }
+
+    #demo-wrapper {
+      padding: 4px;
+      padding-left: 0;
+    }
+    /* Hack to work around style-loader asynchronously loading styles. */
+    /* Equivalent to using mdc-typography's subheading2, which is used in the sass file. */
+
+    .mdc-slider {
+      font-family: Roboto, sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: .04em;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>MDC slider</h1>
+
+    <section class="demo-container">
+      <h2>Continuous slider</h2>
+      <div class="mdc-slider" id="mdc-slider-default">
+        <input type="range" min="0" max="100" value="25" class="mdc-slider__input">
+        <div class="mdc-slider__background">
+          <div class="mdc-slider__background-lower"></div>
+          <div class="mdc-slider__background-upper"></div>
+        </div>
+      </div>
+      <p>Value <span id="slider-value"></span></p>
+    </section>
+
+    <section class="demo-container">
+      <h2>Continuous slider (accent color)</h2>
+      <div class="mdc-slider mdc-slider--accent" id="mdc-slider-accent">
+        <input type="range" min="0" max="100" value="25" class="mdc-slider__input">
+        <div class="mdc-slider__background">
+          <div class="mdc-slider__background-lower"></div>
+          <div class="mdc-slider__background-upper"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="assets/material-components-web.js"></script>
+  <script>
+    (function() {
+      mdc.slider.MDCSlider.attachTo(document.querySelector('#mdc-slider-default'));
+      mdc.slider.MDCSlider.attachTo(document.querySelector('#mdc-slider-accent'));
+
+      var slider = document.querySelector('#mdc-slider-default');
+      var continuousSlider = document.querySelector('#mdc-slider-default .mdc-slider__input');
+      var sliderValue = document.getElementById('slider-value');
+
+      sliderValue.textContent = continuousSlider.value;
+
+      slider.addEventListener('MDCSlider:change', function(evt) {
+        sliderValue.textContent = evt.detail.value;
+      });
+    })();
+  </script>
+</body>
+
+</html>
