@@ -67,6 +67,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       deregisterMenuInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyChange: () => {},
       getWindowInnerHeight: () => /* number */ 0,
+      getPageYoffset: () =>  /* number */ 0,
     };
   }
 
@@ -180,18 +181,16 @@ export default class MDCSelectFoundation extends MDCFoundation {
   open_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     const focusIndex = this.selectedIndex_ < 0 ? 0 : this.selectedIndex_;
-    const {left, top, transformOrigin} = this.computeMenuStylesForOpenAtIndex_(focusIndex);
 
-    this.adapter_.setMenuElStyle('left', left);
-    this.adapter_.setMenuElStyle('top', top);
-    this.adapter_.setMenuElStyle('transform-origin', transformOrigin);
+    this.setMenuStylesForOpenAtIndex_(focusIndex);
     this.adapter_.addClass(OPEN);
     this.adapter_.openMenu(focusIndex);
   }
 
-  computeMenuStylesForOpenAtIndex_(index) {
+  setMenuStylesForOpenAtIndex_(index) {
     const innerHeight = this.adapter_.getWindowInnerHeight();
     const {left, top} = this.adapter_.computeBoundingRect();
+    const pageYOffset = this.adapter_.getPageYoffset();
 
     this.adapter_.setMenuElAttr('aria-hidden', 'true');
     this.adapter_.setMenuElStyle('display', 'block');
@@ -201,20 +200,17 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.rmMenuElAttr('aria-hidden');
 
     let adjustedTop = top - itemOffsetTop;
-    const adjustedHeight = menuHeight - itemOffsetTop;
-    const overflowsTop = adjustedTop < 0;
-    const overflowsBottom = adjustedTop + adjustedHeight > innerHeight;
+    const overflowsTop = adjustedTop < pageYOffset;
+    const overflowsBottom = adjustedTop + menuHeight + pageYOffset > innerHeight;
     if (overflowsTop) {
-      adjustedTop = 0;
+      adjustedTop = pageYOffset;
     } else if (overflowsBottom) {
-      adjustedTop = Math.max(0, adjustedTop - adjustedHeight);
+      adjustedTop = Math.max(0, innerHeight + pageYOffset - menuHeight);
     }
 
-    return {
-      left: `${left}px`,
-      top: `${adjustedTop}px`,
-      transformOrigin: `center ${itemOffsetTop}px`,
-    };
+    this.adapter_.setMenuElStyle('left', `${left}px`);
+    this.adapter_.setMenuElStyle('top', `${adjustedTop}px`);
+    this.adapter_.setMenuElStyle('transformOrigin', `center ${itemOffsetTop}px`);
   }
 
   close_() {
