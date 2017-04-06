@@ -333,7 +333,7 @@ The html for this can be easily added
 <ul class="mdc-list mdc-list--two-line msgs-list">
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
-      <span class="mdc-list-item__text">Ali Connors</span>
+      Ali Connors
       <span class="mdc-list-item__text_secondary">Lunch this afternoon? I was...</span>
     </span>
 
