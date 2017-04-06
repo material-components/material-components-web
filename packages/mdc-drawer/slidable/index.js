@@ -15,4 +15,4 @@
  */
 
 export {focusableElements} from './constants';
-export {MDCMovableDrawerFoundation} from './foundation';
+export {MDCSlidableDrawerFoundation} from './foundation';

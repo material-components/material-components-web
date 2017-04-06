@@ -15,7 +15,7 @@
  */
 
 import * as util from './util';
-export {MDCMovableDrawerFoundation} from './movable';
+export {MDCSlidableDrawerFoundation} from './slidable';
 export {MDCTemporaryDrawer, MDCTemporaryDrawerFoundation} from './temporary';
 export {MDCPersistentDrawer, MDCPersistentDrawerFoundation} from './persistent';
 export {util};

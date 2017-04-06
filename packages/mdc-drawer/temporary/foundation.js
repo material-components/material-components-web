@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import {MDCMovableDrawerFoundation} from '../movable';
+import {MDCSlidableDrawerFoundation} from '../slidable';
 import {cssClasses, strings} from './constants';
 
-export default class MDCTemporaryDrawerFoundation extends MDCMovableDrawerFoundation {
+export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -27,7 +27,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCMovableDrawerFounda
   }
 
   static get defaultAdapter() {
-    const defaultAdapter = MDCMovableDrawerFoundation.defaultAdapter;
+    const defaultAdapter = MDCSlidableDrawerFoundation.defaultAdapter;
     defaultAdapter.updateCssVariable = (/* value: string */) => {};
     return defaultAdapter;
   }

@@ -16,7 +16,7 @@
 
 import {MDCFoundation} from '@material/base';
 
-export class MDCMovableDrawerFoundation extends MDCFoundation {
+export class MDCSlidableDrawerFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
@@ -44,7 +44,7 @@ export class MDCMovableDrawerFoundation extends MDCFoundation {
   }
 
   constructor(adapter) {
-    super(Object.assign(MDCMovableDrawerFoundation.defaultAdapter, adapter));
+    super(Object.assign(MDCSlidableDrawerFoundation.defaultAdapter, adapter));
 
     this.transitionEndHandler_ = (ev) => {
       if (this.adapter_.isDrawer(ev.target)) {
@@ -67,19 +67,19 @@ export class MDCMovableDrawerFoundation extends MDCFoundation {
   }
 
   get rootCssClass() {
-    // Classes extending MDCMovableDrawerFoundation should implement this method to return a string
+    // Classes extending MDCSlidableDrawerFoundation should implement this method to return a string
     // CSS class for the drawer. e.g. 'mdc-temporary-drawer'
     return '';
   }
 
   get animatingCssClass() {
-    // Classes extending MDCMovableDrawerFoundation should implement this method to return a string
+    // Classes extending MDCSlidableDrawerFoundation should implement this method to return a string
     // CSS class for when the drawer is animating. e.g. 'mdc-temporary-drawer--animating'
     return '';
   }
 
   get openCssClass() {
-    // Classes extending MDCMovableDrawerFoundation should implement this method to return a string
+    // Classes extending MDCSlidableDrawerFoundation should implement this method to return a string
     // CSS class for when the drawer is animating. e.g. 'mdc-temporary-drawer--open'
     return '';
   }

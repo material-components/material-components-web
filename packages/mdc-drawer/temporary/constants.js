@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {focusableElements} from '../movable';
+import {focusableElements} from '../slidable';
 
 const ROOT = 'mdc-temporary-drawer';
 

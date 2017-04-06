@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import {MDCMovableDrawerFoundation} from '../movable';
+import {MDCSlidableDrawerFoundation} from '../slidable';
 import {cssClasses, strings} from './constants';
 
-export default class MDCPersistentDrawerFoundation extends MDCMovableDrawerFoundation {
+export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoundation {
   static get cssClasses() {
     return cssClasses;
   }
