@@ -17,6 +17,8 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "../mixins";
+@import "../slidable/mixins";
+@import "../slidable/variables";
 
 $mdc-persistent-drawer-width: 240px;
 
@@ -33,38 +35,36 @@ $mdc-persistent-drawer-width: 240px;
     @include mdc-rtl-reflexive-box(border, right, 1px solid rgba(white, .12));
   }
 
+  @include mdc-slideable-drawer;
+
+  @include mdc-rtl(".mdc-persistent-drawer") {
+      @include mdc-slideable-drawer-rtl;
+  }
+
   display: inline-flex;
   flex-direction: column;
   width: 0;
-  height: 100%;
-  transform: translateX(-107%);
-  transform: translateX(calc(-100% - 20px));
-  will-change: transform;
   box-sizing: border-box;
   overflow: hidden;
   touch-action: none;
 
-  @include mdc-rtl(".mdc-persistent-drawer") {
-    transform: translateX(107%);
-    transform: translateX(calc(100% + 20px));
-  }
-
   &--animating {
-    transition: mdc-animation-enter(transform, .13s), mdc-animation-enter(width, .13s);
+    transition: $mdc-slidable-drawer-transition, mdc-animation-enter(width, $mdc-slidable-drawer-transition-time);
 
     &.mdc-persistent-drawer--open {
-      transition: mdc-animation-enter(transform, .33s), mdc-animation-enter(width, .33s);
+      transition: $mdc-slidable-drawer-transition-open, mdc-animation-enter(width, $mdc-slidable-drawer-transition-open-time);
     }
   }
 
   &--open {
+    @include mdc-slideable-drawer-open;
+
     width: $mdc-persistent-drawer-width;
     pointer-events: auto;
-    transform: none;
 
     // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
     @include mdc-rtl {
-      transform: none;
+      @include mdc-slideable-drawer-open;
     }
   }
 }
