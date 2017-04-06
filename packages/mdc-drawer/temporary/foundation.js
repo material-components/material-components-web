@@ -79,9 +79,8 @@ export default class MDCTemporaryDrawerFoundation extends MDCMovableDrawerFounda
     super.close();
   }
 
-
-  prepareForTouchEnd() {
-    super.prepareForTouchEnd();
+  prepareForTouchEnd_() {
+    super.prepareForTouchEnd_();
 
     this.adapter_.updateCssVariable('');
   }
@@ -89,7 +88,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCMovableDrawerFounda
   updateDrawer_() {
     super.updateDrawer_();
 
-    const newOpacity = Math.max(0, 1 + this.direction_ * (this.newPos / this.drawerWidth_));
+    const newOpacity = Math.max(0, 1 + this.direction_ * (this.newPosition_ / this.drawerWidth_));
     this.adapter_.updateCssVariable(newOpacity);
   }
 }
