@@ -39,7 +39,6 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
       makeElementUntabbable: (/* el: Element */) => {},
       isRtl: () => /* boolean */ false,
       getDrawerWidth: () => /* number */ 0,
-      isDrawer: (/* el: Element */) => /* boolean */ false,
     };
   }
 
@@ -51,7 +50,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.openCssClass_ = openCssClass;
 
     this.transitionEndHandler_ = (ev) => {
-      if (this.adapter_.isDrawer(ev.target)) {
+      if (this.isRootTransitioningElement_(ev.target)) {
         this.adapter_.removeClass(this.animatingCssClass_);
         this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
       }
@@ -228,5 +227,11 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     }
 
     return newPos;
+  }
+
+  isRootTransitioningElement_(el) {
+    // Classes extending MDCSlidableDrawerFoundation should implement this method to return true or false
+    // if the element is the root element currently transitioning.
+    return false;
   }
 }

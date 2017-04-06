@@ -25,5 +25,6 @@ export const cssClasses = {
 };
 
 export const strings = {
+  DRAWER_SELECTOR: `.${ROOT}__drawer`,
   FOCUSABLE_ELEMENTS: focusableElements,
 };

@@ -21,10 +21,18 @@ import {captureHandlers} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {MDCSlidableDrawerFoundation} from '../../../packages/mdc-drawer/slidable';
 
-function setupTest() {
+function setupTest(isRootTransitioningElement) {
   const mockAdapter = td.object(MDCSlidableDrawerFoundation.defaultAdapter);
+
+  class MDCFakeSlideableDrawerFoundation extends MDCSlidableDrawerFoundation {
+
+    isRootTransitioningElement_(el) {
+      return isRootTransitioningElement;
+    }
+  }
+
   const foundation =
-    new MDCSlidableDrawerFoundation(
+    new MDCFakeSlideableDrawerFoundation(
       mockAdapter, 'mdc-slidable-drawer', 'mdc-slidable-drawer--animating', 'mdc-slidable-drawer--open');
 
   td.when(mockAdapter.hasClass('mdc-slidable-drawer')).thenReturn(true);
@@ -44,7 +52,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
-    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer',
+    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth',
   ]);
   // Test default methods
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
@@ -647,16 +655,14 @@ test('on document keydown does nothing if drawer is not opened', () => {
 });
 
 test('should clean up transition handlers after drawer close', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isDrawer(td.matchers.isA(Object))).thenReturn(true);
+  const {foundation, mockAdapter} = setupTest(true);
   td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
   foundation.close();
   td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)));
 });
 
 test('should not trigger bug #67', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isDrawer(td.matchers.isA(Object))).thenReturn(false);
+  const {foundation, mockAdapter} = setupTest(false);
   td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: null});
   foundation.close();
   td.verify(mockAdapter.removeClass('mdc-slidable-drawer--animating'), {times: 0});

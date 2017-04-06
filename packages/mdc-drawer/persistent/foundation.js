@@ -26,11 +26,21 @@ export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoun
     return strings;
   }
 
+  static get defaultAdapter() {
+    const defaultAdapter = MDCSlidableDrawerFoundation.defaultAdapter;
+    defaultAdapter.isRoot = (el) => false;
+    return defaultAdapter;
+  }
+
   constructor(adapter) {
     super(
-      adapter,
+      Object.assign(MDCPersistentDrawerFoundation.defaultAdapter, adapter),
       MDCPersistentDrawerFoundation.cssClasses.ROOT,
       MDCPersistentDrawerFoundation.cssClasses.ANIMATING,
       MDCPersistentDrawerFoundation.cssClasses.OPEN);
+  }
+
+  isRootTransitioningElement_(el) {
+    return this.adapter_.isRoot(el);
   }
 }

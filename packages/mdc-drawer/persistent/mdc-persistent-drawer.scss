@@ -24,47 +24,63 @@ $mdc-persistent-drawer-width: 240px;
 
 .mdc-persistent-drawer {
   @include mdc-drawer-base_;
-  @include mdc-theme-prop(background, background);
-  @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
-  @include mdc-rtl-reflexive-position(left, 0);
-
-  @include mdc-theme-dark {
-    background: #212121;
-
-    @include mdc-theme-prop(color, text-primary-on-dark);
-    @include mdc-rtl-reflexive-box(border, right, 1px solid rgba(white, .12));
-  }
-
-  @include mdc-slideable-drawer;
-
-  @include mdc-rtl(".mdc-persistent-drawer") {
-      @include mdc-slideable-drawer-rtl;
-  }
-
-  display: inline-flex;
-  flex-direction: column;
   width: 0;
-  box-sizing: border-box;
-  overflow: hidden;
-  touch-action: none;
+
+  &__drawer {
+    @include mdc-theme-prop(background, background);
+    @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
+    @include mdc-rtl-reflexive-position(left, 0);
+
+    @include mdc-theme-dark {
+      background: #212121;
+
+      @include mdc-theme-prop(color, text-primary-on-dark);
+      @include mdc-rtl-reflexive-box(border, right, 1px solid rgba(white, .12));
+    }
+
+    @include mdc-slideable-drawer;
+
+    @include mdc-rtl(".mdc-persistent-drawer") {
+        @include mdc-slideable-drawer-rtl;
+    }
+
+    display: inline-flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    touch-action: none;
+    width: $mdc-persistent-drawer-width;
+  }
 
   &--animating {
-    transition: $mdc-slidable-drawer-transition, mdc-animation-enter(width, $mdc-slidable-drawer-transition-time);
+    transition: mdc-animation-enter(width, $mdc-slidable-drawer-transition-time);
+
+    .mdc-persistent-drawer__drawer {
+      transition: $mdc-slidable-drawer-transition;
+    }
 
     &.mdc-persistent-drawer--open {
-      transition: $mdc-slidable-drawer-transition-open, mdc-animation-enter(width, $mdc-slidable-drawer-transition-open-time);
+      transition: mdc-animation-enter(width, $mdc-slidable-drawer-transition-open-time);
+
+      .mdc-persistent-drawer__drawer {
+        transition: $mdc-slidable-drawer-transition-open;
+      }
     }
   }
 
   &--open {
-    @include mdc-slideable-drawer-open;
-
     width: $mdc-persistent-drawer-width;
     pointer-events: auto;
 
+    .mdc-persistent-drawer__drawer {
+      @include mdc-slideable-drawer-open;
+    }
+
     // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
     @include mdc-rtl {
-      @include mdc-slideable-drawer-open;
+      .mdc-persistent-drawer__drawer {
+        @include mdc-slideable-drawer-open;
+      }
     }
   }
 }

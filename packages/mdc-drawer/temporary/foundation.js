@@ -28,6 +28,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
 
   static get defaultAdapter() {
     const defaultAdapter = MDCSlidableDrawerFoundation.defaultAdapter;
+    defaultAdapter.isDrawer = (el) => false;
     defaultAdapter.updateCssVariable = (/* value: string */) => {};
     return defaultAdapter;
   }
@@ -82,5 +83,9 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
 
     const newOpacity = Math.max(0, 1 + this.direction_ * (this.newPosition_ / this.drawerWidth_));
     this.adapter_.updateCssVariable(newOpacity);
+  }
+
+  isRootTransitioningElement_(el) {
+    return this.adapter_.isDrawer(el);
   }
 }

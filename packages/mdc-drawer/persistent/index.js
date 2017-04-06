@@ -39,7 +39,7 @@ export class MDCPersistentDrawer extends MDCComponent {
 
   /* Return the drawer element inside the component. */
   get drawer() {
-    return this.root_;
+    return this.root_.querySelector(MDCPersistentDrawerFoundation.strings.DRAWER_SELECTOR);
   }
 
   getDefaultFoundation() {
@@ -58,8 +58,10 @@ export class MDCPersistentDrawer extends MDCComponent {
           this.drawer.addEventListener(util.remapEvent(evt), handler),
       deregisterDrawerInteractionHandler: (evt, handler) =>
           this.drawer.removeEventListener(util.remapEvent(evt), handler),
-      registerTransitionEndHandler: (handler) => this.drawer.addEventListener('transitionend', handler),
-      deregisterTransitionEndHandler: (handler) => this.drawer.removeEventListener('transitionend', handler),
+      registerTransitionEndHandler: (handler) =>
+          this.root_.addEventListener('transitionend', handler),
+      deregisterTransitionEndHandler: (handler) =>
+          this.root_.removeEventListener('transitionend', handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       getDrawerWidth: () => this.drawer.offsetWidth,
@@ -70,7 +72,7 @@ export class MDCPersistentDrawer extends MDCComponent {
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      isDrawer: (el) => el === this.drawer,
+      isRoot: (el) => el === this.root_,
     });
   }
 }
