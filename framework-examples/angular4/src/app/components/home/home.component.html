@@ -3,9 +3,9 @@
   <mdc-textfield [(ngModel)]="username" id="username" label="Username" required aria-controls="help-username-val"
                  (focus)="handleFocus($event);" (blur)="handleBlur($event);" (input)="handleInput($event);" (keydown)="handleKeyDown($event);">
   </mdc-textfield>
-  <p class="mdc-textfield-helptext mdc-textfield-helptext--validation-msg" id="help-username-val">Username is required</p>
+  <p mdc-textfield-helptext id="help-username-val" [validation]="true" [persistent]="false">Username is required</p>
   <p>ngModel : {{username ? username : 'empty'}}</p>
-  <p>Is focused : {{inputHasFocus}}</p>
+  <p>Focused : {{inputHasFocus}}</p>
   <p>Keydown event count : {{inputKeysPressed}}</p>
   <p>Input event count : {{inputCount}}</p>
 </fieldset>
@@ -26,8 +26,11 @@
 </fieldset>
 <fieldset>
   <legend>Button Example (todo: implement ripple)</legend>
+  <mdc-button [accent]="true" (click)="onSubmit('Default and Accent Clicked')">Default and Accent</mdc-button>
   <mdc-button [raised]="true" (click)="onSubmit('Raised Clicked')">Raised</mdc-button>
-  <mdc-button [primary]="true" [raised]="true" (click)="onSubmit('Raised with Primary Clicked')">Raised with Primary</mdc-button>
-  <mdc-button [raised]="true" [accent]="true" (click)="onSubmit('Raised with Accent Clicked')">Raised with Accent</mdc-button>
+  <mdc-button [dense]="true" [raised]="true" (click)="onSubmit('Dense and Raised Clicked')">Dense and Raised</mdc-button>
+  <mdc-button [raised]="true" [compact]="true" (click)="onSubmit('Raised and Compact Clicked')">Raised and Compact</mdc-button>
+  <mdc-button [primary]="true" [raised]="true" (click)="onSubmit('Raised and Primary Clicked')">Raised and Primary</mdc-button>
+  <mdc-button [raised]="true" [accent]="true" (click)="onSubmit('Raised and Accent Clicked')">Raised and Accent</mdc-button>
   <p>Button Events : {{submitEventText ? submitEventText : 'empty'}}</p>
 </fieldset>
