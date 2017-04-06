@@ -26,15 +26,11 @@ export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoun
     return strings;
   }
 
-  get rootCssClass() {
-    return MDCPersistentDrawerFoundation.cssClasses.ROOT;
-  }
-
-  get animatingCssClass() {
-    return MDCPersistentDrawerFoundation.cssClasses.ANIMATING;
-  }
-
-  get openCssClass() {
-    return MDCPersistentDrawerFoundation.cssClasses.OPEN;
+  constructor(adapter) {
+    super(
+      adapter, 
+      MDCPersistentDrawerFoundation.cssClasses.ROOT, 
+      MDCPersistentDrawerFoundation.cssClasses.ANIMATING,
+      MDCPersistentDrawerFoundation.cssClasses.OPEN);
   }
 }

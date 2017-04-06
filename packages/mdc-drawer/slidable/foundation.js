@@ -43,12 +43,16 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     };
   }
 
-  constructor(adapter) {
+  constructor(adapter, rootCssClass, animatingCssClass, openCssClass) {
     super(Object.assign(MDCSlidableDrawerFoundation.defaultAdapter, adapter));
+
+    this.rootCssClass_ = rootCssClass;
+    this.animatingCssClass_ = animatingCssClass;
+    this.openCssClass_ = openCssClass;
 
     this.transitionEndHandler_ = (ev) => {
       if (this.adapter_.isDrawer(ev.target)) {
-        this.adapter_.removeClass(this.animatingCssClass);
+        this.adapter_.removeClass(this.animatingCssClass_);
         this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
       }
     };
@@ -66,27 +70,9 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     };
   }
 
-  get rootCssClass() {
-    // Classes extending MDCSlidableDrawerFoundation should implement this method to return a string
-    // CSS class for the drawer. e.g. 'mdc-temporary-drawer'
-    return '';
-  }
-
-  get animatingCssClass() {
-    // Classes extending MDCSlidableDrawerFoundation should implement this method to return a string
-    // CSS class for when the drawer is animating. e.g. 'mdc-temporary-drawer--animating'
-    return '';
-  }
-
-  get openCssClass() {
-    // Classes extending MDCSlidableDrawerFoundation should implement this method to return a string
-    // CSS class for when the drawer is animating. e.g. 'mdc-temporary-drawer--open'
-    return '';
-  }
-
   init() {
-    const ROOT = this.rootCssClass;
-    const OPEN = this.openCssClass;
+    const ROOT = this.rootCssClass_;
+    const OPEN = this.openCssClass_;
 
     if (!this.adapter_.hasClass(ROOT)) {
       throw new Error(`${ROOT} class required in root element.`);
@@ -121,8 +107,8 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
   open() {
     this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.addClass(this.animatingCssClass);
-    this.adapter_.addClass(this.openCssClass);
+    this.adapter_.addClass(this.animatingCssClass_);
+    this.adapter_.addClass(this.openCssClass_);
     this.retabinate_();
     this.isOpen_ = true;
   }
@@ -130,8 +116,8 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
   close() {
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
-    this.adapter_.addClass(this.animatingCssClass);
-    this.adapter_.removeClass(this.openCssClass);
+    this.adapter_.addClass(this.animatingCssClass_);
+    this.adapter_.removeClass(this.openCssClass_);
     this.detabinate_();
     this.isOpen_ = false;
   }
@@ -178,7 +164,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
   }
 
   handleTouchStart_(evt) {
-    if (!this.adapter_.hasClass(this.openCssClass)) {
+    if (!this.adapter_.hasClass(this.openCssClass_)) {
       return;
     }
     if (evt.pointerType && evt.pointerType !== 'touch') {

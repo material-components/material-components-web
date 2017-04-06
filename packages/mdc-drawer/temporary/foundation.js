@@ -33,21 +33,13 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
   }
 
   constructor(adapter) {
-    super(Object.assign(MDCTemporaryDrawerFoundation.defaultAdapter, adapter));
+    super(
+      Object.assign(MDCTemporaryDrawerFoundation.defaultAdapter, adapter),
+      MDCTemporaryDrawerFoundation.cssClasses.ROOT,
+      MDCTemporaryDrawerFoundation.cssClasses.ANIMATING,
+      MDCTemporaryDrawerFoundation.cssClasses.OPEN);
 
     this.componentClickHandler_ = () => this.close();
-  }
-
-  get rootCssClass() {
-    return MDCTemporaryDrawerFoundation.cssClasses.ROOT;
-  }
-
-  get animatingCssClass() {
-    return MDCTemporaryDrawerFoundation.cssClasses.ANIMATING;
-  }
-
-  get openCssClass() {
-    return MDCTemporaryDrawerFoundation.cssClasses.OPEN;
   }
 
   init() {
