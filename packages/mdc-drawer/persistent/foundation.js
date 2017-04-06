@@ -28,8 +28,8 @@ export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoun
 
   constructor(adapter) {
     super(
-      adapter, 
-      MDCPersistentDrawerFoundation.cssClasses.ROOT, 
+      adapter,
+      MDCPersistentDrawerFoundation.cssClasses.ROOT,
       MDCPersistentDrawerFoundation.cssClasses.ANIMATING,
       MDCPersistentDrawerFoundation.cssClasses.OPEN);
   }
