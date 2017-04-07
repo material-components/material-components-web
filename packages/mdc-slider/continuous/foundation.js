@@ -52,9 +52,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
 
-    // Browser feature detection.
-    this.isIE_ = adapter.detectIsIE();
-
     this.touchMoveHandler_ = evt => this.handleTouchMove_(evt);
     this.inputHandler = evt => this.onInput_(evt);
     this.changeHandler = evt => this.onChange_(evt);
@@ -72,6 +69,9 @@ export default class MDCSliderFoundation extends MDCFoundation {
     if (!this.adapter_.hasNecessaryDom()) {
       throw new Error(`Required DOM nodes missing in ${ROOT} component.`);
     }
+
+    // Browser feature detection.
+    this.isIE_ = this.adapter_.detectIsIE();
 
     this.adapter_.addClass(UPGRADED);
     this.adapter_.registerHandler('input', this.inputHandler);
@@ -107,7 +107,8 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
   handleTouchMove_(event) {
     const input_ = this.getNativeInput();
-    const value = input_.max / input_.offsetWidth * (event.touches[0].clientX - input_.offsetLeft);
+    const rect = input_.getBoundingClientRect();
+    const value = input_.max / rect.width * (event.touches[0].clientX - rect.left);
     input_.value = value;
 
     event.preventDefault();
@@ -119,7 +120,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
       target: event.target,
       buttons: event.buttons,
       clientX: event.touches[0].clientX,
-      clientY: input_.getBoundingClientRect().y,
+      clientY: rect.top,
     });
     input_.dispatchEvent(newEvent);
   }

@@ -91,6 +91,15 @@ test('#setDisabled handles no native input being returned gracefully', () => {
   assert.doesNotThrow(() => foundation.setDisabled(true));
 });
 
+test('#init detects browser', () => {
+  const { foundation, mockAdapter } = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
+  td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
+  td.when(mockAdapter.detectIsIE()).thenReturn(456);
+  foundation.init();
+  assert.strictEqual(foundation.isIE_, 456);
+});
+
 test('#init adds mdc-slider--upgraded class', () => {
   const { foundation, mockAdapter } = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
