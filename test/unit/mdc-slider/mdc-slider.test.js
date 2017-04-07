@@ -54,6 +54,14 @@ test('get/set disabled updates the input element', () => {
   assert.isNotOk(input.disabled);
 });
 
+test('get disabled gets state', () => {
+  const {component} = setupTest();
+  component.disabled = true;
+  assert.isOk(component.disabled);
+  component.disabled = false;
+  assert.isNotOk(component.disabled);
+});
+
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');

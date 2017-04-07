@@ -19,7 +19,7 @@
 import { assert } from 'chai';
 import td from 'testdouble';
 
-import { verifyDefaultAdapter } from '../helpers/foundation';
+import { verifyDefaultAdapter, captureHandlers } from '../helpers/foundation';
 import { setupFoundationTest } from '../helpers/setup';
 import MDCSliderFoundation from '../../../packages/mdc-slider/continuous/foundation';
 
@@ -56,7 +56,13 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCSliderFoundation);
+function setupTest() {
+  const { foundation, mockAdapter } = setupFoundationTest(MDCSliderFoundation);
+  td.when(mockAdapter.hasClass('mdc-slider')).thenReturn(true);
+  td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
+
+  return { foundation, mockAdapter };
+}
 
 test('#constructor sets disabled to false', () => {
   const { foundation } = setupTest();
@@ -91,10 +97,25 @@ test('#setDisabled handles no native input being returned gracefully', () => {
   assert.doesNotThrow(() => foundation.setDisabled(true));
 });
 
+test('#init throws error when the root class is not present', () => {
+  const mockAdapter = td.object(MDCSliderFoundation.defaultAdapter);
+  td.when(mockAdapter.hasClass('mdc-slider')).thenReturn(false);
+
+  const foundation = new MDCSliderFoundation(mockAdapter);
+  assert.throws(() => foundation.init());
+});
+
+test('#init throws error when the necessary DOM is not present', () => {
+  const mockAdapter = td.object(MDCSliderFoundation.defaultAdapter);
+  td.when(mockAdapter.hasClass('mdc-slider')).thenReturn(true);
+  td.when(mockAdapter.hasNecessaryDom()).thenReturn(false);
+
+  const foundation = new MDCSliderFoundation(mockAdapter);
+  assert.throws(() => foundation.init());
+});
+
 test('#init detects browser', () => {
   const { foundation, mockAdapter } = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
-  td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
   td.when(mockAdapter.detectIsIE()).thenReturn(456);
   foundation.init();
   assert.strictEqual(foundation.isIE_, 456);
@@ -102,8 +123,6 @@ test('#init detects browser', () => {
 
 test('#init adds mdc-slider--upgraded class', () => {
   const { foundation, mockAdapter } = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
-  td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
   foundation.init();
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
@@ -113,13 +132,6 @@ test('#destroy removes mdc-slider--upgraded class', () => {
   foundation.destroy();
   td.verify(mockAdapter.removeClass(cssClasses.UPGRADED));
 });
-
-// this.adapter_.deregisterHandler('input', this.inputHandler);
-// this.adapter_.deregisterHandler('change', this.changeHandler);
-// this.adapter_.deregisterHandler('mouseup', this.mouseUpHandler);
-// this.adapter_.deregisterHandler('touchmove', this.touchMoveHandler_);
-// this.adapter_.deregisterHandler('touchstart', this.touchMoveHandler_);
-// this.adapter_.deregisterRootHandler('mousedown', this.containerMouseDownHandler);
 
 test('#destroy deregisters input handler', () => {
   const { foundation, mockAdapter } = setupTest();
@@ -155,4 +167,189 @@ test('#destroy deregisters mousedown handler', () => {
   const { foundation, mockAdapter } = setupTest();
   foundation.destroy();
   td.verify(mockAdapter.deregisterRootHandler('mousedown', td.matchers.isA(Function)));
+});
+
+test('on input sets valuenow', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    stopPropagation: () => {},
+    target: {},
+  };
+
+  foundation.init();
+
+  td.when(mockAdapter.setAttr('aria-valuenow', td.matchers.anything())).thenReturn();
+  handlers.input(evt);
+  td.verify(mockAdapter.setAttr('aria-valuenow', td.matchers.anything()));
+});
+
+test('on change sets valuenow', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    stopPropagation: () => {},
+    target: {},
+  };
+
+  foundation.init();
+
+  td.when(mockAdapter.setAttr('aria-valuenow', td.matchers.anything())).thenReturn();
+  handlers.change(evt);
+  td.verify(mockAdapter.setAttr('aria-valuenow', td.matchers.anything()));
+});
+
+test('on change adapter adds LOWEST_VALUE for fraction 0', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    stopPropagation: () => {},
+    target: {},
+  };
+
+  const nativeInput = {
+    value: 0,
+    min: 0,
+    max: 100,
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+
+  foundation.init();
+  handlers.change(evt);
+  td.verify(mockAdapter.addInputClass(cssClasses.LOWEST_VALUE));
+});
+
+test('on change adapter removes LOWEST_VALUE for fraction != 0', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    stopPropagation: () => {},
+    target: {},
+  };
+
+  const nativeInput = {
+    value: 50,
+    min: 0,
+    max: 100,
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+
+  foundation.init();
+  handlers.change(evt);
+  td.verify(mockAdapter.removeInputClass(cssClasses.LOWEST_VALUE));
+});
+
+test('on touchmove calls preventDefault', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    target: {},
+    touches: [{ clientX: 50 }],
+  };
+
+  const nativeInput = {
+    max: 100,
+    getBoundingClientRect: () => ({ width: 100, left: 0 }),
+    dispatchEvent: () => undefined,
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  handlers.touchmove(evt);
+  td.verify(evt.preventDefault());
+});
+
+test('on touchmove calls dispatchEvent', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    target: {},
+    touches: [{ clientX: 50 }],
+  };
+
+  const nativeInput = {
+    max: 100,
+    getBoundingClientRect: () => ({ width: 100, left: 0, top: 10 }),
+    dispatchEvent: td.func('input.dispatchEvent'),
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  handlers.touchmove(evt);
+  td.verify(nativeInput.dispatchEvent(td.matchers.anything()));
+});
+
+test('on touchstart calls preventDefault', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    target: {},
+    touches: [{ clientX: 50 }],
+  };
+
+  const nativeInput = {
+    max: 100,
+    getBoundingClientRect: () => ({ width: 100, left: 0 }),
+    dispatchEvent: () => undefined,
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  handlers.touchstart(evt);
+  td.verify(evt.preventDefault());
+});
+
+test('on mousedown calls preventDefault', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerRootHandler');
+  const target = {};
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    target,
+  };
+
+  const nativeInput = {
+    max: 100,
+    parentElement: target,
+    getBoundingClientRect: () => ({ width: 100, left: 0, top: 10 }),
+    dispatchEvent: () => undefined,
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  handlers.mousedown(evt);
+  td.verify(evt.preventDefault());
+});
+
+test('on mousedown calls dispatchEvent', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerRootHandler');
+  const target = {};
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    target,
+  };
+
+  const nativeInput = {
+    max: 100,
+    parentElement: target,
+    getBoundingClientRect: () => ({ width: 100, left: 0, top: 10 }),
+    dispatchEvent: td.func('input.dispatchEvent'),
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  handlers.mousedown(evt);
+  td.verify(nativeInput.dispatchEvent(td.matchers.anything()));
+});
+
+test('on mouseup calls target.blur()', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    target: { blur: td.func('evt.target.blur') },
+  };
+
+  foundation.init();
+  handlers.mouseup(evt);
+  td.verify(evt.target.blur());
 });
