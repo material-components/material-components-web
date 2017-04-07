@@ -62,10 +62,19 @@ export default class MDCRadioFoundation extends MDCFoundation {
     }
   }
 
+  getValue() {
+    return this.getNativeControl_().value;
+  }
+
+  setValue(value) {
+    this.getNativeControl_().value = value;
+  }
+
   getNativeControl_() {
     return this.adapter_.getNativeControl() || {
       checked: false,
       disabled: false,
+      value: null,
     };
   }
 }
