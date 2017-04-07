@@ -294,6 +294,7 @@ within `componentDidUpdate`.
 | `deregisterMenuInteractionHandler(type: string, handler: EventListener) => void` | Opposite of `registerMenuInteractionHandler`. |
 | `notifyChange() => void` | Broadcast a change event, similar to the `change` event emitted by an `HTMLSelectElement`. While we use custom events in our implementation for this, you can use any mechanism desired for notifications, such as callbacks, reactive streams, etc. Note that you can also pass data within your event if you'd like via `foundation.getValue()` and `foundation.getSelectedIndex()`. |
 | `getWindowInnerHeight() => number` | Returns the `innerHeight` property of the `window` element. |
+| `getPageYOffset() => number` | Returns the `pageYOffset` property of the `window` element. |
 
 ### The full foundation API
 
