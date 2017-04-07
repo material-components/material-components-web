@@ -139,7 +139,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
       target: event.target,
       buttons: event.buttons,
       clientX: event.clientX,
-      clientY: input_.getBoundingClientRect().y,
+      clientY: input_.getBoundingClientRect().top,
     });
     input_.dispatchEvent(newEvent);
   }
