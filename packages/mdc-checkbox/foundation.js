@@ -97,6 +97,14 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     this.getNativeControl_().disabled = disabled;
   }
 
+  getValue() {
+    return this.getNativeControl_().value;
+  }
+
+  setValue(value) {
+    this.getNativeControl_().value = value;
+  }
+
   installPropertyChangeHooks_() {
     const nativeCb = this.getNativeControl_();
     const cbProto = Object.getPrototypeOf(nativeCb);
@@ -212,6 +220,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       checked: false,
       indeterminate: false,
       disabled: false,
+      value: null,
     };
   }
 }
