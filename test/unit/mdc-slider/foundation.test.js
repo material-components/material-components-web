@@ -297,6 +297,32 @@ test('on touchstart calls preventDefault', () => {
   td.verify(evt.preventDefault());
 });
 
+test('on touchmove call returns if is IE', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+  };
+
+  td.when(mockAdapter.detectIsIE()).thenReturn(true);
+  foundation.init();
+  handlers.touchmove(evt);
+  td.verify(evt.preventDefault(), { times: 0 });
+});
+
+test('on touchmove call returns if pointerType not touch', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerHandler');
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    pointerType: 'other',
+  };
+
+  foundation.init();
+  handlers.touchmove(evt);
+  td.verify(evt.preventDefault(), { times: 0 });
+});
+
 test('on mousedown calls preventDefault', () => {
   const { foundation, mockAdapter } = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerRootHandler');
@@ -318,6 +344,27 @@ test('on mousedown calls preventDefault', () => {
   td.verify(evt.preventDefault());
 });
 
+test('on mousedown returns if target not parentElement', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerRootHandler');
+  const target = {};
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    target,
+  };
+
+  const nativeInput = {
+    max: 100,
+    parentElement: {},
+    getBoundingClientRect: () => ({ width: 100, left: 0, top: 10 }),
+    dispatchEvent: () => undefined,
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  handlers.mousedown(evt);
+  td.verify(evt.preventDefault(), { times: 0 });
+});
+
 test('on mousedown calls dispatchEvent', () => {
   const { foundation, mockAdapter } = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerRootHandler');
@@ -336,6 +383,33 @@ test('on mousedown calls dispatchEvent', () => {
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
   handlers.mousedown(evt);
+  td.verify(nativeInput.dispatchEvent(td.matchers.anything()));
+});
+
+test("#on mousedown dispatches a mouse event with the supplied data where MouseEvent isn't available", () => {
+  const { foundation, mockAdapter } = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerRootHandler');
+  const target = {};
+  const evt = {
+    preventDefault: td.func('evt.preventDefault'),
+    target,
+  };
+
+  const nativeInput = {
+    max: 100,
+    parentElement: target,
+    getBoundingClientRect: () => ({ width: 100, left: 0, top: 10 }),
+    dispatchEvent: td.func('input.dispatchEvent'),
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  const { MouseEvent } = window;
+  window.MouseEvent = undefined;
+  try {
+    handlers.mousedown(evt);
+  } finally {
+    window.MouseEvent = MouseEvent;
+  }
   td.verify(nativeInput.dispatchEvent(td.matchers.anything()));
 });
 
