@@ -114,6 +114,11 @@ respectively.
 
 Cleans up handlers when slider is destroyed
 
+##### MDCCheckbox.value
+
+String. Returns the slider's value. Setting this property will update the underlying input control.
+element.
+
 
 ### Slider Events
 
@@ -152,6 +157,16 @@ Returns a boolean specifying whether or not the input is disabled.
 ##### MDCSliderFoundation.setDisabled(disabled: boolean)
 
 Updates the input's disabled state.
+
+##### MDCCheckboxFoundation.getValue() => string
+
+Returns the value of `adapter.getNativeControl().value`. Returns `null` if `getNativeControl()`
+does not return an object.
+
+##### MDCCheckboxFoundation.setValue(value: string) => void
+
+Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does
+not return an object.
 
 ### Theming
 

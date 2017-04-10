@@ -351,3 +351,29 @@ test('on mouseup calls target.blur()', () => {
   handlers.mouseup(evt);
   td.verify(evt.target.blur());
 });
+
+test('#getValue returns the value of getNativeInput.value', () => {
+  const { foundation, mockAdapter } = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn({ value: 'value' });
+  assert.equal(foundation.getValue(), 'value');
+});
+
+test('#getValue returns null if getNativeInput() does not return anything', () => {
+  const { foundation, mockAdapter } = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn(null);
+  assert.isNull(foundation.getValue());
+});
+
+test('#setValue sets the value of getNativeInput.value', () => {
+  const { foundation, mockAdapter } = setupTest();
+  const nativeControl = { value: null, max: 100, min: 0 };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeControl);
+  foundation.setValue('49');
+  assert.equal(nativeControl.value, '49');
+});
+
+test('#setValue exits gracefully if getNativeInput() does not return anything', () => {
+  const { foundation, mockAdapter } = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn(null);
+  assert.doesNotThrow(() => foundation.setValue('new value'));
+});

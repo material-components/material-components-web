@@ -30,22 +30,22 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
-      addClass: ( /* className: string */ ) => {},
-      removeClass: ( /* className: string */ ) => {},
-      hasClass: ( /* className: string */ ) => {},
-      addInputClass: ( /* className: string */ ) => {},
-      removeInputClass: ( /* className: string */ ) => {},
-      getNativeInput: ( /* HTMLInputElement */ ) => {},
-      registerHandler: ( /* type: string, handler: EventListener */ ) => {},
-      deregisterHandler: ( /* type: string, handler: EventListener */ ) => {},
-      registerRootHandler: ( /* type: string, handler: EventListener */ ) => {},
-      deregisterRootHandler: ( /* type: string, handler: EventListener */ ) => {},
-      setAttr: ( /* name: string, value: string */ ) => {},
-      setLowerStyle: ( /* name: string, value: number */ ) => {},
-      setUpperStyle: ( /* name: string, value: number */ ) => {},
-      hasNecessaryDom: ( /* boolean */ ) => false,
-      notifyChange: ( /* evtData: {value: number} */ ) => {},
-      detectIsIE: ( /* boolean */ ) => {},
+      addClass: (/* className: string */) => {},
+      removeClass: (/* className: string */) => {},
+      hasClass: (/* className: string */) => {},
+      addInputClass: (/* className: string */) => {},
+      removeInputClass: (/* className: string */) => {},
+      getNativeInput: (/* HTMLInputElement */) => {},
+      registerHandler: (/* type: string, handler: EventListener */) => {},
+      deregisterHandler: (/* type: string, handler: EventListener */) => {},
+      registerRootHandler: (/* type: string, handler: EventListener */) => {},
+      deregisterRootHandler: (/* type: string, handler: EventListener */) => {},
+      setAttr: (/* name: string, value: string */) => {},
+      setLowerStyle: (/* name: string, value: number */) => {},
+      setUpperStyle: (/* name: string, value: number */) => {},
+      hasNecessaryDom: (/* boolean */) => false,
+      notifyChange: (/* evtData: {value: number} */) => {},
+      detectIsIE: (/* boolean */) => {},
     };
   }
 
@@ -218,6 +218,16 @@ export default class MDCSliderFoundation extends MDCFoundation {
   getNativeInput() {
     return this.adapter_.getNativeInput() || {
       disabled: false,
+      value: null,
     };
+  }
+
+  getValue() {
+    return this.getNativeInput().value;
+  }
+
+  setValue(value) {
+    this.getNativeInput().value = value;
+    this.updateValueStyles_();
   }
 }
