@@ -37,8 +37,7 @@ function setupTest() {
     left: 100,
     top: 100,
   });
-  td.when(mockAdapter.getWindowInnerHeight()).thenReturn(500);
-  td.when(mockAdapter.getPageYOffset()).thenReturn(0);
+  td.when(mockAdapter.computeBoundingContainer()).thenReturn({innerHeight: 500, yOffset: 0});
   td.when(mockAdapter.getMenuElOffsetHeight()).thenReturn(100);
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const menuHandlers = captureHandlers(mockAdapter, 'registerMenuInteractionHandler');
@@ -267,7 +266,7 @@ test('when opened clamps the menu position to the top of the window if it cannot
   const mockMenuHeight = mockAdapter.getMenuElOffsetHeight();
 
   foundation.setSelectedIndex(1);
-  td.when(mockAdapter.getWindowInnerHeight()).thenReturn(mockMenuHeight + 100);
+  td.when(mockAdapter.computeBoundingContainer()).thenReturn({innerHeight: mockMenuHeight + 100, yOffset: 0});
   // Bump off offsetHeight to simulate no good possible placement
   td.when(mockAdapter.getMenuElOffsetHeight()).thenReturn(mockMenuHeight + 200);
   td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(120);
