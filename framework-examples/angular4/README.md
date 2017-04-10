@@ -1,6 +1,6 @@
 ﻿# MDC-Web Example - Angular4
 
-This folder contains an example for using mdc-textfield and mdc-button within Angular4.
+This folder contains an example for using mdc-textfield and mdc-button (with mdc-ripple) within Angular4.
 
 ## Setup
 
@@ -12,7 +12,4 @@ This folder contains an example for using mdc-textfield and mdc-button within An
 
 The textfield wrapper is implemented within `src/app/components/textfield/textfield.ts`.
 The button wrapper is implemented within `src/app/components/button/button.ts`.
-
-## Todo
-
-Add ripple to button
+* The mdc-ripple class is auto-injected for all mdc-buttons. 
