@@ -104,7 +104,7 @@ const MDCCheckboxFoundation = mdc.checkbox.MDCCheckboxFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the checkbox, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
@@ -138,6 +138,11 @@ underlying checkbox element.
 
 Boolean. Returns whether or not the checkbox is disabled. Setting this property will update the
 underlying checkbox element.
+
+##### MDCCheckbox.value
+
+String. Returns the checkbox's value. Setting this property will update the underlying checkbox
+element.
 
 ### Using the Foundation Class
 
@@ -188,6 +193,16 @@ Returns whether or not the underlying input is disabled. Returns false when no i
 
 Updates the `disabled` property on the underlying input. Does nothing when the underlying input is
 not present.
+
+##### MDCCheckboxFoundation.getValue() => string
+
+Returns the value of `adapter.getNativeControl().value`. Returns `null` if `getNativeControl()`
+does not return an object.
+
+##### MDCCheckboxFoundation.setValue(value: string) => void
+
+Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does
+not return an object.
 
 ## Theming
 

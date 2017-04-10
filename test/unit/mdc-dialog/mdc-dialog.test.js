@@ -20,31 +20,32 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
-import {MDCDialog} from '../../../packages/mdc-dialog';
+import {MDCDialog, util} from '../../../packages/mdc-dialog';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
   return bel`
     <div>
       <button class="open-dialog">click</button>
-      <aside class="mdc-dialog mdc-dialog--open"
+      <aside id="my-dialog" class="mdc-dialog"
+        style="visibility:hidden;"
         role="alertdialog"
         aria-hidden="true"
-        aria-labelledby="mdc-dialog__first__label"
-        aria-describedby="mdc-dialog__first__description">
+        aria-labelledby="my-dialog-label"
+        aria-describedby="my-dialog-description">
         <div class="mdc-dialog__surface">
           <header class="mdc-dialog__header">
-            <h2 id="mdc-dialog__first__label" class="mdc-dialog__header__title">
+            <h2 id="my-dialog-label" class="mdc-dialog__header__title">
               Use Google's location service?
             </h2>
           </header>
-          <section id="mdc-dialog__first__description" class="mdc-dialog__body">
+          <section id="my-dialog-description" class="mdc-dialog__body">
             Let Google help apps determine location.
           </section>
           <footer class="mdc-dialog__footer">
-            <button type="button" 
+            <button type="button"
               class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">DECLINE</button>
-            <button type="button" 
+            <button type="button"
               class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">ACCEPT</button>
           </footer>
         </div>
@@ -61,6 +62,10 @@ function setupTest() {
   const acceptButton = fixture.querySelector('.mdc-dialog__footer__button--accept');
   const cancelButton = fixture.querySelector('.mdc-dialog__footer__button--cancel');
   return {openDialog, root, acceptButton, cancelButton, component};
+}
+
+function hasClassMatcher(className) {
+  return td.matchers.argThat((el) => el.classList && el.classList.contains(className));
 }
 
 suite('MDCDialog');
@@ -98,7 +103,10 @@ test('#show opens the dialog', () => {
   const {component} = setupTest();
 
   component.show();
-  assert.isTrue(component.open);
+  const wasOpen = component.open;
+  // Deactivate focus trapping, preventing other tests that use focus from failing
+  component.destroy();
+  assert.isTrue(wasOpen);
 });
 
 test('#close hides the dialog', () => {
@@ -108,17 +116,7 @@ test('#close hides the dialog', () => {
   assert.isFalse(component.open);
 });
 
-test('adapter#hasClass returns true if the root element has specified class', () => {
-  const {root, component} = setupTest();
-  root.classList.add('foo'); assert.isOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
-});
-
-test('adapter#hasClass returns false if the root element does not have specified class', () => {
-  const {component} = setupTest();
-  assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
-});
-
-test('foundationAdapter#addClass adds a class to the root element', () => {
+test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   assert.isOk(root.classList.contains('foo'));
@@ -129,6 +127,12 @@ test('adapter#removeClass removes a class from the root element', () => {
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isNotOk(root.classList.contains('foo'));
+});
+
+test('adapter#setStyle sets a style property to the given value on the root element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setStyle('background-color', 'red');
+  assert.equal(root.style.backgroundColor, 'red');
 });
 
 test('adapter#addBodyClass adds a class to the body, locking the background scroll', () => {
@@ -217,71 +221,6 @@ test('adapter#eventTargetHasClass returns whether or not the className is in the
   assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
 });
 
-test('adapter#registerFocusTrappingHandler attaches a "focus" handler to the document', () => {
-  const {component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  component.getDefaultFoundation().adapter_.registerFocusTrappingHandler(handler);
-  domEvents.emit(document, 'focus');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterFocusTrappingHandler removes a "focus" handler from the document', () => {
-  const {component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  component.getDefaultFoundation().adapter_.registerFocusTrappingHandler(handler);
-  component.getDefaultFoundation().adapter_.deregisterFocusTrappingHandler(handler);
-  domEvents.emit(document, 'focus');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#getFocusableElements returns all the focusable elements in the dialog', () => {
-  const root = bel`
-    <aside class="mdc-dialog"
-      role="alertdialog"
-      aria-hidden="true"
-      aria-labelledby="mdc-dialog__first__label"
-      aria-describedby="mdc-dialog__first__description">
-      <div class="mdc-dialog__surface">
-        <header class="mdc-dialog__header">
-          <h2 id="mdc-dialog__first__label" class="mdc-dialog__header__title">
-            Use Google's location service?
-          </h2>
-        </header>
-        <section id="mdc-dialog__first__description" class="mdc-dialog__body">
-          Let Google help apps determine location.
-        </section>
-        <footer class="mdc-dialog__footer">
-          <button type="button" 
-            class="mdc-button mdc-dialog__footer__button mdc-dialog--cancel">DECLINE</button>
-          <button type="button" 
-            class="mdc-button mdc-dialog__footer__button mdc-dialog--accept">ACCEPT</button>
-        </footer>
-      </div>
-      <div class="mdc-dialog__backdrop"></div>
-    </aside>
-  `;
-  const component = new MDCDialog(root);
-  assert.equal(component.getDefaultFoundation().adapter_.getFocusableElements().length, 2);
-});
-
-test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () => {
-  const root = bel`
-    <aside class="mdc-dialog mdc-dialog--open">
-      <nav class="mdc-dialog__surface">
-        <a id="foo" href="foo"></a>
-      </nav>
-    </aside>
-  `;
-
-  const component = new MDCDialog(root);
-  const el = root.querySelector('#foo');
-  component.getDefaultFoundation().adapter_.makeElementUntabbable(el);
-  assert.equal(el.getAttribute('tabindex'), '-1');
-});
-
 test('adapter#notifyAccept emits MDCDialog:accept', () => {
   const {component} = setupTest();
 
@@ -304,35 +243,46 @@ test('adapter#notifyCancel emits MDCDialog:cancel', () => {
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#setFocusedTarget focuses the target given to it', () => {
+test('adapter#trapFocusOnSurface calls activate() on a properly configured focus trap instance', () => {
+  const {createFocusTrapInstance} = util;
+  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
+
+  const fakeFocusTrapInstance = td.object({
+    activate: () => {},
+    deactivate: () => {},
+  });
+  td.when(
+    util.createFocusTrapInstance(
+      hasClassMatcher('mdc-dialog__surface'),
+      hasClassMatcher('mdc-dialog__footer__button--accept')
+    )
+  ).thenReturn(fakeFocusTrapInstance);
+
   const {component} = setupTest();
-  const target = {
-    focus: td.func('focus'),
-  };
+  component.getDefaultFoundation().adapter_.trapFocusOnSurface();
+  util.createFocusTrapInstance = createFocusTrapInstance;
 
-  component.getDefaultFoundation().adapter_.setFocusedTarget(target);
-
-  td.verify(target.focus());
+  td.verify(fakeFocusTrapInstance.activate());
 });
 
-test('adapter#setBodyAttr sets an attribute to the given value on the body', () => {
+test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured focus trap instance', () => {
+  const {createFocusTrapInstance} = util;
+  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
+
+  const fakeFocusTrapInstance = td.object({
+    activate: () => {},
+    deactivate: () => {},
+  });
+  td.when(
+    util.createFocusTrapInstance(
+      hasClassMatcher('mdc-dialog__surface'),
+      hasClassMatcher('mdc-dialog__footer__button--accept')
+    )
+  ).thenReturn(fakeFocusTrapInstance);
+
   const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.untrapFocusOnSurface();
+  util.createFocusTrapInstance = createFocusTrapInstance;
 
-  component.getDefaultFoundation().adapter_.setBodyAttr('aria-hidden', 'true');
-  assert.equal(document.body.getAttribute('aria-hidden'), 'true');
-  document.body.removeAttribute('aria-hidden');
-});
-
-test('adapter#rmBodyAttr removes an attribute from the body', () => {
-  const {component} = setupTest();
-
-  document.body.setAttribute('aria-hidden', 'true');
-  component.getDefaultFoundation().adapter_.rmBodyAttr('aria-hidden');
-  assert.isFalse(document.body.hasAttribute('aria-hidden'));
-});
-
-test('adapter#setAttr sets an attribute to the given value on the root element', () => {
-  const {component, root} = setupTest();
-  component.getDefaultFoundation().adapter_.setAttr('aria-hidden', 'true');
-  assert.equal(root.getAttribute('aria-hidden'), 'true');
+  td.verify(fakeFocusTrapInstance.deactivate());
 });
