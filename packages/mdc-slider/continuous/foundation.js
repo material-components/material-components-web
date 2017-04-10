@@ -106,9 +106,15 @@ export default class MDCSliderFoundation extends MDCFoundation {
   }
 
   handleTouchMove_(event) {
+    if (event.pointerType && event.pointerType !== 'touch') {
+      return;
+    }
+
     const input_ = this.getNativeInput();
     const rect = input_.getBoundingClientRect();
-    const value = input_.max / rect.width * (event.touches[0].clientX - rect.left);
+    const eventclientX = event.touches[0].clientX;
+
+    const value = input_.max / rect.width * (eventclientX - rect.left);
     input_.value = value;
 
     event.preventDefault();
@@ -119,7 +125,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
     const newEvent = new Event('input', {
       target: event.target,
       buttons: event.buttons,
-      clientX: event.touches[0].clientX,
+      clientX: eventclientX,
       clientY: rect.top,
     });
     input_.dispatchEvent(newEvent);
@@ -132,15 +138,42 @@ export default class MDCSliderFoundation extends MDCFoundation {
     if (event.target !== input_.parentElement) {
       return;
     }
+
     // Discard the original event and create a new event that
     // is on the slider element.
     event.preventDefault();
-    const newEvent = new MouseEvent('mousedown', {
-      target: event.target,
-      buttons: event.buttons,
-      clientX: event.clientX,
-      clientY: input_.getBoundingClientRect().top,
-    });
+
+    let newEvent;
+    const newclientY = input_.getBoundingClientRect().top;
+
+    if (typeof MouseEvent === 'function') {
+      newEvent = new MouseEvent('mousedown', {
+        target: event.target,
+        buttons: event.buttons,
+        clientX: event.clientX,
+        clientY: newclientY,
+      });
+    } else {
+      newEvent = document.createEvent('MouseEvent');
+      newEvent.initMouseEvent(
+        'mousedown',
+        false,
+        false,
+        event.view,
+        1,
+        event.screenX,
+        event.screenY,
+        event.clientX,
+        newclientY,
+        false,
+        false,
+        false,
+        false,
+        0,
+        null
+      );
+    }
+
     input_.dispatchEvent(newEvent);
   }
 

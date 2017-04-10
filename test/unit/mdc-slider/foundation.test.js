@@ -179,7 +179,6 @@ test('on input sets valuenow', () => {
 
   foundation.init();
 
-  td.when(mockAdapter.setAttr('aria-valuenow', td.matchers.anything())).thenReturn();
   handlers.input(evt);
   td.verify(mockAdapter.setAttr('aria-valuenow', td.matchers.anything()));
 });
@@ -194,7 +193,6 @@ test('on change sets valuenow', () => {
 
   foundation.init();
 
-  td.when(mockAdapter.setAttr('aria-valuenow', td.matchers.anything())).thenReturn();
   handlers.change(evt);
   td.verify(mockAdapter.setAttr('aria-valuenow', td.matchers.anything()));
 });
