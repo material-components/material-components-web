@@ -109,7 +109,7 @@ Each component also comes with a Sass source file that can be included in your a
 
 ```scss
 // Using the whole library
-@import 'material-components-web';
+@import "material-components-web/material-components-web";
 
 // Using individual components / mixins
 @import '@material/checkbox';

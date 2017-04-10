@@ -258,6 +258,7 @@ functions, with correct signatures:
 | Method Signature | Description |
 | --- | --- |
 | `getOffsetWidth() => number` | Get root element `mdc-grid-list` offsetWidth. |
+| `getNumberOfTiles() => number` | Get the number of mdc-grid-tile elements contained within the grid list. |
 | `getOffsetWidthForTileAtIndex(index: number) => number` | Get offsetWidth of `mdc-grid-tile` at specified index. |
 | `setStyleForTilesElement(property: string, value: number) => void` | Set `mdc-grid-list__tiles` style property to provided value. |
 | `registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize()` event. |

@@ -145,8 +145,14 @@ Here is the full list of colors available to the mixin:
 
 #### mdc-theme-dark mixin
 
-This mixin is mostly used for MDC-Web component development, and provides a standard way of applying dark themes to
-components. It creates a suitable selector for a component, and applies the provided content inside of it:
+This mixin is mostly used for MDC-Web component development, and provides a standard way of
+applying dark themes to components. **Note that mdc-theme-dark does _not_ change any theme-wide
+background colors**. Rather, `mdc-theme-dark` and its CSS classes are intended be used when certain
+sections or treatments of a page use a darker color as its background, where the default colors we
+use would not make sense.
+
+`mdc-theme-dark` creates a suitable selector for a component, and applies the provided content
+inside of it:
 
 ```scss
 .mdc-foo {

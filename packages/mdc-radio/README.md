@@ -90,7 +90,7 @@ const MDCRadioFoundation = mdc.radio.MDCRadioFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the radio, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.radio.MDCRadio.attachTo(document.querySelector('.mdc-radio'));
@@ -119,6 +119,11 @@ respectively.
 ##### MDCRadio.disabled
 
 Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
+respectively.
+
+##### MDCRadio.value
+
+String. Proxies to the foundation's `getValue/setValue` methods when retrieved/set
 respectively.
 
 ### Using the Foundation Class
@@ -153,6 +158,16 @@ does not return an object.
 Sets the value of `adapter.getNativeControl().disabled`. Also adds/removes the `mdc-radio--disabled`
 class based whether or not `disabled` is true. Gracefully handles the absence of a return value of
 `getNativeControl()`.
+
+##### MDCRadioFoundation.getValue() => string
+
+Returns the value of `adapter.getNativeControl().value`. Returns `null` if `getNativeControl()`
+does not return an object.
+
+##### MDCRadioFoundation.setValue(value: string) => void
+
+Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does
+not return an object.
 
 ## Theming
 

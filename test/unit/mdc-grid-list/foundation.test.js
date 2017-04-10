@@ -30,7 +30,7 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCGridListFoundation, [
-    'getOffsetWidth', 'getOffsetWidthForTileAtIndex', 'setStyleForTilesElement',
+    'getOffsetWidth', 'getNumberOfTiles', 'getOffsetWidthForTileAtIndex', 'setStyleForTilesElement',
     'registerResizeHandler', 'deregisterResizeHandler',
   ]);
 });
@@ -55,6 +55,19 @@ test('#destroy calls component event deregistrations', () => {
   foundation.init();
   foundation.destroy();
   td.verify(mockAdapter.deregisterResizeHandler(resizeHandler));
+});
+
+test('#align center does not set the container width if there are no tiles', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  td.when(mockAdapter.getNumberOfTiles()).thenReturn(0);
+  foundation.init();
+
+  foundation.alignCenter();
+  mockRaf.flush();
+
+  td.verify(mockAdapter.setStyleForTilesElement(), {times: 0, ignoreExtraArgs: true});
+  mockRaf.restore();
 });
 
 test('#align center sets the container width to fit tiles inside', () => {
