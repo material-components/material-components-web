@@ -362,9 +362,9 @@ test('adapter#notifyChange emits an "MDCSelect:change" custom event from the roo
   component.getDefaultFoundation().adapter_.notifyChange();
 });
 
-test('adapter#getWindowInnerHeight returns window.innerHeight', () => {
+test('adapter#computeBoundingContainer returns window.innerHeight', () => {
   const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getWindowInnerHeight(), window.innerHeight);
+  assert.equal(component.getDefaultFoundation().adapter_.computeBoundingContainer().innerHeight, window.innerHeight);
 });
 
 test('adapter#getValueForOptionAtIndex returns the id of the option at the given index', () => {
