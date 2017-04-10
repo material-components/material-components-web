@@ -21,6 +21,11 @@
 @import "../slidable/variables";
 
 $mdc-persistent-drawer-width: 240px;
+$mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
+
+:root {
+  --mdc-persistent-drawer-dark-theme-bg-color: $mdc-persistent-drawer-dark-theme-bg-color;
+}
 
 .mdc-persistent-drawer {
   @include mdc-drawer-base_;
@@ -32,7 +37,8 @@ $mdc-persistent-drawer-width: 240px;
     @include mdc-rtl-reflexive-position(left, 0);
 
     @include mdc-theme-dark {
-      background: #212121;
+    background-color: $mdc-persistent-drawer-dark-theme-bg-color;
+    background-color: var(--mdc-persistent-drawer-dark-theme-bg-color, #{$mdc-persistent-drawer-dark-theme-bg-color});
 
       @include mdc-theme-prop(color, text-primary-on-dark);
       @include mdc-rtl-reflexive-box(border, right, 1px solid rgba(white, .12));
@@ -53,18 +59,13 @@ $mdc-persistent-drawer-width: 240px;
   }
 
   &--animating {
-    transition: mdc-animation-enter(width, $mdc-slidable-drawer-transition-time);
 
     .mdc-persistent-drawer__drawer {
       transition: $mdc-slidable-drawer-transition;
     }
 
-    &.mdc-persistent-drawer--open {
-      transition: mdc-animation-enter(width, $mdc-slidable-drawer-transition-open-time);
-
-      .mdc-persistent-drawer__drawer {
-        transition: $mdc-slidable-drawer-transition-open;
-      }
+    &.mdc-persistent-drawer--open .mdc-persistent-drawer__drawer  {
+      transition: $mdc-slidable-drawer-transition-open;
     }
   }
 

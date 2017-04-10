@@ -19,6 +19,7 @@ import MDCTemporaryDrawerFoundation from './foundation';
 import * as util from '../util';
 
 export {MDCTemporaryDrawerFoundation};
+export {util};
 
 export class MDCTemporaryDrawer extends MDCComponent {
   static attachTo(root) {

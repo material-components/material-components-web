@@ -62,12 +62,12 @@ test('#init is super.init', () => {
   td.verify(mockAdapter.registerDrawerInteractionHandler('click', isA(Function)));
 });
 
-test('#isRootTransitioningElement_ returns true if the element is the root element', () => {
+test('#isRootTransitioningEventTarget_ returns true if the element is the root element', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
   const fakeEl = 'fake element';
   td.when(mockAdapter.isRoot(fakeEl)).thenReturn(true);
-  assert.isTrue(foundation.isRootTransitioningElement_(fakeEl));
+  assert.isTrue(foundation.isRootTransitioningEventTarget_(fakeEl));
 });
 

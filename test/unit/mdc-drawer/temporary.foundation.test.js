@@ -295,11 +295,11 @@ test('on touch end resets touch update styles', () => {
   raf.restore();
 });
 
-test('#isRootTransitioningElement_ returns true if the element is the drawer element', () => {
+test('#isRootTransitioningEventTarget_ returns true if the element is the drawer element', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
   const fakeEl = 'fake element';
   td.when(mockAdapter.isDrawer(fakeEl)).thenReturn(true);
-  assert.isTrue(foundation.isRootTransitioningElement_(fakeEl));
+  assert.isTrue(foundation.isRootTransitioningEventTarget_(fakeEl));
 });

@@ -19,6 +19,7 @@ import MDCPersistentDrawerFoundation from './foundation';
 import * as util from '../util';
 
 export {MDCPersistentDrawerFoundation};
+export {util};
 
 export class MDCPersistentDrawer extends MDCComponent {
   static attachTo(root) {
