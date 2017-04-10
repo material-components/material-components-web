@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import {
 	ElementRef,
 	Injectable,
@@ -23,16 +23,16 @@ import {
 import '@material/ripple/mdc-ripple.scss';
 
 export function getMatchesProperty(HTMLElementPrototype) {
-  return [
-    'webkitMatchesSelector', 'msMatchesSelector', 'matches',
-  ].filter((p) => p in HTMLElementPrototype).pop();
+	return [
+		'webkitMatchesSelector', 'msMatchesSelector', 'matches',
+	].filter((p) => p in HTMLElementPrototype).pop();
 }
 
 const MATCHES = getMatchesProperty(HTMLElement.prototype);
 const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
 
 @Injectable()
-export class Ripple  {
+export class Ripple {
 	rippleFoundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this),
 		{
 			isUnbounded: () => true,
@@ -45,22 +45,22 @@ export class Ripple  {
 				const {_renderer: renderer, _root: root} = this;
 				renderer.removeClass(root.nativeElement, className);
 			},
- 			registerInteractionHandler: (evtType: string, handler: EventListener) => {
- 				if(this._root) {
-      		this._root.nativeElement.addEventListener(evtType, handler);
-      	}
-    	},
-    	deregisterInteractionHandler: (evtType: string, handler: EventListener) => {
- 				if(this._root) {
-      		this._root.nativeElement.addEventListener(evtType, handler);
-      	}
-    	},
+			registerInteractionHandler: (evtType: string, handler: EventListener) => {
+        if (this._root) {
+					this._root.nativeElement.addEventListener(evtType, handler);
+				}
+			},
+			deregisterInteractionHandler: (evtType: string, handler: EventListener) => {
+        if (this._root) {
+					this._root.nativeElement.addEventListener(evtType, handler);
+        }
+			},
 			updateCssVariable: (varName: string, value: string) => {
- 				if(this._root) {
-      		this._root.nativeElement.style.setProperty(varName, value);
-      	}
-    	},
-    	computeBoundingRect: () => {
+        if (this._root) {
+					this._root.nativeElement.style.setProperty(varName, value);
+				}
+			},
+			computeBoundingRect: () => {
 				const {left, top, height, width} = this._root.nativeElement.getBoundingClientRect();
 				return {
 					top,
