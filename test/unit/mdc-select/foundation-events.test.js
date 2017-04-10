@@ -242,7 +242,7 @@ test('when opened clamps the menu position to the top of the window if it would 
 test('when opened clamps the menu position to the bottom of the window if it would be ' +
           'positioned below the window', () => {
   const {foundation, mockAdapter, handlers} = setupTest();
-  const mockInnerHeight = mockAdapter.getWindowInnerHeight();
+  const mockInnerHeight = mockAdapter.computeBoundingContainer().innerHeight;
   const mockMenuHeight = mockAdapter.getMenuElOffsetHeight();
 
   foundation.setSelectedIndex(1);
