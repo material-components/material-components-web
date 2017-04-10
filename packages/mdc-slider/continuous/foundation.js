@@ -30,22 +30,22 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      hasClass: (/* className: string */) => {},
-      addInputClass: (/* className: string */) => {},
-      removeInputClass: (/* className: string */) => {},
-      getNativeInput: (/* HTMLInputElement */) => {},
-      registerHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterHandler: (/* type: string, handler: EventListener */) => {},
-      registerRootHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterRootHandler: (/* type: string, handler: EventListener */) => {},
-      setAttr: (/* name: string, value: string */) => {},
-      setLowerStyle: (/* name: string, value: number */) => {},
-      setUpperStyle: (/* name: string, value: number */) => {},
-      hasNecessaryDom: (/* boolean */) => false,
-      notifyChange: (/* evtData: {value: number} */) => {},
-      detectIsIE: (/* boolean */) => {},
+      addClass: ( /* className: string */ ) => {},
+      removeClass: ( /* className: string */ ) => {},
+      hasClass: ( /* className: string */ ) => {},
+      addInputClass: ( /* className: string */ ) => {},
+      removeInputClass: ( /* className: string */ ) => {},
+      getNativeInput: ( /* HTMLInputElement */ ) => {},
+      registerHandler: ( /* type: string, handler: EventListener */ ) => {},
+      deregisterHandler: ( /* type: string, handler: EventListener */ ) => {},
+      registerRootHandler: ( /* type: string, handler: EventListener */ ) => {},
+      deregisterRootHandler: ( /* type: string, handler: EventListener */ ) => {},
+      setAttr: ( /* name: string, value: string */ ) => {},
+      setLowerStyle: ( /* name: string, value: number */ ) => {},
+      setUpperStyle: ( /* name: string, value: number */ ) => {},
+      hasNecessaryDom: ( /* boolean */ ) => false,
+      notifyChange: ( /* evtData: {value: number} */ ) => {},
+      detectIsIE: ( /* boolean */ ) => {},
     };
   }
 
@@ -106,7 +106,8 @@ export default class MDCSliderFoundation extends MDCFoundation {
   }
 
   handleTouchMove_(event) {
-    if (event.pointerType && event.pointerType !== 'touch') {
+    // IE handles events on input[range] so no additional help is needed here
+    if (this.isIE_ || (event.pointerType && event.pointerType !== 'touch')) {
       return;
     }
 
@@ -121,13 +122,18 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
     // create a new event on the slider element to ensure
     // listeners receive the input event
+    let newEvent;
 
-    const newEvent = new Event('input', {
-      target: event.target,
-      buttons: event.buttons,
-      clientX: eventclientX,
-      clientY: rect.top,
-    });
+    // Only if browser supports new Event
+    if (typeof Event === 'function') {
+      newEvent = new Event('input', {
+        target: event.target,
+        buttons: event.buttons,
+        clientX: eventclientX,
+        clientY: rect.top,
+      });
+    }
+
     input_.dispatchEvent(newEvent);
   }
 
