@@ -106,9 +106,16 @@ export class MDCCheckbox extends MDCComponent {
     this.foundation_.setDisabled(disabled);
   }
 
+  get value() {
+    return this.foundation_.getValue();
+  }
+
+  set value(value) {
+    this.foundation_.setValue(value);
+  }
+
   destroy() {
     this.ripple_.destroy();
     super.destroy();
   }
-
 }

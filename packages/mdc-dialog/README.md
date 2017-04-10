@@ -18,9 +18,9 @@ Dialogs inform users about a specific task and may contain critical information 
 
 ```html
 <aside id="my-mdc-dialog"
+  style="visibility:hidden"
   class="mdc-dialog"
   role="alertdialog"
-  aria-hidden="true"
   aria-labelledby="my-mdc-dialog-label"
   aria-describedby="my-mdc-dialog-description">
   <div class="mdc-dialog__surface">
@@ -41,20 +41,17 @@ Dialogs inform users about a specific task and may contain critical information 
 </aside>
 ```
 
-> **NOTE**: The `.mdc-dialog__footer__button--accept` element _must_ be the _final focusable element_ within the dialog
-in order for this component to function properly.
-
-In the example above, we've created a dialog box in an `aside` element. Note that you can place content inside 
+In the example above, we've created a dialog box in an `aside` element. Note that you can place content inside
 the dialog. There are two types: dialog & dialogs with scrollable content. These are declared using CSS classes.
 
-Some dialogs will not be tall enough to accomodate everything you would like to display in them. For this there is a 
+Some dialogs will not be tall enough to accomodate everything you would like to display in them. For this there is a
 `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
 
 ```html
   <aside id="mdc-dialog-with-list"
+    style="visibility:hidden"
     class="mdc-dialog"
     role="alertdialog"
-    aria-hidden="true"
     aria-labelledby="mdc-dialog-with-list-label"
     aria-describedby="mdc-dialog-with-list-description">
     <div class="mdc-dialog__surface">
@@ -76,14 +73,14 @@ Some dialogs will not be tall enough to accomodate everything you would like to 
           <li class="mdc-list-item">Luna</li>
           <li class="mdc-list-item">Marimba</li>
           <li class="mdc-list-item">Schwifty</li>
-        </ul> 
+        </ul>
       </section>
       <footer class="mdc-dialog__footer">
         <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
         <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
       </footer>
     </div>
-    <div class="mdc-dialog__backdrop"></div> 
+    <div class="mdc-dialog__backdrop"></div>
   </aside>
 ```
 
@@ -100,7 +97,7 @@ correct dialog behaviors into idiomatic components.
 ##### ES2015
 
 ```javascript
-import {MDCDialog, MDCDialogFoundation} from 'mdc-dialog';
+import {MDCDialog, MDCDialogFoundation, util} from 'mdc-dialog';
 ```
 
 ##### CommonJS
@@ -109,6 +106,7 @@ import {MDCDialog, MDCDialogFoundation} from 'mdc-dialog';
 const mdcDialog = require('mdc-dialog');
 const MDCDialog = mdcDialog.MDCDialog;
 const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
+const util = mdcDialog.util;
 ```
 
 ##### AMD
@@ -117,6 +115,7 @@ const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
 require(['path/to/mdc-dialog'], mdcDialog => {
   const MDCDialog = mdcDrawer.MDCDialog;
   const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
+  const util = mdcDialog.util;
 });
 ```
 
@@ -125,6 +124,7 @@ require(['path/to/mdc-dialog'], mdcDialog => {
 ```javascript
 const MDCDialog = mdc.dialog.MDCDialog;
 const MDCDialogFoundation = mdc.dialog.MDCDialogFoundation;
+const util = mdc.dialog.util;
 ```
 
 #### Automatic Instantiation
@@ -139,7 +139,7 @@ mdc.dialog.MDCDialog.attachTo(document.querySelector('#my-mdc-dialog'));
 
 #### Manual Instantiation
 
-Dialogs can easily be initialized using their default constructors as well, similar to `attachTo`. 
+Dialogs can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
 import {MDCDialog} from 'mdc-dialog';
@@ -167,27 +167,13 @@ document.querySelector('#default-dialog-activation').addEventListener('click', f
 
 ### Dialog component API
 
-#### MDCDialog.open 
+#### MDCDialog.open
 
 Boolean. True when the dialog is shown, false otherwise.
 
-#### MDCDialog.lastFocusedTarget
-
-EventTarget, usually an HTMLElement. Represents the element that was focused on the page before the dialog is shown. If set, 
-the dialog will return focus to this element when closed. _This property should be set before calls to show()_.
-
-
-#### MDCDialog.initialize() => void
-
-Attaches ripples to the dialog footer buttons
-
-#### MDCDialog.destroy() => void
-
-Cleans up ripples when dialog is destroyed
-
 #### MDCDialog.show() => void
 
-Shows the dialog 
+Shows the dialog
 
 #### MDCDialog.close() => void
 
@@ -208,17 +194,16 @@ Broadcast when a user actions on the `.mdc-dialog__footer__button--cancel` eleme
 MDC Dialog ships with an `MDCDialogFoundation` class that external frameworks and libraries can
 use to integrate the component. As with all foundation classes, an adapter object must be provided.
 
-> **NOTE**: Components themselves must manage adding ripples to dialog buttons, should they choose to 
+> **NOTE**: Components themselves must manage adding ripples to dialog buttons, should they choose to
 do so. We provide instructions on how to add ripples to buttons within the [mdc-button README](https://github.com/material-components/material-components-web/tree/master/packages/mdc-button#adding-ripples-to-buttons).
 
 ### Adapter API
 
 | Method Signature | Description |
 | --- | --- |
-| `hasClass(className: string) => boolean` | Returns boolean indicating whether the root has a given class. |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `setAttr(attr: string, val: string) => void` | Sets the given attribute to the given value on the root element. |
+| `setStyle(propertyName: string, value: string) => void` | Sets a style property `propertyName` on the root element to the `value` specified |
 | `addBodyClass(className: string) => void` | Adds a class to the body. |
 | `removeBodyClass(className: string) => void` | Removes a class from the body. |
 | `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. |
@@ -228,44 +213,76 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `deregisterSurfaceInteractionHandler(evt: string, handler: EventListener) => void` | Deregisters an event handler from the dialog surface element. |
 | `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
 | `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
-| `registerFocusTrappingHandler(handler: EventListener) => void` | Registers a focus event listener with a given handler at the capture phase on the document. |
-| `deregisterFocusTrappingHandler(handler: EventListener) => void` | Deregisters a focus event listener from a given handler at the capture phase on the document. |
-| `numFocusableTargets() => number` | Returns the number of focusable elements in the dialog |
-| `setDialogFocusFirstTarget() => void` | Resets focus to the first focusable element in the dialog |
-| `setInitialFocus() => void` | Sets focus on the `mdc-dialog__footer__button--accept` element. |
-| `getFocusableElements() => Array<Element>` | Returns the list of focusable elements inside the dialog. |
-| `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a way which it can be retrieved later on. |
-| `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
-| `makeElementUntabbable(el: Element) => void` | Makes an element untabbable, e.g. by setting the `tabindex` to `-1`. |
-| `setBodyAttr(attr: string, val: string) => void` | Sets the given attribute to the given value on the body element. |
-| `rmBodyAttr(attr: string) => void` | Removes the given attribute from the body element. |
-| `getFocusedTarget() => Element` | Returns the currently focused element, e.g. `document.activeElement`. |
-| `setFocusedTarget(target: EventTarget) => void` | Sets focus on the given target, e.g. by calling `focus()` |
 | `notifyAccept() => {}` | Broadcasts an event denoting that the user has accepted the dialog. |
 | `notifyCancel() => {}` | Broadcasts an event denoting that the user has cancelled the dialog. |
+| `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
+| `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 
+#### Handling Focus Trapping
+
+In order for dialogs to be fully accessible, they must conform to the guidelines outlined in
+https://www.w3.org/TR/wai-aria-practices/#dialog_modal. The main implication of these guidelines is
+that the only focusable elements are those contained within a dialog surface.
+
+Trapping focus correctly for a modal dialog requires a complex set of events and interaction
+patterns that we feel is best not duplicated within the logic of this component. Furthermore,
+frameworks and libraries may have their own ways of trapping focus that framework authors may want
+to make use of. For this reason, we have two methods on the adapter that should be used to handle
+focus trapping:
+
+- *trapFocusOnSurface()* is called when the dialog is open and should set up focus trapping adhering
+  to the ARIA practices in the link above.
+- *untrapFocusOnSurface()* is called when the dialog is closed and should tear down any focus
+  trapping set up when the dialog was open.
+
+In our `MDCDialog` component, we use the [focus-trap](https://github.com/davidtheclark/focus-trap)
+package to handle this. **You can use [util.createFocusTrapInstance](#mdcdialog-util-api) to easily
+create a focus trapping solution for your component code.**
 
 ### The full foundation API
 
-#### MDCDialogFoundation.open() => void 
+#### MDCDialogFoundation.open() => void
 
-Opens the dialog, registers appropriate event listners, sets aria attributes, focuses elements.
+Opens the dialog, registers appropriate event listeners, sets aria attributes, focuses elements.
 
-#### MDCDialogFoundation.close() => void 
+#### MDCDialogFoundation.close() => void
 
-Closes the dialog, deregisters appropriate event listners, resets aria attributes, focuses elements.
+Closes the dialog, deregisters appropriate event listeners, resets aria attributes, focuses
+elements.
 
-#### MDCDialogFoundation.accept(notifyChange = false) => void 
+#### MDCDialogFoundation.accept(notifyChange = false) => void
 
 Closes the dialog. If `notifyChange` is true, calls the adapter's `notifyAccept()` method.
 
-#### MDCDialogFoundation.cancel(notifyChange = false) => void 
+#### MDCDialogFoundation.cancel(notifyChange = false) => void
 
 Closes the dialog. If `notifyChange` is true, calls the adapter's `notifyCancel()` method.
 
-#### MDCDialogFoundation.isOpen() => Boolean 
+#### MDCDialogFoundation.isOpen() => Boolean
 
 Returns true if the dialog is open, false otherwise.
+
+### MDCDialog Util API
+
+#### util.createFocusTrapInstance(surfaceEl, acceptButtonEl, focusTrapFactory = require('focus-trap')) => {activate: () => {}, deactivate: () => {}};
+
+Given a dialog surface element, an accept button element, and an optional focusTrap factory
+function, creates a properly configured [focus-trap](https://github.com/davidtheclark/focus-trap)
+instance such that:
+
+- The focus is trapped within the `surfaceEl`
+- The `acceptButtonEl` receives focus when the focus trap is activated
+- Pressing the `escape` key deactivates focus
+- Clicking outside the dialog deactivates focus
+- Focus is returned to the previously focused element before the focus trap was activated
+
+This focus trap instance can be used to implement the `trapFocusOnSurface` and
+`untrapFocusOnSurface` adapter methods by calling `instance.activate()` and `instance.deactivate()`
+respectively within those methods.
+
+The `focusTrapFactory` can be used to override the `focus-trap` function used to create the focus
+trap. It's API is the same as focus-trap's [createFocusTrap](https://github.com/davidtheclark/focus-trap#focustrap--createfocustrapelement-createoptions) (which is what it defaults to). You can pass in a custom function for mocking out the
+actual function within tests, or to modify the arguments passed to the function before it's called.
 
 ## Theming - Dark Theme Considerations
 

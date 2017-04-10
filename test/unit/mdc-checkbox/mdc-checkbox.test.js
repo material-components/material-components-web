@@ -123,6 +123,14 @@ test('get/set disabled updates the indeterminate property on the native checkbox
   assert.equal(component.disabled, cb.disabled);
 });
 
+test('get/set value updates the value of the native checkbox element', () => {
+  const {root, component} = setupTest();
+  const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+  component.value = 'new value';
+  assert.equal(cb.value, 'new value');
+  assert.equal(component.value, cb.value);
+});
+
 test('get ripple returns a MDCRipple instance', () => {
   const {component} = setupTest();
   assert.isOk(component.ripple instanceof MDCRipple);
