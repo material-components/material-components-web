@@ -66,8 +66,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       registerMenuInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterMenuInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyChange: () => {},
-      getWindowInnerHeight: () => /* number */ 0,
-      getPageYOffset: () =>  /* number */ 0,
+      computeBoundingContainer: () => /* {innerHeight: number, yOffset: number} */ {},
     };
   }
 
@@ -188,9 +187,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
   }
 
   setMenuStylesForOpenAtIndex_(index) {
-    const innerHeight = this.adapter_.getWindowInnerHeight();
+    const {innerHeight, yOffset} = this.adapter_.computeBoundingContainer();
     const {left, top} = this.adapter_.computeBoundingRect();
-    const pageYOffset = this.adapter_.getPageYOffset();
 
     this.adapter_.setMenuElAttr('aria-hidden', 'true');
     this.adapter_.setMenuElStyle('display', 'block');
@@ -209,7 +207,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     };
 
     this.adapter_.setMenuElStyle('left', `${left}px`);
-    this.adapter_.setMenuElStyle('top', `${adjustedTop + pageYOffset}px`);
+    this.adapter_.setMenuElStyle('top', `${adjustedTop + yOffset}px`);
     this.adapter_.setMenuElStyle('transform-origin', `center ${itemOffsetTop}px`);
   }
 
