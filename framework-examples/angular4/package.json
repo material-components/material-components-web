@@ -2,7 +2,7 @@
   "name": "mdc-angular4-framework-example",
   "private": true,
   "version": "1.0.0",
-  "description": "MDC-Web Framework Integration Exampel for Angular4",
+  "description": "MDC-Web Framework Integration Example for Angular4",
   "scripts": {
     "build": "webpack --progress",
     "build:detailed": "webpack --progress --display-error-details",
