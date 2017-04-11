@@ -54,7 +54,7 @@ export class Ripple {
 			},
 			deregisterInteractionHandler: (evtType: string, handler: EventListener) => {
         if (this._root) {
-					this._root.nativeElement.addEventListener(evtType, handler);
+					this._root.nativeElement.removeEventListener(evtType, handler);
         }
 			},
 			updateCssVariable: (varName: string, value: string) => {
