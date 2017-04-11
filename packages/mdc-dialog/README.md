@@ -18,7 +18,6 @@ Dialogs inform users about a specific task and may contain critical information 
 
 ```html
 <aside id="my-mdc-dialog"
-  style="visibility:hidden"
   class="mdc-dialog"
   role="alertdialog"
   aria-labelledby="my-mdc-dialog-label"
@@ -49,7 +48,6 @@ Some dialogs will not be tall enough to accomodate everything you would like to 
 
 ```html
   <aside id="mdc-dialog-with-list"
-    style="visibility:hidden"
     class="mdc-dialog"
     role="alertdialog"
     aria-labelledby="mdc-dialog-with-list-label"
