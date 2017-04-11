@@ -45,7 +45,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       notifyCancel: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
-      isDialog: (/* el: Element */) => /* boolean */ false
+      isDialog: (/* el: Element */) => /* boolean */ false,
     };
   }
 
