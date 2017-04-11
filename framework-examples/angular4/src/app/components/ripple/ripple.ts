@@ -33,9 +33,11 @@ const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
 
 @Injectable()
 export class Ripple {
+	public unbounded: false; /* Set to true for checkbox and radio button */
+
 	rippleFoundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this),
 		{
-			isUnbounded: () => true,
+			isUnbounded: () => this.unbounded,
 			isSurfaceActive: () => this._root[MATCHES](':active'),
 			addClass: (className: string) => {
 				const {_renderer: renderer, _root: root} = this;
