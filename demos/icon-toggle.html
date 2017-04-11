@@ -24,15 +24,18 @@
         background: #303030;
       }
 
-      .mdc-theme--dark:not(.demo-color-combo) {
-        padding: 1rem;
-        padding-top: 0;
+      section.mdc-theme--dark:not(.demo-color-combo) {
+        padding-bottom: 1rem;
       }
 
       #demo-color-combos {
         display: flex;
         align-items: center;
         justify-content: flex-start;
+      }
+
+      .demo-wrapper {
+        margin-left: 1rem;
       }
 
       .demo-color-combo {
@@ -81,81 +84,81 @@
       <h1>MDC Icon Toggle</h1>
       <section>
         <h2>Using material-icons</h2>
-        <i id="add-to-favorites"
-           class="mdc-icon-toggle material-icons"
-           role="button"
-           aria-label="Add to favorites"
-           aria-pressed="false"
-           tabindex="0"
-           data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-           data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+        <div class="demo-wrapper">
+          <i id="add-to-favorites"
+          class="mdc-icon-toggle material-icons"
+          role="button"
+          aria-label="Add to favorites"
+          aria-pressed="false"
+          tabindex="0"
+          data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+          data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
           <!-- Prevent FOUC by putting the initial content in -->
           favorite_border
         </i>
+        </div>
         <p>Favorited? <span id="favorited-status">no</span></p>
       </section>
       <section>
         <h2>Using Font Awesome</h2>
-        <span class="mdc-icon-toggle mdc-icon-toggle--on"
-           role="button"
-           aria-label="Unstar this item"
-           aria-pressed="true"
-           tabindex="0"
-           data-icon-inner-selector=".fa"
-           data-toggle-on='{"cssClass": "fa-star", "label": "Unstar this item"}'
-           data-toggle-off='{"cssClass": "fa-star-o", "label": "Star this item"}'>
-          <i class="fa fa-star" aria-hidden="true"></i>
-        </span>
+        <div class="demo-wrapper">
+          <span class="mdc-icon-toggle mdc-icon-toggle--on"
+             role="button"
+             aria-label="Unstar this item"
+             aria-pressed="true"
+             tabindex="0"
+             data-icon-inner-selector=".fa"
+             data-toggle-on='{"cssClass": "fa-star", "label": "Unstar this item"}'
+             data-toggle-off='{"cssClass": "fa-star-o", "label": "Star this item"}'>
+            <i class="fa fa-star" aria-hidden="true"></i>
+          </span>
+        </div>
       </section>
       <section class="mdc-theme--dark">
         <h2 class="mdc-theme--text-primary-on-dark">Dark Theme</h2>
-        <i class="mdc-icon-toggle material-icons"
-           role="button"
-           aria-label="Add to favorites"
-           aria-pressed="false"
-           tabindex="0"
-           data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-           data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-          favorite_border
-        </i>
+        <div class="demo-wrapper">
+          <i class="mdc-icon-toggle material-icons"
+             role="button"
+             aria-label="Add to favorites"
+             aria-pressed="false"
+             tabindex="0"
+             data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+             data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+            favorite_border
+          </i>
+        </div>
       </section>
       <section>
         <h2>Primary Colored Icons</h2>
-        <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
-           role="button"
-           aria-label="Add to favorites"
-           aria-pressed="false"
-           tabindex="0"
-           data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-           data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-          favorite_border
-        </i>
+        <div class="demo-wrapper">
+          <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
+             role="button"
+             aria-label="Add to favorites"
+             aria-pressed="false"
+             tabindex="0"
+             data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+             data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+            favorite_border
+          </i>
+        </div>
       </section>
       <section>
         <h2>Accent Colored Icons</h2>
-        <i class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
-           role="button"
-           aria-label="Add to favorites"
-           aria-pressed="false"
-           tabindex="0"
-           data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-           data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-          favorite_border
-        </i>
+        <div class="demo-wrapper">
+          <i class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
+             role="button"
+             aria-label="Add to favorites"
+             aria-pressed="false"
+             tabindex="0"
+             data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+             data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+            favorite_border
+          </i>
+        </div>
       </section>
       <section>
         <h2>Disabled Icons</h2>
-        <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
-           role="button"
-           aria-label="Add to favorites"
-           aria-pressed="false"
-           aria-disabled="true"
-           tabindex="-1"
-           data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-           data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-          favorite_border
-        </i>
-        <div class="mdc-theme--dark">
+        <div class="demo-wrapper">
           <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
              role="button"
              aria-label="Add to favorites"
@@ -166,6 +169,20 @@
              data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
             favorite_border
           </i>
+        </div>
+        <div class="mdc-theme--dark">
+          <div class="demo-wrapper">
+            <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
+               role="button"
+               aria-label="Add to favorites"
+               aria-pressed="false"
+               aria-disabled="true"
+               tabindex="-1"
+               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+              favorite_border
+            </i>
+          </div>
         </div>
       </section>
       <section>
