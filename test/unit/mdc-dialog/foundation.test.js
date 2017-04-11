@@ -129,12 +129,12 @@ test('#open adds scroll lock class to the body', () => {
 test('#close removes the scroll lock class from the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.open();
   td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
   td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.close();
-  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
-  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
 
   td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
 });
@@ -142,9 +142,9 @@ test('#close removes the scroll lock class from the body', () => {
 test('#open activates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  foundation.open();
   td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
   td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
+  foundation.open();
 
   td.verify(mockAdapter.trapFocusOnSurface());
 });
