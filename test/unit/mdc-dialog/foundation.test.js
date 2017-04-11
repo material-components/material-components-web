@@ -49,6 +49,7 @@ function setupTest() {
 
 test('#destroy closes the dialog to perform any necessary cleanup', () => {
   const {foundation, mockAdapter} = setupTest();
+  foundation.open();
   foundation.destroy();
 
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
@@ -113,6 +114,7 @@ test('#open adds the animation class to start an animation', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
+
   td.verify(mockAdapter.addClass(cssClasses.ANIMATING));
 });
 
@@ -120,13 +122,20 @@ test('#open adds scroll lock class to the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
+
   td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
 });
 
 test('#close removes the scroll lock class from the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
+  foundation.open();
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.close();
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
+
   td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
 });
 
@@ -134,6 +143,8 @@ test('#open activates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
 
   td.verify(mockAdapter.trapFocusOnSurface());
 });
