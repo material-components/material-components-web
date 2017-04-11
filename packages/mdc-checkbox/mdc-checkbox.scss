@@ -52,6 +52,7 @@
   box-sizing: content-box;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
+  flex: 0 0 $mdc-checkbox-size;
   padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
   line-height: 0;
   white-space: nowrap;
