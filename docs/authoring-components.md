@@ -38,6 +38,7 @@ may be subject to change. They will stabilize as we near towards a full release.
      * [Define all exported CSS classes, strings, and numbers as foundation constants.](#define-all-exported-css-classes-strings-and-numbers-as-foundation-constants)
      * [Extend components and foundations from mdc-base classes.](#extend-components-and-foundations-from-mdc-base-classes)
      * [Packages must be registered with our build infrastructure, and with material-components-web pkg](#packages-must-be-registered-with-our-build-infrastructure-and-with-material-components-web-pkg)
+     * [Closure Compatibility](#closure-compatibility)
   * [Testing](#testing)
      * [Verify foundation's adapters](#verify-foundations-adapters)
      * [Use helper methods](#use-helper-methods)
@@ -469,9 +470,10 @@ A typical component within our codebase looks like so:
 packages
   ├── mdc-component
       ├── README.md # The component's README
+      ├── constants.js # The component's cssClasses/strings/numbers constants
       ├── foundation.js # The component's foundation class
       ├── index.js # The file that contains the vanilla component class, as well as exports the foundation
-      ├── mdc-textfield.scss # The main source file for the component's CSS
+      ├── mdc-component.scss # The main source file for the component's CSS
       └── package.json # The components package file
 test/unit
   ├── mdc-component
@@ -675,33 +677,47 @@ the aforementioned rule, we would also like to provide lint rules to enforce the
   getter.
 - All strings that are used outside the context of the foundation class (CSS selectors, text that
   could potentially be localized, etc.) must be referenced by a `strings` static getter.
-- All semantic numbers leveraged by the adapter (timeout lengths, transition durations, etc.) must
+- All semantic numbers leveraged by the foundation (timeout lengths, transition durations, etc.) must
   be referenced by a `numbers` static getter.
+- These constants should be defined within a `constants.js` file, and then proxied through the
+  foundation.
 
 ```js
+// constants.js
+
+export const cssClasses = {
+  ROOT: 'mdc-new-component',
+  ACTIVE: 'mdc-new-component--active',
+  DISABLED: 'mdc-new-component--disabled',
+};
+
+export const strings = {
+  CHILD_SELECTOR: '.mdc-new-component__child',
+};
+
+export const numbers = {
+  DEFAULT_THROTTLE_DELAY_MS: 300,
+};
+
+// foundation.js
+
+import {cssClasses, strings, numbers} from './constants';
+
 class MDCNewComponentFoundation extends MDCFoundation {
   static get defaultAdapter() {
     // ...
   }
 
   static get cssClasses() {
-    return {
-      ROOT: 'mdc-new-component',
-      ACTIVE: 'mdc-new-component--active',
-      DISABLED: 'mdc-new-component--disabled'
-    };
+    return cssClasses;
   }
 
   static get strings() {
-    return {
-      CHILD_SELECTOR: '.mdc-new-component__child'
-    };
+    return strings;
   }
 
   static get numbers() {
-    return {
-      DEFAULT_THROTTLE_DELAY_MS: 300
-    };
+    return numbers;
   }
 }
 ```
@@ -729,6 +745,17 @@ Concretely:
   `config.validate-commit-msg.scope.allowed` array within the top-level `package.json` at the root
   of the repo. The commit subject is the _name the component, without the `mdc-`/`@material/`_.
   E.g., for `mdc-icon-toggle`, the correct subject is `icon-toggle`.
+- Ensure that the package name is added to the `closureWhitelist` array within the top-level
+  `package.json`.
+
+#### Closure Compatibility
+
+> NOTE: This section was introduced as part of our [closure compatibility milestone](https://github.com/material-components/material-components-web/milestone/4). Our
+currently existing components are in the process of being made compatible with closure.
+
+All core MDC-Web components must be fully compatible with the Google Closure Compiler using its
+advanced compilation mechanisms. We've provided a thorough explanation of this, as well as
+conventions, examples, and common closure patterns you may not be used to, in our [closure compiler documentation](./closure-compiler.md).
 
 ### Testing
 
@@ -753,7 +780,7 @@ be an easy and successful way to bootstrap fixtures without having to worry abou
 files or write unwieldy DOM API code.
 
 #### Always clean up the DOM after every test
-This is important. _Before calling `t.end()`, ensure that any elements attached to the DOM have been
+This is important. _Before a test ends, ensure that any elements attached to the DOM have been
 removed_.
 
 #### Verify adapters via testdouble.
