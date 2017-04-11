@@ -207,20 +207,22 @@ test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from 
 
 test('adapter#registerTransitionEndHandler adds a transition end event listener on the dialog element', () => {
   const {root, component} = setupTest();
+  const surface = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
   const handler = td.func('transitionEndHandler');
   component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
-  domEvents.emit(root, 'transitionend');
+  domEvents.emit(surface, 'transitionend');
 
   td.verify(handler(td.matchers.anything()));
 });
 
 test('adapter#deregisterTransitionEndHandler removes a transition end event listener on the dialog element', () => {
   const {root, component} = setupTest();
+  const surface = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
   const handler = td.func('transitionEndHandler');
-  root.addEventListener('transitionend', handler);
+  surface.addEventListener('transitionend', handler);
 
   component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
-  domEvents.emit(root, 'transitionend');
+  domEvents.emit(surface, 'transitionend');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
