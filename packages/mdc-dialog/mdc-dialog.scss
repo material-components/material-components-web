@@ -52,7 +52,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
     opacity: 0;
     z-index: -1;
-
   }
 
   &__surface {
@@ -134,7 +133,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     padding: 8px;
   }
 
-  // TODO: Replace with breakpoint variable
   @media (max-width: 640px) {
     min-width: 280px;
 
@@ -175,7 +173,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
       opacity: 1;
     }
   }
-
 }
 
 // postcss-bem-linter: end
