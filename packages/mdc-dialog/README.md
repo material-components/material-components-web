@@ -1,10 +1,25 @@
-# MDC Dialog
+<!--docs:
+title: "Dialogs"
+layout: detail
+section: components
+iconId: dialog
+-->
+
+# Dialogs
 
 The MDC Dialog component is a spec-aligned dialog component adhering to the
 [Material Design dialog pattern](https://material.io/guidelines/components/dialogs.html).
 It implements a modal dialog window. You may notice that full screen components outlined in the dialog spec
 do not appear in MDC Dialog. This is because they have been deemed to be outside of the scope of what
 a dialog should be.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/dialogs.html">Dialogs</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -14,7 +29,7 @@ npm install --save @material/dialog
 
 ## Dialog usage
 
-Dialogs inform users about a specific task and may contain critical information or require decisions.  
+Dialogs inform users about a specific task and may contain critical information or require decisions.
 
 ```html
 <aside id="my-mdc-dialog"

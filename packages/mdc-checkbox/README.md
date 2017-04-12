@@ -1,8 +1,23 @@
-# MDC Checkbox
+<!--docs:
+title: "Checkboxes"
+layout: detail
+section: components
+iconId: selection_control
+-->
+
+# Checkboxes
 
 The MDC Checkbox component is a spec-aligned checkbox component adhering to the
-[Material Design checkbox requirements](https://material.google.com/components/selection-controls.html#selection-controls-checkbox).
+[Material Design checkbox requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox).
 It works without JavaScript with basic functionality for all states. If you use the JavaScript object for a checkbox, it will add more intricate animation effects when switching between states.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox">Selection Controls – Checkbox</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -90,7 +105,7 @@ Note that `mdc-checkbox--disabled` is necessary on the root element to prevent h
 ### Using the JS Component
 
 MDC Checkbox ships with a Component / Foundation combo which progressively enhances the checkbox
-state transitions to achieve full parity with the material design motion for switching checkbox
+state transitions to achieve full parity with the Material Design motion for switching checkbox
 states.
 
 #### Including in code

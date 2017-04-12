@@ -1,7 +1,22 @@
-# MDC Icon Toggle
+<!--docs:
+title: "Icon Toggle Buttons"
+layout: detail
+section: components
+iconId: button
+-->
 
-MDC Icon Toggle provides a material design icon toggle button. It is fully accessible, and is
+# Icon Toggle Buttons
+
+MDC Icon Toggle provides a Material Design icon toggle button. It is fully accessible, and is
 designed to work with any icon set.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons">Toggle buttons</a>
+  </li>
+</ul>
 
 ## Installation
 

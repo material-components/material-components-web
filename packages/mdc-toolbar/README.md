@@ -1,4 +1,11 @@
-# MDC Toolbar
+<!--docs:
+title: "Toolbars"
+layout: detail
+section: components
+iconId: toolbar
+-->
+
+# Toolbars
 
 MDC Toolbar acts as a container for multiple rows containing items such as
 application title, navigation menu, and tabs, among other things. Toolbars
@@ -16,6 +23,13 @@ changes as the user scrolls. Flexible is defined as a modifier class of toolbar
 but not a standalone component. Toolbars using this modifier will have additional
 height added to their first rows.
 
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/toolbars.html">Toolbars</a>
+  </li>
+</ul>
 
 ## Installation
 

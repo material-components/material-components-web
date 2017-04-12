@@ -1,4 +1,11 @@
-# MDC Ripple
+<!--docs:
+title: "Ripples"
+layout: detail
+section: components
+iconId: ripple
+-->
+
+# Ripples
 
 - [MDC Ripple](#mdc-ripple)
     - [An aside regarding browser support](#an-aside-regarding-browser-support)
