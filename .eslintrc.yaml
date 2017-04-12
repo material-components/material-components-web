@@ -15,12 +15,17 @@ rules:
   no-var: error
   curly: error
   no-floating-decimal: error
-  no-unused-vars: error
-  # Disabling jsdoc rules for the time being, but should be discussed as to whether or not this is
-  # something we should add in. For closure compatibility, we can investigate using something like
-  # https://github.com/angular/tsickle with .dts files.
+  no-unused-vars:
+    - error
+    # Account for closure compiler conventions. See docs/closure-compiler.md
+    # Ingores: MDC[PascalCase]Adapter (records), [PascalCase]Type (typedefs)
+    - varsIgnorePattern: ^(?:(?:MDC(?:(?:[A-Z][a-z0-9]+)+)Adapter)|(?:(?:(?:[A-Z][a-z0-9]+)+)Type))$
+
+  # TODO: Enable once https://github.com/material-components/material-components-web/milestone/4
+  # is complete
   require-jsdoc: off
   valid-jsdoc: off
+
   prefer-const: error
 
   # Rules for our mocha unit tests. Note that even though we use mocha, we model our unit tests
