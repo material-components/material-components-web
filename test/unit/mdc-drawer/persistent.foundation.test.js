@@ -18,6 +18,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCPersistentDrawerFoundation from '../../../packages/mdc-drawer/persistent/foundation';
 import {cssClasses, strings} from '../../../packages/mdc-drawer/persistent/constants';
 
@@ -39,19 +40,13 @@ test('exports cssClasses', () => {
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  const {defaultAdapter} = MDCPersistentDrawerFoundation;
-  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
-
-  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  assert.deepEqual(methods, [
+  verifyDefaultAdapter(MDCPersistentDrawerFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'registerInteractionHandler',
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
-    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isRoot',
+    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer',
   ]);
-  // Test default methods
-  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
 test('#init is super.init', () => {
@@ -62,12 +57,12 @@ test('#init is super.init', () => {
   td.verify(mockAdapter.registerDrawerInteractionHandler('click', isA(Function)));
 });
 
-test('#isRootTransitioningEventTarget_ returns true if the element is the root element', () => {
+test('#isRootTransitioningEventTarget_ returns true if the element is the drawer element', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
   const fakeEl = 'fake element';
-  td.when(mockAdapter.isRoot(fakeEl)).thenReturn(true);
+  td.when(mockAdapter.isDrawer(fakeEl)).thenReturn(true);
   assert.isTrue(foundation.isRootTransitioningEventTarget_(fakeEl));
 });
 

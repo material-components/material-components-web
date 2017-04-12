@@ -72,7 +72,7 @@ CSS classes:
 
 ## Persistent drawer usage
 
-A persistent drawers can toggle open or closed. The drawer sits on the same surface elevation as the content. It is closed by default. When the drawer is outside of the page grid and opens, the drawer forces other content to change size and adapt to the smaller viewport. Persistent drawers stay open until closed by the user.
+Persistent drawers can be toggled open or closed. The drawer sits on the same surface elevation as the content. It is closed by default. When the drawer is outside of the page grid and opens, the drawer forces other content to change size and adapt to the smaller viewport. Persistent drawers stay open until closed by the user.
 
 Persistent drawers are acceptable for all sizes larger than mobile.
 

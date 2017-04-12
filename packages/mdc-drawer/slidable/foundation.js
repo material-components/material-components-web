@@ -50,7 +50,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.openCssClass_ = openCssClass;
 
     this.transitionEndHandler_ = (ev) => {
-      if (this.isRootTransitioningElement_(ev.target)) {
+      if (this.isRootTransitioningEventTarget_(ev.target)) {
         this.adapter_.removeClass(this.animatingCssClass_);
         this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
       }

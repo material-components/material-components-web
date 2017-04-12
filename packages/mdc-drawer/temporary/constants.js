@@ -25,5 +25,5 @@ export const cssClasses = {
 export const strings = {
   DRAWER_SELECTOR: '.mdc-temporary-drawer__drawer',
   OPACITY_VAR_NAME: '--mdc-temporary-drawer-opacity',
-  FOCUSABLE_ELEMENTS: FOCUSABLE_ELEMENTS,
+  FOCUSABLE_ELEMENTS,
 };

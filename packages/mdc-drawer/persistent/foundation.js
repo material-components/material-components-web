@@ -28,7 +28,7 @@ export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoun
 
   static get defaultAdapter() {
     return Object.assign(MDCSlidableDrawerFoundation.defaultAdapter, {
-      isRoot: () => false,
+      isDrawer: () => false,
     });
   }
 
@@ -41,6 +41,6 @@ export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoun
   }
 
   isRootTransitioningEventTarget_(el) {
-    return this.adapter_.isRoot(el);
+    return this.adapter_.isDrawer(el);
   }
 }

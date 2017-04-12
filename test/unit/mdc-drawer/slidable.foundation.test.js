@@ -17,17 +17,17 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {captureHandlers} from '../helpers/foundation';
+import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {MDCSlidableDrawerFoundation} from '../../../packages/mdc-drawer/slidable';
 
-function setupTest(isRootTransitioningElement) {
+function setupTest(isRootTransitioningEventTarget) {
   const mockAdapter = td.object(MDCSlidableDrawerFoundation.defaultAdapter);
 
   class MDCFakeSlideableDrawerFoundation extends MDCSlidableDrawerFoundation {
 
-    isRootTransitioningElement_(el) {
-      return isRootTransitioningElement;
+    isRootTransitioningEventTarget_(el) {
+      return isRootTransitioningEventTarget;
     }
   }
 
@@ -43,19 +43,13 @@ function setupTest(isRootTransitioningElement) {
 suite('MDCSlidableDrawerFoundation');
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  const {defaultAdapter} = MDCSlidableDrawerFoundation;
-  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
-
-  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  assert.deepEqual(methods, [
+  verifyDefaultAdapter(MDCSlidableDrawerFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'registerInteractionHandler',
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
     'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth',
   ]);
-  // Test default methods
-  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
 test('#init throws error when the root class is not present', () => {

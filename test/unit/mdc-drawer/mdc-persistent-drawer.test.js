@@ -21,7 +21,7 @@ import td from 'testdouble';
 
 import {MDCPersistentDrawer} from '../../../packages/mdc-drawer/persistent';
 import {strings} from '../../../packages/mdc-drawer/persistent/constants';
-import {getTransformPropertyName, supportsCssCustomProperties} from '../../../packages/mdc-drawer/util';
+import {getTransformPropertyName} from '../../../packages/mdc-drawer/util';
 
 function getFixture() {
   return bel`
@@ -130,26 +130,24 @@ test('adapter#deregisterDrawerInteractionHandler removes an event listener from 
   drawer.addEventListener('click', handler);
 
   component.getDefaultFoundation().adapter_.deregisterDrawerInteractionHandler('click', handler);
-  domEvents.emit(drawer, 'click');
+  domEvents.emit(root, 'click');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('adapter#registerTransitionEndHandler adds a transition end event listener on the drawer element', () => {
   const {root, component} = setupTest();
-  const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   const handler = td.func('transitionEndHandler');
   component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
-  domEvents.emit(drawer, 'transitionend');
+  domEvents.emit(root, 'transitionend');
 
   td.verify(handler(td.matchers.anything()));
 });
 
 test('adapter#deregisterTransitionEndHandler removes a transition end event listener on the drawer element', () => {
   const {root, component} = setupTest();
-  const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   const handler = td.func('transitionEndHandler');
-  drawer.addEventListener('transitionend', handler);
+  root.addEventListener('transitionend', handler);
 
   component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
   domEvents.emit(root, 'transitionend');
@@ -179,14 +177,6 @@ test('adapter#setTranslateX sets translateX to null when given the null value', 
   assert.equal(
     drawer.style.getPropertyValue(transformPropertyName), nonStyledElement.style.getPropertyValue(transformPropertyName)
   );
-});
-
-test('adapter#updateCssVariable sets custom property on root', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.updateCssVariable('0');
-  if (supportsCssCustomProperties()) {
-    assert.equal(root.style.getPropertyValue(strings.OPACITY_VAR_NAME), '0');
-  }
 });
 
 test('adapter#getFocusableElements returns all the focusable elements in the drawer', () => {
@@ -229,6 +219,7 @@ test('adapter#isRtl returns true for RTL documents', () => {
   document.body.appendChild(root);
   const component = new MDCPersistentDrawer(root);
   assert.isOk(component.getDefaultFoundation().adapter_.isRtl());
+  document.body.removeChild(root);
 });
 
 test('adapter#isRtl returns false for explicit LTR documents', () => {
@@ -241,6 +232,7 @@ test('adapter#isRtl returns false for explicit LTR documents', () => {
   document.body.appendChild(root);
   const component = new MDCPersistentDrawer(root);
   assert.isNotOk(component.getDefaultFoundation().adapter_.isRtl());
+  document.body.removeChild(root);
 });
 
 test('adapter#isRtl returns false for implicit LTR documents', () => {
@@ -253,6 +245,7 @@ test('adapter#isRtl returns false for implicit LTR documents', () => {
   document.body.appendChild(root);
   const component = new MDCPersistentDrawer(root);
   assert.isNotOk(component.getDefaultFoundation().adapter_.isRtl());
+  document.body.removeChild(root);
 });
 
 test('adapter#registerDocumentKeydownHandler attaches a "keydown" handler to the document', () => {

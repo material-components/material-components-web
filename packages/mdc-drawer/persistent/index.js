@@ -73,7 +73,7 @@ export class MDCPersistentDrawer extends MDCComponent {
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      isRoot: (el) => el === this.root_,
+      isDrawer: (el) => el === this.drawer,
     });
   }
 }

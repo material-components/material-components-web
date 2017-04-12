@@ -17,7 +17,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {captureHandlers} from '../helpers/foundation';
+import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTemporaryDrawerFoundation from '../../../packages/mdc-drawer/temporary/foundation';
@@ -41,11 +41,7 @@ test('exports cssClasses', () => {
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  const {defaultAdapter} = MDCTemporaryDrawerFoundation;
-  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
-
-  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  assert.deepEqual(methods, [
+  verifyDefaultAdapter(MDCTemporaryDrawerFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'registerInteractionHandler',
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
@@ -53,8 +49,6 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer',
     'updateCssVariable',
   ]);
-  // Test default methods
-  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
 test('#init calls component and drawer event registrations', () => {
