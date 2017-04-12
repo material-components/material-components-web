@@ -15,15 +15,15 @@
  */
 
 import {MDCComponent} from '@material/base';
-import MDCTemporaryDrawerFoundation from './foundation';
+import MDCPersistentDrawerFoundation from './foundation';
 import * as util from '../util';
 
-export {MDCTemporaryDrawerFoundation};
+export {MDCPersistentDrawerFoundation};
 export {util};
 
-export class MDCTemporaryDrawer extends MDCComponent {
+export class MDCPersistentDrawer extends MDCComponent {
   static attachTo(root) {
-    return new MDCTemporaryDrawer(root);
+    return new MDCPersistentDrawer(root);
   }
 
   get open() {
@@ -40,13 +40,13 @@ export class MDCTemporaryDrawer extends MDCComponent {
 
   /* Return the drawer element inside the component. */
   get drawer() {
-    return this.root_.querySelector(MDCTemporaryDrawerFoundation.strings.DRAWER_SELECTOR);
+    return this.root_.querySelector(MDCPersistentDrawerFoundation.strings.DRAWER_SELECTOR);
   }
 
   getDefaultFoundation() {
-    const {FOCUSABLE_ELEMENTS, OPACITY_VAR_NAME} = MDCTemporaryDrawerFoundation.strings;
+    const {FOCUSABLE_ELEMENTS} = MDCPersistentDrawerFoundation.strings;
 
-    return new MDCTemporaryDrawerFoundation({
+    return new MDCPersistentDrawerFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
@@ -59,18 +59,15 @@ export class MDCTemporaryDrawer extends MDCComponent {
           this.drawer.addEventListener(util.remapEvent(evt), handler),
       deregisterDrawerInteractionHandler: (evt, handler) =>
           this.drawer.removeEventListener(util.remapEvent(evt), handler),
-      registerTransitionEndHandler: (handler) => this.drawer.addEventListener('transitionend', handler),
-      deregisterTransitionEndHandler: (handler) => this.drawer.removeEventListener('transitionend', handler),
+      registerTransitionEndHandler: (handler) =>
+          this.root_.addEventListener('transitionend', handler),
+      deregisterTransitionEndHandler: (handler) =>
+          this.root_.removeEventListener('transitionend', handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       getDrawerWidth: () => this.drawer.offsetWidth,
       setTranslateX: (value) => this.drawer.style.setProperty(
           util.getTransformPropertyName(), value === null ? null : `translateX(${value}px)`),
-      updateCssVariable: (value) => {
-        if (util.supportsCssCustomProperties()) {
-          this.root_.style.setProperty(OPACITY_VAR_NAME, value);
-        }
-      },
       getFocusableElements: () => this.drawer.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),

@@ -19,6 +19,11 @@
 @import "../mixins";
 
 $mdc-permanent-drawer-width: 240px;
+$mdc-permanent-drawer-dark-theme-bg-color: #212121 !default;
+
+:root {
+  --mdc-permanent-drawer-dark-theme-bg-color: $mdc-permanent-drawer-dark-theme-bg-color;
+}
 
 .mdc-permanent-drawer {
   @include mdc-drawer-base_;
@@ -27,7 +32,8 @@ $mdc-permanent-drawer-width: 240px;
   @include mdc-rtl-reflexive-position(left, 0);
 
   @include mdc-theme-dark {
-    background: #212121;
+    background-color: $mdc-permanent-drawer-dark-theme-bg-color;
+    background-color: var(--mdc-permanent-drawer-dark-theme-bg-color, #{$mdc-permanent-drawer-dark-theme-bg-color});
 
     @include mdc-theme-prop(color, text-primary-on-dark);
     @include mdc-rtl-reflexive-box(border, right, 1px solid rgba(white, .12));
