@@ -27,6 +27,7 @@ import * as textfield from '@material/textfield';
 import * as snackbar from '@material/snackbar';
 import * as menu from '@material/menu';
 import * as select from '@material/select';
+import * as toolbar from '@material/toolbar';
 import autoInit from '@material/auto-init';
 
 // Register all components
@@ -41,6 +42,7 @@ autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTextfield', textfield.MDCTextfield);
 autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
+autoInit.register('MDCToolbar', toolbar.MDCToolbar);
 
 // Export all components.
 export {
@@ -57,5 +59,6 @@ export {
   textfield,
   menu,
   select,
+  toolbar,
   autoInit,
 };
