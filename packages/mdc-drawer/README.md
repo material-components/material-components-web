@@ -194,7 +194,7 @@ The adapter for persistent drawers must provide the following functions, with co
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
-| `isRoot(el: Element) => boolean` | Returns boolean indicating whether the provided element is the root container element. |
+| `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |
 
 ## Temporary drawer usage
 
