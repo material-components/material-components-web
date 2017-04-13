@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-const ROOT = 'mdc-simple-menu';
-
 export const cssClasses = {
-  ROOT,
-  OPEN: `${ROOT}--open`,
-  ANIMATING: `${ROOT}--animating`,
-  TOP_RIGHT: `${ROOT}--open-from-top-right`,
-  BOTTOM_LEFT: `${ROOT}--open-from-bottom-left`,
-  BOTTOM_RIGHT: `${ROOT}--open-from-bottom-right`,
+  ROOT: 'mdc-simple-menu',
+  OPEN: 'mdc-simple-menu--open',
+  ANIMATING: 'mdc-simple-menu--animating',
+  TOP_RIGHT: 'mdc-simple-menu--open-from-top-right',
+  BOTTOM_LEFT: 'mdc-simple-menu--open-from-bottom-left',
+  BOTTOM_RIGHT: 'mdc-simple-menu--open-from-bottom-right',
 };
 
 export const strings = {
-  ITEMS_SELECTOR: `.${ROOT}__items`,
+  ITEMS_SELECTOR: '.mdc-simple-menu__items',
 };
 
 export const numbers = {

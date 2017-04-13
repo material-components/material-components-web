@@ -20,8 +20,6 @@ import MDCTextfieldFoundation from './foundation';
 
 export {MDCTextfieldFoundation};
 
-const {cssClasses} = MDCTextfieldFoundation;
-
 export class MDCTextfield extends MDCComponent {
   static attachTo(root) {
     return new MDCTextfield(root);
@@ -47,11 +45,11 @@ export class MDCTextfield extends MDCComponent {
   }
 
   get input_() {
-    return this.root_.querySelector(`.${cssClasses.ROOT}__input`);
+    return this.root_.querySelector(MDCTextfieldFoundation.strings.INPUT_SELECTOR);
   }
 
   get label_() {
-    return this.root_.querySelector(`.${cssClasses.ROOT}__label`);
+    return this.root_.querySelector(MDCTextfieldFoundation.strings.LABEL_SELECTOR);
   }
 
   getDefaultFoundation() {
