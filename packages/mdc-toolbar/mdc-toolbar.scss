@@ -74,7 +74,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
 
   &__title {
     @include mdc-typography(title);
-    
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
