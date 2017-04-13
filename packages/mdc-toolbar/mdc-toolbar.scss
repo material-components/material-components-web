@@ -98,3 +98,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     margin-top: $mdc-toolbar-mobile-row-height;
   }
 }
+
+.mdc-toolbar__section-shrink-to-fit {
+  flex: none;
+}
