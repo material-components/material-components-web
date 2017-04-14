@@ -96,7 +96,7 @@ of the toolbar (respectively).
 ```
 
 Toolbar sections are laid out using flexbox. Each section will take up an equal
-amount of space within the toolbar.
+amount of space within the toolbar by default. But you can accommodate very long section (very long title) by adding `mdc-toolbar__section--shrink-to-fit` to the rest of the section
 
 ### Toolbar title
 
@@ -139,3 +139,4 @@ The provided modifiers are:
 | `mdc-toolbar--fixed`                 | Make toolbar fixed to top of screen.    |
 | `mdc-toolbar__section--align-start`  | Makes section aligns to the start.      |
 | `mdc-toolbar__section--align-end`    | Makes section aligns to the end.        |
+| `mdc-toolbar__section--shrink-to-fit`| Makes section take more space.          |
