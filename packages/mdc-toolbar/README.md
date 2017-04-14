@@ -98,6 +98,19 @@ of the toolbar (respectively).
 Toolbar sections are laid out using flexbox. Each section will take up an equal
 amount of space within the toolbar by default. But you can accommodate very long section (very long title) by adding `mdc-toolbar__section--shrink-to-fit` to the rest of the section
 
+```
+<div class="mdc-toolbar>
+  <div class="mdc-toolbar__row">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <span class="mdc-toolbar__title">This is a super super super super long title</span>
+      </section>
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit">
+        <a class="material-icons search align-icons" aria-label="Search" alt="Search">search</a>
+      </section>
+  </div>
+</div>
+```
+
 ### Toolbar title
 
 You can use the `mdc-toolbar__title` element to style toolbar text representing
@@ -139,4 +152,4 @@ The provided modifiers are:
 | `mdc-toolbar--fixed`                 | Make toolbar fixed to top of screen.    |
 | `mdc-toolbar__section--align-start`  | Makes section aligns to the start.      |
 | `mdc-toolbar__section--align-end`    | Makes section aligns to the end.        |
-| `mdc-toolbar__section--shrink-to-fit`| Makes section take more space.          |
+| `mdc-toolbar__section--shrink-to-fit`| Makes section takes the width of its content.|
