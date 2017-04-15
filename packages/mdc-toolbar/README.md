@@ -79,6 +79,20 @@ If you have some long content and you want the scrollbar to be under the toolbar
 <div class="mdc-layout">
 <div class="mdc-layout__container">
 ```
+Example code:
+
+```html
+<div class="mdc-layout">
+<div class="mdc-layout__container">
+  <div class="mdc-toolbar">
+    ...
+  </div>
+  <main>
+    Very long content
+  </main>
+</div>
+</div>
+```
 
 ### Sections
 
