@@ -71,6 +71,14 @@ toolbar will not overlay any of the element's content.
   </p>
 </main>
 ```
+**Adjusting scrollbar below the toolbar**
+
+If you have some long content and you want the scrollbar to be under the toolbar and not over it, add these two lines before all elements under the `body` tag:
+
+```html
+<div class="mdc-layout">
+<div class="mdc-layout__container">
+```
 
 ### Sections
 
