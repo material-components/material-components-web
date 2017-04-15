@@ -105,3 +105,13 @@ $mdc-toolbar-mobile-breakpoint: 599px;
 .mdc-toolbar__section--shrink-to-fit {
   flex: none;
 }
+
+  .mdc-layout {
+		position: absolute; 
+		height: 100%;
+	}
+	
+	.mdc-layout__container {
+		height: 100%; 
+		display: flex;
+	}
