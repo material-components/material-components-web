@@ -1,0 +1,382 @@
+/**
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+@import "@material/animation/variables";
+@import "@material/theme/variables";
+@import "@material/theme/mixins"; // IE11 and Edge use their built-in support for the lower/upper portions of the
+// track, so the slider background is turned off for these browsers.
+// custom css to target IE11+ browser only
+// https://jeffclayton.wordpress.com/2014/07/22/internet-explorer-css-hacks-collection/
+
+$range-bg: rgba(0, 0, 0, 0.26);
+$range-bg-focus: rgba(0, 0, 0, 0.12);
+
+:root .mdc-slider__background,
+_:-ms-input-placeholder {
+    -ms-appearance: none;
+    display: none;
+}
+// custom css to target Edge 12+ only
+// https://jeffclayton.wordpress.com/2015/04/07/css-hacks-for-windows-10-and-spartan-browser-preview/
+@supports (-ms-ime-align:auto) {
+    :root .mdc-slider__background {
+        display: none;
+    }
+}
+
+.mdc-slider {
+    height: 18px;
+    position: relative;
+    // background: none;
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+
+    &--accent {
+        .mdc-slider__input {
+            @include mdc-theme-prop(color, accent);
+
+            &::-webkit-slider-thumb {
+                @include mdc-theme-prop(background, accent);
+            }
+
+            &:active::-webkit-slider-thumb {
+                @include mdc-theme-prop(background, accent);
+            }
+
+            &::-moz-range-thumb {
+                @include mdc-theme-prop(background, accent);
+            }
+
+            &:active::-moz-range-thumb {
+                @include mdc-theme-prop(background, accent);
+            }
+
+            &::-ms-fill-lower {
+                background: linear-gradient(to right, transparent, transparent 16px, $mdc-theme-accent 16px, $mdc-theme-accent 0);
+            }
+
+            &::-ms-thumb {
+                @include mdc-theme-prop(background, accent);
+            }
+
+            &:focus:not(:active)::-ms-thumb {
+                background: radial-gradient(circle closest-side, $mdc-theme-accent 0%, $mdc-theme-accent 37.5%, transparent 37.5%, transparent 100%);
+            }
+            &:active::-ms-thumb {
+                @include mdc-theme-prop(background, accent);
+            }
+        }
+
+        .mdc-slider__background-lower {
+            @include mdc-theme-prop(background, accent);
+          }
+    }
+}
+
+.mdc-slider__input {
+    width: calc(100% - 40px);
+    margin: 0 20px;
+    appearance: none;
+    // height: 2px;
+    background: transparent;
+    user-select: none;
+    outline: 0;
+    padding: 0;
+    @include mdc-theme-prop(color, primary);
+    align-self: center;
+    z-index: 1;
+    cursor: pointer;
+    /**************************** webkit ****************************/
+    &::-webkit-slider-runnable-track {
+        background: transparent;
+        user-select: none;
+        // height: 2px;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 12px;
+        height: 12px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        @include mdc-theme-prop(background, primary);
+        border: none;
+        transition: transform 0.18s $mdc-animation-fast-out-slow-in-timing-function, border 0.18s $mdc-animation-fast-out-slow-in-timing-function, box-shadow 0.18s $mdc-animation-fast-out-slow-in-timing-function, background 0.28s $mdc-animation-fast-out-slow-in-timing-function;
+    }
+
+    &:focus:not(:active)::-webkit-slider-thumb {
+        box-shadow: 0 0 0 10px unquote("rgba(#{$mdc-theme-primary}, 0.26)");
+    }
+
+    &:active::-webkit-slider-thumb {
+        background-image: none;
+        @include mdc-theme-prop(background, primary);
+        transform: scale(1.5);
+    }
+
+    &::-moz-range-track {
+        background: transparent;
+        border: none;
+    }
+
+    &::-moz-range-thumb {
+        -moz-appearance: none;
+        width: 12px;
+        height: 12px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        background-image: none;
+        @include mdc-theme-prop(background, primary);
+        border: none;
+        // -moz-range-thumb doesn't currently support transitions.
+    }
+
+    &:focus:not(:active)::-moz-range-thumb {
+        box-shadow: 0 0 0 10px unquote("rgba(#{$mdc-theme-primary}, 0.26)");
+    }
+
+    &:active::-moz-range-thumb {
+        background-image: none;
+        @include mdc-theme-prop(background, primary);
+        transform: scale(1.5);
+    }
+    // Disable default focus on Firefox.
+    &::-moz-focus-outer {
+        border: 0;
+    }
+    /**************************** IE/Edge ****************************/
+    // Disable tooltip on IE.
+    &::-ms-tooltip {
+        display: none;
+    }
+
+    &::-ms-track {
+        background-color: transparent;
+        color: transparent;
+        height: 2px;
+        width: 100%;
+        border-width: 16px 0;
+        border-color: transparent;
+        overflow: visible;
+    }
+
+    &::-ms-fill-lower {
+        padding: 0;
+        // Margin on -ms-track doesn't work right, so we use gradients on the
+        // fills.
+        background: linear-gradient(to right, transparent, transparent 16px, $mdc-theme-primary 16px, $mdc-theme-primary 0);
+    }
+
+    &::-ms-fill-upper {
+        padding: 0;
+        // Margin on -ms-track doesn't work right, so we use gradients on the
+        // fills.
+        background: linear-gradient(to left, transparent, transparent 16px, $range-bg 16px, $range-bg 0);
+    }
+
+    &::-ms-thumb {
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        @include mdc-theme-prop(background, primary);
+        overflow: visible;
+        transform: scale(0.375);
+        // -ms-thumb doesn't currently support transitions, but leaving this here
+        // in case support ever gets added.
+        transition: transform 0.18s $mdc-animation-fast-out-slow-in-timing-function, background 0.28s $mdc-animation-fast-out-slow-in-timing-function;
+    }
+
+    &:focus:not(:active)::-ms-thumb {
+        background: radial-gradient(circle closest-side, $mdc-theme-primary 0%, $mdc-theme-primary 37.5%, transparent 37.5%, transparent 100%);
+        transform: scale(1);
+    }
+
+    &:active::-ms-thumb {
+        @include mdc-theme-prop(background, primary);
+        transform: scale(.5625);
+    }
+    /**************************** 0-value ****************************/
+    &.mdc-slider--lowest-value::-webkit-slider-thumb {
+        border: 2px solid $range-bg;
+        background: transparent;
+    }
+
+    &.mdc-slider--lowest-value + .mdc-slider__background > .mdc-slider__background-upper {
+        left: 6px;
+    }
+
+    &.mdc-slider--lowest-value:focus:not(:active)::-webkit-slider-thumb {
+        box-shadow: 0 0 0 10px $range-bg-focus;
+        background: $range-bg-focus;
+    }
+
+    &.mdc-slider--lowest-value:active::-webkit-slider-thumb {
+        border: 1.6px solid $range-bg;
+        transform: scale(1.5);
+    }
+
+    &.mdc-slider--lowest-value:active + .mdc-slider__background > .mdc-slider__background-upper {
+        left: 9px;
+    }
+
+    &.mdc-slider--lowest-value::-moz-range-thumb {
+        border: 2px solid $range-bg;
+        background: transparent;
+    }
+
+    &.mdc-slider--lowest-value:focus:not(:active)::-moz-range-thumb {
+        box-shadow: 0 0 0 10px $range-bg-focus;
+        background: $range-bg-focus;
+    }
+
+    &.mdc-slider--lowest-value:active::-moz-range-thumb {
+        border: 1.5px solid $range-bg;
+        transform: scale(1.5);
+    }
+
+    &.mdc-slider--lowest-value::-ms-thumb {
+        background: radial-gradient(circle closest-side, transparent 0%, transparent 66.67%, $range-bg 66.67%, $range-bg 100%);
+    }
+
+    &.mdc-slider--lowest-value:focus:not(:active)::-ms-thumb {
+        background: radial-gradient(circle closest-side, $range-bg-focus 0%, $range-bg-focus 25%, $range-bg 25%, $range-bg 37.5%, $range-bg-focus 37.5%, $range-bg-focus 100%);
+        transform: scale(1);
+    }
+
+    &.mdc-slider--lowest-value:active::-ms-thumb {
+        transform: scale(0.5625);
+        background: radial-gradient(circle closest-side, transparent 0%, transparent 77.78%, $range-bg 77.78%, $range-bg 100%);
+    }
+
+    &.mdc-slider--lowest-value::-ms-fill-lower {
+        background: transparent;
+    }
+
+    &.mdc-slider--lowest-value::-ms-fill-upper {
+        margin-left: 6px;
+    }
+
+    &.mdc-slider--lowest-value:active::-ms-fill-upper {
+        margin-left: 9px;
+    }
+    /**************************** Disabled ****************************/
+    &:disabled::-webkit-slider-thumb,
+    &:disabled:active::-webkit-slider-thumb,
+    &:disabled:focus::-webkit-slider-thumb {
+        transform: scale(0.667);
+        background: $range-bg;
+    }
+
+    &:disabled + .mdc-slider__background > .mdc-slider__background-lower {
+        background-color: $range-bg;
+        left: -6px;
+    }
+
+    &:disabled + .mdc-slider__background > .mdc-slider__background-upper {
+        left: 6px;
+    }
+
+    &.mdc-slider--lowest-value:disabled::-webkit-slider-thumb,
+    &.mdc-slider--lowest-value:disabled:active::-webkit-slider-thumb,
+    &.mdc-slider--lowest-value:disabled:focus::-webkit-slider-thumb {
+        border: 3px solid $range-bg;
+        background: transparent;
+        transform: scale(0.667);
+    }
+
+    &.mdc-slider--lowest-value:disabled:active + .mdc-slider__background > .mdc-slider__background-upper {
+        left: 6px;
+    }
+
+    &:disabled::-moz-range-thumb,
+    &:disabled:active::-moz-range-thumb,
+    &:disabled:focus::-moz-range-thumb {
+        transform: scale(0.667);
+        background: $range-bg;
+    }
+
+    &.mdc-slider--lowest-value:disabled::-moz-range-thumb,
+    &.mdc-slider--lowest-value:disabled:active::-moz-range-thumb,
+    &.mdc-slider--lowest-value:disabled:focus::-moz-range-thumb {
+        border: 3px solid $range-bg;
+        background: transparent;
+        transform: scale(0.667);
+    }
+
+    &:disabled::-ms-thumb,
+    &:disabled:active::-ms-thumb,
+    &:disabled:focus::-ms-thumb {
+        transform: scale(0.25);
+        background: $range-bg;
+    }
+
+    &.mdc-slider--lowest-value:disabled::-ms-thumb,
+    &.mdc-slider--lowest-value:disabled:active::-ms-thumb,
+    &.mdc-slider--lowest-value:disabled:focus::-ms-thumb {
+        transform: scale(0.25);
+        background: radial-gradient(circle closest-side, transparent 0%, transparent 50%, $range-bg 50%, $range-bg 100%);
+    }
+
+    &:disabled::-ms-fill-lower {
+        margin-right: 6px;
+        background: linear-gradient(to right, transparent, transparent 25px, $range-bg 25px, $range-bg 0);
+    }
+
+    &:disabled::-ms-fill-upper {
+        margin-left: 6px;
+    }
+
+    &.mdc-slider--lowest-value:disabled:active::-ms-fill-upper {
+        margin-left: 6px;
+    }
+}
+// Set up a flex box for the styled upper and lower portions of the
+// the slider track (not used in IE/Edge).
+
+.mdc-slider__background {
+    background: transparent;
+    position: absolute;
+    height: 2px;
+    width: calc(100% - 52px);
+    top: 50%;
+    left: 0;
+    margin: 0 26px;
+    display: flex;
+    overflow: hidden;
+    border: 0;
+    padding: 0;
+    transform: translate(0, -1px);
+}
+// The lower part of the slider track.
+
+.mdc-slider__background-lower {
+    @include mdc-theme-prop(background, primary);
+    flex: 0;
+    position: relative;
+    border: 0;
+    padding: 0;
+}
+// The upper part of the slider track.
+
+.mdc-slider__background-upper {
+    background: $range-bg;
+    flex: 1;
+    position: relative;
+    border: 0;
+    padding: 0;
+    transition: left 0.18s $mdc-animation-fast-out-slow-in-timing-function;
+}
