@@ -15,25 +15,15 @@
  */
 
 import {MDCFoundation} from '@material/base';
-
-const ROOT = 'mdc-icon-toggle';
+import {cssClasses, strings} from './constants';
 
 export default class MDCIconToggleFoundation extends MDCFoundation {
   static get cssClasses() {
-    return {
-      ROOT,
-      DISABLED: `${ROOT}--disabled`,
-    };
+    return cssClasses;
   }
 
   static get strings() {
-    return {
-      DATA_TOGGLE_ON: 'data-toggle-on',
-      DATA_TOGGLE_OFF: 'data-toggle-off',
-      ARIA_PRESSED: 'aria-pressed',
-      ARIA_DISABLED: 'aria-disabled',
-      ARIA_LABEL: 'aria-label',
-    };
+    return strings;
   }
 
   static get defaultAdapter() {

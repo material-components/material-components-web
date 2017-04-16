@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const cssClasses = {
-  ROOT: 'mdc-snackbar',
-  TEXT: 'mdc-snackbar__text',
-  ACTION_WRAPPER: 'mdc-snackbar__action-wrapper',
-  ACTION_BUTTON: 'mdc-snackbar__action-button',
-  ACTIVE: 'mdc-snackbar--active',
-  MULTILINE: 'mdc-snackbar--multiline',
-  ACTION_ON_BOTTOM: 'mdc-snackbar--action-on-bottom',
-};
-
 export const strings = {
-  TEXT_SELECTOR: '.mdc-snackbar__text',
-  ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__action-wrapper',
-  ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
+  ARIA_HIDDEN: 'aria-hidden',
+  ROLE: 'role',
+  INPUT_SELECTOR: '.mdc-textfield__input',
+  LABEL_SELECTOR: '.mdc-textfield__label',
 };
 
-export const numbers = {
-  MESSAGE_TIMEOUT: 2750,
+export const cssClasses = {
+  ROOT: 'mdc-textfield',
+  UPGRADED: 'mdc-textfield--upgraded',
+  DISABLED: 'mdc-textfield--disabled',
+  FOCUSED: 'mdc-textfield--focused',
+  INVALID: 'mdc-textfield--invalid',
+  HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
+  HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
+  LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
 };
