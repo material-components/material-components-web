@@ -3,7 +3,7 @@ title: "Cards"
 layout: detail
 section: components
 iconId: card
-path: /cards/
+path: /catalog/cards/
 -->
 
 # Cards

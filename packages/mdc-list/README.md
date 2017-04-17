@@ -3,7 +3,7 @@ title: "Lists"
 layout: detail
 section: components
 iconId: list
-path: /lists/
+path: /catalog/lists/
 -->
 
 # Lists

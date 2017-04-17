@@ -3,7 +3,7 @@ title: "Select Menus"
 layout: detail
 section: components
 iconId: menu
-path: /select-menus/
+path: /catalog/select-menus/
 -->
 
 # Select Menus

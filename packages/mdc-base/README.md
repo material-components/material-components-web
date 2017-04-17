@@ -2,7 +2,7 @@
 title: "Base"
 layout: detail
 section: components
-path: /base/
+path: /catalog/base/
 -->
 
 # Base

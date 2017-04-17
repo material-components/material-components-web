@@ -3,7 +3,7 @@ title: "Toolbars"
 layout: detail
 section: components
 iconId: toolbar
-path: /toolbar/
+path: /catalog/toolbar/
 -->
 
 # Toolbars

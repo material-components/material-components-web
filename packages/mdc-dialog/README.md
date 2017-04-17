@@ -3,7 +3,7 @@ title: "Dialogs"
 layout: detail
 section: components
 iconId: dialog
-path: /dialogs/
+path: /catalog/dialogs/
 -->
 
 # Dialogs

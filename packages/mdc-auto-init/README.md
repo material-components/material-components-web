@@ -2,7 +2,7 @@
 title: "Auto Init"
 layout: detail
 section: components
-path: /auto-init/
+path: /catalog/auto-init/
 -->
 
 # Auto Init

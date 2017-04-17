@@ -3,7 +3,7 @@ title: "Menus"
 layout: detail
 section: components
 iconId: menu
-path: /menus/
+path: /catalog/menus/
 -->
 
 # Menus

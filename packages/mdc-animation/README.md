@@ -3,7 +3,7 @@ title: "Animation"
 layout: detail
 section: components
 iconId: animation
-path: /animation/
+path: /catalog/animation/
 -->
 
 # Animation

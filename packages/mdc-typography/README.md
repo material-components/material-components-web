@@ -2,7 +2,7 @@
 title: "Typography"
 layout: detail
 section: components
-path: /typography/
+path: /catalog/typography/
 -->
 
 # Typography

@@ -3,7 +3,7 @@ title: "Ripples"
 layout: detail
 section: components
 iconId: ripple
-path: /ripples/
+path: /catalog/ripples/
 -->
 
 # Ripples

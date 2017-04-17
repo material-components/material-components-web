@@ -3,7 +3,7 @@ title: "Elevation"
 layout: detail
 section: components
 iconId: shadow
-path: /elevation/
+path: /catalog/elevation/
 -->
 
 # Elevation
