@@ -14,16 +14,7 @@
  * limitations under the License.
  */
 
-import {FOCUSABLE_ELEMENTS} from '../slidable';
-
-export const cssClasses = {
-  ROOT: 'mdc-temporary-drawer',
-  OPEN: 'mdc-temporary-drawer--open',
-  ANIMATING: 'mdc-temporary-drawer--animating',
-};
-
-export const strings = {
-  DRAWER_SELECTOR: '.mdc-temporary-drawer__drawer',
-  OPACITY_VAR_NAME: '--mdc-temporary-drawer-opacity',
-  FOCUSABLE_ELEMENTS,
-};
+$mdc-slidable-drawer-transition-time: .13s;
+$mdc-slidable-drawer-transition-open-time: .33s;
+$mdc-slidable-drawer-transition: mdc-animation-enter(transform, $mdc-slidable-drawer-transition-time);
+$mdc-slidable-drawer-transition-open: mdc-animation-enter(transform, $mdc-slidable-drawer-transition-open-time);

@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-import {FOCUSABLE_ELEMENTS} from '../slidable';
+@import "@material/rtl/mixins";
 
-export const cssClasses = {
-  ROOT: 'mdc-temporary-drawer',
-  OPEN: 'mdc-temporary-drawer--open',
-  ANIMATING: 'mdc-temporary-drawer--animating',
-};
+@mixin mdc-slideable-drawer {
+  height: 100%;
+  transform: translateX(-107%);
+  transform: translateX(calc(-100% - 20px));
+  will-change: transform;
+}
 
-export const strings = {
-  DRAWER_SELECTOR: '.mdc-temporary-drawer__drawer',
-  OPACITY_VAR_NAME: '--mdc-temporary-drawer-opacity',
-  FOCUSABLE_ELEMENTS,
-};
+@mixin mdc-slideable-drawer-rtl {
+  transform: translateX(107%);
+  transform: translateX(calc(100% + 20px));
+}
+
+@mixin mdc-slideable-drawer-open {
+  transform: none;
+}
