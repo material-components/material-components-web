@@ -3,6 +3,7 @@ title: "Layout Grids"
 layout: detail
 section: components
 iconId: responsive_layout
+path: /layout-grids/
 -->
 
 # Layout Grids

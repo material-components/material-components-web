@@ -3,6 +3,7 @@ title: "Switches"
 layout: detail
 section: components
 iconId: switch
+path: /switches/
 -->
 
 # Switches

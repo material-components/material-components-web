@@ -2,6 +2,7 @@
 title: "Typography"
 layout: detail
 section: components
+path: /typography/
 -->
 
 # Typography

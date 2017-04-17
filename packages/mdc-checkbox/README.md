@@ -3,6 +3,7 @@ title: "Checkboxes"
 layout: detail
 section: components
 iconId: selection_control
+path: /checkboxes/
 -->
 
 # Checkboxes

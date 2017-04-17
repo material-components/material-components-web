@@ -3,6 +3,7 @@ title: "Theme"
 layout: detail
 section: components
 iconId: theme
+path: /theme/
 -->
 
 # Theme

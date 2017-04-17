@@ -3,6 +3,7 @@ title: "Drawers"
 layout: detail
 section: components
 iconId: side_navigation
+path: /drawers/
 -->
 
 # Drawers

@@ -2,6 +2,7 @@
 title: "Form Fields"
 layout: detail
 section: components
+path: /form-fields/
 -->
 
 # Form Fields

@@ -3,6 +3,7 @@ title: "Buttons"
 layout: detail
 section: components
 iconId: button
+path: /buttons/
 -->
 
 # Buttons

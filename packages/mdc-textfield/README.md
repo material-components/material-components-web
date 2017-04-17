@@ -3,11 +3,12 @@ title: "Text Fields"
 layout: detail
 section: components
 iconId: text_field
+path: /text-fields/
 -->
 
 # Text Fields
 
-The MDC Textfield component provides a textual input field adhering to the [Material Design Specification](https://material.io/guidelines/components/text-fields.html).
+The MDC Text Field component provides a textual input field adhering to the [Material Design Specification](https://material.io/guidelines/components/text-fields.html).
 It is fully accessible, ships with RTL support, and includes a gracefully-degraded version that does
 not require any javascript.
 

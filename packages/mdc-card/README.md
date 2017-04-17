@@ -3,6 +3,7 @@ title: "Cards"
 layout: detail
 section: components
 iconId: card
+path: /cards/
 -->
 
 # Cards

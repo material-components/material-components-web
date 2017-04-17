@@ -3,6 +3,7 @@ title: "Icon Toggle Buttons"
 layout: detail
 section: components
 iconId: button
+path: /icon-toggle-buttons/
 -->
 
 # Icon Toggle Buttons

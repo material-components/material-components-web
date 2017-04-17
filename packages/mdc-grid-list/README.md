@@ -3,6 +3,7 @@ title: "Grid Lists"
 layout: detail
 section: components
 iconId: card
+path: /grid-lists/
 -->
 
 # Grid Lists

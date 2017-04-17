@@ -2,6 +2,7 @@
 title: "RTL"
 layout: detail
 section: components
+path: /rtl/
 -->
 
 # RTL

@@ -2,6 +2,7 @@
 title: "Base"
 layout: detail
 section: components
+path: /base/
 -->
 
 # Base

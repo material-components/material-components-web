@@ -3,6 +3,7 @@ title: "Menus"
 layout: detail
 section: components
 iconId: menu
+path: /menus/
 -->
 
 # Menus

@@ -3,6 +3,7 @@ title: "Floating Action Buttons"
 layout: detail
 section: components
 iconId: button
+path: /floating-action-buttons/
 -->
 
 # Floating Action Buttons
