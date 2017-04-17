@@ -1,3 +1,47 @@
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/material-components/material-components-web/compare/v0.8.0...v0.9.0) (2017-04-17)
+
+
+### Bug Fixes
+
+* **checkbox:** Prevent checkboxes and radios from changing size with multiline label (#497) ([2e1023c](https://github.com/material-components/material-components-web/commit/2e1023c))
+* **dialog:** Ensure isOpen() returns false when dialog is closed (#465) ([6abc3ee](https://github.com/material-components/material-components-web/commit/6abc3ee)), closes [(#465](https://github.com/(/issues/465)
+* **dialog:** Handle focus trapping correctly (#491) ([12bd03e](https://github.com/material-components/material-components-web/commit/12bd03e))
+* **grid-list:** Updates the grid-list's foundation to NOT center tile… (#467) ([a758519](https://github.com/material-components/material-components-web/commit/a758519))
+* **infrastructure:** Print the entire invalid git commit message. (#510) ([ea8f862](https://github.com/material-components/material-components-web/commit/ea8f862))
+* **list:** Update interactive list's with ripple-upgrade to be narrower (#468) ([c062319](https://github.com/material-components/material-components-web/commit/c062319)), closes [#463](https://github.com/material-components/material-components-web/issues/463)
+* **toolbar:** Make Toolbar accommodated very long section ([130246f](https://github.com/material-components/material-components-web/commit/130246f)), closes [#508](https://github.com/material-components/material-components-web/issues/508)
+
+### Features
+
+* **checkbox:** Add value property to the component and foundation. (#492) ([ff772ad](https://github.com/material-components/material-components-web/commit/ff772ad))
+* **drawer:** Implement persistent drawer (#488) ([79a2352](https://github.com/material-components/material-components-web/commit/79a2352))
+* **radio:** Add a value property to the component and foundation. (#490) ([279d3fd](https://github.com/material-components/material-components-web/commit/279d3fd))
+
+
+### BREAKING CHANGES
+
+* dialog: There are a few changes that need to be taken into
+account for this commit:
+
+- Dialogs no longer require an `aria-hidden="true"` attribute.
+- Dialogs _do_ require a `style="visibility:hidden"` attribute for
+  correct first render.
+- `trapFocusOnSurface` and `untrapFocusOnSurface` methods must be
+  implemented for the adapter
+- `hasClass`, `setAttr`, `registerFocusTrappingHandler`,
+  `deregisterFocusTrappingHandler`, `numFocusableTargets`,
+  `setDialogFocusFirstTarget`, `setInitialFocus`,
+  `getFocusableElements`, `saveElementTabState`,
+  `restoreElementTabState`, `makeElementUntabbable`, `setBodyAttr`,
+  `rmBodyAttr`, `getFocusedTarget`, and `setFocusedTarget` have all been
+  removed from the adapter.
+- `applyPassive`, `saveElementTabState`, and `restoreElementTabState`
+  have all been removed from `mdcDialog.util`.
+* grid-list: Adds getNumberOfTiles to grid-list's adapter API. Please update adapters to implement getNumberOfTiles.
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/material-components/material-components-web/compare/v0.7.0...v0.8.0) (2017-04-03)
 
