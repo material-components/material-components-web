@@ -72,6 +72,7 @@ Permanent drawers can also be set below the toolbar:
         <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
       </a>
     </nav>
+  </nav>
   <main>
     Page content goes here.
   </main>
