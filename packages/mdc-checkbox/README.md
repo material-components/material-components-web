@@ -205,6 +205,8 @@ The adapter for checkboxes must provide the following functions, with correct si
 | `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
 | `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise.` |
 
+> **NOTE**: There are some cases where we do not want ripples to activate. Most of this logic is handled by native control attributes such as `disabled` on input fields. One caveat is that ripples will activate on disabled elements if their corresponding `label` element is clicked. For this, we override the ripple's `shouldIgnoreRippleActivation()` adapter method in `mdc-checkbox`'s `getDefaultFoundation()`, and check if the control is disabled before activating the ripple.
+
 #### MDCCheckboxFoundation API
 
 ##### MDCCheckboxFoundation.isChecked() => boolean

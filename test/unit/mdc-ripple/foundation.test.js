@@ -37,11 +37,12 @@ test('numbers returns constants.numbers', () => {
   assert.deepEqual(MDCRippleFoundation.numbers, numbers);
 });
 
-test('defaultAdapter returns a complete adapter implementation', () => {
+test.only('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCRippleFoundation, [
-    'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'addClass', 'removeClass',
-    'registerInteractionHandler', 'deregisterInteractionHandler', 'registerResizeHandler',
-    'deregisterResizeHandler', 'updateCssVariable', 'computeBoundingRect', 'getWindowPageOffset',
+    'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'shouldIgnoreRippleActivation',
+    'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'registerResizeHandler', 'deregisterResizeHandler', 'updateCssVariable',
+    'computeBoundingRect', 'getWindowPageOffset',
   ]);
 });
 

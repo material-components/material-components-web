@@ -156,6 +156,8 @@ Since MDC Radio is primarily driven by its native control, the adapter API is ex
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 
+> **NOTE**: There are some cases where we do not want ripples to activate. Most of this logic is handled by native control attributes such as `disabled` on input fields. One caveat is that ripples will activate on disabled elements if their corresponding `label` element is clicked. For this, we override the ripple's `shouldIgnoreRippleActivation()` adapter method in `mdc-radio`'s `getDefaultFoundation()`, and check if the control is disabled before activating the ripple.
+
 #### The full foundation API
 
 ##### MDCRadioFoundation.isChecked() => boolean

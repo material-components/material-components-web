@@ -128,6 +128,31 @@
         </div>
         <button type="button" id="make-ind">Make indeterminate</button>
       </section>
+
+      <section>
+        <h2>Disabled</h2>
+        <div class="mdc-form-field">
+          <div id="mdc-disabled-js-checkbox" class="mdc-checkbox">
+            <input type="checkbox"
+                   id="disabled-checkbox"
+                   class="mdc-checkbox__native-control"
+                   disabled />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark"
+                   viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path"
+                      fill="none"
+                      stroke="white"
+                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+
+            </div>
+          </div>
+          <label for="disabled-checkbox" id="my-disabled-checkbox-label">This is my disabled checkbox</label>
+        </div>
+      </section>
+
       <section class="mdc-theme--dark">
         <h2>Dark Theme</h2>
         <div class="mdc-form-field">
@@ -160,6 +185,9 @@
 
         var checkbox = document.getElementById('mdc-js-checkbox');
         var checkboxInstance = new MDCCheckbox(checkbox);
+
+        var disabledCheckbox = document.getElementById('mdc-disabled-js-checkbox');
+        var disabledCheckboxInstance = new MDCCheckbox(disabledCheckbox);
 
         var formField = checkbox.parentElement;
         var formFieldInstance = new MDCFormField(formField);

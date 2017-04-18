@@ -64,6 +64,7 @@ export class MDCCheckbox extends MDCComponent {
 
   getDefaultFoundation() {
     return new MDCCheckboxFoundation({
+      shouldIgnoreRippleActivation: () => this.disabled,
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       registerAnimationEndHandler:
