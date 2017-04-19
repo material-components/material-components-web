@@ -37,7 +37,7 @@ test('numbers returns constants.numbers', () => {
   assert.deepEqual(MDCRippleFoundation.numbers, numbers);
 });
 
-test.only('defaultAdapter returns a complete adapter implementation', () => {
+test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCRippleFoundation, [
     'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'shouldIgnoreRippleActivation',
     'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
