@@ -112,7 +112,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(this.openCssClass_);
     this.retabinate_();
     // Debounce multiple calls
-    if (!this.isOpen_){
+    if (!this.isOpen_) {
       this.adapter_.notifyOpen();
     }
     this.isOpen_ = true;
