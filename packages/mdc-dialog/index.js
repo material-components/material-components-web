@@ -41,7 +41,7 @@ export class MDCDialog extends MDCComponent {
   }
 
   initialize() {
-    this.lastFocusedTarget = null;
+    this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, this.acceptButton_);
     this.footerBtnRipples_ = [];
 
     const footerBtns = this.root_.querySelectorAll('.mdc-dialog__footer__button');
@@ -52,6 +52,7 @@ export class MDCDialog extends MDCComponent {
 
   destroy() {
     this.footerBtnRipples_.forEach((ripple) => ripple.destroy());
+    super.destroy();
   }
 
   show() {
@@ -63,41 +64,23 @@ export class MDCDialog extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {FOCUSABLE_ELEMENTS} = MDCDialogFoundation.strings;
-
     return new MDCDialogFoundation({
-      hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      setAttr: (attr, val) => this.root_.setAttribute(attr, val),
+      setStyle: (prop, val) => this.root_.style.setProperty(prop, val),
       addBodyClass: (className) => document.body.classList.add(className),
       removeBodyClass: (className) => document.body.classList.remove(className),
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerInteractionHandler: (evt, handler) =>
-        this.root_.addEventListener(evt, handler, util.applyPassive()),
-      deregisterInteractionHandler: (evt, handler) =>
-        this.root_.removeEventListener(evt, handler, util.applyPassive()),
-      registerSurfaceInteractionHandler: (evt, handler) =>
-        this.dialogSurface_.addEventListener(evt, handler),
-      deregisterSurfaceInteractionHandler: (evt, handler) =>
-        this.dialogSurface_.removeEventListener(evt, handler),
+      registerInteractionHandler: (evt, handler) => this.root_.addEventListener(evt, handler),
+      deregisterInteractionHandler: (evt, handler) => this.root_.removeEventListener(evt, handler),
+      registerSurfaceInteractionHandler: (evt, handler) => this.dialogSurface_.addEventListener(evt, handler),
+      deregisterSurfaceInteractionHandler: (evt, handler) => this.dialogSurface_.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
-      registerFocusTrappingHandler: (handler) => document.addEventListener('focus', handler, true),
-      deregisterFocusTrappingHandler: (handler) => document.removeEventListener('focus', handler, true),
-      numFocusableTargets: () => this.dialogSurface_.querySelectorAll(FOCUSABLE_ELEMENTS).length,
-      setDialogFocusFirstTarget: () => this.dialogSurface_.querySelectorAll(FOCUSABLE_ELEMENTS)[0].focus(),
-      setInitialFocus: () => this.acceptButton_.focus(),
-      getFocusableElements: () => this.dialogSurface_.querySelectorAll(FOCUSABLE_ELEMENTS),
-      saveElementTabState: (el) => util.saveElementTabState(el),
-      restoreElementTabState: (el) => util.restoreElementTabState(el),
-      makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-      setBodyAttr: (attr, val) => document.body.setAttribute(attr, val),
-      rmBodyAttr: (attr) => document.body.removeAttribute(attr),
-      getFocusedTarget: () => document.activeElement,
-      setFocusedTarget: (target) => target.focus(),
       notifyAccept: () => this.emit('MDCDialog:accept'),
       notifyCancel: () => this.emit('MDCDialog:cancel'),
+      trapFocusOnSurface: () => this.focusTrap_.activate(),
+      untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
     });
   }
 }

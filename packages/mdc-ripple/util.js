@@ -36,21 +36,6 @@ export function getMatchesProperty(HTMLElementPrototype) {
   ].filter((p) => p in HTMLElementPrototype).pop();
 }
 
-export function animateWithClass(rippleAdapter, cls, endEvent) {
-  let cancelled = false;
-  const cancel = () => {
-    if (cancelled) {
-      return;
-    }
-    cancelled = true;
-    rippleAdapter.removeClass(cls);
-    rippleAdapter.deregisterInteractionHandler(endEvent, cancel);
-  };
-  rippleAdapter.registerInteractionHandler(endEvent, cancel);
-  rippleAdapter.addClass(cls);
-  return cancel;
-}
-
 export function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   const {x, y} = pageOffset;
   const documentX = x + clientRect.left;
@@ -59,7 +44,7 @@ export function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   let normalizedX;
   let normalizedY;
   // Determine touch point relative to the ripple container.
-  if (ev.type === 'touchend') {
+  if (ev.type === 'touchstart') {
     normalizedX = ev.changedTouches[0].pageX - documentX;
     normalizedY = ev.changedTouches[0].pageY - documentY;
   } else {

@@ -36,8 +36,7 @@ function getFixture() {
              aria-labelledby="my-checkbox-label"/>
       <div class="mdc-checkbox__frame"></div>
       <div class="mdc-checkbox__background">
-        <svg version="1.1"
-             class="mdc-checkbox__checkmark"
+        <svg class="mdc-checkbox__checkmark"
              viewBox="0 0 24 24">
           <path class="mdc-checkbox__checkmark__path"
                 fill="none"
@@ -87,11 +86,11 @@ if (supportsCssVariables(window)) {
     td.when(fakeMatches(':active')).thenReturn(true);
     input[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
 
-    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
+    assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
     domEvents.emit(input, 'keydown');
     raf.flush();
 
-    assert.isOk(root.classList.contains('mdc-ripple-upgraded--background-active'));
+    assert.isTrue(root.classList.contains('mdc-ripple-upgraded--foreground-activation'));
     raf.restore();
   });
 }
@@ -122,6 +121,14 @@ test('get/set disabled updates the indeterminate property on the native checkbox
   component.disabled = true;
   assert.isOk(cb.disabled);
   assert.equal(component.disabled, cb.disabled);
+});
+
+test('get/set value updates the value of the native checkbox element', () => {
+  const {root, component} = setupTest();
+  const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+  component.value = 'new value';
+  assert.equal(cb.value, 'new value');
+  assert.equal(component.value, cb.value);
 });
 
 test('get ripple returns a MDCRipple instance', () => {

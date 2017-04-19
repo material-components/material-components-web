@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-const ROOT = 'mdc-temporary-drawer';
+import {FOCUSABLE_ELEMENTS} from '../slidable';
 
 export const cssClasses = {
-  ROOT,
-  OPEN: `${ROOT}--open`,
-  ANIMATING: `${ROOT}--animating`,
-  RIGHT: `${ROOT}--right`,
+  ROOT: 'mdc-temporary-drawer',
+  OPEN: 'mdc-temporary-drawer--open',
+  ANIMATING: 'mdc-temporary-drawer--animating',
 };
 
 export const strings = {
-  DRAWER_SELECTOR: `.${ROOT}__drawer`,
-  OPACITY_VAR_NAME: `--${ROOT}-opacity`,
-  FOCUSABLE_ELEMENTS: 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
-      'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]',
+  DRAWER_SELECTOR: '.mdc-temporary-drawer__drawer',
+  OPACITY_VAR_NAME: '--mdc-temporary-drawer-opacity',
+  FOCUSABLE_ELEMENTS,
 };

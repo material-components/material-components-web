@@ -44,6 +44,15 @@ cd material-components-web && npm i
 
 Each component requires the following items in order to be complete:
 
+- An **Engineering Outline Document**, which should be linked to in a comment on the GitHub issue
+  where we're tracking the component. This way, the core team can review and sign off on the
+  outline doc. Outline docs should be signed off on _before_ submitting a PR.
+  Please [copy this google doc template](https://docs.google.com/document/d/1Kybm7XJDTy0KUcuMaw5bzirQNBsDqCPCae8U_ag_a1k/edit?usp=sharing) in order to make your outline.
+
+  We have found that enforcing an eng outline doc has allowed us to speed up development by
+  offering more informed feedback on component implementations. This results in components that
+  take into account all of the concepts MDC Web components should account for (RTL, a11y,
+  etc.) before they even reach the PR stage, meaning faster review and merge times :smile:.
 - A **foundation class** which is integrated into actual components
 - A **component class** using vanilla JS + SCSS
 - A **README.md** in its subdir which contains developer documentation on the component, including usage.
@@ -108,6 +117,10 @@ Our entire coding style is enforced automatically through the use of linters. Ch
 
 When submitting PRs, make sure you're following our commit message conventions (which are the same as [angular's](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit)); our `commit-msg` hook should automatically enforce this. We also support [commitizen](https://www.npmjs.com/package/commitizen), which you can
 use to auto-format commit messages for you.
+
+When submitting PRs for large changes, be sure to include an adequate background in the description
+so that reviewers of the PR know what the changes entail at a high-level, the motivations for making
+these changes, and what they affect.
 
 If you've done some experimental work on your branch/fork and committed these via `git commit --no-verify`, you can rebase them into one correctly-formatted commit before submitting.
 

@@ -23,7 +23,7 @@
       }
       .demo-paragraph {
         margin: 0px;
-        padding: 20px 16px;
+        padding: 20px 28px;
       }
       .material-icons {
         text-decoration: none;
@@ -33,20 +33,27 @@
       [dir='rtl'] .material-icons {
         padding-left: 8px;
       }
+      @media (max-width: 599px) {
+        .demo-paragraph {
+          padding: 16px;
+        }
+      }
     </style>
     <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body class="mdc-typography mdc-toolbar-demo">
     <header class="mdc-toolbar mdc-toolbar--fixed">
-      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-        <a class="material-icons">menu</a>
-        <span class="mdc-toolbar__title">Title</span>
-      </section>
-      <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-        <a class="material-icons" aria-label="Download" alt="Download">file_download</a>
-        <a class="material-icons" aria-label="Print this page" alt="Print this page">print</a>
-        <a class="material-icons" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
-      </section>
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a class="material-icons">menu</a>
+          <span class="mdc-toolbar__title">Title</span>
+        </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
+          <a class="material-icons" aria-label="Download" alt="Download">file_download</a>
+          <a class="material-icons" aria-label="Print this page" alt="Print this page">print</a>
+          <a class="material-icons" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+        </section>
+      </div>
     </header>
     <main>
 

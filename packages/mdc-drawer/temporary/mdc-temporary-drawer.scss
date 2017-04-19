@@ -1,24 +1,26 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 
 @import "@material/animation/functions";
 @import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "../mixins";
+@import "../slidable/mixins";
+@import "../slidable/variables";
 
 .mdc-temporary-drawer {
   @include mdc-drawer-base_;
@@ -61,23 +63,20 @@
       @include mdc-theme-prop(color, text-primary-on-dark);
     }
 
+    @include mdc-slideable-drawer;
+
+    @include mdc-rtl(".mdc-temporary-drawer__drawer") {
+      @include mdc-slideable-drawer-rtl;
+    }
+
     display: flex;
     position: absolute;
     flex-direction: column;
     width: calc(100% - 56px);
     max-width: 280px;
-    height: 100%;
-    transform: translateX(-107%);
-    transform: translateX(calc(-100% - 20px));
-    will-change: transform;
     box-sizing: border-box;
     overflow: hidden;
     touch-action: none;
-
-    @include mdc-rtl(".mdc-temporary-drawer") {
-      transform: translateX(107%);
-      transform: translateX(calc(100% + 20px));
-    }
 
     /* TODO(sgomes): replace with global breakpoints when we have them */
     @media (min-width: 600px) {
@@ -108,11 +107,11 @@
     }
 
     &.mdc-temporary-drawer--open .mdc-temporary-drawer__drawer {
-      transition: mdc-animation-enter(transform, .33s);
+      transition: $mdc-slidable-drawer-transition-open;
     }
 
     .mdc-temporary-drawer__drawer {
-      transition: mdc-animation-enter(transform, .13s);
+      transition: $mdc-slidable-drawer-transition;
     }
   }
 
@@ -125,13 +124,13 @@
     }
 
     .mdc-temporary-drawer__drawer {
-      transform: none;
+      @include mdc-slideable-drawer-open;
     }
 
     // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
     @include mdc-rtl {
       .mdc-temporary-drawer__drawer {
-        transform: none;
+        @include mdc-slideable-drawer-open;
       }
     }
   }

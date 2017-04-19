@@ -137,6 +137,7 @@ module.exports = function(config) {
         rules: webpackConfig.module.rules.concat([config.singleRun ? {
           test: /\.js$/,
           include: path.resolve('./packages'),
+          exclude: /node_modules/,
           loader: 'istanbul-instrumenter-loader',
           query: {esModules: true},
         } : undefined]).filter(Boolean),

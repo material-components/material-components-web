@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import {MDCSlidableDrawerFoundation} from '../slidable';
 import {cssClasses, strings} from './constants';
 
-export default class MDCTemporaryDrawerFoundation extends MDCFoundation {
+export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -27,228 +27,65 @@ export default class MDCTemporaryDrawerFoundation extends MDCFoundation {
   }
 
   static get defaultAdapter() {
-    return {
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      hasClass: (/* className: string */) => {},
-      hasNecessaryDom: () => /* boolean */ false,
-      registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      registerDrawerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterDrawerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      registerTransitionEndHandler: (/* handler: EventListener */) => {},
-      deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
-      registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
-      deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
-      setTranslateX: (/* value: number | null */) => {},
+    return Object.assign(MDCSlidableDrawerFoundation.defaultAdapter, {
+      isDrawer: () => false,
       updateCssVariable: (/* value: string */) => {},
-      getFocusableElements: () => /* NodeList */ {},
-      saveElementTabState: (/* el: Element */) => {},
-      restoreElementTabState: (/* el: Element */) => {},
-      makeElementUntabbable: (/* el: Element */) => {},
-      isRtl: () => /* boolean */ false,
-      getDrawerWidth: () => /* number */ 0,
-      isDrawer: (/* el: Element */) => /* boolean */ false,
-    };
+    });
   }
 
   constructor(adapter) {
-    super(Object.assign(MDCTemporaryDrawerFoundation.defaultAdapter, adapter));
-
-    this.transitionEndHandler_ = (ev) => {
-      if (this.adapter_.isDrawer(ev.target)) {
-        this.adapter_.removeClass(MDCTemporaryDrawerFoundation.cssClasses.ANIMATING);
-        this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-      }
-    };
-
-    this.inert_ = false;
+    super(
+      Object.assign(MDCTemporaryDrawerFoundation.defaultAdapter, adapter),
+      MDCTemporaryDrawerFoundation.cssClasses.ROOT,
+      MDCTemporaryDrawerFoundation.cssClasses.ANIMATING,
+      MDCTemporaryDrawerFoundation.cssClasses.OPEN);
 
     this.componentClickHandler_ = () => this.close();
-    this.drawerClickHandler_ = (evt) => evt.stopPropagation();
-    this.componentTouchStartHandler_ = (evt) => this.handleTouchStart_(evt);
-    this.componentTouchMoveHandler_ = (evt) => this.handleTouchMove_(evt);
-    this.componentTouchEndHandler_ = (evt) => this.handleTouchEnd_(evt);
-    this.documentKeydownHandler_ = (evt) => {
-      if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
-        this.close();
-      }
-    };
   }
 
   init() {
-    const {ROOT, OPEN} = MDCTemporaryDrawerFoundation.cssClasses;
-
-    if (!this.adapter_.hasClass(ROOT)) {
-      throw new Error(`${ROOT} class required in root element.`);
-    }
-
-    if (!this.adapter_.hasNecessaryDom()) {
-      throw new Error(`Required DOM nodes missing in ${ROOT} component.`);
-    }
-
-    if (this.adapter_.hasClass(OPEN)) {
-      this.isOpen_ = true;
-    } else {
-      this.detabinate_();
-      this.isOpen_ = false;
-    }
+    super.init();
 
     // Make browser aware of custom property being used in this element.
     // Workaround for certain types of hard-to-reproduce heisenbugs.
     this.adapter_.updateCssVariable(0);
-
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-    this.adapter_.registerDrawerInteractionHandler('click', this.drawerClickHandler_);
-    this.adapter_.registerDrawerInteractionHandler('touchstart', this.componentTouchStartHandler_);
-    this.adapter_.registerInteractionHandler('touchmove', this.componentTouchMoveHandler_);
-    this.adapter_.registerInteractionHandler('touchend', this.componentTouchEndHandler_);
   }
 
   destroy() {
+    super.destroy();
+
     this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
-    this.adapter_.deregisterDrawerInteractionHandler('click', this.drawerClickHandler_);
-    this.adapter_.deregisterDrawerInteractionHandler('touchstart', this.componentTouchStartHandler_);
-    this.adapter_.deregisterInteractionHandler('touchmove', this.componentTouchMoveHandler_);
-    this.adapter_.deregisterInteractionHandler('touchend', this.componentTouchEndHandler_);
-    // Deregister the document keydown handler just in case the component is destroyed while the menu is open.
-    this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
   }
 
   open() {
     // Make sure custom property values are cleared before starting.
     this.adapter_.updateCssVariable('');
 
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
-    this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.addClass(MDCTemporaryDrawerFoundation.cssClasses.ANIMATING);
-    this.adapter_.addClass(MDCTemporaryDrawerFoundation.cssClasses.OPEN);
-    this.retabinate_();
-    this.isOpen_ = true;
+    super.open();
   }
 
   close() {
     // Make sure custom property values are cleared before making any changes.
     this.adapter_.updateCssVariable('');
 
-    this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
-    this.adapter_.addClass(MDCTemporaryDrawerFoundation.cssClasses.ANIMATING);
-    this.adapter_.removeClass(MDCTemporaryDrawerFoundation.cssClasses.OPEN);
-    this.detabinate_();
-    this.isOpen_ = false;
+    super.close();
   }
 
-  isOpen() {
-    return this.isOpen_;
-  }
+  prepareForTouchEnd_() {
+    super.prepareForTouchEnd_();
 
-  /**
-   *  Render all children of the drawer inert when it's closed.
-   */
-  detabinate_() {
-    if (this.inert_) {
-      return;
-    }
-
-    const elements = this.adapter_.getFocusableElements();
-    if (elements) {
-      for (let i = 0; i < elements.length; i++) {
-        this.adapter_.saveElementTabState(elements[i]);
-        this.adapter_.makeElementUntabbable(elements[i]);
-      }
-    }
-
-    this.inert_ = true;
-  }
-
-  /**
-   *  Make all children of the drawer tabbable again when it's open.
-   */
-  retabinate_() {
-    if (!this.inert_) {
-      return;
-    }
-
-    const elements = this.adapter_.getFocusableElements();
-    if (elements) {
-      for (let i = 0; i < elements.length; i++) {
-        this.adapter_.restoreElementTabState(elements[i]);
-      }
-    }
-
-    this.inert_ = false;
-  }
-
-  handleTouchStart_(evt) {
-    if (!this.adapter_.hasClass(MDCTemporaryDrawerFoundation.cssClasses.OPEN)) {
-      return;
-    }
-    if (evt.pointerType && evt.pointerType !== 'touch') {
-      return;
-    }
-
-    this.direction_ = this.adapter_.isRtl() ? -1 : 1;
-    this.drawerWidth_ = this.adapter_.getDrawerWidth();
-    this.startX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
-    this.currentX_ = this.startX_;
-    this.touchingSideNav_ = true;
-
-    requestAnimationFrame(this.updateDrawer_.bind(this));
-  }
-
-  handleTouchMove_(evt) {
-    if (evt.pointerType && evt.pointerType !== 'touch') {
-      return;
-    }
-
-    this.currentX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
-  }
-
-  handleTouchEnd_(evt) {
-    if (evt.pointerType && evt.pointerType !== 'touch') {
-      return;
-    }
-
-    this.touchingSideNav_ = false;
-    this.adapter_.setTranslateX(null);
     this.adapter_.updateCssVariable('');
-
-    let newPos = null;
-    if (this.direction_ === 1) {
-      newPos = Math.min(0, this.currentX_ - this.startX_);
-    } else {
-      newPos = Math.max(0, this.currentX_ - this.startX_);
-    }
-
-    // Did the user close the drawer by more than 50%?
-    if (Math.abs(newPos / this.drawerWidth_) >= 0.5) {
-      this.close();
-    } else {
-      // Triggering an open here means we'll get a nice animation back to the fully open state.
-      this.open();
-    }
   }
 
   updateDrawer_() {
-    if (!this.touchingSideNav_) {
-      return;
-    }
+    super.updateDrawer_();
 
-    requestAnimationFrame(this.updateDrawer_.bind(this));
-
-    let newPos = null;
-    let newOpacity = null;
-
-    if (this.direction_ === 1) {
-      newPos = Math.min(0, this.currentX_ - this.startX_);
-    } else {
-      newPos = Math.max(0, this.currentX_ - this.startX_);
-    }
-
-    newOpacity = Math.max(0, 1 + this.direction_ * (newPos / this.drawerWidth_));
-
-    this.adapter_.setTranslateX(newPos);
+    const newOpacity = Math.max(0, 1 + this.direction_ * (this.newPosition_ / this.drawerWidth_));
     this.adapter_.updateCssVariable(newOpacity);
+  }
+
+  isRootTransitioningEventTarget_(el) {
+    return this.adapter_.isDrawer(el);
   }
 }

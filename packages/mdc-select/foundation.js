@@ -15,8 +15,8 @@
  */
 
 import {MDCFoundation} from '@material/base';
+import {cssClasses} from './constants';
 
-const ROOT = 'mdc-select';
 const OPENER_KEYS = [
   {key: 'ArrowUp', keyCode: 38, forType: 'keydown'},
   {key: 'ArrowDown', keyCode: 40, forType: 'keydown'},
@@ -25,11 +25,7 @@ const OPENER_KEYS = [
 
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
-    return {
-      ROOT,
-      OPEN: `${ROOT}--open`,
-      DISABLED: `${ROOT}--disabled`,
-    };
+    return cssClasses;
   }
 
   static get defaultAdapter() {

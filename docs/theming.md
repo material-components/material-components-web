@@ -211,7 +211,7 @@ $mdc-theme-primary: #9c27b0;
 $mdc-theme-accent: #76ff03;
 $mdc-theme-background: #fff;
 
-@import "material-components-web";
+@import "material-components-web/material-components-web";
 ```
 
 These definitions will override the defaults included in the `mdc-theme` module, which every themeable component depends

@@ -16,9 +16,8 @@
 
 import {MDCFoundation} from '@material/base';
 
-import {getCorrectEventName} from '@material/animation';
 import {cssClasses, strings, numbers} from './constants';
-import {animateWithClass, getNormalizedEventCoords} from './util';
+import {getNormalizedEventCoords} from './util';
 
 const DEACTIVATION_ACTIVATION_PAIRS = {
   mouseup: 'mousedown',
@@ -85,31 +84,35 @@ export default class MDCRippleFoundation extends MDCFoundation {
       activate: (e) => this.activate_(e),
       deactivate: (e) => this.deactivate_(e),
       focus: () => requestAnimationFrame(
-        () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_ACTIVE)
+        () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
       ),
       blur: () => requestAnimationFrame(
-        () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_ACTIVE)
+        () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
       ),
     };
-    this.unboundedOpacityFadeTimer_ = 0;
     this.resizeHandler_ = () => this.layout();
-    this.cancelBgBounded_ = () => {};
-    this.cancelFgBounded_ = () => {};
-    this.cancelFgUnbounded_ = () => {};
     this.unboundedCoords_ = {
       left: 0,
       top: 0,
     };
     this.fgScale_ = 0;
+    this.activationTimer_ = 0;
+    this.activationAnimationHasEnded_ = false;
+    this.activationTimerCallback_ = () => {
+      this.activationAnimationHasEnded_ = true;
+      this.runDeactivationUXLogicIfReady_();
+    };
   }
 
   defaultActivationState_() {
     return {
       isActivated: false,
+      hasDeactivationUXRun: false,
       wasActivatedByPointer: false,
       wasElementMadeActive: false,
       activationStartTime: 0,
       activationEvent: null,
+      isProgrammatic: false,
     };
   }
 
@@ -150,8 +153,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
     activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : (
       e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown'
     );
-
     activationState.activationStartTime = Date.now();
+
     requestAnimationFrame(() => {
       // This needs to be wrapped in an rAF call b/c web browsers
       // report active states inconsistently when they're called within
@@ -173,34 +176,83 @@ export default class MDCRippleFoundation extends MDCFoundation {
   }
 
   animateActivation_() {
+    const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
     const {
-      BG_ACTIVE, BG_BOUNDED_ACTIVE_FILL,
-      FG_UNBOUNDED_DEACTIVATION, FG_BOUNDED_ACTIVE_FILL,
+      BG_ACTIVE_FILL,
+      FG_DEACTIVATION,
+      FG_ACTIVATION,
     } = MDCRippleFoundation.cssClasses;
+    const {DEACTIVATION_TIMEOUT_MS} = MDCRippleFoundation.numbers;
 
-    // If ripple is currently deactivating, cancel those animations.
-    [
-      BG_BOUNDED_ACTIVE_FILL,
-      FG_UNBOUNDED_DEACTIVATION,
-      FG_BOUNDED_ACTIVE_FILL,
-    ].forEach((c) => this.adapter_.removeClass(c));
-    this.cancelBgBounded_();
-    this.cancelFgBounded_();
-    this.cancelFgUnbounded_();
-    if (this.unboundedOpacityFadeTimer_) {
-      clearTimeout(this.unboundedOpacityFadeTimer_);
-      this.unboundedOpacityFadeTimer_ = 0;
+    let translateStart = '';
+    let translateEnd = '';
+
+    if (!this.adapter_.isUnbounded()) {
+      const {startPoint, endPoint} = this.getFgTranslationCoordinates_();
+      translateStart = `${startPoint.x}px, ${startPoint.y}px`;
+      translateEnd = `${endPoint.x}px, ${endPoint.y}px`;
     }
 
-    this.adapter_.addClass(BG_ACTIVE);
-    if (this.adapter_.isUnbounded()) {
-      this.animateUnboundedActivation_();
+    this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
+    this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
+    // Cancel any ongoing activation/deactivation animations
+    clearTimeout(this.activationTimer_);
+    this.rmBoundedActivationClasses_();
+    this.adapter_.removeClass(FG_DEACTIVATION);
+
+    // Force layout in order to re-trigger the animation.
+    this.adapter_.computeBoundingRect();
+    this.adapter_.addClass(BG_ACTIVE_FILL);
+    this.adapter_.addClass(FG_ACTIVATION);
+    this.activationTimer_ = setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);
+  }
+
+  getFgTranslationCoordinates_() {
+    const {activationState_: activationState} = this;
+    const {activationEvent, wasActivatedByPointer} = activationState;
+
+    let startPoint;
+    if (wasActivatedByPointer) {
+      startPoint = getNormalizedEventCoords(
+        activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect()
+      );
+    } else {
+      startPoint = {
+        x: this.frame_.width / 2,
+        y: this.frame_.height / 2,
+      };
+    }
+    // Center the element around the start point.
+    startPoint = {
+      x: startPoint.x - (this.initialSize_ / 2),
+      y: startPoint.y - (this.initialSize_ / 2),
+    };
+
+    const endPoint = {
+      x: (this.frame_.width / 2) - (this.initialSize_ / 2),
+      y: (this.frame_.height / 2) - (this.initialSize_ / 2),
+    };
+
+    return {startPoint, endPoint};
+  }
+
+  runDeactivationUXLogicIfReady_() {
+    const {FG_DEACTIVATION} = MDCRippleFoundation.cssClasses;
+    const {hasDeactivationUXRun, isActivated} = this.activationState_;
+    const activationHasEnded = hasDeactivationUXRun || !isActivated;
+    if (activationHasEnded && this.activationAnimationHasEnded_) {
+      this.rmBoundedActivationClasses_();
+      // Note that we don't need to remove this here since it's removed on re-activation.
+      this.adapter_.addClass(FG_DEACTIVATION);
     }
   }
 
-  animateUnboundedActivation_() {
-    const {FG_UNBOUNDED_ACTIVATION} = MDCRippleFoundation.cssClasses;
-    this.adapter_.addClass(FG_UNBOUNDED_ACTIVATION);
+  rmBoundedActivationClasses_() {
+    const {BG_ACTIVE_FILL, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
+    this.adapter_.removeClass(BG_ACTIVE_FILL);
+    this.adapter_.removeClass(FG_ACTIVATION);
+    this.activationAnimationHasEnded_ = false;
+    this.adapter_.computeBoundingRect();
   }
 
   deactivate_(e) {
@@ -211,10 +263,12 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
     // Programmatic deactivation.
     if (activationState.isProgrammatic) {
-      requestAnimationFrame(() => this.animateDeactivation_(null, Object.assign({}, activationState)));
+      const evtObject = null;
+      requestAnimationFrame(() => this.animateDeactivation_(evtObject, Object.assign({}, activationState)));
       this.activationState_ = this.defaultActivationState_();
       return;
     }
+
     const actualActivationType = DEACTIVATION_ACTIVATION_PAIRS[e.type];
     const expectedActivationType = activationState.activationEvent.type;
     // NOTE: Pointer events are tricky - https://patrickhlauke.github.io/touch/tests/results/
@@ -228,111 +282,29 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
 
     const state = Object.assign({}, activationState);
-    if (needsDeactivationUX) {
-      requestAnimationFrame(() => this.animateDeactivation_(e, state));
-    }
-    if (needsActualDeactivation) {
-      this.activationState_ = this.defaultActivationState_();
-    }
+    requestAnimationFrame(() => {
+      if (needsDeactivationUX) {
+        this.activationState_.hasDeactivationUXRun = true;
+        this.animateDeactivation_(e, state);
+      }
+
+      if (needsActualDeactivation) {
+        this.activationState_ = this.defaultActivationState_();
+      }
+    });
   }
 
   deactivate() {
     this.deactivate_(null);
   }
 
-  animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive, activationStartTime, isProgrammatic}) {
-    const {BG_ACTIVE} = MDCRippleFoundation.cssClasses;
+  animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive}) {
+    const {BG_FOCUSED} = MDCRippleFoundation.cssClasses;
     if (wasActivatedByPointer || wasElementMadeActive) {
-      this.adapter_.removeClass(BG_ACTIVE);
-      const isPointerEvent = isProgrammatic ? false : (
-        e.type === 'touchend' || e.type === 'pointerup' || e.type === 'mouseup'
-      );
-      if (this.adapter_.isUnbounded()) {
-        this.animateUnboundedDeactivation_(this.getUnboundedDeactivationInfo_(activationStartTime));
-      } else {
-        this.animateBoundedDeactivation_(e, isPointerEvent);
-      }
+      // Remove class left over by element being focused
+      this.adapter_.removeClass(BG_FOCUSED);
+      this.runDeactivationUXLogicIfReady_();
     }
-  }
-
-  animateUnboundedDeactivation_({opacityDuration, transformDuration, approxCurScale}) {
-    const {
-      FG_UNBOUNDED_ACTIVATION,
-      FG_UNBOUNDED_DEACTIVATION,
-    } = MDCRippleFoundation.cssClasses;
-    const {
-      VAR_FG_UNBOUNDED_OPACITY_DURATION,
-      VAR_FG_UNBOUNDED_TRANSFORM_DURATION,
-      VAR_FG_APPROX_XF,
-    } = MDCRippleFoundation.strings;
-
-    this.adapter_.updateCssVariable(VAR_FG_APPROX_XF, `scale(${approxCurScale})`);
-    this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_OPACITY_DURATION, `${opacityDuration}ms`);
-    this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_TRANSFORM_DURATION, `${transformDuration}ms`);
-    this.adapter_.addClass(FG_UNBOUNDED_DEACTIVATION);
-    this.adapter_.removeClass(FG_UNBOUNDED_ACTIVATION);
-    // We use setTimeout here since we know how long the fade will take.
-    this.unboundedOpacityFadeTimer_ = setTimeout(() => {
-      this.adapter_.removeClass(FG_UNBOUNDED_DEACTIVATION);
-    }, opacityDuration);
-  }
-
-  getUnboundedDeactivationInfo_(activationStartTime) {
-    const msElapsed = Date.now() - activationStartTime;
-    const {
-      FG_TRANSFORM_DELAY_MS, OPACITY_DURATION_DIVISOR,
-      ACTIVE_OPACITY_DURATION_MS, UNBOUNDED_TRANSFORM_DURATION_MS,
-      MIN_OPACITY_DURATION_MS,
-    } = MDCRippleFoundation.numbers;
-
-    let approxCurScale = 0;
-    if (msElapsed > FG_TRANSFORM_DELAY_MS) {
-      const percentComplete = Math.min((msElapsed - FG_TRANSFORM_DELAY_MS) / this.xfDuration_, 1);
-      approxCurScale = percentComplete * this.fgScale_;
-    }
-
-    const transformDuration = UNBOUNDED_TRANSFORM_DURATION_MS;
-    const approxOpacity = Math.min(msElapsed / ACTIVE_OPACITY_DURATION_MS, 1);
-    const opacityDuration = Math.max(
-      MIN_OPACITY_DURATION_MS, 1000 * approxOpacity / OPACITY_DURATION_DIVISOR
-    );
-
-    return {transformDuration, opacityDuration, approxCurScale};
-  }
-
-  animateBoundedDeactivation_(e, isPointerEvent) {
-    let startPoint;
-    if (isPointerEvent) {
-      startPoint = getNormalizedEventCoords(
-        e, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect()
-      );
-    } else {
-      startPoint = {
-        x: this.frame_.width / 2,
-        y: this.frame_.height / 2,
-      };
-    }
-
-    startPoint = {
-      x: startPoint.x - (this.initialSize_ / 2),
-      y: startPoint.y - (this.initialSize_ / 2),
-    };
-
-    const endPoint = {
-      x: (this.frame_.width / 2) - (this.initialSize_ / 2),
-      y: (this.frame_.height / 2) - (this.initialSize_ / 2),
-    };
-
-    const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
-    const {BG_BOUNDED_ACTIVE_FILL, FG_BOUNDED_ACTIVE_FILL} = MDCRippleFoundation.cssClasses;
-    this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, `${startPoint.x}px, ${startPoint.y}px`);
-    this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, `${endPoint.x}px, ${endPoint.y}px`);
-    this.cancelBgBounded_ = animateWithClass(this.adapter_,
-                                             BG_BOUNDED_ACTIVE_FILL,
-                                            getCorrectEventName(window, 'transitionend'));
-    this.cancelFgBounded_ = animateWithClass(this.adapter_,
-                                             FG_BOUNDED_ACTIVE_FILL,
-                                             getCorrectEventName(window, 'animationend'));
   }
 
   destroy() {
@@ -396,13 +368,12 @@ export default class MDCRippleFoundation extends MDCFoundation {
   updateLayoutCssVars_() {
     const {
       VAR_SURFACE_WIDTH, VAR_SURFACE_HEIGHT, VAR_FG_SIZE,
-      VAR_FG_UNBOUNDED_TRANSFORM_DURATION, VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
+      VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
     } = MDCRippleFoundation.strings;
 
     this.adapter_.updateCssVariable(VAR_SURFACE_WIDTH, `${this.frame_.width}px`);
     this.adapter_.updateCssVariable(VAR_SURFACE_HEIGHT, `${this.frame_.height}px`);
     this.adapter_.updateCssVariable(VAR_FG_SIZE, `${this.initialSize_}px`);
-    this.adapter_.updateCssVariable(VAR_FG_UNBOUNDED_TRANSFORM_DURATION, `${this.xfDuration_}ms`);
     this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
 
     if (this.adapter_.isUnbounded()) {

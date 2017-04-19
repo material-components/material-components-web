@@ -41,6 +41,7 @@
   <body class="mdc-typography">
     <div class="demo-body">
     	<aside id="mdc-dialog-default"
+          style="visibility:hidden;"
     	  class="mdc-dialog"
     	  role="alertdialog"
     	  aria-hidden="true"
@@ -64,6 +65,7 @@
     	</aside>
 
     	<aside id="mdc-dialog-with-list"
+        style="visibility:hidden;"
     	  class="mdc-dialog"
     	  role="alertdialog"
     	  aria-hidden="true"
@@ -111,11 +113,8 @@
                  id="toggle-rtl"
                  class="mdc-checkbox__native-control"/>
           <div class="mdc-checkbox__background">
-            <svg version="1.1"
-                 class="mdc-checkbox__checkmark"
-                 xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 24 24"
-                 xml:space="preserve">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
               <path class="mdc-checkbox__checkmark__path"
                     fill="none"
                     stroke="white"
@@ -133,11 +132,8 @@
                  id="toggle-dark"
                  class="mdc-checkbox__native-control"/>
           <div class="mdc-checkbox__background">
-            <svg version="1.1"
-                 class="mdc-checkbox__checkmark"
-                 xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 24 24"
-                 xml:space="preserve">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
               <path class="mdc-checkbox__checkmark__path"
                     fill="none"
                     stroke="white"
@@ -192,8 +188,11 @@
           document.body.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
 
-        mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));
-        mdc.ripple.MDCRipple.attachTo(document.querySelector('#dialog-with-list-activation'));
+        // Hack to work around style-loader async loading styles
+        setTimeout(function() {
+          mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));
+          mdc.ripple.MDCRipple.attachTo(document.querySelector('#dialog-with-list-activation'));
+        }, 200);
       })();
     </script>
   </body>

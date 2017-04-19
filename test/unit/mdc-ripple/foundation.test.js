@@ -17,6 +17,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCRippleFoundation from '../../../packages/mdc-ripple/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
 
@@ -37,17 +38,11 @@ test('numbers returns constants.numbers', () => {
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  const {defaultAdapter} = MDCRippleFoundation;
-  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
-
-  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  assert.deepEqual(methods, [
+  verifyDefaultAdapter(MDCRippleFoundation, [
     'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'addClass', 'removeClass',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'registerResizeHandler',
     'deregisterResizeHandler', 'updateCssVariable', 'computeBoundingRect', 'getWindowPageOffset',
   ]);
-  // Test default methods
-  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
 testFoundation(`#init calls adapter.addClass("${cssClasses.ROOT}")`, ({adapter, foundation, mockRaf}) => {
@@ -108,21 +103,6 @@ testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's
   const initialSize = size * numbers.INITIAL_ORIGIN_SCALE;
 
   td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
-});
-
-testFoundation(`#init sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based on the max radius`,
-    ({foundation, adapter, mockRaf}) => {
-  const width = 200;
-  const height = 100;
-  td.when(adapter.computeBoundingRect()).thenReturn({width, height});
-  foundation.init();
-  mockRaf.flush();
-
-  const expectedDiameter = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-  const expectedRadius = expectedDiameter + numbers.PADDING;
-  const expectedDuration = 1000 * Math.sqrt(expectedRadius / 1024);
-  const {VAR_FG_UNBOUNDED_TRANSFORM_DURATION: expectedCssVar} = strings;
-  td.verify(adapter.updateCssVariable(expectedCssVar, `${expectedDuration}ms`));
 });
 
 testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`,
@@ -260,23 +240,6 @@ testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference bet
   const fgScale = maxRadius / initialSize;
 
   td.verify(adapter.updateCssVariable(strings.VAR_FG_SCALE, fgScale));
-});
-
-testFoundation(`#layout sets ${strings.VAR_FG_UNBOUNDED_TRANSFORM_DURATION} based on the max radius`,
-    ({foundation, adapter, mockRaf}) => {
-  const width = 200;
-  const height = 100;
-
-  td.when(adapter.computeBoundingRect()).thenReturn({width, height});
-  foundation.layout();
-  mockRaf.flush();
-
-  const expectedDiameter = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-  const expectedRadius = expectedDiameter + numbers.PADDING;
-  const expectedDuration = 1000 * Math.sqrt(expectedRadius / 1024);
-
-  const {VAR_FG_UNBOUNDED_TRANSFORM_DURATION: expectedCssVar} = strings;
-  td.verify(adapter.updateCssVariable(expectedCssVar, `${expectedDuration}ms`));
 });
 
 testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`,
