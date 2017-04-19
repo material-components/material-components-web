@@ -48,7 +48,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
-    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth',
+    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable',
+    'notifyOpen', 'notifyClose', 'isRtl', 'getDrawerWidth',
   ]);
 });
 
@@ -119,6 +120,22 @@ test('#open adds the open class to show the open drawer', () => {
   td.verify(mockAdapter.addClass('mdc-slidable-drawer--open'));
 });
 
+test('#open sends open event', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.verify(mockAdapter.notifyOpen());
+});
+
+test('repeated #open sends event just once', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  foundation.open();
+  td.verify(mockAdapter.addClass('mdc-slidable-drawer--open'), {times: 2});
+  td.verify(mockAdapter.notifyOpen(), {times: 1});
+});
+
 test('#open makes elements tabbable again', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass('mdc-slidable-drawer--open')).thenReturn(false);
@@ -142,6 +159,26 @@ test('#close removes the open class to show the closed drawer', () => {
 
   foundation.close();
   td.verify(mockAdapter.removeClass('mdc-slidable-drawer--open'));
+});
+
+test('#close sends close event', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  // Drawer needs to be opened, otherwise close event won't trigger on #close
+  foundation.open();
+  assert.isOk(foundation.isOpen());
+
+  foundation.close();
+  td.verify(mockAdapter.notifyClose());
+});
+
+test('#close does not send close event when drawer is not open', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  assert.isNotOk(foundation.isOpen());
+
+  foundation.close();
+  td.verify(mockAdapter.notifyClose(), {times: 0});
 });
 
 test('#close saves tab state and makes elements untabbable', () => {
@@ -423,7 +460,7 @@ test('on touch end resets touch update styles', () => {
   raf.restore();
 });
 
-test('on touch end closes the drawer if moved more than 50%', () => {
+test('on touch end closes the drawer if moved more than 50% and sends close event', () => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -444,10 +481,11 @@ test('on touch end closes the drawer if moved more than 50%', () => {
 
   handlers.touchend({});
   td.verify(mockAdapter.removeClass('mdc-slidable-drawer--open'));
+  td.verify(mockAdapter.notifyClose());
   raf.restore();
 });
 
-test('on touch end keeps the drawer open if moved less than 50%', () => {
+test('on touch end keeps the drawer open if moved less than 50% but does not send open event', () => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -468,10 +506,11 @@ test('on touch end keeps the drawer open if moved less than 50%', () => {
 
   handlers.touchend({});
   td.verify(mockAdapter.addClass('mdc-slidable-drawer--open'));
+  td.verify(mockAdapter.notifyOpen(), {times: 0});
   raf.restore();
 });
 
-test('on touch end closes the drawer if moved more than 50% in RTL', () => {
+test('on touch end closes the drawer if moved more than 50% in RTL and sends close event', () => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -493,10 +532,11 @@ test('on touch end closes the drawer if moved more than 50% in RTL', () => {
 
   handlers.touchend({});
   td.verify(mockAdapter.removeClass('mdc-slidable-drawer--open'));
+  td.verify(mockAdapter.notifyClose());
   raf.restore();
 });
 
-test('on touch end keeps the drawer open if moved less than 50% in RTL', () => {
+test('on touch end keeps the drawer open if moved less than 50% in RTL but does not send open event', () => {
   const {foundation, mockAdapter} = setupTest();
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -518,6 +558,7 @@ test('on touch end keeps the drawer open if moved less than 50% in RTL', () => {
 
   handlers.touchend({});
   td.verify(mockAdapter.addClass('mdc-slidable-drawer--open'));
+  td.verify(mockAdapter.notifyOpen(), {times: 0});
   raf.restore();
 });
 
@@ -546,6 +587,7 @@ test('on touch end works with pointer events', () => {
     pointerType: 'touch',
   });
   td.verify(mockAdapter.addClass('mdc-slidable-drawer--open'));
+  td.verify(mockAdapter.notifyOpen(), {times: 0});
   raf.restore();
 });
 
@@ -574,6 +616,7 @@ test('on touch does nothing for non touch pointer events', () => {
     pointerType: 'not touch',
   });
   td.verify(mockAdapter.addClass('mdc-slidable-drawer--open'), {times: 0});
+  td.verify(mockAdapter.notifyOpen(), {times: 0});
   raf.restore();
 });
 
@@ -592,6 +635,21 @@ test('on document keydown closes the drawer via the escape key', () => {
   td.verify(mockAdapter.removeClass('mdc-slidable-drawer--open'));
 });
 
+test('on document keydown sends cancel event via the escape key', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    keydown = handler;
+  });
+  foundation.init();
+  foundation.open();
+
+  keydown({
+    key: 'Escape',
+  });
+  td.verify(mockAdapter.notifyClose());
+});
+
 test('on document keydown closes the drawer via the escape keyCode when key prop not available', () => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
@@ -607,6 +665,21 @@ test('on document keydown closes the drawer via the escape keyCode when key prop
   td.verify(mockAdapter.removeClass('mdc-slidable-drawer--open'));
 });
 
+test('on document keydown sends cancel event via the escape keyCode when key prop not available', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    keydown = handler;
+  });
+  foundation.init();
+  foundation.open();
+
+  keydown({
+    keyCode: 27,
+  });
+  td.verify(mockAdapter.notifyClose());
+});
+
 test('on document keydown does nothing when key present but not "Escape"', () => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
@@ -620,6 +693,7 @@ test('on document keydown does nothing when key present but not "Escape"', () =>
     key: 'Enter',
   });
   td.verify(mockAdapter.removeClass('mdc-slidable-drawer--open'), {times: 0});
+  td.verify(mockAdapter.notifyClose(), {times: 0});
 });
 
 test('on document keydown does nothing when key prop not present and keyCode is not 27', () => {
@@ -635,6 +709,7 @@ test('on document keydown does nothing when key prop not present and keyCode is 
     keyCode: 32,
   });
   td.verify(mockAdapter.removeClass('mdc-slidable-drawer--open'), {times: 0});
+  td.verify(mockAdapter.notifyClose(), {times: 0});
 });
 
 test('on document keydown does nothing if drawer is not opened', () => {
