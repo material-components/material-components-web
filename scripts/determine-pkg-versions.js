@@ -141,8 +141,11 @@ function pickBestVersionInfo(pkg) {
       possibleNewChangeType = semver.major(pkg.version) === 0 ? VersionType.MINOR : VersionType.MAJOR;
     } else if (commitInfo.type === 'feat') {
       possibleNewChangeType = VersionType.MINOR;
+    } else if (commitInfo.type === 'docs') {
+      // docs would not cause any change, so it should not put its commit message as reason of version bump.
+      return currentBest;
     } else {
-      // fix, docs, style (refers to coding style), refactor (non-breaking change), chore, ...
+      // fix, style (refers to coding style), refactor (non-breaking change), chore, ...
       possibleNewChangeType = VersionType.PATCH;
     }
     // Note that we assume that pkg.version is valid by the time we get here.
