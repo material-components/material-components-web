@@ -1,3 +1,10 @@
+<!--docs:
+title: "Architecture Overview"
+layout: landing
+section: docs
+path: /docs/architecture-overview/
+-->
+
 # MDC-Web Architecture Overview
 
 The following is an outline of the MDC-Web architecture. Many of the architectural decisions we made were in response to the problems and feedback the team has received around Material Design Lite (MDL), the predecessor to MDC-Web. The goals of the MDC-Web architecture are to not only provide an easy way to provide a material UI for static websites, but for _dynamic websites and frameworks as well_. Essentially, _the goal of MDC-Web is to be the canonical Material Design implementation for the web platform_. We want MDC-Web to be:

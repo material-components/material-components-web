@@ -1,4 +1,11 @@
-# MDC-Web Theming Guide
+<!--docs:
+title: "Theming Guide"
+layout: landing
+section: docs
+path: /docs/theming/
+-->
+
+# Theming Guide
 
 ## Overview
 

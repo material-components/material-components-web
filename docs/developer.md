@@ -1,3 +1,10 @@
+<!--docs:
+title: "Developing Components"
+layout: landing
+section: docs
+path: /docs/developing-components/
+-->
+
 # Developing MDC-Web Components
 
 MDC-Web strives to seamlessly incorporate into a wide range of usage contexts - from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. To make this possible, our new component library is internally split into two parts:

@@ -1,3 +1,11 @@
+<!--docs:
+title: "Migrating from Material Design Lite"
+navTitle: "Migrating from MDL"
+layout: landing
+section: docs
+path: /docs/migrating-from-mdl/
+-->
+
 # Migrating from Material Design Lite
 
 Material Components for the web (MDC-Web) is the successor to the Material Design Lite (MDL) project.

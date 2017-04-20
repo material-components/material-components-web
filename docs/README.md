@@ -1,4 +1,11 @@
-# MDC-Web Docs
+<!--docs:
+title: "Documentation"
+layout: landing
+section: docs
+path: /docs/
+-->
+
+# Documentation
 
 Welcome to our (very-much-still-in-progress) documentation! As we develop MDC-Web, we will be
 adding and amending this documentation such that it is both easy to get you up-and-running, as well as

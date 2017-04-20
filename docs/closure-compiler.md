@@ -1,3 +1,10 @@
+<!--docs:
+title: "Annotating for the Closure Compiler"
+layout: landing
+section: docs
+path: /docs/closure-compiler/
+-->
+
 # Annotating MDC-Web for the Closure Compiler
 
 > TL;DR read the section on our [type system](#mdc-web-type-system) and our [closure compiler conventions](#mdc-web-closure-conventions).

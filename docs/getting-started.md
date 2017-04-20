@@ -1,4 +1,11 @@
-# Getting started
+<!--docs:
+title: "Getting Started"
+layout: landing
+section: docs
+path: /docs/getting-started/
+-->
+
+# Getting Started
 
 This guide will help you get started using MDC-Web on your own sites and within your own projects.
 
