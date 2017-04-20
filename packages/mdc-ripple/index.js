@@ -18,8 +18,6 @@ import {MDCComponent} from '@material/base';
 import MDCRippleFoundation from './foundation';
 import {supportsCssVariables, getMatchesProperty} from './util';
 
-const MATCHES = getMatchesProperty(HTMLElement.prototype);
-
 export {MDCRippleFoundation};
 
 export class MDCRipple extends MDCComponent {
@@ -33,6 +31,8 @@ export class MDCRipple extends MDCComponent {
   }
 
   static createAdapter(instance) {
+    const MATCHES = getMatchesProperty(HTMLElement.prototype);
+
     return {
       browserSupportsCssVars: () => supportsCssVariables(window),
       isUnbounded: () => instance.unbounded,
