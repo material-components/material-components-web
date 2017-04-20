@@ -91,7 +91,8 @@ npm run fix # Runs both of the above commands in parallel
 
 npm run test:watch # Runs karma on Chrome, re-running when source files change
 
-npm test # Lints all files, runs karma, and then runs coverage enforcement checks.
+npm test # Lints all files, runs karma, runs closure tests, and then runs coverage enforcement checks.
+npm run test:unit # Only runs the karma tests
 npm run test:closure # Runs closure build tests against all closurized files
 ```
 
