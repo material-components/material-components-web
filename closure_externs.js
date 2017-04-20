@@ -33,8 +33,8 @@
  * app.b.return10 = () => app.a.return5() * 2;
  *
  * The way that closure reconciles this with path-based module loading systems
- * such as CommonJS and ES2015 is by using the `goog:` prefix to load any `goog.provide()`'d
- * modules using path-based module loading methods.
+ * such as CommonJS and ES2015 is by using the `goog:` prefix to load any modules exported via
+ * `goog.provide()` using path-based module loading methods.
  *
  * For example, given this source file:
  *
@@ -48,7 +48,7 @@
  *
  * Our convention here is as follows:
  *
- * - All third party modules should be `goog.provide()`'d using the namespace
+ * - All third party modules should exported via `goog.provide()` using the namespace
  *   `mdc.thirdparty.<CAMEL_CASE_MODULE_NAME>`. E.g. 'focus-trap' is provided as
  *   `goog.provide('mdc.thirdparty.focusTrap')`.
  * - Any default exports from a module MUST be attached to the namespace as a property

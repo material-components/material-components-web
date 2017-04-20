@@ -18,7 +18,7 @@ rules:
   no-unused-vars:
     - error
     # Account for closure compiler conventions. See docs/closure-compiler.md
-    # Ingores: MDC[PascalCase]Adapter (records), [PascalCase]Type (typedefs)
+    # Ignores: MDC[PascalCase]Adapter (records), [PascalCase]Type (typedefs)
     - varsIgnorePattern: ^(?:(?:MDC(?:(?:[A-Z][a-z0-9]+)+)Adapter)|(?:(?:(?:[A-Z][a-z0-9]+)+)Type))$
 
   # TODO: Enable once https://github.com/material-components/material-components-web/milestone/4

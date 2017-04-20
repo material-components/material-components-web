@@ -18,9 +18,10 @@
     "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run lint",
-    "test": "karma start --single-run",
+    "test": "npm run test:unit && npm run test:closure",
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95",
     "test:watch": "karma start --auto-watch",
+    "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh"
   },
   "devDependencies": {
@@ -152,5 +153,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "closureWhitelist": []
+  "closureWhitelist": [
+    "mdc-animation"
+  ]
 }

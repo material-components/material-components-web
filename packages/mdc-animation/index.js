@@ -14,76 +14,96 @@
  * limitations under the License.
  */
 
+/**
+ * @typedef {{
+ *   noPrefix: string,
+ *   webkitPrefix: string
+ * }}
+ */
+let VendorPropertyMapType;
+
+/** @const {Object<string, !VendorPropertyMapType>} */
 const eventTypeMap = {
-  animationstart: {
+  'animationstart': {
     noPrefix: 'animationstart',
     webkitPrefix: 'webkitAnimationStart',
     styleProperty: 'animation',
   },
-  animationend: {
+  'animationend': {
     noPrefix: 'animationend',
     webkitPrefix: 'webkitAnimationEnd',
     styleProperty: 'animation',
   },
-  animationiteration: {
+  'animationiteration': {
     noPrefix: 'animationiteration',
     webkitPrefix: 'webkitAnimationIteration',
     styleProperty: 'animation',
   },
-  transitionend: {
+  'transitionend': {
     noPrefix: 'transitionend',
     webkitPrefix: 'webkitTransitionEnd',
     styleProperty: 'transition',
   },
 };
 
+/** @const {Object<string, !VendorPropertyMapType>} */
 const cssPropertyMap = {
-  animation: {
+  'animation': {
     noPrefix: 'animation',
     webkitPrefix: '-webkit-animation',
   },
-  transform: {
+  'transform': {
     noPrefix: 'transform',
     webkitPrefix: '-webkit-transform',
   },
-  transition: {
+  'transition': {
     noPrefix: 'transition',
     webkitPrefix: '-webkit-transition',
   },
 };
 
+/**
+ * @param {!Object} windowObj
+ * @return {boolean}
+ */
 function hasProperShape(windowObj) {
-  return (windowObj.document !== undefined && typeof windowObj.document.createElement === 'function');
+  return (windowObj['document'] !== undefined && typeof windowObj['document']['createElement'] === 'function');
 }
 
+/**
+ * @param {string} eventType
+ * @return {boolean}
+ */
 function eventFoundInMaps(eventType) {
   return (eventType in eventTypeMap || eventType in cssPropertyMap);
 }
 
-// If 'animation' or 'transition' exist as style property, webkit prefix isn't necessary. Since we are unable to
-// see the event types on the element, we must rely on the corresponding style properties.
+/**
+ * @param {string} eventType
+ * @param {!Object<string, !VendorPropertyMapType>} map
+ * @param {!Element} el
+ * @return {string}
+ */
 function getJavaScriptEventName(eventType, map, el) {
   return map[eventType].styleProperty in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
 }
 
-// Helper function to determine browser prefix for CSS3 animation events
-// and property names
-//
-// Parameters:
-// windowObject: Object -- Contains Document with a `createElement()` method
-// eventType: string -- The type of animation
-//
-// returns the value of the event as a string, prefixed if necessary.
-// If proper arguments are not supplied, this function will return
-// the property or event type without webkit prefix.
-//
+/**
+ * Helper function to determine browser prefix for CSS3 animation events
+ * and property names.
+ * @param {!Object} windowObj
+ * @param {string} eventType
+ * @return {string}
+ */
 function getAnimationName(windowObj, eventType) {
   if (!hasProperShape(windowObj) || !eventFoundInMaps(eventType)) {
     return eventType;
   }
 
-  const map = eventType in eventTypeMap ? eventTypeMap : cssPropertyMap;
-  const el = windowObj.document.createElement('div');
+  const map = /** @type {!Object<string, !VendorPropertyMapType>} */ (
+    eventType in eventTypeMap ? eventTypeMap : cssPropertyMap
+  );
+  const el = windowObj['document']['createElement']('div');
   let eventName = '';
 
   if (map === eventTypeMap) {
@@ -97,19 +117,21 @@ function getAnimationName(windowObj, eventType) {
 
 // Public functions to access getAnimationName() for JavaScript events or CSS
 // property names.
-//
-// Parameters:
-// windowObject: Object -- Contains Document with a `createElement()` method
-// eventType: string -- The type of animation
-//
-// returns the value of the event as a string, prefixed if necessary.
-// If proper arguments are not supplied, this function will return
-// the property or event type without webkit prefix.
-//
+
+/**
+ * @param {!Object} windowObj
+ * @param {string} eventType
+ * @return {string}
+ */
 export function getCorrectEventName(windowObj, eventType) {
   return getAnimationName(windowObj, eventType);
 }
 
+/**
+ * @param {!Object} windowObj
+ * @param {string} eventType
+ * @return {string}
+ */
 export function getCorrectPropertyName(windowObj, eventType) {
   return getAnimationName(windowObj, eventType);
 }
