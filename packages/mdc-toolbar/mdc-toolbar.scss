@@ -59,7 +59,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     align-items: flex-start;
     justify-content: center;
     z-index: 1;
-    overflow: hidden;
+    min-width: 0;
 
     &--align-start {
       justify-content: flex-start;
