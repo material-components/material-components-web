@@ -58,8 +58,8 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     flex: 1;
     align-items: flex-start;
     justify-content: center;
-    z-index: 1;
     overflow: hidden;
+    z-index: 1;
 
     &--align-start {
       justify-content: flex-start;
@@ -75,11 +75,11 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   &__title {
     @include mdc-typography(title);
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     margin: 0;
     line-height: 1.5rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 
