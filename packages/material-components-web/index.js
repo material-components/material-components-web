@@ -32,6 +32,7 @@ import autoInit from '@material/auto-init';
 // Register all components
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCDialog', dialog.MDCDialog);
+autoInit.register('MDCPersistentDrawer', drawer.MDCPersistentDrawer);
 autoInit.register('MDCTemporaryDrawer', drawer.MDCTemporaryDrawer);
 autoInit.register('MDCRipple', ripple.MDCRipple);
 autoInit.register('MDCGridList', gridList.MDCGridList);
