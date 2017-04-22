@@ -1,0 +1,12 @@
+{
+  "name": "building-beautiful-apps",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "live-server"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "live-server": "^1.2.0"
+  }
+}
