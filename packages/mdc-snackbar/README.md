@@ -98,6 +98,18 @@ properties and their usage.
 | multiline | Whether to show the snackbar with space for multiple lines of text | Optional |  Boolean |
 | actionOnBottom | Whether to show the action below the multiple lines of text | Optional, applies when multiline is true |  Boolean |
 
+### Hide or keep snackbar when the action button is pressed
+
+By default the snackbar will be dimissed when the user presses the action button.
+If you want the snackbar to remain visible until the timeout is reached (regardless of
+whether the user pressed the action button or not) you can call the `setDismissOnAction`
+method with `false` as single argument:
+
+```
+const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+snackbar.setDismissOnAction(false)
+```
+
 ### Using the Foundation Class
 
 MDC Snackbar ships with an `MDCSnackbarFoundation` class that external frameworks and libraries can
