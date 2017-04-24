@@ -82,6 +82,12 @@
     text-decoration: none;
 
     @include mdc-typography(body2);
+
+    // Remove the 16px left offset since we already expand the padding of the list item to take up
+    // the width of the drawer.
+    &.mdc-ripple-upgraded {
+      left: 0;
+    }
   }
 
   .mdc-list-item__start-detail {
