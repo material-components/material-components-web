@@ -132,6 +132,19 @@ testFoundation('#open focuses the menu at the end of the animation', ({foundatio
   td.verify(mockAdapter.focus());
 });
 
+testFoundation('#open on a not focused menu does not focust at index 0', ({foundation, mockAdapter, mockRaf}) => {
+  td.when(mockAdapter.isFocused()).thenReturn(true);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+  mockRaf.flush();
+  td.verify(mockAdapter.focusItemAtIndex(0), {times: 0});
+});
+
 testFoundation('#open anchors the menu on the top left in LTR, given enough room',
     ({foundation, mockAdapter, mockRaf}) => {
   td.when(mockAdapter.hasAnchor()).thenReturn(true);
@@ -235,6 +248,27 @@ testFoundation('#open anchors the menu on the bottom left in LTR when close to t
   mockRaf.flush();
   td.verify(mockAdapter.setTransformOrigin('bottom left'));
   td.verify(mockAdapter.setPosition({left: '0', bottom: '0'}));
+});
+
+testFoundation('#open anchors the menu on the top left in LTR when not close to the bottom edge',
+    ({foundation, mockAdapter, mockRaf}) => {
+  td.when(mockAdapter.hasAnchor()).thenReturn(true);
+  td.when(mockAdapter.isRtl()).thenReturn(false);
+  td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+  td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+  td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+    height: 20, width: 40, top: 900, bottom: 20, left: 10, right: 50,
+  });
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+  mockRaf.flush();
+  td.verify(mockAdapter.setTransformOrigin('top left'));
+  td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
 });
 
 testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
@@ -723,6 +757,26 @@ test('on ArrowUp keydown prevents default on the event', () => {
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
   td.verify(preventDefault());
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on any other keydown event, do not prevent default on the event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  const preventDefault = td.func('event.preventDefault');
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+
+  foundation.init();
+  handlers.keydown({target, key: 'Foo', preventDefault});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(preventDefault(), {times: 0});
 
   raf.restore();
   clock.uninstall();

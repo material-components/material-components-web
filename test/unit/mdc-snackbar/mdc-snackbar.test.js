@@ -46,6 +46,25 @@ test('attachTo initializes and returns a MDCSnackbar instance', () => {
   assert.isOk(MDCSnackbar.attachTo(getFixture()) instanceof MDCSnackbar);
 });
 
+test('show() delegates to the foundation', () => {
+  const {component} = setupTest();
+  component.foundation_.show = td.function();
+  component.show('data');
+  td.verify(component.foundation_.show('data'));
+});
+
+test('show() and click', () => {
+  const {root, component} = setupTest();
+  const data = {
+    message: 'Message Deleted',
+    actionText: 'Undo',
+    actionHandler: td.function(),
+  };
+  component.show(data);
+  root.querySelector(strings.ACTION_BUTTON_SELECTOR).click();
+  td.verify(data.actionHandler());
+});
+
 test('foundationAdapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
