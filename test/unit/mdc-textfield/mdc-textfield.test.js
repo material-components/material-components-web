@@ -54,6 +54,12 @@ function setupTest() {
   return {root, component};
 }
 
+test('#adapter.initialSyncWithDom', () => {
+  const {component} = setupTest();
+  component.initialSyncWithDom();
+  assert.isNotOk(component.disabled);
+});
+
 test('get/set disabled updates the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
@@ -204,7 +210,7 @@ test('#adapter.addClassToHelptext adds a class to the helptext element when pres
 
 test('#adapter.removeClassFromHelptext does nothing if no help text element present', () => {
   const {component} = setupTest();
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToHelptext('foo'));
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromHelptext('foo'));
 });
 
 test('#adapter.removeClassFromHelptext removes a class from the helptext element when present', () => {

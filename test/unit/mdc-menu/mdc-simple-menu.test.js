@@ -250,6 +250,19 @@ test('adapter#restoreFocus restores the focus saved by adapter#saveFocus', () =>
   document.body.removeChild(root);
 });
 
+test('adapter#restoreFocus does not restores the focus if never called adapter#saveFocus', () => {
+  const {root, component} = setupTest(true);
+  const button = bel`<button>Foo</button>`;
+  document.body.appendChild(button);
+  document.body.appendChild(root);
+  button.focus();
+  root.focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+  assert.equal(document.activeElement, root);
+  document.body.removeChild(button);
+  document.body.removeChild(root);
+});
+
 test('adapter#isFocused returns whether the menu is focused', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
