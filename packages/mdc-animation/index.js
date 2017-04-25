@@ -18,18 +18,22 @@ const eventTypeMap = {
   animationstart: {
     noPrefix: 'animationstart',
     webkitPrefix: 'webkitAnimationStart',
+    styleProperty: 'animation',
   },
   animationend: {
     noPrefix: 'animationend',
     webkitPrefix: 'webkitAnimationEnd',
+    styleProperty: 'animation',
   },
   animationiteration: {
     noPrefix: 'animationiteration',
     webkitPrefix: 'webkitAnimationIteration',
+    styleProperty: 'animation',
   },
   transitionend: {
     noPrefix: 'transitionend',
     webkitPrefix: 'webkitTransitionEnd',
+    styleProperty: 'transition',
   },
 };
 
@@ -59,16 +63,7 @@ function eventFoundInMaps(eventType) {
 // If 'animation' or 'transition' exist as style property, webkit prefix isn't necessary. Since we are unable to
 // see the event types on the element, we must rely on the corresponding style properties.
 function getJavaScriptEventName(eventType, map, el) {
-  switch (eventType) {
-    case 'animationstart':
-    case 'animationend':
-    case 'animationiteration':
-      return 'animation' in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
-    case 'transitionend':
-      return 'transition' in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
-    default:
-      return map[eventType].noPrefix;
-  }
+  return map[eventType].styleProperty in el.style ? map[eventType].noPrefix : map[eventType].webkitPrefix;
 }
 
 // Helper function to determine browser prefix for CSS3 animation events
