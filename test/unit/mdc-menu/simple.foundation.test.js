@@ -23,7 +23,7 @@ import {createMockRaf} from '../helpers/raf';
 import MDCSimpleMenuFoundation from '../../../packages/mdc-menu/simple/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-menu/simple/constants';
 
-function setupTest(isCssVarsSupported = true) {
+function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSimpleMenuFoundation);
   const size = {width: 500, height: 200};
   const itemYParams = {top: 100, height: 20};

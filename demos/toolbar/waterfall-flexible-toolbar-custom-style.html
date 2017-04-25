@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Toolbar Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      .mdc-toolbar-demo {
+        margin: 0px;
+      }
+      .demo-paragraph {
+        margin: 0px;
+        padding: 20px 28px;
+      }
+      .material-icons {
+        text-decoration: none;
+        cursor: pointer;
+        padding: 0px 8px 0px 0px;
+        color: white;
+      }
+      [dir='rtl'] .material-icons {
+        padding-left: 8px;
+      }
+      @media (max-width: 599px) {
+        .demo-paragraph {
+          padding: 16px;
+        }
+      }
+      footer {
+        position: fixed;
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+        color: red;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      #my-flexible-header {
+        --mdc-toolbar-ratio-to-extend-flexible: 2;
+        background-color: rgb(255, 64, 129);
+      }
+      #my-flexible-header .mdc-toolbar__title {
+        font-size: 5rem;
+        transform: translateY(-30px);
+      }
+    </style>
+    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
+  </head>
+  <body class="mdc-typography mdc-toolbar-demo">
+    <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall mdc-toolbar--flexible" id="my-flexible-header">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-center">
+          <span class="mdc-toolbar__title">Hey!</span>
+        </section>
+      </div>
+    </header>
+    <main>
+      <div class="mdc-toolbar-fixed-adjust">
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+      </div>
+    </main>
+    <footer>
+      <span>Flexible Expansion Ratio: <span id="ratio">0</span></span>
+    </footer>
+    <script src="../assets/material-components-web.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      (function() {
+        var pollId = 0;
+        pollId = setInterval(function() {
+          var pos = getComputedStyle(document.querySelector('.mdc-toolbar')).position;
+          if (pos === 'fixed' || pos === 'relative') {
+            init();
+            clearInterval(pollId);
+          }
+        }, 250);
+        function init() {
+          var initialR = 255;
+          var initialG = 64;
+          var initialB = 129;
+          var endR = 63;
+          var endG = 81;
+          var endB = 181;
+          var initialFontSize = 5;
+          var initialTransY = -30;
+          var endFontSize = 1.25;
+          var endTransY = 0;
+          var ratioSpan = document.querySelector("#ratio");
+          var myFlexibleHeader = document.querySelector("#my-flexible-header");
+          var myFlexibleHeaderTitle = document.querySelector("#my-flexible-header .mdc-toolbar__title");
+          var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
+          toolbar.listen('MDCToolbar:change', function(evt) {
+            var flexibleExpansionRatio = evt.detail.flexibleExpansionRatio;
+
+            var currentR = Math.round(endR - (endR - initialR) * flexibleExpansionRatio);
+            var currentG = Math.round(endG - (endG - initialG) * flexibleExpansionRatio);
+            var currentB = Math.round(endB - (endB - initialB) * flexibleExpansionRatio);
+            myFlexibleHeader.style.backgroundColor = `rgb(${currentR}, ${currentG}, ${currentB})`;
+
+            if (flexibleExpansionRatio > 0.5) {
+              var currentTransY = endTransY - (endTransY - initialTransY) * (flexibleExpansionRatio - 0.5) * 2;
+              myFlexibleHeaderTitle.style.transform = `translateY(${currentTransY}px)`;
+            } else {
+              var currentFontsize = endFontSize - (endFontSize - initialFontSize) * flexibleExpansionRatio * 2;
+              myFlexibleHeaderTitle.style.fontSize = `${currentFontsize}rem`;
+            }
+
+            ratioSpan.innerHTML = flexibleExpansionRatio.toFixed(2);
+          });
+          toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
+        }
+      })();
+    </script>
+  </body>
+</html>

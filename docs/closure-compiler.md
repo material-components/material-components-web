@@ -690,6 +690,13 @@ class MyComponent extends MDCComponent {
 
 While this may seem very foreign coming from outside of closure, it is a [common idiom used by closure code](https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System#typedefs).
 
+## Handling third-party code
+
+Some of our components rely on third-party modules. These modules must be typed as **externs**
+within `closure_externs.js`. In most cases, you will not need to worry about doing this, as a core
+team member will most likely assist you with it. However, the details of typing these modules can
+be found within that file.
+
 ## Where to go for more help
 
 If you're working on an issue for MDC-Web and find yourself wrestling with closure, please don't

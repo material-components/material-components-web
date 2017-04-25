@@ -48,7 +48,7 @@ export default class MDCFormFieldFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
   }
 
-  handleClick_(evt) {
+  handleClick_() {
     this.adapter_.activateInputRipple();
     requestAnimationFrame(() => this.adapter_.deactivateInputRipple());
   }
