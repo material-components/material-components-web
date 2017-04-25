@@ -32,6 +32,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       addClassToLabel: (/* className: string */) => {},
       removeClassFromLabel: (/* className: string */) => {},
+      getLabelOffsetWidth: () => /* number */ 0,
       addClassToHelptext: (/* className: string */) => {},
       removeClassFromHelptext: (/* className: string */) => {},
       helptextHasClass: (/* className: string */) => /* boolean */ false,
@@ -110,8 +111,14 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     }
     if (isValid) {
       this.adapter_.removeClass(INVALID);
+      this.adapter_.removeClassFromLabel('mdc-textfield__label--shake');
     } else {
       this.adapter_.addClass(INVALID);
+      if (this.receivedUserInput_) {
+        this.adapter_.removeClassFromLabel('mdc-textfield__label--shake');
+        this.adapter_.getLabelOffsetWidth();
+        this.adapter_.addClassToLabel('mdc-textfield__label--shake');
+      }
     }
     this.updateHelptextOnDeactivation_(isValid);
   }

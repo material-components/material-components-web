@@ -15,6 +15,8 @@
 //
 
 @import "@material/animation/variables";
+@import "@material/animation/functions";
+@import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
@@ -123,10 +125,179 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     transform: translateY(-100%) scale(.75, .75);
     cursor: auto;
   }
-  // stylelint-enable plugin/selector-bem-pattern  
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-textfield--upgraded:not(.mdc-textfield--fullwidth) {
+// PROTO
+
+@keyframes anim-invalid-label-shake {
+  33% {
+    transform: translateY(-50%) translateX(5px) scale(.75, .75);
+    animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+  }
+
+  66% {
+    transform: translateY(-50%) translateX(-2.5px) scale(.75, .75);
+    animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+  }
+
+  100% {
+    transform: translateY(-50%) translateX(0) scale(.75, .75);
+    animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+  }
+}
+
+.mdc-textfield--proto-textbox {
+  display: inline-flex;
+  position: relative;
+  height: 56px;
+  border-radius: 4px 4px 0 0;
+  background-color: rgba(black, .06);
+  color: rgba(black, .6);
+  overflow: hidden;
+
+  $opacity-duration: 83ms;
+
+  &.mdc-textfield--disabled {
+    border-bottom: none;
+    background-color: rgba(black, .04);
+    color: rgba(black, .38);
+    // TODO: Should this just go on textfield?
+    pointer-events: none;
+
+    .mdc-textfield__label {
+      bottom: 20px;
+    }
+
+    .mdc-textfield__input {
+      padding-bottom: 0;
+    }
+  }
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    // TODO use ripple positioning logic here. This all will eventually be hover positioning logic
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &::before {
+    transform: scale(.9);
+    transition: opacity 17ms linear, transform 0ms $opacity-duration+2 linear;
+    background-color: inherit;
+  }
+
+  // Ink wash on hover
+  &:hover {
+    &::before {
+      transform: scale(1.4);
+      transition: opacity $opacity-duration linear 17ms, transform 250ms cubic-bezier(0, 0, .2, 1) 17ms;
+      opacity: 1;
+    }
+  }
+
+  &.mdc-ripple-upgraded {
+    @include mdc-ripple-base;
+    @include mdc-ripple-fg((pseudo: "::after"));
+  }
+
+  .mdc-textfield__input {
+    align-self: flex-end;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px 16px 0;
+  }
+
+  .mdc-textfield__label {
+    @include mdc-theme-prop(color, text-secondary-on-light);
+
+    position: absolute;
+    bottom: 20px;
+    left: 16px;
+    pointer-events: none;
+
+    &--float-above {
+      transform: translateY(-50%) scale(.75, .75);
+    }
+
+    &--shake {
+      animation: anim-invalid-label-shake 250ms linear;
+    }
+
+    @at-root {
+      .mdc-textfield--focused.mdc-textfield--invalid .mdc-textfield__label {
+        color: $mdc-textfield-error-on-light;
+      }
+    }
+  }
+
+  .mdc-textfield__bottom-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    transform: scaleY(1);
+    transform-origin: center bottom;
+    transition: background-color 33ms cubic-bezier(.4, 0, .2, 1), mdc-textfield-transition(transform);
+    background-color: rgba(black, .42);
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: scale(0);
+      transition: transform 0ms linear $opacity-duration, opacity $opacity-duration linear;
+      content: "";
+      opacity: 0;
+    }
+
+    &::before {
+      @include mdc-theme-prop(background-color, primary);
+    }
+
+    &::after {
+      background-color: $mdc-textfield-error-on-light;
+    }
+
+    @at-root {
+      .mdc-textfield:hover .mdc-textfield__bottom-line {
+        transition: background-color 250ms cubic-bezier(.4, 0, .2, 1), mdc-textfield-transition(transform);
+        background-color: black;
+      }
+
+      .mdc-textfield--proto-textbox.mdc-textfield--focused .mdc-textfield__bottom-line::before,
+      .mdc-textfield--proto-textbox.mdc-textfield--invalid .mdc-textfield__bottom-line::after {
+        transform: scale(1);
+        transition: opacity 0ms linear, transform 250ms cubic-bezier(.4, 0, .2, 1);
+        opacity: 1;
+      }
+
+      .mdc-textfield--focused .mdc-textfield__bottom-line {
+        transform: scaleY(2);
+      }
+
+      .mdc-textfield--disabled .mdc-textfield__bottom-line {
+        display: none;
+      }
+    }
+  }
+}
+
+// END PROTO
+
+.mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--proto-textbox) {
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
@@ -171,7 +342,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     @include mdc-theme-prop(color, primary);
   }
 
-  &.mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--multiline)::after {
+  &.mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--multiline):not(.mdc-textfield--proto-textbox)::after {
     @include mdc-textfield-after-styles;
 
     @include mdc-theme-dark(".mdc-textfield", true) {
@@ -201,7 +372,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 .mdc-textfield--invalid {
   &:not(.mdc-textfield--focused) {
-    &::after {
+    &:not(.mdc-textfield--proto-textbox)::after {
       background-color: $mdc-textfield-error-on-light;
     }
 
@@ -497,12 +668,23 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   will-change: initial;
 }
 
+.mdc-textfield-helptext--validation-msg:not(.mdc-textfield-helptext--persistent) {
+  transform: translateY(-10px);
+  transition: opacity 83ms linear, transform 0ms linear 83ms;
+  opacity: 0;
+}
+
 // postcss-bem-linter: end
 
 .mdc-textfield--invalid {
   + .mdc-textfield-helptext--validation-msg {
     color: $mdc-textfield-error-on-light;
     opacity: 1;
+
+    &:not(.mdc-textfield-helptext--persistent) {
+      transform: translateY(0);
+      transition: opacity 167ms linear, transform 250ms cubic-bezier(.4, 0, .2, 1);
+    }
   }
 
   @include mdc-theme-dark(".mdc-textfield", true) {

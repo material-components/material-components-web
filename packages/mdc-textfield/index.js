@@ -68,6 +68,7 @@ export class MDCTextfield extends MDCComponent {
           label.classList.remove(className);
         }
       },
+      getLabelOffsetWidth: () => this.label_.offsetWidth,
     }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_()));
   }
 
