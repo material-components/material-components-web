@@ -26,7 +26,7 @@ function setupTest(isRootTransitioningEventTarget) {
 
   class MDCFakeSlideableDrawerFoundation extends MDCSlidableDrawerFoundation {
 
-    isRootTransitioningEventTarget_(el) {
+    isRootTransitioningEventTarget_() {
       return isRootTransitioningEventTarget;
     }
   }

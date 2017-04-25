@@ -229,7 +229,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     return newPos;
   }
 
-  isRootTransitioningEventTarget_(el) {
+  isRootTransitioningEventTarget_() {
     // Classes extending MDCSlidableDrawerFoundation should implement this method to return true or false
     // if the event target is the root event target currently transitioning.
     return false;

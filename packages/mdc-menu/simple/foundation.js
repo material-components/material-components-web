@@ -72,7 +72,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     this.clickHandler_ = (evt) => this.handlePossibleSelected_(evt);
     this.keydownHandler_ = (evt) => this.handleKeyboardDown_(evt);
     this.keyupHandler_ = (evt) => this.handleKeyboardUp_(evt);
-    this.documentClickHandler_ = (evt) => {
+    this.documentClickHandler_ = () => {
       this.adapter_.notifyCancel();
       this.close();
     };
