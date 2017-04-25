@@ -29,6 +29,7 @@
         text-decoration: none;
         cursor: pointer;
         padding: 0px 8px 0px 0px;
+        color: white;
       }
       [dir='rtl'] .material-icons {
         padding-left: 8px;
@@ -42,22 +43,24 @@
     <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body class="mdc-typography mdc-toolbar-demo">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <a class="material-icons">menu</a>
+          <a href="#" class="material-icons">menu</a>
           <span class="mdc-toolbar__title">Title</span>
         </section>
         <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-          <a class="material-icons" aria-label="Download" alt="Download">file_download</a>
-          <a class="material-icons" aria-label="Print this page" alt="Print this page">print</a>
-          <a class="material-icons" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+          <a href="#" class="material-icons" aria-label="Download" alt="Download">file_download</a>
+          <a href="#" class="material-icons" aria-label="Print this page" alt="Print this page">print</a>
+          <a href="#" class="material-icons" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
         </section>
       </div>
     </header>
     <main>
-
       <div class="mdc-toolbar-fixed-adjust">
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
         <p class="demo-paragraph">
           Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
         </p>
@@ -66,5 +69,22 @@
         </p>
       </div>
     </main>
+    <script src="../assets/material-components-web.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      (function() {
+        var pollId = 0;
+        pollId = setInterval(function() {
+          var pos = getComputedStyle(document.querySelector('.mdc-toolbar')).position;
+          if (pos === 'fixed' || pos === 'relative') {
+            init();
+            clearInterval(pollId);
+          }
+        }, 250);
+        function init() {
+          var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
+          toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
+        }
+      })();
+    </script>
   </body>
 </html>
