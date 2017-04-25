@@ -219,6 +219,7 @@ export class MDCAwesomeComponent extends MDCComponent {
 
 #### @typedefs are always `let` declarations, always pascal case, and always end in `Type`
 
+<!--{% raw %} -->
 ```js
 // GOOD
 /**
@@ -250,6 +251,7 @@ let eventDataType;
  */
 let EventData;
 ```
+<!--{% endraw %} -->
 
 Using this convention allows us to write tooling around handling these expressions, such as
 lint rule exceptions, and (in the future) code removal tools.
@@ -266,6 +268,7 @@ objects with semantic keys must be declared as described above. Furthermore:
 - All object keys _must be quoted_
 - All references to object keys _must be done using bracket notation_
 
+<!--{% raw %} -->
 ```js
 // GOOD
 /** @const {!Object<string, string>}  */
@@ -289,6 +292,7 @@ const eventListenerMap = {
   touchstart: (evt) => handleTouchstart(evt),
 };
 ```
+<!--{% endraw %} -->
 
 ```js
 // GOOD
@@ -583,6 +587,7 @@ mostly used to specify the shape of adapters, as mentioned above.
 
 **Example**:
 
+<!--{% raw %} -->
 ```js
 /**
  * @typedef {{
@@ -600,6 +605,7 @@ let ActivationStateType;
  */
 export let MyExportedType;
 ```
+<!--{% endraw %} -->
 
 While these `let` declarations do not do anything at runtime, they are used by closure to
 encapsulate complex types as specified through a [\@typedef statement](https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System#typedefs). The statements above let both `ActivationStateType` and `MyExportedType` be used as type
