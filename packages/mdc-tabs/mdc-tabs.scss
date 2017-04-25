@@ -1,0 +1,118 @@
+@import "@material/ripple/mixins";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+
+// TODO:
+// - differentiate between small view and big view
+// - text wrap: seems impossible for now
+// - scrolling tabs
+
+.mdc-tabs {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+.mdc-tabs__tab-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.mdc-tabs__tab {
+    @include mdc-typography(body2);
+    color: rgba(0, 0, 0, .26);
+
+    background: transparent;
+
+    position: relative;
+    display: inline-block;
+    float: left;
+
+    // only if fixed tab
+    width: 100%;
+    height: 48px;
+    padding: 0 24px;
+
+    max-width: 264px;
+    min-width: 160px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: center;
+    line-height: 48px;
+    text-transform: uppercase;
+    text-decoration: none;
+    vertical-align: middle;
+
+    user-select: none;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    // to include padding and border into size calculation
+    box-sizing: border-box;
+
+    @include mdc-theme-dark {
+        @include mdc-theme-prop(background-color, primary);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    &--active {
+        @include mdc-theme-prop(color, text-primary-on-light);
+
+        @include mdc-theme-dark {
+            @include mdc-theme-prop(color, text-primary-on-dark);
+        }
+    }
+}
+
+.mdc-tabs__tab.mdc-ripple-upgraded {
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg((pseudo: "::before"));
+    @include mdc-ripple-fg((pseudo: "::after"));
+}
+
+.mdc-tabs__content {
+    position: relative;
+}
+
+@keyframes mdc-tab-content-hide {
+  0% { opacity: 1; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.mdc-tabs__panel {
+    transition: transform 0.5s ease-in-out;
+
+    transform: translate3d(0, 0, 0);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    &--left:not(.mdc-tabs__panel--active)  {
+        transform: translate(-100%);
+        animation: 1s mdc-tab-content-hide;
+        opacity:0;
+    }
+
+    &--right:not(.mdc-tabs__panel--active) {
+        transform: translate(+100%);
+        animation: 1s mdc-tab-content-hide;
+        opacity:0;
+    }
+}
+
+.mdc-tabs__ink-bar {
+    @include mdc-theme-prop(background-color, accent);
+    height: 2px;
+    display: block;
+    position: absolute;
+    transition: left 0.25s ease-in-out, right 0.75s ease-in-out;
+}
