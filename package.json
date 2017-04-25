@@ -50,7 +50,7 @@
     "eslint-plugin-mocha": "^4.8.0",
     "extract-text-webpack-plugin": "2.0.0-rc.3",
     "glob": "^7.1.1",
-    "google-closure-compiler": "^20170409.0.0",
+    "google-closure-compiler": "^20170423.0.0",
     "husky": "^0.13.1",
     "istanbul": "^0.4.4",
     "istanbul-instrumenter-loader": "^2.0.0",
