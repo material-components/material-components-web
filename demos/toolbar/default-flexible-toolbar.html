@@ -21,6 +21,11 @@
       .mdc-toolbar-demo {
         margin: 0px;
       }
+      .mdc-toolbar__row:first-child::after {
+        background-image: url("../images/4-3.jpg");
+        background-size: cover;
+        background-position: center;
+      }
       .demo-paragraph {
         margin: 0px;
         padding: 20px 28px;
@@ -39,11 +44,19 @@
           padding: 16px;
         }
       }
+      footer {
+        position: fixed;
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+        color: red;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
     </style>
     <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body class="mdc-typography mdc-toolbar-demo">
-    <header class="mdc-toolbar">
+    <header class="mdc-toolbar mdc-toolbar--flexible mdc-toolbar--flexible-default-behavior">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <a href="#" class="material-icons">menu</a>
@@ -67,5 +80,29 @@
         Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
       </p>
     </main>
+    <footer>
+      <span>Flexible Expansion Ratio: <span id="ratio">0</span></span>
+    </footer>
+    <script src="../assets/material-components-web.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      (function() {
+        var pollId = 0;
+        pollId = setInterval(function() {
+          var pos = getComputedStyle(document.querySelector('.mdc-toolbar')).position;
+          if (pos === 'fixed' || pos === 'relative') {
+            init();
+            clearInterval(pollId);
+          }
+        }, 250);
+        function init() {
+          var ratioSpan = document.querySelector("#ratio");
+          var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
+          toolbar.listen('MDCToolbar:change', function(evt) {
+            var flexibleExpansionRatio = evt.detail.flexibleExpansionRatio;
+            ratioSpan.innerHTML = flexibleExpansionRatio.toFixed(2);
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
