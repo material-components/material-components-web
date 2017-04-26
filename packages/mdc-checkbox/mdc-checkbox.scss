@@ -252,6 +252,11 @@ fieldset:disabled .mdc-checkbox__native-control,
   }
 }
 
+.mdc-checkbox--disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
 .mdc-checkbox--upgraded {
   .mdc-checkbox__background,
   .mdc-checkbox__checkmark,
