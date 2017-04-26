@@ -60,8 +60,8 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     flex: 1;
     align-items: flex-start;
     justify-content: center;
-    z-index: 1;
     min-width: 0;
+    z-index: 1;
 
     &--align-start {
       justify-content: flex-start;
@@ -79,10 +79,10 @@ $mdc-toolbar-mobile-breakpoint: 599px;
 
     margin: 0;
     line-height: 1.5rem;
-    z-index: 1;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    z-index: 1;
   }
 }
 
@@ -123,10 +123,10 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     .mdc-toolbar__title {
       @include mdc-typography(display1);
 
-      line-height: 1.5rem;
       transform: translateY($mdc-toolbar-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 1));
       transform: translateY(calc(#{$mdc-toolbar-row-height} * (var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
       font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
+      line-height: 1.5rem;
 
       @media (max-width: $mdc-toolbar-mobile-breakpoint) {
         transform: translateY($mdc-toolbar-mobile-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 1));
