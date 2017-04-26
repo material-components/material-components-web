@@ -38,6 +38,10 @@
         background-color: antiquewhite;
       }
 
+      .mdc-theme--dark {
+        background-color: #333;
+      }
+
       .mdc-menu-anchor {
         position: absolute;
       }
@@ -110,9 +114,12 @@
 
       var dark = document.querySelector('input[name="dark"]');
       dark.addEventListener('change', function(evt) {
+        var contentEl = document.querySelector('.demo-content');
         if (evt.target.checked) {
+          contentEl.classList.add('mdc-theme--dark');
           menuEl.classList.add('mdc-simple-menu--theme-dark');
         } else {
+          contentEl.classList.remove('mdc-theme--dark');
           menuEl.classList.remove('mdc-simple-menu--theme-dark');
         }
       });
