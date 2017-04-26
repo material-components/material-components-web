@@ -167,6 +167,13 @@ import {MDCPersistentDrawer} from 'mdc-drawer';
 const drawer = new MDCPersistentDrawer(document.querySelector('.mdc-persistent-drawer'));
 ```
 
+#### Handling events
+
+When the drawer is opened or closed, the component will emit a
+`MDCPersistentDrawer:open` or `MDCPersistentDrawer:close` custom event with no data attached.
+Events get emitted only when the drawer toggles its opened state, i.e. multiple consecutive
+`drawer.open = true` calls will result in only one `MDCPersistentDrawer:open`.
+
 ### Using the Foundation Class
 
 MDC Persistent Drawer ships with an `MDCPersistentDrawerFoundation` class that external frameworks and libraries can
@@ -193,6 +200,8 @@ The adapter for persistent drawers must provide the following functions, with co
 | `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
+| `notifyOpen() => void` | Dispatches an event notifying listeners that the drawer has been opened. |
+| `notifyClose() => void` | Dispatches an event notifying listeners that the drawer has been closed. |
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |
 
@@ -348,6 +357,13 @@ import {MDCTemporaryDrawer} from 'mdc-drawer';
 const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
 ```
 
+#### Handling events
+
+When the drawer is opened or closed, the component will emit a
+`MDCTemporaryDrawer:open` or `MDCTemporaryDrawer:close` custom event with no data attached.
+Events get emitted only when the drawer toggles its opened state, i.e. multiple consecutive
+`drawer.open = true` calls will result in only one `MDCTemporaryDrawer:open`.
+
 ### Using the Foundation Class
 
 MDC Temporary Drawer ships with an `MDCTemporaryDrawerFoundation` class that external frameworks and libraries can
@@ -375,6 +391,8 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
+| `notifyOpen() => void` | Dispatches an event notifying listeners that the drawer has been opened. |
+| `notifyClose() => void` | Dispatches an event notifying listeners that the drawer has been closed. |
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |
 
