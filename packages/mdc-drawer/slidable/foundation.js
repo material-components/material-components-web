@@ -37,6 +37,8 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
       saveElementTabState: (/* el: Element */) => {},
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
+      notifyOpen: () => {},
+      notifyClose: () => {},
       isRtl: () => /* boolean */ false,
       getDrawerWidth: () => /* number */ 0,
     };
@@ -109,6 +111,10 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(this.animatingCssClass_);
     this.adapter_.addClass(this.openCssClass_);
     this.retabinate_();
+    // Debounce multiple calls
+    if (!this.isOpen_) {
+      this.adapter_.notifyOpen();
+    }
     this.isOpen_ = true;
   }
 
@@ -118,6 +124,10 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(this.animatingCssClass_);
     this.adapter_.removeClass(this.openCssClass_);
     this.detabinate_();
+    // Debounce multiple calls
+    if (this.isOpen_) {
+      this.adapter_.notifyClose();
+    }
     this.isOpen_ = false;
   }
 
@@ -229,7 +239,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     return newPos;
   }
 
-  isRootTransitioningEventTarget_(el) {
+  isRootTransitioningEventTarget_() {
     // Classes extending MDCSlidableDrawerFoundation should implement this method to return true or false
     // if the event target is the root event target currently transitioning.
     return false;

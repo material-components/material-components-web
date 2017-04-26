@@ -86,6 +86,7 @@ module.exports = [{
     select: [path.resolve('./packages/mdc-select/index.js')],
     snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
     textfield: [path.resolve('./packages/mdc-textfield/index.js')],
+    toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
   },
   output: {
     path: OUT_PATH,

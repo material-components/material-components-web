@@ -43,10 +43,11 @@
                     <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                   </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
+                  <div class="mdc-checkbox__mixedmark"></div>
+                </div>
               </div>
+              <label for="multiline" id="multiline-label">Multiline</label>
             </div>
-            <label for="multiline" id="multiline-label">Multiline</label>
           </div>
 
           <div class="mdc-checkbox-wrapper">
@@ -61,38 +62,27 @@
                     <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                   </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
+                  <div class="mdc-checkbox__mixedmark"></div>
+                </div>
               </div>
+              <label for="action-on-bottom" id="action-on-bottom-label">Action On Bottom</label>
             </div>
-            <label for="action-on-bottom" id="action-on-bottom-label">Action On Bottom</label>
           </div>
-        </div>
 
-        <div>
-          <label for="message">Message Text</label>
-          <input type="text" id="message" value="Message deleted">
-        </div>
-
-        <div>
-          <label for="action">Action Text</label>
-          <input type="text" id="action" value="Undo">
-        </div>
-
-        <button type="button" id="show-snackbar">Show</button>
-        <button type="button" id="show-rtl-snackbar">Show RTL</button>
-
-        <div id="mdc-js-snackbar"
-             class="mdc-snackbar"
-             aria-live="assertive"
-             aria-atomic="true"
-             aria-hidden="true">
-          <div class="mdc-snackbar__text"></div>
-          <div class="mdc-snackbar__action-wrapper">
-            <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+          <div>
+            <label for="message">Message Text</label>
+            <input type="text" id="message" value="Message deleted">
           </div>
-        </div>
-        <div dir="rtl">
-          <div id="mdc-rtl-js-snackbar"
+
+          <div>
+            <label for="action">Action Text</label>
+            <input type="text" id="action" value="Undo">
+          </div>
+
+          <button type="button" id="show-snackbar">Show</button>
+          <button type="button" id="show-rtl-snackbar">Show RTL</button>
+
+          <div id="mdc-js-snackbar"
                class="mdc-snackbar"
                aria-live="assertive"
                aria-atomic="true"
@@ -100,6 +90,18 @@
             <div class="mdc-snackbar__text"></div>
             <div class="mdc-snackbar__action-wrapper">
               <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+            </div>
+          </div>
+          <div dir="rtl">
+            <div id="mdc-rtl-js-snackbar"
+                 class="mdc-snackbar"
+                 aria-live="assertive"
+                 aria-atomic="true"
+                 aria-hidden="true">
+              <div class="mdc-snackbar__text"></div>
+              <div class="mdc-snackbar__action-wrapper">
+                <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+              </div>
             </div>
           </div>
         </div>
