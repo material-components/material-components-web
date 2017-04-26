@@ -81,6 +81,30 @@
         <button type="button" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">Toggle Align End</button>
         <button type="button" onclick="document.getElementById('basic-checkbox').disabled = !document.getElementById('basic-checkbox').disabled;">Toggle Disabled</button>
       </section>
+
+      <section>
+        <h2>CSS Only - Disabled</h2>
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox mdc-checkbox--disabled">
+            <input type="checkbox"
+                   id="basic-disabled-checkbox"
+                   class="mdc-checkbox__native-control"
+                   disabled />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark"
+                   viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path"
+                      fill="none"
+                      stroke="white"
+                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
+        </div>
+      </section>
+
       <section>
         <h2>With Javascript</h2>
         <div class="mdc-form-field">
