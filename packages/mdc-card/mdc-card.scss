@@ -79,6 +79,7 @@
     // Tweak button paddings and margins when they're used as actions
     .mdc-card__action {
       margin: 0 8px 0 0;
+
       @include mdc-rtl {
         margin: 0 0 0 8px;
       }
@@ -163,8 +164,8 @@
     align-items: flex-start;
     justify-content: space-between;
     box-sizing: border-box;
-
     padding: 0 16px 0 0;
+
     @include mdc-rtl {
       padding: 0 0 0 16px;
     }
