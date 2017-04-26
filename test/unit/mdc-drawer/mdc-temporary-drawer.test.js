@@ -46,13 +46,21 @@ test('attachTo initializes and returns a MDCTemporaryDrawer instance', () => {
 
 test('get/set open', () => {
   const {root, component} = setupTest();
+
+  const openHandler = td.func('notifyOpen handler');
+  root.addEventListener('MDCTemporaryDrawer:open', openHandler);
+  const closeHandler = td.func('notifyClose handler');
+  root.addEventListener('MDCTemporaryDrawer:close', closeHandler);
+
   component.open = true;
   assert.isOk(root.classList.contains('mdc-temporary-drawer--open'));
   assert.isOk(component.open);
+  td.verify(openHandler(td.matchers.anything()));
 
   component.open = false;
   assert.isNotOk(root.classList.contains('mdc-temporary-drawer--open'));
   assert.isNotOk(component.open);
+  td.verify(closeHandler(td.matchers.anything()));
 });
 
 test('foundationAdapter#addClass adds a class to the root element', () => {
@@ -217,6 +225,22 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () =
   const el = root.querySelector('#foo');
   component.getDefaultFoundation().adapter_.makeElementUntabbable(el);
   assert.equal(el.getAttribute('tabindex'), '-1');
+});
+
+test('adapter#notifyOpen fires an "MDCTemporaryDrawer:open" custom event', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('notifyOpen handler');
+  root.addEventListener('MDCTemporaryDrawer:open', handler);
+  component.getDefaultFoundation().adapter_.notifyOpen();
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#notifyClose fires an "MDCTemporaryDrawer:close" custom event', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('notifyClose handler');
+  root.addEventListener('MDCTemporaryDrawer:close', handler);
+  component.getDefaultFoundation().adapter_.notifyClose();
+  td.verify(handler(td.matchers.anything()));
 });
 
 test('adapter#isRtl returns true for RTL documents', () => {

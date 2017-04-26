@@ -37,6 +37,8 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
       saveElementTabState: (/* el: Element */) => {},
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
+      notifyOpen: () => {},
+      notifyClose: () => {},
       isRtl: () => /* boolean */ false,
       getDrawerWidth: () => /* number */ 0,
     };
@@ -109,6 +111,10 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(this.animatingCssClass_);
     this.adapter_.addClass(this.openCssClass_);
     this.retabinate_();
+    // Debounce multiple calls
+    if (!this.isOpen_) {
+      this.adapter_.notifyOpen();
+    }
     this.isOpen_ = true;
   }
 
@@ -118,6 +124,10 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(this.animatingCssClass_);
     this.adapter_.removeClass(this.openCssClass_);
     this.detabinate_();
+    // Debounce multiple calls
+    if (this.isOpen_) {
+      this.adapter_.notifyClose();
+    }
     this.isOpen_ = false;
   }
 
