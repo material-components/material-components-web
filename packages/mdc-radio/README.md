@@ -48,7 +48,8 @@ npm install --save @material/radio
 ```
 
 Note that `mdc-radio--disabled` is necessary on the root element in order to avoid having the ripple
-elements intercept pointer events when using JS.
+elements intercept pointer events when using JS. When using the CSS-only variation, this is also
+necessary to prevent hover states from activating.
 
 ### Using the JS Component
 
