@@ -54,7 +54,7 @@ test('#getCorrectEventName does not prefix events when not necessary', () => {
 test('#getCorrectPropertyName does not prefix events when not necessary', () => {
   const windowObj = td.object({
     document: {
-      createElement: (str) => ({
+      createElement: () => ({
         style: {
           animation: 'none',
         },
