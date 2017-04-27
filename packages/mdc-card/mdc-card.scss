@@ -165,6 +165,7 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding: 0;
+
     @include mdc-rtl-reflexive-property(padding, 0, 16px);
 
     // postcss-bem-linter: ignore
