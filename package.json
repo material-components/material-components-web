@@ -88,7 +88,7 @@
     "to-slug-case": "^1.0.0",
     "validate-commit-msg": "^2.6.1",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^2.4.3"
   },
   "babel": {
     "presets": [
