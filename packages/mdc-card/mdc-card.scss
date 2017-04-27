@@ -164,11 +164,8 @@
     align-items: flex-start;
     justify-content: space-between;
     box-sizing: border-box;
-    padding: 0 16px 0 0;
-
-    @include mdc-rtl {
-      padding: 0 0 0 16px;
-    }
+    padding: 0;
+    @include mdc-rtl-reflexive-property(padding, 0, 16px);
 
     // postcss-bem-linter: ignore
     .mdc-card__actions--vertical {
