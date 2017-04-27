@@ -213,7 +213,7 @@ test('adapter#getFocusableElements returns all the focusable elements in the dra
   assert.equal(component.getDefaultFoundation().adapter_.getFocusableElements().length, 3);
 });
 
-test('adapter#restoreElementTabState restores tabindex and removes data-mdx-tabindex', () => {
+test('adapter#restoreElementTabState restores tabindex and removes data-mdc-tabindex', () => {
   const root = bel`
     <aside class="mdc-temporary-drawer">
       <nav class="mdc-temporary-drawer__drawer">
