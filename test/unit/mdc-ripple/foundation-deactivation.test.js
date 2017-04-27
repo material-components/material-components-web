@@ -333,3 +333,20 @@ testFoundation('ensures pointer event deactivation occurs even if activation rAF
   td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 1});
   clock.uninstall();
 });
+
+testFoundation('ensures non-pointer event deactivation does not occurs even if activation rAF not run',
+    ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  const clock = lolex.install();
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.keydown({key: 'Space'});
+  mockRaf.pendingFrames.shift();
+  handlers.keyup({key: 'Space'});
+  mockRaf.flush();
+  clock.tick(DEACTIVATION_TIMEOUT_MS);
+
+  td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 0});
+  clock.uninstall();
+});
