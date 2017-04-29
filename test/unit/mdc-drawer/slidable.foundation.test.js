@@ -740,3 +740,21 @@ test('should not trigger bug #67', () => {
     {times: 0}
   );
 });
+
+test('isRootTransitioningEventTarget_ returns false', () => {
+  const mockAdapter = td.object(MDCSlidableDrawerFoundation.defaultAdapter);
+  const foundation =
+    new MDCSlidableDrawerFoundation(
+      mockAdapter, 'mdc-slidable-drawer', 'mdc-slidable-drawer--animating', 'mdc-slidable-drawer--open');
+
+  td.when(mockAdapter.hasClass('mdc-slidable-drawer')).thenReturn(true);
+  td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
+
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: null});
+  foundation.close();
+  td.verify(mockAdapter.removeClass('mdc-slidable-drawer--animating'), {times: 0});
+  td.verify(
+    mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)),
+    {times: 0}
+  );
+});

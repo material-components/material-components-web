@@ -203,6 +203,22 @@ test('adapter#getFocusableElements returns all the focusable elements in the dra
   assert.equal(component.getDefaultFoundation().adapter_.getFocusableElements().length, 3);
 });
 
+test('adapter#restoreElementTabState restores tabindex and removes data-mdx-tabindex', () => {
+  const root = bel`
+    <aside class="mdc-persistent-drawer">
+      <nav class="mdc-persistent-drawer__drawer">
+        <div id="foo" tabindex="0"></div>
+      </nav>
+    </aside>
+  `;
+  const component = new MDCPersistentDrawer(root);
+  const el = root.querySelector('#foo');
+  component.getDefaultFoundation().adapter_.restoreElementTabState(el);
+  assert.equal(el.getAttribute('tabindex'), '0');
+  assert.equal(el.getAttribute('data-mdc-tabindex'), null);
+  assert.equal(el.getAttribute('data-mdc-tabindex-handled'), null);
+});
+
 test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () => {
   const root = bel`
     <aside class="mdc-persistent-drawer mdc-persistent-drawer--open">

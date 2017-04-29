@@ -22,6 +22,7 @@ import {assert} from 'chai';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
 import {MDCIconToggle, MDCIconToggleFoundation} from '../../../packages/mdc-icon-toggle';
+import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
 function setupTest({useInnerIconElement = false} = {}) {
   const root = document.createElement(useInnerIconElement ? 'span' : 'i');
@@ -204,4 +205,16 @@ test('#adapter.notifyChange broadcasts a "MDCIconToggle:change" custom event', (
   root.addEventListener('MDCIconToggle:change', handler);
   component.getDefaultFoundation().adapter_.notifyChange({});
   td.verify(handler(td.matchers.anything()));
+});
+
+test('assert keydown does not trigger ripple', () => {
+  const {root} = setupTest();
+  domEvents.emit(root, 'keydown');
+  assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
+});
+
+test('assert keyup does not trigger ripple', () => {
+  const {root} = setupTest();
+  domEvents.emit(root, 'keyup');
+  assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
 });

@@ -59,6 +59,14 @@ test('on click opens the menu', () => {
   td.verify(mockAdapter.openMenu(0));
 });
 
+test('on click does not open the menu if it is already open', () => {
+  const {mockAdapter, handlers} = setupTest();
+  td.when(mockAdapter.isMenuOpen()).thenReturn(true);
+  handlers.click(createEvent());
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.openMenu(0), {times: 0});
+});
+
 test('on click opens the menu focused at the selected index, if any', () => {
   const {foundation, mockAdapter, handlers} = setupTest();
   foundation.setSelectedIndex(1);

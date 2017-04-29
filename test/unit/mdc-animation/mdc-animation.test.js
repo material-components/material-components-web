@@ -51,6 +51,24 @@ test('#getCorrectEventName does not prefix events when not necessary', () => {
   );
 });
 
+test('#getCorrectPropertyName does not prefix events when not necessary', () => {
+  const windowObj = td.object({
+    document: {
+      createElement: () => ({
+        style: {
+          animation: 'none',
+        },
+      }),
+    },
+  });
+
+  assert.equal(
+    getCorrectPropertyName(windowObj, 'animation'),
+    'animation',
+    'no prefix'
+  );
+});
+
 test('#getCorrectEventName does not prefix events if window does not contain a DOM node', () => {
   const windowObj = td.object({});
 
