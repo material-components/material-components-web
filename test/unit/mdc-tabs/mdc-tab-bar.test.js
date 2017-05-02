@@ -20,7 +20,6 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {MDCTab} from '../../../packages/mdc-tabs/tab';
 import {MDCTabBar} from '../../../packages/mdc-tabs/tab-bar';
 import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
 
@@ -54,10 +53,6 @@ test('#get tabs returns tabs', () => {
   const {component} = setupTest();
 
   assert.isArray(component.tabs);
-
-  for (let i = 0; i < component.tabs.length; i++) {
-    assert.instanceOf(component.tabs[i], MDCTab);
-  }
 });
 
 test('adapter#addClass adds a class to the root element', () => {
