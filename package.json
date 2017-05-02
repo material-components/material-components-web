@@ -11,7 +11,7 @@
     "dist": "npm run clean && npm run build && npm run build:min",
     "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --content-base demos --inline --hot --host 0.0.0.0",
     "fix:js": "eslint --fix packages test webpack.config.js karma.conf.js",
-    "fix:css": "stylefmt -R packages",
+    "fix:css": "stylefmt -r packages/**/*.scss",
     "fix": "npm-run-all --parallel fix:*",
     "lint:js": "eslint packages test scripts webpack.config.js karma.conf.js",
     "lint:css": "stylelint packages/**/*.scss",
