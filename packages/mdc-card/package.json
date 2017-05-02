@@ -15,6 +15,7 @@
   "dependencies": {
     "@material/elevation": "^0.1.5",
     "@material/theme": "^0.1.4",
-    "@material/typography": "^0.2.1"
+    "@material/typography": "^0.2.1",
+    "@material/rtl": "^0.1.3"
   }
 }
