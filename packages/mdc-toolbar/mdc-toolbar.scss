@@ -44,13 +44,14 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     display: flex;
     position: relative;
     width: 100%;
-    height: $mdc-toolbar-row-height;
+    height: auto;
+    min-height: $mdc-toolbar-row-height;
     padding: $mdc-toolbar-padding;
     box-sizing: border-box;
 
     // TODO: refactor this out when #23 is implemented
     @media (max-width: $mdc-toolbar-mobile-breakpoint) {
-      height: $mdc-toolbar-mobile-row-height;
+      min-height: $mdc-toolbar-mobile-row-height;
       padding: $mdc-toolbar-mobile-padding;
     }
   }
