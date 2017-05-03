@@ -27,6 +27,7 @@ import * as textfield from '@material/textfield';
 import * as snackbar from '@material/snackbar';
 import * as menu from '@material/menu';
 import * as select from '@material/select';
+import * as tabs from '@material/tabs';
 import * as toolbar from '@material/toolbar';
 import autoInit from '@material/auto-init';
 
@@ -40,6 +41,7 @@ autoInit.register('MDCGridList', gridList.MDCGridList);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
+autoInit.register('MDCTab', tabs.MDCTab);
 autoInit.register('MDCTextfield', textfield.MDCTextfield);
 autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
@@ -57,6 +59,7 @@ export {
   snackbar,
   dialog,
   drawer,
+  tabs,
   textfield,
   menu,
   select,
