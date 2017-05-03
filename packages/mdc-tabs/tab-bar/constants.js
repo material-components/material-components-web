@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
- export {MDCTabFoundation, MDCTab} from './tab';
- export {MDCTabBarFoundation, MDCTabBar} from './tab-bar';
+export const cssClasses = {
+  UPGRADED: 'mdc-tab-bar-upgraded',
+};
+
+export const strings = {
+  TAB_SELECTOR: '.mdc-tab',
+  INDICATOR_SELECTOR: '.mdc-tab-bar__indicator',
+};

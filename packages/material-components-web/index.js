@@ -42,6 +42,7 @@ autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab', tabs.MDCTab);
+autoInit.register('MDCTabBar', tabs.MDCTabBar);
 autoInit.register('MDCTextfield', textfield.MDCTextfield);
 autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
