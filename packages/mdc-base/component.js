@@ -80,7 +80,7 @@ export default class MDCComponent {
     if (typeof CustomEvent === 'function') {
       evt = new CustomEvent(evtType, {
         detail: evtData,
-        bubbles: shouldBubble
+        bubbles: shouldBubble,
       });
     } else {
       evt = document.createEvent('CustomEvent');
