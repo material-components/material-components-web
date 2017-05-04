@@ -21,6 +21,7 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {MDCTab} from '../../../packages/mdc-tabs/tab';
+import {MDCTabFoundation} from '../../../packages/mdc-tabs/tab';
 import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
 
 function getFixture() {
@@ -151,4 +152,14 @@ test('adapter#notifySelected emits MDCTab:selected', () => {
   component.getDefaultFoundation().adapter_.notifySelected();
 
   td.verify(handler(td.matchers.anything()));
+});
+
+test('#measureSelf proxies to the foundation\'s measureSelf', () => {
+  const MockTabFoundation = td.constructor(MDCTabFoundation);
+  const root = document.createElement('a');
+  const foundation = new MockTabFoundation();
+  const component = new MDCTab(root, foundation);
+
+  component.measureSelf();
+  td.verify(foundation.measureSelf());
 });

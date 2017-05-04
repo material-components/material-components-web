@@ -22,6 +22,7 @@ import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {MDCTab} from '../../../packages/mdc-tabs/tab';
 import {MDCTabBar} from '../../../packages/mdc-tabs/tab-bar';
+import {MDCTabBarFoundation} from '../../../packages/mdc-tabs/tab-bar';
 import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
 
 function getFixture() {
@@ -115,19 +116,19 @@ test('adapter#deregisterResizeHandler removes resize listener from component', (
   const {component} = setupTest();
   const handler = td.func('resizeHandler');
 
+  window.addEventListener('resize', handler);
   component.getDefaultFoundation().adapter_.deregisterResizeHandler(handler);
   domEvents.emit(window, 'resize');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
-  window.removeEventListener('resize', handler);
 });
 
 test('adapter#getOffsetWidth returns width of component', () => {
   const {root, component} = setupTest();
-  const calculatedWidth =
+  const tabBarWidth =
     component.getDefaultFoundation().adapter_.getOffsetWidth();
 
-  assert.equal(calculatedWidth, root.offsetWidth);
+  assert.equal(tabBarWidth, root.offsetWidth);
 });
 
 test('adapter#setStyleForIndicator sets a given property to the given value', () => {
@@ -139,16 +140,16 @@ test('adapter#setStyleForIndicator sets a given property to the given value', ()
 
 test('adapter#getOffsetWidthForIndicator returns the width of the active tab indicator', () => {
   const {indicator, component} = setupTest();
-  const calculatedWidth =
+  const indicatorWidth =
     component.getDefaultFoundation().adapter_.getOffsetWidthForIndicator();
 
-  assert.equal(calculatedWidth, indicator.offsetWidth);
+  assert.equal(indicatorWidth, indicator.offsetWidth);
 });
 
 test('adapter#notifyChange emits MDCTabBar:change with event data', () => {
   const {component} = setupTest();
-
   const data = td.func('eventDataObj');
+
   const handler = (d) => {
     assert.equal(data, d);
   };
@@ -231,4 +232,14 @@ test('adapter#getComputedLeftForTabAtIndex returns left offset for a given tab',
 
   assert.equal(component.getDefaultFoundation().adapter_.getComputedLeftForTabAtIndex(targetIndex),
     component.tabs[targetIndex].root_.offsetLeft);
+});
+
+test('#layout proxies to foundation.layout()', () => {
+  const {root} = setupTest();
+  const MockTabBarFoundation = td.constructor(MDCTabBarFoundation);
+  const foundation = new MockTabBarFoundation();
+  const component = new MDCTabBar(root, foundation);
+
+  component.layout();
+  td.verify(foundation.layout());
 });
