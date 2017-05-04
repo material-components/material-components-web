@@ -17,7 +17,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 
 import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
 import MDCTabFoundation from '../../../packages/mdc-tabs/tab/foundation';
@@ -25,7 +25,7 @@ import MDCTabFoundation from '../../../packages/mdc-tabs/tab/foundation';
 suite('MDCTabFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTabFoundation);
+  assert.deepEqual(MDCTabFoundation.cssClasses, cssClasses);
 });
 
 test('default adapter returns a complete adapter implementation', () => {
@@ -131,4 +131,64 @@ test('#measureSelf sets computedWidth_ and computedLeft_ for tab', () => {
 
   assert.equal(foundation.computedWidth_, 200);
   assert.equal(foundation.computedLeft_, 100);
+});
+
+test('on document keydown notifies selected when enter key is pressed using keycode', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+
+  td.when(mockAdapter.registerInteractionHandler('keydown', td.matchers.isA(Function))).thenDo((type, handler) => {
+    keydown = handler;
+  });
+
+  foundation.init();
+  keydown({
+    keyCode: 13,
+  });
+
+  td.verify(mockAdapter.notifySelected());
+});
+
+test('on document keydown notifies selected when enter key is pressed using Enter', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+
+  td.when(mockAdapter.registerInteractionHandler('keydown', td.matchers.isA(Function))).thenDo((type, handler) => {
+    keydown = handler;
+  });
+
+  foundation.init();
+  keydown({
+    key: 'Enter',
+  });
+
+  td.verify(mockAdapter.notifySelected());
+});
+
+test('on document click calls evt.preventDefault() preventDefaultOnClick_ is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const evt = {
+    preventDefault: td.func('evt.stopPropagation'),
+  };
+
+  foundation.init();
+  foundation.setPreventDefaultOnClick(true);
+  handlers.click(evt);
+
+  td.verify(evt.preventDefault());
+});
+
+test('on document click notifies selected when clicked', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let click;
+
+  td.when(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function))).thenDo((type, handler) => {
+    click = handler;
+  });
+
+  foundation.init();
+  click();
+
+  td.verify(mockAdapter.notifySelected());
 });

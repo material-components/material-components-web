@@ -49,8 +49,8 @@ export default class MDCTabFoundation extends MDCFoundation {
       this.adapter_.notifySelected();
     };
 
-    this.keydownHandler_ = ({key, keyCode}) => {
-      if (key && key === 'Enter' || keyCode === 13) {
+    this.keydownHandler_ = (evt) => {
+      if (evt.key && evt.key === 'Enter' || evt.keyCode === 13) {
         this.adapter_.notifySelected();
       }
     };
