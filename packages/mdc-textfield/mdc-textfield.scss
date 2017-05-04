@@ -201,9 +201,10 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 .mdc-textfield--invalid {
   &:not(.mdc-textfield--focused) {
-    &::after {
-      // Use !important here to override default background-color
-      background-color: $mdc-textfield-error-on-light !important;
+    &.mdc-textfield--upgraded {
+      &::after {
+        background-color: $mdc-textfield-error-on-light;
+      }
     }
 
     .mdc-textfield__label {
@@ -213,8 +214,10 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   @include mdc-theme-dark(".mdc-textfield", true) {
     &:not(.mdc-textfield--focused) {
-      &::after {
-        background-color: $mdc-textfield-error-on-dark;
+      &.mdc-textfield--upgraded {
+        &::after {
+          background-color: $mdc-textfield-error-on-dark;
+        }
       }
 
       .mdc-textfield__label {
