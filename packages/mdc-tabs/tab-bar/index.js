@@ -40,7 +40,7 @@ export class MDCTabBar extends MDCComponent {
   }
 
   get activeTabIndex() {
-    return this.foundation_.getActiveTabIndex();
+    return this.tabs.indexOf(this.activeTab);
   }
 
   set activeTabIndex(index) {

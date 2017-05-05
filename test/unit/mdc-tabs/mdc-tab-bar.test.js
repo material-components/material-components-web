@@ -92,6 +92,15 @@ test('#set activeTab proxies to foundation_.switchToTabAtIndex', () => {
   td.verify(foundation.switchToTabAtIndex(targetIndex, td.matchers.isA(Boolean)));
 });
 
+test('#get activeTabIndex returns active tab', () => {
+  const {component} = setupTest();
+  const targetIndex = 0;
+  const tab = component.tabs[targetIndex];
+
+  tab.isActive = true;
+  assert.equal(component.tabs.indexOf(tab), component.activeTabIndex);
+});
+
 test('#set activeTabIndex proxies to foundation_.switchToTabAtIndex', () => {
   const {root, foundation} = setupTest();
   const component = new MDCTabBar(root, foundation);
