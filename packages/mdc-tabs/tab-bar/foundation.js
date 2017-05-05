@@ -143,10 +143,6 @@ export default class MDCTabBarFoundation extends MDCFoundation {
     });
   }
 
-  getActiveTabIndex() {
-    return this.findActiveTabIndex_();
-  }
-
   findActiveTabIndex_() {
     let activeTabIndex = -1;
     this.forEachTabIndex_((index) => {
