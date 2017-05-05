@@ -82,8 +82,8 @@ Toolbar sections are laid out using flexbox. Each section will take up an equal
 amount of space within the toolbar by default. But you can accommodate very long section (very long title)
 by adding `mdc-toolbar__section--shrink-to-fit` to other sections.
 
-```
-<div class="mdc-toolbar>
+```html
+<div class="mdc-toolbar">
   <div class="mdc-toolbar__row">
       <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
         <span class="mdc-toolbar__title">This is a super super super super long title</span>
