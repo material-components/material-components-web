@@ -21,11 +21,11 @@ limitations under the License
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <style>
-    	.demo-body {
-    	  padding: 0;
-    	  margin: 0;
-    	  box-sizing: border-box;
-    	}
+      .demo-body {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
 
       h1, h2 {
         margin: 0;
@@ -199,7 +199,7 @@ limitations under the License
 
       <section>
         <h2>CSS-Only Icon &amp; Text Labels</h2>
-        <nav id="icon-text-tab-bar" class="mdc-tab-bar mdc-tab-bar--icons-with-text">
+        <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text">
           <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="#recents">
             <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
             <span class="mdc-tab__icon-text">Recents</span>
@@ -516,7 +516,7 @@ limitations under the License
             var dotIndex = [].slice.call(dots.querySelectorAll('.dot')).indexOf(evt.target);
 
             if (dotIndex >= 0) {
-              dynamicTabBar.foundation_.switchToTabAtIndex(dotIndex, false);
+              dynamicTabBar.activeTabAtIndex = dotIndex;
             }
             updatePanel(dotIndex);
             updateDot(dotIndex);

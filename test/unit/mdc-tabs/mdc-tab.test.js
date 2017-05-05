@@ -20,6 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCTab} from '../../../packages/mdc-tabs/tab';
 import {MDCTabFoundation} from '../../../packages/mdc-tabs/tab';
 import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
@@ -51,6 +52,7 @@ if (supportsCssVariables(window)) {
 
     raf.flush();
 
+    assert.isTrue(component.ripple instanceof MDCRipple);
     component.destroy();
     raf.flush();
 
@@ -72,13 +74,13 @@ test('#get computedLeft returns computed left offset of tab', () => {
 });
 
 test('#get/set isActive', () => {
-  const {component} = setupTest();
+  const {component, root} = setupTest();
 
   component.isActive = false;
-  assert.isFalse(component.root_.classList.contains(cssClasses.ACTIVE));
+  assert.isFalse(root.classList.contains(cssClasses.ACTIVE));
 
   component.isActive = true;
-  assert.isTrue(component.root_.classList.contains(cssClasses.ACTIVE));
+  assert.isTrue(root.classList.contains(cssClasses.ACTIVE));
 });
 
 test('#get/set preventDefaultOnClick', () => {
@@ -126,7 +128,7 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
   root.addEventListener(type, handler);
 
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler(type, handler);
-  domEvents.emit(root, 'click');
+  domEvents.emit(root, type);
 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });

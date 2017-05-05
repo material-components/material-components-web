@@ -51,6 +51,10 @@ export class MDCTab extends MDCComponent {
     this.foundation_.setPreventDefaultOnClick(preventDefaultOnClick);
   }
 
+  get ripple() {
+    return this.ripple_;
+  }
+
   constructor(...args) {
     super(...args);
 

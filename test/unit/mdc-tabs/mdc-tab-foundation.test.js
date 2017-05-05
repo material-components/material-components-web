@@ -121,16 +121,43 @@ test('#setPreventDefaultOnClick sets preventDefaultOnClick_' +
    assert.isFalse(foundation.preventDefaultOnClick_);
 });
 
+test('#setPreventDefaultOnClick sets preventDefaultOnClick_ to true. Subsequent clicks ' +
+  'call preventDefault()', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+    const evt = {
+      preventDefault: td.func('evt.stopPropagation'),
+    };
+
+    foundation.init();
+    foundation.setPreventDefaultOnClick(true);
+
+    handlers.click(evt);
+    td.verify(evt.preventDefault());
+});
+
+test('#setPreventDefaultOnClick sets preventDefaultOnClick_ to false. Subsequent clicks ' +
+  'do not call preventDefault()', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+    const evt = {
+      preventDefault: td.func('evt.stopPropagation'),
+    };
+
+    foundation.init();
+    foundation.setPreventDefaultOnClick(false);
+
+    handlers.click(evt);
+    td.verify(evt.preventDefault(), {times: 0});
+});
+
 test('#measureSelf sets computedWidth_ and computedLeft_ for tab', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.getOffsetWidth()).thenReturn(200);
-  td.when(mockAdapter.getOffsetLeft()).thenReturn(100);
-
   foundation.measureSelf();
 
-  assert.equal(foundation.computedWidth_, 200);
-  assert.equal(foundation.computedLeft_, 100);
+  td.verify(mockAdapter.getOffsetWidth());
+  td.verify(mockAdapter.getOffsetLeft());
 });
 
 test('on document keydown notifies selected when enter key is pressed using keycode', () => {

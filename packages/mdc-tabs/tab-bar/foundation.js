@@ -15,6 +15,7 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
+import {getCorrectPropertyName} from '../../../packages/mdc-animation';
 
 import {cssClasses, strings} from './constants';
 
@@ -97,10 +98,7 @@ export default class MDCTabBarFoundation extends MDCFoundation {
       this.adapter_.getComputedWidthForTabAtIndex(this.activeTabIndex_) / this.adapter_.getOffsetWidth();
 
     const transformValue = `translateX(${translateAmtForActiveTabLeft}px) scale(${scaleAmtForActiveTabWidth}, 1)`;
-
-    ['-webkit-transform', 'transform'].forEach((transformProperty) => {
-      this.adapter_.setStyleForIndicator(transformProperty, transformValue);
-    });
+    this.adapter_.setStyleForIndicator(getCorrectPropertyName(window, 'transform'), transformValue);
 
     if (isIndicatorFirstRender) {
       // Force layout so that transform styles to take effect.
@@ -143,6 +141,10 @@ export default class MDCTabBarFoundation extends MDCFoundation {
         this.adapter_.notifyChange({activeTabIndex: this.activeTabIndex_});
       }
     });
+  }
+
+  getActiveTabIndex() {
+    return this.findActiveTabIndex_();
   }
 
   findActiveTabIndex_() {

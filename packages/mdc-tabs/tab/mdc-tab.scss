@@ -103,7 +103,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
     @include mdc-theme-prop(color, text-primary-on-dark);
   }
 
-  &:before {
+  &::before {
     bottom: 0;
   }
 }
@@ -149,10 +149,8 @@ $mdc-tab-with-icon-and-text-height: 72px;
   }
 }
 
-.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab--with-icon-and-text {
-  &::after {
-    top: $mdc-tab-with-icon-and-text-height - 2px;
-  }
+.mdc-tab-bar--icons-with-text:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
+  top: $mdc-tab-with-icon-and-text-height - 2px;
 }
 
 .mdc-tab.mdc-ripple-upgraded {

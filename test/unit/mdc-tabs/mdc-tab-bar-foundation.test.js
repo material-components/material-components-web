@@ -17,9 +17,8 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
-import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 import MDCTabBarFoundation from '../../../packages/mdc-tabs/tab-bar/foundation';
 
@@ -46,8 +45,9 @@ function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCTabBarFoundation);
   const {UPGRADED} = MDCTabBarFoundation.cssClasses;
   const {TAB_SELECTOR, INDICATOR_SELECTOR} = MDCTabBarFoundation.strings;
+  const tabHandlers = captureHandlers(mockAdapter, 'bindOnMDCTabSelectedEvent');
 
-  return {foundation, mockAdapter, UPGRADED, TAB_SELECTOR, INDICATOR_SELECTOR};
+  return {foundation, mockAdapter, UPGRADED, TAB_SELECTOR, INDICATOR_SELECTOR, tabHandlers};
 }
 
 test('#init adds upgraded class to tabs', () => {
@@ -66,19 +66,17 @@ test('#init registers listeners', () => {
   td.verify(mockAdapter.registerResizeHandler(isA(Function)));
 });
 
-if (supportsCssVariables(window)) {
-  test('#init sets -webkit-transform and transform for indicator', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const raf = createMockRaf();
+test('#init sets -webkit-transform and transform for indicator', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
 
-    foundation.init();
-    raf.flush();
+  foundation.init();
+  raf.flush();
 
-    td.verify(mockAdapter.setStyleForIndicator(td.matchers.anything(), td.matchers.anything()));
+  td.verify(mockAdapter.setStyleForIndicator(td.matchers.anything(), td.matchers.anything()));
 
-    raf.restore();
-  });
-}
+  raf.restore();
+});
 
 test('#destroy removes class from tabs', () => {
   const {foundation, mockAdapter, UPGRADED} = setupTest();
@@ -121,20 +119,18 @@ test('#switchToTabAtIndex throws if index is out of bounds', () => {
   assert.throws(() => foundation.switchToTabAtIndex(2, true));
 });
 
-if (supportsCssVariables(window)) {
-  test('#switchToTabAtIndex makes tab active', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const raf = createMockRaf();
-    const tabToSwitchTo = 1;
-    const shouldNotify = true;
+test('#switchToTabAtIndex makes tab active', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  const tabToSwitchTo = 1;
+  const shouldNotify = true;
 
-    td.when(mockAdapter.getNumberOfTabs()).thenReturn(2);
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(2);
 
-    foundation.switchToTabAtIndex(tabToSwitchTo, shouldNotify);
-    raf.flush();
+  foundation.switchToTabAtIndex(tabToSwitchTo, shouldNotify);
+  raf.flush();
 
-    td.verify(mockAdapter.setTabActiveAtIndex(tabToSwitchTo, shouldNotify));
-    td.verify(mockAdapter.notifyChange(td.matchers.anything()));
-    raf.restore();
-  });
-}
+  td.verify(mockAdapter.setTabActiveAtIndex(tabToSwitchTo, shouldNotify));
+  td.verify(mockAdapter.notifyChange(td.matchers.anything()));
+  raf.restore();
+});
