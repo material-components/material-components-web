@@ -139,7 +139,7 @@
         var dismissOnActionInput = document.getElementById('dismiss-on-action');
 
         var show = function(sb) {
-          snackbar.setDismissOnAction(dismissOnActionInput.checked)
+          snackbar.dismissesOnAction = dismissOnActionInput.checked;
           var data =  {
             message: messageInput.value,
             actionOnBottom: actionOnBottomInput.checked,
