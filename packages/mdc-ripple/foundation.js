@@ -201,7 +201,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.adapter_.removeClass(FG_DEACTIVATION);
 
     // Force layout in order to re-trigger the animation.
-    this.adapter_.computeBoundingRect();
+    this.layoutInternal_();
     this.adapter_.addClass(BG_ACTIVE_FILL);
     this.adapter_.addClass(FG_ACTIVATION);
     this.activationTimer_ = setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);

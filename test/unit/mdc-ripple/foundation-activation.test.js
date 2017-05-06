@@ -173,34 +173,6 @@ testFoundation('adds activation classes on keydown when surface is made active',
   td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
 });
 
-testFoundation('sets FG position to center on non-pointer activation', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
-  const left = 50;
-  const top = 50;
-  const width = 200;
-  const height = 100;
-  const maxSize = Math.max(width, height);
-  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
-
-  td.when(adapter.computeBoundingRect()).thenReturn({width, height, left, top});
-  td.when(adapter.isSurfaceActive()).thenReturn(true);
-  foundation.init();
-  mockRaf.flush();
-
-  handlers.keydown();
-  mockRaf.flush();
-
-  const position = {
-    x: (width / 2) - (initialSize / 2),
-    y: (height / 2) - (initialSize / 2),
-  };
-
-  td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_START,
-      `${position.x}px, ${position.y}px`));
-  td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_END,
-      `${position.x}px, ${position.y}px`));
-});
-
 testFoundation('adds activation classes on programmatic activation', ({foundation, adapter, mockRaf}) => {
   td.when(adapter.isSurfaceActive()).thenReturn(true);
   foundation.init();
@@ -311,4 +283,27 @@ testFoundation('clears translation custom properties when unbounded in case ripp
 
   td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_START, ''));
   td.verify(adapter.updateCssVariable(strings.VAR_FG_TRANSLATE_END, ''));
+});
+
+testFoundation('re-lays out the component on activation', ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  td.when(adapter.computeBoundingRect()).thenReturn({
+    width: 100,
+    height: 200,
+  }, {
+    width: 50,
+    height: 100,
+  });
+
+  foundation.init();
+  mockRaf.flush();
+
+  td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '100px'));
+  td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '200px'));
+
+  handlers.mousedown();
+  mockRaf.flush();
+
+  td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '50px'));
+  td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '100px'));
 });
