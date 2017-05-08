@@ -17,10 +17,13 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC Ripple Demo</title>
+    <title>Ripple - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <script>
       if (!window.CSS || !window.CSS.supports ||
         !window.CSS.supports('--css-vars', 'yes') && !(window.CSS.supports('color', '#00000000'))) {
@@ -64,16 +67,6 @@
         appearance: none;
       }
 
-      section {
-        align-items: center;
-        display: flex;
-        margin-left: 10px;
-      }
-
-      section > div {
-        margin: 48px 0;
-        width: 400px;
-      }
 
       body {
         font-family: sans-serif;
@@ -99,10 +92,28 @@
       }
 
       @media (max-width: 565px) {
-        section {
+        .example {
           flex-direction: column;
           width: 100%;
         }
+      }
+
+      .example {
+        margin: 24px;
+        padding: 24px;
+        align-items: center;
+        display: flex;
+        margin-left: 10px;
+      }
+
+      .example > div {
+        margin: 48px 0;
+        width: 400px;
+      }
+
+      .example h2 {
+        font-size: 1.2em;
+        margin-bottom: 0.8em;
       }
     </style>
   </head>
@@ -111,9 +122,22 @@
       It appears your browser does not support custom properties, or has a broken implementation.
       Please try this in Desktop Chrome or Desktop Firefox.
     </aside>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Ripple</span>
+        </section>
+      </div>
+    </header>
     <main>
-      <h1>MDC Ripple</h1>
-      <section>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero mdc-ripple-surface">
+      </section>
+
+      <section class="example">
         <div>
           <h2>Bounded</h2>
           <div class="mdc-ripple-surface demo-surface mdc-elevation--z2" tabindex="0">
@@ -127,7 +151,7 @@
           </div>
         </div>
       </section>
-      <section>
+      <section class="example">
         <div>
           <h2>Unbounded</h2>
           <div class="mdc-ripple-surface demo-surface material-icons" data-mdc-ripple-is-unbounded
@@ -143,7 +167,7 @@
           </div>
         </div>
       </section>
-      <section>
+      <section class="example">
         <div>
           <h2>Theme Styles</h2>
           <div
@@ -172,7 +196,7 @@
         </div>
 
       </section>
-      <section>
+      <section class="example">
         <div>
           <h2>Applied to <code>&lt;button&gt;</code> element</h2>
           <button type="button" class="mdc-ripple-surface mdc-elevation--z2 demo-surface">button</button>

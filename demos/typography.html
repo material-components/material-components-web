@@ -19,8 +19,10 @@
     <meta charset="utf-8">
     <title>MDC Typography Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <style>
       .demo-typography--section {
@@ -30,7 +32,21 @@
     </style>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Typography</span>
+        </section>
+      </div>
+    </header>
     <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+      </section>
+
       <h1>MDC Typography</h1>
       <h2>Styles</h2>
       <section class="demo-typography--section mdc-typography">
