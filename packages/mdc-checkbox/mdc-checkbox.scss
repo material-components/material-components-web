@@ -50,9 +50,9 @@
   display: inline-block;
   position: relative;
   box-sizing: content-box;
+  flex: 0 0 $mdc-checkbox-size;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
-  flex: 0 0 $mdc-checkbox-size;
   padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
   line-height: 0;
   white-space: nowrap;
@@ -250,6 +250,11 @@ fieldset:disabled .mdc-checkbox__native-control,
       // stylelint-enable selector-max-compound-selectors, selector-max-specificity
     }
   }
+}
+
+.mdc-checkbox--disabled {
+  cursor: default;
+  pointer-events: none;
 }
 
 .mdc-checkbox--upgraded {

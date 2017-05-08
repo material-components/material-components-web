@@ -46,7 +46,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
-    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer',
+    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable',
+    'notifyOpen', 'notifyClose', 'isRtl', 'getDrawerWidth', 'isDrawer',
     'updateCssVariable',
   ]);
 });

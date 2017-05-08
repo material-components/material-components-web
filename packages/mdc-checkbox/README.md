@@ -63,6 +63,30 @@ easily position checkboxes and their labels.
 </div>
 ```
 
+#### Disabled Checkboxes
+
+```html
+<div class="mdc-checkbox mdc-checkbox--disabled">
+  <input type="checkbox"
+         id="basic-disabled-checkbox"
+         class="mdc-checkbox__native-control"
+         disabled />
+  <div class="mdc-checkbox__background">
+    <svg class="mdc-checkbox__checkmark"
+         viewBox="0 0 24 24">
+      <path class="mdc-checkbox__checkmark__path"
+            fill="none"
+            stroke="white"
+            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+    </svg>
+    <div class="mdc-checkbox__mixedmark"></div>
+  </div>
+</div>
+<label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
+```
+
+Note that `mdc-checkbox--disabled` is necessary on the root element to prevent hover states from activating.
+
 ### Using the JS Component
 
 MDC Checkbox ships with a Component / Foundation combo which progressively enhances the checkbox

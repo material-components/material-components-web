@@ -45,7 +45,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
-    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer',
+    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable',
+    'notifyOpen', 'notifyClose', 'isRtl', 'getDrawerWidth', 'isDrawer',
   ]);
 });
 
@@ -65,4 +66,3 @@ test('#isRootTransitioningEventTarget_ returns true if the element is the drawer
   td.when(mockAdapter.isDrawer(fakeEl)).thenReturn(true);
   assert.isTrue(foundation.isRootTransitioningEventTarget_(fakeEl));
 });
-

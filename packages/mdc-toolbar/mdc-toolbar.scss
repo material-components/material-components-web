@@ -24,6 +24,8 @@ $mdc-toolbar-mobile-row-height: 56px;
 $mdc-toolbar-padding: 20px 28px;
 $mdc-toolbar-mobile-padding: 16px;
 
+$mdc-toolbar-ratio-to-extend-flexible: 4 !default;
+
 $mdc-toolbar-mobile-breakpoint: 599px;
 
 // postcss-bem-linter: define toolbar
@@ -58,8 +60,8 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     flex: 1;
     align-items: flex-start;
     justify-content: center;
+    min-width: 0;
     z-index: 1;
-    overflow: hidden;
 
     &--align-start {
       justify-content: flex-start;
@@ -75,11 +77,12 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   &__title {
     @include mdc-typography(title);
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     margin: 0;
     line-height: 1.5rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 1;
   }
 }
 
@@ -92,6 +95,87 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   @include mdc-elevation(4);
 }
 
+.mdc-toolbar--flexible {
+  // stylelint-disable plugin/selector-bem-pattern
+  // bem linter is disabled because it cannot correctly reconcile mdc prefix for css variables.
+  --mdc-toolbar-ratio-to-extend-flexible: $mdc-toolbar-ratio-to-extend-flexible;
+  // stylelint-enable plugin/selector-bem-pattern
+
+  .mdc-toolbar__row:first-child {
+    height: $mdc-toolbar-row-height * $mdc-toolbar-ratio-to-extend-flexible;
+    height: calc(#{$mdc-toolbar-row-height} * var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}));
+
+    @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+      height: $mdc-toolbar-mobile-row-height * $mdc-toolbar-ratio-to-extend-flexible;
+      height: calc(#{$mdc-toolbar-mobile-row-height} * var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}));
+    }
+
+    &::after {
+      // The style ensures the pseudo element will be defined and can easily be styled
+      position: absolute;
+      content: "";
+    }
+  }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  // bem linter is disabled because it cannot handle multiple top level selector
+  &-default-behavior {
+    .mdc-toolbar__title {
+      @include mdc-typography(display1);
+
+      transform: translateY($mdc-toolbar-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 1));
+      transform: translateY(calc(#{$mdc-toolbar-row-height} * (var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
+      font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
+      line-height: 1.5rem;
+
+      @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+        transform: translateY($mdc-toolbar-mobile-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 1));
+        transform: translateY(calc(#{$mdc-toolbar-mobile-row-height} * (var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
+      }
+    }
+
+    .mdc-toolbar__row:first-child::after {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity .2s ease;
+      opacity: 1;
+    }
+
+    &.mdc-toolbar--flexible-space-minimized {
+      .mdc-toolbar__row:first-child::after {
+        opacity: 0;
+      }
+
+      .mdc-toolbar__title {
+        font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
+      }
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+}
+
+.mdc-toolbar--waterfall {
+  &.mdc-toolbar--fixed {
+    @include mdc-elevation(0);
+    @include mdc-elevation-transition;
+
+    &.mdc-toolbar--flexible-space-minimized {
+      @include mdc-elevation(4);
+    }
+
+    &.mdc-toolbar--fixed-lastrow-only {
+      &.mdc-toolbar--flexible-space-minimized {
+        @include mdc-elevation(0);
+      }
+
+      &.mdc-toolbar--fixed-at-last-row {
+        @include mdc-elevation(4);
+      }
+    }
+  }
+}
 // postcss-bem-linter: end
 
 .mdc-toolbar-fixed-adjust {
