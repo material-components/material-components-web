@@ -86,7 +86,7 @@ h1 {
 }
 
 .hero {
-  background-color: #f0f0f0;
+  background-color: rgba(0, 0, 0, 0.05);
   min-height: 360px;
   display: flex;
   align-items: center;
