@@ -211,7 +211,7 @@ MDC Dialog ships with an `MDCDialogFoundation` class that external frameworks an
 use to integrate the component. As with all foundation classes, an adapter object must be provided.
 
 > **NOTE**: Components themselves must manage adding ripples to dialog buttons, should they choose to
-do so. We provide instructions on how to add ripples to buttons within the [mdc-button README](https://github.com/material-components/material-components-web/tree/master/packages/mdc-button#adding-ripples-to-buttons).
+do so. We provide instructions on how to add ripples to buttons within the [mdc-button README](../mdc-button#adding-ripples-to-buttons).
 
 ### Adapter API
 
