@@ -1,5 +1,5 @@
 <!--docs:
-title: "Annotating for the Closure Compiler"
+title: "Closure Compiler Annotations"
 layout: landing
 section: docs
 path: /docs/closure-compiler/
