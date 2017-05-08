@@ -46,21 +46,20 @@ checked under the `optimization` option.
 
 Furthermore, you may want to check the `Pretty Print` option if you're debugging the output code.
 
-Additionally, if you use getter/setter properties within your code, add the following in between
-the `// ==ClosureCompiler==` / `// ==/ClosureCompiler==` comment block:
+Additionally, if you use getter/setter properties within your code, add `// @language_out ECMASCRIPT5` in between the ClosureCompiler comment block, like:
 
-```js
+```
+// ==ClosureCompiler==
 // @language_out ECMASCRIPT5
+// ...Other configurations
+// ==/ClosureCompiler==
 ```
 
 This will tell closure to compile your code to ES5 (the default is ES3 which doesn't support
 accessor properties).
 
-Finally, you can make the permalinks to closure code a bit nicer by using a link shortener, such as
-https://goo.gl.
-
 You can use [this starter template](https://goo.gl/YSQkDi) to help debug your closure code, which
-has all of the above settings pre-configured.
+has all of the above settings pre-configured (Even though the UI shows optimization is simple).
 
 ## MDC-Web Type System
 
@@ -250,6 +249,16 @@ lint rule exceptions, and (in the future) code removal tools.
 
 ### Objects that use event names or other external symbols as keys must be declared as `@dict` or `!Object<string, T>`.
 
+By default, when closure uses advanced compilation, it rewrites the property names of objects to be
+as short as possible, ensuring the smallest possible code size. This is problematic when object
+properties have semantic meaning for code used outside of closure. For example, if object keys
+represent event names to be passed to `addEventListener`, or global settings to be affected by the
+user, then the code will break when closure rewrites the property names. In order to prevent this,
+objects with semantic keys must be declared as described above. Furthermore:
+
+- All object keys _must be quoted_
+- All references to object keys _must be done using bracket notation_
+
 ```js
 // GOOD
 /** @const {!Object<string, string>}  */
@@ -289,16 +298,6 @@ Object.keys(activationDeactivationPairs).forEach((activationEvt) => {
 // BAD
 el.addEventListener(activationDeactivationPairs.mousedown, (evt) => this.deactivate(evt));
 ```
-
-By default, when closure uses advanced compilation, it rewrites the property names of objects to be
-as short as possible, ensuring the smallest possible code size. This is problematic when object
-properties have semantic meaning for code used outside of closure. For example, if object keys
-represent event names to be passed to `addEventListener`, or global settings to be affected by the
-user, then the code will break when closure rewrites the property names. In order to prevent this,
-objects with semantic keys must be declared as described above. Furthermore:
-
-- All object keys _must be quoted_
-- All references to object keys _must be done using bracket notation_
 
 #### `Object<string, T> vs. @dict`
 
@@ -658,11 +657,7 @@ specified in their constructors. This is problematic in cases where a base const
 "setup" function in which properties are added to the instance. This is a pattern we use in our
 codebase via `MDCComponent#initialize()`, so that the component has an opportunity to perform any
 instantiation logic without losing all of the base constructor logic of assigning a root element,
-instantiating an adapter, etc. Because `initialize()` is called as part of the `super()` call within
-the constructor, we cannot assign a default value to `this.innerEl_` within the constructor since it
-would override what's been assigned in `initialize()`. Furthermore, closure mandates that `super()`
-be the first expression within a method. Thus, we cannot assign to `this.innerEl_` before `super()`
-is called.
+instantiating an adapter, etc.
 
 To get around this, we simply create a sentinel expression statement that references the property.
 This sentinel expression lets closure know of the property declaration, which is declared _within_
@@ -679,7 +674,7 @@ class MyComponent extends MDCComponent {
   constructor(...args) {
     super(...args);
     /** @private {!Element} */
-    this.innerEl_;
+    this.innerEl_;  // Sentinel expression statement
   }
 
   initialize() {
@@ -687,6 +682,20 @@ class MyComponent extends MDCComponent {
   }
 }
 ```
+
+The reason we cannot simple declare the property first as following is because
+closure mandates that `super()` be the first expression within a method.
+
+```
+constructor(...args) {
+    /** @private {!Element} */
+    this.innerEl_ = DEFAULT_VALUE;
+    super(...args);
+  }
+```
+Because `initialize()` is called as part of the `super()` call within the constructor,
+we cannot assign a default value to `this.innerEl_` within the constructor since it
+would override what's been assigned in `initialize()`.
 
 While this may seem very foreign coming from outside of closure, it is a [common idiom used by closure code](https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System#typedefs).
 
