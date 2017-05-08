@@ -50,6 +50,11 @@ table {
 
 /* Base style */
 
+:root {
+  --mdc-theme-primary: #212121;
+  --mdc-theme-accent: #64DD17;
+}
+
 body {
   font-family: Roboto, -apple-system, Arial, sans-serif;
 }
@@ -65,9 +70,10 @@ h1 {
   margin-bottom: 0.8em;
 }
 
-:root {
-  --mdc-theme-primary: #212121;
-  --mdc-theme-accent: #64DD17;
+h2 {
+	margin-left: 24px;
+	margin-top: 0.8em;
+	margin-bottom: 0.8em;
 }
 
 .mdc-toolbar a, .mdc-toolbar a:visited {
