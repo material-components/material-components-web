@@ -17,18 +17,61 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC Snackbar Demo</title>
+    <title>Snackbar - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
-      .mdc-snackbar { transform: translateY(100%); }
+      .example {
+        padding: 24px;
+        margin: 24px;
+      }
+
+      /* initialize it off screen. */
+      .example .mdc-snackbar { transform: translateY(100%); }
+
+      /* Override style for hero example. */
+      .hero .mdc-snackbar {
+        position: relative;
+        left: auto;
+      }
+      .hero .mdc-snackbar--active {
+        transform: none;
+      }
+
     </style>
-    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Snackbar</span>
+        </section>
+      </div>
+    </header>
+
     <main>
-      <h1>MDC Snackbar</h1>
-      <section>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div class="mdc-snackbar mdc-snackbar--active"
+             aria-live="assertive"
+             aria-atomic="true"
+             aria-hidden="true">
+          <div class="mdc-snackbar__text">Message sent</div>
+          <div class="mdc-snackbar__action-wrapper">
+            <button type="button" class="mdc-button mdc-snackbar__action-button">Undo</button>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="example">
         <h2>Basic Example</h2>
         <div>
           <div class="mdc-checkbox-wrapper">
