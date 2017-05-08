@@ -66,6 +66,19 @@ test('#init registers listeners', () => {
   td.verify(mockAdapter.registerResizeHandler(isA(Function)));
 });
 
+test('#init sets active tab if index of active tab on init() is > 0', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const activeTabIndex = 2;
+  const numberOfTabs = 5;
+
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numberOfTabs);
+  td.when(mockAdapter.isTabActiveAtIndex(activeTabIndex)).thenReturn(true);
+
+  foundation.init();
+
+  assert.isTrue(mockAdapter.isTabActiveAtIndex(activeTabIndex));
+});
+
 test('#init sets -webkit-transform and transform for indicator', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();

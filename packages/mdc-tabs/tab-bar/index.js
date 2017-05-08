@@ -88,19 +88,19 @@ export class MDCTabBar extends MDCComponent {
     return tabElements.map((el) => tabFactory(el));
   }
 
-  setActiveTab_(activeTab, notifyChange) {
-    const indexOfTab = this.tabs.indexOf(activeTab);
-    if (indexOfTab < 0) {
-      throw new Error('Invalid tab component give as activeTab: Tab not found within this component\'s tab list');
-    }
-    this.setActiveTabIndex_(indexOfTab, notifyChange);
-  }
-
   setActiveTabIndex_(activeTabIndex, notifyChange) {
     this.foundation_.switchToTabAtIndex(activeTabIndex, notifyChange);
   }
 
   layout() {
     this.foundation_.layout();
+  }
+
+  setActiveTab_(activeTab, notifyChange) {
+    const indexOfTab = this.tabs.indexOf(activeTab);
+    if (indexOfTab < 0) {
+      throw new Error('Invalid tab component given as activeTab: Tab not found within this component\'s tab list');
+    }
+    this.setActiveTabIndex_(indexOfTab, notifyChange);
   }
 }

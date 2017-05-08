@@ -57,6 +57,17 @@ function setupTest() {
   return {fixture, root, indicator, component, foundation};
 }
 
+const createMockHandler = () => {
+  let changeHandler;
+  const {component} = setupTest();
+
+  td.when(component.getDefaultFoundation().adapter_.bindOnMDCTabSelectedEvent()).thenDo((fn) => {
+    changeHandler = fn;
+  });
+
+  return {changeHandler};
+};
+
 suite('MDCTabBar');
 
 test('attachTo returns a component instance', () => {
@@ -139,6 +150,13 @@ test('adapter#bindOnMDCTabSelectedEvent adds event listener for MDCTab:selected 
 
   assert.isTrue(tab.isActive);
   raf.restore();
+});
+
+test('on MDCTab:selected if tab is not in tab bar, throw Error', () => {
+  const tab = new MockTab();
+  const {changeHandler} = createMockHandler();
+
+  assert.throws(() => changeHandler({detail: {tab}}));
 });
 
 test('adapter#unbindOnMDCTabSelectedEvent removes listener from component', () => {
