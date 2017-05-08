@@ -51,7 +51,7 @@ introduction to the library.
 ## Installing individual components
 
 MDC-Web is modular by design. Each component lives within its own packages under the
-[@material npm scope](https://www.npmjs.com/~material).
+[@material npm org](https://www.npmjs.com/org/material).
 
 ```
 npm install --save @material/button @material/card @material/textfield @material/typography
