@@ -290,6 +290,28 @@ test('on touch end resets touch update styles', () => {
   raf.restore();
 });
 
+test('on touch end does not update drawer', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const raf = createMockRaf();
+  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
+  foundation.init();
+
+  drawerHandlers.touchstart({
+    touches: [{pageX: 500}],
+  });
+  raf.flush();
+  td.verify(mockAdapter.updateCssVariable(1), {times: 1});
+
+  handlers.touchend({});
+  raf.flush();
+  td.verify(mockAdapter.updateCssVariable(1), {times: 1});
+
+  raf.restore();
+});
+
 test('#isRootTransitioningEventTarget_ returns true if the element is the drawer element', () => {
   const {foundation, mockAdapter} = setupTest();
 
