@@ -96,13 +96,13 @@ Get up and running with Material Components for web
 
     <ul class="icon-list">
       <li class="icon-list-item icon-list-item--guide">
-        <a href="docs/getting-started.md">Read the Getting Started Guide</a>
+        <a href="getting-started.md">Read the Getting Started Guide</a>
       </li>
       <li class="icon-list-item icon-list-item--components">
         <a href="../packages">View the Component Documentation</a>
       </li>
       <li class="icon-list-item icon-list-item--code">
-        <a href="framework-examples">Explore Framework Integration Examples</a>
+        <a href="../framework-examples">Explore Framework Integration Examples</a>
       </li>
       <li class="icon-list-item icon-list-item--github">
         <a href="https://github.com/material-components/material-components-web/">View the project on GitHub</a>
