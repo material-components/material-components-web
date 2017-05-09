@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses, events} from './constants';
+import {cssClasses} from './constants';
 import {MDCSimpleMenuFoundation} from '@material/menu';
 
 const OPENER_KEYS = [

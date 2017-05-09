@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses, strings, events} from './constants';
+import {cssClasses, strings} from './constants';
 
 export default class MDCDialogFoundation extends MDCFoundation {
   static get cssClasses() {

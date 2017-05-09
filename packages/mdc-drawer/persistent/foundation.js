@@ -15,7 +15,7 @@
  */
 
 import {MDCSlidableDrawerFoundation} from '../slidable';
-import {cssClasses, strings, events} from './constants';
+import {cssClasses, strings} from './constants';
 
 export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoundation {
   static get cssClasses() {

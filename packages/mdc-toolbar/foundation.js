@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import MDCFoundation from '@material/base/foundation';
-import {cssClasses, strings, events, numbers} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 export default class MDCToolbarFoundation extends MDCFoundation {
   static get cssClasses() {

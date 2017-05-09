@@ -23,7 +23,7 @@ import {strings as menuStrings} from '../../../packages/mdc-menu/simple/constant
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 
-const {cssClasses, events} = MDCSelectFoundation;
+const {cssClasses} = MDCSelectFoundation;
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSelectFoundation);
