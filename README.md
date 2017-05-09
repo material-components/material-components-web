@@ -1,3 +1,7 @@
+[![Build Status](https://img.shields.io/travis/material-components/material-components-web/master.svg)](https://travis-ci.org/material-components/material-components-web/)
+[![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
+[![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
+
 # Material Components for the web
 
 Material Components for the web (MDC-Web) help developers execute [Material Design](https://www.material.io).
