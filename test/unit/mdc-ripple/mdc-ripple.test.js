@@ -111,10 +111,10 @@ test('adapter#isSurfaceActive calls the correct :matches API method on the root 
   assert.isOk(component.getDefaultFoundation().adapter_.isSurfaceActive());
 });
 
-test('adapter#shouldIgnoreRippleActivation is set to the instance\'s disabled state', () => {
+test('adapter#isSurfaceDisabled delegates to component\'s disabled getter', () => {
   const {component} = setupTest();
   component.disabled = true;
-  assert.isTrue(component.getDefaultFoundation().adapter_.shouldIgnoreRippleActivation());
+  assert.isTrue(component.getDefaultFoundation().adapter_.isSurfaceDisabled());
 });
 
 test('adapter#addClass adds a class to the root', () => {

@@ -260,7 +260,7 @@ ripple to. The adapter API is as follows:
 | `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Safari considerations](#caveat-safari) into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
 | `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
-| `shouldIgnoreRippleActivation() => boolean` | Initially set to false, this method is intended to be overridden at the individual component level so that the ripple knows whether or not to activate. e.g.: disabled `mdc-radio` components should not activate a ripple when their corresponding label is clicked. |
+| `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
 | `removeClass(className: string) => void` | Removes a class from the ripple surface |
 | `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler that's invoked when the ripple is interacted with using type `evtType`. Essentially equivalent to `HTMLElement.prototype.addEventListener`. |
