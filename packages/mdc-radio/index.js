@@ -61,7 +61,6 @@ export class MDCRadio extends MDCComponent {
 
   initRipple_() {
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      shouldIgnoreRippleActivation: () => this.disabled,
       isUnbounded: () => true,
       // Radio buttons technically go "active" whenever there is *any* keyboard interaction. This is not the
       // UI we desire.

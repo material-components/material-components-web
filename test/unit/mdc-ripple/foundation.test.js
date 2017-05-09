@@ -39,7 +39,7 @@ test('numbers returns constants.numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCRippleFoundation, [
-    'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'shouldIgnoreRippleActivation',
+    'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'isSurfaceDisabled',
     'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerResizeHandler', 'deregisterResizeHandler', 'updateCssVariable',
     'computeBoundingRect', 'getWindowPageOffset',
