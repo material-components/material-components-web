@@ -56,6 +56,7 @@ const CSS_LOADER_CONFIG = [
   {
     loader: 'postcss-loader',
     options: {
+      sourceMap: true,
       plugins: () =>[require('autoprefixer')({grid: false})],
     },
   },
