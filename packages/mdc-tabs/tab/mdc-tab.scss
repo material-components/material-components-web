@@ -73,7 +73,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
     padding: 0 12px;
   }
 
-  // postcss-bem-linter: ignore
   &__icon {
     @include mdc-tabs-icon-tab-content;
 

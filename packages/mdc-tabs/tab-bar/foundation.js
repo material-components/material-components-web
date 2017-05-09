@@ -109,6 +109,27 @@ export default class MDCTabBarFoundation extends MDCFoundation {
     }
   }
 
+  findActiveTabIndex_() {
+    let activeTabIndex = -1;
+    this.forEachTabIndex_((index) => {
+      if (this.adapter_.isTabActiveAtIndex(index)) {
+        activeTabIndex = index;
+        return true;
+      }
+    });
+    return activeTabIndex;
+  }
+
+  forEachTabIndex_(iterator) {
+    const numTabs = this.adapter_.getNumberOfTabs();
+    for (let index = 0; index < numTabs; index++) {
+      const shouldBreak = iterator(index);
+      if (shouldBreak) {
+        break;
+      }
+    }
+  }
+
   layout() {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
@@ -143,24 +164,7 @@ export default class MDCTabBarFoundation extends MDCFoundation {
     });
   }
 
-  findActiveTabIndex_() {
-    let activeTabIndex = -1;
-    this.forEachTabIndex_((index) => {
-      if (this.adapter_.isTabActiveAtIndex(index)) {
-        activeTabIndex = index;
-        return true;
-      }
-    });
-    return activeTabIndex;
-  }
-
-  forEachTabIndex_(iterator) {
-    const numTabs = this.adapter_.getNumberOfTabs();
-    for (let index = 0; index < numTabs; index++) {
-      const shouldBreak = iterator(index);
-      if (shouldBreak) {
-        break;
-      }
-    }
+  getActiveTabIndex() {
+    return this.findActiveTabIndex_();
   }
 }

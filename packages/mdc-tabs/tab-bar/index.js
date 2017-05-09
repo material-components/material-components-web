@@ -32,11 +32,12 @@ export class MDCTabBar extends MDCComponent {
   }
 
   get activeTab() {
-    return this.tabs[this.foundation_.activeTabIndex_];
+    const activeIndex = this.foundation_.getActiveTabIndex();
+    return this.tabs[activeIndex];
   }
 
   set activeTab(tab) {
-    this.foundation_.switchToTabAtIndex(this.tabs.indexOf(tab), true);
+    this.setActiveTab_(tab, false);
   }
 
   get activeTabIndex() {

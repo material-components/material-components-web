@@ -112,13 +112,32 @@ test('#preventsDefaultOnClick returns state of preventsDefaultOnClick', () => {
   assert.isTrue(foundation.preventsDefaultOnClick());
 });
 
-test('#setPreventDefaultOnClick sets preventDefaultOnClick_' +
- 'to the value of preventDefaultOnClick argument', () => {
-   const {foundation} = setupTest();
+test('#setPreventDefaultOnClick does not preventDefault if set to false', () => {
+   const {foundation, mockAdapter} = setupTest();
+   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+   const evt = {
+     preventDefault: td.func('evt.stopPropagation'),
+   };
 
+   foundation.init();
    foundation.setPreventDefaultOnClick(false);
 
-   assert.isFalse(foundation.preventDefaultOnClick_);
+   handlers.click(evt);
+   td.verify(evt.preventDefault(), {times: 0});
+});
+
+test('#setPreventDefaultOnClick calls preventDefault if set to true', () => {
+   const {foundation, mockAdapter} = setupTest();
+   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+   const evt = {
+     preventDefault: td.func('evt.stopPropagation'),
+   };
+
+   foundation.init();
+   foundation.setPreventDefaultOnClick(true);
+
+   handlers.click(evt);
+   td.verify(evt.preventDefault());
 });
 
 test('#setPreventDefaultOnClick sets preventDefaultOnClick_ to true. Subsequent clicks ' +

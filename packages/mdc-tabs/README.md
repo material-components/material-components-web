@@ -205,8 +205,9 @@ currently active tab.
 
 ### Using the JavaScript Component
 
-`mdc-tab-bar` ships with a Component / Foundation combo for `mdc-tab` (a tab),
-`mdc-tab-bar`(a collection components of type MDC-Tab), and
+`mdc-tab-bar` ships with a Component/Foundation combo for ingesting instances of `mdc-tab` (a tab).
+`mdc-tab-bar` uses its `initialize()` method call a factory function which gathers and instantiates
+any tab elements that are children of the `mdc-tab-bar` root element.
 
 
 #### Including in code
@@ -286,9 +287,31 @@ const tabBar = new MDCTabBar(document.querySelector('#my-mdc-tab-bar'));
 
 ### Tab component API
 
-#### MDCTab.destroy() => void
+#### setters/getters
+--------------------
+#### get:computedWidth() => number
 
-Cleans up ripple when tab is destroyed
+Returns the width of the tab.
+
+#### get:computedLeft() => number
+
+Returns the left offset of a tab.
+
+#### get:isActive => boolean
+
+Returns true if the tab is the currently active tab.
+
+#### set:isActive(isActive: boolean) => void
+
+Sets a tab's `isActive` property to the value assigned.
+
+#### get:preventDefaultOnClick() => boolean
+
+Returns true if the tab will call evt.preventDefault() when actioned on.
+
+#### set:preventDefaultOnClick(preventDefaultOnClick: boolean) => void
+
+Sets a tab's `preventsDefaultOnClick` property to the value assigned.
 
 ### Tab Events
 
@@ -351,10 +374,28 @@ Sets `computedWidth_` and `computedLeft_` for a tab.
 
 ### Tab Bar component API
 
-#### MDCTabBar.initialize() => void
+#### setters/getters
+--------------------
 
-Instantiates `mdc-tab` components and initializes private properties
+#### get:tabs() => MDCTab[]
 
+Returns an array containing tabs.
+
+#### get:activeTab() => MDCTab
+
+Returns the currently active tab.
+
+#### set:activeTab(tab: MDCTab) => void
+
+Sets a provided tab to active.
+
+#### get:activeTabIndex() => number
+
+Returns the index of the currently active tab.
+
+#### set:activeTabIndex(index: number) => void
+
+Sets a provided tab index to active.
 
 ### Tab Bar Events
 
@@ -412,3 +453,7 @@ Returns the width of the element containing the tabs.
 #### MDCTabBarFoundation.switchToTabAtIndex(index, shouldNotify) => void
 
 Updates the active tab to be the tab at the given index, emits `MDCTabBar:change` if `shouldNotify` is true.
+
+#### MDCTabBarFoundation.getActiveTabIndex() => number
+
+Returns the index of the currently active tab.

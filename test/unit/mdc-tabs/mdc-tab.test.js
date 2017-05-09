@@ -28,7 +28,7 @@ import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
 function getFixture() {
   return bel`
     <div>
-      <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
+      <a class="mdc-tab" href="#one">Item One</a>
     </div>`;
 }
 
@@ -104,7 +104,6 @@ test('adapter#removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
 
   root.classList.add('foo');
-  assert.isTrue(root.classList.contains('foo'));
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
 });

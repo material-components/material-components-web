@@ -57,17 +57,6 @@ function setupTest() {
   return {fixture, root, indicator, component, foundation};
 }
 
-const createMockHandler = () => {
-  let changeHandler;
-  const {component} = setupTest();
-
-  td.when(component.getDefaultFoundation().adapter_.bindOnMDCTabSelectedEvent()).thenDo((fn) => {
-    changeHandler = fn;
-  });
-
-  return {changeHandler};
-};
-
 suite('MDCTabBar');
 
 test('attachTo returns a component instance', () => {
@@ -94,13 +83,16 @@ test('#get activeTab returns active tab', () => {
 });
 
 test('#set activeTab proxies to foundation_.switchToTabAtIndex', () => {
-  const {root, foundation} = setupTest();
-  const component = new MDCTabBar(root, foundation);
-  const targetIndex = 1;
-  const tab = component.tabs[targetIndex];
+  const raf = createMockRaf();
+  const {component} = setupTest();
+  const tab = new MockTab();
+  component.tabs.push(tab);
 
   component.activeTab = tab;
-  td.verify(foundation.switchToTabAtIndex(targetIndex, td.matchers.isA(Boolean)));
+  raf.flush();
+
+  assert.isTrue(tab.isActive);
+  raf.restore();
 });
 
 test('#get activeTabIndex returns active tab', () => {
@@ -113,11 +105,16 @@ test('#get activeTabIndex returns active tab', () => {
 });
 
 test('#set activeTabIndex proxies to foundation_.switchToTabAtIndex', () => {
-  const {root, foundation} = setupTest();
-  const component = new MDCTabBar(root, foundation);
+  const raf = createMockRaf();
+  const {component} = setupTest();
+  const tab = new MockTab();
+  component.tabs.push(tab);
 
-  component.activeTabIndex = 1;
-  td.verify(foundation.switchToTabAtIndex(1, td.matchers.isA(Boolean)));
+  component.activeTabIndex = component.tabs.indexOf(tab);
+  raf.flush();
+
+  assert.isTrue(tab.isActive);
+  raf.restore();
 });
 
 test('adapter#addClass adds a class to the root element', () => {
@@ -153,10 +150,19 @@ test('adapter#bindOnMDCTabSelectedEvent adds event listener for MDCTab:selected 
 });
 
 test('on MDCTab:selected if tab is not in tab bar, throw Error', () => {
+  const {component} = setupTest();
   const tab = new MockTab();
-  const {changeHandler} = createMockHandler();
 
-  assert.throws(() => changeHandler({detail: {tab}}));
+  // This is purely to make sure that bindOnMDCTabSelectedEvent() is executed
+  // and does not throw.
+  component.getDefaultFoundation().adapter_.bindOnMDCTabSelectedEvent();
+
+  // NOTE: Because of this issue: https://bugs.chromium.org/p/chromium/issues/detail?id=239648#
+  // Chai cannot observe an error thrown as a result of an event being dispatched.
+  const evtObj = {
+    detail: {tab},
+  };
+  assert.throws(() => component.tabSelectedHandler_(evtObj));
 });
 
 test('adapter#unbindOnMDCTabSelectedEvent removes listener from component', () => {

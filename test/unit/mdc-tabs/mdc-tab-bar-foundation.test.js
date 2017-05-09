@@ -79,14 +79,16 @@ test('#init sets active tab if index of active tab on init() is > 0', () => {
   assert.isTrue(mockAdapter.isTabActiveAtIndex(activeTabIndex));
 });
 
-test('#init sets -webkit-transform and transform for indicator', () => {
+test('#init sets styles for indicator', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
   foundation.init();
   raf.flush();
 
-  td.verify(mockAdapter.setStyleForIndicator(td.matchers.anything(), td.matchers.anything()));
+  td.verify(mockAdapter.setStyleForIndicator('transform', td.matchers.isA(String)));
+  td.verify(mockAdapter.setStyleForIndicator('transition', td.matchers.isA(String)));
+  td.verify(mockAdapter.setStyleForIndicator('visibility', td.matchers.isA(String)));
 
   raf.restore();
 });
@@ -146,4 +148,17 @@ test('#switchToTabAtIndex makes tab active', () => {
   td.verify(mockAdapter.setTabActiveAtIndex(tabToSwitchTo, shouldNotify));
   td.verify(mockAdapter.notifyChange(td.matchers.anything()));
   raf.restore();
+});
+
+test('#getActiveTabIndex returns the active tab index', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const activeTabIndex = 2;
+  const numberOfTabs = 5;
+
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numberOfTabs);
+  td.when(mockAdapter.isTabActiveAtIndex(activeTabIndex)).thenReturn(true);
+
+  foundation.init();
+
+  assert.equal(foundation.getActiveTabIndex(), activeTabIndex);
 });
