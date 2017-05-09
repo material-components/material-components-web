@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Select Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <style type="text/css">
+
+      .mdc-theme--dark {
+        background-color: #303030;
+        color: #eee;
+      }
+
+      .container {
+        display: inline-block;
+        max-width: 100%;
+        margin: auto;
+        padding: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>MDC Range Slider</h1>
+      <hr />
+      <section class="container">
+
+        <legend>Standard</legend>
+        <input type="range" class="mdc-range-slider" value="5" min="0" max="10" step="1" />
+
+        <hr />
+
+        <legend>Disabled</legend>
+        <input type="range" class="mdc-range-slider" value="5" min="0" max="10" step="1" disabled="true" />
+
+        <hr />
+
+        <legend>Primary</legend>
+        <input type="range" value="5" min="0" max="10" step="1" class="mdc-range-slider mdc-range-slider--primary" />
+
+        <hr />
+
+        <legend>Accent</legend>
+        <input type="range" value="5" min="0" max="10" step="1" class="mdc-range-slider mdc-range-slider--accent" />
+
+      </section>
+
+      <section class="container mdc-theme--dark">
+
+        <legend>Standard<legend>
+        <input type="range" class="mdc-range-slider" value="5" min="0" max="10" step="1" />
+
+        <hr />
+
+        <legend>Disabled</legend>
+        <input type="range" class="mdc-range-slider mdc-range-slider--disabled" value="5" min="0" max="10" step="1" />
+
+        <hr />
+
+        <legend>Primary</legend>
+        <input type="range" value="5" min="0" max="10" step="1" class="mdc-range-slider mdc-range-slider--primary" />
+
+        <hr />
+
+        <legend>Accent</legend>
+        <input type="range" value="5" min="0" max="10" step="1" class="mdc-range-slider mdc-range-slider--accent" />
+
+      </section>
+    </main>
+  </body>
+</html>

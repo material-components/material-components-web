@@ -1,0 +1,243 @@
+/* Copyright 2016 Google Inc. All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. */
+@import "@material/elevation/mixins";
+@import "@material/theme/mixins";
+@import "variables";
+@import "mixins";
+
+.mdc-range-slider {
+  -webkit-appearance: none;
+  margin: $mdc-range-slider-input-height / 2 0;
+  background: transparent;
+
+  /* Focus */
+  &:focus { outline: none; }
+  &::-moz-focus-outer { border: 0; }
+
+  /* Chrome */
+  &::-webkit-slider-runnable-track {
+    @include mdc-range-slider-track;
+    background-color: darken($mdc-theme-background, 60%);
+    -webkit-appearance: none;
+  }
+  &::-webkit-slider-thumb {
+    @include mdc-range-slider-thumb;
+    @include mdc-theme-prop(background-color, text-primary-on-primary);
+    margin-top: $mdc-range-slider-thumb-margin-top;
+    border-style: solid;
+    border-color: darken($mdc-theme-background, 40%);
+    -webkit-appearance: none;
+  }
+
+  /* FireFox */
+  &::-moz-range-track {
+    @include mdc-range-slider-track;
+    @include mdc-theme-prop(background-color, text-disabled-on-background);
+
+    @include mdc-theme-dark { opacity: .5; }
+  }
+  &::-moz-range-progress {
+    @include mdc-range-slider-track;
+    background-color: darken($mdc-theme-background, 20%);
+  }
+  &::-moz-range-thumb {
+    @include mdc-range-slider-thumb;
+    background-color: darken($mdc-theme-background, 20%);
+  }
+
+  /* iE */
+
+  &::-ms-track {
+    @include mdc-range-slider-track;
+    border-width: $mdc-range-slider-thumb-width 0;
+    background: transparent;
+    color: transparent;
+  }
+  &::-ms-fill-lower {
+    background-color: darken($mdc-theme-background, 20%);
+  }
+  &::-ms-fill-upper {
+    @include mdc-theme-prop(background-color, text-disabled-on-background);
+
+    @include mdc-theme-dark { opacity: .5; }
+  }
+  &::-ms-thumb {
+    @include mdc-range-slider-thumb;
+    background-color: darken($mdc-theme-background, 20%);
+  }
+
+  @include mdc-theme-dark(".mdc-range-slider", true) {
+    opacity: .8;
+  }
+
+  &:disabled,
+  &--disabled {
+    &::-webkit-slider-runnable-track {
+      @include mdc-theme-prop(background-color, text-disabled-on-background);
+    }
+    &::-webkit-slider-thumb {
+      @include mdc-elevation(0);
+      @include mdc-theme-prop(border-color, text-disabled-on-background);
+      @include mdc-theme-prop(background-color, background);
+      border-width: $mdc-range-slider-thumb-boarder-width * 2;
+    }
+
+    &::-moz-range-progress {
+      background-color: darken($mdc-theme-background, 40%);
+    }
+    &::-moz-range-track {
+      background-color: darken($mdc-theme-background, 40%);
+    }
+    &::-moz-range-thumb {
+      @include mdc-elevation(0);
+      @include mdc-theme-prop(border-color, text-disabled-on-background);
+      @include mdc-theme-prop(background-color, background);
+
+      border-width: $mdc-range-slider-thumb-boarder-width * 2;
+      border-style: solid;
+
+    }
+    &::-ms-fill-upper {
+      background-color: darken($mdc-theme-background, 40%);
+    }
+    &::-ms-thumb {
+      @include mdc-elevation(0);
+      @include mdc-theme-prop(border-color, text-disabled-on-background);
+      @include mdc-theme-prop(background-color, text-primary-on-primary);
+      border-width: $mdc-range-slider-thumb-boarder-width * 2;
+      border-style: solid;
+    }
+
+    @include mdc-theme-dark(".mdc-range-slider", true) {
+      opacity: .5;
+    }
+  }
+
+  &:active {
+    &::-webkit-slider-thumb {
+      @include mdc-range-slider-thumb-focus;
+      @include mdc-theme-prop(border-color, text-disabled-on-light);
+      margin-top: $mdc-range-slider-thumb-focus-margin-top;
+    }
+    &::-moz-range-thumb {
+      @include mdc-range-slider-thumb-focus;
+      @include mdc-theme-prop(border-color, text-disabled-on-light);
+    }
+    &::-ms-thumb {
+      @include mdc-range-slider-thumb-focus;
+      @include mdc-theme-prop(border-color, text-disabled-on-light);
+    }
+  }
+
+  &--primary {
+    &::-webkit-slider-runnable-track {
+      @include mdc-theme-prop(background-color, primary);
+    }
+    &::-webkit-slider-thumb {
+      @include mdc-theme-prop(border-color, primary);
+
+      @include mdc-theme-dark {
+        background-color: darken($mdc-theme-background, 10%);
+      }
+    }
+    &::-moz-range-track {
+      @include mdc-theme-prop(background-color, text-disabled-on-background);
+
+      @include mdc-theme-dark { opacity: .5; }
+    }
+    &::-moz-range-progress {
+      @include mdc-theme-prop(background-color, primary);
+    }
+    &::-moz-range-thumb {
+      @include mdc-theme-prop(background-color, primary);
+    }
+    &::-ms-fill-lower {
+      @include mdc-theme-prop(background-color, primary);
+    }
+    &::-ms-fill-upper {
+      @include mdc-theme-prop(background-color, text-disabled-on-background);
+
+      @include mdc-theme-dark { opacity: .5; }
+    }
+    &::-ms-thumb {
+      @include mdc-theme-prop(background-color, primary);
+    }
+    &:active {
+      &::-webkit-slider-thumb {
+        border-color: rgba($mdc-theme-primary, .6);
+      }
+      &::-moz-range-thumb {
+        @include mdc-theme-prop(border-color, text-disabled-on-primary);
+      }
+      &::-ms-thumb {
+        @include mdc-theme-prop(border-color, text-disabled-on-primary);
+      }
+    }
+
+    @include mdc-theme-dark(".mdc-range-slider", true) {
+      opacity: 1;
+    }
+  }
+  &--accent {
+    &::-webkit-slider-runnable-track {
+      @include mdc-theme-prop(background-color, accent);
+    }
+    &::-webkit-slider-thumb {
+      @include mdc-theme-prop(border-color, accent);
+
+      @include mdc-theme-dark {
+        background-color: darken($mdc-theme-background, 10%);
+      }
+    }
+    &::-moz-range-progress {
+      @include mdc-theme-prop(background-color, accent);
+    }
+    &::-moz-range-track {
+      @include mdc-theme-prop(background-color, text-disabled-on-background);
+
+      @include mdc-theme-dark {
+        opacity: .5;
+      }
+    }
+    &::-moz-range-thumb {
+      @include mdc-theme-prop(background-color, accent);
+    }
+    &::-ms-fill-lower {
+      @include mdc-theme-prop(background-color, accent);
+    }
+    &::-ms-fill-upper {
+      @include mdc-theme-prop(background-color, text-disabled-on-background);
+
+      @include mdc-theme-dark { opacity: .5; }
+    }
+    &::-ms-thumb {
+      @include mdc-theme-prop(background-color, accent);
+    }
+
+    &:active {
+      &::-webkit-slider-thumb {
+        border-color: rgba($mdc-theme-accent, .6);
+      }
+      &::-moz-range-thumb {
+        @include mdc-theme-prop(border-color, text-disabled-on-accent);
+      }
+      &::-ms-thumb {
+        @include mdc-theme-prop(border-color, text-disabled-on-accent);
+      }
+    }
+
+    @include mdc-theme-dark(".mdc-range-slider", true) {
+      opacity: 1;
+    }
+  }
+}
