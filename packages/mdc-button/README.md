@@ -16,7 +16,12 @@ If you initiate the JavaScript object for a button, then it will be enhanced wit
 ## Design & API Documentation
 
 <ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec"><a href="https://material.io/guidelines/components/buttons.html">Buttons</a></li>
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/buttons.html">Buttons</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/button.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

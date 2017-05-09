@@ -18,6 +18,9 @@ not require any javascript.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/text-fields.html">Text Fields</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/textfield.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

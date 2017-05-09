@@ -20,6 +20,9 @@ a dialog should be.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/dialogs.html">Dialogs</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/dialog.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

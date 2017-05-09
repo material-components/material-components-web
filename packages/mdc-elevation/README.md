@@ -29,6 +29,9 @@ which was created in collaboration with the designers on the Material Design tea
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/what-is-material/elevation-shadows.html">Shadows & elevation</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/elevation.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

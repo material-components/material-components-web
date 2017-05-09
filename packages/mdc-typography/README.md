@@ -18,6 +18,9 @@ developers as CSS classes.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/style/typography.html">Typography</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/typography.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

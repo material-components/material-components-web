@@ -18,6 +18,9 @@ It works without JavaScript.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-switch">Selection Controls – Switch</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/switch.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

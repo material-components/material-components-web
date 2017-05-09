@@ -15,7 +15,12 @@ developers as a set of CSS classes.
 ## Design & API Documentation
 
 <ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec"><a href="https://material.io/guidelines/components/cards.html">Cards</a></li>
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/cards.html">Cards</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/card.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

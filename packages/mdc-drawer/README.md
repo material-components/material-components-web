@@ -19,6 +19,15 @@ user interaction.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/patterns/navigation-drawer.html">Navigation drawer</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/persistent-drawer.html">Demo: Persistent Drawer</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/permanent-drawer-above-toolbar.html">Demo: Permanent Drawer Above Toolbar</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/permanent-drawer-below-toolbar.html">Demo: Permanent Drawer Below Toolbar</a>
+  </li>
 </ul>
 
 ## Installation

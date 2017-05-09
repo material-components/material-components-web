@@ -20,6 +20,9 @@ It uses [CSS Grid](https://www.w3.org/TR/css-grid-1/) where possible, with a CSS
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-grid">Layout grid guidelines</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/layout-grid.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

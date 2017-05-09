@@ -21,6 +21,9 @@ in conjunction with the browser's native element. Both are fully accessible, and
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/menus.html">Menus</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/select.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

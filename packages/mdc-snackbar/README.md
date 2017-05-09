@@ -18,6 +18,9 @@ It requires JavaScript the trigger the display and hide of the snackbar.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/snackbars-toasts.html">Snackbars & toasts</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/snackbar.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation
