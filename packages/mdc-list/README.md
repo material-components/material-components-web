@@ -2,6 +2,7 @@
 title: "Lists"
 layout: detail
 section: components
+excerpt: "Lists present multiple line items vertically as a single continuous element."
 iconId: list
 path: /catalog/lists/
 -->

@@ -2,6 +2,7 @@
 title: "Dialogs"
 layout: detail
 section: components
+excerpt: "Modal dialogs."
 iconId: dialog
 path: /catalog/dialogs/
 -->
