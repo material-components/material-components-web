@@ -28,13 +28,13 @@ Get up and running with Material Components for web
 
 1.  {: .step-list-item } ### Install the library
 
-    Start by installing the library from NPM:
+    Start by installing the library from [npm](https://npmjs.com):
 
     ```
     npm install --save material-components-web
     ```
 
-2.  {: .step-list-item } ### Include stylesheet
+2.  {: .step-list-item } ### Include the stylesheet
     
     Include the MDC-Web stylesheet in the head of your file
     
@@ -61,7 +61,7 @@ Get up and running with Material Components for web
       </body>
     ```
 
-4.  {: .step-list-item } ### Add scripts and initiate
+4.  {: .step-list-item } ### Add scripts and instantiate
 
     Add the MDC-Web scripts and call MDC Auto Init. 
 
