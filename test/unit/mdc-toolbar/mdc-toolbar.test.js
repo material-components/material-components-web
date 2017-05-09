@@ -19,7 +19,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {strings} from '../../../packages/mdc-toolbar/constants';
+import {strings, events} from '../../../packages/mdc-toolbar/constants';
 import {MDCToolbar} from '../../../packages/mdc-toolbar';
 
 function getFixture() {
@@ -158,12 +158,12 @@ test('adapter#getFlexibleRowElementOffsetHeight returns the height of the flexib
     flexibleRowElement.offsetHeight);
 });
 
-test('adapter#notifyChange emits MDCToolbar:change', () => {
+test(`adapter#notifyChange emits ${events.CHANGE_EVENT}`, () => {
   const {component} = setupTest();
 
   const handler = td.func('changeHandler');
 
-  component.listen('MDCToolbar:change', handler);
+  component.listen(events.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange();
 
   td.verify(handler(td.matchers.anything()));

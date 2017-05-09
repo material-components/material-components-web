@@ -20,7 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCTemporaryDrawer} from '../../../packages/mdc-drawer/temporary';
-import {strings} from '../../../packages/mdc-drawer/temporary/constants';
+import {strings, events} from '../../../packages/mdc-drawer/temporary/constants';
 import {getTransformPropertyName, supportsCssCustomProperties} from '../../../packages/mdc-drawer/util';
 
 function getFixture() {
@@ -48,9 +48,9 @@ test('get/set open', () => {
   const {root, component} = setupTest();
 
   const openHandler = td.func('notifyOpen handler');
-  root.addEventListener('MDCTemporaryDrawer:open', openHandler);
+  root.addEventListener(events.OPEN_EVENT, openHandler);
   const closeHandler = td.func('notifyClose handler');
-  root.addEventListener('MDCTemporaryDrawer:close', closeHandler);
+  root.addEventListener(events.CLOSE_EVENT, closeHandler);
 
   component.open = true;
   assert.isOk(root.classList.contains('mdc-temporary-drawer--open'));
@@ -243,18 +243,18 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () =
   assert.equal(el.getAttribute('tabindex'), '-1');
 });
 
-test('adapter#notifyOpen fires an "MDCTemporaryDrawer:open" custom event', () => {
+test(`adapter#notifyOpen fires an ${events.OPEN_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('notifyOpen handler');
-  root.addEventListener('MDCTemporaryDrawer:open', handler);
+  root.addEventListener(events.OPEN_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyOpen();
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#notifyClose fires an "MDCTemporaryDrawer:close" custom event', () => {
+test(`adapter#notifyClose fires an ${events.CLOSE_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('notifyClose handler');
-  root.addEventListener('MDCTemporaryDrawer:close', handler);
+  root.addEventListener(events.CLOSE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyClose();
   td.verify(handler(td.matchers.anything()));
 });
