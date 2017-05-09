@@ -2,6 +2,7 @@
 title: "RTL"
 layout: detail
 section: components
+excerpt: "Right-to-left and bi-directional text layout via SCSS helpers."
 path: /catalog/rtl/
 -->
 

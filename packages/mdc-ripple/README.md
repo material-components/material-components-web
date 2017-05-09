@@ -2,6 +2,7 @@
 title: "Ripples"
 layout: detail
 section: components
+excerpt: "Ink ripple touch feedback effect."
 iconId: ripple
 path: /catalog/ripples/
 -->

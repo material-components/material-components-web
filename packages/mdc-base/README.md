@@ -2,6 +2,7 @@
 title: "Base"
 layout: detail
 section: components
+excerpt: "Base foundation and component classes."
 path: /catalog/base/
 -->
 

@@ -2,6 +2,7 @@
 title: "Cards"
 layout: detail
 section: components
+excerpt: "Cards for displaying content composed of different elements."
 iconId: card
 path: /catalog/cards/
 -->
