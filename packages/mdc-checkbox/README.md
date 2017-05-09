@@ -1,8 +1,27 @@
-# MDC Checkbox
+<!--docs:
+title: "Checkboxes"
+layout: detail
+section: components
+iconId: selection_control
+path: /catalog/checkboxes/
+-->
+
+# Checkboxes
 
 The MDC Checkbox component is a spec-aligned checkbox component adhering to the
-[Material Design checkbox requirements](https://material.google.com/components/selection-controls.html#selection-controls-checkbox).
+[Material Design checkbox requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox).
 It works without JavaScript with basic functionality for all states. If you use the JavaScript object for a checkbox, it will add more intricate animation effects when switching between states.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox">Selection Controls – Checkbox</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/checkbox.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -90,7 +109,7 @@ Note that `mdc-checkbox--disabled` is necessary on the root element to prevent h
 ### Using the JS Component
 
 MDC Checkbox ships with a Component / Foundation combo which progressively enhances the checkbox
-state transitions to achieve full parity with the material design motion for switching checkbox
+state transitions to achieve full parity with the Material Design motion for switching checkbox
 states.
 
 #### Including in code
@@ -178,14 +197,12 @@ The adapter for checkboxes must provide the following functions, with correct si
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `registerAnimationEndHandler(handler: EventListener) => void` | Registers an event handler to be called when an `animationend` event is triggered on the root element. Note that you must account for
-vendor prefixes in order for this to work correctly. |
+| `registerAnimationEndHandler(handler: EventListener) => void` | Registers an event handler to be called when an `animationend` event is triggered on the root element. Note that you must account for vendor prefixes in order for this to work correctly. |
 | `deregisterAnimationEndHandler(handler: EventListener) => void` | Deregisters an event handler from an `animationend` event listener. This will only be called with handlers that have previously been passed to `registerAnimationEndHandler` calls. |
 | `registerChangeHandler(handler: EventListener) => void` | Registers an event handler to be called when a `change` event is triggered on the native control (_not_ the root element). |
 | `deregisterChangeHandler(handler: EventListener) => void` | Deregisters an event handler that was previously passed to `registerChangeHandler`. |
 | `getNativeControl() => HTMLInputElement?` | Returns the native checkbox control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
-| `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart
-animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
+| `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
 | `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise.` |
 
 #### MDCCheckboxFoundation API

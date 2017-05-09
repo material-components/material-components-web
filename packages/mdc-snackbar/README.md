@@ -1,8 +1,27 @@
-# MDC Snackbar
+<!--docs:
+title: "Snackbars"
+layout: detail
+section: components
+iconId: toast
+path: /catalog/snackbars/
+-->
+
+# Snackbars
 
 The MDC Snackbar component is a spec-aligned snackbar/toast component adhering to the
-[Material Design snackbars & toasts requirements](https://material.google.com/components/snackbars-toasts.html#snackbars-toasts-specs).
+[Material Design snackbars & toasts requirements](https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs).
 It requires JavaScript the trigger the display and hide of the snackbar.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/snackbars-toasts.html">Snackbars & toasts</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/snackbar.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -66,7 +85,7 @@ const MDCSnackbarFoundation = mdc.snackbar.MDCSnackbarFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the snackbar, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));

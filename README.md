@@ -1,3 +1,7 @@
+[![Build Status](https://img.shields.io/travis/material-components/material-components-web/master.svg)](https://travis-ci.org/material-components/material-components-web/)
+[![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
+[![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
+
 # Material Components for the web
 
 Material Components for the web (MDC-Web) help developers execute [Material Design](https://www.material.io).
@@ -6,7 +10,7 @@ Developed by a core team of engineers and UX designers at Google, these componen
 Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
 
 - Production-ready components consumable in an a-la-carte fashion
-- Best-in-class performance and adherence to the [Material Design guidelines](https://material.google.com)
+- Best-in-class performance and adherence to the [Material Design guidelines](https://material.io/guidelines)
 - Seamless integration with other JS frameworks and libraries
 
 MDC-Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
@@ -146,7 +150,7 @@ open http://localhost:8080
 - [Contributing](CONTRIBUTING.md)
 - [Developing MDC-Web Components](docs/developer.md)
 - [Material.io](https://www.material.io) (external site)
-- [Material Design Guidelines](https://material.google.com) (external site)
+- [Material Design Guidelines](https://material.io/guidelines) (external site)
 
 ## Browser Support
 

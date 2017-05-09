@@ -1,4 +1,11 @@
-# MDC-Web Auto Init
+<!--docs:
+title: "Auto Init"
+layout: detail
+section: components
+path: /catalog/auto-init/
+-->
+
+# Auto Init
 
 `mdc-auto-init` is a utility package that provides declarative, DOM-based method of initialization
 for MDC-Web components on simple web sites. Note that for more advanced use-cases and complex sites,
