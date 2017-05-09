@@ -2,6 +2,7 @@
 title: "Theme"
 layout: detail
 section: components
+excerpt: "Color theming for MDC-Web components."
 iconId: theme
 path: /catalog/theme/
 -->

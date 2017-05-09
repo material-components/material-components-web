@@ -2,6 +2,7 @@
 title: "Grid Lists"
 layout: detail
 section: components
+excerpt: "An RTL-aware Material Design grid list component."
 iconId: card
 path: /catalog/grid-lists/
 -->
