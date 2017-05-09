@@ -2,6 +2,7 @@
 title: "Layout Grids"
 layout: detail
 section: components
+excerpt: "Responsive grids using CSS/SCSS."
 iconId: responsive_layout
 path: /catalog/layout-grids/
 -->

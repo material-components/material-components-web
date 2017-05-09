@@ -2,6 +2,7 @@
 title: "Menus"
 layout: detail
 section: components
+excerpt: "Non-cascading Material Design menus."
 iconId: menu
 path: /catalog/menus/
 -->

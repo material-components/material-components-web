@@ -2,6 +2,7 @@
 title: "Toolbars"
 layout: detail
 section: components
+excerpt: "A container for multiple rows of items such as application title, navigation menu, or tabs."
 iconId: toolbar
 path: /catalog/toolbar/
 -->

@@ -2,6 +2,7 @@
 title: "Drawers"
 layout: detail
 section: components
+excerpt: "Permanent, persistent, and temporary drawers."
 iconId: side_navigation
 path: /catalog/drawers/
 -->

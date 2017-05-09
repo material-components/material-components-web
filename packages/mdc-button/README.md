@@ -2,6 +2,7 @@
 title: "Buttons"
 layout: detail
 section: components
+excerpt: "Material Design-styled buttons."
 iconId: button
 path: /catalog/buttons/
 -->

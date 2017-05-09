@@ -2,6 +2,7 @@
 title: "Animation"
 layout: detail
 section: components
+excerpt: "Animation timing curves and utilities for smooth and consistent motion."
 iconId: animation
 path: /catalog/animation/
 -->
