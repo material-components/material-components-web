@@ -34,7 +34,6 @@
         padding: 24px;
       }
 
-
       .example h2 {
         font-size: 1.3em;
         margin-bottom: 0.8em;
@@ -90,8 +89,22 @@
         </div>
       </section>
 
+      <section class="example">
+          <div class="mdc-form-field">
+            <div class="mdc-checkbox">
+              <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
+          </div>
+      </section>
 
-      <div class="example">
+      <section class="example examples">
         <h2>Grid List (Default): empty grid</h2>
         <div class="mdc-grid-list">
           <ul class="mdc-grid-list__tiles">
@@ -705,23 +718,31 @@
             </li>
           </ul>
         </div>
-      </div>
-      <div class="example">
-        <button type="button" class="mdc-button" onclick="toggleRTL(this)">Toggle RTL</button>
-      </div>
+      </section>
+
     </main>
     <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script type="text/javascript">
-      function toggleRTL(elem) {
-        var gridListEl = elem.parentElement.querySelector('#example');
-        gridListEl.getAttribute('dir') === 'rtl' ? gridListEl.setAttribute('dir', 'ltr') : gridListEl.setAttribute('dir', 'rtl');
-      }
+      // function toggleRTL(elem) {
+      //   var gridListEl = elem.parentElement.querySelector('');
+      //   gridListEl.getAttribute('dir') === 'rtl' ? gridListEl.setAttribute('dir', 'ltr') : gridListEl.setAttribute('dir', 'rtl');
+      // }
       function initGridList() {
         var nodes = document.querySelectorAll('.mdc-grid-list');
         for (var i = 0, node; node = nodes[i]; i++) {
           mdc.gridList.MDCGridList.attachTo(node);
         }
       }
+      // Hook up RTL
+      var demoWrapper = document.querySelector('.examples');
+      document.getElementById('toggle-rtl').addEventListener('change', function () {
+        if (this.checked) {
+          demoWrapper.setAttribute('dir', 'rtl');
+        } else {
+          demoWrapper.removeAttribute('dir');
+        }
+      });
+
       // Hack for webpack async loading: Delay initialization until styles have loaded
       // This is not needed when using pre-built css and js
       setTimeout(function() {

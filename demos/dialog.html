@@ -17,7 +17,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDC-Web Dialog Demo</title>
+    <title>Dialog - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <link href="demos.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       </section>
 
       <div class="demo-body">
-    	<aside id="mdc-dialog-default"
+        <aside id="mdc-dialog-default"
           style="visibility:hidden;"
     	  class="mdc-dialog"
     	  role="alertdialog"
@@ -142,7 +142,7 @@
     	  <div class="mdc-dialog__backdrop"></div>
     	</aside>
   	</div>
-      <section class="demo-content">
+    <section class="example">
       <button id="default-dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog</button>
       <button id="dialog-with-list-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Scrolling Dialog</button>
       <div class="mdc-form-field">
@@ -215,11 +215,14 @@
       (function() {
         mdc.dialog.MDCDialog.attachTo(document.querySelector('.mdc-dialog'));
         const demoWrapper = document.querySelector('.demo-body');
+        const hero = document.querySelector('.hero');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
           if (this.checked) {
             demoWrapper.setAttribute('dir', 'rtl');
+            hero.setAttribute('dir', 'rtl');
           } else {
             demoWrapper.removeAttribute('dir');
+            hero.removeAttribute('dir');
           }
         });
         document.getElementById('toggle-dark').addEventListener('change', function(evt) {
