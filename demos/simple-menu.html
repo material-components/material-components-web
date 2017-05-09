@@ -19,11 +19,11 @@
     <meta charset="utf-8">
     <title>Simple Menu - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <link href="demos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
-    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
     <style>
       html,
       body,
@@ -37,7 +37,11 @@
         position: relative;
         flex: 1;
         margin-top: 16px;
-        background-color: antiquewhite;
+        background-color: #eef;
+      }
+
+      .mdc-menu-anchor {
+        margin: 16px;
       }
 
       .mdc-theme--dark {
@@ -47,13 +51,6 @@
       .mdc-menu-anchor {
         position: absolute;
       }
-
-      .example {
-        margin: 24px;
-        padding: 24px;
-      }
-
-
     </style>
   </head>
   <body>
@@ -113,30 +110,32 @@
         <div>
           <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
         </div>
-        <div class="demo-content">
-          <div class="mdc-menu-anchor">
-            <button class="toggle">Toggle</button>
 
-            <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
-              <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
-                <li class="mdc-list-divider" role="separator"></li>
+      </section>
 
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Print...</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Cast...</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Translate to English</li>
-                <li class="mdc-list-divider" role="separator"></li>
+      <div class="demo-content">
+        <div class="mdc-menu-anchor">
+          <button class="toggle">Reveal Menu</button>
 
-                <li class="mdc-list-item" role="menuitem" tabindex="0">View Page Source</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Inspect</li>
-              </ul>
-            </div>
+          <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
+            <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
+              <li class="mdc-list-divider" role="separator"></li>
+
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Print...</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Cast...</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Translate to English</li>
+              <li class="mdc-list-divider" role="separator"></li>
+
+              <li class="mdc-list-item" role="menuitem" tabindex="0">View Page Source</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">Inspect</li>
+            </ul>
           </div>
         </div>
-      </section>
+      </div>
     </main>
 
     <script src="../assets/material-components-web.js" charset="utf-8"></script>

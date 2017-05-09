@@ -81,6 +81,12 @@
         border: 1px solid rgba(0, 0, 0, 0.1);
       }
 
+      #demo-wrapper .mdc-list-group .mdc-list,
+      #demo-wrapper .mdc-theme--dark .mdc-list,
+      #demo-wrapper .mdc-theme--dark .mdc-list-group {
+        border: none;
+      }
+
       #demo-wrapper h2 {
         font-size: 1.5em;
         margin-bottom: 0.8em;
@@ -166,7 +172,8 @@
         <aside>
           <p>
           <em>NOTE:</em> For the purposes of this demo, we've set a max-width of 600px on all
-          <code>mdc-list</code> elements. This is not included in the base css, which has the list
+          <code>mdc-list</code> elements surrounded by a 1px border. This is
+          not included in the base css, which has the list
           take up as much width as possible (since it's a block element).
           </p>
         </aside>
@@ -1109,18 +1116,21 @@
         var cb = mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
         formField.input = cb;
         var demoWrapper = document.getElementById('demo-wrapper');
+        var hero = document.querySelector('.hero');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
           if (this.checked) {
             demoWrapper.setAttribute('dir', 'rtl');
+            hero.setAttribute('dir', 'rtl');
           } else {
             demoWrapper.removeAttribute('dir');
+            hero.removeAttribute('dir');
           }
         });
         // Delay initialization within development until styles have loaded
         setTimeout(initInteractiveLists, 250);
         function initInteractiveLists() {
           var interactiveListItems = document.querySelectorAll(
-            '[data-demo-interactive-list] .mdc-list-item'
+            '[data-demo-interactive-list] .mdc-list-item, .hero .mdc-list-item'
           );
           for (var i = 0, li; li = interactiveListItems[i]; i++) {
             mdc.ripple.MDCRipple.attachTo(li);

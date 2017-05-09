@@ -64,7 +64,7 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div id="js-select" class="mdc-select" role="listbox" tabindex="0">
+        <div id="hero-js-select" class="mdc-select" role="listbox" tabindex="0">
           <span class="mdc-select__selected-text">Pick a food group</span>
           <div class="mdc-simple-menu mdc-select__menu">
             <ul class="mdc-list mdc-simple-menu__items">
@@ -95,7 +95,7 @@
       </section>
 
       <section class="example">
-        <h2>Fully-Featured Component</h2>
+        <h2 class="mdc-typography--title">Fully-Featured Component</h2>
         <section id="demo-wrapper">
           <div id="js-select" class="mdc-select" role="listbox" tabindex="0">
             <span class="mdc-select__selected-text">Pick a food group</span>
@@ -141,7 +141,7 @@
         </div>
       </section>
       <section class="example">
-        <h2>CSS Only</h2>
+        <h2 class="mdc-typography--title">CSS Only</h2>
         <select class="mdc-select">
           <option value="" default selected>Pick a food group</option>
           <option value="grains">Bread, Cereal, Rice, and Pasta</option>
@@ -173,6 +173,7 @@
         </select>
       </section>
 
+      <!--
       <section class="example">
         <h2>Custom Menu + Native Menu on mobile</h2>
         <em>
@@ -180,6 +181,7 @@
           keeps them in sync?
         </em>
       </section>
+    -->
     </main>
     <script src="assets/material-components-web.js"></script>
     <script>
@@ -213,6 +215,9 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
+
+        var heroSelect = document.getElementById('hero-js-select');
+        mdc.select.MDCSelect.attachTo(heroSelect);
       })();
     </script>
   </body>
