@@ -2,6 +2,7 @@
 title: "Auto Init"
 layout: detail
 section: components
+excerpt: "Utilities for declarative, DOM-based initialization of components on simple web sites."
 path: /catalog/auto-init/
 -->
 

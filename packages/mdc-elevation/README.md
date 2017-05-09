@@ -2,6 +2,7 @@
 title: "Elevation"
 layout: detail
 section: components
+excerpt: "Shadows and elevation as Sass mixins and CSS classes."
 iconId: shadow
 path: /catalog/elevation/
 -->

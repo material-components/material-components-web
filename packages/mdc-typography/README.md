@@ -2,6 +2,7 @@
 title: "Typography"
 layout: detail
 section: components
+excerpt: "Material Design typography guidelines implemented via CSS."
 iconId: typography
 path: /catalog/typography/
 -->
