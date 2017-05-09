@@ -99,3 +99,13 @@ h2 {
   justify-content: center;
   flex-flow: row nowrap;
 }
+
+/* Default padding on all examples. */
+section.example {
+	padding: 24px;
+	margin: 24px;
+}
+
+section.example h2 {
+	margin-left: 0;
+}
