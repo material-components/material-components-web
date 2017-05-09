@@ -80,6 +80,27 @@
       /* 197sp, for 16:9 ratio with 350sp demo card width */
     }
 
+    .demo-card--small .mdc-card__media {
+      background-image: url("images/1-1.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: 10.938rem;
+      /* 175sp, for 1:1 ratio with 175sp demo card width */
+    }
+    
+    .demo-card--bg-demo {
+      height: 21.875rem;
+      /* 350sp */
+      background-image: url("images/1-1.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .demo-card--bg-demo .mdc-card__primary,
+    .demo-card--bg-demo .mdc-card__actions {
+      background: rgba(0, 0, 0, .4);
+    }
+
     #demo-wrapper {
       margin: 24px;
       display: flex;
@@ -213,20 +234,6 @@
       </div>
 
       <div>
-        <style>
-          .demo-card--bg-demo {
-            height: 21.875rem;
-            /* 350sp */
-            background-image: url("images/1-1.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-          }
-
-          .demo-card--bg-demo .mdc-card__primary,
-          .demo-card--bg-demo .mdc-card__actions {
-            background: rgba(0, 0, 0, .4);
-          }
-        </style>
         <div class="mdc-card mdc-card--theme-dark demo-card demo-card--bg-demo">
           <section class="mdc-card__primary">
             <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
@@ -240,15 +247,6 @@
       </div>
 
       <div>
-        <style>
-          .demo-card--small .mdc-card__media {
-            background-image: url("images/1-1.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 10.938rem;
-            /* 175sp, for 1:1 ratio with 175sp demo card width */
-          }
-        </style>
         <div class="mdc-card demo-card demo-card--small">
           <section class="mdc-card__media">
             <h1 class="mdc-card__title mdc-card__title--large">Title</h1>

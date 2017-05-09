@@ -34,10 +34,19 @@
       }
 
       .demo-content {
-        position: relative;
         flex: 1;
         margin-top: 16px;
-        background-color: #eef;
+      }
+
+      .demo-controls-container {
+        height: 100%;
+        width: 100%;
+      }
+
+      .demo-controls {
+        margin-left: auto;
+        margin-right: auto;
+        width: 320px;
       }
 
       .mdc-menu-anchor {
@@ -82,40 +91,15 @@
 
       <section class="example">
 
-        <p>
-          Button position:
-          <label>
-            <input type="radio" name="position" value="top left" checked>
-            Top left
-          </label>
-          <label>
-            <input type="radio" name="position" value="top right">
-            Top right
-          </label>
-          <label>
-            <input type="radio" name="position" value="bottom left">
-            Bottom left
-          </label>
-          <label>
-            <input type="radio" name="position" value="bottom right">
-            Bottom right
-          </label>
-        </p>
-        <p>
-          <label>
-            <input type="checkbox" name="dark">
-            Dark mode
-          </label>
-        </p>
-        <div>
-          <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
-        </div>
+
 
       </section>
 
       <div class="demo-content">
         <div class="mdc-menu-anchor">
-          <button class="toggle">Reveal Menu</button>
+          <button class="mdc-button mdc-button--raised mdc-button--primary toggle">
+            Reveal Menu
+          </button>
 
           <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
             <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
@@ -125,14 +109,45 @@
               <li class="mdc-list-divider" role="separator"></li>
 
               <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
-              <li class="mdc-list-item" role="menuitem" tabindex="0">Print...</li>
-              <li class="mdc-list-item" role="menuitem" tabindex="0">Cast...</li>
-              <li class="mdc-list-item" role="menuitem" tabindex="0">Translate to English</li>
-              <li class="mdc-list-divider" role="separator"></li>
-
-              <li class="mdc-list-item" role="menuitem" tabindex="0">View Page Source</li>
-              <li class="mdc-list-item" role="menuitem" tabindex="0">Inspect</li>
             </ul>
+          </div>
+        </div>
+
+        <div class="demo-controls-container">
+          <div class="demo-controls">
+            <p>
+              Button position:
+              <div class="">
+                <label><input type="radio" name="position" value="top left" checked>Top left</label>
+              </div>
+
+              <div class="">
+                <label><input type="radio" name="position" value="top right">Top right</label>
+              </div>
+
+              <div class="">
+              <label>
+                <input type="radio" name="position" value="bottom left">
+                Bottom left
+              </label>
+            </div>
+
+            <div class="">
+              <label>
+                <input type="radio" name="position" value="bottom right">
+                Bottom right
+              </label>
+            </div>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" name="dark">
+                Dark mode
+              </label>
+            </p>
+            <div>
+              <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
+            </div>
           </div>
         </div>
       </div>
