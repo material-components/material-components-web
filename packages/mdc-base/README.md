@@ -1,6 +1,13 @@
-# mdc-base
+<!--docs:
+title: "Base"
+layout: detail
+section: components
+path: /catalog/base/
+-->
 
-MDC base contains core foundation and component classes that serve as the base classes for all of MDC-Web's foundation classes and components (respectively).
+# Base
+
+MDC Base contains core foundation and component classes that serve as the base classes for all of MDC-Web's foundation classes and components (respectively).
 
 Most of the time, you shouldn't need to depend on `mdc-base` directly. It is useful however if you'd like to write custom components that follow MDC-Web's pattern and elegantly integrate with the MDC-Web ecosystem.
 

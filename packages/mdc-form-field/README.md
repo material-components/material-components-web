@@ -1,4 +1,11 @@
-# MDC Form Field
+<!--docs:
+title: "Form Fields"
+layout: detail
+section: components
+path: /catalog/form-fields/
+-->
+
+# Form Fields
 
 MDC Form Field provides an `mdc-form-field` helper class for easily making theme-aware, RTL-aware
 form field + label combos. It also provides an `MDCFormField` class for easily making input ripples

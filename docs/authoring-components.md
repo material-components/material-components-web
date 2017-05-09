@@ -1,3 +1,10 @@
+<!--docs:
+title: "Authoring Components"
+layout: landing
+section: docs
+path: /docs/authoring-components/
+-->
+
 # Authoring Components
 
 This document serves as a reference for developing components either directly for MDC-Web or

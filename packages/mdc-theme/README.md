@@ -1,6 +1,14 @@
-# mdc-theme
+<!--docs:
+title: "Theme"
+layout: detail
+section: components
+iconId: theme
+path: /catalog/theme/
+-->
 
-MDC theme is a foundational module that provides theming to MDC-Web components, and also makes it available to
+# Theme
+
+MDC Theme is a foundational module that provides theming to MDC-Web components, and also makes it available to
 developers as Sass functions and mixins, as CSS custom properties, and as a set of CSS classes.
 
 The colors in this module are derived from the three theme colors in MDC-Web:

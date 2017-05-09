@@ -1,9 +1,28 @@
-# MDC FAB
+<!--docs:
+title: "Floating Action Buttons"
+layout: detail
+section: components
+iconId: button
+path: /catalog/floating-action-buttons/
+-->
+
+# Floating Action Buttons
 
 The MDC FAB component is a spec-aligned button component adhering to the
-[Material Design FAB requirements](https://material.google.com/components/buttons-floating-action-button.html).
+[Material Design FAB requirements](https://material.io/guidelines/components/buttons-floating-action-button.html).
 It works without JavaScript with basic functionality for all states.
 If you initiate the JavaScript object for a button, then it will be enhanced with ripple effects. (Not yet implemented)
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/buttons-floating-action-button.html">Floating Action Button</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/fab.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
