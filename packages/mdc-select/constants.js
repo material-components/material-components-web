@@ -18,3 +18,7 @@ export const cssClasses = {
   OPEN: 'mdc-select--open',
   DISABLED: 'mdc-select--disabled',
 };
+
+export const events = {
+  CHANGE_EVENT: 'MDCSelect:change',
+};

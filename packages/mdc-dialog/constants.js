@@ -28,3 +28,8 @@ export const strings = {
   DIALOG_SURFACE_SELECTOR: '.mdc-dialog__surface',
   ACCEPT_SELECTOR: '.mdc-dialog__footer__button--accept',
 };
+
+export const events = {
+  ACCEPT_EVENT: 'MDCDialog:accept',
+  CANCEL_EVENT: 'MDCDialog:cancel',
+};

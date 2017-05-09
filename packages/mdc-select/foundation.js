@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses} from './constants';
+import {cssClasses, events} from './constants';
 
 const OPENER_KEYS = [
   {key: 'ArrowUp', keyCode: 38, forType: 'keydown'},
@@ -26,6 +26,10 @@ const OPENER_KEYS = [
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
+  }
+
+  static get events() {
+    return events;
   }
 
   static get defaultAdapter() {

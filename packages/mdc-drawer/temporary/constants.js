@@ -27,3 +27,8 @@ export const strings = {
   OPACITY_VAR_NAME: '--mdc-temporary-drawer-opacity',
   FOCUSABLE_ELEMENTS,
 };
+
+export const events = {
+  OPEN_EVENT: 'MDCTemporaryDrawer:open',
+  CLOSE_EVENT: 'MDCTemporaryDrawer:close',
+};

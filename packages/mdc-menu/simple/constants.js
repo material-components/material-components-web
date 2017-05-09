@@ -26,6 +26,11 @@ export const strings = {
   ITEMS_SELECTOR: '.mdc-simple-menu__items',
 };
 
+export const events = {
+  SELECTED_EVENT: 'MDCSimpleMenu:selected',
+  CANCEL_EVENT: 'MDCSimpleMenu:cancel',
+};
+
 export const numbers = {
   // Amount of time to wait before triggering a selected event on the menu. Note that this time
   // will most likely be bumped up once interactive lists are supported to allow for the ripple to

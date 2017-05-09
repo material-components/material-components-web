@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, events} from './constants';
 
 export default class MDCIconToggleFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -24,6 +24,10 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
 
   static get strings() {
     return strings;
+  }
+
+  static get events() {
+    return events;
   }
 
   static get defaultAdapter() {

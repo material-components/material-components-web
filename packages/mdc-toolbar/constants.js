@@ -29,6 +29,10 @@ export const strings = {
   FLEXIBLE_ROW_SELECTOR: '.mdc-toolbar__row:first-child',
 };
 
+export const events = {
+  CHANGE_EVENT: 'MDCToolbar:change',
+};
+
 export const numbers = {
   MAX_TITLE_SIZE: 2.125,
   MIN_TITLE_SIZE: 1.25,

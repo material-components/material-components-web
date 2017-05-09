@@ -27,6 +27,12 @@ export default class MDCFoundation {
     return {};
   }
 
+  static get events() {
+    // Classes extending MDCFoundation should implement this method to return an object which exports all
+    // emitting event names as constants. e.g {CLOSE_EVENT: 'MDCComponent:close'}
+    return {};
+  }
+
   static get numbers() {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // of its semantic numbers as constants. e.g. {ANIMATION_DELAY_MS: 350}

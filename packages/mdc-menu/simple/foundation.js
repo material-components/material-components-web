@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings, events, numbers} from './constants';
 import {clamp, bezierProgress} from '../util';
 
 export default class MDCSimpleMenuFoundation extends MDCFoundation {
@@ -25,6 +25,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
 
   static get strings() {
     return strings;
+  }
+
+  static get events() {
+    return events;
   }
 
   static get numbers() {

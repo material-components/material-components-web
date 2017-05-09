@@ -25,3 +25,7 @@ export const cssClasses = {
   ROOT: 'mdc-icon-toggle',
   DISABLED: 'mdc-icon-toggle--disabled',
 };
+
+export const events = {
+  CHANGE_EVENT: 'MDCIconToggle:change',
+};

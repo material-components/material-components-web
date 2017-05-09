@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import MDCFoundation from '@material/base/foundation';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings, events, numbers} from './constants';
 
 export default class MDCToolbarFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -23,6 +23,10 @@ export default class MDCToolbarFoundation extends MDCFoundation {
 
   static get strings() {
     return strings;
+  }
+
+  static get events() {
+    return events;
   }
 
   static get numbers() {
