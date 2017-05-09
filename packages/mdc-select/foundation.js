@@ -17,6 +17,10 @@
 import {MDCFoundation} from '@material/base';
 import {cssClasses, events} from './constants';
 
+import {MDCSimpleMenuFoundation} from '@material/menu';
+
+const menuEvents = MDCSimpleMenuFoundation.events;
+
 const OPENER_KEYS = [
   {key: 'ArrowUp', keyCode: 38, forType: 'keydown'},
   {key: 'ArrowDown', keyCode: 40, forType: 'keydown'},
@@ -100,8 +104,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('click', this.displayHandler_);
     this.adapter_.registerInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.registerInteractionHandler('keyup', this.displayViaKeyboardHandler_);
-    this.adapter_.registerMenuInteractionHandler('MDCSimpleMenu:selected', this.selectionHandler_);
-    this.adapter_.registerMenuInteractionHandler('MDCSimpleMenu:cancel', this.cancelHandler_);
+    this.adapter_.registerMenuInteractionHandler(menuEvents.SELECTED_EVENT, this.selectionHandler_);
+    this.adapter_.registerMenuInteractionHandler(menuEvents.CANCEL_EVENT, this.cancelHandler_);
     this.resize();
   }
 
@@ -111,8 +115,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('click', this.displayHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.deregisterInteractionHandler('keyup', this.displayViaKeyboardHandler_);
-    this.adapter_.deregisterMenuInteractionHandler('MDCSimpleMenu:selected', this.selectionHandler_);
-    this.adapter_.deregisterMenuInteractionHandler('MDCSimpleMenu:cancel', this.cancelHandler_);
+    this.adapter_.deregisterMenuInteractionHandler(menuEvents.SELECTED_EVENT, this.selectionHandler_);
+    this.adapter_.deregisterMenuInteractionHandler(menuEvents.CANCEL_EVENT, this.cancelHandler_);
   }
 
   getValue() {
