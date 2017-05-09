@@ -1,8 +1,27 @@
-# mdc-typography
+<!--docs:
+title: "Typography"
+layout: detail
+section: components
+iconId: typography
+path: /catalog/typography/
+-->
+
+# Typography
 
 MDC typography is a CSS-only component that implements the
-[Material Design typography guidelines](https://material.google.com/style/typography.html), and makes them available to
+[Material Design typography guidelines](https://material.io/guidelines/style/typography.html), and makes them available to
 developers as CSS classes.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/style/typography.html">Typography</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/typography.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 

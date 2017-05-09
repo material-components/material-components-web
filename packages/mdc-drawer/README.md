@@ -1,9 +1,34 @@
-# MDC Drawer
+<!--docs:
+title: "Drawers"
+layout: detail
+section: components
+iconId: side_navigation
+path: /catalog/drawers/
+-->
+
+# Drawers
 
 The MDC Drawer component is a spec-aligned drawer component adhering to the
-[Material Design navigation drawer pattern](https://material.google.com/patterns/navigation-drawer.html).
+[Material Design navigation drawer pattern](https://material.io/guidelines/patterns/navigation-drawer.html).
 It implements permanent, persistent, and temporary drawers. Permanent drawers are CSS-only and require no JavaScript, whereas persistent and temporary drawers require JavaScript to function, in order to respond to
 user interaction.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/patterns/navigation-drawer.html">Navigation drawer</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/persistent-drawer.html">Demo: Persistent Drawer</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/permanent-drawer-above-toolbar.html">Demo: Permanent Drawer Above Toolbar</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/permanent-drawer-below-toolbar.html">Demo: Permanent Drawer Below Toolbar</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -56,6 +81,7 @@ Permanent drawers can also be set below the toolbar:
         <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
       </a>
     </nav>
+  </nav>
   <main>
     Page content goes here.
   </main>
@@ -151,7 +177,7 @@ const util = mdc.drawer.util;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the persistent drawer, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.drawer.MDCPersistentDrawer.attachTo(document.querySelector('.mdc-persistent-drawer'));
@@ -341,7 +367,7 @@ const util = mdc.drawer.util;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the temporary drawer, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.drawer.MDCTemporaryDrawer.attachTo(document.querySelector('.mdc-temporary-drawer'));
