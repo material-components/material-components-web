@@ -22,7 +22,6 @@ import {assert} from 'chai';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
 import {MDCIconToggle, MDCIconToggleFoundation} from '../../../packages/mdc-icon-toggle';
-import {events} from '../../../packages/mdc-icon-toggle/constants';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
 function setupTest({useInnerIconElement = false} = {}) {
@@ -200,10 +199,10 @@ test('#adapter.rmAttr removes an attribute from the root element', () => {
   assert.isNotOk(root.hasAttribute('aria-label'));
 });
 
-test(`#adapter.notifyChange broadcasts a ${events.CHANGE_EVENT} custom event`, () => {
+test(`#adapter.notifyChange broadcasts a ${MDCIconToggleFoundation.strings.CHANGE_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('custom event handler');
-  root.addEventListener(events.CHANGE_EVENT, handler);
+  root.addEventListener(MDCIconToggleFoundation.strings.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange({});
   td.verify(handler(td.matchers.anything()));
 });

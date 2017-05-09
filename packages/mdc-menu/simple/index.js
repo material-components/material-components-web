@@ -92,11 +92,11 @@ export class MDCSimpleMenu extends MDCComponent {
       setTransitionDelayForItemAtIndex: (index, value) =>
         this.items[index].style.setProperty('transition-delay', value),
       getIndexForEventTarget: (target) => this.items.indexOf(target),
-      notifySelected: (evtData) => this.emit(MDCSimpleMenuFoundation.events.SELECTED_EVENT, {
+      notifySelected: (evtData) => this.emit(MDCSimpleMenuFoundation.strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      notifyCancel: () => this.emit(MDCSimpleMenuFoundation.events.CANCEL_EVENT),
+      notifyCancel: () => this.emit(MDCSimpleMenuFoundation.strings.CANCEL_EVENT),
       saveFocus: () => {
         this.previousFocus_ = document.activeElement;
       },

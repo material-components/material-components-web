@@ -77,8 +77,8 @@ export class MDCDialog extends MDCComponent {
       deregisterSurfaceInteractionHandler: (evt, handler) => this.dialogSurface_.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
-      notifyAccept: () => this.emit(MDCDialogFoundation.events.ACCEPT_EVENT),
-      notifyCancel: () => this.emit(MDCDialogFoundation.events.CANCEL_EVENT),
+      notifyAccept: () => this.emit(MDCDialogFoundation.strings.ACCEPT_EVENT),
+      notifyCancel: () => this.emit(MDCDialogFoundation.strings.CANCEL_EVENT),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
     });

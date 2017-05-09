@@ -26,10 +26,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return strings;
   }
 
-  static get events() {
-    return events;
-  }
-
   static get defaultAdapter() {
     return {
       addClass: (/* className: string */) => {},

@@ -24,9 +24,6 @@ export const cssClasses = {
 
 export const strings = {
   ITEMS_SELECTOR: '.mdc-simple-menu__items',
-};
-
-export const events = {
   SELECTED_EVENT: 'MDCSimpleMenu:selected',
   CANCEL_EVENT: 'MDCSimpleMenu:cancel',
 };

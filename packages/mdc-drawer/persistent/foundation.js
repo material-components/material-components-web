@@ -26,10 +26,6 @@ export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoun
     return strings;
   }
 
-  static get events() {
-    return events;
-  }
-
   static get defaultAdapter() {
     return Object.assign(MDCSlidableDrawerFoundation.defaultAdapter, {
       isDrawer: () => false,

@@ -25,10 +25,6 @@ export default class MDCToolbarFoundation extends MDCFoundation {
     return strings;
   }
 
-  static get events() {
-    return events;
-  }
-
   static get numbers() {
     return numbers;
   }

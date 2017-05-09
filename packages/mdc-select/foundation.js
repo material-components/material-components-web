@@ -16,10 +16,7 @@
 
 import {MDCFoundation} from '@material/base';
 import {cssClasses, events} from './constants';
-
 import {MDCSimpleMenuFoundation} from '@material/menu';
-
-const menuEvents = MDCSimpleMenuFoundation.events;
 
 const OPENER_KEYS = [
   {key: 'ArrowUp', keyCode: 38, forType: 'keydown'},
@@ -30,10 +27,6 @@ const OPENER_KEYS = [
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
-  }
-
-  static get events() {
-    return events;
   }
 
   static get defaultAdapter() {
@@ -104,8 +97,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('click', this.displayHandler_);
     this.adapter_.registerInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.registerInteractionHandler('keyup', this.displayViaKeyboardHandler_);
-    this.adapter_.registerMenuInteractionHandler(menuEvents.SELECTED_EVENT, this.selectionHandler_);
-    this.adapter_.registerMenuInteractionHandler(menuEvents.CANCEL_EVENT, this.cancelHandler_);
+    this.adapter_.registerMenuInteractionHandler(
+      MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
+    this.adapter_.registerMenuInteractionHandler(
+      MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
     this.resize();
   }
 
@@ -115,8 +110,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('click', this.displayHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.deregisterInteractionHandler('keyup', this.displayViaKeyboardHandler_);
-    this.adapter_.deregisterMenuInteractionHandler(menuEvents.SELECTED_EVENT, this.selectionHandler_);
-    this.adapter_.deregisterMenuInteractionHandler(menuEvents.CANCEL_EVENT, this.cancelHandler_);
+    this.adapter_.deregisterMenuInteractionHandler(
+      MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
+    this.adapter_.deregisterMenuInteractionHandler(
+      MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
   }
 
   getValue() {
