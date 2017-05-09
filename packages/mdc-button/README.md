@@ -1,9 +1,28 @@
-# MDC Button
+<!--docs:
+title: "Buttons"
+layout: detail
+section: components
+iconId: button
+path: /catalog/buttons/
+-->
+
+# Buttons
 
 The MDC Button component is a spec-aligned button component adhering to the
- [Material Design button requirements](https://material.google.com/components/buttons.html).
- It works without JavaScript with basic functionality for all states.
- If you initiate the JavaScript object for a button, then it will be enhanced with ripple effects. (Not yet implemented)
+[Material Design button requirements](https://material.io/guidelines/components/buttons.html).
+It works without JavaScript with basic functionality for all states.
+If you initiate the JavaScript object for a button, then it will be enhanced with ripple effects. (Not yet implemented)
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/buttons.html">Buttons</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/button.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 

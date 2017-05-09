@@ -1,8 +1,27 @@
-# MDC Radio
+<!--docs:
+title: "Radio Buttons"
+layout: detail
+section: components
+iconId: radio_button
+path: /catalog/radio-buttons/
+-->
 
-The MDC Radio component provides a radio button adhering to the [Material Design Specification](https://material.google.com/components/selection-controls.html#selection-controls-radio-button).
+# Radio Buttons
+
+The MDC Radio Button component provides a radio button adhering to the [Material Design Specification](https://material.io/guidelines/components/selection-controls.html#selection-controls-radio-button).
 It requires no Javascript out of the box, but can be enhanced with Javascript to provide better
 interaction UX as well as a component-level API for state modification.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-radio-button">Selection Controls – Radio buttons</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/radio.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 

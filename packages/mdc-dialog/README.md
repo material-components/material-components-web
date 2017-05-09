@@ -1,10 +1,29 @@
-# MDC Dialog
+<!--docs:
+title: "Dialogs"
+layout: detail
+section: components
+iconId: dialog
+path: /catalog/dialogs/
+-->
+
+# Dialogs
 
 The MDC Dialog component is a spec-aligned dialog component adhering to the
 [Material Design dialog pattern](https://material.io/guidelines/components/dialogs.html).
 It implements a modal dialog window. You may notice that full screen components outlined in the dialog spec
 do not appear in MDC Dialog. This is because they have been deemed to be outside of the scope of what
 a dialog should be.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/dialogs.html">Dialogs</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/dialog.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -14,7 +33,7 @@ npm install --save @material/dialog
 
 ## Dialog usage
 
-Dialogs inform users about a specific task and may contain critical information or require decisions.  
+Dialogs inform users about a specific task and may contain critical information or require decisions.
 
 ```html
 <aside id="my-mdc-dialog"
@@ -195,7 +214,7 @@ MDC Dialog ships with an `MDCDialogFoundation` class that external frameworks an
 use to integrate the component. As with all foundation classes, an adapter object must be provided.
 
 > **NOTE**: Components themselves must manage adding ripples to dialog buttons, should they choose to
-do so. We provide instructions on how to add ripples to buttons within the [mdc-button README](https://github.com/material-components/material-components-web/tree/master/packages/mdc-button#adding-ripples-to-buttons).
+do so. We provide instructions on how to add ripples to buttons within the [mdc-button README](../mdc-button#adding-ripples-to-buttons).
 
 ### Adapter API
 

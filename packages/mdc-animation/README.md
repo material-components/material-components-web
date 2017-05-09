@@ -1,6 +1,22 @@
-# mdc-animation
+<!--docs:
+title: "Animation"
+layout: detail
+section: components
+iconId: animation
+path: /catalog/animation/
+-->
 
-mdc-animation is a Sass / CSS / JavaScript library which provides a toolbelt for Material Design animation, based off of the [motion guidelines](https://material.google.com/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves.
+# Animation
+
+MDC Animation is a Sass / CSS / JavaScript library which provides a toolbelt for Material Design animation, based off of the [motion guidelines](https://material.io/guidelines/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/motion/duration-easing.html">Duration & easing</a>
+  </li>
+</ul>
 
 ## Installation
 

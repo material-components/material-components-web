@@ -1,4 +1,12 @@
-# MDC Ripple
+<!--docs:
+title: "Ripples"
+layout: detail
+section: components
+iconId: ripple
+path: /catalog/ripples/
+-->
+
+# Ripples
 
 - [MDC Ripple](#mdc-ripple)
     - [An aside regarding browser support](#an-aside-regarding-browser-support)
@@ -58,7 +66,7 @@ Let's say we have a `surface` element that represents a basic surface.
 ```
 
 We also have some basic styles for our surface that
-use [mdc-elevation](https://github.com/material-components/material-components-web/tree/master/packages/mdc-elevation) to raise it up off of its background.
+use [mdc-elevation](../mdc-elevation) to raise it up off of its background.
 
 ```scss
 @import "@material/elevation/mixins";
@@ -385,7 +393,7 @@ build that can handle our usage of CSS variables.
 > TL;DR theme custom variable changes will not propagate to ripples if the browser does not support
 > [CSS 4 color-mod functions](https://drafts.csswg.org/css-color/).
 
-The way that [mdc-theme works](https://github.com/material-components/material-components-web/tree/master/packages/mdc-theme#mdc-theme-prop-mixin) is that it emits two properties: one with the hard-coded sass variable, and another for a
+The way that [mdc-theme works](../mdc-theme#mdc-theme-prop-mixin) is that it emits two properties: one with the hard-coded sass variable, and another for a
 CSS variable that can be interpolated. The problem is that ripple backgrounds need to have an opacity, and currently there's no way to opacify a pre-existing color defined by a CSS variable.
 There is an editor's draft for a `color-mod` function (see link in TL;DR) that _can_ do this:
 

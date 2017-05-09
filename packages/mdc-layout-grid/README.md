@@ -1,10 +1,29 @@
-# mdc-layout-grid
+<!--docs:
+title: "Layout Grids"
+layout: detail
+section: components
+iconId: responsive_layout
+path: /catalog/layout-grids/
+-->
 
-MDC layout grid is a CSS-only component that implements the
+# Layout Grids
+
+MDC Layout Grid is a CSS-only component that implements the
 [Material Design layout grid guidelines](https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-grid),
 and makes them available to developers as CSS classes and Sass mixins.
 
 It uses [CSS Grid](https://www.w3.org/TR/css-grid-1/) where possible, with a CSS Flexible Box fallback everywhere else.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-grid">Layout grid guidelines</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/layout-grid.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
