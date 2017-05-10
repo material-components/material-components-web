@@ -9,7 +9,9 @@ path: /catalog/input-controls/select-menus/
 # Select Menus
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/selects.png" width="376" alt="Select screenshot">
+  <a href="https://material-components-web.appspot.com/select.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/selects.png" width="376" alt="Select screenshot">
+  </a>
 </div>-->
 
 MDC Select provides Material Design single-option and multi-option select menus. It functions analogously to the

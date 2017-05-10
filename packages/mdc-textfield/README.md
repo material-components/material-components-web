@@ -9,7 +9,9 @@ path: /catalog/input-controls/text-fields/
 # Text Fields
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
+  <a href="https://material-components-web.appspot.com/textfield.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
+  </a>
 </div>-->
 
 The MDC Text Field component provides a textual input field adhering to the [Material Design Specification](https://material.io/guidelines/components/text-fields.html).

@@ -163,7 +163,7 @@ function updatePanel(index) {
   }
 }
 
-dynamicTabs.root_.addEventListener('MDCTabBar:change', function ({detail: tabs}) {
+dynamicTabBar.listen('MDCTabBar:change', function ({detail: tabs}) {
   var nthChildIndex = tabs.activeTabIndex;
 
   updatePanel(nthChildIndex);
@@ -180,8 +180,9 @@ dots.addEventListener('click', function (evt) {
   var dotIndex = [].slice.call(dots.querySelectorAll('.dot')).indexOf(evt.target);
 
   if (dotIndex >= 0) {
-    dynamicTabBar.foundation_.switchToTabAtIndex(dotIndex, false);
+    dynamicTabBar.activeTabIndex = dotIndex;
   }
+
   updatePanel(dotIndex);
   updateDot(dotIndex);
 })
@@ -283,35 +284,18 @@ import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs';
 const tabBar = new MDCTabBar(document.querySelector('#my-mdc-tab-bar'));
 ```
 
-## Tab Section
+## Tab
 
 ### Tab component API
 
-#### setters/getters
---------------------
-#### get:computedWidth() => number
+#### Properties
 
-Returns the width of the tab.
-
-#### get:computedLeft() => number
-
-Returns the left offset of a tab.
-
-#### get:isActive => boolean
-
-Returns true if the tab is the currently active tab.
-
-#### set:isActive(isActive: boolean) => void
-
-Sets a tab's `isActive` property to the value assigned.
-
-#### get:preventDefaultOnClick() => boolean
-
-Returns true if the tab will call evt.preventDefault() when actioned on.
-
-#### set:preventDefaultOnClick(preventDefaultOnClick: boolean) => void
-
-Sets a tab's `preventsDefaultOnClick` property to the value assigned.
+| Property Name | Type | Description |
+| --- | --- | --- |
+| `computedWidth` | `number` | _(read-only)_ The width of the tab. |
+| `computedLeft` | `number` | _(read-only)_ The left offset of the tab. |
+| `isActive` | `boolean` | Whether or not the tab is active. Setting this makes the tab active. |
+| `preventDefaultOnClick` | `boolean` | Whether or not the tab will call `preventDefault()` on an event. Setting this makes the tab call `preventDefault()` on events. |
 
 ### Tab Events
 
@@ -370,32 +354,17 @@ Sets tabs `preventDefaultOnClick` property to the value of the `preventDefaultOn
 Sets `computedWidth_` and `computedLeft_` for a tab.
 
 
-## Tab Bar Section
+## Tab Bar
 
 ### Tab Bar component API
 
-#### setters/getters
---------------------
+#### Properties
 
-#### get:tabs() => MDCTab[]
-
-Returns an array containing tabs.
-
-#### get:activeTab() => MDCTab
-
-Returns the currently active tab.
-
-#### set:activeTab(tab: MDCTab) => void
-
-Sets a provided tab to active.
-
-#### get:activeTabIndex() => number
-
-Returns the index of the currently active tab.
-
-#### set:activeTabIndex(index: number) => void
-
-Sets a provided tab index to active.
+| Property Name | Type | Description |
+| --- | --- | --- |
+| `tabs` | `MDCTab[]` | _(read-only)_ An array of the tab bar's instances of MDC Tab. |
+| `activeTab` | `MDCTab` | The currently active tab. Setting this makes the tab active. |
+| `activeTabIndex` | `number` | The index of the currently active tab. Setting this makes the tab at the given index active. |
 
 ### Tab Bar Events
 

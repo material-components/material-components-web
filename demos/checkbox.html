@@ -159,6 +159,7 @@
         </div>
         <button type="button" id="make-ind">Make indeterminate</button>
       </section>
+
       <section class="example mdc-theme--dark">
         <h2>Dark Theme</h2>
         <div class="mdc-form-field">
@@ -191,6 +192,9 @@
 
         var checkbox = document.getElementById('mdc-js-checkbox');
         var checkboxInstance = new MDCCheckbox(checkbox);
+
+        var disabledCheckbox = document.getElementById('mdc-disabled-js-checkbox');
+        var disabledCheckboxInstance = new MDCCheckbox(disabledCheckbox);
 
         var formField = checkbox.parentElement;
         var formFieldInstance = new MDCFormField(formField);

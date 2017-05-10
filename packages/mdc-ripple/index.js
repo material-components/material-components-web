@@ -37,6 +37,7 @@ export class MDCRipple extends MDCComponent {
       browserSupportsCssVars: () => supportsCssVariables(window),
       isUnbounded: () => instance.unbounded,
       isSurfaceActive: () => instance.root_[MATCHES](':active'),
+      isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
       registerInteractionHandler: (evtType, handler) => instance.root_.addEventListener(evtType, handler),

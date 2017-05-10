@@ -45,6 +45,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       browserSupportsCssVars: () => /* boolean - cached */ {},
       isUnbounded: () => /* boolean */ {},
       isSurfaceActive: () => /* boolean */ {},
+      isSurfaceDisabled: () => /* boolean */ {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       registerInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
@@ -67,6 +68,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
 
   constructor(adapter) {
     super(Object.assign(MDCRippleFoundation.defaultAdapter, adapter));
+
     this.layoutFrame_ = 0;
     this.frame_ = {width: 0, height: 0};
     this.activationState_ = this.defaultActivationState_();
@@ -142,6 +144,10 @@ export default class MDCRippleFoundation extends MDCFoundation {
   }
 
   activate_(e) {
+    if (this.adapter_.isSurfaceDisabled()) {
+      return;
+    }
+
     const {activationState_: activationState} = this;
     if (activationState.isActivated) {
       return;

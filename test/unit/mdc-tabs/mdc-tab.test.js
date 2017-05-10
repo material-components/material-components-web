@@ -20,7 +20,6 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCTab} from '../../../packages/mdc-tabs/tab';
 import {MDCTabFoundation} from '../../../packages/mdc-tabs/tab';
 import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
@@ -46,18 +45,21 @@ test('attachTo returns a component instance', () => {
 });
 
 if (supportsCssVariables(window)) {
+  test('#constructor initializes the root element with a ripple', () => {
+    const raf = createMockRaf();
+    const {root} = setupTest();
+    raf.flush();
+    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
+    raf.restore();
+  });
+
   test('#destroy cleans up ripple on tab', () => {
     const raf = createMockRaf();
     const {root, component} = setupTest();
-
     raf.flush();
-
-    assert.isTrue(component.ripple instanceof MDCRipple);
     component.destroy();
     raf.flush();
-
-    assert.isFalse(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
+    assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
   });
 }
 

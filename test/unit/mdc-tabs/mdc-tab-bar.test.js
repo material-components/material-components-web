@@ -82,7 +82,7 @@ test('#get activeTab returns active tab', () => {
   assert.equal(tab, component.activeTab);
 });
 
-test('#set activeTab proxies to foundation_.switchToTabAtIndex', () => {
+test('#set activeTab makes a tab the active tab', () => {
   const raf = createMockRaf();
   const {component} = setupTest();
   const tab = new MockTab();
@@ -104,7 +104,7 @@ test('#get activeTabIndex returns active tab', () => {
   assert.equal(component.tabs.indexOf(tab), component.activeTabIndex);
 });
 
-test('#set activeTabIndex proxies to foundation_.switchToTabAtIndex', () => {
+test('#set activeTabIndex makes a tab at a given index the active tab', () => {
   const raf = createMockRaf();
   const {component} = setupTest();
   const tab = new MockTab();
@@ -166,16 +166,20 @@ test('on MDCTab:selected if tab is not in tab bar, throw Error', () => {
 });
 
 test('adapter#unbindOnMDCTabSelectedEvent removes listener from component', () => {
-  const {component} = setupTest();
-  const tabIndex = 1;
-  const tab = component.tabs[tabIndex];
-  const handler = td.func('MDCTab:selected handler');
+  const {component, root} = setupTest();
+  const adapter = component.getDefaultFoundation().adapter_;
+  const tab = new MockTab();
+  component.tabs.push(tab);
+  const raf = createMockRaf();
 
-  component.listen('MDCTab:selected', handler);
-  component.getDefaultFoundation().adapter_.unbindOnMDCTabSelectedEvent();
-  domEvents.emit(tab.root, 'MDCTab:selected');
+  component.listen('MDCTab:selected', {detail: {tab}});
+  adapter.unbindOnMDCTabSelectedEvent();
+  domEvents.emit(root, 'MDCTab:selected', {detail: {tab}});
 
-  td.verify(handler(td.matchers.anything()), {times: 0});
+  raf.flush();
+
+  assert.isFalse(tab.isActive);
+  raf.restore();
 });
 
 test('adapter#registerResizeHandler adds resize listener to the component', () => {

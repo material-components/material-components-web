@@ -9,7 +9,9 @@ path: /catalog/input-controls/switches/
 # Switches
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/switches.png" width="37" alt="Switches screenshot">
+  <a href="https://material-components-web.appspot.com/switch.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/switches.png" width="37" alt="Switches screenshot">
+  </a>
 </div>-->
 
 The MDC Switch component is a spec-aligned switch component adhering to the

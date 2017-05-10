@@ -10,7 +10,9 @@ path: /catalog/layout-grids/
 # Layout Grids
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/layout.png" width="256" alt="Layout grid screenshot">
+  <a href="https://material-components-web.appspot.com/layout-grid.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/layout.png" width="256" alt="Layout grid screenshot">
+  </a>
 </div>-->
 
 MDC Layout Grid is a CSS-only component that implements the

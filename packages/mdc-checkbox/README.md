@@ -9,7 +9,9 @@ path: /catalog/input-controls/checkboxes/
 # Checkboxes
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png" width="99" alt="Checkboxes screenshot">
+  <a href="https://material-components-web.appspot.com/checkbox.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png" width="99" alt="Checkboxes screenshot">
+  </a>
 </div>-->
 
 The MDC Checkbox component is a spec-aligned checkbox component adhering to the
@@ -208,6 +210,7 @@ The adapter for checkboxes must provide the following functions, with correct si
 | `getNativeControl() => HTMLInputElement?` | Returns the native checkbox control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
 | `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
 | `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise.` |
+
 
 #### MDCCheckboxFoundation API
 
