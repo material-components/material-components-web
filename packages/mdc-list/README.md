@@ -202,7 +202,7 @@ details can be configured.
 
 MDC List supports adding ripples to `mdc-list-item` elements, for example in the case of a nav menu.
 To add ripples to lists, simply attach a ripple to all list items. Note that this can be easily done
-via `mdc-auto-init` when using the [material-components-web](../packages/material-components-web).
+via `mdc-auto-init` when using the [material-components-web](../material-components-web).
 
 ```html
 <nav class="mdc-list">
