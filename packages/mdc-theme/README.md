@@ -9,6 +9,10 @@ path: /catalog/theme/
 
 # Theme
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/themes.png" width="241" alt="Themes screenshot">
+</div>-->
+
 MDC Theme is a foundational module that provides theming to MDC-Web components, and also makes it available to
 developers as Sass functions and mixins, as CSS custom properties, and as a set of CSS classes.
 

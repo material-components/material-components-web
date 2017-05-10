@@ -3,10 +3,14 @@ title: "Switches"
 layout: detail
 section: components
 iconId: switch
-path: /catalog/switches/
+path: /catalog/input-controls/switches/
 -->
 
 # Switches
+
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/switches.png" width="37" alt="Switches screenshot">
+</div>-->
 
 The MDC Switch component is a spec-aligned switch component adhering to the
 [Material Design Switch requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-switch).
@@ -16,7 +20,7 @@ It works without JavaScript.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-switch">Selection Controls – Switch</a>
+    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-switch">Material Design guidelines: Switches</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/switch.html">Demo</a>

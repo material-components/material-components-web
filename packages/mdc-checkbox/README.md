@@ -3,10 +3,14 @@ title: "Checkboxes"
 layout: detail
 section: components
 iconId: selection_control
-path: /catalog/checkboxes/
+path: /catalog/input-controls/checkboxes/
 -->
 
 # Checkboxes
+
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png" width="99" alt="Checkboxes screenshot">
+</div>-->
 
 The MDC Checkbox component is a spec-aligned checkbox component adhering to the
 [Material Design checkbox requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox).
@@ -16,7 +20,7 @@ It works without JavaScript with basic functionality for all states. If you use 
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox">Selection Controls – Checkbox</a>
+    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox">Material Design guidelines: Selection Controls – Checkbox</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/checkbox.html">Demo</a>

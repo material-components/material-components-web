@@ -3,10 +3,14 @@ title: "Select Menus"
 layout: detail
 section: components
 iconId: menu
-path: /catalog/select-menus/
+path: /catalog/input-controls/select-menus/
 -->
 
 # Select Menus
+
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/selects.png" width="376" alt="Select screenshot">
+</div>-->
 
 MDC Select provides Material Design single-option and multi-option select menus. It functions analogously to the
 browser's native `<select>` element, and includes a gracefully degraded version that can be used
@@ -16,10 +20,10 @@ in conjunction with the browser's native element. Both are fully accessible, and
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html">Text Fields</a>
+    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
   </li>
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/menus.html">Menus</a>
+    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/select.html">Demo</a>

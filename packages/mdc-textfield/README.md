@@ -3,10 +3,14 @@ title: "Text Fields"
 layout: detail
 section: components
 iconId: text_field
-path: /catalog/text-fields/
+path: /catalog/input-controls/text-fields/
 -->
 
 # Text Fields
+
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
+</div>-->
 
 The MDC Text Field component provides a textual input field adhering to the [Material Design Specification](https://material.io/guidelines/components/text-fields.html).
 It is fully accessible, ships with RTL support, and includes a gracefully-degraded version that does
@@ -16,7 +20,7 @@ not require any javascript.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html">Text Fields</a>
+    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/textfield.html">Demo</a>

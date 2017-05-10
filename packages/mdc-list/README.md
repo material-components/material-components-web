@@ -9,6 +9,10 @@ path: /catalog/lists/
 
 # Lists
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/lists.png" width="365" alt="Lists screenshot">
+</div>-->
+
 MDC List provides styles which implement [Material Design Lists](https://material.io/guidelines/components/lists.html) - "A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are supported (with
 three-line lists [coming soon](https://github.com/material-components/material-components-web/issues/31)). MDC
 Lists are design to be accessible and RTL aware.
@@ -17,7 +21,7 @@ Lists are design to be accessible and RTL aware.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/lists.html">Lists</a>
+    <a href="https://material.io/guidelines/components/lists.html">Material Design guidelines: Lists</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/list.html">Demo</a>
