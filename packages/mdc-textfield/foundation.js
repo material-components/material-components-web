@@ -104,7 +104,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     const isValid = input.checkValidity();
 
     this.adapter_.removeClass(FOCUSED);
-    if (!input.value) {
+    if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
       this.receivedUserInput_ = false;
     }
@@ -140,6 +140,11 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.setHelptextAttr(ARIA_HIDDEN, 'true');
   }
 
+  isBadInput_() {
+    const input = this.getNativeInput_();
+    return input.validity ? input.validity.badInput : input.badInput;
+  }
+
   isDisabled() {
     return this.getNativeInput_().disabled;
   }
@@ -159,6 +164,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       checkValidity: () => true,
       value: '',
       disabled: false,
+      badInput: false,
     };
   }
 }
