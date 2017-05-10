@@ -9,6 +9,12 @@ path: /catalog/buttons/
 
 # Buttons
 
+<!--<div class="article__asset">
+  <a href="https://material-components-web.appspot.com/button.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/buttons.png" width="363" alt="Buttons screenshot">
+  </a>
+</div>-->
+
 The MDC Button component is a spec-aligned button component adhering to the
 [Material Design button requirements](https://material.io/guidelines/components/buttons.html).
 It works without JavaScript with basic functionality for all states.
@@ -18,7 +24,7 @@ If you initiate the JavaScript object for a button, then it will be enhanced wit
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html">Buttons</a>
+    <a href="https://material.io/guidelines/components/buttons.html">Material Design guidelines: Buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/button.html">Demo</a>
@@ -67,14 +73,14 @@ npm install --save @material/button
 
 ### Adding ripples to buttons
 
-To add the ink ripple effect to a button, attach a [ripple](../packages/mdc-ripple) instance to the
+To add the ink ripple effect to a button, attach a [ripple](../mdc-ripple) instance to the
 button element.
 
 ```js
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
 ```
 
-You can also do this declaratively when using the [material-components-web](../packages/material-components-web) package.
+You can also do this declaratively when using the [material-components-web](../material-components-web) package.
 
 ```html
 <button class="mdc-button" data-mdc-auto-init="MDCRipple">

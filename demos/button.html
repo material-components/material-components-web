@@ -14,13 +14,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDC-Web Button Demo</title>
+    <title>Button - Material Compoonents Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
-      /* Make the demo look a little bit better */
       fieldset {
-        margin-bottom: 0.5rem;
+        margin: 24px;
+        margin-top: 0;
+        margin-bottom: 16px;
       }
       fieldset .mdc-button {
         margin: 16px;
@@ -28,24 +33,45 @@
       .mdc-theme--dark fieldset {
         background-color: #333;
       }
-      legend {
-        background: white;
+
+      .mdc-theme--dark fieldset legend {
+        color: #f0f0f0;
       }
-      .mdc-theme--dark legend {
-        background: #333;
-        color: white;
-        padding: 0px 2px;
-        border: 2px groove #c0c0c0;
+
+      .hero button {
+        margin-left: 32px;
+        margin-right: 32px;
+      }
+
+      fieldset legend {
+        display: block;
+        padding: 16px;
+        padding-top: 64px;
+        padding-bottom: 24px;
       }
     </style>
-    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body>
-    <main>
-      <h1>MDC WEB BUTTON</h1>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Buttons</span>
+        </section>
+      </div>
+    </header>
+    <main class="mdc-toolbar-fixed-adjust">
+
+      <section class="hero">
+        <button class="mdc-button button">Flat</button>
+        <button class="mdc-button mdc-button--raised button mdc-button--primary">Raised</button>
+      </section>
+
       <section>
         <fieldset>
-          <legend>Buttons</legend>
+          <legend class="mdc-typography--title">Buttons</legend>
           <button class="mdc-button">
             Default
           </button>
@@ -80,8 +106,9 @@
             Div
           </div>
         </fieldset>
+
         <fieldset>
-          <legend>Buttons - CSS Only</legend>
+          <legend class="mdc-typography--title">Buttons CSS Only</legend>
           <button class="mdc-button" data-demo-no-js>
             Default
           </button>
@@ -116,8 +143,9 @@
             Div
           </div>
         </fieldset>
+
         <fieldset>
-          <legend>Links with Button Style</legend>
+          <legend class="mdc-typography--title">Links with Button Style</legend>
           <a href="/button.html" class="mdc-button">
             Default
           </a>
@@ -149,8 +177,9 @@
             Raised with Accent
           </a>
         </fieldset>
+
         <fieldset disabled>
-          <legend>Disabled Buttons</legend>
+          <legend class="mdc-typography--title">Disabled</legend>
           <button class="mdc-button">
             Default
           </button>
@@ -187,10 +216,9 @@
         </fieldset>
       </section>
 
-      <h2>Dark theme</h2>
       <section class="mdc-theme--dark">
         <fieldset>
-          <legend>Buttons</legend>
+          <legend class="mdc-typography--title">Dark Theme - Buttons</legend>
           <button class="mdc-button">
             Default
           </button>
@@ -226,7 +254,7 @@
           </div>
         </fieldset>
         <fieldset>
-          <legend>Buttons - CSS Only</legend>
+          <legend class="mdc-typography--title">Dark Theme - Buttons CSS Only</legend>
           <button class="mdc-button" data-demo-no-js>
             Default
           </button>
@@ -262,7 +290,8 @@
           </div>
         </fieldset>
         <fieldset disabled>
-          <legend>Disabled Buttons</legend>
+          <legend class="mdc-typography--title">Dark Theme - Disabled</legend>
+
           <button class="mdc-button">
             Default
           </button>
