@@ -1,11 +1,18 @@
+<!--docs:
+title: "Architecture Overview"
+layout: landing
+section: docs
+path: /docs/architecture-overview/
+-->
+
 # MDC-Web Architecture Overview
 
-The following is an outline of the MDC-Web architecture. Many of the architectural decisions we made were in response to the problems and feedback the team has received around Material Design Lite (MDL), the predecessor to MDC-Web. The goals of the MDC-Web architecture are to not only provide an easy way to provide a material UI for static websites, but for _dynamic websites and frameworks as well_. Essentially, _the goal of MDC-Web is to be the canonical material design implementation for the web platform_. We want MDC-Web to be:
+The following is an outline of the MDC-Web architecture. Many of the architectural decisions we made were in response to the problems and feedback the team has received around Material Design Lite (MDL), the predecessor to MDC-Web. The goals of the MDC-Web architecture are to not only provide an easy way to provide a material UI for static websites, but for _dynamic websites and frameworks as well_. Essentially, _the goal of MDC-Web is to be the canonical Material Design implementation for the web platform_. We want MDC-Web to be:
 
-* Accurate to the [material design spec](https://material.google.com/) with the highest possible fidelity, with graceful degradation in situations where this cannot be achieved.
+* Accurate to the [Material Design guidelines](https://material.io/guidelines/) with the highest possible fidelity, with graceful degradation in situations where this cannot be achieved.
 * Plug-and-play for people who just want to add styles to a static site, just like [Material Design Lite](https://getmdl.io).
 * Modular and un-invasive for developers who want to create more complex, dynamic sites using Material Design.
-* Easy to integrate into third-party libraries and frameworks, with minimal duplication of effort. There should not be N different material design implementations for N different frameworks. We strive for _one_ universal implementation across the web, and want to facilitate library developers who want material design components for their frameworks.
+* Easy to integrate into third-party libraries and frameworks, with minimal duplication of effort. There should not be N different Material Design implementations for N different frameworks. We strive for _one_ universal implementation across the web, and want to facilitate library developers who want Material Design components for their frameworks.
 
 ## No automatic DOM traversal and rendering
 
@@ -127,7 +134,7 @@ class RGBSquare {
   /** destruction lifecycle method */
   destroy() {
     this.root_.removeEventListener('click', this.clickHandler_);
-  }  
+  }
 
   update_() {
     const oldClass = this.colorClass_(this.counter_);
@@ -170,7 +177,7 @@ class RGBSquare {
   /** destruction lifecycle method */
   destroy() {
     SOMEHOW_DEREGISTER_CLICK_HANDLER(this.clickHandler_);
-  }  
+  }
 
   update_() {
     const oldClass = this.colorClass_(this.counter_);
@@ -234,7 +241,7 @@ class RGBSquareFoundation {
   /** destruction lifecycle method */
   destroy() {
     this.adapter_.deregisterClickHandler(this.clickHandler_);
-  }  
+  }
 
   update_() {
     const oldClass = this.colorClass_(this.counter_);
@@ -328,6 +335,6 @@ It is also worth mentioning that **most of this will be opaque to end users.** W
 
 ## Resources
 
-- The [mdc-checkbox](https://github.com/material-components/material-components-web/tree/master/packages/mdc-checkbox) component is an example of a complex UI component which requires foundations and adapters. We also have a [react example](https://github.com/material-components/material-components-web/tree/master/framework-examples/react) where we create a React component using the foundation class.
-- Our [mdc-base](https://github.com/material-components/material-components-web/tree/master/packages/mdc-base) package contains the core Foundation and Component classes which all of our other MDC-Web components derive from. If you're interested in contributing _directly_ to MDC-Web, it's worth a read!
+- The [mdc-checkbox](../packages/mdc-checkbox) component is an example of a complex UI component which requires foundations and adapters. We also have a [react example](https://github.com/material-components/material-components-web/tree/master/framework-examples/react) where we create a React component using the foundation class.
+- Our [mdc-base](../packages/mdc-base) package contains the core Foundation and Component classes which all of our other MDC-Web components derive from. If you're interested in contributing _directly_ to MDC-Web, it's worth a read!
 - As per usual our [contributing docs](https://github.com/material-components/material-components-web/blob/master/CONTRIBUTING.md) contain information about how to actually develop MDC-Web.

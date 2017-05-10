@@ -1,12 +1,16 @@
-# MDC-Web Docs
+<!--docs:
+title: "Documentation"
+layout: landing
+section: docs
+path: /docs/
+-->
 
-Welcome to our (very-much-still-in-progress) documentation! As we develop MDC-Web, we will be
-adding and amending this documentation such that it is both easy to get you up-and-running, as well as
-thorough enough for advanced developers to understand why we made the decisions we did for the
-project.
+# Supporting documentation
+
+This section includes supporting documentation aimed to both improve the onboarding experience for teams that are new to Material Components, as well as cover advanced issues for those interested in the reasoning behind our decisions and contributing to the project.
 
 To jump right in and begin using the library, check out our [Getting Started Guide](./getting-started.md)
 
-If you're interested in a general overview of MDC-Web, check out [developer.md](./developer.md). If
+If you're interested in a general overview of MDC-Web, check out [our developer guide](./developer.md). If
 you want to take a deep dive through our architectural overview, jump right into
-[architecture.md](./architecture.md).
+[architecture](./architecture.md).

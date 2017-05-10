@@ -1,7 +1,22 @@
-# MDC Elevation
+<!--docs:
+title: "Elevation"
+layout: detail
+section: components
+excerpt: "Shadows and elevation as Sass mixins and CSS classes."
+iconId: shadow
+path: /catalog/elevation/
+-->
+
+# Elevation
+
+<!--<div class="article__asset">
+  <a href="https://material-components-web.appspot.com/elevation.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/elevation.png" width="247" alt="Elevation screenshot">
+  </a>
+</div>-->
 
 MDC Elevation provides Sass mixins and CSS classes which are used to provide [shadows and
-elevation](https://material.google.com/what-is-material/elevation-shadows.html) to our material
+elevation](https://material.io/guidelines/what-is-material/elevation-shadows.html) to our material
 components.
 
 The elevation values are mapped out in a "z-space" and range from `0` to `24`.
@@ -14,6 +29,17 @@ which was created in collaboration with the designers on the Material Design tea
 > just "z" for short) because it aligns with the technical definition of, and nomenclature for,
 > a 3-d coordinate system. Therefore, we feel it makes more sense than `dp`. However, when we refer
 > to `z-space` (or `z`), that can be used interchangeably with the spec's `dp`.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/what-is-material/elevation-shadows.html">Material Design guidelines: Shadows & elevation</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/elevation.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -28,7 +54,7 @@ npm install --save @material/elevation
 MDC Elevation exports an `mdc-elevation` mixin which can be used to set the elevation on a selector.
 It works by assigning the correct elevation value to a selector's `box-shadow` property.
 
-`mdc-elevation` takes one `$z-value` argument which represents the z-space for that given elevation. For example, [cards](https://material.google.com/components/cards.html) have a resting elevation of `2dp`. Implementing that using MDC Elevation looks like the following:
+`mdc-elevation` takes one `$z-value` argument which represents the z-space for that given elevation. For example, [cards](https://material.io/guidelines/components/cards.html) have a resting elevation of `2dp`. Implementing that using MDC Elevation looks like the following:
 
 ```scss
 @import "@material/elevation/mixins";
