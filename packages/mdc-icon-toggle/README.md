@@ -8,6 +8,10 @@ path: /catalog/buttons/icon-toggle-buttons/
 
 # Icon Toggle Buttons
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon toggles screenshot">
+</div>-->
+
 MDC Icon Toggle provides a Material Design icon toggle button. It is fully accessible, and is
 designed to work with any icon set.
 

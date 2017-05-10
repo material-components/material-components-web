@@ -9,6 +9,10 @@ path: /catalog/menus/
 
 # Menus
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="153" alt="Menus screenshot">
+</div>-->
+
 The MDC Menu component is a spec-aligned menu component adhering to the
 [Material Design menu specification](https://material.io/guidelines/components/menus.html).
 It implements simple menus. Menus require JavaScript to work correctly, but the open and closed states are correct on

@@ -9,6 +9,10 @@ path: /catalog/toolbar/
 
 # Toolbars
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
+</div>-->
+
 MDC Toolbar acts as a container for multiple rows containing items such as
 application title, navigation menu, and tabs, among other things. Toolbars
 scroll with content by default, but supports fixed behavior as well.

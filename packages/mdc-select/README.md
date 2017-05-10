@@ -8,6 +8,10 @@ path: /catalog/input-controls/select-menus/
 
 # Select Menus
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/selects.png" width="376" alt="Select screenshot">
+</div>-->
+
 MDC Select provides Material Design single-option and multi-option select menus. It functions analogously to the
 browser's native `<select>` element, and includes a gracefully degraded version that can be used
 in conjunction with the browser's native element. Both are fully accessible, and fully RTL-aware.

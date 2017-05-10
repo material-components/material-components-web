@@ -9,6 +9,10 @@ path: /catalog/snackbars/
 
 # Snackbars
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbars screenshot">
+</div>-->
+
 The MDC Snackbar component is a spec-aligned snackbar/toast component adhering to the
 [Material Design snackbars & toasts requirements](https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs).
 It requires JavaScript the trigger the display and hide of the snackbar.

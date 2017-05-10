@@ -9,6 +9,10 @@ path: /catalog/dialogs/
 
 # Dialogs
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/dialogs.png" width="714" alt="Dialogs screenshot">
+</div>-->
+
 The MDC Dialog component is a spec-aligned dialog component adhering to the
 [Material Design dialog pattern](https://material.io/guidelines/components/dialogs.html).
 It implements a modal dialog window. You may notice that full screen components outlined in the dialog spec

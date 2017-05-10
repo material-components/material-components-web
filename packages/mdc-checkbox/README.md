@@ -8,6 +8,10 @@ path: /catalog/input-controls/checkboxes/
 
 # Checkboxes
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png" width="99" alt="Checkboxes screenshot">
+</div>-->
+
 The MDC Checkbox component is a spec-aligned checkbox component adhering to the
 [Material Design checkbox requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox).
 It works without JavaScript with basic functionality for all states. If you use the JavaScript object for a checkbox, it will add more intricate animation effects when switching between states.

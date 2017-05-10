@@ -9,6 +9,10 @@ path: /catalog/elevation/
 
 # Elevation
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/elevation.png" width="247" alt="Elevation screenshot">
+</div>-->
+
 MDC Elevation provides Sass mixins and CSS classes which are used to provide [shadows and
 elevation](https://material.io/guidelines/what-is-material/elevation-shadows.html) to our material
 components.

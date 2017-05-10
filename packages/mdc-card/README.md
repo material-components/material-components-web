@@ -9,6 +9,10 @@ path: /catalog/cards/
 
 # Cards
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/cards.png" width="328" alt="Cards screenshot">
+</div>-->
+
 MDC Card is a component that implements the
 [Material Design card component](https://material.io/guidelines/components/cards.html), and makes it available to
 developers as a set of CSS classes.

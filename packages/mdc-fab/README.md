@@ -8,6 +8,10 @@ path: /catalog/buttons/floating-action-buttons/
 
 # Floating Action Buttons
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/fabs.png" width="78" alt="Floating action buttons screenshot">
+</div>-->
+
 The MDC FAB component is a spec-aligned button component adhering to the
 [Material Design FAB requirements](https://material.io/guidelines/components/buttons-floating-action-button.html).
 It works without JavaScript with basic functionality for all states.

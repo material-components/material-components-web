@@ -9,6 +9,10 @@ path: /catalog/grid-lists/
 
 # Grid Lists
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/grids.png" width="320" alt="Grid lists screenshot">
+</div>-->
+
 MDC Grid List provides a RTL-aware Material Design Grid list component adhering to the
 [Material Design Grid list spec](https://material.io/guidelines/components/grid-lists.html).
 Grid Lists are best suited for presenting homogeneous data, typically images.

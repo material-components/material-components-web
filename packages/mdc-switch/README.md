@@ -8,6 +8,10 @@ path: /catalog/input-controls/switches/
 
 # Switches
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/switches.png" width="37" alt="Switches screenshot">
+</div>-->
+
 The MDC Switch component is a spec-aligned switch component adhering to the
 [Material Design Switch requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-switch).
 It works without JavaScript.

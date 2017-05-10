@@ -9,6 +9,10 @@ path: /catalog/buttons/
 
 # Buttons
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/buttons.png" width="363" alt="Buttons screenshot">
+</div>-->
+
 The MDC Button component is a spec-aligned button component adhering to the
 [Material Design button requirements](https://material.io/guidelines/components/buttons.html).
 It works without JavaScript with basic functionality for all states.

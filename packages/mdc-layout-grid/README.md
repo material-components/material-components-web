@@ -9,6 +9,10 @@ path: /catalog/layout-grids/
 
 # Layout Grids
 
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/layout.png" width="256" alt="Layout grid screenshot">
+</div>-->
+
 MDC Layout Grid is a CSS-only component that implements the
 [Material Design layout grid guidelines](https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-grid),
 and makes them available to developers as CSS classes and Sass mixins.
