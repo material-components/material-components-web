@@ -75,13 +75,16 @@ export default class MDCComponent {
 
   // Fires a cross-browser-compatible custom event from the component root of the given type,
   // with the given data.
-  emit(evtType, evtData) {
+  emit(evtType, evtData, shouldBubble = false) {
     let evt;
     if (typeof CustomEvent === 'function') {
-      evt = new CustomEvent(evtType, {detail: evtData});
+      evt = new CustomEvent(evtType, {
+        detail: evtData,
+        bubbles: shouldBubble,
+      });
     } else {
       evt = document.createEvent('CustomEvent');
-      evt.initCustomEvent(evtType, false, false, evtData);
+      evt.initCustomEvent(evtType, shouldBubble, false, evtData);
     }
 
     this.root_.dispatchEvent(evt);
