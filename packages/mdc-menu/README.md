@@ -22,7 +22,7 @@ first render.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/menus.html">Menus</a>
+    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/simple-menu.html">Demo</a>

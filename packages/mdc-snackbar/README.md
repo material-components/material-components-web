@@ -21,7 +21,7 @@ It requires JavaScript the trigger the display and hide of the snackbar.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/snackbars-toasts.html">Snackbars & toasts</a>
+    <a href="https://material.io/guidelines/components/snackbars-toasts.html">Material Design guidelines: Snackbars & toasts</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/snackbar.html">Demo</a>

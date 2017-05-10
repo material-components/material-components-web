@@ -15,7 +15,7 @@ MDC Animation is a Sass / CSS / JavaScript library which provides a toolbelt for
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/motion/duration-easing.html">Duration & easing</a>
+    <a href="https://material.io/guidelines/motion/duration-easing.html">Material Design guidelines: Duration & easing</a>
   </li>
 </ul>
 

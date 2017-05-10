@@ -22,7 +22,7 @@ If you initiate the JavaScript object for a button, then it will be enhanced wit
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html">Buttons</a>
+    <a href="https://material.io/guidelines/components/buttons.html">Material Design guidelines: Buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/button.html">Demo</a>

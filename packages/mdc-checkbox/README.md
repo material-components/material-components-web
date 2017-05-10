@@ -20,7 +20,7 @@ It works without JavaScript with basic functionality for all states. If you use 
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox">Selection Controls – Checkbox</a>
+    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox">Material Design guidelines: Selection Controls – Checkbox</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/checkbox.html">Demo</a>

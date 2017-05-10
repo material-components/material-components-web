@@ -21,7 +21,7 @@ Lists are design to be accessible and RTL aware.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/lists.html">Lists</a>
+    <a href="https://material.io/guidelines/components/lists.html">Material Design guidelines: Lists</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/list.html">Demo</a>

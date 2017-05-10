@@ -23,7 +23,7 @@ a dialog should be.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/dialogs.html">Dialogs</a>
+    <a href="https://material.io/guidelines/components/dialogs.html">Material Design guidelines: Dialogs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/dialog.html">Demo</a>

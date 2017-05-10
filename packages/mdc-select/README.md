@@ -20,10 +20,10 @@ in conjunction with the browser's native element. Both are fully accessible, and
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html">Text Fields</a>
+    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
   </li>
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/menus.html">Menus</a>
+    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/select.html">Demo</a>
