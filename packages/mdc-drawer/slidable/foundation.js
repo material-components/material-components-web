@@ -184,9 +184,8 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.drawerWidth_ = this.adapter_.getDrawerWidth();
     this.startX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
     this.currentX_ = this.startX_;
-    this.touchingSideNav_ = true;
 
-    requestAnimationFrame(this.updateDrawer_.bind(this));
+    this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
   }
 
   handleTouchMove_(evt) {
@@ -214,16 +213,12 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
   }
 
   prepareForTouchEnd_() {
-    this.touchingSideNav_ = false;
+    cancelAnimationFrame(this.updateRaf_);
     this.adapter_.setTranslateX(null);
   }
 
   updateDrawer_() {
-    if (!this.touchingSideNav_) {
-      return;
-    }
-
-    requestAnimationFrame(this.updateDrawer_.bind(this));
+    this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
     this.adapter_.setTranslateX(this.newPosition_);
   }
 

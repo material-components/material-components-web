@@ -1,8 +1,24 @@
-# MDC RTL
+<!--docs:
+title: "RTL"
+layout: detail
+section: components
+excerpt: "Right-to-left and bi-directional text layout via SCSS helpers."
+path: /catalog/rtl/
+-->
+
+# RTL
 
 MDC RTL provides sass mixins to assist with RTL / bi-directional layouts within MDC-Web components.
 Because we would like to achieve a standard approach to RTL throughout MDC-Web, we highly recommend
 that any MDC-Web component that needs RTL support leverage this package.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/usability/bidirectionality.html">Material Design guidelines: Bidirectionality</a>
+  </li>
+</ul>
 
 ## Installation
 

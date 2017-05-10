@@ -1,9 +1,32 @@
-# MDC FAB
+<!--docs:
+title: "Floating Action Buttons"
+layout: detail
+section: components
+iconId: button
+path: /catalog/buttons/floating-action-buttons/
+-->
+
+# Floating Action Buttons
+
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/fabs.png" width="78" alt="Floating action buttons screenshot">
+</div>-->
 
 The MDC FAB component is a spec-aligned button component adhering to the
-[Material Design FAB requirements](https://material.google.com/components/buttons-floating-action-button.html).
+[Material Design FAB requirements](https://material.io/guidelines/components/buttons-floating-action-button.html).
 It works without JavaScript with basic functionality for all states.
 If you initiate the JavaScript object for a button, then it will be enhanced with ripple effects. (Not yet implemented)
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/buttons-floating-action-button.html">Material Design guidelines: Floating Action Button</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/fab.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -83,14 +106,14 @@ Developers must position it as-needed within their applications designs.
 
 ### Adding ripples to FABs
 
-To add the ink ripple effect to a FAB, attach a [ripple](../packages/mdc-ripple) instance to the
+To add the ink ripple effect to a FAB, attach a [ripple](../mdc-ripple) instance to the
 FAB element.
 
 ```js
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-fab'));
 ```
 
-You can also do this declaratively when using the [material-components-web](../packages/material-components-web) package.
+You can also do this declaratively when using the [material-components-web](../material-components-web) package.
 
 ```html
 <button class="mdc-fab material-icons" aria-label="Favorite" data-mdc-auto-init="MDCRipple">

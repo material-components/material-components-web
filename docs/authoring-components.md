@@ -1,3 +1,10 @@
+<!--docs:
+title: "Authoring Components"
+layout: landing
+section: docs
+path: /docs/authoring-components/
+-->
+
 # Authoring Components
 
 This document serves as a reference for developing components either directly for MDC-Web or
@@ -619,7 +626,7 @@ All thematic elements of a component should be specified via [mdc-theme](../pack
 This will ensure that the component integrates harmoniously into our theming system.
 
 #### Use mdc-rtl for RTL support
-All RTL treatments within a component's style should be specified via [mdc-rtl](../package/mdc-rtl).
+All RTL treatments within a component's style should be specified via [mdc-rtl](../packages/mdc-rtl).
 This will ensure that all components treat RTL contexts the same way, and will behave consistently.
 
 ### Javascript
