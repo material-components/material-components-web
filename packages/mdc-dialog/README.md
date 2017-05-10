@@ -10,7 +10,9 @@ path: /catalog/dialogs/
 # Dialogs
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/dialogs.png" width="714" alt="Dialogs screenshot">
+  <a href="https://material-components-web.appspot.com/dialog.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/dialogs.png" width="714" alt="Dialogs screenshot">
+  </a>
 </div>-->
 
 The MDC Dialog component is a spec-aligned dialog component adhering to the

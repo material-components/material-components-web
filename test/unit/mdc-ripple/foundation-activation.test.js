@@ -21,6 +21,20 @@ import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constan
 
 suite('MDCRippleFoundation - Activation Logic');
 
+testFoundation('does nothing if component if isSurfaceDisabled is true',
+  ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  foundation.init();
+  mockRaf.flush();
+
+  td.when(adapter.isSurfaceDisabled()).thenReturn(true);
+
+  handlers.mousedown();
+
+  td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 0});
+  td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+});
+
 testFoundation('adds activation classes on mousedown', ({foundation, adapter, mockRaf}) => {
   const handlers = captureHandlers(adapter);
   foundation.init();
