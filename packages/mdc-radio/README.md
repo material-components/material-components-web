@@ -162,6 +162,7 @@ Since MDC Radio is primarily driven by its native control, the adapter API is ex
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 
+
 #### The full foundation API
 
 ##### MDCRadioFoundation.isChecked() => boolean
