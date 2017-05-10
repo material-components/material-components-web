@@ -17,9 +17,13 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC Select Demo</title>
+    <title>Select Menu - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style type="text/css">
       .mdc-theme--dark {
         background-color: #303030;
@@ -38,13 +42,60 @@
         font-weight: 400;
         letter-spacing: .04em;
       }
+
+      .example {
+        margin: 24px;
+        padding: 24px;
+      }
     </style>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Select</span>
+        </section>
+      </div>
+    </header>
+
     <main>
-      <h1>MDC select</h1>
-      <section>
-        <h2>Fully-Featured Component</h2>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div id="hero-js-select" class="mdc-select" role="listbox" tabindex="0">
+          <span class="mdc-select__selected-text">Pick a food group</span>
+          <div class="mdc-simple-menu mdc-select__menu">
+            <ul class="mdc-list mdc-simple-menu__items">
+              <li class="mdc-list-item" role="option"  aria-disabled="true">
+                Pick a food group
+              </li>
+              <li class="mdc-list-item" role="option" tabindex="0">
+                Bread, Cereal, Rice, and Pasta
+              </li>
+              <li class="mdc-list-item" role="option"  tabindex="0">
+                Vegetables
+              </li>
+              <li class="mdc-list-item" role="option" tabindex="0">
+                Fruit
+              </li>
+              <li class="mdc-list-item" role="option"  tabindex="0">
+                Milk, Yogurt, and Cheese
+              </li>
+              <li class="mdc-list-item" role="option" tabindex="0">
+                Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
+              </li>
+              <li class="mdc-list-item" role="option" tabindex="0">
+                Fats, Oils, and Sweets
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="example">
+        <h2 class="mdc-typography--title">Fully-Featured Component</h2>
         <section id="demo-wrapper">
           <div id="js-select" class="mdc-select" role="listbox" tabindex="0">
             <span class="mdc-select__selected-text">Pick a food group</span>
@@ -89,8 +140,8 @@
           <label for="disabled">Disabled</label>
         </div>
       </section>
-      <section>
-        <h2>CSS Only</h2>
+      <section class="example">
+        <h2 class="mdc-typography--title">CSS Only</h2>
         <select class="mdc-select">
           <option value="" default selected>Pick a food group</option>
           <option value="grains">Bread, Cereal, Rice, and Pasta</option>
@@ -102,11 +153,11 @@
         </select>
       </section>
 
-      <section>
+      <section class="example">
         <h2>Select Multiple - CSS Only</h2>
         <select multiple size="8" class="mdc-multi-select mdc-list">
 
-          <optgroup class="mdc-list-group" label="Fats, Oils, & Sweets">
+          <optgroup class="mdc-list-group" label="Fats, Oils, &amp; Sweets">
             <option class="mdc-list-item">Olive Oil</option>
             <option class="mdc-list-item">Brown Sugar</option>
             <option class="mdc-list-item">Ice Cream</option>
@@ -122,13 +173,6 @@
         </select>
       </section>
 
-      <section>
-        <h2>Custom Menu + Native Menu on mobile</h2>
-        <em>
-          TODO: Present both, maybe have a wrapper element that switches between both and
-          keeps them in sync?
-        </em>
-      </section>
     </main>
     <script src="assets/material-components-web.js"></script>
     <script>
@@ -162,6 +206,9 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
+
+        var heroSelect = document.getElementById('hero-js-select');
+        mdc.select.MDCSelect.attachTo(heroSelect);
       })();
     </script>
   </body>

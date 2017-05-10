@@ -14,8 +14,12 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDC Toolbar Demo</title>
+    <title>Toolbar - Material Compoonents Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="../demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
       .demo-container {
@@ -24,39 +28,128 @@
         font-size: 16px;
         overflow: scroll;
       }
+
+      .hero .catalog-toolbar-container {
+        width: 480px;
+        height: 72px;
+      }
+
+      .hero .catalog-toolbar-container .mdc-toolbar {
+        box-shadow:
+          0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+          0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+      }
+
+      .examples {
+        display: flex;
+        flex-flow: row wrap;
+        align-content: left;
+        justify-content: left;
+      }
+
+      .example {
+        width: 320px;
+        height: 600px;
+        margin: 24px;
+      }
+
+      .example iframe {
+        border: 1px solid #eee;
+      }
+
+      .examples h2 {
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+
+      p.intro {
+        padding: 48px 24px;
+      }
+
     </style>
-    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body class="mdc-typography">
-    <main>
-      <small>To best show the functionality of toolbars, we put both demos in iframes. Click the links above the iframe to view the demo in a full browser window.</small>
-      <h2>Normal Toolbar <button type="button" onclick="toggleRTL(0)">Toggle RTL</button></h2>
-      <p><a href="./default-toolbar.html" target="_blank">View in separate window</a></p>
-      <iframe class="demo-container" src="./default-toolbar.html"></iframe>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Toolbar</span>
+        </section>
+      </div>
+    </header>
+    <main class="mdc-toolbar-fixed-adjust">
+      <div class="hero">
+        <div class="catalog-toolbar-container">
+          <header class="mdc-toolbar">
+            <div class="mdc-toolbar__row">
+              <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+                <span class="catalog-back">
+                  <a href="#"><i class="material-icons">menu</i></a>
+                </span>
+                <span class="mdc-toolbar__title catalog-title">Toolbar</span>
+              </section>
+            </div>
+          </header>
+        </div>
+      </div>
 
-      <h2>Fixed Toolbar<button type="button" onclick="toggleRTL(1)">Toggle RTL</button></h2>
-      <p><a href="./fixed-toolbar.html" target="_blank">View in separate window</a></p>
-      <iframe class="demo-container" src="./fixed-toolbar.html"></iframe>
+      <p class="intro">
+        To best show the functionality of toolbars, we put both demos in iframes.
+         Click the links above the iframe to view the demo in a full browser window.
+       </p>
 
-      <h2>Waterfall Toolbar<button type="button" onclick="toggleRTL(2)">Toggle RTL</button></h2>
-      <p><a href="./waterfall-toolbar.html" target="_blank">View in separate window</a></p>
-      <iframe class="demo-container" src="./waterfall-toolbar.html"></iframe>
+      <section class="examples">
+        <div class="example">
+          <h2>Normal Toolbar <button type="button" onclick="toggleRTL(0)">Toggle RTL</button></h2>
+          <p><a href="./default-toolbar.html" target="_blank">View in separate window</a></p>
+          <iframe class="demo-container" src="./default-toolbar.html"></iframe>
+        </div>
 
-      <h2>Default Flexible Toolbar<button type="button" onclick="toggleRTL(3)">Toggle RTL</button></h2>
-      <p><a href="./default-flexible-toolbar.html" target="_blank">View in separate window</a></p>
-      <iframe class="demo-container" src="./default-flexible-toolbar.html"></iframe>
+        <div class="example">
+          <h2>Fixed Toolbar<button type="button" onclick="toggleRTL(1)">Toggle RTL</button></h2>
+          <p><a href="./fixed-toolbar.html" target="_blank">View in separate window</a></p>
+          <iframe class="demo-container" src="./fixed-toolbar.html"></iframe>
+        </div>
 
-      <h2>Waterfall Flexible Toolbar<button type="button" onclick="toggleRTL(4)">Toggle RTL</button></h2>
-      <p><a href="./waterfall-flexible-toolbar.html" target="_blank">View in separate window</a></p>
-      <iframe class="demo-container" src="./waterfall-flexible-toolbar.html"></iframe>
+        <div class="example">
+          <h2>Waterfall Toolbar<button type="button" onclick="toggleRTL(2)">Toggle RTL</button></h2>
+          <p><a href="./waterfall-toolbar.html" target="_blank">View in separate window</a></p>
+          <iframe class="demo-container" src="./waterfall-toolbar.html"></iframe>
+        </div>
 
-      <h2>Waterfall Toolbar Fix Last Row<button type="button" onclick="toggleRTL(5)">Toggle RTL</button></h2>
-      <p><a href="./waterfall-toolbar-fix-last-row.html" target="_blank">View in separate window</a></p>
-      <iframe class="demo-container" src="./waterfall-toolbar-fix-last-row.html"></iframe>
+        <div class="example">
+          <h2>Default Flexible Toolbar<button type="button" onclick="toggleRTL(3)">Toggle RTL</button></h2>
+          <p><a href="./default-flexible-toolbar.html" target="_blank">View in separate window</a></p>
+          <iframe class="demo-container" src="./default-flexible-toolbar.html"></iframe>
+        </div>
 
-      <h2>Waterfall Flexible Toolbar with Custom Style<button type="button" onclick="toggleRTL(6)">Toggle RTL</button></h2>
-      <p><a href="./waterfall-flexible-toolbar-custom-style.html" target="_blank">View in separate window</a></p>
-      <iframe class="demo-container" src="./waterfall-flexible-toolbar-custom-style.html"></iframe>
+        <div class="example">
+          <h2>Waterfall Flexible Toolbar<button type="button" onclick="toggleRTL(4)">Toggle RTL</button></h2>
+          <p><a href="./waterfall-flexible-toolbar.html" target="_blank">View in separate window</a></p>
+          <iframe class="demo-container" src="./waterfall-flexible-toolbar.html"></iframe>
+        </div>
+
+        <div class="example">
+          <h2>Waterfall Toolbar Fix Last Row<button type="button" onclick="toggleRTL(5)">Toggle RTL</button></h2>
+          <p><a href="./waterfall-toolbar-fix-last-row.html" target="_blank">View in separate window</a></p>
+          <iframe class="demo-container" src="./waterfall-toolbar-fix-last-row.html"></iframe>
+        </div>
+
+        <div class="example">
+          <h2>Waterfall Flexible Toolbar with Custom Style<button type="button" onclick="toggleRTL(6)">Toggle RTL</button></h2>
+          <p><a href="./waterfall-flexible-toolbar-custom-style.html" target="_blank">View in separate window</a></p>
+          <iframe class="demo-container" src="./waterfall-flexible-toolbar-custom-style.html"></iframe>
+        </div>
+
+      </section>
+
+
+
+
+
     </main>
     <script>
       function toggleRTL(iframe_number) {

@@ -1,8 +1,32 @@
-# mdc-card
+<!--docs:
+title: "Cards"
+layout: detail
+section: components
+excerpt: "Cards for displaying content composed of different elements."
+iconId: card
+path: /catalog/cards/
+-->
 
-MDC card is a component that implements the
-[Material Design card component](https://material.google.com/components/cards.html), and makes it available to
+# Cards
+
+<!--<div class="article__asset">
+<img src="{{ site.rootpath }}/images/mdc_web_screenshots/cards.png" width="328" alt="Cards screenshot">
+</div>-->
+
+MDC Card is a component that implements the
+[Material Design card component](https://material.io/guidelines/components/cards.html), and makes it available to
 developers as a set of CSS classes.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/cards.html">Material Design guidelines: Cards</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/card.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
