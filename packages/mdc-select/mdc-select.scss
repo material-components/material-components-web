@@ -250,6 +250,12 @@
       @include mdc-theme-prop(background-color, text-primary-on-dark);
     }
   }
+
+  .mdc-list-divider {
+    margin-bottom: 8px;
+    padding-top: 8px;
+    font-size: 0;
+  }
   // stylelint-enable plugin/selector-bem-pattern
 }
 
@@ -263,13 +269,5 @@
 
 // height for option elements cannot be controlled
 // with CSS. Use the font-size rule instead.
-
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-list-divider {
-  margin-bottom: 8px;
-  padding-top: 8px;
-  font-size: 0;
-}
-// stylelint-enable plugin/selector-bem-pattern
 
 // postcss-bem-linter: end

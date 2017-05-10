@@ -1,0 +1,10 @@
+# Doc site configuration.
+# TODO(shyndman): Link to documentation.
+basepath: /web
+site_platform: web
+site_title: Material Components for the Web
+site_short_title: Web
+site_description: >
+  Material Components for Web is a set of user interface components that help developers build web apps with material design.
+repo_url: https://github.com/material-components/material-components-web/
+repo_stable_branch: master

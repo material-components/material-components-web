@@ -56,6 +56,7 @@ const CSS_LOADER_CONFIG = [
   {
     loader: 'postcss-loader',
     options: {
+      sourceMap: IS_DEV,
       plugins: () =>[require('autoprefixer')({grid: false})],
     },
   },
@@ -86,6 +87,7 @@ module.exports = [{
     select: [path.resolve('./packages/mdc-select/index.js')],
     snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
     textfield: [path.resolve('./packages/mdc-textfield/index.js')],
+    toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
   },
   output: {
     path: OUT_PATH,
@@ -93,6 +95,12 @@ module.exports = [{
     filename: 'mdc.[name].' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
     library: ['mdc', '[name]'],
+  },
+  // See https://github.com/webpack/webpack-dev-server/issues/882
+  // Because we only spin up dev servers temporarily, and all of our assets are publicly
+  // available on GitHub, we can safely disable this check.
+  devServer: {
+    disableHostCheck: true,
   },
   devtool: IS_DEV ? 'source-map' : false,
   module: {
@@ -117,6 +125,9 @@ module.exports = [{
     filename: 'material-components-web.' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
     library: 'mdc',
+  },
+  devServer: {
+    disableHostCheck: true,
   },
   devtool: IS_DEV ? 'source-map' : false,
   module: {
@@ -168,6 +179,9 @@ module.exports = [{
     // all other cases, ExtractTextPlugin is used to generate the final css, so this is given a
     // dummy ".css-entry" extension.
     filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry'),
+  },
+  devServer: {
+    disableHostCheck: true,
   },
   devtool: IS_DEV ? 'source-map' : false,
   module: {

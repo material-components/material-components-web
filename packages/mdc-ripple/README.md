@@ -1,4 +1,13 @@
-# MDC Ripple
+<!--docs:
+title: "Ripples"
+layout: detail
+section: components
+excerpt: "Ink ripple touch feedback effect."
+iconId: ripple
+path: /catalog/ripples/
+-->
+
+# Ripples
 
 - [MDC Ripple](#mdc-ripple)
     - [An aside regarding browser support](#an-aside-regarding-browser-support)
@@ -58,7 +67,7 @@ Let's say we have a `surface` element that represents a basic surface.
 ```
 
 We also have some basic styles for our surface that
-use [mdc-elevation](https://github.com/material-components/material-components-web/tree/master/packages/mdc-elevation) to raise it up off of its background.
+use [mdc-elevation](../mdc-elevation) to raise it up off of its background.
 
 ```scss
 @import "@material/elevation/mixins";
@@ -252,6 +261,7 @@ ripple to. The adapter API is as follows:
 | `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Safari considerations](#caveat-safari) into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
 | `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
+| `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
 | `removeClass(className: string) => void` | Removes a class from the ripple surface |
 | `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler that's invoked when the ripple is interacted with using type `evtType`. Essentially equivalent to `HTMLElement.prototype.addEventListener`. |
@@ -385,7 +395,7 @@ build that can handle our usage of CSS variables.
 > TL;DR theme custom variable changes will not propagate to ripples if the browser does not support
 > [CSS 4 color-mod functions](https://drafts.csswg.org/css-color/).
 
-The way that [mdc-theme works](https://github.com/material-components/material-components-web/tree/master/packages/mdc-theme#mdc-theme-prop-mixin) is that it emits two properties: one with the hard-coded sass variable, and another for a
+The way that [mdc-theme works](../mdc-theme#mdc-theme-prop-mixin) is that it emits two properties: one with the hard-coded sass variable, and another for a
 CSS variable that can be interpolated. The problem is that ripple backgrounds need to have an opacity, and currently there's no way to opacify a pre-existing color defined by a CSS variable.
 There is an editor's draft for a `color-mod` function (see link in TL;DR) that _can_ do this:
 

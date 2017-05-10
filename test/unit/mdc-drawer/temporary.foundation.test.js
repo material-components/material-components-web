@@ -46,7 +46,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
-    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable', 'isRtl', 'getDrawerWidth', 'isDrawer',
+    'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable',
+    'notifyOpen', 'notifyClose', 'isRtl', 'getDrawerWidth', 'isDrawer',
     'updateCssVariable',
   ]);
 });
@@ -286,6 +287,28 @@ test('on touch end resets touch update styles', () => {
 
   handlers.touchend({});
   td.verify(mockAdapter.updateCssVariable(''));
+  raf.restore();
+});
+
+test('on touch end does not update drawer', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const raf = createMockRaf();
+  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
+  foundation.init();
+
+  drawerHandlers.touchstart({
+    touches: [{pageX: 500}],
+  });
+  raf.flush();
+  td.verify(mockAdapter.updateCssVariable(1), {times: 1});
+
+  handlers.touchend({});
+  raf.flush();
+  td.verify(mockAdapter.updateCssVariable(1), {times: 1});
+
   raf.restore();
 });
 

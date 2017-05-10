@@ -37,6 +37,8 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
       saveElementTabState: (/* el: Element */) => {},
       restoreElementTabState: (/* el: Element */) => {},
       makeElementUntabbable: (/* el: Element */) => {},
+      notifyOpen: () => {},
+      notifyClose: () => {},
       isRtl: () => /* boolean */ false,
       getDrawerWidth: () => /* number */ 0,
     };
@@ -109,6 +111,10 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(this.animatingCssClass_);
     this.adapter_.addClass(this.openCssClass_);
     this.retabinate_();
+    // Debounce multiple calls
+    if (!this.isOpen_) {
+      this.adapter_.notifyOpen();
+    }
     this.isOpen_ = true;
   }
 
@@ -118,6 +124,10 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(this.animatingCssClass_);
     this.adapter_.removeClass(this.openCssClass_);
     this.detabinate_();
+    // Debounce multiple calls
+    if (this.isOpen_) {
+      this.adapter_.notifyClose();
+    }
     this.isOpen_ = false;
   }
 
@@ -174,9 +184,8 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.drawerWidth_ = this.adapter_.getDrawerWidth();
     this.startX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
     this.currentX_ = this.startX_;
-    this.touchingSideNav_ = true;
 
-    requestAnimationFrame(this.updateDrawer_.bind(this));
+    this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
   }
 
   handleTouchMove_(evt) {
@@ -204,16 +213,12 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
   }
 
   prepareForTouchEnd_() {
-    this.touchingSideNav_ = false;
+    cancelAnimationFrame(this.updateRaf_);
     this.adapter_.setTranslateX(null);
   }
 
   updateDrawer_() {
-    if (!this.touchingSideNav_) {
-      return;
-    }
-
-    requestAnimationFrame(this.updateDrawer_.bind(this));
+    this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
     this.adapter_.setTranslateX(this.newPosition_);
   }
 
@@ -229,7 +234,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     return newPos;
   }
 
-  isRootTransitioningEventTarget_(el) {
+  isRootTransitioningEventTarget_() {
     // Classes extending MDCSlidableDrawerFoundation should implement this method to return true or false
     // if the event target is the root event target currently transitioning.
     return false;

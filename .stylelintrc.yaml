@@ -19,7 +19,7 @@ rules:
   # attribute strings are normally quoted within the DOM.
   string-quotes: double
   # https://github.com/sasstools/sass-lint/blob/develop/lib/config/property-sort-orders/smacss.yml
-  order/declaration-block-properties-specified-order:
+  order/properties-order:
     - display
     - position
     - top

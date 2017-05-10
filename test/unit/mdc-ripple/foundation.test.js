@@ -39,9 +39,10 @@ test('numbers returns constants.numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCRippleFoundation, [
-    'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'addClass', 'removeClass',
-    'registerInteractionHandler', 'deregisterInteractionHandler', 'registerResizeHandler',
-    'deregisterResizeHandler', 'updateCssVariable', 'computeBoundingRect', 'getWindowPageOffset',
+    'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'isSurfaceDisabled',
+    'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'registerResizeHandler', 'deregisterResizeHandler', 'updateCssVariable',
+    'computeBoundingRect', 'getWindowPageOffset',
   ]);
 });
 
@@ -142,6 +143,23 @@ testFoundation('#init registers an event for when a resize occurs', ({foundation
   foundation.init();
 
   td.verify(adapter.registerResizeHandler(td.matchers.isA(Function)));
+});
+
+testFoundation('#destroy not supported', ({foundation, adapter}) => {
+  const handlers = {};
+
+  td.when(
+    adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function))
+  ).thenDo((type, handler) => {
+    handlers[type] = handler;
+  });
+  foundation.init();
+  td.when(adapter.browserSupportsCssVars()).thenReturn(false);
+  foundation.destroy();
+
+  Object.keys(handlers).forEach((type) => {
+    td.verify(adapter.deregisterInteractionHandler(type, handlers[type]), {times: 0});
+  });
 });
 
 testFoundation('#destroy unregisters all bound interaction handlers', ({foundation, adapter}) => {

@@ -1,4 +1,11 @@
-# MDC-Web Theming Guide
+<!--docs:
+title: "Theming Guide"
+layout: landing
+section: docs
+path: /docs/theming/
+-->
+
+# Theming Guide
 
 ## Overview
 
@@ -18,7 +25,7 @@ components, and usually as the page background as well.
 Finally, MDC-Web has a number of text colors, which are used for rendering text and other shapes on top of the primary,
 accent and background colors. These are specified as either dark or light, in order to provide sufficient contrast to
 what's behind them, and have
-[different levels of opacity depending on usage](https://material.google.com/style/color.html#color-color-schemes):
+[different levels of opacity depending on usage](https://material.io/guidelines/style/color.html#color-color-schemes):
 - Primary, used for most text.
 - Secondary, used for text which is lower in the visual hierarchy.
 - Hint, used for text hints (such as those in text fields and labels).
@@ -219,7 +226,7 @@ on. As for the text colors, these will all be automatically calculated from the 
 provide, as part of the Sass definitions in `mdc-theme`. Pretty simple!
 
 > Note: theme colors don't have to be part of the Material palette; you can use any valid color. You may want to read
-the [color section](https://material.google.com/style/color.html) in the Material Design spec to inform your pick of an
+the [color section](https://material.io/guidelines/style/color.html) in the Material Design spec to inform your pick of an
 alternative palette.
 
 
