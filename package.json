@@ -137,6 +137,7 @@
           "select",
           "snackbar",
           "switch",
+          "tabs",
           "textfield",
           "theme",
           "toolbar",
