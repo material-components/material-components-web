@@ -723,17 +723,13 @@
     </main>
     <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script type="text/javascript">
-      // function toggleRTL(elem) {
-      //   var gridListEl = elem.parentElement.querySelector('');
-      //   gridListEl.getAttribute('dir') === 'rtl' ? gridListEl.setAttribute('dir', 'ltr') : gridListEl.setAttribute('dir', 'rtl');
-      // }
       function initGridList() {
         var nodes = document.querySelectorAll('.mdc-grid-list');
         for (var i = 0, node; node = nodes[i]; i++) {
           mdc.gridList.MDCGridList.attachTo(node);
         }
       }
-      // Hook up RTL
+
       var demoWrapper = document.querySelector('.examples');
       document.getElementById('toggle-rtl').addEventListener('change', function () {
         if (this.checked) {
