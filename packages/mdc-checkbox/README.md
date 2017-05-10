@@ -3,7 +3,7 @@ title: "Checkboxes"
 layout: detail
 section: components
 iconId: selection_control
-path: /catalog/checkboxes/
+path: /catalog/input-controls/checkboxes/
 -->
 
 # Checkboxes

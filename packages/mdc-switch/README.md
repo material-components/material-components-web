@@ -3,7 +3,7 @@ title: "Switches"
 layout: detail
 section: components
 iconId: switch
-path: /catalog/switches/
+path: /catalog/input-controls/switches/
 -->
 
 # Switches

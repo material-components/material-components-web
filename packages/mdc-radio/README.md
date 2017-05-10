@@ -3,7 +3,7 @@ title: "Radio Buttons"
 layout: detail
 section: components
 iconId: radio_button
-path: /catalog/radio-buttons/
+path: /catalog/input-controls/radio-buttons/
 -->
 
 # Radio Buttons
