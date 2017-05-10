@@ -10,7 +10,9 @@ path: /catalog/menus/
 # Menus
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="153" alt="Menus screenshot">
+  <a href="https://material-components-web.appspot.com/simple-menu.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="153" alt="Menus screenshot">
+  </a>
 </div>-->
 
 The MDC Menu component is a spec-aligned menu component adhering to the

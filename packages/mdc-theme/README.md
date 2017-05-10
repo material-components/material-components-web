@@ -10,7 +10,9 @@ path: /catalog/theme/
 # Theme
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/themes.png" width="241" alt="Themes screenshot">
+  <a href="https://material-components-web.appspot.com/theme.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/themes.png" width="241" alt="Themes screenshot">
+  </a>
 </div>-->
 
 MDC Theme is a foundational module that provides theming to MDC-Web components, and also makes it available to

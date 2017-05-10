@@ -9,7 +9,9 @@ path: /catalog/input-controls/radio-buttons/
 # Radio Buttons
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/radios.png" width="60" alt="Radio buttons screenshot">
+  <a href="https://material-components-web.appspot.com/radio.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/radios.png" width="60" alt="Radio buttons screenshot">
+  </a>
 </div>-->
 
 The MDC Radio Button component provides a radio button adhering to the [Material Design Specification](https://material.io/guidelines/components/selection-controls.html#selection-controls-radio-button).

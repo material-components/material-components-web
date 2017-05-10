@@ -9,7 +9,9 @@ path: /catalog/input-controls/checkboxes/
 # Checkboxes
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png" width="99" alt="Checkboxes screenshot">
+  <a href="https://material-components-web.appspot.com/checkbox.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png" width="99" alt="Checkboxes screenshot">
+  </a>
 </div>-->
 
 The MDC Checkbox component is a spec-aligned checkbox component adhering to the

@@ -10,7 +10,9 @@ path: /catalog/buttons/
 # Buttons
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/buttons.png" width="363" alt="Buttons screenshot">
+  <a href="https://material-components-web.appspot.com/button.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/buttons.png" width="363" alt="Buttons screenshot">
+  </a>
 </div>-->
 
 The MDC Button component is a spec-aligned button component adhering to the
