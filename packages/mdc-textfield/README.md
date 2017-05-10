@@ -9,7 +9,8 @@ path: /catalog/input-controls/text-fields/
 # Text Fields
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/textfield.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/textfield.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
   </a>
 </div>-->

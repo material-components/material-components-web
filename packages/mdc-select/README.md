@@ -9,7 +9,8 @@ path: /catalog/input-controls/select-menus/
 # Select Menus
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/select.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/select.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/selects.png" width="376" alt="Select screenshot">
   </a>
 </div>-->

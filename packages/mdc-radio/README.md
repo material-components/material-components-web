@@ -9,7 +9,8 @@ path: /catalog/input-controls/radio-buttons/
 # Radio Buttons
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/radio.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/radio.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/radios.png" width="60" alt="Radio buttons screenshot">
   </a>
 </div>-->

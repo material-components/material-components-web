@@ -9,7 +9,8 @@ path: /catalog/input-controls/checkboxes/
 # Checkboxes
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/checkbox.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/checkbox.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png" width="99" alt="Checkboxes screenshot">
   </a>
 </div>-->

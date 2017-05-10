@@ -10,7 +10,8 @@ path: /catalog/snackbars/
 # Snackbars
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/snackbar.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/snackbar.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbars screenshot">
   </a>
 </div>-->
