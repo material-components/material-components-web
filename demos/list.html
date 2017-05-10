@@ -14,11 +14,13 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC List Demo</title>
+    <title>List Item - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
       .mdc-list,
       .mdc-list-group {
@@ -60,32 +62,139 @@
       .mdc-theme--dark .two-line-avatar-text-icon-demo .mdc-list-item__end-detail {
         color: rgba(255, 255, 255, .7);
       }
+
+      .preamble {
+        max-width: 600px;
+        margin-top: 48px;
+        margin-left: 72px;
+      }
+
+      #demo-wrapper {
+        margin: 24px;
+      }
+
+      #demo-wrapper section {
+        padding: 24px;
+      }
+
+      #demo-wrapper .mdc-list, #demo-wrapper .mdc-list-group {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      #demo-wrapper .mdc-list-group .mdc-list,
+      #demo-wrapper .mdc-theme--dark .mdc-list,
+      #demo-wrapper .mdc-theme--dark .mdc-list-group {
+        border: none;
+      }
+
+      #demo-wrapper h2 {
+        font-size: 1.5em;
+        margin-bottom: 0.8em;
+        margin-left: 24px;
+      }
+
+      #demo-wrapper h3 {
+        margin-bottom: 0.8em;
+      }
+
+      .hero .mdc-list {
+        background-color: white;
+        min-width: 320px;
+        box-shadow:
+          0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+          0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+      }
+
     </style>
   </head>
   <body>
-    <main>
-      <h1>MDC List</h1>
-      <aside>
-        <em>NOTE:</em> For the purposes of this demo, we've set a max-width of 600px on all
-        <code>mdc-list</code> elements. This is not included in the base css, which has the list
-        take up as much width as possible (since it's a block element).
-      </aside>
-      <div class="mdc-form-field">
-        <div class="mdc-checkbox">
-          <input type="checkbox"
-                 class="mdc-checkbox__native-control"
-                 id="toggle-rtl"
-                 aria-labelledby="toggle-rtl-label" />
-          <div class="mdc-checkbox__background">
-            <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-              <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
-                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-            </svg>
-            <div class="mdc-checkbox__mixedmark"></div>
-          </div>
-        </div>
-        <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">List</span>
+        </section>
       </div>
+    </header>
+    <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list two-line-avatar-text-icon-demo">
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__start-detail grey-bg" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              Photos
+              <span class="mdc-list-item__text__secondary">Jan 9, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__end-detail material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__start-detail grey-bg" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              Recipes
+              <span class="mdc-list-item__text__secondary">Jan 17, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__end-detail material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__start-detail grey-bg" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              Work
+              <span class="mdc-list-item__text__secondary">Jan 28, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__end-detail material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="preamble mdc-typography--body1">
+        <aside>
+          <p>
+          <em>NOTE:</em> For the purposes of this demo, we've set a max-width of 600px on all
+          <code>mdc-list</code> elements, and surrounded them by a 1px border. This is
+          not included in the base css, which has the list
+          take up as much width as possible (since it's a block element).
+          </p>
+        </aside>
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox"
+                   class="mdc-checkbox__native-control"
+                   id="toggle-rtl"
+                   aria-labelledby="toggle-rtl-label" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
+                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
+        </div>
+      </section>
+
       <div id="demo-wrapper">
         <section>
           <h2>Single-Line List</h2>
@@ -115,7 +224,7 @@
           </section>
           <section>
             <h3>Start Detail</h3>
-            <aside><em>Note: The grey background is styled using demo placeholder styles</em></aside>
+            <aside><p><em>Note: The grey background is styled using demo placeholder styles</em></p></aside>
             <ul class="mdc-list">
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
@@ -1007,18 +1116,21 @@
         var cb = mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
         formField.input = cb;
         var demoWrapper = document.getElementById('demo-wrapper');
+        var hero = document.querySelector('.hero');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
           if (this.checked) {
             demoWrapper.setAttribute('dir', 'rtl');
+            hero.setAttribute('dir', 'rtl');
           } else {
             demoWrapper.removeAttribute('dir');
+            hero.removeAttribute('dir');
           }
         });
         // Delay initialization within development until styles have loaded
         setTimeout(initInteractiveLists, 250);
         function initInteractiveLists() {
           var interactiveListItems = document.querySelectorAll(
-            '[data-demo-interactive-list] .mdc-list-item'
+            '[data-demo-interactive-list] .mdc-list-item, .hero .mdc-list-item'
           );
           for (var i = 0, li; li = interactiveListItems[i]; i++) {
             mdc.ripple.MDCRipple.attachTo(li);

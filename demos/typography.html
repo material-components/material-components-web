@@ -17,22 +17,42 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDC Typography Demo</title>
+    <title>Typography - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
       .demo-typography--section {
-        padding: 16px;
+        margin: 24px;
+        padding: 24px;
         border: 1px solid #ddd;
+      }
+      .demo-typography--section h2 {
+        margin-left: 0;
       }
     </style>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Typography</span>
+        </section>
+      </div>
+    </header>
     <main>
-      <h1>MDC Typography</h1>
-      <h2>Styles</h2>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <h2 class="mdc-typography--display4">Tt</h2>
+      </section>
+
+      <h2 class="mdc-typography--display1">Styles</h2>
       <section class="demo-typography--section mdc-typography">
         <h1 class="mdc-typography--display4">Display 4</h1>
         <h1 class="mdc-typography--display3">Display 3</h1>
@@ -51,7 +71,7 @@
         <aside class="mdc-typography--body2">Body 2 text, calling something out.</aside>
       </section>
 
-      <h2>Styles with margin adjustments</h2>
+      <h2 class="mdc-typography--display1">Styles with margin adjustments</h2>
       <section class="demo-typography--section mdc-typography">
         <h1 class="mdc-typography--display4 mdc-typography--adjust-margin">Display 4</h1>
         <h1 class="mdc-typography--display3 mdc-typography--adjust-margin">Display 3</h1>

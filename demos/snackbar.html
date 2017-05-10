@@ -17,73 +17,106 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC Snackbar Demo</title>
+    <title>Snackbar - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
-      .mdc-snackbar { transform: translateY(100%); }
+      /* initialize it off screen. */
+      .loading .example .mdc-snackbar { transform: translateY(100%); }
+
+      /* Override style for hero example. */
+      .hero .mdc-snackbar {
+        position: relative;
+        left: auto;
+      }
+      .hero .mdc-snackbar--active {
+        transform: none;
+      }
+
+      .field {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+
     </style>
-    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
-  <body>
+  <body class="loading">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Snackbar</span>
+        </section>
+      </div>
+    </header>
+
     <main>
-      <h1>MDC Snackbar</h1>
-      <section>
-        <h2>Basic Example</h2>
-        <div>
-          <div class="mdc-checkbox-wrapper">
-            <div class="mdc-checkbox-wrapper__layout">
-              <div class="mdc-checkbox">
-                <input type="checkbox"
-                       class="mdc-checkbox__native-control"
-                       id="multiline"
-                       aria-labelledby="multiline-label" />
-                <div class="mdc-checkbox__background">
-                  <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                    <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
-                          d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                  </svg>
-                  <div class="mdc-checkbox__mixedmark"></div>
-                </div>
-              </div>
-              <label for="multiline" id="multiline-label">Multiline</label>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div class="mdc-snackbar mdc-snackbar--active"
+             aria-live="assertive"
+             aria-atomic="true"
+             aria-hidden="true">
+          <div class="mdc-snackbar__text">Message sent</div>
+          <div class="mdc-snackbar__action-wrapper">
+            <button type="button" class="mdc-button mdc-snackbar__action-button">Undo</button>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="example">
+        <h2 class="mdc-typography--title">Basic Example</h2>
+
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="multiline" aria-labelledby="multiline-label" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
             </div>
           </div>
+          <label for="multiline" id="multiline-label">Multiline</label>
+        </div>
 
-          <div class="mdc-checkbox-wrapper">
-            <div class="mdc-checkbox-wrapper__layout">
-              <div class="mdc-checkbox">
-                <input type="checkbox"
-                       class="mdc-checkbox__native-control"
-                       id="action-on-bottom"
-                       aria-labelledby="action-on-bottom-label" />
-                <div class="mdc-checkbox__background">
-                  <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                    <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
-                          d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                  </svg>
-                  <div class="mdc-checkbox__mixedmark"></div>
-                </div>
-              </div>
-              <label for="action-on-bottom" id="action-on-bottom-label">Action On Bottom</label>
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="action-on-bottom" aria-labelledby="action-on-bottom-label" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
             </div>
           </div>
+          <label for="action-on-bottom" id="action-on-bottom-label">Action On Bottom</label>
+        </div>
 
-          <div>
-            <label for="message">Message Text</label>
-            <input type="text" id="message" value="Message deleted">
-          </div>
 
-          <div>
-            <label for="action">Action Text</label>
-            <input type="text" id="action" value="Undo">
-          </div>
+        <div class="field">
+          <label for="message">Message Text</label>
+          <input type="text" id="message" value="Message deleted">
+        </div>
+
+        <div class="field">
+          <label for="action">Action Text</label>
+          <input type="text" id="action" value="Undo">
+        </div>
 
           <button type="button" id="show-snackbar">Show</button>
           <button type="button" id="show-rtl-snackbar">Show RTL</button>
 
           <div id="mdc-js-snackbar"
-               class="mdc-snackbar"
+               class="mdc-snackbar demo-hidden"
                aria-live="assertive"
                aria-atomic="true"
                aria-hidden="true">
@@ -94,7 +127,7 @@
           </div>
           <div dir="rtl">
             <div id="mdc-rtl-js-snackbar"
-                 class="mdc-snackbar"
+                 class="mdc-snackbar demo-hidden"
                  aria-live="assertive"
                  aria-atomic="true"
                  aria-hidden="true">
@@ -141,6 +174,9 @@
         document.getElementById('show-rtl-snackbar').addEventListener('click', function() {
           show(rtlSnackbar);
         });
+
+        // Remove any element hiding after loading.
+        window.onload = function() { document.body.className = ''; };
       })(this);
     </script>
   </body>

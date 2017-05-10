@@ -17,14 +17,16 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC Checkbox Demo</title>
+    <title>Checkbox - Material Compoonents Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+
     <style media="screen">
-      section {
-        margin-top: .5rem;
-        padding: 0 .5rem 1rem .5rem;
-      }
+
 
       .mdc-theme--dark {
         background: #262626;
@@ -39,24 +41,53 @@
          into account. */
       .mdc-theme--dark .mdc-checkbox__native-control:checked:not(:disabled) ~ .mdc-checkbox__background,
       .mdc-theme--dark .mdc-checkbox__native-control:indeterminate:not(:disabled) ~ .mdc-checkbox__background {
-        background-color: #E91E63;
-        border-color: #E91E63;
+        background-color: #64DD17;
+        border-color: #64DD17;
       }
       .mdc-theme--dark .mdc-checkbox__background::before {
-        background-color: #E91E63;
+        background-color: #64DD17;
       }
       .mdc-theme--dark .mdc-checkbox__checkmark__path {
         stroke: #262626 !important;
       }
       .mdc-theme--dark .mdc-checkbox__mixedmark {
-        background-color: #262626;
+        background-color: #64DD17;
       }
     </style>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Checkbox</span>
+        </section>
+      </div>
+    </header>
     <main>
-      <h1>MDC Checkbox</h1>
-      <section>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div class="mdc-checkbox">
+          <input type="checkbox"
+                 id="hero-checkbox"
+                 class="mdc-checkbox__native-control"/>
+          <div class="mdc-checkbox__background">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
+              <path class="mdc-checkbox__checkmark__path"
+                    fill="none"
+                    stroke="white"
+                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+        </div>
+        <label for="hero-checkbox" id="hero-checkbox-label">Checkbox</label>
+      </section>
+
+      <section class="example">
         <h2>CSS Only</h2>
         <div class="mdc-form-field">
           <div class="mdc-checkbox">
@@ -82,7 +113,7 @@
         <button type="button" onclick="document.getElementById('basic-checkbox').disabled = !document.getElementById('basic-checkbox').disabled;">Toggle Disabled</button>
       </section>
 
-      <section>
+      <section class="example">
         <h2>CSS Only - Disabled</h2>
         <div class="mdc-form-field">
           <div class="mdc-checkbox mdc-checkbox--disabled">
@@ -105,7 +136,7 @@
         </div>
       </section>
 
-      <section>
+      <section class="example">
         <h2>With Javascript</h2>
         <div class="mdc-form-field">
           <div id="mdc-js-checkbox" class="mdc-checkbox">
@@ -128,7 +159,7 @@
         </div>
         <button type="button" id="make-ind">Make indeterminate</button>
       </section>
-      <section class="mdc-theme--dark">
+      <section class="example mdc-theme--dark">
         <h2>Dark Theme</h2>
         <div class="mdc-form-field">
           <div id="mdc-checkbox-dark" class="mdc-checkbox mdc-checkbox--theme-dark">
