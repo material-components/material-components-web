@@ -10,7 +10,9 @@ path: /catalog/toolbar/
 # Toolbars
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
+  <a href="https://material-components-web.appspot.com/toolbar.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
+  </a>
 </div>-->
 
 MDC Toolbar acts as a container for multiple rows containing items such as

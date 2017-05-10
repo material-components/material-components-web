@@ -10,7 +10,9 @@ path: /catalog/cards/
 # Cards
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/cards.png" width="328" alt="Cards screenshot">
+  <a href="https://material-components-web.appspot.com/card.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/cards.png" width="328" alt="Cards screenshot">
+  </a>
 </div>-->
 
 MDC Card is a component that implements the

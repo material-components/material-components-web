@@ -10,7 +10,9 @@ path: /catalog/snackbars/
 # Snackbars
 
 <!--<div class="article__asset">
-<img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbars screenshot">
+  <a href="https://material-components-web.appspot.com/snackbar.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbars screenshot">
+  </a>
 </div>-->
 
 The MDC Snackbar component is a spec-aligned snackbar/toast component adhering to the
