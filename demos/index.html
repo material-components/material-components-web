@@ -17,38 +17,244 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDC Demos</title>
+    <title>Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <style>
+
+    .catalog-list {
+      padding-left: 28px;
+    }
+    .catalog-list-icon {
+      margin-right: 24px;
+    }
+
+
+    ul.catalog-list li a {
+      text-decoration: none;
+      color: #212121;
+    }
+    .catalog-component-list-content {
+      padding-left: 24px;
+      order: 2;
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+    }
+
+    .catalog-component-list-title {
+      order: 1;
+    }
+
+    .catalog-component-list-description {
+      color: #999;
+      order: 2;
+    }
+
+    </style>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-logo">
+            <img src="/images/ic_component_24px_white.svg">
+          </span>
+          <!--<a href="#" class="material-icons">menu</a>-->
+          <span class="mdc-toolbar__title catalog-title">Material Components Catalog</span>
+        </section>
+      </div>
+    </header>
     <main>
-      <nav>
-        <ul>
-          <li><a href="button.html">Button</a></li>
-          <li><a href="card.html">Card</a></li>
-          <li><a href="checkbox.html">Checkbox</a></li>
-          <li><a href="dialog.html">Dialog</a></li>
-          <li><a href="drawer/temporary-drawer.html">Drawer (temporary)</a></li>
-          <li><a href="drawer/persistent-drawer.html">Drawer (persistent)</a></li>
-          <li><a href="drawer/permanent-drawer-above-toolbar.html">Drawer (permanent, above toolbar)</a></li>
-          <li><a href="drawer/permanent-drawer-below-toolbar.html">Drawer (permanent, below toolbar)</a></li>
-          <li><a href="elevation.html">Elevation</a></li>
-          <li><a href="fab.html">FAB</a></li>
-          <li><a href="grid-list.html">Grid List</a></li>
-          <li><a href="icon-toggle.html">Icon Toggle</a></li>
-          <li><a href="layout-grid.html">Layout grid</a></li>
-          <li><a href="list.html">List</a></li>
-          <li><a href="select.html">Select</a></li>
-          <li><a href="simple-menu.html">Menu (simple)</a></li>
-          <li><a href="switch.html">Switch</a></li>
-          <li><a href="radio.html">Radio</a></li>
-          <li><a href="ripple.html">Ripple</a></li>
-          <li><a href="snackbar.html">Snackbar</a></li>
-          <li><a href="textfield.html">Text Field</a></li>
-          <li><a href="theme.html">Theme</a></li>
-          <li><a href="toolbar/index.html">Toolbar</a></li>
-          <li><a href="typography.html">Typography</a></li>
+      <nav class="mdc-toolbar-fixed-adjust">
+        <ul class="catalog-list mdc-list mdc-list--two-line">
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_button_24px.svg" /></span>
+              <a href="button.html" class="mdc-list-item__text">
+                Button
+                <span class="mdc-list-item__text__secondary">Raised and flat buttons</span>
+              </a>
+          </li>
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_card_24px.svg" /></span>
+              <a href="card.html" class="mdc-list-item__text">
+                Card
+                <span class="mdc-list-item__text__secondary">Various card layout styles</span>
+              </a>
+          </li>
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_selection_control_24px.svg" /></span>
+              <a href="checkbox.html" class="mdc-list-item__text">
+                Checkbox
+                <span class="mdc-list-item__text__secondary">Multi-selection controls</span>
+              </a>
+          </li>
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_dialog_24px.svg" /></span>
+              <a href="dialog.html" class="mdc-list-item__text">
+                Dialog
+                <span class="mdc-list-item__text__secondary">Secondary text</span>
+              </a>
+          </li>
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_side_navigation_24px.svg" /></span>
+              <a href="drawer/temporary-drawer.html" class="mdc-list-item__text">
+                Drawer
+                <span class="mdc-list-item__text__secondary">Temporary</span>
+              </a>
+          </li>
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_side_navigation_24px.svg" /></span>
+              <a href="drawer/persistent-drawer.html" class="mdc-list-item__text">
+                Drawer
+                <span class="mdc-list-item__text__secondary">Persistent</span>
+              </a>
+          </li>
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_side_navigation_24px.svg" /></span>
+              <a href="drawer/permanent-drawer-above-toolbar.html" class="mdc-list-item__text">
+                Drawer
+                <span class="mdc-list-item__text__secondary">Permanent drawer above toolbar</span>
+              </a>
+          </li>
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_side_navigation_24px.svg" /></span>
+              <a href="drawer/permanent-drawer-below-toolbar.html" class="mdc-list-item__text">
+                Drawer
+                <span class="mdc-list-item__text__secondary">Permanent drawer below toolbar</span>
+              </a>
+          </li>
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_shadow_24px.svg" /></span>
+              <a href="elevation.html" class="mdc-list-item__text">
+                Elevation
+                <span class="mdc-list-item__text__secondary">Shadow for different elevations</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_button_24px.svg" /></span>
+              <a href="fab.html" class="mdc-list-item__text">
+                Floating action button
+                <span class="mdc-list-item__text__secondary"></span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_card_24px.svg" /></span>
+              <a href="grid-list.html" class="mdc-list-item__text">
+                Grid list
+                <span class="mdc-list-item__text__secondary">2D grid layouts</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_component_24px.svg" /></span>
+              <a href="icon-toggle.html" class="mdc-list-item__text">
+                Icon toggle
+                <span class="mdc-list-item__text__secondary">Toggling icon states</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_card_24px.svg" /></span>
+              <a href="layout-grid.html" class="mdc-list-item__text">
+                Layout grid
+                <span class="mdc-list-item__text__secondary">Grid and gutter support</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_list_24px.svg" /></span>
+              <a href="list.html" class="mdc-list-item__text">
+                List
+                <span class="mdc-list-item__text__secondary">Item layouts in lists</span>
+              </a>
+          </li>
+
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_radio_button_24px.svg" /></span>
+              <a href="radio.html" class="mdc-list-item__text">
+                Radio buttons
+                <span class="mdc-list-item__text__secondary">Single selection controls</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_ripple_24px.svg" /></span>
+              <a href="ripple.html" class="mdc-list-item__text">
+                Ripple
+                <span class="mdc-list-item__text__secondary">Touch ripple</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_menu_24px.svg" /></span>
+              <a href="select.html" class="mdc-list-item__text">
+                Select
+                <span class="mdc-list-item__text__secondary">Popover selection menus</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_menu_24px.svg" /></span>
+              <a href="simple-menu.html" class="mdc-list-item__text">
+                Simple Menu
+                <span class="mdc-list-item__text__secondary">Pop over menus</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_toast_24px.svg" /></span>
+              <a href="snackbar.html" class="mdc-list-item__text">
+                Snackbar
+                <span class="mdc-list-item__text__secondary">Transient messages</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_switch_24px.svg" /></span>
+              <a href="switch.html" class="mdc-list-item__text">
+                Switch
+                <span class="mdc-list-item__text__secondary">On off switches</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_text_field_24px.svg" /></span>
+              <a href="textfield.html" class="mdc-list-item__text">
+                Text field
+                <span class="mdc-list-item__text__secondary">Single and multiline text fields</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_theme_24px.svg" /></span>
+              <a href="theme.html" class="mdc-list-item__text">
+                Theme
+                <span class="mdc-list-item__text__secondary">Using primary and accent colors</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_toolbar_24px.svg" /></span>
+              <a href="toolbar/index.html" class="mdc-list-item__text">
+                Toolbar
+                <span class="mdc-list-item__text__secondary">Header and footers</span>
+              </a>
+          </li>
+
+          <li class="mdc-list-item">
+              <span class="catalog-list-icon mdc-list-item__start-detail"><img class="catalog-component-icon" src="/images/ic_typography_24px.svg" /></span>
+              <a href="typography.html" class="mdc-list-item__text">
+                Typography
+                <span class="mdc-list-item__text__secondary">Type hierarchy</span>
+              </a>
+          </li>
+
         </ul>
       </nav>
     </main>

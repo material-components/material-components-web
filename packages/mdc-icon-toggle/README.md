@@ -3,10 +3,16 @@ title: "Icon Toggle Buttons"
 layout: detail
 section: components
 iconId: button
-path: /catalog/icon-toggle-buttons/
+path: /catalog/buttons/icon-toggle-buttons/
 -->
 
 # Icon Toggle Buttons
+
+<!--<div class="article__asset">
+  <a href="https://material-components-web.appspot.com/icon-toggle.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon toggles screenshot">
+  </a>
+</div>-->
 
 MDC Icon Toggle provides a Material Design icon toggle button. It is fully accessible, and is
 designed to work with any icon set.
@@ -15,7 +21,7 @@ designed to work with any icon set.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons">Toggle buttons</a>
+    <a href="https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons">Material Design guidelines: Toggle buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/icon-toggle.html">Demo</a>

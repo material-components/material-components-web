@@ -5,12 +5,9 @@ section: docs
 path: /docs/
 -->
 
-# Documentation
+# Supporting documentation
 
-Welcome to our (very-much-still-in-progress) documentation! As we develop MDC-Web, we will be
-adding and amending this documentation such that it is both easy to get you up-and-running, as well as
-thorough enough for advanced developers to understand why we made the decisions we did for the
-project.
+This section includes supporting documentation aimed to both improve the onboarding experience for teams that are new to Material Components, as well as cover advanced issues for those interested in the reasoning behind our decisions and contributing to the project.
 
 To jump right in and begin using the library, check out our [Getting Started Guide](./getting-started.md)
 

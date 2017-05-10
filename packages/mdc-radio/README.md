@@ -3,10 +3,16 @@ title: "Radio Buttons"
 layout: detail
 section: components
 iconId: radio_button
-path: /catalog/radio-buttons/
+path: /catalog/input-controls/radio-buttons/
 -->
 
 # Radio Buttons
+
+<!--<div class="article__asset">
+  <a href="https://material-components-web.appspot.com/radio.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/radios.png" width="60" alt="Radio buttons screenshot">
+  </a>
+</div>-->
 
 The MDC Radio Button component provides a radio button adhering to the [Material Design Specification](https://material.io/guidelines/components/selection-controls.html#selection-controls-radio-button).
 It requires no Javascript out of the box, but can be enhanced with Javascript to provide better
@@ -16,7 +22,7 @@ interaction UX as well as a component-level API for state modification.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-radio-button">Selection Controls – Radio buttons</a>
+    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-radio-button">Material Design guidelines: Selection Controls – Radio buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/radio.html">Demo</a>
@@ -155,6 +161,7 @@ Since MDC Radio is primarily driven by its native control, the adapter API is ex
 | `getNativeControl() => HTMLInputElement?` | Returns the native radio control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
+
 
 #### The full foundation API
 
