@@ -1,8 +1,33 @@
-# MDC Textfield
+<!--docs:
+title: "Text Fields"
+layout: detail
+section: components
+iconId: text_field
+path: /catalog/input-controls/text-fields/
+-->
 
-The MDC Textfield component provides a textual input field adhering to the [Material Design Specification](https://material.google.com/components/text-fields.html).
+# Text Fields
+
+<!--<div class="article__asset">
+  <a href="https://material-components-web.appspot.com/textfield.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
+  </a>
+</div>-->
+
+The MDC Text Field component provides a textual input field adhering to the [Material Design Specification](https://material.io/guidelines/components/text-fields.html).
 It is fully accessible, ships with RTL support, and includes a gracefully-degraded version that does
 not require any javascript.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/textfield.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -280,7 +305,7 @@ complicated.
 | deregisterInputInputHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for an "input" event |
 | registerInputKeydownHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "keydown" event |
 | deregisterInputKeydownHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "keydown" event |
-| getNativeInput() => {value: string, disabled: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value` and `disabled` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
+| getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 
 #### The full foundation API
 

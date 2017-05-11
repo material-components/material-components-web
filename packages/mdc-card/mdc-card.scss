@@ -17,6 +17,7 @@
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
+@import "@material/rtl/mixins";
 
 // postcss-bem-linter: define card
 .mdc-card {
@@ -78,10 +79,14 @@
     // Tweak button paddings and margins when they're used as actions
     .mdc-card__action {
       margin: 0 8px 0 0;
+
+      @include mdc-rtl {
+        margin: 0 0 0 8px;
+      }
     }
 
     .mdc-card__action:last-child {
-      margin-right: 0;
+      @include mdc-rtl-reflexive-box(margin, right, 0);
     }
 
     // Vertical actions (one per line)
@@ -158,8 +163,10 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 0 16px 0 0;
     box-sizing: border-box;
+    padding: 0;
+
+    @include mdc-rtl-reflexive-property(padding, 0, 16px);
 
     // postcss-bem-linter: ignore
     .mdc-card__actions--vertical {
@@ -167,7 +174,7 @@
     }
 
     .mdc-card__media-item {
-      margin-left: 16px;
+      @include mdc-rtl-reflexive-box(margin, left, 16px);
     }
 
     // postcss-bem-linter: ignore

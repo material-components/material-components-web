@@ -1,4 +1,19 @@
-# MDC Toolbar
+<!--docs:
+title: "Toolbars"
+layout: detail
+section: components
+excerpt: "A container for multiple rows of items such as application title, navigation menu, or tabs."
+iconId: toolbar
+path: /catalog/toolbar/
+-->
+
+# Toolbars
+
+<!--<div class="article__asset">
+  <a href="https://material-components-web.appspot.com/toolbar/">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
+  </a>
+</div>-->
 
 MDC Toolbar acts as a container for multiple rows containing items such as
 application title, navigation menu, and tabs, among other things. Toolbars
@@ -16,6 +31,16 @@ changes as the user scrolls. Flexible is defined as a modifier class of toolbar
 but not a standalone component. Toolbars using this modifier will have additional
 height added to their first rows.
 
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/toolbars.html">Material Design guidelines: Toolbars</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/toolbar/">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -82,8 +107,8 @@ Toolbar sections are laid out using flexbox. Each section will take up an equal
 amount of space within the toolbar by default. But you can accommodate very long section (very long title)
 by adding `mdc-toolbar__section--shrink-to-fit` to other sections.
 
-```
-<div class="mdc-toolbar>
+```html
+<div class="mdc-toolbar">
   <div class="mdc-toolbar__row">
       <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
         <span class="mdc-toolbar__title">This is a super super super super long title</span>

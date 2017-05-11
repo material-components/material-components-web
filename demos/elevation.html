@@ -17,11 +17,16 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC Elevation Demo</title>
+    <title>Elevation - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
       .demo-surfaces {
+        padding-top: 48px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -49,12 +54,38 @@
         padding: 2rem;
         border-radius: 4px;
       }
+
+      .hero .demo-surface {
+        width: 96px;
+        height: 48px;
+        margin: 24px 24px;
+        background-color: #212121;
+        color: #f0f0f0;
+      }
     </style>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Elevation</span>
+        </section>
+      </div>
+    </header>
     <main>
-      <h1>MDC Elevation</h1>
-      <aside style="margin-bottom:1rem;">Demo adapted from <a href="http://codepen.io/shyndman/pen/ojxmdY" target="_blank">http://codepen.io/shyndman/pen/ojxmdY</a></aside>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <figure class="demo-surface mdc-elevation--z0">
+          <figcaption>FLAT 0dp</figcaption>
+        </figure>
+        <figure class="demo-surface mdc-elevation--z4">
+          <figcaption>RAISED 4dp</figcaption>
+        </figure>
+      </section>
+
       <section class="demo-surfaces">
         <figure class="demo-surface mdc-elevation--z0">
           <figcaption>0dp (<code>mdc-elevation--z0</code>)</figcaption>

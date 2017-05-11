@@ -111,6 +111,12 @@ test('adapter#isSurfaceActive calls the correct :matches API method on the root 
   assert.isOk(component.getDefaultFoundation().adapter_.isSurfaceActive());
 });
 
+test('adapter#isSurfaceDisabled delegates to component\'s disabled getter', () => {
+  const {component} = setupTest();
+  component.disabled = true;
+  assert.isTrue(component.getDefaultFoundation().adapter_.isSurfaceDisabled());
+});
+
 test('adapter#addClass adds a class to the root', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');

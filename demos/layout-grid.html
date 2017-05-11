@@ -17,12 +17,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDC Layout Grid Demo</title>
+    <title>Layout Grid - Material Components</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
-
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
     .demo-grid {
       background-color: #DDDDDD;
@@ -83,86 +84,119 @@
         content: "";
       }
     }
+
+    .examples {
+      margin: 24px;
+    }
+
+    .hero .demo-cell {
+      height: 60px;
+    }
+
     </style>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Layout Grid</span>
+        </section>
+      </div>
+    </header>
+
     <main class="mdc-typography">
-      <h1>MDC Layout Grid</h1>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
 
-      <div class="demo-controls">
-        Margin:
-        <select id="margin">
-          <option value="8px">8px</option>
-          <option value="16px" selected>16px</option>
-          <option value="24px">24px</option>
-          <option value="40px">40px</option>
-        </select>
+        <div class="demo-grid mdc-layout-grid">
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+        </div>
 
-        <br>
+      </section>
 
-        Gutter:
-        <select id="gutter">
-          <option value="8px">8px</option>
-          <option value="16px" selected>16px</option>
-          <option value="24px">24px</option>
-          <option value="40px">40px</option>
-        </select>
-      </div>
-      <div class="demo-warning"></div>
+      <section class="examples">
+
+        <div class="demo-controls">
+          Margin:
+          <select id="margin">
+            <option value="8px">8px</option>
+            <option value="16px" selected>16px</option>
+            <option value="24px">24px</option>
+            <option value="40px">40px</option>
+          </select>
+
+          <br>
+
+          Gutter:
+          <select id="gutter">
+            <option value="8px">8px</option>
+            <option value="16px" selected>16px</option>
+            <option value="24px">24px</option>
+            <option value="40px">40px</option>
+          </select>
+        </div>
+        <div class="demo-warning"></div>
 
 
-      <div class="demo-grid-legend">Grid of 1 column wide items</div>
-      <div class="demo-grid mdc-layout-grid">
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-      </div>
+        <div class="demo-grid-legend">Grid of 1 column wide items</div>
+        <div class="demo-grid mdc-layout-grid">
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+        </div>
 
-      <div class="demo-grid-legend">Grid of 4 column wide items</div>
-      <div class="demo-grid mdc-layout-grid">
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
-      </div>
+        <div class="demo-grid-legend">Grid of 4 column wide items</div>
+        <div class="demo-grid mdc-layout-grid">
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+        </div>
 
-      <div class="demo-grid-legend">Grid of differently sized items</div>
-      <div class="demo-grid mdc-layout-grid">
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6">6</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2">2</div>
-      </div>
+        <div class="demo-grid-legend">Grid of differently sized items</div>
+        <div class="demo-grid mdc-layout-grid">
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6">6</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2">2</div>
+        </div>
 
-      <div class="demo-grid-legend">Grid of items with tweaks at different screen sizes</div>
-      <div class="demo-grid mdc-layout-grid">
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">6 (8 tablet)</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-6-tablet">4 (6 tablet)</div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-4-phone">2 (4 phone)</div>
-      </div>
+        <div class="demo-grid-legend">Grid of items with tweaks at different screen sizes</div>
+        <div class="demo-grid mdc-layout-grid">
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">6 (8 tablet)</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-6-tablet">4 (6 tablet)</div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-4-phone">2 (4 phone)</div>
+        </div>
 
-      <div class="demo-grid-legend">Grid with max width and center alignment</div>
-      <div class="demo-grid mdc-layout-grid max-width">
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-      </div>
+        <div class="demo-grid-legend">Grid with max width and center alignment</div>
+        <div class="demo-grid mdc-layout-grid max-width">
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+        </div>
 
-      <div class="demo-grid-legend">Grid with max width and left alignment</div>
-      <div class="demo-grid mdc-layout-grid max-width left-align">
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-        <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-      </div>
+        <div class="demo-grid-legend">Grid with max width and left alignment</div>
+        <div class="demo-grid mdc-layout-grid max-width left-align">
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+          <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+        </div>
 
-      <div class="demo-ruler"><div id="current"></div></div>
+        <div class="demo-ruler"><div id="current"></div></div>
+    </section>
+
     </main>
 
     <script>
