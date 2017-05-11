@@ -201,7 +201,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 .mdc-textfield--invalid {
   &:not(.mdc-textfield--focused) {
-    &::after {
+    &::after,
+    &.mdc-textfield--upgraded::after {
       background-color: $mdc-textfield-error-on-light;
     }
 
@@ -212,7 +213,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   @include mdc-theme-dark(".mdc-textfield", true) {
     &:not(.mdc-textfield--focused) {
-      &::after {
+      &::after,
+      &.mdc-textfield--upgraded::after {
         background-color: $mdc-textfield-error-on-dark;
       }
 
