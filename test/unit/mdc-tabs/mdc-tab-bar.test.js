@@ -166,18 +166,20 @@ test('on MDCTab:selected if tab is not in tab bar, throw Error', () => {
 });
 
 test('adapter#unbindOnMDCTabSelectedEvent removes listener from component', () => {
-  const {component, root} = setupTest();
+  const {component} = setupTest();
   const adapter = component.getDefaultFoundation().adapter_;
   const tab = new MockTab();
   component.tabs.push(tab);
   const raf = createMockRaf();
+  const handler = td.func('custom handler');
 
-  component.listen('MDCTab:selected', {detail: {tab}});
+  component.listen('MDCTab:selected', handler);
   adapter.unbindOnMDCTabSelectedEvent();
-  domEvents.emit(root, 'MDCTab:selected', {detail: {tab}});
+  domEvents.emit(tab.root, 'MDCTab:selected', {detail: {tab}});
 
   raf.flush();
 
+  td.verify(handler(td.matchers.anything()), {times: 0});
   assert.isFalse(tab.isActive);
   raf.restore();
 });
