@@ -39,6 +39,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
   overflow: hidden;
   box-sizing: border-box;
   will-change: transform, opacity;
+  z-index: 4;
 
   @include mdc-elevation(2);
 
