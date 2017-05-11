@@ -9,6 +9,12 @@ path: /catalog/toolbar/
 
 # Toolbars
 
+<!--<div class="article__asset">
+  <a href="https://material-components-web.appspot.com/toolbar/">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
+  </a>
+</div>-->
+
 MDC Toolbar acts as a container for multiple rows containing items such as
 application title, navigation menu, and tabs, among other things. Toolbars
 scroll with content by default, but supports fixed behavior as well.
@@ -29,10 +35,10 @@ height added to their first rows.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/toolbars.html">Toolbars</a>
+    <a href="https://material.io/guidelines/components/toolbars.html">Material Design guidelines: Toolbars</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/toolbar.html">Demo</a>
+    <a href="https://material-components-web.appspot.com/toolbar/index.html">Demo</a>
   </li>
 </ul>
 

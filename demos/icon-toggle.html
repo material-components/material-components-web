@@ -14,17 +14,20 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC Icon Toggle Demo</title>
+    <title>Icon Toggle - Material Components Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <link href="demos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
     <style>
       .mdc-theme--dark {
         background: #303030;
       }
 
-      section.mdc-theme--dark:not(.demo-color-combo) {
+      .mdc-theme--dark:not(.demo-color-combo) {
         padding-bottom: 1rem;
       }
 
@@ -36,6 +39,25 @@
 
       .demo-wrapper {
         margin-left: 1rem;
+      }
+
+      .example {
+        display: flex;
+        flex-flow: row wrap;
+        align-content: left;
+        justify-content: left;
+      }
+
+      .toggle-example {
+        min-width: 240px;
+        padding: 24px;
+        margin: 24px;
+      }
+
+      .example h2 {
+        font-size: 1.3em;
+        margin-bottom: 0.8em;
+        margin-top: 0.8em;
       }
 
       .demo-color-combo {
@@ -77,15 +99,23 @@
         background-color: rgba(222, 68, 44, .26);
       }
     </style>
-    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Icon Toggle</span>
+        </section>
+      </div>
+    </header>
     <main>
-      <h1>MDC Icon Toggle</h1>
-      <section>
-        <h2>Using material-icons</h2>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
         <div class="demo-wrapper">
-          <i id="add-to-favorites"
+          <i
           class="mdc-icon-toggle material-icons"
           role="button"
           aria-label="Add to favorites"
@@ -95,82 +125,92 @@
           data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
           <!-- Prevent FOUC by putting the initial content in -->
           favorite_border
-        </i>
-        </div>
-        <p>Favorited? <span id="favorited-status">no</span></p>
-      </section>
-      <section>
-        <h2>Using Font Awesome</h2>
-        <div class="demo-wrapper">
-          <span class="mdc-icon-toggle mdc-icon-toggle--on"
-             role="button"
-             aria-label="Unstar this item"
-             aria-pressed="true"
-             tabindex="0"
-             data-icon-inner-selector=".fa"
-             data-toggle-on='{"cssClass": "fa-star", "label": "Unstar this item"}'
-             data-toggle-off='{"cssClass": "fa-star-o", "label": "Star this item"}'>
-            <i class="fa fa-star" aria-hidden="true"></i>
-          </span>
-        </div>
-      </section>
-      <section class="mdc-theme--dark">
-        <h2 class="mdc-theme--text-primary-on-dark">Dark Theme</h2>
-        <div class="demo-wrapper">
-          <i class="mdc-icon-toggle material-icons"
-             role="button"
-             aria-label="Add to favorites"
-             aria-pressed="false"
-             tabindex="0"
-             data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-             data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-            favorite_border
           </i>
         </div>
       </section>
-      <section>
-        <h2>Primary Colored Icons</h2>
-        <div class="demo-wrapper">
-          <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
-             role="button"
-             aria-label="Add to favorites"
-             aria-pressed="false"
-             tabindex="0"
-             data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-             data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+
+      <section class="example">
+        <div class="toggle-example">
+          <h2>Using Material Icons</h2>
+          <div class="demo-wrapper">
+            <i id="add-to-favorites"
+            class="mdc-icon-toggle material-icons"
+            role="button"
+            aria-label="Add to favorites"
+            aria-pressed="false"
+            tabindex="0"
+            data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+            data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+            <!-- Prevent FOUC by putting the initial content in -->
             favorite_border
-          </i>
+            </i>
+          </div>
+          <p>Favorited? <span id="favorited-status">no</span></p>
         </div>
-      </section>
-      <section>
-        <h2>Accent Colored Icons</h2>
-        <div class="demo-wrapper">
-          <i class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
-             role="button"
-             aria-label="Add to favorites"
-             aria-pressed="false"
-             tabindex="0"
-             data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-             data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-            favorite_border
-          </i>
+
+        <div class="toggle-example">
+          <h2>Using Font Awesome</h2>
+          <div class="demo-wrapper">
+            <span class="mdc-icon-toggle mdc-icon-toggle--on"
+               role="button"
+               aria-label="Unstar this item"
+               aria-pressed="true"
+               tabindex="0"
+               data-icon-inner-selector=".fa"
+               data-toggle-on='{"cssClass": "fa-star", "label": "Unstar this item"}'
+               data-toggle-off='{"cssClass": "fa-star-o", "label": "Star this item"}'>
+              <i class="fa fa-star" aria-hidden="true"></i>
+            </span>
+          </div>
         </div>
-      </section>
-      <section>
-        <h2>Disabled Icons</h2>
-        <div class="demo-wrapper">
-          <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
-             role="button"
-             aria-label="Add to favorites"
-             aria-pressed="false"
-             aria-disabled="true"
-             tabindex="-1"
-             data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-             data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-            favorite_border
-          </i>
+
+        <div class="toggle-example mdc-theme--dark">
+          <h2 class="mdc-theme--text-primary-on-dark">Dark Theme</h2>
+          <div class="demo-wrapper">
+            <i class="mdc-icon-toggle material-icons"
+               role="button"
+               aria-label="Add to favorites"
+               aria-pressed="false"
+               tabindex="0"
+               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+              favorite_border
+            </i>
+          </div>
         </div>
-        <div class="mdc-theme--dark">
+
+        <div class="toggle-example">
+          <h2>Primary Colored Icons</h2>
+          <div class="demo-wrapper">
+            <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
+               role="button"
+               aria-label="Add to favorites"
+               aria-pressed="false"
+               tabindex="0"
+               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+              favorite_border
+            </i>
+          </div>
+        </div>
+
+        <div class="toggle-example">
+          <h2>Accent Colored Icons</h2>
+          <div class="demo-wrapper">
+            <i class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
+               role="button"
+               aria-label="Add to favorites"
+               aria-pressed="false"
+               tabindex="0"
+               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+              favorite_border
+            </i>
+          </div>
+        </div>
+
+        <div class="toggle-example">
+          <h2>Disabled Icons</h2>
           <div class="demo-wrapper">
             <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
                role="button"
@@ -183,52 +223,68 @@
               favorite_border
             </i>
           </div>
+          <div class="mdc-theme--dark">
+            <div class="demo-wrapper">
+              <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
+                 role="button"
+                 aria-label="Add to favorites"
+                 aria-pressed="false"
+                 aria-disabled="true"
+                 tabindex="-1"
+                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                favorite_border
+              </i>
+            </div>
+          </div>
         </div>
-      </section>
-      <section>
-        <h2>Additional Color Combinations</h2>
-        <div id="demo-color-combos">
-          <div id="light-on-bg" class="demo-color-combo">
-            <div>
-              <i class="mdc-icon-toggle material-icons mdc-theme--text-primary-on-primary"
-                 role="button"
-                 aria-label="Add to favorites"
-                 aria-pressed="false"
-                 tabindex="0"
-                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-                favorite_border
-              </i>
+
+
+        <div class="toggle-example">
+          <h2>Additional Color Combinations</h2>
+          <div id="demo-color-combos">
+            <div id="light-on-bg" class="demo-color-combo">
+              <div>
+                <i class="mdc-icon-toggle material-icons mdc-theme--text-primary-on-primary"
+                   role="button"
+                   aria-label="Add to favorites"
+                   aria-pressed="false"
+                   tabindex="0"
+                   data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+                   data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                  favorite_border
+                </i>
+              </div>
+              <p class="mdc-theme--text-primary-on-primary">Light icon on background</p>
             </div>
-            <p class="mdc-theme--text-primary-on-primary">Light icon on background</p>
-          </div>
-          <div id="dark-on-bg" class="demo-color-combo">
-            <div class="mdc-theme--primary">
-              <i class="mdc-icon-toggle material-icons"
-                 role="button"
-                 aria-label="Add to favorites"
-                 aria-pressed="false"
-                 tabindex="0"
-                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-                favorite_border
-              </i>
+            <div id="dark-on-bg" class="demo-color-combo">
+              <div class="mdc-theme--primary">
+                <i class="mdc-icon-toggle material-icons"
+                   role="button"
+                   aria-label="Add to favorites"
+                   aria-pressed="false"
+                   tabindex="0"
+                   data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+                   data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                  favorite_border
+                </i>
+              </div>
+              <p>Dark icon on background</p>
             </div>
-            <p>Dark icon on background</p>
-          </div>
-          <div id="custom-on-dark" class="demo-color-combo mdc-theme--dark">
-            <div>
-              <i class="mdc-icon-toggle material-icons"
-                 role="button"
-                 aria-label="Add to favorites"
-                 aria-pressed="false"
-                 tabindex="0"
-                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-                favorite_border
-              </i>
+            <div id="custom-on-dark" class="demo-color-combo mdc-theme--dark">
+              <div>
+                <i class="mdc-icon-toggle material-icons"
+                   role="button"
+                   aria-label="Add to favorites"
+                   aria-pressed="false"
+                   tabindex="0"
+                   data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+                   data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                  favorite_border
+                </i>
+              </div>
+              <p class="mdc-theme--text-primary-on-dark">Custom color on dark background</p>
             </div>
-            <p class="mdc-theme--text-primary-on-dark">Custom color on dark background</p>
           </div>
         </div>
       </section>
