@@ -20,6 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {MDCTabBar} from '../../../packages/mdc-tabs/tab-bar';
 import {MDCTabBarFoundation} from '../../../packages/mdc-tabs/tab-bar';
+import {strings} from '../../../packages/mdc-tabs/tab-bar/constants';
 import {createMockRaf} from '../helpers/raf';
 
 class MockTab {
@@ -229,14 +230,14 @@ test('adapter#getOffsetWidthForIndicator returns the width of the active tab ind
   assert.equal(indicatorWidth, indicator.offsetWidth);
 });
 
-test('adapter#notifyChange emits MDCTabBar:change with event data', () => {
+test(`adapter#notifyChange emits ${strings.CHANGE_EVENT} with event data`, () => {
   const {component} = setupTest();
-  const handler = td.func('MDCTabBar:change handler');
+  const handler = td.func('change event handler');
   const data = td.object({
     tab: td.object({}),
   });
 
-  component.listen('MDCTabBar:change', handler);
+  component.listen(strings.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange(data);
 
   td.verify(handler(td.matchers.isA(Object)));
