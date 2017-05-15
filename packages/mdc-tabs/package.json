@@ -12,7 +12,7 @@
     "material design",
     "tabs"
   ],
-  "publicConfig": {
+  "publishConfig": {
     "access": "public"
   },
   "dependencies": {
