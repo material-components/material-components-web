@@ -128,8 +128,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
     }
   }
 
-  handleTransitionEnd_(ev) {
-    if (this.adapter_.isDialog(ev.target)) {
+  handleTransitionEnd_(evt) {
+    if (this.adapter_.isDialog(evt.target)) {
       this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
       this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
       if (this.isOpen_) {
