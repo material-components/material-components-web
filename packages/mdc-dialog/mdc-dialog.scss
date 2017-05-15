@@ -133,6 +133,7 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     padding: 8px;
   }
 
+  // TODO: Replace with breakpoint variable
   @media (max-width: 640px) {
     min-width: 280px;
 
