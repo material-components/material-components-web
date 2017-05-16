@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {MDCSlidableDrawerFoundation} from '../slidable';
-import {cssClasses, strings} from './constants';
+import { MDCSlidableDrawerFoundation } from '../slidable';
+import { cssClasses, strings } from './constants';
 
 export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFoundation {
   static get cssClasses() {
@@ -29,7 +29,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
   static get defaultAdapter() {
     return Object.assign(MDCSlidableDrawerFoundation.defaultAdapter, {
       isDrawer: () => false,
-      updateCssVariable: (/* value: string */) => {},
+      updateCssVariable: (/* value: string */) => { },
     });
   }
 
@@ -41,10 +41,10 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       MDCTemporaryDrawerFoundation.cssClasses.OPEN);
 
     this.componentClickHandler_ = (evt) => {
-      if(evt.srcElement.classList.contains("mdc-temporary-drawer")){
+      if (evt.srcElement.classList.contains('mdc-temporary-drawer')) {
         this.close();
       }
-    }
+    };
   }
 
   init() {
