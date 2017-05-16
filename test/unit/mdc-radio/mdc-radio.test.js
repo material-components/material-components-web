@@ -82,6 +82,9 @@ test('get/set disabled updates the disabled value of the native radio element', 
   component.disabled = true;
   assert.isOk(radio.disabled);
   assert.equal(component.disabled, radio.disabled);
+  component.disabled = false;
+  assert.isNotOk(radio.disabled);
+  assert.equal(component.disabled, radio.disabled);
 });
 
 test('get/set value updates the value of the native radio element', () => {

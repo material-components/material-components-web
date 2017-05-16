@@ -135,6 +135,13 @@ test('saveElementTabState marks an element as handled, as long as it is tabbable
   assert.equal(el.getAttribute('data-mdc-tabindex-handled'), 'true');
 });
 
+test('restoreElementTabState does nothing to an element we have not already handled ', () => {
+  const el = bel`<a id="foo" href="foo" data-mdc-tabindex="42"></a>`;
+  utils.restoreElementTabState(el);
+  assert.equal(el.getAttribute('tabindex'), null);
+  assert.equal(el.getAttribute('data-mdc-tabindex'), '42');
+});
+
 test('restoreElementTabState restores the tab index of an element that was saved earlier', () => {
   const el = bel`<a id="foo" href="foo" data-mdc-tabindex="42" data-mdc-tabindex-handled="true"></a>`;
   utils.restoreElementTabState(el);

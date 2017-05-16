@@ -1,6 +1,14 @@
-# mdc-base
+<!--docs:
+title: "Base"
+layout: detail
+section: components
+excerpt: "Base foundation and component classes."
+path: /catalog/base/
+-->
 
-MDC base contains core foundation and component classes that serve as the base classes for all of MDC-Web's foundation classes and components (respectively).
+# Base
+
+MDC Base contains core foundation and component classes that serve as the base classes for all of MDC-Web's foundation classes and components (respectively).
 
 Most of the time, you shouldn't need to depend on `mdc-base` directly. It is useful however if you'd like to write custom components that follow MDC-Web's pattern and elegantly integrate with the MDC-Web ecosystem.
 
@@ -164,7 +172,7 @@ export class MyComponent extends MDCComponent {
 | `destroy()` | Subclasses may override this method if they wish to perform any additional cleanup work when a component is destroyed. For example, a component may want to deregister a window resize listener. |
 | `listen(type: string, handler: EventListener)` | Adds an event listener to the component's root node for the given `type`. Note that this is simply a proxy to `this.root_.addEventListener`. |
 | `unlisten(type: string, handler: EventListener)` | Removes an event listener from the component's root node. Note that this is simply a proxy to `this.root_.removeEventListener`. |
-| `emit(type: string, data: Object)` | Dispatches a custom event of type `type` with detail `data` from the component's root node. This is the preferred way of dispatching events within our vanilla components. |
+| `emit(type: string, data: Object, shouldBubble: boolean = false)` | Dispatches a custom event of type `type` with detail `data` from the component's root node. It also takes an optional shouldBubble argument to specify if the event should bubble. This is the preferred way of dispatching events within our vanilla components. |
 
 #### Static Methods
 

@@ -6,3 +6,4 @@ packages/*/dist
 *.log
 .idea
 *.sw*
+.closure-tmp

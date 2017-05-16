@@ -19,6 +19,7 @@ import MDCTemporaryDrawerFoundation from './foundation';
 import * as util from '../util';
 
 export {MDCTemporaryDrawerFoundation};
+export {util};
 
 export class MDCTemporaryDrawer extends MDCComponent {
   static attachTo(root) {
@@ -74,6 +75,8 @@ export class MDCTemporaryDrawer extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
+      notifyOpen: () => this.emit('MDCTemporaryDrawer:open'),
+      notifyClose: () => this.emit('MDCTemporaryDrawer:close'),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       isDrawer: (el) => el === this.drawer,
     });

@@ -18,8 +18,6 @@ import {MDCComponent} from '@material/base';
 import MDCRippleFoundation from './foundation';
 import {supportsCssVariables, getMatchesProperty} from './util';
 
-const MATCHES = getMatchesProperty(HTMLElement.prototype);
-
 export {MDCRippleFoundation};
 
 export class MDCRipple extends MDCComponent {
@@ -33,10 +31,13 @@ export class MDCRipple extends MDCComponent {
   }
 
   static createAdapter(instance) {
+    const MATCHES = getMatchesProperty(HTMLElement.prototype);
+
     return {
       browserSupportsCssVars: () => supportsCssVariables(window),
       isUnbounded: () => instance.unbounded,
       isSurfaceActive: () => instance.root_[MATCHES](':active'),
+      isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
       registerInteractionHandler: (evtType, handler) => instance.root_.addEventListener(evtType, handler),

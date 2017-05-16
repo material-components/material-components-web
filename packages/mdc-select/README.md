@@ -1,8 +1,37 @@
-# MDC Select
+<!--docs:
+title: "Select Menus"
+layout: detail
+section: components
+iconId: menu
+path: /catalog/input-controls/select-menus/
+-->
 
-MDC Select provides material design single-option and multi-option select menus. It functions analogously to the
+# Select Menus
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/select.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/selects.png" width="376" alt="Select screenshot">
+  </a>
+</div>-->
+
+MDC Select provides Material Design single-option and multi-option select menus. It functions analogously to the
 browser's native `<select>` element, and includes a gracefully degraded version that can be used
 in conjunction with the browser's native element. Both are fully accessible, and fully RTL-aware.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
+  </li>
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/select.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 

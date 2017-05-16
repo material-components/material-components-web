@@ -1,8 +1,35 @@
-# MDC List
+<!--docs:
+title: "Lists"
+layout: detail
+section: components
+excerpt: "Lists present multiple line items vertically as a single continuous element."
+iconId: list
+path: /catalog/lists/
+-->
 
-MDC List provides styles which implement [Material Design Lists](https://material.google.com/components/lists.html#) - "A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are supported (with
+# Lists
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/list.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/lists.png" width="365" alt="Lists screenshot">
+  </a>
+</div>-->
+
+MDC List provides styles which implement [Material Design Lists](https://material.io/guidelines/components/lists.html) - "A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are supported (with
 three-line lists [coming soon](https://github.com/material-components/material-components-web/issues/31)). MDC
 Lists are design to be accessible and RTL aware.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/lists.html">Material Design guidelines: Lists</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/list.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -65,7 +92,7 @@ Lists can be made more compact by using the `mdc-list--dense` modifier class.
 
 ### Two-line lists
 
-While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with some extra markup around the text to style a list in the two-line list style as defined by [the spec](https://material.google.com/components/lists.html#lists-specs) (see "Two-line lists").
+While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with some extra markup around the text to style a list in the two-line list style as defined by [the spec](https://material.io/guidelines/components/lists.html#lists-specs) (see "Two-line lists").
 
 ```html
 <ul class="mdc-list mdc-list--two-line">
@@ -122,17 +149,17 @@ profile pictures, etc.
     <img class="mdc-list-item__start-detail" src="/users/1/profile_pic.png"
          width="56" height="56" alt="Picture of Janet Perkins">
     Janet Perkins
-  </il>
+  </li>
   <li class="mdc-list-item">
     <img class="mdc-list-item__start-detail" src="/users/2/profile_pic.png"
          width="56" height="56" alt="Picture of Mary Johnson">
     Mary Johnson
-  </il>
+  </li>
   <li class="mdc-list-item">
     <img class="mdc-list-item__start-detail" src="/users/3/profile_pic.png"
          width="56" height="56" alt="Picture of Peter Carlsson">
     Peter Carlsson
-  </il>
+  </li>
 </ul>
 ```
 
@@ -178,7 +205,7 @@ details can be configured.
 
 MDC List supports adding ripples to `mdc-list-item` elements, for example in the case of a nav menu.
 To add ripples to lists, simply attach a ripple to all list items. Note that this can be easily done
-via `mdc-auto-init` when using the [material-components-web](../packages/material-components-web).
+via `mdc-auto-init` when using the [material-components-web](../material-components-web).
 
 ```html
 <nav class="mdc-list">

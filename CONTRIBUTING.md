@@ -44,6 +44,15 @@ cd material-components-web && npm i
 
 Each component requires the following items in order to be complete:
 
+- An **Engineering Outline Document**, which should be linked to in a comment on the GitHub issue
+  where we're tracking the component. This way, the core team can review and sign off on the
+  outline doc. Outline docs should be signed off on _before_ submitting a PR.
+  Please [copy this google doc template](https://docs.google.com/document/d/1Kybm7XJDTy0KUcuMaw5bzirQNBsDqCPCae8U_ag_a1k/edit?usp=sharing) in order to make your outline.
+
+  We have found that enforcing an eng outline doc has allowed us to speed up development by
+  offering more informed feedback on component implementations. This results in components that
+  take into account all of the concepts MDC Web components should account for (RTL, a11y,
+  etc.) before they even reach the PR stage, meaning faster review and merge times :smile:.
 - A **foundation class** which is integrated into actual components
 - A **component class** using vanilla JS + SCSS
 - A **README.md** in its subdir which contains developer documentation on the component, including usage.
@@ -82,7 +91,9 @@ npm run fix # Runs both of the above commands in parallel
 
 npm run test:watch # Runs karma on Chrome, re-running when source files change
 
-npm test # Lints all files, runs karma, and then runs coverage enforcement checks.
+npm test # Lints all files, runs karma, runs closure tests, and then runs coverage enforcement checks.
+npm run test:unit # Only runs the karma tests
+npm run test:closure # Runs closure build tests against all closurized files
 ```
 
 #### Running Tests across browsers

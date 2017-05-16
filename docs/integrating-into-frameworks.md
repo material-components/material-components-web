@@ -1,4 +1,12 @@
-# Integrating MDC-Web into frameworks
+<!--docs:
+title: "Integrating MDC-Web into Frameworks"
+navTitle: "Framework Integration"
+layout: landing
+section: docs
+path: /docs/framework-integration/
+-->
+
+# Integrating MDC-Web into Frameworks
 
 MDC-Web was designed to be integrated as easily as possible into any and all web frameworks. This
 document will walk you through strategies for integrating components into various types of

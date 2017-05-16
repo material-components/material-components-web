@@ -1,9 +1,35 @@
-# MDC Drawer
+<!--docs:
+title: "Drawers"
+layout: detail
+section: components
+excerpt: "Permanent, persistent, and temporary drawers."
+iconId: side_navigation
+path: /catalog/drawers/
+-->
+
+# Drawers
 
 The MDC Drawer component is a spec-aligned drawer component adhering to the
-[Material Design navigation drawer pattern](https://material.google.com/patterns/navigation-drawer.html).
-It implements permanent and temporary drawers. Permanent drawers are CSS-only and require no JavaScript, whereas
-temporary drawers require JavaScript to function, in order to respond to user interaction.
+[Material Design navigation drawer pattern](https://material.io/guidelines/patterns/navigation-drawer.html).
+It implements permanent, persistent, and temporary drawers. Permanent drawers are CSS-only and require no JavaScript, whereas persistent and temporary drawers require JavaScript to function, in order to respond to
+user interaction.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/patterns/navigation-drawer.html">Material Design guidelines: Navigation drawer</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/drawer/persistent-drawer.html">Demo: Persistent Drawer</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/drawer/permanent-drawer-above-toolbar.html">Demo: Permanent Drawer Above Toolbar</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/drawer/permanent-drawer-below-toolbar.html">Demo: Permanent Drawer Below Toolbar</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -56,6 +82,7 @@ Permanent drawers can also be set below the toolbar:
         <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
       </a>
     </nav>
+  </nav>
   <main>
     Page content goes here.
   </main>
@@ -70,6 +97,140 @@ CSS classes:
 | `mdc-permanent-drawer__content`        | Mandatory. Needs to be set on the container node for the drawer content.   |
 | `mdc-permanent-drawer__toolbar-spacer` | Optional. Add to node to provide the matching amount of space for toolbar. |
 
+## Persistent drawer usage
+
+Persistent drawers can be toggled open or closed. The drawer sits on the same surface elevation as the content. It is closed by default. When the drawer is outside of the page grid and opens, the drawer forces other content to change size and adapt to the smaller viewport. Persistent drawers stay open until closed by the user.
+
+Persistent drawers are acceptable for all sizes larger than mobile.
+
+```html
+<aside class="mdc-persistent-drawer mdc-typography">
+  <nav class="mdc-persistent-drawer__drawer">
+    <header class="mdc-persistent-drawer__header">
+      <div class="mdc-persistent-drawer__header-content">
+        Header here
+      </div>
+    </header>
+    <nav id="icon-with-text-demo" class="mdc-persistent-drawer__content mdc-list">
+      <a class="mdc-list-item mdc-persistent-drawer--selected" href="#">
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+      </a>
+    </nav>
+  </nav>
+</aside>
+```
+
+```js
+let drawer = new mdc.drawer.MDCPersistentDrawer(document.querySelector('.mdc-persistent-drawer'));
+document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
+```
+
+CSS classes:
+
+| Class                                  | Description                                                                |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| `mdc-persistent-drawer`                 | Mandatory. Needs to be set on the root element of the component.           |
+| `mdc-persistent-drawer__drawer`         | Mandatory. Needs to be set on the container node for the drawer content.   |
+
+### Using the JS Component
+
+MDC Persistent Drawer ships with a Component / Foundation combo which allows for frameworks to richly integrate the
+correct drawer behaviors into idiomatic components.
+
+#### Including in code
+
+##### ES2015
+
+```javascript
+import {MDCPersistentDrawer, MDCPersistentDrawerFoundation, util} from 'mdc-drawer';
+```
+
+##### CommonJS
+
+```javascript
+const mdcDrawer = require('mdc-drawer');
+const MDCPersistentDrawer = mdcDrawer.MDCPersistentDrawer;
+const MDCPersistentDrawerFoundation = mdcDrawer.MDCPersistentDrawerFoundation;
+const util = mdcDrawer.util;
+```
+
+##### AMD
+
+```javascript
+require(['path/to/mdc-drawer'], mdcDrawer => {
+  const MDCPersistentDrawer = mdcDrawer.MDCPersistentDrawer;
+  const MDCPersistentDrawerFoundation = mdcDrawer.MDCPersistentDrawerFoundation;
+  const util = mdcDrawer.util;
+});
+```
+
+##### Global
+
+```javascript
+const MDCPersistentDrawer = mdc.drawer.MDCPersistentDrawer;
+const MDCPersistentDrawerFoundation = mdc.drawer.MDCPersistentDrawerFoundation;
+const util = mdc.drawer.util;
+```
+
+#### Automatic Instantiation
+
+If you do not care about retaining the component instance for the persistent drawer, simply call `attachTo()`
+and pass it a DOM element.
+
+```javascript
+mdc.drawer.MDCPersistentDrawer.attachTo(document.querySelector('.mdc-persistent-drawer'));
+```
+
+#### Manual Instantiation
+
+Persistent drawers can easily be initialized using their default constructors as well, similar to `attachTo`.
+
+```javascript
+import {MDCPersistentDrawer} from 'mdc-drawer';
+
+const drawer = new MDCPersistentDrawer(document.querySelector('.mdc-persistent-drawer'));
+```
+
+#### Handling events
+
+When the drawer is opened or closed, the component will emit a
+`MDCPersistentDrawer:open` or `MDCPersistentDrawer:close` custom event with no data attached.
+Events get emitted only when the drawer toggles its opened state, i.e. multiple consecutive
+`drawer.open = true` calls will result in only one `MDCPersistentDrawer:open`.
+
+### Using the Foundation Class
+
+MDC Persistent Drawer ships with an `MDCPersistentDrawerFoundation` class that external frameworks and libraries can
+use to integrate the component. As with all foundation classes, an adapter object must be provided.
+The adapter for persistent drawers must provide the following functions, with correct signatures:
+
+| Method Signature | Description |
+| --- | --- |
+| `addClass(className: string) => void` | Adds a class to the root element. |
+| `removeClass(className: string) => void` | Removes a class from the root element. |
+| `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
+| `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-persistent-drawer__drawer` drawer container). |
+| `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
+| `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
+| `registerDrawerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the drawer container sub-element, for the specified event name. |
+| `deregisterDrawerInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from drawer container sub-element, for the specified event name. |
+| `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when a `transitionend` event is triggered on the drawer container sub-element element. |
+| `deregisterTransitionEndHandler(handler: EventListener) => void` | Deregisters an event handler from a `transitionend` event listener. This will only be called with handlers that have previously been passed to `registerTransitionEndHandler` calls. |
+| `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
+| `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
+| `getDrawerWidth() => number` | Returns the current drawer width, in pixels. |
+| `setTranslateX(value: number) => void` | Sets the current position for the drawer, in pixels from the border. |
+| `getFocusableElements() => NodeList` | Returns the node list of focusable elements inside the drawer. |
+| `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
+| `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
+| `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
+| `notifyOpen() => void` | Dispatches an event notifying listeners that the drawer has been opened. |
+| `notifyClose() => void` | Dispatches an event notifying listeners that the drawer has been closed. |
+| `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
+| `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |
 
 ## Temporary drawer usage
 
@@ -207,7 +368,7 @@ const util = mdc.drawer.util;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the temporary drawer, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.drawer.MDCTemporaryDrawer.attachTo(document.querySelector('.mdc-temporary-drawer'));
@@ -222,6 +383,13 @@ import {MDCTemporaryDrawer} from 'mdc-drawer';
 
 const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
 ```
+
+#### Handling events
+
+When the drawer is opened or closed, the component will emit a
+`MDCTemporaryDrawer:open` or `MDCTemporaryDrawer:close` custom event with no data attached.
+Events get emitted only when the drawer toggles its opened state, i.e. multiple consecutive
+`drawer.open = true` calls will result in only one `MDCTemporaryDrawer:open`.
 
 ### Using the Foundation Class
 
@@ -250,6 +418,8 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
 | `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
+| `notifyOpen() => void` | Dispatches an event notifying listeners that the drawer has been opened. |
+| `notifyClose() => void` | Dispatches an event notifying listeners that the drawer has been closed. |
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |
 
