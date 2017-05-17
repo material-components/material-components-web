@@ -122,6 +122,7 @@ export default class MDCToolbarFoundation extends MDCFoundation {
     const newToolbarRowHeight = this.getRowHeight_();
     if (newToolbarRowHeight !== this.calculations_.toolbarRowHeight) {
       this.calculations_.toolbarRowHeight = newToolbarRowHeight;
+      this.calculations_.toolbarRatio = this.adapter_.getOffsetHeight() / newToolbarRowHeight;
       this.calculations_.toolbarHeight = this.calculations_.toolbarRatio * this.calculations_.toolbarRowHeight;
       this.calculations_.flexibleExpansionHeight =
         this.calculations_.flexibleExpansionRatio * this.calculations_.toolbarRowHeight;
