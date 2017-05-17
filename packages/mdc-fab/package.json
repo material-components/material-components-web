@@ -1,7 +1,7 @@
 {
   "name": "@material/fab",
   "description": "The Material Components for the web floating action button component",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -14,8 +14,8 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.2.1",
-    "@material/elevation": "^0.1.6",
+    "@material/animation": "^0.2.2",
+    "@material/elevation": "^0.1.7",
     "@material/ripple": "^0.6.1",
     "@material/theme": "^0.1.5"
   }
