@@ -64,6 +64,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.currentTranslateOffset_ = 0;
     this.focusedTarget_ = null;
     this.layoutFrame_ = 0;
+    this.scrollFrameScrollLeft_ = 0;
     this.forwardIndicatorClickHandler_ = (evt) => this.scrollForward(evt);
     this.backIndicatorClickHandler_ = (evt) => this.scrollBack(evt);
     this.resizeHandler_ = () => this.layout();
@@ -90,18 +91,46 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       evt.preventDefault();
     }
 
+    // let tabWidthAccumulator = 0;
+    // let scrollTargetIndex = 0;
+    //
+    // for (let i = this.adapter_.getNumberOfTabs() - 1; i > 0; i--) {
+    //   const tabOffsetX = this.getOffsetXForTabAtIndex_(i);
+    //
+    //   if (tabOffsetX >= this.currentTranslateOffset_) {
+    //     continue;
+    //   }
+    //
+    //   tabWidthAccumulator += this.adapter_.getComputedWidthForTabAtIndex(i);
+    //
+    //   const setScrollTarget = tabWidthAccumulator > this.adapter_.getOffsetWidthForScrollFrame();
+    //
+    //   if (setScrollTarget) {
+    //     scrollTargetIndex = i;
+    //     break;
+    //   }
+    // }
+
     let tabWidthAccumulator = 0;
     let scrollTargetIndex = 0;
 
     for (let i = this.adapter_.getNumberOfTabs() - 1; i > 0; i--) {
-      const tabOffsetX = this.getOffsetXForTabAtIndex_(i);
+      const tabOffsetLeft = this.adapter_.getComputedLeftForTabAtIndex(i);
+      const tabBarWidthLessTabOffsetLeft = this.adapter_.getOffsetWidthForTabBar() - tabOffsetLeft;
 
-      if (tabOffsetX >= this.currentTranslateOffset_) {
+      let tabIsNotOccluded = tabOffsetLeft > this.currentTranslateOffset_;
+      if (this.isRTL()) {
+        tabIsNotOccluded = tabBarWidthLessTabOffsetLeft > this.currentTranslateOffset_;
+      }
+
+      if (tabIsNotOccluded) {
         continue;
       }
 
       tabWidthAccumulator += this.adapter_.getComputedWidthForTabAtIndex(i);
-      if (tabWidthAccumulator > this.adapter_.getOffsetWidthForScrollFrame()) {
+
+      const setScrollTarget = tabWidthAccumulator > this.adapter_.getOffsetWidthForScrollFrame();
+      if (setScrollTarget) {
         scrollTargetIndex = i;
         break;
       }
@@ -114,15 +143,39 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     if (evt) {
       evt.preventDefault();
     }
+    console.log('scrolling forward')
+    // const totalOffset = this.adapter_.getOffsetWidthForScrollFrame() + this.currentTranslateOffset_;
+    // let scrollTargetIndex = 0;
+    //
+    // for (let i = 0; i < this.adapter_.getNumberOfTabs(); i++) {
+    //   const tabOffsetX = this.getOffsetXForTabAtIndex_(i);
+    //   const offsetWidth = this.adapter_.getComputedWidthForTabAtIndex(i);
+    //   const setScrollTarget = this.isRTL() ?
+    //     tabOffsetX >= totalOffset :
+    //     tabOffsetX + offsetWidth >= totalOffset;
+    //
+    //   if (setScrollTarget) {
+    //     scrollTargetIndex = i;
+    //     break;
+    //   }
+    // }
 
-    const totalOffset = this.adapter_.getOffsetWidthForScrollFrame() + this.currentTranslateOffset_;
+    const scrollFrameOffsetWidth = this.adapter_.getOffsetWidthForScrollFrame() + this.currentTranslateOffset_;
     let scrollTargetIndex = 0;
 
     for (let i = 0; i < this.adapter_.getNumberOfTabs(); i++) {
-      const tabOffsetX = this.getOffsetXForTabAtIndex_(i);
-      const offsetWidth = this.adapter_.getComputedWidthForTabAtIndex(i);
+      let setScrollTarget = this.adapter_.getComputedLeftForTabAtIndex(i) > scrollFrameOffsetWidth;
 
-      if (tabOffsetX + offsetWidth >= totalOffset) {
+      if (this.isRTL()) {
+        const tabOffsetLeftAndWidth =
+          this.adapter_.getComputedLeftForTabAtIndex(i) + this.adapter_.getComputedWidthForTabAtIndex(i);
+        const tabRightOffset =
+          this.adapter_.getOffsetWidthForTabBar() - tabOffsetLeftAndWidth;
+
+        setScrollTarget = tabRightOffset > scrollFrameOffsetWidth;
+      }
+
+      if (setScrollTarget) {
         scrollTargetIndex = i;
         break;
       }
@@ -131,39 +184,35 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.scrollToTabAtIndex_(scrollTargetIndex);
   }
 
-  handlePossibleTabFocus_({target}) {
-    if (!this.adapter_.eventTargetHasClass(target, cssClasses.TAB)) {
+  handlePossibleTabFocus_(evt) {
+    if (!this.adapter_.eventTargetHasClass(evt.target, cssClasses.TAB) || evt.type === 'click') {
       return;
     }
 
-    this.focusedTarget_ = target;
-    const focusedTargetOffsetLeft = this.adapter_.getOffsetLeftForEventTarget(this.focusedTarget_);
-    const focusedTargetOffsetWidth = this.adapter_.getOffsetWidthForEventTarget(this.focusedTarget_);
-
-    const rightEdge = focusedTargetOffsetLeft + focusedTargetOffsetWidth;
-    const leftEdge = focusedTargetOffsetLeft;
+    this.focusedTarget_ = evt.target;
     const scrollFrameWidth = this.adapter_.getOffsetWidthForScrollFrame();
     const tabBarWidth = this.adapter_.getOffsetWidthForTabBar();
-    // Because clicking on an element that's partially visible would normally
-    // shift the frame because of the focus event it generates—thus losing the
-    // ability to finish the click on the tab and thus persisting the ripple
-    // deactivation and not selecting the tab—we only shift if the _entire_
-    // tab is occluded by the scroll frame.
-    let shouldScrollForward = leftEdge > this.currentTranslateOffset_ + scrollFrameWidth;
+    const focusedTargetOffsetLeft = this.adapter_.getOffsetLeftForEventTarget(this.focusedTarget_);
+    const focusedTargetOffsetWidth = this.adapter_.getOffsetWidthForEventTarget(this.focusedTarget_);
+    const leftEdge = focusedTargetOffsetLeft;
+    const rightEdge = focusedTargetOffsetLeft + focusedTargetOffsetWidth;
+    const rightOffset = tabBarWidth - rightEdge;
+
     let shouldScrollBack = rightEdge <= this.currentTranslateOffset_;
+    let shouldScrollForward = leftEdge >= this.currentTranslateOffset_ + scrollFrameWidth;
 
     if (this.isRTL()) {
-      shouldScrollForward = rightEdge < tabBarWidth - (this.currentTranslateOffset_ + scrollFrameWidth);
-      shouldScrollBack = leftEdge < scrollFrameWidth + this.currentTranslateOffset_;
+      shouldScrollBack = leftEdge >= tabBarWidth - this.currentTranslateOffset_;
+      shouldScrollForward = rightOffset >= scrollFrameWidth + this.currentTranslateOffset_;
     }
 
     if (shouldScrollForward) {
+      this.adapter_.resetScrollLeftForScrollFrame();
       this.scrollForward();
     } else if (shouldScrollBack) {
+      this.adapter_.resetScrollLeftForScrollFrame();
       this.scrollBack();
     }
-
-    this.updateIndicatorEnabledStates_();
   }
 
   layout() {
@@ -189,14 +238,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
 
     this.currentTranslateOffset_ =
       this.normalizeForRTL_(scrollTargetOffsetLeft, scrollTargetOffsetWidth);
-    debugger;
-    requestAnimationFrame(() => this.shiftFrame_());
-  }
 
-  getOffsetXForTabAtIndex_(index) {
-    const offsetLeft = this.adapter_.getComputedLeftForTabAtIndex(index);
-    const offsetWidth = this.adapter_.getComputedWidthForTabAtIndex(index);
-    return this.normalizeForRTL_(offsetLeft, offsetWidth);
+    requestAnimationFrame(() => this.shiftFrame_());
   }
 
   normalizeForRTL_(left, width) {
@@ -206,7 +249,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
   shiftFrame_() {
     const shiftAmount = this.isRTL() ?
       this.currentTranslateOffset_ :
-      -this.currentTranslateOffset_ + this.adapter_.getScrollLeftForScrollFrame();
+       -this.currentTranslateOffset_ + this.adapter_.getScrollLeftForScrollFrame();
 
     this.adapter_.setTransformStyleForTabBar(`translateX(${shiftAmount}px)`);
     this.updateIndicatorEnabledStates_();

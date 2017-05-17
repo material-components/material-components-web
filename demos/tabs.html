@@ -128,7 +128,7 @@ limitations under the License
 
     </style>
   </head>
-  <body dir="rtl">
+  <body>
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
@@ -630,6 +630,7 @@ limitations under the License
             mainElement.hasAttribute('dir') ? mainElement.removeAttribute('dir') : mainElement.setAttribute('dir', 'rtl');
             window.basicTabBar.layout();
             window.tabBarScroller.layout();
+            tabBarScroller.tabBar.layout();
             window.iconTabBar.layout();
             window.iconTextTabBar.layout();
             window.toolbarTabBar.layout();
