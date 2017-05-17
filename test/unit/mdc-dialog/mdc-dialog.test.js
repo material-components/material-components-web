@@ -28,7 +28,6 @@ function getFixture() {
     <div>
       <button class="open-dialog">click</button>
       <aside id="my-dialog" class="mdc-dialog"
-        style="visibility:hidden;"
         role="alertdialog"
         aria-hidden="true"
         aria-labelledby="my-dialog-label"
@@ -129,12 +128,6 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('adapter#setStyle sets a style property to the given value on the root element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setStyle('background-color', 'red');
-  assert.equal(root.style.backgroundColor, 'red');
-});
-
 test('adapter#addBodyClass adds a class to the body, locking the background scroll', () => {
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.addBodyClass('mdc-dialog--scroll-lock');
@@ -212,6 +205,28 @@ test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
+test('adapter#registerTransitionEndHandler adds a transition end event listener on the dialog element', () => {
+  const {root, component} = setupTest();
+  const surface = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
+  const handler = td.func('transitionEndHandler');
+  component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
+  domEvents.emit(surface, 'transitionend');
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#deregisterTransitionEndHandler removes a transition end event listener on the dialog element', () => {
+  const {root, component} = setupTest();
+  const surface = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
+  const handler = td.func('transitionEndHandler');
+  surface.addEventListener('transitionend', handler);
+
+  component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
+  domEvents.emit(surface, 'transitionend');
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
 test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
   const {component} = setupTest();
   const target = bel`<div class="existent-class"></div>`;
@@ -285,4 +300,15 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
   util.createFocusTrapInstance = createFocusTrapInstance;
 
   td.verify(fakeFocusTrapInstance.deactivate());
+});
+
+test('adapter#isDialog returns true for the dialog surface element', () => {
+  const {root, component} = setupTest();
+  const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
+  assert.isOk(component.getDefaultFoundation().adapter_.isDialog(dialog));
+});
+
+test('adapter#isDialog returns false for a non-dialog surface element', () => {
+  const {root, component} = setupTest();
+  assert.isNotOk(component.getDefaultFoundation().adapter_.isDialog(root));
 });
