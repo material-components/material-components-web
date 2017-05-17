@@ -91,25 +91,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       evt.preventDefault();
     }
 
-    // let tabWidthAccumulator = 0;
-    // let scrollTargetIndex = 0;
-    //
-    // for (let i = this.adapter_.getNumberOfTabs() - 1; i > 0; i--) {
-    //   const tabOffsetX = this.getOffsetXForTabAtIndex_(i);
-    //
-    //   if (tabOffsetX >= this.currentTranslateOffset_) {
-    //     continue;
-    //   }
-    //
-    //   tabWidthAccumulator += this.adapter_.getComputedWidthForTabAtIndex(i);
-    //
-    //   const setScrollTarget = tabWidthAccumulator > this.adapter_.getOffsetWidthForScrollFrame();
-    //
-    //   if (setScrollTarget) {
-    //     scrollTargetIndex = i;
-    //     break;
-    //   }
-    // }
+    console.log('scrolling back');
 
     let tabWidthAccumulator = 0;
     let scrollTargetIndex = 0;
@@ -143,22 +125,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     if (evt) {
       evt.preventDefault();
     }
-    console.log('scrolling forward')
-    // const totalOffset = this.adapter_.getOffsetWidthForScrollFrame() + this.currentTranslateOffset_;
-    // let scrollTargetIndex = 0;
-    //
-    // for (let i = 0; i < this.adapter_.getNumberOfTabs(); i++) {
-    //   const tabOffsetX = this.getOffsetXForTabAtIndex_(i);
-    //   const offsetWidth = this.adapter_.getComputedWidthForTabAtIndex(i);
-    //   const setScrollTarget = this.isRTL() ?
-    //     tabOffsetX >= totalOffset :
-    //     tabOffsetX + offsetWidth >= totalOffset;
-    //
-    //   if (setScrollTarget) {
-    //     scrollTargetIndex = i;
-    //     break;
-    //   }
-    // }
+
+    console.log('scrolling forward');
 
     const scrollFrameOffsetWidth = this.adapter_.getOffsetWidthForScrollFrame() + this.currentTranslateOffset_;
     let scrollTargetIndex = 0;
@@ -189,34 +157,38 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       return;
     }
 
+    const resetAmt = this.isRTL() ? this.scrollFrameScrollLeft_ : 0;
+    console.log('reset amount ', resetAmt);
+    this.adapter_.resetScrollLeftForScrollFrame(resetAmt);
+
     this.focusedTarget_ = evt.target;
     const scrollFrameWidth = this.adapter_.getOffsetWidthForScrollFrame();
     const tabBarWidth = this.adapter_.getOffsetWidthForTabBar();
-    const focusedTargetOffsetLeft = this.adapter_.getOffsetLeftForEventTarget(this.focusedTarget_);
-    const focusedTargetOffsetWidth = this.adapter_.getOffsetWidthForEventTarget(this.focusedTarget_);
-    const leftEdge = focusedTargetOffsetLeft;
-    const rightEdge = focusedTargetOffsetLeft + focusedTargetOffsetWidth;
-    const rightOffset = tabBarWidth - rightEdge;
+    const leftEdge = this.adapter_.getOffsetLeftForEventTarget(this.focusedTarget_);
+    const rightEdge = leftEdge + this.adapter_.getOffsetWidthForEventTarget(this.focusedTarget_);
 
     let shouldScrollBack = rightEdge <= this.currentTranslateOffset_;
     let shouldScrollForward = leftEdge >= this.currentTranslateOffset_ + scrollFrameWidth;
 
     if (this.isRTL()) {
+      const rightOffset = tabBarWidth - rightEdge;
       shouldScrollBack = leftEdge >= tabBarWidth - this.currentTranslateOffset_;
       shouldScrollForward = rightOffset >= scrollFrameWidth + this.currentTranslateOffset_;
     }
 
     if (shouldScrollForward) {
-      this.adapter_.resetScrollLeftForScrollFrame();
+      // this.adapter_.resetScrollLeftForScrollFrame();
       this.scrollForward();
     } else if (shouldScrollBack) {
-      this.adapter_.resetScrollLeftForScrollFrame();
+      // this.adapter_.resetScrollLeftForScrollFrame();
       this.scrollBack();
     }
   }
 
   layout() {
     cancelAnimationFrame(this.layoutFrame_);
+    this.scrollFrameScrollLeft_ = this.adapter_.getScrollLeftForScrollFrame();
+    console.log('layout scrollLeft: ', this.scrollFrameScrollLeft_);
     this.layoutFrame_ = requestAnimationFrame(() => this.layout_());
   }
 
@@ -247,9 +219,10 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
   }
 
   shiftFrame_() {
+    console.log(this.adapter_.getScrollLeftForScrollFrame());
     const shiftAmount = this.isRTL() ?
       this.currentTranslateOffset_ :
-       -this.currentTranslateOffset_ + this.adapter_.getScrollLeftForScrollFrame();
+       -this.currentTranslateOffset_ + this.scrollFrameScrollLeft;
 
     this.adapter_.setTransformStyleForTabBar(`translateX(${shiftAmount}px)`);
     this.updateIndicatorEnabledStates_();
