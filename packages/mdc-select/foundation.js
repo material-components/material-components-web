@@ -62,7 +62,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       registerMenuInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterMenuInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyChange: () => {},
-      getWindowInnerHeight: () => /* number */ 0,
+      computeBoundingContainer: () => /* {innerHeight: number, yOffset: number} */ {},
     };
   }
 
@@ -176,17 +176,14 @@ export default class MDCSelectFoundation extends MDCFoundation {
   open_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     const focusIndex = this.selectedIndex_ < 0 ? 0 : this.selectedIndex_;
-    const {left, top, transformOrigin} = this.computeMenuStylesForOpenAtIndex_(focusIndex);
 
-    this.adapter_.setMenuElStyle('left', left);
-    this.adapter_.setMenuElStyle('top', top);
-    this.adapter_.setMenuElStyle('transform-origin', transformOrigin);
+    this.setMenuStylesForOpenAtIndex_(focusIndex);
     this.adapter_.addClass(OPEN);
     this.adapter_.openMenu(focusIndex);
   }
 
-  computeMenuStylesForOpenAtIndex_(index) {
-    const innerHeight = this.adapter_.getWindowInnerHeight();
+  setMenuStylesForOpenAtIndex_(index) {
+    const {innerHeight, yOffset} = this.adapter_.computeBoundingContainer();
     const {left, top} = this.adapter_.computeBoundingRect();
 
     this.adapter_.setMenuElAttr('aria-hidden', 'true');
@@ -197,20 +194,17 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.rmMenuElAttr('aria-hidden');
 
     let adjustedTop = top - itemOffsetTop;
-    const adjustedHeight = menuHeight - itemOffsetTop;
     const overflowsTop = adjustedTop < 0;
-    const overflowsBottom = adjustedTop + adjustedHeight > innerHeight;
-    if (overflowsTop) {
+    const overflowsBottom = adjustedTop + menuHeight > innerHeight;
+    if (overflowsTop && top >= 0) {
       adjustedTop = 0;
-    } else if (overflowsBottom) {
-      adjustedTop = Math.max(0, adjustedTop - adjustedHeight);
-    }
-
-    return {
-      left: `${left}px`,
-      top: `${adjustedTop}px`,
-      transformOrigin: `center ${itemOffsetTop}px`,
+    } else if (overflowsBottom && top <= innerHeight) {
+      adjustedTop = Math.max(0, innerHeight - menuHeight);
     };
+
+    this.adapter_.setMenuElStyle('left', `${left}px`);
+    this.adapter_.setMenuElStyle('top', `${adjustedTop + yOffset}px`);
+    this.adapter_.setMenuElStyle('transform-origin', `center ${itemOffsetTop}px`);
   }
 
   close_() {
@@ -241,3 +235,4 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 }
+

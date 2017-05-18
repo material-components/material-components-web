@@ -325,7 +325,7 @@ within `componentDidUpdate`.
 | `registerMenuInteractionHandler(type: string, handler: EventListener) => void` | Registers an event listener on the menu component's root element. Note that we will always listen for `MDCSimpleMenu:selected` for change events, and `MDCSimpleMenu:cancel` to know that we need to close the menu. If you are using a different events system, you could check the event type for either one of these strings and take the necessary steps to wire it up. |
 | `deregisterMenuInteractionHandler(type: string, handler: EventListener) => void` | Opposite of `registerMenuInteractionHandler`. |
 | `notifyChange() => void` | Broadcast a change event, similar to the `change` event emitted by an `HTMLSelectElement`. While we use custom events in our implementation for this, you can use any mechanism desired for notifications, such as callbacks, reactive streams, etc. Note that you can also pass data within your event if you'd like via `foundation.getValue()` and `foundation.getSelectedIndex()`. |
-| `getWindowInnerHeight() => number` | Returns the `innerHeight` property of the `window` element. |
+| `computeBoundedContainer() =>  {innerHeight: number, yOffset: number}` | Returns the `innerHeight` property of the `window` element and the `pageYOffset` property of the `window` element. May be changed in instances where the Select 'Menu' should be constrained to a different area.|
 
 ### The full foundation API
 
