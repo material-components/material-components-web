@@ -37,8 +37,14 @@ test('default adapter returns a complete adapter implementation', () => {
     'isMenuOpen', 'setSelectedTextContent', 'getNumberOfOptions', 'getTextForOptionAtIndex',
     'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex', 'getOffsetTopForOptionAtIndex',
     'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler', 'notifyChange',
-    'computeBoundingContainer', 'getValueForOptionAtIndex',
+    'getWindowInnerHeight', 'getValueForOptionAtIndex',
   ]);
+
+  const renderingContext = MDCSelectFoundation.defaultAdapter.create2dRenderingContext();
+  const renderingContextMethods =
+    Object.keys(renderingContext).filter((k) => typeof renderingContext[k] === 'function');
+  assert.deepEqual(renderingContextMethods.slice().sort(), ['measureText'].slice().sort());
+  renderingContextMethods.forEach((m) => assert.doesNotThrow(renderingContext[m]));
 });
 
 function setupTest() {
