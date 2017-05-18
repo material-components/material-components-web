@@ -10,7 +10,8 @@ path: /catalog/menus/
 # Menus
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/simple-menu.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/simple-menu.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="153" alt="Menus screenshot">
   </a>
 </div>-->

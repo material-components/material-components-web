@@ -10,7 +10,8 @@ path: /catalog/grid-lists/
 # Grid Lists
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/grid-list.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/grid-list.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/grids.png" width="320" alt="Grid lists screenshot">
   </a>
 </div>-->

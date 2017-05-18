@@ -10,7 +10,8 @@ path: /catalog/buttons/
 # Buttons
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/button.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/button.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/buttons.png" width="363" alt="Buttons screenshot">
   </a>
 </div>-->
