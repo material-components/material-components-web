@@ -20,6 +20,8 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {MDCTabBar} from '../../../packages/mdc-tabs/tab-bar';
 import {MDCTabBarFoundation} from '../../../packages/mdc-tabs/tab-bar';
+import {strings} from '../../../packages/mdc-tabs/tab-bar/constants';
+import {strings as tabStrings} from '../../../packages/mdc-tabs/tab/constants';
 import {createMockRaf} from '../helpers/raf';
 
 class MockTab {
@@ -132,8 +134,8 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('adapter#bindOnMDCTabSelectedEvent adds event listener for MDCTab:selected on ' +
-  'the component', () => {
+test(`adapter#bindOnMDCTabSelectedEvent adds event listener for ${tabStrings.SELECTED_EVENT} ` +
+  'on the component', () => {
   const {component, root} = setupTest();
   const adapter = component.getDefaultFoundation().adapter_;
   const tab = new MockTab();
@@ -141,7 +143,7 @@ test('adapter#bindOnMDCTabSelectedEvent adds event listener for MDCTab:selected 
   const raf = createMockRaf();
 
   adapter.bindOnMDCTabSelectedEvent();
-  domEvents.emit(root, 'MDCTab:selected', {detail: {tab}});
+  domEvents.emit(root, tabStrings.SELECTED_EVENT, {detail: {tab}});
 
   raf.flush();
 
@@ -149,7 +151,7 @@ test('adapter#bindOnMDCTabSelectedEvent adds event listener for MDCTab:selected 
   raf.restore();
 });
 
-test('on MDCTab:selected if tab is not in tab bar, throw Error', () => {
+test(`on ${tabStrings.SELECTED_EVENT} if tab is not in tab bar, throw Error`, () => {
   const {component} = setupTest();
   const tab = new MockTab();
 
@@ -173,9 +175,9 @@ test('adapter#unbindOnMDCTabSelectedEvent removes listener from component', () =
   const raf = createMockRaf();
   const handler = td.func('custom handler');
 
-  component.listen('MDCTab:selected', handler);
+  component.listen(tabStrings.SELECTED_EVENT, handler);
   adapter.unbindOnMDCTabSelectedEvent();
-  domEvents.emit(tab.root, 'MDCTab:selected', {detail: {tab}});
+  domEvents.emit(tab.root, tabStrings.SELECTED_EVENT, {detail: {tab}});
 
   raf.flush();
 
@@ -229,14 +231,14 @@ test('adapter#getOffsetWidthForIndicator returns the width of the active tab ind
   assert.equal(indicatorWidth, indicator.offsetWidth);
 });
 
-test('adapter#notifyChange emits MDCTabBar:change with event data', () => {
+test(`adapter#notifyChange emits ${strings.CHANGE_EVENT} with event data`, () => {
   const {component} = setupTest();
-  const handler = td.func('MDCTabBar:change handler');
+  const handler = td.func('change event handler');
   const data = td.object({
     tab: td.object({}),
   });
 
-  component.listen('MDCTabBar:change', handler);
+  component.listen(strings.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange(data);
 
   td.verify(handler(td.matchers.isA(Object)));

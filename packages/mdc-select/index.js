@@ -110,7 +110,7 @@ export class MDCSelect extends MDCComponent {
       getOffsetTopForOptionAtIndex: (index) => this.options[index].offsetTop,
       registerMenuInteractionHandler: (type, handler) => this.menu_.listen(type, handler),
       deregisterMenuInteractionHandler: (type, handler) => this.menu_.unlisten(type, handler),
-      notifyChange: () => this.emit('MDCSelect:change', this),
+      notifyChange: () => this.emit(MDCSelectFoundation.strings.CHANGE_EVENT, this),
       getWindowInnerHeight: () => window.innerHeight,
     });
   }

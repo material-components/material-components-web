@@ -75,6 +75,28 @@ test('#supportsCssVariables returns false when CSS is not an object', () => {
   assert.isNotOk(util.supportsCssVariables(windowObj));
 });
 
+test('applyPassive returns an options object for browsers that support passive event listeners', () => {
+  const mockWindow = {
+    document: {
+      addEventListener: function(name, method, options) {
+        return options.passive;
+      },
+    },
+  };
+  assert.deepEqual(util.applyPassive(mockWindow, true), {passive: true});
+});
+
+test('applyPassive returns false for browsers that do not support passive event listeners', () => {
+  const mockWindow = {
+    document: {
+      addEventListener: function() {
+        throw new Error();
+      },
+    },
+  };
+  assert.isNotOk(util.applyPassive(mockWindow, true));
+});
+
 test('#getMatchesProperty returns the correct property for selector matching', () => {
   assert.equal(util.getMatchesProperty({matches: () => {}}), 'matches');
   assert.equal(util.getMatchesProperty({webkitMatchesSelector: () => {}}), 'webkitMatchesSelector');

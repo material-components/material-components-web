@@ -16,7 +16,7 @@
 
 import {MDCComponent} from '@material/base';
 import MDCRippleFoundation from './foundation';
-import {supportsCssVariables, getMatchesProperty} from './util';
+import {applyPassive, supportsCssVariables, getMatchesProperty} from './util';
 
 export {MDCRippleFoundation};
 
@@ -40,8 +40,10 @@ export class MDCRipple extends MDCComponent {
       isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
-      registerInteractionHandler: (evtType, handler) => instance.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => instance.root_.removeEventListener(evtType, handler),
+      registerInteractionHandler: (evtType, handler) =>
+          instance.root_.addEventListener(evtType, handler, applyPassive()),
+      deregisterInteractionHandler: (evtType, handler) =>
+          instance.root_.removeEventListener(evtType, handler, applyPassive()),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       updateCssVariable: (varName, value) => instance.root_.style.setProperty(varName, value),
