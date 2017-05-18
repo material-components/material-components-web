@@ -19,6 +19,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {captureHandlers} from '../helpers/foundation';
+import {strings as menuStrings} from '../../../packages/mdc-menu/simple/constants';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 
@@ -37,7 +38,7 @@ function setupTest() {
     left: 100,
     top: 100,
   });
-  td.when(mockAdapter.computeBoundingContainer()).thenReturn({innerHeight: 500, yOffset: 0});
+  td.when(mockAdapter.getWindowInnerHeight()).thenReturn(500);
   td.when(mockAdapter.getMenuElOffsetHeight()).thenReturn(100);
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const menuHandlers = captureHandlers(mockAdapter, 'registerMenuInteractionHandler');
@@ -57,6 +58,14 @@ test('on click opens the menu', () => {
   handlers.click(createEvent());
   td.verify(mockAdapter.addClass(cssClasses.OPEN));
   td.verify(mockAdapter.openMenu(0));
+});
+
+test('on click does not open the menu if it is already open', () => {
+  const {mockAdapter, handlers} = setupTest();
+  td.when(mockAdapter.isMenuOpen()).thenReturn(true);
+  handlers.click(createEvent());
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.openMenu(0), {times: 0});
 });
 
 test('on click opens the menu focused at the selected index, if any', () => {
@@ -156,52 +165,52 @@ test('on Space keyup does not open the menu on bubbled events', () => {
   td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
 });
 
-test('on MDCSimpleMenu:selected updates the selected index to that given by the event', () => {
+test(`on ${menuStrings.SELECTED_EVENT} updates the selected index to that given by the event`, () => {
   const {foundation, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   selected(createEvent({detail: {index: 1}}));
   assert.equal(foundation.getSelectedIndex(), 1);
 });
 
-test('on MDCSimpleMenu:selected fires a change event', () => {
+test(`on ${menuStrings.SELECTED_EVENT} fires a change event`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   selected(createEvent({detail: {index: 1}}));
   td.verify(mockAdapter.notifyChange());
 });
 
-test('on MDCSimpleMenu:selected does not fire change event if the index is already the selected index', () => {
+test(`on ${menuStrings.SELECTED_EVENT} does not fire change event if the index is already the selected index`, () => {
   const {foundation, mockAdapter, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   foundation.setSelectedIndex(1);
   selected({detail: {index: 1}});
   td.verify(mockAdapter.notifyChange(), {times: 0});
 });
 
-test('on MDCSimpleMenu:selected closes the menu', () => {
+test(`on ${menuStrings.SELECTED_EVENT} closes the menu`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   selected(createEvent({detail: {index: 1}}));
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-test('on MDCSimpleMenu:selected refocuses on the select element', () => {
+test(`on ${menuStrings.SELECTED_EVENT} refocuses on the select element`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   selected(createEvent({detail: {index: 1}}));
   td.verify(mockAdapter.focus());
 });
 
-test('on MDCSimpleMenu:cancel closes the menu', () => {
+test(`on ${menuStrings.CANCEL_EVENT} closes the menu`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const cancel = menuHandlers['MDCSimpleMenu:cancel'];
+  const cancel = menuHandlers[menuStrings.CANCEL_EVENT];
   cancel(createEvent());
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-test('on MDCSimpleMenu:cancel re-focuses the select element', () => {
+test(`on ${menuStrings.CANCEL_EVENT} re-focuses the select element`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const cancel = menuHandlers['MDCSimpleMenu:cancel'];
+  const cancel = menuHandlers[menuStrings.CANCEL_EVENT];
   cancel(createEvent());
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
@@ -242,7 +251,7 @@ test('when opened clamps the menu position to the top of the window if it would 
 test('when opened clamps the menu position to the bottom of the window if it would be ' +
           'positioned below the window', () => {
   const {foundation, mockAdapter, handlers} = setupTest();
-  const mockInnerHeight = mockAdapter.computeBoundingContainer().innerHeight;
+  const mockInnerHeight = mockAdapter.getWindowInnerHeight();
   const mockMenuHeight = mockAdapter.getMenuElOffsetHeight();
 
   foundation.setSelectedIndex(1);
@@ -266,10 +275,10 @@ test('when opened clamps the menu position to the top of the window if it cannot
   const mockMenuHeight = mockAdapter.getMenuElOffsetHeight();
 
   foundation.setSelectedIndex(1);
-  td.when(mockAdapter.computeBoundingContainer()).thenReturn({innerHeight: mockMenuHeight + 100, yOffset: 0});
+  td.when(mockAdapter.getWindowInnerHeight()).thenReturn(mockMenuHeight - 10);
   // Bump off offsetHeight to simulate no good possible placement
-  td.when(mockAdapter.getMenuElOffsetHeight()).thenReturn(mockMenuHeight + 200);
-  td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(120);
+  td.when(mockAdapter.getMenuElOffsetHeight()).thenReturn(mockMenuHeight + 10);
+  td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(20);
   handlers.click(createEvent());
 
   const mockLocation = mockAdapter.computeBoundingRect();
