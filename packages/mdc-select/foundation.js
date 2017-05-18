@@ -15,8 +15,9 @@
  */
 
 import {MDCFoundation} from '@material/base';
+import {cssClasses} from './constants';
+import {MDCSimpleMenuFoundation} from '@material/menu';
 
-const ROOT = 'mdc-select';
 const OPENER_KEYS = [
   {key: 'ArrowUp', keyCode: 38, forType: 'keydown'},
   {key: 'ArrowDown', keyCode: 40, forType: 'keydown'},
@@ -25,11 +26,7 @@ const OPENER_KEYS = [
 
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
-    return {
-      ROOT,
-      OPEN: `${ROOT}--open`,
-      DISABLED: `${ROOT}--disabled`,
-    };
+    return cssClasses;
   }
 
   static get defaultAdapter() {
@@ -100,8 +97,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('click', this.displayHandler_);
     this.adapter_.registerInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.registerInteractionHandler('keyup', this.displayViaKeyboardHandler_);
-    this.adapter_.registerMenuInteractionHandler('MDCSimpleMenu:selected', this.selectionHandler_);
-    this.adapter_.registerMenuInteractionHandler('MDCSimpleMenu:cancel', this.cancelHandler_);
+    this.adapter_.registerMenuInteractionHandler(
+      MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
+    this.adapter_.registerMenuInteractionHandler(
+      MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
     this.resize();
   }
 
@@ -111,8 +110,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('click', this.displayHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.deregisterInteractionHandler('keyup', this.displayViaKeyboardHandler_);
-    this.adapter_.deregisterMenuInteractionHandler('MDCSimpleMenu:selected', this.selectionHandler_);
-    this.adapter_.deregisterMenuInteractionHandler('MDCSimpleMenu:cancel', this.cancelHandler_);
+    this.adapter_.deregisterMenuInteractionHandler(
+      MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
+    this.adapter_.deregisterMenuInteractionHandler(
+      MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
   }
 
   getValue() {
@@ -187,7 +188,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   }
 
   setMenuStylesForOpenAtIndex_(index) {
-    const {innerHeight, yOffset} = this.adapter_.computeBoundingContainer();
+    const innerHeight = this.adapter_.getWindowInnerHeight();;
     const {left, top} = this.adapter_.computeBoundingRect();
 
     this.adapter_.setMenuElAttr('aria-hidden', 'true');
@@ -200,9 +201,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     let adjustedTop = top - itemOffsetTop;
     const overflowsTop = adjustedTop < 0;
     const overflowsBottom = adjustedTop + menuHeight > innerHeight;
-    if (overflowsTop && top >= 0) {
+    if (overflowsTop) {
       adjustedTop = 0;
-    } else if (overflowsBottom && top <= innerHeight) {
+    } else if (overflowsBottom) {
       adjustedTop = Math.max(0, innerHeight - menuHeight);
     };
 
