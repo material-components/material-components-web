@@ -48,9 +48,9 @@ test('get/set open', () => {
   const {root, component} = setupTest();
 
   const openHandler = td.func('notifyOpen handler');
-  root.addEventListener('MDCPersistentDrawer:open', openHandler);
+  root.addEventListener(strings.OPEN_EVENT, openHandler);
   const closeHandler = td.func('notifyClose handler');
-  root.addEventListener('MDCPersistentDrawer:close', closeHandler);
+  root.addEventListener(strings.CLOSE_EVENT, closeHandler);
 
   component.open = true;
   assert.isOk(root.classList.contains('mdc-persistent-drawer--open'));
@@ -233,18 +233,18 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () =
   assert.equal(el.getAttribute('tabindex'), '-1');
 });
 
-test('adapter#notifyOpen fires an "MDCPersistentDrawer:open" custom event', () => {
+test(`adapter#notifyOpen fires an ${strings.OPEN_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('notifyOpen handler');
-  root.addEventListener('MDCPersistentDrawer:open', handler);
+  root.addEventListener(strings.OPEN_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyOpen();
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#notifyClose fires an "MDCPersistentDrawer:close" custom event', () => {
+test(`adapter#notifyClose fires an ${strings.CLOSE_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('notifyClose handler');
-  root.addEventListener('MDCPersistentDrawer:close', handler);
+  root.addEventListener(strings.CLOSE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyClose();
   td.verify(handler(td.matchers.anything()));
 });

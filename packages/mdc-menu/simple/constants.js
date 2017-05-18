@@ -24,6 +24,8 @@ export const cssClasses = {
 
 export const strings = {
   ITEMS_SELECTOR: '.mdc-simple-menu__items',
+  SELECTED_EVENT: 'MDCSimpleMenu:selected',
+  CANCEL_EVENT: 'MDCSimpleMenu:cancel',
 };
 
 export const numbers = {

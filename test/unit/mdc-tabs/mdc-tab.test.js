@@ -22,7 +22,7 @@ import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {MDCTab} from '../../../packages/mdc-tabs/tab';
 import {MDCTabFoundation} from '../../../packages/mdc-tabs/tab';
-import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
+import {cssClasses, strings} from '../../../packages/mdc-tabs/tab/constants';
 
 function getFixture() {
   return bel`
@@ -146,12 +146,12 @@ test('adapter#getOffsetLeft returns left offset for the tab', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getOffsetLeft(), root.offsetLeft);
 });
 
-test('adapter#notifySelected emits MDCTab:selected', () => {
+test(`adapter#notifySelected emits ${strings.SELECTED_EVENT}`, () => {
   const {component} = setupTest();
 
   const handler = td.func('acceptHandler');
 
-  component.listen('MDCTab:selected', handler);
+  component.listen(strings.SELECTED_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifySelected();
 
   td.verify(handler(td.matchers.anything()));

@@ -221,23 +221,23 @@ test('adapter#eventTargetHasClass returns whether or not the className is in the
   assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
 });
 
-test('adapter#notifyAccept emits MDCDialog:accept', () => {
+test(`adapter#notifyAccept emits ${strings.ACCEPT_EVENT}`, () => {
   const {component} = setupTest();
 
   const handler = td.func('acceptHandler');
 
-  component.listen('MDCDialog:accept', handler);
+  component.listen(strings.ACCEPT_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyAccept();
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#notifyCancel emits MDCDialog:cancel', () => {
+test(`adapter#notifyCancel emits ${strings.CANCEL_EVENT}`, () => {
   const {component} = setupTest();
 
   const handler = td.func('cancelHandler');
 
-  component.listen('MDCDialog:cancel', handler);
+  component.listen(strings.CANCEL_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyCancel();
 
   td.verify(handler(td.matchers.anything()));

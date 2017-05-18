@@ -17,3 +17,7 @@
 export const cssClasses = {
   ACTIVE: 'mdc-tab--active',
 };
+
+export const strings = {
+  SELECTED_EVENT: 'MDCTab:selected',
+};
