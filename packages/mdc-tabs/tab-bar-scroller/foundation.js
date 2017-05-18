@@ -91,8 +91,6 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       evt.preventDefault();
     }
 
-    console.log('scrolling back');
-
     let tabWidthAccumulator = 0;
     let scrollTargetIndex = 0;
 
@@ -126,8 +124,6 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       evt.preventDefault();
     }
 
-    console.log('scrolling forward');
-
     const scrollFrameOffsetWidth = this.adapter_.getOffsetWidthForScrollFrame() + this.currentTranslateOffset_;
     let scrollTargetIndex = 0;
 
@@ -158,7 +154,6 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     }
 
     const resetAmt = this.isRTL() ? this.scrollFrameScrollLeft_ : 0;
-    console.log('reset amount ', resetAmt);
     this.adapter_.resetScrollLeftForScrollFrame(resetAmt);
 
     this.focusedTarget_ = evt.target;
@@ -188,7 +183,6 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
   layout() {
     cancelAnimationFrame(this.layoutFrame_);
     this.scrollFrameScrollLeft_ = this.adapter_.getScrollLeftForScrollFrame();
-    console.log('layout scrollLeft: ', this.scrollFrameScrollLeft_);
     this.layoutFrame_ = requestAnimationFrame(() => this.layout_());
   }
 
@@ -219,10 +213,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
   }
 
   shiftFrame_() {
-    console.log(this.adapter_.getScrollLeftForScrollFrame());
     const shiftAmount = this.isRTL() ?
-      this.currentTranslateOffset_ :
-       -this.currentTranslateOffset_ + this.scrollFrameScrollLeft;
+      this.currentTranslateOffset_ : -this.currentTranslateOffset_;
 
     this.adapter_.setTransformStyleForTabBar(`translateX(${shiftAmount}px)`);
     this.updateIndicatorEnabledStates_();
