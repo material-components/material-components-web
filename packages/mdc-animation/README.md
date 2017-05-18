@@ -123,7 +123,7 @@ MDC Web ships with a set of utility functions designed to make animations easier
 
 To use:
 ```js
-import {getCorrectEventName} from '@material/mdc-animation';
+import {getCorrectEventName} from '@material/animation';
 
 const eventToListenFor = getCorrectEventName(window, 'animationstart');
 ```

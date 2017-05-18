@@ -15,7 +15,7 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {getCorrectPropertyName} from '../../../packages/mdc-animation';
+import {getCorrectPropertyName} from '@material/animation';
 
 import {cssClasses, strings} from './constants';
 
