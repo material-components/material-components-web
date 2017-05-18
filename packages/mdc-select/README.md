@@ -1,8 +1,37 @@
-# MDC Select
+<!--docs:
+title: "Select Menus"
+layout: detail
+section: components
+iconId: menu
+path: /catalog/input-controls/select-menus/
+-->
 
-MDC Select provides material design single-option and multi-option select menus. It functions analogously to the
+# Select Menus
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/select.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/selects.png" width="376" alt="Select screenshot">
+  </a>
+</div>-->
+
+MDC Select provides Material Design single-option and multi-option select menus. It functions analogously to the
 browser's native `<select>` element, and includes a gracefully degraded version that can be used
 in conjunction with the browser's native element. Both are fully accessible, and fully RTL-aware.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
+  </li>
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/select.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -19,6 +48,9 @@ npm install --save @material/select
   <span class="mdc-select__selected-text">Pick a food group</span>
   <div class="mdc-simple-menu mdc-select__menu">
     <ul class="mdc-list mdc-simple-menu__items">
+      <li class="mdc-list-item" role="option" id="grains" aria-disabled="true">
+        Pick a food group
+      </li>
       <li class="mdc-list-item" role="option" id="grains" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -293,7 +325,7 @@ within `componentDidUpdate`.
 | `registerMenuInteractionHandler(type: string, handler: EventListener) => void` | Registers an event listener on the menu component's root element. Note that we will always listen for `MDCSimpleMenu:selected` for change events, and `MDCSimpleMenu:cancel` to know that we need to close the menu. If you are using a different events system, you could check the event type for either one of these strings and take the necessary steps to wire it up. |
 | `deregisterMenuInteractionHandler(type: string, handler: EventListener) => void` | Opposite of `registerMenuInteractionHandler`. |
 | `notifyChange() => void` | Broadcast a change event, similar to the `change` event emitted by an `HTMLSelectElement`. While we use custom events in our implementation for this, you can use any mechanism desired for notifications, such as callbacks, reactive streams, etc. Note that you can also pass data within your event if you'd like via `foundation.getValue()` and `foundation.getSelectedIndex()`. |
-| `computeBoundedContainer() =>  {innerHeight: number, yOffset: number}` | Returns the `innerHeight` property of the `window` element and the `pageYOffset` property of the `window` element. May be changed in instances where the Select 'Menu' should be constrained to a different area.|
+| `getWindowInnerHeight() => number` | Returns the `innerHeight` property of the `window` element. |
 
 ### The full foundation API
 
