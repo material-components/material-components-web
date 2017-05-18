@@ -320,16 +320,16 @@ The following table summarizes the current situation (TBI = to be implemented):
 | `mdl-checkbox` | [`@material/checkbox`](../packages/mdc-checkbox/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
 | `mdl-chip` | TBI | [#56](https://github.com/material-components/material-components-web/issues/56) |
 | `mdl-data-table` | TBI | [#57](https://github.com/material-components/material-components-web/issues/57) |
-| `mdl-dialog` | TBI | [#32](https://github.com/material-components/material-components-web/issues/32) |
+| `mdl-dialog` | [`@material/dialog`](../packages/mdc-dialog/README.md) | Sufficiently different from MDL. MDL uses the `dialog` element which has limited cross-browser support. `mdc-dialog` relies on elements with more cross-browser support. |
 | `mdl-footer` | None | Not currently planned for MDC-Web. |
 | `mdl-grid` | [`@material/layout-grid`](../packages/mdc-layout-grid/README.md) | Very similar. No offsets in MDC-Web. |
 | `mdl-icon-toggle` | [`@material/icon-toggle`](../packages/mdc-icon-toggle/README.md) | Very different DOM. |
-| `mdl-layout` | Split into [`@material/drawer`](../packages/mdc-drawer/README.md) and [`@material/toolbar`](../packages/mdc-toolbar/README.md) | No tabs component in MDC-Web at the moment, [TBI](https://github.com/material-components/material-components-web/issues/37). |
+| `mdl-layout` | Split into [`@material/drawer`](../packages/mdc-drawer/README.md), [`@material/toolbar`](../packages/mdc-toolbar/README.md), and [`@material/layout-grid`](../packages/mdc-layout-grid/README.md) | No tabs component in MDC-Web at the moment, [TBI](https://github.com/material-components/material-components-web/issues/37). |
 | `mdl-list` | [`@material/list`](../packages/mdc-list/README.md) | Very different DOM. |
 | `mdl-menu` | [`@material/menu`](../packages/mdc-menu/README.md) | Very different DOM. |
 | `mdl-palette` | TBI | [#27](https://github.com/material-components/material-components-web/issues/27) |
 | `mdl-progress` | TBI | [#29](https://github.com/material-components/material-components-web/issues/29) |
-| `mdl-radio` | [`@material/radio`](../packages/mdc-radio/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
+| `mdl-radio` | [`@material/radi`](../opackages/mdc-radio/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
 | `mdl-resets` | None. | There are plans for an [optional resets/defaults library](https://github.com/material-components/material-components-web/issues/42). |
 | `mdl-ripple` | [`@material/ripple`](../packages/mdc-ripple/README.md) | Very different usage; much improved in MDC-Web. |
 | `mdl-shadow` | [`@material/elevation`](../packages/mdc-elevation/README.md) | Similar usage. |
@@ -337,7 +337,7 @@ The following table summarizes the current situation (TBI = to be implemented):
 | `mdl-snackbar` | [`@material/snackbar`](../packages/mdc-snackbar/README.md) | Very different DOM. |
 | `mdl-spinner` | TBI | [#30](https://github.com/material-components/material-components-web/issues/30) |
 | `mdl-switch` | [`@material/switch`](../packages/mdc-switch/README.md) | Very different DOM. |
-| `mdl-tabs` | TBI | While this was a different type of tabs in MDL, in MDC-Web it’s likely going to be just another use-case for the regular tabs.  [TBI](https://github.com/material-components/material-components-web/issues/37) |
+| `mdl-tabs` | [`@material/tabs`](../packages/mdc-tabs/README.md) | Very different DOM. |
 | `mdl-textfield` | [`@material/textfield`](../packages/mdc-textfield/README.md) | Very different DOM. |
 | `mdl-tooltip` | TBI | [#24](https://github.com/material-components/material-components-web/issues/24) |
 | `mdl-typography` | [`@material/typography`](../packages/mdc-typography/README.md) | Somewhat different usage. |
@@ -348,6 +348,8 @@ New MDC-Web components:
 | --------- | ----------- |
 | [`@material/auto-init`](../packages/mdc-auto-init/README.md) | Helper for automatically initializing components (optional in MDC-Web). |
 | [`@material/form-field`](../packages/mdc-form-field/README.md) | Helpers for using labels with form field elements (radios and checkboxes). |
+| [`@material/grid-list`](../packages/mdc-grid-list/README.md) | An RTL-aware grid list component. |
 | [`@material/rtl`](../packages/mdc-rtl/README.md) | Helpers for working with right-to-left languages. |
 | [`@material/select`](../packages/mdc-select/README.md) | Select (AKA drop-down) component. |
 | [`@material/theme`](../packages/mdc-theme/README.md) | Theming helpers for CSS and Sass. |
+| [`@material/toolbar`](../packages/mdc-toolbar/README.md) | A container for multiple rows containing items such as application title, navigation menu, and tabs, among other things. |
