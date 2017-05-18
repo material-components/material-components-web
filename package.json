@@ -129,6 +129,7 @@
           "grid-list",
           "icon-toggle",
           "layout-grid",
+          "linear-progress",
           "list",
           "menu",
           "radio",
