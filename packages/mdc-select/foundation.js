@@ -208,7 +208,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     };
 
     this.adapter_.setMenuElStyle('left', `${left}px`);
-    this.adapter_.setMenuElStyle('top', `${adjustedTop + yOffset}px`);
+    this.adapter_.setMenuElStyle('top', `${adjustedTop}px`);
     this.adapter_.setMenuElStyle('transform-origin', `center ${itemOffsetTop}px`);
   }
 
