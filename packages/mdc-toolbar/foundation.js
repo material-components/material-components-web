@@ -90,7 +90,6 @@ export default class MDCToolbarFoundation extends MDCFoundation {
     if (this.hasFlexibleRow_) {
       this.useFlexDefaultBehavior_ = this.adapter_.hasClass(MDCToolbarFoundation.cssClasses.FLEXIBLE_DEFAULT_BEHAVIOR);
     }
-    this.initKeyRatio_();
     this.setKeyHeights_();
     this.adapter_.registerResizeHandler(this.resizeHandler_);
     this.adapter_.registerScrollHandler(this.scrollHandler_);
@@ -122,7 +121,7 @@ export default class MDCToolbarFoundation extends MDCFoundation {
     const newToolbarRowHeight = this.getRowHeight_();
     if (newToolbarRowHeight !== this.calculations_.toolbarRowHeight) {
       this.calculations_.toolbarRowHeight = newToolbarRowHeight;
-      this.calculations_.toolbarRatio = this.adapter_.getOffsetHeight() / newToolbarRowHeight;
+      this.initKeyRatio_();
       this.calculations_.toolbarHeight = this.calculations_.toolbarRatio * this.calculations_.toolbarRowHeight;
       this.calculations_.flexibleExpansionHeight =
         this.calculations_.flexibleExpansionRatio * this.calculations_.toolbarRowHeight;
@@ -163,7 +162,7 @@ export default class MDCToolbarFoundation extends MDCFoundation {
   }
 
   initKeyRatio_() {
-    const toolbarRowHeight = this.getRowHeight_();
+    const toolbarRowHeight = this.calculations_.toolbarRowHeight;
     const flexibleRowMaxRatio = this.adapter_.getFlexibleRowElementOffsetHeight() / toolbarRowHeight;
     this.calculations_.toolbarRatio = this.adapter_.getOffsetHeight() / toolbarRowHeight;
     this.calculations_.flexibleExpansionRatio = flexibleRowMaxRatio - 1;
