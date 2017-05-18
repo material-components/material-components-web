@@ -56,6 +56,7 @@ fieldset {
   align-items: center;
   justify-content: center;
   flex-flow: row nowrap;
+  height: 360px;
 }
 
 /* Default padding on all examples. */
