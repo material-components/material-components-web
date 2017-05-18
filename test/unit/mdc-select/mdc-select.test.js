@@ -20,6 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCSelect} from '../../../packages/mdc-select';
+import {strings} from '../../../packages/mdc-select/constants';
 
 class FakeMenu {
   constructor() {
@@ -355,16 +356,16 @@ test('adapter#deregisterMenuInteractionHandler unlistens for an interaction hand
   td.verify(menu.unlisten('evt', handler));
 });
 
-test('adapter#notifyChange emits an "MDCSelect:change" custom event from the root element', () => {
+test(`adapter#notifyChange emits an ${strings.CHANGE_EVENT} custom event from the root element`, () => {
   const {component, fixture} = setupTest();
-  const handler = td.func('MDCSelect:change handler');
-  fixture.addEventListener('MDCSelect:change', handler);
+  const handler = td.func('change handler');
+  fixture.addEventListener(strings.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange();
 });
 
-test('adapter#computeBoundingContainer returns window.innerHeight', () => {
+test('adapter#getWindowInnerHeight returns window.innerHeight', () => {
   const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.computeBoundingContainer().innerHeight, window.innerHeight);
+  assert.equal(component.getDefaultFoundation().adapter_.getWindowInnerHeight(), window.innerHeight);
 });
 
 test('adapter#getValueForOptionAtIndex returns the id of the option at the given index', () => {
