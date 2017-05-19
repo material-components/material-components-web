@@ -125,7 +125,7 @@ function setupTest() {
   const forwardIndicatorEl = fixture.querySelector('.mdc-tab-bar-scroller__indicator--forward');
   const component = new MDCTabBarScroller(root, undefined, () => mockTabBar);
 
-  return {mockTabBar, mockTab, fixture, root, scrollFrameEl, tabBarEl,
+  return {fixture, root, scrollFrameEl, tabBarEl,
           component, backIndicatorEl, forwardIndicatorEl};
 }
 

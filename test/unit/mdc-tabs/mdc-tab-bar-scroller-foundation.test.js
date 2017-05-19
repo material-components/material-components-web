@@ -113,14 +113,17 @@ test('#scrollBack prevents default if evt is passed as argument', () => {
 test('#scrollForward moves the tab bar forward', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
+  const numTabs = 4;
+  const tabWidth = 200;
+  const scrollFrameWidth = 300;
 
-  td.when(mockAdapter.getNumberOfTabs()).thenReturn(4);
-  for (let i = 0; i < 4; i++) {
-    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * 200);
-    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(200);
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
+  for (let i = 0; i < numTabs; i++) {
+    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * tabWidth);
+    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(tabWidth);
   }
-  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(800);
-  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(300);
+  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(numTabs * tabWidth);
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
   raf.flush();
@@ -130,14 +133,17 @@ test('#scrollForward moves the tab bar forward', () => {
 test('#scrollBack moves the tab bar back', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
+  const numTabs = 4;
+  const tabWidth = 200;
+  const scrollFrameWidth = 300;
 
-  td.when(mockAdapter.getNumberOfTabs()).thenReturn(4);
-  for (let i = 0; i < 4; i++) {
-    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * 200);
-    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(200);
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
+  for (let i = 0; i < numTabs; i++) {
+    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * tabWidth);
+    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(tabWidth);
   }
-  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(800);
-  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(300);
+  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(numTabs * tabWidth);
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
   raf.flush();
@@ -151,14 +157,17 @@ test('#scrollBack removes indicator enabled state if at first tab', () => {
   const {foundation, mockAdapter} = setupTest();
   const {INDICATOR_ENABLED} = MDCTabBarScrollerFoundation.cssClasses;
   const raf = createMockRaf();
+  const numTabs = 4;
+  const tabWidth = 200;
+  const scrollFrameWidth = 300;
 
-  td.when(mockAdapter.getNumberOfTabs()).thenReturn(4);
-  for (let i = 0; i < 4; i++) {
-    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * 200);
-    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(200);
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
+  for (let i = 0; i < numTabs; i++) {
+    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * tabWidth);
+    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(tabWidth);
   }
-  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(800);
-  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(300);
+  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(numTabs * tabWidth);
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
   raf.flush();
@@ -173,15 +182,18 @@ test('#scrollBack removes indicator enabled state if at first tab', () => {
 test('#scrollForward moves the tab bar forward in RTL context', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
+  const numTabs = 4;
+  const tabWidth = 200;
+  const scrollFrameWidth = 300;
 
   td.when(mockAdapter.isRTL()).thenReturn(true);
-  td.when(mockAdapter.getNumberOfTabs()).thenReturn(4);
-  for (let i = 0; i < 4; i++) {
-    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * 200);
-    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(200);
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
+  for (let i = 0; i < numTabs; i++) {
+    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * tabWidth);
+    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(tabWidth);
   }
-  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(800);
-  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(300);
+  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(numTabs * tabWidth);
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
   raf.flush();
@@ -191,15 +203,18 @@ test('#scrollForward moves the tab bar forward in RTL context', () => {
 test('#scrollBack moves the tab bar back in RTL context', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
+  const numTabs = 4;
+  const tabWidth = 200;
+  const scrollFrameWidth = 300;
 
   td.when(mockAdapter.isRTL()).thenReturn(true);
-  td.when(mockAdapter.getNumberOfTabs()).thenReturn(4);
-  for (let i = 0; i < 4; i++) {
-    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * 200);
-    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(200);
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
+  for (let i = 0; i < numTabs; i++) {
+    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * tabWidth);
+    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(tabWidth);
   }
-  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(800);
-  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(300);
+  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(numTabs * tabWidth);
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
   raf.flush();
@@ -213,9 +228,11 @@ test('#layout sets indicator enabled states if tab bar overflows', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   const {INDICATOR_ENABLED} = MDCTabBarScrollerFoundation.cssClasses;
+  const scrollFrameWidth = 60;
+  const tabBarWidth = 100;
 
-  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(60);
-  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(100);
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
+  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(tabBarWidth);
 
   foundation.init();
   raf.flush();
@@ -227,9 +244,11 @@ test('#layout removes indicator enabled states if tab bar does not overflow', ()
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   const {INDICATOR_ENABLED} = MDCTabBarScrollerFoundation.cssClasses;
+  const scrollFrameWidth = 200;
+  const tabBarWidth = 100;
 
-  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(200);
-  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(100);
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
+  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(tabBarWidth);
 
   foundation.init();
   raf.flush();

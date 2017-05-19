@@ -18,6 +18,8 @@
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
 
+$mdc-tab-bar-scroller-indicator-width: 48px;
+
 // postcss-bem-linter: define tab-bar-scroller
 .mdc-tab-bar-scroller {
   display: flex;
@@ -39,8 +41,6 @@
       will-change: transform;
     }
   }
-
-  $mdc-tab-bar-scroller-indicator-width: 48px;
 
   &__indicator {
     display: flex;

@@ -359,7 +359,7 @@ mdc.tabs.MDCTabBarScroller.attachTo(document.querySelector('#my-mdc-tab-bar-scro
 Tab Bar Scrollers can easily be initialized using their default constructors as well, similar
 to `attachTo`. This process involves a factory to create an instance of `MDCTabBar`
 from the `mdc-tab-bar` Element inside of the `mdc-tab-bar-scroller` node during the initialization phase
-of `MDCTabBar`, e.g.:
+of `MDCTabBarScroller`, e.g.:
 
 ```html
 <div id="my-tab-bar-scroller" class="mdc-tab-bar-scroller">
@@ -551,6 +551,9 @@ Returns the index of the currently active tab.
 | --- | --- | --- |
 | `tabBar` | `MDCTabBar` | _(read-only)_ The scroller's tab bar. |
 
+#### MDCTabBarScroller.layout() => void
+
+Proxies to the foundation's `layout()` method.
 
 ### Using the Foundation Class
 

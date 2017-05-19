@@ -48,10 +48,9 @@ test('default adapter returns a complete adapter implementation', () => {
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCTabBarFoundation);
   const {UPGRADED} = MDCTabBarFoundation.cssClasses;
-  const {TAB_SELECTOR, INDICATOR_SELECTOR} = MDCTabBarFoundation.strings;
   const tabHandlers = captureHandlers(mockAdapter, 'bindOnMDCTabSelectedEvent');
 
-  return {foundation, mockAdapter, UPGRADED, TAB_SELECTOR, INDICATOR_SELECTOR, tabHandlers};
+  return {foundation, mockAdapter, UPGRADED, tabHandlers};
 }
 
 test('#init adds upgraded class to tabs', () => {
@@ -132,19 +131,21 @@ test('#switchToTabAtIndex throws if index negative', () => {
 
 test('#switchToTabAtIndex throws if index is out of bounds', () => {
   const {foundation, mockAdapter} = setupTest();
+  const numTabs = 2;
 
-  td.when(mockAdapter.getNumberOfTabs()).thenReturn(2);
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
 
-  assert.throws(() => foundation.switchToTabAtIndex(2, true));
+  assert.throws(() => foundation.switchToTabAtIndex(numTabs, true));
 });
 
 test('#switchToTabAtIndex makes tab active', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
+  const numTabs = 2;
   const tabToSwitchTo = 1;
   const shouldNotify = true;
 
-  td.when(mockAdapter.getNumberOfTabs()).thenReturn(2);
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
 
   foundation.switchToTabAtIndex(tabToSwitchTo, shouldNotify);
   raf.flush();
