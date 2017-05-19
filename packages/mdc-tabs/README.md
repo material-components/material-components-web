@@ -5,6 +5,7 @@ The MDC Tabs component contains components which are used to create spec-aligned
 
 - **mdc-tab**: The individual tab elements
 - **mdc-tab-bar**: The main component which is composed of `mdc-tab` elements
+- **mdc-tab-bar-scroller**: The component which controls the horizontal scrolling behavior of `mdc-tab-bars` that overflow their containers
 
 ## Installation
 
@@ -266,7 +267,7 @@ mdc.tabs.MDCTabBar.attachTo(document.querySelector('#my-mdc-tab-bar'));
 
 Tabs can easily be initialized using their default constructors as well, similar
 to `attachTo`. This process involves a factory to create an instance of MDCTab
-from each tab Element inside of the `mdc-tab-bar` node during the intialization phase
+from each tab Element inside of the `mdc-tab-bar` node during the initialization phase
 of `MDCTabBar`, e.g.:
 
 ```html
@@ -283,6 +284,118 @@ import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs';
 
 const tabBar = new MDCTabBar(document.querySelector('#my-mdc-tab-bar'));
 ```
+
+
+### Using the JavaScript Tab Bar Scroller Component
+
+`mdc-tab-bar-scroller` ships with a Component/Foundation combo for ingesting instances of `mdc-tab-bar`. `mdc-tab-bar-scroller` uses its `initialize()` method call a factory function which gathers and instantiates any tab bar elements that are children of the `mdc-tab-bar-scroller` root element.
+
+The anatomy of `mdc-tab-bar-scroller` includes an instance of `mdc-tab-bar`, forward and back indicators which, when actioned on, move the tab bar left and right, and a scroll frame. The scroll frame is the parent element of the tab bar, and serves to mask the tabs in the tab bar when they overflow the available width.
+
+
+#### Including in code
+
+##### ES2015
+
+```javascript
+import {MDCTab, MDCTabFoundation} from '@material/tabs';
+import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs';
+import {MDCTabBarScroller, MDCTabBarFoundationScroller} from '@material/tabs';
+```
+
+##### CommonJS
+
+```javascript
+const mdcTabs = require('@material/tabs');
+const MDCTab = mdcTabs.MDCTab;
+const MDCTabFoundation = mdcTabs.MDCTabFoundation;
+
+const MDCTabBar = mdcTabs.MDCTabBar;
+const MDCTabBarFoundation = mdcTabs.MDCTabBarFoundation;
+
+const MDCTabBarScroller = mdcTabs.MDCTabBarScroller;
+const MDCTabBarScrollerFoundation = mdcTabs.MDCTabBarScrollerFoundation;
+```
+
+##### AMD
+
+```javascript
+require(['path/to/@material/tabs'], mdcTabs => {
+  const MDCTab = mdcTabs.MDCTab;
+  const MDCTabFoundation = mdcTabs.MDCTabFoundation;
+
+  const MDCTabBar = mdcTabs.MDCTabBar;
+  const MDCTabBarFoundation = mdcTabs.MDCTabBarFoundation;
+
+  const MDCTabBarScroller = mdcTabs.MDCTabBarScroller;
+  const MDCTabBarScrollerFoundation = mdcTabs.MDCTabBarScrollerFoundation;
+});
+```
+
+##### Global
+
+```javascript
+const MDCTab = mdc.tabs.MDCTab;
+const MDCTabFoundation = mdc.tabs.MDCTabFoundation;
+
+const MDCTabBar = mdc.tabs.MDCTabBar;
+const MDCTabBarFoundation = mdc.tabs.MDCTabBarFoundation;
+
+const MDCTabBarScroller = mdc.tabs.MDCTabBarScroller;
+const MDCTabBarScrollerFoundation = mdc.tabs.MDCTabBarScrollerFoundation;
+```
+
+#### Automatic Instantiation
+
+If you do not care about retaining the component instance for the tabs, simply
+call `attachTo()` and pass it a DOM element.
+
+```javascript
+mdc.tabs.MDCTabBarScroller.attachTo(document.querySelector('#my-mdc-tab-bar-scroller'));
+```
+
+#### Manual Instantiation
+
+Tab Bar Scrollers can easily be initialized using their default constructors as well, similar
+to `attachTo`. This process involves a factory to create an instance of `MDCTabBar`
+from the `mdc-tab-bar` Element inside of the `mdc-tab-bar-scroller` node during the initialization phase
+of `MDCTabBar`, e.g.:
+
+```html
+<div id="my-tab-bar-scroller" class="mdc-tab-bar-scroller">
+  <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--back">
+    <a class="mdc-tab-bar-scroller__indicator__inner material-icons" href="#" aria-label="scroll back button">
+      navigate_before
+    </a>
+  </div>
+  <div class="mdc-tab-bar-scroller__scroll-frame">
+    <nav id="my-scrollable-tab-bar" class="mdc-tab-bar mdc-tab-bar-scroller__scroll-frame__tabs">
+      <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
+      <a class="mdc-tab" href="#two">Item Two</a>
+      <a class="mdc-tab" href="#three">Item Three</a>
+      <a class="mdc-tab" href="#four">Item Four</a>
+      <a class="mdc-tab" href="#five">Item Five</a>
+      <a class="mdc-tab" href="#six">Item Six</a>
+      <a class="mdc-tab" href="#seven">Item Seven</a>
+      <a class="mdc-tab" href="#eight">Item Eight</a>
+      <a class="mdc-tab" href="#nine">Item Nine</a>
+      <span class="mdc-tab-bar__indicator"></span>
+    </nav>
+  </div>
+  <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--forward">
+    <a class="mdc-tab-bar-scroller__indicator__inner material-icons" href="#" aria-label="scroll forward button">
+      navigate_next
+    </a>
+  </div>
+</div>
+```
+
+```javascript
+import {MDCTabBarScroller, MDCTabBarScrollerFoundation} from '@material/tabs';
+
+const tabBarScroller = new MDCTabBarScroller(document.querySelector('#my-mdc-tab-bar-scroller'));
+```
+
 
 ## Tab
 
@@ -426,3 +539,72 @@ Updates the active tab to be the tab at the given index, emits `MDCTabBar:change
 #### MDCTabBarFoundation.getActiveTabIndex() => number
 
 Returns the index of the currently active tab.
+
+
+## Tab Bar Scroller
+
+### Tab Bar Scroller component API
+
+#### Properties
+
+| Property Name | Type | Description |
+| --- | --- | --- |
+| `tabBar` | `MDCTabBar` | _(read-only)_ The scroller's tab bar. |
+
+
+### Using the Foundation Class
+
+MDC Tab Bar Scroller ships with an `MDCTabBarScrollerFoundation` class that external frameworks and libraries can use to integrate the component. As with all foundation classes, an adapter object must be provided.
+
+
+### Adapter API
+
+| Method Signature | Description |
+| --- | --- |
+| `addClass(className: string) => void` | Adds a class to the root element. |
+| `removeClass(className: string) => void` | Removes a class from the root element. |
+| `eventTargetHasClass(target: HTMLElement, className: string) => boolean` | Returns true if target has a given class name |
+| `addClassToForwardIndicator(className: string) => void` | Adds a given class to the forward indicator |
+| `removeClassFromForwardIndicator(className: string) => void` | Removes a given class from the forward indicator |
+| `addClassToBackIndicator(className: string) => void` | Adds a given class to the back indicator |
+| `removeClassFromBackIndicator(className: string) => void` | Removes a given class from the back indicator |
+| `isRTL() => boolean` | Returns true if in RTL context. False otherwise. |
+| `registerBackIndicatorClickHandler(handler: EventListener) => void` | Registers an event handler to be called when a `click` event happens on the back indicator |
+| `deregisterBackIndicatorClickHandler(handler: EventHandler) => void` | Deregisters an event handler from a `click` event happening on the back indicator |
+| `registerForwardIndicatorClickHandler(handler: EventHandler) => void` | Registers an event handler to be called when a `click` event happens on the forward indicator |
+| `deregisterForwardIndicatorClickHandler(handler: EventHandler) => void` | Deregisters an event handler from a `click` event happening on the forward indicator. |
+| `registerCapturedFocusHandler(handler: EventHandler) => void` | Registers an event handler to be called when a `focus` event happens on the root of the component. This event gets dispatched to the listener during the capture phase. |
+| `deregisterCapturedFocusHandler(handler: EventHandler) => void` | Deregisters an event handler from a `focus` event happening on the root of the component |
+| `registerWindowResizeHandler(handler: EventHandler) => void` | Registers an event handler to be called when a `resize` event happens on the `window` |
+| `deregisterWindowResizeHandler(handler: EventHandler) => void `| Deregisters an event handler from a `resize` event happening on the `window` |
+| `getNumberOfTabs() => number` | Returns the number of tabs in the scroller's tab bar |
+| `getComputedWidthForTabAtIndex(index: number) => number` | Returns the width of a tab at the given index |
+| `getComputedLeftForTabAtIndex(index: number) => number` | Returns the left offset of a tab at the given index |
+| `getOffsetWidthForScrollFrame() => number` | Returns the width of the scroll frame. This is the width of the visible tabs. |
+| `getScrollLeftForScrollFrame() => number` | Returns the `scrollLeft` value of the scroll frame |
+| `setScrollLeftForScrollFrame(scrollLeftAmount: number) => void` | Sets the value of `scrollLeft` for the scroll frame. |
+| `getOffsetWidthForTabBar() => number` | Returns the width of the _entire_ tab bar, including that which is occluded. |
+| `setTransformStyleForTabBar(value: string) => void` | Sets the `translateX` `transform` property for the tab bar. |
+| `getOffsetLeftForEventTarget(target: HTMLElement) => number`| Returns the left offset of a given element. |
+| `getOffsetWidthForEventTarget(target: HTMLElement) => number` | Returns the width of a given element. |
+
+
+### The full foundation API
+
+#### MDCTabBarScrollerFoundation.scrollBack() => void
+
+Scrolls the tab bar such that the leftmost tab traverses the scroll frame and becomes the rightmost tab, potentially being partially, but not fully, occluded.
+
+#### MDCTabBarScrollerFoundation.scrollForward() => void
+
+Scrolls the tab bar such that the rightmost tab traverses the scroll frame and becomes the leftmost tab. This tabs left offset will line up with the left edge of the scroll frame, and never be partially or fully occluded.
+
+> **NOTE:** Due to a quirk in event behavior, we allow the rightmost tab to be partially occluded even when tabbed to because clicking on such an element would shift the frame on the `focus` event. This would result in a scenario where the ripple persists and the intended tab would not be selected due to the tab bar shifting before the `mouseup` or `click` events get dispatched.
+
+#### MDCTabBarScrollerFoundation.layout() => void
+
+If the tab bar is overflowing its available width, this method will reset the back and forward indicators to the correct states (visible/hidden) based on the new width.
+
+#### MDCTabBarScrollerFoundation.isRTL() => boolean
+
+Returns true if in RTL context, false otherwise.

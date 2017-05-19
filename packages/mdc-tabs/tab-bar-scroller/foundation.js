@@ -30,6 +30,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
+      addClass: (/* className: string */) => {},
+      removeClass: (/* className: string */) => {},
       eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false,
       addClassToForwardIndicator: (/* className: string */) => {},
       removeClassFromForwardIndicator: (/* className: string */) => {},
@@ -39,7 +41,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       registerBackIndicatorClickHandler: (/* handler: EventListener */) => {},
       deregisterBackIndicatorClickHandler: (/* handler: EventListener */) => {},
       registerForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
-      deregisterForwardIndicatonClickHandler: (/* handler: EventListener */) => {},
+      deregisterForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
       registerCapturedFocusHandler: (/* handler: EventListener */) => {},
       deregisterCapturedFocusHandler: (/* handler: EventListener */) => {},
       registerWindowResizeHandler: (/* handler: EventListener */) => {},
@@ -49,8 +51,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       getComputedLeftForTabAtIndex: () => /* number */ 0,
       getOffsetWidthForScrollFrame: () => /* number */ 0,
       getScrollLeftForScrollFrame: () => /* number */ 0,
-      addClassToTabBar: (/* className: string */) => {},
-      removeClassFromTabBar: (/* className: string */) => {},
+      setScrollLeftForScrollFrame: (/* scrollLeftAmount: number */) => {},
       getOffsetWidthForTabBar: () => /* number */ 0,
       setTransformStyleForTabBar: (/* value: string */) => {},
       getOffsetLeftForEventTarget: (/* target: EventTarget */) => /* number */ 0,
@@ -148,13 +149,23 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.scrollToTabAtIndex_(scrollTargetIndex);
   }
 
+  layout() {
+    cancelAnimationFrame(this.layoutFrame_);
+    this.scrollFrameScrollLeft_ = this.adapter_.getScrollLeftForScrollFrame();
+    this.layoutFrame_ = requestAnimationFrame(() => this.layout_());
+  }
+
+  isRTL() {
+    return this.adapter_.isRTL();
+  }
+
   handlePossibleTabFocus_(evt) {
     if (!this.adapter_.eventTargetHasClass(evt.target, cssClasses.TAB) || evt.type === 'click') {
       return;
     }
 
     const resetAmt = this.isRTL() ? this.scrollFrameScrollLeft_ : 0;
-    this.adapter_.resetScrollLeftForScrollFrame(resetAmt);
+    this.adapter_.setScrollLeftForScrollFrame(resetAmt);
 
     this.focusedTarget_ = evt.target;
     const scrollFrameWidth = this.adapter_.getOffsetWidthForScrollFrame();
@@ -172,18 +183,10 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     }
 
     if (shouldScrollForward) {
-      // this.adapter_.resetScrollLeftForScrollFrame();
       this.scrollForward();
     } else if (shouldScrollBack) {
-      // this.adapter_.resetScrollLeftForScrollFrame();
       this.scrollBack();
     }
-  }
-
-  layout() {
-    cancelAnimationFrame(this.layoutFrame_);
-    this.scrollFrameScrollLeft_ = this.adapter_.getScrollLeftForScrollFrame();
-    this.layoutFrame_ = requestAnimationFrame(() => this.layout_());
   }
 
   layout_() {
@@ -234,9 +237,5 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClassFromForwardIndicator(INDICATOR_ENABLED);
     }
-  }
-
-  isRTL() {
-    return this.adapter_.isRTL();
   }
 }

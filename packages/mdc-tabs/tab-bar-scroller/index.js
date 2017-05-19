@@ -71,7 +71,7 @@ export class MDCTabBarScroller extends MDCComponent {
       getComputedLeftForTabAtIndex: (index) => this.tabBar.tabs[index].computedLeft,
       getOffsetWidthForScrollFrame: () => this.scrollFrame_.offsetWidth,
       getScrollLeftForScrollFrame: () => this.scrollFrame_.scrollLeft,
-      resetScrollLeftForScrollFrame: (scrollLeftAmount) => this.scrollFrame_.scrollLeft = scrollLeftAmount,
+      setScrollLeftForScrollFrame: (scrollLeftAmount) => this.scrollFrame_.scrollLeft = scrollLeftAmount,
       getOffsetWidthForTabBar: () => this.tabBarEl_.offsetWidth,
       setTransformStyleForTabBar: (value) => {
         this.tabBarEl_.style.setProperty(getCorrectPropertyName(window, 'transform'), value);
