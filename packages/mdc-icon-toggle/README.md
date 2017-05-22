@@ -9,7 +9,8 @@ path: /catalog/buttons/icon-toggle-buttons/
 # Icon Toggle Buttons
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/icon-toggle.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/icon-toggle.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon toggles screenshot">
   </a>
 </div>-->

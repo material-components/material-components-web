@@ -65,7 +65,7 @@
 
     @include mdc-slideable-drawer;
 
-    @include mdc-rtl(".mdc-temporary-drawer__drawer") {
+    @include mdc-rtl(".mdc-temporary-drawer") {
       @include mdc-slideable-drawer-rtl;
     }
 

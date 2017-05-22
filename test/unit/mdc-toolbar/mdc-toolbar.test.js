@@ -158,12 +158,12 @@ test('adapter#getFlexibleRowElementOffsetHeight returns the height of the flexib
     flexibleRowElement.offsetHeight);
 });
 
-test('adapter#notifyChange emits MDCToolbar:change', () => {
+test(`adapter#notifyChange emits ${strings.CHANGE_EVENT}`, () => {
   const {component} = setupTest();
 
   const handler = td.func('changeHandler');
 
-  component.listen('MDCToolbar:change', handler);
+  component.listen(strings.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange();
 
   td.verify(handler(td.matchers.anything()));

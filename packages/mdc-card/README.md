@@ -10,7 +10,8 @@ path: /catalog/cards/
 # Cards
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/card.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/card.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/cards.png" width="328" alt="Cards screenshot">
   </a>
 </div>-->

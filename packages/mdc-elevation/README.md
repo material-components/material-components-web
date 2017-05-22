@@ -10,7 +10,8 @@ path: /catalog/elevation/
 # Elevation
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/elevation.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/elevation.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/elevation.png" width="247" alt="Elevation screenshot">
   </a>
 </div>-->

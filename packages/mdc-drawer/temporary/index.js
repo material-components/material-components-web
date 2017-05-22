@@ -75,8 +75,8 @@ export class MDCTemporaryDrawer extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-      notifyOpen: () => this.emit('MDCTemporaryDrawer:open'),
-      notifyClose: () => this.emit('MDCTemporaryDrawer:close'),
+      notifyOpen: () => this.emit(MDCTemporaryDrawerFoundation.strings.OPEN_EVENT),
+      notifyClose: () => this.emit(MDCTemporaryDrawerFoundation.strings.CLOSE_EVENT),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       isDrawer: (el) => el === this.drawer,
     });
