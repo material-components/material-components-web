@@ -89,19 +89,42 @@
           <label for="multiline" id="multiline-label">Multiline</label>
         </div>
 
-        <div class="mdc-form-field">
-          <div class="mdc-checkbox">
-            <input type="checkbox" class="mdc-checkbox__native-control" id="action-on-bottom" aria-labelledby="action-on-bottom-label" />
-            <div class="mdc-checkbox__background">
-              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-              </svg>
+        <div class="mdc-checkbox-wrapper">
+          <div class="mdc-checkbox-wrapper__layout">
+            <div class="mdc-checkbox">
+              <input type="checkbox"
+                     class="mdc-checkbox__native-control"
+                     id="action-on-bottom"
+                     aria-labelledby="action-on-bottom-label" />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
           </div>
           <label for="action-on-bottom" id="action-on-bottom-label">Action On Bottom</label>
         </div>
 
+        <div class="mdc-checkbox-wrapper">
+          <div class="mdc-checkbox-wrapper__layout">
+            <div class="mdc-checkbox">
+              <input type="checkbox"
+                     checked
+                     class="mdc-checkbox__native-control"
+                     id="dismiss-on-action"
+                     aria-labelledby="dismiss-on-action-label" />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="dismiss-on-action" id="dismiss-on-action-label">Dismiss On Action</label>
+        </div>
 
         <div class="field">
           <label for="message">Message Text</label>
@@ -152,8 +175,10 @@
         var actionInput = document.getElementById('action');
         var multilineInput = document.getElementById('multiline');
         var actionOnBottomInput = document.getElementById('action-on-bottom');
+        var dismissOnActionInput = document.getElementById('dismiss-on-action');
 
         var show = function(sb) {
+          snackbar.dismissesOnAction = dismissOnActionInput.checked;
           var data =  {
             message: messageInput.value,
             actionOnBottom: actionOnBottomInput.checked,

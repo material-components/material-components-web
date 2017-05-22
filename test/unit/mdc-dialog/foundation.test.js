@@ -34,11 +34,12 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
-    'addClass', 'removeClass', 'setStyle', 'addBodyClass', 'removeBodyClass',
+    'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
     'eventTargetHasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
-    'notifyAccept', 'notifyCancel', 'trapFocusOnSurface', 'untrapFocusOnSurface',
+    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
+    'notifyAccept', 'notifyCancel', 'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
   ]);
 });
 
@@ -48,6 +49,7 @@ function setupTest() {
 
 test('#destroy closes the dialog to perform any necessary cleanup', () => {
   const {foundation, mockAdapter} = setupTest();
+  foundation.open();
   foundation.destroy();
 
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
@@ -94,22 +96,6 @@ test('#close deregisters all events registered within open()', () => {
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
 });
 
-test('#open makes the dialog visible', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.open();
-
-  td.verify(mockAdapter.setStyle('visibility', 'visible'));
-});
-
-test('#close makes the dialog hidden', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.close();
-
-  td.verify(mockAdapter.setStyle('visibility', 'hidden'));
-});
-
 test('#open adds the open class to reveal the dialog', () => {
   const {foundation, mockAdapter} = setupTest();
 
@@ -124,23 +110,40 @@ test('#close removes the open class to hide the dialog', () => {
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
+test('#open adds the animation class to start an animation', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+
+  td.verify(mockAdapter.addClass(cssClasses.ANIMATING));
+});
+
 test('#open adds scroll lock class to the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.open();
+
   td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
 });
 
 test('#close removes the scroll lock class from the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
+  foundation.open();
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.close();
+
   td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
 });
 
 test('#open activates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
 
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.open();
 
   td.verify(mockAdapter.trapFocusOnSurface());
@@ -314,4 +317,12 @@ test('on document keydown does nothing when key other than escape is pressed', (
     key: 'Enter',
   });
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
+});
+
+test('should clean up transition handlers after dialog close', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  foundation.close();
+  td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)));
 });
