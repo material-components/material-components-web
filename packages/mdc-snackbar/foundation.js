@@ -51,6 +51,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
     this.active_ = false;
+    this.dismissOnAction_ = true;
     this.queue_ = [];
     this.actionClickHandler_ = () => this.invokeAction_();
   }
@@ -63,6 +64,14 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
   destroy() {
     this.adapter_.deregisterActionClickHandler(this.actionClickHandler_);
+  }
+
+  dismissesOnAction() {
+    return this.dismissOnAction_;
+  }
+
+  setDismissOnAction(dismissOnAction) {
+    this.dismissOnAction_ = !!dismissOnAction;
   }
 
   show(data) {
@@ -108,15 +117,22 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.addClass(ACTIVE);
     this.adapter_.unsetAriaHidden();
 
-    setTimeout(this.cleanup_.bind(this), data.timeout || MESSAGE_TIMEOUT);
+    this.timeoutId_ = setTimeout(this.cleanup_.bind(this), data.timeout || MESSAGE_TIMEOUT);
   }
 
   invokeAction_() {
-    if (!this.actionHandler_) {
-      return;
-    }
+    try {
+      if (!this.actionHandler_) {
+        return;
+      }
 
-    this.actionHandler_();
+      this.actionHandler_();
+    } finally {
+      if (this.dismissOnAction_) {
+        clearTimeout(this.timeoutId_);
+        this.cleanup_();
+      }
+    }
   }
 
   cleanup_() {
