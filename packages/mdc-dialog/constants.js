@@ -17,6 +17,7 @@
 export const cssClasses = {
   ROOT: 'mdc-dialog',
   OPEN: 'mdc-dialog--open',
+  ANIMATING: 'mdc-dialog--animating',
   BACKDROP: 'mdc-dialog__backdrop',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
   ACCEPT_BTN: 'mdc-dialog__footer__button--accept',
