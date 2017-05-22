@@ -55,4 +55,12 @@ export class MDCSnackbar extends MDCComponent {
         (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'transitionend'), handler),
     });
   }
+
+  get dismissesOnAction() {
+    return this.foundation_.dismissesOnAction();
+  }
+
+  set dismissesOnAction(dismissesOnAction) {
+    this.foundation_.setDismissOnAction(dismissesOnAction);
+  }
 }
