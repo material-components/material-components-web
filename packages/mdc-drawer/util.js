@@ -24,14 +24,14 @@ let supportsPassive_;
 export function remapEvent(eventName, globalObj = window) {
   if (!('ontouchstart' in globalObj.document)) {
     switch (eventName) {
-      case 'touchstart':
-        return 'pointerdown';
-      case 'touchmove':
-        return 'pointermove';
-      case 'touchend':
-        return 'pointerup';
-      default:
-        return eventName;
+    case 'touchstart':
+      return 'pointerdown';
+    case 'touchmove':
+      return 'pointermove';
+    case 'touchend':
+      return 'pointerup';
+    default:
+      return eventName;
     }
   }
 
