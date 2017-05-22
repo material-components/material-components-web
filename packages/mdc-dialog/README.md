@@ -45,7 +45,6 @@ Dialogs inform users about a specific task and may contain critical information 
 
 ```html
 <aside id="my-mdc-dialog"
-  style="visibility:hidden"
   class="mdc-dialog"
   role="alertdialog"
   aria-labelledby="my-mdc-dialog-label"
@@ -76,7 +75,6 @@ Some dialogs will not be tall enough to accomodate everything you would like to 
 
 ```html
   <aside id="mdc-dialog-with-list"
-    style="visibility:hidden"
     class="mdc-dialog"
     role="alertdialog"
     aria-labelledby="mdc-dialog-with-list-label"
@@ -240,8 +238,11 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `deregisterSurfaceInteractionHandler(evt: string, handler: EventListener) => void` | Deregisters an event handler from the dialog surface element. |
 | `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
 | `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
+| `registerTransitionEndHandler: (handler: EventListener) => void` | Registers an event handler to be called when a transitionend event is triggered on the dialog container sub-element element. |
+| `deregisterTransitionEndHandler: (handler: EventListener) => void` | Deregisters an event handler from a transitionend event listener. This will only be called with handlers that have previously been passed to registerTransitionEndHandler calls. |
 | `notifyAccept() => {}` | Broadcasts an event denoting that the user has accepted the dialog. |
 | `notifyCancel() => {}` | Broadcasts an event denoting that the user has cancelled the dialog. |
+| `isDialog(el: Element) => boolean` | Returns boolean indicating whether the provided element is the dialog surface element. |
 | `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 | `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 
