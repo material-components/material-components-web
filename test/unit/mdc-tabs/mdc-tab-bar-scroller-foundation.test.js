@@ -130,6 +130,26 @@ test('#scrollForward moves the tab bar forward', () => {
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-400px)'));
 });
 
+test('#scrollForward moves the tab bar forward if last tab is partially occluded', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  const numTabs = 4;
+  const tabWidth = 200;
+  const scrollFrameWidth = 780;
+
+  td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
+  for (let i = 0; i < numTabs; i++) {
+    td.when(mockAdapter.getComputedLeftForTabAtIndex(i)).thenReturn(i * tabWidth);
+    td.when(mockAdapter.getComputedWidthForTabAtIndex(i)).thenReturn(tabWidth);
+  }
+  td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(numTabs * tabWidth);
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
+
+  foundation.scrollForward();
+  raf.flush();
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-200px)'));
+});
+
 test('#scrollBack moves the tab bar back', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();

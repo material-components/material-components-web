@@ -143,6 +143,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       if (setScrollTarget) {
         scrollTargetIndex = i;
         break;
+      } else if (this.adapter_.getOffsetWidthForTabBar() > scrollFrameOffsetWidth) {
+        scrollTargetIndex = 1;
       }
     }
 
