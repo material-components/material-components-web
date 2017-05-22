@@ -28,6 +28,10 @@ test('exports cssClasses', () => {
   assert.deepEqual(MDCTabFoundation.cssClasses, cssClasses);
 });
 
+test('exports strings', () => {
+  assert.isOk('strings' in MDCTabFoundation);
+});
+
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabFoundation, [
     'addClass', 'removeClass', 'registerInteractionHandler',
