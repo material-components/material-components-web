@@ -312,3 +312,54 @@ test('#show will clean up snackbar after the timeout and transition end', () => 
 
   clock.uninstall();
 });
+
+test('snackbar is dismissed after action button is pressed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+
+  let actionClickHandler;
+  td.when(mockAdapter.registerActionClickHandler(isA(Function)))
+    .thenDo((handler) => {
+      actionClickHandler = handler;
+    });
+
+  foundation.init();
+
+  td.reset();
+
+  foundation.show({
+    message: 'Message Deleted',
+    actionText: 'Undo',
+    actionHandler: () => {},
+  });
+
+  actionClickHandler();
+
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
+});
+
+test('snackbar is not dismissed after action button is pressed if setDismissOnAction(false) was called before', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+
+  let actionClickHandler;
+  td.when(mockAdapter.registerActionClickHandler(isA(Function)))
+    .thenDo((handler) => {
+      actionClickHandler = handler;
+    });
+
+  foundation.init();
+  foundation.setDismissOnAction(false);
+
+  td.reset();
+
+  foundation.show({
+    message: 'Message Deleted',
+    actionText: 'Undo',
+    actionHandler: () => {},
+  });
+
+  actionClickHandler();
+
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
+});
