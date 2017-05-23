@@ -161,6 +161,7 @@ module.exports = [{
     'mdc.grid-list': path.resolve('./packages/mdc-grid-list/mdc-grid-list.scss'),
     'mdc.icon-toggle': path.resolve('./packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
     'mdc.layout-grid': path.resolve('./packages/mdc-layout-grid/mdc-layout-grid.scss'),
+    'mdc.linear-progress': path.resolve('./packages/mdc-linear-progress/mdc-linear-progress.scss'),
     'mdc.list': path.resolve('./packages/mdc-list/mdc-list.scss'),
     'mdc.menu': path.resolve('./packages/mdc-menu/mdc-menu.scss'),
     'mdc.radio': path.resolve('./packages/mdc-radio/mdc-radio.scss'),
