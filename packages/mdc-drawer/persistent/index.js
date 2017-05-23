@@ -72,8 +72,8 @@ export class MDCPersistentDrawer extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
-      notifyOpen: () => this.emit('MDCPersistentDrawer:open'),
-      notifyClose: () => this.emit('MDCPersistentDrawer:close'),
+      notifyOpen: () => this.emit(MDCPersistentDrawerFoundation.strings.OPEN_EVENT),
+      notifyClose: () => this.emit(MDCPersistentDrawerFoundation.strings.CLOSE_EVENT),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       isDrawer: (el) => el === this.drawer,
     });

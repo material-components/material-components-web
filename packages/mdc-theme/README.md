@@ -10,7 +10,8 @@ path: /catalog/theme/
 # Theme
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/theme.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/theme.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/themes.png" width="241" alt="Themes screenshot">
   </a>
 </div>-->

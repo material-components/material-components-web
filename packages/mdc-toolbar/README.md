@@ -10,7 +10,8 @@ path: /catalog/toolbar/
 # Toolbars
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/toolbar/index.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/toolbar/index.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
   </a>
 </div>-->

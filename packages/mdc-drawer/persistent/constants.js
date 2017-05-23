@@ -25,4 +25,6 @@ export const cssClasses = {
 export const strings = {
   DRAWER_SELECTOR: '.mdc-persistent-drawer__drawer',
   FOCUSABLE_ELEMENTS,
+  OPEN_EVENT: 'MDCPersistentDrawer:open',
+  CLOSE_EVENT: 'MDCPersistentDrawer:close',
 };

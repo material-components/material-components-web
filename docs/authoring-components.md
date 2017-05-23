@@ -682,8 +682,8 @@ the aforementioned rule, we would also like to provide lint rules to enforce the
 #### Define all exported CSS classes, strings, and numbers as foundation constants.
 - All CSS Classes referenced by a component's foundation must be referenced by a `cssClasses` static
   getter.
-- All strings that are used outside the context of the foundation class (CSS selectors, text that
-  could potentially be localized, etc.) must be referenced by a `strings` static getter.
+- All strings that are used outside the context of the foundation class (CSS selectors, custom event names,
+  text that could potentially be localized, etc.) must be referenced by a `strings` static getter.
 - All semantic numbers leveraged by the foundation (timeout lengths, transition durations, etc.) must
   be referenced by a `numbers` static getter.
 - These constants should be defined within a `constants.js` file, and then proxied through the
@@ -700,6 +700,7 @@ export const cssClasses = {
 
 export const strings = {
   CHILD_SELECTOR: '.mdc-new-component__child',
+  CUSTOM_EVENT: 'MDCNewComponent:event',
 };
 
 export const numbers = {

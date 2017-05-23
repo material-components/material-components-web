@@ -30,7 +30,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      setStyle: (/* propertyName: string, value: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false,
@@ -40,16 +39,18 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
+      registerTransitionEndHandler: (/* handler: EventListener */) => {},
+      deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
       notifyAccept: () => {},
       notifyCancel: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
+      isDialog: (/* el: Element */) => /* boolean */ false,
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
-
     this.isOpen_ = false;
     this.componentClickHandler_ = () => this.cancel(true);
     this.dialogClickHandler_ = (evt) => this.handleDialogClick_(evt);
@@ -58,34 +59,43 @@ export default class MDCDialogFoundation extends MDCFoundation {
         this.cancel(true);
       }
     };
-  }
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
+  };
 
   destroy() {
-    this.close();
+    // Ensure that dialog is cleaned up when destroyed
+    if (this.isOpen_) {
+      this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
+      this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
+      this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
+      this.adapter_.untrapFocusOnSurface();
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
+      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
+      this.enableScroll_();
+    }
   }
 
   open() {
     this.isOpen_ = true;
     this.disableScroll_();
-    this.adapter_.setStyle('visibility', 'visible');
-    this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
-    this.adapter_.trapFocusOnSurface();
-
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.registerSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
+    this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
   }
 
   close() {
     this.isOpen_ = false;
-    this.adapter_.untrapFocusOnSurface();
-    this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
-    this.adapter_.setStyle('visibility', 'hidden');
-    this.enableScroll_();
-
     this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
+    this.adapter_.untrapFocusOnSurface();
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
+    this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
   }
 
   isOpen() {
@@ -117,6 +127,18 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.cancel(true);
     }
   }
+
+  handleTransitionEnd_(evt) {
+    if (this.adapter_.isDialog(evt.target)) {
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
+      if (this.isOpen_) {
+        this.adapter_.trapFocusOnSurface();
+      } else {
+        this.enableScroll_();
+      };
+    };
+  };
 
   disableScroll_() {
     this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);

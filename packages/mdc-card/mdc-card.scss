@@ -28,6 +28,8 @@
   justify-content: flex-end;
   padding: 0;
   box-sizing: border-box;
+  border-radius: 2px;
+  overflow: hidden;
 
   &__primary {
     padding: 16px;

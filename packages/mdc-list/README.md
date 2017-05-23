@@ -10,7 +10,8 @@ path: /catalog/lists/
 # Lists
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/list.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/list.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/lists.png" width="365" alt="Lists screenshot">
   </a>
 </div>-->

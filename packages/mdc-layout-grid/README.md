@@ -10,7 +10,8 @@ path: /catalog/layout-grids/
 # Layout Grids
 
 <!--<div class="article__asset">
-  <a href="https://material-components-web.appspot.com/layout-grid.html">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/layout-grid.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/layout.png" width="256" alt="Layout grid screenshot">
   </a>
 </div>-->

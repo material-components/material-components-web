@@ -28,6 +28,10 @@ test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCSelectFoundation);
 });
 
+test('exports strings', () => {
+  assert.isOk('strings' in MDCSelectFoundation);
+});
+
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'setAttr', 'rmAttr', 'computeBoundingRect',

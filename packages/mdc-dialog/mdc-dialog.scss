@@ -32,10 +32,29 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
 .mdc-dialog {
   display: flex;
   position: fixed;
+  top: 0;
+  left: 0;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  z-index: -1;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  z-index: 2;
+
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    @include mdc-theme-prop(background-color, text-primary-on-light);
+
+    opacity: 0;
+    z-index: -1;
+  }
 
   &__surface {
     display: inline-flex;
@@ -47,7 +66,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     min-width: 640px;
     max-width: 865px;
     transform: translateY(150px) scale(.8);
-    transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
     border-radius: 2px;
 
     @include mdc-theme-prop(background-color, background);
@@ -64,22 +82,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     }
 
     opacity: 0;
-  }
-
-  &__backdrop {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-
-    @include mdc-theme-prop(background-color, text-primary-on-light);
-
-    opacity: 0;
-    z-index: -1;
   }
 
   &__header {
@@ -131,6 +133,14 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     align-items: center;
     justify-content: flex-end;
     padding: 8px;
+
+    &__button {
+      margin-right: 8px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 
   // TODO: Replace with breakpoint variable
@@ -145,28 +155,34 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
       line-height: 24px;
     }
   }
-}
 
-.mdc-dialog--open {
-  display: flex;
-  top: 0;
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  z-index: 2;
+  &--animating {
+    visibility: visible;
 
-  .mdc-dialog__surface {
-    transform: translateY(0) scale(1);
-    transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
-    opacity: 1;
+    .mdc-dialog__backdrop {
+      transition: mdc-animation-enter(opacity, 120ms);
+    }
+
+    .mdc-dialog--open .mdc-dialog__surface {
+      transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
+    }
+
+    .mdc-dialog__surface {
+      transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
+    }
   }
 
-  .mdc-dialog__backdrop {
-    transition: mdc-animation-enter(opacity, 120ms);
-    opacity: .3;
+  &--open {
+    visibility: visible;
+
+    .mdc-dialog__backdrop {
+      opacity: .3;
+    }
+
+    .mdc-dialog__surface {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
   }
 }
 
