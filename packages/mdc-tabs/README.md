@@ -5,7 +5,7 @@ The MDC Tabs component contains components which are used to create spec-aligned
 
 - **mdc-tab**: The individual tab elements
 - **mdc-tab-bar**: The main component which is composed of `mdc-tab` elements
-- **mdc-tab-bar-scroller**: The component which controls the horizontal scrolling behavior of `mdc-tab-bars` that overflow their containers
+- **mdc-tab-bar-scroller**: The component which controls the horizontal scrolling behavior of an `mdc-tab-bar` that overflows its container
 
 ## Installation
 
@@ -288,9 +288,10 @@ const tabBar = new MDCTabBar(document.querySelector('#my-mdc-tab-bar'));
 
 ### Using the JavaScript Tab Bar Scroller Component
 
-`mdc-tab-bar-scroller` ships with a Component/Foundation combo for ingesting instances of `mdc-tab-bar`. `mdc-tab-bar-scroller` uses its `initialize()` method call a factory function which gathers and instantiates any tab bar elements that are children of the `mdc-tab-bar-scroller` root element.
+`mdc-tab-bar-scroller` ships with a Component/Foundation combo which wraps instances of `mdc-tab-bar`. `mdc-tab-bar-scroller` uses its `initialize()` method call a factory function which gathers and instantiates any tab bar elements that are children of the `mdc-tab-bar-scroller` root element.
 
-The anatomy of `mdc-tab-bar-scroller` includes an instance of `mdc-tab-bar`, forward and back indicators which, when actioned on, move the tab bar left and right, and a scroll frame. The scroll frame is the parent element of the tab bar, and serves to mask the tabs in the tab bar when they overflow the available width.
+The anatomy of `mdc-tab-bar-scroller` includes an instance of `mdc-tab-bar`, RTL-aware forward and back indicators which, when actioned on, move the tab bar left and right, and a scroll frame. The scroll frame is the parent element of the tab bar, and serves to mask the tabs in the tab bar when they overflow the available width.
+
 
 
 #### Including in code
@@ -395,6 +396,18 @@ import {MDCTabBarScroller, MDCTabBarScrollerFoundation} from '@material/tabs';
 
 const tabBarScroller = new MDCTabBarScroller(document.querySelector('#my-mdc-tab-bar-scroller'));
 ```
+
+Tab Bar Scrollers can also instantiate any `mdc-tab-bar` from a DOM element on the fly using a built in factory function:
+
+```js
+import {MDCTabBarScroller, MDCTabBarScrollerFoundation} from '@material/tabs';
+
+const tabBarEl = document.querySelector('#my-mdc-tab-bar');
+const scrollerEl = document.querySelector('#my-mdc-tab-bar-scroller');
+
+const tabBarScroller = new MDCTabBarScroller(scrollerEl, undefined, tabBarEl);
+```
+This will create an instance of MDC Tab Bar during the initialization phase of Tab Bar Scroller.
 
 
 ## Tab
@@ -576,8 +589,8 @@ MDC Tab Bar Scroller ships with an `MDCTabBarScrollerFoundation` class that exte
 | `deregisterBackIndicatorClickHandler(handler: EventHandler) => void` | Deregisters an event handler from a `click` event happening on the back indicator |
 | `registerForwardIndicatorClickHandler(handler: EventHandler) => void` | Registers an event handler to be called when a `click` event happens on the forward indicator |
 | `deregisterForwardIndicatorClickHandler(handler: EventHandler) => void` | Deregisters an event handler from a `click` event happening on the forward indicator. |
-| `registerTabInteractionHandler(evt: string, handler: EventHandler) => void` | Registers an event handler to be called when a `focus`, `touchstart`, or `mousedown` event happens on the root of the component. These events gets dispatched to the listener during the capture phase. They also govern the scrolling behavior when tabs are tabbed to or actioned on. |
-| `deregisterTabInteractionHandler(evt: string, handler: EventHandler) => void` | Deregisters an event handler from a `focus`, `touchstart`, or `mousedown` events happening on the root of the component |
+| `registerCapturedInteractionHandler(evt: string, handler: EventHandler) => void` | Registers an event handler to be called when a `focus`, `touchstart`, or `mousedown` event happens on the root of the component. These events gets dispatched to the listener during the capture phase. They also govern the scrolling behavior when tabs are tabbed to or actioned on. |
+| `deregisterCapturedInteractionHandler(evt: string, handler: EventHandler) => void` | Deregisters an event handler from a `focus`, `touchstart`, or `mousedown` events happening on the root of the component |
 | `registerWindowResizeHandler(handler: EventHandler) => void` | Registers an event handler to be called when a `resize` event happens on the `window` |
 | `deregisterWindowResizeHandler(handler: EventHandler) => void `| Deregisters an event handler from a `resize` event happening on the `window` |
 | `getNumberOfTabs() => number` | Returns the number of tabs in the scroller's tab bar |
@@ -607,7 +620,3 @@ Scrolls the tab bar such that the rightmost tab traverses the scroll frame and b
 #### MDCTabBarScrollerFoundation.layout() => void
 
 If the tab bar is overflowing its available width, this method will reset the back and forward indicators to the correct states (visible/hidden) based on the new width.
-
-#### MDCTabBarScrollerFoundation.isRTL() => boolean
-
-Returns true if in RTL context, false otherwise.

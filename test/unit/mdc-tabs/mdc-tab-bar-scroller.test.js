@@ -244,24 +244,24 @@ test('adapter#deregisterForwardIndicatorClickHandler deregisters a forward indic
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerTabInteractionHandler registers an event handler', () => {
+test('adapter#registerCapturedInteractionHandler registers an event handler', () => {
   const {root, component} = setupTest();
   const handler = td.func('focusHandler');
   const evtType = 'focus';
 
-  component.getDefaultFoundation().adapter_.registerTabInteractionHandler(evtType, handler);
+  component.getDefaultFoundation().adapter_.registerCapturedInteractionHandler(evtType, handler);
   domEvents.emit(root, 'focus');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterTabInteractionHandler deregisters an event handler', () => {
+test('adapter#deregisterCapturedInteractionHandler deregisters an event handler', () => {
   const {root, component} = setupTest();
   const handler = td.func('focusHandler');
   const evtType = 'focus';
 
   root.addEventListener('focus', handler, true);
-  component.getDefaultFoundation().adapter_.deregisterTabInteractionHandler(evtType, handler);
+  component.getDefaultFoundation().adapter_.deregisterCapturedInteractionHandler(evtType, handler);
   domEvents.emit(root, 'focus');
 
   td.verify(handler(td.matchers.anything()), {times: 0});

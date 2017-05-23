@@ -42,6 +42,14 @@ limitations under the License
         color: #f0f0f0;
       }
 
+      .mdc-theme--dark .demo-tabs__scroller {
+        background-color: #333;
+      }
+
+      .mdc-theme--dark .demo-tabs__scroller .demo-title {
+        color: #f0f0f0;
+      }
+
       .hero button {
         margin-left: 32px;
         margin-right: 32px;
@@ -58,8 +66,13 @@ limitations under the License
         padding-bottom: 24px;
       }
 
+      .demo-tabs__scroller {
+        margin-top: 64px;
+        padding-bottom: 1px;
+      }
+
       .demo-title {
-        padding: 64px 40px 40px;
+        padding: 0 40px 40px;
       }
 
       .mdc-tab-bar-scroller {
@@ -180,6 +193,7 @@ limitations under the License
       </section>
 
       <section>
+        <div class="demo-tabs__scroller">
           <h2 class="mdc-typography--title demo-title">Tab Bar with Scroller</h2>
           <div id="tab-bar-scroller" class="mdc-tab-bar-scroller">
             <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--back">
@@ -207,6 +221,7 @@ limitations under the License
               </a>
             </div>
           </div>
+        </div>
       </section>
 
       <section>
@@ -628,9 +643,10 @@ limitations under the License
           document.getElementById('toggle-rtl').addEventListener('click', function(evt) {
             var mainElement = document.querySelector('#tabs-demo-main-section');
             mainElement.hasAttribute('dir') ? mainElement.removeAttribute('dir') : mainElement.setAttribute('dir', 'rtl');
+
             window.basicTabBar.layout();
             window.tabBarScroller.layout();
-            tabBarScroller.tabBar.layout();
+            window.tabBarScroller.tabBar.layout();
             window.iconTabBar.layout();
             window.iconTextTabBar.layout();
             window.toolbarTabBar.layout();

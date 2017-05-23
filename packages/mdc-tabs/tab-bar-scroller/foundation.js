@@ -42,8 +42,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       deregisterBackIndicatorClickHandler: (/* handler: EventListener */) => {},
       registerForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
       deregisterForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
-      registerTabInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterTabInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      registerCapturedInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterCapturedInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerWindowResizeHandler: (/* handler: EventListener */) => {},
       deregisterWindowResizeHandler: (/* handler: EventListener */) => {},
       getNumberOfTabs: () => /* number */ 0,
@@ -74,7 +74,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       if (evt.type == 'touchstart' || evt.type == 'mousedown') {
         this.pointerDownRecognized_ = true;
       }
-      this.handleTabInteraction_(evt);
+      this.handlePossibleTabKeyboardFocus_(evt);
 
       if (evt.type == 'focus') {
         this.pointerDownRecognized_ = false;
@@ -87,7 +87,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.adapter_.registerForwardIndicatorClickHandler(this.forwardIndicatorClickHandler_);
     this.adapter_.registerWindowResizeHandler(this.resizeHandler_);
     ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
-      this.adapter_.registerTabInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.registerCapturedInteractionHandler(evtType, this.interactionHandler_);
     });
     this.layout();
   }
@@ -97,11 +97,11 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.adapter_.deregisterForwardIndicatorClickHandler(this.forwardIndicatorClickHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.resizeHandler_);
     ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
-      this.adapter_.deregisterTabInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.deregisterCapturedInteractionHandler(evtType, this.interactionHandler_);
     });
   }
 
-  scrollBack(evt) {
+  scrollBack(evt = null) {
     if (evt) {
       evt.preventDefault();
     }
@@ -114,7 +114,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       const tabBarWidthLessTabOffsetLeft = this.adapter_.getOffsetWidthForTabBar() - tabOffsetLeft;
 
       let tabIsNotOccluded = tabOffsetLeft > this.currentTranslateOffset_;
-      if (this.isRTL()) {
+      if (this.isRTL_()) {
         tabIsNotOccluded = tabBarWidthLessTabOffsetLeft > this.currentTranslateOffset_;
       }
 
@@ -124,9 +124,9 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
 
       tabWidthAccumulator += this.adapter_.getComputedWidthForTabAtIndex(i);
 
-      const setScrollTarget = tabWidthAccumulator > this.adapter_.getOffsetWidthForScrollFrame();
-      if (setScrollTarget) {
-        scrollTargetIndex = i;
+      const scrollTargetDetermined = tabWidthAccumulator > this.adapter_.getOffsetWidthForScrollFrame();
+      if (scrollTargetDetermined) {
+        scrollTargetIndex = this.isRTL_() ? i + 1 : i;
         break;
       }
     }
@@ -134,7 +134,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.scrollToTabAtIndex_(scrollTargetIndex);
   }
 
-  scrollForward(evt) {
+  scrollForward(evt = null) {
     if (evt) {
       evt.preventDefault();
     }
@@ -145,9 +145,9 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     for (let i = 0; i < this.adapter_.getNumberOfTabs(); i++) {
       const tabOffsetLeftAndWidth =
         this.adapter_.getComputedLeftForTabAtIndex(i) + this.adapter_.getComputedWidthForTabAtIndex(i);
-      let setScrollTarget = tabOffsetLeftAndWidth > scrollFrameOffsetWidth;
+      let scrollTargetDetermined = tabOffsetLeftAndWidth > scrollFrameOffsetWidth;
 
-      if (this.isRTL()) {
+      if (this.isRTL_()) {
         const frameOffsetAndTabWidth =
           scrollFrameOffsetWidth - this.adapter_.getComputedWidthForTabAtIndex(i);
         const tabOffsetLeftAndWidth =
@@ -155,10 +155,10 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
         const tabRightOffset =
           this.adapter_.getOffsetWidthForTabBar() - tabOffsetLeftAndWidth;
 
-        setScrollTarget = tabRightOffset > frameOffsetAndTabWidth;
+        scrollTargetDetermined = tabRightOffset > frameOffsetAndTabWidth;
       }
 
-      if (setScrollTarget) {
+      if (scrollTargetDetermined) {
         scrollTargetIndex = i;
         break;
       }
@@ -173,16 +173,16 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.layoutFrame_ = requestAnimationFrame(() => this.layout_());
   }
 
-  isRTL() {
+  isRTL_() {
     return this.adapter_.isRTL();
   }
 
-  handleTabInteraction_(evt) {
+  handlePossibleTabKeyboardFocus_(evt) {
     if (!this.adapter_.eventTargetHasClass(evt.target, cssClasses.TAB) || this.pointerDownRecognized_) {
       return;
     }
 
-    const resetAmt = this.isRTL() ? this.scrollFrameScrollLeft_ : 0;
+    const resetAmt = this.isRTL_() ? this.scrollFrameScrollLeft_ : 0;
     this.adapter_.setScrollLeftForScrollFrame(resetAmt);
 
     this.focusedTarget_ = evt.target;
@@ -194,7 +194,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     let shouldScrollBack = rightEdge <= this.currentTranslateOffset_;
     let shouldScrollForward = rightEdge > this.currentTranslateOffset_ + scrollFrameWidth;
 
-    if (this.isRTL()) {
+    if (this.isRTL_()) {
       const normalizedLeftOffset = tabBarWidth - leftEdge;
       shouldScrollBack = leftEdge >= tabBarWidth - this.currentTranslateOffset_;
       shouldScrollForward = normalizedLeftOffset > scrollFrameWidth + this.currentTranslateOffset_;
@@ -205,6 +205,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     } else if (shouldScrollBack) {
       this.scrollBack();
     }
+
+    this.pointerDownRecognized_ = false;
   }
 
   layout_() {
@@ -213,9 +215,9 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
 
     if (!isOverflowing) {
       this.currentTranslateOffset_ = 0;
-      this.shiftFrame_();
     }
 
+    this.shiftFrame_();
     this.updateIndicatorEnabledStates_();
   }
 
@@ -230,11 +232,11 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
   }
 
   normalizeForRTL_(left, width) {
-    return this.isRTL() ? this.adapter_.getOffsetWidthForTabBar() - (left + width) : left;
+    return this.isRTL_() ? this.adapter_.getOffsetWidthForTabBar() - (left + width) : left;
   }
 
   shiftFrame_() {
-    const shiftAmount = this.isRTL() ?
+    const shiftAmount = this.isRTL_() ?
       this.currentTranslateOffset_ : -this.currentTranslateOffset_;
 
     this.adapter_.setTransformStyleForTabBar(`translateX(${shiftAmount}px)`);
@@ -255,7 +257,5 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClassFromForwardIndicator(INDICATOR_ENABLED);
     }
-
-    this.pointerDownRecognized_ = false;
   }
 }
