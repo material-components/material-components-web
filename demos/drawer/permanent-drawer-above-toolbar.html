@@ -37,7 +37,7 @@
       padding: 0;
       margin: 0;
       box-sizing: border-box;
-      height: 100%;
+      min-height: 100%;
       width: 100%;
     }
 
@@ -57,6 +57,18 @@
 
     .demo-main {
       padding-left: 16px;
+    }
+
+    .extra-content-wrapper {
+      padding: 10px;
+    }
+
+    #extra-wide-content {
+      width: 200vw;
+    }
+
+    #extra-tall-content {
+      height: 200vh;
     }
     </style>
   </head>
@@ -110,7 +122,28 @@
       <main class="demo-main">
         <h1 class="mdc-typography--display1">Permanent Drawer</h1>
         <p class="mdc-typography--body1">It sits to the left of this content.</p>
+        <div class="extra-content-wrapper">
+          <button id="toggle-wide">Toggle extra-wide content</button>
+          <div id="extra-wide-content" class="mdc-elevation--z2">&nbsp;</div>
+        </div>
+        <div class="extra-content-wrapper">
+          <button id="toggle-tall">Toggle extra-tall content</button>
+          <div id="extra-tall-content" class="mdc-elevation--z2">&nbsp;</div>
+        </div>
       </main>
     </div>
+
+    <script type="text/javascript">
+      var extraWide = document.querySelector('#extra-wide-content');
+      extraWide.style.display = 'none';
+      document.querySelector('#toggle-wide').addEventListener('click', function() {
+        extraWide.style.display = extraWide.style.display ? '' : 'none';
+      });
+      var extraTall = document.querySelector('#extra-tall-content');
+      extraTall.style.display = 'none';
+      document.querySelector('#toggle-tall').addEventListener('click', function() {
+        extraTall.style.display = extraTall.style.display ? '' : 'none';
+      });
+    </script>
   </body>
 </html>
