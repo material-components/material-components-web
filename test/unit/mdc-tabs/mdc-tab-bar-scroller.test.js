@@ -50,10 +50,13 @@ class MockTabBar {
     this.tabs = [
       {
         computedWidth: 200,
-        computedLeft: 100,
+        computedLeft: 0,
       }, {
         computedWidth: 200,
-        computedLeft: 300,
+        computedLeft: 200,
+      }, {
+        computedWidth: 200,
+        computedLeft: 400,
       },
     ];
   }
@@ -241,22 +244,24 @@ test('adapter#deregisterForwardIndicatorClickHandler deregisters a forward indic
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerCapturedFocusHandler registers a focus handler', () => {
+test('adapter#registerTabInteractionHandler registers an event handler', () => {
   const {root, component} = setupTest();
   const handler = td.func('focusHandler');
+  const evtType = 'focus';
 
-  component.getDefaultFoundation().adapter_.registerCapturedFocusHandler(handler);
+  component.getDefaultFoundation().adapter_.registerTabInteractionHandler(evtType, handler);
   domEvents.emit(root, 'focus');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterCapturedFocusHandler deregisters a focus handler', () => {
+test('adapter#deregisterTabInteractionHandler deregisters an event handler', () => {
   const {root, component} = setupTest();
   const handler = td.func('focusHandler');
+  const evtType = 'focus';
 
   root.addEventListener('focus', handler, true);
-  component.getDefaultFoundation().adapter_.deregisterCapturedFocusHandler(handler);
+  component.getDefaultFoundation().adapter_.deregisterTabInteractionHandler(evtType, handler);
   domEvents.emit(root, 'focus');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
@@ -286,7 +291,7 @@ test('adapter#deregisterWindowResizeHandler deregisters a resize handler', () =>
 test('adapter#getNumberOfTabs returns the numebr of tabs in tab bar', () => {
   const {component} = setupTest();
 
-  assert.equal(component.getDefaultFoundation().adapter_.getNumberOfTabs(), 2);
+  assert.equal(component.getDefaultFoundation().adapter_.getNumberOfTabs(), 3);
 });
 
 test('adapter#getComputedWidthForTabAtIndex returns width for a tab at a given index', () => {
@@ -298,7 +303,7 @@ test('adapter#getComputedWidthForTabAtIndex returns width for a tab at a given i
 test('adapter#getComputedLeftForTabAtIndex returns left offset for a tab at a given index', () => {
   const {component} = setupTest();
 
-  assert.equal(component.getDefaultFoundation().adapter_.getComputedLeftForTabAtIndex(0), 100);
+  assert.equal(component.getDefaultFoundation().adapter_.getComputedLeftForTabAtIndex(1), 200);
 });
 
 test('adapter#getOffsetWidthForScrollFrame returns the width of the scroll frame', () => {

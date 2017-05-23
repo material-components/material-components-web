@@ -42,8 +42,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       deregisterBackIndicatorClickHandler: (/* handler: EventListener */) => {},
       registerForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
       deregisterForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
-      registerCapturedFocusHandler: (/* handler: EventListener */) => {},
-      deregisterCapturedFocusHandler: (/* handler: EventListener */) => {},
+      registerTabInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterTabInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerWindowResizeHandler: (/* handler: EventListener */) => {},
       deregisterWindowResizeHandler: (/* handler: EventListener */) => {},
       getNumberOfTabs: () => /* number */ 0,
@@ -62,6 +62,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCTabBarScrollerFoundation.defaultAdapter, adapter));
 
+    this.pointerDownRecognized_ = false;
     this.currentTranslateOffset_ = 0;
     this.focusedTarget_ = null;
     this.layoutFrame_ = 0;
@@ -69,14 +70,25 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.forwardIndicatorClickHandler_ = (evt) => this.scrollForward(evt);
     this.backIndicatorClickHandler_ = (evt) => this.scrollBack(evt);
     this.resizeHandler_ = () => this.layout();
-    this.focusHandler_ = (evt) => this.handlePossibleTabFocus_(evt);
+    this.interactionHandler_ = (evt) => {
+      if (evt.type == 'touchstart' || evt.type == 'mousedown') {
+        this.pointerDownRecognized_ = true;
+      }
+      this.handleTabInteraction_(evt);
+
+      if (evt.type == 'focus') {
+        this.pointerDownRecognized_ = false;
+      }
+    };
   }
 
   init() {
     this.adapter_.registerBackIndicatorClickHandler(this.backIndicatorClickHandler_);
     this.adapter_.registerForwardIndicatorClickHandler(this.forwardIndicatorClickHandler_);
     this.adapter_.registerWindowResizeHandler(this.resizeHandler_);
-    this.adapter_.registerCapturedFocusHandler(this.focusHandler_);
+    ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
+      this.adapter_.registerTabInteractionHandler(evtType, this.interactionHandler_);
+    });
     this.layout();
   }
 
@@ -84,7 +96,9 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.adapter_.deregisterBackIndicatorClickHandler(this.backIndicatorClickHandler_);
     this.adapter_.deregisterForwardIndicatorClickHandler(this.forwardIndicatorClickHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.resizeHandler_);
-    this.adapter_.deregisterCapturedFocusHandler(this.focusHandler_);
+    ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
+      this.adapter_.deregisterTabInteractionHandler(evtType, this.interactionHandler_);
+    });
   }
 
   scrollBack(evt) {
@@ -141,7 +155,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       }
 
       if (setScrollTarget) {
-        scrollTargetIndex = i;
+        scrollTargetIndex = i - 1;
         break;
       } else if (this.adapter_.getOffsetWidthForTabBar() > scrollFrameOffsetWidth) {
         scrollTargetIndex = 1;
@@ -161,8 +175,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     return this.adapter_.isRTL();
   }
 
-  handlePossibleTabFocus_(evt) {
-    if (!this.adapter_.eventTargetHasClass(evt.target, cssClasses.TAB) || evt.type === 'click') {
+  handleTabInteraction_(evt) {
+    if (!this.adapter_.eventTargetHasClass(evt.target, cssClasses.TAB) || this.pointerDownRecognized_) {
       return;
     }
 
@@ -176,12 +190,12 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     const rightEdge = leftEdge + this.adapter_.getOffsetWidthForEventTarget(this.focusedTarget_);
 
     let shouldScrollBack = rightEdge <= this.currentTranslateOffset_;
-    let shouldScrollForward = leftEdge >= this.currentTranslateOffset_ + scrollFrameWidth;
+    let shouldScrollForward = rightEdge > this.currentTranslateOffset_ + scrollFrameWidth;
 
     if (this.isRTL()) {
-      const rightOffset = tabBarWidth - rightEdge;
+      const normalizedLeftOffset = tabBarWidth - leftEdge;
       shouldScrollBack = leftEdge >= tabBarWidth - this.currentTranslateOffset_;
-      shouldScrollForward = rightOffset >= scrollFrameWidth + this.currentTranslateOffset_;
+      shouldScrollForward = normalizedLeftOffset > scrollFrameWidth + this.currentTranslateOffset_;
     }
 
     if (shouldScrollForward) {
@@ -239,5 +253,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClassFromForwardIndicator(INDICATOR_ENABLED);
     }
+
+    this.pointerDownRecognized_ = false;
   }
 }

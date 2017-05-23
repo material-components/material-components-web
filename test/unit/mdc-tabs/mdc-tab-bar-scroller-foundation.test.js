@@ -35,7 +35,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'removeClassFromForwardIndicator', 'addClassToBackIndicator', 'removeClassFromBackIndicator',
     'isRTL', 'registerBackIndicatorClickHandler', 'deregisterBackIndicatorClickHandler',
     'registerForwardIndicatorClickHandler', 'deregisterForwardIndicatorClickHandler',
-    'registerCapturedFocusHandler', 'deregisterCapturedFocusHandler',
+    'registerTabInteractionHandler', 'deregisterTabInteractionHandler',
     'registerWindowResizeHandler', 'deregisterWindowResizeHandler',
     'getNumberOfTabs', 'getComputedWidthForTabAtIndex', 'getComputedLeftForTabAtIndex',
     'getOffsetWidthForScrollFrame', 'getScrollLeftForScrollFrame', 'setScrollLeftForScrollFrame',
@@ -56,7 +56,7 @@ test('#init registers event handlers', () => {
   td.verify(mockAdapter.registerBackIndicatorClickHandler(isA(Function)));
   td.verify(mockAdapter.registerForwardIndicatorClickHandler(isA(Function)));
   td.verify(mockAdapter.registerWindowResizeHandler(isA(Function)));
-  td.verify(mockAdapter.registerCapturedFocusHandler(isA(Function)));
+  td.verify(mockAdapter.registerTabInteractionHandler(isA(String), isA(Function)), {times: 3});
 });
 
 test('#init removes enabled class from indicators if tab bar doesn\'t overflow', () => {
@@ -96,7 +96,7 @@ test('#destroy deregisters event handlers', () => {
   td.verify(mockAdapter.deregisterBackIndicatorClickHandler(isA(Function)));
   td.verify(mockAdapter.deregisterForwardIndicatorClickHandler(isA(Function)));
   td.verify(mockAdapter.deregisterWindowResizeHandler(isA(Function)));
-  td.verify(mockAdapter.deregisterCapturedFocusHandler(isA(Function)));
+  td.verify(mockAdapter.deregisterTabInteractionHandler(isA(String), isA(Function)), {times: 3});
 });
 
 test('#scrollBack prevents default if evt is passed as argument', () => {
@@ -127,7 +127,7 @@ test('#scrollForward moves the tab bar forward', () => {
 
   foundation.scrollForward();
   raf.flush();
-  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-400px)'));
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-200px)'));
 });
 
 test('#scrollForward moves the tab bar forward if last tab is partially occluded', () => {
@@ -204,7 +204,7 @@ test('#scrollForward moves the tab bar forward in RTL context', () => {
   const raf = createMockRaf();
   const numTabs = 4;
   const tabWidth = 200;
-  const scrollFrameWidth = 300;
+  const scrollFrameWidth = 750;
 
   td.when(mockAdapter.isRTL()).thenReturn(true);
   td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
@@ -217,7 +217,7 @@ test('#scrollForward moves the tab bar forward in RTL context', () => {
 
   foundation.scrollForward();
   raf.flush();
-  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(600px)'));
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(400px)'));
 });
 
 test('#scrollBack moves the tab bar back in RTL context', () => {
@@ -286,6 +286,7 @@ test('#isRTL calls the isRTL() adapter method', () => {
 
 test('focus event sets the scrollLeft property', () => {
   const {foundation, mockAdapter} = setupTest();
+  const evtType = 'focus';
   const mockEvent = {
     type: 'focus',
     target: {
@@ -294,14 +295,14 @@ test('focus event sets the scrollLeft property', () => {
   };
   let tabEvent;
 
-  td.when(mockAdapter.registerCapturedFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
     tabEvent = handler;
   });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
   td.when(mockAdapter.isRTL()).thenReturn(false);
 
   foundation.init();
-
   tabEvent(mockEvent);
 
   td.verify(mockAdapter.setScrollLeftForScrollFrame(td.matchers.isA(Number)));
@@ -310,6 +311,7 @@ test('focus event sets the scrollLeft property', () => {
 test('focus scrolls back if right edge of tab is less than or equal to the current translate offset', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
+  const evtType = 'focus';
   const mockEvent = {
     type: 'focus',
     target: {
@@ -322,7 +324,8 @@ test('focus scrolls back if right edge of tab is less than or equal to the curre
   const scrollFrameWidth = 300;
   const evtTargetOffsetLeft = 0;
 
-  td.when(mockAdapter.registerCapturedFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
     tabEvent = handler;
   });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
@@ -340,7 +343,7 @@ test('focus scrolls back if right edge of tab is less than or equal to the curre
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
 });
 
-test('focus scrolls forward if left edge of tab is greater than or equal to the current translate offset' +
+test('focus scrolls forward if right edge of tab is greater than the current translate offset' +
   'plus the scroll frame width', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
@@ -354,9 +357,10 @@ test('focus scrolls forward if left edge of tab is greater than or equal to the 
 
   const tabWidth = 200;
   const scrollFrameWidth = 300;
-  const evtTargetOffsetLeft = 900;
+  const evtTargetOffsetLeft = 280;
 
-  td.when(mockAdapter.registerCapturedFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerTabInteractionHandler('focus', td.matchers.isA(Function)))
+    .thenDo((evt, handler) => {
     tabEvent = handler;
   });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
@@ -376,6 +380,7 @@ test('focus scrolls forward if left edge of tab is greater than or equal to the 
 test('focus inRTL scrolls back if left edge of tab is greater than or equal to tab bar width minus the offset', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
+  const evtType = 'focus';
   const mockEvent = {
     type: 'focus',
     target: {
@@ -389,7 +394,8 @@ test('focus inRTL scrolls back if left edge of tab is greater than or equal to t
   const evtTargetOffsetLeft = 900;
   const tabBarWidth = 900;
 
-  td.when(mockAdapter.registerCapturedFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
     tabEvent = handler;
   });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
@@ -412,6 +418,7 @@ test('focus in RTL context scrolls forward if distance between the right edge of
   'scroll frame width plus the translate offset', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
+  const evtType = 'focus';
   const mockEvent = {
     type: 'focus',
     target: {
@@ -425,7 +432,8 @@ test('focus in RTL context scrolls forward if distance between the right edge of
   const evtTargetOffsetLeft = 1000;
   const tabBarWidth = 900;
 
-  td.when(mockAdapter.registerCapturedFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
+  .thenDo((evtType, handler) => {
     tabEvent = handler;
   });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);

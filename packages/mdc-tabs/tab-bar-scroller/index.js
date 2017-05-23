@@ -58,10 +58,10 @@ export class MDCTabBarScroller extends MDCComponent {
         this.forwardIndicator_.addEventListener('click', handler),
       deregisterForwardIndicatorClickHandler: (handler) =>
         this.forwardIndicator_.removeEventListener('click', handler),
-      registerCapturedFocusHandler: (handler) =>
-        this.root_.addEventListener('focus', handler, true),
-      deregisterCapturedFocusHandler: (handler) =>
-        this.root_.removeEventListener('focus', handler, true),
+      registerTabInteractionHandler: (evt, handler) =>
+        this.root_.addEventListener(evt, handler, true),
+      deregisterTabInteractionHandler: (evt, handler) =>
+        this.root_.removeEventListener(evt, handler, true),
       registerWindowResizeHandler: (handler) =>
         window.addEventListener('resize', handler),
       deregisterWindowResizeHandler: (handler) =>
