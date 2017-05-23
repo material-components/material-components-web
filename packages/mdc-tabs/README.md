@@ -576,8 +576,8 @@ MDC Tab Bar Scroller ships with an `MDCTabBarScrollerFoundation` class that exte
 | `deregisterBackIndicatorClickHandler(handler: EventHandler) => void` | Deregisters an event handler from a `click` event happening on the back indicator |
 | `registerForwardIndicatorClickHandler(handler: EventHandler) => void` | Registers an event handler to be called when a `click` event happens on the forward indicator |
 | `deregisterForwardIndicatorClickHandler(handler: EventHandler) => void` | Deregisters an event handler from a `click` event happening on the forward indicator. |
-| `registerCapturedFocusHandler(handler: EventHandler) => void` | Registers an event handler to be called when a `focus` event happens on the root of the component. This event gets dispatched to the listener during the capture phase. |
-| `deregisterCapturedFocusHandler(handler: EventHandler) => void` | Deregisters an event handler from a `focus` event happening on the root of the component |
+| `registerTabInteractionHandler(evt: string, handler: EventHandler) => void` | Registers an event handler to be called when a `focus`, `touchstart`, or `mousedown` event happens on the root of the component. These events gets dispatched to the listener during the capture phase. They also govern the scrolling behavior when tabs are tabbed to or actioned on. |
+| `deregisterTabInteractionHandler(evt: string, handler: EventHandler) => void` | Deregisters an event handler from a `focus`, `touchstart`, or `mousedown` events happening on the root of the component |
 | `registerWindowResizeHandler(handler: EventHandler) => void` | Registers an event handler to be called when a `resize` event happens on the `window` |
 | `deregisterWindowResizeHandler(handler: EventHandler) => void `| Deregisters an event handler from a `resize` event happening on the `window` |
 | `getNumberOfTabs() => number` | Returns the number of tabs in the scroller's tab bar |
