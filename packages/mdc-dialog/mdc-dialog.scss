@@ -133,6 +133,14 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     align-items: center;
     justify-content: flex-end;
     padding: 8px;
+
+    &__button {
+      margin-right: 8px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 
   // TODO: Replace with breakpoint variable
