@@ -25,6 +25,7 @@ import * as dialog from '@material/dialog';
 import * as drawer from '@material/drawer';
 import * as textfield from '@material/textfield';
 import * as snackbar from '@material/snackbar';
+import * as linearProgress from '@material/linear-progress';
 import * as menu from '@material/menu';
 import * as select from '@material/select';
 import * as tabs from '@material/tabs';
@@ -39,6 +40,7 @@ autoInit.register('MDCTemporaryDrawer', drawer.MDCTemporaryDrawer);
 autoInit.register('MDCRipple', ripple.MDCRipple);
 autoInit.register('MDCGridList', gridList.MDCGridList);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
+autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab', tabs.MDCTab);
@@ -52,14 +54,15 @@ autoInit.register('MDCToolbar', toolbar.MDCToolbar);
 export {
   base,
   checkbox,
+  dialog,
+  drawer,
   formField,
   gridList,
   iconToggle,
+  linearProgress,
   radio,
   ripple,
   snackbar,
-  dialog,
-  drawer,
   tabs,
   textfield,
   menu,

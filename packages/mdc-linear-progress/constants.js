@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,12 @@
  */
 
 export const cssClasses = {
-  ROOT: 'mdc-dialog',
-  OPEN: 'mdc-dialog--open',
-  ANIMATING: 'mdc-dialog--animating',
-  BACKDROP: 'mdc-dialog__backdrop',
-  SCROLL_LOCK: 'mdc-dialog-scroll-lock',
-  ACCEPT_BTN: 'mdc-dialog__footer__button--accept',
-  CANCEL_BTN: 'mdc-dialog__footer__button--cancel',
+  CLOSED_CLASS: 'mdc-linear-progress--closed',
+  INDETERMINATE_CLASS: 'mdc-linear-progress--indeterminate',
+  REVERSED_CLASS: 'mdc-linear-progress--reversed',
 };
 
 export const strings = {
-  OPEN_DIALOG_SELECTOR: '.mdc-dialog--open',
-  DIALOG_SURFACE_SELECTOR: '.mdc-dialog__surface',
-  ACCEPT_SELECTOR: '.mdc-dialog__footer__button--accept',
-  ACCEPT_EVENT: 'MDCDialog:accept',
-  CANCEL_EVENT: 'MDCDialog:cancel',
+  PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
+  BUFFER_SELECTOR: '.mdc-linear-progress__buffer',
 };

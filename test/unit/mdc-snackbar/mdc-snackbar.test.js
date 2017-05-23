@@ -161,3 +161,19 @@ test('foundationAdapter#deregisterTransitionEndHandler adds an event listener to
   domEvents.emit(root, 'transitionend');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
+
+test('#get dismissesOnAction property dispatches to foundation_', () => {
+  const {component} = setupTest();
+
+  assert.isTrue(component.dismissesOnAction);
+  component.foundation_.setDismissOnAction(false);
+  assert.isFalse(component.dismissesOnAction);
+});
+
+test('#set dismissesOnAction property dispatches to foundation_', () => {
+  const {component} = setupTest();
+
+  assert.isTrue(component.foundation_.dismissesOnAction());
+  component.dismissesOnAction = false;
+  assert.isFalse(component.foundation_.dismissesOnAction());
+});

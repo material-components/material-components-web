@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses} from './constants';
+import {cssClasses, strings} from './constants';
 import {MDCSimpleMenuFoundation} from '@material/menu';
 
 const OPENER_KEYS = [
@@ -27,6 +27,10 @@ const OPENER_KEYS = [
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
+  }
+
+  static get strings() {
+    return strings;
   }
 
   static get defaultAdapter() {
