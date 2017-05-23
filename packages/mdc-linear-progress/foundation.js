@@ -90,9 +90,8 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
 
   setScale(el, scaleValue) {
     const value = 'scaleX(' + scaleValue + ')';
-    for (let i=0; i<transformStyleProperties.length; i++) {
-      const transformStyleProperty = transformStyleProperties[i];
+    transformStyleProperties.forEach((transformStyleProperty) => {
       this.adapter_.setStyle(el, transformStyleProperty, value);
-    }
+    });
   }
 }
