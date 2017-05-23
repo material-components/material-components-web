@@ -35,7 +35,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCLinearProgressFoundation, [
-    'addClass', 'getPrimaryBar', 'getBuffer', 'hasClass', 'removeClass', 'setTransform',
+    'addClass', 'getPrimaryBar', 'getBuffer', 'hasClass', 'removeClass', 'setStyle',
   ]);
 });
 
@@ -51,8 +51,8 @@ test('#set indeterminate adds class and resets transforms', () => {
   foundation.init();
   foundation.determinate = false;
   td.verify(mockAdapter.addClass(cssClasses.INDETERMINATE_CLASS));
-  td.verify(mockAdapter.setTransform(primaryBar, 'scaleX(1)'));
-  td.verify(mockAdapter.setTransform(buffer, 'scaleX(1)'));
+  td.verify(mockAdapter.setStyle(primaryBar, 'transform', 'scaleX(1)'));
+  td.verify(mockAdapter.setStyle(buffer, 'transform', 'scaleX(1)'));
 });
 
 test('#set determinate removes class', () => {
@@ -70,7 +70,7 @@ test('#set progress sets transform', () => {
   td.when(mockAdapter.getPrimaryBar()).thenReturn(primaryBar);
   foundation.init();
   foundation.progress = 0.5;
-  td.verify(mockAdapter.setTransform(primaryBar, 'scaleX(0.5)'));
+  td.verify(mockAdapter.setStyle(primaryBar, 'transform', 'scaleX(0.5)'));
 });
 
 test('#set progress on indeterminate does nothing', () => {
@@ -80,7 +80,7 @@ test('#set progress on indeterminate does nothing', () => {
   td.when(mockAdapter.getPrimaryBar()).thenReturn(primaryBar);
   foundation.init();
   foundation.progress = 0.5;
-  td.verify(mockAdapter.setTransform(), {times: 0, ignoreExtraArgs: true});
+  td.verify(mockAdapter.setStyle(), {times: 0, ignoreExtraArgs: true});
 });
 
 test('#set buffer sets transform', () => {
@@ -90,7 +90,7 @@ test('#set buffer sets transform', () => {
   td.when(mockAdapter.getBuffer()).thenReturn(buffer);
   foundation.init();
   foundation.buffer = 0.5;
-  td.verify(mockAdapter.setTransform(buffer, 'scaleX(0.5)'));
+  td.verify(mockAdapter.setStyle(buffer, 'transform', 'scaleX(0.5)'));
 });
 
 test('#set buffer on indeterminate does nothing', () => {
@@ -100,7 +100,7 @@ test('#set buffer on indeterminate does nothing', () => {
   td.when(mockAdapter.getBuffer()).thenReturn(buffer);
   foundation.init();
   foundation.buffer = 0.5;
-  td.verify(mockAdapter.setTransform(), {times: 0, ignoreExtraArgs: true});
+  td.verify(mockAdapter.setStyle(), {times: 0, ignoreExtraArgs: true});
 });
 
 test('#set reverse adds class', () => {

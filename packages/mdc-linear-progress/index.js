@@ -55,14 +55,7 @@ export class MDCLinearProgress extends MDCComponent {
       getBuffer: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.BUFFER_SELECTOR),
       hasClass: (className) => this.root_.classList.contains(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      setTransform: (el, value) => {
-        const style = el.style;
-        style.transform = value;
-        style.WebkitTransform = value;
-        style.MozTransform = value;
-        style.OTransform = value;
-        style.MSTransform = value;
-      },
+      setStyle: (el, styleProperty, value) => el.style[styleProperty] = value,
     });
   }
 }

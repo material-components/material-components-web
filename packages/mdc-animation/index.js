@@ -118,6 +118,8 @@ function getAnimationName(windowObj, eventType) {
 // Public functions to access getAnimationName() for JavaScript events or CSS
 // property names.
 
+export const transformStyleProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'MSTransform'];
+
 /**
  * @param {!Object} windowObj
  * @param {string} eventType

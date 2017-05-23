@@ -15,6 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
+import {transformStyleProperties} from '@material/animation';
 
 import {cssClasses, strings} from './constants';
 
@@ -34,7 +35,7 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
       getBuffer: () => /* el: Element */ {},
       hasClass: (/* className: string */) => false,
       removeClass: (/* className: string */) => {},
-      setTransform: (/* el: Element, value: number */) => {},
+      setStyle: (/* el: Element, styleProperty: string, value: number */) => {},
     };
   }
 
@@ -53,20 +54,20 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
     } else {
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
-      this.adapter_.setTransform(this.adapter_.getPrimaryBar(), 'scaleX(1)');
-      this.adapter_.setTransform(this.adapter_.getBuffer(), 'scaleX(1)');
+      this.setScale(this.adapter_.getPrimaryBar(), 1);
+      this.setScale(this.adapter_.getBuffer(), 1);
     }
   }
 
   set progress(value) {
     if (this.determinate_) {
-      this.adapter_.setTransform(this.adapter_.getPrimaryBar(), 'scaleX(' + value + ')');
+      this.setScale(this.adapter_.getPrimaryBar(), value);
     }
   }
 
   set buffer(value) {
     if (this.determinate_) {
-      this.adapter_.setTransform(this.adapter_.getBuffer(), 'scaleX(' + value + ')');
+      this.setScale(this.adapter_.getBuffer(), value);
     }
   }
 
@@ -85,5 +86,13 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
 
   close() {
     this.adapter_.addClass(cssClasses.CLOSED_CLASS);
+  }
+
+  setScale(el, scaleValue) {
+    const value = 'scaleX(' + scaleValue + ')';
+    for (let i=0; i<transformStyleProperties.length; i++) {
+      const transformStyleProperty = transformStyleProperties[i];
+      this.adapter_.setStyle(el, transformStyleProperty, value);
+    }
   }
 }
