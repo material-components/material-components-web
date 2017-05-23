@@ -377,6 +377,74 @@ test('focus scrolls forward if right edge of tab is greater than the current tra
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
 });
 
+test('mousedown does not move the tab bar if tab is only partially occluded', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  const evtType = 'mousedown';
+  const mockEvent = {
+    type: 'mousedown',
+    target: {
+      classList: ['mdc-tab'],
+    },
+  };
+  let tabEvent;
+
+  const tabWidth = 200;
+  const scrollFrameWidth = 300;
+  const evtTargetOffsetLeft = 280;
+
+  td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+    tabEvent = handler;
+  });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
+  td.when(mockAdapter.isRTL()).thenReturn(false);
+
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
+  td.when(mockAdapter.getOffsetLeftForEventTarget(td.matchers.anything())).thenReturn(evtTargetOffsetLeft);
+  td.when(mockAdapter.getOffsetWidthForEventTarget(td.matchers.anything())).thenReturn(tabWidth);
+
+  foundation.init();
+  tabEvent(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(0px)'));
+});
+
+test('touching does not move the tab bar if tab is only partially occluded', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  const evtType = 'touchstart';
+  const mockEvent = {
+    type: 'touchstart',
+    target: {
+      classList: ['mdc-tab'],
+    },
+  };
+  let tabEvent;
+
+  const tabWidth = 200;
+  const scrollFrameWidth = 300;
+  const evtTargetOffsetLeft = 280;
+
+  td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+    tabEvent = handler;
+  });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
+  td.when(mockAdapter.isRTL()).thenReturn(false);
+
+  td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
+  td.when(mockAdapter.getOffsetLeftForEventTarget(td.matchers.anything())).thenReturn(evtTargetOffsetLeft);
+  td.when(mockAdapter.getOffsetWidthForEventTarget(td.matchers.anything())).thenReturn(tabWidth);
+
+  foundation.init();
+  tabEvent(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(0px)'));
+});
+
 test('focus inRTL scrolls back if left edge of tab is greater than or equal to tab bar width minus the offset', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
