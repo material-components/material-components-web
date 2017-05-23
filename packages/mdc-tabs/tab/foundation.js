@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-import {cssClasses} from './constants';
 import MDCFoundation from '@material/base/foundation';
+import {cssClasses, strings} from './constants';
 
 export default class MDCTabFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
+  }
+
+  static get strings() {
+    return strings;
   }
 
   static get defaultAdapter() {

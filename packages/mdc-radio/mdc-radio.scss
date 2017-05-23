@@ -40,7 +40,7 @@ $mdc-radio-transition-duration: 120ms;
   display: inline-block;
   position: relative;
   box-sizing: border-box;
-  flex: 0 0 $mdc-radio-touch-area;
+  flex: 0 0 auto;
   width: $mdc-radio-touch-area;
   height: $mdc-radio-touch-area;
   padding: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;

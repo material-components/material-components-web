@@ -57,7 +57,7 @@ export class MDCToolbar extends MDCComponent {
       getViewportScrollY: () => window.pageYOffset,
       getOffsetHeight: () => this.root_.offsetHeight,
       getFlexibleRowElementOffsetHeight: () => this.flexibleRowElement_.offsetHeight,
-      notifyChange: (evtData) => this.emit('MDCToolbar:change', evtData),
+      notifyChange: (evtData) => this.emit(MDCToolbarFoundation.strings.CHANGE_EVENT, evtData),
       setStyle: (property, value) => this.root_.style.setProperty(property, value),
       setStyleForTitleElement: (property, value) => this.titleElement_.style.setProperty(property, value),
       setStyleForFlexibleRowElement: (property, value) => this.flexibleRowElement_.style.setProperty(property, value),

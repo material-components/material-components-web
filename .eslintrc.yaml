@@ -9,6 +9,7 @@ parserOptions:
   ecmaVersion: 2015
   sourceType: module
 rules:
+  indent: [error, 2]
   max-len: [error, 120]
   no-new: warn
   quotes: [error, single, {"avoidEscape": true}]

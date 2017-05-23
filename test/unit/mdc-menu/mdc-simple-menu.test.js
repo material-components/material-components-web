@@ -211,7 +211,7 @@ test('adapter#getIndexForEventTarget returns the item index of the event target'
   assert.equal(component.getDefaultFoundation().adapter_.getIndexForEventTarget({}), -1, 'missing index = -1');
 });
 
-test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with the item and index', () => {
+test(`adapter#notifySelected fires an ${strings.SELECTED_EVENT} custom event with the item and index`, () => {
   const {root, component} = setupTest();
   const item = root.querySelectorAll('[role="menuitem"]')[0];
   const handler = td.func('notifySelected handler');
@@ -219,7 +219,7 @@ test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with
   td.when(handler(td.matchers.isA(Object))).thenDo((evt) => {
     evtData = evt.detail;
   });
-  root.addEventListener('MDCSimpleMenu:selected', handler);
+  root.addEventListener(strings.SELECTED_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifySelected({index: 0});
   assert.isOk(evtData !== null);
   assert.deepEqual(evtData, {
@@ -228,10 +228,10 @@ test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with
   });
 });
 
-test('adapter#notifyCancel fires an "MDCSimpleMenu:cancel" custom event', () => {
+test(`adapter#notifyCancel fires an ${strings.CANCEL_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('notifyCancel handler');
-  root.addEventListener('MDCSimpleMenu:cancel', handler);
+  root.addEventListener(strings.CANCEL_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyCancel();
   td.verify(handler(td.matchers.anything()));
 });

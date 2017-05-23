@@ -16,8 +16,7 @@
 
 import MDCComponent from '@material/base/component';
 
-import {MDCTab} from '../tab';
-import {strings} from './constants';
+import {MDCTab, MDCTabFoundation} from '../tab';
 import MDCTabBarFoundation from './foundation';
 
 export {MDCTabBarFoundation};
@@ -49,7 +48,7 @@ export class MDCTabBar extends MDCComponent {
   }
 
   initialize(tabFactory = (el) => new MDCTab(el)) {
-    this.indicator_ = this.root_.querySelector(strings.INDICATOR_SELECTOR);
+    this.indicator_ = this.root_.querySelector(MDCTabBarFoundation.strings.INDICATOR_SELECTOR);
     this.tabs_ = this.gatherTabs_(tabFactory);
     this.tabSelectedHandler_ = ({detail}) => {
       const {tab} = detail;
@@ -61,14 +60,16 @@ export class MDCTabBar extends MDCComponent {
     return new MDCTabBarFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      bindOnMDCTabSelectedEvent: () => this.listen('MDCTab:selected', this.tabSelectedHandler_),
-      unbindOnMDCTabSelectedEvent: () => this.unlisten('MDCTab:selected', this.tabSelectedHandler_),
+      bindOnMDCTabSelectedEvent: () => this.listen(
+        MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
+      unbindOnMDCTabSelectedEvent: () => this.unlisten(
+        MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getOffsetWidth: () => this.root_.offsetWidth,
       setStyleForIndicator: (propertyName, value) => this.indicator_.style.setProperty(propertyName, value),
       getOffsetWidthForIndicator: () => this.indicator_.offsetWidth,
-      notifyChange: (evtData) => this.emit('MDCTabBar:change', evtData),
+      notifyChange: (evtData) => this.emit(MDCTabBarFoundation.strings.CHANGE_EVENT, evtData),
       getNumberOfTabs: () => this.tabs.length,
       isTabActiveAtIndex: (index) => this.tabs[index].isActive,
       setTabActiveAtIndex: (index, isActive) => {
@@ -85,7 +86,7 @@ export class MDCTabBar extends MDCComponent {
   }
 
   gatherTabs_(tabFactory) {
-    const tabElements = [].slice.call(this.root_.querySelectorAll(strings.TAB_SELECTOR));
+    const tabElements = [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
     return tabElements.map((el) => tabFactory(el));
   }
 

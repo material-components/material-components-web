@@ -78,7 +78,7 @@ export class MDCIconToggle extends MDCComponent {
       getAttr: (name, value) => this.root_.getAttribute(name, value),
       setAttr: (name, value) => this.root_.setAttribute(name, value),
       rmAttr: (name) => this.root_.removeAttribute(name),
-      notifyChange: (evtData) => this.emit('MDCIconToggle:change', evtData),
+      notifyChange: (evtData) => this.emit(MDCIconToggleFoundation.strings.CHANGE_EVENT, evtData),
     });
   }
 

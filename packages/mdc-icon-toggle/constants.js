@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+export const cssClasses = {
+  ROOT: 'mdc-icon-toggle',
+  DISABLED: 'mdc-icon-toggle--disabled',
+};
+
 export const strings = {
   DATA_TOGGLE_ON: 'data-toggle-on',
   DATA_TOGGLE_OFF: 'data-toggle-off',
   ARIA_PRESSED: 'aria-pressed',
   ARIA_DISABLED: 'aria-disabled',
   ARIA_LABEL: 'aria-label',
-};
-
-export const cssClasses = {
-  ROOT: 'mdc-icon-toggle',
-  DISABLED: 'mdc-icon-toggle--disabled',
+  CHANGE_EVENT: 'MDCIconToggle:change',
 };

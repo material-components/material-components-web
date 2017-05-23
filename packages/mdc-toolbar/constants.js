@@ -27,6 +27,7 @@ export const cssClasses = {
 export const strings = {
   TITLE_SELECTOR: '.mdc-toolbar__title',
   FLEXIBLE_ROW_SELECTOR: '.mdc-toolbar__row:first-child',
+  CHANGE_EVENT: 'MDCToolbar:change',
 };
 
 export const numbers = {
