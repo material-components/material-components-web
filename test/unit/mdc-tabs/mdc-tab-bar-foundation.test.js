@@ -28,6 +28,10 @@ test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCTabBarFoundation);
 });
 
+test('exports strings', () => {
+  assert.isOk('strings' in MDCTabBarFoundation);
+});
+
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabBarFoundation, [
     'addClass', 'removeClass', 'bindOnMDCTabSelectedEvent',
