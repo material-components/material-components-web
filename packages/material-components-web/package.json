@@ -33,6 +33,7 @@
     "@material/radio": "^0.2.5",
     "@material/ripple": "^0.6.2",
     "@material/select": "^0.3.7",
+    "@material/slider": "^0.0.0",
     "@material/snackbar": "^0.2.0",
     "@material/switch": "^0.1.8",
     "@material/tabs": "^0.2.0",
