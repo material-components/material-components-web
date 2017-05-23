@@ -158,7 +158,7 @@ test('#close deactivates focus trapping on the dialog surface', () => {
 });
 
 test('#accept closes the dialog', () => {
-   const {foundation} = setupTest();
+  const {foundation} = setupTest();
 
   foundation.accept();
   assert.isFalse(foundation.isOpen());
@@ -172,7 +172,7 @@ test('#accept calls accept when shouldNotify is set to true', () => {
 });
 
 test('#cancel closes the dialog', () => {
-   const {foundation} = setupTest();
+  const {foundation} = setupTest();
 
   foundation.cancel();
   assert.isFalse(foundation.isOpen());
