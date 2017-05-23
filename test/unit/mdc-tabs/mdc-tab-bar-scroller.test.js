@@ -129,7 +129,7 @@ function setupTest() {
   const component = new MDCTabBarScroller(root, undefined, () => mockTabBar);
 
   return {fixture, root, scrollFrameEl, tabBarEl,
-          component, backIndicatorEl, forwardIndicatorEl};
+    component, backIndicatorEl, forwardIndicatorEl};
 }
 
 suite('MDCTabBarScroller');

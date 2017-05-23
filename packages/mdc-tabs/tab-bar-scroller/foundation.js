@@ -143,22 +143,24 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     let scrollTargetIndex = 0;
 
     for (let i = 0; i < this.adapter_.getNumberOfTabs(); i++) {
-      let setScrollTarget = this.adapter_.getComputedLeftForTabAtIndex(i) > scrollFrameOffsetWidth;
+      const tabOffsetLeftAndWidth =
+        this.adapter_.getComputedLeftForTabAtIndex(i) + this.adapter_.getComputedWidthForTabAtIndex(i);
+      let setScrollTarget = tabOffsetLeftAndWidth > scrollFrameOffsetWidth;
 
       if (this.isRTL()) {
+        const frameOffsetAndTabWidth =
+          scrollFrameOffsetWidth - this.adapter_.getComputedWidthForTabAtIndex(i);
         const tabOffsetLeftAndWidth =
           this.adapter_.getComputedLeftForTabAtIndex(i) + this.adapter_.getComputedWidthForTabAtIndex(i);
         const tabRightOffset =
           this.adapter_.getOffsetWidthForTabBar() - tabOffsetLeftAndWidth;
 
-        setScrollTarget = tabRightOffset > scrollFrameOffsetWidth;
+        setScrollTarget = tabRightOffset > frameOffsetAndTabWidth;
       }
 
       if (setScrollTarget) {
-        scrollTargetIndex = i - 1;
+        scrollTargetIndex = i;
         break;
-      } else if (this.adapter_.getOffsetWidthForTabBar() > scrollFrameOffsetWidth) {
-        scrollTargetIndex = 1;
       }
     }
 

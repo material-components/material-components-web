@@ -115,7 +115,7 @@ test('#scrollForward moves the tab bar forward', () => {
   const raf = createMockRaf();
   const numTabs = 4;
   const tabWidth = 200;
-  const scrollFrameWidth = 300;
+  const scrollFrameWidth = 600;
 
   td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
   for (let i = 0; i < numTabs; i++) {
@@ -127,7 +127,7 @@ test('#scrollForward moves the tab bar forward', () => {
 
   foundation.scrollForward();
   raf.flush();
-  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-200px)'));
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
 });
 
 test('#scrollForward moves the tab bar forward if last tab is partially occluded', () => {
@@ -147,7 +147,7 @@ test('#scrollForward moves the tab bar forward if last tab is partially occluded
 
   foundation.scrollForward();
   raf.flush();
-  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-200px)'));
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
 });
 
 test('#scrollBack moves the tab bar back', () => {
@@ -155,7 +155,7 @@ test('#scrollBack moves the tab bar back', () => {
   const raf = createMockRaf();
   const numTabs = 4;
   const tabWidth = 200;
-  const scrollFrameWidth = 300;
+  const scrollFrameWidth = 600;
 
   td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
   for (let i = 0; i < numTabs; i++) {
@@ -170,7 +170,7 @@ test('#scrollBack moves the tab bar back', () => {
   foundation.scrollBack();
   raf.flush();
 
-  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-200px)'));
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
 });
 
 test('#scrollBack removes indicator enabled state if at first tab', () => {
@@ -217,7 +217,7 @@ test('#scrollForward moves the tab bar forward in RTL context', () => {
 
   foundation.scrollForward();
   raf.flush();
-  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(400px)'));
+  td.verify(mockAdapter.setTransformStyleForTabBar('translateX(600px)'));
 });
 
 test('#scrollBack moves the tab bar back in RTL context', () => {
@@ -297,8 +297,8 @@ test('focus event sets the scrollLeft property', () => {
 
   td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
-    tabEvent = handler;
-  });
+      tabEvent = handler;
+    });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
   td.when(mockAdapter.isRTL()).thenReturn(false);
 
@@ -326,8 +326,8 @@ test('focus scrolls back if right edge of tab is less than or equal to the curre
 
   td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
-    tabEvent = handler;
-  });
+      tabEvent = handler;
+    });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
   td.when(mockAdapter.isRTL()).thenReturn(false);
 
@@ -361,8 +361,8 @@ test('focus scrolls forward if right edge of tab is greater than the current tra
 
   td.when(mockAdapter.registerTabInteractionHandler('focus', td.matchers.isA(Function)))
     .thenDo((evt, handler) => {
-    tabEvent = handler;
-  });
+      tabEvent = handler;
+    });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
   td.when(mockAdapter.isRTL()).thenReturn(false);
 
@@ -395,8 +395,8 @@ test('mousedown does not move the tab bar if tab is only partially occluded', ()
 
   td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
-    tabEvent = handler;
-  });
+      tabEvent = handler;
+    });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
   td.when(mockAdapter.isRTL()).thenReturn(false);
 
@@ -429,8 +429,8 @@ test('touching does not move the tab bar if tab is only partially occluded', () 
 
   td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
-    tabEvent = handler;
-  });
+      tabEvent = handler;
+    });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
   td.when(mockAdapter.isRTL()).thenReturn(false);
 
@@ -464,8 +464,8 @@ test('focus inRTL scrolls back if left edge of tab is greater than or equal to t
 
   td.when(mockAdapter.registerTabInteractionHandler(evtType, td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
-    tabEvent = handler;
-  });
+      tabEvent = handler;
+    });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
   td.when(mockAdapter.isRTL()).thenReturn(true);
 
