@@ -48,30 +48,30 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
     this.reverse_ = this.adapter_.hasClass(cssClasses.REVERSED_CLASS);
   }
 
-  set determinate(isDeterminate) {
+  setDeterminate(isDeterminate) {
     this.determinate_ = isDeterminate;
     if (this.determinate_) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
     } else {
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
-      this.setScale(this.adapter_.getPrimaryBar(), 1);
-      this.setScale(this.adapter_.getBuffer(), 1);
+      this.setScale_(this.adapter_.getPrimaryBar(), 1);
+      this.setScale_(this.adapter_.getBuffer(), 1);
     }
   }
 
-  set progress(value) {
+  setProgress(value) {
     if (this.determinate_) {
-      this.setScale(this.adapter_.getPrimaryBar(), value);
+      this.setScale_(this.adapter_.getPrimaryBar(), value);
     }
   }
 
-  set buffer(value) {
+  setBuffer(value) {
     if (this.determinate_) {
-      this.setScale(this.adapter_.getBuffer(), value);
+      this.setScale_(this.adapter_.getBuffer(), value);
     }
   }
 
-  set reverse(isReversed) {
+  setReverse(isReversed) {
     this.reverse_ = isReversed;
     if (this.reverse_) {
       this.adapter_.addClass(cssClasses.REVERSED_CLASS);
@@ -88,7 +88,7 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.CLOSED_CLASS);
   }
 
-  setScale(el, scaleValue) {
+  setScale_(el, scaleValue) {
     const value = 'scaleX(' + scaleValue + ')';
     transformStyleProperties.forEach((transformStyleProperty) => {
       this.adapter_.setStyle(el, transformStyleProperty, value);
