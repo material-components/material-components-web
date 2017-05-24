@@ -101,7 +101,7 @@ npm run test:closure # Runs closure build tests against all closurized files
 If you're making big changes or developing new components, we encourage you to be a good citizen and test your changes across browsers! A super simple way to do this is to use [sauce labs](https://saucelabs.com/), which is how we tests our collaborator PRs on TravisCI:
 
 1. [Sign up](https://saucelabs.com/beta/signup) for a sauce labs account (choose "Open Sauce" as your selected plan; [it's free](https://saucelabs.com/opensauce/)!)
-2. [Download sauce connect](https://wiki.saucelabs.com/display/DOCS/Setting+Up+Sauce+Connect) for your OS and make sure that the `bin` folder in the downloaded zip is somewhere on your `$PATH`.
+2. [Download sauce connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy) for your OS and make sure that the `bin` folder in the downloaded zip is somewhere on your `$PATH`.
 3. Navigate to your dashboard, scroll down to where it says "Access Key", and click "Show"
 4. Enter your password when prompted
 5. Copy your access key
