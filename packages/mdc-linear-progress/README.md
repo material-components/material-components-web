@@ -20,6 +20,7 @@ The MDC Linear Progress component is a spec-aligned linear progress indicator co
 
 ## Design & API Documentation
 
+```html
 <div role="progressbar" class="mdc-linear-progress">
   <div class="mdc-linear-progress__buffering-dots"></div>
   <div class="mdc-linear-progress__buffer"></div>
@@ -30,6 +31,7 @@ The MDC Linear Progress component is a spec-aligned linear progress indicator co
     <span class="mdc-linear-progress__bar-inner"></span>
   </div>
 </div>
+```
 
 ## Installation
 

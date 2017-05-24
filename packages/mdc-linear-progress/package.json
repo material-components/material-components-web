@@ -16,5 +16,8 @@
     "@material/animation": "^0.2.2",
     "@material/base": "^0.1.3",
     "@material/theme": "^0.1.5"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
