@@ -149,7 +149,7 @@ prevent toolbar overlaying your content. You can add the `mdc-toolbar-fixed-adju
 helper class to the toolbar's adjacent sibling element, which will add default
 `margin-top`.
 
-When you are using `mdc-toolbar` with JavaScript, you should assgin your content
+When you are using `mdc-toolbar` with JavaScript, you should assign your content
 wrapper element to `mdc-toolbar`'s instance property `fixedAdjustElement`. This
 will make `mdc-toolbar` aware of the wrapper class and adjust the `margin-top`
 correspondingly.
