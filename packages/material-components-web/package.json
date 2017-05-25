@@ -27,7 +27,7 @@
     "@material/grid-list": "^0.2.2",
     "@material/icon-toggle": "^0.1.11",
     "@material/layout-grid": "^0.1.2",
-    "@material/linear-progress": "^0.1.0",
+    "@material/linear-progress": "^0.0.0",
     "@material/list": "^0.2.8",
     "@material/menu": "^0.2.6",
     "@material/radio": "^0.2.4",
