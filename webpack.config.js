@@ -153,9 +153,6 @@ module.exports = [{
   output: {
     path: OUT_PATH,
     publicPath: PUBLIC_PATH,
-    // In development, these are emitted as js files to facilitate hot module replacement. In
-    // all other cases, ExtractTextPlugin is used to generate the final css, so this is given a
-    // dummy ".css-entry" extension.
     filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry'),
   },
   devServer: {
