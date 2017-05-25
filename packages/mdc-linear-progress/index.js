@@ -25,19 +25,19 @@ export class MDCLinearProgress extends MDCComponent {
   }
 
   set determinate(value) {
-    this.foundation_.determinate = value;
+    this.foundation_.setDeterminate(value);
   }
 
   set progress(value) {
-    this.foundation_.progress = value;
+    this.foundation_.setProgress(value);
   }
 
   set buffer(value) {
-    this.foundation_.buffer = value;
+    this.foundation_.setBuffer(value);
   }
 
   set reverse(value) {
-    this.foundation_.reverse = value;
+    this.foundation_.setReverse(value);
   }
 
   open() {
