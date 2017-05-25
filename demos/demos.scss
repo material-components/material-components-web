@@ -17,6 +17,7 @@
 // @import "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css";
 
 /* Base style */
+@import "@material/ripple/mdc-ripple";
 
 $mdc-theme-primary: #212121;
 $mdc-theme-accent: #64dd17;
@@ -39,6 +40,16 @@ fieldset {
 .mdc-toolbar a:visited {
   color: #f0f0f0;
   text-decoration: none;
+}
+
+.mdc-ripple-surface {
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before"));
+  @include mdc-ripple-fg((pseudo: "::after"));
+  // ...
+
+  /* "Bound" the ripple, preventing the pseudo-elements from bleeding out of the box. */
+  overflow: hidden;
 }
 
 // stylelint-disable selector-class-pattern
