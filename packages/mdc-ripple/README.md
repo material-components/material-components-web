@@ -126,13 +126,13 @@ First import the ripple JS
 ##### ES2015
 
 ```javascript
-import { MDCRipple, MDCRippleFoundation } from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 ```
 
 ##### CommonJS
 
 ```javascript
-const { MDCRipple, MDCRippleFoundation } = require('@material/ripple');
+const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
 ```
 
 ##### AMD
