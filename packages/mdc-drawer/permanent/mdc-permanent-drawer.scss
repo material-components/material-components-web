@@ -41,8 +41,8 @@ $mdc-permanent-drawer-dark-theme-bg-color: #212121 !default;
 
   display: inline-flex;
   flex-direction: column;
+  flex: 0 0 auto;
   width: $mdc-permanent-drawer-width;
-  height: 100%;
   box-sizing: border-box;
   overflow: hidden;
 

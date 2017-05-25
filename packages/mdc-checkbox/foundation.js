@@ -199,18 +199,18 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     } = MDCCheckboxFoundation.cssClasses;
 
     switch (oldState) {
-      case TRANSITION_STATE_INIT:
-        if (newState === TRANSITION_STATE_UNCHECKED) {
-          return '';
-        }
+    case TRANSITION_STATE_INIT:
+      if (newState === TRANSITION_STATE_UNCHECKED) {
+        return '';
+      }
         // fallthrough
-      case TRANSITION_STATE_UNCHECKED:
-        return newState === TRANSITION_STATE_CHECKED ? ANIM_UNCHECKED_CHECKED : ANIM_UNCHECKED_INDETERMINATE;
-      case TRANSITION_STATE_CHECKED:
-        return newState === TRANSITION_STATE_UNCHECKED ? ANIM_CHECKED_UNCHECKED : ANIM_CHECKED_INDETERMINATE;
+    case TRANSITION_STATE_UNCHECKED:
+      return newState === TRANSITION_STATE_CHECKED ? ANIM_UNCHECKED_CHECKED : ANIM_UNCHECKED_INDETERMINATE;
+    case TRANSITION_STATE_CHECKED:
+      return newState === TRANSITION_STATE_UNCHECKED ? ANIM_CHECKED_UNCHECKED : ANIM_CHECKED_INDETERMINATE;
       // TRANSITION_STATE_INDETERMINATE
-      default:
-        return newState === TRANSITION_STATE_CHECKED ?
+    default:
+      return newState === TRANSITION_STATE_CHECKED ?
           ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
     }
   }

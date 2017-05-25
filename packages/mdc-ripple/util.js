@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+let supportsPassive_;
+
 export function supportsCssVariables(windowObj) {
   const supportsFunctionPresent = windowObj.CSS && typeof windowObj.CSS.supports === 'function';
   if (!supportsFunctionPresent) {
@@ -28,6 +30,22 @@ export function supportsCssVariables(windowObj) {
     windowObj.CSS.supports('color', '#00000000')
   );
   return explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus;
+}
+
+// Determine whether the current browser supports passive event listeners, and if so, use them.
+export function applyPassive(globalObj = window, forceRefresh = false) {
+  if (supportsPassive_ === undefined || forceRefresh) {
+    let isSupported = false;
+    try {
+      globalObj.document.addEventListener('test', null, {get passive() {
+        isSupported = true;
+      }});
+    } catch (e) { }
+
+    supportsPassive_ = isSupported;
+  }
+
+  return supportsPassive_ ? {passive: true} : false;
 }
 
 export function getMatchesProperty(HTMLElementPrototype) {

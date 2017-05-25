@@ -19,6 +19,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {captureHandlers} from '../helpers/foundation';
+import {strings as menuStrings} from '../../../packages/mdc-menu/simple/constants';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 
@@ -164,52 +165,52 @@ test('on Space keyup does not open the menu on bubbled events', () => {
   td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
 });
 
-test('on MDCSimpleMenu:selected updates the selected index to that given by the event', () => {
+test(`on ${menuStrings.SELECTED_EVENT} updates the selected index to that given by the event`, () => {
   const {foundation, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   selected(createEvent({detail: {index: 1}}));
   assert.equal(foundation.getSelectedIndex(), 1);
 });
 
-test('on MDCSimpleMenu:selected fires a change event', () => {
+test(`on ${menuStrings.SELECTED_EVENT} fires a change event`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   selected(createEvent({detail: {index: 1}}));
   td.verify(mockAdapter.notifyChange());
 });
 
-test('on MDCSimpleMenu:selected does not fire change event if the index is already the selected index', () => {
+test(`on ${menuStrings.SELECTED_EVENT} does not fire change event if the index is already the selected index`, () => {
   const {foundation, mockAdapter, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   foundation.setSelectedIndex(1);
   selected({detail: {index: 1}});
   td.verify(mockAdapter.notifyChange(), {times: 0});
 });
 
-test('on MDCSimpleMenu:selected closes the menu', () => {
+test(`on ${menuStrings.SELECTED_EVENT} closes the menu`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   selected(createEvent({detail: {index: 1}}));
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-test('on MDCSimpleMenu:selected refocuses on the select element', () => {
+test(`on ${menuStrings.SELECTED_EVENT} refocuses on the select element`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const selected = menuHandlers['MDCSimpleMenu:selected'];
+  const selected = menuHandlers[menuStrings.SELECTED_EVENT];
   selected(createEvent({detail: {index: 1}}));
   td.verify(mockAdapter.focus());
 });
 
-test('on MDCSimpleMenu:cancel closes the menu', () => {
+test(`on ${menuStrings.CANCEL_EVENT} closes the menu`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const cancel = menuHandlers['MDCSimpleMenu:cancel'];
+  const cancel = menuHandlers[menuStrings.CANCEL_EVENT];
   cancel(createEvent());
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-test('on MDCSimpleMenu:cancel re-focuses the select element', () => {
+test(`on ${menuStrings.CANCEL_EVENT} re-focuses the select element`, () => {
   const {mockAdapter, menuHandlers} = setupTest();
-  const cancel = menuHandlers['MDCSimpleMenu:cancel'];
+  const cancel = menuHandlers[menuStrings.CANCEL_EVENT];
   cancel(createEvent());
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });

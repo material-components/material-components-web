@@ -199,10 +199,10 @@ test('#adapter.rmAttr removes an attribute from the root element', () => {
   assert.isNotOk(root.hasAttribute('aria-label'));
 });
 
-test('#adapter.notifyChange broadcasts a "MDCIconToggle:change" custom event', () => {
+test(`#adapter.notifyChange broadcasts a ${MDCIconToggleFoundation.strings.CHANGE_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('custom event handler');
-  root.addEventListener('MDCIconToggle:change', handler);
+  root.addEventListener(MDCIconToggleFoundation.strings.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange({});
   td.verify(handler(td.matchers.anything()));
 });

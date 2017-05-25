@@ -70,7 +70,7 @@ export class MDCTab extends MDCComponent {
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       getOffsetWidth: () => this.root_.offsetWidth,
       getOffsetLeft: () => this.root_.offsetLeft,
-      notifySelected: () => this.emit('MDCTab:selected', {tab: this}, true),
+      notifySelected: () => this.emit(MDCTabFoundation.strings.SELECTED_EVENT, {tab: this}, true),
     });
   }
 
