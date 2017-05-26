@@ -20,6 +20,7 @@ The MDC Linear Progress component is a spec-aligned linear progress indicator co
 
 ## Design & API Documentation
 
+```html
 <div role="progressbar" class="mdc-linear-progress">
   <div class="mdc-linear-progress__buffering-dots"></div>
   <div class="mdc-linear-progress__buffer"></div>
@@ -30,6 +31,7 @@ The MDC Linear Progress component is a spec-aligned linear progress indicator co
     <span class="mdc-linear-progress__bar-inner"></span>
   </div>
 </div>
+```
 
 ## Installation
 
@@ -64,13 +66,26 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `getBuffer() => Element` | Returns the buffer element. |
 | `setTransform(el: Element, value: string) => void` | Sets the css transform property on the given element. |
 
+### MDCLinearProgressFoundation API
+
+MDC Linear Progress Foundation exposes the following methods:
+
+| Method Signature | Description |
+| --- | --- |
+| `setDeterminate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
+| `setProgress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
+| `setBuffer(value: number) => void` | Sets the buffer bar to this value. Value should be between [0, 1]. |
+| `setReverse(value: boolean) => void` | Reverses the direction of the linear progress indicator. |
+| `open() => void` | Puts the component in the open state. |
+| `close() => void` | Puts the component in the closed state. |
+
 ### MDCLinearProgress API
 
 MDC Linear Progress exposes the following methods:
 
 | Method Signature | Description |
 | --- | --- |
-| `set determinate(value: boolean) => void` | Toggles the components between the determinate and indeterminate state. |
+| `set determinate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
 | `set progress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
 | `set buffer(value: number) => void` | Sets the buffer bar to this value. Value should be between [0, 1]. |
 | `set reverse(value: boolean) => void` | Reverses the direction of the linear progress indicator. |

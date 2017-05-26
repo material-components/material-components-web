@@ -103,7 +103,7 @@ To add a ripple to our surface, first we include the proper Sass mixins within o
 
 This code sets up `.surface` with the correct css variables as well as `will-change` properties to support the ripple. It then dynamically generates the correct selectors such that the surface's `::before` element functions as a background ripple, and the surface's `::after` element functions as a foreground ripple.
 
-When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple is not initialized but Sass misins are included within our surface, the ripple will still work, but it would use a simpler, CSS-Only implementation which relies on `:hover`, `:active`, and `:focus`.
+When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple is not initialized but Sass mixins are included within our surface, the ripple will still work, but it would use a simpler, CSS-Only implementation which relies on `:hover`, `:active`, and `:focus`.
 
 ##### The full Sass API
 
@@ -126,20 +126,19 @@ First import the ripple JS
 ##### ES2015
 
 ```javascript
-import {MDCRipple, MDCRippleFoundation} from 'mdc-ripple';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 ```
 
 ##### CommonJS
 
 ```javascript
-const MDCRipple = require('mdc-ripple').MDCRipple;
-const MDCRippleFoundation = require('mdc-ripple').MDCRippleFoundation;
+const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
 ```
 
 ##### AMD
 
 ```javascript
-require('path/to/mdc-ripple', function(mdcRipple) {
+require('path/to/@material/ripple', function(mdcRipple) {
   const MDCRipple = mdcRipple.MDCRipple;
   const MDCRippleFoundation = mdcRipple.MDCRippleFoundation;
 });

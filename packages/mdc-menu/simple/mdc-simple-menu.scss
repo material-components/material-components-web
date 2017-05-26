@@ -63,7 +63,6 @@ $mdc-simple-menu-item-fade-duration: .3s;
   }
 
   &__items {
-    display: inline-block;
     overflow-x: hidden;
     overflow-y: auto;
     box-sizing: border-box;
@@ -125,7 +124,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
   /* stylelint-disable plugin/selector-bem-pattern */
   .mdc-list-group,
   .mdc-list {
-    padding: 0;
+    padding: 8px 0;
   }
 
   .mdc-list-item {
