@@ -146,33 +146,6 @@ module.exports = [{
     createBannerPlugin(),
   ],
 }, {
-  name: 'demo-css',
-  entry: {
-    'demo-styles': path.resolve('./demos/demos.scss'),
-  },
-  output: {
-    path: OUT_PATH,
-    publicPath: PUBLIC_PATH,
-    filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry'),
-  },
-  devServer: {
-    disableHostCheck: true,
-  },
-  devtool: IS_DEV ? 'source-map' : false,
-  module: {
-    rules: [{
-      test: /\.scss$/,
-      use: IS_DEV ? [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG) : ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: CSS_LOADER_CONFIG,
-      }),
-    }],
-  },
-  plugins: [
-    new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css'),
-    createBannerPlugin(),
-  ],
-}, {
   name: 'css',
   entry: {
     'material-components-web': path.resolve(
@@ -229,3 +202,30 @@ module.exports = [{
     createBannerPlugin(),
   ],
 }];
+
+if (IS_DEV) {
+  module.exports.push({
+    name: 'demo-css',
+    entry: {
+      'demo-styles': path.resolve('./demos/demos.scss'),
+    },
+    output: {
+      path: OUT_PATH,
+      publicPath: PUBLIC_PATH,
+      filename: '[name].css.js',
+    },
+    devServer: {
+      disableHostCheck: true,
+    },
+    devtool: 'source-map',
+    module: {
+      rules: [{
+        test: /\.scss$/,
+        use: [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG),
+      }],
+    },
+    plugins: [
+      createBannerPlugin(),
+    ],
+  });
+}

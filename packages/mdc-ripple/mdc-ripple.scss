@@ -39,8 +39,8 @@
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16, base-color: primary));
-    @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16, base-color: primary));
+    @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16));
+    @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16));
   }
 
   &--accent {
