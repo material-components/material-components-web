@@ -14,27 +14,14 @@
   limitations under the License
 */
 
-// @import "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css";
 
-/* Base style */
+// Base style
 
 $mdc-theme-primary: #212121;
 $mdc-theme-accent: #64dd17;
 
-@import "@material/theme/mdc-theme";
-@import "@material/button/mdc-button";
-@import "@material/checkbox/mdc-checkbox";
-@import "@material/dialog/mdc-dialog";
-@import "@material/fab/mdc-fab";
-@import "@material/icon-toggle/mdc-icon-toggle";
-@import "@material/menu/mdc-menu";
-@import "@material/radio/mdc-radio";
-@import "@material/ripple/mdc-ripple";
-@import "@material/select/mdc-select";
-@import "@material/snackbar/mdc-snackbar";
-@import "@material/switch/mdc-switch";
-@import "@material/tabs/mdc-tabs";
-@import "@material/toolbar/mdc-toolbar";
+@import "../../material-components-web/material-components-web";
 
 // stylelint-disable selector-no-type
 body {
