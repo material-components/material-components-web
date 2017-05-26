@@ -152,6 +152,10 @@ export default class Checkbox extends PureComponent {
     },
   }));
 
+  changeHandler(evt) {
+    this.props.toggleChecked(evt);
+  }
+
   render() {
     // Within render, we generate the html needed to render a proper MDC-Web checkbox.
     return (
@@ -161,15 +165,8 @@ export default class Checkbox extends PureComponent {
                type="checkbox"
                className="mdc-checkbox__native-control"
                aria-labelledby={this.props.labelId}
-               checked={this.state.checkedInternal}
                disabled={this.state.disabledInternal}
-               onChange={evt => {
-                 this.setState({
-                   checkedInternal: this.refs.nativeCb.checked,
-                   indeterminateInternal: false
-                 });
-                 this.props.onChange(evt);
-               }}/>
+               onChange={this.changeHandler.bind(this)}/>
         <div className="mdc-checkbox__background">
           <svg className="mdc-checkbox__checkmark"
                viewBox="0 0 24 24">
