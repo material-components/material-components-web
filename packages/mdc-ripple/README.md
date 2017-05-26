@@ -126,20 +126,19 @@ First import the ripple JS
 ##### ES2015
 
 ```javascript
-import {MDCRipple, MDCRippleFoundation} from 'mdc-ripple';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 ```
 
 ##### CommonJS
 
 ```javascript
-const MDCRipple = require('mdc-ripple').MDCRipple;
-const MDCRippleFoundation = require('mdc-ripple').MDCRippleFoundation;
+const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
 ```
 
 ##### AMD
 
 ```javascript
-require('path/to/mdc-ripple', function(mdcRipple) {
+require('path/to/@material/ripple', function(mdcRipple) {
   const MDCRipple = mdcRipple.MDCRipple;
   const MDCRippleFoundation = mdcRipple.MDCRippleFoundation;
 });
