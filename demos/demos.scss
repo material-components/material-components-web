@@ -14,7 +14,8 @@
   limitations under the License
 */
 
-@import "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css";
+// stylelint-disable
+@import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");
 
 // Base style
 
@@ -23,7 +24,6 @@ $mdc-theme-accent: #64dd17;
 
 @import "../../material-components-web/material-components-web";
 
-// stylelint-disable selector-no-type
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
@@ -33,19 +33,17 @@ fieldset {
   padding: 0;
   border: 0;
 }
-// stylelint enable
 
-.mdc-toolbar a,
-.mdc-toolbar a:visited {
-  color: #f0f0f0;
-  text-decoration: none;
+.mdc-toolbar {
+  a {
+    color: #f0f0f0;
+    text-decoration: none;
+  }
 }
 
-// stylelint-disable selector-class-pattern
 .catalog-title {
   font-family: "Roboto Mono", monospace;
 }
-// stylelint enable
 
 .catalog-logo,
 .catalog-back {
@@ -65,13 +63,43 @@ fieldset {
 }
 
 /* Default padding on all examples. */
-// stylelint-disable selector-no-qualifying-type
 section.example {
   margin: 24px;
   padding: 24px;
 }
 
-section.example h2 {
-  margin-left: 0;
+section.example {
+  h2 {
+    margin-left: 0;
+  }
 }
-// stylelint enable
+
+.catalog-list {
+  padding-left: 28px;
+}
+.catalog-list-icon {
+  margin-right: 24px;
+}
+
+ul.catalog-list {
+  a {
+    text-decoration: none;
+    color: #212121;
+  }
+}
+.catalog-component-list-content {
+  padding-left: 24px;
+  order: 2;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+
+.catalog-component-list-title {
+  order: 1;
+}
+
+.catalog-component-list-description {
+  color: #999;
+  order: 2;
+}
