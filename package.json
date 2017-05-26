@@ -156,6 +156,7 @@
     }
   },
   "closureWhitelist": [
-    "mdc-animation"
+    "mdc-animation",
+    "mdc-base"
   ]
 }
