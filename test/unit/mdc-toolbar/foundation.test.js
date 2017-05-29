@@ -596,16 +596,16 @@ test('on resize call update style if screen width go below breakpoint', () => {
 });
 
 test('on resize call updates keyRatio', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const mockRaf = createMockRaf();
-    const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
-    setDeviceDesktop(mockAdapter, {isDesktop: false});
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  setDeviceDesktop(mockAdapter, {isDesktop: false});
 
-    foundation.initKeyRatio_ = td.function();
+  foundation.initKeyRatio_ = td.function();
 
-    resizeHandler();
-    mockRaf.flush();
+  resizeHandler();
+  mockRaf.flush();
 
-    td.verify(foundation.initKeyRatio_());
-    mockRaf.restore();
+  td.verify(foundation.initKeyRatio_());
+  mockRaf.restore();
 });
