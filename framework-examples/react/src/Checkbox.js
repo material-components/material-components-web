@@ -22,7 +22,8 @@
  * allows it to perform UI operations in a way idiomatic to React.
  */
 
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable';
 // Temporarily using relative reference until we publish on npm.
 import {getCorrectEventName} from '@material/animation/dist/mdc.animation';
@@ -41,14 +42,6 @@ const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.strings;
 const MATCHES = getMatchesProperty(HTMLElement.prototype);
 
 export default class Checkbox extends PureComponent {
-  static propTypes = {
-    id: PropTypes.string,
-    labelId: PropTypes.string,
-    checked: PropTypes.bool,
-    disabled: PropTypes.bool,
-    indeterminate: PropTypes.bool,
-    onChange: PropTypes.func
-  }
 
   static defaultProps = {
     checked: false,
@@ -152,6 +145,10 @@ export default class Checkbox extends PureComponent {
     },
   }));
 
+  handleCheck(evt) {
+    this.props.changeHandler(evt);
+  }
+
   render() {
     // Within render, we generate the html needed to render a proper MDC-Web checkbox.
     return (
@@ -161,15 +158,8 @@ export default class Checkbox extends PureComponent {
                type="checkbox"
                className="mdc-checkbox__native-control"
                aria-labelledby={this.props.labelId}
-               checked={this.state.checkedInternal}
                disabled={this.state.disabledInternal}
-               onChange={evt => {
-                 this.setState({
-                   checkedInternal: this.refs.nativeCb.checked,
-                   indeterminateInternal: false
-                 });
-                 this.props.onChange(evt);
-               }}/>
+               onChange={this.handleCheck.bind(this)}/>
         <div className="mdc-checkbox__background">
           <svg className="mdc-checkbox__checkmark"
                viewBox="0 0 24 24">
@@ -197,7 +187,7 @@ export default class Checkbox extends PureComponent {
 
   // Here we synchronize the internal state of the UI component based on what the user has specified.
   componentWillReceiveProps(props) {
-    if (props.checked !== this.props.checked) {
+    if (props.checked !== this.state.checkedInternal) {
       this.setState({checkedInternal: props.checked, indeterminateInternal: false});
     }
     if (props.indeterminate !== this.props.indeterminate) {
@@ -222,4 +212,13 @@ export default class Checkbox extends PureComponent {
       });
     }
   }
+}
+
+PureComponent.PropTypes = {
+  id: PropTypes.string,
+  labelId: PropTypes.string,
+  checked: PropTypes.bool,
+  disabled: PropTypes.bool,
+  indeterminate: PropTypes.bool,
+  onChange: PropTypes.func
 }

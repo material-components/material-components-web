@@ -30,6 +30,14 @@ export default class App extends PureComponent {
     changeEventCount: 0
   }
 
+  updateChecked(evt) {
+    this.setState({
+      changeEventCount: this.state.changeEventCount + 1,
+      checked: evt.target.checked,
+      indeterminate: false
+    })
+  }
+
   render() {
     const {checked, disabled, indeterminate, status, changeEventCount} = this.state;
     return (
@@ -38,13 +46,10 @@ export default class App extends PureComponent {
         <FormField>
           <Checkbox id="my-checkbox"
                     labelId="my-checkbox-label"
+                    checked={checked}
                     disabled={disabled}
                     indeterminate={indeterminate}
-                    onChange={({target}) => this.setState({
-                      changeEventCount: changeEventCount + 1,
-                      checked: target.checked,
-                      indeterminate: false
-                    })}/>
+                    changeHandler={this.updateChecked.bind(this)} />
           <CheckboxLabel id="my-checkbox-label" for="my-checkbox">
             The checkbox is currently {this.status()}
           </CheckboxLabel>

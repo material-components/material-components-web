@@ -22,7 +22,7 @@
 $mdc-toolbar-row-height: 64px;
 $mdc-toolbar-mobile-row-height: 56px;
 $mdc-toolbar-padding: 20px 28px;
-$mdc-toolbar-mobile-padding: 16px;
+$mdc-toolbar-mobile-padding: 8px;
 
 $mdc-toolbar-ratio-to-extend-flexible: 4 !default;
 
@@ -43,10 +43,10 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   &__row {
     display: flex;
     position: relative;
+    align-items: center;
     width: 100%;
     height: auto;
     min-height: $mdc-toolbar-row-height;
-    padding: $mdc-toolbar-padding;
     box-sizing: border-box;
 
     // TODO: refactor this out when #23 is implemented
@@ -78,12 +78,24 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   &__title {
     @include mdc-typography(title);
 
+    align-self: center;
     margin: 0;
+    margin-left: 16px;
     line-height: 1.5rem;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     z-index: 1;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    text-decoration: none;
+
+    @include mdc-theme-prop(color, text-primary-on-primary);
   }
 }
 
