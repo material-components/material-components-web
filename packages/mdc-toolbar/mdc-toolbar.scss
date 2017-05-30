@@ -21,12 +21,13 @@
 
 $mdc-toolbar-row-height: 64px;
 $mdc-toolbar-mobile-row-height: 56px;
+$mdc-toolbar-mobile-landscape-row-height: 48px;
 $mdc-toolbar-padding: 20px 28px;
-$mdc-toolbar-mobile-padding: 8px;
 
 $mdc-toolbar-ratio-to-extend-flexible: 4 !default;
 
-$mdc-toolbar-mobile-breakpoint: 599px;
+$mdc-toolbar-mobile-landscape-width-breakpoint: 960px;
+$mdc-toolbar-mobile-breakpoint: 600px;
 
 // postcss-bem-linter: define toolbar
 .mdc-toolbar {
@@ -50,9 +51,14 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     box-sizing: border-box;
 
     // TODO: refactor this out when #23 is implemented
+    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+      and (orientation: landscape) {
+      min-height: $mdc-toolbar-mobile-landscape-row-height;
+    }
+
+    // TODO: refactor this out when #23 is implemented
     @media (max-width: $mdc-toolbar-mobile-breakpoint) {
       min-height: $mdc-toolbar-mobile-row-height;
-      padding: $mdc-toolbar-mobile-padding;
     }
   }
 
@@ -62,6 +68,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     align-items: flex-start;
     justify-content: center;
     min-width: 0;
+    height: 100%;
     z-index: 1;
 
     &--align-start {
@@ -81,6 +88,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     align-self: center;
     margin: 0;
     margin-left: 16px;
+    padding: 10px 0;
     line-height: 1.5rem;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -88,11 +96,21 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     z-index: 1;
   }
 
+  &__menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    text-decoration: none;
+
+    @include mdc-theme-prop(color, text-primary-on-primary);
+  }
+
   &__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
+    padding: 16px 8px;
     text-decoration: none;
 
     @include mdc-theme-prop(color, text-primary-on-primary);
@@ -136,14 +154,16 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     .mdc-toolbar__title {
       @include mdc-typography(display1);
 
-      transform: translateY($mdc-toolbar-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 1));
-      transform: translateY(calc(#{$mdc-toolbar-row-height} * (var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
+      align-self: flex-end;
+
+      // transform: translateY($mdc-toolbar-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 2));
+      // transform: translateY(calc(#{$mdc-toolbar-row-height} * (var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
       font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
       line-height: 1.5rem;
 
       @media (max-width: $mdc-toolbar-mobile-breakpoint) {
-        transform: translateY($mdc-toolbar-mobile-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 1));
-        transform: translateY(calc(#{$mdc-toolbar-mobile-row-height} * (var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
+        // transform: translateY($mdc-toolbar-mobile-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 2));
+        // transform: translateY(calc(#{$mdc-toolbar-mobile-row-height} * (var(--mdctoolbar--ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
       }
     }
 

@@ -216,7 +216,7 @@ export default class MDCToolbarFoundation extends MDCFoundation {
     const minTitleSize = MDCToolbarFoundation.numbers.MIN_TITLE_SIZE;
     const currentTitleSize = (maxTitleSize - minTitleSize) * flexibleExpansionRatio + minTitleSize;
     if (this.fixed_) {
-      const height = this.calculations_.flexibleExpansionHeight * flexibleExpansionRatio;
+      const height = this.calculations_.flexibleExpansionHeight * (flexibleExpansionRatio - 1);
       this.adapter_.setStyleForTitleElement('transform', `translateY(${height}px)`);
     }
     this.adapter_.setStyleForTitleElement('font-size', `${currentTitleSize}rem`);
