@@ -35,7 +35,7 @@ export class MDCDynamicDrawer extends MDCComponent {
 
     const stateMach = this.root_.className.match(/mdc-dynamic-drawer__(\w+)/);
     this.state_ = null;
-    if (stateMach && states.includes(stateMach[1])) {
+    if (stateMach && ~states.indexOf(stateMach[1])) {
       this.state_ = stateMach[1];
     }
   }
@@ -58,7 +58,7 @@ export class MDCDynamicDrawer extends MDCComponent {
 
   set state(value) {
     if (this.state_ !== value) {
-      if (states.includes(value)) {
+      if (~states.indexOf(value)) {
         this.root_.classList.remove('mdc-dynamic-drawer__' + this.state_);
 
         this.state_ = value;
