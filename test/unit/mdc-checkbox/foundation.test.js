@@ -246,7 +246,7 @@ test('#setDisabled adds mdc-checkbox--disabled class to the root element when se
   td.verify(mockAdapter.addClass(cssClasses.DISABLED));
 });
 
-test('#setDisabled removes mdc-checkbox--disabled class to the root element when set to false', () => {
+test('#setDisabled removes mdc-checkbox--disabled class from the root element when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeControl = {disabled: true};
   td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
