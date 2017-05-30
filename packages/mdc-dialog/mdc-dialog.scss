@@ -138,7 +138,7 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
       @include mdc-rtl-reflexive-box(margin, right, 8px);
 
       &:last-child {
-        @include mdc-rtl-reflexive-box(margin, left, 0);
+        @include mdc-rtl-reflexive-box(margin, right, 0);
       }
     }
   }
