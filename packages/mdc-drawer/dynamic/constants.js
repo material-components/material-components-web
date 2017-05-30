@@ -14,8 +14,25 @@
  * limitations under the License.
  */
 
-import * as util from './util';
-export {MDCDynamicDrawer, MDCDynamicDrawerFoundation} from './dynamic';
-export {MDCTemporaryDrawer, MDCTemporaryDrawerFoundation} from './temporary';
-export {MDCPersistentDrawer, MDCPersistentDrawerFoundation} from './persistent';
-export {util};
+import {FOCUSABLE_ELEMENTS} from '../slidable';
+
+export const cssClasses = {
+  ROOT: 'mdc-dynamic-drawer',
+  OPEN: 'mdc-dynamic-drawer--open',
+  ANIMATING: 'mdc-dynamic-drawer--animating',
+  TEMPORARY: 'mdc-dynamic-drawer__temporary',
+  PERSISTENT: 'mdc-dynamic-drawer__persistent',
+};
+
+export const strings = {
+  DRAWER_SELECTOR: '.mdc-dynamic-drawer__drawer',
+  OPACITY_VAR_NAME: '--mdc-dynamic-drawer-opacity',
+  FOCUSABLE_ELEMENTS,
+  OPEN_EVENT: 'MDCDynamicDrawer:open',
+  CLOSE_EVENT: 'MDCDynamicDrawer:close',
+};
+
+export const states = [
+  'temporary',
+  'persistent',
+];
