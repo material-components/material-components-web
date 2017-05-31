@@ -199,5 +199,5 @@ test('adapter#setStyleForFixedAdjustElement sets the correct style on fixed adju
 test('adapter#setStyleForFixedAdjustElement works even if fixedAdjustElement not provided', () => {
   const {adjust, component} = setupTest();
   component.getDefaultFoundation().adapter_.setStyleForFixedAdjustElement('marginTop', '-56px');
-  assert.isNotOk(adjust.style.getPropertyValue('margin-top'));
+  assert.equal(adjust.style.getPropertyValue('margin-top'), '');
 });
