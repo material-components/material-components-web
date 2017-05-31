@@ -1,13 +1,14 @@
 language: node_js
+node_js:
+  - "iojs"
+  - "7"
 branches:
   only:
     - master
 matrix:
   include:
     # Unit tests on Node Stable
-      node_js:
-        - "node"
-        - "7"
+      node_js: node_js
       env:
         global:
           - SAUCE_USERNAME=material-sauce
