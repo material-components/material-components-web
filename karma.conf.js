@@ -167,7 +167,11 @@ module.exports = function(config) {
         startConnect: false,
       },
 <<<<<<< HEAD
+<<<<<<< HEAD
       browsers: ['chrome_travis_ci'],
+=======
+      browsers: ['chrome_travis_ci_2'],
+>>>>>>> fix(infrastructure): set Travis CI node version to 7
 =======
       browsers: ['chrome_travis_ci_2'],
 >>>>>>> fix(infrastructure): set Travis CI node version to 7
