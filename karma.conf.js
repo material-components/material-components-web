@@ -165,16 +165,8 @@ module.exports = function(config) {
         username: process.env.SAUCE_USERNAME,
         accessKey: process.env.SAUCE_ACCESS_KEY,
         startConnect: false,
-      },
-<<<<<<< HEAD
-<<<<<<< HEAD
-      browsers: ['chrome_travis_ci'],
-=======
+      },=
       browsers: ['chrome_travis_ci_2'],
->>>>>>> fix(infrastructure): set Travis CI node version to 7
-=======
-      browsers: ['chrome_travis_ci_2'],
->>>>>>> fix(infrastructure): set Travis CI node version to 7
       // Attempt to de-flake Sauce Labs tests on TravisCI.
       transports: ['polling'],
       browserDisconnectTolerance: 3,
