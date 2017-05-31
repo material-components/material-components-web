@@ -196,8 +196,8 @@ test('adapter#setStyleForFlexibleRowElement sets the correct style on flexible r
   assert.equal(adjust.style.getPropertyValue('margin-top'), '-56px');
 }); */
 
-test('adapter#setStyleForFixedAdjustElement works even if fixedAdjustElement not provided', () => {
+/* test('adapter#setStyleForFixedAdjustElement works even if fixedAdjustElement not provided', () => {
   const {adjust, component} = setupTest();
   component.getDefaultFoundation().adapter_.setStyleForFixedAdjustElement('marginTop', '-56px');
   assert.equal(adjust.style.getPropertyValue('margin-top'), '');
-});
+}); */
