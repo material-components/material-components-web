@@ -189,15 +189,15 @@ test('adapter#setStyleForFlexibleRowElement sets the correct style on flexible r
   assert.equal(flexibleRowElement.style.getPropertyValue('height'), '56px');
 });
 
-/* test('adapter#setStyleForFixedAdjustElement sets the correct style on fixed adjust element', () => {
+test('adapter#setStyleForFixedAdjustElement sets the correct style on fixed adjust element', () => {
   const {adjust, component} = setupTest();
   component.fixedAdjustElement = adjust;
   component.getDefaultFoundation().adapter_.setStyleForFixedAdjustElement('margin-top', '-56px');
   assert.equal(adjust.style.getPropertyValue('margin-top'), '-56px');
-}); */
+});
 
-/* test('adapter#setStyleForFixedAdjustElement works even if fixedAdjustElement not provided', () => {
+test('adapter#setStyleForFixedAdjustElement works even if fixedAdjustElement not provided', () => {
   const {adjust, component} = setupTest();
   component.getDefaultFoundation().adapter_.setStyleForFixedAdjustElement('marginTop', '-56px');
-  assert.equal(adjust.style.getPropertyValue('margin-top'), '');
-}); */
+  assert.isNotOk(adjust.style.getPropertyValue('margin-top'));
+});
