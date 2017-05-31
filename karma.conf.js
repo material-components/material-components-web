@@ -26,18 +26,21 @@ const SL_LAUNCHERS = {
     browserName: 'chrome',
     version: 'latest',
     platform: 'macOS 10.12',
+    flags: ['--no-sandbox'],
   },
   'sl-chrome-beta': {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'beta',
     platform: 'macOS 10.12',
+    flags: ['--no-sandbox'],
   },
   'sl-chrome-previous': {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'latest-1',
     platform: 'macOS 10.12',
+    flags: ['--no-sandbox'],
   },
   'sl-firefox-stable': {
     base: 'SauceLabs',
