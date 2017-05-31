@@ -21,6 +21,10 @@ const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
 const SL_LAUNCHERS = {
+  Chrome_travis_ci: {
+      base: 'Chrome',
+      flags: ['--no-sandbox']
+  },
   'sl-chrome-stable': {
     base: 'SauceLabs',
     browserName: 'chrome',
@@ -162,6 +166,7 @@ module.exports = function(config) {
         accessKey: process.env.SAUCE_ACCESS_KEY,
         startConnect: false,
       },
+      browsers: ['Chrome_travis_ci'],
       // Attempt to de-flake Sauce Labs tests on TravisCI.
       transports: ['polling'],
       browserDisconnectTolerance: 3,
