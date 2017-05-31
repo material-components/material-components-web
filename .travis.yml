@@ -3,16 +3,13 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 language: node_js
-node_js:
-  - "node"
-  - "7"
 branches:
   only:
     - master
 matrix:
   include:
     # Unit tests on Node Stable
-    - node_js: node
+    - node_js: 7 
       env:
         global:
           - SAUCE_USERNAME=material-sauce

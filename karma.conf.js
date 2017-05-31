@@ -21,7 +21,7 @@ const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
 const SL_LAUNCHERS = {
-  'chrome_travis_ci_2': {
+  'chrome_travis_ci': {
     base: 'Chrome',
     flags: ['--no-sandbox'],
   },
@@ -30,21 +30,18 @@ const SL_LAUNCHERS = {
     browserName: 'chrome',
     version: 'latest',
     platform: 'macOS 10.12',
-    flags: ['--no-sandbox'],
   },
   'sl-chrome-beta': {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'beta',
     platform: 'macOS 10.12',
-    flags: ['--no-sandbox'],
   },
   'sl-chrome-previous': {
     base: 'SauceLabs',
     browserName: 'chrome',
     version: 'latest-1',
     platform: 'macOS 10.12',
-    flags: ['--no-sandbox'],
   },
   'sl-firefox-stable': {
     base: 'SauceLabs',
@@ -166,7 +163,7 @@ module.exports = function(config) {
         accessKey: process.env.SAUCE_ACCESS_KEY,
         startConnect: false,
       },
-      browsers: ['chrome_travis_ci_2'],
+      browsers: ['chrome_travis_ci'],
       // Attempt to de-flake Sauce Labs tests on TravisCI.
       transports: ['polling'],
       browserDisconnectTolerance: 3,
