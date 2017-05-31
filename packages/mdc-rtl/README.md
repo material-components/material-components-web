@@ -233,4 +233,4 @@ is equivalent to:
  }
 ```
 
-An optional third `#{$root-selector}` argument may also be given, which is passed to `mdc-rtl`.
+An optional third `$root-selector` argument may also be given, which is passed to `mdc-rtl`.
