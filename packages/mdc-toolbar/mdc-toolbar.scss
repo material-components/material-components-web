@@ -23,6 +23,7 @@ $mdc-toolbar-row-height: 64px;
 $mdc-toolbar-mobile-row-height: 56px;
 $mdc-toolbar-mobile-landscape-row-height: 48px;
 $mdc-toolbar-padding: 20px 28px;
+$mdc-toobar-element-vertical-padding: 16px;
 
 $mdc-toolbar-ratio-to-extend-flexible: 4 !default;
 
@@ -88,7 +89,7 @@ $mdc-toolbar-mobile-breakpoint: 600px;
     align-self: center;
     margin: 0;
     margin-left: 16px;
-    padding: 10px 0;
+    padding: $mdc-toobar-element-vertical-padding 0;
     line-height: 1.5rem;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -100,7 +101,7 @@ $mdc-toolbar-mobile-breakpoint: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px;
+    padding: $mdc-toobar-element-vertical-padding;
     text-decoration: none;
 
     @include mdc-theme-prop(color, text-primary-on-primary);
@@ -110,7 +111,7 @@ $mdc-toolbar-mobile-breakpoint: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 8px;
+    padding: $mdc-toobar-element-vertical-padding 8px;
     text-decoration: none;
 
     @include mdc-theme-prop(color, text-primary-on-primary);
@@ -214,7 +215,7 @@ $mdc-toolbar-mobile-breakpoint: 600px;
 .mdc-toolbar-fixed-adjust {
   margin-top: $mdc-toolbar-row-height;
 
-  @media (max-width: 599px) {
+  @media (max-width: 600px) {
     margin-top: $mdc-toolbar-mobile-row-height;
   }
 }
