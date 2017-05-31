@@ -21,9 +21,9 @@ const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
 const SL_LAUNCHERS = {
-  Chrome_travis_ci: {
-      base: 'Chrome',
-      flags: ['--no-sandbox']
+  'chrome_travis_ci': {
+    base: 'Chrome',
+    flags: ['--no-sandbox'],
   },
   'sl-chrome-stable': {
     base: 'SauceLabs',
