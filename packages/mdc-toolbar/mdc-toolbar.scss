@@ -116,6 +116,12 @@ $mdc-toolbar-mobile-breakpoint: 600px;
 
     @include mdc-theme-prop(color, text-primary-on-primary);
   }
+
+  &__icon__button {
+    border: none;
+    background-color: inherit;
+    color: inherit;
+  }
 }
 
 .mdc-toolbar--fixed {
