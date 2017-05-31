@@ -28,14 +28,9 @@
         margin: 0px;
         padding: 20px 28px;
       }
-      .material-icons {
-        text-decoration: none;
-        cursor: pointer;
-        padding: 0px 8px 0px 0px;
-        color: white;
-      }
-      [dir='rtl'] .material-icons {
-        padding-left: 8px;
+      .demo-custom-scroll-title {
+        line-height: 130%;
+        margin-left: 0;
       }
       @media (max-width: 599px) {
         .demo-paragraph {
@@ -64,7 +59,7 @@
     <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall mdc-toolbar--flexible" id="my-flexible-header">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-center">
-          <span class="mdc-toolbar__title">Hey!</span>
+          <span class="mdc-toolbar__title demo-custom-scroll-title">Hey!</span>
         </section>
       </div>
     </header>
@@ -96,14 +91,14 @@
           }
         }, 250);
         function init() {
-          var initialR = 255;
-          var initialG = 64;
-          var initialB = 129;
-          var endR = 63;
-          var endG = 81;
-          var endB = 181;
-          var initialFontSize = 5;
-          var initialTransY = -30;
+          var initialR = 100;
+          var initialG = 221;
+          var initialB = 23;
+          var endR = 33;
+          var endG = 33;
+          var endB = 33;
+          var initialFontSize = 4;
+          var initialTransY = 0;
           var endFontSize = 1.25;
           var endTransY = 0;
           var ratioSpan = document.querySelector("#ratio");
@@ -112,20 +107,14 @@
           var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
           toolbar.listen('MDCToolbar:change', function(evt) {
             var flexibleExpansionRatio = evt.detail.flexibleExpansionRatio;
-
             var currentR = Math.round(endR - (endR - initialR) * flexibleExpansionRatio);
             var currentG = Math.round(endG - (endG - initialG) * flexibleExpansionRatio);
             var currentB = Math.round(endB - (endB - initialB) * flexibleExpansionRatio);
+            var currentTransY = endTransY - (endTransY - initialTransY) * (flexibleExpansionRatio - 0.5) * 2;
+            var currentFontsize = endFontSize - (endFontSize - initialFontSize) * flexibleExpansionRatio;
             myFlexibleHeader.style.backgroundColor = `rgb(${currentR}, ${currentG}, ${currentB})`;
-
-            if (flexibleExpansionRatio > 0.5) {
-              var currentTransY = endTransY - (endTransY - initialTransY) * (flexibleExpansionRatio - 0.5) * 2;
-              myFlexibleHeaderTitle.style.transform = `translateY(${currentTransY}px)`;
-            } else {
-              var currentFontsize = endFontSize - (endFontSize - initialFontSize) * flexibleExpansionRatio * 2;
-              myFlexibleHeaderTitle.style.fontSize = `${currentFontsize}rem`;
-            }
-
+            myFlexibleHeaderTitle.style.transform = `translateY(${currentTransY}px)`;
+            myFlexibleHeaderTitle.style.fontSize = `${currentFontsize}rem`;
             ratioSpan.innerHTML = flexibleExpansionRatio.toFixed(2);
           });
           toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');

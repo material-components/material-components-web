@@ -34,6 +34,10 @@
         height: 100%;
       }
 
+      .demo-header-toolbar {
+        z-index: 10;
+      }
+
       .demo-content {
         position: relative;
         flex: 1;
@@ -65,11 +69,11 @@
     </style>
   </head>
   <body>
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Simple Menu</span>
         </section>
