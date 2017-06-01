@@ -122,13 +122,13 @@ correct dialog behaviors into idiomatic components.
 ##### ES2015
 
 ```javascript
-import {MDCDialog, MDCDialogFoundation, util} from 'mdc-dialog';
+import {MDCDialog, MDCDialogFoundation, util} from '@material/dialog';
 ```
 
 ##### CommonJS
 
 ```javascript
-const mdcDialog = require('mdc-dialog');
+const mdcDialog = require('@material/dialog');
 const MDCDialog = mdcDialog.MDCDialog;
 const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
 const util = mdcDialog.util;
@@ -137,7 +137,7 @@ const util = mdcDialog.util;
 ##### AMD
 
 ```javascript
-require(['path/to/mdc-dialog'], mdcDialog => {
+require(['path/to/@material/dialog'], mdcDialog => {
   const MDCDialog = mdcDrawer.MDCDialog;
   const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
   const util = mdcDialog.util;
