@@ -14,25 +14,33 @@
  * limitations under the License.
  */
 
+/**
+ * @template A
+ */
 export default class MDCFoundation {
+
+  /** @return enum{cssClasses} */
   static get cssClasses() {
     // Classes extending MDCFoundation should implement this method to return an object which exports every
     // CSS class the foundation class needs as a property. e.g. {ACTIVE: 'mdc-component--active'}
     return {};
   }
 
+  /** @return enum{strings} */
   static get strings() {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // semantic strings as constants. e.g. {ARIA_ROLE: 'tablist'}
     return {};
   }
 
+  /** @return enum{numbers} */
   static get numbers() {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // of its semantic numbers as constants. e.g. {ANIMATION_DELAY_MS: 350}
     return {};
   }
 
+  /** @return {!Object} */
   static get defaultAdapter() {
     // Classes extending MDCFoundation may choose to implement this getter in order to provide a convenient
     // way of viewing the necessary methods of an adapter. In the future, this could also be used for adapter
@@ -40,7 +48,11 @@ export default class MDCFoundation {
     return {};
   }
 
+  /**
+   * @param {!A} adapter
+   */
   constructor(adapter = {}) {
+    /** @private {!A} */
     this.adapter_ = adapter;
   }
 

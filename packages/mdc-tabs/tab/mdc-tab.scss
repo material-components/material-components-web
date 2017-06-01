@@ -32,18 +32,18 @@ $mdc-tab-with-icon-and-text-height: 72px;
 .mdc-tab {
   @include mdc-typography(body2);
 
+  display: table-cell;
   position: relative;
   box-sizing: border-box;
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-  min-height: $mdc-tab-with-text-height;
   min-width: 160px;
-  overflow: hidden;
+  min-height: $mdc-tab-with-text-height;
   padding: 0 24px;
+  text-align: center;
   text-decoration: none;
-  cursor: pointer;
   white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+  vertical-align: middle;
 
   @include mdc-theme-prop(color, text-secondary-on-light);
 
@@ -107,20 +107,22 @@ $mdc-tab-with-icon-and-text-height: 72px;
   }
 }
 
+// stylelint-disable plugin/selector-bem-pattern
 .mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab {
   position: relative;
 
   &::after {
+    display: none;
     position: absolute;
-    left: 0;
     top: $mdc-tab-with-text-height - 2px;
-    content: "";
+    left: 0;
     width: calc(100% - 4px);
     height: 2px;
-    display: none;
+    content: "";
     pointer-events: none;
 
     @include mdc-theme-prop(background-color, text-primary-on-light);
+
     @include mdc-theme-dark(".mdc-tab-bar", true) {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
     }
@@ -147,15 +149,19 @@ $mdc-tab-with-icon-and-text-height: 72px;
     opacity: .87;
   }
 }
+// stylelint-enable plugin/selector-bem-pattern
 
+// stylelint-disable plugin/selector-bem-pattern
 .mdc-tab-bar--icons-with-text:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
   top: $mdc-tab-with-icon-and-text-height - 2px;
 }
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-tab.mdc-ripple-upgraded {
   @include mdc-ripple-base;
   @include mdc-ripple-fg((pseudo: "::after"));
   @include mdc-ripple-bg((pseudo: "::before"));
+
   @include mdc-theme-dark(".mdc-tab-bar") {
     @include mdc-ripple-bg((pseudo: "::before", base-color: map-get($mdc-theme-property-values, text-primary-on-dark), opacity: .16));
     @include mdc-ripple-fg((pseudo: "::after", base-color: map-get($mdc-theme-property-values, text-primary-on-dark), opacity: .16));
@@ -166,9 +172,10 @@ $mdc-tab-with-icon-and-text-height: 72px;
     @include mdc-ripple-fg((pseudo: "::after", base-color: map-get($mdc-theme-property-values, text-primary-on-primary), opacity: .16));
   }
 
+  // stylelint-disable plugin/selector-bem-pattern
   &:focus {
     outline: none;
   }
+  // stylelint-enable plugin/selector-bem-pattern
 }
-
 // postcss-bem-linter: end
