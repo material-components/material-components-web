@@ -1,0 +1,95 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/animation/functions";
+@import "@material/theme/mixins";
+@import "@material/rtl/mixins";
+
+$mdc-tab-bar-scroller-indicator-width: 48px;
+
+// postcss-bem-linter: define tab-bar-scroller
+.mdc-tab-bar-scroller {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: inherit;
+  overflow: hidden;
+
+  &__scroll-frame {
+    display: flex;
+    position: relative;
+    flex: 1;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    &__tabs {
+      transition: mdc-animation-enter(transform, 240ms);
+      will-change: transform;
+    }
+  }
+
+  &__indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $mdc-tab-bar-scroller-indicator-width;
+    cursor: pointer;
+    visibility: hidden;
+
+    @include mdc-theme-prop(color, text-secondary-on-light);
+
+    @include mdc-theme-dark(".mdc-tab-bar") {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
+
+    &:hover {
+      @include mdc-theme-prop(color, text-primary-on-light);
+
+      @include mdc-theme-dark(".mdc-tab-bar") {
+        @include mdc-theme-prop(color, text-primary-on-dark);
+      }
+    }
+
+    &__inner {
+      color: inherit;
+      text-decoration: inherit;
+      cursor: inherit;
+
+      &:focus {
+        outline-color: inherit;
+      }
+
+      @include mdc-rtl(".mdc-tab-bar-scroller") {
+        transform: rotate(180deg);
+      }
+    }
+
+    &__inner:hover {
+      color: inherit;
+
+      @include mdc-theme-dark(".mdc-tab-bar") {
+        @include mdc-theme-prop(color, text-secondary-on-dark);
+      }
+    }
+  }
+
+  &__indicator--enabled {
+    visibility: visible;
+  }
+}
+
+// postcss-bem-linter: end

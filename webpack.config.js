@@ -81,6 +81,7 @@ module.exports = [{
     formField: [path.resolve('./packages/mdc-form-field/index.js')],
     gridList: [path.resolve('./packages/mdc-grid-list/index.js')],
     iconToggle: [path.resolve('./packages/mdc-icon-toggle/index.js')],
+    linearProgress: [path.resolve('./packages/mdc-linear-progress/index.js')],
     menu: [path.resolve('./packages/mdc-menu/index.js')],
     radio: [path.resolve('./packages/mdc-radio/index.js')],
     ripple: [path.resolve('./packages/mdc-ripple/index.js')],

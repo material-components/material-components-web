@@ -135,10 +135,10 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     padding: 8px;
 
     &__button {
-      margin-right: 8px;
+      @include mdc-rtl-reflexive-box(margin, right, 8px);
 
       &:last-child {
-        margin-right: 0;
+        @include mdc-rtl-reflexive-box(margin, right, 0);
       }
     }
   }

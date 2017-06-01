@@ -25,9 +25,9 @@ limitations under the License
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
       fieldset {
-        margin: 24px;
-        margin-top: 0;
-        margin-bottom: 16px;
+        padding: 24px;
+        padding-top: 0;
+        padding-bottom: 16px;
       }
 
       fieldset .mdc-button {
@@ -39,6 +39,14 @@ limitations under the License
       }
 
       .mdc-theme--dark fieldset legend {
+        color: #f0f0f0;
+      }
+
+      .mdc-theme--dark .demo-tabs__scroller {
+        background-color: #333;
+      }
+
+      .mdc-theme--dark .demo-tabs__scroller .demo-title {
         color: #f0f0f0;
       }
 
@@ -56,6 +64,19 @@ limitations under the License
         padding: 16px;
         padding-top: 64px;
         padding-bottom: 24px;
+      }
+
+      .demo-tabs__scroller {
+        margin-top: 64px;
+        padding-bottom: 1px;
+      }
+
+      .demo-title {
+        padding: 0 40px 40px;
+      }
+
+      .mdc-tab-bar-scroller {
+        margin-bottom: 16px;
       }
 
       .demo-note {
@@ -132,7 +153,7 @@ limitations under the License
       </div>
     </header>
 
-    <main class="mdc-toolbar-fixed-adjust">
+    <main id="tabs-demo-main-section" class="mdc-toolbar-fixed-adjust">
       <section class="hero">
         <nav id="demo-tab-bar" class="mdc-tab-bar">
           <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
@@ -169,6 +190,38 @@ limitations under the License
             <span class="mdc-tab-bar__indicator"></span>
           </nav>
         </fieldset>
+      </section>
+
+      <section>
+        <div class="demo-tabs__scroller">
+          <h2 class="mdc-typography--title demo-title">Tab Bar with Scroller</h2>
+          <div id="tab-bar-scroller" class="mdc-tab-bar-scroller">
+            <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--back">
+              <a class="mdc-tab-bar-scroller__indicator__inner material-icons" href="#" aria-label="scroll back button">
+                navigate_before
+              </a>
+            </div>
+            <div class="mdc-tab-bar-scroller__scroll-frame">
+              <nav id="scrollable-tab-bar" class="mdc-tab-bar mdc-tab-bar-scroller__scroll-frame__tabs">
+                <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
+                <a class="mdc-tab" href="#two">Item Two</a>
+                <a class="mdc-tab" href="#three">Item Three</a>
+                <a class="mdc-tab" href="#four">Item Four</a>
+                <a class="mdc-tab" href="#five">Item Five</a>
+                <a class="mdc-tab" href="#six">Item Six</a>
+                <a class="mdc-tab" href="#seven">Item Seven</a>
+                <a class="mdc-tab" href="#eight">Item Eight</a>
+                <a class="mdc-tab" href="#nine">Item Nine</a>
+                <span class="mdc-tab-bar__indicator"></span>
+              </nav>
+            </div>
+            <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--forward">
+              <a class="mdc-tab-bar-scroller__indicator__inner material-icons" href="#" aria-label="scroll forward button">
+                navigate_next
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section>
@@ -520,6 +573,7 @@ limitations under the License
 
           window.demoTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#demo-tab-bar'));
           window.basicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar'));
+          window.tabBarScroller = new mdc.tabs.MDCTabBarScroller(document.querySelector('#tab-bar-scroller'));
           window.iconTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-tab-bar'));
           window.iconTextTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
           window.toolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar'));
@@ -587,8 +641,12 @@ limitations under the License
     <script>
         (function() {
           document.getElementById('toggle-rtl').addEventListener('click', function(evt) {
-            evt.target.parentElement.hasAttribute('dir') ? evt.target.parentElement.removeAttribute('dir') : evt.target.parentElement.setAttribute('dir', 'rtl');
-            window.basicTabBar.layout()
+            var mainElement = document.querySelector('#tabs-demo-main-section');
+            mainElement.hasAttribute('dir') ? mainElement.removeAttribute('dir') : mainElement.setAttribute('dir', 'rtl');
+
+            window.basicTabBar.layout();
+            window.tabBarScroller.layout();
+            window.tabBarScroller.tabBar.layout();
             window.iconTabBar.layout();
             window.iconTextTabBar.layout();
             window.toolbarTabBar.layout();

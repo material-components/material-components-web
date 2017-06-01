@@ -95,6 +95,11 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
 
   setDisabled(disabled) {
     this.getNativeControl_().disabled = disabled;
+    if (disabled) {
+      this.adapter_.addClass(cssClasses.DISABLED);
+    } else {
+      this.adapter_.removeClass(cssClasses.DISABLED);
+    }
   }
 
   getValue() {
