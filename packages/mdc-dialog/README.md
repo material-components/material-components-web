@@ -154,7 +154,7 @@ const util = mdc.dialog.util;
 
 #### Automatic Instantiation
 
-If you do not care about retaining the component instance for the temporary drawer, simply call `attachTo()`
+If you do not care about retaining the component instance for the dialog, simply call `attachTo()`
 and pass it a DOM element. This however, is only useful if you do not need to pass a callback to the dialog
 when the user selects Accept or Cancel.
 
