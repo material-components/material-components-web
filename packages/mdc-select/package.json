@@ -1,7 +1,7 @@
 {
   "name": "@material/select",
   "description": "The Material Components web select (textfield drop-down) component",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -15,10 +15,10 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.2.2",
-    "@material/base": "^0.1.3",
-    "@material/list": "^0.2.8",
-    "@material/menu": "^0.2.6",
+    "@material/animation": "^0.2.3",
+    "@material/base": "^0.2.0",
+    "@material/list": "^0.2.9",
+    "@material/menu": "^0.2.7",
     "@material/rtl": "^0.1.4",
     "@material/theme": "^0.1.5",
     "@material/typography": "^0.2.2"

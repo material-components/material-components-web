@@ -1,6 +1,6 @@
 {
   "name": "@material/toolbar",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "The Material Components for the web toolbar component",
   "license": "Apache-2.0",
   "repository": {
@@ -13,8 +13,8 @@
     "toolbar"
   ],
   "dependencies": {
-    "@material/base": "^0.1.3",
-    "@material/elevation": "^0.1.7",
+    "@material/base": "^0.2.0",
+    "@material/elevation": "^0.1.8",
     "@material/rtl": "^0.1.4",
     "@material/theme": "^0.1.5",
     "@material/typography": "^0.2.2"

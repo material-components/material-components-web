@@ -159,6 +159,7 @@
           <label for="native-js-checkbox" id="my-checkbox-label">This is my checkbox</label>
         </div>
         <button type="button" id="make-ind">Make indeterminate</button>
+        <button type="button" id="toggle-disabled">Toggle Disabled</button>
       </section>
 
       <section class="example mdc-theme--dark">
@@ -200,6 +201,10 @@
 
         document.getElementById('make-ind').addEventListener('click', function() {
           checkboxInstance.indeterminate = true;
+        });
+
+        document.getElementById('toggle-disabled').addEventListener('click', function() {
+          checkboxInstance.disabled = !checkboxInstance.disabled;
         });
       })(this);
     </script>
