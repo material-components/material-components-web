@@ -1,7 +1,7 @@
 {
   "name": "@material/textfield",
   "description": "The Material Components for the web text field component",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -14,8 +14,8 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.2.2",
-    "@material/base": "^0.1.3",
+    "@material/animation": "^0.2.3",
+    "@material/base": "^0.2.0",
     "@material/rtl": "^0.1.4",
     "@material/theme": "^0.1.5",
     "@material/typography": "^0.2.2"

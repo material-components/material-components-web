@@ -1,6 +1,6 @@
 {
   "name": "@material/dialog",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "The Material Components Web dialog component",
   "license": "Apache-2.0",
   "keywords": [
@@ -15,10 +15,10 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.2.2",
-    "@material/base": "^0.1.3",
-    "@material/elevation": "^0.1.7",
-    "@material/ripple": "^0.6.1",
+    "@material/animation": "^0.2.3",
+    "@material/base": "^0.2.0",
+    "@material/elevation": "^0.1.8",
+    "@material/ripple": "^0.6.2",
     "@material/rtl": "^0.1.4",
     "@material/theme": "^0.1.5",
     "@material/typography": "^0.1.1",

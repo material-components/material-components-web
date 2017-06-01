@@ -1,6 +1,6 @@
 {
   "name": "@material/grid-list",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "The Material Components for the web grid list component",
   "license": "Apache-2.0",
   "repository": {
@@ -13,7 +13,7 @@
     "grid list"
   ],
   "dependencies": {
-    "@material/base": "^0.1.3",
+    "@material/base": "^0.2.0",
     "@material/rtl": "^0.1.4",
     "@material/theme": "^0.1.5",
     "@material/typography": "^0.2.2"

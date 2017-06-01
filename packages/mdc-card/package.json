@@ -1,6 +1,6 @@
 {
   "name": "@material/card",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "The Material Components for the web card component",
   "license": "Apache-2.0",
   "keywords": [
@@ -13,7 +13,7 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/elevation": "^0.1.7",
+    "@material/elevation": "^0.1.8",
     "@material/theme": "^0.1.5",
     "@material/typography": "^0.2.2",
     "@material/rtl": "^0.1.4"
