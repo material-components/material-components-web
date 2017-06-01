@@ -1,3 +1,12 @@
+<a name="0.12.1"></a>
+## [0.12.1](https://github.com/material-components/material-components-web/compare/v0.12.0...v0.12.1) (2017-05-31)
+
+
+### Bug Fixes
+
+* Include the JavaScript for linear-progress  (#760) (#759) ([94e2221](https://github.com/material-components/material-components-web/commit/94e2221)), closes [#759](https://github.com/material-components/material-components-web/issues/759)
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/material-components/material-components-web/compare/v0.11.1...v0.12.0) (2017-05-30)
 

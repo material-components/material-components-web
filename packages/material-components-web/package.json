@@ -1,7 +1,7 @@
 {
   "name": "material-components-web",
   "description": "Modular and customizable Material Design UI components for the web",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -27,7 +27,7 @@
     "@material/grid-list": "^0.2.3",
     "@material/icon-toggle": "^0.1.12",
     "@material/layout-grid": "^0.1.2",
-    "@material/linear-progress": "^0.1.0",
+    "@material/linear-progress": "^0.1.1",
     "@material/list": "^0.2.9",
     "@material/menu": "^0.2.7",
     "@material/radio": "^0.2.5",
