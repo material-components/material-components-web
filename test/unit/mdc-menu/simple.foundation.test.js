@@ -334,7 +334,7 @@ test('#isOpen returns false when the menu is initiated without the open class pr
   assert.isNotOk(foundation.isOpen());
 });
 
-test('on click notifies user of selection after allowing time for selection UX to run', () => {
+test.only('on click notifies user of selection after allowing time for selection UX to run', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
