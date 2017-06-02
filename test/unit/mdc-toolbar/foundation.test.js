@@ -513,7 +513,6 @@ test('on scroll take correct action for flexible fixed last row only header with
   td.when(mockAdapter.hasClass(cssClasses.FLEXIBLE_DEFAULT_BEHAVIOR)).thenReturn(true);
   scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
 
-  td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()));
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()));
   mockRaf.restore();
 });
@@ -527,7 +526,6 @@ test('on scroll take correct action for flexible fixed header with default behav
   td.when(mockAdapter.hasClass(cssClasses.FLEXIBLE_DEFAULT_BEHAVIOR)).thenReturn(true);
   scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
 
-  td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()));
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()));
   mockRaf.restore();
 });
