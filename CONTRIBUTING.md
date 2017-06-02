@@ -209,6 +209,7 @@ The core team maintains a [public Pivotal Tracker](https://www.pivotaltracker.co
 
 Each tracker story contains a link to its corresponding GH issue within its description. Each GH issue present in tracker is tagged with an `in-tracker` label. This will hopefully make it easy to move between the two if so desired.
 
+**Our team prioritizes responding to as many engineering and user experience questions as possible. We do not support responses to questions outside of these areas at this time.**
 
 [js-style-guide]: https://google.github.io/styleguide/jsguide.html
 [css-style-guide]: https://github.com/material-components/material-components-web/blob/master/.stylelintrc.yaml

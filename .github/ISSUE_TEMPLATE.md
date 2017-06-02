@@ -19,6 +19,8 @@ MDC-Web is still under active development. You can see our current progress on [
 
 If you're interested in information for a specific component, check out our [component issues](https://github.com/material-components/material-components-web/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20label%3Av2-component) to see which milestone it's associated with and subscribe to updates to it. If an issue has the `in-tracker` label, you can also take a look at our [public Pivotal Tracker](https://www.pivotaltracker.com/n/projects/1664011) for a rough estimate of when we'll get to it.
 
+Our team prioritizes responding to as many engineering and user experience questions as possible. We do not support responses to questions outside of these areas at this time.
+
 ## Bugs
 
 Follow the template below to ensure the quickest and most accurate response to your issue.

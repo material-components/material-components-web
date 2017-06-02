@@ -238,6 +238,22 @@ test('#setDisabled updates the value of nativeControl.disabled', () => {
   assert.isNotOk(nativeControl.disabled);
 });
 
+test('#setDisabled adds mdc-checkbox--disabled class to the root element when set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeControl = {disabled: false};
+  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
+  foundation.setDisabled(true);
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED));
+});
+
+test('#setDisabled removes mdc-checkbox--disabled class from the root element when set to false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeControl = {disabled: true};
+  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
+  foundation.setDisabled(false);
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
+});
+
 test('#isDisabled returns false when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);

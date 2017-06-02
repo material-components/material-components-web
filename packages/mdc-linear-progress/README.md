@@ -3,7 +3,7 @@ title: "Linear Progress"
 layout: detail
 section: components
 excerpt: "Material Design-styled linear progress indicators."
-iconId: linear-progress
+iconId: progress_linear
 path: /catalog/linear-progress/
 -->
 
@@ -11,7 +11,8 @@ path: /catalog/linear-progress/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/linear-progress.html">
+      href="https://material-components-web.appspot.com/linear-progress.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/linear-progress.png" width="586" alt="Linear progress screenshot">
   </a>
 </div>-->
 
@@ -19,6 +20,23 @@ The MDC Linear Progress component is a spec-aligned linear progress indicator co
 [Material Design progress & activity requirements](https://material.io/guidelines/components/progress-activity.html).
 
 ## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/progress-activity.html">Guidelines</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/linear-progress.html">Demo</a>
+  </li>
+</ul>
+
+## Installation
+
+```
+npm install --save @material/linear-progress
+```
+
+## Usage
 
 ```html
 <div role="progressbar" class="mdc-linear-progress">
@@ -32,14 +50,6 @@ The MDC Linear Progress component is a spec-aligned linear progress indicator co
   </div>
 </div>
 ```
-
-## Installation
-
-```
-npm install --save @material/linear-progress
-```
-
-## Usage
 
 ### CSS Modifiers
 

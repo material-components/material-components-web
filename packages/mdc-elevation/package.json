@@ -1,7 +1,7 @@
 {
   "name": "@material/elevation",
   "description": "Material Components for the web mixins + CSS Classes for Material Design elevation",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -14,6 +14,6 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.2.2"
+    "@material/animation": "^0.2.3"
   }
 }
