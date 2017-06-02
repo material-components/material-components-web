@@ -49,7 +49,7 @@ npm install --save @material/elevation
 | Mixin | Description |
 | ----------------------------------------------- | - |
 | `mdc-elevation($z-value)` | Sets the elevation to the z-space for that given elevation |
-| `mdc-elevation-transition($duration, $easing)` | Applies the correct css rules needed to have an element transition between elevations |
+| `mdc-elevation-transition($duration, $easing)` | Applies the correct css rules to transition an element between elevations |
 
 | Variable | Description |
 | ------------------------------------------- | - |
@@ -75,4 +75,4 @@ If you need more configurability over your transitions, use the `mdc-elevation-t
 | CSS Class | Description |
 | --------------------------- | - |
 | `mdc-elevation--z<N>` | Sets the elevation to the (N)dp, where 1 <= N <= 24. |
-| `mdc-elevation-transition` | Applies the correct css rules needed to have an element transition between elevations. |
+| `mdc-elevation-transition` | Applies the correct css rules to transition an element between elevations. |
