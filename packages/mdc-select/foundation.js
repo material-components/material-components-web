@@ -83,7 +83,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
       }
     };
     this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
-    this.selectionHandler_ = ({detail}) => {
+    this.selectionHandler_ = (evt) => {
+      console.log(evt)
+      const {detail} = evt;
       const {index} = detail;
       this.close_();
       if (index !== this.selectedIndex_) {
@@ -91,7 +93,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
         this.adapter_.notifyChange();
       }
     };
-    this.cancelHandler_ = () => {
+    this.cancelHandler_ = (evt) => {
+      console.log(evt)
       this.close_();
     };
   }

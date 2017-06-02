@@ -153,6 +153,17 @@
         @include mdc-theme-prop(color, text-primary-on-dark);
       }
     }
+
+    &--disabled {
+      cursor: default;
+      pointer-events: none;
+
+      @include mdc-theme-prop(color, text-disabled-on-light);
+
+      @include mdc-theme-dark(".mdc-select") {
+        @include mdc-theme-prop(color, text-disabled-on-dark);
+      }
+    }
   }
 
   .mdc-list-group,
