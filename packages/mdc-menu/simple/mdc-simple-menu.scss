@@ -189,6 +189,14 @@ $mdc-simple-menu-item-fade-duration: .3s;
     opacity: .18;
   }
 
+  .mdc-list-item--disabled:focus::before {
+    opacity: 0;
+  }
+
+  .mdc-list-item--disabled:active::before {
+    opacity: 0;
+  }
+
   /* stylelint-enable plugin/selector-bem-pattern */
 }
 

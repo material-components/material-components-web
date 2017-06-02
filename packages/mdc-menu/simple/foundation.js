@@ -300,6 +300,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   handlePossibleSelected_(evt) {
+    if (evt.target.classList.contains(MDCSimpleMenuFoundation.cssClasses.DISABLED_ITEM)) {
+      evt.stopPropagation();
+      return;
+    }
     const targetIndex = this.adapter_.getIndexForEventTarget(evt.target);
     if (targetIndex < 0) {
       return;

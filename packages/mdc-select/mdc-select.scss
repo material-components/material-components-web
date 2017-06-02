@@ -139,6 +139,8 @@
 
 .mdc-select__menu {
   .mdc-list-item {
+    user-select: none;
+
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-secondary-on-light);
 
@@ -156,7 +158,6 @@
 
     &--disabled {
       cursor: default;
-      pointer-events: none;
 
       @include mdc-theme-prop(color, text-disabled-on-light);
 

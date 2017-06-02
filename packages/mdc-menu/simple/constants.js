@@ -20,6 +20,7 @@ export const cssClasses = {
   TOP_RIGHT: 'mdc-simple-menu--open-from-top-right',
   BOTTOM_LEFT: 'mdc-simple-menu--open-from-bottom-left',
   BOTTOM_RIGHT: 'mdc-simple-menu--open-from-bottom-right',
+  DISABLED_ITEM: 'mdc-list-item--disabled',
 };
 
 export const strings = {
