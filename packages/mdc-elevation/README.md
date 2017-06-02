@@ -16,13 +16,7 @@ path: /catalog/elevation/
   </a>
 </div>-->
 
-MDC Elevation provides Sass mixins and CSS classes which are used to provide [shadows and
-elevation](https://material.io/guidelines/what-is-material/elevation-shadows.html) to our material
-components.
-
-The elevation values are mapped out in a "z-space" and range from `0` to `24`.
-Our implementation is based on [Scott Hyndman's work](http://codepen.io/shyndman/full/ojxmdY/),
-which was created in collaboration with the designers on the Material Design team.
+Shadows provide important visual cues about objects’ depth and directional movement. They are the only visual cue indicating the amount of separation between surfaces. An object’s elevation determines the appearance of its shadow. The elevation values are mapped out in a "z-space" and range from `0` to `24`.
 
 > **A note about "z-space"**: Within the spec, elevation is normally referred to as having a `dp`
 > value. In other words, how many "pixels" above the base material is a piece of material elevated.
