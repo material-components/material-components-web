@@ -110,6 +110,16 @@ test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', () => 
   assert.isOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());
 });
 
+test('adapter#eventTargetHasClass returns true if the event target has a given class', () => {
+  const {root, component} = setupTest();
+  const target = root.querySelectorAll('[role="menuitem"]')[1];
+  const newClassname = 'foo';
+
+  target.classList.add(newClassname);
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(target, newClassname));
+});
+
 test('adapter#hasNecessaryDom returns false if the DOM does not include the items container', () => {
   const {root, component} = setupTest();
   const items = root.querySelector(strings.ITEMS_SELECTOR);

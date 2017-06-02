@@ -37,6 +37,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
       hasNecessaryDom: () => /* boolean */ false,
+      eventTargetHasClass: (/* target: EventTarget, className: string */) => false,
       getInnerDimensions: () => /* { width: number, height: number } */ ({}),
       hasAnchor: () => /* boolean */ false,
       getAnchorDimensions: () =>
@@ -300,7 +301,9 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   handlePossibleSelected_(evt) {
-    if (evt.target.classList.contains(MDCSimpleMenuFoundation.cssClasses.DISABLED_ITEM)) {
+    const targetIsDisabled =
+      this.adapter_.eventTargetHasClass(evt.target, MDCSimpleMenuFoundation.cssClasses.DISABLED_ITEM);
+    if (targetIsDisabled) {
       evt.stopPropagation();
       return;
     }

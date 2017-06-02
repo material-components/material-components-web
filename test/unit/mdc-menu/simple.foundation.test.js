@@ -62,8 +62,8 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getInnerDimensions', 'hasAnchor',
-    'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale', 'getNumberOfItems',
+    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'eventTargetHasClass', 'getInnerDimensions',
+    'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale', 'getNumberOfItems',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'registerDocumentClickHandler',
     'deregisterDocumentClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
     'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
@@ -334,7 +334,7 @@ test('#isOpen returns false when the menu is initiated without the open class pr
   assert.isNotOk(foundation.isOpen());
 });
 
-test.only('on click notifies user of selection after allowing time for selection UX to run', () => {
+test('on click notifies user of selection after allowing time for selection UX to run', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -367,6 +367,25 @@ test('on click closes the menu', () => {
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 
   raf.restore();
+  clock.uninstall();
+});
+
+test('on click does not trigger selected if menu item is disabled', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.DISABLED_ITEM)).thenReturn(true);
+  const clock = lolex.install();
+  const mockEvt = {
+    target: {},
+    stopPropagation: td.func('stopPropagation'),
+  };
+
+  foundation.init();
+  handlers.click(mockEvt);
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+
   clock.uninstall();
 });
 

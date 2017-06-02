@@ -65,6 +65,7 @@ export class MDCSimpleMenu extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.itemsContainer_),
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
       getInnerDimensions: () => {
         const {itemsContainer_: itemsContainer} = this;
         return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};

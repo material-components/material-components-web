@@ -136,6 +136,25 @@ classes:
 | `mdc-simple-menu--open-from-bottom-right` | Open the menu from the bottom right. |
 
 
+#### Disabled list items
+
+When used in components such as MDC Menu, list items can be disabled.
+To disable a list item, add the `mdc-list-item--disabled` modifier class, set `tabindex` to -1,
+and set `aria-hidden` to true.
+
+```html
+<div class="mdc-simple-menu" tabindex="-1">
+  <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+    <li class="mdc-list-item" role="menuitem" tabindex="0">
+      A Menu Item
+    </li>
+    <li class="mdc-list-item mdc-list-item--disabled" role="menuitem" tabindex="-1" aria-hidden="true">
+      Another Menu Item
+    </li>
+  </ul>
+</div>
+```
+
 ### Using the JS Component
 
 MDC Simple Menu ships with a Component / Foundation combo which allows for frameworks to richly integrate the
@@ -247,6 +266,7 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
 | `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-simple-menu__items` container). |
+| `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns boolean indicating whether an event target has a given class. |
 | `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height |
 | `hasAnchor: () => boolean` | Returns whether the menu has an anchor for positioning. |
 | `getAnchorDimensions() => { width: number, height: number, top: number, right: number, bottom: number, left: number }` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`). |

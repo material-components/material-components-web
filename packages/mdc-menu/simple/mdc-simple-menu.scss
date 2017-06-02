@@ -133,11 +133,22 @@ $mdc-simple-menu-item-fade-duration: .3s;
     outline: none;
     color: inherit;
     text-decoration: none;
+    user-select: none;
 
     @include mdc-typography(body2);
 
     @include mdc-theme-dark(".mdc-simple-menu", true) {
       color: white;
+    }
+
+    &--disabled {
+      cursor: default;
+
+      @include mdc-theme-prop(color, text-disabled-on-light);
+
+      @include mdc-theme-dark(".mdc-select") {
+        @include mdc-theme-prop(color, text-disabled-on-dark);
+      }
     }
   }
 
