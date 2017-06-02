@@ -47,12 +47,12 @@ npm install --save @material/elevation
 ### Sass Mixins, Variables, and Functions
 
 | Mixin | Description |
-| - | - |
+| ---------------------------------------------- | - |
 | `mdc-elevation($z-value)` | Sets the elevation to the z-space for that given elevation |
 | `mdc-elevation-transition($duration, $easing)` | Applies the correct css rules needed to have an element transition between elevations |
 
 | Variable | Description |
-| - | - |
+| ------------------------------------------ | - |
 | `mdc-elevation-transition-duration` | Default duration value for elevation transitions |
 | `mdc-elevation-transition-timing-function` | Default easing value for elevation transitions |
 
@@ -73,6 +73,6 @@ If you need more configurability over your transitions, use the `mdc-elevation-t
 ### CSS Classes
 
 | CSS Class | Description |
-| - | - |
+| -------------------------- | - |
 | `mdc-elevation--z<N>` | Sets the elevation to the (N)dp, where 1 <= N <= 24. |
 | `mdc-elevation-transition` | Applies the correct css rules needed to have an element transition between elevations. |
