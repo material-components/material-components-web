@@ -58,7 +58,7 @@ Wrap the items with `mdc-toolbar` class in following way:
 <header class="mdc-toolbar">
   <div class="mdc-toolbar__row">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-      <a href="#" class="material-icons">menu</a>
+      <a href="#" class="material-icons mdc-toolbar__icon--menu">menu</a>
       <span class="mdc-toolbar__title">Title</span>
     </section>
   </div>
@@ -71,7 +71,7 @@ MDC Toolbars can accommodate multiple rows using the wrapper `mdc-toolbar__row`:
 <header class="mdc-toolbar">
   <div class="mdc-toolbar__row">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-      <a href="#" class="material-icons">menu</a>
+      <a href="#" class="material-icons mdc-toolbar__icon--menu">menu</a>
       <span class="mdc-toolbar__title">Title</span>
     </section>
   </div>
@@ -136,6 +136,12 @@ a page's title, or an application name.
   </div>
 </header>
 ```
+
+#### Toolbar Icons
+
+Icons can be added as anchor tags, `span`s, or `button`s to `mdc-toolbar`. There are two types of icons,
+`mdc-toolbar__icon--menu` represents the left most icon in `mdc-toolbar` usually to the left of `mdc-toolbar__title`.
+`mdc-toolbar__icon` represents any icons placed on the right side of an `mdc-toolbar`.
 
 ### Fixed toolbars
 
@@ -331,8 +337,8 @@ The provided modifiers are:
 
 | Class                                | Description                             |
 | -------------------------------------| --------------------------------------- |
-| `mdc-toolbar--fixed`                 | Makes toolbar fixed on top and have persistent elavation |
-| `mdc-toolbar--waterfall`             | Removes fixed toolbar persistent elavation and makes it to gain elevation when a user begins to scroll down the page |
+| `mdc-toolbar--fixed`                 | Makes toolbar fixed on top and have persistent elevation |
+| `mdc-toolbar--waterfall`             | Removes fixed toolbar persistent elevation and makes it to gain elevation when a user begins to scroll down the page |
 | `mdc-toolbar--fixed-lastrow-only`    | Makes only last row of fixed toolbar anchored on top |
 | `mdc-toolbar--flexible`              | Makes toolbar first row has flexible space |
 | `mdc-toolbar__section--align-start`  | Makes section aligns to the start.      |

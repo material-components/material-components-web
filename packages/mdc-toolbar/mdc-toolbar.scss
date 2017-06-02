@@ -18,15 +18,8 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
-
-$mdc-toolbar-row-height: 64px;
-$mdc-toolbar-mobile-row-height: 56px;
-$mdc-toolbar-padding: 20px 28px;
-$mdc-toolbar-mobile-padding: 16px;
-
-$mdc-toolbar-ratio-to-extend-flexible: 4 !default;
-
-$mdc-toolbar-mobile-breakpoint: 599px;
+@import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define toolbar
 .mdc-toolbar {
@@ -43,16 +36,21 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   &__row {
     display: flex;
     position: relative;
+    align-items: center;
     width: 100%;
     height: auto;
     min-height: $mdc-toolbar-row-height;
-    padding: $mdc-toolbar-padding;
     box-sizing: border-box;
+
+    // TODO: refactor this out when #23 is implemented
+    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+      and (orientation: landscape) {
+      min-height: $mdc-toolbar-mobile-landscape-row-height;
+    }
 
     // TODO: refactor this out when #23 is implemented
     @media (max-width: $mdc-toolbar-mobile-breakpoint) {
       min-height: $mdc-toolbar-mobile-row-height;
-      padding: $mdc-toolbar-mobile-padding;
     }
   }
 
@@ -62,6 +60,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     align-items: flex-start;
     justify-content: center;
     min-width: 0;
+    height: 100%;
     z-index: 1;
 
     &--align-start {
@@ -78,12 +77,25 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   &__title {
     @include mdc-typography(title);
 
+    align-self: center;
     margin: 0;
+    margin-left: 16px;
+    padding: $mdc-toobar-element-vertical-padding 0;
     line-height: 1.5rem;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     z-index: 1;
+  }
+
+  &__icon {
+    @include mdc-shared-icon-style;
+    @include mdc-theme-prop(color, text-primary-on-primary);
+  }
+
+  &__icon--menu {
+    @include mdc-shared-icon-style(menu);
+    @include mdc-theme-prop(color, text-primary-on-primary);
   }
 }
 
@@ -124,15 +136,9 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     .mdc-toolbar__title {
       @include mdc-typography(display1);
 
-      transform: translateY($mdc-toolbar-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 1));
-      transform: translateY(calc(#{$mdc-toolbar-row-height} * (var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
+      align-self: flex-end;
       font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
       line-height: 1.5rem;
-
-      @media (max-width: $mdc-toolbar-mobile-breakpoint) {
-        transform: translateY($mdc-toolbar-mobile-row-height * ($mdc-toolbar-ratio-to-extend-flexible - 1));
-        transform: translateY(calc(#{$mdc-toolbar-mobile-row-height} * (var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}) - 1)));
-      }
     }
 
     .mdc-toolbar__row:first-child::after {
@@ -182,7 +188,7 @@ $mdc-toolbar-mobile-breakpoint: 599px;
 .mdc-toolbar-fixed-adjust {
   margin-top: $mdc-toolbar-row-height;
 
-  @media (max-width: 599px) {
+  @media (max-width: $mdc-toolbar-mobile-breakpoint) {
     margin-top: $mdc-toolbar-mobile-row-height;
   }
 }

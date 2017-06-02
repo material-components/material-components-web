@@ -50,6 +50,10 @@ limitations under the License
         color: #f0f0f0;
       }
 
+      .demo-header-toolbar {
+        z-index: 10;
+      }
+
       .hero button {
         margin-left: 32px;
         margin-right: 32px;
@@ -131,7 +135,7 @@ limitations under the License
       .my-modified-toolbar-section {
         position: absolute;
         right: 0;
-        bottom: 0;
+        bottom: -16px;
       }
 
       [dir="rtl"] .my-modified-toolbar-section {
@@ -142,11 +146,11 @@ limitations under the License
     </style>
   </head>
   <body>
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Tabs</span>
         </section>
@@ -388,7 +392,7 @@ limitations under the License
 .my-modified-toolbar-section {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: -16px;
 }
 
 [dir="rtl"] .my-modified-toolbar-section {

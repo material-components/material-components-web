@@ -34,21 +34,6 @@ fieldset {
   border: 0;
 }
 
-.mdc-toolbar a, .mdc-toolbar a:visited {
-  text-decoration: none;
-  color: #f0f0f0;
-}
-
-.catalog-title {
-  font-family: "Roboto Mono", monospace;
-}
-
-.catalog-logo, .catalog-back {
-  text-decoration: none;
-  padding-right: 24px;
-  color: #eeeeee;
-}
-
 .hero {
   background-color: rgba(0, 0, 0, 0.05);
   min-height: 360px;
