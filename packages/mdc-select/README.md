@@ -181,7 +181,7 @@ on a mobile device. It does not require any javascript, nor any CSS for `mdc-men
 MDC-Web implements multi-select on top of the `<select multiple>` element.
 
 ```html
-<select multiple size="6" class="mdc-multi-select mdl-list" >
+<select multiple size="6" class="mdc-multi-select mdc-list" >
   <optgroup class="mdc-list-group" label="Starches">
     <option class="mdc-list-item">
       Potato
