@@ -19,21 +19,21 @@
  */
 export default class MDCFoundation {
 
-  /** @return enum{cssClasses} */
+  /** @return {!Object<string>} */
   static get cssClasses() {
     // Classes extending MDCFoundation should implement this method to return an object which exports every
     // CSS class the foundation class needs as a property. e.g. {ACTIVE: 'mdc-component--active'}
     return {};
   }
 
-  /** @return enum{strings} */
+  /** @return {!Object<string>} */
   static get strings() {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // semantic strings as constants. e.g. {ARIA_ROLE: 'tablist'}
     return {};
   }
 
-  /** @return enum{numbers} */
+  /** @return {!Object<string>} */
   static get numbers() {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // of its semantic numbers as constants. e.g. {ANIMATION_DELAY_MS: 350}
@@ -49,10 +49,10 @@ export default class MDCFoundation {
   }
 
   /**
-   * @param {!A} adapter
+   * @param {A=} adapter
    */
   constructor(adapter = {}) {
-    /** @private {!A} */
+    /** @protected {!A} */
     this.adapter_ = adapter;
   }
 
