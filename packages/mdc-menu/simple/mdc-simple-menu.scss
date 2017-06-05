@@ -134,7 +134,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
     color: inherit;
     text-decoration: none;
 
-    @include mdc-typography(body2);
+    @include mdc-typography(subheading2);
 
     @include mdc-theme-dark(".mdc-simple-menu", true) {
       color: white;
