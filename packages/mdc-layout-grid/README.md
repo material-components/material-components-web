@@ -190,7 +190,7 @@ Note that the margin and gutter can be overriden at runtime by using the CSS cus
 @include mdc-layout-grid-cell-order(2);
 ```
 
-`mdl-layout-grid-cell-order` reorders a cell inside a grid. It's an optional mixin that should be applied to the cell
+`mdc-layout-grid-cell-order` reorders a cell inside a grid. It's an optional mixin that should be applied to the cell
 element, together with the mandatory `mdc-layout-grid-cell`.
 
 It takes a single parameter, `$order`, which expects a value from 1 to 12.
@@ -202,7 +202,7 @@ It takes a single parameter, `$order`, which expects a value from 1 to 12.
 @include mdc-layout-grid-cell-align(top);
 ```
 
-`mdl-layout-grid-cell-align` aligns a cell vertically inside a grid. It's an optional mixin that should be applied to
+`mdc-layout-grid-cell-align` aligns a cell vertically inside a grid. It's an optional mixin that should be applied to
 the cell element, together with the mandatory `mdc-layout-grid-cell`.
 
 It takes a single parameter, `$position`, which expects `top`, `middle` or `bottom` as values.
