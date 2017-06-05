@@ -37,7 +37,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
       hasNecessaryDom: () => /* boolean */ false,
-      eventTargetHasClass: (/* target: EventTarget, className: string */) => false,
+      getAttributeForEventTarget: (/* target: EventTarget, attributeName: string */) => {},
       getInnerDimensions: () => /* { width: number, height: number } */ ({}),
       hasAnchor: () => /* boolean */ false,
       getAnchorDimensions: () =>
@@ -302,7 +302,9 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
 
   handlePossibleSelected_(evt) {
     const targetIsDisabled =
-      this.adapter_.eventTargetHasClass(evt.target, MDCSimpleMenuFoundation.cssClasses.DISABLED_ITEM);
+      this.adapter_.getAttributeForEventTarget(
+        evt.target, MDCSimpleMenuFoundation.strings.ARIA_DISABLED_ATTR
+      ) === 'true';
     if (targetIsDisabled) {
       evt.stopPropagation();
       return;

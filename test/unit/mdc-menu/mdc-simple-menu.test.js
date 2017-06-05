@@ -110,14 +110,15 @@ test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', () => 
   assert.isOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());
 });
 
-test('adapter#eventTargetHasClass returns true if the event target has a given class', () => {
+test('adapter#getAttributeForEventTarget returns the value of an attribute for a given event target', () => {
   const {root, component} = setupTest();
+  const attrName = 'aria-disabled';
+  const attrVal = 'true';
   const target = root.querySelectorAll('[role="menuitem"]')[1];
-  const newClassname = 'foo';
 
-  target.classList.add(newClassname);
+  target.setAttribute(attrName, attrVal);
 
-  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(target, newClassname));
+  assert.equal(component.getDefaultFoundation().adapter_.getAttributeForEventTarget(target, attrName), attrVal);
 });
 
 test('adapter#hasNecessaryDom returns false if the DOM does not include the items container', () => {

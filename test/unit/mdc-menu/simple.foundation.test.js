@@ -62,7 +62,7 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'eventTargetHasClass', 'getInnerDimensions',
+    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'getInnerDimensions',
     'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale', 'getNumberOfItems',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'registerDocumentClickHandler',
     'deregisterDocumentClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
@@ -370,11 +370,12 @@ test('on click closes the menu', () => {
   clock.uninstall();
 });
 
-test('on click does not trigger selected if menu item is disabled', () => {
+test('on click does not trigger event target has aria-disabled set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
 
-  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.DISABLED_ITEM)).thenReturn(true);
+  td.when(mockAdapter.getAttributeForEventTarget(td.matchers.anything(), strings.ARIA_DISABLED_ATTR))
+    .thenReturn('true');
   const clock = lolex.install();
   const mockEvt = {
     target: {},

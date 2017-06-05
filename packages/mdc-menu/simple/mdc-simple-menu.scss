@@ -140,16 +140,6 @@ $mdc-simple-menu-item-fade-duration: .3s;
     @include mdc-theme-dark(".mdc-simple-menu", true) {
       color: white;
     }
-
-    &--disabled {
-      cursor: default;
-
-      @include mdc-theme-prop(color, text-disabled-on-light);
-
-      @include mdc-theme-dark(".mdc-select") {
-        @include mdc-theme-prop(color, text-disabled-on-dark);
-      }
-    }
   }
 
   .mdc-list-divider {
@@ -200,14 +190,23 @@ $mdc-simple-menu-item-fade-duration: .3s;
     opacity: .18;
   }
 
-  .mdc-list-item--disabled:focus::before {
+  .mdc-list-item[aria-disabled="true"] {
+    cursor: default;
+
+    @include mdc-theme-prop(color, text-disabled-on-light);
+
+    @include mdc-theme-dark(".mdc-select") {
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+    }
+  }
+
+  .mdc-list-item[aria-disabled="true"]:focus::before {
     opacity: 0;
   }
 
-  .mdc-list-item--disabled:active::before {
+  .mdc-list-item[aria-disabled="true"]:active::before {
     opacity: 0;
   }
-
   /* stylelint-enable plugin/selector-bem-pattern */
 }
 

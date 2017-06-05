@@ -154,11 +154,10 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 </div>
 ```
 
-#### Disabled list items
+#### Disabled options
 
-When used in components such as MDC Select, individual list items can be disabled.
-To disable a list item, add the `mdc-list-item--disabled` modifier class to it, set `tabindex` to -1,
-and set `aria-hidden` to true.
+When used in components such as MDC Select, `mdc-list-item`'s can be disabled.
+To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `"-1"`.
 
 ```html
 <div class="mdc-select" role="listbox">
@@ -168,8 +167,8 @@ and set `aria-hidden` to true.
       <li class="mdc-list-item" role="option" id="grains" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list-item mdc-list-item--disabled" role="option" id="vegetables" tabindex="-1" aria-disabled="true">
-        Vegetables
+      <li class="mdc-list-item" role="option" id="vegetables" tabindex="-1" aria-disabled="true">
+        Vegetables (Disabled)
       </li>
       <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
         Fruit

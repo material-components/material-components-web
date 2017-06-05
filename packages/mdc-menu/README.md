@@ -136,11 +136,10 @@ classes:
 | `mdc-simple-menu--open-from-bottom-right` | Open the menu from the bottom right. |
 
 
-#### Disabled list items
+#### Disabled menu items
 
-When used in components such as MDC Menu, list items can be disabled.
-To disable a list item, add the `mdc-list-item--disabled` modifier class, set `tabindex` to -1,
-and set `aria-hidden` to true.
+When used in components such as MDC Menu, `mdc-list-item`'s can be disabled.
+To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `"-1"`.
 
 ```html
 <div class="mdc-simple-menu" tabindex="-1">
@@ -148,8 +147,8 @@ and set `aria-hidden` to true.
     <li class="mdc-list-item" role="menuitem" tabindex="0">
       A Menu Item
     </li>
-    <li class="mdc-list-item mdc-list-item--disabled" role="menuitem" tabindex="-1" aria-hidden="true">
-      Another Menu Item
+    <li class="mdc-list-item" role="menuitem" tabindex="-1" aria-disabled="true">
+      Disabled Menu Item
     </li>
   </ul>
 </div>
