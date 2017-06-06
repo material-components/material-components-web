@@ -64,8 +64,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'getInnerDimensions',
     'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale', 'getNumberOfItems',
-    'registerInteractionHandler', 'deregisterInteractionHandler', 'registerDocumentClickHandler',
-    'deregisterDocumentClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
+    'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
+    'deregisterBodyClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
     'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
     'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition', 'getAccurateTime',
   ]);
@@ -270,6 +270,21 @@ testFoundation('#open anchors the menu on the top left in LTR when not close to 
       td.verify(mockAdapter.setTransformOrigin('top left'));
       td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
     });
+
+testFoundation('#close does nothing if event target has aria-disabled set to true',
+  ({foundation, mockAdapter}) => {
+    const mockEvt = {
+      target: {},
+      stopPropagation: td.func('stopPropagation'),
+    };
+
+    td.when(mockAdapter.getAttributeForEventTarget(td.matchers.anything(), strings.ARIA_DISABLED_ATTR))
+      .thenReturn('true');
+
+    foundation.close(mockEvt);
+
+    td.verify(mockAdapter.deregisterBodyClickHandler(td.matchers.anything()), {times: 0});
+  });
 
 testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
   foundation.close();
@@ -824,7 +839,7 @@ test('on spacebar keydown prevents default on the event', () => {
 
 testFoundation('on document click cancels and closes the menu', ({foundation, mockAdapter, mockRaf}) => {
   let documentClickHandler;
-  td.when(mockAdapter.registerDocumentClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
     documentClickHandler = handler;
   });
 

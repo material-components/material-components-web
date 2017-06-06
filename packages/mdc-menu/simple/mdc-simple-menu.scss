@@ -200,12 +200,11 @@ $mdc-simple-menu-item-fade-duration: .3s;
     }
   }
 
-  .mdc-list-item[aria-disabled="true"]:focus::before {
-    opacity: 0;
-  }
-
-  .mdc-list-item[aria-disabled="true"]:active::before {
-    opacity: 0;
+  .mdc-list-item[aria-disabled="true"] {
+    &:focus::before,
+    &:active::before {
+      opacity: 0;
+    }
   }
   /* stylelint-enable plugin/selector-bem-pattern */
 }

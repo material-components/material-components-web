@@ -139,8 +139,6 @@
 
 .mdc-select__menu {
   .mdc-list-item {
-    user-select: none;
-
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-secondary-on-light);
 
@@ -153,16 +151,6 @@
 
       &[aria-selected="true"] {
         @include mdc-theme-prop(color, text-primary-on-dark);
-      }
-    }
-
-    &--disabled {
-      cursor: default;
-
-      @include mdc-theme-prop(color, text-disabled-on-light);
-
-      @include mdc-theme-dark(".mdc-select") {
-        @include mdc-theme-prop(color, text-disabled-on-dark);
       }
     }
   }
