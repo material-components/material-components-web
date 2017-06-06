@@ -15,22 +15,38 @@
 @import "./variables";
 @import "./mixins";
 
+:root {
+  @each $size in map-keys($mdc-layout-grid-columns) {
+    --mdc-layout-grid-margin-#{$size}: map-get($mdc-layout-grid-default-margin, $size);
+    --mdc-layout-grid-gutter-#{$size}: map-get($mdc-layout-grid-default-gutter, $size);
+  }
+}
+
 // postcss-bem-linter: define layout-grid
 .mdc-layout-grid {
-  @include mdc-layout-grid($mdc-layout-grid-default-margin, $mdc-layout-grid-default-gutter);
+  @each $size in map-keys($mdc-layout-grid-columns) {
+    @include mdc-layout-grid-media-query_($size) {
+      $margin: map-get($mdc-layout-grid-default-margin, $size);
+      $gutter: map-get($mdc-layout-grid-default-gutter, $size);
+
+      @include mdc-layout-grid($size, $margin, $gutter, $mdc-layout-grid-max-width);
+    }
+  }
 }
 
 .mdc-layout-grid__cell {
-  @include mdc-layout-grid-cell($mdc-layout-grid-default-gutter);
-
   @each $size in map-keys($mdc-layout-grid-columns) {
     @include mdc-layout-grid-media-query_($size) {
+      $gutter: map-get($mdc-layout-grid-default-gutter, $size);
+
+      @include mdc-layout-grid-cell($size, $mdc-layout-grid-default-column-span, $gutter);
+
       @for $span from 1 through map-get($mdc-layout-grid-columns, desktop) {
         // Span classes.
         // stylelint-disable max-nesting-depth
         @at-root .mdc-layout-grid__cell--span-#{$span},
           .mdc-layout-grid__cell--span-#{$span}-#{$size}.mdc-layout-grid__cell--span-#{$span}-#{$size} {
-          @include mdc-layout-grid-cell-span_($size, $span, $mdc-layout-grid-default-gutter);
+          @include mdc-layout-grid-cell-span_($size, $span, $gutter);
         }
         // stylelint-enable max-nesting-depth
       }
