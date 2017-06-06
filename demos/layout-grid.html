@@ -121,28 +121,73 @@
       </section>
 
       <section class="examples">
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__cell">
+            <div class="demo-controls">
+              Desktop Margin:
+              <select id="desktop-margin">
+                <option value="8px">8px</option>
+                <option value="16px">16px</option>
+                <option value="24px" selected>24px</option>
+                <option value="40px">40px</option>
+              </select>
 
-        <div class="demo-controls">
-          Margin:
-          <select id="margin">
-            <option value="8px">8px</option>
-            <option value="16px" selected>16px</option>
-            <option value="24px">24px</option>
-            <option value="40px">40px</option>
-          </select>
+              <br>
 
-          <br>
+              Desktop Gutter:
+              <select id="desktop-gutter">
+                <option value="8px">8px</option>
+                <option value="16px">16px</option>
+                <option value="24px" selected>24px</option>
+                <option value="40px">40px</option>
+              </select>
+            </div>
+          </div>
+          <div class="mdc-layout-grid__cell">
+            <div class="demo-controls">
+              Tablet Margin:
+              <select id="tablet-margin">
+                <option value="8px">8px</option>
+                <option value="16px" selected>16px</option>
+                <option value="24px">24px</option>
+                <option value="40px">40px</option>
+              </select>
 
-          Gutter:
-          <select id="gutter">
-            <option value="8px">8px</option>
-            <option value="16px" selected>16px</option>
-            <option value="24px">24px</option>
-            <option value="40px">40px</option>
-          </select>
+              <br>
+
+              Tablet Gutter:
+              <select id="tablet-gutter">
+                <option value="8px">8px</option>
+                <option value="16px" selected>16px</option>
+                <option value="24px">24px</option>
+                <option value="40px">40px</option>
+              </select>
+            </div>
+          </div>
+          <div class="mdc-layout-grid__cell">
+            <div class="demo-controls">
+              Phone Margin:
+              <select id="phone-margin">
+                <option value="8px">8px</option>
+                <option value="16px" selected>16px</option>
+                <option value="24px">24px</option>
+                <option value="40px">40px</option>
+              </select>
+
+              <br>
+
+              Phone Gutter:
+              <select id="phone-gutter">
+                <option value="8px">8px</option>
+                <option value="16px" selected>16px</option>
+                <option value="24px">24px</option>
+                <option value="40px">40px</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <div class="demo-warning"></div>
 
+        <div class="demo-warning"></div>
 
         <div class="demo-grid-legend">Grid of 1 column wide items</div>
         <div class="demo-grid mdc-layout-grid">
@@ -203,14 +248,32 @@
     <script>
       (function(global) {
         'use strict';
-        var marginSelect = document.querySelector('#margin');
-        marginSelect.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-margin', marginSelect.value);
+        var marginSelectDesktop = document.querySelector('#desktop-margin');
+        marginSelectDesktop.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-margin-desktop', marginSelectDesktop.value);
         });
 
-        var gutterSelect = document.querySelector('#gutter');
-        gutterSelect.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-gutter', gutterSelect.value);
+        var gutterSelectDesktop = document.querySelector('#desktop-gutter');
+        gutterSelectDesktop.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-gutter-desktop', gutterSelectDesktop.value);
+        });
+        var marginSelectTablet = document.querySelector('#tablet-margin');
+        marginSelectTablet.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-margin-tablet', marginSelectTablet.value);
+        });
+
+        var gutterSelectTablet = document.querySelector('#tablet-gutter');
+        gutterSelectTablet.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-gutter-tablet', gutterSelectTablet.value);
+        });
+        var marginSelectPhone = document.querySelector('#phone-margin');
+        marginSelectPhone.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-margin-phone', marginSelectPhone.value);
+        });
+
+        var gutterSelectPhone = document.querySelector('#phone-gutter');
+        gutterSelectPhone.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-gutter-phone', gutterSelectPhone.value);
         });
 
         var current = document.querySelector('#current');
