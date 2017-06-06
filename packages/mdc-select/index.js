@@ -112,6 +112,7 @@ export class MDCSelect extends MDCComponent {
       deregisterMenuInteractionHandler: (type, handler) => this.menu_.unlisten(type, handler),
       notifyChange: () => this.emit(MDCSelectFoundation.strings.CHANGE_EVENT, this),
       getWindowInnerHeight: () => window.innerHeight,
+      getPageYoffset: () => window.pageYOffset,
     });
   }
 
