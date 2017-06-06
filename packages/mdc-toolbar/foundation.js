@@ -41,7 +41,7 @@ export default class MDCToolbarFoundation extends MDCFoundation {
       getViewportWidth: () => /* number */ 0,
       getViewportScrollY: () => /* number */ 0,
       getOffsetHeight: () => /* number */ 0,
-      getFlexibleRowElementOffsetHeight: () => /* number */ 0,
+      getFirstRowElementOffsetHeight: () => /* number */ 0,
       notifyChange: (/* evtData: {flexibleExpansionRatio: number} */) => {},
       setStyle: (/* property: string, value: string */) => {},
       setStyleForTitleElement: (/* property: string, value: string */) => {},
@@ -164,13 +164,13 @@ export default class MDCToolbarFoundation extends MDCFoundation {
 
   initKeyRatio_() {
     const toolbarRowHeight = this.getRowHeight_();
-    const flexibleRowMaxRatio = this.adapter_.getFlexibleRowElementOffsetHeight() / toolbarRowHeight;
+    const firstRowMaxRatio = this.adapter_.getFirstRowElementOffsetHeight() / toolbarRowHeight;
     this.calculations_.toolbarRatio = this.adapter_.getOffsetHeight() / toolbarRowHeight;
-    this.calculations_.flexibleExpansionRatio = flexibleRowMaxRatio - 1;
+    this.calculations_.flexibleExpansionRatio = firstRowMaxRatio - 1;
     this.calculations_.maxTranslateYRatio =
-      this.fixedLastrow_ ? this.calculations_.toolbarRatio - flexibleRowMaxRatio : 0;
+      this.fixedLastrow_ ? this.calculations_.toolbarRatio - firstRowMaxRatio : 0;
     this.calculations_.scrollThresholdRatio =
-      (this.fixedLastrow_ ? this.calculations_.toolbarRatio : flexibleRowMaxRatio) - 1;
+      (this.fixedLastrow_ ? this.calculations_.toolbarRatio : firstRowMaxRatio) - 1;
   }
 
   getRowHeight_() {
