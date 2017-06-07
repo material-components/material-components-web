@@ -27,8 +27,8 @@ export class MDCToolbar extends MDCComponent {
     return new MDCToolbar(root);
   }
 
-  get flexibleRowElement_() {
-    return this.root_.querySelector(MDCToolbarFoundation.strings.FLEXIBLE_ROW_SELECTOR);
+  get firstRowElement_() {
+    return this.root_.querySelector(MDCToolbarFoundation.strings.FIRST_ROW_SELECTOR);
   }
 
   get titleElement_() {
@@ -56,11 +56,11 @@ export class MDCToolbar extends MDCComponent {
       getViewportWidth: () => window.innerWidth,
       getViewportScrollY: () => window.pageYOffset,
       getOffsetHeight: () => this.root_.offsetHeight,
-      getFlexibleRowElementOffsetHeight: () => this.flexibleRowElement_.offsetHeight,
+      getFirstRowElementOffsetHeight: () => this.firstRowElement_.offsetHeight,
       notifyChange: (evtData) => this.emit(MDCToolbarFoundation.strings.CHANGE_EVENT, evtData),
       setStyle: (property, value) => this.root_.style.setProperty(property, value),
       setStyleForTitleElement: (property, value) => this.titleElement_.style.setProperty(property, value),
-      setStyleForFlexibleRowElement: (property, value) => this.flexibleRowElement_.style.setProperty(property, value),
+      setStyleForFlexibleRowElement: (property, value) => this.firstRowElement_.style.setProperty(property, value),
       setStyleForFixedAdjustElement: (property, value) => {
         if (this.fixedAdjustElement) {
           this.fixedAdjustElement.style.setProperty(property, value);

@@ -14,15 +14,15 @@
   limitations under the License
 */
 
-@import "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css";
+// stylelint-disable
+@import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");
 
+// Base style
 
-/* Base style */
+$mdc-theme-primary: #212121;
+$mdc-theme-accent: #64dd17;
 
-:root {
-  --mdc-theme-primary: #212121;
-  --mdc-theme-accent: #64DD17;
-}
+@import "../../material-components-web/material-components-web";
 
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -34,37 +34,72 @@ fieldset {
   border: 0;
 }
 
-.mdc-toolbar a, .mdc-toolbar a:visited {
-  text-decoration: none;
-  color: #f0f0f0;
+.mdc-toolbar {
+  a {
+    color: #f0f0f0;
+    text-decoration: none;
+  }
 }
 
 .catalog-title {
   font-family: "Roboto Mono", monospace;
 }
 
-.catalog-logo, .catalog-back {
-  text-decoration: none;
+.catalog-logo,
+.catalog-back {
   padding-right: 24px;
-  color: #eeeeee;
+  color: #eee;
+  text-decoration: none;
 }
 
 .hero {
-  background-color: rgba(0, 0, 0, 0.05);
-  min-height: 360px;
   display: flex;
+  flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-  flex-flow: row nowrap;
   height: 360px;
+  min-height: 360px;
+  background-color: rgba(0, 0, 0, .05);
 }
 
 /* Default padding on all examples. */
 section.example {
-  padding: 24px;
   margin: 24px;
+  padding: 24px;
 }
 
-section.example h2 {
-  margin-left: 0;
+section.example {
+  h2 {
+    margin-left: 0;
+  }
+}
+
+.catalog-list {
+  padding-left: 28px;
+}
+.catalog-list-icon {
+  margin-right: 24px;
+}
+
+ul.catalog-list {
+  a {
+    text-decoration: none;
+    color: #212121;
+  }
+}
+.catalog-component-list-content {
+  padding-left: 24px;
+  order: 2;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+
+.catalog-component-list-title {
+  order: 1;
+}
+
+.catalog-component-list-description {
+  color: #999;
+  order: 2;
 }

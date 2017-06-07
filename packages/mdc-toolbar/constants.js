@@ -26,7 +26,7 @@ export const cssClasses = {
 
 export const strings = {
   TITLE_SELECTOR: '.mdc-toolbar__title',
-  FLEXIBLE_ROW_SELECTOR: '.mdc-toolbar__row:first-child',
+  FIRST_ROW_SELECTOR: '.mdc-toolbar__row:first-child',
   CHANGE_EVENT: 'MDCToolbar:change',
 };
 
@@ -35,5 +35,5 @@ export const numbers = {
   MIN_TITLE_SIZE: 1.25,
   TOOLBAR_ROW_HEIGHT: 64,
   TOOLBAR_ROW_MOBILE_HEIGHT: 56,
-  TOOLBAR_MOBILE_BREAKPOINT: 599,
+  TOOLBAR_MOBILE_BREAKPOINT: 600,
 };

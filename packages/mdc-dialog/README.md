@@ -122,13 +122,13 @@ correct dialog behaviors into idiomatic components.
 ##### ES2015
 
 ```javascript
-import {MDCDialog, MDCDialogFoundation, util} from 'mdc-dialog';
+import {MDCDialog, MDCDialogFoundation, util} from '@material/dialog';
 ```
 
 ##### CommonJS
 
 ```javascript
-const mdcDialog = require('mdc-dialog');
+const mdcDialog = require('@material/dialog');
 const MDCDialog = mdcDialog.MDCDialog;
 const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
 const util = mdcDialog.util;
@@ -137,7 +137,7 @@ const util = mdcDialog.util;
 ##### AMD
 
 ```javascript
-require(['path/to/mdc-dialog'], mdcDialog => {
+require(['path/to/@material/dialog'], mdcDialog => {
   const MDCDialog = mdcDrawer.MDCDialog;
   const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
   const util = mdcDialog.util;
@@ -154,7 +154,7 @@ const util = mdc.dialog.util;
 
 #### Automatic Instantiation
 
-If you do not care about retaining the component instance for the temporary drawer, simply call `attachTo()`
+If you do not care about retaining the component instance for the dialog, simply call `attachTo()`
 and pass it a DOM element. This however, is only useful if you do not need to pass a callback to the dialog
 when the user selects Accept or Cancel.
 
