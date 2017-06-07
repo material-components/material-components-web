@@ -26,6 +26,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
 .mdc-simple-menu {
   display: none;
   position: absolute;
+  min-width: 170px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 32px);
   margin: 0;
@@ -134,7 +135,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
     color: inherit;
     text-decoration: none;
 
-    @include mdc-typography(body2);
+    @include mdc-typography(subheading2);
 
     @include mdc-theme-dark(".mdc-simple-menu", true) {
       color: white;
