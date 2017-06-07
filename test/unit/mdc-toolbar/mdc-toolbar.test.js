@@ -151,11 +151,11 @@ test('adapter#getOffsetHeight returns the height of the toolbar', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getOffsetHeight(), root.offsetHeight);
 });
 
-test('adapter#getFlexibleRowElementOffsetHeight returns the height of the flexible row', () => {
+test('adapter#getFirstRowElementOffsetHeight returns the height of the first row', () => {
   const {root, component} = setupTest();
-  const flexibleRowElement = root.querySelector(strings.FLEXIBLE_ROW_SELECTOR);
-  assert.equal(component.getDefaultFoundation().adapter_.getFlexibleRowElementOffsetHeight(),
-    flexibleRowElement.offsetHeight);
+  const firstRowElement = root.querySelector(strings.FIRST_ROW_SELECTOR);
+  assert.equal(component.getDefaultFoundation().adapter_.getFirstRowElementOffsetHeight(),
+    firstRowElement.offsetHeight);
 });
 
 test(`adapter#notifyChange emits ${strings.CHANGE_EVENT}`, () => {
@@ -184,7 +184,7 @@ test('adapter#setStyleForTitleElement sets the correct style on title element', 
 
 test('adapter#setStyleForFlexibleRowElement sets the correct style on flexible row element', () => {
   const {root, component} = setupTest();
-  const flexibleRowElement = root.querySelector(strings.FLEXIBLE_ROW_SELECTOR);
+  const flexibleRowElement = root.querySelector(strings.FIRST_ROW_SELECTOR);
   component.getDefaultFoundation().adapter_.setStyleForFlexibleRowElement('height', '56px');
   assert.equal(flexibleRowElement.style.getPropertyValue('height'), '56px');
 });
