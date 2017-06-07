@@ -65,6 +65,7 @@ export class MDCSimpleMenu extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.itemsContainer_),
+      getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
       getInnerDimensions: () => {
         const {itemsContainer_: itemsContainer} = this;
         return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};
@@ -83,8 +84,8 @@ export class MDCSimpleMenu extends MDCComponent {
       getNumberOfItems: () => this.items.length,
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      registerDocumentClickHandler: (handler) => document.addEventListener('click', handler),
-      deregisterDocumentClickHandler: (handler) => document.removeEventListener('click', handler),
+      registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
+      deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
       getYParamsForItemAtIndex: (index) => {
         const {offsetTop: top, offsetHeight: height} = this.items[index];
         return {top, height};
