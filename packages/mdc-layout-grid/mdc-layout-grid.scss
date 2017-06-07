@@ -27,9 +27,19 @@
   @each $size in map-keys($mdc-layout-grid-columns) {
     @include mdc-layout-grid-media-query_($size) {
       $margin: map-get($mdc-layout-grid-default-margin, $size);
+
+      @include mdc-layout-grid($size, $margin, $mdc-layout-grid-max-width);
+    }
+  }
+}
+
+.mdc-layout-grid__inner {
+  @each $size in map-keys($mdc-layout-grid-columns) {
+    @include mdc-layout-grid-media-query_($size) {
+      $margin: map-get($mdc-layout-grid-default-margin, $size);
       $gutter: map-get($mdc-layout-grid-default-gutter, $size);
 
-      @include mdc-layout-grid($size, $margin, $gutter, $mdc-layout-grid-max-width);
+      @include mdc-layout-grid-inner($size, $margin, $gutter);
     }
   }
 }
