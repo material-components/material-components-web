@@ -43,7 +43,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'hasClass', 'addClass', 'removeClass', 'registerScrollHandler',
     'deregisterScrollHandler', 'registerResizeHandler', 'deregisterResizeHandler',
     'getViewportWidth', 'getViewportScrollY', 'getOffsetHeight',
-    'getFlexibleRowElementOffsetHeight', 'notifyChange', 'setStyle',
+    'getFirstRowElementOffsetHeight', 'notifyChange', 'setStyle',
     'setStyleForTitleElement', 'setStyleForFlexibleRowElement',
     'setStyleForFixedAdjustElement',
   ]);
@@ -147,7 +147,7 @@ test('on scroll handles no flexible height case', () => {
   const mockRaf = createMockRaf();
 
   setDeviceDesktop(mockAdapter);
-  td.when(mockAdapter.getFlexibleRowElementOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT);
+  td.when(mockAdapter.getFirstRowElementOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT);
   td.when(mockAdapter.getOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT);
   const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
 
@@ -163,7 +163,7 @@ test('on scroll handles no flexible height case', () => {
 const scrollEventMock =
   (foundation, mockAdapter, mockRaf, {isOutOfThreshold=false, flexExpansionRatio=0} = {}) => {
     setDeviceDesktop(mockAdapter);
-    td.when(mockAdapter.getFlexibleRowElementOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT * 3);
+    td.when(mockAdapter.getFirstRowElementOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT * 3);
     td.when(mockAdapter.getOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT * 4);
     const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
 

@@ -26,6 +26,7 @@ export const strings = {
   ITEMS_SELECTOR: '.mdc-simple-menu__items',
   SELECTED_EVENT: 'MDCSimpleMenu:selected',
   CANCEL_EVENT: 'MDCSimpleMenu:cancel',
+  ARIA_DISABLED_ATTR: 'aria-disabled',
 };
 
 export const numbers = {

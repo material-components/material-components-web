@@ -66,7 +66,7 @@
         margin-bottom: 16px;
       }
 
-      p.intro {
+      div.intro {
         padding: 48px 24px;
       }
 
@@ -102,10 +102,17 @@
         </div>
       </div>
 
-      <p class="intro">
+      <div class="intro">
+       <p>
         To best show the functionality of toolbars, we put both demos in iframes.
-         Click the links above the iframe to view the demo in a full browser window.
+        Click the links above the iframe to view the demo in a full browser window.
        </p>
+       <p>
+        It's worth noting that we also use icons in this demo, which aren't loaded by default.
+        In order to properly include icons in your own project, you'll need to load in the Material Icons stylesheet:
+       </p>
+       <pre>&lt;link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"&gt;</pre>
+      </div>
 
       <section class="examples">
         <div class="example">

@@ -136,6 +136,24 @@ classes:
 | `mdc-simple-menu--open-from-bottom-right` | Open the menu from the bottom right. |
 
 
+#### Disabled menu items
+
+When used in components such as MDC Menu, `mdc-list-item`'s can be disabled.
+To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `"-1"`.
+
+```html
+<div class="mdc-simple-menu" tabindex="-1">
+  <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+    <li class="mdc-list-item" role="menuitem" tabindex="0">
+      A Menu Item
+    </li>
+    <li class="mdc-list-item" role="menuitem" tabindex="-1" aria-disabled="true">
+      Disabled Menu Item
+    </li>
+  </ul>
+</div>
+```
+
 ### Using the JS Component
 
 MDC Simple Menu ships with a Component / Foundation combo which allows for frameworks to richly integrate the
@@ -247,6 +265,7 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
 | `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-simple-menu__items` container). |
+| `getAttributeForEventTarget(target: EventTarget, attributeName: string) => string` | Returns the value of a given attribute on an event target. |
 | `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height |
 | `hasAnchor: () => boolean` | Returns whether the menu has an anchor for positioning. |
 | `getAnchorDimensions() => { width: number, height: number, top: number, right: number, bottom: number, left: number }` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`). |
@@ -256,8 +275,8 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `getNumberOfItems() => numbers` | Returns the number of _item_ elements inside the items container. In our vanilla component, we determine this by counting the number of list items whose `role` attribute corresponds to the correct child role of the role present on the menu list element. For example, if the list element has a role of `menu` this queries for all elements that have a role of `menuitem`. |
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type`. |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type`. |
-| `registerDocumentClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type 'click'. |
-| `deregisterDocumentClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type 'click'. |
+| `registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type 'click'. |
+| `deregisterBodyClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type 'click'. |
 | `getYParamsForItemAtIndex(index: number) => {top: number, height: number}` | Returns an object with the offset top and offset height values for the _item_ element inside the items container at the provided index. Note that this is an index into the list of _item_ elements, and not necessarily every child element of the list. |
 | `setTransitionDelayForItemAtIndex(index: number, value: string) => void` | Sets the transition delay on the element inside the items container at the provided index to the provided value. The same notice for `index` applies here as above. |
 | `getIndexForEventTarget(target: EventTarget) => number` | Checks to see if the `target` of an event pertains to one of the menu items, and if so returns the index of that item. Returns -1 if the target is not one of the menu items. The same notice for `index` applies here as above. |

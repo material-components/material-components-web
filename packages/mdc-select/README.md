@@ -154,6 +154,39 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 </div>
 ```
 
+#### Disabled options
+
+When used in components such as MDC Select, `mdc-list-item`'s can be disabled.
+To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `"-1"`.
+
+```html
+<div class="mdc-select" role="listbox">
+  <span class="mdc-select__selected-text">Pick a food group</span>
+  <div class="mdc-simple-menu mdc-select__menu">
+    <ul class="mdc-list mdc-simple-menu__items">
+      <li class="mdc-list-item" role="option" id="grains" tabindex="0">
+        Bread, Cereal, Rice, and Pasta
+      </li>
+      <li class="mdc-list-item" role="option" id="vegetables" tabindex="-1" aria-disabled="true">
+        Vegetables (Disabled)
+      </li>
+      <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
+        Fruit
+      </li>
+      <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
+        Milk, Yogurt, and Cheese
+      </li>
+      <li class="mdc-list-item" role="option" id="meat" tabindex="0">
+        Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
+      </li>
+      <li class="mdc-list-item" role="option" id="fats" tabindex="0">
+        Fats, Oils, and Sweets
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
 ### Using the Pure CSS Select
 
 The `mdc-select` CSS class also works on browser's native `<select>` elements, allowing for a

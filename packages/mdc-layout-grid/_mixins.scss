@@ -69,7 +69,6 @@
   display: flex;
   flex-flow: row wrap;
   align-items: stretch;
-
   margin: -$gutter / 2;
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2 * -1);
 
