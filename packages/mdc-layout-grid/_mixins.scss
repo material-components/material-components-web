@@ -48,6 +48,9 @@
 
   @supports (display: grid) {
     width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
     grid-column-end: span min($span, map-get($mdc-layout-grid-columns, $size));
   }
 }
