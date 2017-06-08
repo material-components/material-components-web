@@ -1,0 +1,36 @@
+﻿<fieldset>
+  <legend>Single-line Example</legend>
+  <mdc-textfield [(ngModel)]="username" id="username" label="Username" required aria-controls="help-username-val"
+                 (focus)="handleFocus($event);" (blur)="handleBlur($event);" (input)="handleInput($event);" (keydown)="handleKeyDown($event);">
+  </mdc-textfield>
+  <p mdc-textfield-helptext id="help-username-val" [validation]="true" [persistent]="false">Username is required</p>
+  <p>ngModel : {{username ? username : 'empty'}}</p>
+  <p>Focused : {{inputHasFocus}}</p>
+  <p>Keydown event count : {{inputKeysPressed}}</p>
+  <p>Input event count : {{inputCount}}</p>
+</fieldset>
+<fieldset>
+  <legend>Multi-line Example</legend>
+  <mdc-textfield [(ngModel)]="comments" id="comments" label="Comments" rows="8" cols="40" [multiline]="true">
+  </mdc-textfield>
+  <p>Comments ngModel : {{comments ? comments : 'empty'}}</p>
+</fieldset>
+<fieldset>
+  <legend>Full-Width Example</legend>
+  <mdc-textfield [(ngModel)]="subject" id="subject" placeholder="Subject" [fullwidth]="true">
+  </mdc-textfield>
+  <mdc-textfield [(ngModel)]="message" id="message" placeholder="Type your message here" [fullwidth]="true" rows="8" [multiline]="true">
+  </mdc-textfield>
+  <p>Subject ngModel : {{subject ? subject : 'empty'}}</p>
+  <p>Message ngModel : {{message ? message : 'empty'}}</p>
+</fieldset>
+<fieldset>
+  <legend>Button Example with Ripple</legend>
+  <mdc-button [accent]="true" (click)="onSubmit('Default and Accent Clicked')">Default and Accent</mdc-button>
+  <mdc-button [raised]="true" (click)="onSubmit('Raised Clicked')">Raised</mdc-button>
+  <mdc-button [dense]="true" [raised]="true" (click)="onSubmit('Dense and Raised Clicked')">Dense and Raised</mdc-button>
+  <mdc-button [raised]="true" [compact]="true" (click)="onSubmit('Raised and Compact Clicked')">Raised and Compact</mdc-button>
+  <mdc-button [primary]="true" [raised]="true" (click)="onSubmit('Raised and Primary Clicked')">Raised and Primary</mdc-button>
+  <mdc-button [raised]="true" [accent]="true" (click)="onSubmit('Raised and Accent Clicked')">Raised and Accent</mdc-button>
+  <p>Button Events : {{submitEventText ? submitEventText : 'empty'}}</p>
+</fieldset>

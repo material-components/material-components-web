@@ -1,0 +1,72 @@
+{
+  "name": "mdc-angular4-framework-example",
+  "private": true,
+  "version": "1.0.0",
+  "description": "MDC-Web Framework Integration Example for Angular4",
+  "scripts": {
+    "build": "webpack --progress",
+    "build:detailed": "webpack --progress --display-error-details",
+    "watch": "npm run build -- --watch",
+    "server": "webpack-dev-server --inline --port 2000 --content-base src",
+    "start": "npm run server"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/node": "7.0.12",
+    "autoprefixer": "^6.7.7",
+    "angular2-template-loader": "^0.6.2",
+    "awesome-typescript-loader": "^3.1.2",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "1.3.3",
+    "css-loader": "^0.28.0",
+    "html-loader": "^0.4.5",
+    "node-sass": "^4.5.2",
+    "postcss-loader": "^1.3.3",
+    "sass-loader": "^6.0.3",
+    "source-map-loader": "^0.2.1",
+    "typescript": "2.2.2",
+    "typings": "2.1.1",
+    "webpack": "2.3.3",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "dependencies": {
+    "@angular/common": "^4.0.1",
+    "@angular/compiler": "^4.0.1",
+    "@angular/core": "^4.0.1",
+    "@angular/forms": "^4.0.1",
+    "@angular/http": "4.0.1",
+    "@angular/platform-browser": "^4.0.1",
+    "@angular/platform-browser-dynamic": "^4.0.1",
+    "@angular/router": "^4.0.1",
+    "@material/textfield": "^0.2.4",
+    "@material/button": "^0.3.2",
+    "@material/ripple": "0.5.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.3.0",
+    "zone.js": "0.8.5"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "modules": false,
+          "targets": {
+            "browsers": [
+              "last 2 versions",
+              "not ie 10"
+            ]
+          }
+        }
+      ]
+    ],
+    "env": {
+      "test": {
+        "presets": [
+          "env"
+        ]
+      }
+    }
+  }
+}
