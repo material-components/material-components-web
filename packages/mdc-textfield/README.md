@@ -214,6 +214,28 @@ UX for client-side form field validation.
 </div>
 ```
 
+### Text Field Boxes
+
+```html
+<div class="mdc-textfield mdc-textfield--box">
+  <input type="text" id="tf-box" class="mdc-textfield__input">
+  <label for="tf-box" class="mdc-textfield__label">Your Name</label>
+  <div class="mdc-textfield__bottom-line"></div>
+</div>
+```
+
+Note that Text field boxes support all of the same features as normal textfields, including help
+text, validation, and dense UI.
+
+#### CSS-only text field boxes
+
+```html
+<label for="css-only-textfield-box">Your name:</label>
+<div class="mdc-textfield mdc-textfield--box">
+  <input type="text" class="mdc-textfield__input" id="css-only-textfield-box" placeholder="Name">
+</div>
+```
+
 ### Using the JS component
 
 MDC Textfield ships with Component / Foundation classes which are used to provide a full-fidelity
@@ -265,6 +287,23 @@ import {MDCTextfield} from 'mdc-textfield';
 const textfield = new MDCTextfield(document.querySelector('.mdc-textfield'));
 ```
 
+#### Controlling ripple instantiation
+
+When `MDCTextfield` is instantiated with a root element containing the `mdc-textfield--box` class,
+it instantiates an `MDCRipple` instance on the element in order to facilitate the correct
+interaction UX for text field boxes as outlined in the spec. The way this ripple is instantiated
+can be controlled by passing a ripple factory argument to the constructor.
+
+```js
+const textfieldBoxEl = document.querySelector('.mdc-textfield--box');
+const textfield = new MDCTextfield(textfieldBoxEl, /* foundation */ undefined, (el) => {
+  // do something with el...
+  return new MDCRipple(el);
+});
+```
+
+By default the ripple factory simply calls `new MDCRipple(el)` and returns the result.
+
 #### MDCTextfield API
 
 Similar to regular DOM elements, the `MDCTextfield` functionality is exposed through accessor
@@ -281,6 +320,11 @@ with the corresponding id within the document and automatically assign it to thi
 
 Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
 respectively.
+
+##### MDCTextfield.ripple
+
+`MDCRipple` instance. Set to the `MDCRipple` instance for the root element that `MDCTextfield`
+initializes when given an `mdc-textfield--box` root element. Otherwise, the field is set to `null`.
 
 ### Using the foundation class
 
