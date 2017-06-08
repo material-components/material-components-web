@@ -88,6 +88,13 @@ test('deactivate() delegates to the foundation', () => {
   td.verify(component.foundation_.deactivate());
 });
 
+test('layout() delegates to the foundation', () => {
+  const {component} = setupTest();
+  component.foundation_.layout = td.function();
+  component.layout();
+  td.verify(component.foundation_.layout());
+});
+
 test('adapter#browserSupportsCssVars delegates to util', () => {
   const {component} = setupTest();
   assert.equal(
