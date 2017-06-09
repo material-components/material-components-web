@@ -28,6 +28,7 @@ import * as snackbar from '@material/snackbar';
 import * as linearProgress from '@material/linear-progress';
 import * as menu from '@material/menu';
 import * as select from '@material/select';
+import * as slider from '@material/slider';
 import * as tabs from '@material/tabs';
 import * as toolbar from '@material/toolbar';
 import autoInit from '@material/auto-init';
@@ -48,6 +49,7 @@ autoInit.register('MDCTabBar', tabs.MDCTabBar);
 autoInit.register('MDCTextfield', textfield.MDCTextfield);
 autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
+autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCToolbar', toolbar.MDCToolbar);
 
 // Export all components.
@@ -67,6 +69,7 @@ export {
   textfield,
   menu,
   select,
+  slider,
   toolbar,
   autoInit,
 };

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2017 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Slider - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
+    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <script src="assets/demo-styles.css.js" charset="utf-8"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <style>
+      #hero-slider-wrapper {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 600px;
+        /* Blended equivalent of rgba(0, 0, 0, .05); */
+        --mdc-slider-bg-color-behind-component: #f2f2f2;
+      }
+
+      .mdc-theme--dark {
+        background-color: #333;
+        --mdc-theme-primary: #64dd17;
+      }
+
+      .custom-bg {
+        background-color: #eee;
+        --mdc-slider-bg-color-behind-component: #eee;
+      }
+
+      .mdc-theme--dark.custom-bg {
+        background-color: #102027;
+        --mdc-slider-bg-color-behind-component: #102027;
+      }
+
+      .example-slider-wrapper {
+        padding: 0 16px;
+      }
+    </style>
+  </head>
+  <body class="mdc-typography">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Slider</span>
+        </section>
+      </div>
+    </header>
+    <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div id="hero-slider-wrapper">
+          <div id="hero-slider" class="mdc-slider" tabindex="0"
+               role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30"
+               aria-label="Select Value">
+            <div class="mdc-slider__track-container">
+              <div class="mdc-slider__track"></div>
+            </div>
+            <div class="mdc-slider__thumb-container">
+              <svg class="mdc-slider__thumb" width="21" height="21">
+                <circle cx="10.5" cy="10.5" r="7.875"></circle>
+              </svg>
+              <div class="mdc-slider__focus-ring"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="example"><em>Note that in browsers that support custom properties, we alter theme's primary
+             color when using the dark theme toggle so that the slider appears more visible</em></section>
+
+      <section class="example">
+        <h2>Continuous Slider</h2>
+        <div id="continuous-slider-example" class="slider-example">
+          <p id="example-cs-label">Select Value:</p>
+
+          <div class="example-slider-wrapper">
+            <div class="mdc-slider" tabindex="0" role="slider"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="30"
+                 aria-labelledby="example-cs-label">
+              <div class="mdc-slider__track-container">
+                <div class="mdc-slider__track"></div>
+              </div>
+              <div class="mdc-slider__thumb-container">
+                <svg class="mdc-slider__thumb" width="21" height="21">
+                  <circle cx="10.5" cy="10.5" r="7.875"></circle>
+                </svg>
+                <div class="mdc-slider__focus-ring"></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label>
+              Min: <input name="min" type="number" min="0" max="100" value="0">
+            </label>
+          </div>
+          <div>
+            <label>
+              Max: <input name="max" type="number" min="0" max="100" value="100">
+            </label>
+          </div>
+          <div>
+            <label>
+              Step: <input name="step" type="number" min="0" max="100" value="0">
+            </label>
+          </div>
+          <div>
+            <label>
+              Dark Theme: <input type="checkbox" name="dark-theme">
+            </label>
+          </div>
+          <div>
+            <label>
+              Disabled: <input type="checkbox" name="disabled">
+            </label>
+          </div>
+          <div>
+            <label>
+              Use Custom BG Color: <input type="checkbox" name="use-custom-color">
+            </label>
+          </div>
+          <div>
+            <label>
+              RTL: <input type="checkbox" name="rtl">
+            </label>
+          </div>
+          <p>
+            Value from <code>MDCSlider:input</code> event: <span class="value">0</span>
+          </p>
+          <p>
+            Value from <code>MDCSlider:change</code> event: <span class="committed-value">0</span>
+          </p>
+        </div>
+      </section>
+    </main>
+    <script src="assets/material-components-web.js" charset="utf-8"></script>
+    <script>
+      (function() {
+        setTimeout(function() {
+          mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
+          initDemo(document.getElementById('continuous-slider-example'));
+        }, 80);
+
+        function initDemo(demoRoot) {
+          var min = demoRoot.querySelector('[name="min"]');
+          var max = demoRoot.querySelector('[name="max"]');
+          var step = demoRoot.querySelector('[name="step"]');
+          var darkTheme = demoRoot.querySelector('[name="dark-theme"]');
+          var disabled = demoRoot.querySelector('[name="disabled"]');
+          var useCustomColor = demoRoot.querySelector('[name="use-custom-color"]');
+          var rtl = demoRoot.querySelector('[name="rtl"]');
+          var value = demoRoot.querySelector('.value');
+          var committedValue = demoRoot.querySelector('.committed-value');
+          var sliderEl = demoRoot.querySelector('.mdc-slider');
+          var slider = new mdc.slider.MDCSlider(sliderEl);
+
+          slider.listen('MDCSlider:input', function() {
+            value.textContent = slider.value;
+          });
+
+          slider.listen('MDCSlider:change', function() {
+            committedValue.textContent = slider.value;
+          });
+
+          min.addEventListener('input', function() {
+            slider.min = parseFloat(min.value);
+          });
+
+          max.addEventListener('input', function() {
+            slider.max = parseFloat(max.value);
+          });
+
+          step.addEventListener('input', function() {
+            slider.step = parseFloat(step.value);
+          });
+
+          darkTheme.addEventListener('change', function() {
+            demoRoot
+              .querySelector('.example-slider-wrapper')
+              .classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
+          });
+
+          disabled.addEventListener('change', function() {
+            slider.disabled = disabled.checked;
+          });
+
+          useCustomColor.addEventListener('change', function() {
+            demoRoot
+              .querySelector('.example-slider-wrapper')
+              .classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
+          });
+
+          rtl.addEventListener('change', function() {
+            var wrapper = demoRoot.querySelector('.example-slider-wrapper');
+            if (rtl.checked) {
+              wrapper.setAttribute('dir', 'rtl');
+            } else {
+              wrapper.removeAttribute('dir');
+            }
+            slider.layout();
+          });
+        }
+      })();
+    </script>
+</html>
