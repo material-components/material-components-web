@@ -53,26 +53,30 @@
 }
 
 // Public mixins, meant for developer usage.
-@mixin mdc-layout-grid($size, $margin, $gutter, $max-width: null) {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: stretch;
-  margin: 0 auto;
+@mixin mdc-layout-grid($size, $margin, $max-width: null) {
   box-sizing: border-box;
+  margin: 0 auto;
 
   @if $max-width {
     max-width: $max-width;
   }
 
-  padding: $margin - $gutter / 2;
-  padding: calc(var(--mdc-layout-grid-margin-#{$size}, #{$margin}) - var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2);
+  padding: $margin;
+  padding: var(--mdc-layout-grid-margin-#{$size}, #{$margin});
+}
+
+@mixin mdc-layout-grid-inner($size, $margin, $gutter) {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+  margin: -$gutter / 2;
+  margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2 * -1);
 
   @supports (display: grid) {
     display: grid;
     grid-gap: $gutter;
     grid-gap: var(--mdc-layout-grid-gutter-#{$size}, $gutter);
-    padding: $margin;
-    padding: var(--mdc-layout-grid-margin-#{$size}, #{$margin});
+    margin: 0;
     grid-template-columns: repeat(map-get($mdc-layout-grid-columns, $size), minmax(0, 1fr));
   }
 }
