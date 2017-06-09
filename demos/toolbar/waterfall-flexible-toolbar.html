@@ -18,7 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
     <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
-    <link href="../demos.css" rel="stylesheet">
+    <script src="../assets/demo-styles.css.js" charset="utf-8"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
       .mdc-toolbar-demo {
@@ -32,15 +32,6 @@
       .demo-paragraph {
         margin: 0px;
         padding: 20px 28px;
-      }
-      .material-icons {
-        text-decoration: none;
-        cursor: pointer;
-        padding: 0px 8px 0px 0px;
-        color: white;
-      }
-      [dir='rtl'] .material-icons {
-        padding-left: 8px;
       }
       @media (max-width: 599px) {
         .demo-paragraph {
@@ -61,13 +52,13 @@
     <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall mdc-toolbar--flexible mdc-toolbar--flexible-default-behavior">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <a href="#" class="material-icons">menu</a>
+          <a href="#" class="material-icons mdc-toolbar__icon--menu">menu</a>
           <span class="mdc-toolbar__title">Title</span>
         </section>
         <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-          <a href="#" class="material-icons" aria-label="Download" alt="Download">file_download</a>
-          <a href="#" class="material-icons" aria-label="Print this page" alt="Print this page">print</a>
-          <a href="#" class="material-icons" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+          <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
+          <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
+          <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">more_vert</a>
         </section>
       </div>
     </header>

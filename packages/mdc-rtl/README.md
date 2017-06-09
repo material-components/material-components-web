@@ -174,8 +174,8 @@ trying to flip the values, use `mdc-rtl-reflexive-property`.
 @mixin mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector: null)
 ```
 
-Takes a base property and emits rules that assign <base-property>-left to <left-value> and
-<base-property>-right to <right-value> in a LTR context, and vice versa in a RTL context.
+Takes a base property and emits rules that assign `#{$base-property}`-left to `#{left-value}` and
+`#{base-property}`-right to `#{right-value}` in a LTR context, and vice versa in a RTL context.
 
 For example:
 
@@ -233,4 +233,4 @@ is equivalent to:
  }
 ```
 
-An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
+An optional third `$root-selector` argument may also be given, which is passed to `mdc-rtl`.

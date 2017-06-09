@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
-    <link href="demos.css" rel="stylesheet">
+    <script src="assets/demo-styles.css.js" charset="utf-8"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
@@ -61,7 +61,7 @@
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Checkbox</span>
         </section>
@@ -159,6 +159,7 @@
           <label for="native-js-checkbox" id="my-checkbox-label">This is my checkbox</label>
         </div>
         <button type="button" id="make-ind">Make indeterminate</button>
+        <button type="button" id="toggle-disabled">Toggle Disabled</button>
       </section>
 
       <section class="example mdc-theme--dark">
@@ -200,6 +201,10 @@
 
         document.getElementById('make-ind').addEventListener('click', function() {
           checkboxInstance.indeterminate = true;
+        });
+
+        document.getElementById('toggle-disabled').addEventListener('click', function() {
+          checkboxInstance.disabled = !checkboxInstance.disabled;
         });
       })(this);
     </script>

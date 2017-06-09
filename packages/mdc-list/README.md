@@ -361,7 +361,7 @@ The html for this can be easily added
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
       Ali Connors
-      <span class="mdc-list-item__text_secondary">Lunch this afternoon? I was...</span>
+      <span class="mdc-list-item__text__secondary">Lunch this afternoon? I was...</span>
     </span>
 
     <span class="mdc-list-item__end-detail">

@@ -86,6 +86,7 @@ module.exports = [{
     radio: [path.resolve('./packages/mdc-radio/index.js')],
     ripple: [path.resolve('./packages/mdc-ripple/index.js')],
     select: [path.resolve('./packages/mdc-select/index.js')],
+    slider: [path.resolve('./packages/mdc-slider/index.js')],
     snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
     tabs: [path.resolve('./packages/mdc-tabs/index.js')],
     textfield: [path.resolve('./packages/mdc-textfield/index.js')],
@@ -168,6 +169,7 @@ module.exports = [{
     'mdc.radio': path.resolve('./packages/mdc-radio/mdc-radio.scss'),
     'mdc.ripple': path.resolve('./packages/mdc-ripple/mdc-ripple.scss'),
     'mdc.select': path.resolve('./packages/mdc-select/mdc-select.scss'),
+    'mdc.slider': path.resolve('./packages/mdc-slider/mdc-slider.scss'),
     'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
     'mdc.switch': path.resolve('./packages/mdc-switch/mdc-switch.scss'),
     'mdc.tabs': path.resolve('./packages/mdc-tabs/mdc-tabs.scss'),
@@ -202,3 +204,30 @@ module.exports = [{
     createBannerPlugin(),
   ],
 }];
+
+if (IS_DEV) {
+  module.exports.push({
+    name: 'demo-css',
+    entry: {
+      'demo-styles': path.resolve('./demos/demos.scss'),
+    },
+    output: {
+      path: OUT_PATH,
+      publicPath: PUBLIC_PATH,
+      filename: '[name].css.js',
+    },
+    devServer: {
+      disableHostCheck: true,
+    },
+    devtool: 'source-map',
+    module: {
+      rules: [{
+        test: /\.scss$/,
+        use: [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG),
+      }],
+    },
+    plugins: [
+      createBannerPlugin(),
+    ],
+  });
+}

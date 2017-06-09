@@ -140,9 +140,7 @@ $mdc-list-side-padding: 16px;
   .mdc-list--two-line.mdc-list--dense & {
     height: 60px;
   }
-  // stylelint-enable plugin/selector-bem-pattern
 }
-
 // postcss-bem-linter: end //
 
 // Override anchor tag styles for the use-case of a list being used for navigation
@@ -221,11 +219,9 @@ a.mdc-list-item {
   }
 
   // Reset padding on mdc-list since it's already accounted for by the list group.
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list {
     padding: 0;
   }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 // postcss-bem-linter: end
