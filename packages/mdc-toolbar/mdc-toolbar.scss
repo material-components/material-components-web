@@ -79,7 +79,6 @@
 
     align-self: center;
     margin: 0;
-    margin-left: 16px;
     padding: $mdc-toobar-element-vertical-padding 0;
     line-height: 1.5rem;
     text-overflow: ellipsis;
@@ -96,6 +95,8 @@
   &__icon--menu {
     @include mdc-shared-icon-style(menu);
     @include mdc-theme-prop(color, text-primary-on-primary);
+
+    margin-right: 32px;
   }
 }
 
