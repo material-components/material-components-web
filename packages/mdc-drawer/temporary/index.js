@@ -50,6 +50,8 @@ export class MDCTemporaryDrawer extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
+      addBodyClass: (className) => document.body.classList.add(className),
+      removeBodyClass: (className) => document.body.classList.remove(className),
       hasNecessaryDom: () => Boolean(this.drawer),
       registerInteractionHandler: (evt, handler) =>
           this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),

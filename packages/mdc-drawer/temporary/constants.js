@@ -20,6 +20,7 @@ export const cssClasses = {
   ROOT: 'mdc-temporary-drawer',
   OPEN: 'mdc-temporary-drawer--open',
   ANIMATING: 'mdc-temporary-drawer--animating',
+  SCROLL_LOCK: 'mdc-drawer-scroll-lock',
 };
 
 export const strings = {
