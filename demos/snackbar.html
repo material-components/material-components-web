@@ -29,6 +29,14 @@
       /* initialize it off screen. */
       .loading .example .mdc-snackbar { transform: translateY(100%); }
 
+      .mdc-theme--dark {
+        background-color: #333;
+      }
+
+      .mdc-theme--dark .hero {
+        background-color: #2d2d2d;
+      }
+
       /* Override style for hero example. */
       .hero .mdc-snackbar {
         position: relative;
@@ -88,33 +96,26 @@
           </div>
           <label for="multiline" id="multiline-label">Multiline</label>
         </div>
-
-        <div class="mdc-checkbox-wrapper">
-          <div class="mdc-checkbox-wrapper__layout">
-            <div class="mdc-checkbox">
-              <input type="checkbox"
-                     class="mdc-checkbox__native-control"
-                     id="action-on-bottom"
-                     aria-labelledby="action-on-bottom-label" />
-              <div class="mdc-checkbox__background">
+        <br/>
+        
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="action-on-bottom" aria-labelledby="action-on-bottom-label" />
+            <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
           </div>
           <label for="action-on-bottom" id="action-on-bottom-label">Action On Bottom</label>
         </div>
+        <br/>
 
-        <div class="mdc-checkbox-wrapper">
-          <div class="mdc-checkbox-wrapper__layout">
+        <div class="mdc-form-field">
             <div class="mdc-checkbox">
-              <input type="checkbox"
-                     checked
-                     class="mdc-checkbox__native-control"
-                     id="dismiss-on-action"
-                     aria-labelledby="dismiss-on-action-label" />
+              <input type="checkbox" checked class="mdc-checkbox__native-control" id="dismiss-on-action" aria-labelledby="dismiss-on-action-label" />
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white"
@@ -125,19 +126,25 @@
           </div>
           <label for="dismiss-on-action" id="dismiss-on-action-label">Dismiss On Action</label>
         </div>
+        <br/>
 
-        <div class="field">
-          <label for="message">Message Text</label>
-          <input type="text" id="message" value="Message deleted">
+        <button type="button" class="mdc-button mdc-button--raised mdc-button--primary" id="toggle-dark-theme">Toggle Dark Theme</button>
+        <br/>
+
+        <div class="mdc-textfield">
+          <input type="text" id="message" class="mdc-textfield__input" value="Message deleted">
+          <label class="mdc-textfield__label" for="message">Message Text</label>
         </div>
+        <br/>
 
-        <div class="field">
-          <label for="action">Action Text</label>
-          <input type="text" id="action" value="Undo">
+        <div class="mdc-textfield">
+          <input type="text" id="action" class="mdc-textfield__input" value="Undo">
+          <label class="mdc-textfield__label" for="action">Action Text</label>
         </div>
+        <br/>
 
-          <button type="button" id="show-snackbar">Show</button>
-          <button type="button" id="show-rtl-snackbar">Show RTL</button>
+        <button type="button" class="mdc-button mdc-button--raised mdc-button--secondary" id="show-snackbar">Show</button>
+        <button type="button" class="mdc-button mdc-button--raised mdc-button--secondary" id="show-rtl-snackbar">Show RTL</button>
 
           <div id="mdc-js-snackbar"
                class="mdc-snackbar demo-hidden"
@@ -176,6 +183,7 @@
         var multilineInput = document.getElementById('multiline');
         var actionOnBottomInput = document.getElementById('action-on-bottom');
         var dismissOnActionInput = document.getElementById('dismiss-on-action');
+        var textFields = document.querySelectorAll('.mdc-textfield');
 
         var show = function(sb) {
           snackbar.dismissesOnAction = dismissOnActionInput.checked;
@@ -200,6 +208,14 @@
         document.getElementById('show-rtl-snackbar').addEventListener('click', function() {
           show(rtlSnackbar);
         });
+
+        document.getElementById('toggle-dark-theme').addEventListener('click', function(evt) {
+          document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
+        });
+
+        textFields.forEach(function(tf) {
+          mdc.textfield.MDCTextfield.attachTo(tf);
+        })
 
         // Remove any element hiding after loading.
         window.onload = function() { document.body.className = ''; };
