@@ -97,9 +97,9 @@
           <label for="multiline" id="multiline-label">Multiline</label>
         </div>
         <br/>
-        
+
         <div class="mdc-form-field">
-          <div class="mdc-checkbox">
+          <div class="mdc-checkbox" id="action-on-bottom-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" id="action-on-bottom" aria-labelledby="action-on-bottom-label" />
             <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
@@ -182,8 +182,15 @@
         var actionInput = document.getElementById('action');
         var multilineInput = document.getElementById('multiline');
         var actionOnBottomInput = document.getElementById('action-on-bottom');
+        var actionOnBottomCheckbox = document.getElementById('action-on-bottom-checkbox');
         var dismissOnActionInput = document.getElementById('dismiss-on-action');
         var textFields = document.querySelectorAll('.mdc-textfield');
+
+        // Since Action on Bottom cannot be checked if Multi-line Input
+        // is not, we start with a disabled Action on Bottom option
+        actionOnBottomCheckbox.classList.add('mdc-checkbox--disabled');
+        actionOnBottomInput.disabled = true;
+        actionOnBottomInput.checked = false;
 
         var show = function(sb) {
           snackbar.dismissesOnAction = dismissOnActionInput.checked;
@@ -200,6 +207,17 @@
           }
           sb.show(data);
         };
+
+        multilineInput.addEventListener('click', function () {
+          if (!multilineInput.checked) {
+            actionOnBottomCheckbox.classList.add('mdc-checkbox--disabled');
+            actionOnBottomInput.disabled = true;
+            actionOnBottomInput.checked = false;
+          } else {
+            actionOnBottomCheckbox.classList.remove('mdc-checkbox--disabled');
+            actionOnBottomInput.disabled = false;
+          }
+        });
 
         document.getElementById('show-snackbar').addEventListener('click', function() {
           show(snackbar);
