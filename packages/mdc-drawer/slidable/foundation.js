@@ -51,12 +51,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.animatingCssClass_ = animatingCssClass;
     this.openCssClass_ = openCssClass;
 
-    this.transitionEndHandler_ = (ev) => {
-      if (this.isRootTransitioningEventTarget_(ev.target)) {
-        this.adapter_.removeClass(this.animatingCssClass_);
-        this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-      }
-    };
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
 
     this.inert_ = false;
 
@@ -239,4 +234,11 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     // if the event target is the root event target currently transitioning.
     return false;
   }
+
+  handleTransitionEnd_(evt) {
+    if (this.isRootTransitioningEventTarget_(evt.target)) {
+      this.adapter_.removeClass(this.animatingCssClass_);
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    }
+  };
 }
