@@ -18,7 +18,7 @@ path: /catalog/snackbars/
 
 The MDC Snackbar component is a spec-aligned snackbar/toast component adhering to the
 [Material Design snackbars & toasts requirements](https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs).
-It requires JavaScript the trigger the display and hide of the snackbar.
+It requires JavaScript to show and hide itself.
 
 ## Design & API Documentation
 
@@ -109,6 +109,7 @@ import {MDCSnackbar} from 'mdc-snackbar';
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 ```
 
+
 ### Showing a message and action
 
 Once you have obtained an MDCSnackbar instance attached to the DOM, you can use
@@ -124,6 +125,38 @@ properties and their usage.
 | actionText | The text to display for the action button. | Required if actionHandler is set |  String |
 | multiline | Whether to show the snackbar with space for multiple lines of text | Optional |  Boolean |
 | actionOnBottom | Whether to show the action below the multiple lines of text | Optional, applies when multiline is true |  Boolean |
+
+### Responding to a Snackbar Action
+
+To respond to a snackbar action, assign a function to the optional `actionHandler` property in the object that gets passed to the `show` method. If you choose to set this property, you *must _also_* set the `actionText` property.
+
+```html
+<div class="mdc-snackbar"
+     aria-live="assertive"
+     aria-atomic="true"
+     aria-hidden="true">
+  <div class="mdc-snackbar__text"></div>
+  <div class="mdc-snackbar__action-wrapper">
+    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+  </div>
+</div>
+```
+
+```js
+import {MDCSnackbar} from 'mdc-snackbar';
+
+const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+const dataObj = {
+  message: messageInput.value,
+  actionText: 'Undo',
+  actionHandler: function () {
+    console.log('my cool function');
+  }
+};
+
+snackbar.show(dataObj);
+```
+
 
 ### Keep snackbar when the action button is pressed
 
