@@ -1,6 +1,6 @@
 {
   "name": "@material/tabs",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The Material Components for the web tabs component",
   "license": "Apache-2.0",
   "repository": {
@@ -20,7 +20,7 @@
     "@material/ripple": "^0.6.2",
     "@material/animation": "^0.2.3",
     "@material/typography": "^0.2.2",
-    "@material/rtl": "^0.1.4",
+    "@material/rtl": "^0.1.5",
     "@material/theme": "^0.1.5"
   }
 }
