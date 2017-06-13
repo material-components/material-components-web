@@ -41,14 +41,12 @@ npm install --save @material/layout-grid
 
 ## The layout grid
 
-A grid consists of a group of cells, which get positioned in sequence according to a predefined number of columns.
-Cells specify how many columns to span (the default being 4), and get placed side by side while there is room. When
-there isn't enough room for a cell, it gets moved to the beginning of the next row, and placement continues as usual.
+A grid is a container that consists of a group of cells. Grid can define its own max-width or designate its columns to be a certain width. Cells get positioned in sequence according to a predefined number of columns.
 
 The grid has 12 columns in desktop mode (>= 840px), 8 columns in tablet mode (>= 480px), and 4 columns in phone mode
-(< 480px). Column widths are variable; margins and gutters are fixed, with columns taking up the remainder of the space.
+(< 480px). Cells specify how many columns to span (the default is 4). Cells are placed side by side until there is no more room, then the next cell is placed at the beginning of the next row.
 
-Margins (the space between the edge of the grid and the edge of the first cell) and gutters (the space between edges of adjacent cells) can be customized on different devices respectively based on design needs. Layout grids set default margins and gutters to 24px on desktop, 16px on tablet and phone, according to the Material Design spec.
+ Margins (the space between the edge of the grid and the edge of the first cell) and gutters (the space between edges of adjacent cells) can be customized on different devices respectively based on design needs. The columns are evenly distributed within the container width, minus the width of all margins and gutters. Layout grids set default margins and gutters to 24px on desktop, 16px on tablet and phone, according to the Material Design spec.
 
 The grid and cells are not styled in any way, serving only for alignment and positioning of elements.
 
@@ -66,6 +64,8 @@ The grid and cells are not styled in any way, serving only for alignment and pos
 ```
 
 The grid should have the `mdc-layout-grid` class. Every cell should have the `mdc-layout-grid__cell` class and must be wrapped by `mdc-layout-grid__inner` for proper alignment. Behavior for grids containing direct children without the `mdc-layout-grid__cell` class is undefined.
+
+By default, `mdc-layout-grid` behaves like a fluid container, which takes up its parents container's available space. You can change the behavior using [max-width](#max-width) or [fixed column width layout grid](#fixed-column-width-grid).
 
 
 ### Margins and gutters
@@ -137,6 +137,26 @@ columns wide.
 MDC layout grids take up the parent element space by default. However, user can set `$mdc-layout-grid-max-width` to restrict the max-width of the layout grid.
 
 
+### Fixed column width grid
+
+You can designate each column to have a certain width by using `mdc-layout-grid--fixed-column-width` modifier. The column width can be specified through sass map `$mdc-layout-grid-column-width` or css custom properties `--mdc-layout-grid-column-width-{screen_size}`. The column width is set to 72px on all devices by default.
+
+```
+<style>
+:root {
+  --mdc-layout-grid-column-width-desktop: 84px;
+}
+</style>
+
+<div class="mdc-layout-grid mdc-layout-grid--fixed-column-width">
+  <div class="mdc-layout-grid__inner">
+    <div class="mdc-layout-grid__cell"></div>
+    <div class="mdc-layout-grid__cell"></div>
+  </div>
+</div>
+```
+
+
 ### Nested grid
 
 When your contents need extra structure that cannot be supported by single layout grid, you can nest layout grid within each other. To nest layout grid, add a new `mdc-layout-grid__inner` to wrap around nested `mdc-layout-grid__cell` within an existing `mdc-layout-grid__cell`.
@@ -159,7 +179,6 @@ However, Material guideline do not recommend have a deeply nested grid since it 
   </div>
 </div>
 ```
-
 
 ### Reordering
 
@@ -234,6 +253,18 @@ behavior by using one of the `mdc-layout-grid__cell--align-{position}` alignment
 - `$gutter`: the size of the gutter between cells. Be sure to use the same value as for the parent grid.
 
 > Note even though size is passed in as one of the arguments, it won't apply any `media-query` rules. It is set for using the correct CSS custom properties to overriden the margin and gutter at runtime (See [Margins and gutters](#margins-and-gutters) section for detail).
+
+### mdc-layout-grid-fixed-column-width
+
+```scss
+@include mdc-layout-grid-fixed-column-width(desktop, 24px, 24px, 72px);
+```
+
+`mdc-layout-grid-fixed-column-width` defines the container by width designated column width. The mixin takes four parameters:
+- `$size`: the target platform: `desktop`, `tablet` or `phone`.
+- `$margin`: the size of the grid margin.
+- `$gutter`: the size of the gutter between cells.
+- `$column-width`: the width of the column within the grid.
 
 
 ### mdc-layout-grid-cell-order
