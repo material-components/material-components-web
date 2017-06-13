@@ -214,6 +214,9 @@ UX for client-side form field validation.
 </div>
 ```
 
+Note that **full-width text fields do not support floating labels**. Labels should not be
+included as part of the DOM structure for full-width text fields.
+
 ### Text Field Boxes
 
 ```html
