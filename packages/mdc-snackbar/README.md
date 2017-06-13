@@ -53,6 +53,23 @@ npm install --save @material/snackbar
 </div>
 ```
 
+### Start Aligned Snackbars (tablet and desktop only)
+
+MDC Snackbar can be start aligned (including in RTL contexts). To create a start-aligned
+snackbar, add the `mdc-snackbar--align-start` modifier class to the root element.
+
+```html
+<div class="mdc-snackbar mdc-snackbar--align-start"
+     aria-live="assertive"
+     aria-atomic="true"
+     aria-hidden="true">
+  <div class="mdc-snackbar__text"></div>
+  <div class="mdc-snackbar__action-wrapper">
+    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+  </div>
+</div>
+```
+
 ### Using the JS Component
 
 MDC Snackbar ships with a Component / Foundation combo which provides the API for showing snackbar

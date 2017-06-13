@@ -30,7 +30,7 @@
   justify-content: flex-start;
   padding-right: 24px;
   padding-left: 24px;
-  transform: translate(0, 100%);
+  transform: translate(-50%, 100%);
   transition: mdc-animation-exit(transform, .25s);
   background-color: $mdc-snackbar-background-color;
 
@@ -44,22 +44,46 @@
   @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
     left: 0;
     width: calc(100% - 48px);
+    transform: translate(0, 100%);
   }
 
   @media (min-width: $mdc-snackbar-tablet-breakpoint) {
     min-width: 288px;
     max-width: 568px;
-    transform: translate(-50%, 100%);
     border-radius: 2px;
   }
 
+  &--align-start {
+    @media (min-width: $mdc-snackbar-tablet-breakpoint) {
+      bottom: 24px;
+
+      @include mdc-rtl-reflexive-position(left, 24px);
+
+      transform: translate(0, 200%);
+    }
+
+    @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
+      bottom: 0;
+      left: 0;
+      width: calc(100% - 48px);
+      transform: translate(0, 100%);
+    }
+  }
+
   &--active {
-    transform: translate(0, 0);
+    transform: translate(0);
     pointer-events: auto;
     transition: mdc-animation-enter(transform, .25s);
 
-    @media (min-width: $mdc-snackbar-tablet-breakpoint) {
+    &:not(.mdc-snackbar--align-start) {
       transform: translate(-50%, 0);
+
+      @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
+        bottom: 0;
+        left: 0;
+        width: calc(100% - 48px);
+        transform: translate(0);
+      }
     }
   }
 
