@@ -81,7 +81,7 @@
     "stylefmt": "^6.0.0",
     "stylelint": "^7.8.0",
     "stylelint-config-standard": "^16.0.0",
-    "stylelint-order": "^0.4.3",
+    "stylelint-order": "^0.5.0",
     "stylelint-scss": "^1.4.1",
     "stylelint-selector-bem-pattern": "^1.0.0",
     "testdouble": "^3.0.0",
