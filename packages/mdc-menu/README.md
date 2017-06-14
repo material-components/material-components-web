@@ -195,7 +195,7 @@ console.log(`Menu is ${menu.open ? 'open' : 'closed'}.`);
 ##### ES2015
 
 ```javascript
-import {MDCSimpleMenu, MDCSimpleMenuFoundation} from 'mdc-menu';
+import {MDCSimpleMenu, MDCSimpleMenuFoundation, util} from 'mdc-menu';
 ```
 
 ##### CommonJS
@@ -204,6 +204,7 @@ import {MDCSimpleMenu, MDCSimpleMenuFoundation} from 'mdc-menu';
 const mdcMenu = require('mdc-menu');
 const MDCSimpleMenu = mdcMenu.MDCSimpleMenu;
 const MDCSimpleMenuFoundation = mdcMenu.MDCSimpleMenuFoundation;
+const util = mdcMenu.util;
 ```
 
 ##### AMD
@@ -212,6 +213,7 @@ const MDCSimpleMenuFoundation = mdcMenu.MDCSimpleMenuFoundation;
 require(['path/to/mdc-menu'], mdcMenu => {
   const MDCSimpleMenu = mdcMenu.MDCSimpleMenu;
   const MDCSimpleMenuFoundation = mdcMenu.MDCSimpleMenuFoundation;
+  const util = mdcMenu.util;
 });
 ```
 
@@ -220,6 +222,7 @@ require(['path/to/mdc-menu'], mdcMenu => {
 ```javascript
 const MDCSimpleMenu = mdc.Menu.MDCSimpleMenu;
 const MDCSimpleMenuFoundation = mdc.Menu.MDCSimpleMenuFoundation;
+const util = mdc.menu.util;
 ```
 
 #### Automatic Instantiation
@@ -306,3 +309,29 @@ Closes the menu.
 #### MDCSimpleMenuFoundation.isOpen() => boolean
 
 Returns whether or not the menu is open.
+
+
+### The util API
+External frameworks and libraries can use the following utility methods when integrating a component.
+
+#### util.getTransformPropertyName(globalObj, forceRefresh = false) => String
+
+Returns the name of the correct transform property to use on the current browser.
+
+#### util.clamp(value, min = 0, max = 1) => Number
+
+Clamps a value between the minimum and the maximum, returning the clamped value.
+
+#### util.bezierProgress(time, x1, y1, x2, y2) => Number
+
+Returns the easing value to apply at time t, for a given cubic bezier curve.
+
+```
+Control points P0 and P3 are assumed to be (0,0) and (1,1), respectively.
+Parameters are as follows:
+ - time: The current time in the animation, scaled between 0 and 1.
+ - x1: The x value of control point P1.
+ - y1: The y value of control point P1.
+ - x2: The x value of control point P2.
+ - y2: The y value of control point P2.
+```
