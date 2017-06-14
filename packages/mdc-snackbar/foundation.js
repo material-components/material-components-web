@@ -145,8 +145,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       this.adapter_.removeClass(MULTILINE);
       this.adapter_.removeClass(ACTION_ON_BOTTOM);
       this.setActionHidden_(true);
-      this.adapter_.setMessageText(null);
-      this.adapter_.setActionText(null);
       this.adapter_.setAriaHidden();
       this.active_ = false;
       this.showNext_();
