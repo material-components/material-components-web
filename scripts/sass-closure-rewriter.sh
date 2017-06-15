@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Rewrites our .scss files to be compatible with closure-stylesheets 
+# in our internal Blaze infrastructure.
+
 ##
 # Copyright 2017 Google Inc. All Rights Reserved.
 #
@@ -21,8 +24,6 @@ set -e
 function log() {
   echo -e "\033[36m[closure-rewriter]\033[0m" "$@"
 }
-
-function join_by { local IFS="$1"; shift; echo "$*"; }
 
 CLOSURE_TMP=.closure-tmp
 CLOSURE_PKGDIR=$CLOSURE_TMP/packages
