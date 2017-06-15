@@ -31,7 +31,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       isDrawer: () => false,
-      updateCssVariable: (/* value: string */) => {},
+      updateCssVariable: (/* value: string */) => { },
     });
   }
 
@@ -42,7 +42,11 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       MDCTemporaryDrawerFoundation.cssClasses.ANIMATING,
       MDCTemporaryDrawerFoundation.cssClasses.OPEN);
 
-    this.componentClickHandler_ = () => this.close();
+    this.componentClickHandler_ = (evt) => {
+      if (evt.srcElement.classList.contains('mdc-temporary-drawer')) {
+        this.close();
+      }
+    };
   }
 
   init() {
