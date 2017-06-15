@@ -58,6 +58,7 @@
  * - https://github.com/google/closure-compiler/issues/2386
  *
  * Note that for third-party modules, they must be defined in closure_externs.js. See that file for more info.
+ * Also note that this works on `export .... from ...` as well.
  */
 
 const assert = require('assert');
@@ -94,8 +95,10 @@ function transform(srcFile, rootDir) {
   });
 
   traverse(ast, {
-    'ImportDeclaration'({node}) {
-      rewriteImportDeclaration(node, srcFile, rootDir);
+    'ImportDeclaration|ExportNamedDeclaration'({node}) {
+      if (node.source) {
+        rewriteDeclarationSource(node, srcFile, rootDir);
+      }
     },
   });
 
@@ -113,38 +116,39 @@ function transform(srcFile, rootDir) {
   console.log(`[rewrite] ${srcFile}`);
 }
 
-function rewriteImportDeclaration(node, srcFile, rootDir) {
-  let importSource = node.source.value;
-  const pathParts = importSource.split('/');
+function rewriteDeclarationSource(node, srcFile, rootDir) {
+  let source = node.source.value;
+  const pathParts = source.split('/');
   const isMDCImport = pathParts[0] === '@material';
   if (isMDCImport) {
     const modName = pathParts[1];  // @material/<modName>
     const atMaterialReplacementPath = `${rootDir}/mdc-${modName}`;
-    const rewrittenImportSource = [atMaterialReplacementPath].concat(pathParts.slice(2)).join('/');
-    importSource = rewrittenImportSource;
+    const rewrittenSource = [atMaterialReplacementPath].concat(pathParts.slice(2)).join('/');
+    source = rewrittenSource;
   }
 
-  patchNodeForImportSource(importSource, srcFile, node);
+  patchNodeForDeclarationSource(source, srcFile, rootDir, node);
 }
 
-function patchNodeForImportSource(importSource, srcFile, node) {
-  let resolvedImportSource = importSource;
+function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
+  let resolvedSource = source;
   // See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
-  const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => importSource.indexOf(s) === 0);
+  const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => source.indexOf(s) === 0);
   const isThirdPartyModule = !wouldLoadAsFileOrDir;
   if (isThirdPartyModule) {
-    assert(importSource.indexOf('@material') < 0, '@material/* import sources should have already been rewritten');
+    assert(source.indexOf('@material') < 0, '@material/* import sources should have already been rewritten');
     patchDefaultImportIfNeeded(node);
-    resolvedImportSource = `goog:mdc.thirdparty.${camelCase(importSource)}`;
+    resolvedSource = `goog:mdc.thirdparty.${camelCase(source)}`;
   } else {
-    const needsClosureModuleRootResolution = path.isAbsolute(importSource);
+    const normPath = path.normalize(path.dirname(srcFile), source);
+    const needsClosureModuleRootResolution = path.isAbsolute(source) || fs.statSync(normPath).isDirectory();
     if (needsClosureModuleRootResolution) {
-      resolvedImportSource = path.relative(rootDir, resolve.sync(importSource, {
+      resolvedSource = path.relative(rootDir, resolve.sync(source, {
         basedir: path.dirname(srcFile),
       }));
     }
   }
-  node.source = t.stringLiteral(resolvedImportSource);
+  node.source = t.stringLiteral(resolvedSource);
 }
 
 function patchDefaultImportIfNeeded(node) {

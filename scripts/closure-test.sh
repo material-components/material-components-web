@@ -24,7 +24,6 @@ function log() {
 
 CLOSURE_TMP=.closure-tmp
 CLOSURE_PKGDIR=$CLOSURE_TMP/packages
-JS_SRCS=$CLOSURE_PKGDIR/**/*.js
 CLOSURIZED_PKGS=$(node -e "console.log(require('./package.json').closureWhitelist.join(' '))")
 
 if [ -z "$CLOSURIZED_PKGS" ]; then
@@ -42,7 +41,7 @@ done
 rm -fr $CLOSURE_PKGDIR/**/{node_modules,dist}
 
 log "Rewriting all import statements to be closure compatible"
-node scripts/rewrite-import-statements-for-closure-test.js $CLOSURE_PKGDIR
+node scripts/rewrite-decl-statements-for-closure-test.js $CLOSURE_PKGDIR
 
 log "Testing packages"
 echo ''
@@ -56,7 +55,7 @@ for pkg in $CLOSURIZED_PKGS; do
   CMD="java -jar node_modules/google-closure-compiler/compiler.jar \
   --externs closure_externs.js \
   --compilation_level ADVANCED \
-  --js $JS_SRCS \
+  --js $(find $CLOSURE_PKGDIR -type f -name "*.js") \
   --language_out ECMASCRIPT5_STRICT \
   --dependency_mode STRICT \
   --module_resolution LEGACY \
