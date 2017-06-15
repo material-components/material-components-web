@@ -15,10 +15,6 @@ path: /catalog/input-controls/sliders/
   </a>
 </div>-->
 
-> **Status**:
-> - [x] Continuous Sliders
-> - [ ] Discrete Sliders
-
 MDC Slider provides an implementation of the Material Design slider component. It is modeled after
 the browser's `<input type="range">` element. Sliders are fully RTL-aware, and conform to the
 WAI-ARIA [slider authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#slider).
@@ -48,6 +44,8 @@ npm i --save @material/slider
 
 ## Usage
 
+### Continuous Slider
+
 ```html
 <div class="mdc-slider" tabindex="0" role="slider"
      aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
@@ -56,6 +54,27 @@ npm i --save @material/slider
     <div class="mdc-slider__track"></div>
   </div>
   <div class="mdc-slider__thumb-container">
+    <svg class="mdc-slider__thumb" width="21" height="21">
+      <circle cx="10.5" cy="10.5" r="7.875"></circle>
+    </svg>
+    <div class="mdc-slider__focus-ring"></div>
+  </div>
+</div>
+```
+
+### Discrete Slider
+
+```html
+<div class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+     aria-label="Select Value">
+  <div class="mdc-slider__track-container">
+    <div class="mdc-slider__track"></div>
+  </div>
+  <div class="mdc-slider__thumb-container">
+    <div class="mdc-slider__pin">
+      <span class="mdc-slider__pin-value-marker"></span>
+    </div>
     <svg class="mdc-slider__thumb" width="21" height="21">
       <circle cx="10.5" cy="10.5" r="7.875"></circle>
     </svg>
@@ -123,7 +142,33 @@ When a step value is given, the slider will quantize all values to match that st
 for the minimum and maximum values, which can always be set. This is to ensure consistent behavior.
 
 The step value can be any positive floating-point number, or `0`. When the step value is `0`, the
-slider is considered to not have any step.
+slider is considered to not have any step. A error will be thrown if you are trying to set step
+value to be a negative number.
+
+Discrete sliders are required to have a positive step value other than 0. If a step value of 0 is
+provided, or no value is provided, the step value will default to 1.
+
+### Display tracker markers (discrete slider only)
+
+Discrete sliders support display markers on their tracks by adding the `mdc-slider--display-markers`
+modifier class to `mdc-slider`, and `<div class="mdc-slider__track-marker-container"></div>` to the
+track container.
+
+```html
+<div class="mdc-slider mdc-slider--discrete mdc-slider--display-markers" tabindex="0" role="slider"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+     data-step="2" aria-label="Select Value">
+     <div class="mdc-slider__track-container">
+      <div class="mdc-slider__track"></div>
+      <div class="mdc-slider__track-marker-container"></div>
+    </div>
+    <!-- ... -->
+</div>
+```
+
+> **NOTE**: When the provided step is indivisble to distance between max and min,
+> we place the secondary to last marker proportionally at where thumb could reach and
+> place the last marker at max value.
 
 ### Disabled sliders
 
@@ -182,25 +227,30 @@ use to build a custom MDCSlider component for their framework.
 
 | Method Signature | Description |
 | --- | --- |
+| `hasClass(className: string) => boolean` | Checks if `className` exists on the root element |
 | `addClass(className: string) => void` | Adds a class `className` to the root element |
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
 | `getAttribute(name: string) => string?` | Returns the value of the attribute `name` on the root element, or `null` if that attribute is not present on the root element. |
 | `setAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
-| `removeAttribute(name: string) => void` | Removes an attribute `name` from the root element |
+| `removeAttribute(name: string) => void` | Removes an attribute `name` from the root element. |
 | `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()`` for this. |
-| `getTabIndex() => number` | Returns the value of the `tabIndex` property on the root element |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
-| `registerThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element |
-| `deregisterThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb container element |
-| `registerBodyInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document |
-| `deregisterBodyInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document |
+| `getTabIndex() => number` | Returns the value of the `tabIndex` property on the root element. |
+| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element. |
+| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element. |
+| `registerThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element. |
+| `deregisterThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb container element. |
+| `registerBodyInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document. |
+| `deregisterBodyInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document. |
 | `registerResizeHandler(handler: EventListener) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`. |
-| `deregisterResizeHandler(handler: EventListener) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler` |
+| `deregisterResizeHandler(handler: EventListener) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler`. |
 | `notifyInput() => void` | Broadcasts an "input" event notifying clients that the slider's value is currently being changed. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for. |
 | `notifyChange() => void` | Broadcasts a "change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`. |
 | `setThumbContainerStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb container element. |
-| `setTrackStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track element |
+| `setTrackStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track element. |
+| `setMarkerValue(value: number) => void` | Sets pin value marker's value when discrete slider thumb moves. |
+| `appendTrackMarkers(numMarkers: number) => void` | Appends track marker element to track container. |
+| `removeTrackMarkers() => void` | Removes existing marker elements to track container. |
+| `setLastTrackMarkersStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the last element of the track markers. |
 | `isRTL() => boolean` | True if the slider is within an RTL context, false otherwise. |
 
 #### MDCSliderFoundation API
@@ -218,6 +268,7 @@ use to build a custom MDCSlider component for their framework.
 | `setStep(step: number) => void` | Sets the step value of the slider |
 | `isDisabled() => boolean` | Returns whether or not the slider is disabled |
 | `setDisabled(disabled: boolean) => void` | Disables the slider when given true, enables it otherwise. |
+| `setupTrackMarker() => void` | Put correct number of markers in track for discrete slider that display track markers. No-op if it doesn't meet those criteria. |
 
 ### Theming
 

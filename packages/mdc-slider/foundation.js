@@ -45,6 +45,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
+      hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       getAttribute: (/* name: string */) => /* string|null */ null,
@@ -66,6 +67,10 @@ export default class MDCSliderFoundation extends MDCFoundation {
       notifyChange: () => {},
       setThumbContainerStyleProperty: (/* propertyName: string, value: string */) => {},
       setTrackStyleProperty: (/* propertyName: string, value: string */) => {},
+      setMarkerValue: (/* value: number */) => {},
+      appendTrackMarkers: (/* numMarkers: number */) => {},
+      removeTrackMarkers: () => {},
+      setLastTrackMarkersStyleProperty: (/* propertyName: string, value: string */) => {},
       isRTL: () => /* boolean */ false,
     };
   }
@@ -79,6 +84,8 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.off_ = false;
     this.active_ = false;
     this.inTransit_ = false;
+    this.isDiscrete_ = false;
+    this.hasTrackMarker_ = false;
     this.handlingThumbTargetEvt_ = false;
     this.min_ = 0;
     this.max_ = 100;
@@ -101,6 +108,8 @@ export default class MDCSliderFoundation extends MDCFoundation {
   }
 
   init() {
+    this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
+    this.hasTrackMarker_ = this.adapter_.hasClass(cssClasses.HAS_TRACK_MARKER);
     this.adapter_.registerInteractionHandler('mousedown', this.mousedownHandler_);
     this.adapter_.registerInteractionHandler('pointerdown', this.pointerdownHandler_);
     this.adapter_.registerInteractionHandler('touchstart', this.touchstartHandler_);
@@ -112,6 +121,10 @@ export default class MDCSliderFoundation extends MDCFoundation {
     });
     this.adapter_.registerResizeHandler(this.resizeHandler_);
     this.layout();
+    // At last step, provide a reasonable default value to discrete slider
+    if (this.isDiscrete_ && this.getStep() == 0) {
+      this.setStep(1);
+    }
   }
 
   destroy() {
@@ -125,6 +138,32 @@ export default class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.deregisterThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
     });
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+  }
+
+  setupTrackMarker() {
+    if (this.isDiscrete_ && this.hasTrackMarker_&& this.getStep() != 0) {
+      const min = this.getMin();
+      const max = this.getMax();
+      const step = this.getStep();
+      let numMarkers = (max - min) / step;
+
+      // In case distance between max & min is indivisible to step,
+      // we place the secondary to last marker proportionally at where thumb
+      // could reach and place the last marker at max value
+      const indivisible = Math.ceil(numMarkers) !== numMarkers;
+      if (indivisible) {
+        numMarkers = Math.ceil(numMarkers);
+      }
+
+      this.adapter_.removeTrackMarkers();
+      this.adapter_.appendTrackMarkers(numMarkers);
+
+      if (indivisible) {
+        const lastStepRatio = (max - numMarkers * step) / step + 1;
+        const flex = getCorrectPropertyName(window, 'flex');
+        this.adapter_.setLastTrackMarkersStyleProperty(flex, lastStepRatio);
+      }
+    }
   }
 
   layout() {
@@ -151,6 +190,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.max_ = max;
     this.setValue_(this.value_, false, true);
     this.adapter_.setAttribute(strings.ARIA_VALUEMAX, String(this.max_));
+    this.setupTrackMarker();
   }
 
   getMin() {
@@ -164,6 +204,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.min_ = min;
     this.setValue_(this.value_, false, true);
     this.adapter_.setAttribute(strings.ARIA_VALUEMIN, String(this.min_));
+    this.setupTrackMarker();
   }
 
   getStep() {
@@ -174,8 +215,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     if (step < 0) {
       throw new Error('Step cannot be set to a negative number');
     }
+    if (this.isDiscrete_ && (typeof(step) !== 'number' || step < 1)) {
+      step = 1;
+    }
     this.step_ = step;
     this.setValue_(this.value_, false, true);
+    this.setupTrackMarker();
   }
 
   isDisabled() {
@@ -356,6 +401,9 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
     if (shouldFireInput) {
       this.adapter_.notifyInput();
+      if (this.isDiscrete_) {
+        this.adapter_.setMarkerValue(value);
+      }
     }
   }
 
