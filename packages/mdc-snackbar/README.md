@@ -126,7 +126,6 @@ import {MDCSnackbar} from 'mdc-snackbar';
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 ```
 
-
 ### Showing a message and action
 
 Once you have obtained an MDCSnackbar instance attached to the DOM, you can use
@@ -203,6 +202,12 @@ The adapter for snackbars must provide the following functions, with correct sig
 | `setActionText(actionText: string) => void` | Set the text content of the action element. |
 | `setActionAriaHidden() => void` | Sets `aria-hidden="true"` on the action element. |
 | `unsetActionAriaHidden() => void` | Removes the `aria-hidden` attribute from the action element. |
+| `registerFocusHandler(handler: EventListener) => void` | Registers an event handler to be called when a `focus` event is triggered on the `body` |
+| `deregisterFocusHandler(handler: EventListener) => void` | Deregisters a `focus` event handler from the `body` |
+| `registerBlurHandler(handler: EventListener) => void` | Registers an event handler to be called when a `blur` event is triggered on the action button |
+| `deregisterBlurHandler(handler: EventListener) => void` | Deregisters a `blur` event handler from the actionButton |
+| `registerVisibilityChangeHandler(handler: EventListener) => void` | Registers an event handler to be called when a 'visibilitychange' event occurs |
+| `deregisterVisibilityChangeHandler(handler: EventListener) => void` | Deregisters an event handler to be called when a 'visibilitychange' event occurs |
 | `registerActionClickHandler(handler: EventListener) => void` | Registers an event handler to be called when a `click` event is triggered on the action element. |
 | `deregisterActionClickHandler(handler: EventListener) => void` | Deregisters an event handler from a `click` event on the action element. This will only be called with handlers that have previously been passed to `registerActionClickHandler` calls. |
 | `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when an `transitionend` event is triggered on the root element. Note that you must account for vendor prefixes in order for this to work correctly. |

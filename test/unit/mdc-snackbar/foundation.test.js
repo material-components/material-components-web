@@ -44,9 +44,11 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   assert.deepEqual(methods, [
     'addClass', 'removeClass', 'setAriaHidden', 'unsetAriaHidden', 'setMessageText',
-    'setActionText', 'setActionAriaHidden', 'unsetActionAriaHidden',
-    'registerActionClickHandler', 'deregisterActionClickHandler',
-    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
+    'setActionText', 'setActionAriaHidden', 'unsetActionAriaHidden', 'visibilityIsHidden',
+    'registerBlurHandler', 'deregisterBlurHandler', 'registerVisibilityChangeHandler',
+    'deregisterVisibilityChangeHandler', 'registerCapturedInteractionHandler',
+    'deregisterCapturedInteractionHandler', 'registerActionClickHandler',
+    'deregisterActionClickHandler', 'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
   ]);
   // Test default methods
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
@@ -216,7 +218,8 @@ test('#show while snackbar is already showing will queue the data object.', () =
     message: 'Message Archived',
   });
 
-  td.verify(mockAdapter.setMessageText('Message Archived'), {times: 0});
+  td.verify(mockAdapter.setMessageText('Message Deleted'));
+  td.verify(mockAdapter.setMessageText('Message Archived'));
 });
 
 test('#show while snackbar is already showing will show after the timeout and transition end', () => {
@@ -224,14 +227,13 @@ test('#show while snackbar is already showing will show after the timeout and tr
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
-  foundation.init();
-
   let transEndHandler;
   td.when(mockAdapter.registerTransitionEndHandler(isA(Function)))
     .thenDo((handler) => {
       transEndHandler = handler;
     });
 
+  foundation.init();
   foundation.show({
     message: 'Message Deleted',
   });
@@ -304,8 +306,6 @@ test('#show will clean up snackbar after the timeout and transition end', () => 
   clock.tick(numbers.MESSAGE_TIMEOUT);
   transEndHandler();
 
-  td.verify(mockAdapter.setMessageText(null));
-  td.verify(mockAdapter.setActionText(null));
   td.verify(mockAdapter.removeClass(cssClasses.MULTILINE));
   td.verify(mockAdapter.removeClass(cssClasses.ACTION_ON_BOTTOM));
   td.verify(mockAdapter.deregisterTransitionEndHandler(transEndHandler));
