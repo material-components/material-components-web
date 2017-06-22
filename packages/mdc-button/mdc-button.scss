@@ -27,7 +27,6 @@
   @include mdc-ripple-base;
   @include mdc-ripple-bg((pseudo: "::before"));
   @include mdc-ripple-fg((pseudo: "::after"));
-  @include mdc-typography(body2);
   @include mdc-theme-prop(color, text-primary-on-light);
 
   display: inline-block;
@@ -41,6 +40,7 @@
   background: transparent;
   font-size: 14px; // Override font to specifically be px as spec defined pt
   font-weight: 500;
+  letter-spacing: .04em;
   line-height: 36px; // Override line-height so text aligns centered
   text-align: center;
   text-decoration: none;
