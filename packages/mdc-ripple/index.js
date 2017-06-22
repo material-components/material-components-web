@@ -74,6 +74,10 @@ export class MDCRipple extends MDCComponent {
     this.foundation_.deactivate();
   }
 
+  layout() {
+    this.foundation_.layout();
+  }
+
   getDefaultFoundation() {
     return new MDCRippleFoundation(MDCRipple.createAdapter(this));
   }
