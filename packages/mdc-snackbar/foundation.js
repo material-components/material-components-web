@@ -32,13 +32,14 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
-      setMessageText: (/* message: string */) => {},
-      setActionText: (/* actionText: string */) => {},
       setActionAriaHidden: () => {},
       unsetActionAriaHidden: () => {},
+      setActionText: (/* actionText: string */) => {},
+      setMessageText: (/* message: string */) => {},
+      setFocus: () => {},
       visibilityIsHidden: () => /* boolean */ false,
-      registerBlurHandler: (/* handler: EventListener */) => {},
-      deregisterBlurHandler: (/* handler: EventListener */) => {},
+      registerCapturedBlurHandler: (/* handler: EventListener */) => {},
+      deregisterCapturedBlurHandler: (/* handler: EventListener */) => {},
       registerVisibilityChangeHandler: (/* handler: EventListener */) => {},
       deregisterVisibilityChangeHandler: (/* handler: EventListener */) => {},
       registerCapturedInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
@@ -74,7 +75,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       this.snackbarHasFocus_ = true;
 
       if (!this.adapter_.visibilityIsHidden()) {
-        setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || MESSAGE_TIMEOUT);
+        setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || numbers.MESSAGE_TIMEOUT);
       }
     };
     this.interactionHandler_ = (evt) => {
@@ -90,7 +91,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.blurHandler_ = () => {
       clearTimeout(this.timeoutId_);
       this.snackbarHasFocus_ = false;
-      this.timeoutId_ = setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || MESSAGE_TIMEOUT);
+      this.timeoutId_ = setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || numbers.MESSAGE_TIMEOUT);
     };
   }
 
@@ -102,7 +103,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
   destroy() {
     this.adapter_.deregisterActionClickHandler(this.actionClickHandler_);
-    this.adapter_.deregisterBlurHandler(this.focusHandler_);
+    this.adapter_.deregisterCapturedBlurHandler(this.blurHandler_);
     this.adapter_.deregisterVisibilityChangeHandler(this.visibilitychangeHandler_);
     ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
       this.adapter_.deregisterCapturedInteractionHandler(evtType, this.interactionHandler_);
@@ -122,7 +123,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.snackbarData_ = data;
     this.firstFocus_ = true;
     this.adapter_.registerVisibilityChangeHandler(this.visibilitychangeHandler_);
-    this.adapter_.registerBlurHandler(this.blurHandler_);
+    this.adapter_.registerCapturedBlurHandler(this.blurHandler_);
     ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
       this.adapter_.registerCapturedInteractionHandler(evtType, this.interactionHandler_);
     });
@@ -142,7 +143,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     }
 
     const {ACTIVE, MULTILINE, ACTION_ON_BOTTOM} = cssClasses;
-    const {MESSAGE_TIMEOUT} = numbers;
 
     this.adapter_.setMessageText(this.snackbarData_.message);
 
@@ -167,7 +167,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.addClass(ACTIVE);
     this.adapter_.unsetAriaHidden();
 
-    this.timeoutId_ = setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || MESSAGE_TIMEOUT);
+    this.timeoutId_ = setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || numbers.MESSAGE_TIMEOUT);
   }
 
   handlePossibleTabKeyboardFocus_() {

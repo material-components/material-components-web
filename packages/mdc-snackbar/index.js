@@ -49,8 +49,8 @@ export class MDCSnackbar extends MDCComponent {
       setMessageText: (text) => { getText().textContent = text; },
       setFocus: () => getActionButton().focus(),
       visibilityIsHidden: () => document.hidden,
-      registerBlurHandler: (handler) => getActionButton().addEventListener('blur', handler, true),
-      deregisterBlurHandler: (handler) => getActionButton().removeEventListener('blur', handler, true),
+      registerCapturedBlurHandler: (handler) => getActionButton().addEventListener('blur', handler, true),
+      deregisterCapturedBlurHandler: (handler) => getActionButton().removeEventListener('blur', handler, true),
       registerVisibilityChangeHandler: (handler) => document.addEventListener('visibilitychange', handler),
       deregisterVisibilityChangeHandler: (handler) => document.removeEventListener('visibilitychange', handler),
       registerCapturedInteractionHandler: (evt, handler) =>

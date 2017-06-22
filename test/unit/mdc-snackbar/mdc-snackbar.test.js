@@ -118,41 +118,45 @@ test('foundationAdapter#unsetActionAriaHidden removes "aria-hidden" from the act
   assert.isNotOk(actionButton.getAttribute('aria-hidden'));
 });
 
-// TODO: return to this
 test('adapter#setFocus sets focus on the action button', () => {
-  const {actionButton, component} = setupTest();
+  const {root, actionButton, component} = setupTest();
+  const handler = td.func('fixture focus handler');
+  root.addEventListener('focus', handler);
+  document.body.appendChild(root);
+
   component.getDefaultFoundation().adapter_.setFocus();
+
   assert.equal(document.activeElement, actionButton);
+  document.body.removeChild(root);
 });
 
-// TODO: return to this
-test.only('adapter#visibilityIsHidden returns the document.hidden property', () => {
+test('adapter#visibilityIsHidden returns the document.hidden property', () => {
   const {component} = setupTest();
-  assert.isTrue(component.getDefaultFoundation().adapter_.visibilityIsHidden());
+  assert.equal(component.getDefaultFoundation().adapter_.visibilityIsHidden(), document.hidden);
 });
 
-test.only('adapter#registerBlurHandler adds a handler to be called on a blur event', () => {
+test('adapter#registerCapturedBlurHandler adds a handler to be called on a blur event', () => {
   const {actionButton, component} = setupTest();
   const handler = td.func('blurHandler');
 
-  component.getDefaultFoundation().adapter_.registerBlurHandler(handler);
+  component.getDefaultFoundation().adapter_.registerCapturedBlurHandler(handler);
   domEvents.emit(actionButton, 'blur');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test.only('adapter#deregisterBlurHandler removes a handler to be called on a blur event', () => {
+test('adapter#deregisterCapturedBlurHandler removes a handler to be called on a blur event', () => {
   const {actionButton, component} = setupTest();
   const handler = td.func('blurHandler');
 
   actionButton.addEventListener('blur', handler, true);
-  component.getDefaultFoundation().adapter_.deregisterBlurHandler(handler);
+  component.getDefaultFoundation().adapter_.deregisterCapturedBlurHandler(handler);
   domEvents.emit(actionButton, 'blur');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test.only('adapter#registerVisibilityChangeHandler adds a handler to be called on a visibilitychange event', () => {
+test('adapter#registerVisibilityChangeHandler adds a handler to be called on a visibilitychange event', () => {
   const {component} = setupTest();
   const handler = td.func('visibilitychangeHandler');
 
@@ -162,7 +166,7 @@ test.only('adapter#registerVisibilityChangeHandler adds a handler to be called o
   td.verify(handler(td.matchers.anything()));
 });
 
-test.only('adapter#deregisterVisibilityChangeHandler removes a handler to be called on a visibilitychange event', () => {
+test('adapter#deregisterVisibilityChangeHandler removes a handler to be called on a visibilitychange event', () => {
   const {component} = setupTest();
   const handler = td.func('visibilitychangeHandler');
 
@@ -173,7 +177,7 @@ test.only('adapter#deregisterVisibilityChangeHandler removes a handler to be cal
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test.only('adapter#registerCapturedInteractionHandler adds a handler to be called when a given event occurs', () => {
+test('adapter#registerCapturedInteractionHandler adds a handler to be called when a given event occurs', () => {
   const {component} = setupTest();
   const handler = td.func('interactionHandler');
   const mockEvent = 'click';
@@ -184,7 +188,7 @@ test.only('adapter#registerCapturedInteractionHandler adds a handler to be calle
   td.verify(handler(td.matchers.anything()));
 });
 
-test.only('adapter#deregisterCapturedInteractionHandler removes a handler to be called when a given event occurs', () => {
+test('adapter#deregisterCapturedInteractionHandler removes a handler to be called when a given event occurs', () => {
   const {component} = setupTest();
   const handler = td.func('interactionHandler');
   const mockEvent = 'click';
