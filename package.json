@@ -84,7 +84,7 @@
     "stylelint-order": "^0.5.0",
     "stylelint-scss": "^1.4.1",
     "stylelint-selector-bem-pattern": "^1.0.0",
-    "testdouble": "^3.0.0",
+    "testdouble": "3.0.0",
     "to-slug-case": "^1.0.0",
     "validate-commit-msg": "^2.6.1",
     "webpack": "^2.2.1",
