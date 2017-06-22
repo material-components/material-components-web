@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
+/** @type {string|undefined} */
 let storedTransformPropertyName_;
 
-// Returns the name of the correct transform property to use on the current browser.
+/**
+ * Returns the name of the correct transform property to use on the current browser.
+ * @param {!Window} globalObj
+ * @param {boolean=} forceRefresh
+ * @return {string}
+ */
 export function getTransformPropertyName(globalObj, forceRefresh = false) {
   if (storedTransformPropertyName_ === undefined || forceRefresh) {
     const el = globalObj.document.createElement('div');
@@ -27,27 +33,48 @@ export function getTransformPropertyName(globalObj, forceRefresh = false) {
   return storedTransformPropertyName_;
 }
 
-// Clamps a value between the minimum and the maximum, returning the clamped value.
+/**
+ * Clamps a value between the minimum and the maximum, returning the clamped value.
+ * @param {number} value
+ * @param {number} min
+ * @param {number} max
+ * @return {number}
+ */
 export function clamp(value, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
 
-// Returns the easing value to apply at time t, for a given cubic bezier curve.
-// Control points P0 and P3 are assumed to be (0,0) and (1,1), respectively.
-// Paramters are as follows:
-// - time: The current time in the animation, scaled between 0 and 1.
-// - x1: The x value of control point P1.
-// - y1: The y value of control point P1.
-// - x2: The x value of control point P2.
-// - y2: The y value of control point P2.
+
+/**
+ * Returns the easing value to apply at time t, for a given cubic bezier curve.
+ * Control points P0 and P3 are assumed to be (0,0) and (1,1), respectively.
+ * Parameters are as follows:
+ * - time: The current time in the animation, scaled between 0 and 1.
+ * - x1: The x value of control point P1.
+ * - y1: The y value of control point P1.
+ * - x2: The x value of control point P2.
+ * - y2: The y value of control point P2.
+ * @param {number} time
+ * @param {number} x1
+ * @param {number} y1
+ * @param {number} x2
+ * @param {number} y2
+ * @return {number}
+ */
 export function bezierProgress(time, x1, y1, x2, y2) {
   return getBezierCoordinate_(solvePositionFromXValue_(time, x1, x2), y1, y2);
 }
 
-// Compute a single coordinate at a position point between 0 and 1.
-// c1 and c2 are the matching coordinate on control points P1 and P2, respectively.
-// Control points P0 and P3 are assumed to be (0,0) and (1,1), respectively.
-// Adapted from https://github.com/google/closure-library/blob/master/closure/goog/math/bezier.js.
+/**
+ * Compute a single coordinate at a position point between 0 and 1.
+ * c1 and c2 are the matching coordinate on control points P1 and P2, respectively.
+ * Control points P0 and P3 are assumed to be (0,0) and (1,1), respectively.
+ * Adapted from https://github.com/google/closure-library/blob/master/closure/goog/math/bezier.js.
+ * @param {number} t
+ * @param {number} c1
+ * @param {number} c2
+ * @return {number}
+ */
 function getBezierCoordinate_(t, c1, c2) {
   // Special case start and end.
   if (t === 0 || t === 1) {
@@ -67,8 +94,14 @@ function getBezierCoordinate_(t, c1, c2) {
   return ic0 + t * (ic1 - ic0);
 }
 
-// Project a point onto the Bezier curve, from a given X. Calculates the position t along the curve.
-// Adapted from https://github.com/google/closure-library/blob/master/closure/goog/math/bezier.js.
+/**
+ * Project a point onto the Bezier curve, from a given X. Calculates the position t along the curve.
+ * Adapted from https://github.com/google/closure-library/blob/master/closure/goog/math/bezier.js.
+ * @param {number} xVal
+ * @param {number} x1
+ * @param {number} x2
+ * @return {number}
+ */
 function solvePositionFromXValue_(xVal, x1, x2) {
   const EPSILON = 1e-6;
   const MAX_ITERATIONS = 8;
