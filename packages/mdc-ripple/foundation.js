@@ -99,6 +99,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     };
     this.fgScale_ = 0;
     this.activationTimer_ = 0;
+    this.fgDeactivationRemovalTimer_ = 0;
     this.activationAnimationHasEnded_ = false;
     this.activationTimerCallback_ = () => {
       this.activationAnimationHasEnded_ = true;
@@ -203,6 +204,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
     // Cancel any ongoing activation/deactivation animations
     clearTimeout(this.activationTimer_);
+    clearTimeout(this.fgDeactivationRemovalTimer_);
     this.rmBoundedActivationClasses_();
     this.adapter_.removeClass(FG_DEACTIVATION);
 
@@ -248,8 +250,10 @@ export default class MDCRippleFoundation extends MDCFoundation {
     const activationHasEnded = hasDeactivationUXRun || !isActivated;
     if (activationHasEnded && this.activationAnimationHasEnded_) {
       this.rmBoundedActivationClasses_();
-      // Note that we don't need to remove this here since it's removed on re-activation.
       this.adapter_.addClass(FG_DEACTIVATION);
+      this.fgDeactivationRemovalTimer_ = setTimeout(() => {
+        this.adapter_.removeClass(FG_DEACTIVATION);
+      }, numbers.FG_DEACTIVATION_MS);
     }
   }
 

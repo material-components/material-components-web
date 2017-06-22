@@ -181,6 +181,10 @@ such as a `mousedown` or a `pointerdown` event). It expands from the center.
 Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via
 interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
 
+#### MDCRipple.layout()
+
+Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's
+position or dimension is changed programmatically.
 
 ### Unbounded Ripples
 
