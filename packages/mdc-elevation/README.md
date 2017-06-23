@@ -56,7 +56,7 @@ npm install --save @material/elevation
 | `mdc-elevation-transition-duration` | Default duration value for elevation transitions |
 | `mdc-elevation-transition-timing-function` | Default easing value for elevation transitions |
 
-If you need more configurability over your transitions, use the `mdc-elevation-transition-rule` function in conjunctions with the exported sass variables.
+If you need more configurability over your transitions, use the `mdc-elevation-transition-rule` function in conjunction with the exported sass variables.
 
 ```scss
 .my-component-with-custom-transitions {
