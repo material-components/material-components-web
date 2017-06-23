@@ -16,9 +16,10 @@
 
 import {MDCComponent} from '@material/base';
 import MDCRippleFoundation from './foundation';
-import {applyPassive, supportsCssVariables, getMatchesProperty} from './util';
+import * as util from './util';
 
 export {MDCRippleFoundation};
+export {util};
 
 export class MDCRipple extends MDCComponent {
   static attachTo(root, {isUnbounded = undefined} = {}) {
@@ -31,19 +32,19 @@ export class MDCRipple extends MDCComponent {
   }
 
   static createAdapter(instance) {
-    const MATCHES = getMatchesProperty(HTMLElement.prototype);
+    const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
 
     return {
-      browserSupportsCssVars: () => supportsCssVariables(window),
+      browserSupportsCssVars: () => util.supportsCssVariables(window),
       isUnbounded: () => instance.unbounded,
       isSurfaceActive: () => instance.root_[MATCHES](':active'),
       isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
       registerInteractionHandler: (evtType, handler) =>
-          instance.root_.addEventListener(evtType, handler, applyPassive()),
+          instance.root_.addEventListener(evtType, handler, util.applyPassive()),
       deregisterInteractionHandler: (evtType, handler) =>
-          instance.root_.removeEventListener(evtType, handler, applyPassive()),
+          instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       updateCssVariable: (varName, value) => instance.root_.style.setProperty(varName, value),

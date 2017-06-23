@@ -56,7 +56,7 @@ mdc-base exposes two classes: `MDCComponent` (the default export) which all comp
 
 ### MDCFoundation
 
-MDCFoundation provides the basic mechanisms for implementing a foundation classes. Subclasses are expected to:
+MDCFoundation provides the basic mechanisms for implementing foundation classes. Subclasses are expected to:
 
 - Provide implementations of the proper static getters where necessary.
 - Provide `init()` and `destroy()` lifecycle methods

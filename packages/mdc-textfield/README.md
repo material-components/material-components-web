@@ -110,7 +110,7 @@ information to users, as well for validation messages (covered below).
 </p>
 ```
 
-Help text appears on input field focus and disappear on input field blur by default when using
+Help text appears on input field focus and disappears on input field blur by default when using
 the textfield JS component.
 
 #### Persistent help text
@@ -331,7 +331,7 @@ initializes when given an `mdc-textfield--box` root element. Otherwise, the fiel
 
 ### Using the foundation class
 
-Because MDC Textfield is a feature-rich and relatively complex component, it's adapter is a bit more
+Because MDC Textfield is a feature-rich and relatively complex component, its adapter is a bit more
 complicated.
 
 | Method Signature | Description |
