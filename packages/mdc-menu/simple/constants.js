@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** @enum {string} */
 export const cssClasses = {
   ROOT: 'mdc-simple-menu',
   OPEN: 'mdc-simple-menu--open',
@@ -22,6 +24,7 @@ export const cssClasses = {
   BOTTOM_RIGHT: 'mdc-simple-menu--open-from-bottom-right',
 };
 
+/** @enum {string} */
 export const strings = {
   ITEMS_SELECTOR: '.mdc-simple-menu__items',
   SELECTED_EVENT: 'MDCSimpleMenu:selected',
@@ -29,6 +32,7 @@ export const strings = {
   ARIA_DISABLED_ATTR: 'aria-disabled',
 };
 
+/** @enum {number} */
 export const numbers = {
   // Amount of time to wait before triggering a selected event on the menu. Note that this time
   // will most likely be bumped up once interactive lists are supported to allow for the ripple to

@@ -39,7 +39,7 @@ export default class MDCComponent {
    * @param {...?} args
    */
   constructor(root, foundation = undefined, ...args) {
-    /** @private {!Element} */
+    /** @protected {!Element} */
     this.root_ = root;
     this.initialize(...args);
     // Note that we initialize foundation here and not within the constructor's default param so that
@@ -104,7 +104,7 @@ export default class MDCComponent {
    * with the given data.
    * @param {string} evtType
    * @param {!Object} evtData
-   * @param {boolean} shouldBubble
+   * @param {boolean=} shouldBubble
    */
   emit(evtType, evtData, shouldBubble = false) {
     let evt;
