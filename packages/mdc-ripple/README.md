@@ -33,6 +33,7 @@ path: /catalog/ripples/
     - [Specifying known element dimensions](#specifying-known-element-dimensions)
   - [Caveat: Safari](#caveat-safari)
   - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
+  - [The util API](#the-util-api)
 
 MDC Ripple provides the Javascript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
 
@@ -125,13 +126,13 @@ First import the ripple JS
 ##### ES2015
 
 ```javascript
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation, util} from '@material/ripple';
 ```
 
 ##### CommonJS
 
 ```javascript
-const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
+const {MDCRipple, MDCRippleFoundation, util} = require('@material/ripple');
 ```
 
 ##### AMD
@@ -140,6 +141,7 @@ const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
 require('path/to/@material/ripple', function(mdcRipple) {
   const MDCRipple = mdcRipple.MDCRipple;
   const MDCRippleFoundation = mdcRipple.MDCRippleFoundation;
+  const util = mdcRipple.util;
 });
 ```
 
@@ -148,6 +150,7 @@ require('path/to/@material/ripple', function(mdcRipple) {
 ```javascript
 const MDCRipple = mdc.ripple.MDCRipple;
 const MDCRippleFoundation = mdc.ripple.MDCRippleFoundation;
+const util = mdc.ripple.util;
 ```
 
 Then, simply initialize the ripple with the correct DOM element.
@@ -408,3 +411,23 @@ background: color(var(--mdc-theme-primary) a(6%));
 But as far as we know, no browsers yet support it. We have added a `@supports` clause into our code
 to make sure that it can be used as soon as browsers adopt it, but for now this means that _changes
 to your theme via a custom variable will not propagate to ripples._ We don't see this being a gigantic issue as we envision most users configuring one theme via sass. For places where you do need this, special treatment will have to be given.
+
+### The util API
+
+External frameworks and libraries can use the following utility methods when integrating a component.
+
+#### util.supportsCssVariables(windowObj) => Boolean
+
+Determine whether the current browser supports CSS variables (custom properties).
+
+#### util.applyPassive(globalObj = window, forceRefresh = false) => object
+
+Determine whether the current browser supports passive event listeners, and if so, use them.
+
+#### getMatchesProperty(HTMLElementPrototype) => Function
+
+Choose the correct matches property to use on the current browser.
+
+#### getNormalizedEventCoords(ev, pageOffset, clientRect) => object
+
+Determines X/Y coordinates of an event normalized for touch events and ripples.
