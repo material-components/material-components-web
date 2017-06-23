@@ -96,7 +96,7 @@ will emit the following css:
   padding-right: 4px;
 }
 ```
-*N.B.**: checking for `[dir="rtl"]` on an ancestor element works in most cases, it will sometimes
+**N.B.**: checking for `[dir="rtl"]` on an ancestor element works in most cases, it will sometimes
 lead to false negatives for more complex layouts, e.g.
 
 ```html

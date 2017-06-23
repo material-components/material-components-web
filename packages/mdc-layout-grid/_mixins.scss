@@ -14,6 +14,10 @@
 
 // Private mixins, meant for internal use.
 @mixin mdc-layout-grid-media-query_($size) {
+  @if not map-has-key($mdc-layout-grid-columns, $size) {
+    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+  }
+
   @if $size == phone {
     // Phone
     @media (max-width: map-get($mdc-layout-grid-breakpoints, tablet) - 1px) {
@@ -37,6 +41,10 @@
 }
 
 @mixin mdc-layout-grid-cell-span_($size, $span, $gutter) {
+  @if not map-has-key($mdc-layout-grid-columns, $size) {
+    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+  }
+
   $percent: percentage($span / map-get($mdc-layout-grid-columns, $size));
 
   @if $percent > 100% {
@@ -54,6 +62,10 @@
 
 // Public mixins, meant for developer usage.
 @mixin mdc-layout-grid($size, $margin, $max-width: null) {
+  @if not map-has-key($mdc-layout-grid-columns, $size) {
+    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+  }
+
   box-sizing: border-box;
   margin: 0 auto;
 
@@ -66,6 +78,10 @@
 }
 
 @mixin mdc-layout-grid-inner($size, $margin, $gutter) {
+  @if not map-has-key($mdc-layout-grid-columns, $size) {
+    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+  }
+
   display: flex;
   flex-flow: row wrap;
   align-items: stretch;
@@ -82,6 +98,10 @@
 }
 
 @mixin mdc-layout-grid-cell($size, $default-span, $gutter) {
+  @if not map-has-key($mdc-layout-grid-columns, $size) {
+    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+  }
+
   box-sizing: border-box;
   margin: $gutter / 2;
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2);
@@ -121,4 +141,22 @@
   @if $position == "stretch" {
     align-self: stretch;
   }
+}
+
+@mixin mdc-layout-grid-fixed-column-width($size, $margin, $gutter, $column-width) {
+  @if not map-has-key($mdc-layout-grid-columns, $size) {
+    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+  }
+
+  $columnCount: map-get($mdc-layout-grid-columns, $size);
+  $gutter-number: $columnCount - 1;
+  $margin-number: 2;
+
+  width: $column-width * $columnCount + $gutter * $gutter-number + $margin * $margin-number;
+  width:
+    calc(
+      var(--mdc-layout-grid-column-width-#{$size}, #{$column-width}) * #{$columnCount} +
+      var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) * #{$gutter-number} +
+      var(--mdc-layout-grid-margin-#{$size}, #{$margin}) * #{$margin-number}
+    );
 }
