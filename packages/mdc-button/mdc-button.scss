@@ -115,6 +115,7 @@
 
     @include mdc-theme-dark(".mdc-button") {
       @include mdc-theme-prop(background-color, primary);
+      @include mdc-theme-prop(color, text-primary-on-primary);
 
       // postcss-bem-linter: ignore
       &::before {
