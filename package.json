@@ -45,7 +45,7 @@
     "cz-conventional-changelog": "^2.0.0",
     "del-cli": "^1.0.0",
     "dom-events": "^0.1.1",
-    "eslint": "^3.6.1",
+    "eslint": "^4.1.0",
     "eslint-config-google": "^0.7.1",
     "eslint-plugin-mocha": "^4.8.0",
     "extract-text-webpack-plugin": "^2.1.2",
