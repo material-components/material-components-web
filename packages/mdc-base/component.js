@@ -35,7 +35,7 @@ export default class MDCComponent {
 
   /**
    * @param {!Element} root
-   * @param {!F} foundation
+   * @param {F=} foundation
    * @param {...?} args
    */
   constructor(root, foundation = undefined, ...args) {
@@ -44,7 +44,7 @@ export default class MDCComponent {
     this.initialize(...args);
     // Note that we initialize foundation here and not within the constructor's default param so that
     // this.root_ is defined and can be used within the foundation class.
-    /** @private {!F} */
+    /** @protected {!F} */
     this.foundation_ = foundation === undefined ? this.getDefaultFoundation() : foundation;
     this.foundation_.init();
     this.initialSyncWithDOM();
