@@ -30,11 +30,12 @@ class FakeComponent extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    return td.object({
+    const defaultFoundation = td.object({
       isDefaultFoundation: true,
       init: () => {},
-      rootElementAtTimeOfCall: this.root_,
     });
+    defaultFoundation.rootElementAtTimeOfCall = this.root_;
+    return defaultFoundation;
   }
 
   initialize(...args) {
