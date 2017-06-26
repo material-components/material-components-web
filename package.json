@@ -160,6 +160,7 @@
   },
   "closureWhitelist": [
     "mdc-animation",
+    "mdc-auto-init",
     "mdc-base",
     "mdc-menu"
   ]

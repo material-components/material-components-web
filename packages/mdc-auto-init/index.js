@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
+/** @type {!Object<!Function>} */
 const registry = Object.create(null);
 
+/** @type {!Function} */
 const CONSOLE_WARN = console.warn.bind(console);
 
 /**
  * Auto-initializes all mdc components on a page.
+ * @param {Document=} root
+ * @param {Function=} warn
  */
 export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   const nodes = root.querySelectorAll('[data-mdc-auto-init]');
   for (let i = 0, node; (node = nodes[i]); i++) {
-    const ctorName = node.dataset.mdcAutoInit;
+    const ctorName = node.dataset['mdcAutoInit'];
     if (!ctorName) {
       throw new Error('(mdc-auto-init) Constructor name must be given.');
     }
@@ -41,7 +45,7 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     }
 
     // TODO: Should we make an eslint rule for an attachTo() static method?
-    const component = Ctor.attachTo(node);
+    const component = Ctor['attachTo'](node);
     Object.defineProperty(node, ctorName, {
       value: component,
       writable: false,
@@ -51,6 +55,11 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   }
 }
 
+/**
+ * @param {string} componentName
+ * @param {!Function} Ctor
+ * @param {Function=} warn
+ */
 mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {
   if (typeof Ctor !== 'function') {
     throw new Error(`(mdc-auto-init) Invalid Ctor value ${Ctor}. Expected function`);
@@ -68,5 +77,5 @@ mdcAutoInit.deregister = function(componentName) {
 };
 
 mdcAutoInit.deregisterAll = function() {
-  Object.keys(registry).forEach(this.deregister, this);
+  Object.keys(registry).forEach(mdcAutoInit.deregister);
 };
