@@ -161,6 +161,7 @@
   "closureWhitelist": [
     "mdc-animation",
     "mdc-base",
-    "mdc-menu"
+    "mdc-menu",
+    "mdc-ripple"
   ]
 }
