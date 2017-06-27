@@ -14,11 +14,55 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
-
+import MDCFoundation from '@material/base/foundation';
+import MDCRippleAdapter from './adapter';
 import {cssClasses, strings, numbers} from './constants';
 import {getNormalizedEventCoords} from './util';
 
+/**
+ * @typedef {!{
+ *   isActivated: (boolean|undefined),
+ *   hasDeactivationUXRun: (boolean|undefined),
+ *   wasActivatedByPointer: (boolean|undefined),
+ *   wasElementMadeActive: (boolean|undefined),
+ *   activationStartTime: (number|undefined),
+ *   activationEvent: Event,
+ *   isProgrammatic: (boolean|undefined)
+ * }}
+ */
+let ActivationStateType;
+
+/**
+ * @typedef {!{
+ *   activate: (string|undefined),
+ *   deactivate: (string|undefined),
+ *   focus: (string|undefined),
+ *   blur: (string|undefined)
+ * }}
+ */
+let ListenerInfoType;
+
+/**
+ * @typedef {!{
+ *   activate: function(!Event),
+ *   deactivate: function(!Event),
+ *   focus: function(),
+ *   blur: function()
+ * }}
+ */
+let ListenersType;
+
+/**
+ * @typedef {!{
+ *   x: number,
+ *   y: number
+ * }}
+ */
+let PointType;
+
+/**
+ * @enum {string}
+ */
 const DEACTIVATION_ACTIVATION_PAIRS = {
   mouseup: 'mousedown',
   pointerup: 'pointerdown',
@@ -27,6 +71,9 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
   blur: 'focus',
 };
 
+/**
+ * @extends {MDCFoundation<!MDCRippleAdapter>}
+ */
 export default class MDCRippleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
@@ -58,10 +105,13 @@ export default class MDCRippleFoundation extends MDCFoundation {
     };
   }
 
-  // We compute this property so that we are not querying information about the client
-  // until the point in time where the foundation requests it. This prevents scenarios where
-  // client-side feature-detection may happen too early, such as when components are rendered on the server
-  // and then initialized at mount time on the client.
+  /**
+   * We compute this property so that we are not querying information about the client
+   * until the point in time where the foundation requests it. This prevents scenarios where
+   * client-side feature-detection may happen too early, such as when components are rendered on the server
+   * and then initialized at mount time on the client.
+   * @return {boolean}
+   */
   get isSupported_() {
     return this.adapter_.browserSupportsCssVars();
   }
@@ -69,12 +119,25 @@ export default class MDCRippleFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCRippleFoundation.defaultAdapter, adapter));
 
+    /** @private {number} */
     this.layoutFrame_ = 0;
-    this.frame_ = {width: 0, height: 0};
+
+    /** @private {!ClientRect} */
+    this.frame_ = /** @type {!ClientRect} */ ({width: 0, height: 0});
+
+    /** @private {!ActivationStateType} */
     this.activationState_ = this.defaultActivationState_();
+
+    /** @private {number} */
     this.xfDuration_ = 0;
+
+    /** @private {number} */
     this.initialSize_ = 0;
+
+    /** @private {number} */
     this.maxRadius_ = 0;
+
+    /** @private {!Array<{ListenerInfoType}>} */
     this.listenerInfos_ = [
       {activate: 'touchstart', deactivate: 'touchend'},
       {activate: 'pointerdown', deactivate: 'pointerup'},
@@ -82,6 +145,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
       {activate: 'keydown', deactivate: 'keyup'},
       {focus: 'focus', blur: 'blur'},
     ];
+
+    /** @private {!ListenersType} */
     this.listeners_ = {
       activate: (e) => this.activate_(e),
       deactivate: (e) => this.deactivate_(e),
@@ -92,21 +157,38 @@ export default class MDCRippleFoundation extends MDCFoundation {
         () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
       ),
     };
+
+    /** @private {!Function} */
     this.resizeHandler_ = () => this.layout();
+
+    /** @private {!{left: number, top:number}} */
     this.unboundedCoords_ = {
       left: 0,
       top: 0,
     };
+
+    /** @private {number} */
     this.fgScale_ = 0;
+
+    /** @private {number} */
     this.activationTimer_ = 0;
+
+    /** @private {number} */
     this.fgDeactivationRemovalTimer_ = 0;
+
+    /** @private {boolean} */
     this.activationAnimationHasEnded_ = false;
+
+    /** @private {!Function} */
     this.activationTimerCallback_ = () => {
       this.activationAnimationHasEnded_ = true;
       this.runDeactivationUXLogicIfReady_();
     };
   }
 
+  /**
+   * @return {!ActivationStateType}
+   */
   defaultActivationState_() {
     return {
       isActivated: false,
@@ -135,6 +217,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
+  /** @private */
   addEventListeners_() {
     this.listenerInfos_.forEach((info) => {
       Object.keys(info).forEach((k) => {
@@ -144,6 +227,10 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.adapter_.registerResizeHandler(this.resizeHandler_);
   }
 
+  /**
+   * @param {Event} e
+   * @private
+   */
   activate_(e) {
     if (this.adapter_.isSurfaceDisabled()) {
       return;
@@ -182,6 +269,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.activate_(null);
   }
 
+  /** @private */
   animateActivation_() {
     const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
     const {
@@ -215,6 +303,10 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.activationTimer_ = setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);
   }
 
+  /**
+   * @private
+   * @return {{startPoint: PointType, endPoint: PointType}}
+   */
   getFgTranslationCoordinates_() {
     const {activationState_: activationState} = this;
     const {activationEvent, wasActivatedByPointer} = activationState;
@@ -222,7 +314,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
     let startPoint;
     if (wasActivatedByPointer) {
       startPoint = getNormalizedEventCoords(
-        activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect()
+        /** @type {!Event} */ (activationEvent),
+        this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect()
       );
     } else {
       startPoint = {
@@ -244,6 +337,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     return {startPoint, endPoint};
   }
 
+  /** @private */
   runDeactivationUXLogicIfReady_() {
     const {FG_DEACTIVATION} = MDCRippleFoundation.cssClasses;
     const {hasDeactivationUXRun, isActivated} = this.activationState_;
@@ -257,6 +351,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
   }
 
+  /** @private */
   rmBoundedActivationClasses_() {
     const {BG_ACTIVE_FILL, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     this.adapter_.removeClass(BG_ACTIVE_FILL);
@@ -265,6 +360,10 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.adapter_.computeBoundingRect();
   }
 
+  /**
+   * @param {Event} e
+   * @private
+   */
   deactivate_(e) {
     const {activationState_: activationState} = this;
     // This can happen in scenarios such as when you have a keyup event that blurs the element.
@@ -274,7 +373,8 @@ export default class MDCRippleFoundation extends MDCFoundation {
     // Programmatic deactivation.
     if (activationState.isProgrammatic) {
       const evtObject = null;
-      requestAnimationFrame(() => this.animateDeactivation_(evtObject, Object.assign({}, activationState)));
+      const state = /** @type {!ActivationStateType} */ (Object.assign({}, activationState));
+      requestAnimationFrame(() => this.animateDeactivation_(evtObject, state));
       this.activationState_ = this.defaultActivationState_();
       return;
     }
@@ -291,7 +391,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
       needsActualDeactivation = e.type === 'mouseup';
     }
 
-    const state = Object.assign({}, activationState);
+    const state = /** @type {!ActivationStateType} */ (Object.assign({}, activationState));
     requestAnimationFrame(() => {
       if (needsDeactivationUX) {
         this.activationState_.hasDeactivationUXRun = true;
@@ -308,6 +408,11 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.deactivate_(null);
   }
 
+  /**
+   * @param {Event} e
+   * @param {!ActivationStateType} options
+   * @private
+   */
   animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive}) {
     const {BG_FOCUSED} = MDCRippleFoundation.cssClasses;
     if (wasActivatedByPointer || wasElementMadeActive) {
@@ -331,6 +436,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
+  /** @private */
   removeEventListeners_() {
     this.listenerInfos_.forEach((info) => {
       Object.keys(info).forEach((k) => {
@@ -340,6 +446,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
   }
 
+  /** @private */
   removeCssVars_() {
     const {strings} = MDCRippleFoundation;
     Object.keys(strings).forEach((k) => {
@@ -359,6 +466,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
+  /** @private */
   layoutInternal_() {
     this.frame_ = this.adapter_.computeBoundingRect();
 
@@ -375,6 +483,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.updateLayoutCssVars_();
   }
 
+  /** @private */
   updateLayoutCssVars_() {
     const {
       VAR_SURFACE_WIDTH, VAR_SURFACE_HEIGHT, VAR_FG_SIZE,
