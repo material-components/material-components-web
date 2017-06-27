@@ -52,7 +52,7 @@ export class MDCRipple extends MDCComponent {
   }
 
   /**
-   * @param {!MDCRipple} instance
+   * @param {!RippleAbleType} instance
    * @return {!MDCRippleAdapter}
    */
   static createAdapter(instance) {
@@ -114,3 +114,12 @@ export class MDCRipple extends MDCComponent {
     this.unbounded = 'mdcRippleIsUnbounded' in this.root_.dataset;
   }
 }
+
+/**
+ * @typedef {!{
+ *   root_: !Element,
+ *   unbounded: (boolean|undefined),
+ *   disabled: (boolean|undefined)
+ * }}
+ */
+let RippleAbleType;
