@@ -2,6 +2,7 @@
 title: "Sliders"
 layout: detail
 section: components
+excerpt: "A select over a range of values by moving the slider thumb."
 iconId: slider
 path: /catalog/input-controls/sliders/
 -->
@@ -11,7 +12,7 @@ path: /catalog/input-controls/sliders/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/slider.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/sliders.png" width="400" alt="Select screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/slider.png" width="400" alt="Select screenshot">
   </a>
 </div>-->
 
@@ -187,7 +188,7 @@ use to build a custom MDCSlider component for their framework.
 | `getAttribute(name: string) => string?` | Returns the value of the attribute `name` on the root element, or `null` if that attribute is not present on the root element. |
 | `setAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
 | `removeAttribute(name: string) => void` | Removes an attribute `name` from the root element |
-| `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()`` for this. |
+| `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
 | `getTabIndex() => number` | Returns the value of the `tabIndex` property on the root element |
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
