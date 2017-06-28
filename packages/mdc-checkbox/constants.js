@@ -19,7 +19,6 @@ const ROOT = 'mdc-checkbox';
 
 /** @enum {string} */
 export const cssClasses = {
-  ROOT: 'mdc-checkbox',
   UPGRADED: 'mdc-checkbox--upgraded',
   CHECKED: 'mdc-checkbox--checked',
   INDETERMINATE: 'mdc-checkbox--indeterminate',

@@ -15,7 +15,9 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCCheckboxAdapter from './adapter';
+/* eslint-disable no-unused-vars */
+import {MDCCheckboxAdapter, InputElementState} from './adapter';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
 /** @const {!Array<string>} */
@@ -45,7 +47,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
       deregisterChangeHandler: (/* handler: EventListener */) => {},
-      getNativeControl: () => /* HTMLInputElement */ {},
+      getNativeControl: () => /* InputElementState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
     };
@@ -63,17 +65,16 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     /** @private {number} */
     this.animEndLatchTimer_ = 0;
 
-    /** @private {!Function} */
-    this.animEndHandler_ = () => {
+    this.animEndHandler_ = /** @private {!EventListener} */ (() => {
       clearTimeout(this.animEndLatchTimer_);
       this.animEndLatchTimer_ = setTimeout(() => {
         this.adapter_.removeClass(this.currentAnimationClass_);
         this.adapter_.deregisterAnimationEndHandler(this.animEndHandler_);
       }, numbers.ANIM_END_LATCH_MS);
-    };
+    });
 
-    /** @private {!Function} */
-    this.changeHandler_ = () => this.transitionCheckState_();
+    this.changeHandler_ = /** @private {!EventListener} */ (
+      () => this.transitionCheckState_());
   }
 
   init() {
@@ -202,7 +203,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!HTMLInputElement} nativeCb
+   * @param {!InputElementState} nativeCb
    * @return {string}
    * @private
    */
@@ -258,7 +259,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!HTMLInputElement|InputPropsType}
+   * @return {!InputElementState}
    * @private
    */
   getNativeControl_() {
@@ -278,13 +279,3 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
 function validDescriptor(inputPropDesc) {
   return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
-
-/**
- * @typedef {!{
- *   checked: boolean,
- *   indeterminate: boolean,
- *   disabled: boolean,
- *   value: ?string
- * }}
- */
-let InputPropsType;

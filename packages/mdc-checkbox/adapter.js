@@ -41,19 +41,19 @@ export default class MDCCheckboxAdapter {
   /** @param {string} className */
   removeClass(className) {}
 
-  /** @param {!Function} handler */
+  /** @param {!EventListener} handler */
   registerAnimationEndHandler(handler) {}
 
-  /** @param {!Function} handler */
+  /** @param {!EventListener} handler */
   deregisterAnimationEndHandler(handler) {}
 
-  /** @param {!Function} handler */
+  /** @param {!EventListener} handler */
   registerChangeHandler(handler) {}
 
-  /** @param {!Function} handler */
+  /** @param {!EventListener} handler */
   deregisterChangeHandler(handler) {}
 
-  /** @return {!HTMLInputElement} */
+  /** @return {InputElementState} */
   getNativeControl() {}
 
   forceLayout() {}
@@ -62,3 +62,13 @@ export default class MDCCheckboxAdapter {
   isAttachedToDOM() {}
 
 }
+
+/**
+ * @typedef {!{
+ *   checked: boolean,
+ *   indeterminate: boolean,
+ *   disabled: boolean,
+ *   value: ?string
+ * }}
+ */
+export let InputElementState;

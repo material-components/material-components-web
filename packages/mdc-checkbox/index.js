@@ -16,6 +16,9 @@
 
 import {getCorrectEventName} from '@material/animation';
 import MDCComponent from '@material/base/component';
+/* eslint-disable no-unused-vars */
+import {InputElementState} from './adapter';
+/* eslint-enable no-unused-vars */
 import MDCCheckboxFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 import {getMatchesProperty} from '@material/ripple/util';
@@ -31,12 +34,12 @@ export class MDCCheckbox extends MDCComponent {
   }
 
   /**
-   * @return {!HTMLInputElement}
+   * @return {InputElementState|undefined}
    * @private
    */
   get nativeCb_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    const cbEl = /** @type {!HTMLInputElement} */ (
+    const cbEl = /** @type {InputElementState|undefined} */ (
         this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
     return cbEl;
   }
