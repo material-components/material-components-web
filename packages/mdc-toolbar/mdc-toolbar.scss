@@ -96,6 +96,8 @@
   &__icon--menu {
     @include mdc-shared-icon-style(menu);
     @include mdc-theme-prop(color, text-primary-on-primary);
+
+    cursor: pointer;
   }
 }
 
