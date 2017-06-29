@@ -89,7 +89,7 @@
     "to-slug-case": "^1.0.0",
     "query-ast": "^1.0.1",
     "validate-commit-msg": "^2.6.1",
-    "webpack": "^2.2.1",
+    "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.3"
   },
   "babel": {
