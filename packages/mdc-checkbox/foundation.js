@@ -164,7 +164,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
 
     CB_PROTO_PROPS.forEach((controlState) => {
       const desc = /** @type {!ObjectPropertyDescriptor} */ (
-          Object.getOwnPropertyDescriptor(cbProto, controlState));
+        Object.getOwnPropertyDescriptor(cbProto, controlState));
       if (validDescriptor(desc)) {
         Object.defineProperty(nativeCb, controlState, desc);
       }
