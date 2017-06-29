@@ -1,7 +1,7 @@
 {
   "name": "@material/linear-progress",
   "description": "The Material Components for the web linear progress indicator component",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@material/animation": "^0.2.3",
-    "@material/base": "^0.2.0",
+    "@material/base": "^0.2.1",
     "@material/theme": "^0.1.5"
   },
   "publishConfig": {

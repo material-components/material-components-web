@@ -44,6 +44,10 @@ testFoundation('runs deactivation UX on touchend after touchstart', ({foundation
   td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+  clock.tick(numbers.FG_DEACTIVATION_MS);
+  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+
   clock.uninstall();
 });
 
@@ -64,6 +68,10 @@ testFoundation('runs deactivation UX on pointerup after pointerdown', ({foundati
   td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+  clock.tick(numbers.FG_DEACTIVATION_MS);
+  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+
   clock.uninstall();
 });
 
@@ -84,6 +92,10 @@ testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, 
   td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+  clock.tick(numbers.FG_DEACTIVATION_MS);
+  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+
   clock.uninstall();
 });
 
@@ -107,6 +119,10 @@ testFoundation('runs deactivation on keyup after keydown when keydown makes surf
       td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
       td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
       td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+      clock.tick(numbers.FG_DEACTIVATION_MS);
+      td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+
       clock.uninstall();
     });
 
@@ -152,6 +168,10 @@ testFoundation('runs deactivation UX on public deactivate() call', ({foundation,
   td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+  clock.tick(numbers.FG_DEACTIVATION_MS);
+  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+
   clock.uninstall();
 });
 
@@ -173,6 +193,10 @@ testFoundation('runs deactivation UX when activation UX timer finishes first (ac
       td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
       td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
       td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+      clock.tick(numbers.FG_DEACTIVATION_MS);
+      td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+
       clock.uninstall();
     });
 
@@ -195,6 +219,7 @@ testFoundation('clears any pending deactivation UX timers when re-triggered', ({
   mockRaf.flush();
   handlers.mouseup();
   mockRaf.flush();
+
   clock.tick(DEACTIVATION_TIMEOUT_MS);
 
   // Verify that BG_FOCUSED was removed both times
@@ -206,8 +231,42 @@ testFoundation('clears any pending deactivation UX timers when re-triggered', ({
   td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 3});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 3});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
+
   clock.uninstall();
 });
+
+testFoundation('clears any pending foreground deactivation class removal timers when re-triggered',
+    ({foundation, adapter, mockRaf}) => {
+      const handlers = captureHandlers(adapter);
+      const clock = lolex.install();
+      foundation.init();
+      mockRaf.flush();
+
+      // Trigger the first interaction
+      handlers.mousedown({pageX: 0, pageY: 0});
+      mockRaf.flush();
+      handlers.mouseup();
+      mockRaf.flush();
+
+      // Tick the clock such that the deactivation UX gets run, but _not_ so the foreground deactivation removal
+      // timer gets run
+      clock.tick(DEACTIVATION_TIMEOUT_MS);
+
+      // Sanity check that the foreground deactivation class removal was only called once within
+      // the activation code.
+      td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION), {times: 1});
+
+      // Trigger another activation
+      handlers.mousedown({pageX: 0, pageY: 0});
+      mockRaf.flush();
+
+      // Tick the clock past the time when the initial foreground deactivation timer would have ran.
+      clock.tick(numbers.FG_DEACTIVATION_MS);
+
+      // Verify that the foreground deactivation class removal was only called twice: once within the
+      // original activation, and again within this subsequent activation; NOT by means of any timers firing.
+      td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION), {times: 2});
+    });
 
 testFoundation('waits until activation UX timer runs before removing active fill classes',
     ({foundation, adapter, mockRaf}) => {

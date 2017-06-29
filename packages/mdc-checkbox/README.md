@@ -210,7 +210,7 @@ The adapter for checkboxes must provide the following functions, with correct si
 | `deregisterChangeHandler(handler: EventListener) => void` | Deregisters an event handler that was previously passed to `registerChangeHandler`. |
 | `getNativeControl() => HTMLInputElement?` | Returns the native checkbox control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
 | `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
-| `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise.` |
+| `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise. |
 
 
 #### MDCCheckboxFoundation API

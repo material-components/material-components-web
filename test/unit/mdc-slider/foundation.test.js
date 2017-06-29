@@ -43,12 +43,13 @@ test('exports numbers', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
-    'addClass', 'removeClass', 'getAttribute', 'setAttribute', 'removeAttribute',
+    'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute', 'removeAttribute',
     'computeBoundingRect', 'getTabIndex', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerThumbContainerInteractionHandler', 'deregisterThumbContainerInteractionHandler',
     'registerBodyInteractionHandler', 'deregisterBodyInteractionHandler', 'registerResizeHandler',
     'deregisterResizeHandler', 'notifyInput', 'notifyChange', 'setThumbContainerStyleProperty',
-    'setTrackStyleProperty', 'isRTL',
+    'setTrackStyleProperty', 'setMarkerValue', 'appendTrackMarkers', 'removeTrackMarkers',
+    'setLastTrackMarkersStyleProperty', 'isRTL',
   ]);
 });
 
@@ -101,6 +102,21 @@ test('#init registers all necessary event handlers for the component', () => {
   raf.restore();
 });
 
+test('#init checks if slider is discrete and if display track markers', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
+  foundation.init();
+
+  raf.flush();
+
+  td.verify(mockAdapter.hasClass(cssClasses.IS_DISCRETE));
+  td.verify(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER));
+
+  raf.restore();
+});
+
 test('#init performs an initial layout of the component', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
@@ -133,6 +149,94 @@ test('#destroy deregisters all component event handlers registered during init()
   td.verify(mockAdapter.deregisterThumbContainerInteractionHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.deregisterThumbContainerInteractionHandler('touchstart', isA(Function)));
   td.verify(mockAdapter.deregisterResizeHandler(isA(Function)));
+});
+
+test('#setupTrackMarker appends correct number of markers to discrete slider with markers', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  const numMarkers = 10;
+  foundation.setMax(100);
+  foundation.setMin(0);
+  foundation.setStep(10);
+  foundation.setupTrackMarker();
+
+  td.verify(mockAdapter.removeTrackMarkers());
+  td.verify(mockAdapter.appendTrackMarkers(numMarkers));
+
+  raf.restore();
+});
+
+test('#setupTrackMarker append one excessive marker if distance is indivisible to step', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  const numMarkers = 12;
+  foundation.setMax(100);
+  foundation.setMin(0);
+  foundation.setStep(9);
+  foundation.setupTrackMarker();
+
+  td.verify(mockAdapter.removeTrackMarkers());
+  td.verify(mockAdapter.appendTrackMarkers(numMarkers));
+
+  raf.restore();
+});
+
+test('#setupTrackMarker does execute if it is continuous slider', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setMax(100);
+  foundation.setMin(0);
+  foundation.setStep(10);
+  foundation.setupTrackMarker();
+
+  td.verify(mockAdapter.removeTrackMarkers(), {times: 0});
+  td.verify(mockAdapter.appendTrackMarkers(isA(Number)), {times: 0});
+
+  raf.restore();
+});
+
+test('#setupTrackMarker does execute if discrete slider does not display markers', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(false);
+  foundation.init();
+  raf.flush();
+
+  foundation.setMax(100);
+  foundation.setMin(0);
+  foundation.setStep(10);
+  foundation.setupTrackMarker();
+
+  td.verify(mockAdapter.removeTrackMarkers(), {times: 0});
+  td.verify(mockAdapter.appendTrackMarkers(isA(Number)), {times: 0});
+
+  raf.restore();
 });
 
 test('#layout re-computes the bounding rect for the component on each call', () => {
@@ -518,6 +622,26 @@ test('#setMax updates "aria-valuemax" to the new maximum', () => {
   raf.restore();
 });
 
+test('#setMax re-renders track markers if slider is discrete and displays markers', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  const {isA} = td.matchers;
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setMax(50);
+
+  td.verify(mockAdapter.removeTrackMarkers());
+  td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
+
+  raf.restore();
+});
+
+
 test('#getMin/#setMin retrieves / sets the minimum value, respectively', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
@@ -600,6 +724,25 @@ test('#setMin updates "aria-valuemin" to the new minimum', () => {
   raf.restore();
 });
 
+test('#setMin re-renders track markers if slider is discrete and displays markers', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  const {isA} = td.matchers;
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setMin(10);
+
+  td.verify(mockAdapter.removeTrackMarkers());
+  td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
+
+  raf.restore();
+});
+
 test('#getStep/#setStep retrieves / sets the step value, respectively', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
@@ -646,6 +789,22 @@ test('#setStep throws if the step value given is less than 0', () => {
   raf.restore();
 });
 
+test('#setStep set discrete slider step to 1 if the provided step is invalid', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setStep(0.5);
+
+  assert.equal(foundation.getStep(), 1);
+
+  raf.restore();
+});
+
 test('#setStep updates the slider\'s UI when altering the step value', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
@@ -664,6 +823,25 @@ test('#setStep updates the slider\'s UI when altering the step value', () => {
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(10px) translateX(-50%)'));
   td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.1)'));
+
+  raf.restore();
+});
+
+test('#setStep re-renders track markers if slider is discrete and displays markers', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  const {isA} = td.matchers;
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setStep(10);
+
+  td.verify(mockAdapter.removeTrackMarkers());
+  td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
 
   raf.restore();
 });

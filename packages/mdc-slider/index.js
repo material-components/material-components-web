@@ -69,10 +69,13 @@ export class MDCSlider extends MDCComponent {
   initialize() {
     this.thumbContainer_ = this.root_.querySelector(strings.THUMB_CONTAINER_SELECTOR);
     this.track_ = this.root_.querySelector(strings.TRACK_SELECTOR);
+    this.pinValueMarker_ = this.root_.querySelector(strings.PIN_VALUE_MARKER_SELECTOR);
+    this.trackMarkerContainer_ = this.root_.querySelector(strings.TRACK_MARKER_CONTAINER_SELECTOR);
   }
 
   getDefaultFoundation() {
     return new MDCSliderFoundation({
+      hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       getAttribute: (name) => this.root_.getAttribute(name),
@@ -116,6 +119,28 @@ export class MDCSlider extends MDCComponent {
       setTrackStyleProperty: (propertyName, value) => {
         this.track_.style.setProperty(propertyName, value);
       },
+      setMarkerValue: (value) => {
+        this.pinValueMarker_.innerText = value;
+      },
+      appendTrackMarkers: (numMarkers) => {
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < numMarkers; i++) {
+          const marker = document.createElement('div');
+          marker.classList.add('mdc-slider__track-marker');
+          frag.appendChild(marker);
+        }
+        this.trackMarkerContainer_.appendChild(frag);
+      },
+      removeTrackMarkers: () => {
+        while (this.trackMarkerContainer_.firstChild) {
+          this.trackMarkerContainer_.removeChild(this.trackMarkerContainer_.firstChild);
+        }
+      },
+      setLastTrackMarkersStyleProperty: (propertyName, value) => {
+        // We remove and append new nodes, thus, the last track marker must be dynamically found.
+        const lastTrackMarker = this.root_.querySelector(strings.LAST_TRACK_MARKER_SELECTOR);
+        lastTrackMarker.style.setProperty(propertyName, value);
+      },
       isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
     });
   }
@@ -130,6 +155,7 @@ export class MDCSlider extends MDCComponent {
       this.root_.hasAttribute(strings.ARIA_DISABLED) &&
       this.root_.getAttribute(strings.ARIA_DISABLED) !== 'false'
     );
+    this.foundation_.setupTrackMarker();
   }
 
   layout() {
