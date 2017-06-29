@@ -306,6 +306,46 @@
           </div>
         </div>
 
+        <div class="demo-grid-legend">Fixed column width layout grid</div>
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell">
+              <div class="demo-controls">
+                Desktop Column Width:
+                <select id="desktop-column-width">
+                  <option value="72px" selected>72px</option>
+                  <option value="84px">84px</option>
+                </select>
+              </div>
+            </div>
+            <div class="mdc-layout-grid__cell">
+              <div class="demo-controls">
+                Tablet Column Width:
+                <select id="tablet-column-width">
+                  <option value="72px" selected>72px</option>
+                  <option value="84px">84px</option>
+                </select>
+              </div>
+            </div>
+            <div class="mdc-layout-grid__cell">
+              <div class="demo-controls">
+                Phone Column Width:
+                <select id="phone-column-width">
+                  <option value="72px" >72px</option>
+                  <option value="84px">84px</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-grid mdc-layout-grid mdc-layout-grid--fixed-column-width">
+          <div class="mdc-layout-grid__inner">
+            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+          </div>
+        </div>
+
         <div class="demo-ruler"><div id="current"></div></div>
     </section>
 
@@ -323,6 +363,7 @@
         gutterSelectDesktop.addEventListener('change', function() {
           document.documentElement.style.setProperty('--mdc-layout-grid-gutter-desktop', gutterSelectDesktop.value);
         });
+
         var marginSelectTablet = document.querySelector('#tablet-margin');
         marginSelectTablet.addEventListener('change', function() {
           document.documentElement.style.setProperty('--mdc-layout-grid-margin-tablet', marginSelectTablet.value);
@@ -332,6 +373,7 @@
         gutterSelectTablet.addEventListener('change', function() {
           document.documentElement.style.setProperty('--mdc-layout-grid-gutter-tablet', gutterSelectTablet.value);
         });
+
         var marginSelectPhone = document.querySelector('#phone-margin');
         marginSelectPhone.addEventListener('change', function() {
           document.documentElement.style.setProperty('--mdc-layout-grid-margin-phone', marginSelectPhone.value);
@@ -340,6 +382,21 @@
         var gutterSelectPhone = document.querySelector('#phone-gutter');
         gutterSelectPhone.addEventListener('change', function() {
           document.documentElement.style.setProperty('--mdc-layout-grid-gutter-phone', gutterSelectPhone.value);
+        });
+
+        var columnWidthSelectDesktop = document.querySelector('#desktop-column-width');
+        columnWidthSelectDesktop.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-desktop', columnWidthSelectDesktop.value);
+        });
+
+        var columnWidthSelectTablet = document.querySelector('#tablet-column-width');
+        columnWidthSelectTablet.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-tablet', columnWidthSelectTablet.value);
+        });
+
+        var columnWidthSelectPhone = document.querySelector('#phone-column-width');
+        columnWidthSelectPhone.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-phone', columnWidthSelectPhone.value);
         });
 
         var current = document.querySelector('#current');

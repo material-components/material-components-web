@@ -1,7 +1,7 @@
 {
   "name": "@material/snackbar",
   "description": "The Material Components for the web snackbar component",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@material/animation": "^0.2.3",
-    "@material/base": "^0.2.0",
-    "@material/button": "^0.3.7",
-    "@material/rtl": "^0.1.5",
+    "@material/base": "^0.2.1",
+    "@material/button": "^0.3.8",
+    "@material/rtl": "^0.1.6",
     "@material/theme": "^0.1.5",
     "@material/typography": "^0.2.2"
   }
