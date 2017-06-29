@@ -14,78 +14,110 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import MDCFoundation from '@material/base/foundation';
+import MDCSimpleMenuAdapter from './adapter';
 import {cssClasses, strings, numbers} from './constants';
 import {clamp, bezierProgress} from '../util';
 
+/**
+ * @extends {MDCFoundation<!MDCSimpleMenuAdapter>}
+ */
 export default class MDCSimpleMenuFoundation extends MDCFoundation {
+  /** @return enum{cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum{strings} */
   static get strings() {
     return strings;
   }
 
+  /** @return enum{numbers} */
   static get numbers() {
     return numbers;
   }
 
+  /**
+   * {@see MDCSimpleMenuAdapter} for typing information on parameters and return
+   * types.
+   * @return {!MDCSimpleMenuAdapter}
+   */
   static get defaultAdapter() {
-    return {
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      hasClass: (/* className: string */) => {},
-      hasNecessaryDom: () => /* boolean */ false,
-      getAttributeForEventTarget: (/* target: EventTarget, attributeName: string */) => {},
-      getInnerDimensions: () => /* { width: number, height: number } */ ({}),
-      hasAnchor: () => /* boolean */ false,
-      getAnchorDimensions: () =>
-          /* { width: number, height: number, top: number, right: number, bottom: number, left: number } */ ({}),
-      getWindowDimensions: () => /* { width: number, height: number } */ ({}),
-      setScale: (/* x: number, y: number */) => {},
-      setInnerScale: (/* x: number, y: number */) => {},
-      getNumberOfItems: () => /* number */ 0,
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      registerBodyClickHandler: (/* handler: EventListener */) => {},
-      deregisterBodyClickHandler: (/* handler: EventListener */) => {},
-      getYParamsForItemAtIndex: (/* index: number */) => /* {top: number, height: number} */ ({}),
-      setTransitionDelayForItemAtIndex: (/* index: number, value: string */) => {},
-      getIndexForEventTarget: (/* target: EventTarget */) => /* number */ 0,
-      notifySelected: (/* evtData: {index: number} */) => {},
+    return /** @type {!MDCSimpleMenuAdapter} */ ({
+      addClass: () => {},
+      removeClass: () => {},
+      hasClass: () => false,
+      hasNecessaryDom: () => false,
+      getAttributeForEventTarget: () => {},
+      getInnerDimensions: () => ({}),
+      hasAnchor: () => false,
+      getAnchorDimensions: () => ({}),
+      getWindowDimensions: () => ({}),
+      setScale: () => {},
+      setInnerScale: () => {},
+      getNumberOfItems: () => 0,
+      registerInteractionHandler: () => {},
+      deregisterInteractionHandler: () => {},
+      registerBodyClickHandler: () => {},
+      deregisterBodyClickHandler: () => {},
+      getYParamsForItemAtIndex: () => ({}),
+      setTransitionDelayForItemAtIndex: () => {},
+      getIndexForEventTarget: () => 0,
+      notifySelected: () => {},
       notifyCancel: () => {},
       saveFocus: () => {},
       restoreFocus: () => {},
-      isFocused: () => /* boolean */ false,
+      isFocused: () => false,
       focus: () => {},
-      getFocusedItemIndex: () => /* number */ -1,
-      focusItemAtIndex: (/* index: number */) => {},
-      isRtl: () => /* boolean */ false,
-      setTransformOrigin: (/* origin: string */) => {},
-      setPosition: (/* position: { top: string, right: string, bottom: string, left: string } */) => {},
-      getAccurateTime: () => /* number */ 0,
-    };
+      getFocusedItemIndex: () => -1,
+      focusItemAtIndex: () => {},
+      isRtl: () => false,
+      setTransformOrigin: () => {},
+      setPosition: () => {},
+      getAccurateTime: () => 0,
+    });
   }
 
+  /** @param {!MDCSimpleMenuAdapter} adapter */
   constructor(adapter) {
     super(Object.assign(MDCSimpleMenuFoundation.defaultAdapter, adapter));
+
+    /** @private {function(!Event)} */
     this.clickHandler_ = (evt) => this.handlePossibleSelected_(evt);
+    /** @private {function(!Event)} */
     this.keydownHandler_ = (evt) => this.handleKeyboardDown_(evt);
+    /** @private {function(!Event)} */
     this.keyupHandler_ = (evt) => this.handleKeyboardUp_(evt);
+    /** @private {function(!Event)} */
     this.documentClickHandler_ = (evt) => {
       this.adapter_.notifyCancel();
       this.close(evt);
     };
+    /** @private {boolean} */
     this.isOpen_ = false;
+    /** @private {number} */
     this.startScaleX_ = 0;
+    /** @private {number} */
     this.startScaleY_ = 0;
+    /** @private {number} */
     this.targetScale_ = 1;
+    /** @private {number} */
     this.scaleX_ = 0;
+    /** @private {number} */
     this.scaleY_ = 0;
+    /** @private {boolean} */
     this.running_ = false;
+    /** @private {number} */
     this.selectedTriggerTimerId_ = 0;
+    /** @private {number} */
     this.animationRequestId_ = 0;
+    /** @private {!{ width: number, height: number }} */
+    this.dimensions_;
+    /** @private {number} */
+    this.startTime_;
+    /** @private {number} */
+    this.itemHeight_;
   }
 
   init() {
@@ -118,7 +150,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
   }
 
-  // Calculate transition delays for individual menu items, so that they fade in one at a time.
+  /**
+   * Calculates transition delays for individual menu items, so that they fade in one at a time.
+   * @private
+   */
   applyTransitionDelays_() {
     const {BOTTOM_LEFT, BOTTOM_RIGHT} = MDCSimpleMenuFoundation.cssClasses;
     const numItems = this.adapter_.getNumberOfItems();
@@ -139,7 +174,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     }
   }
 
-  // Remove transition delays from menu items.
+  /**
+   * Removes transition delays from menu items.
+   * @private
+   */
   removeTransitionDelays_() {
     const numItems = this.adapter_.getNumberOfItems();
     for (let i = 0; i < numItems; i++) {
@@ -147,7 +185,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     }
   }
 
-  // Animate menu opening or closing.
+  /**
+   * Animates menu opening or closing.
+   * @private
+   */
   animationLoop_() {
     const time = this.adapter_.getAccurateTime();
     const {TRANSITION_DURATION_MS, TRANSITION_X1, TRANSITION_Y1, TRANSITION_X2, TRANSITION_Y2,
@@ -199,7 +240,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     }
   }
 
-  // Starts the open or close animation.
+  /**
+   * Starts the open or close animation.
+   * @private
+   */
   animateMenu_() {
     this.startTime_ = this.adapter_.getAccurateTime();
     this.startScaleX_ = this.scaleX_;
@@ -213,6 +257,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * @param {?number} focusIndex
+   * @private
+   */
   focusOnOpen_(focusIndex) {
     if (focusIndex === null) {
       // First, try focusing the menu.
@@ -226,7 +274,12 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     }
   }
 
-  // Handle keys that we want to repeat on hold (tab and arrows).
+  /**
+   * Handle keys that we want to repeat on hold (tab and arrows).
+   * @param {!Event} evt
+   * @return {boolean}
+   * @private
+   */
   handleKeyboardDown_(evt) {
     // Do nothing if Alt, Ctrl or Meta are pressed.
     if (evt.altKey || evt.ctrlKey || evt.metaKey) {
@@ -276,7 +329,12 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     return true;
   }
 
-  // Handle keys that we don't want to repeat on hold (Enter, Space, Escape).
+  /**
+   * Handle keys that we don't want to repeat on hold (Enter, Space, Escape).
+   * @param {!Event} evt
+   * @return {boolean}
+   * @private
+   */
   handleKeyboardUp_(evt) {
     // Do nothing if Alt, Ctrl or Meta are pressed.
     if (evt.altKey || evt.ctrlKey || evt.metaKey) {
@@ -300,6 +358,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     return true;
   }
 
+  /**
+   * @param {!Event} evt
+   * @private
+   */
   handlePossibleSelected_(evt) {
     if (this.adapter_.getAttributeForEventTarget(evt.target, strings.ARIA_DISABLED_ATTR) === 'true') {
       return;
@@ -319,6 +381,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     }, numbers.SELECTED_TRIGGER_DELAY);
   }
 
+  /** @private */
   autoPosition_() {
     if (!this.adapter_.hasAnchor()) {
       return;
@@ -365,7 +428,11 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     this.adapter_.setPosition(position);
   }
 
-  // Open the menu.
+
+  /**
+   * Open the menu.
+   * @param {{focusIndex: ?number}=} options
+   */
   open({focusIndex = null} = {}) {
     this.adapter_.saveFocus();
     this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
@@ -381,7 +448,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     this.isOpen_ = true;
   }
 
-  // Close the menu.
+  /**
+   * Closes the menu.
+   * @param {Event=} evt
+   */
   close(evt = null) {
     const targetIsDisabled = evt ?
       this.adapter_.getAttributeForEventTarget(evt.target, strings.ARIA_DISABLED_ATTR) === 'true' :
@@ -402,7 +472,10 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     this.adapter_.restoreFocus();
   }
 
+  /** @return {boolean} */
   isOpen() {
     return this.isOpen_;
   }
 }
+
+

@@ -2,6 +2,7 @@
 title: "Sliders"
 layout: detail
 section: components
+excerpt: "A select over a range of values by moving the slider thumb."
 iconId: slider
 path: /catalog/input-controls/sliders/
 -->
@@ -11,7 +12,7 @@ path: /catalog/input-controls/sliders/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/slider.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/sliders.png" width="400" alt="Select screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/slider.png" width="400" alt="Select screenshot">
   </a>
 </div>-->
 
@@ -232,15 +233,15 @@ use to build a custom MDCSlider component for their framework.
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
 | `getAttribute(name: string) => string?` | Returns the value of the attribute `name` on the root element, or `null` if that attribute is not present on the root element. |
 | `setAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
-| `removeAttribute(name: string) => void` | Removes an attribute `name` from the root element. |
-| `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()`` for this. |
-| `getTabIndex() => number` | Returns the value of the `tabIndex` property on the root element. |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element. |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element. |
-| `registerThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element. |
-| `deregisterThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb container element. |
-| `registerBodyInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document. |
-| `deregisterBodyInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document. |
+| `removeAttribute(name: string) => void` | Removes an attribute `name` from the root element |
+| `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
+| `getTabIndex() => number` | Returns the value of the `tabIndex` property on the root element |
+| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
+| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
+| `registerThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element |
+| `deregisterThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb container element |
+| `registerBodyInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document |
+| `deregisterBodyInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document |
 | `registerResizeHandler(handler: EventListener) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`. |
 | `deregisterResizeHandler(handler: EventListener) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler`. |
 | `notifyInput() => void` | Broadcasts an "input" event notifying clients that the slider's value is currently being changed. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for. |

@@ -15,6 +15,7 @@
 //
 
 @import "@material/animation/variables";
+@import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
@@ -75,7 +76,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     }
 
     @include mdc-theme-dark {
-      color: white;
+      @include mdc-theme-prop(color, text-primary-on-dark);
 
       &::placeholder {
         @include mdc-theme-prop(color, text-hint-on-dark);
@@ -123,10 +124,196 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     transform: translateY(-100%) scale(.75, .75);
     cursor: auto;
   }
-  // stylelint-enable plugin/selector-bem-pattern  
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-textfield--upgraded:not(.mdc-textfield--fullwidth) {
+.mdc-textfield--box {
+  display: inline-flex;
+  position: relative;
+  height: 56px;
+  border-radius: 4px 4px 0 0;
+  background-color: rgba(black, .04);
+  overflow: hidden;
+
+  @include mdc-theme-dark(".mdc-textfield", true) {
+    background-color: rgba(white, .1);
+  }
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: inherit;
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
+  // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
+  // we would normally disable it (&.mdc-textfield--disabled) as a workaround.
+
+  // stylelint-disable plugin/selector-bem-pattern
+  // TODO: Refactor this out once #194 lands
+  $opacity-duration: 83ms;
+
+  &::before {
+    transition: opacity 17ms linear, transform 0ms $opacity-duration+2 linear;
+  }
+
+  &:hover {
+    &::before {
+      transition:
+        opacity $opacity-duration linear 17ms,
+        transform 250ms $mdc-animation-linear-out-slow-in-timing-function 17ms;
+      opacity: 1;
+    }
+  }
+
+  .mdc-textfield__input {
+    align-self: flex-end;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px 16px 0;
+  }
+
+  .mdc-textfield__label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    position: absolute;
+    bottom: 20px;
+    color: rgba(black, .6);
+    pointer-events: none;
+    // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
+    // when the ripple is activated behind it.
+    will-change: transform;
+
+    @include mdc-theme-dark(".mdc-textfield") {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
+
+    &--float-above {
+      transform: translateY(-50%) scale(.75, .75);
+    }
+  }
+
+  &.mdc-ripple-upgraded {
+    @include mdc-ripple-base;
+    // TODO: Add ::before as ripple bg once #194 lands
+    @include mdc-ripple-fg((pseudo: "::after", opacity: .04));
+
+    &::before {
+      top: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
+      left: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
+      width: var(--mdc-ripple-fg-size, 100%);
+      height: var(--mdc-ripple-fg-size, 100%);
+      transform: scale(.8);
+    }
+
+    &:hover::before {
+      transform: scale(calc(var(--mdc-ripple-fg-scale, 1) + .1));
+    }
+
+    @include mdc-theme-dark(".mdc-textfield", true) {
+      @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .05));
+    }
+  }
+
+  &.mdc-textfield--disabled {
+    border-bottom: none;
+    background-color: rgba(black, .02);
+    color: rgba(black, .38);
+
+    @include mdc-theme-dark(".mdc-textfield", true) {
+      border-bottom: none;
+      background-color: rgba(white, .05);
+    }
+
+    .mdc-textfield__label {
+      bottom: 20px;
+    }
+
+    .mdc-textfield__input {
+      padding-bottom: 0;
+    }
+  }
+
+  // TODO: Move into general .mdc-textfield decl and replace ::after textfield styles with this
+  // element as part of #675
+  .mdc-textfield__bottom-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    transform: scaleY(1);
+    transform-origin: center bottom;
+    transition:
+      background-color 33ms $mdc-animation-fast-out-slow-in-timing-function,
+      mdc-textfield-transition(transform);
+    background-color: rgba(black, .42);
+    pointer-events: none;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: mdc-textfield-transition(opacity);
+      background-color: $mdc-textfield-error-on-light;
+      content: "";
+      opacity: 0;
+    }
+
+    @include mdc-theme-dark(".mdc-textfield") {
+      @include mdc-theme-prop(background-color, text-hint-on-dark);
+
+      &::after {
+        background-color: $mdc-textfield-error-on-dark;
+      }
+    }
+  }
+
+  &.mdc-textfield--focused .mdc-textfield__bottom-line {
+    @include mdc-theme-prop(background-color, primary);
+
+    transform: scaleY(2);
+  }
+
+  &.mdc-textfield--disabled .mdc-textfield__bottom-line {
+    display: none;
+  }
+
+  &.mdc-textfield--invalid .mdc-textfield__bottom-line::after {
+    opacity: 1;
+  }
+
+  &.mdc-textfield--dense {
+    height: 44px;
+
+    .mdc-textfield__input {
+      padding: 12px 12px 0;
+    }
+
+    .mdc-textfield__label {
+      @include mdc-rtl-reflexive-position(left, 12px);
+
+      bottom: 12px;
+
+      &--float-above {
+        transform: translateY(calc(-75% - 2px)) scale(.923, .923);
+      }
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+}
+
+.mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--box) {
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
@@ -171,7 +358,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     @include mdc-theme-prop(color, primary);
   }
 
-  &.mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--multiline)::after {
+  &.mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--multiline):not(.mdc-textfield--box)::after {
     @include mdc-textfield-after-styles;
 
     @include mdc-theme-dark(".mdc-textfield", true) {
@@ -200,7 +387,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 }
 
 .mdc-textfield--invalid {
-  &:not(.mdc-textfield--focused) {
+  &:not(.mdc-textfield--focused):not(.mdc-textfield--box) {
     &::after,
     &.mdc-textfield--upgraded::after {
       background-color: $mdc-textfield-error-on-light;
@@ -226,6 +413,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 }
 
 .mdc-textfield--disabled {
+  pointer-events: none;
+
   &::after {
     display: none;
   }
@@ -276,10 +465,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   .mdc-textfield--focused & {
     color: $mdc-textfield-error-on-light;
-  }
 
-  @include mdc-theme-dark(".mdc-textfield") {
-    .mdc-textfield--focused & {
+    @include mdc-theme-dark(".mdc-textfield", true) {
       color: $mdc-textfield-error-on-dark;
     }
   }
@@ -457,6 +644,19 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
         border-color: $mdc-textfield-error-on-dark;
       }
     }
+  }
+}
+
+.mdc-textfield--box:not(.mdc-textfield--upgraded) {
+  height: 36px;
+
+  &::before,
+  &::after {
+    border-radius: 0;
+  }
+
+  .mdc-textfield__input {
+    padding-top: 0;
   }
 }
 

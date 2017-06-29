@@ -19,6 +19,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {assert} from 'chai';
 
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCTextfield, MDCTextfieldFoundation} from '../../../packages/mdc-textfield';
 
 const {cssClasses} = MDCTextfieldFoundation;
@@ -48,13 +49,54 @@ test('#constructor assigns helptextElement to the id specified in the input aria
   document.body.removeChild(helptext);
 });
 
+class FakeRipple {
+  constructor(root) {
+    this.root = root;
+    this.layout = td.func('.layout');
+    this.destroy = td.func('.destroy');
+  }
+}
+
+test('#constructor when given a `mdc-textfield--box` element instantiates a ripple on the root element', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.BOX);
+  const component = new MDCTextfield(root, undefined, (el) => new FakeRipple(el));
+  assert.equal(component.ripple.root, root);
+});
+
+test('#constructor sets the ripple property to `null` when given a non `mdc-textfield--box` element', () => {
+  const component = new MDCTextfield(getFixture());
+  assert.isNull(component.ripple);
+});
+
+test('#constructor when given a `mdc-textfield--box` element, initializes a default ripple when no ' +
+     'ripple factory given', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.BOX);
+  const component = new MDCTextfield(root);
+  assert.instanceOf(component.ripple, MDCRipple);
+});
+
+test('#destroy cleans up the ripple if present', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.BOX);
+  const component = new MDCTextfield(root, undefined, (el) => new FakeRipple(el));
+  component.destroy();
+  td.verify(component.ripple.destroy());
+});
+
+test('#destroy accounts for ripple nullability', () => {
+  const component = new MDCTextfield(getFixture());
+  assert.doesNotThrow(() => component.destroy());
+});
+
 function setupTest() {
   const root = getFixture();
   const component = new MDCTextfield(root);
   return {root, component};
 }
 
-test('#adapter.initialSyncWithDom', () => {
+test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
   const {component} = setupTest();
   component.initialSyncWithDom();
   assert.isNotOk(component.disabled);
