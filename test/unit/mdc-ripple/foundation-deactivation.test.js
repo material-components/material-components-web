@@ -100,56 +100,56 @@ testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, 
 });
 
 testFoundation('runs deactivation on keyup after keydown when keydown makes surface active',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
-      td.when(adapter.isSurfaceActive()).thenReturn(true);
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
+    td.when(adapter.isSurfaceActive()).thenReturn(true);
 
-      foundation.init();
-      mockRaf.flush();
+    foundation.init();
+    mockRaf.flush();
 
-      handlers.keydown({key: 'Space'});
-      mockRaf.flush();
+    handlers.keydown({key: 'Space'});
+    mockRaf.flush();
 
-      handlers.keyup({key: 'Space'});
-      mockRaf.flush();
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
+    handlers.keyup({key: 'Space'});
+    mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-      td.verify(adapter.removeClass(cssClasses.BG_FOCUSED));
-      td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
-      td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
-      td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+    td.verify(adapter.removeClass(cssClasses.BG_FOCUSED));
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
 
-      clock.tick(numbers.FG_DEACTIVATION_MS);
-      td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+    clock.tick(numbers.FG_DEACTIVATION_MS);
+    td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
 
-      clock.uninstall();
-    });
+    clock.uninstall();
+  });
 
 testFoundation('does not run deactivation on keyup after keydown if keydown did not make surface active',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
-      td.when(adapter.isSurfaceActive()).thenReturn(false);
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
+    td.when(adapter.isSurfaceActive()).thenReturn(false);
 
-      foundation.init();
-      mockRaf.flush();
+    foundation.init();
+    mockRaf.flush();
 
-      handlers.keydown({key: 'Space'});
-      mockRaf.flush();
+    handlers.keydown({key: 'Space'});
+    mockRaf.flush();
 
-      handlers.keyup({key: 'Space'});
-      mockRaf.flush();
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
+    handlers.keyup({key: 'Space'});
+    mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-  // Note that all of these should be called 0 times since a keydown that does not make a surface active should never
-  // activate it in the first place.
-      td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 0});
-      td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 0});
-      td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 0});
-      td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
-      clock.uninstall();
-    });
+    // Note that all of these should be called 0 times since a keydown that does not make a surface active should never
+    // activate it in the first place.
+    td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 0});
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 0});
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 0});
+    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
+    clock.uninstall();
+  });
 
 testFoundation('runs deactivation UX on public deactivate() call', ({foundation, adapter, mockRaf}) => {
   const clock = lolex.install();
@@ -176,29 +176,29 @@ testFoundation('runs deactivation UX on public deactivate() call', ({foundation,
 });
 
 testFoundation('runs deactivation UX when activation UX timer finishes first (activation held for a long time)',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
-      foundation.init();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
+    foundation.init();
+    mockRaf.flush();
 
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.flush();
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.flush();
 
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
-      handlers.mouseup();
-      mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
+    handlers.mouseup();
+    mockRaf.flush();
 
-      td.verify(adapter.removeClass(cssClasses.BG_FOCUSED));
-      td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
-      td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
-      td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+    td.verify(adapter.removeClass(cssClasses.BG_FOCUSED));
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
 
-      clock.tick(numbers.FG_DEACTIVATION_MS);
-      td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+    clock.tick(numbers.FG_DEACTIVATION_MS);
+    td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
 
-      clock.uninstall();
-    });
+    clock.uninstall();
+  });
 
 testFoundation('clears any pending deactivation UX timers when re-triggered', ({foundation, adapter, mockRaf}) => {
   const handlers = captureHandlers(adapter);
@@ -236,176 +236,176 @@ testFoundation('clears any pending deactivation UX timers when re-triggered', ({
 });
 
 testFoundation('clears any pending foreground deactivation class removal timers when re-triggered',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
-      foundation.init();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
+    foundation.init();
+    mockRaf.flush();
 
-      // Trigger the first interaction
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.flush();
-      handlers.mouseup();
-      mockRaf.flush();
+    // Trigger the first interaction
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.flush();
+    handlers.mouseup();
+    mockRaf.flush();
 
-      // Tick the clock such that the deactivation UX gets run, but _not_ so the foreground deactivation removal
-      // timer gets run
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
+    // Tick the clock such that the deactivation UX gets run, but _not_ so the foreground deactivation removal
+    // timer gets run
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-      // Sanity check that the foreground deactivation class removal was only called once within
-      // the activation code.
-      td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION), {times: 1});
+    // Sanity check that the foreground deactivation class removal was only called once within
+    // the activation code.
+    td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
-      // Trigger another activation
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.flush();
+    // Trigger another activation
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.flush();
 
-      // Tick the clock past the time when the initial foreground deactivation timer would have ran.
-      clock.tick(numbers.FG_DEACTIVATION_MS);
+    // Tick the clock past the time when the initial foreground deactivation timer would have ran.
+    clock.tick(numbers.FG_DEACTIVATION_MS);
 
-      // Verify that the foreground deactivation class removal was only called twice: once within the
-      // original activation, and again within this subsequent activation; NOT by means of any timers firing.
-      td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION), {times: 2});
-    });
+    // Verify that the foreground deactivation class removal was only called twice: once within the
+    // original activation, and again within this subsequent activation; NOT by means of any timers firing.
+    td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION), {times: 2});
+  });
 
 testFoundation('waits until activation UX timer runs before removing active fill classes',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
 
-      foundation.init();
-      mockRaf.flush();
+    foundation.init();
+    mockRaf.flush();
 
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.flush();
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.flush();
 
-      handlers.mouseup();
-      mockRaf.flush();
-      clock.tick(DEACTIVATION_TIMEOUT_MS - 1);
+    handlers.mouseup();
+    mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS - 1);
 
-      td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
-      td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 1});
-      td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
-      clock.uninstall();
-    });
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 1});
+    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
+    clock.uninstall();
+  });
 
 testFoundation('waits until actual deactivation UX is needed if animation finishes before deactivating',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
 
-      foundation.init();
-      mockRaf.flush();
+    foundation.init();
+    mockRaf.flush();
 
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.flush();
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-      td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
-      td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 1});
-      td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
-      clock.uninstall();
-    });
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 1});
+    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
+    clock.uninstall();
+  });
 
 testFoundation('removes BG_FOCUSED class immediately without waiting for animationend event',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
 
-      foundation.init();
-      mockRaf.flush();
+    foundation.init();
+    mockRaf.flush();
 
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.flush();
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.flush();
 
-      handlers.mouseup();
-      mockRaf.flush();
+    handlers.mouseup();
+    mockRaf.flush();
 
-      td.verify(adapter.removeClass(cssClasses.BG_FOCUSED));
-      clock.uninstall();
-    });
+    td.verify(adapter.removeClass(cssClasses.BG_FOCUSED));
+    clock.uninstall();
+  });
 
 testFoundation('only re-activates when there are no additional pointer events to be processed',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
-      foundation.init();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
+    foundation.init();
+    mockRaf.flush();
 
-  // Simulate Android 6 / Chrome latest event flow.
-      handlers.pointerdown({pageX: 0, pageY: 0});
-      mockRaf.flush();
-      handlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
-      mockRaf.flush();
+    // Simulate Android 6 / Chrome latest event flow.
+    handlers.pointerdown({pageX: 0, pageY: 0});
+    mockRaf.flush();
+    handlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
+    mockRaf.flush();
 
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
-      handlers.pointerup();
-      mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
+    handlers.pointerup();
+    mockRaf.flush();
 
-  // At this point, the deactivation UX should have run, since the initial activation was triggered by
-  // a pointerdown event.
-      td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
-      td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
-      td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
+    // At this point, the deactivation UX should have run, since the initial activation was triggered by
+    // a pointerdown event.
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
-      handlers.touchend();
-      mockRaf.flush();
+    handlers.touchend();
+    mockRaf.flush();
 
-  // Verify that deactivation UX has not been run redundantly
-      td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 1});
-      td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
-      td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
-      td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
+    // Verify that deactivation UX has not been run redundantly
+    td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 1});
+    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.flush();
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.flush();
 
-  // Verify that activation only happened once, at pointerdown
-      td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
-      td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
+    // Verify that activation only happened once, at pointerdown
+    td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
 
-      handlers.mouseup();
-      mockRaf.flush();
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
+    handlers.mouseup();
+    mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-  // Finally, verify that since mouseup happened, we can re-activate the ripple.
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.flush();
-      td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
-      td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 2});
-      clock.uninstall();
-    });
+    // Finally, verify that since mouseup happened, we can re-activate the ripple.
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.flush();
+    td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 2});
+    clock.uninstall();
+  });
 
 testFoundation('ensures pointer event deactivation occurs even if activation rAF not run',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
-      foundation.init();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
+    foundation.init();
+    mockRaf.flush();
 
-      handlers.mousedown({pageX: 0, pageY: 0});
-      mockRaf.pendingFrames.shift();
-      handlers.mouseup();
-      mockRaf.flush();
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
+    handlers.mousedown({pageX: 0, pageY: 0});
+    mockRaf.pendingFrames.shift();
+    handlers.mouseup();
+    mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-      td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 1});
-      clock.uninstall();
-    });
+    td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 1});
+    clock.uninstall();
+  });
 
 testFoundation('ensures non-pointer event deactivation does not occurs even if activation rAF not run',
-    ({foundation, adapter, mockRaf}) => {
-      const handlers = captureHandlers(adapter);
-      const clock = lolex.install();
-      foundation.init();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter);
+    const clock = lolex.install();
+    foundation.init();
+    mockRaf.flush();
 
-      handlers.keydown({key: 'Space'});
-      mockRaf.pendingFrames.shift();
-      handlers.keyup({key: 'Space'});
-      mockRaf.flush();
-      clock.tick(DEACTIVATION_TIMEOUT_MS);
+    handlers.keydown({key: 'Space'});
+    mockRaf.pendingFrames.shift();
+    handlers.keyup({key: 'Space'});
+    mockRaf.flush();
+    clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-      td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 0});
-      clock.uninstall();
-    });
+    td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 0});
+    clock.uninstall();
+  });
