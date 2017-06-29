@@ -41,6 +41,7 @@
     height: auto;
     min-height: $mdc-toolbar-row-height;
     box-sizing: border-box;
+    padding: 0 8px;
 
     // TODO: refactor this out when #23 is implemented
     @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
@@ -51,6 +52,7 @@
     // TODO: refactor this out when #23 is implemented
     @media (max-width: $mdc-toolbar-mobile-breakpoint) {
       min-height: $mdc-toolbar-mobile-row-height;
+      padding: 0;
     }
   }
 
