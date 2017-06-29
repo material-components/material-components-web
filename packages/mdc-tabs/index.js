@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
- export {MDCTabFoundation, MDCTab} from './tab';
- export {MDCTabBarFoundation, MDCTabBar} from './tab-bar';
- export {MDCTabBarScrollerFoundation, MDCTabBarScroller} from './tab-bar-scroller';
+export {MDCTabFoundation, MDCTab} from './tab';
+export {MDCTabBarFoundation, MDCTabBar} from './tab-bar';
+export {MDCTabBarScrollerFoundation, MDCTabBarScroller} from './tab-bar-scroller';

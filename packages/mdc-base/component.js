@@ -20,7 +20,6 @@ import MDCFoundation from './foundation';
  * @template F
  */
 export default class MDCComponent {
-
   /**
    * @param {!Element} root
    * @return {!MDCComponent}

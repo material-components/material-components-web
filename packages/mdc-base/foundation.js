@@ -18,7 +18,6 @@
  * @template A
  */
 export default class MDCFoundation {
-
   /** @return enum{cssClasses} */
   static get cssClasses() {
     // Classes extending MDCFoundation should implement this method to return an object which exports every

@@ -150,7 +150,7 @@ module.exports = [{
   name: 'css',
   entry: {
     'material-components-web': path.resolve(
-        './packages/material-components-web/material-components-web.scss'),
+      './packages/material-components-web/material-components-web.scss'),
     'mdc.animation': path.resolve('./packages/mdc-animation/mdc-animation.scss'),
     'mdc.button': path.resolve('./packages/mdc-button/mdc-button.scss'),
     'mdc.card': path.resolve('./packages/mdc-card/mdc-card.scss'),

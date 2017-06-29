@@ -192,7 +192,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
   animationLoop_() {
     const time = this.adapter_.getAccurateTime();
     const {TRANSITION_DURATION_MS, TRANSITION_X1, TRANSITION_Y1, TRANSITION_X2, TRANSITION_Y2,
-        TRANSITION_SCALE_ADJUSTMENT_X, TRANSITION_SCALE_ADJUSTMENT_Y} = MDCSimpleMenuFoundation.numbers;
+      TRANSITION_SCALE_ADJUSTMENT_X, TRANSITION_SCALE_ADJUSTMENT_Y} = MDCSimpleMenuFoundation.numbers;
     const currentTime = clamp((time - this.startTime_) / TRANSITION_DURATION_MS);
 
     // Animate X axis very slowly, so that only the Y axis animation is visible during fade-out.
@@ -477,5 +477,3 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     return this.isOpen_;
   }
 }
-
-
