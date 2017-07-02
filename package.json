@@ -162,6 +162,7 @@
     "mdc-animation",
     "mdc-base",
     "mdc-menu",
-    "mdc-ripple"
+    "mdc-ripple",
+    "mdc-textfield"
   ]
 }

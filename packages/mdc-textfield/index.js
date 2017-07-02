@@ -14,30 +14,62 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base';
+import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple';
-
+/* eslint-disable no-unused-vars */
+import {
+    MDCTextfieldAdapter,
+    MDCTextfieldInputAdapter,
+    MDCTextfieldHelptextAdapter,
+    TextfieldElementState,
+} from './adapter';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 import MDCTextfieldFoundation from './foundation';
 
 export {MDCTextfieldFoundation};
 
+/**
+ * @extends MDCComponent<!MDCTextfieldFoundation>
+ */
 export class MDCTextfield extends MDCComponent {
   static attachTo(root) {
     return new MDCTextfield(root);
   }
 
+  constructor(...args) {
+    super(...args);
+
+    /** @private {!TextfieldElementState} */
+    this.input_;
+
+    /** @private {Element} */
+    this.label_;
+
+    /** @type {Element} */
+    this.helptextElement;
+
+    /** @type {MDCRipple} */
+    this.ripple;
+  }
+
+  /**
+   * @param {!RippleFactoryType=} rippleFactory
+   */
   initialize(rippleFactory = (el) => new MDCRipple(el)) {
-    this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
+    this.input_ = /** @type {!TextfieldElementState} */ (
+      this.root_.querySelector(strings.INPUT_SELECTOR));
+
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.helptextElement = null;
     this.ripple = null;
+
     if (this.input_.hasAttribute('aria-controls')) {
       this.helptextElement = document.getElementById(this.input_.getAttribute('aria-controls'));
     }
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = rippleFactory(this.root_);
-    };
+    }
   }
 
   destroy() {
@@ -51,14 +83,17 @@ export class MDCTextfield extends MDCComponent {
     this.disabled = this.input_.disabled;
   }
 
+  /** @return {boolean} */
   get disabled() {
     return this.foundation_.isDisabled();
   }
 
+  /** @param {boolean} disabled */
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
 
+  /** @return {!MDCTextfieldFoundation} */
   getDefaultFoundation() {
     return new MDCTextfieldFoundation(Object.assign({
       addClass: (className) => this.root_.classList.add(className),
@@ -78,6 +113,7 @@ export class MDCTextfield extends MDCComponent {
     }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_()));
   }
 
+  /** @return {!MDCTextfieldInputAdapter} */
   getInputAdapterMethods_() {
     return {
       registerInputFocusHandler: (handler) => this.input_.addEventListener('focus', handler),
@@ -92,6 +128,7 @@ export class MDCTextfield extends MDCComponent {
     };
   }
 
+  /** @return {!MDCTextfieldHelptextAdapter} */
   getHelptextAdapterMethods_() {
     return {
       addClassToHelptext: (className) => {
@@ -123,3 +160,6 @@ export class MDCTextfield extends MDCComponent {
     };
   }
 }
+
+/** @typedef {function(!Element): MDCRipple} */
+let RippleFactoryType;
