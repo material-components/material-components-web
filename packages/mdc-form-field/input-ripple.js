@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
-/** @enum {string} */
-export const cssClasses = {
-  ROOT: 'mdc-form-field',
-};
+/* eslint no-unused-vars: [2, {"args": "none"}] */
 
-/** @enum {string} */
-export const strings = {
-  LABEL_SELECTOR: '.mdc-form-field > label',
-};
+/* eslint-disable no-unused-vars */
+import {MDCRipple} from '@material/ripple';
+/* eslint-enable no-unused-vars */
+
+/**
+ * Interface implemented by input controls that have a ripple.
+ * TODO: implement on MDCCheckbox and MDCRadio
+ * @record
+ */
+export default class MDCInputRippleType {
+
+  /** @return {!MDCRipple} */
+  get ripple() {}
+
+}
