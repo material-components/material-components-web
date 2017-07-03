@@ -18,6 +18,7 @@
     @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
   }
   $min: map-get($mdc-layout-grid-breakpoints, $size);
+
   @return if($min != 0, $min, null);
 }
 
@@ -29,6 +30,7 @@
   $names: map-keys($mdc-layout-grid-columns);
   $n: index($names, $size);
   $prev: if($n > 1, nth($names, $n - 1), null);
+
   @return if($prev, breakpoint-min($prev) - 1px, null);
 }
 
@@ -47,21 +49,24 @@
       @content;
     }
   }
+
   @else if $min != null and $max != null {
     // Tablet
     @media (min-width: $min) and (max-width: $max) {
       @content;
     }
   }
+
   @else if $min != null and $max == null {
     // Desktop
     @media (min-width: $min) {
       @content;
     }
   }
+
   @else {
-      // Fallback - no breakpoints defined
-      @content;
+    // Fallback - no breakpoints defined
+    @content;
   }
 }
 
