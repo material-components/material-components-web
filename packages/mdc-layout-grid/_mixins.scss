@@ -31,7 +31,7 @@
   $n: index($names, $size);
   $prev: if($n > 1, nth($names, $n - 1), null);
 
-  @return if($prev, breakpoint-min($prev) - 1px, null);
+  @return if($prev, (mdc-layout-grid-breakpoint-min($prev) - 1px), null);
 }
 
 // Private mixins, meant for internal use.
