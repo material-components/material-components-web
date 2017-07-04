@@ -83,7 +83,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       }
     };
     this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
-    this.selectionHandler_ = ({detail}) => {
+    this.selectionHandler_ = (detail) => {
       const {index} = detail;
       this.close_();
       if (index !== this.selectedIndex_) {
