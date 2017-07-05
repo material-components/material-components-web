@@ -1,3 +1,12 @@
+<!--docs:
+title: "Tabs"
+layout: detail
+section: components
+excerpt: "A tabbed navigation component."
+iconId: tabs
+path: /catalog/tabs/
+-->
+
 # MDC Tabs
 
 The MDC Tabs component contains components which are used to create spec-aligned tabbed navigation components adhering to the
@@ -6,6 +15,17 @@ The MDC Tabs component contains components which are used to create spec-aligned
 - **mdc-tab**: The individual tab elements
 - **mdc-tab-bar**: The main component which is composed of `mdc-tab` elements
 - **mdc-tab-bar-scroller**: The component which controls the horizontal scrolling behavior of an `mdc-tab-bar` that overflows its container
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/tabs.html">Material Design guidelines: Tabs</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="http://material-components-web.appspot.com/tabs.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -109,7 +129,7 @@ provides a minimal example of how to do so using JavaScript, also shown below.
 
 #### Markup:
 ```html
-<section id="dynamic-demo-toolbar">  
+<section id="dynamic-demo-toolbar">
   <nav id="dynamic-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent" role="tablist">
     <a role="tab" aria-controls="panel-1"
        class="mdc-tab mdc-tab--active" href="#panel-1">Item One</a>

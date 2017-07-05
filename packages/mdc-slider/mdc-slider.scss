@@ -15,6 +15,7 @@
 //
 
 @import "@material/theme/mixins";
+@import "@material/typography/mixins";
 @import "@material/rtl/mixins";
 @import "./variables";
 
@@ -77,6 +78,50 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     }
   }
 
+  &__track-marker-container {
+    display: flex;
+    margin-right: 0;
+    margin-left: -1px;
+    visibility: hidden;
+
+    @include mdc-rtl(".mdc-slider") {
+      margin-right: -1px;
+      margin-left: 0;
+    }
+
+    &::after {
+      display: block;
+      width: 2px;
+      height: 2px;
+      background-color: $mdc-slider-dark-theme-grey;
+      content: "";
+
+      @include mdc-theme-dark(".mdc-slider", true) {
+        background-color: $mdc-slider-main-grey;
+      }
+    }
+  }
+
+  &__track-marker {
+    flex: 1;
+
+    &::after {
+      display: block;
+      width: 2px;
+      height: 2px;
+      background-color: $mdc-slider-dark-theme-grey;
+      content: "";
+
+      @include mdc-theme-dark(".mdc-slider", true) {
+        background-color: $mdc-slider-main-grey;
+      }
+    }
+
+    &:first-child::after {
+      width: 3px;
+    }
+  }
+
   &__thumb-container {
     position: absolute;
     top: 15px;
@@ -108,6 +153,37 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     transition: transform 266.67ms ease-out, opacity 266.67ms ease-out, background-color 266.67ms ease-out;
     border-radius: 50%;
     opacity: 0;
+  }
+
+  &__pin {
+    @include mdc-theme-prop(background-color, primary);
+    @include mdc-theme-prop(color, text-primary-on-primary);
+
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    margin-top: -2px;
+    margin-left: -2px;
+    transform: rotate(-45deg) scale(0) translate(0, 0);
+    transition: transform 100ms ease-out;
+    border-radius: 50% 50% 50% 0%;
+
+    /**
+     * Ensuring that the pin is higher than the thumb in the stacking order
+     * removes some rendering jank observed in Chrome.
+     */
+    z-index: 1;
+  }
+
+  &__pin-value-marker {
+    @include mdc-typography(caption);
+
+    transform: rotate(45deg);
   }
 }
 
@@ -172,6 +248,14 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     }
   }
 
+  .mdc-slider__pin {
+    background-color: $mdc-slider-main-grey;
+
+    @include mdc-theme-dark(".mdc-slider", true) {
+      background-color: $mdc-slider-dark-theme-grey;
+    }
+  }
+
   // stylelint-disable plugin/selector-bem-pattern
   &.mdc-slider--focus {
     .mdc-slider__thumb {
@@ -221,6 +305,37 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   .mdc-slider__track {
     transition: transform 80ms ease;
   }
+}
+
+.mdc-slider--discrete {
+  // stylelint-disable plugin/selector-bem-pattern
+  &.mdc-slider--active {
+    .mdc-slider__thumb {
+      transform: scale(calc(12 / 21));
+    }
+
+    .mdc-slider__pin {
+      transform: rotate(-45deg) scale(1) translate(19px, -20px);
+    }
+  }
+
+  &.mdc-slider--focus {
+    .mdc-slider__thumb {
+      animation: none;
+    }
+
+    .mdc-slider__focus-ring {
+      transform: none;
+      opacity: 0;
+    }
+  }
+
+  &.mdc-slider--display-markers {
+    .mdc-slider__track-marker-container {
+      visibility: visible;
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 // postcss-bem-linter: end

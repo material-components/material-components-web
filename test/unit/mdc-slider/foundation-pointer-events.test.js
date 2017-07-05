@@ -165,6 +165,23 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
+  test(`on ${downEvt} notifies discrete slider pin value marker to change value`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(50));
+    raf.flush();
+
+    td.verify(mockAdapter.setMarkerValue(isA(Number)));
+
+    raf.restore();
+  });
+
   test(`on ${downEvt} attaches event handlers for ${moveEvt} and ${upEvt} events to the document body`, () => {
     const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
     const {isA} = td.matchers;
@@ -259,6 +276,27 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
 
     // Once on mousedown, once on mousemove
     td.verify(mockAdapter.notifyInput(), {times: 2});
+
+    raf.restore();
+  });
+
+  test(`on body ${moveEvt} notifies discrete slider pin value marker to change value`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(49));
+    bodyHandlers[moveEvt](Object.assign({
+      preventDefault: () => {},
+    }, pageXObj(50)));
+    raf.flush();
+
+    // Once on mousedown, once on mousemove
+    td.verify(mockAdapter.setMarkerValue(isA(Number)), {times: 2});
 
     raf.restore();
   });
