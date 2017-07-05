@@ -52,7 +52,7 @@ export class MDCRipple extends MDCComponent {
   }
 
   /**
-   * @param {!MDCRipple} instance
+   * @param {!RippleCapableSurface} instance
    * @return {!MDCRippleAdapter}
    */
   static createAdapter(instance) {
@@ -114,3 +114,25 @@ export class MDCRipple extends MDCComponent {
     this.unbounded = 'mdcRippleIsUnbounded' in this.root_.dataset;
   }
 }
+
+/**
+ * See Material Design spec for more details on when to use ripples.
+ * https://material.io/guidelines/motion/choreography.html#choreography-creation
+ * @record
+ */
+class RippleCapableSurface {}
+
+/** @protected {!Element} */
+RippleCapableSurface.prototype.root_;
+
+/**
+ * Whether or not the ripple bleeds out of the bounds of the element.
+ * @type {boolean|undefined}
+ */
+RippleCapableSurface.prototype.unbounded;
+
+/**
+ * Whether or not the ripple is attached to a disabled component.
+ * @type {boolean|undefined}
+ */
+RippleCapableSurface.prototype.disabled;
