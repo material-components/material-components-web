@@ -48,10 +48,10 @@ export default class MDCFoundation {
   }
 
   /**
-   * @param {!A} adapter
+   * @param {A=} adapter
    */
   constructor(adapter = {}) {
-    /** @private {!A} */
+    /** @protected {!A} */
     this.adapter_ = adapter;
   }
 

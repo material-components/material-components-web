@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import MDCFoundation from '@material/base/foundation';
+/* eslint-disable no-unused-vars */
+import {MDCCheckboxAdapter, InputElementState} from './adapter';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
+/** @const {!Array<string>} */
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
+/**
+ * @extends {MDCFoundation<!MDCCheckboxAdapter>}
+ */
 export default class MDCCheckboxFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
@@ -40,7 +47,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
       deregisterChangeHandler: (/* handler: EventListener */) => {},
-      getNativeControl: () => /* HTMLInputElement */ {},
+      getNativeControl: () => /* InputElementState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
     };
@@ -49,17 +56,25 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCCheckboxFoundation.defaultAdapter, adapter));
 
+    /** @private {string} */
     this.currentCheckState_ = strings.TRANSITION_STATE_INIT;
+
+    /** @private {string} */
     this.currentAnimationClass_ = '';
+
+    /** @private {number} */
     this.animEndLatchTimer_ = 0;
-    this.animEndHandler_ = () => {
+
+    this.animEndHandler_ = /** @private {!EventListener} */ (() => {
       clearTimeout(this.animEndLatchTimer_);
       this.animEndLatchTimer_ = setTimeout(() => {
         this.adapter_.removeClass(this.currentAnimationClass_);
         this.adapter_.deregisterAnimationEndHandler(this.animEndHandler_);
       }, numbers.ANIM_END_LATCH_MS);
-    };
-    this.changeHandler_ = () => this.transitionCheckState_();
+    });
+
+    this.changeHandler_ = /** @private {!EventListener} */ (
+      () => this.transitionCheckState_());
   }
 
   init() {
@@ -73,26 +88,32 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     this.uninstallPropertyChangeHooks_();
   }
 
+  /** @return {boolean} */
   isChecked() {
     return this.getNativeControl_().checked;
   }
 
+  /** @param {boolean} checked */
   setChecked(checked) {
     this.getNativeControl_().checked = checked;
   }
 
+  /** @return {boolean} */
   isIndeterminate() {
     return this.getNativeControl_().indeterminate;
   }
 
+  /** @param {boolean} indeterminate */
   setIndeterminate(indeterminate) {
     this.getNativeControl_().indeterminate = indeterminate;
   }
 
+  /** @return {boolean} */
   isDisabled() {
     return this.getNativeControl_().disabled;
   }
 
+  /** @param {boolean} disabled */
   setDisabled(disabled) {
     this.getNativeControl_().disabled = disabled;
     if (disabled) {
@@ -102,14 +123,17 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     }
   }
 
+  /** @return {?string} */
   getValue() {
     return this.getNativeControl_().value;
   }
 
+  /** @param {?string} value */
   setValue(value) {
     this.getNativeControl_().value = value;
   }
 
+  /** @private */
   installPropertyChangeHooks_() {
     const nativeCb = this.getNativeControl_();
     const cbProto = Object.getPrototypeOf(nativeCb);
@@ -119,7 +143,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       // We have to check for this descriptor, since some browsers (Safari) don't support its return.
       // See: https://bugs.webkit.org/show_bug.cgi?id=49739
       if (validDescriptor(desc)) {
-        Object.defineProperty(nativeCb, controlState, {
+        const nativeCbDesc = /** @type {!ObjectPropertyDescriptor} */ ({
           get: desc.get,
           set: (state) => {
             desc.set.call(nativeCb, state);
@@ -128,22 +152,26 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
           configurable: desc.configurable,
           enumerable: desc.enumerable,
         });
+        Object.defineProperty(nativeCb, controlState, nativeCbDesc);
       }
     });
   }
 
+  /** @private */
   uninstallPropertyChangeHooks_() {
     const nativeCb = this.getNativeControl_();
     const cbProto = Object.getPrototypeOf(nativeCb);
 
     CB_PROTO_PROPS.forEach((controlState) => {
-      const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
+      const desc = /** @type {!ObjectPropertyDescriptor} */ (
+          Object.getOwnPropertyDescriptor(cbProto, controlState));
       if (validDescriptor(desc)) {
         Object.defineProperty(nativeCb, controlState, desc);
       }
     });
   }
 
+  /** @private */
   transitionCheckState_() {
     const nativeCb = this.adapter_.getNativeControl();
     if (!nativeCb) {
@@ -174,6 +202,11 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * @param {!InputElementState} nativeCb
+   * @return {string}
+   * @private
+   */
   determineCheckState_(nativeCb) {
     const {
       TRANSITION_STATE_INDETERMINATE,
@@ -187,6 +220,11 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     return nativeCb.checked ? TRANSITION_STATE_CHECKED : TRANSITION_STATE_UNCHECKED;
   }
 
+  /**
+   * @param {string} oldState
+   * @param {string} newState
+   * @return {string}
+   */
   getTransitionAnimationClass_(oldState, newState) {
     const {
       TRANSITION_STATE_INIT,
@@ -220,6 +258,10 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * @return {!InputElementState}
+   * @private
+   */
   getNativeControl_() {
     return this.adapter_.getNativeControl() || {
       checked: false,
@@ -230,6 +272,10 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 }
 
+/**
+ * @param {ObjectPropertyDescriptor|undefined} inputPropDesc
+ * @return {boolean}
+ */
 function validDescriptor(inputPropDesc) {
-  return inputPropDesc && typeof inputPropDesc.set === 'function';
+  return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
