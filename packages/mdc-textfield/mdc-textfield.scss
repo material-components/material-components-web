@@ -48,6 +48,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   &__input {
     @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-typography-base;
 
     padding: 0 0 8px;
     border: none;
