@@ -92,7 +92,9 @@ You can change the margins and gutters for a grid using the `--mdc-layout-grid-m
 You can change the margins and gutters using sass variables if you are compiling from them. MDC layout grid uses sass map `mdc-layout-grid-default-margin` and `mdc-layout-grid-default-gutter` to define margins and gutters on different screen types.
 
 
-### Column spans
+### Grid cells
+
+#### Column spans
 
 ```html
 <div class="mdc-layout-grid">
@@ -131,13 +133,49 @@ In the example above, the first cell has a default span of 6, the second 4, and 
 the first cell becomes 8 columns wide instead, and the second 6 columns wide. At phone sizes, the third cell becomes 4
 columns wide.
 
+#### Cell reordering
 
-### Max width
+By default, items are positioned in the source order. However, you can reorder them by using the
+`mdc-layout-grid__cell--order-{number}` classes, where `{order}` is an integer between 1 and 12.
+
+```html
+<div class="mdc-layout-grid">
+  <div class="mdc-layout-grid__inner">
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--order-3"></div>
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--order-1"></div>
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--order-2"></div>
+  </div>
+</div>
+```
+
+Please bear in mind that this may have an impact on accessibility, since screen readers and other tools tend to follow
+source order.
+
+
+#### Cell alignment
+
+Items are defined to stretch, by default, taking up the height of their corresponding row. You can switch to a different
+behavior by using one of the `mdc-layout-grid__cell--align-{position}` alignment classes, where `{position}` is one of
+`{top}`, `{middle}` or `{bottom}`.
+
+```html
+<div class="mdc-layout-grid">
+  <div class="mdc-layout-grid__inner">
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--align-top"></div>
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--align-middle"></div>
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--align-bottom"></div>
+  </div>
+</div>
+```
+
+### Grid with restricted width
+
+#### Max width
 
 MDC layout grids take up the parent element space by default. However, user can set `$mdc-layout-grid-max-width` to restrict the max-width of the layout grid.
 
 
-### Fixed column width grid
+#### Fixed column width grid
 
 You can designate each column to have a certain width by using `mdc-layout-grid--fixed-column-width` modifier. The column width can be specified through sass map `$mdc-layout-grid-column-width` or css custom properties `--mdc-layout-grid-column-width-{screen_size}`. The column width is set to 72px on all devices by default.
 
@@ -156,6 +194,20 @@ You can designate each column to have a certain width by using `mdc-layout-grid-
 </div>
 ```
 
+#### Alignment of grid
+
+The grid is by default center aligned. User can add `mdc-layout-grid--align-left`
+or `mdc-layout-grid--align-right` modifier class to change this behavior. Note, these
+modifiers will have no effect when the grid already fills its container.
+
+```
+<div class="mdc-layout-grid mdc-layout-grid--fixed-column-width mdc-layout-grid--align-left">
+  <div class="mdc-layout-grid__inner">
+    <div class="mdc-layout-grid__cell"></div>
+    <div class="mdc-layout-grid__cell"></div>
+  </div>
+</div>
+```
 
 ### Nested grid
 
@@ -176,41 +228,6 @@ However, Material guideline do not recommend have a deeply nested grid since it 
     </div>
     <div class="mdc-layout-grid__cell">First level</div>
     <div class="mdc-layout-grid__cell">First level</div>
-  </div>
-</div>
-```
-
-### Reordering
-
-By default, items are positioned in the source order. However, you can reorder them by using the
-`mdc-layout-grid__cell--order-{number}` classes, where `{order}` is an integer between 1 and 12.
-
-```html
-<div class="mdc-layout-grid">
-  <div class="mdc-layout-grid__inner">
-    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--order-3"></div>
-    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--order-1"></div>
-    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--order-2"></div>
-  </div>
-</div>
-```
-
-Please bear in mind that this may have an impact on accessibility, since screen readers and other tools tend to follow
-source order.
-
-
-### Alignment
-
-Items are defined to stretch, by default, taking up the height of their corresponding row. You can switch to a different
-behavior by using one of the `mdc-layout-grid__cell--align-{position}` alignment classes, where `{position}` is one of
-`{top}`, `{middle}` or `{bottom}`.
-
-```html
-<div class="mdc-layout-grid">
-  <div class="mdc-layout-grid__inner">
-    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--align-top"></div>
-    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--align-middle"></div>
-    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--align-bottom"></div>
   </div>
 </div>
 ```

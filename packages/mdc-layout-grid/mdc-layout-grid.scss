@@ -97,4 +97,13 @@
   }
 }
 
+.mdc-layout-grid--align-left {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.mdc-layout-grid--align-right {
+  margin-right: 0;
+  margin-left: auto;
+}
 // postcss-bem-linter: end
