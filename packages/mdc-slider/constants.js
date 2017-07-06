@@ -21,11 +21,16 @@ export const cssClasses = {
   FOCUS: 'mdc-slider--focus',
   IN_TRANSIT: 'mdc-slider--in-transit',
   OFF: 'mdc-slider--off',
+  IS_DISCRETE: 'mdc-slider--discrete',
+  HAS_TRACK_MARKER: 'mdc-slider--display-markers',
 };
 
 export const strings = {
   TRACK_SELECTOR: '.mdc-slider__track',
+  TRACK_MARKER_CONTAINER_SELECTOR: '.mdc-slider__track-marker-container',
+  LAST_TRACK_MARKER_SELECTOR: '.mdc-slider__track-marker:last-child',
   THUMB_CONTAINER_SELECTOR: '.mdc-slider__thumb-container',
+  PIN_VALUE_MARKER_SELECTOR: '.mdc-slider__pin-value-marker',
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUENOW: 'aria-valuenow',

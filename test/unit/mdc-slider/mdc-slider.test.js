@@ -32,8 +32,12 @@ function getFixture() {
     <div class="mdc-slider" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
       <div class="mdc-slider__track-container">
         <div class="mdc-slider__track"></div>
+        <div class="mdc-slider__track-marker-container"></div>
       </div>
       <div class="mdc-slider__thumb-container">
+        <div class="mdc-slider__pin">
+          <span class="mdc-slider__pin-value-marker">30</span>
+        </div>
         <svg class="mdc-slider__thumb" width="21" height="21">
           <circle cx="10.5" cy="10.5" r="7.875"></circle>
         </svg>
@@ -232,6 +236,13 @@ test('#stepDown decrements the slider by the step value if no value given and a 
   assert.equal(component.value, 10);
 });
 
+test('adapter#hasClass checks if a class exists on root element', () => {
+  const {root, component} = setupTest();
+  root.classList.add('foo');
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
+});
+
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -419,6 +430,51 @@ test('adapter#setTrackStyleProperty sets a style property on the track element',
   component.getDefaultFoundation().adapter_.setTrackStyleProperty('background-color', 'black');
 
   assert.equal(track.style.backgroundColor, div.style.backgroundColor);
+});
+
+test('adapter#setMarkerValue changes the value on pin value markers', () => {
+  const {root, component} = setupTest();
+  const pinValueMarker = root.querySelector(strings.PIN_VALUE_MARKER_SELECTOR);
+
+  component.getDefaultFoundation().adapter_.setMarkerValue(10);
+
+  assert.equal(pinValueMarker.innerHTML, 10);
+});
+
+test('adapter#appendTrackMarkers appends correct number of markers to track', () => {
+  const {root, component} = setupTest();
+  const markerContainer = root.querySelector(strings.TRACK_MARKER_CONTAINER_SELECTOR);
+
+  component.getDefaultFoundation().adapter_.appendTrackMarkers(1);
+
+  assert.equal(markerContainer.firstChild.className, 'mdc-slider__track-marker');
+  assert.equal(markerContainer.childNodes.length, 1);
+});
+
+test('adapter#removeTrackMarkers all markers from track', () => {
+  const {root, component} = setupTest();
+  const markerContainer = root.querySelector(strings.TRACK_MARKER_CONTAINER_SELECTOR);
+
+  component.getDefaultFoundation().adapter_.appendTrackMarkers(1);
+  assert.equal(markerContainer.childNodes.length, 1);
+
+  component.getDefaultFoundation().adapter_.removeTrackMarkers();
+  assert.equal(markerContainer.childNodes.length, 0);
+});
+
+test('adapter#setLastTrackMarkersStyleProperty all markers from track', () => {
+  const {root, component} = setupTest();
+
+  // We need to first append one marker to the container
+  component.getDefaultFoundation().adapter_.appendTrackMarkers(1);
+  const lastMarker = root.querySelector(strings.LAST_TRACK_MARKER_SELECTOR);
+
+  const div = bel`<div></div>`;
+  div.style.flex = 0.5;
+
+  component.getDefaultFoundation().adapter_.setLastTrackMarkersStyleProperty('flex', 0.5);
+
+  assert.equal(lastMarker.style.flex, div.style.flex);
 });
 
 test('adapter#isRTL returns true when component is in an RTL context', () => {

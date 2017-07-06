@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
+/** @private {boolean|undefined} */
 let supportsPassive_;
 
+/**
+ * @param {!Window} windowObj
+ * @return {boolean|undefined}
+ */
 export function supportsCssVariables(windowObj) {
   const supportsFunctionPresent = windowObj.CSS && typeof windowObj.CSS.supports === 'function';
   if (!supportsFunctionPresent) {
@@ -32,7 +37,13 @@ export function supportsCssVariables(windowObj) {
   return explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus;
 }
 
-// Determine whether the current browser supports passive event listeners, and if so, use them.
+//
+/**
+ * Determine whether the current browser supports passive event listeners, and if so, use them.
+ * @param {!Window=} globalObj
+ * @param {boolean=} forceRefresh
+ * @return {boolean|{passive: boolean}}
+ */
 export function applyPassive(globalObj = window, forceRefresh = false) {
   if (supportsPassive_ === undefined || forceRefresh) {
     let isSupported = false;
@@ -48,12 +59,22 @@ export function applyPassive(globalObj = window, forceRefresh = false) {
   return supportsPassive_ ? {passive: true} : false;
 }
 
+/**
+ * @param {!Object} HTMLElementPrototype
+ * @return {!Array<string>}
+ */
 export function getMatchesProperty(HTMLElementPrototype) {
   return [
     'webkitMatchesSelector', 'msMatchesSelector', 'matches',
   ].filter((p) => p in HTMLElementPrototype).pop();
 }
 
+/**
+ * @param {!Event} ev
+ * @param {!{x: number, y: number}} pageOffset
+ * @param {!ClientRect} clientRect
+ * @return {!{x: number, y: number}}
+ */
 export function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   const {x, y} = pageOffset;
   const documentX = x + clientRect.left;
