@@ -14,30 +14,47 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base';
+import {getCorrectEventName} from '@material/animation';
+import MDCComponent from '@material/base/component';
+/* eslint-disable no-unused-vars */
+import {InputElementState} from './adapter';
+/* eslint-enable no-unused-vars */
+import MDCCheckboxFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 import {getMatchesProperty} from '@material/ripple/util';
-import {getCorrectEventName} from '@material/animation';
-
-import MDCCheckboxFoundation from './foundation';
 
 export {MDCCheckboxFoundation};
 
+/**
+ * @extends MDCComponent<!MDCCheckboxFoundation>
+ */
 export class MDCCheckbox extends MDCComponent {
   static attachTo(root) {
     return new MDCCheckbox(root);
   }
 
+  /**
+   * @return {InputElementState|undefined}
+   * @private
+   */
   get nativeCb_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    return this.root_.querySelector(NATIVE_CONTROL_SELECTOR);
+    const cbEl = /** @type {InputElementState|undefined} */ (
+        this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
+    return cbEl;
   }
 
   constructor(...args) {
     super(...args);
+
+    /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
   }
 
+  /**
+   * @return {!MDCRipple}
+   * @private
+   */
   initRipple_() {
     const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
@@ -62,6 +79,7 @@ export class MDCCheckbox extends MDCComponent {
     return new MDCRipple(this.root_, foundation);
   }
 
+  /** @return {!MDCCheckboxFoundation} */
   getDefaultFoundation() {
     return new MDCCheckboxFoundation({
       addClass: (className) => this.root_.classList.add(className),
@@ -78,38 +96,47 @@ export class MDCCheckbox extends MDCComponent {
     });
   }
 
+  /** @return {!MDCRipple} */
   get ripple() {
     return this.ripple_;
   }
 
+  /** @return {boolean} */
   get checked() {
     return this.foundation_.isChecked();
   }
 
+  /** @param {boolean} checked */
   set checked(checked) {
     this.foundation_.setChecked(checked);
   }
 
+  /** @return {boolean} */
   get indeterminate() {
     return this.foundation_.isIndeterminate();
   }
 
+  /** @param {boolean} indeterminate */
   set indeterminate(indeterminate) {
     this.foundation_.setIndeterminate(indeterminate);
   }
 
+  /** @return {boolean} */
   get disabled() {
     return this.foundation_.isDisabled();
   }
 
+  /** @param {boolean} disabled */
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
 
+  /** @return {?string} */
   get value() {
     return this.foundation_.getValue();
   }
 
+  /** @param {?string} value */
   set value(value) {
     this.foundation_.setValue(value);
   }
