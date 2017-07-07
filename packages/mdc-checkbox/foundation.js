@@ -164,7 +164,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
 
     CB_PROTO_PROPS.forEach((controlState) => {
       const desc = /** @type {!ObjectPropertyDescriptor} */ (
-          Object.getOwnPropertyDescriptor(cbProto, controlState));
+        Object.getOwnPropertyDescriptor(cbProto, controlState));
       if (validDescriptor(desc)) {
         Object.defineProperty(nativeCb, controlState, desc);
       }
@@ -246,15 +246,15 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       if (newState === TRANSITION_STATE_UNCHECKED) {
         return '';
       }
-        // fallthrough
+    // fallthrough
     case TRANSITION_STATE_UNCHECKED:
       return newState === TRANSITION_STATE_CHECKED ? ANIM_UNCHECKED_CHECKED : ANIM_UNCHECKED_INDETERMINATE;
     case TRANSITION_STATE_CHECKED:
       return newState === TRANSITION_STATE_UNCHECKED ? ANIM_CHECKED_UNCHECKED : ANIM_CHECKED_INDETERMINATE;
-      // TRANSITION_STATE_INDETERMINATE
+    // TRANSITION_STATE_INDETERMINATE
     default:
       return newState === TRANSITION_STATE_CHECKED ?
-          ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
+        ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
     }
   }
 

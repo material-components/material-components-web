@@ -62,67 +62,67 @@ testFoundation('#init adds unbounded class when adapter indicates unbounded', ({
 });
 
 testFoundation('#init does not add unbounded class when adapter does not indicate unbounded (default)',
-    ({adapter, foundation, mockRaf}) => {
-      foundation.init();
-      mockRaf.flush();
+  ({adapter, foundation, mockRaf}) => {
+    foundation.init();
+    mockRaf.flush();
 
-      td.verify(adapter.addClass(cssClasses.UNBOUNDED), {times: 0});
-    });
+    td.verify(adapter.addClass(cssClasses.UNBOUNDED), {times: 0});
+  });
 
 testFoundation('#init gracefully exits when css variables are not supported', false,
-    ({foundation, adapter, mockRaf}) => {
-      foundation.init();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    foundation.init();
+    mockRaf.flush();
 
-      td.verify(adapter.addClass(cssClasses.ROOT), {times: 0});
-    });
+    td.verify(adapter.addClass(cssClasses.ROOT), {times: 0});
+  });
 
 testFoundation(`#init sets ${strings.VAR_SURFACE_WIDTH} css variable to the clientRect's width`,
-    ({foundation, adapter, mockRaf}) => {
-      td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
-      foundation.init();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
+    foundation.init();
+    mockRaf.flush();
 
-      td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '200px'));
-    });
+    td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '200px'));
+  });
 
 testFoundation(`#init sets ${strings.VAR_SURFACE_HEIGHT} css variable to the clientRect's height`,
-    ({foundation, adapter, mockRaf}) => {
-      td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
-      foundation.init();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
+    foundation.init();
+    mockRaf.flush();
 
-      td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '100px'));
-    });
+    td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '100px'));
+  });
 
 testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
-    ({foundation, adapter, mockRaf}) => {
-      const size = 200;
-      td.when(adapter.computeBoundingRect()).thenReturn({width: size, height: size / 2});
-      foundation.init();
-      mockRaf.flush();
-      const initialSize = size * numbers.INITIAL_ORIGIN_SCALE;
+  ({foundation, adapter, mockRaf}) => {
+    const size = 200;
+    td.when(adapter.computeBoundingRect()).thenReturn({width: size, height: size / 2});
+    foundation.init();
+    mockRaf.flush();
+    const initialSize = size * numbers.INITIAL_ORIGIN_SCALE;
 
-      td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
-    });
+    td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
+  });
 
 testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`,
-    ({foundation, adapter, mockRaf}) => {
-      const width = 200;
-      const height = 100;
-      const maxSize = Math.max(width, height);
-      const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+  ({foundation, adapter, mockRaf}) => {
+    const width = 200;
+    const height = 100;
+    const maxSize = Math.max(width, height);
+    const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
 
-      td.when(adapter.computeBoundingRect()).thenReturn({width, height});
-      td.when(adapter.isUnbounded()).thenReturn(true);
-      foundation.init();
-      mockRaf.flush();
+    td.when(adapter.computeBoundingRect()).thenReturn({width, height});
+    td.when(adapter.isUnbounded()).thenReturn(true);
+    foundation.init();
+    mockRaf.flush();
 
-      td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
+    td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
       `${Math.round((width / 2) - (initialSize / 2))}px`));
-      td.verify(adapter.updateCssVariable(strings.VAR_TOP,
+    td.verify(adapter.updateCssVariable(strings.VAR_TOP,
       `${Math.round((height / 2) - (initialSize / 2))}px`));
-    });
+  });
 
 testFoundation('#init registers events for all types of common interactions', ({foundation, adapter}) => {
   const expectedEvents = [
@@ -211,36 +211,36 @@ testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mock
 });
 
 testFoundation(`#layout sets ${strings.VAR_SURFACE_WIDTH} css variable to the clientRect's width`,
-    ({foundation, adapter, mockRaf}) => {
-      td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
-      foundation.layout();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
+    foundation.layout();
+    mockRaf.flush();
 
-      td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '200px'));
-    });
+    td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '200px'));
+  });
 
 testFoundation(`#layout sets ${strings.VAR_SURFACE_HEIGHT} css variable to the clientRect's height`,
-    ({foundation, adapter, mockRaf}) => {
-      td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
-      foundation.layout();
-      mockRaf.flush();
+  ({foundation, adapter, mockRaf}) => {
+    td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
+    foundation.layout();
+    mockRaf.flush();
 
-      td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '100px'));
-    });
+    td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '100px'));
+  });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
-    ({foundation, adapter, mockRaf}) => {
-      const width = 200;
-      const height = 100;
-      const maxSize = Math.max(width, height);
-      const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+  ({foundation, adapter, mockRaf}) => {
+    const width = 200;
+    const height = 100;
+    const maxSize = Math.max(width, height);
+    const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
 
-      td.when(adapter.computeBoundingRect()).thenReturn({width, height});
-      foundation.layout();
-      mockRaf.flush();
+    td.when(adapter.computeBoundingRect()).thenReturn({width, height});
+    foundation.layout();
+    mockRaf.flush();
 
-      td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
-    });
+    td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
+  });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference between the ` +
                'proportion of the max radius and the initial size', ({foundation, adapter, mockRaf}) => {
@@ -261,22 +261,22 @@ testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference bet
 });
 
 testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`,
-    ({foundation, adapter, mockRaf}) => {
-      const width = 200;
-      const height = 100;
-      const maxSize = Math.max(width, height);
-      const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+  ({foundation, adapter, mockRaf}) => {
+    const width = 200;
+    const height = 100;
+    const maxSize = Math.max(width, height);
+    const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
 
-      td.when(adapter.computeBoundingRect()).thenReturn({width, height});
-      td.when(adapter.isUnbounded()).thenReturn(true);
-      foundation.layout();
-      mockRaf.flush();
+    td.when(adapter.computeBoundingRect()).thenReturn({width, height});
+    td.when(adapter.isUnbounded()).thenReturn(true);
+    foundation.layout();
+    mockRaf.flush();
 
-      td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
+    td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
       `${Math.round((width / 2) - (initialSize / 2))}px`));
-      td.verify(adapter.updateCssVariable(strings.VAR_TOP,
+    td.verify(adapter.updateCssVariable(strings.VAR_TOP,
       `${Math.round((height / 2) - (initialSize / 2))}px`));
-    });
+  });
 
 testFoundation('#layout debounces calls within the same frame', ({foundation, mockRaf}) => {
   foundation.layout();

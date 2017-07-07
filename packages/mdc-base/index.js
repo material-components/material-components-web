@@ -14,5 +14,7 @@
  * limitations under the License.
  */
 
-export {default as MDCFoundation} from './foundation';
-export {default as MDCComponent} from './component';
+import MDCFoundation from './foundation';
+import MDCComponent from './component';
+
+export {MDCFoundation, MDCComponent};
