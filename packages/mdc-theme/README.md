@@ -66,7 +66,7 @@ The correct text colors will automatically be calculated based on the provided t
 
 ### CSS Custom properties
 
-| CSS Custom property | Description |
+| CSS Custom property                        | Description |
 | ------------------------------------------ | - |
 | `--mdc-theme-primary` | The theme primary color. |
 | `--mdc-theme-accent` | The theme accent color. |
@@ -99,14 +99,14 @@ The correct text colors will automatically be calculated based on the provided t
 
 ### Sass Mixins, Variables, and Functions
 
-| Mixin | Description |
+| Mixin                                           | Description |
 | ----------------------------------------------- | - |
 | `mdc-theme-prop($property, $style, $important)` | Applies a theme color to a property |
 | `mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the root element is within an Dark Theme context. If using the mixin on anything other than the base selector, you need to specify the base selector as a parameter. If using the mixin with a modifier class, pass `true` for the second argument. |
 
 #### Properties
 
-| PropertyName                   | Description |
+| Property Name                  | Description |
 | ------------------------------ | - |
 | `primary` | The theme primary color. |
 | `accent` | The theme accent color. |
