@@ -57,6 +57,7 @@
     "@material/icon-toggle": "^0.1.0",
     "@material/list": "^0.1.0",
     "@material/ripple": "^0.1.0",
+    "@material/slider": "^0.1.0",
     "@material/snackbar": "^0.1.0",
     "@material/theme": "^0.1.0",
     "@material/typography": "^0.1.0"

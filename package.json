@@ -50,7 +50,7 @@
     "eslint-plugin-mocha": "^4.8.0",
     "extract-text-webpack-plugin": "^2.1.2",
     "glob": "^7.1.1",
-    "google-closure-compiler": "^20170521.0.0",
+    "google-closure-compiler": "^20170626.0.0",
     "husky": "^0.14.0",
     "istanbul": "^0.4.4",
     "istanbul-instrumenter-loader": "^2.0.0",
@@ -85,7 +85,7 @@
     "stylelint-order": "^0.5.0",
     "stylelint-scss": "^1.4.1",
     "stylelint-selector-bem-pattern": "^1.0.0",
-    "testdouble": "3.0.0",
+    "testdouble": "3.2.0",
     "to-slug-case": "^1.0.0",
     "query-ast": "^1.0.1",
     "validate-commit-msg": "^2.6.1",
@@ -161,6 +161,7 @@
   "closureWhitelist": [
     "mdc-animation",
     "mdc-base",
+    "mdc-checkbox",
     "mdc-menu",
     "mdc-ripple"
   ]
