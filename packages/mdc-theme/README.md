@@ -67,7 +67,7 @@ The correct text colors will automatically be calculated based on the provided t
 ### CSS Custom properties
 
 | CSS Custom property | Description |
-| --------------------------- | - |
+| ------------------------------------------ | - |
 | `--mdc-theme-primary` | The theme primary color. |
 | `--mdc-theme-accent` | The theme accent color. |
 | `--mdc-theme-background` | The theme background color. |
@@ -164,7 +164,7 @@ Determines whether to use light or dark text on top of a given color.
 ### CSS Classes
 
 | CSS Class | Description |
-| --------------------------- | - |
+| --------------------------------------- | - |
 | `mdc-theme--primary` | Sets the text color to the theme primary color. |
 | `mdc-theme--accent` | Sets the text color to the theme accent color. |
 | `mdc-theme--background` | Sets the background color to the theme background color. |
