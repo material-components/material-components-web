@@ -34,7 +34,6 @@
  */
 
 export default class MDCCheckboxAdapter {
-
   /** @param {string} className */
   addClass(className) {}
 
@@ -60,7 +59,6 @@ export default class MDCCheckboxAdapter {
 
   /** @return {boolean} */
   isAttachedToDOM() {}
-
 }
 
 /**

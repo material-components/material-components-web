@@ -496,9 +496,9 @@ test('focus in RTL context scrolls forward if distance between the right edge of
   const tabBarWidth = 900;
 
   td.when(mockAdapter.registerCapturedInteractionHandler(evtType, td.matchers.isA(Function)))
-  .thenDo((evtType, handler) => {
-    tabEvent = handler;
-  });
+    .thenDo((evtType, handler) => {
+      tabEvent = handler;
+    });
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
   td.when(mockAdapter.isRTL()).thenReturn(true);
 
