@@ -66,7 +66,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       outline: none;
 
       &::placeholder {
-        @include mdc-theme-prop(color, text-secondary-on-light);
+        @include mdc-theme-prop(color, text-textfield-placeholder-on-light);
       }
     }
 
@@ -83,13 +83,13 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       }
 
       &:focus::placeholder {
-        @include mdc-theme-prop(color, text-secondary-on-dark);
+        @include mdc-theme-prop(color, text-textfield-placeholder-on-dark);
       }
     }
   }
 
   &__label {
-    @include mdc-theme-prop(color, text-hint-on-light);
+    @include mdc-theme-prop(color, text-textfield-label-on-light);
 
     position: absolute;
     bottom: 8px;
@@ -107,7 +107,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     // stylelint-enable plugin/selector-bem-pattern
 
     @include mdc-theme-dark(".mdc-textfield") {
-      @include mdc-theme-prop(color, text-hint-on-dark);
+      @include mdc-theme-prop(color, text-textfield-label-on-dark);
     }
 
     &--float-above {
@@ -226,11 +226,14 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   &.mdc-textfield--disabled {
     border-bottom: none;
     background-color: rgba(black, .02);
-    color: rgba(black, .38);
+
+    @include mdc-theme-prop(background-color, text-textfield-background-on-light);
+    @include mdc-theme-prop(color, text-textfield-placeholder-on-light);
 
     @include mdc-theme-dark(".mdc-textfield", true) {
       border-bottom: none;
-      background-color: rgba(white, .05);
+
+      @include mdc-theme-prop(background-color, text-textfield-background-on-dark);
     }
 
     .mdc-textfield__label {
@@ -616,7 +619,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     }
 
     &:disabled {
-      @include mdc-theme-prop(color, text-disabled-on-light);
+      @include mdc-theme-prop(color, text-textfield-placeholder-on-light);
 
       border-style: dotted;
       border-color: $mdc-textfield-disabled-border-on-light;
@@ -634,7 +637,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       }
 
       &:disabled {
-        @include mdc-theme-prop(color, text-disabled-on-dark);
+        @include mdc-theme-prop(color, text-textfield-placeholder-on-dark);
 
         border-color: $mdc-textfield-disabled-border-on-dark;
       }
