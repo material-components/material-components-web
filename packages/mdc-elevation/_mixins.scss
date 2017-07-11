@@ -30,8 +30,8 @@
   }
 
   #{$mdc-elevation-property}:
-    #{map-get($mdc-elevation-umbra-map, $z-value)} $mdc-elevation-umbra-color,
-    #{map-get($mdc-elevation-penumbra-map, $z-value)} $mdc-elevation-penumbra-color,
+    #{"#{map-get($mdc-elevation-umbra-map, $z-value)} #{$mdc-elevation-umbra-color}"},
+    #{"#{map-get($mdc-elevation-penumbra-map, $z-value)} #{$mdc-elevation-penumbra-color}"},
     #{map-get($mdc-elevation-ambient-map, $z-value)} $mdc-elevation-ambient-color;
 }
 
