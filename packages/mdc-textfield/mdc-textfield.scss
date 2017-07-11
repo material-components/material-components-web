@@ -105,17 +105,8 @@ $mdc-textfield-underline-on-dark: rgba(white, 1);
     }
   }
 
-  &__bottom-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    transform: scaleX(0);
-    transition: mdc-textfield-transition(transform), mdc-textfield-transition(opacity);
-    opacity: 0;
-    z-index: 2;
-
+  &__label {
+    @include mdc-theme-prop(color, text-textfield-label-on-light);
     @include mdc-theme-prop(background-color, primary);
   }
 
