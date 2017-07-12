@@ -17,13 +17,13 @@
 @import "./variables";
 
 @mixin mdc-animation-linear-out-slow-in {
-  animation-timing-function: $mdc-animation-linear-out-slow-in-timing-function;
+  animation-timing-function: $mdc-animation-timing-function-deceleration-curve;
 }
 
 @mixin mdc-animation-fast-out-slow-in {
-  animation-timing-function: $mdc-animation-fast-out-slow-in-timing-function;
+  animation-timing-function: $mdc-animation-timing-function-standard-curve;
 }
 
 @mixin mdc-animation-fast-out-linear-in {
-  animation-timing-function: $mdc-animation-fast-out-linear-in-timing-function;
+  animation-timing-function: $mdc-animation-timing-function-acceleration-curve;
 }
