@@ -416,7 +416,7 @@ const toolbar = new MDCToolbar(document.querySelector('.mdc-toolbar'));
 
 | Method Signature | Description |
 | --- | --- |
-| `hasClass(className: string) => void` | Checks if the root element of the component has the given className. |
+| `hasClass(className: string) => boolean` | Checks if the root element of the component has the given className. |
 | `addClass(className: string) => void` | Adds a class to the root element of the component. |
 | `removeClass(className: string) => void` | Removes a class from the root element of the component. |
 | `registerScrollHandler(handler: Function) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event. |

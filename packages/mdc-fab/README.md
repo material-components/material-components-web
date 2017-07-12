@@ -84,7 +84,7 @@ Developers must position it as-needed within their applications designs.
 -->
 <style>
 .app-fab--absolute.app-fab--absolute {
-  position: absolute;
+  position: fixed;
   bottom: 1rem;
   right: 1rem;
 }
