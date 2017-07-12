@@ -38,7 +38,7 @@ export class MDCPersistentDrawer extends MDCComponent {
     }
   }
 
-  /* Return the drawer element inside the component. */
+  // Return the drawer element inside the component.
   get drawer() {
     return this.root_.querySelector(MDCPersistentDrawerFoundation.strings.DRAWER_SELECTOR);
   }
@@ -52,22 +52,22 @@ export class MDCPersistentDrawer extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.drawer),
       registerInteractionHandler: (evt, handler) =>
-          this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+        this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       deregisterInteractionHandler: (evt, handler) =>
-          this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+        this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       registerDrawerInteractionHandler: (evt, handler) =>
-          this.drawer.addEventListener(util.remapEvent(evt), handler),
+        this.drawer.addEventListener(util.remapEvent(evt), handler),
       deregisterDrawerInteractionHandler: (evt, handler) =>
-          this.drawer.removeEventListener(util.remapEvent(evt), handler),
+        this.drawer.removeEventListener(util.remapEvent(evt), handler),
       registerTransitionEndHandler: (handler) =>
-          this.root_.addEventListener('transitionend', handler),
+        this.root_.addEventListener('transitionend', handler),
       deregisterTransitionEndHandler: (handler) =>
-          this.root_.removeEventListener('transitionend', handler),
+        this.root_.removeEventListener('transitionend', handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       getDrawerWidth: () => this.drawer.offsetWidth,
       setTranslateX: (value) => this.drawer.style.setProperty(
-          util.getTransformPropertyName(), value === null ? null : `translateX(${value}px)`),
+        util.getTransformPropertyName(), value === null ? null : `translateX(${value}px)`),
       getFocusableElements: () => this.drawer.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),

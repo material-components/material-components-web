@@ -17,15 +17,10 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Ripple. Provides an interface for managing
+ * Adapter for MDC Checkbox. Provides an interface for managing
  * - classes
  * - dom
- * - CSS variables
- * - position
- * - dimensions
- * - scroll position
  * - event handlers
- * - unbounded, active and disabled states
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -37,56 +32,41 @@
  *
  * @record
  */
-export default class MDCRippleAdapter {
-  /** @return {boolean} */
-  browserSupportsCssVars() {}
 
-  /** @return {boolean} */
-  isUnbounded() {}
-
-  /** @return {boolean} */
-  isSurfaceActive() {}
-
-  /** @return {boolean} */
-  isSurfaceDisabled() {}
-
+export default class MDCCheckboxAdapter {
   /** @param {string} className */
   addClass(className) {}
 
   /** @param {string} className */
   removeClass(className) {}
 
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  registerInteractionHandler(evtType, handler) {}
+  /** @param {!EventListener} handler */
+  registerAnimationEndHandler(handler) {}
 
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  deregisterInteractionHandler(evtType, handler) {}
+  /** @param {!EventListener} handler */
+  deregisterAnimationEndHandler(handler) {}
 
-  /**
-   * @param {!Function} handler
-   */
-  registerResizeHandler(handler) {}
+  /** @param {!EventListener} handler */
+  registerChangeHandler(handler) {}
 
-  /**
-   * @param {!Function} handler
-   */
-  deregisterResizeHandler(handler) {}
+  /** @param {!EventListener} handler */
+  deregisterChangeHandler(handler) {}
 
-  /**
-   * @param {string} varName
-   * @param {?number|string} value
-   */
-  updateCssVariable(varName, value) {}
+  /** @return {InputElementState} */
+  getNativeControl() {}
 
-  /** @return {!ClientRect} */
-  computeBoundingRect() {}
+  forceLayout() {}
 
-  /** @return {{x: number, y: number}} */
-  getWindowPageOffset() {}
+  /** @return {boolean} */
+  isAttachedToDOM() {}
 }
+
+/**
+ * @typedef {!{
+ *   checked: boolean,
+ *   indeterminate: boolean,
+ *   disabled: boolean,
+ *   value: ?string
+ * }}
+ */
+export let InputElementState;
