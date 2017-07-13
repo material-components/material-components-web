@@ -61,7 +61,8 @@
         <div class="mdc-textfield">
           <input type="text" class="mdc-textfield__input" id="my-textfield"
                  name="email" aria-controls="my-textfield-helptext"
-                 data-demo-no-auto-js autocomplete="email">
+                 data-demo-no-auto-js>
+          <div class="mdc-textfield__bottom-line"></div>
           <label for="my-textfield" class="mdc-textfield__label">Text Field</label>
         </div>
       </section>
@@ -79,6 +80,7 @@
             <input type="text" class="mdc-textfield__input" id="my-textfield"
                    name="email" aria-controls="my-textfield-helptext"
                    data-demo-no-auto-js autocomplete="email">
+            <div class="mdc-textfield__bottom-line"></div>
             <label for="my-textfield" class="mdc-textfield__label">Email Address</label>
           </div>
           <p id="my-textfield-helptext" class="mdc-textfield-helptext"
@@ -127,6 +129,7 @@
           <input required pattern=".{8,}" type="password" class="mdc-textfield__input" id="pw"
                  aria-controls="pw-validation-msg"
                  autocomplete="current-password">
+          <div class="mdc-textfield__bottom-line"></div>
           <label for="pw" class="mdc-textfield__label">Choose password</label>
         </div>
         <p class="mdc-textfield-helptext mdc-textfield-helptext--persistent mdc-textfield-helptext--validation-msg"
@@ -200,6 +203,7 @@
           <div class="mdc-textfield" data-demo-no-auto-js>
             <input type="text" class="mdc-textfield__input" id="css-only-textfield"
                    placeholder="Name">
+            <div class="mdc-textfield__bottom-line"></div>
           </div>
           <label for="css-only-textfield">Your name:</label>
         </div>
@@ -218,6 +222,7 @@
         <h2>Preventing FOUC</h2>
         <div class="mdc-textfield mdc-textfield--upgraded">
           <input id="fouc" type="text" class="mdc-textfield__input" value="Pre-filled value">
+          <div class="mdc-textfield__bottom-line"></div>
           <label for="fouc" class="mdc-textfield__label mdc-textfield__label--float-above">
             Label floating above
           </label>
@@ -225,8 +230,8 @@
       </section>
       <section class="example">
         <h2>Multi-line Textfields</h2>
-        <section id="demo-textfield-multiline-wrapper">
-          <div class="mdc-textfield mdc-textfield--multiline">
+        <section id="demo-textfield-textarea-wrapper">
+          <div class="mdc-textfield mdc-textfield--textarea">
             <textarea id="multi-line" class="mdc-textfield__input" rows="8" cols="40"></textarea>
             <label for="multi-line" class="mdc-textfield__label">Multi-line Label</label>
           </div>
@@ -250,10 +255,10 @@
       </section>
       <section class="example">
         <h2>Multi-line Textfields - CSS Only</h2>
-        <label for="css-only-multiline" style="margin-bottom:4px;">About you:</label>
-        <div class="mdc-textfield mdc-textfield--multiline" data-demo-no-auto-js>
+        <label for="css-only-textarea" style="margin-bottom:4px;">About you:</label>
+        <div class="mdc-textfield mdc-textfield--textarea" data-demo-no-auto-js>
           <textarea class="mdc-textfield__input"
-                    id="css-only-multiline"
+                    id="css-only-textarea"
                     rows="8" cols="40"
                     placeholder="Tell the world something about yourself!"></textarea>
         </div>
@@ -264,7 +269,7 @@
           <div class="mdc-textfield mdc-textfield--fullwidth" data-demo-no-auto-js>
             <input class="mdc-textfield__input" type="text" placeholder="Subject" aria-label="Subject">
           </div>
-          <div class="mdc-textfield mdc-textfield--multiline mdc-textfield--fullwidth" data-demo-no-auto-js>
+          <div class="mdc-textfield mdc-textfield--textarea mdc-textfield--fullwidth" data-demo-no-auto-js>
             <textarea class="mdc-textfield__input" placeholder="Message" rows="8" cols="40" aria-label="Message"></textarea>
           </div>
         </div>
@@ -347,7 +352,7 @@
     </script>
     <script>
       (function() {
-        var section = document.getElementById('demo-textfield-multiline-wrapper');
+        var section = document.getElementById('demo-textfield-textarea-wrapper');
         var tfRoot = section.querySelector('.mdc-textfield');
         var tf = new mdc.textfield.MDCTextfield(tfRoot);
         document.getElementById('multi-disable').addEventListener('change', function(evt) {
@@ -376,7 +381,7 @@
       (function() {
         var section = document.getElementById('demo-fullwidth-wrapper');
         var tfRoot = section.querySelector('.mdc-textfield');
-        var tfMultiRoot = section.querySelector('.mdc-textfield--multiline');
+        var tfMultiRoot = section.querySelector('.mdc-textfield--textarea');
         var tf = new mdc.textfield.MDCTextfield(tfRoot);
         var tfMulti = new mdc.textfield.MDCTextfield(tfMultiRoot);
 

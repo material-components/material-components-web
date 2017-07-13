@@ -36,12 +36,15 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextfieldFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
+    'addClassToBottomLine', 'removeClassFromBottomLine',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputFocusHandler', 'deregisterInputFocusHandler',
     'registerInputBlurHandler', 'deregisterInputBlurHandler',
     'registerInputInputHandler', 'deregisterInputInputHandler',
     'registerInputKeydownHandler', 'deregisterInputKeydownHandler',
-    'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
+    'registerInputPointerDownHandler', 'deregisterInputPointerDownHandler',
+    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
+    'setBottomLineAttr', 'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
   ]);
 });
 
@@ -108,6 +111,20 @@ test('#init adds mdc-textfield--upgraded class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
+});
+
+test('#init adds event listeners', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+
+  td.verify(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInputBlurHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInputInputHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInputKeydownHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function)));
+  td.verify(
+    mockAdapter.registerInputPointerDownHandler(td.matchers.isA(String), td.matchers.isA(Function)), {times: 2}
+  );
 });
 
 test('#init adds mdc-textfield__label--float-above class if the input contains a value', () => {
@@ -337,4 +354,72 @@ test('on blur handles getNativeInput() not returning anything gracefully', () =>
   const {mockAdapter, blur} = setupBlurTest();
   td.when(mockAdapter.getNativeInput()).thenReturn(null);
   assert.doesNotThrow(blur);
+});
+
+test('on transition end removes the bottom line active class if this.isFocused_ is false ' +
+  'and transition type is opacity', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    propertyName: 'opacity',
+  };
+  let transitionEnd;
+
+  td.when(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    transitionEnd = handler;
+  });
+
+  foundation.init();
+  transitionEnd(mockEvt);
+
+  td.verify(mockAdapter.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
+});
+
+test('mousedown on the input sets the bottom line origin', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    target: {
+      getBoundingClientRect: () => {
+        return {};
+      },
+    },
+    clientX: 200,
+    clientY: 200,
+  };
+
+  let clickHandler;
+
+  td.when(mockAdapter.registerInputPointerDownHandler('mousedown', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      clickHandler = handler;
+    });
+
+  foundation.init();
+  clickHandler(mockEvt);
+
+  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+});
+
+test('touchstart on the input sets the bottom line origin', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    target: {
+      getBoundingClientRect: () => {
+        return {};
+      },
+    },
+    clientX: 200,
+    clientY: 200,
+  };
+
+  let clickHandler;
+
+  td.when(mockAdapter.registerInputPointerDownHandler('touchstart', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      clickHandler = handler;
+    });
+
+  foundation.init();
+  clickHandler(mockEvt);
+
+  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
 });
