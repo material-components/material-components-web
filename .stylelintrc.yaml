@@ -207,7 +207,7 @@ rules:
     - ignoreProperties:
         - contain
   # There is no reason that a specific ID would be needed for UI components
-  selector-no-id: true
+  # selector-no-id: true
   # Qualifying types are not needed when using a naming system like BEM
   selector-no-qualifying-type: true
   # In general, we should *never* be modifying elements within our components, since we can't
@@ -216,12 +216,12 @@ rules:
   # we want our UI components within that fieldset to be disabled as well.
   # Other exceptions to this may be in packages/material-components-web, in which case this rule could
   # be disabled for that file, with an explanation.
-  selector-no-type:
-    - true
-    - ignoreTypes:
-        - fieldset
+  # selector-no-type:
+  #   - true
+  #   - ignoreTypes:
+  #       - fieldset
   # Styles for components should never need the universal selector.
-  selector-no-universal: true
+  # selector-no-universal: true
   # Ensure any defined symbols are prefixed with "mdc-"
   # TODO: Remove "md-" pattern.
   custom-media-pattern: ^mdc?-.+

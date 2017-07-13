@@ -18,6 +18,7 @@ export const strings = {
   ROLE: 'role',
   INPUT_SELECTOR: '.mdc-textfield__input',
   LABEL_SELECTOR: '.mdc-textfield__label',
+  BOTTOM_LINE_SELECTOR: '.mdc-textfield__bottom-line',
 };
 
 export const cssClasses = {
@@ -30,4 +31,6 @@ export const cssClasses = {
   HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
   LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
   BOX: 'mdc-textfield--box',
+  TEXTAREA: 'mdc-textfield--textarea',
+  BOTTOM_LINE_ACTIVE: 'mdc-textfield__bottom-line--active',
 };
