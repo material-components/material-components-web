@@ -118,8 +118,8 @@ test('#switchToTabAtIndex does nothing if the currently active tab is clicked', 
   foundation.switchToTabAtIndex(0, true);
 
   td.verify(mockAdapter.setTabActiveAtIndex(
-      td.matchers.anything(), td.matchers.isA(Boolean)
-    ), {times: 0});
+    td.matchers.anything(), td.matchers.isA(Boolean)
+  ), {times: 0});
   td.verify(mockAdapter.notifyChange(td.matchers.anything()), {times: 0});
 });
 

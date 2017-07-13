@@ -24,7 +24,7 @@ import { MDCCheckboxFoundation } from '@material/checkbox';
 const { ANIM_END_EVENT_NAME } = MDCCheckboxFoundation.strings;
 
 export default {
-  props: ['id', 'labelId', 'value'],
+  props: ['id', 'value'],
   data () {
     return {
       classes: {},
