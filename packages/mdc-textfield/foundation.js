@@ -67,7 +67,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.inputKeydownHandler_ = () => this.receivedUserInput_ = true;
     this.useCustomValidityChecking_ = false;
     this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
-    this.setPointerXOffset_ = (evt) => this.setBottomLineOrigin_(evt);
+    this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin_(evt);
   }
 
   init() {
@@ -107,7 +107,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
   }
 
-  setBottomLineOrigin_(evt) {
+  setBottomLineTransformOrigin_(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();
     const evtCoords = {x: evt.clientX, y: evt.clientY};
     const normalizedX = evtCoords.x - targetClientRect.left;
@@ -131,6 +131,9 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   transitionEnd_(evt) {
     const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
 
+    // We need to wait for the bottom line to entirely transparent
+    // before removing the class. If we do not, we see the line start to
+    // scale down before disappearing - sheehana
     if (evt.propertyName === 'opacity' && !this.isFocused_) {
       this.adapter_.removeClassFromBottomLine(BOTTOM_LINE_ACTIVE);
     }

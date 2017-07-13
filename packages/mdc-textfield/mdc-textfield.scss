@@ -31,6 +31,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 $mdc-textfield-underline-on-light-idle: rgba(black, .5);
 $mdc-textfield-underline-on-light: rgba(black, 1);
 $mdc-textfield-underline-on-dark: rgba(white, 1);
+$mdc-textfield-underline-on-dark-idle: rgba(white, .5);
 
 @function mdc-textfield-transition($property) {
   @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
@@ -87,11 +88,12 @@ $mdc-textfield-underline-on-dark: rgba(white, 1);
     }
 
     @include mdc-theme-dark {
-      border-bottom: 1px solid $mdc-textfield-underline-on-dark;
+      border-bottom: 1px solid $mdc-textfield-underline-on-dark-idle;
 
       @include mdc-theme-prop(color, text-primary-on-dark);
 
       &:hover {
+        border-bottom: 1px solid $mdc-textfield-underline-on-dark;
         border-width: 2px;
       }
 
@@ -105,8 +107,17 @@ $mdc-textfield-underline-on-dark: rgba(white, 1);
     }
   }
 
-  &__label {
-    @include mdc-theme-prop(color, text-textfield-label-on-light);
+  &__bottom-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: scaleX(0);
+    transition: mdc-textfield-transition(transform), mdc-textfield-transition(opacity);
+    opacity: 0;
+    z-index: 2;
+
     @include mdc-theme-prop(background-color, primary);
   }
 
@@ -263,6 +274,7 @@ $mdc-textfield-underline-on-dark: rgba(white, 1);
       border-bottom: none;
 
       @include mdc-theme-prop(background-color, text-textfield-background-on-dark);
+      @include mdc-theme-prop(color, text-textfield-placeholder-on-dark);
     }
 
     .mdc-textfield__label {
