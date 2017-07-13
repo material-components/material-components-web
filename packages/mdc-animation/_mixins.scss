@@ -16,14 +16,14 @@
 
 @import "./variables";
 
-@mixin mdc-animation-linear-out-slow-in {
+@mixin mdc-animation-deceleration-curve {
   animation-timing-function: $mdc-animation-timing-function-deceleration-curve;
 }
 
-@mixin mdc-animation-fast-out-slow-in {
+@mixin mdc-animation-standard-curve {
   animation-timing-function: $mdc-animation-timing-function-standard-curve;
 }
 
-@mixin mdc-animation-fast-out-linear-in {
+@mixin mdc-animation-acceleration-curve {
   animation-timing-function: $mdc-animation-timing-function-acceleration-curve;
 }

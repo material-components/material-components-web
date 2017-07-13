@@ -50,7 +50,7 @@ property:
 
 ```scss
 .mdc-thing--on-screen {
-  @include mdc-animation-fast-out-linear-in;
+  @include mdc-animation-acceleration-curve;
 }
 ```
 
@@ -105,7 +105,7 @@ Alternatively, you can include the built stylesheet and use the classes it expor
 ```html
 <link href="path/to/mdc-animation/dist/mdc-animation.css" rel="stylesheet">
 <!-- ... -->
-<div id="my-animating-div" class="mdc-animation-fast-out-slow-in">hi</div>
+<div id="my-animating-div" class="mdc-animation-standard-curve">hi</div>
 ```
 
 CSS Classes have the exact same name as their mixin counterparts.
