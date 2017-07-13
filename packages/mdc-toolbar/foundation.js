@@ -61,7 +61,7 @@ export default class MDCToolbarFoundation extends MDCFoundation {
     this.calculations_ = {
       toolbarRowHeight: 0,
       // Calculated Height ratio. We use ratio to calculate corresponding heights in resize event.
-      toolbarRatio: 0,  // The ratio of toolbar height to row height
+      toolbarRatio: 0, // The ratio of toolbar height to row height
       flexibleExpansionRatio: 0, // The ratio of flexible space height to row height
       maxTranslateYRatio: 0, // The ratio of max toolbar move up distance to row height
       scrollThresholdRatio: 0, // The ratio of max scrollTop that we should listen to to row height

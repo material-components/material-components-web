@@ -22,12 +22,11 @@ import {getCorrectPropertyName} from '../../../packages/mdc-animation';
 
 // Has no properties without a prefix
 const legacyWindowObj = td.object({
-  document: {
-    createElement: () => ({
-      style: {
-        'webkitTransform': 'nah',
-      },
-    }),
+  document: {},
+});
+legacyWindowObj.document.createElement = () => ({
+  style: {
+    'webkitTransform': 'nah',
   },
 });
 
@@ -35,12 +34,11 @@ suite('MDCAnimation');
 
 test('#getCorrectEventName does not prefix events when not necessary', () => {
   const windowObj = td.object({
-    document: {
-      createElement: () => ({
-        style: {
-          animation: 'none',
-        },
-      }),
+    document: {},
+  });
+  windowObj.document.createElement = () => ({
+    style: {
+      animation: 'none',
     },
   });
 
@@ -53,12 +51,11 @@ test('#getCorrectEventName does not prefix events when not necessary', () => {
 
 test('#getCorrectPropertyName does not prefix events when not necessary', () => {
   const windowObj = td.object({
-    document: {
-      createElement: () => ({
-        style: {
-          animation: 'none',
-        },
-      }),
+    document: {},
+  });
+  windowObj.document.createElement = () => ({
+    style: {
+      animation: 'none',
     },
   });
 

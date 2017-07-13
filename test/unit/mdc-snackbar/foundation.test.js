@@ -43,16 +43,19 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   assert.deepEqual(methods, [
-    'addClass', 'removeClass', 'setAriaHidden', 'unsetAriaHidden', 'setMessageText',
-    'setActionText', 'setActionAriaHidden', 'unsetActionAriaHidden',
-    'registerActionClickHandler', 'deregisterActionClickHandler',
-    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
+    'addClass', 'removeClass', 'setAriaHidden', 'unsetAriaHidden', 'setActionAriaHidden',
+    'unsetActionAriaHidden', 'setActionText', 'setMessageText', 'setFocus', 'visibilityIsHidden',
+    'registerCapturedBlurHandler', 'deregisterCapturedBlurHandler', 'registerVisibilityChangeHandler',
+    'deregisterVisibilityChangeHandler', 'registerCapturedInteractionHandler',
+    'deregisterCapturedInteractionHandler', 'registerActionClickHandler',
+    'deregisterActionClickHandler', 'registerTransitionEndHandler',
+    'deregisterTransitionEndHandler',
   ]);
   // Test default methods
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
-test('#init calls adapter.registerActionClickHandler() with a action click handler function', () => {
+test('#init calls adapter.registerActionClickHandler() with an action click handler function', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -72,6 +75,30 @@ test('#destroy calls adapter.deregisterActionClickHandler() with a registerActio
 
   foundation.destroy();
   td.verify(mockAdapter.deregisterActionClickHandler(changeHandler));
+});
+
+test('#destroy calls adapter.deregisterVisibilityChangeHandler() with a function', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+
+  foundation.destroy();
+  td.verify(mockAdapter.deregisterVisibilityChangeHandler(isA(Function)));
+});
+
+test('#destroy calls adapter.deregisterCapturedBlurHandler() with a function', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+
+  foundation.destroy();
+  td.verify(mockAdapter.deregisterCapturedBlurHandler(isA(Function)));
+});
+
+test('#destroy calls adapter.deregisterCapturedInteractionHandler() with an event type and function 3 times', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+
+  foundation.destroy();
+  td.verify(mockAdapter.deregisterCapturedInteractionHandler(isA(String), isA(Function)), {times: 3});
 });
 
 test('#init calls adapter.setAriaHidden to ensure snackbar starts hidden', () => {
@@ -216,7 +243,8 @@ test('#show while snackbar is already showing will queue the data object.', () =
     message: 'Message Archived',
   });
 
-  td.verify(mockAdapter.setMessageText('Message Archived'), {times: 0});
+  td.verify(mockAdapter.setMessageText('Message Deleted'));
+  td.verify(mockAdapter.setMessageText('Message Archived'));
 });
 
 test('#show while snackbar is already showing will show after the timeout and transition end', () => {
@@ -224,14 +252,13 @@ test('#show while snackbar is already showing will show after the timeout and tr
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
-  foundation.init();
-
   let transEndHandler;
   td.when(mockAdapter.registerTransitionEndHandler(isA(Function)))
     .thenDo((handler) => {
       transEndHandler = handler;
     });
 
+  foundation.init();
   foundation.show({
     message: 'Message Deleted',
   });
@@ -304,13 +331,35 @@ test('#show will clean up snackbar after the timeout and transition end', () => 
   clock.tick(numbers.MESSAGE_TIMEOUT);
   transEndHandler();
 
-  td.verify(mockAdapter.setMessageText(null));
-  td.verify(mockAdapter.setActionText(null));
   td.verify(mockAdapter.removeClass(cssClasses.MULTILINE));
   td.verify(mockAdapter.removeClass(cssClasses.ACTION_ON_BOTTOM));
   td.verify(mockAdapter.deregisterTransitionEndHandler(transEndHandler));
 
   clock.uninstall();
+});
+
+test('#show calls adapter.registerVisibilityChangeHandler() with a function', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+
+  foundation.show({message: 'foo'});
+  td.verify(mockAdapter.registerVisibilityChangeHandler(isA(Function)));
+});
+
+test('#show calls adapter.registerCapturedBlurHandler() with a function', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+
+  foundation.show({message: 'foo'});
+  td.verify(mockAdapter.registerCapturedBlurHandler(isA(Function)));
+});
+
+test('#show calls adapter.registerCapturedInteractionHandler() with an event type and function 3 times', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+
+  foundation.show({message: 'foo'});
+  td.verify(mockAdapter.registerCapturedInteractionHandler(isA(String), isA(Function)), {times: 3});
 });
 
 test('snackbar is dismissed after action button is pressed', () => {
@@ -362,4 +411,100 @@ test('snackbar is not dismissed after action button is pressed if setDismissOnAc
   actionClickHandler();
 
   td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
+});
+
+test('snackbar is not dismissed if action button gets focus', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const evtType = 'focus';
+  const mockEvent = {type: 'focus'};
+  let focusEvent;
+
+  td.when(mockAdapter.registerCapturedInteractionHandler(evtType, td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focusEvent = handler;
+    });
+
+  foundation.init();
+  foundation.show({message: 'foo'});
+  focusEvent(mockEvent);
+
+  foundation.show({message: 'foo'});
+
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
+});
+
+test('focus hijacks the snackbar timeout if no click or touchstart occurs', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvent = {type: 'focus'};
+  let tabEvent;
+
+  td.when(mockAdapter.registerCapturedInteractionHandler(mockEvent.type, td.matchers.isA(Function)))
+    .thenDo((evt, handler) => {
+      tabEvent = handler;
+    });
+
+  foundation.init();
+  foundation.show({message: 'foo'});
+  tabEvent(mockEvent);
+
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
+});
+
+test('focus does not hijack the snackbar timeout if it occurs as a result' +
+  'of a mousedown or touchstart', () => {
+  const clock = lolex.install();
+  const {foundation, mockAdapter} = setupTest();
+  const mockFocusEvent = {type: 'focus'};
+  const mockMouseEvent = {type: 'mousedown'};
+  let focusEvent;
+  let mouseEvent;
+
+  td.when(mockAdapter.registerCapturedInteractionHandler(mockFocusEvent.type, td.matchers.isA(Function)))
+    .thenDo((evt, handler) => {
+      focusEvent = handler;
+    });
+  td.when(mockAdapter.registerCapturedInteractionHandler(mockMouseEvent.type, td.matchers.isA(Function)))
+    .thenDo((evt, handler) => {
+      mouseEvent = handler;
+    });
+
+  foundation.init();
+  foundation.show({message: 'foo'});
+  mouseEvent(mockMouseEvent);
+  focusEvent(mockFocusEvent);
+  clock.tick(numbers.MESSAGE_TIMEOUT);
+
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
+  clock.uninstall();
+});
+
+test('blur resets the snackbar timeout', () => {
+  const clock = lolex.install();
+  const {foundation, mockAdapter} = setupTest();
+  const {isA} = td.matchers;
+  const mockBlurEvent = {type: 'blur'};
+  const mockFocusEvent = {type: 'focus'};
+  let focusEvent;
+  let blurEvent;
+
+  td.when(mockAdapter.registerCapturedInteractionHandler(mockFocusEvent.type, td.matchers.isA(Function)))
+    .thenDo((evt, handler) => {
+      focusEvent = handler;
+    });
+  td.when(mockAdapter.registerCapturedBlurHandler(isA(Function)))
+    .thenDo((handler) => {
+      blurEvent = handler;
+    });
+
+  foundation.init();
+  foundation.show({message: 'foo'});
+  focusEvent(mockFocusEvent);
+  // Sanity Check
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
+
+  blurEvent(mockBlurEvent);
+  clock.tick(numbers.MESSAGE_TIMEOUT);
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
+
+  clock.uninstall();
 });

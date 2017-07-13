@@ -40,7 +40,7 @@ export class MDCCheckbox extends MDCComponent {
   get nativeCb_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
     const cbEl = /** @type {InputElementState|undefined} */ (
-        this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
+      this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
     return cbEl;
   }
 
