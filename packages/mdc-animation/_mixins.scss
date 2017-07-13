@@ -17,13 +17,13 @@
 @import "./variables";
 
 @mixin mdc-animation-deceleration-curve {
-  animation-timing-function: $mdc-animation-timing-function-deceleration-curve;
+  animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
 }
 
 @mixin mdc-animation-standard-curve {
-  animation-timing-function: $mdc-animation-timing-function-standard-curve;
+  animation-timing-function: $mdc-animation-standard-curve-timing-function;
 }
 
 @mixin mdc-animation-acceleration-curve {
-  animation-timing-function: $mdc-animation-timing-function-acceleration-curve;
+  animation-timing-function: $mdc-animation-acceleration-curve-timing-function;
 }

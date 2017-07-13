@@ -31,9 +31,9 @@ We currently have variables for the following 3 animation curves:
 
 | Variable name | timing function | use case |
 | --- | --- | --- |
-| `$mdc-animation-timing-function-standard-curve` | `cubic-bezier(.4, 0, .2, 1)` | Standard curve; any animations that are visible from start to finish (e.g. a FAB transforming into a toolbar) |
-| `$mdc-animation-timing-function-deceleration-curve` | `cubic-bezier(0, 0, .2, 1)` | Animations that cause objects to enter the screen (e.g. a fade in) |
-| `$mdc-animation-timing-function-acceleration-curve` | `cubic-bezier(.4, 0, ``, 1)` | Animations that cause objects to leave the screen (e.g. a fade out) |
+| `$mdc-animation-standard-curve-timing-function` | `cubic-bezier(.4, 0, .2, 1)` | Standard curve; any animations that are visible from start to finish (e.g. a FAB transforming into a toolbar) |
+| `$mdc-animation-deceleration-curve-timing-function` | `cubic-bezier(0, 0, .2, 1)` | Animations that cause objects to enter the screen (e.g. a fade in) |
+| `$mdc-animation-acceleration-curve-timing-function` | `cubic-bezier(.4, 0, ``, 1)` | Animations that cause objects to leave the screen (e.g. a fade out) |
 
 ### SCSS
 
@@ -41,7 +41,7 @@ Simply drop `mdc-animation` into your build and start using the variables:
 
 ```scss
 .mdc-thing--animating {
-  animation: foo 175ms $mdc-animation-timing-function-standard-curve;
+  animation: foo 175ms $mdc-animation-standard-curve-timing-function;
 }
 ```
 
