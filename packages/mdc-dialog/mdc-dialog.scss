@@ -136,6 +136,7 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
     &__button {
       @include mdc-rtl-reflexive-box(margin, right, 8px);
+      @include mdc-theme-prop(color, primary);
 
       &:last-child {
         @include mdc-rtl-reflexive-box(margin, right, 0);
