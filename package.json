@@ -18,11 +18,12 @@
     "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run lint && node scripts/check-imports.js",
-    "test": "npm run test:unit && npm run test:closure",
+    "test": "npm run test:unit && npm run test:closure && npm run test:dependency",
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95",
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
-    "test:closure": "./scripts/closure-test.sh"
+    "test:closure": "./scripts/closure-test.sh",
+    "test:dependency": "./scripts/dependency-test.sh"
   },
   "devDependencies": {
     "ascii-table": "0.0.9",
@@ -42,6 +43,7 @@
     "cp-file": "^4.1.0",
     "cross-env": "^5.0.0",
     "css-loader": "^0.28.0",
+    "cssom": "^0.3.2",
     "cz-conventional-changelog": "^2.0.0",
     "del-cli": "^1.0.0",
     "dom-events": "^0.1.1",
@@ -71,6 +73,7 @@
     "node-sass": "^4.0.0",
     "npm-run-all": "^3.1.2",
     "postcss-loader": "^2.0.3",
+    "query-ast": "^1.0.1",
     "raw-loader": "^0.5.1",
     "recast": "^0.12.3",
     "resolve": "^1.3.2",
@@ -87,7 +90,6 @@
     "stylelint-selector-bem-pattern": "^1.0.0",
     "testdouble": "3.2.0",
     "to-slug-case": "^1.0.0",
-    "query-ast": "^1.0.1",
     "validate-commit-msg": "^2.6.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.3"
