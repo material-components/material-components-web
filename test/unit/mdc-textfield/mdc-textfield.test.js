@@ -27,6 +27,7 @@ const {cssClasses} = MDCTextfieldFoundation;
 const getFixture = () => bel`
   <div class="mdc-textfield">
     <input type="text" class="mdc-textfield__input" id="my-textfield">
+    <div class="mdc-textfield__bottom-line"></div>
     <label class="mdc-textfield__label" for="my-textfield">My Label</label>
   </div>
 `;
@@ -92,8 +93,9 @@ test('#destroy accounts for ripple nullability', () => {
 
 function setupTest() {
   const root = getFixture();
+  const bottomLine = root.querySelector('.mdc-textfield__bottom-line');
   const component = new MDCTextfield(root);
-  return {root, component};
+  return {root, bottomLine, component};
 }
 
 test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
@@ -125,6 +127,46 @@ test('set valid updates the component styles', () => {
   assert.isOk(root.classList.contains(cssClasses.INVALID));
   component.valid = true;
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
+});
+
+test('#adapter.addClassToBottomLine adds a class to the bottom line', () => {
+  const {bottomLine, component} = setupTest();
+  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
+  assert.isTrue(bottomLine.classList.contains('foo'));
+});
+
+test('#adapter.removeClassFromBottomLine removes a class from the bottom line', () => {
+  const {bottomLine, component} = setupTest();
+
+  bottomLine.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
+  assert.isFalse(bottomLine.classList.contains('foo'));
+});
+
+test('#adapter.setBottomLineAttr adds a given attribute to the bottom line', () => {
+  const {bottomLine, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-label', 'foo');
+  assert.equal(bottomLine.getAttribute('aria-label'), 'foo');
+});
+
+test('#adapter.registerTransitionEndHandler adds event listener for "transitionend" to bottom line', () => {
+  const {bottomLine, component} = setupTest();
+  const handler = td.func('transitionend handler');
+  component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
+  domEvents.emit(bottomLine, 'transitionend');
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.deregisterTransitionEndHandler removes event listener for "transitionend" from bottom line', () => {
+  const {bottomLine, component} = setupTest();
+  const handler = td.func('transitionend handler');
+
+  bottomLine.addEventListener('transitionend', handler);
+  component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
+  domEvents.emit(bottomLine, 'transitionend');
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('#adapter.addClass adds a class to the root element', () => {

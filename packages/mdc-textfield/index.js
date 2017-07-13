@@ -38,6 +38,9 @@ export class MDCTextfield extends MDCComponent {
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = rippleFactory(this.root_);
     };
+    if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
+      this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    };
   }
 
   destroy() {
@@ -79,7 +82,37 @@ export class MDCTextfield extends MDCComponent {
           label.classList.remove(className);
         }
       },
-    }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_()));
+    }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_(), this.getBottomLineAdapterMethods_()));
+  }
+
+  getBottomLineAdapterMethods_() {
+    return {
+      addClassToBottomLine: (className) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.classList.add(className);
+        }
+      },
+      removeClassFromBottomLine: (className) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.classList.remove(className);
+        }
+      },
+      setBottomLineAttr: (attr, value) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.setAttribute(attr, value);
+        }
+      },
+      registerTransitionEndHandler: (handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.addEventListener('transitionend', handler);
+        }
+      },
+      deregisterTransitionEndHandler: (handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.removeEventListener('transitionend', handler);
+        }
+      },
+    };
   }
 
   getInputAdapterMethods_() {
@@ -92,6 +125,8 @@ export class MDCTextfield extends MDCComponent {
       deregisterInputBlurHandler: (handler) => this.input_.removeEventListener('blur', handler),
       deregisterInputInputHandler: (handler) => this.input_.removeEventListener('input', handler),
       deregisterInputKeydownHandler: (handler) => this.input_.removeEventListener('keydown', handler),
+      registerInputPointerDownHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
+      deregisterInputPointerDownHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
       getNativeInput: () => this.input_,
     };
   }
