@@ -31,9 +31,9 @@ We currently have variables for the following 3 animation curves:
 
 | Variable name | timing function | use case |
 | --- | --- | --- |
-| `$mdc-animation-fast-out-slow-in-timing-function` | `cubic-bezier(.4, 0, .2, 1)` | Standard curve; any animations that are visible from start to finish (e.g. a FAB transforming into a toolbar) |
-| `$mdc-animation-linear-out-slow-in-timing-function` | `cubic-bezier(0, 0, .2, 1)` | Animations that cause objects to enter the screen (e.g. a fade in) |
-| `$mdc-animation-fast-out-linear-in-timing-function` | `cubic-bezier(.4, 0, ``, 1)` | Animations that cause objects to leave the screen (e.g. a fade out) |
+| `$mdc-animation-standard-curve-timing-function` | `cubic-bezier(.4, 0, .2, 1)` | Standard curve; any animations that are visible from start to finish (e.g. a FAB transforming into a toolbar) |
+| `$mdc-animation-deceleration-curve-timing-function` | `cubic-bezier(0, 0, .2, 1)` | Animations that cause objects to enter the screen (e.g. a fade in) |
+| `$mdc-animation-acceleration-curve-timing-function` | `cubic-bezier(.4, 0, ``, 1)` | Animations that cause objects to leave the screen (e.g. a fade out) |
 
 ### SCSS
 
@@ -41,7 +41,7 @@ Simply drop `mdc-animation` into your build and start using the variables:
 
 ```scss
 .mdc-thing--animating {
-  animation: foo 175ms $mdc-animation-fast-out-slow-in-timing-function;
+  animation: foo 175ms $mdc-animation-standard-curve-timing-function;
 }
 ```
 
@@ -50,7 +50,7 @@ property:
 
 ```scss
 .mdc-thing--on-screen {
-  @include mdc-animation-fast-out-linear-in;
+  @include mdc-animation-acceleration-curve;
 }
 ```
 
@@ -105,7 +105,7 @@ Alternatively, you can include the built stylesheet and use the classes it expor
 ```html
 <link href="path/to/mdc-animation/dist/mdc-animation.css" rel="stylesheet">
 <!-- ... -->
-<div id="my-animating-div" class="mdc-animation-fast-out-slow-in">hi</div>
+<div id="my-animating-div" class="mdc-animation-standard-curve">hi</div>
 ```
 
 CSS Classes have the exact same name as their mixin counterparts.

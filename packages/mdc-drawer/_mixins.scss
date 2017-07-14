@@ -135,7 +135,7 @@
   }
 
   .mdc-list-item:active:focus::before {
-    transition-timing-function: $mdc-animation-fast-out-slow-in-timing-function;
+    transition-timing-function: $mdc-animation-standard-curve-timing-function;
   }
 }
 
