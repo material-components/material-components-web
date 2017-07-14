@@ -63,7 +63,7 @@ very common example of this is something that fades in and then fades out using 
 @import "@material/animation/functions";
 
 .mdc-thing {
-  transition: mdc-animation-exit(/* $name: */ opacity, /* $duration: */ 175ms, /* $delay: */ 150ms);
+  transition: mdc-animation-exit-permanent(/* $name: */ opacity, /* $duration: */ 175ms, /* $delay: */ 150ms);
   opacity: 0;
   will-change: opacity;
 
