@@ -28,11 +28,15 @@
 
   @if $important {
     #{$property}: map-get($mdc-theme-property-values, $style) !important;
+
+    /* @alternate */
     #{$property}: var(--mdc-theme-#{$style}, map-get($mdc-theme-property-values, $style)) !important;
   }
 
   @else {
     #{$property}: map-get($mdc-theme-property-values, $style);
+
+    /* @alternate */
     #{$property}: var(--mdc-theme-#{$style}, map-get($mdc-theme-property-values, $style));
   }
 }
