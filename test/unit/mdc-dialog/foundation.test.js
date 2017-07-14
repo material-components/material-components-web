@@ -185,20 +185,6 @@ test('#cancel calls notifyCancel when shouldNotify is set to true', () => {
   td.verify(mockAdapter.notifyCancel());
 });
 
-test('on dialog surface click calls evt.stopPropagation() to prevent click from propagating to background el', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
-  const evt = {
-    stopPropagation: td.func('evt.stopPropagation'),
-    target: {},
-  };
-
-  foundation.open();
-  handlers.click(evt);
-
-  td.verify(evt.stopPropagation());
-});
-
 test('on dialog surface click closes and notifies acceptance if event target is the accept button', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
@@ -246,15 +232,37 @@ test('on dialog surface click does not close or notify if the event target is no
   td.verify(mockAdapter.notifyAccept(), {times: 0});
 });
 
-test('on click closese the dialog and notifies cancellation', () => {
+test('on click closes the dialog and notifies cancellation if event target is the backdrop', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const evt = {
+    stopPropagation: () => {},
+    target: {},
+  };
+
+  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.BACKDROP)).thenReturn(true);
 
   foundation.open();
-  handlers.click();
+  handlers.click(evt);
 
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
   td.verify(mockAdapter.notifyCancel());
+});
+
+test('on click does not close or notify cancellation if event target is the surface', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const evt = {
+    stopPropagation: () => {},
+    target: {},
+  };
+
+  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.BACKDROP)).thenReturn(false);
+
+  foundation.open();
+  handlers.click(evt);
+
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
 });
 
 test('on document keydown closes the dialog when escape key is pressed', () => {
