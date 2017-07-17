@@ -165,6 +165,7 @@
     "mdc-base",
     "mdc-checkbox",
     "mdc-menu",
+    "mdc-radio",
     "mdc-ripple"
   ]
 }
