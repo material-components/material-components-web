@@ -171,9 +171,8 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
     font-size: 1rem;
     font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
     line-height: 1rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+
+    @include mdc-typography-overflow-ellipsis;
   }
 
   &__support-text {
