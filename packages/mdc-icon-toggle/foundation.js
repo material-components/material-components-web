@@ -16,7 +16,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {MDCIconToggleAdapter, CheckboxEvent} from './adapter';
+import {MDCIconToggleAdapter, IconToggleEvent} from './adapter';
 import {cssClasses, strings} from './constants';
 
 /**
@@ -43,7 +43,7 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
       getAttr: (/* name: string */) => /* string */ '',
       setAttr: (/* name: string, value: string */) => {},
       rmAttr: (/* name: string */) => {},
-      notifyChange: (/* evtData: CheckboxEvent */) => {},
+      notifyChange: (/* evtData: IconToggleEvent */) => {},
     };
   }
 
@@ -109,7 +109,7 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
   toggleFromEvt_() {
     this.toggle();
     const {on_: isOn} = this;
-    this.adapter_.notifyChange(/** @type {!CheckboxEvent} */ ({isOn}));
+    this.adapter_.notifyChange(/** @type {!IconToggleEvent} */ ({isOn}));
   }
 
   /** @return {boolean} */

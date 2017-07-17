@@ -77,7 +77,7 @@ export default class MDCIconToggleAdapter {
   /** @param {string} name */
   rmAttr(name) {}
 
-  /** @param {CheckboxEvent} evtData */
+  /** @param {IconToggleEvent} evtData */
   notifyChange(evtData) {}
 }
 
@@ -86,4 +86,4 @@ export default class MDCIconToggleAdapter {
  *   isOn: boolean,
  * }}
  */
-export let CheckboxEvent;
+export let IconToggleEvent;
