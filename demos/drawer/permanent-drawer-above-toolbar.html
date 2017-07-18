@@ -17,11 +17,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MDC-Web Permanent Drawer (above toolbar) Demo</title>
+    <title>Drawer Above Toolbar - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
     <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
+    <script src="../assets/demo-styles.css.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
     /* Ensure layout covers the entire screen. */
     html {
@@ -35,7 +37,7 @@
       padding: 0;
       margin: 0;
       box-sizing: border-box;
-      height: 100%;
+      min-height: 100%;
       width: 100%;
     }
 
@@ -55,6 +57,18 @@
 
     .demo-main {
       padding-left: 16px;
+    }
+
+    .extra-content-wrapper {
+      padding: 10px;
+    }
+
+    #extra-wide-content {
+      width: 200vw;
+    }
+
+    #extra-tall-content {
+      height: 200vh;
     }
     </style>
   </head>
@@ -95,15 +109,41 @@
     <div class="demo-content">
       <!-- TODO: #324 - Should switch to .mdc-toolbar--fixed -->
       <header class="mdc-toolbar mdc-elevation--z4">
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <span class="mdc-toolbar__title">Title</span>
-        </section>
+        <div class="mdc-toolbar__row">
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+            <span class="catalog-back">
+              <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+            </span>
+            <span class="mdc-toolbar__title catalog-title">Permanent Drawer Above Toolbar</span>
+          </section>
+        </div>
       </header>
 
       <main class="demo-main">
         <h1 class="mdc-typography--display1">Permanent Drawer</h1>
         <p class="mdc-typography--body1">It sits to the left of this content.</p>
+        <div class="extra-content-wrapper">
+          <button id="toggle-wide">Toggle extra-wide content</button>
+          <div id="extra-wide-content" class="mdc-elevation--z2">&nbsp;</div>
+        </div>
+        <div class="extra-content-wrapper">
+          <button id="toggle-tall">Toggle extra-tall content</button>
+          <div id="extra-tall-content" class="mdc-elevation--z2">&nbsp;</div>
+        </div>
       </main>
     </div>
+
+    <script type="text/javascript">
+      var extraWide = document.querySelector('#extra-wide-content');
+      extraWide.style.display = 'none';
+      document.querySelector('#toggle-wide').addEventListener('click', function() {
+        extraWide.style.display = extraWide.style.display ? '' : 'none';
+      });
+      var extraTall = document.querySelector('#extra-tall-content');
+      extraTall.style.display = 'none';
+      document.querySelector('#toggle-tall').addEventListener('click', function() {
+        extraTall.style.display = extraTall.style.display ? '' : 'none';
+      });
+    </script>
   </body>
 </html>

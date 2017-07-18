@@ -361,6 +361,7 @@ test(`adapter#notifyChange emits an ${strings.CHANGE_EVENT} custom event from th
   const handler = td.func('change handler');
   fixture.addEventListener(strings.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange();
+  td.verify(handler(td.matchers.anything()));
 });
 
 test('adapter#getWindowInnerHeight returns window.innerHeight', () => {

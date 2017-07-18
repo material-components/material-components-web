@@ -110,6 +110,17 @@ test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', () => 
   assert.isOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());
 });
 
+test('adapter#getAttributeForEventTarget returns the value of an attribute for a given event target', () => {
+  const {root, component} = setupTest();
+  const attrName = 'aria-disabled';
+  const attrVal = 'true';
+  const target = root.querySelectorAll('[role="menuitem"]')[1];
+
+  target.setAttribute(attrName, attrVal);
+
+  assert.equal(component.getDefaultFoundation().adapter_.getAttributeForEventTarget(target, attrName), attrVal);
+});
+
 test('adapter#hasNecessaryDom returns false if the DOM does not include the items container', () => {
   const {root, component} = setupTest();
   const items = root.querySelector(strings.ITEMS_SELECTOR);
@@ -160,25 +171,23 @@ test('adapter#deregisterInteractionHandler proxies to removeEventListener', () =
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerDocumentClickHandler proxies to addEventListener', () => {
-  const {root, component} = setupTest();
+test('adapter#registerBodyClickHandler proxies to addEventListener', () => {
+  const {component} = setupTest();
   const handler = td.func('interactionHandler');
-  document.body.appendChild(root);
-  component.getDefaultFoundation().adapter_.registerDocumentClickHandler(handler);
-  domEvents.emit(document, 'click');
+
+  component.getDefaultFoundation().adapter_.registerBodyClickHandler(handler);
+  domEvents.emit(document.body, 'click');
   td.verify(handler(td.matchers.anything()));
-  document.body.removeChild(root);
 });
 
-test('adapter#deregisterDocumentClickHandler proxies to removeEventListener', () => {
-  const {root, component} = setupTest();
+test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => {
+  const {component} = setupTest();
   const handler = td.func('interactionHandler');
-  document.body.appendChild(root);
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler(handler);
-  domEvents.emit(document, 'click');
+
+  document.body.addEventListener('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterBodyClickHandler(handler);
+  domEvents.emit(document.body, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
-  document.body.removeChild(root);
 });
 
 test('adapter#getYParamsForItemAtIndex returns the height and top of the item at the provided index', () => {
@@ -211,7 +220,7 @@ test('adapter#getIndexForEventTarget returns the item index of the event target'
   assert.equal(component.getDefaultFoundation().adapter_.getIndexForEventTarget({}), -1, 'missing index = -1');
 });
 
-test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with the item and index', () => {
+test(`adapter#notifySelected fires an ${strings.SELECTED_EVENT} custom event with the item and index`, () => {
   const {root, component} = setupTest();
   const item = root.querySelectorAll('[role="menuitem"]')[0];
   const handler = td.func('notifySelected handler');
@@ -219,7 +228,7 @@ test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with
   td.when(handler(td.matchers.isA(Object))).thenDo((evt) => {
     evtData = evt.detail;
   });
-  root.addEventListener('MDCSimpleMenu:selected', handler);
+  root.addEventListener(strings.SELECTED_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifySelected({index: 0});
   assert.isOk(evtData !== null);
   assert.deepEqual(evtData, {
@@ -228,10 +237,10 @@ test('adapter#notifySelected fires an "MDCSimpleMenu:selected" custom event with
   });
 });
 
-test('adapter#notifyCancel fires an "MDCSimpleMenu:cancel" custom event', () => {
+test(`adapter#notifyCancel fires an ${strings.CANCEL_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('notifyCancel handler');
-  root.addEventListener('MDCSimpleMenu:cancel', handler);
+  root.addEventListener(strings.CANCEL_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyCancel();
   td.verify(handler(td.matchers.anything()));
 });
@@ -246,6 +255,19 @@ test('adapter#restoreFocus restores the focus saved by adapter#saveFocus', () =>
   root.focus();
   component.getDefaultFoundation().adapter_.restoreFocus();
   assert.equal(document.activeElement, button);
+  document.body.removeChild(button);
+  document.body.removeChild(root);
+});
+
+test('adapter#restoreFocus does not restores the focus if never called adapter#saveFocus', () => {
+  const {root, component} = setupTest(true);
+  const button = bel`<button>Foo</button>`;
+  document.body.appendChild(button);
+  document.body.appendChild(root);
+  button.focus();
+  root.focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+  assert.equal(document.activeElement, root);
   document.body.removeChild(button);
   document.body.removeChild(root);
 });

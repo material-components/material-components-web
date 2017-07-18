@@ -1,8 +1,34 @@
-# MDC Textfield
+<!--docs:
+title: "Text Fields"
+layout: detail
+section: components
+iconId: text_field
+path: /catalog/input-controls/text-fields/
+-->
 
-The MDC Textfield component provides a textual input field adhering to the [Material Design Specification](https://material.google.com/components/text-fields.html).
+# Text Fields
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/textfield.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
+  </a>
+</div>-->
+
+The MDC Text Field component provides a textual input field adhering to the [Material Design Specification](https://material.io/guidelines/components/text-fields.html).
 It is fully accessible, ships with RTL support, and includes a gracefully-degraded version that does
 not require any javascript.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/textfield.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -84,7 +110,7 @@ information to users, as well for validation messages (covered below).
 </p>
 ```
 
-Help text appears on input field focus and disappear on input field blur by default when using
+Help text appears on input field focus and disappears on input field blur by default when using
 the textfield JS component.
 
 #### Persistent help text
@@ -188,6 +214,31 @@ UX for client-side form field validation.
 </div>
 ```
 
+Note that **full-width text fields do not support floating labels**. Labels should not be
+included as part of the DOM structure for full-width text fields.
+
+### Text Field Boxes
+
+```html
+<div class="mdc-textfield mdc-textfield--box">
+  <input type="text" id="tf-box" class="mdc-textfield__input">
+  <label for="tf-box" class="mdc-textfield__label">Your Name</label>
+  <div class="mdc-textfield__bottom-line"></div>
+</div>
+```
+
+Note that Text field boxes support all of the same features as normal textfields, including help
+text, validation, and dense UI.
+
+#### CSS-only text field boxes
+
+```html
+<label for="css-only-textfield-box">Your name:</label>
+<div class="mdc-textfield mdc-textfield--box">
+  <input type="text" class="mdc-textfield__input" id="css-only-textfield-box" placeholder="Name">
+</div>
+```
+
 ### Using the JS component
 
 MDC Textfield ships with Component / Foundation classes which are used to provide a full-fidelity
@@ -239,6 +290,23 @@ import {MDCTextfield} from 'mdc-textfield';
 const textfield = new MDCTextfield(document.querySelector('.mdc-textfield'));
 ```
 
+#### Controlling ripple instantiation
+
+When `MDCTextfield` is instantiated with a root element containing the `mdc-textfield--box` class,
+it instantiates an `MDCRipple` instance on the element in order to facilitate the correct
+interaction UX for text field boxes as outlined in the spec. The way this ripple is instantiated
+can be controlled by passing a ripple factory argument to the constructor.
+
+```js
+const textfieldBoxEl = document.querySelector('.mdc-textfield--box');
+const textfield = new MDCTextfield(textfieldBoxEl, /* foundation */ undefined, (el) => {
+  // do something with el...
+  return new MDCRipple(el);
+});
+```
+
+By default the ripple factory simply calls `new MDCRipple(el)` and returns the result.
+
 #### MDCTextfield API
 
 Similar to regular DOM elements, the `MDCTextfield` functionality is exposed through accessor
@@ -256,9 +324,14 @@ with the corresponding id within the document and automatically assign it to thi
 Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
 respectively.
 
+##### MDCTextfield.ripple
+
+`MDCRipple` instance. Set to the `MDCRipple` instance for the root element that `MDCTextfield`
+initializes when given an `mdc-textfield--box` root element. Otherwise, the field is set to `null`.
+
 ### Using the foundation class
 
-Because MDC Textfield is a feature-rich and relatively complex component, it's adapter is a bit more
+Because MDC Textfield is a feature-rich and relatively complex component, its adapter is a bit more
 complicated.
 
 | Method Signature | Description |
@@ -280,7 +353,7 @@ complicated.
 | deregisterInputInputHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for an "input" event |
 | registerInputKeydownHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "keydown" event |
 | deregisterInputKeydownHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "keydown" event |
-| getNativeInput() => {value: string, disabled: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value` and `disabled` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
+| getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 
 #### The full foundation API
 

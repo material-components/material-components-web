@@ -88,6 +88,13 @@ test('deactivate() delegates to the foundation', () => {
   td.verify(component.foundation_.deactivate());
 });
 
+test('layout() delegates to the foundation', () => {
+  const {component} = setupTest();
+  component.foundation_.layout = td.function();
+  component.layout();
+  td.verify(component.foundation_.layout());
+});
+
 test('adapter#browserSupportsCssVars delegates to util', () => {
   const {component} = setupTest();
   assert.equal(
@@ -109,6 +116,12 @@ test('adapter#isSurfaceActive calls the correct :matches API method on the root 
   td.when(matches(':active')).thenReturn(true);
   root[MATCHES] = matches;
   assert.isOk(component.getDefaultFoundation().adapter_.isSurfaceActive());
+});
+
+test('adapter#isSurfaceDisabled delegates to component\'s disabled getter', () => {
+  const {component} = setupTest();
+  component.disabled = true;
+  assert.isTrue(component.getDefaultFoundation().adapter_.isSurfaceDisabled());
 });
 
 test('adapter#addClass adds a class to the root', () => {

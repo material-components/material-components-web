@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-   */
+ */
 
 import {MDCFoundation} from '@material/base';
 import {cssClasses, strings} from './constants';
@@ -28,10 +28,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
-      hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      setAttr: (/* attr: string, val: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false,
@@ -41,77 +39,67 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
-      registerFocusTrappingHandler: (/* handler: EventListener */) => {},
-      deregisterFocusTrappingHandler: (/* handler: EventListener */) => {},
-      numFocusableTargets: () => /* number */ 0,
-      setDialogFocusFirstTarget: () => {},
-      setInitialFocus: () => {},
-      getFocusableElements: (/* handler: EventListener */) => /* Array<Element> */ [],
-      saveElementTabState: (/* el: Element */) => {},
-      restoreElementTabState: (/* el: Element */) => {},
-      makeElementUntabbable: (/* el: Element */) => {},
-      setBodyAttr: (/* attr: string, val: string */) => {},
-      rmBodyAttr: (/* attr: string */) => {},
-      getFocusedTarget: () => {},
-      setFocusedTarget: (/* target: EventTarget */) => {},
+      registerTransitionEndHandler: (/* handler: EventListener */) => {},
+      deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
       notifyAccept: () => {},
       notifyCancel: () => {},
+      trapFocusOnSurface: () => {},
+      untrapFocusOnSurface: () => {},
+      isDialog: (/* el: Element */) => /* boolean */ false,
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
-
-    this.lastFocusedTarget_ = null;
-    this.currentFocusedElIndex_ = -1;
     this.isOpen_ = false;
-    this.isResettingToFirstFocusTarget_ = false;
-    this.componentClickHandler_ = () => this.cancel(true);
+    this.componentClickHandler_ = (evt) => {
+      if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.BACKDROP)) {
+        this.cancel(true);
+      }
+    };
     this.dialogClickHandler_ = (evt) => this.handleDialogClick_(evt);
-    this.focusHandler_ = (evt) => this.setFocus_(evt);
     this.documentKeydownHandler_ = (evt) => {
       if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
         this.cancel(true);
       }
     };
-  }
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
+  };
 
   destroy() {
     // Ensure that dialog is cleaned up when destroyed
-    this.close();
+    if (this.isOpen_) {
+      this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
+      this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
+      this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
+      this.adapter_.untrapFocusOnSurface();
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
+      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
+      this.enableScroll_();
+    }
   }
 
   open() {
-    this.lastFocusedTarget_ = this.adapter_.getFocusedTarget();
-    this.makeTabbable_();
+    this.isOpen_ = true;
+    this.disableScroll_();
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.registerSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-    this.adapter_.setInitialFocus();
-    this.adapter_.registerFocusTrappingHandler(this.focusHandler_);
-    this.disableScroll_();
-    this.adapter_.setBodyAttr('aria-hidden', 'true');
-    this.adapter_.setAttr('aria-hidden', 'false');
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
-    this.isOpen_ = true;
-    this.currentFocusedElIndex_ = this.adapter_.numFocusableTargets() - 1;
   }
 
   close() {
-    this.makeUntabbable_();
+    this.isOpen_ = false;
     this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
-    this.adapter_.deregisterFocusTrappingHandler(this.focusHandler_);
+    this.adapter_.untrapFocusOnSurface();
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
-    this.enableScroll_();
-    this.adapter_.rmBodyAttr('aria-hidden');
-    this.adapter_.setAttr('aria-hidden', 'true');
-
-    if (this.lastFocusedTarget_) {
-      this.adapter_.setFocusedTarget(this.lastFocusedTarget_);
-    }
-    this.lastFocusedTarget_ = null;
   }
 
   isOpen() {
@@ -135,7 +123,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   handleDialogClick_(evt) {
-    evt.stopPropagation();
     const {target} = evt;
     if (this.adapter_.eventTargetHasClass(target, cssClasses.ACCEPT_BTN)) {
       this.accept(true);
@@ -144,43 +131,17 @@ export default class MDCDialogFoundation extends MDCFoundation {
     }
   }
 
-  makeUntabbable_() {
-    const elements = this.adapter_.getFocusableElements();
-    if (elements) {
-      for (let i = 0; i < elements.length; i++) {
-        this.adapter_.saveElementTabState(elements[i]);
-        this.adapter_.makeElementUntabbable(elements[i]);
-      }
-    }
-  }
-
-  makeTabbable_() {
-    const elements = this.adapter_.getFocusableElements();
-    if (elements) {
-      for (let i = 0; i < elements.length; i++) {
-        this.adapter_.restoreElementTabState(elements[i]);
-      }
-    }
-  }
-
-  setFocus_(evt) {
-    if (!evt.relatedTarget) {
-      // Do not increment the focused el index when re-focusing on same element, e.g. switching windows
-      return;
-    }
-
-    if (this.isResettingToFirstFocusTarget_) {
-      return;
-    }
-
-    this.currentFocusedElIndex_ = (this.currentFocusedElIndex_ + 1) % this.adapter_.numFocusableTargets();
-
-    if (this.currentFocusedElIndex_ === 0) {
-      this.isResettingToFirstFocusTarget_ = true;
-      this.adapter_.setDialogFocusFirstTarget();
-      this.isResettingToFirstFocusTarget_ = false;
-    }
-  }
+  handleTransitionEnd_(evt) {
+    if (this.adapter_.isDialog(evt.target)) {
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
+      if (this.isOpen_) {
+        this.adapter_.trapFocusOnSurface();
+      } else {
+        this.enableScroll_();
+      };
+    };
+  };
 
   disableScroll_() {
     this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);

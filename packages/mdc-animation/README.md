@@ -1,6 +1,23 @@
-# mdc-animation
+<!--docs:
+title: "Animation"
+layout: detail
+section: components
+excerpt: "Animation timing curves and utilities for smooth and consistent motion."
+iconId: animation
+path: /catalog/animation/
+-->
 
-mdc-animation is a Sass / CSS / JavaScript library which provides a toolbelt for Material Design animation, based off of the [motion guidelines](https://material.google.com/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves.
+# Animation
+
+MDC Animation is a Sass / CSS / JavaScript library which provides a toolbelt for Material Design animation, based off of the [motion guidelines](https://material.io/guidelines/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/motion/duration-easing.html">Material Design guidelines: Duration & easing</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -14,9 +31,9 @@ We currently have variables for the following 3 animation curves:
 
 | Variable name | timing function | use case |
 | --- | --- | --- |
-| `$mdc-animation-fast-out-slow-in-timing-function` | `cubic-bezier(.4, 0, .2, 1)` | Standard curve; any animations that are visible from start to finish (e.g. a FAB transforming into a toolbar) |
-| `$mdc-animation-linear-out-slow-in-timing-function` | `cubic-bezier(0, 0, .2, 1)` | Animations that cause objects to enter the screen (e.g. a fade in) |
-| `$mdc-animation-fast-out-linear-in-timing-function` | `cubic-bezier(.4, 0, ``, 1)` | Animations that cause objects to leave the screen (e.g. a fade out) |
+| `$mdc-animation-standard-curve-timing-function` | `cubic-bezier(.4, 0, .2, 1)` | Standard curve; any animations that are visible from start to finish (e.g. a FAB transforming into a toolbar) |
+| `$mdc-animation-deceleration-curve-timing-function` | `cubic-bezier(0, 0, .2, 1)` | Animations that cause objects to enter the screen (e.g. a fade in) |
+| `$mdc-animation-acceleration-curve-timing-function` | `cubic-bezier(.4, 0, ``, 1)` | Animations that cause objects to leave the screen (e.g. a fade out) |
 
 ### SCSS
 
@@ -24,7 +41,7 @@ Simply drop `mdc-animation` into your build and start using the variables:
 
 ```scss
 .mdc-thing--animating {
-  animation: foo 175ms $mdc-animation-fast-out-slow-in-timing-function;
+  animation: foo 175ms $mdc-animation-standard-curve-timing-function;
 }
 ```
 
@@ -33,7 +50,7 @@ property:
 
 ```scss
 .mdc-thing--on-screen {
-  @include mdc-animation-fast-out-linear-in;
+  @include mdc-animation-acceleration-curve;
 }
 ```
 
@@ -46,7 +63,7 @@ very common example of this is something that fades in and then fades out using 
 @import "@material/animation/functions";
 
 .mdc-thing {
-  transition: mdc-animation-exit(/* $name: */ opacity, /* $duration: */ 175ms, /* $delay: */ 150ms);
+  transition: mdc-animation-exit-permanent(/* $name: */ opacity, /* $duration: */ 175ms, /* $delay: */ 150ms);
   opacity: 0;
   will-change: opacity;
 
@@ -88,7 +105,7 @@ Alternatively, you can include the built stylesheet and use the classes it expor
 ```html
 <link href="path/to/mdc-animation/dist/mdc-animation.css" rel="stylesheet">
 <!-- ... -->
-<div id="my-animating-div" class="mdc-animation-fast-out-slow-in">hi</div>
+<div id="my-animating-div" class="mdc-animation-standard-curve">hi</div>
 ```
 
 CSS Classes have the exact same name as their mixin counterparts.
@@ -106,7 +123,7 @@ MDC Web ships with a set of utility functions designed to make animations easier
 
 To use:
 ```js
-import {getCorrectEventName} from '@material/mdc-animation';
+import {getCorrectEventName} from '@material/animation';
 
 const eventToListenFor = getCorrectEventName(window, 'animationstart');
 ```

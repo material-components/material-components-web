@@ -111,3 +111,29 @@ test('#setDisabled exits gracefully if getNativeControl() does not return anythi
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
   assert.doesNotThrow(() => foundation.setDisabled(true));
 });
+
+test('#getValue returns the value of nativeControl.value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeControl()).thenReturn({value: 'value'});
+  assert.equal(foundation.getValue(), 'value');
+});
+
+test('#getValue returns null if getNativeControl() does not return anything', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeControl()).thenReturn(null);
+  assert.isNull(foundation.getValue());
+});
+
+test('#setValue sets the value of nativeControl.value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeControl = {value: null};
+  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
+  foundation.setValue('new value');
+  assert.equal(nativeControl.value, 'new value');
+});
+
+test('#setValue exits gracefully if getNativeControl() does not return anything', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeControl()).thenReturn(null);
+  assert.doesNotThrow(() => foundation.setValue('new value'));
+});

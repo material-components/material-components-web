@@ -27,8 +27,8 @@
   @include mdc-ripple-base;
   @include mdc-ripple-bg((pseudo: "::before"));
   @include mdc-ripple-fg((pseudo: "::after"));
-  @include mdc-typography(body2);
   @include mdc-theme-prop(color, text-primary-on-light);
+  @include mdc-typography-base;
 
   display: inline-block;
   position: relative;
@@ -39,9 +39,10 @@
   border-radius: 2px;
   outline: none;
   background: transparent;
-  font-size: 14px; // Override font to specifically be px as spec defined pt
+  font-size: 14px;
   font-weight: 500;
-  line-height: 36px; // Override line-height so text aligns centered
+  letter-spacing: .04em;
+  line-height: 36px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -115,6 +116,7 @@
 
     @include mdc-theme-dark(".mdc-button") {
       @include mdc-theme-prop(background-color, primary);
+      @include mdc-theme-prop(color, text-primary-on-primary);
 
       // postcss-bem-linter: ignore
       &::before {

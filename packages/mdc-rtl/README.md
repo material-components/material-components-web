@@ -1,8 +1,24 @@
-# MDC RTL
+<!--docs:
+title: "RTL"
+layout: detail
+section: components
+excerpt: "Right-to-left and bi-directional text layout via SCSS helpers."
+path: /catalog/rtl/
+-->
+
+# RTL
 
 MDC RTL provides sass mixins to assist with RTL / bi-directional layouts within MDC-Web components.
 Because we would like to achieve a standard approach to RTL throughout MDC-Web, we highly recommend
 that any MDC-Web component that needs RTL support leverage this package.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/usability/bidirectionality.html">Material Design guidelines: Bidirectionality</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -80,7 +96,7 @@ will emit the following css:
   padding-right: 4px;
 }
 ```
-*N.B.**: checking for `[dir="rtl"]` on an ancestor element works in most cases, it will sometimes
+**N.B.**: checking for `[dir="rtl"]` on an ancestor element works in most cases, it will sometimes
 lead to false negatives for more complex layouts, e.g.
 
 ```html
@@ -158,8 +174,8 @@ trying to flip the values, use `mdc-rtl-reflexive-property`.
 @mixin mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector: null)
 ```
 
-Takes a base property and emits rules that assign <base-property>-left to <left-value> and
-<base-property>-right to <right-value> in a LTR context, and vice versa in a RTL context.
+Takes a base property and emits rules that assign `#{$base-property}`-left to `#{left-value}` and
+`#{base-property}`-right to `#{right-value}` in a LTR context, and vice versa in a RTL context.
 
 For example:
 
@@ -217,4 +233,4 @@ is equivalent to:
  }
 ```
 
-An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
+An optional third `$root-selector` argument may also be given, which is passed to `mdc-rtl`.

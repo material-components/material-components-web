@@ -46,13 +46,21 @@ test('attachTo initializes and returns a MDCTemporaryDrawer instance', () => {
 
 test('get/set open', () => {
   const {root, component} = setupTest();
+
+  const openHandler = td.func('notifyOpen handler');
+  root.addEventListener(strings.OPEN_EVENT, openHandler);
+  const closeHandler = td.func('notifyClose handler');
+  root.addEventListener(strings.CLOSE_EVENT, closeHandler);
+
   component.open = true;
   assert.isOk(root.classList.contains('mdc-temporary-drawer--open'));
   assert.isOk(component.open);
+  td.verify(openHandler(td.matchers.anything()));
 
   component.open = false;
   assert.isNotOk(root.classList.contains('mdc-temporary-drawer--open'));
   assert.isNotOk(component.open);
+  td.verify(closeHandler(td.matchers.anything()));
 });
 
 test('foundationAdapter#addClass adds a class to the root element', () => {
@@ -205,6 +213,22 @@ test('adapter#getFocusableElements returns all the focusable elements in the dra
   assert.equal(component.getDefaultFoundation().adapter_.getFocusableElements().length, 3);
 });
 
+test('adapter#restoreElementTabState restores tabindex and removes data-mdc-tabindex', () => {
+  const root = bel`
+    <aside class="mdc-temporary-drawer">
+      <nav class="mdc-temporary-drawer__drawer">
+        <div id="foo" tabindex="0"></div>
+      </nav>
+    </aside>
+  `;
+  const component = new MDCTemporaryDrawer(root);
+  const el = root.querySelector('#foo');
+  component.getDefaultFoundation().adapter_.restoreElementTabState(el);
+  assert.equal(el.getAttribute('tabindex'), '0');
+  assert.equal(el.getAttribute('data-mdc-tabindex'), null);
+  assert.equal(el.getAttribute('data-mdc-tabindex-handled'), null);
+});
+
 test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () => {
   const root = bel`
     <aside class="mdc-temporary-drawer mdc-temporary-drawer--open">
@@ -217,6 +241,22 @@ test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () =
   const el = root.querySelector('#foo');
   component.getDefaultFoundation().adapter_.makeElementUntabbable(el);
   assert.equal(el.getAttribute('tabindex'), '-1');
+});
+
+test(`adapter#notifyOpen fires an ${strings.OPEN_EVENT} custom event`, () => {
+  const {root, component} = setupTest();
+  const handler = td.func('notifyOpen handler');
+  root.addEventListener(strings.OPEN_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyOpen();
+  td.verify(handler(td.matchers.anything()));
+});
+
+test(`adapter#notifyClose fires an ${strings.CLOSE_EVENT} custom event`, () => {
+  const {root, component} = setupTest();
+  const handler = td.func('notifyClose handler');
+  root.addEventListener(strings.CLOSE_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyClose();
+  td.verify(handler(td.matchers.anything()));
 });
 
 test('adapter#isRtl returns true for RTL documents', () => {
@@ -281,4 +321,19 @@ test('adapter#isDrawer returns true for the drawer element', () => {
 test('adapter#isDrawer returns false for a non-drawer element', () => {
   const {root, component} = setupTest();
   assert.isNotOk(component.getDefaultFoundation().adapter_.isDrawer(root));
+});
+
+test('adapter#addBodyClass adds a class to the body', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.addBodyClass('mdc-drawer--scroll-lock');
+  assert.isOk(document.querySelector('body').classList.contains('mdc-drawer--scroll-lock'));
+});
+
+test('adapter#removeBodyClass remove a class from the body', () => {
+  const {component} = setupTest();
+  const body = document.querySelector('body');
+
+  body.classList.add('mdc-drawer--scroll-lock');
+  component.getDefaultFoundation().adapter_.removeBodyClass('mdc-drawer--scroll-lock');
+  assert.isNotOk(body.classList.contains('mdc-drawer--scroll-lock'));
 });

@@ -25,6 +25,7 @@ export default class MDCGridListFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return {
       getOffsetWidth: () => /* number */ 0,
+      getNumberOfTiles: () => /* number */ 0,
       getOffsetWidthForTileAtIndex: (/* index: number */) => /* number */ 0,
       setStyleForTilesElement: (/* property: string, value: string */) => {},
       registerResizeHandler: (/* handler: EventListener */) => {},
@@ -53,6 +54,9 @@ export default class MDCGridListFoundation extends MDCFoundation {
     });
   }
   alignCenter_() {
+    if (this.adapter_.getNumberOfTiles() == 0) {
+      return;
+    }
     const gridWidth = this.adapter_.getOffsetWidth();
     const itemWidth = this.adapter_.getOffsetWidthForTileAtIndex(0);
     const tilesWidth = itemWidth * Math.floor(gridWidth / itemWidth);

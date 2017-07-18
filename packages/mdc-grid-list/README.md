@@ -1,11 +1,37 @@
-# MDC Grid list
+<!--docs:
+title: "Grid Lists"
+layout: detail
+section: components
+excerpt: "An RTL-aware Material Design grid list component."
+iconId: card
+path: /catalog/grid-lists/
+-->
 
-MDC Grid list provides a RTL-aware Material Design Grid list component adhering to the
+# Grid Lists
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/grid-list.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/grids.png" width="320" alt="Grid lists screenshot">
+  </a>
+</div>-->
+
+MDC Grid List provides a RTL-aware Material Design Grid list component adhering to the
 [Material Design Grid list spec](https://material.io/guidelines/components/grid-lists.html).
 Grid Lists are best suited for presenting homogeneous data, typically images.
 Each item in a grid list is called a **tile**. Tiles maintain consistent width, height, and padding
 across screen sizes.
 
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/grid-lists.html">Material Design guidelines: Grid lists</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/grid-list.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -72,8 +98,8 @@ overwrite the default value for your grid list:
   You can overwrite the scss variable by
 
   ```scss
-  @import "@material/grid-list/mdc-grid-list";
   $mdc-grid-list-tile-width: 300px;
+  @import "@material/grid-list/mdc-grid-list";
   ```
 
 3. Add own style to tile
@@ -258,6 +284,7 @@ functions, with correct signatures:
 | Method Signature | Description |
 | --- | --- |
 | `getOffsetWidth() => number` | Get root element `mdc-grid-list` offsetWidth. |
+| `getNumberOfTiles() => number` | Get the number of mdc-grid-tile elements contained within the grid list. |
 | `getOffsetWidthForTileAtIndex(index: number) => number` | Get offsetWidth of `mdc-grid-tile` at specified index. |
 | `setStyleForTilesElement(property: string, value: number) => void` | Set `mdc-grid-list__tiles` style property to provided value. |
 | `registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize()` event. |

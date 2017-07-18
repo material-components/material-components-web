@@ -1,18 +1,18 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 
 @import "@material/animation/functions";
 @import "@material/typography/mixins";
@@ -44,8 +44,8 @@
   max-width: calc(100% - #{$dd-arrow-padding});
   height: 32px;
   transition:
-    mdc-animation-exit(border-bottom-color, 150ms),
-    mdc-animation-exit(background-color, 150ms);
+    mdc-animation-exit-permanent(border-bottom-color, 150ms),
+    mdc-animation-exit-permanent(background-color, 150ms);
   border: none;
   border-bottom: 1px solid rgba(black, .12);
   border-radius: 0;
@@ -95,8 +95,8 @@
 
   &__selected-text {
     transition:
-      mdc-animation-exit(opacity, 125ms),
-      mdc-animation-exit(transform, 125ms);
+      mdc-animation-exit-permanent(opacity, 125ms),
+      mdc-animation-exit-permanent(transform, 125ms);
     white-space: nowrap;
     overflow: hidden;
   }
@@ -250,6 +250,12 @@
       @include mdc-theme-prop(background-color, text-primary-on-dark);
     }
   }
+
+  .mdc-list-divider {
+    margin-bottom: 8px;
+    padding-top: 8px;
+    font-size: 0;
+  }
   // stylelint-enable plugin/selector-bem-pattern
 }
 
@@ -263,13 +269,5 @@
 
 // height for option elements cannot be controlled
 // with CSS. Use the font-size rule instead.
-
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-list-divider {
-  margin-bottom: 8px;
-  padding-top: 8px;
-  font-size: 0;
-}
-// stylelint-enable plugin/selector-bem-pattern
 
 // postcss-bem-linter: end

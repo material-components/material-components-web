@@ -1,9 +1,36 @@
-# MDC Menu
+<!--docs:
+title: "Menus"
+layout: detail
+section: components
+excerpt: "Non-cascading Material Design menus."
+iconId: menu
+path: /catalog/menus/
+-->
+
+# Menus
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/simple-menu.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="153" alt="Menus screenshot">
+  </a>
+</div>-->
 
 The MDC Menu component is a spec-aligned menu component adhering to the
-[Material Design menu specification](https://material.google.com/components/menus.html).
+[Material Design menu specification](https://material.io/guidelines/components/menus.html).
 It implements simple menus. Menus require JavaScript to work correctly, but the open and closed states are correct on
 first render.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/simple-menu.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -109,6 +136,24 @@ classes:
 | `mdc-simple-menu--open-from-bottom-right` | Open the menu from the bottom right. |
 
 
+#### Disabled menu items
+
+When used in components such as MDC Menu, `mdc-list-item`'s can be disabled.
+To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `"-1"`.
+
+```html
+<div class="mdc-simple-menu" tabindex="-1">
+  <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+    <li class="mdc-list-item" role="menuitem" tabindex="0">
+      A Menu Item
+    </li>
+    <li class="mdc-list-item" role="menuitem" tabindex="-1" aria-disabled="true">
+      Disabled Menu Item
+    </li>
+  </ul>
+</div>
+```
+
 ### Using the JS Component
 
 MDC Simple Menu ships with a Component / Foundation combo which allows for frameworks to richly integrate the
@@ -150,7 +195,7 @@ console.log(`Menu is ${menu.open ? 'open' : 'closed'}.`);
 ##### ES2015
 
 ```javascript
-import {MDCSimpleMenu, MDCSimpleMenuFoundation} from 'mdc-menu';
+import {MDCSimpleMenu, MDCSimpleMenuFoundation, util} from 'mdc-menu';
 ```
 
 ##### CommonJS
@@ -159,6 +204,7 @@ import {MDCSimpleMenu, MDCSimpleMenuFoundation} from 'mdc-menu';
 const mdcMenu = require('mdc-menu');
 const MDCSimpleMenu = mdcMenu.MDCSimpleMenu;
 const MDCSimpleMenuFoundation = mdcMenu.MDCSimpleMenuFoundation;
+const util = mdcMenu.util;
 ```
 
 ##### AMD
@@ -167,6 +213,7 @@ const MDCSimpleMenuFoundation = mdcMenu.MDCSimpleMenuFoundation;
 require(['path/to/mdc-menu'], mdcMenu => {
   const MDCSimpleMenu = mdcMenu.MDCSimpleMenu;
   const MDCSimpleMenuFoundation = mdcMenu.MDCSimpleMenuFoundation;
+  const util = mdcMenu.util;
 });
 ```
 
@@ -175,6 +222,7 @@ require(['path/to/mdc-menu'], mdcMenu => {
 ```javascript
 const MDCSimpleMenu = mdc.Menu.MDCSimpleMenu;
 const MDCSimpleMenuFoundation = mdc.Menu.MDCSimpleMenuFoundation;
+const util = mdc.menu.util;
 ```
 
 #### Automatic Instantiation
@@ -212,7 +260,7 @@ If the menu is closed with no selection made (for example, if the user hits `Esc
 
 MDC Simple Menu ships with an `MDCSimpleMenuFoundation` class that external frameworks and libraries can use to
 integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for temporary drawers must provide the following functions, with correct signatures:
+The adapter for simple menu must provide the following functions, with correct signatures:
 
 | Method Signature | Description |
 | --- | --- |
@@ -220,6 +268,7 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
 | `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-simple-menu__items` container). |
+| `getAttributeForEventTarget(target: EventTarget, attributeName: string) => string` | Returns the value of a given attribute on an event target. |
 | `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height |
 | `hasAnchor: () => boolean` | Returns whether the menu has an anchor for positioning. |
 | `getAnchorDimensions() => { width: number, height: number, top: number, right: number, bottom: number, left: number }` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`). |
@@ -229,8 +278,8 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `getNumberOfItems() => numbers` | Returns the number of _item_ elements inside the items container. In our vanilla component, we determine this by counting the number of list items whose `role` attribute corresponds to the correct child role of the role present on the menu list element. For example, if the list element has a role of `menu` this queries for all elements that have a role of `menuitem`. |
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type`. |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type`. |
-| `registerDocumentClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type 'click'. |
-| `deregisterDocumentClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type 'click'. |
+| `registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type 'click'. |
+| `deregisterBodyClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type 'click'. |
 | `getYParamsForItemAtIndex(index: number) => {top: number, height: number}` | Returns an object with the offset top and offset height values for the _item_ element inside the items container at the provided index. Note that this is an index into the list of _item_ elements, and not necessarily every child element of the list. |
 | `setTransitionDelayForItemAtIndex(index: number, value: string) => void` | Sets the transition delay on the element inside the items container at the provided index to the provided value. The same notice for `index` applies here as above. |
 | `getIndexForEventTarget(target: EventTarget) => number` | Checks to see if the `target` of an event pertains to one of the menu items, and if so returns the index of that item. Returns -1 if the target is not one of the menu items. The same notice for `index` applies here as above. |
@@ -260,3 +309,29 @@ Closes the menu.
 #### MDCSimpleMenuFoundation.isOpen() => boolean
 
 Returns whether or not the menu is open.
+
+
+### The util API
+External frameworks and libraries can use the following utility methods when integrating a component.
+
+#### util.getTransformPropertyName(globalObj, forceRefresh = false) => String
+
+Returns the name of the correct transform property to use on the current browser.
+
+#### util.clamp(value, min = 0, max = 1) => Number
+
+Clamps a value between the minimum and the maximum, returning the clamped value.
+
+#### util.bezierProgress(time, x1, y1, x2, y2) => Number
+
+Returns the easing value to apply at time t, for a given cubic bezier curve.
+
+```
+Control points P0 and P3 are assumed to be (0,0) and (1,1), respectively.
+Parameters are as follows:
+ - time: The current time in the animation, scaled between 0 and 1.
+ - x1: The x value of control point P1.
+ - y1: The y value of control point P1.
+ - x2: The x value of control point P2.
+ - y2: The y value of control point P2.
+```

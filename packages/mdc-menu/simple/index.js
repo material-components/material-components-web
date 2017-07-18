@@ -14,21 +14,37 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base';
+import MDCComponent from '@material/base/component';
 import MDCSimpleMenuFoundation from './foundation';
 import {getTransformPropertyName} from '../util';
 
 export {MDCSimpleMenuFoundation};
 
+/**
+ * @extends MDCComponent<!MDCSimpleMenuFoundation>
+ */
 export class MDCSimpleMenu extends MDCComponent {
+  /** @param {...?} args */
+  constructor(...args) {
+    super(...args);
+    /** @private {!Element} */
+    this.previousFocus_;
+  }
+
+  /**
+   * @param {!Element} root
+   * @return {!MDCSimpleMenu}
+   */
   static attachTo(root) {
     return new MDCSimpleMenu(root);
   }
 
+  /** @return {boolean} */
   get open() {
     return this.foundation_.isOpen();
   }
 
+  /** @param {boolean} value */
   set open(value) {
     if (value) {
       this.foundation_.open();
@@ -37,6 +53,7 @@ export class MDCSimpleMenu extends MDCComponent {
     }
   }
 
+  /** @param {{focusIndex: ?number}=} options */
   show({focusIndex = null} = {}) {
     this.foundation_.open({focusIndex: focusIndex});
   }
@@ -45,26 +62,33 @@ export class MDCSimpleMenu extends MDCComponent {
     this.foundation_.close();
   }
 
-  /* Return the item container element inside the component. */
+  /**
+   * Return the item container element inside the component.
+   * @return {?Element}
+   */
   get itemsContainer_() {
     return this.root_.querySelector(MDCSimpleMenuFoundation.strings.ITEMS_SELECTOR);
   }
 
-  /* Return the items within the menu. Note that this only contains the set of elements within
+  /**
+   * Return the items within the menu. Note that this only contains the set of elements within
    * the items container that are proper list items, and not supplemental / presentational DOM
    * elements.
+   * @return {!Array<!Element>}
    */
   get items() {
     const {itemsContainer_: itemsContainer} = this;
     return [].slice.call(itemsContainer.querySelectorAll('.mdc-list-item[role]'));
   }
 
+  /** @return {!MDCSimpleMenuFoundation} */
   getDefaultFoundation() {
     return new MDCSimpleMenuFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.itemsContainer_),
+      getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
       getInnerDimensions: () => {
         const {itemsContainer_: itemsContainer} = this;
         return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};
@@ -83,8 +107,8 @@ export class MDCSimpleMenu extends MDCComponent {
       getNumberOfItems: () => this.items.length,
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      registerDocumentClickHandler: (handler) => document.addEventListener('click', handler),
-      deregisterDocumentClickHandler: (handler) => document.removeEventListener('click', handler),
+      registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
+      deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
       getYParamsForItemAtIndex: (index) => {
         const {offsetTop: top, offsetHeight: height} = this.items[index];
         return {top, height};
@@ -92,11 +116,11 @@ export class MDCSimpleMenu extends MDCComponent {
       setTransitionDelayForItemAtIndex: (index, value) =>
         this.items[index].style.setProperty('transition-delay', value),
       getIndexForEventTarget: (target) => this.items.indexOf(target),
-      notifySelected: (evtData) => this.emit('MDCSimpleMenu:selected', {
+      notifySelected: (evtData) => this.emit(MDCSimpleMenuFoundation.strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      notifyCancel: () => this.emit('MDCSimpleMenu:cancel'),
+      notifyCancel: () => this.emit(MDCSimpleMenuFoundation.strings.CANCEL_EVENT, {}),
       saveFocus: () => {
         this.previousFocus_ = document.activeElement;
       },

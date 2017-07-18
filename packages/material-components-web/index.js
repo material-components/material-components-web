@@ -14,48 +14,62 @@
  * limitations under the License.
  */
 
+import autoInit from '@material/auto-init';
 import * as base from '@material/base';
 import * as checkbox from '@material/checkbox';
+import * as dialog from '@material/dialog';
+import * as drawer from '@material/drawer';
 import * as formField from '@material/form-field';
 import * as gridList from '@material/grid-list';
 import * as iconToggle from '@material/icon-toggle';
+import * as linearProgress from '@material/linear-progress';
+import * as menu from '@material/menu';
 import * as radio from '@material/radio';
 import * as ripple from '@material/ripple';
-import * as dialog from '@material/dialog';
-import * as drawer from '@material/drawer';
-import * as textfield from '@material/textfield';
-import * as snackbar from '@material/snackbar';
-import * as menu from '@material/menu';
 import * as select from '@material/select';
-import autoInit from '@material/auto-init';
+import * as slider from '@material/slider';
+import * as snackbar from '@material/snackbar';
+import * as tabs from '@material/tabs';
+import * as textfield from '@material/textfield';
+import * as toolbar from '@material/toolbar';
 
 // Register all components
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCDialog', dialog.MDCDialog);
+autoInit.register('MDCPersistentDrawer', drawer.MDCPersistentDrawer);
 autoInit.register('MDCTemporaryDrawer', drawer.MDCTemporaryDrawer);
 autoInit.register('MDCRipple', ripple.MDCRipple);
 autoInit.register('MDCGridList', gridList.MDCGridList);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
+autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
+autoInit.register('MDCTab', tabs.MDCTab);
+autoInit.register('MDCTabBar', tabs.MDCTabBar);
 autoInit.register('MDCTextfield', textfield.MDCTextfield);
 autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
+autoInit.register('MDCSlider', slider.MDCSlider);
+autoInit.register('MDCToolbar', toolbar.MDCToolbar);
 
 // Export all components.
 export {
+  autoInit,
   base,
   checkbox,
+  dialog,
+  drawer,
   formField,
   gridList,
   iconToggle,
+  linearProgress,
+  menu,
   radio,
   ripple,
-  snackbar,
-  dialog,
-  drawer,
-  textfield,
-  menu,
   select,
-  autoInit,
+  slider,
+  snackbar,
+  tabs,
+  textfield,
+  toolbar,
 };

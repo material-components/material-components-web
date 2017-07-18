@@ -15,21 +15,15 @@
  */
 
 import {MDCFoundation} from '@material/base';
-
-const ROOT = 'mdc-radio';
+import {cssClasses, strings} from './constants';
 
 export default class MDCRadioFoundation extends MDCFoundation {
   static get cssClasses() {
-    return {
-      ROOT,
-      DISABLED: `${ROOT}--disabled`,
-    };
+    return cssClasses;
   }
 
   static get strings() {
-    return {
-      NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
-    };
+    return strings;
   }
 
   static get defaultAdapter() {
@@ -62,10 +56,19 @@ export default class MDCRadioFoundation extends MDCFoundation {
     }
   }
 
+  getValue() {
+    return this.getNativeControl_().value;
+  }
+
+  setValue(value) {
+    this.getNativeControl_().value = value;
+  }
+
   getNativeControl_() {
     return this.adapter_.getNativeControl() || {
       checked: false,
       disabled: false,
+      value: null,
     };
   }
 }

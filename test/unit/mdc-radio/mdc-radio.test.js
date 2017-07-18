@@ -82,6 +82,17 @@ test('get/set disabled updates the disabled value of the native radio element', 
   component.disabled = true;
   assert.isOk(radio.disabled);
   assert.equal(component.disabled, radio.disabled);
+  component.disabled = false;
+  assert.isNotOk(radio.disabled);
+  assert.equal(component.disabled, radio.disabled);
+});
+
+test('get/set value updates the value of the native radio element', () => {
+  const {root, component} = setupTest();
+  const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
+  component.value = 'new value';
+  assert.equal(radio.value, 'new value');
+  assert.equal(component.value, radio.value);
 });
 
 test('get ripple returns a MDCRipple instance', () => {

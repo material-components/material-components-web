@@ -1,30 +1,25 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 
 @import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
-
-$mdc-toolbar-row-height: 64px;
-$mdc-toolbar-mobile-row-height: 56px;
-$mdc-toolbar-padding: 20px 28px;
-$mdc-toolbar-mobile-padding: 16px;
-
-$mdc-toolbar-mobile-breakpoint: 599px;
+@import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define toolbar
 .mdc-toolbar {
@@ -41,15 +36,21 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   &__row {
     display: flex;
     position: relative;
+    align-items: center;
     width: 100%;
-    height: $mdc-toolbar-row-height;
-    padding: $mdc-toolbar-padding;
+    height: auto;
+    min-height: $mdc-toolbar-row-height;
     box-sizing: border-box;
 
     // TODO: refactor this out when #23 is implemented
+    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+      and (orientation: landscape) {
+      min-height: $mdc-toolbar-mobile-landscape-row-height;
+    }
+
+    // TODO: refactor this out when #23 is implemented
     @media (max-width: $mdc-toolbar-mobile-breakpoint) {
-      height: $mdc-toolbar-mobile-row-height;
-      padding: $mdc-toolbar-mobile-padding;
+      min-height: $mdc-toolbar-mobile-row-height;
     }
   }
 
@@ -58,6 +59,8 @@ $mdc-toolbar-mobile-breakpoint: 599px;
     flex: 1;
     align-items: flex-start;
     justify-content: center;
+    min-width: 0;
+    height: 100%;
     z-index: 1;
 
     &--align-start {
@@ -74,8 +77,49 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   &__title {
     @include mdc-typography(title);
 
+    align-self: center;
     margin: 0;
+    margin-left: 24px;
+    padding: $mdc-toobar-element-vertical-padding 0;
     line-height: 1.5rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  &__icon {
+    @include mdc-shared-icon-style;
+    @include mdc-theme-prop(color, text-primary-on-primary);
+  }
+
+  &__icon:last-child {
+    padding-right: 16px;
+  }
+
+  &__icon--menu {
+    @include mdc-shared-icon-style(menu);
+    @include mdc-theme-prop(color, text-primary-on-primary);
+
+    padding: 16px 24px;
+  }
+}
+
+.mdc-toolbar__icon--menu + .mdc-toolbar__title {
+  margin-left: 8px;
+}
+
+@media (max-width: $mdc-toolbar-mobile-breakpoint) {
+  .mdc-toolbar__icon--menu {
+    padding: 16px;
+  }
+
+  .mdc-toolbar__icon:last-child {
+    padding: 16px 8px;
+  }
+
+  .mdc-toolbar__title {
+    margin-left: 16px !important;
   }
 }
 
@@ -83,17 +127,101 @@ $mdc-toolbar-mobile-breakpoint: 599px;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 4;
 
   @include mdc-elevation(4);
 }
 
+.mdc-toolbar--flexible {
+  // stylelint-disable plugin/selector-bem-pattern
+  // bem linter is disabled because it cannot correctly reconcile mdc prefix for css variables.
+  --mdc-toolbar-ratio-to-extend-flexible: $mdc-toolbar-ratio-to-extend-flexible;
+  // stylelint-enable plugin/selector-bem-pattern
+
+  .mdc-toolbar__row:first-child {
+    height: $mdc-toolbar-row-height * $mdc-toolbar-ratio-to-extend-flexible;
+    height: calc(#{$mdc-toolbar-row-height} * var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}));
+
+    @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+      height: $mdc-toolbar-mobile-row-height * $mdc-toolbar-ratio-to-extend-flexible;
+      height: calc(#{$mdc-toolbar-mobile-row-height} * var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}));
+    }
+
+    &::after {
+      // The style ensures the pseudo element will be defined and can easily be styled
+      position: absolute;
+      content: "";
+    }
+  }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  // bem linter is disabled because it cannot handle multiple top level selector
+  &-default-behavior {
+    .mdc-toolbar__title {
+      @include mdc-typography(display1);
+
+      align-self: flex-end;
+      font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
+      line-height: 1.5rem;
+    }
+
+    .mdc-toolbar__row:first-child::after {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity .2s ease;
+      opacity: 1;
+    }
+
+    &.mdc-toolbar--flexible-space-minimized {
+      .mdc-toolbar__row:first-child::after {
+        opacity: 0;
+      }
+
+      .mdc-toolbar__title {
+        font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
+      }
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+}
+
+.mdc-toolbar--waterfall {
+  &.mdc-toolbar--fixed {
+    @include mdc-elevation(0);
+    @include mdc-elevation-transition;
+
+    &.mdc-toolbar--flexible-space-minimized {
+      @include mdc-elevation(4);
+    }
+
+    &.mdc-toolbar--fixed-lastrow-only {
+      &.mdc-toolbar--flexible-space-minimized {
+        @include mdc-elevation(0);
+      }
+
+      &.mdc-toolbar--fixed-at-last-row {
+        @include mdc-elevation(4);
+      }
+    }
+  }
+}
 // postcss-bem-linter: end
 
 .mdc-toolbar-fixed-adjust {
   margin-top: $mdc-toolbar-row-height;
 
-  @media (max-width: 599px) {
+  @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+    and (orientation: landscape) {
+    margin-top: $mdc-toolbar-mobile-landscape-row-height;
+  }
+
+  @media (max-width: $mdc-toolbar-mobile-breakpoint) {
     margin-top: $mdc-toolbar-mobile-row-height;
   }
+}
+
+.mdc-toolbar__section--shrink-to-fit {
+  flex: none;
 }

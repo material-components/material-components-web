@@ -238,6 +238,22 @@ test('#setDisabled updates the value of nativeControl.disabled', () => {
   assert.isNotOk(nativeControl.disabled);
 });
 
+test('#setDisabled adds mdc-checkbox--disabled class to the root element when set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeControl = {disabled: false};
+  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
+  foundation.setDisabled(true);
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED));
+});
+
+test('#setDisabled removes mdc-checkbox--disabled class from the root element when set to false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeControl = {disabled: true};
+  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
+  foundation.setDisabled(false);
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
+});
+
 test('#isDisabled returns false when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
@@ -248,6 +264,32 @@ test('#setDisabled works when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
   assert.doesNotThrow(() => foundation.setDisabled(true));
+});
+
+test('#getValue returns the value of nativeControl.value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeControl()).thenReturn({value: 'value'});
+  assert.equal(foundation.getValue(), 'value');
+});
+
+test('#getValue returns null if getNativeControl() does not return anything', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeControl()).thenReturn(null);
+  assert.isNull(foundation.getValue());
+});
+
+test('#setValue sets the value of nativeControl.value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeControl = {value: null};
+  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
+  foundation.setValue('new value');
+  assert.equal(nativeControl.value, 'new value');
+});
+
+test('#setValue exits gracefully if getNativeControl() does not return anything', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeControl()).thenReturn(null);
+  assert.doesNotThrow(() => foundation.setValue('new value'));
 });
 
 testChangeHandler('unchecked -> checked animation class', {

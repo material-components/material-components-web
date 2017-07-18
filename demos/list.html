@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <!--
   Copyright 2016 Google Inc. All rights reserved.
-
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-
       https://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,74 +14,171 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>MDC List Demo</title>
+    <title>List Item - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
     <script src="assets/material-components-web.css.js" charset="utf-8"></script>
+    <script src="assets/demo-styles.css.js" charset="utf-8"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <style>
       .mdc-list,
       .mdc-list-group {
         max-width: 600px;
       }
-
       .mdc-theme--dark {
         background: #303030;
       }
-
       .mdc-theme--dark > h3 {
         color: white;
       }
-
       .grey-bg {
         background: rgba(0, 0, 0, .26);
       }
-
       #icon-with-text-demo .mdc-list-item__start-detail {
         color: rgba(0, 0, 0, .54);
       }
-
       .mdc-theme--dark #icon-with-text-demo .mdc-list-item__start-detail {
         color: rgba(255, 255, 255, .7);
       }
-
       #avatar-text-icon-demo-list .mdc-list-item__end-detail {
         text-decoration: none;
         color: #ff4081; /* Pink A200 */
       }
-
       .two-line-avatar-text-icon-demo .mdc-list-item__start-detail {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         color: white;
       }
-
       .two-line-avatar-text-icon-demo .mdc-list-item__end-detail {
         color: rgba(0, 0, 0, .26);
         text-decoration: none;
       }
-
       .mdc-theme--dark .two-line-avatar-text-icon-demo .mdc-list-item__start-detail {
         background-color: rgba(255, 255, 255, .7);
         color: #303030;
       }
-
       .mdc-theme--dark .two-line-avatar-text-icon-demo .mdc-list-item__end-detail {
         color: rgba(255, 255, 255, .7);
       }
+
+      .preamble {
+        max-width: 600px;
+        margin-top: 48px;
+        margin-left: 72px;
+      }
+
+      #demo-wrapper {
+        margin: 24px;
+      }
+
+      #demo-wrapper section {
+        padding: 24px;
+      }
+
+      #demo-wrapper .mdc-list, #demo-wrapper .mdc-list-group {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      #demo-wrapper .mdc-list-group .mdc-list,
+      #demo-wrapper .mdc-theme--dark .mdc-list,
+      #demo-wrapper .mdc-theme--dark .mdc-list-group {
+        border: none;
+      }
+
+      #demo-wrapper h2 {
+        font-size: 1.5em;
+        margin-bottom: 0.8em;
+        margin-left: 24px;
+      }
+
+      #demo-wrapper h3 {
+        margin-bottom: 0.8em;
+      }
+
+      .hero .mdc-list {
+        background-color: white;
+        min-width: 320px;
+        box-shadow:
+          0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+          0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+      }
+
     </style>
   </head>
   <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">List</span>
+        </section>
+      </div>
+    </header>
     <main>
-      <h1>MDC List</h1>
-      <aside>
-        <em>NOTE:</em> For the purposes of this demo, we've set a max-width of 600px on all
-        <code>mdc-list</code> elements. This is not included in the base css, which has the list
-        take up as much width as possible (since it's a block element).
-      </aside>
-      <div class="mdc-checkbox-wrapper">
-        <div class="mdc-checkbox-wrapper__layout">
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list two-line-avatar-text-icon-demo">
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__start-detail grey-bg" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              Photos
+              <span class="mdc-list-item__text__secondary">Jan 9, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__end-detail material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__start-detail grey-bg" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              Recipes
+              <span class="mdc-list-item__text__secondary">Jan 17, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__end-detail material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__start-detail grey-bg" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              Work
+              <span class="mdc-list-item__text__secondary">Jan 28, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__end-detail material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="preamble mdc-typography--body1">
+        <aside>
+          <p>
+          <em>NOTE:</em> For the purposes of this demo, we've set a max-width of 600px on all
+          <code>mdc-list</code> elements, and surrounded them by a 1px border. This is
+          not included in the base css, which has the list
+          take up as much width as possible (since it's a block element).
+          </p>
+        </aside>
+        <div class="mdc-form-field">
           <div class="mdc-checkbox">
             <input type="checkbox"
                    class="mdc-checkbox__native-control"
@@ -100,7 +194,8 @@
           </div>
           <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
         </div>
-      </div>
+      </section>
+
       <div id="demo-wrapper">
         <section>
           <h2>Single-Line List</h2>
@@ -130,7 +225,7 @@
           </section>
           <section>
             <h3>Start Detail</h3>
-            <aside><em>Note: The grey background is styled using demo placeholder styles</em></aside>
+            <aside><p><em>Note: The grey background is styled using demo placeholder styles</em></p></aside>
             <ul class="mdc-list">
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
@@ -447,19 +542,19 @@
             <ul class="mdc-list mdc-list--two-line">
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
@@ -470,19 +565,19 @@
             <ul class="mdc-list mdc-list--two-line mdc-list--dense">
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
@@ -494,21 +589,21 @@
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
@@ -520,21 +615,21 @@
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
@@ -546,21 +641,21 @@
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
@@ -572,21 +667,21 @@
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__start-detail grey-bg"></span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
               </li>
@@ -597,21 +692,21 @@
             <ul class="mdc-list mdc-list--two-line">
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
                 <span class="mdc-list-item__end-detail grey-bg"></span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
                 <span class="mdc-list-item__end-detail grey-bg"></span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
                 <span class="mdc-list-item__end-detail grey-bg"></span>
@@ -623,21 +718,21 @@
             <ul class="mdc-list mdc-list--two-line mdc-list--dense">
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
                 <span class="mdc-list-item__end-detail grey-bg"></span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
                 <span class="mdc-list-item__end-detail grey-bg"></span>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Two-line item</span>
+                  Two-line item
                   <span class="mdc-list-item__text__secondary">Secondary text</span>
                 </span>
                 <span class="mdc-list-item__end-detail grey-bg"></span>
@@ -652,7 +747,7 @@
                   <i class="material-icons" aria-hidden="true">folder</i>
                 </span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Photos</span>
+                  Photos
                   <span class="mdc-list-item__text__secondary">Jan 9, 2014</span>
                 </span>
                 <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -666,7 +761,7 @@
                   <i class="material-icons" aria-hidden="true">folder</i>
                 </span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Recipes</span>
+                  Recipes
                   <span class="mdc-list-item__text__secondary">Jan 17, 2014</span>
                 </span>
                 <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -680,7 +775,7 @@
                   <i class="material-icons" aria-hidden="true">folder</i>
                 </span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Work</span>
+                  Work
                   <span class="mdc-list-item__text__secondary">Jan 28, 2014</span>
                 </span>
                 <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -699,7 +794,7 @@
                   <i class="material-icons" aria-hidden="true">folder</i>
                 </span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Photos</span>
+                  Photos
                   <span class="mdc-list-item__text__secondary">Jan 9, 2014</span>
                 </span>
                 <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -713,7 +808,7 @@
                   <i class="material-icons" aria-hidden="true">folder</i>
                 </span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Recipes</span>
+                  Recipes
                   <span class="mdc-list-item__text__secondary">Jan 17, 2014</span>
                 </span>
                 <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -727,7 +822,7 @@
                   <i class="material-icons" aria-hidden="true">folder</i>
                 </span>
                 <span class="mdc-list-item__text">
-                  <span class="mdc-list-item__text__primary">Work</span>
+                  Work
                   <span class="mdc-list-item__text__secondary">Jan 28, 2014</span>
                 </span>
                 <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -809,7 +904,7 @@
                     <i class="material-icons" aria-hidden="true">folder</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Photos</span>
+                    Photos
                     <span class="mdc-list-item__text__secondary">Jan 9, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -823,7 +918,7 @@
                     <i class="material-icons" aria-hidden="true">folder</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Recipes</span>
+                    Recipes
                     <span class="mdc-list-item__text__secondary">Jan 17, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -837,7 +932,7 @@
                     <i class="material-icons" aria-hidden="true">folder</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Work</span>
+                    Work
                     <span class="mdc-list-item__text__secondary">Jan 28, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -855,7 +950,7 @@
                     <i class="material-icons" aria-hidden="true">insert_drive_file</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Vacation Itinerary</span>
+                    Vacation Itinerary
                     <span class="mdc-list-item__text__secondary">Jan 10, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -869,7 +964,7 @@
                     <i class="material-icons" aria-hidden="true">insert_drive_file</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Kitchen Remodel</span>
+                    Kitchen Remodel
                     <span class="mdc-list-item__text__secondary">Jan 20, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -891,7 +986,7 @@
                     <i class="material-icons" aria-hidden="true">folder</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Photos</span>
+                    Photos
                     <span class="mdc-list-item__text__secondary">Jan 9, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -905,7 +1000,7 @@
                     <i class="material-icons" aria-hidden="true">folder</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Recipes</span>
+                    Recipes
                     <span class="mdc-list-item__text__secondary">Jan 17, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -919,7 +1014,7 @@
                     <i class="material-icons" aria-hidden="true">folder</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Work</span>
+                    Work
                     <span class="mdc-list-item__text__secondary">Jan 28, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -937,7 +1032,7 @@
                     <i class="material-icons" aria-hidden="true">insert_drive_file</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Vacation Itinerary</span>
+                    Vacation Itinerary
                     <span class="mdc-list-item__text__secondary">Jan 10, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -951,7 +1046,7 @@
                     <i class="material-icons" aria-hidden="true">insert_drive_file</i>
                   </span>
                   <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__text__primary">Kitchen Remodel</span>
+                    Kitchen Remodel
                     <span class="mdc-list-item__text__secondary">Jan 20, 2014</span>
                   </span>
                   <a href="#" class="mdc-list-item__end-detail material-icons"
@@ -1018,22 +1113,25 @@
     <script src="/assets/material-components-web.js"></script>
     <script>
       (function() {
-        mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
-        const demoWrapper = document.getElementById('demo-wrapper');
+        var formField = new mdc.formField.MDCFormField(document.querySelector('.mdc-form-field'));
+        var cb = mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
+        formField.input = cb;
+        var demoWrapper = document.getElementById('demo-wrapper');
+        var hero = document.querySelector('.hero');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
           if (this.checked) {
             demoWrapper.setAttribute('dir', 'rtl');
+            hero.setAttribute('dir', 'rtl');
           } else {
             demoWrapper.removeAttribute('dir');
+            hero.removeAttribute('dir');
           }
         });
-
         // Delay initialization within development until styles have loaded
         setTimeout(initInteractiveLists, 250);
-
         function initInteractiveLists() {
           var interactiveListItems = document.querySelectorAll(
-            '[data-demo-interactive-list] .mdc-list-item'
+            '[data-demo-interactive-list] .mdc-list-item, .hero .mdc-list-item'
           );
           for (var i = 0, li; li = interactiveListItems[i]; i++) {
             mdc.ripple.MDCRipple.attachTo(li);

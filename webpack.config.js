@@ -56,6 +56,7 @@ const CSS_LOADER_CONFIG = [
   {
     loader: 'postcss-loader',
     options: {
+      sourceMap: IS_DEV,
       plugins: () =>[require('autoprefixer')({grid: false})],
     },
   },
@@ -80,12 +81,16 @@ module.exports = [{
     formField: [path.resolve('./packages/mdc-form-field/index.js')],
     gridList: [path.resolve('./packages/mdc-grid-list/index.js')],
     iconToggle: [path.resolve('./packages/mdc-icon-toggle/index.js')],
+    linearProgress: [path.resolve('./packages/mdc-linear-progress/index.js')],
     menu: [path.resolve('./packages/mdc-menu/index.js')],
     radio: [path.resolve('./packages/mdc-radio/index.js')],
     ripple: [path.resolve('./packages/mdc-ripple/index.js')],
     select: [path.resolve('./packages/mdc-select/index.js')],
+    slider: [path.resolve('./packages/mdc-slider/index.js')],
     snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
+    tabs: [path.resolve('./packages/mdc-tabs/index.js')],
     textfield: [path.resolve('./packages/mdc-textfield/index.js')],
+    toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
   },
   output: {
     path: OUT_PATH,
@@ -93,6 +98,12 @@ module.exports = [{
     filename: 'mdc.[name].' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
     library: ['mdc', '[name]'],
+  },
+  // See https://github.com/webpack/webpack-dev-server/issues/882
+  // Because we only spin up dev servers temporarily, and all of our assets are publicly
+  // available on GitHub, we can safely disable this check.
+  devServer: {
+    disableHostCheck: true,
   },
   devtool: IS_DEV ? 'source-map' : false,
   module: {
@@ -118,6 +129,9 @@ module.exports = [{
     libraryTarget: 'umd',
     library: 'mdc',
   },
+  devServer: {
+    disableHostCheck: true,
+  },
   devtool: IS_DEV ? 'source-map' : false,
   module: {
     rules: [{
@@ -136,7 +150,7 @@ module.exports = [{
   name: 'css',
   entry: {
     'material-components-web': path.resolve(
-        './packages/material-components-web/material-components-web.scss'),
+      './packages/material-components-web/material-components-web.scss'),
     'mdc.animation': path.resolve('./packages/mdc-animation/mdc-animation.scss'),
     'mdc.button': path.resolve('./packages/mdc-button/mdc-button.scss'),
     'mdc.card': path.resolve('./packages/mdc-card/mdc-card.scss'),
@@ -149,13 +163,16 @@ module.exports = [{
     'mdc.grid-list': path.resolve('./packages/mdc-grid-list/mdc-grid-list.scss'),
     'mdc.icon-toggle': path.resolve('./packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
     'mdc.layout-grid': path.resolve('./packages/mdc-layout-grid/mdc-layout-grid.scss'),
+    'mdc.linear-progress': path.resolve('./packages/mdc-linear-progress/mdc-linear-progress.scss'),
     'mdc.list': path.resolve('./packages/mdc-list/mdc-list.scss'),
     'mdc.menu': path.resolve('./packages/mdc-menu/mdc-menu.scss'),
     'mdc.radio': path.resolve('./packages/mdc-radio/mdc-radio.scss'),
     'mdc.ripple': path.resolve('./packages/mdc-ripple/mdc-ripple.scss'),
     'mdc.select': path.resolve('./packages/mdc-select/mdc-select.scss'),
+    'mdc.slider': path.resolve('./packages/mdc-slider/mdc-slider.scss'),
     'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
     'mdc.switch': path.resolve('./packages/mdc-switch/mdc-switch.scss'),
+    'mdc.tabs': path.resolve('./packages/mdc-tabs/mdc-tabs.scss'),
     'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
     'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
     'mdc.toolbar': path.resolve('./packages/mdc-toolbar/mdc-toolbar.scss'),
@@ -168,6 +185,9 @@ module.exports = [{
     // all other cases, ExtractTextPlugin is used to generate the final css, so this is given a
     // dummy ".css-entry" extension.
     filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry'),
+  },
+  devServer: {
+    disableHostCheck: true,
   },
   devtool: IS_DEV ? 'source-map' : false,
   module: {
@@ -184,3 +204,30 @@ module.exports = [{
     createBannerPlugin(),
   ],
 }];
+
+if (IS_DEV) {
+  module.exports.push({
+    name: 'demo-css',
+    entry: {
+      'demo-styles': path.resolve('./demos/demos.scss'),
+    },
+    output: {
+      path: OUT_PATH,
+      publicPath: PUBLIC_PATH,
+      filename: '[name].css.js',
+    },
+    devServer: {
+      disableHostCheck: true,
+    },
+    devtool: 'source-map',
+    module: {
+      rules: [{
+        test: /\.scss$/,
+        use: [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG),
+      }],
+    },
+    plugins: [
+      createBannerPlugin(),
+    ],
+  });
+}

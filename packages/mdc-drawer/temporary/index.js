@@ -19,6 +19,7 @@ import MDCTemporaryDrawerFoundation from './foundation';
 import * as util from '../util';
 
 export {MDCTemporaryDrawerFoundation};
+export {util};
 
 export class MDCTemporaryDrawer extends MDCComponent {
   static attachTo(root) {
@@ -49,22 +50,24 @@ export class MDCTemporaryDrawer extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
+      addBodyClass: (className) => document.body.classList.add(className),
+      removeBodyClass: (className) => document.body.classList.remove(className),
       hasNecessaryDom: () => Boolean(this.drawer),
       registerInteractionHandler: (evt, handler) =>
-          this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+        this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       deregisterInteractionHandler: (evt, handler) =>
-          this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+        this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       registerDrawerInteractionHandler: (evt, handler) =>
-          this.drawer.addEventListener(util.remapEvent(evt), handler),
+        this.drawer.addEventListener(util.remapEvent(evt), handler),
       deregisterDrawerInteractionHandler: (evt, handler) =>
-          this.drawer.removeEventListener(util.remapEvent(evt), handler),
+        this.drawer.removeEventListener(util.remapEvent(evt), handler),
       registerTransitionEndHandler: (handler) => this.drawer.addEventListener('transitionend', handler),
       deregisterTransitionEndHandler: (handler) => this.drawer.removeEventListener('transitionend', handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       getDrawerWidth: () => this.drawer.offsetWidth,
       setTranslateX: (value) => this.drawer.style.setProperty(
-          util.getTransformPropertyName(), value === null ? null : `translateX(${value}px)`),
+        util.getTransformPropertyName(), value === null ? null : `translateX(${value}px)`),
       updateCssVariable: (value) => {
         if (util.supportsCssCustomProperties()) {
           this.root_.style.setProperty(OPACITY_VAR_NAME, value);
@@ -74,6 +77,8 @@ export class MDCTemporaryDrawer extends MDCComponent {
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
       makeElementUntabbable: (el) => el.setAttribute('tabindex', -1),
+      notifyOpen: () => this.emit(MDCTemporaryDrawerFoundation.strings.OPEN_EVENT),
+      notifyClose: () => this.emit(MDCTemporaryDrawerFoundation.strings.CLOSE_EVENT),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       isDrawer: (el) => el === this.drawer,
     });

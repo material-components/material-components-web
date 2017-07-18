@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-const ROOT = 'mdc-snackbar';
-
 export const cssClasses = {
-  ROOT,
-  TEXT: `${ROOT}__text`,
-  ACTION_WRAPPER: `${ROOT}__action-wrapper`,
-  ACTION_BUTTON: `${ROOT}__action-button`,
-  ACTIVE: `${ROOT}--active`,
-  MULTILINE: `${ROOT}--multiline`,
-  ACTION_ON_BOTTOM: `${ROOT}--action-on-bottom`,
+  ROOT: 'mdc-snackbar',
+  TEXT: 'mdc-snackbar__text',
+  ACTION_WRAPPER: 'mdc-snackbar__action-wrapper',
+  ACTION_BUTTON: 'mdc-snackbar__action-button',
+  ACTIVE: 'mdc-snackbar--active',
+  MULTILINE: 'mdc-snackbar--multiline',
+  ACTION_ON_BOTTOM: 'mdc-snackbar--action-on-bottom',
 };
 
 export const strings = {
-  TEXT_SELECTOR: `.${cssClasses.TEXT}`,
-  ACTION_WRAPPER_SELECTOR: `.${cssClasses.ACTION_WRAPPER}`,
-  ACTION_BUTTON_SELECTOR: `.${cssClasses.ACTION_BUTTON}`,
+  TEXT_SELECTOR: '.mdc-snackbar__text',
+  ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__action-wrapper',
+  ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
 };
 
 export const numbers = {

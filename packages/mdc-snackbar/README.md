@@ -1,8 +1,35 @@
-# MDC Snackbar
+<!--docs:
+title: "Snackbars"
+layout: detail
+section: components
+excerpt: "Brief feedback for an action through a message at the bottom of the screen."
+iconId: toast
+path: /catalog/snackbars/
+-->
+
+# Snackbars
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/snackbar.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbars screenshot">
+  </a>
+</div>-->
 
 The MDC Snackbar component is a spec-aligned snackbar/toast component adhering to the
-[Material Design snackbars & toasts requirements](https://material.google.com/components/snackbars-toasts.html#snackbars-toasts-specs).
-It requires JavaScript the trigger the display and hide of the snackbar.
+[Material Design snackbars & toasts requirements](https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs).
+It requires JavaScript to show and hide itself.
+
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/components/snackbars-toasts.html">Material Design guidelines: Snackbars & toasts</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/snackbar.html">Demo</a>
+  </li>
+</ul>
 
 ## Installation
 
@@ -16,6 +43,23 @@ npm install --save @material/snackbar
 
 ```html
 <div class="mdc-snackbar"
+     aria-live="assertive"
+     aria-atomic="true"
+     aria-hidden="true">
+  <div class="mdc-snackbar__text"></div>
+  <div class="mdc-snackbar__action-wrapper">
+    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+  </div>
+</div>
+```
+
+### Start Aligned Snackbars (tablet and desktop only)
+
+MDC Snackbar can be start aligned (including in RTL contexts). To create a start-aligned
+snackbar, add the `mdc-snackbar--align-start` modifier class to the root element.
+
+```html
+<div class="mdc-snackbar mdc-snackbar--align-start"
      aria-live="assertive"
      aria-atomic="true"
      aria-hidden="true">
@@ -66,7 +110,7 @@ const MDCSnackbarFoundation = mdc.snackbar.MDCSnackbarFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the snackbar, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));
@@ -98,6 +142,50 @@ properties and their usage.
 | multiline | Whether to show the snackbar with space for multiple lines of text | Optional |  Boolean |
 | actionOnBottom | Whether to show the action below the multiple lines of text | Optional, applies when multiline is true |  Boolean |
 
+### Responding to a Snackbar Action
+
+To respond to a snackbar action, assign a function to the optional `actionHandler` property in the object that gets passed to the `show` method. If you choose to set this property, you *must _also_* set the `actionText` property.
+
+```html
+<div class="mdc-snackbar"
+     aria-live="assertive"
+     aria-atomic="true"
+     aria-hidden="true">
+  <div class="mdc-snackbar__text"></div>
+  <div class="mdc-snackbar__action-wrapper">
+    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+  </div>
+</div>
+```
+
+```js
+import {MDCSnackbar} from 'mdc-snackbar';
+
+const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+const dataObj = {
+  message: messageInput.value,
+  actionText: 'Undo',
+  actionHandler: function () {
+    console.log('my cool function');
+  }
+};
+
+snackbar.show(dataObj);
+```
+
+
+### Keep snackbar when the action button is pressed
+
+By default the snackbar will be dimissed when the user presses the action button.
+If you want the snackbar to remain visible until the timeout is reached (regardless of
+whether the user pressed the action button or not) you can set the `dismissesOnAction`
+property to `false`:
+
+```
+const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+snackbar.dismissesOnAction = false
+```
+
 ### Using the Foundation Class
 
 MDC Snackbar ships with an `MDCSnackbarFoundation` class that external frameworks and libraries can
@@ -110,10 +198,18 @@ The adapter for snackbars must provide the following functions, with correct sig
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `setAriaHidden() => void` | Sets `aria-hidden="true"` on the root element. |
 | `unsetAriaHidden() => void` | Removes the `aria-hidden` attribute from the root element. |
-| `setMessageText(message: string) => void` | Set the text content of the message element. |
-| `setActionText(actionText: string) => void` | Set the text content of the action element. |
 | `setActionAriaHidden() => void` | Sets `aria-hidden="true"` on the action element. |
 | `unsetActionAriaHidden() => void` | Removes the `aria-hidden` attribute from the action element. |
+| `setActionText(actionText: string) => void` | Set the text content of the action element. |
+| `setMessageText(message: string) => void` | Set the text content of the message element. |
+| `setFocus() => void` | Sets focus on the action button. |
+| `visibilityIsHidden() => boolean` | Returns document.hidden property. |
+| `registerBlurHandler(handler: EventListener) => void` | Registers an event handler to be called when a `blur` event is triggered on the action button |
+| `deregisterBlurHandler(handler: EventListener) => void` | Deregisters a `blur` event handler from the actionButton |
+| `registerVisibilityChangeHandler(handler: EventListener) => void` | Registers an event handler to be called when a 'visibilitychange' event occurs |
+| `deregisterVisibilityChangeHandler(handler: EventListener) => void` | Deregisters an event handler to be called when a 'visibilitychange' event occurs |
+| `registerCapturedInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler to be called when the given event type is triggered on the `body` |
+| `deregisterCapturedInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler from the `body` |
 | `registerActionClickHandler(handler: EventListener) => void` | Registers an event handler to be called when a `click` event is triggered on the action element. |
 | `deregisterActionClickHandler(handler: EventListener) => void` | Deregisters an event handler from a `click` event on the action element. This will only be called with handlers that have previously been passed to `registerActionClickHandler` calls. |
 | `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when an `transitionend` event is triggered on the root element. Note that you must account for vendor prefixes in order for this to work correctly. |
