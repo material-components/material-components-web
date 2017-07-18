@@ -59,10 +59,10 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
     /** @private {number} */
     this.savedTabIndex_ = -1;
 
-    /** @private {IconToggleState} */
+    /** @private {?IconToggleState} */
     this.toggleOnData_ = null;
 
-    /** @private {IconToggleState} */
+    /** @private {?IconToggleState} */
     this.toggleOffData_ = null;
 
     this.clickHandler_ = /** @private {!EventListener} */ (
@@ -200,11 +200,11 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
 export let KeyboardKey;
 
 /**
- * @param {KeyboardKey} keyboardKey
+ * @param {!KeyboardKey} keyboardKey
  * @return {boolean}
  */
 function isSpace(keyboardKey) {
-  return !!keyboardKey.key && keyboardKey.key === 'Space' || keyboardKey.keyCode === 32;
+  return keyboardKey.key === 'Space' || keyboardKey.keyCode === 32;
 }
 
 
@@ -213,21 +213,18 @@ class IconToggleState {}
 
 /**
  * The aria-label value of the icon toggle, or undefined if there is no aria-label.
- * @type {string|undefined}
- * @export
+ * @export {string|undefined}
  */
 IconToggleState.prototype.label;
 
 /**
  * The text for the icon toggle, or undefined if there is no text.
- * @type {string|undefined}
- * @export
+ * @export {string|undefined}
  */
 IconToggleState.prototype.content;
 
 /**
  * The CSS class to add to the icon toggle, or undefined if there is no CSS class.
- * @type {string|undefined}
- * @export
+ * @export {string|undefined}
  */
 IconToggleState.prototype.cssClass;

@@ -24,7 +24,7 @@ import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 export {MDCIconToggleFoundation};
 
 /**
- * @extends MDCComponent<!MDCIconToggleFoundation>
+ * @extends {MDCComponent<!MDCIconToggleFoundation>}
  */
 export class MDCIconToggle extends MDCComponent {
   static attachTo(root) {
