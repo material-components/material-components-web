@@ -183,6 +183,9 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
     margin: 0;
     margin-top: 4px;
     padding: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   &__icon {
