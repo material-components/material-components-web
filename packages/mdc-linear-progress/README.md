@@ -65,7 +65,7 @@ The provided modifiers are:
 
 MDC Linear Progress ships with an `MDCLinearProgressFoundation` class that external frameworks and libraries can
 use to integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for temporary drawers must provide the following functions, with correct signatures:
+The adapter for linear progress must provide the following functions, with correct signatures:
 
 | Method Signature | Description |
 | --- | --- |
