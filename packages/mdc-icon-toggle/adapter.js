@@ -77,7 +77,7 @@ export default class MDCIconToggleAdapter {
   /** @param {string} name */
   rmAttr(name) {}
 
-  /** @param {IconToggleEvent} evtData */
+  /** @param {!IconToggleEvent} evtData */
   notifyChange(evtData) {}
 }
 
