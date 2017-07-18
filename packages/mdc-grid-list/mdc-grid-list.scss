@@ -177,6 +177,7 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 
   &__support-text {
     @include mdc-typography(body1);
+    @include mdc-typography-overflow-ellipsis;
 
     display: block;
     margin: 0;
