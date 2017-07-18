@@ -260,7 +260,7 @@ If the menu is closed with no selection made (for example, if the user hits `Esc
 
 MDC Simple Menu ships with an `MDCSimpleMenuFoundation` class that external frameworks and libraries can use to
 integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for temporary drawers must provide the following functions, with correct signatures:
+The adapter for simple menu must provide the following functions, with correct signatures:
 
 | Method Signature | Description |
 | --- | --- |

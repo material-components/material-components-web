@@ -46,16 +46,8 @@ if ! gcloud config get-value project 2>/dev/null | grep -q material-components-w
   exit 1
 fi
 
-log "Checking that all packages have correct accessConfig rules within their package.json files..."
-for f in $(find packages -name 'package.json' -not -path "*/node_modules/*"); do
-  log "\tChecking $f"
-  if ! node scripts/check-pkg-for-release.js "$f"; then
-    echo "FAILURE: Did not find publishConfig.access: 'public' in $f. Please consult our" \
-         "docs/authoring-components.md file and ensure that the new component's package.json"\
-         "is well-formed."
-    exit 1
-  fi
-done
+log "Checking that all packages have correct dependency rules..."
+sh ./scripts/dependency-test.sh
 
 log "Running npm test to ensure no breakages..."
 npm test

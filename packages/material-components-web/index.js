@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
+import autoInit from '@material/auto-init';
 import * as base from '@material/base';
 import * as checkbox from '@material/checkbox';
+import * as dialog from '@material/dialog';
+import * as drawer from '@material/drawer';
 import * as formField from '@material/form-field';
 import * as gridList from '@material/grid-list';
 import * as iconToggle from '@material/icon-toggle';
-import * as radio from '@material/radio';
-import * as ripple from '@material/ripple';
-import * as dialog from '@material/dialog';
-import * as drawer from '@material/drawer';
-import * as textfield from '@material/textfield';
-import * as snackbar from '@material/snackbar';
 import * as linearProgress from '@material/linear-progress';
 import * as menu from '@material/menu';
+import * as radio from '@material/radio';
+import * as ripple from '@material/ripple';
 import * as select from '@material/select';
 import * as slider from '@material/slider';
+import * as snackbar from '@material/snackbar';
 import * as tabs from '@material/tabs';
+import * as textfield from '@material/textfield';
 import * as toolbar from '@material/toolbar';
-import autoInit from '@material/auto-init';
 
 // Register all components
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
@@ -54,6 +54,7 @@ autoInit.register('MDCToolbar', toolbar.MDCToolbar);
 
 // Export all components.
 export {
+  autoInit,
   base,
   checkbox,
   dialog,
@@ -62,14 +63,13 @@ export {
   gridList,
   iconToggle,
   linearProgress,
+  menu,
   radio,
   ripple,
+  select,
+  slider,
   snackbar,
   tabs,
   textfield,
-  menu,
-  select,
-  slider,
   toolbar,
-  autoInit,
 };

@@ -31,7 +31,7 @@
   padding-right: 24px;
   padding-left: 24px;
   transform: translate(-50%, 100%);
-  transition: mdc-animation-exit(transform, .25s);
+  transition: mdc-animation-exit-permanent(transform, .25s);
   background-color: $mdc-snackbar-background-color;
 
   @include mdc-theme-dark(".mdc-snackbar") {
@@ -111,7 +111,7 @@
     display: flex;
     align-items: center;
     height: 48px;
-    transition: mdc-animation-exit(opacity, .3s);
+    transition: mdc-animation-exit-permanent(opacity, .3s);
     color: $mdc-snackbar-foreground-color;
 
     @include mdc-theme-dark(".mdc-snackbar") {
@@ -142,7 +142,7 @@
 
     min-width: auto;
     height: inherit;
-    transition: mdc-animation-exit(opacity, .3s);
+    transition: mdc-animation-exit-permanent(opacity, .3s);
     opacity: 0;
     visibility: hidden;
 
@@ -157,7 +157,7 @@
 
   &--active &__text,
   &--active &__action-button:not([aria-hidden]) {
-    transition: mdc-animation-exit(opacity, .3s);
+    transition: mdc-animation-exit-permanent(opacity, .3s);
     opacity: 1;
   }
 }

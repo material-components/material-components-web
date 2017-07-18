@@ -1,6 +1,6 @@
 {
   "name": "@material/drawer",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "The Material Components Web drawer component",
   "license": "Apache-2.0",
   "keywords": [
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@material/animation": "^0.2.3",
-    "@material/base": "^0.2.1",
+    "@material/base": "^0.2.2",
     "@material/elevation": "^0.1.9",
     "@material/rtl": "^0.1.6",
     "@material/theme": "^0.1.5",
