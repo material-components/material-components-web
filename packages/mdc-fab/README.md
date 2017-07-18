@@ -91,8 +91,8 @@ Developers must position it as-needed within their applications designs.
 
 @media(min-width: 1024px) {
    .app-fab--absolute.app-fab--absolute {
-    bottom: 3rem;
-    right: 5rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
   }
 }
 </style>
