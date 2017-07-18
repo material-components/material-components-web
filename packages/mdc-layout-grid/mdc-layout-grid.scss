@@ -46,13 +46,16 @@
 }
 
 .mdc-layout-grid__cell {
+  // select the upper breakpoint
+  $upper-breakpoint: nth(map-keys($mdc-layout-grid-columns), 1);
+
   @each $size in map-keys($mdc-layout-grid-columns) {
     @include mdc-layout-grid-media-query_($size) {
       $gutter: map-get($mdc-layout-grid-default-gutter, $size);
 
       @include mdc-layout-grid-cell($size, $mdc-layout-grid-default-column-span, $gutter);
 
-      @for $span from 1 through map-get($mdc-layout-grid-columns, desktop) {
+      @for $span from 1 through map-get($mdc-layout-grid-columns, $upper-breakpoint) {
         // Span classes.
         // stylelint-disable max-nesting-depth
         @at-root .mdc-layout-grid__cell--span-#{$span},
@@ -65,7 +68,7 @@
   }
 
   // Order override classes.
-  @for $i from 1 through map-get($mdc-layout-grid-columns, desktop) {
+  @for $i from 1 through map-get($mdc-layout-grid-columns, $upper-breakpoint) {
     &--order-#{$i} {
       @include mdc-layout-grid-cell-order($i);
     }
