@@ -59,6 +59,8 @@
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
   @if ($theme-style) {
     $theme-value: map-get($mdc-theme-property-values, $theme-style);
+
+    /* @alternate */
     $css-var: $theme-value;
     $css-var: var(--mdc-theme-#{$theme-style}, $theme-value);
 
@@ -115,6 +117,8 @@
     left: calc(50% - #{$radius});
     width: $radius * 2;
     height: $radius * 2;
+
+    /* @alternate */
     transform: scale(0);
     transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
@@ -129,14 +133,23 @@
   }
 
   &.mdc-ripple-upgraded--unbounded#{$pseudo} {
+    /* @alternate */
     top: calc(50% - #{$radius / 2});
     top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
+
+    /* @alternate */
     left: calc(50% - #{$radius / 2});
     left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
+
+    /* @alternate */
     width: $radius;
     width: var(--mdc-ripple-fg-size, $radius);
+
+    /* @alternate */
     height: $radius;
     height: var(--mdc-ripple-fg-size, $radius);
+
+    /* @alternate */
     transform: scale(0);
     transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
@@ -179,8 +192,12 @@
     &#{$pseudo} {
       top: 0;
       left: 0;
+
+      /* @alternate */
       width: $radius;
       width: var(--mdc-ripple-fg-size, $radius);
+
+      /* @alternate */
       height: $radius;
       height: var(--mdc-ripple-fg-size, $radius);
       transform: scale(0);
@@ -194,12 +211,19 @@
   }
 
   &.mdc-ripple-upgraded--unbounded#{$pseudo} {
+    /* @alternate */
     top: 0;
     top: var(--mdc-ripple-top, 0);
+
+    /* @alternate */
     left: 0;
     left: var(--mdc-ripple-left, 0);
+
+    /* @alternate */
     width: $radius;
     width: var(--mdc-ripple-fg-size, $radius);
+
+    /* @alternate */
     height: $radius;
     height: var(--mdc-ripple-fg-size, $radius);
     transform: scale(0);

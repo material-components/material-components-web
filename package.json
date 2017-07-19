@@ -163,6 +163,7 @@
   "closureWhitelist": [
     "mdc-animation",
     "mdc-base",
+    "mdc-icon-toggle",
     "mdc-checkbox",
     "mdc-menu",
     "mdc-ripple"
