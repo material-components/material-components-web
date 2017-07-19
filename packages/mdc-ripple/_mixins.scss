@@ -211,21 +211,20 @@
   }
 
   &.mdc-ripple-upgraded--unbounded#{$pseudo} {
+    /* @alternate */
     top: 0;
-
-    /* @alternate */
     top: var(--mdc-ripple-top, 0);
+
+    /* @alternate */
     left: 0;
-
-    /* @alternate */
     left: var(--mdc-ripple-left, 0);
+
+    /* @alternate */
     width: $radius;
-
-    /* @alternate */
     width: var(--mdc-ripple-fg-size, $radius);
-    height: $radius;
 
     /* @alternate */
+    height: $radius;
     height: var(--mdc-ripple-fg-size, $radius);
     transform: scale(0);
     transform-origin: center center;
