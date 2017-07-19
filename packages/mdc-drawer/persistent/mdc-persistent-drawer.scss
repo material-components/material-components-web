@@ -61,7 +61,7 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
 
   &--animating {
     .mdc-persistent-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition;
+      transition: $mdc-slidable-drawer-transition-close;
     }
 
     &.mdc-persistent-drawer--open .mdc-persistent-drawer__drawer {
