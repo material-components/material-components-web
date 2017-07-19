@@ -103,13 +103,13 @@ export class MDCRadio extends MDCComponent {
   }
 
   /**
-   * Returns the state of the native control element, or undefined if the native control element is not present.
-   * @return {SelectionControlState|undefined}
+   * Returns the state of the native control element, or null if the native control element is not present.
+   * @return {?SelectionControlState}
    * @private
    */
   get nativeControl_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
-    const el = /** @type {SelectionControlState|undefined} */ (
+    const el = /** @type {?SelectionControlState} */ (
       this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
     return el;
   }

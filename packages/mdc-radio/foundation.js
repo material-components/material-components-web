@@ -25,12 +25,12 @@ import {cssClasses, strings} from './constants';
  * @extends {MDCFoundation<!MDCRadioAdapter>}
  */
 export default class MDCRadioFoundation extends MDCFoundation {
-  /** @return enum{cssClasses} */
+  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum{strings} */
+  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
@@ -40,7 +40,7 @@ export default class MDCRadioFoundation extends MDCFoundation {
     return /** @type {!MDCRadioAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      getNativeControl: () => /* SelectionControlState */ {},
+      getNativeControl: () => /* !SelectionControlState */ {},
     });
   }
 

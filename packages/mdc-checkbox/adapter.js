@@ -54,7 +54,7 @@ export default class MDCCheckboxAdapter {
   /** @param {!EventListener} handler */
   deregisterChangeHandler(handler) {}
 
-  /** @return {SelectionControlState} */
+  /** @return {!SelectionControlState} */
   getNativeControl() {}
 
   forceLayout() {}
