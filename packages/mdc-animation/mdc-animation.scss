@@ -28,4 +28,8 @@
   &-acceleration-curve {
     @include mdc-animation-acceleration-curve;
   }
+
+  &-sharp-curve {
+    @include mdc-animation-sharp-curve;
+  }
 }

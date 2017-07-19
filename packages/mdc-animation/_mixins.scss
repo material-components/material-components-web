@@ -27,3 +27,7 @@
 @mixin mdc-animation-acceleration-curve {
   animation-timing-function: $mdc-animation-acceleration-curve-timing-function;
 }
+
+@mixin mdc-animation-sharp-curve {
+  animation-timing-function: $mdc-animation-sharp-curve-timing-function;
+}
