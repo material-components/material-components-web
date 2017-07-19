@@ -17,15 +17,19 @@
 @import "./mixins";
 
 .mdc-animation {
-  &-linear-out-slow-in {
-    @include mdc-animation-linear-out-slow-in;
+  &-deceleration-curve {
+    @include mdc-animation-deceleration-curve;
   }
 
-  &-fast-out-slow-in {
-    @include mdc-animation-fast-out-slow-in;
+  &-standard-curve {
+    @include mdc-animation-standard-curve;
   }
 
-  &-fast-out-linear-in {
-    @include mdc-animation-fast-out-linear-in;
+  &-acceleration-curve {
+    @include mdc-animation-acceleration-curve;
+  }
+
+  &-sharp-curve {
+    @include mdc-animation-sharp-curve;
   }
 }

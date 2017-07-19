@@ -119,4 +119,4 @@ $mdc-elevation-transition-duration: 280ms !default;
 /**
  * The default easing value for elevation transitions.
  */
-$mdc-elevation-transition-timing-function: $mdc-animation-fast-out-slow-in-timing-function !default;
+$mdc-elevation-transition-timing-function: $mdc-animation-standard-curve-timing-function !default;
