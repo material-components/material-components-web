@@ -40,3 +40,10 @@
 @mixin mdc-typography-adjust-margin($style) {
   margin: map-get(map-get($mdc-typography-styles, $style), margin);
 }
+
+// Element must be `display: block` or `display: inline-block` for this to work.
+@mixin mdc-typography-overflow-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

@@ -205,7 +205,7 @@ properties that element supports. It also emits events equivalent to a range inp
 | --- | --- |
 | `layout() => void` | Recomputes the dimensions and re-lays out the component. This should be called if the dimensions of the slider itself or any of its parent elements change programmatically (it is called automatically on resize). |
 | `stepUp(amount = 1) => void` | Increases the slider value by the given `amount`, or `1` if no amount is given |
-| `stepDown(amount = 1) => void` | Increases the slider value by the given `amount`, or `1` if no amount is given |
+| `stepDown(amount = 1) => void` | Decrease the slider value by the given `amount`, or `1` if no amount is given |
 
 #### Events
 

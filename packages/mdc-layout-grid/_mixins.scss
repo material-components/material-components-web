@@ -12,31 +12,61 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// returns the lower grid boundary or null if the smallest grid is selected
+@function mdc-layout-grid-breakpoint-min($size) {
+  @if not map-has-key($mdc-layout-grid-columns, $size) {
+    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+  }
+  $min: map-get($mdc-layout-grid-breakpoints, $size);
+
+  @return if($min != 0, $min, null);
+}
+
+// returns the upper grid boundary or null if the largest grid is selected
+@function mdc-layout-grid-breakpoint-max($size) {
+  @if not map-has-key($mdc-layout-grid-columns, $size) {
+    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+  }
+  $names: map-keys($mdc-layout-grid-columns);
+  $n: index($names, $size);
+  $prev: if($n > 1, nth($names, $n - 1), null);
+
+  @return if($prev, (mdc-layout-grid-breakpoint-min($prev) - 1px), null);
+}
+
 // Private mixins, meant for internal use.
 @mixin mdc-layout-grid-media-query_($size) {
   @if not map-has-key($mdc-layout-grid-columns, $size) {
     @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
   }
 
-  @if $size == phone {
+  $min: mdc-layout-grid-breakpoint-min($size);
+  $max: mdc-layout-grid-breakpoint-max($size);
+
+  @if $min == null and $max != null {
     // Phone
-    @media (max-width: map-get($mdc-layout-grid-breakpoints, tablet) - 1px) {
+    @media (max-width: $max) {
       @content;
     }
   }
 
-  @if $size == tablet {
+  @else if $min != null and $max != null {
     // Tablet
-    @media (min-width: map-get($mdc-layout-grid-breakpoints, tablet)) and (max-width: map-get($mdc-layout-grid-breakpoints, desktop) - 1px) {
+    @media (min-width: $min) and (max-width: $max) {
       @content;
     }
   }
 
-  @if $size == desktop {
+  @else if $min != null and $max == null {
     // Desktop
-    @media (min-width: map-get($mdc-layout-grid-breakpoints, desktop)) {
+    @media (min-width: $min) {
       @content;
     }
+  }
+
+  @else {
+    // Fallback - no breakpoints defined
+    @content;
   }
 }
 

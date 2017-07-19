@@ -19,6 +19,7 @@
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
+@import "@material/typography/mixins";
 
 // postcss-bem-linter: define button
 
@@ -27,6 +28,7 @@
   @include mdc-ripple-bg((pseudo: "::before"));
   @include mdc-ripple-fg((pseudo: "::after"));
   @include mdc-theme-prop(color, text-primary-on-light);
+  @include mdc-typography-base;
 
   display: inline-block;
   position: relative;
