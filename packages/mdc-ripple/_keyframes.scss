@@ -25,7 +25,7 @@
     // that custom properties are supported within the browser before adding this class, we can
     // safely use them without a fallback.
     transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
-    animation-timing-function: $mdc-animation-fast-out-slow-in-timing-function;
+    animation-timing-function: $mdc-animation-standard-curve-timing-function;
   }
 
   to {

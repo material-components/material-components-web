@@ -131,6 +131,7 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     // is considered "clicking on the thumb".
     height: 100%;
     will-change: transform;
+    user-select: none;
   }
 
   &__thumb {

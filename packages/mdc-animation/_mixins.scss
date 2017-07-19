@@ -16,14 +16,18 @@
 
 @import "./variables";
 
-@mixin mdc-animation-linear-out-slow-in {
-  animation-timing-function: $mdc-animation-linear-out-slow-in-timing-function;
+@mixin mdc-animation-deceleration-curve {
+  animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
 }
 
-@mixin mdc-animation-fast-out-slow-in {
-  animation-timing-function: $mdc-animation-fast-out-slow-in-timing-function;
+@mixin mdc-animation-standard-curve {
+  animation-timing-function: $mdc-animation-standard-curve-timing-function;
 }
 
-@mixin mdc-animation-fast-out-linear-in {
-  animation-timing-function: $mdc-animation-fast-out-linear-in-timing-function;
+@mixin mdc-animation-acceleration-curve {
+  animation-timing-function: $mdc-animation-acceleration-curve-timing-function;
+}
+
+@mixin mdc-animation-sharp-curve {
+  animation-timing-function: $mdc-animation-sharp-curve-timing-function;
 }
