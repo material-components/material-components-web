@@ -33,7 +33,8 @@ We currently have variables for the following 3 animation curves:
 | --- | --- | --- |
 | `$mdc-animation-standard-curve-timing-function` | `cubic-bezier(.4, 0, .2, 1)` | Standard curve; any animations that are visible from start to finish (e.g. a FAB transforming into a toolbar) |
 | `$mdc-animation-deceleration-curve-timing-function` | `cubic-bezier(0, 0, .2, 1)` | Animations that cause objects to enter the screen (e.g. a fade in) |
-| `$mdc-animation-acceleration-curve-timing-function` | `cubic-bezier(.4, 0, ``, 1)` | Animations that cause objects to leave the screen (e.g. a fade out) |
+| `$mdc-animation-acceleration-curve-timing-function` | `cubic-bezier(.4, 0, 1, 1)` | Animations that cause objects to leave the screen permanently (e.g. a fade out) |
+| `$mdc-animation-sharp-curve-timing-function` | `cubic-bezier(.4, 0, .6, 1)` | Animations that cause objects to leave the screen temporarily (e.g. closing a drawer) |
 
 ### SCSS
 
