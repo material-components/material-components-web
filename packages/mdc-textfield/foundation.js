@@ -14,18 +14,28 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import MDCFoundation from '@material/base/foundation';
+/* eslint-disable no-unused-vars */
+import {MDCTextfieldAdapter, TextfieldElementState} from './adapter';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 
+/**
+ * @extends {MDCFoundation<!MDCTextfieldAdapter>}
+ */
 export default class MDCTextfieldFoundation extends MDCFoundation {
+
+  /** @return enum{cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum{strings} */
   static get strings() {
     return strings;
   }
 
+  /** @return {!MDCTextfieldAdapter} */
   static get defaultAdapter() {
     return {
       addClass: (/* className: string */) => {},
@@ -45,18 +55,27 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       deregisterInputKeydownHandler: (/* handler: EventListener */) => {},
       setHelptextAttr: (/* name: string, value: string */) => {},
       removeHelptextAttr: (/* name: string */) => {},
-      getNativeInput: () => /* HTMLInputElement */ ({}),
+      getNativeInput: () => /* TextfieldElementState */ ({}),
     };
   }
 
   constructor(adapter = {}) {
     super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
 
+    /** @private {boolean} */
     this.receivedUserInput_ = false;
-    this.inputFocusHandler_ = () => this.activateFocus_();
-    this.inputBlurHandler_ = () => this.deactivateFocus_();
-    this.inputInputHandler_ = () => this.autoCompleteFocus_();
-    this.inputKeydownHandler_ = () => this.receivedUserInput_ = true;
+
+    this.inputFocusHandler_ = /** @private {!EventListener} */ (
+      () => this.activateFocus_());
+
+    this.inputBlurHandler_ = /** @private {!EventListener} */ (
+      () => this.deactivateFocus_());
+
+    this.inputInputHandler_ = /** @private {!EventListener} */ (
+      () => this.autoCompleteFocus_());
+
+    this.inputKeydownHandler_ = /** @private {!EventListener} */ (
+      () => this.receivedUserInput_ = true);
   }
 
   init() {
@@ -80,6 +99,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
   }
 
+  /** @private */
   activateFocus_() {
     const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
@@ -87,17 +107,20 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.showHelptext_();
   }
 
+  /** @private */
   autoCompleteFocus_() {
     if (!this.receivedUserInput_) {
       this.activateFocus_();
     }
   }
 
+  /** @private */
   showHelptext_() {
     const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
     this.adapter_.removeHelptextAttr(ARIA_HIDDEN);
   }
 
+  /** @private */
   deactivateFocus_() {
     const {FOCUSED, INVALID, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
@@ -116,6 +139,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.updateHelptextOnDeactivation_(isValid);
   }
 
+  /**
+   * @param {boolean} isValid
+   * @private
+   */
   updateHelptextOnDeactivation_(isValid) {
     const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextfieldFoundation.cssClasses;
     const {ROLE} = MDCTextfieldFoundation.strings;
@@ -135,20 +162,30 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.hideHelptext_();
   }
 
+  /** @private */
   hideHelptext_() {
     const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
     this.adapter_.setHelptextAttr(ARIA_HIDDEN, 'true');
   }
 
+  /**
+   * @return {boolean}
+   * @private
+   */
   isBadInput_() {
     const input = this.getNativeInput_();
     return input.validity ? input.validity.badInput : input.badInput;
   }
 
+  /**
+   * @return {boolean}
+   * @private
+   */
   isDisabled() {
     return this.getNativeInput_().disabled;
   }
 
+  /** @param {boolean} disabled */
   setDisabled(disabled) {
     const {DISABLED} = MDCTextfieldFoundation.cssClasses;
     this.getNativeInput_().disabled = disabled;
@@ -159,6 +196,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * @return {!TextfieldElementState}
+   * @private
+   */
   getNativeInput_() {
     return this.adapter_.getNativeInput() || {
       checkValidity: () => true,
