@@ -220,8 +220,18 @@ rules:
     - true
     - ignoreProperties:
         - contain
+  # There is no reason that a specific ID would be needed for UI components
+  selector-max-id: 0
   # Qualifying types are not needed when using a naming system like BEM
   selector-no-qualifying-type: true
+  # In general, we should not be modifying elements within our components, since we can't
+  # predict the use cases in which users would add a certain type of element into a component.
+  selector-max-type: 
+    - 0
+    - ignoreTypes:
+        - /fieldset/
+  # Styles for components should never need the universal selector.
+  selector-max-universal: 0
   # Ensure any defined symbols are prefixed with "mdc-"
   # TODO: Remove "md-" pattern.
   custom-media-pattern: ^mdc?-.+
