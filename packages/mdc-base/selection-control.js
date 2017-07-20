@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-/** @enum {string} */
-export const strings = {
-  NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control',
-};
-
-/** @enum {string} */
-export const cssClasses = {
-  ROOT: 'mdc-radio',
-  DISABLED: 'mdc-radio--disabled',
-};
+/**
+ * @typedef {!{
+ *   checked: boolean,
+ *   indeterminate: boolean,
+ *   disabled: boolean,
+ *   value: ?string
+ * }}
+ */
+export let SelectionControlState;
