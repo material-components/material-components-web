@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-unused-vars */
-import {SelectionControlState} from '@material/base/selection-control';
-
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Checkbox. Provides an interface for managing
+ * Adapter for MDC Icon Toggle. Provides an interface for managing
  * - classes
  * - dom
+ * - inner text
  * - event handlers
+ * - event dispatch
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -35,30 +34,56 @@ import {SelectionControlState} from '@material/base/selection-control';
  *
  * @record
  */
-export default class MDCCheckboxAdapter {
+export default class MDCIconToggleAdapter {
   /** @param {string} className */
   addClass(className) {}
 
   /** @param {string} className */
   removeClass(className) {}
 
-  /** @param {!EventListener} handler */
-  registerAnimationEndHandler(handler) {}
+  /**
+   * @param {string} type
+   * @param {!EventListener} handler
+   */
+  registerInteractionHandler(type, handler) {}
 
-  /** @param {!EventListener} handler */
-  deregisterAnimationEndHandler(handler) {}
+  /**
+   * @param {string} type
+   * @param {!EventListener} handler
+   */
+  deregisterInteractionHandler(type, handler) {}
 
-  /** @param {!EventListener} handler */
-  registerChangeHandler(handler) {}
+  /** @param {string} text */
+  setText(text) {}
 
-  /** @param {!EventListener} handler */
-  deregisterChangeHandler(handler) {}
+  /** @return {number} */
+  getTabIndex() {}
 
-  /** @return {!SelectionControlState} */
-  getNativeControl() {}
+  /** @param {number} tabIndex */
+  setTabIndex(tabIndex) {}
 
-  forceLayout() {}
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  getAttr(name) {}
 
-  /** @return {boolean} */
-  isAttachedToDOM() {}
+  /**
+   * @param {string} name
+   * @param {string} value
+   */
+  setAttr(name, value) {}
+
+  /** @param {string} name */
+  rmAttr(name) {}
+
+  /** @param {!IconToggleEvent} evtData */
+  notifyChange(evtData) {}
 }
+
+/**
+ * @typedef {!{
+ *   isOn: boolean,
+ * }}
+ */
+export let IconToggleEvent;

@@ -14,38 +14,52 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import MDCFoundation from '@material/base/foundation';
+/* eslint-disable no-unused-vars */
+import {SelectionControlState} from '@material/base/selection-control';
+import MDCRadioAdapter from './adapter';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 
+/**
+ * @extends {MDCFoundation<!MDCRadioAdapter>}
+ */
 export default class MDCRadioFoundation extends MDCFoundation {
+  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
 
+  /** @return {!MDCRadioAdapter} */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCRadioAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      getNativeControl: () => /* HTMLInputElement */ {},
-    };
+      getNativeControl: () => /* !SelectionControlState */ {},
+    });
   }
 
+  /** @return {boolean} */
   isChecked() {
     return this.getNativeControl_().checked;
   }
 
+  /** @param {boolean} checked */
   setChecked(checked) {
     this.getNativeControl_().checked = checked;
   }
 
+  /** @return {boolean} */
   isDisabled() {
     return this.getNativeControl_().disabled;
   }
 
+  /** @param {boolean} disabled */
   setDisabled(disabled) {
     const {DISABLED} = MDCRadioFoundation.cssClasses;
     this.getNativeControl_().disabled = disabled;
@@ -56,14 +70,20 @@ export default class MDCRadioFoundation extends MDCFoundation {
     }
   }
 
+  /** @return {?string} */
   getValue() {
     return this.getNativeControl_().value;
   }
 
+  /** @param {?string} value */
   setValue(value) {
     this.getNativeControl_().value = value;
   }
 
+  /**
+   * @return {!SelectionControlState}
+   * @private
+   */
   getNativeControl_() {
     return this.adapter_.getNativeControl() || {
       checked: false,
