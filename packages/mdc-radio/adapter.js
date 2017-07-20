@@ -20,10 +20,9 @@ import {SelectionControlState} from '@material/base/selection-control';
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Checkbox. Provides an interface for managing
+ * Adapter for MDC Radio. Provides an interface for managing
  * - classes
  * - dom
- * - event handlers
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -35,30 +34,13 @@ import {SelectionControlState} from '@material/base/selection-control';
  *
  * @record
  */
-export default class MDCCheckboxAdapter {
+export default class MDCRadioAdapter {
   /** @param {string} className */
   addClass(className) {}
 
   /** @param {string} className */
   removeClass(className) {}
 
-  /** @param {!EventListener} handler */
-  registerAnimationEndHandler(handler) {}
-
-  /** @param {!EventListener} handler */
-  deregisterAnimationEndHandler(handler) {}
-
-  /** @param {!EventListener} handler */
-  registerChangeHandler(handler) {}
-
-  /** @param {!EventListener} handler */
-  deregisterChangeHandler(handler) {}
-
   /** @return {!SelectionControlState} */
   getNativeControl() {}
-
-  forceLayout() {}
-
-  /** @return {boolean} */
-  isAttachedToDOM() {}
 }
