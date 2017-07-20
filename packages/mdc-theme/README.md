@@ -46,13 +46,12 @@ npm install --save @material/theme
 
 ## Usage
 
-### Themeing
+### Change theme colors
 
-MDC Theme mixins use CSS custom properties for browsers that support it, with a fallback to a pre-processed 
-static color if they don't. This enables runtime theming if CSS properties are available.
+MDC Theme makes it easy to develop your brand colors. You can simply override the default theme color by through Sass variable or CSS custom properties. In the latter case, it enables runtime theming.
 
-To set the theme colors for your application, simply define the three theme color variables before importing 
-`mdc-theme` or any MDC-Web components that rely on it:
+> **A note for Sass variables**, you need to define the three theme color variables before importing mdc-theme
+> or any MDC-Web components that rely on it, like following:
 
 ```scss
 $mdc-theme-primary: #9c27b0;
@@ -62,7 +61,10 @@ $mdc-theme-background: #fff;
 @import "@material/theme/mdc-theme";
 ```
 
-The correct text colors will automatically be calculated based on the provided theme colors.
+The text color, for text placed on top of these selected theme colors, is programmatically computed based on
+color contrast. We follow the Web Content Accessibility Guidelines 2.0. 
+
+https://www.w3.org/TR/WCAG20
 
 ### CSS Custom properties
 
@@ -104,7 +106,9 @@ The correct text colors will automatically be calculated based on the provided t
 | `mdc-theme-prop($property, $style, $important)` | Applies a theme color to a property |
 | `mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the root element is within an Dark Theme context. If using the mixin on anything other than the base selector, you need to specify the base selector as a parameter. If using the mixin with a modifier class, pass `true` for the second argument. |
 
-#### Properties
+#### mdc-theme-prop Properties
+
+These properties can be used as the `$property` argument for `mdc-theme-prop` mixin.
 
 | Property Name                  | Description |
 | ------------------------------ | - |
