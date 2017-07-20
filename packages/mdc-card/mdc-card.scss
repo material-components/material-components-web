@@ -50,7 +50,7 @@
     box-sizing: border-box;
 
     @include mdc-typography(body1);
-    @include mdc-theme-prop(color, text-primary-on-background);
+    @include mdc-theme-prop(color, text-primary-on-light);
 
     @include mdc-theme-dark(".mdc-card") {
       @include mdc-theme-prop(color, text-primary-on-dark);
@@ -132,7 +132,7 @@
 
   &__title {
     @include mdc-typography(body2);
-    @include mdc-theme-prop(color, text-primary-on-background);
+    @include mdc-theme-prop(color, text-primary-on-light);
 
     // Adjust text color for dark theme.
     @include mdc-theme-dark(".mdc-card") {
@@ -150,7 +150,7 @@
 
   &__subtitle {
     @include mdc-typography(body1);
-    @include mdc-theme-prop(color, text-primary-on-background);
+    @include mdc-theme-prop(color, text-primary-on-light);
 
     // Adjust text color for dark theme.
     @include mdc-theme-dark(".mdc-card") {

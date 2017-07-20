@@ -30,7 +30,7 @@
 }
 
 @function mdc-checkbox-transition-exit($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
-  @return mdc-animation-exit($property, $duration, $delay);
+  @return mdc-animation-exit-temporary($property, $duration, $delay);
 }
 
 @mixin mdc-checkbox-cover-element {

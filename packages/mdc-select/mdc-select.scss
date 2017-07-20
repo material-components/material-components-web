@@ -44,8 +44,8 @@
   max-width: calc(100% - #{$dd-arrow-padding});
   height: 32px;
   transition:
-    mdc-animation-exit(border-bottom-color, 150ms),
-    mdc-animation-exit(background-color, 150ms);
+    mdc-animation-exit-temporary(border-bottom-color, 150ms),
+    mdc-animation-exit-temporary(background-color, 150ms);
   border: none;
   border-bottom: 1px solid rgba(black, .12);
   border-radius: 0;
@@ -95,8 +95,8 @@
 
   &__selected-text {
     transition:
-      mdc-animation-exit(opacity, 125ms),
-      mdc-animation-exit(transform, 125ms);
+      mdc-animation-exit-temporary(opacity, 125ms),
+      mdc-animation-exit-temporary(transform, 125ms);
     white-space: nowrap;
     overflow: hidden;
   }

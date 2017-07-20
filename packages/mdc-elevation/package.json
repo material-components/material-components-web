@@ -8,7 +8,6 @@
     "material design",
     "elevation"
   ],
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

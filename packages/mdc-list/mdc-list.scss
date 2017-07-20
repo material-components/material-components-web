@@ -78,7 +78,7 @@ $mdc-list-side-padding: 16px;
 
   &__end-detail {
     @include mdc-list-detail-size_(24px);
-    @include mdc-rtl-reflexive-property(margin, auto, $mdc-list-side-padding, ".mdc-list-item");
+    @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
   }
 
   &__text {
