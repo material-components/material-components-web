@@ -28,7 +28,7 @@ $mdc-radio-transition-duration: 120ms;
 }
 
 @function mdc-radio-exit($name) {
-  @return mdc-animation-exit($name, $mdc-radio-transition-duration);
+  @return mdc-animation-exit-temporary($name, $mdc-radio-transition-duration);
 }
 
 // postcss-bem-linter: define radio
