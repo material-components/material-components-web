@@ -31,7 +31,7 @@ It is important  choose a text color with sufficient contrast, especially when y
 - Disabled, used for text in disabled components and content.
 - Icon, used for icons.
 
-> Note: Don't confuse primary color with primary text. The former refers to the primary theme color, that is used
+> **A note about primary**, don't confuse primary color with primary text. The former refers to the primary theme color, that is used
 to establish a visual identity and color many parts of your application. The latter refers to the style of text
 that is most prominent (low opacity, high contrast), and used to display most content.
 
@@ -48,7 +48,7 @@ npm install --save @material/theme
 MDC Theme makes it easy to develop your brand colors. You override the default theme color through Sass 
 variables or CSS custom properties. CSS custom properties enables runtime theming.
 
-> **A note for Sass variables**, you need to define the three theme color variables before importing mdc-theme
+> **A note about Sass variables**, you need to define the three theme color variables before importing mdc-theme
 > or any MDC-Web components that rely on it, like following:
 
 ```scss
@@ -114,11 +114,7 @@ background. There are two ways to specify if a component is in a Dark Theme cont
 | Mixin                                           | Description |
 | ----------------------------------------------- | - |
 | `mdc-theme-prop($property, $style, $important)` | Applies a theme color to a property |
-| `mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the current selector is
-within an Dark Theme context. If you are using the mixin on anything other than the base selector of the
-component, e.g. `.mdc-button`, you need to specify `$root-selector` as the base selector as a parameter. You
-can also specify `$compound` to true if the the current selector is a compound selector with the base
-selector, e.g. a modifier class to the component root element. |
+| `mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the current selector is within an Dark Theme context. If you are using the mixin on anything other than the base selector of the component, e.g. `.mdc-button`, you need to specify `$root-selector` as the base selector as a parameter. You can also specify `$compound` to true if the the current selector is a compound selector with the base selector, e.g. a modifier class to the component root element. |
 
 #### mdc-theme-prop Properties
 
