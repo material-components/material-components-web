@@ -146,7 +146,7 @@ function checkCSSDependencyAddedInMDCPackage() {
 
 function checkJSDependencyAddedInMDCPackage() {
   const NOT_IMPORTED = ['animation'];
-  const NOT_AUTOINIT = ['auto-init', 'base', 'form-field'];
+  const NOT_AUTOINIT = ['auto-init', 'base'];
   const name = pkg.name.split('/')[1];
   if (typeof(pkg.main) !== 'undefined' && NOT_IMPORTED.indexOf(name) === -1) {
     const nameCamel = camelCase(pkg.name.replace('@material/', ''));
