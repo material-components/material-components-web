@@ -715,8 +715,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 }
 
 // mdc-form-field tweaks to align text field label correctly
-// stylelint-disable selector-no-type
+// stylelint-disable selector-max-type
 .mdc-form-field > .mdc-textfield + label {
   align-self: flex-start;
 }
-// stylelint-enable selector-no-type
+// stylelint-enable selector-max-type
