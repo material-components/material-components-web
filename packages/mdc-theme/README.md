@@ -18,16 +18,13 @@ path: /catalog/theme/
 
 This color palette comprises primary and accent colors that can be used for illustration or to develop your brand colors.
 
-MDC Theme is a foundational module that provides theming to MDC-Web components. The module makes Sass functions, 
-mixins, CSS custom properties, and a set of CSS classes available to developers.
-
-The colors in this module are derived from the three theme colors in MDC-Web:
+MDC Theme is a foundational module that provides theming to MDC-Web components. The colors in this module
+let you specify your brand colors:
 - Primary: the primary color used in your application. This applies to a number of UI elements, such as app bars.
 - Accent: the accent color used in your application. This applies to UI elements such as FABs.
 - Background: the background color for your application. This is the color on top of which your UI is drawn.
 
-When using the theme colors as background, it becomes important to choose a text color with sufficient contrast.
-In addition, it's important to consider the style of text:
+It is important  choose a text color with sufficient contrast, especially when you use a theme color as a background color. Consider the different styles of text:
 - Primary, used for most text.
 - Secondary, used for text which is lower in the visual hierarchy.
 - Hint, used for text hints (such as those in text fields and labels).
@@ -48,7 +45,8 @@ npm install --save @material/theme
 
 ### Change theme colors
 
-MDC Theme makes it easy to develop your brand colors. You can simply override the default theme color by through Sass variable or CSS custom properties. In the latter case, it enables runtime theming.
+MDC Theme makes it easy to develop your brand colors. You override the default theme color through Sass 
+variables or CSS custom properties. CSS custom properties enables runtime theming.
 
 > **A note for Sass variables**, you need to define the three theme color variables before importing mdc-theme
 > or any MDC-Web components that rely on it, like following:
@@ -99,12 +97,28 @@ https://www.w3.org/TR/WCAG20
 | `--mdc-theme-text-disabled-on-dark` | Disabled text on top of a dark-colored background. |
 | `--mdc-theme-text-icon-on-dark` | Icons on top of a dark-colored background. |
 
+### Dark Theme
+
+Some components can change their appearance when in a Dark Theme context, aka placed on top of a dark
+background. There are two ways to specify if a component is in a Dark Theme context The first is to add 
+`mdc-theme--dark` to a *container* element, which hold the component. The second way is to add 
+`<component_name>--theme-dark` modifier class to the actual component element. For example, 
+`mdc-button--theme-dark` would put the MDC Button in dark mode.
+
+> **A note about Dark Theme context**, don't confuse Dark Theme context with a component that has a dark color. 
+> Dark Theme context means the component sits on top of a dark background.
+
+
 ### Sass Mixins, Variables, and Functions
 
 | Mixin                                           | Description |
 | ----------------------------------------------- | - |
 | `mdc-theme-prop($property, $style, $important)` | Applies a theme color to a property |
-| `mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the root element is within an Dark Theme context. If using the mixin on anything other than the base selector, you need to specify the base selector as a parameter. If using the mixin with a modifier class, pass `true` for the second argument. |
+| `mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the current selector is
+within an Dark Theme context. If you are using the mixin on anything other than the base selector of the
+component, e.g. `.mdc-button`, you need to specify `$root-selector` as the base selector as a parameter. You
+can also specify `$compound` to true if the the current selector is a compound selector with the base
+selector, e.g. a modifier class to the component root element. |
 
 #### mdc-theme-prop Properties
 
