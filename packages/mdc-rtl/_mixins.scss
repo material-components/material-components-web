@@ -125,7 +125,7 @@
  * ```
  *
  * You can also pass a 4th optional $root-selector argument which will be forwarded to `mdc-rtl`,
- * e.g. `@include mdc-rtl-reflexive-box-property(margin, left, 8px, ".mdc-component")`.
+ * e.g. `@include mdc-rtl-reflexive-box(margin, left, 8px, ".mdc-component")`.
  *
  * Note that this function will always zero out the original value in an RTL context. If you're
  * trying to flip the values, use mdc-rtl-reflexive-property().
@@ -206,15 +206,15 @@
  * ```
  * An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
  */
-@mixin mdc-rtl-reflexive-position($pos, $value, $root-selector: null) {
-  @if (index((right, left), $pos) == null) {
-    @error "Invalid position #{pos}. Please specifiy either right or left";
+@mixin mdc-rtl-reflexive-position($position-property, $value, $root-selector: null) {
+  @if (index((right, left), $position-property) == null) {
+    @error "Invalid position #{position-property}. Please specifiy either right or left";
   }
 
   $left-value: $value;
   $right-value: initial;
 
-  @if ($pos == right) {
+  @if ($position-property == right) {
     $right-value: $value;
     $left-value: initial;
   }
