@@ -194,6 +194,20 @@ rules:
   # attribute modifiers based on selector-max-compound-selectors, plus an addition for
   # pseudo-classes (4). Allow for pseudo-elements (1).
   selector-max-specificity: 0,4,1
+  at-rule-no-unknown:
+    - true
+    - ignoreAtRules:
+      - at-root
+      - content
+      - each
+      - else
+      - error
+      - for
+      - function
+      - include
+      - if
+      - mixin
+      - return
   # Disallow "@extend" in scss.
   # http://csswizardry.com/2016/02/mixins-better-for-performance/
   # http://vanseodesign.com/css/sass-mixin-or-extend/
@@ -207,21 +221,17 @@ rules:
     - ignoreProperties:
         - contain
   # There is no reason that a specific ID would be needed for UI components
-  selector-no-id: true
+  selector-max-id: 0
   # Qualifying types are not needed when using a naming system like BEM
   selector-no-qualifying-type: true
-  # In general, we should *never* be modifying elements within our components, since we can't
+  # In general, we should not be modifying elements within our components, since we can't
   # predict the use cases in which users would add a certain type of element into a component.
-  # The only hard exception to this are `fieldset` elements, which can be disabled and in that case
-  # we want our UI components within that fieldset to be disabled as well.
-  # Other exceptions to this may be in packages/material-components-web, in which case this rule could
-  # be disabled for that file, with an explanation.
-  selector-no-type:
-    - true
+  selector-max-type: 
+    - 0
     - ignoreTypes:
-        - fieldset
+        - /fieldset/
   # Styles for components should never need the universal selector.
-  selector-no-universal: true
+  selector-max-universal: 0
   # Ensure any defined symbols are prefixed with "mdc-"
   # TODO: Remove "md-" pattern.
   custom-media-pattern: ^mdc?-.+
