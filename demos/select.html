@@ -65,7 +65,7 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div id="hero-js-select" class="mdc-select" role="listbox" tabindex="0">
+        <div id="hero-js-select" class="mdc-select mdc-ripple-upgraded" role="listbox" tabindex="0">
           <span class="mdc-select__selected-text">Pick a food group</span>
           <div class="mdc-simple-menu mdc-select__menu">
             <ul class="mdc-list mdc-simple-menu__items">
@@ -141,6 +141,59 @@
           <label for="disabled">Disabled</label>
         </div>
       </section>
+
+      <section class="example">
+        <h2 class="mdc-typography--title">Fully-Featured Component Improved Style</h2>
+        <section id="box-demo-wrapper">
+          <div id="js-select-box" class="mdc-select mdc-select--box" role="listbox" tabindex="0">
+            <span class="mdc-select__selected-text">Pick a food group</span>
+            <div class="mdc-simple-menu mdc-select__menu">
+              <ul class="mdc-list mdc-simple-menu__items">
+                <li class="mdc-list-item" role="option" id="grains" aria-disabled="true">
+                  Pick a food group
+                </li>
+                <li class="mdc-list-item" role="option" id="grains" tabindex="0">
+                  Bread, Cereal, Rice, and Pasta
+                </li>
+                <li class="mdc-list-item" role="option" id="vegetables" aria-disabled="true" tabindex="0">
+                  Vegetables
+                </li>
+                <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
+                  Fruit
+                </li>
+                <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
+                  Milk, Yogurt, and Cheese
+                </li>
+                <li class="mdc-list-item" role="option" id="meat" tabindex="0">
+                  Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
+                </li>
+                <li class="mdc-list-item" role="option" id="fats" tabindex="0">
+                  Fats, Oils, and Sweets
+                </li>
+              </ul>
+              <span class="mdc-select__label"></span>
+              <div class="mdc-select__bottom-line"></div>
+            </div>
+          </div>
+        </section>
+        <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
+        <div>
+          <input type="checkbox" id="dark-theme">
+          <label for="dark-theme">Dark Theme</label>
+        </div>
+        <div>
+          <input type="checkbox" id="rtl">
+          <label for="rtl">RTL</label>
+        </div>
+        <div>
+          <input type="checkbox" id="disabled">
+          <label for="disabled">Disabled</label>
+        </div>
+      </section>
+
+
+
+
       <section class="example">
         <h2 class="mdc-typography--title">CSS Only</h2>
         <select class="mdc-select">
@@ -210,6 +263,42 @@
 
         var heroSelect = document.getElementById('hero-js-select');
         mdc.select.MDCSelect.attachTo(heroSelect);
+      })();
+    </script>
+    <script>
+      (function() {
+        var MDCSelect = mdc.select.MDCSelect;
+        var boxRoot = document.getElementById('js-select-box');
+        var boxCurrentlySelected = document.getElementById('box-currently-selected');
+        var select = MDCSelect.attachTo(boxRoot);
+        boxRoot.addEventListener('MDCSelect:change', function() {
+          var item = select.selectedOptions[0];
+          var index = select.selectedIndex;
+          boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
+           ' with value "' + select.value + '"';
+        });
+
+        var boxDemoWrapper = document.getElementById('box-demo-wrapper');
+        var darkThemeCb = document.getElementById('dark-theme');
+        var rtlCb = document.getElementById('rtl');
+        var disabledCb = document.getElementById('disabled');
+
+        darkThemeCb.addEventListener('change', function() {
+          boxDemoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
+        rtlCb.addEventListener('change', function() {
+          if (rtlCb.checked) {
+            boxDemoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            boxDemoWrapper.removeAttribute('dir');
+          }
+        });
+        disabledCb.addEventListener('change', function() {
+          select.disabled = disabledCb.checked;
+        });
+
+        // var heroSelect = document.getElementById('hero-js-select');
+        // mdc.select.MDCSelect.attachTo(heroSelect);
       })();
     </script>
   </body>
