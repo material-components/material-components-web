@@ -113,7 +113,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="basic-checkbox" id="basic-checkbox-label">This is my checkbox</label>
+            <label for="basic-checkbox">This is my checkbox</label>
           </div>
           <button type="button" onclick="this.parentElement.hasAttribute('dir') ? this.parentElement.removeAttribute('dir') : this.parentElement.setAttribute('dir', 'rtl');">Toggle RTL</button>
           <button type="button" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">Toggle Align End</button>
@@ -136,7 +136,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
+            <label for="basic-disabled-checkbox">This is my disabled checkbox</label>
           </div>
           <div>
             <div class="mdc-form-field">
@@ -155,7 +155,7 @@
                   <div class="mdc-checkbox__mixedmark"></div>
                 </div>
               </div>
-              <label for="basic-indeterminate-checkbox" id="basic-disabled-checkbox-label">This is my indeterminate checkbox</label>
+              <label for="basic-indeterminate-checkbox">This is my indeterminate checkbox</label>
             </div>
             <script type="text/javascript">
               document.getElementById('basic-indeterminate-checkbox').indeterminate = true;
@@ -183,7 +183,7 @@
 
             </div>
           </div>
-          <label for="native-js-checkbox" id="my-checkbox-label">This is my checkbox</label>
+          <label for="native-js-checkbox">This is my checkbox</label>
         </div>
         <button type="button" id="make-ind">Make indeterminate</button>
         <button type="button" id="toggle-disabled">Toggle Disabled</button>
@@ -193,7 +193,7 @@
         <h2>Dark Theme (mdc-theme--dark) - CSS Only</h2>
         <div>
           <div class="mdc-form-field">
-            <div id="mdc-checkbox-dark" class="mdc-checkbox">
+            <div class="mdc-checkbox">
               <input type="checkbox"
                      id="checkbox-dark"
                      class="mdc-checkbox__native-control"/>
@@ -208,14 +208,14 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="checkbox-dark" id="dark-checkbox-label">This is my checkbox</label>
+            <label for="checkbox-dark">This is my checkbox</label>
           </div>
         </div>
         <div>
           <div class="mdc-form-field">
             <div class="mdc-checkbox mdc-checkbox--disabled">
               <input type="checkbox"
-                     id="basic-disabled-checkbox"
+                     id="basic-disabled-checkbox-dark"
                      class="mdc-checkbox__native-control"
                      disabled />
               <div class="mdc-checkbox__background">
@@ -229,7 +229,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
+            <label for="basic-disabled-checkbox-dark">This is my disabled checkbox</label>
           </div>
         </div>
         <div>
@@ -249,7 +249,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="basic-indeterminate-checkbox-dark" id="basic-disabled-checkbox-label">This is my indeterminate checkbox</label>
+            <label for="basic-indeterminate-checkbox-dark">This is my indeterminate checkbox</label>
           </div>
           <script type="text/javascript">
             document.getElementById('basic-indeterminate-checkbox-dark').indeterminate = true;
@@ -261,9 +261,9 @@
         <h2>Dark Theme (mdc-checkbox--theme-dark) - CSS Only</h2>
         <div>
           <div class="mdc-form-field mdc-form-field--theme-dark">
-            <div id="mdc-checkbox-dark" class="mdc-checkbox mdc-checkbox--theme-dark">
+            <div class="mdc-checkbox mdc-checkbox--theme-dark">
               <input type="checkbox"
-                     id="checkbox-dark"
+                     id="checkbox-dark-2"
                      class="mdc-checkbox__native-control"/>
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
@@ -276,14 +276,14 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="checkbox-dark" id="dark-checkbox-label">This is my checkbox</label>
+            <label for="checkbox-dark-2">This is my checkbox</label>
           </div>
         </div>
         <div>
           <div class="mdc-form-field mdc-form-field--theme-dark">
             <div class="mdc-checkbox mdc-checkbox--theme-dark mdc-checkbox--disabled">
               <input type="checkbox"
-                     id="basic-disabled-checkbox"
+                     id="basic-disabled-checkbox-dark-2"
                      class="mdc-checkbox__native-control"
                      disabled />
               <div class="mdc-checkbox__background">
@@ -297,7 +297,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
+            <label for="basic-disabled-checkbox-dark-2">This is my disabled checkbox</label>
           </div>
         </div>
         <div>
@@ -317,7 +317,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="basic-indeterminate-checkbox-dark" id="basic-disabled-checkbox-label">This is my indeterminate checkbox</label>
+            <label for="basic-indeterminate-checkbox-dark-2">This is my indeterminate checkbox</label>
           </div>
           <script type="text/javascript">
             document.getElementById('basic-indeterminate-checkbox-dark-2').indeterminate = true;
@@ -339,13 +339,6 @@
         var formField = checkbox.parentElement;
         var formFieldInstance = new MDCFormField(formField);
         formFieldInstance.input = checkboxInstance;
-
-        var checkbox2 = document.getElementById('mdc-js-checkbox-2');
-        var checkboxInstance2 = new MDCCheckbox(checkbox2);
-
-        var formField2 = checkbox2.parentElement;
-        var formFieldInstance2 = new MDCFormField(formField2);
-        formFieldInstance2.input = checkboxInstance2;
 
         document.getElementById('make-ind').addEventListener('click', function() {
           checkboxInstance.indeterminate = true;
