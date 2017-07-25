@@ -44,6 +44,18 @@ npm install --save @material/elevation
 
 ## Usage
 
+### CSS Classes
+
+Some components have a set elevation. For example, a raised MDC Button has elevation 2.
+
+If you want to set the elevation of an element, which is not a Material Design component, you
+can apply the following CSS classes.
+
+| CSS Class | Description |
+| --------------------------- | - |
+| `mdc-elevation--z<N>` | Sets the elevation to the (N)dp, where 1 <= N <= 24. |
+| `mdc-elevation-transition` | Applies the correct css rules to transition an element between elevations. |
+
 ### Sass Mixins, Variables, and Functions
 
 | Mixin | Description |
@@ -69,10 +81,3 @@ If you need more configurability over your transitions, use the `mdc-elevation-t
   will-change: $mdc-elevation-property, opacity;
 }
 ```
-
-### CSS Classes
-
-| CSS Class | Description |
-| --------------------------- | - |
-| `mdc-elevation--z<N>` | Sets the elevation to the (N)dp, where 1 <= N <= 24. |
-| `mdc-elevation-transition` | Applies the correct css rules to transition an element between elevations. |
