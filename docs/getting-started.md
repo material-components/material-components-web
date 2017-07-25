@@ -235,7 +235,7 @@ following to the `<head>` tag of `index.html`:
 </style>
 ```
 
-If you are using any modern browser besides Edge (which is currently [working on it](https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csscustompropertiesakacssvariables/)), you'll see that the button background as well as the focused underline and label on text
+If you're using any supported browser, besides IE 11, you'll see that the button background as well as the focused underline and label on text
 fields are now a nice, dark shade of blue.
 
 > Note that using CSS Variables is just one way of theming using MDC-Web. Check out our

@@ -29,4 +29,5 @@ export const cssClasses = {
   HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
   HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
   LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
+  BOX: 'mdc-textfield--box',
 };

@@ -42,7 +42,8 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTemporaryDrawerFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'registerInteractionHandler',
+    'addClass', 'removeClass', 'hasClass', 'addBodyClass', 'removeBodyClass',
+    'hasNecessaryDom', 'registerInteractionHandler',
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
@@ -319,4 +320,25 @@ test('#isRootTransitioningEventTarget_ returns true if the element is the drawer
   const fakeEl = 'fake element';
   td.when(mockAdapter.isDrawer(fakeEl)).thenReturn(true);
   assert.isTrue(foundation.isRootTransitioningEventTarget_(fakeEl));
+});
+
+test('#open adds scroll lock class to the body', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+
+  td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
+});
+
+test('#close removes the scroll lock class from the body', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDrawer(td.matchers.isA(Object))).thenReturn(true);
+  foundation.open();
+  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
+  td.when(mockAdapter.isDrawer(td.matchers.isA(Object))).thenReturn(true);
+  foundation.close();
+
+  td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
 });

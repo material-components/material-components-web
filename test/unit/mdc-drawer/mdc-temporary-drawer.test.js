@@ -322,3 +322,18 @@ test('adapter#isDrawer returns false for a non-drawer element', () => {
   const {root, component} = setupTest();
   assert.isNotOk(component.getDefaultFoundation().adapter_.isDrawer(root));
 });
+
+test('adapter#addBodyClass adds a class to the body', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.addBodyClass('mdc-drawer--scroll-lock');
+  assert.isOk(document.querySelector('body').classList.contains('mdc-drawer--scroll-lock'));
+});
+
+test('adapter#removeBodyClass remove a class from the body', () => {
+  const {component} = setupTest();
+  const body = document.querySelector('body');
+
+  body.classList.add('mdc-drawer--scroll-lock');
+  component.getDefaultFoundation().adapter_.removeBodyClass('mdc-drawer--scroll-lock');
+  assert.isNotOk(body.classList.contains('mdc-drawer--scroll-lock'));
+});

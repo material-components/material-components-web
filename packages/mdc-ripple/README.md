@@ -33,6 +33,7 @@ path: /catalog/ripples/
     - [Specifying known element dimensions](#specifying-known-element-dimensions)
   - [Caveat: Safari](#caveat-safari)
   - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
+  - [The util API](#the-util-api)
 
 MDC Ripple provides the Javascript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
 
@@ -112,8 +113,7 @@ argument, with which you can specify the following parameters:
 
 | Parameter | Description | Default |
 | --- | --- | --- |
-| `pseudo` | The name of the pseudo-element you want to use to style the ripple. Using pseudo-elements to style ripples obviates the need for any extra DOM and is recommended. However,
-if given `null` it will style the element directly, rather than attaching styles to the pseudo element. | `null` |
+| `pseudo` | The name of the pseudo-element you want to use to style the ripple. Using pseudo-elements to style ripples obviates the need for any extra DOM and is recommended. However, if given `null` it will style the element directly, rather than attaching styles to the pseudo element. | `null` |
 | `radius` | For _bounded_ ripples, specifies radii of the ripple circles. Can be any valid numeric CSS unit. | `100%` |
 | `theme-style` | When provided, will use a style specified by `mdc-theme` to provide colors to the ripple. For example, passing `(theme-style: primary)` would make the ripples the color of the theme's primary color. Note that there are some current limitations here. See [below](#caveat-theme-custom-variables) | `null` |
 | `base-color` | The RGB color (_without_ an alpha component) of the ripple. This will only be used if `theme-style` isn't specified. | `black` |
@@ -126,13 +126,13 @@ First import the ripple JS
 ##### ES2015
 
 ```javascript
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation, util} from '@material/ripple';
 ```
 
 ##### CommonJS
 
 ```javascript
-const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
+const {MDCRipple, MDCRippleFoundation, util} = require('@material/ripple');
 ```
 
 ##### AMD
@@ -141,6 +141,7 @@ const {MDCRipple, MDCRippleFoundation} = require('@material/ripple');
 require('path/to/@material/ripple', function(mdcRipple) {
   const MDCRipple = mdcRipple.MDCRipple;
   const MDCRippleFoundation = mdcRipple.MDCRippleFoundation;
+  const util = mdcRipple.util;
 });
 ```
 
@@ -149,6 +150,7 @@ require('path/to/@material/ripple', function(mdcRipple) {
 ```javascript
 const MDCRipple = mdc.ripple.MDCRipple;
 const MDCRippleFoundation = mdc.ripple.MDCRippleFoundation;
+const util = mdc.ripple.util;
 ```
 
 Then, simply initialize the ripple with the correct DOM element.
@@ -181,6 +183,10 @@ such as a `mousedown` or a `pointerdown` event). It expands from the center.
 Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via
 interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
 
+#### MDCRipple.layout()
+
+Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's
+position or dimension is changed programmatically.
 
 ### Unbounded Ripples
 
@@ -405,3 +411,23 @@ background: color(var(--mdc-theme-primary) a(6%));
 But as far as we know, no browsers yet support it. We have added a `@supports` clause into our code
 to make sure that it can be used as soon as browsers adopt it, but for now this means that _changes
 to your theme via a custom variable will not propagate to ripples._ We don't see this being a gigantic issue as we envision most users configuring one theme via sass. For places where you do need this, special treatment will have to be given.
+
+### The util API
+
+External frameworks and libraries can use the following utility methods when integrating a component.
+
+#### util.supportsCssVariables(windowObj) => Boolean
+
+Determine whether the current browser supports CSS variables (custom properties).
+
+#### util.applyPassive(globalObj = window, forceRefresh = false) => object
+
+Determine whether the current browser supports passive event listeners, and if so, use them.
+
+#### getMatchesProperty(HTMLElementPrototype) => Function
+
+Choose the correct matches property to use on the current browser.
+
+#### getNormalizedEventCoords(ev, pageOffset, clientRect) => object
+
+Determines X/Y coordinates of an event normalized for touch events and ripples.

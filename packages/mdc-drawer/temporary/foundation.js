@@ -28,6 +28,8 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
 
   static get defaultAdapter() {
     return Object.assign(MDCSlidableDrawerFoundation.defaultAdapter, {
+      addBodyClass: (/* className: string */) => {},
+      removeBodyClass: (/* className: string */) => {},
       isDrawer: () => false,
       updateCssVariable: (/* value: string */) => {},
     });
@@ -56,9 +58,11 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
     super.destroy();
 
     this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
+    this.enableScroll_();
   }
 
   open() {
+    this.disableScroll_();
     // Make sure custom property values are cleared before starting.
     this.adapter_.updateCssVariable('');
 
@@ -87,5 +91,20 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
 
   isRootTransitioningEventTarget_(el) {
     return this.adapter_.isDrawer(el);
+  }
+
+  handleTransitionEnd_(evt) {
+    super.handleTransitionEnd_(evt);
+    if (!this.isOpen_) {
+      this.enableScroll_();
+    }
+  };
+
+  disableScroll_() {
+    this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
+  }
+
+  enableScroll_() {
+    this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
   }
 }

@@ -15,7 +15,9 @@
  */
 
 import {MDCComponent} from '@material/base';
+import {MDCRipple} from '@material/ripple';
 
+import {cssClasses, strings} from './constants';
 import MDCTextfieldFoundation from './foundation';
 
 export {MDCTextfieldFoundation};
@@ -25,11 +27,24 @@ export class MDCTextfield extends MDCComponent {
     return new MDCTextfield(root);
   }
 
-  constructor(...args) {
-    super(...args);
-    const input = this.input_;
-    this.helptextElement = input.hasAttribute('aria-controls') ?
-      document.getElementById(input.getAttribute('aria-controls')) : null;
+  initialize(rippleFactory = (el) => new MDCRipple(el)) {
+    this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
+    this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
+    this.helptextElement = null;
+    this.ripple = null;
+    if (this.input_.hasAttribute('aria-controls')) {
+      this.helptextElement = document.getElementById(this.input_.getAttribute('aria-controls'));
+    }
+    if (this.root_.classList.contains(cssClasses.BOX)) {
+      this.ripple = rippleFactory(this.root_);
+    };
+  }
+
+  destroy() {
+    if (this.ripple) {
+      this.ripple.destroy();
+    }
+    super.destroy();
   }
 
   initialSyncWithDom() {
@@ -42,14 +57,6 @@ export class MDCTextfield extends MDCComponent {
 
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
-  }
-
-  get input_() {
-    return this.root_.querySelector(MDCTextfieldFoundation.strings.INPUT_SELECTOR);
-  }
-
-  get label_() {
-    return this.root_.querySelector(MDCTextfieldFoundation.strings.LABEL_SELECTOR);
   }
 
   getDefaultFoundation() {

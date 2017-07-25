@@ -18,7 +18,7 @@ path: /catalog/toolbar/
 
 MDC Toolbar acts as a container for multiple rows containing items such as
 application title, navigation menu, and tabs, among other things. Toolbars
-scroll with content by default, but supports fixed behavior as well.
+scroll with content by default, but support fixed behavior as well.
 
 When using the **fixed** pattern, a persistent elevation is added to toolbar.
 When using the **waterfall** pattern, a toolbar will have no elevation when the
@@ -52,7 +52,7 @@ npm install --save @material/toolbar
 
 ## Usage
 
-Wrap the items with `mdc-toolbar` class in following way:
+Wrap the items with `mdc-toolbar` class in the following way:
 
 ```html
 <header class="mdc-toolbar">
@@ -416,7 +416,7 @@ const toolbar = new MDCToolbar(document.querySelector('.mdc-toolbar'));
 
 | Method Signature | Description |
 | --- | --- |
-| `hasClass(className: string) => void` | Checks if the root element of the component has the given className. |
+| `hasClass(className: string) => boolean` | Checks if the root element of the component has the given className. |
 | `addClass(className: string) => void` | Adds a class to the root element of the component. |
 | `removeClass(className: string) => void` | Removes a class from the root element of the component. |
 | `registerScrollHandler(handler: Function) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event. |

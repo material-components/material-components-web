@@ -1,3 +1,123 @@
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/material-components/material-components-web/compare/v0.15.0...v0.16.0) (2017-07-24)
+
+
+### Bug Fixes
+
+* **animation:** Update exit curves to match spec (#971) ([4844330](https://github.com/material-components/material-components-web/commit/4844330))
+* **button:** Add mdc-typography-base to button (#949) ([3b80525](https://github.com/material-components/material-components-web/commit/3b80525)), closes [#942](https://github.com/material-components/material-components-web/issues/942)
+* **card:** Correct text in a card to use text-primar-on-light (#931) ([e3966d9](https://github.com/material-components/material-components-web/commit/e3966d9)), closes [#930](https://github.com/material-components/material-components-web/issues/930)
+* **dialog:** allow click events to propagate (#869) ([ef7e540](https://github.com/material-components/material-components-web/commit/ef7e540)), closes [#794](https://github.com/material-components/material-components-web/issues/794)
+* **drawer:** Align open & close animations to spec (#976) ([b001aec](https://github.com/material-components/material-components-web/commit/b001aec)), closes [(#976](https://github.com/(/issues/976)
+* **drawer:** Temporary drawer is below toolbar (#925) ([cbc8436](https://github.com/material-components/material-components-web/commit/cbc8436))
+* **elevation:** Update _mixins.scss so Sass linter passes (#933) ([9e6623e](https://github.com/material-components/material-components-web/commit/9e6623e))
+* **list:** Correct list end detail padding (#909) ([d7aa726](https://github.com/material-components/material-components-web/commit/d7aa726)), closes [#904](https://github.com/material-components/material-components-web/issues/904)
+* **slider:** Set mdc-slider__thumb-container #user-select property to none (#968) ([b26b98c](https://github.com/material-components/material-components-web/commit/b26b98c))
+* **toolbar:** Add `pointer` for `icon` element (#974) ([830259c](https://github.com/material-components/material-components-web/commit/830259c))
+
+
+
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/material-components/material-components-web/compare/v0.13.0...v0.15.0) (2017-07-10)
+
+
+### Bug Fixes
+
+* **base:** Fix compiler warnings (#788) ([56d8fff](https://github.com/material-components/material-components-web/commit/56d8fff)), closes [(#788](https://github.com/(/issues/788)
+* **button:** Sets text on raised buttons on dark theme to text-primary-on-primary (#853) ([49170d6](https://github.com/material-components/material-components-web/commit/49170d6))
+* **fab:** FAB z-index is wrong (#888) ([3812fbd](https://github.com/material-components/material-components-web/commit/3812fbd)), closes [#872](https://github.com/material-components/material-components-web/issues/872)
+* **infrastructure:** Downgrade closure-compiler (#915) ([5b10478](https://github.com/material-components/material-components-web/commit/5b10478))
+* **infrastructure:** Harden closure declaration source rewriting (#835) ([7c6da3a](https://github.com/material-components/material-components-web/commit/7c6da3a))
+* **layout-grid:** use correct selector for size specific column span (#862) ([0e2a0df](https://github.com/material-components/material-components-web/commit/0e2a0df))
+* **ripple:** Remove fg deactivation class when animation finishes ([4985b4b](https://github.com/material-components/material-components-web/commit/4985b4b))
+* **toolbar:** Adjusting sibling elements on mobile landscape (#846) ([798091f](https://github.com/material-components/material-components-web/commit/798091f))
+* **toolbar:** Fix toolbar margin for desktop (#887) ([0a8a75d](https://github.com/material-components/material-components-web/commit/0a8a75d)), closes [(#887](https://github.com/(/issues/887) [#786](https://github.com/material-components/material-components-web/issues/786)
+* **toolbar:** Increase fixed toolbar's z-index from 1 to 4(#897) ([78946c4](https://github.com/material-components/material-components-web/commit/78946c4)), closes [4(#897](https://github.com/4(/issues/897) [#834](https://github.com/material-components/material-components-web/issues/834)
+
+### Features
+
+* **checkbox:** Annotate mdc-checkbox for closure (#867) ([a6956b8](https://github.com/material-components/material-components-web/commit/a6956b8)), closes [#334](https://github.com/material-components/material-components-web/issues/334)
+* **framework-examples:** Add Vue continuous slider example (#827) ([6e0a8c9](https://github.com/material-components/material-components-web/commit/6e0a8c9))
+* **infrastructure:** Create script for that rewrites .scss imports (#831) ([bd0123b](https://github.com/material-components/material-components-web/commit/bd0123b))
+* **layout-grid:** Add fixed column width layout grid modifier. (#816) ([94d62ad](https://github.com/material-components/material-components-web/commit/94d62ad)), closes [(#816](https://github.com/(/issues/816) [#748](https://github.com/material-components/material-components-web/issues/748)
+* **layout-grid:** Implement layout grid alignment. (#885) ([1528ed7](https://github.com/material-components/material-components-web/commit/1528ed7)), closes [#749](https://github.com/material-components/material-components-web/issues/749)
+* **menu:** annotate mdc-menu for closure compiler ([b188d4f](https://github.com/material-components/material-components-web/commit/b188d4f)), closes [#339](https://github.com/material-components/material-components-web/issues/339)
+* **menu:** Export util (#824) ([7d0394b](https://github.com/material-components/material-components-web/commit/7d0394b)), closes [#823](https://github.com/material-components/material-components-web/issues/823)
+* **ripple:** Add layout() method to component ([ef99024](https://github.com/material-components/material-components-web/commit/ef99024))
+* **ripple:** Annotate mdc-ripple for closure (#856) ([f0f0a86](https://github.com/material-components/material-components-web/commit/f0f0a86)), closes [#341](https://github.com/material-components/material-components-web/issues/341)
+* **ripple:** export util from @material/ripple (#751) ([27c172a](https://github.com/material-components/material-components-web/commit/27c172a)), closes [#253](https://github.com/material-components/material-components-web/issues/253)
+* **ripple:** Reduce the fade out time for foreground ripple effect ([9394b5f](https://github.com/material-components/material-components-web/commit/9394b5f))
+* **slider:** Implement discrete slider and discrete slider with marker (#842) ([e681aae](https://github.com/material-components/material-components-web/commit/e681aae)), closes [#25](https://github.com/material-components/material-components-web/issues/25)
+* **snackbar:** Implement full-featured Snackbar component (#852) ([4be947f](https://github.com/material-components/material-components-web/commit/4be947f))
+* **textfield:** Implement text field boxes ([cfa3737](https://github.com/material-components/material-components-web/commit/cfa3737)), closes [#673](https://github.com/material-components/material-components-web/issues/673)
+
+
+### BREAKING CHANGES
+
+* snackbar: Adds adapter methods to capture blur, focus, and interaction events
+
+
+
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/material-components/material-components-web/compare/v0.13.0...v0.14.0) (2017-06-26)
+
+
+### Bug Fixes
+
+* **base:** Fix compiler warnings (#788) ([56d8fff](https://github.com/material-components/material-components-web/commit/56d8fff)), closes [(#788](https://github.com/(/issues/788)
+* **button:** Sets text on raised buttons on dark theme to text-primary-on-primary (#853) ([49170d6](https://github.com/material-components/material-components-web/commit/49170d6))
+* **infrastructure:** Harden closure declaration source rewriting (#835) ([7c6da3a](https://github.com/material-components/material-components-web/commit/7c6da3a))
+* **ripple:** Remove fg deactivation class when animation finishes ([4985b4b](https://github.com/material-components/material-components-web/commit/4985b4b))
+* **toolbar:** Adjusting sibling elements on mobile landscape (#846) ([798091f](https://github.com/material-components/material-components-web/commit/798091f))
+
+### Features
+
+* **infrastructure:** Create script for that rewrites .scss imports (#831) ([bd0123b](https://github.com/material-components/material-components-web/commit/bd0123b))
+* **layout-grid:** Add fixed column width layout grid modifier. (#816) ([94d62ad](https://github.com/material-components/material-components-web/commit/94d62ad)), closes [(#816](https://github.com/(/issues/816) [#748](https://github.com/material-components/material-components-web/issues/748)
+* **menu:** annotate mdc-menu for closure compiler ([b188d4f](https://github.com/material-components/material-components-web/commit/b188d4f)), closes [#339](https://github.com/material-components/material-components-web/issues/339)
+* **menu:** Export util (#824) ([7d0394b](https://github.com/material-components/material-components-web/commit/7d0394b)), closes [#823](https://github.com/material-components/material-components-web/issues/823)
+* **ripple:** Add layout() method to component ([ef99024](https://github.com/material-components/material-components-web/commit/ef99024))
+* **ripple:** export util from @material/ripple (#751) ([27c172a](https://github.com/material-components/material-components-web/commit/27c172a)), closes [#253](https://github.com/material-components/material-components-web/issues/253)
+* **ripple:** Reduce the fade out time for foreground ripple effect ([9394b5f](https://github.com/material-components/material-components-web/commit/9394b5f))
+* **textfield:** Implement text field boxes ([cfa3737](https://github.com/material-components/material-components-web/commit/cfa3737)), closes [#673](https://github.com/material-components/material-components-web/issues/673)
+
+
+
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/material-components/material-components-web/compare/v0.12.0...v0.13.0) (2017-06-12)
+
+
+### Bug Fixes
+
+* **demos:** Fix non-unique ids in radio demo (#792) ([cada61a](https://github.com/material-components/material-components-web/commit/cada61a)), closes [(#792](https://github.com/(/issues/792)
+* **dialog:** Add 8dp padding for side-by-side buttons in RTL (#752) ([07f4ee7](https://github.com/material-components/material-components-web/commit/07f4ee7)), closes [#750](https://github.com/material-components/material-components-web/issues/750)
+* **dialog:** Incorrect Text (#744) ([d38756f](https://github.com/material-components/material-components-web/commit/d38756f))
+* **drawer:** Prevent scrolling on body when temporary drawer open (#807) ([8686d85](https://github.com/material-components/material-components-web/commit/8686d85))
+* **infrastructure:** set Travis CI node version to 7 (#758) ([75ddf28](https://github.com/material-components/material-components-web/commit/75ddf28))
+* **menu:** Add disabled list items to menu (#780) ([ef44d3d](https://github.com/material-components/material-components-web/commit/ef44d3d))
+* **menu:** Fix wrong menu styling properties (#789) ([76714f2](https://github.com/material-components/material-components-web/commit/76714f2)), closes [(#789](https://github.com/(/issues/789)
+* **toolbar:** Improve layout and scrolling logic of items in toolbars (#764) ([f0ff94d](https://github.com/material-components/material-components-web/commit/f0ff94d))
+* **toolbar:** rename ambiguous identifiers (#765) (#773) ([0471f1f](https://github.com/material-components/material-components-web/commit/0471f1f))
+
+### Features
+
+* **layout-grid:** make layout grid nestable (#804) ([dec20ab](https://github.com/material-components/material-components-web/commit/dec20ab))
+* **layout-grid:** parameterize layout grid (#795) ([99d2bbd](https://github.com/material-components/material-components-web/commit/99d2bbd))
+* **slider:** Implement continuous slider component (#781) ([a9d46ab](https://github.com/material-components/material-components-web/commit/a9d46ab))
+
+
+### BREAKING CHANGES
+
+* drawer: Adapter API for temporary drawers contains two new methods: `addBodyClass` and `removeBodyClass`.
+* layout-grid: Add mdc-layout-grid__inner as a wrapper for mdc-layout-grid__cell. All existing implementation need to add this extra wrapper layer after upgrade to the latest layout grid.
+
+This is for proper alignment both in nesting and removing the restriction that margin need to be at least half size of the padding.
+* menu: Rename symmetric registerDocumentClickHandler/deregisterDocumentClickHandler adapter methods to registerBodyClickHandler/deregisterBodyClickHandler
+* layout-grid: the css custom properties for customize margins and gutters are exposed in format of `mdc-layout-grid-margin-#{$size}`, where valid sizes are `desktop`, `tablet` and `phone`. The old name `mdc-layout-grid-margin` and `mdc-layout-grid-gutter` is no longer available in the new version. Sass variables change from single numeric value to Sass map to accomendate margins and gutters for different screens as well. Visually, the default value of margins and gutters change from 16px to 24px on desktop, while remain the same on tablet and mobile.
+* toolbar: The adapter method `getFlexibleRowElementOffsetHeight` has been _renamed_ to `getFirstRowElementOffsetHeight`. Please update your code accordingly.
+
+
+
 <a name="0.12.1"></a>
 ## [0.12.1](https://github.com/material-components/material-components-web/compare/v0.12.0...v0.12.1) (2017-05-31)
 

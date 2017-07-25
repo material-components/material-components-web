@@ -54,8 +54,7 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 
   &__tiles {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     margin: 0;
     padding: 0;
   }
@@ -171,13 +170,13 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
     font-size: 1rem;
     font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
     line-height: 1rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+
+    @include mdc-typography-overflow-ellipsis;
   }
 
   &__support-text {
     @include mdc-typography(body1);
+    @include mdc-typography-overflow-ellipsis;
 
     display: block;
     margin: 0;

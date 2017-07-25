@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
+import * as util from './util';
 export {MDCSimpleMenu, MDCSimpleMenuFoundation} from './simple';
+export {util};

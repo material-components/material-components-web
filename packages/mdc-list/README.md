@@ -18,7 +18,7 @@ path: /catalog/lists/
 
 MDC List provides styles which implement [Material Design Lists](https://material.io/guidelines/components/lists.html) - "A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are supported (with
 three-line lists [coming soon](https://github.com/material-components/material-components-web/issues/31)). MDC
-Lists are design to be accessible and RTL aware.
+Lists are designed to be accessible and RTL aware.
 
 ## Design & API Documentation
 
@@ -41,7 +41,7 @@ npm install --save @material/list
 
 ### Basic Lists
 
-A basic lists consists simply of the list itself, and list items taking up one line.
+A basic list consists simply of the list itself, and list items taking up one line.
 
 ```html
 <ul class="mdc-list">

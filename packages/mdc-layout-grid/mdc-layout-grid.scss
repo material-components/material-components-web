@@ -19,6 +19,7 @@
   @each $size in map-keys($mdc-layout-grid-columns) {
     --mdc-layout-grid-margin-#{$size}: map-get($mdc-layout-grid-default-margin, $size);
     --mdc-layout-grid-gutter-#{$size}: map-get($mdc-layout-grid-default-gutter, $size);
+    --mdc-layout-grid-column-width-#{$size}: map-get($mdc-layout-grid-column-width, $size);
   }
 }
 
@@ -27,25 +28,38 @@
   @each $size in map-keys($mdc-layout-grid-columns) {
     @include mdc-layout-grid-media-query_($size) {
       $margin: map-get($mdc-layout-grid-default-margin, $size);
+
+      @include mdc-layout-grid($size, $margin, $mdc-layout-grid-max-width);
+    }
+  }
+}
+
+.mdc-layout-grid__inner {
+  @each $size in map-keys($mdc-layout-grid-columns) {
+    @include mdc-layout-grid-media-query_($size) {
+      $margin: map-get($mdc-layout-grid-default-margin, $size);
       $gutter: map-get($mdc-layout-grid-default-gutter, $size);
 
-      @include mdc-layout-grid($size, $margin, $gutter, $mdc-layout-grid-max-width);
+      @include mdc-layout-grid-inner($size, $margin, $gutter);
     }
   }
 }
 
 .mdc-layout-grid__cell {
+  // select the upper breakpoint
+  $upper-breakpoint: nth(map-keys($mdc-layout-grid-columns), 1);
+
   @each $size in map-keys($mdc-layout-grid-columns) {
     @include mdc-layout-grid-media-query_($size) {
       $gutter: map-get($mdc-layout-grid-default-gutter, $size);
 
       @include mdc-layout-grid-cell($size, $mdc-layout-grid-default-column-span, $gutter);
 
-      @for $span from 1 through map-get($mdc-layout-grid-columns, desktop) {
+      @for $span from 1 through map-get($mdc-layout-grid-columns, $upper-breakpoint) {
         // Span classes.
         // stylelint-disable max-nesting-depth
         @at-root .mdc-layout-grid__cell--span-#{$span},
-          .mdc-layout-grid__cell--span-#{$span}-#{$size}.mdc-layout-grid__cell--span-#{$span}-#{$size} {
+          .mdc-layout-grid__cell--span-#{$span}-#{$size} {
           @include mdc-layout-grid-cell-span_($size, $span, $gutter);
         }
         // stylelint-enable max-nesting-depth
@@ -54,7 +68,7 @@
   }
 
   // Order override classes.
-  @for $i from 1 through map-get($mdc-layout-grid-columns, desktop) {
+  @for $i from 1 through map-get($mdc-layout-grid-columns, $upper-breakpoint) {
     &--order-#{$i} {
       @include mdc-layout-grid-cell-order($i);
     }
@@ -74,4 +88,25 @@
   }
 }
 
+.mdc-layout-grid--fixed-column-width {
+  @each $size in map-keys($mdc-layout-grid-columns) {
+    @include mdc-layout-grid-media-query_($size) {
+      $margin: map-get($mdc-layout-grid-default-margin, $size);
+      $gutter: map-get($mdc-layout-grid-default-gutter, $size);
+      $column-width: map-get($mdc-layout-grid-column-width, $size);
+
+      @include mdc-layout-grid-fixed-column-width($size, $margin, $gutter, $column-width);
+    }
+  }
+}
+
+.mdc-layout-grid--align-left {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.mdc-layout-grid--align-right {
+  margin-right: 0;
+  margin-left: auto;
+}
 // postcss-bem-linter: end

@@ -18,7 +18,6 @@
  * @template A
  */
 export default class MDCFoundation {
-
   /** @return enum{cssClasses} */
   static get cssClasses() {
     // Classes extending MDCFoundation should implement this method to return an object which exports every
@@ -49,10 +48,10 @@ export default class MDCFoundation {
   }
 
   /**
-   * @param {!A} adapter
+   * @param {A=} adapter
    */
   constructor(adapter = {}) {
-    /** @private {!A} */
+    /** @protected {!A} */
     this.adapter_ = adapter;
   }
 
