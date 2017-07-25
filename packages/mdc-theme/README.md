@@ -44,6 +44,17 @@ background. There are two ways to specify if a component is in a Dark Theme cont
 > **A note about Dark Theme context**, don't confuse Dark Theme context with a component that has a dark color. 
 > Dark Theme context means the component sits on top of a dark background.
 
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/guidelines/style/color.html">Material Design guidelines: Color</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/theme.html">Demo</a>
+  </li>
+</ul>
+
 ## Installation
 
 ```
