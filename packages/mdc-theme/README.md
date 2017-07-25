@@ -114,8 +114,8 @@ Some components can change their appearance when a theme-based modifier CSS clas
 `mdc-button--primary` will make the MDC Button the primary color. For more documentation on these modifier
 classes, consult the documentation for each component.
 
-However, if you are want to modify an element, which is not an Material Design component, then you can apply
-the following modifier CSS classes.
+If you want to modify an element, which is not a Material Design component, you can apply the following
+modifier CSS classes.
 
 | CSS Class | Description |
 | --------------------------------------- | - |
