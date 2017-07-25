@@ -34,7 +34,16 @@ export function supportsCssVariables(windowObj) {
     windowObj.CSS.supports('(--css-vars: yes)') &&
     windowObj.CSS.supports('color', '#00000000')
   );
-  return explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus;
+  // See: https://caniuse.com/#search=custom%20properties
+  // See: README section on Edge
+  const weAreFeatureDetectingEdge = (
+    typeof CSS !== 'undefined' &&
+    CSS.supports('(-ms-ime-align:auto)')
+  );
+  return (
+    (explicitlySupportsCssVars && !weAreFeatureDetectingEdge) ||
+    weAreFeatureDetectingSafari10plus
+  );
 }
 
 //

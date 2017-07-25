@@ -32,6 +32,7 @@ path: /catalog/ripples/
     - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
     - [Specifying known element dimensions](#specifying-known-element-dimensions)
   - [Caveat: Safari](#caveat-safari)
+  - [Caveat: Edge](#caveat-edge)
   - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
   - [The util API](#the-util-api)
 
@@ -394,6 +395,18 @@ webkit versions: Webkit builds which have this bug fixed (e.g. the builds used i
 support [CSS 4 Hex Notation](https://drafts.csswg.org/css-color/#hex-notation) while those do not
 have the fix don't. We use this to reliably feature-detect whether we are working with a WebKit
 build that can handle our usage of CSS variables.
+
+## Caveat: Edge
+
+> TL;DR ripples are disabled in Edge because of a nasty CSS variables bug.
+
+The ripple works by updating CSS Variables which are used by pseudo-elements. This allows ripple
+effects to work on elements without the need to add a bunch of extra DOM to them. Unfortunately,
+CSS Variables have [known issues](See: https://caniuse.com/#search=custom%20properties) when applied
+to pseudo-elements or animation in Edge. It will be break rendering under that case (try out
+[this codepen](https://codepen.io/yeelan0319/pen/RZNjKd) in Chrome and then in Edge to see the issue).
+We feature-detect around Egde by the fact it support both CSS Variables and `ms` features. We will
+closely monitor when a future version of edge fixes this bug.
 
 ## Caveat: Theme Custom Variables
 
