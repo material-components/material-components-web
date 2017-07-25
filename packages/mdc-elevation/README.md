@@ -46,6 +46,11 @@ npm install --save @material/elevation
 
 ### CSS Classes
 
+Some components have a set elevation. For example, a raised MDC Button has elevation 2.
+
+However, if you want to set the elevation of an element, which is not an Material Design component, then you
+can apply the following CSS classes.
+
 | CSS Class | Description |
 | --------------------------- | - |
 | `mdc-elevation--z<N>` | Sets the elevation to the (N)dp, where 1 <= N <= 24. |
