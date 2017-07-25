@@ -310,6 +310,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       }
     }
   }
+  // stylelint-enable plugin/selector-bem-pattern
 
   // stylelint-disable plugin/selector-bem-pattern
   & + .mdc-textfield-helptext {
