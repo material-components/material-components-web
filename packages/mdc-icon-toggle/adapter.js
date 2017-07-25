@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,12 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Ripple. Provides an interface for managing
+ * Adapter for MDC Icon Toggle. Provides an interface for managing
  * - classes
  * - dom
- * - CSS variables
- * - position
- * - dimensions
- * - scroll position
+ * - inner text
  * - event handlers
- * - unbounded, active and disabled states
+ * - event dispatch
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -37,19 +34,7 @@
  *
  * @record
  */
-export default class MDCRippleAdapter {
-  /** @return {boolean} */
-  browserSupportsCssVars() {}
-
-  /** @return {boolean} */
-  isUnbounded() {}
-
-  /** @return {boolean} */
-  isSurfaceActive() {}
-
-  /** @return {boolean} */
-  isSurfaceDisabled() {}
-
+export default class MDCIconToggleAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -57,36 +42,48 @@ export default class MDCRippleAdapter {
   removeClass(className) {}
 
   /**
-   * @param {string} evtType
-   * @param {!Function} handler
+   * @param {string} type
+   * @param {!EventListener} handler
    */
-  registerInteractionHandler(evtType, handler) {}
+  registerInteractionHandler(type, handler) {}
 
   /**
-   * @param {string} evtType
-   * @param {!Function} handler
+   * @param {string} type
+   * @param {!EventListener} handler
    */
-  deregisterInteractionHandler(evtType, handler) {}
+  deregisterInteractionHandler(type, handler) {}
+
+  /** @param {string} text */
+  setText(text) {}
+
+  /** @return {number} */
+  getTabIndex() {}
+
+  /** @param {number} tabIndex */
+  setTabIndex(tabIndex) {}
 
   /**
-   * @param {!Function} handler
+   * @param {string} name
+   * @return {string}
    */
-  registerResizeHandler(handler) {}
+  getAttr(name) {}
 
   /**
-   * @param {!Function} handler
+   * @param {string} name
+   * @param {string} value
    */
-  deregisterResizeHandler(handler) {}
+  setAttr(name, value) {}
 
-  /**
-   * @param {string} varName
-   * @param {?number|string} value
-   */
-  updateCssVariable(varName, value) {}
+  /** @param {string} name */
+  rmAttr(name) {}
 
-  /** @return {!ClientRect} */
-  computeBoundingRect() {}
-
-  /** @return {{x: number, y: number}} */
-  getWindowPageOffset() {}
+  /** @param {!IconToggleEvent} evtData */
+  notifyChange(evtData) {}
 }
+
+/**
+ * @typedef {!{
+ *   isOn: boolean,
+ * }}
+ */
+export let IconToggleEvent;

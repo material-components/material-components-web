@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
+import {SelectionControlState} from '@material/base/selection-control';
+
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Ripple. Provides an interface for managing
+ * Adapter for MDC Radio. Provides an interface for managing
  * - classes
  * - dom
- * - CSS variables
- * - position
- * - dimensions
- * - scroll position
- * - event handlers
- * - unbounded, active and disabled states
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -37,56 +34,13 @@
  *
  * @record
  */
-export default class MDCRippleAdapter {
-  /** @return {boolean} */
-  browserSupportsCssVars() {}
-
-  /** @return {boolean} */
-  isUnbounded() {}
-
-  /** @return {boolean} */
-  isSurfaceActive() {}
-
-  /** @return {boolean} */
-  isSurfaceDisabled() {}
-
+export default class MDCRadioAdapter {
   /** @param {string} className */
   addClass(className) {}
 
   /** @param {string} className */
   removeClass(className) {}
 
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  registerInteractionHandler(evtType, handler) {}
-
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  deregisterInteractionHandler(evtType, handler) {}
-
-  /**
-   * @param {!Function} handler
-   */
-  registerResizeHandler(handler) {}
-
-  /**
-   * @param {!Function} handler
-   */
-  deregisterResizeHandler(handler) {}
-
-  /**
-   * @param {string} varName
-   * @param {?number|string} value
-   */
-  updateCssVariable(varName, value) {}
-
-  /** @return {!ClientRect} */
-  computeBoundingRect() {}
-
-  /** @return {{x: number, y: number}} */
-  getWindowPageOffset() {}
+  /** @return {!SelectionControlState} */
+  getNativeControl() {}
 }

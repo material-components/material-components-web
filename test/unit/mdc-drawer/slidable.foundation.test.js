@@ -25,7 +25,6 @@ function setupTest(isRootTransitioningEventTarget) {
   const mockAdapter = td.object(MDCSlidableDrawerFoundation.defaultAdapter);
 
   class MDCFakeSlideableDrawerFoundation extends MDCSlidableDrawerFoundation {
-
     isRootTransitioningEventTarget_() {
       return isRootTransitioningEventTarget;
     }

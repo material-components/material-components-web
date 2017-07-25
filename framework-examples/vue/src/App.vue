@@ -46,13 +46,13 @@
     <div class="demo-surface" v-ripple><p>{{label}}</p></div>
     <div>
       <form-field :align-end='alignEnd'>
-        <checkbox v-model="checked" label="Test me" id="my-check" label-id="my-check-label"></checkbox>
+        <checkbox v-model="checked" id="my-check"></checkbox>
         <checkbox-label id="my-check-label" for="my-check" :label="label"></checkbox-label>
       </form-field>
     </div>
     <div>
       <form-field>
-        <checkbox v-model="alignEnd" label="Test me" id="my-check" label-id="my-check-label"></checkbox>
+        <checkbox v-model="alignEnd" id="my-check"></checkbox>
         <checkbox-label id="my-check-label" for="my-check" label="Align End?"></checkbox-label>
       </form-field>
       <input v-model="label"></input>
@@ -65,7 +65,7 @@
     <div>
       <p>
         <form-field :align-end='alignEnd'>
-          <checkbox v-model="showIcon" label="Show toggle" id="my-show" label-id="my-show-label"></checkbox>
+          <checkbox v-model="showIcon" id="my-show"></checkbox>
           <checkbox-label id="my-show-label" for="my-show" :label="showLabel"></checkbox-label>
         </form-field>
       </p>
@@ -82,6 +82,21 @@
      </div>
      <p>Favorited?: {{favorited}}</p>
     </div>
+
+    <section class="example">
+    <h2>Continuous Slider</h2>
+    <div id="continuous-slider-example" class="slider-example">
+      <p>Select Value: {{slideValue}}</p>
+      <div class="example-slider-wrapper">
+        <slider v-model="slideValue" :disabled="sliderDisabled"></slider>
+      </div>
+    </div>
+
+    <form-field :align-end='alignEnd'>
+      <checkbox v-model="sliderDisabled" id="slider-disabled"></checkbox>
+      <checkbox-label id="slider-disabled-label" for="slider-disabled" label="Disabled:"></checkbox-label>
+    </form-field>
+    </section>
   </main>
 </div>
 </template>
@@ -94,6 +109,7 @@ import IconToggle from './v-mdc-icon-toggle/IconToggle';
 import CheckboxLabel from './v-mdc-checkbox/CheckboxLabel';
 import FormField from './v-mdc-form-field/FormField';
 import TemporaryDrawer from './v-mdc-drawer/TemporaryDrawer';
+import Slider from './v-mdc-slider/Slider';
 
 export default {
   data () {
@@ -105,10 +121,12 @@ export default {
       favorited: true,
       favoritedLabel: 'Remove from favorites',
       showIcon: true,
-      showLabel: 'Hide icon toggle'
+      showLabel: 'Hide icon toggle',
+      slideValue: 50,
+      sliderDisabled: false
     }
   },
-  components: { FormField, Checkbox, CheckboxLabel, IconToggle, Snackbar, TemporaryDrawer },
+  components: { FormField, Checkbox, CheckboxLabel, IconToggle, Slider, Snackbar, TemporaryDrawer },
   directives: { Ripple },
   watch: {
     checked () {
@@ -167,5 +185,9 @@ export default {
 
 main {
   padding: 12px;
+}
+section.example {
+  margin: 24px;
+  padding: 24px;
 }
 </style>

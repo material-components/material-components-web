@@ -30,7 +30,7 @@
   width: 56px;
   height: 56px;
   padding: 0;
-  transition: box-shadow 280ms $mdc-animation-fast-out-slow-in-timing-function;
+  transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -83,12 +83,12 @@
   // This allows for using SVGs within them to align properly in all browsers.
   // Can remove once: https://bugzilla.mozilla.org/show_bug.cgi?id=1294515 is resolved.
 
-  // stylelint-disable selector-no-type
+  // stylelint-disable selector-max-type
   // postcss-bem-linter: ignore
   > svg {
     width: 100%;
   }
-  // stylelint-enable selector-no-type
+  // stylelint-enable selector-max-type
 
   fieldset:disabled &,
   &:disabled {

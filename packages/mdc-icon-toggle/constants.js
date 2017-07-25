@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** @enum {string} */
 export const cssClasses = {
   ROOT: 'mdc-icon-toggle',
   DISABLED: 'mdc-icon-toggle--disabled',
 };
 
+/** @enum {string} */
 export const strings = {
   DATA_TOGGLE_ON: 'data-toggle-on',
   DATA_TOGGLE_OFF: 'data-toggle-off',

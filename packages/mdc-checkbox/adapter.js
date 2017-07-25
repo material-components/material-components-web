@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
+import {SelectionControlState} from '@material/base/selection-control';
+
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -32,9 +35,7 @@
  *
  * @record
  */
-
 export default class MDCCheckboxAdapter {
-
   /** @param {string} className */
   addClass(className) {}
 
@@ -53,22 +54,11 @@ export default class MDCCheckboxAdapter {
   /** @param {!EventListener} handler */
   deregisterChangeHandler(handler) {}
 
-  /** @return {InputElementState} */
+  /** @return {!SelectionControlState} */
   getNativeControl() {}
 
   forceLayout() {}
 
   /** @return {boolean} */
   isAttachedToDOM() {}
-
 }
-
-/**
- * @typedef {!{
- *   checked: boolean,
- *   indeterminate: boolean,
- *   disabled: boolean,
- *   value: ?string
- * }}
- */
-export let InputElementState;

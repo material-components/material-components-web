@@ -16,7 +16,8 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {MDCCheckboxAdapter, InputElementState} from './adapter';
+import {SelectionControlState} from '@material/base/selection-control';
+import MDCCheckboxAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
@@ -27,30 +28,34 @@ const CB_PROTO_PROPS = ['checked', 'indeterminate'];
  * @extends {MDCFoundation<!MDCCheckboxAdapter>}
  */
 export default class MDCCheckboxFoundation extends MDCFoundation {
+  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
 
+  /** @return enum {numbers} */
   static get numbers() {
     return numbers;
   }
 
+  /** @return {!MDCCheckboxAdapter} */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCCheckboxAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       registerAnimationEndHandler: (/* handler: EventListener */) => {},
       deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
       deregisterChangeHandler: (/* handler: EventListener */) => {},
-      getNativeControl: () => /* InputElementState */ {},
+      getNativeControl: () => /* !SelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
-    };
+    });
   }
 
   constructor(adapter) {
@@ -164,7 +169,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
 
     CB_PROTO_PROPS.forEach((controlState) => {
       const desc = /** @type {!ObjectPropertyDescriptor} */ (
-          Object.getOwnPropertyDescriptor(cbProto, controlState));
+        Object.getOwnPropertyDescriptor(cbProto, controlState));
       if (validDescriptor(desc)) {
         Object.defineProperty(nativeCb, controlState, desc);
       }
@@ -203,7 +208,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!InputElementState} nativeCb
+   * @param {!SelectionControlState} nativeCb
    * @return {string}
    * @private
    */
@@ -246,20 +251,20 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       if (newState === TRANSITION_STATE_UNCHECKED) {
         return '';
       }
-        // fallthrough
+    // fallthrough
     case TRANSITION_STATE_UNCHECKED:
       return newState === TRANSITION_STATE_CHECKED ? ANIM_UNCHECKED_CHECKED : ANIM_UNCHECKED_INDETERMINATE;
     case TRANSITION_STATE_CHECKED:
       return newState === TRANSITION_STATE_UNCHECKED ? ANIM_CHECKED_UNCHECKED : ANIM_CHECKED_INDETERMINATE;
-      // TRANSITION_STATE_INDETERMINATE
+    // TRANSITION_STATE_INDETERMINATE
     default:
       return newState === TRANSITION_STATE_CHECKED ?
-          ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
+        ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
     }
   }
 
   /**
-   * @return {!InputElementState}
+   * @return {!SelectionControlState}
    * @private
    */
   getNativeControl_() {

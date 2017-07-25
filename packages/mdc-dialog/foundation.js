@@ -52,7 +52,11 @@ export default class MDCDialogFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
     this.isOpen_ = false;
-    this.componentClickHandler_ = () => this.cancel(true);
+    this.componentClickHandler_ = (evt) => {
+      if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.BACKDROP)) {
+        this.cancel(true);
+      }
+    };
     this.dialogClickHandler_ = (evt) => this.handleDialogClick_(evt);
     this.documentKeydownHandler_ = (evt) => {
       if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
@@ -119,7 +123,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   handleDialogClick_(evt) {
-    evt.stopPropagation();
     const {target} = evt;
     if (this.adapter_.eventTargetHasClass(target, cssClasses.ACCEPT_BTN)) {
       this.accept(true);

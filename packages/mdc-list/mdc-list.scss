@@ -78,7 +78,7 @@ $mdc-list-side-padding: 16px;
 
   &__end-detail {
     @include mdc-list-detail-size_(24px);
-    @include mdc-rtl-reflexive-property(margin, auto, $mdc-list-side-padding, ".mdc-list-item");
+    @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
   }
 
   &__text {
@@ -144,12 +144,12 @@ $mdc-list-side-padding: 16px;
 // postcss-bem-linter: end //
 
 // Override anchor tag styles for the use-case of a list being used for navigation
-// stylelint-disable selector-no-type,selector-no-qualifying-type
+// stylelint-disable selector-max-type,selector-no-qualifying-type
 a.mdc-list-item {
   color: inherit;
   text-decoration: none;
 }
-// stylelint-enable selector-no-type,selector-no-qualifying-type
+// stylelint-enable selector-max-type,selector-no-qualifying-type
 
 .mdc-list-item.mdc-ripple-upgraded {
   @include mdc-ripple-base;
