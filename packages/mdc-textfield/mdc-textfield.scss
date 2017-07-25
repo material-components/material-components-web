@@ -311,9 +311,10 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     }
   }
 
+  // stylelint-disable plugin/selector-bem-pattern
   & + .mdc-textfield-helptext {
-    margin-left: 16px;
     margin-right: 16px;
+    margin-left: 16px;
   }
   // stylelint-enable plugin/selector-bem-pattern
 }
