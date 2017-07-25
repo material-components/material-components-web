@@ -29,7 +29,7 @@
     <style media="screen">
 
 
-      .mdc-theme--dark {
+      .mdc-theme--dark, .section-dark-theme {
         background: #262626;
         color: white;
       }
@@ -41,18 +41,24 @@
       /* Example of manually theming a checkbox. Note that this does not take JS-provided animations
          into account. */
       .mdc-theme--dark .mdc-checkbox__native-control:checked:not(:disabled) ~ .mdc-checkbox__background,
-      .mdc-theme--dark .mdc-checkbox__native-control:indeterminate:not(:disabled) ~ .mdc-checkbox__background {
+      .section-dark-theme .mdc-checkbox__native-control:checked:not(:disabled) ~ .mdc-checkbox__background,
+      .mdc-theme--dark .mdc-checkbox__native-control:indeterminate:not(:disabled) ~ .mdc-checkbox__background,
+      .section-dark-theme .mdc-checkbox__native-control:indeterminate:not(:disabled) ~ .mdc-checkbox__background
+      {
         background-color: #64DD17;
         border-color: #64DD17;
       }
-      .mdc-theme--dark .mdc-checkbox__background::before {
+      .mdc-theme--dark .mdc-checkbox__background::before,
+      .section-dark-theme .mdc-checkbox__background::before {
         background-color: #64DD17;
       }
-      .mdc-theme--dark .mdc-checkbox__checkmark__path {
+      .mdc-theme--dark .mdc-checkbox__checkmark__path,
+      .section-dark-theme .mdc-checkbox__checkmark__path {
         stroke: #262626 !important;
       }
-      .mdc-theme--dark .mdc-checkbox__mixedmark {
-        background-color: #64DD17;
+      .mdc-theme--dark .mdc-checkbox__mixedmark,
+      .section-dark-theme .mdc-checkbox__mixedmark {
+        background-color: #262626;
       }
     </style>
   </head>
@@ -90,50 +96,71 @@
 
       <section class="example">
         <h2>CSS Only</h2>
-        <div class="mdc-form-field">
-          <div class="mdc-checkbox">
-            <input type="checkbox"
-                   id="basic-checkbox"
-                   class="mdc-checkbox__native-control"/>
-            <div class="mdc-checkbox__background">
-              <svg class="mdc-checkbox__checkmark"
-                   viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path"
-                      fill="none"
-                      stroke="white"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-              </svg>
-              <div class="mdc-checkbox__mixedmark"></div>
+        <div>
+          <div class="mdc-form-field">
+            <div class="mdc-checkbox">
+              <input type="checkbox"
+                     id="basic-checkbox"
+                     class="mdc-checkbox__native-control"/>
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
             </div>
+            <label for="basic-checkbox">This is my checkbox</label>
           </div>
-          <label for="basic-checkbox" id="basic-checkbox-label">This is my checkbox</label>
+          <button type="button" onclick="this.parentElement.hasAttribute('dir') ? this.parentElement.removeAttribute('dir') : this.parentElement.setAttribute('dir', 'rtl');">Toggle RTL</button>
+          <button type="button" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">Toggle Align End</button>
         </div>
-        <button type="button" onclick="document.getElementById('basic-checkbox').indeterminate = true;">Make indeterminate</button>
-        <button type="button" onclick="this.parentElement.hasAttribute('dir') ? this.parentElement.removeAttribute('dir') : this.parentElement.setAttribute('dir', 'rtl');">Toggle RTL</button>
-        <button type="button" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">Toggle Align End</button>
-        <button type="button" onclick="document.getElementById('basic-checkbox').disabled = !document.getElementById('basic-checkbox').disabled;">Toggle Disabled</button>
-      </section>
-
-      <section class="example">
-        <h2>CSS Only - Disabled</h2>
-        <div class="mdc-form-field">
-          <div class="mdc-checkbox mdc-checkbox--disabled">
-            <input type="checkbox"
-                   id="basic-disabled-checkbox"
-                   class="mdc-checkbox__native-control"
-                   disabled />
-            <div class="mdc-checkbox__background">
-              <svg class="mdc-checkbox__checkmark"
-                   viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path"
-                      fill="none"
-                      stroke="white"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-              </svg>
-              <div class="mdc-checkbox__mixedmark"></div>
+        <div>
+          <div class="mdc-form-field">
+            <div class="mdc-checkbox mdc-checkbox--disabled">
+              <input type="checkbox"
+                     id="basic-disabled-checkbox"
+                     class="mdc-checkbox__native-control"
+                     disabled />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
             </div>
+            <label for="basic-disabled-checkbox">This is my disabled checkbox</label>
           </div>
-          <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
+          <div>
+            <div class="mdc-form-field">
+              <div class="mdc-checkbox">
+                <input type="checkbox"
+                       id="basic-indeterminate-checkbox"
+                       class="mdc-checkbox__native-control"/>
+                <div class="mdc-checkbox__background">
+                  <svg class="mdc-checkbox__checkmark"
+                       viewBox="0 0 24 24">
+                    <path class="mdc-checkbox__checkmark__path"
+                          fill="none"
+                          stroke="white"
+                          d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                  </svg>
+                  <div class="mdc-checkbox__mixedmark"></div>
+                </div>
+              </div>
+              <label for="basic-indeterminate-checkbox">This is my indeterminate checkbox</label>
+            </div>
+            <script type="text/javascript">
+              document.getElementById('basic-indeterminate-checkbox').indeterminate = true;
+            </script>
+          </div>
         </div>
       </section>
 
@@ -156,34 +183,148 @@
 
             </div>
           </div>
-          <label for="native-js-checkbox" id="my-checkbox-label">This is my checkbox</label>
+          <label for="native-js-checkbox">This is my checkbox</label>
         </div>
         <button type="button" id="make-ind">Make indeterminate</button>
         <button type="button" id="toggle-disabled">Toggle Disabled</button>
       </section>
 
       <section class="example mdc-theme--dark">
-        <h2>Dark Theme</h2>
-        <div class="mdc-form-field">
-          <div id="mdc-checkbox-dark" class="mdc-checkbox mdc-checkbox--theme-dark">
-            <input type="checkbox"
-                   id="checkbox-dark"
-                   class="mdc-checkbox__native-control"/>
-            <div class="mdc-checkbox__background">
-              <svg class="mdc-checkbox__checkmark"
-                   viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path"
-                      fill="none"
-                      stroke="white"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-              </svg>
-              <div class="mdc-checkbox__mixedmark"></div>
+        <h2>Dark Theme (mdc-theme--dark) - CSS Only</h2>
+        <div>
+          <div class="mdc-form-field">
+            <div class="mdc-checkbox">
+              <input type="checkbox"
+                     id="checkbox-dark"
+                     class="mdc-checkbox__native-control"/>
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
             </div>
+            <label for="checkbox-dark">This is my checkbox</label>
           </div>
-          <label for="checkbox-dark" id="dark-checkbox-label">This is my checkbox</label>
         </div>
-        <button type="button" onclick="document.getElementById('checkbox-dark').disabled = !document.getElementById('checkbox-dark').disabled;">Toggle Disabled</button>
+        <div>
+          <div class="mdc-form-field">
+            <div class="mdc-checkbox mdc-checkbox--disabled">
+              <input type="checkbox"
+                     id="basic-disabled-checkbox-dark"
+                     class="mdc-checkbox__native-control"
+                     disabled />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="basic-disabled-checkbox-dark">This is my disabled checkbox</label>
+          </div>
+        </div>
+        <div>
+          <div class="mdc-form-field">
+            <div class="mdc-checkbox">
+              <input type="checkbox"
+                     id="basic-indeterminate-checkbox-dark"
+                     class="mdc-checkbox__native-control"/>
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="basic-indeterminate-checkbox-dark">This is my indeterminate checkbox</label>
+          </div>
+          <script type="text/javascript">
+            document.getElementById('basic-indeterminate-checkbox-dark').indeterminate = true;
+          </script>
+        </div>
       </section>
+
+      <section class="example section-dark-theme">
+        <h2>Dark Theme (mdc-checkbox--theme-dark) - CSS Only</h2>
+        <div>
+          <div class="mdc-form-field mdc-form-field--theme-dark">
+            <div class="mdc-checkbox mdc-checkbox--theme-dark">
+              <input type="checkbox"
+                     id="checkbox-dark-2"
+                     class="mdc-checkbox__native-control"/>
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="checkbox-dark-2">This is my checkbox</label>
+          </div>
+        </div>
+        <div>
+          <div class="mdc-form-field mdc-form-field--theme-dark">
+            <div class="mdc-checkbox mdc-checkbox--theme-dark mdc-checkbox--disabled">
+              <input type="checkbox"
+                     id="basic-disabled-checkbox-dark-2"
+                     class="mdc-checkbox__native-control"
+                     disabled />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="basic-disabled-checkbox-dark-2">This is my disabled checkbox</label>
+          </div>
+        </div>
+        <div>
+          <div class="mdc-form-field mdc-form-field--theme-dark">
+            <div class="mdc-checkbox mdc-checkbox--theme-dark">
+              <input type="checkbox"
+                     id="basic-indeterminate-checkbox-dark-2"
+                     class="mdc-checkbox__native-control"/>
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="basic-indeterminate-checkbox-dark-2">This is my indeterminate checkbox</label>
+          </div>
+          <script type="text/javascript">
+            document.getElementById('basic-indeterminate-checkbox-dark-2').indeterminate = true;
+          </script>
+        </div>
+      </section>
+
     </main>
     <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script>
