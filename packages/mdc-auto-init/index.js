@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// import {MDCComponent} from '@material/base';
+
 const registry = Object.create(null);
 
 const CONSOLE_WARN = console.warn.bind(console);
@@ -49,6 +51,8 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
       configurable: true,
     });
   }
+
+  // MDCComponent.emit('MDCAutoInit:End');
 }
 
 mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {

@@ -95,3 +95,7 @@ test('#register warns when registered key is being overridden', () => {
 
   td.verify(warn(contains('(mdc-auto-init) Overriding registration')));
 });
+
+test('#fires event on init complete', () => {
+  // Really not sure what the test should be :(
+});
