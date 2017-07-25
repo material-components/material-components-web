@@ -75,6 +75,8 @@ https://www.w3.org/TR/WCAG20
 
 ### CSS Custom Properties
 
+MDC Theme CSS custom properties follow a pattern of mdc-theme--<theme> for color and mdc-theme-text-<text>-on-<theme> for text on a theme background. It covers all three theme colors, and all five text styles. There is also mdc-theme-text-<text>-on-<light/dark>. These properties are referenced when the background color is not a theme color. 
+
 | CSS Custom property                        | Description |
 | ------------------------------------------ | - |
 | `--mdc-theme-primary` | The theme primary color. |
@@ -108,7 +110,12 @@ https://www.w3.org/TR/WCAG20
 
 ### CSS Classes
 
-MDC Web themes components with a combination of mdc-theme--<theme> for color and mdc-theme-text-<text>-on-<theme>for text on a theme background. Users can apply the following CSS classes to modify a component.
+Some components can change their appearance when a theme-based modifier CSS class is applied. For example,
+`mdc-button--primary` will make the MDC Button the primary color. For more documentation on these modifier
+classes, consult the documentation for each component.
+
+However, if you are want to modify an element, which is not an Material Design component, then you can apply
+the following modifier CSS classes.
 
 | CSS Class | Description |
 | --------------------------------------- | - |
