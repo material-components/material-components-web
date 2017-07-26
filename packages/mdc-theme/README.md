@@ -77,6 +77,8 @@ https://www.w3.org/TR/WCAG20
 
 #### CSS Custom Properties
 
+> **A note about `<TEXT_STYLE>` and `<THEME_COLOR>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. 'hint'. `<THEME_COLOR>` represents the lowercase name of the theme colors listed above, e.g. `accent`. When you put it all together it would be `--mdc-theme-text-hint-on-accent`.
+
 CSS Custom property | Description
 --- | ---
 `--mdc-theme-primary` | The theme primary color
@@ -91,6 +93,8 @@ CSS Custom property | Description
 Some components can change their appearance when a theme-based modifier CSS class is applied. For example, `mdc-button--primary` will make the MDC Button the primary color. For more documentation on these modifier classes, consult the documentation for each component.
 
 If you want to modify an element, which is not a Material Design component, you can apply the following modifier CSS classes.
+
+> **A note about `<TEXT_STYLE>` and `<THEME_COLOR>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. 'hint'. `<THEME_COLOR>` represents the lowercase name of the theme colors listed above, e.g. `accent`. When you put it all together it would be `mdc-theme--text-hint-on-accent`.
 
 CSS Class | Description
 --- | ---
@@ -117,6 +121,8 @@ Creates a rule that is applied when the current selector is within an Dark Theme
 #### `mdc-theme-prop` Properties
 
 These properties can be used as the `$property` argument for `mdc-theme-prop` mixin.
+
+> **A note about `<TEXT_STYLE>` and `<THEME_COLOR>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. 'hint'. `<THEME_COLOR>` represents the lowercase name of the theme colors listed above, e.g. `accent`. When you put it all together it would be `text-hint-on-accent`.
 
 Property Name | Description
 --- | ---
