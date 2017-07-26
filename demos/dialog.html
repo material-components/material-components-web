@@ -70,8 +70,11 @@
       	       Please check the left and right side of this element for fun.
       	    </section>
       	    <footer class="mdc-dialog__footer">
-      	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Cancel</button>
-      	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Continue</button>
+      	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">
+                <span class="mdc-button__inner">Cancel</span>
+              </button>
+      	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">  <span class="mdc-button__inner">Continue</span>
+              </button>
       	    </footer>
       	  </div>
       	</aside>
@@ -94,8 +97,10 @@
     	        Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
     	      </section>
     	      <footer class="mdc-dialog__footer">
-    	        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
-    	        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
+    	        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">  <span class="mdc-button__inner">Decline</span>
+              </button>
+    	        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">  <span class="mdc-button__inner">Accept</span>
+              </button>
     	      </footer>
     	    </div>
     	    <div class="mdc-dialog__backdrop"></div>
@@ -129,16 +134,23 @@
               </ul>
       	    </section>
       	    <footer class="mdc-dialog__footer">
-      	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
-      	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
+      	      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">  <span class="mdc-button__inner">Decline</span>
+              </button>
+              <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">  <span class="mdc-button__inner">Accept</span>
+              </button>
+            </footer>
       	    </footer>
       	  </div>
       	  <div class="mdc-dialog__backdrop"></div>
       	</aside>
     	</div>
       <section class="example">
-        <button id="default-dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog</button>
-        <button id="dialog-with-list-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Scrolling Dialog</button>
+        <button id="default-dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">
+          <span class="mdc-button__inner">Show Dialog</span>
+        </button>
+        <button id="dialog-with-list-activation" class="mdc-button mdc-button--primary mdc-button--raised">
+          <span class="mdc-button__inner">Show Scrolling Dialog</span>
+        </button>
         <div class="mdc-form-field">
           <div class="mdc-checkbox">
             <input type="checkbox"

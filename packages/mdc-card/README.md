@@ -52,8 +52,12 @@ npm install --save @material/card
     commodo consequat.
   </section>
   <section class="mdc-card__actions">
-    <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-    <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+    <button class="mdc-button mdc-button--compact mdc-card__action">
+      <span class="mdc-button__inner">Action 1</span>
+    </button>
+    <button class="mdc-button mdc-button--compact mdc-card__action">
+      <span class="mdc-button__inner">Action 2</span>
+    </button>
   </section>
 </div>
 ```
@@ -84,8 +88,12 @@ Cards can use a dark theme by either having the `mdc-card--theme-dark` option di
     <h2 class="mdc-card__subtitle">Subtitle here</h2>
   </section>
   <section class="mdc-card__actions">
-    <button class="mdc-button mdc-button--theme-dark mdc-button--compact mdc-card__action">Action 1</button>
-    <button class="mdc-button mdc-button--theme-dark mdc-button--compact mdc-card__action">Action 2</button>
+    <button class="mdc-button mdc-button--compact mdc-card__action">
+      <span class="mdc-button__inner">Action 1</span>
+    </button>
+    <button class="mdc-button mdc-button--compact mdc-card__action">
+      <span class="mdc-button__inner">Action 2</span>
+    </button>
   </section>
 </div>
 ```
@@ -100,8 +108,12 @@ Or by using the `mdc-theme--dark` global modifier class that affects all childre
       <h2 class="mdc-card__subtitle">Subtitle here</h2>
     </section>
     <section class="mdc-card__actions">
-      <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-      <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+      <button class="mdc-button mdc-button--compact mdc-card__action">
+        <span class="mdc-button__inner">Action 1</span>
+      </button>
+      <button class="mdc-button mdc-button--compact mdc-card__action">
+        <span class="mdc-button__inner">Action 2</span>
+      </button>
     </section>
   </div>
 </body>
@@ -136,8 +148,12 @@ This area is used for showing rich media in cards, and optionally as a container
 
 ```html
 <section class="mdc-card__actions">
-  <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-  <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+  <button class="mdc-button mdc-button--compact mdc-card__action">
+    <span class="mdc-button__inner">Action 1</span>
+  </button>
+  <button class="mdc-button mdc-button--compact mdc-card__action">
+    <span class="mdc-button__inner">Action 2</span>
+  </button>
 </section>
 ```
 
@@ -150,8 +166,12 @@ You can use the `mdc-card__actions--vertical` option to lay actions out vertical
 
 ```html
 <section class="mdc-card__actions mdc-card__actions--vertical">
-  <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-  <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+  <button class="mdc-button mdc-button--compact mdc-card__action">
+    <span class="mdc-button__inner">Action 1</span>
+  </button>
+  <button class="mdc-button mdc-button--compact mdc-card__action">
+    <span class="mdc-button__inner">Action 2</span>
+  </button>
 </section>
 ```
 
@@ -206,7 +226,9 @@ You can stack multiple card blocks horizontally instead of vertically, by placin
     <h2 class="mdc-card__subtitle">Subtitle here</h2>
   </section>
   <section class="mdc-card__actions">
-    <button class="mdc-button mdc-button--compact mdc-card__action">Action</button>
+    <button class="mdc-button mdc-button--compact mdc-card__action">
+      <span class="mdc-button__inner">Action</span>
+    </button>
   </section>
 </div>
 ```
