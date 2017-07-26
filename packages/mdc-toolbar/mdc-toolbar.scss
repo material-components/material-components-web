@@ -76,21 +76,21 @@
 
   &__title {
     @include mdc-typography(title);
+    @include mdc-typography-overflow-ellipsis;
 
     align-self: center;
     margin: 0;
     margin-left: 24px;
     padding: $mdc-toobar-element-vertical-padding 0;
     line-height: 1.5rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
     z-index: 1;
   }
 
   &__icon {
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
+
+    cursor: pointer;
   }
 
   &__icon:last-child {
@@ -102,6 +102,7 @@
     @include mdc-theme-prop(color, text-primary-on-primary);
 
     padding: 16px 24px;
+    cursor: pointer;
   }
 }
 

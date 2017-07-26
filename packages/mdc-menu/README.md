@@ -12,7 +12,7 @@ path: /catalog/menus/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/simple-menu.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="153" alt="Menus screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="178" alt="Menus screenshot">
   </a>
 </div>-->
 
@@ -260,7 +260,7 @@ If the menu is closed with no selection made (for example, if the user hits `Esc
 
 MDC Simple Menu ships with an `MDCSimpleMenuFoundation` class that external frameworks and libraries can use to
 integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for temporary drawers must provide the following functions, with correct signatures:
+The adapter for simple menu must provide the following functions, with correct signatures:
 
 | Method Signature | Description |
 | --- | --- |

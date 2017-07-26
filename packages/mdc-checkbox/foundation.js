@@ -16,7 +16,8 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {MDCCheckboxAdapter, InputElementState} from './adapter';
+import {SelectionControlState} from '@material/base/selection-control';
+import MDCCheckboxAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
@@ -27,30 +28,34 @@ const CB_PROTO_PROPS = ['checked', 'indeterminate'];
  * @extends {MDCFoundation<!MDCCheckboxAdapter>}
  */
 export default class MDCCheckboxFoundation extends MDCFoundation {
+  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
 
+  /** @return enum {numbers} */
   static get numbers() {
     return numbers;
   }
 
+  /** @return {!MDCCheckboxAdapter} */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCCheckboxAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       registerAnimationEndHandler: (/* handler: EventListener */) => {},
       deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
       deregisterChangeHandler: (/* handler: EventListener */) => {},
-      getNativeControl: () => /* InputElementState */ {},
+      getNativeControl: () => /* !SelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
-    };
+    });
   }
 
   constructor(adapter) {
@@ -203,7 +208,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!InputElementState} nativeCb
+   * @param {!SelectionControlState} nativeCb
    * @return {string}
    * @private
    */
@@ -259,7 +264,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!InputElementState}
+   * @return {!SelectionControlState}
    * @private
    */
   getNativeControl_() {

@@ -30,25 +30,25 @@ $mdc-textfield-disabled-border-on-light: rgba(#231f20, .26);
 $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 @function mdc-textfield-transition($property) {
-  @return #{$property} 180ms $mdc-animation-fast-out-slow-in-timing-function;
+  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
 }
 
 // postcss-bem-linter: define textfield
 .mdc-textfield {
-  @include mdc-typography-base;
-  // We use only a subset of the MDC typography values here as changing things such as line-height
-  // affects how the labels are transformed.
-  @each $prop in (font-size, letter-spacing) {
-    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
-  }
-
   display: inline-block;
   margin-bottom: 8px;
   will-change: opacity, transform, color;
 
   &__input {
     @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-typography-base;
+    // We use only a subset of the MDC typography values here as changing things such as line-height
+    // affects how the labels are transformed.
+    @each $prop in (font-size, letter-spacing) {
+      #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
+    }
 
+    width: 100%;
     padding: 0 0 8px;
     border: none;
     background: none;
@@ -169,7 +169,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     &::before {
       transition:
         opacity $opacity-duration linear 17ms,
-        transform 250ms $mdc-animation-linear-out-slow-in-timing-function 17ms;
+        transform 250ms $mdc-animation-deceleration-curve-timing-function 17ms;
       opacity: 1;
     }
   }
@@ -253,7 +253,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     transform: scaleY(1);
     transform-origin: center bottom;
     transition:
-      background-color 33ms $mdc-animation-fast-out-slow-in-timing-function,
+      background-color 33ms $mdc-animation-standard-curve-timing-function,
       mdc-textfield-transition(transform);
     background-color: rgba(black, .42);
     pointer-events: none;
@@ -715,8 +715,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 }
 
 // mdc-form-field tweaks to align text field label correctly
-// stylelint-disable selector-no-type
+// stylelint-disable selector-max-type
 .mdc-form-field > .mdc-textfield + label {
   align-self: flex-start;
 }
-// stylelint-enable selector-no-type
+// stylelint-enable selector-max-type
