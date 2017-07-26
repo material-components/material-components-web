@@ -48,6 +48,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   &__input {
     @include mdc-theme-prop(color, text-primary-on-light);
 
+    width: 100%;
     padding: 0 0 8px;
     border: none;
     background: none;
@@ -123,7 +124,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     transform: translateY(-100%) scale(.75, .75);
     cursor: auto;
   }
-  // stylelint-enable plugin/selector-bem-pattern  
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-textfield--upgraded:not(.mdc-textfield--fullwidth) {
