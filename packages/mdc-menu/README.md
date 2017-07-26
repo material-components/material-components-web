@@ -12,7 +12,7 @@ path: /catalog/menus/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/simple-menu.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="153" alt="Menus screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="178" alt="Menus screenshot">
   </a>
 </div>-->
 

@@ -89,6 +89,8 @@
   &__icon {
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
+
+    cursor: pointer;
   }
 
   &__icon:last-child {
@@ -100,6 +102,7 @@
     @include mdc-theme-prop(color, text-primary-on-primary);
 
     padding: 16px 24px;
+    cursor: pointer;
   }
 }
 
