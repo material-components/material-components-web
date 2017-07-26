@@ -14,6 +14,7 @@
 
 @import "@material/animation/functions";
 @import "@material/animation/variables";
+@import "@material/typography/mixins";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
 @import "./mixins";
@@ -191,4 +192,12 @@
       background-color: $mdc-switch-disabled-knob-color-dark;
     }
   }
+}
+
+.mdc-switch-label {
+  @include mdc-typography(body1);
+}
+
+.mdc-switch--disabled + .mdc-switch-label {
+  opacity: .38;
 }
