@@ -1,3 +1,22 @@
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/material-components/material-components-web/compare/v0.15.0...v0.16.0) (2017-07-24)
+
+
+### Bug Fixes
+
+* **animation:** Update exit curves to match spec (#971) ([4844330](https://github.com/material-components/material-components-web/commit/4844330))
+* **button:** Add mdc-typography-base to button (#949) ([3b80525](https://github.com/material-components/material-components-web/commit/3b80525)), closes [#942](https://github.com/material-components/material-components-web/issues/942)
+* **card:** Correct text in a card to use text-primar-on-light (#931) ([e3966d9](https://github.com/material-components/material-components-web/commit/e3966d9)), closes [#930](https://github.com/material-components/material-components-web/issues/930)
+* **dialog:** allow click events to propagate (#869) ([ef7e540](https://github.com/material-components/material-components-web/commit/ef7e540)), closes [#794](https://github.com/material-components/material-components-web/issues/794)
+* **drawer:** Align open & close animations to spec (#976) ([b001aec](https://github.com/material-components/material-components-web/commit/b001aec)), closes [(#976](https://github.com/(/issues/976)
+* **drawer:** Temporary drawer is below toolbar (#925) ([cbc8436](https://github.com/material-components/material-components-web/commit/cbc8436))
+* **elevation:** Update _mixins.scss so Sass linter passes (#933) ([9e6623e](https://github.com/material-components/material-components-web/commit/9e6623e))
+* **list:** Correct list end detail padding (#909) ([d7aa726](https://github.com/material-components/material-components-web/commit/d7aa726)), closes [#904](https://github.com/material-components/material-components-web/issues/904)
+* **slider:** Set mdc-slider__thumb-container #user-select property to none (#968) ([b26b98c](https://github.com/material-components/material-components-web/commit/b26b98c))
+* **toolbar:** Add `pointer` for `icon` element (#974) ([830259c](https://github.com/material-components/material-components-web/commit/830259c))
+
+
+
 <a name="0.15.0"></a>
 # [0.15.0](https://github.com/material-components/material-components-web/compare/v0.13.0...v0.15.0) (2017-07-10)
 
