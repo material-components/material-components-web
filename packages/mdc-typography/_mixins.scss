@@ -35,6 +35,11 @@
   font-weight: #{map-get($style-props, font-weight)};
   letter-spacing: map-get($style-props, letter-spacing);
   line-height: map-get($style-props, line-height);
+
+  @if $style == "button" {
+    text-decoration: none;
+    text-transform: uppercase;
+  }
 }
 
 @mixin mdc-typography-adjust-margin($style) {

@@ -106,5 +106,12 @@ $mdc-typography-styles: (
     font-weight: map-get($mdc-typography-font-weight-values, regular),
     letter-spacing: .08em,
     margin: -.5rem 0 1rem -.04em /* -8sp 0 16sp -.04em */
+  ),
+  button: (
+    font-size: .875rem, /* 14sp */
+    line-height: 2.25rem, /* 36sp */
+    font-weight: map-get($mdc-typography-font-weight-values, medium),
+    letter-spacing: .04em,
+    margin: inherit /* We do not have adjust margin for button */
   )
 ) !default;
