@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// import {MDCComponent} from '@material/base';
-
 const registry = Object.create(null);
 
 const CONSOLE_WARN = console.warn.bind(console);
@@ -25,6 +23,7 @@ const CONSOLE_WARN = console.warn.bind(console);
  */
 export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   const nodes = root.querySelectorAll('[data-mdc-auto-init]');
+  let component = null;
   for (let i = 0, node; (node = nodes[i]); i++) {
     const ctorName = node.dataset.mdcAutoInit;
     if (!ctorName) {
@@ -43,7 +42,7 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     }
 
     // TODO: Should we make an eslint rule for an attachTo() static method?
-    const component = Ctor.attachTo(node);
+    component = Ctor.attachTo(node);
     Object.defineProperty(node, ctorName, {
       value: component,
       writable: false,
@@ -52,7 +51,9 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     });
   }
 
-  // MDCComponent.emit('MDCAutoInit:End');
+  if (component !== null) {
+    component.emit('MDCAutoInit:End', {}, true);
+  }
 }
 
 mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {

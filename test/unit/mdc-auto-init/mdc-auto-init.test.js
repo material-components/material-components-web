@@ -18,14 +18,29 @@ import bel from 'bel';
 import td from 'testdouble';
 import {assert} from 'chai';
 import mdcAutoInit from '../../../packages/mdc-auto-init';
+import {MDCComponent} from '../../../packages/mdc-base';
 
-class FakeComponent {
+class FakeComponent extends MDCComponent {
   static attachTo(node) {
     return new this(node);
   }
 
   constructor(node) {
-    this.node = node;
+    super();
+    this.root_ = node;
+  }
+
+  get root() {
+    return this.root_;
+  }
+
+  getDefaultFoundation() {
+    const defaultFoundation = td.object({
+      isDefaultFoundation: true,
+      init: () => {},
+    });
+    defaultFoundation.rootElementAtTimeOfCall = this.root_;
+    return defaultFoundation;
   }
 }
 
@@ -55,7 +70,7 @@ test('passes the node where "data-mdc-auto-init" was found to attachTo()', () =>
   mdcAutoInit(root);
 
   const fake = root.querySelector('.mdc-fake');
-  assert.equal(fake.FakeComponent.node, fake);
+  assert.equal(fake.FakeComponent.root, fake);
 });
 
 test('throws when no constructor name is specified within "data-mdc-auto-init"', () => {
@@ -96,6 +111,12 @@ test('#register warns when registered key is being overridden', () => {
   td.verify(warn(contains('(mdc-auto-init) Overriding registration')));
 });
 
-test('#fires event on init complete', () => {
-  // Really not sure what the test should be :(
+test('#emit event from MDCComponent on init complete', () => {
+  const root = setupTest();
+  const handler = td.func('init event handler');
+
+  root.addEventListener('MDCAutoInit:End', handler);
+  mdcAutoInit(root);
+
+  td.verify(handler(td.matchers.isA(Object)));
 });
