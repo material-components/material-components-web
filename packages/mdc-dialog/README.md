@@ -59,8 +59,12 @@ Dialogs inform users about a specific task and may contain critical information 
       Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
     </section>
     <footer class="mdc-dialog__footer">
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
+      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">
+        <span class="mdc-button__inner">Cancel</span>
+      </button>
+      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">
+        <span class="mdc-button__inner">Continue</span>
+      </button>
     </footer>
   </div>
   <div class="mdc-dialog__backdrop"></div>
@@ -101,8 +105,12 @@ Some dialogs will not be tall enough to accomodate everything you would like to 
         </ul>
       </section>
       <footer class="mdc-dialog__footer">
-        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
-        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">
+          <span class="mdc-button__inner">Cancel</span>
+        </button>
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">
+          <span class="mdc-button__inner">Continue</span>
+        </button>
       </footer>
     </div>
     <div class="mdc-dialog__backdrop"></div>
