@@ -37,8 +37,8 @@
   line-height: map-get($style-props, line-height);
 
   @if $style == "button" {
-    text-transform: uppercase;
     text-decoration: none;
+    text-transform: uppercase;
   }
 }
 
