@@ -31,11 +31,11 @@
       fieldset .mdc-button {
         margin: 16px;
       }
-      .mdc-theme--dark fieldset {
+      .mdc-theme--dark fieldset, .section-dark-theme fieldset {
         background-color: #333;
       }
 
-      .mdc-theme--dark fieldset legend {
+      .mdc-theme--dark fieldset legend, .section-dark-theme fieldset legend {
         color: #f0f0f0;
       }
 
@@ -219,7 +219,7 @@
 
       <section class="mdc-theme--dark">
         <fieldset>
-          <legend class="mdc-typography--title">Dark Theme - Buttons</legend>
+          <legend class="mdc-typography--title">Dark Theme (mdc-theme--dark) - Buttons</legend>
           <button class="mdc-button">
             Default
           </button>
@@ -255,7 +255,7 @@
           </div>
         </fieldset>
         <fieldset>
-          <legend class="mdc-typography--title">Dark Theme - Buttons CSS Only</legend>
+          <legend class="mdc-typography--title">Dark Theme (mdc-theme--dark) - Buttons CSS Only</legend>
           <button class="mdc-button" data-demo-no-js>
             Default
           </button>
@@ -291,7 +291,7 @@
           </div>
         </fieldset>
         <fieldset disabled>
-          <legend class="mdc-typography--title">Dark Theme - Disabled</legend>
+          <legend class="mdc-typography--title">Dark Theme (mdc-theme--dark) - Disabled</legend>
 
           <button class="mdc-button">
             Default
@@ -328,6 +328,83 @@
           </div>
         </fieldset>
       </section>
+
+      <section class="section-dark-theme">
+        <fieldset>
+          <legend class="mdc-typography--title">Dark Theme (mdc-button--theme-dark) - Buttons CSS Only</legend>
+          <button class="mdc-button mdc-button--theme-dark" data-demo-no-js>
+            Default
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--raised" data-demo-no-js>
+            Raised
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--dense" data-demo-no-js>
+            Dense Default
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--raised mdc-button--dense" data-demo-no-js>
+            Dense Raised
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--compact" data-demo-no-js>
+            Compact
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--raised mdc-button--compact" data-demo-no-js>
+            Compact Raised
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--primary" data-demo-no-js>
+            Default with Primary
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--raised mdc-button--primary" data-demo-no-js>
+            Raised with Primary
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--accent" data-demo-no-js>
+            Default with Accent
+          </button>
+          <button class="mdc-button mdc-button--theme-dark mdc-button--raised mdc-button--accent" data-demo-no-js>
+            Raised with Accent
+          </button>
+          <div class="mdc-button mdc-button--theme-dark mdc-button--raised" tabindex="0" role="button" data-demo-no-js>
+            Div
+          </div>
+        </fieldset>
+        <fieldset disabled>
+          <legend class="mdc-typography--title">Dark Theme (mdc-button--theme-dark) - Disabled</legend>
+
+          <button class="mdc-button mdc-button--theme-dark ">
+            Default
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--raised">
+            Raised
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--dense">
+            Dense Default
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--raised mdc-button--dense">
+            Dense Raised
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--compact">
+            Compact
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--raised mdc-button--compact">
+            Compact Raised
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--primary">
+            Default with Primary
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--raised mdc-button--primary">
+            Raised with Primary
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--accent">
+            Default with Accent
+          </button>
+          <button class="mdc-button mdc-button--theme-dark  mdc-button--raised mdc-button--accent">
+            Raised with Accent
+          </button>
+          <div class="mdc-button mdc-button--theme-dark  mdc-button--raised" tabindex="0" role="button">
+            Div
+          </div>
+        </fieldset>
+      </section>
+
     </main>
     <script src="assets/material-components-web.js" charset="utf-8"></script>
     <script>
