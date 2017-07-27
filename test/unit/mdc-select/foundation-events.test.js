@@ -257,7 +257,7 @@ test('when opened clamps the menu position to the bottom of the window if it wou
   foundation.setSelectedIndex(1);
   td.when(mockAdapter.computeBoundingRect()).thenReturn({
     left: 100,
-    top: mockInnerHeight,
+    top: mockInnerHeight-40,
   });
   td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(20);
   handlers.click(createEvent());
@@ -265,7 +265,7 @@ test('when opened clamps the menu position to the bottom of the window if it wou
   const mockLocation = mockAdapter.computeBoundingRect();
   td.verify(mockAdapter.setMenuElStyle('left', `${mockLocation.left}px`));
   td.verify(
-    mockAdapter.setMenuElStyle('top', `${mockLocation.top - mockMenuHeight}px`)
+    mockAdapter.setMenuElStyle('top', `${mockInnerHeight - mockMenuHeight}px`)
   );
 });
 
