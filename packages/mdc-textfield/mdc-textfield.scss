@@ -48,6 +48,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
     }
 
+    width: 100%;
     padding: 0 0 8px;
     border: none;
     background: none;
