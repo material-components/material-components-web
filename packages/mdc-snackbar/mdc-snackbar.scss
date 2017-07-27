@@ -139,12 +139,19 @@
     }
 
     @include mdc-rtl-reflexive-box(margin, right, -16px, ".mdc-snackbar");
+    @include mdc-typography(button);
 
-    min-width: auto;
-    height: inherit;
+    position: relative;
+    padding: 0 16px;
     transition: mdc-animation-exit-permanent(opacity, .3s);
+    border: none;
+    outline: none;
+    background: transparent;
     opacity: 0;
+    overflow: hidden;
     visibility: hidden;
+    user-select: none;
+    -webkit-appearance: none;
 
     &::-moz-focus-inner {
       border: 0;
