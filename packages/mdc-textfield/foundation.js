@@ -51,7 +51,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
   constructor(adapter = {}) {
     super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
-    
+
     this.receivedUserInput_ = false;
     this.inputFocusHandler_ = () => this.activateFocus_();
     this.inputBlurHandler_ = () => this.deactivateFocus_();
