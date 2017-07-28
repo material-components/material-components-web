@@ -19,7 +19,8 @@ MDC Typography is a foundational module that applies that typographic scale to M
 * Display 1
 * Headline
 * Title
-* Subheading
+* Subheading 2
+* Subheading 1
 * Body 2
 * Body 1
 * Caption
@@ -28,7 +29,7 @@ MDC Typography is a foundational module that applies that typographic scale to M
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/style/typography.html">Material Design guidelines: Style – Typography</a>
+    <a href="https://material.io/guidelines/style/typography.html">Material Design guidelines: Typography</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/typography.html">Demo</a>
@@ -99,7 +100,8 @@ These styles can be used as the `$style` argument for `mdc-typography` and `mdc-
 * `display1`
 * `headline`
 * `title`
-* `subheading`
+* `subheading2`
+* `subheading1`
 * `body2`
 * `body1`
 * `caption`
