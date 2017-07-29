@@ -63,17 +63,18 @@ If you want to set the typographic style of an element, which is not a Material 
 CSS Class | Description
 --- | ---
 `mdc-typography` | Sets the font to Roboto
-`mdc-typography--display4` | Formats text as Display 4
-`mdc-typography--display3` | Formats text as Display 3
-`mdc-typography--display2` | Formats text as Display 2
-`mdc-typography--display1` | Formats text as Display 1
-`mdc-typography--headline` | Formats text as Headline
-`mdc-typography--title` | Formats text as Title
-`mdc-typography--subheading` | Formats text as Subheading
-`mdc-typography--body2` | Formats text as Body 2
-`mdc-typography--body1` | Formats text as Body 1
-`mdc-typography--caption` | Formats text as Caption
-`mdc-typography--adjust-margin` | Positions text
+`mdc-typography--display4` | Sets font properties as Display 4
+`mdc-typography--display3` | Sets font properties as Display 3
+`mdc-typography--display2` | Sets font properties as Display 2
+`mdc-typography--display1` | Sets font properties as Display 1
+`mdc-typography--headline` | Sets font properties as Headline
+`mdc-typography--title` | Sets font properties as Title
+`mdc-typography--subheading2` | Sets font properties as Subheading 2
+`mdc-typography--subheading1` | Sets font properties as Subheading 1
+`mdc-typography--body2` | Sets font properties as Body 2
+`mdc-typography--body1` | Sets font properties as Body 1
+`mdc-typography--caption` | Sets font properties as Caption
+`mdc-typography--adjust-margin` | Positions text, used in conjuction with other font properties
 
 > **A note about `mdc-typography--adjust-margin`**, `mdc-typography--adjust-margin` will change the margin properties of the element it is applied to, to align text correctly. `mdc-typography--adjust-margin` should only be used in a text context; using this property on UI elements such as buttons may cause them to be positioned incorrectly.
 
