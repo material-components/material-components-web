@@ -27,7 +27,7 @@ npm install --save @material/animation
 
 ## Usage
 
-We currently have variables for the following 3 animation curves:
+We currently have variables for the following 4 animation curves:
 
 | Variable name | timing function | use case |
 | --- | --- | --- |
