@@ -18,13 +18,13 @@ import {MDCComponent} from '@material/base';
 import {MDCRipple} from '@material/ripple';
 
 import {cssClasses, strings} from './constants';
-import MDCTextfieldFoundation from './foundation';
+import MDCTextFieldFoundation from './foundation';
 
-export {MDCTextfieldFoundation};
+export {MDCTextFieldFoundation};
 
-export class MDCTextfield extends MDCComponent {
+export class MDCTextField extends MDCComponent {
   static attachTo(root) {
-    return new MDCTextfield(root);
+    return new MDCTextField(root);
   }
 
   initialize(rippleFactory = (el) => new MDCRipple(el)) {
@@ -64,7 +64,7 @@ export class MDCTextfield extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    return new MDCTextfieldFoundation(Object.assign({
+    return new MDCTextFieldFoundation(Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       addClassToLabel: (className) => {

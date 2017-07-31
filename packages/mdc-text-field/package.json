@@ -1,12 +1,12 @@
 {
-  "name": "@material/textfield",
+  "name": "@material/text-field",
   "description": "The Material Components for the web text field component",
   "version": "0.3.6",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
     "material design",
-    "textfield"
+    "text field"
   ],
   "main": "index.js",
   "repository": {

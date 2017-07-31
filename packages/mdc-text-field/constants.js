@@ -16,18 +16,18 @@
 export const strings = {
   ARIA_HIDDEN: 'aria-hidden',
   ROLE: 'role',
-  INPUT_SELECTOR: '.mdc-textfield__input',
-  LABEL_SELECTOR: '.mdc-textfield__label',
+  INPUT_SELECTOR: '.mdc-text-field__input',
+  LABEL_SELECTOR: '.mdc-text-field__label',
 };
 
 export const cssClasses = {
-  ROOT: 'mdc-textfield',
-  UPGRADED: 'mdc-textfield--upgraded',
-  DISABLED: 'mdc-textfield--disabled',
-  FOCUSED: 'mdc-textfield--focused',
-  INVALID: 'mdc-textfield--invalid',
-  HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
-  HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
-  LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
-  BOX: 'mdc-textfield--box',
+  ROOT: 'mdc-text-field',
+  UPGRADED: 'mdc-text-field--upgraded',
+  DISABLED: 'mdc-text-field--disabled',
+  FOCUSED: 'mdc-text-field--focused',
+  INVALID: 'mdc-text-field--invalid',
+  HELPTEXT_PERSISTENT: 'mdc-text-field-helptext--persistent',
+  HELPTEXT_VALIDATION_MSG: 'mdc-text-field-helptext--validation-msg',
+  LABEL_FLOAT_ABOVE: 'mdc-text-field__label--float-above',
+  BOX: 'mdc-text-field--box',
 };
