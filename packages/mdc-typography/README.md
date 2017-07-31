@@ -9,9 +9,9 @@ path: /catalog/typography/
 
 # Typography
 
-Material Design's typographic scale has a limited set of type sizes that work well together along with the layout grid.
+Material Design's text sizes and styles were developed to balance content density and reading comfort under typical usage conditions.
 
-MDC Typography is a foundational module that applies that typographic scale to MDC Web components. The typographic styles in this module are derived from ten styles:
+MDC Typography is a foundational module that applies these styles to MDC Web components. The typographic styles in this module are derived from ten styles:
 
 * Display 4
 * Display 3
