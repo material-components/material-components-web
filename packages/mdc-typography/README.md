@@ -74,7 +74,7 @@ CSS Class | Description
 `mdc-typography--body2` | Sets font properties as Body 2
 `mdc-typography--body1` | Sets font properties as Body 1
 `mdc-typography--caption` | Sets font properties as Caption
-`mdc-typography--adjust-margin` | Positions text, used in conjuction with other font properties
+`mdc-typography--adjust-margin` | Positions text, used in conjunction with font classes above
 
 > **A note about `mdc-typography--adjust-margin`**, `mdc-typography--adjust-margin` will change the margin properties of the element it is applied to, to align text correctly. `mdc-typography--adjust-margin` should only be used in a text context; using this property on UI elements such as buttons may cause them to be positioned incorrectly.
 
