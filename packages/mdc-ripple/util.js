@@ -22,6 +22,32 @@ let supportsPassive_;
 
 /**
  * @param {!Window} windowObj
+ * @return {boolean}
+ */
+function detectEdgePseudoVarBug(windowObj) {
+  // Detect versions of Edge with buggy var() support
+  // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
+  const document = windowObj.document;
+  const className = 'test-edge-css-var';
+  const styleNode = document.createElement('style');
+  document.head.appendChild(styleNode);
+  const sheet = styleNode.sheet;
+  // Internet Explorer 11 requires indices to always be specified to insertRule
+  sheet.insertRule(`:root { --${className}: 1px solid #000; }`, 0);
+  sheet.insertRule(`.${className} { visibility: hidden; }`, 1);
+  sheet.insertRule(`.${className}::before { border: var(--${className}); }`, 2);
+  const node = document.createElement('div');
+  node.className = className;
+  document.body.appendChild(node);
+  // Bug exists if ::before style ends up propagating to the parent element
+  const hasPseudoVarBug = windowObj.getComputedStyle(node).borderTopStyle === 'solid';
+  node.remove();
+  styleNode.remove();
+  return hasPseudoVarBug;
+}
+
+/**
+ * @param {!Window} windowObj
  * @param {boolean=} forceRefresh
  * @return {boolean|undefined}
  */
@@ -43,30 +69,11 @@ export function supportsCssVariables(windowObj, forceRefresh = false) {
     windowObj.CSS.supports('color', '#00000000')
   );
 
-  if (!explicitlySupportsCssVars && !weAreFeatureDetectingSafari10plus) {
+  if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
+    supportsCssVariables_ = !detectEdgePseudoVarBug(windowObj);
+  } else {
     supportsCssVariables_ = false;
-    return supportsCssVariables_;
   }
-
-  // Detect versions of Edge with buggy var() support
-  // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-  const document = windowObj.document;
-  const className = 'test-edge-css-var';
-  const styleNode = document.createElement('style');
-  document.head.appendChild(styleNode);
-  const sheet = styleNode.sheet;
-  // Internet Explorer 11 requires indices to always be specified to insertRule
-  sheet.insertRule(`:root { --${className}: 1px solid #000; }`, 0);
-  sheet.insertRule(`.${className} { visibility: hidden; }`, 1);
-  sheet.insertRule(`.${className}::before { border: var(--${className}); }`, 2);
-  const node = document.createElement('div');
-  node.className = className;
-  document.body.appendChild(node);
-  // Bug exists if ::before style ends up propagating to the parent element
-  const hasPseudoVarBug = windowObj.getComputedStyle(node).borderTopStyle === 'solid';
-  node.remove();
-  styleNode.remove();
-  supportsCssVariables_ = !hasPseudoVarBug;
   return supportsCssVariables_;
 }
 
