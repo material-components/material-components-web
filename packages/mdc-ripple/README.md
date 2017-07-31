@@ -46,9 +46,7 @@ In order to function correctly, MDC Ripple requires a _browser_ implementation o
 
 Because we rely on scoped, dynamic CSS variables, static pre-processors such as [postcss-custom-properties](https://github.com/postcss/postcss-custom-properties) will not work as an adequate polyfill ([...yet?](https://github.com/postcss/postcss-custom-properties/issues/32)).
 
-[Most modern browsers](http://caniuse.com/#feat=css-variables) support CSS variables, so MDC ripple will work just fine. In other cases, MDC ripple will _still work_ if you include it in your codebase. It will simply check if CSS variables are supported upon initialization and if they aren't, gracefully exit. The only exceptions to this rule are Edge and Safari, which do support CSS variables
-but unfortunately ripples are disabled for (see [below](#caveat-edge) for an explanation).
-
+Edge and Safari, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari](#caveat-safari) for an explanation.
 
 ## Installation
 
@@ -385,12 +383,12 @@ this.ripple_ = new MDCRippleFoundation({
 
 > TL;DR ripples are disabled in Edge because of issues with its support of CSS variables in pseudo elements.
 
-Edge introduced CSS variables in version 15.  Unfortunately, there are
-[issues](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/)
-involving its implementation for `::before` and `::after` pseudo-element selectors which cause ripples to
-behave incorrectly.  We feature-detect one of these bugs and do not upgrade ripples if the bug is observed.
-Earlier versions of Edge (and IE) are not affected, as they do not report support for CSS variables at all,
-and as such ripples are never upgraded.
+Edge introduced CSS variables in version 15. Unfortunately, there are
+[known issues](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/)
+involving its implementation for pseudo-elements which cause ripples to behave incorrectly.
+We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not initialize ripples if the bug is
+observed. Earlier versions of Edge (and IE) are not affected, as they do not report support for CSS variables at all,
+and as such ripples are never initialized.
 
 ## Caveat: Safari
 
@@ -428,7 +426,7 @@ to your theme via a custom variable will not propagate to ripples._ We don't see
 
 External frameworks and libraries can use the following utility methods when integrating a component.
 
-#### util.supportsCssVariables(windowObj) => Boolean
+#### util.supportsCssVariables(windowObj, forceRefresh = false) => Boolean
 
 Determine whether the current browser supports CSS variables (custom properties).
 
