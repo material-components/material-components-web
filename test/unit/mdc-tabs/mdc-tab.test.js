@@ -44,7 +44,7 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCTab.attachTo(getFixture()) instanceof MDCTab);
 });
 
-test('#constructor initializes the root element with a ripple in browsers that support it', () => {
+test('#constructor initializes the root element with a ripple in browsers that support it', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
@@ -56,7 +56,7 @@ test('#constructor initializes the root element with a ripple in browsers that s
   raf.restore();
 });
 
-test('#destroy cleans up tab\'s ripple in browsers that support it', () => {
+test('#destroy cleans up tab\'s ripple in browsers that support it', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
