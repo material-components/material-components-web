@@ -25,6 +25,15 @@ MDC Typography is a foundational module that applies that typographic scale to M
 * Body 1
 * Caption
 
+```html
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+</head>
+<body class="mdc-typography">
+  <h1 class="mdc-typography--display4">Big header</h1>
+</body>
+```
+
 ## Design & API Documentation
 
 <ul class="icon-list">
@@ -52,6 +61,9 @@ We recommend you load Roboto from Google Fonts
 <head>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 </head>
+<body class="mdc-typography">
+  <h1 class="mdc-typography--display4">Big header</h1>
+</body>
 ```
 
 ### CSS Classes
