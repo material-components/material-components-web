@@ -428,11 +428,11 @@ External frameworks and libraries can use the following utility methods when int
 
 #### util.supportsCssVariables(windowObj, forceRefresh = false) => Boolean
 
-Determine whether the current browser supports CSS variables (custom properties).
+Determine whether the current browser supports CSS variables (custom properties). This function caches its result; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
 
 #### util.applyPassive(globalObj = window, forceRefresh = false) => object
 
-Determine whether the current browser supports passive event listeners, and if so, use them.
+Determine whether the current browser supports passive event listeners, and if so, use them. This function caches its result; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
 
 #### getMatchesProperty(HTMLElementPrototype) => Function
 

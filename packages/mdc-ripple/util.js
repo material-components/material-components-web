@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-/** @private {boolean|undefined} */
+/**
+ * Stores result from supportsCssVariables to avoid redundant processing to detect CSS custom variable support.
+ * @private {boolean|undefined}
+ */
 let supportsCssVariables_;
 
-/** @private {boolean|undefined} */
+/**
+ * Stores result from applyPassive to avoid redundant processing to detect passive event listener support.
+ * @private {boolean|undefined}
+ */
 let supportsPassive_;
 
 /**
