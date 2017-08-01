@@ -100,7 +100,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   deactivateFocus_() {
-    const {FOCUSED, INVALID, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
     const isValid = input.checkValidity();
 
@@ -113,8 +113,9 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       this.changeValidity_(isValid);
     }
   }
-  
+
   changeValidity_(isValid) {
+    const {INVALID} = MDCTextfieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
@@ -174,7 +175,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       badInput: false,
     };
   }
-  
+
   setValid(isValid) {
     this.useNativeValidityChecking_ = false;
     this.changeValidity_(isValid);
