@@ -24,6 +24,7 @@ MDC Typography is a foundational module that applies these styles to MDC Web com
 * Body 2
 * Body 1
 * Caption
+* Button
 
 ### Usage
 
@@ -88,6 +89,7 @@ CSS Class | Description
 `mdc-typography--body2` | Sets font properties as Body 2
 `mdc-typography--body1` | Sets font properties as Body 1
 `mdc-typography--caption` | Sets font properties as Caption
+`mdc-typography--button` | Sets font properties as Button
 `mdc-typography--adjust-margin` | Positions text, used in conjunction with font classes above
 
 > **A note about `mdc-typography--adjust-margin`**, `mdc-typography--adjust-margin` will change the margin properties of the element it is applied to, to align text correctly. `mdc-typography--adjust-margin` should only be used in a text context; using this property on UI elements such as buttons may cause them to be positioned incorrectly.
@@ -120,3 +122,4 @@ These styles can be used as the `$style` argument for `mdc-typography` and `mdc-
 * `body2`
 * `body1`
 * `caption`
+* `button`
