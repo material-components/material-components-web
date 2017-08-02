@@ -9,7 +9,7 @@ path: /catalog/animation/
 
 # Animation
 
-MDC Animation is a Sass / CSS / JavaScript library which provides a toolbelt for Material Design animation, based off of the [motion guidelines](https://material.io/guidelines/motion/duration-easing.html#duration-easing-common-durations). Currently, it only covers easing curves.
+Material in motion is responsive and natural. Use these easing curves and duration patterns to create smooth and consistent motion.
 
 ## Design & API Documentation
 
@@ -27,55 +27,72 @@ npm install --save @material/animation
 
 ## Usage
 
-We currently have variables for the following 4 animation curves:
+### CSS Classes
 
-| Variable name | timing function | use case |
-| --- | --- | --- |
-| `$mdc-animation-standard-curve-timing-function` | `cubic-bezier(.4, 0, .2, 1)` | Standard curve; any animations that are visible from start to finish (e.g. a FAB transforming into a toolbar) |
-| `$mdc-animation-deceleration-curve-timing-function` | `cubic-bezier(0, 0, .2, 1)` | Animations that cause objects to enter the screen (e.g. a fade in) |
-| `$mdc-animation-acceleration-curve-timing-function` | `cubic-bezier(.4, 0, 1, 1)` | Animations that cause objects to leave the screen permanently (e.g. a fade out) |
-| `$mdc-animation-sharp-curve-timing-function` | `cubic-bezier(.4, 0, .6, 1)` | Animations that cause objects to leave the screen temporarily (e.g. closing a drawer) |
+Some components already use a set curve for their animation. For example, MDC Checkbox uses deceleration curve for its checkmark animation.
 
-### SCSS
+If you want to animate an element that is not a Material Design component, you can apply the following CSS classes.
 
-Simply drop `mdc-animation` into your build and start using the variables:
+CSS Class | Description
+--- | ---
+`mdc-animation-deceleration-curve` | Sets the `animation-timing-function` to deceleration curve
+`mdc-animation-standard-curve` | Sets the `animation-timing-function` to standard curve, a.k.a quickly accelerate and slowly decelerate
+`mdc-animation-acceleration-curve` | Sets the `animation-timing-function` to acceleration curve
+`mdc-animation-sharp-curve` | Sets the `animation-timing-function` to shar curve, a.k.a quickly accelerate and decelerate
 
-```scss
-.mdc-thing--animating {
-  animation: foo 175ms $mdc-animation-standard-curve-timing-function;
-}
-```
+### Sass Variables and Mixins
 
-or the mixins, which simply assign their corresponding variables to the `animation-timing-function`
-property:
+Instead of setting CSS classes on elements, you can use the Sass mixins to achieve the same goal.
 
 ```scss
-.mdc-thing--on-screen {
+@import "@material/animation/mixins";
+
+.my-element--animating {
   @include mdc-animation-acceleration-curve;
 }
 ```
 
-Every mixin has the same name as its corresponding variable, without the `-timing-function` suffix.
+Mixin | Description
+--- | ---
+`mdc-animation-deceleration-curve` | Sets the `animation-timing-function` to deceleration curve
+`mdc-animation-standard-curve` | Sets the `animation-timing-function` to standard curve, a.k.a quickly accelerate and slowly decelerate
+`mdc-animation-acceleration-curve` | Sets the `animation-timing-function` to acceleration curve
+`mdc-animation-sharp-curve` | Sets the `animation-timing-function` to shar curve, a.k.a quickly accelerate and decelerate
 
-MDC Animation also provides helper functions for defining transitions for when something enters and exits the frame. A
-very common example of this is something that fades in and then fades out using opacity.
+We also provide the timing functions used by these mixins, which you can use with the `animation` or `transition` CSS properties
+
+```scss
+@import "@material/animation/variables";
+
+.my-element--animating {
+  animation: foo-keyframe 175ms $mdc-animation-standard-curve-timing-function;
+}
+```
+
+Variable | Description
+--- | ---
+`mdc-animation-deceleration-curve-timing-function` | Timing function to decelerate
+`mdc-animation-standard-curve-timing-function` | Timing function to quickly accelerate and slowly decelerate
+`mdc-animation-acceleration-curve-timing-function` | Timing function to accelerate
+`mdc-animation-sharp-curve-timing-function` | Timing function to quickly accelerate and decelerate
+
+The following functions create transitions given `$name` and the `$duration`. You can also specify `$delay`, but the default is 0ms. `$name` can either refer to the keyframe, or to CSS property used in `transition`.
 
 ```scss
 @import "@material/animation/functions";
 
-.mdc-thing {
+.my-element {
   transition: mdc-animation-exit-permanent(/* $name: */ opacity, /* $duration: */ 175ms, /* $delay: */ 150ms);
   opacity: 0;
   will-change: opacity;
 
-  &:active {
-    transition: mdc-animation-enter(opacity, 175ms /*, $delay: 0ms by default */);
+  &--animating {
+    transition: mdc-animation-enter(/* $name: */ opacity, /* $duration: */ 175ms);
     opacity: 1;
   }
 }
 ```
 
-Note that these functions also work with the `animation` property.
 
 ```scss
 @import "@material/animation/functions";
@@ -92,44 +109,28 @@ Note that these functions also work with the `animation` property.
   }
 }
 
-.mdc-thing {
-  animation: mdc-animation-enter(fade-in, 350ms);
+.my-element {
+  animation: mdc-animation-enter(/* $name: */ fade-in, /* $duration: */ 350ms);
 }
 ```
 
-### CSS Classes
-
-> NOTE: dist/ will be available when installing via NPM.
-
-Alternatively, you can include the built stylesheet and use the classes it exports within your HTML
-
-```html
-<link href="path/to/mdc-animation/dist/mdc-animation.css" rel="stylesheet">
-<!-- ... -->
-<div id="my-animating-div" class="mdc-animation-standard-curve">hi</div>
-```
-
-CSS Classes have the exact same name as their mixin counterparts.
-
-### Overriding the default curves.
-
-All animation variables are marked with `!default`, thus they can be overridden should the need
-arise.
+Function | Description
+--- | ---
+`mdc-animation-enter($name, $duration, $delay)` | Defines transition for entering the frame
+`mdc-animation-exit-permanent($name, $duration, $delay)` | Defines transition for exiting the frame permanently
+`mdc-animation-exit-temporary($name, $duration, $delay)` | Defines transition for exiting the frame temporarily
 
 ### JavaScript
 
-MDC Web ships with a set of utility functions designed to make animations easier to implement.
+These functions handle prefixing across various browsers
 
-### Using Utility Functions
-
-To use:
 ```js
 import {getCorrectEventName} from '@material/animation';
 
 const eventToListenFor = getCorrectEventName(window, 'animationstart');
 ```
 
-| Method Signature | Description |
-| --- | --- |
-| `getCorrectEventName(windowObj: Object, eventType: string)` | Returns a JavaScript event name. Prefixed if necessary. |
-| `getCorrectPropertyName(windowObj: Object, eventType: string)` | Returns a CSS property name. Prefixed if necessary. |
+Method Signature | Description
+--- | ---
+`getCorrectEventName(windowObj, eventType)` | Returns a JavaScript event name, prefixed if necessary
+`getCorrectPropertyName(windowObj, eventType)` | Returns a CSS property name, prefixed if necessary
