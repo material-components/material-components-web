@@ -15,6 +15,7 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/animation/variables";
 @import "@material/typography/mixins";
 @import "@material/theme/mixins";
 @import "@material/ripple/mixins";
@@ -24,64 +25,146 @@
   background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E);
 }
 
+@function mdc-select-transition($property) {
+  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
+}
+
+$dd-arrow-padding: 24px;
+
 // postcss-bem-linter: define select
 .mdc-select {
-  $dd-arrow-padding: 24px;
 
-  @include mdc-typography(subheading2);
-  @include mdc-theme-prop(color, text-primary-on-light);
-  @include mdc-rtl-reflexive-box(padding, right, $dd-arrow-padding);
+  // @include mdc-theme-dark {
+  //   @include mdc-theme-prop(color, text-primary-on-dark);
+  //   @include mdc-select-dd-arrow-svg-bg_(ffffff);
+  //
+  //   border-bottom: 1px solid rgba(white, .12);
+  //
+  //   &:focus {
+  //     @include mdc-theme-prop(border-bottom-color, primary);
+  //
+  //     background-color: rgba(white, .09);
+  //   }
+  //
+  //   &.mdc-ripple-upgraded {
+  //     @include mdc-ripple-base;
+  //     // TODO: Add ::before as ripple bg once #194 lands
+  //     @include mdc-ripple-fg((pseudo: "::after", opacity: .04));
+  //
+  //     &::before {
+  //       top: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
+  //       left: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
+  //       width: var(--mdc-ripple-fg-size, 100%);
+  //       height: var(--mdc-ripple-fg-size, 100%);
+  //       transform: scale(.8);
+  //     }
+  //
+  //     &:hover::before {
+  //       transform: scale(calc(var(--mdc-ripple-fg-scale, 1) + .1));
+  //     }
+  //
+  //     @include mdc-theme-dark(".mdc-select", true) {
+  //       @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .05));
+  //     }
+  //   }
+  // }
+}
 
-  // Resets for <select> element
-  appearance: none;
-
-  &::-ms-expand {
-    display: none;
-  }
-
+.mdc-select {
   display: inline-flex;
+  position: relative;
   align-items: center;
   justify-content: flex-start;
-  max-width: calc(100% - #{$dd-arrow-padding});
-  height: 32px;
-  transition:
-    mdc-animation-exit-temporary(border-bottom-color, 150ms),
-    mdc-animation-exit-temporary(background-color, 150ms);
+  height: 56px;
   border: none;
-  border-bottom: 1px solid rgba(black, .12);
-  border-radius: 0;
+  border-radius: 4px 4px 0 0;
   background: none;
+  background-color: rgba(black, .04);
   background-repeat: no-repeat;
-  background-position: right center;
+  background-position: right 10px center;
 
   @include mdc-select-dd-arrow-svg-bg_;
 
   font-family: Roboto, sans-serif;
   font-size: .936rem;
   cursor: pointer;
+  overflow: visible;
 
-  &:focus {
-    @include mdc-theme-prop(border-bottom-color, primary);
-
-    outline: none;
-    background-color: rgba(black, .06);
-  }
-
-  @include mdc-rtl {
+  @include mdc-rtl(".mdc-select") {
     background-position: left center;
   }
 
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-    @include mdc-select-dd-arrow-svg-bg_(ffffff);
+  @include mdc-theme-dark(".mdc-textfield", true) {
+    background-color: rgba(white, .1);
+  }
 
-    border-bottom: 1px solid rgba(white, .12);
+  &::before,
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: inherit;
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+  }
 
-    &:focus {
-      @include mdc-theme-prop(border-bottom-color, primary);
+  &__menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-height: 100%;
+    transform-origin: center center;
+    overflow-y: scroll;
+    z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
+  }
 
-      background-color: rgba(white, .09);
+  .mdc-select__surface {
+    @include mdc-typography(subheading2);
+    @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-rtl-reflexive-box(padding, right, $dd-arrow-padding);
+
+    // Resets for <select> element
+    appearance: none;
+
+    &::-ms-expand {
+      display: none;
     }
+
+    display: flex;
+    position: relative;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    overflow: hidden;
+
+    // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
+    // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
+    // we would normally disable it (&.mdc-textfield--disabled) as a workaround.
+
+    // stylelint-disable plugin/selector-bem-pattern
+    // TODO: Refactor this out once #194 lands
+    $opacity-duration: 83ms;
+
+    &::before {
+      transition: opacity 17ms linear, transform 0ms $opacity-duration+2 linear;
+    }
+
+    &:hover {
+      &::before {
+        transition:
+          opacity $opacity-duration linear 17ms,
+          transform 250ms $mdc-animation-deceleration-curve-timing-function 17ms;
+        opacity: 1;
+      }
+    }
+    // stylelint-enable
 
     &.mdc-ripple-upgraded {
       @include mdc-ripple-base;
@@ -106,72 +189,78 @@
     }
   }
 
-  &__menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    max-height: 100%;
-    transform-origin: center center;
-    overflow-y: scroll;
-    z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
+  .mdc-select__label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    position: absolute;
+    bottom: 12px;
+    color: rgba(black, .6);
+    pointer-events: none;
+    // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
+    // when the ripple is activated behind it.
+    will-change: transform;
+    transform-origin: left top;
+    transition: mdc-select-transition(transform);
+
+    @include mdc-theme-dark(".mdc-textfield") {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
+
+    &--float-above {
+      transform: translateY(-40%) scale(.75, .75);
+    }
   }
 
-  &__selected-text {
+  .mdc-select__selected-text {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 6px;
+    padding-right: 10px;
+    padding-left: 16px;
     transition:
       mdc-animation-exit-temporary(opacity, 125ms),
       mdc-animation-exit-temporary(transform, 125ms);
     white-space: nowrap;
     overflow: hidden;
   }
-}
 
-// TODO: move these rules into the normal .mdc-select block when all
-// versions of mdc-select inherit this style
-.mdc-select--box {
-  display: inline-flex;
-  position: relative;
-  height: 56px;
-  border-radius: 4px 4px 0 0;
-  background-color: rgba(black, .04);
-  overflow: hidden;
-
-  @include mdc-theme-dark(".mdc-textfield", true) {
-    background-color: rgba(white, .1);
-  }
-
-  &::before,
-  &::after {
+  .mdc-select__bottom-line {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: inherit;
-    content: "";
-    opacity: 0;
+    height: 1px;
+    transform: scaleY(1);
+    transform-origin: center bottom;
+    transition:
+      background-color 33ms $mdc-animation-standard-curve-timing-function,
+      mdc-textfield-transition(transform);
+    background-color: rgba(black, .42);
     pointer-events: none;
-  }
 
-  // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
-  // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
-  // we would normally disable it (&.mdc-textfield--disabled) as a workaround.
-
-  // stylelint-disable plugin/selector-bem-pattern
-  // TODO: Refactor this out once #194 lands
-  $opacity-duration: 83ms;
-
-  &::before {
-    transition: opacity 17ms linear, transform 0ms $opacity-duration+2 linear;
-  }
-
-  &:hover {
-    &::before {
-      transition:
-        opacity $opacity-duration linear 17ms,
-        transform 250ms $mdc-animation-deceleration-curve-timing-function 17ms;
-      opacity: 1;
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: mdc-textfield-transition(opacity);
+      //background-color: $mdc-textfield-error-on-light;
+      content: "";
+      opacity: 0;
     }
+
+    @include mdc-theme-dark(".mdc-textfield") {
+      @include mdc-theme-prop(background-color, text-hint-on-dark);
+
+      &::after {
+        //background-color: $mdc-textfield-error-on-dark;
+      }
+    }
+  }
+
+  .mdc-select__menu {
+
   }
 }
 

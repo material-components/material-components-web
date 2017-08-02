@@ -81,18 +81,22 @@ export default class MDCSelectFoundation extends MDCFoundation {
       if (!this.adapter_.isMenuOpen()) {
         this.open_();
       }
+      // TODO: Activate Bottom Line Transition
     };
     this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
     this.selectionHandler_ = ({detail}) => {
       const {index} = detail;
-      this.close_();
+      const removeFloatingLabelClass = false;
+
       if (index !== this.selectedIndex_) {
         this.setSelectedIndex(index);
         this.adapter_.notifyChange();
       }
+      this.close_(removeFloatingLabelClass);
     };
     this.cancelHandler_ = () => {
-      this.close_();
+      const removeFloatingLabelClass = true;
+      this.close_(removeFloatingLabelClass);
     };
   }
 
@@ -106,6 +110,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.registerMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
     this.resize();
+
+    if (this.selectedIndex_ === -1) {
+      this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
+    }
   }
 
   destroy() {
@@ -174,10 +182,12 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
     let maxTextLength = 0;
     for (let i = 0, l = this.adapter_.getNumberOfOptions(); i < l; i++) {
+      const selectBoxAddedPadding = 26;
       const txt = this.adapter_.getTextForOptionAtIndex(i).trim();
       const {width} = this.ctx_.measureText(txt);
       const addedSpace = letterSpacing * txt.length;
-      maxTextLength = Math.max(maxTextLength, Math.ceil(width + addedSpace));
+      maxTextLength =
+        Math.max(maxTextLength, Math.ceil(width + addedSpace + selectBoxAddedPadding));
     }
     this.adapter_.setStyle('width', `${maxTextLength}px`);
   }
@@ -187,6 +197,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const focusIndex = this.selectedIndex_ < 0 ? 0 : this.selectedIndex_;
 
     this.setMenuStylesForOpenAtIndex_(focusIndex);
+    this.adapter_.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE);
     this.adapter_.addClass(OPEN);
     this.adapter_.openMenu(focusIndex);
   }
@@ -216,9 +227,13 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.setMenuElStyle('transform-origin', `center ${itemOffsetTop}px`);
   }
 
-  close_() {
+  close_(removeFloatingLabelClass) {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
+
+    if (removeFloatingLabelClass && this.getSelectedIndex() === -1) {
+      this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
+    }
     this.adapter_.focus();
   }
 

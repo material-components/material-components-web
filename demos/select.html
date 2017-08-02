@@ -94,7 +94,7 @@
           </div>
         </div>
       </section>
-
+<!--
       <section class="example">
         <h2 class="mdc-typography--title">Fully-Featured Component</h2>
         <section id="demo-wrapper">
@@ -140,12 +140,34 @@
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
         </div>
-      </section>
+      </section> -->
 
       <section class="example">
         <h2 class="mdc-typography--title">Fully-Featured Component Improved Style</h2>
         <section id="box-demo-wrapper">
-          <div id="js-select-box" class="mdc-select mdc-select--box" role="listbox" tabindex="0">
+
+          <div id="js-select-box" class="mdc-select" role="listbox" tabindex="0">
+            <div class="mdc-select__surface">
+              <div class="mdc-select__label">Food Group</div>
+              <div class="mdc-select__selected-text"></div>
+              <div class="mdc-select__bottom-line"></div>
+            </div>
+            <div class="mdc-simple-menu mdc-select__menu">
+              <ul class="mdc-list mdc-simple-menu__items">
+                <li class="mdc-list-item" role="option" id="fruit-roll-ups">
+                  Fruit Roll Ups
+                </li>
+                <li class="mdc-list-item" role="option" id="cotton-candy" tabindex="0">
+                  Candy (cotton)
+                </li>
+                <li class="mdc-list-item" role="option" id="vegetables" aria-disabled="true" tabindex="0">
+                  Vegetables
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- <div id="js-select-box" class="mdc-select mdc-select--box" role="listbox" tabindex="0">
             <span class="mdc-select__selected-text">Pick a food group</span>
             <div class="mdc-simple-menu mdc-select__menu">
               <ul class="mdc-list mdc-simple-menu__items">
@@ -158,23 +180,14 @@
                 <li class="mdc-list-item" role="option" id="vegetables" aria-disabled="true" tabindex="0">
                   Vegetables
                 </li>
-                <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
-                  Fruit
-                </li>
-                <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
-                  Milk, Yogurt, and Cheese
-                </li>
-                <li class="mdc-list-item" role="option" id="meat" tabindex="0">
-                  Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
-                </li>
-                <li class="mdc-list-item" role="option" id="fats" tabindex="0">
-                  Fats, Oils, and Sweets
-                </li>
               </ul>
-              <span class="mdc-select__label"></span>
               <div class="mdc-select__bottom-line"></div>
             </div>
-          </div>
+          </div> -->
+
+
+
+
         </section>
         <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
         <div>
@@ -192,8 +205,6 @@
       </section>
 
 
-
-
       <section class="example">
         <h2 class="mdc-typography--title">CSS Only</h2>
         <select class="mdc-select">
@@ -206,6 +217,7 @@
           <option value="fats">Fats, Oils, and Sweets</option>
         </select>
       </section>
+
 
       <section class="example">
         <h2>Select Multiple - CSS Only</h2>
@@ -230,48 +242,50 @@
     </main>
     <script src="assets/material-components-web.js"></script>
     <script>
-      (function() {
-        var MDCSelect = mdc.select.MDCSelect;
-        var root = document.getElementById('js-select');
-        var currentlySelected = document.getElementById('currently-selected');
-        var select = MDCSelect.attachTo(root);
-        root.addEventListener('MDCSelect:change', function() {
-          var item = select.selectedOptions[0];
-          var index = select.selectedIndex;
-          currentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
-           ' with value "' + select.value + '"';
-        });
-
-        var demoWrapper = document.getElementById('demo-wrapper');
-        var darkThemeCb = document.getElementById('dark-theme');
-        var rtlCb = document.getElementById('rtl');
-        var disabledCb = document.getElementById('disabled');
-
-        darkThemeCb.addEventListener('change', function() {
-          demoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('mdc-theme--dark');
-        });
-        rtlCb.addEventListener('change', function() {
-          if (rtlCb.checked) {
-            demoWrapper.setAttribute('dir', 'rtl');
-          } else {
-            demoWrapper.removeAttribute('dir');
-          }
-        });
-        disabledCb.addEventListener('change', function() {
-          select.disabled = disabledCb.checked;
-        });
-
-        var heroSelect = document.getElementById('hero-js-select');
-        mdc.select.MDCSelect.attachTo(heroSelect);
-      })();
+      // (function() {
+      //   var MDCSelect = mdc.select.MDCSelect;
+      //   var root = document.getElementById('js-select');
+      //   var currentlySelected = document.getElementById('currently-selected');
+      //   var select = MDCSelect.attachTo(root);
+      //   root.addEventListener('MDCSelect:change', function() {
+      //     var item = select.selectedOptions[0];
+      //     var index = select.selectedIndex;
+      //     currentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
+      //      ' with value "' + select.value + '"';
+      //   });
+      //
+      //   var demoWrapper = document.getElementById('demo-wrapper');
+      //   var darkThemeCb = document.getElementById('dark-theme');
+      //   var rtlCb = document.getElementById('rtl');
+      //   var disabledCb = document.getElementById('disabled');
+      //
+      //   darkThemeCb.addEventListener('change', function() {
+      //     demoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('mdc-theme--dark');
+      //   });
+      //   rtlCb.addEventListener('change', function() {
+      //     if (rtlCb.checked) {
+      //       demoWrapper.setAttribute('dir', 'rtl');
+      //     } else {
+      //       demoWrapper.removeAttribute('dir');
+      //     }
+      //   });
+      //   disabledCb.addEventListener('change', function() {
+      //     select.disabled = disabledCb.checked;
+      //   });
+      //
+      //   var heroSelect = document.getElementById('hero-js-select');
+      //   mdc.select.MDCSelect.attachTo(heroSelect);
+      // })();
     </script>
     <script>
       (function() {
+        // Select with box styling
         var MDCSelect = mdc.select.MDCSelect;
-        var boxRoot = document.getElementById('js-select-box');
+        var root = document.getElementById('js-select-box');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
-        var select = MDCSelect.attachTo(boxRoot);
-        boxRoot.addEventListener('MDCSelect:change', function() {
+        var select = MDCSelect.attachTo(root);
+
+        root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];
           var index = select.selectedIndex;
           boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
@@ -296,9 +310,6 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-
-        // var heroSelect = document.getElementById('hero-js-select');
-        // mdc.select.MDCSelect.attachTo(heroSelect);
       })();
     </script>
   </body>

@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 export const cssClasses = {
-  ROOT: 'mdc-select',
-  OPEN: 'mdc-select--open',
+  BOTTOM_LINE: 'mdc-select__bottom-line',
+  BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
+  LABEL: 'mdc-select__label',
+  LABEL_FLOAT_ABOVE: 'mdc-select__label--float-above',
+  OPEN: 'mdc-select--open',
+  ROOT: 'mdc-select',
+  SURFACE: 'mdc-select__surface',
 };
 
 export const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
+  BOTTOM_LINE_SELECTOR: '.mdc-select__bottom-line',
+  LABEL_SELECTOR: '.mdc-select__label',
+  MENU_SELECTOR: '.mdc-select__menu',
+  SURFACE_SELECTOR: '.mdc-select__surface',
 };
