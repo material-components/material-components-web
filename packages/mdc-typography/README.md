@@ -75,6 +75,7 @@ The full list of styles:
 - `mdc-typography--body2`
 - `mdc-typography--body1`
 - `mdc-typography--caption`
+- `mdc-typography--button`
 
 #### Margins and positioning
 
@@ -137,6 +138,7 @@ The full list of styles:
 - `body2`
 - `body1`
 - `caption`
+- `button`
 
 
 ### mdc-typography-adjust-margin
