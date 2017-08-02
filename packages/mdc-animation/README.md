@@ -35,10 +35,10 @@ If you want to animate an element that is not a Material Design component, you c
 
 CSS Class | Description
 --- | ---
-`mdc-animation-deceleration-curve` | Sets the speed curve to deceleration
-`mdc-animation-standard-curve` | Sets the speed curve to standard, a.k.a quickly accelerate and slowly decelerate
-`mdc-animation-acceleration-curve` | Sets the speed curve to acceleration
-`mdc-animation-sharp-curve` | Sets the speed curve to sharp, a.k.a quickly accelerate and decelerate
+`mdc-animation-deceleration-curve` | Sets the `animation-timing-function` to deceleration curve
+`mdc-animation-standard-curve` | Sets the `animation-timing-function` to standard curve, a.k.a quickly accelerate and slowly decelerate
+`mdc-animation-acceleration-curve` | Sets the `animation-timing-function` to acceleration curve
+`mdc-animation-sharp-curve` | Sets the `animation-timing-function` to shar curve, a.k.a quickly accelerate and decelerate
 
 ### Sass Variables and Mixins
 
@@ -54,10 +54,10 @@ Instead of setting CSS classes on elements, you can use the Sass mixins to achie
 
 Mixin | Description
 --- | ---
-`mdc-animation-deceleration-curve` | Sets the speed curve to deceleration
-`mdc-animation-standard-curve` | Sets the speed curve to standard, a.k.a quickly accelerate and slowly decelerate
-`mdc-animation-acceleration-curve` | Sets the speed curve to acceleration
-`mdc-animation-sharp-curve` | Sets the speed curve to sharp, a.k.a quickly accelerate and decelerate
+`mdc-animation-deceleration-curve` | Sets the `animation-timing-function` to deceleration curve
+`mdc-animation-standard-curve` | Sets the `animation-timing-function` to standard curve, a.k.a quickly accelerate and slowly decelerate
+`mdc-animation-acceleration-curve` | Sets the `animation-timing-function` to acceleration curve
+`mdc-animation-sharp-curve` | Sets the `animation-timing-function` to shar curve, a.k.a quickly accelerate and decelerate
 
 We also provide the timing functions used by these mixins, which you can use with the `animation` or `transition` CSS properties
 
