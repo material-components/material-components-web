@@ -13,7 +13,6 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.3.0",
     "@material/elevation": "^0.1.10",
     "@material/ripple": "^0.8.1",
     "@material/theme": "^0.1.6",
