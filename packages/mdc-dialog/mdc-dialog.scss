@@ -141,6 +141,10 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
         @include mdc-rtl-reflexive-box(margin, right, 0);
       }
     }
+
+    &__action {
+      @include mdc-theme-prop(color, accent);
+    }
   }
 
   // TODO: Replace with breakpoint variable
