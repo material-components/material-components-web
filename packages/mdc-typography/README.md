@@ -25,6 +25,8 @@ MDC Typography is a foundational module that applies these styles to MDC Web com
 * Body 1
 * Caption
 
+### Usage
+
 ```html
 <head>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
