@@ -94,7 +94,7 @@ CSS Class | Description
 
 ### Sass Variables and Mixins
 
-Variable | Description
+Mixin | Description
 --- | ---
 `mdc-typography-base` | Sets the font to Roboto
 `mdc-typography($style)` | Applies one of the typography styles, including setting the font to Roboto
