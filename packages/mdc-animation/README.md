@@ -29,9 +29,9 @@ npm install --save @material/animation
 
 ### CSS Classes
 
-Some components have a set typographic style. For example, a raised MDC Checkbox enter and exit curves.
+Some components already use a set curve for their animation. For example, MDC Checkbox uses deceleration curve for its checkmark animation.
 
-If you want to animate an element, which is not a Material Design component, you can apply the following CSS classes.
+If you want to animate an element that is not a Material Design component, you can apply the following CSS classes.
 
 CSS Class | Description
 --- | ---
@@ -45,6 +45,8 @@ CSS Class | Description
 Instead of setting CSS classes on elements, you can use the Sass mixins to achieve the same goal.
 
 ```scss
+@import "@material/animation/mixins";
+
 .my-element--animating {
   @include mdc-animation-acceleration-curve;
 }
@@ -60,6 +62,8 @@ Mixin | Description
 We also provide the timing functions used by these mixins, which you can use with the `animation` or `transition` CSS properties
 
 ```scss
+@import "@material/animation/variables";
+
 .my-element--animating {
   animation: foo-keyframe 175ms $mdc-animation-standard-curve-timing-function;
 }
@@ -75,6 +79,8 @@ Variable | Description
 The following functions create transitions given `$name` and the `$duration`. You can also specify `$delay`, but the default is 0ms. `$name` can either refer to the keyframe, or to CSS property used in `transition`.
 
 ```scss
+@import "@material/animation/functions";
+
 .my-element {
   transition: mdc-animation-exit-permanent(/* $name: */ opacity, /* $duration: */ 175ms, /* $delay: */ 150ms);
   opacity: 0;
@@ -89,6 +95,8 @@ The following functions create transitions given `$name` and the `$duration`. Yo
 
 
 ```scss
+@import "@material/animation/functions";
+
 @keyframes fade-in {
   from {
     transform: translateY(-80px);
@@ -124,5 +132,5 @@ const eventToListenFor = getCorrectEventName(window, 'animationstart');
 
 Method Signature | Description
 --- | ---
-`getCorrectEventName(windowObj, eventType)` | Returns a JavaScript event name, prefixed if necessary |
-`getCorrectPropertyName(windowObj, eventType)` | Returns a CSS property name, prefixed if necessary |
+`getCorrectEventName(windowObj, eventType)` | Returns a JavaScript event name, prefixed if necessary
+`getCorrectPropertyName(windowObj, eventType)` | Returns a CSS property name, prefixed if necessary
