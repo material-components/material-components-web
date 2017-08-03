@@ -33,6 +33,9 @@ We strive to make developing Material Components Web as frictionless as possible
 
 You'll need a recent version of [nodejs](https://nodejs.org/en/) to work on MDC-Web. We [test our builds](https://travis-ci.org/material-components/material-components-web) using both the latest and LTS node versions, so use of one of those is recommended. You can use [nvm](https://github.com/creationix/nvm) to easily install and manage different versions of node on your system.
 
+> **NOTE**: If you expect to commit updated or new dependencies, please ensure you are using npm 5, which will
+> also update `package-lock.json` correctly when you install or upgrade packages.
+
 Once node is installed, simply clone our repo (or your fork of it) and run `npm install`
 
 ```
