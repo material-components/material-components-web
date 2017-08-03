@@ -311,13 +311,6 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     }
   }
   // stylelint-enable plugin/selector-bem-pattern
-
-  // stylelint-disable plugin/selector-bem-pattern
-  & + .mdc-textfield-helptext {
-    margin-right: 16px;
-    margin-left: 16px;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--box) {
@@ -695,6 +688,11 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   .mdc-textfield--focused + &:not(#{&}--validation-msg) {
     opacity: 1;
+  }
+
+  .mdc-textfield--box + & {
+    margin-right: 16px;
+    margin-left: 16px;
   }
 
   // stylelint-enable plugin/selector-bem-pattern
