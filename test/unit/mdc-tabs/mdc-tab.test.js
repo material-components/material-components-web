@@ -44,24 +44,30 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCTab.attachTo(getFixture()) instanceof MDCTab);
 });
 
-if (supportsCssVariables(window)) {
-  test('#constructor initializes the root element with a ripple', () => {
-    const raf = createMockRaf();
-    const {root} = setupTest();
-    raf.flush();
-    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
-  });
+test('#constructor initializes the root element with a ripple in browsers that support it', function() {
+  if (!supportsCssVariables(window, true)) {
+    this.skip(); // eslint-disable-line no-invalid-this
+    return;
+  }
+  const raf = createMockRaf();
+  const {root} = setupTest();
+  raf.flush();
+  assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
+  raf.restore();
+});
 
-  test('#destroy cleans up ripple on tab', () => {
-    const raf = createMockRaf();
-    const {root, component} = setupTest();
-    raf.flush();
-    component.destroy();
-    raf.flush();
-    assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
-  });
-}
+test('#destroy cleans up tab\'s ripple in browsers that support it', function() {
+  if (!supportsCssVariables(window, true)) {
+    this.skip(); // eslint-disable-line no-invalid-this
+    return;
+  }
+  const raf = createMockRaf();
+  const {root, component} = setupTest();
+  raf.flush();
+  component.destroy();
+  raf.flush();
+  assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
+});
 
 test('#get computedWidth returns computed width of tab', () => {
   const {root, component} = setupTest();

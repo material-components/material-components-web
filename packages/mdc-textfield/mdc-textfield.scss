@@ -35,20 +35,20 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 // postcss-bem-linter: define textfield
 .mdc-textfield {
-  @include mdc-typography-base;
-  // We use only a subset of the MDC typography values here as changing things such as line-height
-  // affects how the labels are transformed.
-  @each $prop in (font-size, letter-spacing) {
-    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
-  }
-
   display: inline-block;
   margin-bottom: 8px;
   will-change: opacity, transform, color;
 
   &__input {
     @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-typography-base;
+    // We use only a subset of the MDC typography values here as changing things such as line-height
+    // affects how the labels are transformed.
+    @each $prop in (font-size, letter-spacing) {
+      #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
+    }
 
+    width: 100%;
     padding: 0 0 8px;
     border: none;
     background: none;

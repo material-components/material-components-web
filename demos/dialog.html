@@ -43,6 +43,17 @@
         position: relative;
         width: 320px;
       }
+
+      .dialog-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mdc-theme--dark, .section-dark-theme {
+        background: #262626;
+        color: white;
+      }
     </style>
   </head>
   <body class="mdc-typography">
@@ -157,26 +168,50 @@
           </div>
           <label for="toggle-rtl">Toggle RTL</label>
         </div>
+      </section>
 
-        <div class="mdc-form-field">
-          <div class="mdc-checkbox">
-            <input type="checkbox"
-                 id="toggle-dark"
-                 class="mdc-checkbox__native-control"/>
-            <div class="mdc-checkbox__background">
-              <svg class="mdc-checkbox__checkmark"
-                 viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path"
-                     fill="none"
-                     stroke="white"
-                     d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-              </svg>
-              <div class="mdc-checkbox__mixedmark"></div>
+      <section class="example mdc-theme--dark">
+        <h2>Dark Theme (mdc-theme--dark)</h2>
+        <div class="dialog-container">
+          <aside class="catalog-dialog-demo mdc-dialog mdc-dialog--open">
+            <div class="mdc-dialog__surface">
+              <header class="mdc-dialog__header">
+                <h2 id="mdc-dialog-default-label" class="mdc-dialog__header__title">
+                  Are you happy?
+                </h2>
+              </header>
+              <section id="mdc-dialog-default-description" class="mdc-dialog__body">
+                 Please check the left and right side of this element for fun.
+              </section>
+              <footer class="mdc-dialog__footer">
+                <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Cancel</button>
+                <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Continue</button>
+              </footer>
             </div>
-          </div>
-          <label for="toggle-dark">Toggle Dark</label>
+          </aside>
         </div>
+      </section>
 
+      <section class="example section-dark-theme">
+        <h2>Dark Theme (mdc-dialog--theme-dark)</h2>
+        <div class="dialog-container">
+          <aside class="catalog-dialog-demo mdc-dialog mdc-dialog--theme-dark mdc-dialog--open">
+            <div class="mdc-dialog__surface">
+              <header class="mdc-dialog__header">
+                <h2 id="mdc-dialog-default-label" class="mdc-dialog__header__title">
+                  Are you happy?
+                </h2>
+              </header>
+              <section id="mdc-dialog-default-description" class="mdc-dialog__body">
+                 Please check the left and right side of this element for fun.
+              </section>
+              <footer class="mdc-dialog__footer">
+                <button type="button" class="mdc-button mdc-button--theme-dark mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Cancel</button>
+                <button type="button" class="mdc-button mdc-button--theme-dark mdc-dialog__footer__button mdc-dialog__footer__button--accept">Continue</button>
+              </footer>
+            </div>
+          </aside>
+        </div>
       </section>
     </main>
     <script src="assets/material-components-web.js" charset="utf-8"></script>
@@ -213,9 +248,6 @@
             demoWrapper.removeAttribute('dir');
             hero.removeAttribute('dir');
           }
-        });
-        document.getElementById('toggle-dark').addEventListener('change', function(evt) {
-          document.body.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
         // Hack to work around style-loader async loading styles
         setTimeout(function() {
