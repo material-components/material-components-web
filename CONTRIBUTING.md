@@ -61,7 +61,9 @@ Each component requires the following items in order to be complete:
 
 You can find much more information with respect to building components within our [authoring components guide](./docs/authoring-components.md)
 
-### Running the development server
+### Running development server
+
+#### Local developement server
 
 ```
 npm run dev
@@ -69,6 +71,15 @@ open http://localhost:8080
 ```
 
 `npm run dev` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that uses `demos/` as its content base. This should aid you in initial development of a component. It's served on port 8080.
+
+#### Appengine developement server
+
+```
+MDC_ENV=development npm run build && gcloud app deploy app.yaml --project google.com:mdc-web-dev --version $USER
+gcloud app browse
+```
+
+The above script will build and deploy the app to mdc-web's dev server with your userid as its version number, you can switch to your version by adding $USER-dot to the URL. This would be helpful if we need to share work-in-progress work within teams and designers.
 
 ### Building MDC-Web
 
