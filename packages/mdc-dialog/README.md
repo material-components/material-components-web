@@ -259,6 +259,7 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `isDialog(el: Element) => boolean` | Returns boolean indicating whether the provided element is the dialog surface element. |
 | `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 | `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
+| `layoutFooterRipples() => void` | Calls `layout` on the ripple components instantiated on buttons in the footer. |
 
 #### Handling Focus Trapping
 
