@@ -15,6 +15,7 @@
 */
 
 // stylelint-disable
+
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");
 
 // Base style
@@ -22,7 +23,7 @@
 $mdc-theme-primary: #212121;
 $mdc-theme-accent: #64dd17;
 
-@import "../../material-components-web/material-components-web";
+@import "../packages/material-components-web/material-components-web";
 
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
