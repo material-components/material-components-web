@@ -55,7 +55,6 @@
   }
 
   @include mdc-theme-dark {
-    @include mdc-ripple-base;
     @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
     @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
     @include mdc-theme-prop(color, text-primary-on-dark);
@@ -67,7 +66,6 @@
 
   @each $theme-style in (primary, accent) {
     &.mdc-button--#{$theme-style} {
-      @include mdc-ripple-base;
       @include mdc-ripple-bg((pseudo: "::before", theme-style: $theme-style, opacity: .12));
       @include mdc-ripple-fg((pseudo: "::after", theme-style: $theme-style, opacity: .12));
     }
@@ -106,7 +104,6 @@
 
     @each $theme-style in (primary, accent) {
       &.mdc-button--#{$theme-style} {
-        @include mdc-ripple-base;
         @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
         @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
       }
@@ -130,10 +127,6 @@
   &--primary {
     @include mdc-theme-prop(color, primary);
 
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, primary);
-    }
-
     // postcss-bem-linter: ignore
     &.mdc-button--raised {
       @include mdc-theme-prop(background-color, primary);
@@ -148,10 +141,6 @@
 
   &--accent {
     @include mdc-theme-prop(color, accent);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, accent);
-    }
 
     // postcss-bem-linter: ignore
     &.mdc-button--raised {
