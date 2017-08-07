@@ -20,8 +20,8 @@
 
 // Base style
 
-$mdc-theme-primary: #212121;
-$mdc-theme-accent: #64dd17;
+$mdc-theme-primary: #212121 !default;
+$mdc-theme-accent: #64dd17 !default;
 
 @import "../packages/material-components-web/material-components-web";
 
