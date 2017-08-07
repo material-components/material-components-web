@@ -76,12 +76,14 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.ctx_ = null;
     this.selectedIndex_ = -1;
     this.disabled_ = false;
+    this.isFocused_ = false;
+    this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
+    this.setPointerXOffset_ = (evt) => this.setBottomLineOrigin_(evt);
     this.displayHandler_ = (evt) => {
       evt.preventDefault();
       if (!this.adapter_.isMenuOpen()) {
         this.open_();
       }
-      // TODO: Activate Bottom Line Transition
     };
     this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
     this.selectionHandler_ = ({detail}) => {
@@ -109,6 +111,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.registerMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.adapter_.registerPointerDownHandler(evtType, this.setPointerXOffset_);
+    });
     this.resize();
 
     if (this.selectedIndex_ === -1) {
@@ -126,6 +132,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.deregisterMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
+    this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.adapter_.deregisterPointerDownHandler(evtType, this.setPointerXOffset_, {passive: true});
+    });
   }
 
   getValue() {
@@ -198,8 +208,27 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
     this.setMenuStylesForOpenAtIndex_(focusIndex);
     this.adapter_.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE);
+    this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.addClass(OPEN);
     this.adapter_.openMenu(focusIndex);
+    this.isFocused_ = true;
+  }
+
+  setBottomLineOrigin_(evt) {
+    const targetClientRect = evt.target.getBoundingClientRect();
+    const evtCoords = {x: evt.clientX, y: evt.clientY};
+    const normalizedX = evtCoords.x - targetClientRect.left;
+    const attributeString =
+      `transform-origin: ${normalizedX}px center`;
+
+    this.adapter_.setBottomLineAttr('style', attributeString);
+  }
+
+  transitionEnd_(evt) {
+    console.log(evt.propertyName);
+    if (evt.propertyName === 'opacity' && !this.isFocused_) {
+      this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    }
   }
 
   setMenuStylesForOpenAtIndex_(index) {
@@ -254,6 +283,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const isOpenerKey = OPENER_KEYS.some(({key, keyCode, forType}) => {
       return evt.type === forType && (evt.key === key || evt.keyCode === keyCode);
     });
+
     if (isOpenerKey) {
       this.displayHandler_(evt);
     }

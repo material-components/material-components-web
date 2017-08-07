@@ -33,44 +33,6 @@ $dd-arrow-padding: 24px;
 
 // postcss-bem-linter: define select
 .mdc-select {
-
-  // @include mdc-theme-dark {
-  //   @include mdc-theme-prop(color, text-primary-on-dark);
-  //   @include mdc-select-dd-arrow-svg-bg_(ffffff);
-  //
-  //   border-bottom: 1px solid rgba(white, .12);
-  //
-  //   &:focus {
-  //     @include mdc-theme-prop(border-bottom-color, primary);
-  //
-  //     background-color: rgba(white, .09);
-  //   }
-  //
-  //   &.mdc-ripple-upgraded {
-  //     @include mdc-ripple-base;
-  //     // TODO: Add ::before as ripple bg once #194 lands
-  //     @include mdc-ripple-fg((pseudo: "::after", opacity: .04));
-  //
-  //     &::before {
-  //       top: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
-  //       left: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
-  //       width: var(--mdc-ripple-fg-size, 100%);
-  //       height: var(--mdc-ripple-fg-size, 100%);
-  //       transform: scale(.8);
-  //     }
-  //
-  //     &:hover::before {
-  //       transform: scale(calc(var(--mdc-ripple-fg-scale, 1) + .1));
-  //     }
-  //
-  //     @include mdc-theme-dark(".mdc-select", true) {
-  //       @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .05));
-  //     }
-  //   }
-  // }
-}
-
-.mdc-select {
   display: inline-flex;
   position: relative;
   align-items: center;
@@ -78,8 +40,8 @@ $dd-arrow-padding: 24px;
   height: 56px;
   border: none;
   border-radius: 4px 4px 0 0;
+  outline: none;
   background: none;
-  background-color: rgba(black, .04);
   background-repeat: no-repeat;
   background-position: right 10px center;
 
@@ -90,6 +52,13 @@ $dd-arrow-padding: 24px;
   cursor: pointer;
   overflow: visible;
 
+  &:focus {
+    .mdc-select__bottom-line {
+      transform: scaleY(2);
+      background-color: rgba(black, .8);
+    }
+  }
+
   @include mdc-rtl(".mdc-select") {
     background-position: left center;
   }
@@ -98,21 +67,8 @@ $dd-arrow-padding: 24px;
     background-color: rgba(white, .1);
   }
 
-  &::before,
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: inherit;
-    content: "";
-    opacity: 0;
-    pointer-events: none;
-  }
-
   &__menu {
+    // display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -122,7 +78,7 @@ $dd-arrow-padding: 24px;
     z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
   }
 
-  .mdc-select__surface {
+  &__surface {
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-primary-on-light);
     @include mdc-rtl-reflexive-box(padding, right, $dd-arrow-padding);
@@ -139,10 +95,23 @@ $dd-arrow-padding: 24px;
     flex: 1;
     width: 100%;
     height: 100%;
-    border-radius: 0;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    border-radius: 4px 4px 0 0;
+    background-color: rgba(black, .04);
     overflow: hidden;
+
+    &::before,
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: inherit;
+      content: "";
+      opacity: 0;
+      pointer-events: none;
+    }
 
     // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
     // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
@@ -157,6 +126,11 @@ $dd-arrow-padding: 24px;
     }
 
     &:hover {
+      .mdc-select__bottom-line {
+        transform: scaleY(2);
+        background-color: rgba(black, .8);
+      }
+
       &::before {
         transition:
           opacity $opacity-duration linear 17ms,
@@ -164,7 +138,6 @@ $dd-arrow-padding: 24px;
         opacity: 1;
       }
     }
-    // stylelint-enable
 
     &.mdc-ripple-upgraded {
       @include mdc-ripple-base;
@@ -177,11 +150,13 @@ $dd-arrow-padding: 24px;
         width: var(--mdc-ripple-fg-size, 100%);
         height: var(--mdc-ripple-fg-size, 100%);
         transform: scale(.8);
+        content: "";
       }
 
       &:hover::before {
         transform: scale(calc(var(--mdc-ripple-fg-scale, 1) + .1));
       }
+      // stylelint-enable
 
       @include mdc-theme-dark(".mdc-textfield", true) {
         @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .05));
@@ -189,20 +164,20 @@ $dd-arrow-padding: 24px;
     }
   }
 
-  .mdc-select__label {
+  &__label {
     @include mdc-rtl-reflexive-position(left, 16px);
 
     position: absolute;
     bottom: 12px;
+    transform-origin: left top;
+    transition: mdc-select-transition(transform);
     color: rgba(black, .6);
     pointer-events: none;
     // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
-    transform-origin: left top;
-    transition: mdc-select-transition(transform);
 
-    @include mdc-theme-dark(".mdc-textfield") {
+    @include mdc-theme-dark(".mdc-select") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
 
@@ -211,7 +186,7 @@ $dd-arrow-padding: 24px;
     }
   }
 
-  .mdc-select__selected-text {
+  &__selected-text {
     display: flex;
     align-items: flex-end;
     margin-bottom: 6px;
@@ -222,45 +197,44 @@ $dd-arrow-padding: 24px;
       mdc-animation-exit-temporary(transform, 125ms);
     white-space: nowrap;
     overflow: hidden;
+
+    @include mdc-theme-dark(".mdc-select") {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
   }
 
-  .mdc-select__bottom-line {
+  &__bottom-line {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 1px;
     transform: scaleY(1);
-    transform-origin: center bottom;
-    transition:
-      background-color 33ms $mdc-animation-standard-curve-timing-function,
-      mdc-textfield-transition(transform);
-    background-color: rgba(black, .42);
-    pointer-events: none;
+    transform-origin: bottom;
+    transition: mdc-select-transition(transform);
+    background-color: rgba(black, .4);
 
     &::after {
       position: absolute;
-      top: 0;
+      bottom: -1px;
       left: 0;
       width: 100%;
-      height: 100%;
-      transition: mdc-textfield-transition(opacity);
-      //background-color: $mdc-textfield-error-on-light;
+      height: 2px;
+      transform: scaleX(0);
+      transition: mdc-select-transition(transform);
       content: "";
       opacity: 0;
-    }
+      z-index: 2;
 
-    @include mdc-theme-dark(".mdc-textfield") {
-      @include mdc-theme-prop(background-color, text-hint-on-dark);
-
-      &::after {
-        //background-color: $mdc-textfield-error-on-dark;
-      }
+      @include mdc-theme-prop(background-color, primary);
     }
   }
 
-  .mdc-select__menu {
-
+  &__bottom-line--active {
+    &::after {
+      transform: scaleX(1);
+      opacity: 1;
+    }
   }
 }
 

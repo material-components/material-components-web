@@ -19,7 +19,7 @@ import {MDCRipple} from '@material/ripple';
 import {MDCSimpleMenu} from '@material/menu';
 
 import MDCSelectFoundation from './foundation';
-import {cssClasses, strings} from './constants';
+import {strings} from './constants';
 
 export {MDCSelectFoundation};
 
@@ -70,20 +70,14 @@ export class MDCSelect extends MDCComponent {
     return null;
   }
 
-  initialize(menuFactory = (el) => new MDCSimpleMenu(el), rippleFactory = (el) => new MDCRipple(el)) {
+  initialize(menuFactory = (el) => new MDCSimpleMenu(el)) {
     this.surface_ = this.root_.querySelector(strings.SURFACE_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
+    this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
     this.menuEl_ = this.root_.querySelector(strings.MENU_SELECTOR);
     this.menu_ = menuFactory(this.menuEl_);
-    this.boxStyle = null;
-    this.ripple = null;
-    this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
-    this.ripple = rippleFactory(this.surface_);
-
-    if (this.root_.classList.contains(cssClasses.BOX)) {
-      this.boxStyle = true;
-    //  this.ripple = rippleFactory(this.surface_);
-    };
+    this.ripple = new MDCRipple(this.surface_);
   }
 
   getDefaultFoundation() {
@@ -94,17 +88,22 @@ export class MDCSelect extends MDCComponent {
       removeClassFromLabel: (className) => this.label_.classList.remove(className),
       addClassToBottomLine: (className) => this.bottomLine_.classList.add(className),
       removeClassFromBottomLine: (className) => this.bottomLine_.classList.remove(className),
+      setBottomLineAttr: (attr, value) => this.bottomLine_.setAttribute(attr, value),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
       computeBoundingRect: () => this.surface_.getBoundingClientRect(),
-      registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
-      focus: () => this.surface_.focus(),
+      registerPointerDownHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterPointerDownHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
+      registerTransitionEndHandler: (handler) => this.bottomLine_.addEventListener('transitionend', handler),
+      deregisterTransitionEndHandler: (handler) => this.bottomLine_.removeEventListener('transitionend', handler),
+      focus: () => this.root_.focus(),
       makeTabbable: () => {
-        this.surface_.tabIndex = 0;
+        this.menuEl_.tabIndex = 0;
       },
       makeUntabbable: () => {
-        this.surface_.tabIndex = -1;
+        this.menuEl_.tabIndex = -1;
       },
       getComputedStyleValue: (prop) => window.getComputedStyle(this.surface_).getPropertyValue(prop),
       setStyle: (propertyName, value) => this.surface_.style.setProperty(propertyName, value),

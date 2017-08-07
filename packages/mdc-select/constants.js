@@ -15,6 +15,7 @@
  */
 export const cssClasses = {
   BOTTOM_LINE: 'mdc-select__bottom-line',
+  BOTTOM_LINE_ACTIVE: 'mdc-select__bottom-line--active',
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
   LABEL: 'mdc-select__label',
@@ -30,4 +31,5 @@ export const strings = {
   LABEL_SELECTOR: '.mdc-select__label',
   MENU_SELECTOR: '.mdc-select__menu',
   SURFACE_SELECTOR: '.mdc-select__surface',
+  SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
 };
