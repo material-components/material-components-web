@@ -130,10 +130,6 @@
   &--primary {
     @include mdc-theme-prop(color, primary);
 
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, primary);
-    }
-
     // postcss-bem-linter: ignore
     &.mdc-button--raised {
       @include mdc-theme-prop(background-color, primary);
@@ -148,10 +144,6 @@
 
   &--accent {
     @include mdc-theme-prop(color, accent);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, accent);
-    }
 
     // postcss-bem-linter: ignore
     &.mdc-button--raised {
