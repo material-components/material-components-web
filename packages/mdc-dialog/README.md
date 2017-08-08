@@ -121,7 +121,7 @@ Dialog actions use system colors by default, but you can use a contrasting color
   <div class="mdc-dialog__surface">
     <footer class="mdc-dialog__footer">
       <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept mdc-dialog__action">Accept</button>
+      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept mdc-dialog__footer__action">Accept</button>
     </footer>
 </aside>
 ```
