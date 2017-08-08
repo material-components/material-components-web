@@ -1,3 +1,22 @@
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/material-components/material-components-web/compare/v0.16.0...v0.17.0) (2017-08-07)
+
+
+### Bug Fixes
+
+* **dialog:** Dialog buttons should use primary color (#941) ([b4e8b5a](https://github.com/material-components/material-components-web/commit/b4e8b5a)), closes [#940](https://github.com/material-components/material-components-web/issues/940)
+* **ripple:** Feature-detect buggy Edge behavior for custom properties (#1041) ([5cc2115](https://github.com/material-components/material-components-web/commit/5cc2115))
+* **select:** menu positioning logic incorrect when select appears near viewport edge #671 (#680) ([874f043](https://github.com/material-components/material-components-web/commit/874f043))
+* **textfield:** Add font styles to input, remove from mdc wrapper (#908) ([a498a28](https://github.com/material-components/material-components-web/commit/a498a28))
+* **textfield:** Fix textfield input sizes  (#1016) ([e59ee21](https://github.com/material-components/material-components-web/commit/e59ee21)), closes [#1016](https://github.com/material-components/material-components-web/issues/1016) [#1002](https://github.com/material-components/material-components-web/issues/1002)
+
+
+### Features
+
+* **typography:** Add button style to typography (#1064) ([21c7a54](https://github.com/material-components/material-components-web/commit/21c7a54))
+
+
+
 <a name="0.16.0"></a>
 # [0.16.0](https://github.com/material-components/material-components-web/compare/v0.15.0...v0.16.0) (2017-07-24)
 
