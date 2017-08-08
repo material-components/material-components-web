@@ -93,9 +93,11 @@
     cursor: pointer;
   }
 
-  &__icon:last-child {
-    padding-right: 16px;
+@media (min-width: $mdc-toolbar-mobile-breakpoint) {
+  .mdc-toolbar__icon:last-child {
+    margin-right: 8px;
   }
+}
 
   &__icon--menu {
     @include mdc-shared-icon-style(menu);
@@ -113,10 +115,6 @@
 @media (max-width: $mdc-toolbar-mobile-breakpoint) {
   .mdc-toolbar__icon--menu {
     padding: 16px;
-  }
-
-  .mdc-toolbar__icon:last-child {
-    padding: 16px 8px;
   }
 
   .mdc-toolbar__title {
