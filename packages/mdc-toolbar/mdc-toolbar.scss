@@ -103,7 +103,7 @@
 }
 
 @media (min-width: $mdc-toolbar-mobile-breakpoint) {
-  .mdc-toolbar__icon:last-child {
+  .mdc-toolbar__icon:last-of-type {
     margin-right: 8px;
   }
 }
