@@ -37,9 +37,16 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      addClassToLabel: (/* className: string */) => {},
+      removeClassFromLabel: (/* className: string */) => {},
+      addClassToBottomLine: (/* className: string */) => {},
+      removeClassFromBottomLine: (/* className: string */) => {},
+      setBottomLineAttr: (/* attr: string, value: string */) => {},
       setAttr: (/* attr: string, value: string */) => {},
       rmAttr: (/* attr: string */) => {},
       computeBoundingRect: () => /* {left: number, top: number} */ ({left: 0, top: 0}),
+      registerPointerDownHandler: (/* evtType: string, handler: EventListener */) => {},
+      deregisterPointerDownHandler: (/* evtType: string, handler: EventListener */) => {},
       registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
       focus: () => {},
@@ -77,7 +84,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.selectedIndex_ = -1;
     this.disabled_ = false;
     this.isFocused_ = false;
-    this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
     this.setPointerXOffset_ = (evt) => this.setBottomLineOrigin_(evt);
     this.displayHandler_ = (evt) => {
       evt.preventDefault();
@@ -111,7 +117,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.registerMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
     ['mousedown', 'touchstart'].forEach((evtType) => {
       this.adapter_.registerPointerDownHandler(evtType, this.setPointerXOffset_);
     });
@@ -132,7 +137,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.deregisterMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
-    this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
     ['mousedown', 'touchstart'].forEach((evtType) => {
       this.adapter_.deregisterPointerDownHandler(evtType, this.setPointerXOffset_, {passive: true});
     });
@@ -224,13 +228,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.setBottomLineAttr('style', attributeString);
   }
 
-  transitionEnd_(evt) {
-    console.log(evt.propertyName);
-    if (evt.propertyName === 'opacity' && !this.isFocused_) {
-      this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
-    }
-  }
-
   setMenuStylesForOpenAtIndex_(index) {
     const innerHeight = this.adapter_.getWindowInnerHeight();
     const {left, top} = this.adapter_.computeBoundingRect();
@@ -263,6 +260,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     if (removeFloatingLabelClass && this.getSelectedIndex() === -1) {
       this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
     }
+    this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.focus();
   }
 

@@ -34,14 +34,15 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
-    'addClass', 'removeClass', 'setAttr', 'rmAttr', 'computeBoundingRect',
-    'registerInteractionHandler', 'deregisterInteractionHandler', 'focus', 'makeTabbable',
-    'makeUntabbable', 'getComputedStyleValue', 'setStyle', 'create2dRenderingContext',
-    'setMenuElStyle', 'setMenuElAttr', 'rmMenuElAttr', 'getMenuElOffsetHeight', 'openMenu',
-    'isMenuOpen', 'setSelectedTextContent', 'getNumberOfOptions', 'getTextForOptionAtIndex',
-    'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex', 'getOffsetTopForOptionAtIndex',
-    'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler', 'notifyChange',
-    'getWindowInnerHeight', 'getValueForOptionAtIndex',
+    'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel', 'addClassToBottomLine',
+    'removeClassFromBottomLine', 'setBottomLineAttr', 'setAttr', 'rmAttr', 'computeBoundingRect',
+    'registerPointerDownHandler', 'deregisterPointerDownHandler', 'registerInteractionHandler',
+    'deregisterInteractionHandler', 'focus', 'makeTabbable', 'makeUntabbable', 'getComputedStyleValue',
+    'setStyle', 'create2dRenderingContext', 'setMenuElStyle', 'setMenuElAttr', 'rmMenuElAttr',
+    'getMenuElOffsetHeight', 'openMenu', 'isMenuOpen', 'setSelectedTextContent', 'getNumberOfOptions',
+    'getTextForOptionAtIndex', 'getValueForOptionAtIndex', 'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex',
+    'getOffsetTopForOptionAtIndex', 'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler',
+    'notifyChange', 'getWindowInnerHeight',
   ]);
 
   const renderingContext = MDCSelectFoundation.defaultAdapter.create2dRenderingContext();
@@ -185,8 +186,8 @@ test('#resize resizes the element to the longest-length option', () => {
   foundation.init();
   foundation.resize();
   assert.equal(ctx.font, '16px Roboto');
-  // ceil(letter-spacing * 'longest'.length + longest measured width)
-  const expectedWidth = Math.ceil((2.5 * 7) + Math.max(...widths));
+  // ceil(letter-spacing * 'longest'.length + longest measured width + extra padding)
+  const expectedWidth = Math.ceil((2.5 * 7) + Math.max(...widths) + 26);
   td.verify(mockAdapter.setStyle('width', `${expectedWidth}px`));
 });
 
@@ -215,7 +216,7 @@ test('#resize falls back to font-{family,size} if shorthand is not supported', (
   foundation.resize();
   assert.equal(ctx.font, '16px Roboto');
   // ceil(letter-spacing * 'longest'.length + longest measured width)
-  const expectedWidth = Math.ceil((2.5 * 7) + Math.max(...widths));
+  const expectedWidth = Math.ceil((2.5 * 7) + Math.max(...widths) + 26);
   td.verify(mockAdapter.setStyle('width', `${expectedWidth}px`));
 });
 

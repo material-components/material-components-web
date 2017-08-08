@@ -40,14 +40,20 @@ class FakeMenu {
 
 function getFixture() {
   return bel`
-    <div class="mdc-select" role="listbox" tabindex="0">
-      <span class="mdc-select__selected-text">Pick a food group</span>
-      <div class="mdc-select__menu mdc-simple-menu">
-        <ul class="mdc-simple-menu__items">
-          <li class="mdc-list-item" role="option" tabindex="0">An option</li>
-        </ul>
-      </div>
+  <div class="mdc-select" role="listbox" tabindex="0">
+    <div class="mdc-select__surface">
+      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__bottom-line"></div>
     </div>
+    <div class="mdc-simple-menu mdc-select__menu">
+      <ul class="mdc-list mdc-simple-menu__items">
+        <li class="mdc-list-item" role="option" aria-disabled="true">
+          Pick a food group
+        </li>
+      </ul>
+    </div>
+  </div>
   `;
 }
 
@@ -60,9 +66,10 @@ test('attachTo returns a component instance', () => {
 function setupTest() {
   const menu = new FakeMenu();
   const fixture = getFixture();
+  const surface = fixture.querySelector('.mdc-select__surface');
   const menuEl = fixture.querySelector('.mdc-select__menu');
   const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu);
-  return {menu, menuEl, fixture, component};
+  return {menu, menuEl, fixture, surface, component};
 }
 
 test('options returns the menu items', () => {
@@ -214,17 +221,17 @@ test('adapter#focus focuses on the root element', () => {
 });
 
 test('adapter#makeTabbable sets the root element\'s tabindex to 0', () => {
-  const {component, fixture} = setupTest();
-  fixture.tabIndex = -1;
+  const {component, menuEl} = setupTest();
+  menuEl.tabIndex = -1;
   component.getDefaultFoundation().adapter_.makeTabbable();
-  assert.equal(fixture.tabIndex, 0);
+  assert.equal(menuEl.tabIndex, 0);
 });
 
 test('adapter#makeUntabbable sets the root element\'s tabindex to -1', () => {
-  const {component, fixture} = setupTest();
-  fixture.tabIndex = 0;
+  const {component, menuEl} = setupTest();
+  menuEl.tabIndex = 0;
   component.getDefaultFoundation().adapter_.makeUntabbable();
-  assert.equal(fixture.tabIndex, -1);
+  assert.equal(menuEl.tabIndex, -1);
 });
 
 test('adapter#getComputedStyleValue gets the computed style value of the prop from the root element', () => {
@@ -239,9 +246,9 @@ test('adapter#getComputedStyleValue gets the computed style value of the prop fr
 });
 
 test('adapter#setStyle sets the given style propertyName to the given value', () => {
-  const {component, fixture} = setupTest();
+  const {component, surface} = setupTest();
   component.getDefaultFoundation().adapter_.setStyle('font-size', '13px');
-  assert.equal(fixture.style.getPropertyValue('font-size'), '13px');
+  assert.equal(surface.style.getPropertyValue('font-size'), '13px');
 });
 
 test('adapter#create2dRenderingContext returns a CanvasRenderingContext2d instance', () => {

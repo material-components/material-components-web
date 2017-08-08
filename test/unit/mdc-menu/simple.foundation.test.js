@@ -837,7 +837,14 @@ test('on spacebar keydown prevents default on the event', () => {
   clock.uninstall();
 });
 
-testFoundation('on document click cancels and closes the menu', ({foundation, mockAdapter, mockRaf}) => {
+test('on document click cancels and closes the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const mockEvt = {
+    target: {
+      classList: {contains: () => false},
+    },
+  };
   let documentClickHandler;
   td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
     documentClickHandler = handler;
@@ -847,7 +854,7 @@ testFoundation('on document click cancels and closes the menu', ({foundation, mo
   foundation.open();
   mockRaf.flush();
 
-  documentClickHandler();
+  documentClickHandler(mockEvt);
   mockRaf.flush();
 
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));

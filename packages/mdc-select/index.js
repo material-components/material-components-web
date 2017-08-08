@@ -96,8 +96,6 @@ export class MDCSelect extends MDCComponent {
       deregisterPointerDownHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      registerTransitionEndHandler: (handler) => this.bottomLine_.addEventListener('transitionend', handler),
-      deregisterTransitionEndHandler: (handler) => this.bottomLine_.removeEventListener('transitionend', handler),
       focus: () => this.root_.focus(),
       makeTabbable: () => {
         this.menuEl_.tabIndex = 0;
