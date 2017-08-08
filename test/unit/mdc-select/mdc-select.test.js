@@ -67,9 +67,12 @@ function setupTest() {
   const menu = new FakeMenu();
   const fixture = getFixture();
   const surface = fixture.querySelector('.mdc-select__surface');
+  const label = fixture.querySelector('.mdc-select__label');
+  const bottomLine = fixture.querySelector('.mdc-select__bottom-line');
   const menuEl = fixture.querySelector('.mdc-select__menu');
   const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu);
-  return {menu, menuEl, fixture, surface, component};
+
+  return {menu, menuEl, fixture, surface, label, bottomLine, component};
 }
 
 test('options returns the menu items', () => {
@@ -170,6 +173,43 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isNotOk(fixture.classList.contains('foo'));
 });
 
+test('adapter#addClassToLabel adds a class to the label', () => {
+  const {component, label} = setupTest();
+
+  component.getDefaultFoundation().adapter_.addClassToLabel('foo');
+  assert.isTrue(label.classList.contains('foo'));
+});
+
+test('adapter#removeClassFromLabel removes a class from the label', () => {
+  const {component, label} = setupTest();
+
+  label.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClassFromLabel('foo');
+  assert.isFalse(label.classList.contains('foo'));
+});
+
+test('adapter#addClassToBottomLine adds a class to the bottom line', () => {
+  const {component, bottomLine} = setupTest();
+
+  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
+  assert.isTrue(bottomLine.classList.contains('foo'));
+});
+
+test('adapter#removeClassFromBottomLine removes a class from the bottom line', () => {
+  const {component, bottomLine} = setupTest();
+
+  bottomLine.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
+  assert.isFalse(bottomLine.classList.contains('foo'));
+});
+
+test('adapter#setBottomLineAttr adds attribute to bottom line', () => {
+  const {component, bottomLine} = setupTest();
+
+  component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-disabled', 'true');
+  assert.equal(bottomLine.getAttribute('aria-disabled'), 'true');
+});
+
 test('adapter#setAttr sets an attribute with a given value on the root element', () => {
   const {component, fixture} = setupTest();
   component.getDefaultFoundation().adapter_.setAttr('aria-disabled', 'true');
@@ -189,6 +229,23 @@ test('adapter#computeBoundingRect returns the result of getBoundingClientRect() 
     component.getDefaultFoundation().adapter_.computeBoundingRect(),
     fixture.getBoundingClientRect()
   );
+});
+
+test('adapter#registerPointerDownHandler adds an event listener to the root element', () => {
+  const {component, fixture} = setupTest();
+  const listener = td.func('eventlistener');
+  component.getDefaultFoundation().adapter_.registerPointerDownHandler('mousedown', listener);
+  domEvents.emit(fixture, 'mousedown');
+  td.verify(listener(td.matchers.anything()));
+});
+
+test('adapter#deregisterPointerDownHandler removes an event listener from the root element', () => {
+  const {component, fixture} = setupTest();
+  const listener = td.func('eventlistener');
+  fixture.addEventListener('mousedown', listener);
+  component.getDefaultFoundation().adapter_.deregisterPointerDownHandler('mousedown', listener);
+  domEvents.emit(fixture, 'mousedown');
+  td.verify(listener(td.matchers.anything()), {times: 0});
 });
 
 test('adapter#registerInteractionHandler adds an event listener to the root element', () => {

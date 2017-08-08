@@ -15,23 +15,13 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@material/animation": "^0.3.1",
     "@material/base": "^0.2.3",
     "@material/list": "^0.2.14",
     "@material/menu": "^0.4.3",
+    "@material/ripple": "^0.8.2",
     "@material/rtl": "^0.1.7",
     "@material/theme": "^0.1.7",
     "@material/typography": "^0.3.0"
-=======
-    "@material/animation": "^0.2.3",
-    "@material/base": "^0.2.2",
-    "@material/list": "^0.2.12",
-    "@material/menu": "^0.4.1",
-    "@material/ripple": "^0.8.0",
-    "@material/rtl": "^0.1.6",
-    "@material/theme": "^0.1.5",
-    "@material/typography": "^0.2.2"
->>>>>>> feat(select): Update styles and add ripples
   }
 }

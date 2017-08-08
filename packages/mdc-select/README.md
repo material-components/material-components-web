@@ -45,28 +45,29 @@ npm install --save @material/select
 
 ```html
 <div class="mdc-select" role="listbox" tabindex="0">
-  <span class="mdc-select__selected-text">Pick a food group</span>
+  <div class="mdc-select__surface">
+    <div class="mdc-select__label">Pick a Food Group</div>
+    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-select__bottom-line"></div>
+  </div>
   <div class="mdc-simple-menu mdc-select__menu">
     <ul class="mdc-list mdc-simple-menu__items">
-      <li class="mdc-list-item" role="option" id="grains" aria-disabled="true">
-        Pick a food group
-      </li>
-      <li class="mdc-list-item" role="option" id="grains" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list-item" role="option" id="vegetables" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Vegetables
       </li>
-      <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Fruit
       </li>
-      <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Milk, Yogurt, and Cheese
       </li>
-      <li class="mdc-list-item" role="option" id="meat" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
       </li>
-      <li class="mdc-list-item" role="option" id="fats" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Fats, Oils, and Sweets
       </li>
     </ul>
@@ -98,25 +99,29 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 
 ```html
 <div class="mdc-select" role="listbox" tabindex="0">
-  <span class="mdc-select__selected-text">Vegetables</span>
+  <div class="mdc-select__surface">
+    <div class="mdc-select__label">Pick a Food Group</div>
+    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-select__bottom-line"></div>
+  </div>
   <div class="mdc-simple-menu mdc-select__menu">
     <ul class="mdc-list mdc-simple-menu__items">
-      <li class="mdc-list-item" role="option" id="grains" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list-item" role="option" aria-selected id="vegetables" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Vegetables
       </li>
-      <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Fruit
       </li>
-      <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
+      <li class="mdc-list-item" role="option" aria-selected tabindex="0">
         Milk, Yogurt, and Cheese
       </li>
-      <li class="mdc-list-item" role="option" id="meat" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
       </li>
-      <li class="mdc-list-item" role="option" id="fats" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Fats, Oils, and Sweets
       </li>
     </ul>
@@ -127,26 +132,30 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 #### Disabled select
 
 ```html
-<div class="mdc-select mdc-select--disabled" role="listbox" aria-disabled="true" tabindex="-1">
-  <span class="mdc-select__selected-text">Pick a food group</span>
+<div class="mdc-select" role="listbox" aria-disabled="true" tabindex="0">
+  <div class="mdc-select__surface">
+    <div class="mdc-select__label">Pick a Food Group</div>
+    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-select__bottom-line"></div>
+  </div>
   <div class="mdc-simple-menu mdc-select__menu">
     <ul class="mdc-list mdc-simple-menu__items">
-      <li class="mdc-list-item" role="option" id="grains" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list-item" role="option" id="vegetables" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Vegetables
       </li>
-      <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Fruit
       </li>
-      <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
+      <li class="mdc-list-item" role="option"  tabindex="0">
         Milk, Yogurt, and Cheese
       </li>
-      <li class="mdc-list-item" role="option" id="meat" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
       </li>
-      <li class="mdc-list-item" role="option" id="fats" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Fats, Oils, and Sweets
       </li>
     </ul>
@@ -160,26 +169,33 @@ When used in components such as MDC Select, `mdc-list-item`'s can be disabled.
 To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `"-1"`.
 
 ```html
-<div class="mdc-select" role="listbox">
-  <span class="mdc-select__selected-text">Pick a food group</span>
+<div class="mdc-select" role="listbox" tabindex="0">
+  <div class="mdc-select__surface">
+    <div class="mdc-select__label">Pick a Food Group</div>
+    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-select__bottom-line"></div>
+  </div>
   <div class="mdc-simple-menu mdc-select__menu">
     <ul class="mdc-list mdc-simple-menu__items">
-      <li class="mdc-list-item" role="option" id="grains" tabindex="0">
+      <li class="mdc-list-item" role="option" aria-disabled="true">
+        Pick a food group
+      </li>
+      <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list-item" role="option" id="vegetables" tabindex="-1" aria-disabled="true">
-        Vegetables (Disabled)
+      <li class="mdc-list-item" role="option" aria-disabled="true" tabindex="0">
+        Vegetables
       </li>
-      <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Fruit
       </li>
-      <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
+      <li class="mdc-list-item" role="option"  tabindex="0">
         Milk, Yogurt, and Cheese
       </li>
-      <li class="mdc-list-item" role="option" id="meat" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
       </li>
-      <li class="mdc-list-item" role="option" id="fats" tabindex="0">
+      <li class="mdc-list-item" role="option" tabindex="0">
         Fats, Oils, and Sweets
       </li>
     </ul>
@@ -194,19 +210,18 @@ seamless, un-invasive experience in browsers where a native select may be more a
 on a mobile device. It does not require any javascript, nor any CSS for `mdc-menu` or `mdc-list`.
 
 ```html
-<select class="mdc-select">
-  <option value="" default selected>Pick a food</option>
-  <option value="grains">Bread, Cereal, Rice, and Pasta</option>
-  <option value="vegetables">Vegetables</option>
-  <optgroup label="Fruits">
-    <option value="apple">Apple</option>
-    <option value="oranges">Orange</option>
-    <option value="banana">Banana</option>
-  </optgroup>
-  <option value="dairy">Milk, Yogurt, and Cheese</option>
-  <option value="meat">Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts</option>
-  <option value="fats">Fats, Oils, and Sweets</option>
-</select>
+<div class="mdc-select">
+  <select class="mdc-select__surface">
+    <option value="" default selected>Pick a food group</option>
+    <option value="grains">Bread, Cereal, Rice, and Pasta</option>
+    <option value="vegetables" disabled>Vegetables</option>
+    <option value="fruit">Fruit</option>
+    <option value="dairy">Milk, Yogurt, and Cheese</option>
+    <option value="meat">Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts</option>
+    <option value="fats">Fats, Oils, and Sweets</option>
+  </select>
+  <div class="mdc-select__bottom-line"></div>
+</div>
 ```
 
 ### Multi Select
@@ -331,9 +346,16 @@ within `componentDidUpdate`.
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
+| `addClassToLabel(className: string) => void` | Adds a class to the label |
+| `removeClassFromLabel(className: string) => void` | Removes a class from the label |
+| `addClassToBottomLine(className: string) => void` | Adds a class to the bottom line |
+| `removeClassFromBottomLine(className: string) => void` | Removes a class from the bottom line |
+| `setBottomLineAttr(attr: string, value: string) => void` | Adds an attribute to the bottom line |
 | `setAttr(attr: string, value: string) => void` | Sets attribute `attr` to value `value` on the root element. |
 | `rmAttr(attr: string) => void` | Removes attribute `attr` from the root element. |
 | `computeBoundingRect() => {left: number, top: number}` | Returns an object with a shape similar to a `ClientRect` object, with a `left` and `top` property specifying the element's position on the page relative to the viewport. The easiest way to achieve this is by calling `getBoundingClientRect()` on the root element. |
+| `registerPointerDownHandler(evtType: string, handler: EventListener) => void`| Adds an event listener for pointer down interactions to the root element |
+| `deregisterPointerDownHandler(evtType: string, handler: EventListener) => void`| Removes an event listener for pointer down interactions from the root element |
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the root element. |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the root element. |
 | `focus() => void` | Focuses the root element |
@@ -403,12 +425,16 @@ First, wrap both a custom select and a native select within a wrapper element, l
 <div class="select-manager">
   <!-- Custom MDC Select, shown on desktop -->
   <div class="mdc-select" role="listbox" tabindex="0">
-    <span class="mdc-select__selected-text">Pick one</span>
+    <div class="mdc-select__surface">
+      <div class="mdc-select__label">Pick One</div>
+      <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__bottom-line"></div>
+    </div>
     <div class="mdc-simple-menu mdc-select__menu">
       <ul class="mdc-list mdc-simple-menu__items">
-        <li class="mdc-list-item" role="option" id="a" tabindex="0">A</li>
-        <li class="mdc-list-item" role="option" id="b" tabindex="0">B</li>
-        <li class="mdc-list-item" role="option" id="c" tabindex="0">C</li>
+        <li id="a" class="mdc-list-item" role="option" tabindex="0">A</li>
+        <li id="b" class="mdc-list-item" role="option" tabindex="0">B</li>
+        <li id="c" class="mdc-list-item" role="option" tabindex="0">C</li>
       </ul>
     </div>
   </div>
