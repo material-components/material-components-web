@@ -239,7 +239,7 @@ mdc.MDCSimpleMenu.attachTo(document.querySelector('.mdc-simple-menu'));
 Simple menus can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import MDCSimpleMenu from '@material/mdc-menu';
+import {MDCSimpleMenu} from '@material/mdc-menu';
 
 const menu = new MDCSimpleMenu(document.querySelector('.mdc-simple-menu'));
 ```
