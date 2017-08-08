@@ -93,18 +93,18 @@
     cursor: pointer;
   }
 
-@media (min-width: $mdc-toolbar-mobile-breakpoint) {
-  .mdc-toolbar__icon:last-child {
-    margin-right: 8px;
-  }
-}
-
   &__icon--menu {
     @include mdc-shared-icon-style(menu);
     @include mdc-theme-prop(color, text-primary-on-primary);
 
     padding: 16px 24px;
     cursor: pointer;
+  }
+}
+
+@media (min-width: $mdc-toolbar-mobile-breakpoint) {
+  .mdc-toolbar__icon:last-child {
+    margin-right: 8px;
   }
 }
 
