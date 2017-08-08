@@ -24,7 +24,7 @@ $mdc-persistent-drawer-width: 240px;
 $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
 
 :root {
-  --mdc-persistent-drawer-dark-theme-bg-color: $mdc-persistent-drawer-dark-theme-bg-color;
+  --mdc-persistent-drawer-dark-theme-bg-color: #{$mdc-persistent-drawer-dark-theme-bg-color};
 }
 
 .mdc-persistent-drawer {
