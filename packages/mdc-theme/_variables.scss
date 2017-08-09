@@ -19,6 +19,7 @@
 /*
   Main theme colors.
   If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
+  NOTE: Using a distinct secondary (accent) color is optional, but recommended.
 */
 $mdc-theme-primary: #3f51b5 !default; /* Indigo 500 */
 $mdc-theme-accent: $mdc-theme-primary !default;
