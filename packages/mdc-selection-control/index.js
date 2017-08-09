@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
+import {MDCRipple} from '@material/ripple';
+/* eslint-enable no-unused-vars */
+
 /**
  * @typedef {!{
  *   checked: boolean,
@@ -22,4 +26,12 @@
  *   value: ?string
  * }}
  */
-export let SelectionControlState;
+export let MDCSelectionControlState;
+
+/**
+ * @record
+ */
+export class MDCSelectionControl {
+  /** @return {?MDCRipple} */
+  get ripple() {}
+}

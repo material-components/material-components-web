@@ -16,7 +16,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {SelectionControlState} from '@material/base/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control';
 import MDCCheckboxAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
@@ -52,7 +52,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
       deregisterChangeHandler: (/* handler: EventListener */) => {},
-      getNativeControl: () => /* !SelectionControlState */ {},
+      getNativeControl: () => /* !MDCSelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
     });
@@ -208,7 +208,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!SelectionControlState} nativeCb
+   * @param {!MDCSelectionControlState} nativeCb
    * @return {string}
    * @private
    */
@@ -264,7 +264,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!SelectionControlState}
+   * @return {!MDCSelectionControlState}
    * @private
    */
   getNativeControl_() {

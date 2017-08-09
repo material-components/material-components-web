@@ -27,6 +27,7 @@ import * as menu from '@material/menu';
 import * as radio from '@material/radio';
 import * as ripple from '@material/ripple';
 import * as select from '@material/select';
+import * as selectionControl from '@material/selection-control';
 import * as slider from '@material/slider';
 import * as snackbar from '@material/snackbar';
 import * as tabs from '@material/tabs';
@@ -68,6 +69,7 @@ export {
   radio,
   ripple,
   select,
+  selectionControl,
   slider,
   snackbar,
   tabs,

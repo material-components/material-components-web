@@ -86,6 +86,7 @@ module.exports = [{
     radio: [path.resolve('./packages/mdc-radio/index.js')],
     ripple: [path.resolve('./packages/mdc-ripple/index.js')],
     select: [path.resolve('./packages/mdc-select/index.js')],
+    selectionControl: [path.resolve('./packages/mdc-selection-control/index.js')],
     slider: [path.resolve('./packages/mdc-slider/index.js')],
     snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
     tabs: [path.resolve('./packages/mdc-tabs/index.js')],
