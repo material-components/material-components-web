@@ -213,7 +213,6 @@
         var actionOnBottomInput = document.getElementById('action-on-bottom');
         var actionOnBottomCheckbox = document.getElementById('action-on-bottom-checkbox');
         var dismissOnActionInput = document.getElementById('dismiss-on-action');
-        var textFields = document.querySelectorAll('.mdc-textfield');
 
         // Since Action on Bottom cannot be checked if Multi-line Input
         // is not, we start with a disabled Action on Bottom option
@@ -271,7 +270,7 @@
           document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
         });
 
-        textFields.forEach(function(tf) {
+        [].slice.call(document.querySelectorAll('.mdc-textfield')).forEach(function(tf) {
           mdc.textfield.MDCTextfield.attachTo(tf);
         })
 

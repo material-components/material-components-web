@@ -288,8 +288,7 @@
           });
 
           darkTheme.addEventListener('change', function() {
-            var examples = demoRoot.querySelectorAll('.example-slider-wrapper');
-            examples.forEach((example) => {
+            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
               example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
             });
           });
@@ -301,15 +300,13 @@
           });
 
           useCustomColor.addEventListener('change', function() {
-            var examples = demoRoot.querySelectorAll('.example-slider-wrapper');
-            examples.forEach((example) => {
+            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
               example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
             });
           });
 
           rtl.addEventListener('change', function() {
-            var examples = demoRoot.querySelectorAll('.example-slider-wrapper');
-            examples.forEach((example) => {
+            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
               if (rtl.checked) {
                 example.setAttribute('dir', 'rtl');
               } else {
