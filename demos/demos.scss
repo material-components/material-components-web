@@ -23,7 +23,7 @@
 $mdc-theme-primary: #212121 !default;
 $mdc-theme-accent: #64dd17 !default;
 
-@import "../../material-components-web/material-components-web";
+@import "../packages/material-components-web/material-components-web";
 
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
