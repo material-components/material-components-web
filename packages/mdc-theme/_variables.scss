@@ -21,7 +21,7 @@
   If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
 */
 $mdc-theme-primary: #3f51b5 !default; /* Indigo 500 */
-$mdc-theme-accent: #ff4081 !default; /* Pink A200 */
+$mdc-theme-accent: $mdc-theme-primary !default;
 $mdc-theme-background: #fff !default; /* White */
 
 /* Which set of text colors to use for each main theme color (light or dark) */
