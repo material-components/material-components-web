@@ -16,10 +16,8 @@
 
 @import "./constants";
 
-/**
- * Calculate the luminance for a color.
- * See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
- */
+// Calculate the luminance for a color.
+// See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
 @function mdc-theme-luminance($color) {
   $red: nth($mdc-theme-linear-channel-values, red($color) + 1);
   $green: nth($mdc-theme-linear-channel-values, green($color) + 1);
@@ -28,10 +26,8 @@
   @return .2126 * $red + .7152 * $green + .0722 * $blue;
 }
 
-/**
- * Calculate the contrast ratio between two colors.
- * See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
- */
+// Calculate the contrast ratio between two colors.
+// See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
 @function mdc-theme-contrast($back, $front) {
   $backLum: mdc-theme-luminance($back) + .05;
   $foreLum: mdc-theme-luminance($front) + .05;
@@ -39,10 +35,8 @@
   @return max($backLum, $foreLum) / min($backLum, $foreLum);
 }
 
-/**
- * Determine whether to use dark or light text on top of given color.
- * Returns "dark" for dark text and "light" for light text.
- */
+// Determine whether to use dark or light text on top of given color.
+// Returns "dark" for dark text and "light" for light text.
 @function mdc-theme-light-or-dark($color) {
   $minimumContrast: 3.1;
 
