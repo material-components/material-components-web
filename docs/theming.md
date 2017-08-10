@@ -209,13 +209,13 @@ however, the text would be dark again, for the same reason. So how _do_ we chang
 ### Step 3: Changing the theme with Sass
 
 The application-wide theme colors that are used as the default across your entire application can be set in Sass.
-This is as easy as defining three variables (`$mdc-theme-primary`, `$mdc-theme-accent` and `$mdc-theme-background`) in
+This is as easy as defining three variables (`$mdc-theme-primary`, `$mdc-theme-secondary` and `$mdc-theme-background`) in
 your Sass file, before importing any MDC-Web modules.
 
 ```scss
 // My main Sass file.
 $mdc-theme-primary: #9c27b0;
-$mdc-theme-accent: #76ff03;
+$mdc-theme-secondary: #76ff03;
 $mdc-theme-background: #fff;
 
 @import "material-components-web/material-components-web";

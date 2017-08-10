@@ -16,20 +16,46 @@
 
 @import "./functions";
 
-/*
-  Main theme colors.
-  If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
-*/
-$mdc-theme-primary: #3f51b5 !default; /* Indigo 500 */
-$mdc-theme-accent: #ff4081 !default; /* Pink A200 */
-$mdc-theme-background: #fff !default; /* White */
+//
+// Main theme colors for your brand.
+//
+// If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
+//
 
-/* Which set of text colors to use for each main theme color (light or dark) */
+$mdc-theme-primary: #3f51b5 !default; // Indigo 500
+$mdc-theme-primary-dark: mdc-theme-dark-variant($mdc-theme-primary) !default;
+$mdc-theme-primary-light: mdc-theme-light-variant($mdc-theme-primary) !default;
+
+// The $mdc-theme-secondary variable is DEPRECATED - it exists purely for backward compatibility.
+// The $mdc-theme-secondary* variables should be used for all new projects.
+$mdc-theme-accent: #ff4081 !default; // Pink A200
+$mdc-theme-secondary: $mdc-theme-accent !default;
+$mdc-theme-secondary-dark: mdc-theme-dark-variant($mdc-theme-secondary) !default;
+$mdc-theme-secondary-light: mdc-theme-light-variant($mdc-theme-secondary) !default;
+
+$mdc-theme-background: #fff !default; // White
+
+//
+// Which set of text colors to use for each main theme color (light or dark).
+//
+
 $mdc-theme-primary-tone: mdc-theme-light-or-dark($mdc-theme-primary);
-$mdc-theme-accent-tone: mdc-theme-light-or-dark($mdc-theme-accent);
+$mdc-theme-primary-dark-tone: mdc-theme-light-or-dark($mdc-theme-primary-dark);
+$mdc-theme-primary-light-tone: mdc-theme-light-or-dark($mdc-theme-primary-light);
+
+// The $mdc-theme-secondary-tone variable is DEPRECATED - it exists purely for backward compatibility.
+// The $mdc-theme-secondary-tone* variables should be used for all new projects.
+$mdc-theme-accent-tone: mdc-theme-light-or-dark($mdc-theme-secondary);
+$mdc-theme-secondary-tone: $mdc-theme-accent-tone;
+$mdc-theme-secondary-dark-tone: mdc-theme-light-or-dark($mdc-theme-secondary-dark);
+$mdc-theme-secondary-light-tone: mdc-theme-light-or-dark($mdc-theme-secondary-light);
+
 $mdc-theme-background-tone: mdc-theme-light-or-dark($mdc-theme-background);
 
-/* Text colors according to light vs dark and text type */
+//
+// Text colors according to light vs dark and text type.
+//
+
 $mdc-theme-text-colors: (
   dark: (
     primary: rgba(black, .87),
@@ -47,21 +73,24 @@ $mdc-theme-text-colors: (
   )
 );
 
-/* Primary text colors for each of the theme colors */
+//
+// Primary text colors for each of the theme colors.
+//
+
 $mdc-theme-property-values: (
   primary: $mdc-theme-primary,
-  accent: $mdc-theme-accent,
+  accent: $mdc-theme-secondary,
   background: $mdc-theme-background,
   text-primary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), primary),
   text-secondary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), secondary),
   text-hint-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), hint),
   text-disabled-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), disabled),
   text-icon-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), icon),
-  text-primary-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), primary),
-  text-secondary-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), secondary),
-  text-hint-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), hint),
-  text-disabled-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), disabled),
-  text-icon-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-accent-tone), icon),
+  text-primary-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), primary),
+  text-secondary-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), secondary),
+  text-hint-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), hint),
+  text-disabled-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), disabled),
+  text-icon-on-accent: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), icon),
   text-primary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), primary),
   text-secondary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), secondary),
   text-hint-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), hint),
