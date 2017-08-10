@@ -54,7 +54,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
 
     this.inert_ = false;
 
-    this.drawerClickHandler_ = (evt) => {}
+    this.drawerClickHandler_ = () => {};
     this.componentTouchStartHandler_ = (evt) => this.handleTouchStart_(evt);
     this.componentTouchMoveHandler_ = (evt) => this.handleTouchMove_(evt);
     this.componentTouchEndHandler_ = (evt) => this.handleTouchEnd_(evt);

@@ -47,7 +47,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.ROOT)) {
         this.close(true);
       }
-    } 
+    };
   }
 
   init() {
