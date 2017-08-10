@@ -93,7 +93,7 @@
     cursor: pointer;
   }
 
-  &__icon:last-child {
+  &__icon:last-of-type {
     padding-right: 16px;
   }
 
@@ -136,7 +136,7 @@
 .mdc-toolbar--flexible {
   // stylelint-disable plugin/selector-bem-pattern
   // bem linter is disabled because it cannot correctly reconcile mdc prefix for css variables.
-  --mdc-toolbar-ratio-to-extend-flexible: $mdc-toolbar-ratio-to-extend-flexible;
+  --mdc-toolbar-ratio-to-extend-flexible: #{$mdc-toolbar-ratio-to-extend-flexible};
   // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-toolbar__row:first-child {
