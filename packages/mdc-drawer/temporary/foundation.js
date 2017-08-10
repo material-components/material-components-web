@@ -32,7 +32,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       removeBodyClass: (/* className: string */) => {},
       isDrawer: () => false,
       updateCssVariable: (/* value: string */) => {},
-      eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false
+      eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false,
     });
   }
 
