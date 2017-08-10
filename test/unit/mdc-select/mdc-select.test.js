@@ -231,23 +231,6 @@ test('adapter#computeBoundingRect returns the result of getBoundingClientRect() 
   );
 });
 
-test('adapter#registerPointerDownHandler adds an event listener to the root element', () => {
-  const {component, fixture} = setupTest();
-  const listener = td.func('eventlistener');
-  component.getDefaultFoundation().adapter_.registerPointerDownHandler('mousedown', listener);
-  domEvents.emit(fixture, 'mousedown');
-  td.verify(listener(td.matchers.anything()));
-});
-
-test('adapter#deregisterPointerDownHandler removes an event listener from the root element', () => {
-  const {component, fixture} = setupTest();
-  const listener = td.func('eventlistener');
-  fixture.addEventListener('mousedown', listener);
-  component.getDefaultFoundation().adapter_.deregisterPointerDownHandler('mousedown', listener);
-  domEvents.emit(fixture, 'mousedown');
-  td.verify(listener(td.matchers.anything()), {times: 0});
-});
-
 test('adapter#registerInteractionHandler adds an event listener to the root element', () => {
   const {component, fixture} = setupTest();
   const listener = td.func('eventlistener');
@@ -292,12 +275,12 @@ test('adapter#makeUntabbable sets the root element\'s tabindex to -1', () => {
 });
 
 test('adapter#getComputedStyleValue gets the computed style value of the prop from the root element', () => {
-  const {component, fixture} = setupTest();
+  const {component, fixture, surface} = setupTest();
   document.body.appendChild(fixture);
-  fixture.style.width = '500px';
+  surface.style.width = '500px';
   assert.equal(
     component.getDefaultFoundation().adapter_.getComputedStyleValue('width'),
-    getComputedStyle(fixture).getPropertyValue('width')
+    getComputedStyle(surface).getPropertyValue('width')
   );
   document.body.removeChild(fixture);
 });

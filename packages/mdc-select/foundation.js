@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses, strings} from './constants';
+import {cssClasses, numbers, strings} from './constants';
 import {MDCSimpleMenuFoundation} from '@material/menu';
 
 const OPENER_KEYS = [
@@ -94,17 +94,17 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
     this.selectionHandler_ = ({detail}) => {
       const {index} = detail;
-      const removeFloatingLabelClass = false;
+      const shouldRemoveFloatingLabelClass = false;
 
       if (index !== this.selectedIndex_) {
         this.setSelectedIndex(index);
         this.adapter_.notifyChange();
       }
-      this.close_(removeFloatingLabelClass);
+      this.close_(shouldRemoveFloatingLabelClass);
     };
     this.cancelHandler_ = () => {
-      const removeFloatingLabelClass = true;
-      this.close_(removeFloatingLabelClass);
+      const shouldRemoveFloatingLabelClass = true;
+      this.close_(shouldRemoveFloatingLabelClass);
     };
   }
 
@@ -118,7 +118,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.registerMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
     ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.registerPointerDownHandler(evtType, this.setPointerXOffset_);
+      this.adapter_.registerInteractionHandler(evtType, this.setPointerXOffset_);
     });
     this.resize();
 
@@ -138,7 +138,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deregisterMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
     ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.deregisterPointerDownHandler(evtType, this.setPointerXOffset_, {passive: true});
+      this.adapter_.registerInteractionHandler(evtType, this.setPointerXOffset_);
     });
   }
 
@@ -196,7 +196,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
     let maxTextLength = 0;
     for (let i = 0, l = this.adapter_.getNumberOfOptions(); i < l; i++) {
-      const selectBoxAddedPadding = 26;
+      // SURFACE_HORIZONTAL_PADDING corresponds to a variable set in ./mdc-select.scss
+      // If the UI of MDC Select changes, also change it in the style
+      const selectBoxAddedPadding = numbers.SURFACE_HORIZONTAL_PADDING;
       const txt = this.adapter_.getTextForOptionAtIndex(i).trim();
       const {width} = this.ctx_.measureText(txt);
       const addedSpace = letterSpacing * txt.length;
@@ -253,11 +255,11 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.setMenuElStyle('transform-origin', `center ${itemOffsetTop}px`);
   }
 
-  close_(removeFloatingLabelClass) {
+  close_(shouldRemoveFloatingLabelClass) {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
 
-    if (removeFloatingLabelClass && this.getSelectedIndex() === -1) {
+    if (shouldRemoveFloatingLabelClass && this.getSelectedIndex() === -1) {
       this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
     }
     this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
@@ -287,4 +289,3 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 }
-

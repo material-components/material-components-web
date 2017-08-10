@@ -177,13 +177,10 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
   </div>
   <div class="mdc-simple-menu mdc-select__menu">
     <ul class="mdc-list mdc-simple-menu__items">
-      <li class="mdc-list-item" role="option" aria-disabled="true">
-        Pick a food group
-      </li>
       <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list-item" role="option" aria-disabled="true" tabindex="0">
+      <li class="mdc-list-item" role="option" aria-disabled="true" tabindex="-1">
         Vegetables
       </li>
       <li class="mdc-list-item" role="option" tabindex="0">
@@ -205,9 +202,11 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
 
 ### Using the Pure CSS Select
 
-The `mdc-select` CSS class also works on browser's native `<select>` elements, allowing for a
+The `mdc-select` CSS classes also work with the browser's native `<select>` element, allowing for a
 seamless, un-invasive experience in browsers where a native select may be more appropriate, such as
 on a mobile device. It does not require any javascript, nor any CSS for `mdc-menu` or `mdc-list`.
+Simply wrap the `<select>` element in one with class `mdc-select`, add `mdc-select__surface` to `<select>`,
+and `<div class="mdc-select__bottom-line"></div>` immediately after `<select>`.
 
 ```html
 <div class="mdc-select">
@@ -354,8 +353,6 @@ within `componentDidUpdate`.
 | `setAttr(attr: string, value: string) => void` | Sets attribute `attr` to value `value` on the root element. |
 | `rmAttr(attr: string) => void` | Removes attribute `attr` from the root element. |
 | `computeBoundingRect() => {left: number, top: number}` | Returns an object with a shape similar to a `ClientRect` object, with a `left` and `top` property specifying the element's position on the page relative to the viewport. The easiest way to achieve this is by calling `getBoundingClientRect()` on the root element. |
-| `registerPointerDownHandler(evtType: string, handler: EventListener) => void`| Adds an event listener for pointer down interactions to the root element |
-| `deregisterPointerDownHandler(evtType: string, handler: EventListener) => void`| Removes an event listener for pointer down interactions from the root element |
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the root element. |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the root element. |
 | `focus() => void` | Focuses the root element |
@@ -477,7 +474,7 @@ custom component, the type will be `MDCSelect:change`, otherwise it will simply 
 const selectManager = document.querySelector('.select-manager');
 const selects = {
   custom: MDCSelect.attachTo(selectManager.querySelector('.mdc-select[role="listbox"]')),
-  native: MDCSelect.attachTo(selectManager.querySelector('select.mdc-select'))
+  native: MDCSelect.attachTo(selectManager.querySelector('select.mdc-select__surface'))
 };
 const changeHandler = ({type}) =>  {
   let changedSelect, selectToUpdate, value;

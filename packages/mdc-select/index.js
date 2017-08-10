@@ -92,8 +92,6 @@ export class MDCSelect extends MDCComponent {
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
       computeBoundingRect: () => this.surface_.getBoundingClientRect(),
-      registerPointerDownHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterPointerDownHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       focus: () => this.root_.focus(),

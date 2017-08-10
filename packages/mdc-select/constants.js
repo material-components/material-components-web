@@ -33,3 +33,7 @@ export const strings = {
   SURFACE_SELECTOR: '.mdc-select__surface',
   SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
 };
+
+export const numbers = {
+  SURFACE_HORIZONTAL_PADDING: 26,
+};
