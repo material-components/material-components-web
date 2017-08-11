@@ -66,6 +66,7 @@
   }
 
   @each $theme-style in (primary, secondary) {
+    // Needed for backward compatibility. Theme uses the term "secondary", but button still calls it "accent" for now.
     $modifier: if($theme-style == "secondary", "accent", $theme-style);
 
     &.mdc-button--#{$modifier} {
@@ -107,6 +108,7 @@
     }
 
     @each $theme-style in (primary, secondary) {
+      // Needed for backward compatibility. Theme uses the term "secondary", but button still calls it "accent" for now.
       $modifier: if($theme-style == "secondary", "accent", $theme-style);
 
       &.mdc-button--#{$modifier} {
