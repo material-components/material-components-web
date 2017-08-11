@@ -30,12 +30,12 @@ export class MDCFormField extends MDCComponent {
     return new MDCFormField(root);
   }
 
-  /** @param {MDCSelectionControl} input */
+  /** @param {?MDCSelectionControl} input */
   set input(input) {
     this.input_ = input;
   }
 
-  /** @return {MDCSelectionControl} */
+  /** @return {?MDCSelectionControl} */
   get input() {
     return this.input_;
   }
@@ -43,7 +43,7 @@ export class MDCFormField extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {MDCSelectionControl} */
+    /** @private {?MDCSelectionControl} */
     this.input_;
   }
 

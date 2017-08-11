@@ -22,12 +22,12 @@ import {cssClasses, strings} from './constants';
  * @extends {MDCFoundation<!MDCFormFieldAdapter>}
  */
 export default class MDCFormFieldFoundation extends MDCFoundation {
-  /** @return enum{cssClasses} */
+  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum{strings} */
+  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
@@ -45,7 +45,8 @@ export default class MDCFormFieldFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCFormFieldFoundation.defaultAdapter, adapter));
 
-    this.clickHandler_ = /** @private {!EventListener} */ (
+    /** @private {!EventListener} */
+    this.clickHandler_ = /** @type {!EventListener} */ (
       () => this.handleClick_());
   }
 
