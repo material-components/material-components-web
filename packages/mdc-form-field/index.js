@@ -14,28 +14,49 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base';
+import MDCComponent from '@material/base/component';
 import MDCFormFieldFoundation from './foundation';
+/* eslint-disable no-unused-vars */
+import {MDCSelectionControl} from '@material/selection-control';
+/* eslint-enable no-unused-vars */
 
 export {MDCFormFieldFoundation};
 
+/**
+ * @extends MDCComponent<!MDCFormFieldFoundation>
+ */
 export class MDCFormField extends MDCComponent {
   static attachTo(root) {
     return new MDCFormField(root);
   }
 
+  /** @param {?MDCSelectionControl} input */
   set input(input) {
     this.input_ = input;
   }
 
+  /** @return {?MDCSelectionControl} */
   get input() {
     return this.input_;
   }
 
-  get label_() {
-    return this.root_.querySelector(MDCFormFieldFoundation.strings.LABEL_SELECTOR);
+  constructor(...args) {
+    super(...args);
+
+    /** @private {?MDCSelectionControl} */
+    this.input_;
   }
 
+  /**
+   * @return {!Element}
+   * @private
+   */
+  get label_() {
+    const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
+    return /** @type {!Element} */ (this.root_.querySelector(LABEL_SELECTOR));
+  }
+
+  /** @return {!MDCFormFieldFoundation} */
   getDefaultFoundation() {
     return new MDCFormFieldFoundation({
       registerInteractionHandler: (type, handler) => this.label_.addEventListener(type, handler),
