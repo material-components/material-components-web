@@ -65,32 +65,26 @@ $_mdc-theme-tonal-offset: 7%;
   }
 }
 
-/**
- * Return the given number if $value >= $min and $value <= $max. If $value falls
- * outside those bounds, return the nearest boundary value ($max or $min).
- */
+// Return the given number if $value >= $min and $value <= $max. If $value falls
+// outside those bounds, return the nearest boundary value ($max or $min).
 @function mdc-theme-clamp-number_($value, $min, $max) {
   @return max($min, min($max, $value));
 }
 
-/*
- * lighten() and darken() require values to be between 0% and 100%.
- */
+// lighten() and darken() require values to be between 0% and 100%.
 @function mdc-theme-clamp-lighten-amount_($percentage) {
   @return mdc-theme-clamp-number_($percentage, 0%, 100%);
 }
 
-/**
- * Darken the given color by approximately the specified number of indexes
- * within its tonal palette.
- *
- * If the color is already very dark, it will be lightened instead of darkened
- * to ensure that the returned value is visually distinct from the input color.
- *
- * If the color is very light, it will be darkened twice as much as usual to
- * ensure that the returned value is visually distinct from the light variant
- * (which will actually end up being a dark shade).
- */
+// Darken the given color by approximately the specified number of indexes
+// within its tonal palette.
+//
+// If the color is already very dark, it will be lightened instead of darkened
+// to ensure that the returned value is visually distinct from the input color.
+//
+// If the color is very light, it will be darkened twice as much as usual to
+// ensure that the returned value is visually distinct from the light variant
+// (which will actually end up being a dark shade).
 @function mdc-theme-dark-variant($color, $num-indexes: 2) {
   $offset: $_mdc-theme-tonal-offset;
   $amount: $offset * $num-indexes;
@@ -108,17 +102,15 @@ $_mdc-theme-tonal-offset: 7%;
   }
 }
 
-/**
- * Lighten the given color by approximately the specified number of indexes
- * within its tonal palette.
- *
- * If the color is already very light, it will be darkened instead of lightened
- * to ensure that the returned value is visually distinct from the input color.
- *
- * If the color is very dark, it will be lightened twice as much as usual to
- * ensure that the returned value is visually distinct from the dark variant
- * (which will actually end up being a light tint).
- */
+// Lighten the given color by approximately the specified number of indexes
+// within its tonal palette.
+//
+// If the color is already very light, it will be darkened instead of lightened
+// to ensure that the returned value is visually distinct from the input color.
+//
+// If the color is very dark, it will be lightened twice as much as usual to
+// ensure that the returned value is visually distinct from the dark variant
+// (which will actually end up being a light tint).
 @function mdc-theme-light-variant($color, $num-indexes: 2) {
   $offset: $_mdc-theme-tonal-offset;
   $amount: $offset * $num-indexes;
