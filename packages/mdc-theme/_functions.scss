@@ -16,11 +16,9 @@
 
 @import "./constants";
 
-/**
- * Used by the functions below to shift a color's lightness by approximately
- * one index within its tonal palette.
- * E.g., shift from Red 500 to Red 400 or Red 600.
- */
+// Used by the functions below to shift a color's lightness by approximately
+// one index within its tonal palette.
+// E.g., shift from Red 500 to Red 400 or Red 600.
 $_mdc-theme-tonal-offset: 7%;
 
 /**
