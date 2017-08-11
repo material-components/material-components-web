@@ -287,7 +287,7 @@ end-users’ browsers, you can use the custom properties provided by `@material/
 ```css
 :root {
   --mdc-theme-primary: #9c27b0;
-  --mdc-theme-accent: #ffab40;
+  --mdc-theme-secondary: #ffab40;
   --mdc-theme-background: #fff;
 }
 ```

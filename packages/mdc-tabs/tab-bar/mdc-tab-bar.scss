@@ -97,15 +97,15 @@
 .mdc-tab-bar--indicator-accent,
 .mdc-toolbar .mdc-tab-bar--indicator-accent {
   .mdc-tab-bar__indicator {
-    @include mdc-theme-prop(background-color, accent);
+    @include mdc-theme-prop(background-color, secondary);
 
     @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(background-color, accent);
+      @include mdc-theme-prop(background-color, secondary);
     };
   }
 
   &.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
-    @include mdc-theme-prop(background-color, accent);
+    @include mdc-theme-prop(background-color, secondary);
   }
 }
 // postcss-bem-linter: end

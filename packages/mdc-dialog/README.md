@@ -114,7 +114,7 @@ They only need to match the values set for their corresponding aria attributes.
 
 ### Dialog Action Color ###
 
-Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s accent color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply accent color.
+Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s secondary color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply secondary color.
 
 ```
 <aside class="mdc-dialog">

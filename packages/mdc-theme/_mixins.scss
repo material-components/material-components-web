@@ -23,7 +23,7 @@
  */
 @mixin mdc-theme-prop($property, $style, $important: false) {
   @if not map-has-key($mdc-theme-property-values, $style) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-theme-property-values)}";
+    @error "Invalid style: '#{$style}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
   }
 
   @if $important {
