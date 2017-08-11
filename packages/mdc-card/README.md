@@ -224,7 +224,7 @@ of the card.
     <h1 class="mdc-card__title mdc-card__title--large">Title here</h1>
     <h2 class="mdc-card__subtitle">Subtitle here</h2>
   </section>
-  <img class="mdc-card__media-item mdc-card__media-item--1x" src="image.jpg"></img>
+  <img class="mdc-card__media-item mdc-card__media-item--1x" src="image.jpg">
 </div>
 ```
 
