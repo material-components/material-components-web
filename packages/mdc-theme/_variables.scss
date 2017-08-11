@@ -16,20 +16,18 @@
 
 @import "./functions";
 
-/*
-  Main theme colors.
-  If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
-*/
-$mdc-theme-primary: #3f51b5 !default; /* Indigo 500 */
-$mdc-theme-accent: #ff4081 !default; /* Pink A200 */
-$mdc-theme-background: #fff !default; /* White */
+// Main theme colors.
+// If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
+$mdc-theme-primary: #3f51b5 !default; // Indigo 500
+$mdc-theme-accent: #ff4081 !default; // Pink A200
+$mdc-theme-background: #fff !default; // White
 
-/* Which set of text colors to use for each main theme color (light or dark) */
+// Which set of text colors to use for each main theme color (light or dark).
 $mdc-theme-primary-tone: mdc-theme-light-or-dark($mdc-theme-primary);
 $mdc-theme-accent-tone: mdc-theme-light-or-dark($mdc-theme-accent);
 $mdc-theme-background-tone: mdc-theme-light-or-dark($mdc-theme-background);
 
-/* Text colors according to light vs dark and text type */
+// Text colors according to light vs dark and text type.
 $mdc-theme-text-colors: (
   dark: (
     primary: rgba(black, .87),
@@ -47,7 +45,7 @@ $mdc-theme-text-colors: (
   )
 );
 
-/* Primary text colors for each of the theme colors */
+// Primary text colors for each of the theme colors.
 $mdc-theme-property-values: (
   primary: $mdc-theme-primary,
   accent: $mdc-theme-accent,
