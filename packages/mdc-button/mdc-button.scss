@@ -55,7 +55,6 @@
   }
 
   @include mdc-theme-dark {
-    @include mdc-ripple-base;
     @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
     @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
     @include mdc-theme-prop(color, text-primary-on-dark);
@@ -67,7 +66,6 @@
 
   @each $theme-style in (primary, accent) {
     &.mdc-button--#{$theme-style} {
-      @include mdc-ripple-base;
       @include mdc-ripple-bg((pseudo: "::before", theme-style: $theme-style, opacity: .12));
       @include mdc-ripple-fg((pseudo: "::after", theme-style: $theme-style, opacity: .12));
     }
@@ -106,7 +104,6 @@
 
     @each $theme-style in (primary, accent) {
       &.mdc-button--#{$theme-style} {
-        @include mdc-ripple-base;
         @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
         @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
       }
