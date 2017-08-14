@@ -140,6 +140,7 @@
           "ripple",
           "rtl",
           "select",
+          "selection-control",
           "slider",
           "snackbar",
           "switch",
@@ -163,10 +164,12 @@
   "closureWhitelist": [
     "mdc-animation",
     "mdc-base",
-    "mdc-icon-toggle",
     "mdc-checkbox",
+    "mdc-form-field",
+    "mdc-icon-toggle",
     "mdc-menu",
     "mdc-radio",
-    "mdc-ripple"
+    "mdc-ripple",
+    "mdc-selection-control"
   ]
 }

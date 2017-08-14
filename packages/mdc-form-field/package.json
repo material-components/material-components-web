@@ -16,6 +16,7 @@
   "dependencies": {
     "@material/base": "^0.2.3",
     "@material/rtl": "^0.1.7",
+    "@material/selection-control": "^0.0.0",
     "@material/theme": "^0.1.7",
     "@material/typography": "^0.3.0"
   }
