@@ -331,8 +331,8 @@ limitations under the License
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Accent Color Indicator</legend>
-          <nav id="accent-indicator-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
+          <legend class="mdc-typography--title">Secondary Color Indicator</legend>
+          <nav id="secondary-indicator-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
             <a class="mdc-tab" href="#three">Three</a>
@@ -343,7 +343,7 @@ limitations under the License
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Accent Color Indicator - CSS-Only</legend>
+          <legend class="mdc-typography--title">Secondary Color Indicator - CSS-Only</legend>
           <nav class="mdc-tab-bar mdc-tab-bar--indicator-accent">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
@@ -448,7 +448,7 @@ limitations under the License
           <div class="demo-note">
             <em>Note: Changing the toolbar's background color here so that the primary indicator can be visible</em>
           </div>
-          <div class="mdc-toolbar mdc-theme--accent-bg">
+          <div class="mdc-toolbar mdc-theme--secondary-bg">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
                 <h1 class="mdc-toolbar__title">Title</h1>
@@ -470,7 +470,7 @@ limitations under the License
       <section>
         <fieldset>
           <legend class="mdc-typography--title">Within mdc-toolbar + primary indicator, CSS-Only</legend>
-          <div class="mdc-toolbar mdc-theme--accent-bg">
+          <div class="mdc-toolbar mdc-theme--secondary-bg">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
                 <h1 class="mdc-toolbar__title">Title</h1>
@@ -492,7 +492,7 @@ limitations under the License
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + accent indicator</legend>
+          <legend class="mdc-typography--title">Within mdc-toolbar + secondary color indicator</legend>
           <div class="mdc-toolbar">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
@@ -500,7 +500,7 @@ limitations under the License
               </div>
               <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
                 <div>
-                  <nav id="toolbar-tab-bar-accent-indicator" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
+                  <nav id="toolbar-tab-bar-secondary-indicator" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
                     <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
                     <a class="mdc-tab" href="#two">Item Two</a>
                     <a class="mdc-tab" href="#three">Item Three</a>
@@ -515,7 +515,7 @@ limitations under the License
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + accent indicator, CSS-Only</legend>
+          <legend class="mdc-typography--title">Within mdc-toolbar + secondary color indicator, CSS-Only</legend>
           <div class="mdc-toolbar">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
@@ -582,9 +582,9 @@ limitations under the License
           window.toolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar'));
           window.toolbarTabBarModified = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-modified'));
           window.primaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#primary-indicator-tab-bar'));
-          window.accentIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#accent-indicator-tab-bar'));
+          window.secondaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#secondary-indicator-tab-bar'));
           window.primaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-primary-indicator'));
-          window.accentIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-accent-indicator'));
+          window.secondaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-secondary-indicator'));
 
           var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
           var dots = document.querySelector('.dots');
@@ -654,9 +654,9 @@ limitations under the License
             window.iconTextTabBar.layout();
             window.toolbarTabBar.layout();
             window.primaryIndicatorTabBar.layout();
-            window.accentIndicatorTabBar.layout();
+            window.secondaryIndicatorTabBar.layout();
             window.primaryIndicatorToolbarTabBar.layout();
-            window.accentIndicatorToolbarTabBar.layout();
+            window.secondaryIndicatorToolbarTabBar.layout();
             window.dynamicTabBar.layout();
             toolbarTabBarModified.layout();
           });
