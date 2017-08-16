@@ -189,3 +189,10 @@ Determines whether to use light or dark text on top of a given color.
 ```scss
 @debug mdc-theme-light-or-dark(#9c27b0); // light
 ```
+
+#### `mdc-theme-light-variant` and `mdc-theme-dark-variant`
+
+Function | Description
+--- | ---
+`mdc-theme-dark-variant($color, $num-indexes)` | Darken a color by a certain number of indexes within its tonal palette
+`mdc-theme-light-variant($color, $num-indexes)` | Lighten a color by a certain number of indexes within its tonal palette
