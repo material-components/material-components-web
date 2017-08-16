@@ -128,21 +128,25 @@ You can also do this declaratively when using the [material-components-web](../m
 
 FABs are fully aware of ripple styles, so no DOM or CSS changes are required to use them.
 
-## Classes
-
 ### Block
 
 The block class is `mdc-fab`. This defines the top-level button element.
 
 ### Element
+
 The button component has a single `span` element added as a child of the button due to buttons not adhering to flexbox rules
 in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35466231/revisions) for details.
 
-### Modifier
+### CSS Classes
 
-The provided modifiers are:
+CSS Class | Description
+--- | ---
+`mdc-fab--mini` | Makes the fab smaller (40 x 40 pixels)
+`mdc-fab--plain` | Makes the FAB have a white background
 
-| Class             | Description                             |
-| ------------------| --------------------------------------- |
-| `mdc-fab--mini`   | Makes the fab smaller (40 x 40 pixels). |
-| `mdc-fab--plain`  | Makes the FAB have a white background.  |
+### Sass Functions
+
+Function | Description
+--- | ---
+`mdc-fab-base` | Generates CSS properties and element/modifier classes for a basic FAB without any explicit color or theming
+`mdc-fab-theme($config)` | Generates color theme-related CSS properties and element/modifier classes from the given theme config
