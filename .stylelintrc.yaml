@@ -279,4 +279,4 @@ rules:
   scss/at-import-no-partial-leading-underscore: true
   # Since mixins are explicit (`@include`) and parens are unnecessary for argumentless mixins, they
   # can be omitted.
-  scss/at-mixin-no-argumentless-call-parentheses: true
+  scss/at-mixin-argumentless-call-parentheses: never
