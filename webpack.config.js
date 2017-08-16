@@ -27,7 +27,8 @@ const PUBLIC_PATH = '/assets/';
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
 const IS_FAST_BUILD = process.env.MDC_BUILD === 'fast';
-const GENERATE_SOURCE_MAPS = IS_DEV && !IS_FAST_BUILD;
+const GENERATE_SOURCE_MAPS = IS_DEV && !IS_FAST_BUILD && process.env.MDC_GENERATE_SOURCE_MAPS !== 'false';
+const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS !== 'false';
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 
 const banner = [
@@ -49,7 +50,7 @@ if (LIFECYCLE_EVENT == 'test' || LIFECYCLE_EVENT == 'test:watch') {
   process.env.BABEL_ENV = 'test';
 }
 
-const CSS_LOADER_CONFIG = [
+const SASS_LOADER_CONFIG = [
   {
     loader: 'css-loader',
     options: {
@@ -71,6 +72,20 @@ const CSS_LOADER_CONFIG = [
     },
   },
 ];
+
+const CSS_WRAPPED_IN_JS_CONFIG = [{loader: 'style-loader'}].concat(SASS_LOADER_CONFIG);
+
+const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${WRAP_CSS_IN_JS ? '.js' : ''}`;
+
+const cssLoaderConfig = () =>
+  WRAP_CSS_IN_JS ?
+    CSS_WRAPPED_IN_JS_CONFIG :
+    ExtractTextPlugin.extract({
+      fallback: 'style-loader',
+      use: SASS_LOADER_CONFIG,
+    });
+
+const createCssExtractTextPlugin = () => new ExtractTextPlugin(`[name]${IS_PROD ? '.min' : ''}.css`);
 
 module.exports = [{
   name: 'js-components',
@@ -188,7 +203,7 @@ module.exports = [{
     // In development, these are emitted as js files to facilitate hot module replacement. In
     // all other cases, ExtractTextPlugin is used to generate the final css, so this is given a
     // dummy ".css-entry" extension.
-    filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry'),
+    filename: CSS_FILENAME_OUTPUT_PATTERN,
   },
   devServer: {
     disableHostCheck: true,
@@ -197,14 +212,11 @@ module.exports = [{
   module: {
     rules: [{
       test: /\.scss$/,
-      use: IS_DEV ? [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG) : ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: CSS_LOADER_CONFIG,
-      }),
+      use: cssLoaderConfig(),
     }],
   },
   plugins: [
-    new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css'),
+    createCssExtractTextPlugin(),
     createBannerPlugin(),
   ],
 }];
@@ -218,7 +230,7 @@ if (IS_DEV) {
     output: {
       path: OUT_PATH,
       publicPath: PUBLIC_PATH,
-      filename: '[name].css.js',
+      filename: CSS_FILENAME_OUTPUT_PATTERN,
     },
     devServer: {
       disableHostCheck: true,
@@ -227,10 +239,11 @@ if (IS_DEV) {
     module: {
       rules: [{
         test: /\.scss$/,
-        use: [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG),
+        use: cssLoaderConfig(),
       }],
     },
     plugins: [
+      createCssExtractTextPlugin(),
       createBannerPlugin(),
     ],
   });
