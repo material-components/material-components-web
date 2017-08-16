@@ -38,8 +38,14 @@
   );
 }
 
-@function mdc-map-get-child_($map, $parent-key, $child-key) {
-  @return map-get(map-get($map, $parent-key), $child-key);
+@function mdc-map-get-child_($parent-map, $keys...) {
+  $value: $parent-map;
+
+  @each $key in join($keys...) {
+    $value: map-get($value, $key);
+  }
+
+  @return $value;
 }
 
 @mixin mdc-fab-base {
