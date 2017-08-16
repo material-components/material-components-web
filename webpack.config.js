@@ -29,7 +29,7 @@ const IS_PROD = process.env.MDC_ENV === 'production';
 const IS_FAST_BUILD = process.env.MDC_BUILD === 'fast';
 const GENERATE_SOURCE_MAPS = IS_DEV && !IS_FAST_BUILD && process.env.MDC_GENERATE_SOURCE_MAPS !== 'false';
 const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS !== 'false';
-const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
+const DEVTOOL = process.env.MDC_DEVTOOL || (GENERATE_SOURCE_MAPS ? 'source-map' : false);
 
 const banner = [
   '/*!',
