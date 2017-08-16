@@ -64,7 +64,7 @@
 
   @include mdc-elevation(6);
 
-  &--mini {
+  #{&}--mini {
     width: 40px;
     height: 40px;
   }
@@ -103,7 +103,7 @@
     pointer-events: none;
   }
 
-  &__icon {
+  #{&}__icon {
     display: flex;
     align-items: center;
     justify-content: center;
