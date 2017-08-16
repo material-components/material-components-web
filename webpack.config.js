@@ -26,9 +26,6 @@ const OUT_PATH = path.resolve('./build');
 const PUBLIC_PATH = '/assets/';
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
-const IS_FAST_BUILD = process.env.MDC_BUILD === 'fast';
-const GENERATE_SOURCE_MAPS = IS_DEV && !IS_FAST_BUILD;
-const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 
 const banner = [
   '/*!',
@@ -53,20 +50,20 @@ const CSS_LOADER_CONFIG = [
   {
     loader: 'css-loader',
     options: {
-      sourceMap: GENERATE_SOURCE_MAPS,
+      sourceMap: true,
     },
   },
   {
     loader: 'postcss-loader',
     options: {
-      sourceMap: GENERATE_SOURCE_MAPS,
+      sourceMap: IS_DEV,
       plugins: () =>[require('autoprefixer')({grid: false})],
     },
   },
   {
     loader: 'sass-loader',
     options: {
-      sourceMap: GENERATE_SOURCE_MAPS,
+      sourceMap: true,
       includePaths: glob.sync('packages/*/node_modules').map((d) => path.join(__dirname, d)),
     },
   },
@@ -109,7 +106,7 @@ module.exports = [{
   devServer: {
     disableHostCheck: true,
   },
-  devtool: DEVTOOL,
+  devtool: IS_DEV ? 'source-map' : false,
   module: {
     rules: [{
       test: /\.js$/,
@@ -136,7 +133,7 @@ module.exports = [{
   devServer: {
     disableHostCheck: true,
   },
-  devtool: DEVTOOL,
+  devtool: IS_DEV ? 'source-map' : false,
   module: {
     rules: [{
       test: /\.js$/,
@@ -193,7 +190,7 @@ module.exports = [{
   devServer: {
     disableHostCheck: true,
   },
-  devtool: DEVTOOL,
+  devtool: IS_DEV ? 'source-map' : false,
   module: {
     rules: [{
       test: /\.scss$/,
@@ -223,7 +220,7 @@ if (IS_DEV) {
     devServer: {
       disableHostCheck: true,
     },
-    devtool: DEVTOOL,
+    devtool: 'source-map',
     module: {
       rules: [{
         test: /\.scss$/,
