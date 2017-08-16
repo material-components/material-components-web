@@ -241,14 +241,14 @@ a ripple:
 ```
 
 There are also modifier classes that can be used for styling ripple surfaces using the configured
-theme's primary and accent colors
+theme's primary and secondary colors
 
 ```html
 <div class="mdc-ripple-surface mdc-ripple-surface--primary my-surface" tabindex="0">
   Surface with a primary-colored ripple.
 </div>
 <div class="mdc-ripple-surface mdc-ripple-surface--accent my-surface" tabindex="0">
-  Surface with an accent-colored ripple.
+  Surface with a secondary-colored ripple.
 </div>
 ```
 
