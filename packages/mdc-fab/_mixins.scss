@@ -64,10 +64,12 @@
 
   @include mdc-elevation(6);
 
-  #{&}--mini {
+  // stylelint-disable selector-max-type
+  &--mini {
     width: 40px;
     height: 40px;
   }
+  // stylelint-enable selector-max-type
 
   &:active,
   &:focus {
@@ -103,12 +105,14 @@
     pointer-events: none;
   }
 
-  #{&}__icon {
+  // stylelint-disable selector-max-type
+  &__icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
   }
+  // stylelint-enable selector-max-type
 }
 
 @mixin mdc-fab-color_($config: (), $type: "standard") {
