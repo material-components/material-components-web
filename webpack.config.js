@@ -30,7 +30,7 @@ const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS !== 'false';
 // Source maps break extract-text-webpack-plugin, so they need to be disabled when WRAP_CSS_IN_JS is set to false.
 const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
-    (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && !WRAP_CSS_IN_JS);
+    (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 
 const banner = [
