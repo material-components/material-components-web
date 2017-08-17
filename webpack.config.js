@@ -78,7 +78,7 @@ const CSS_WRAPPED_IN_JS_CONFIG = [{loader: 'style-loader'}].concat(SASS_LOADER_C
 
 const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${WRAP_CSS_IN_JS ? '.js' : ''}`;
 
-const cssLoaderConfig = () =>
+const createCssLoaderConfig = () =>
   WRAP_CSS_IN_JS ?
     CSS_WRAPPED_IN_JS_CONFIG :
     ExtractTextPlugin.extract({
@@ -213,7 +213,7 @@ module.exports = [{
   module: {
     rules: [{
       test: /\.scss$/,
-      use: cssLoaderConfig(),
+      use: createCssLoaderConfig(),
     }],
   },
   plugins: [
@@ -240,7 +240,7 @@ if (IS_DEV) {
     module: {
       rules: [{
         test: /\.scss$/,
-        use: cssLoaderConfig(),
+        use: createCssLoaderConfig(),
       }],
     },
     plugins: [
