@@ -52,7 +52,7 @@ if (LIFECYCLE_EVENT == 'test' || LIFECYCLE_EVENT == 'test:watch') {
   process.env.BABEL_ENV = 'test';
 }
 
-const SASS_LOADER_CONFIG = [
+const CSS_LOADER_CONFIG = [
   {
     loader: 'css-loader',
     options: {
@@ -80,10 +80,10 @@ const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css`;
 
 const createCssLoaderConfig = () =>
   WRAP_CSS_IN_JS ?
-    [{loader: 'style-loader'}].concat(SASS_LOADER_CONFIG) :
+    [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG) :
     ExtractTextPlugin.extract({
       fallback: 'style-loader',
-      use: SASS_LOADER_CONFIG,
+      use: CSS_LOADER_CONFIG,
     });
 
 const createCssExtractTextPlugin = () => new ExtractTextPlugin(CSS_FILENAME_OUTPUT_PATTERN);
