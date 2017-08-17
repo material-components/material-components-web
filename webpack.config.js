@@ -26,10 +26,11 @@ const OUT_PATH = path.resolve('./build');
 const PUBLIC_PATH = '/assets/';
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
+const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS !== 'false';
+// Source maps break extract-text-webpack-plugin, so they need to be disabled when WRAP_CSS_IN_JS is set to false.
 const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
-    (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV);
-const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS !== 'false';
+    (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && !WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 
 const banner = [
