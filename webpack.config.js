@@ -74,13 +74,11 @@ const SASS_LOADER_CONFIG = [
   },
 ];
 
-const CSS_WRAPPED_IN_JS_CONFIG = [{loader: 'style-loader'}].concat(SASS_LOADER_CONFIG);
-
 const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${WRAP_CSS_IN_JS ? '.js' : ''}`;
 
 const createCssLoaderConfig = () =>
   WRAP_CSS_IN_JS ?
-    CSS_WRAPPED_IN_JS_CONFIG :
+    [{loader: 'style-loader'}].concat(SASS_LOADER_CONFIG) :
     ExtractTextPlugin.extract({
       fallback: 'style-loader',
       use: SASS_LOADER_CONFIG,
