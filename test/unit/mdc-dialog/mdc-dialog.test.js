@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// This suite requires hooks to stub (and clean up) MDCRipple#layout.
+/* eslint mocha/no-hooks: "off" */
+
 import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
@@ -21,6 +24,7 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
 import {MDCDialog, util} from '../../../packages/mdc-dialog';
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
@@ -60,6 +64,7 @@ function setupTest() {
   const component = new MDCDialog(root);
   const acceptButton = fixture.querySelector('.mdc-dialog__footer__button--accept');
   const cancelButton = fixture.querySelector('.mdc-dialog__footer__button--cancel');
+
   return {openDialog, root, acceptButton, cancelButton, component};
 }
 
@@ -68,6 +73,22 @@ function hasClassMatcher(className) {
 }
 
 suite('MDCDialog');
+
+const originalLayout = MDCRipple.prototype.layout;
+const stubbedLayout = td.func('MDCRipple#layout');
+
+before(() => {
+  MDCRipple.prototype.layout = stubbedLayout;
+});
+
+afterEach(() => {
+  // Ensure that stubbedLayout's call count resets between tests
+  td.reset();
+});
+
+after(() => {
+  MDCRipple.prototype.layout = originalLayout;
+});
 
 test('attachTo returns a component instance', () => {
   assert.isOk(MDCDialog.attachTo(getFixture().querySelector('.mdc-dialog')) instanceof MDCDialog);
@@ -311,4 +332,10 @@ test('adapter#isDialog returns true for the dialog surface element', () => {
 test('adapter#isDialog returns false for a non-dialog surface element', () => {
   const {root, component} = setupTest();
   assert.isNotOk(component.getDefaultFoundation().adapter_.isDialog(root));
+});
+
+test('adapter#layoutFooterRipples calls layout on each footer button\'s ripple instance', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.layoutFooterRipples();
+  td.verify(stubbedLayout(), {times: 2});
 });
