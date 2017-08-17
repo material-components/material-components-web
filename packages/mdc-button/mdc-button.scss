@@ -17,64 +17,32 @@
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
+@import "@material/theme/variables";
 @import "@material/typography/mixins";
 
 // postcss-bem-linter: define button
-
 .mdc-button {
   @include mdc-ripple-base;
   @include mdc-ripple-bg((pseudo: "::before"));
   @include mdc-ripple-fg((pseudo: "::after"));
+  @include mdc-typography(button);
   @include mdc-theme-prop(color, text-primary-on-light);
-  @include mdc-typography-base;
 
   display: inline-block;
   position: relative;
-  min-width: 64px;
+  min-width: 88px;
   height: 36px;
   padding: 0 16px;
   border: none;
-  border-radius: 2px;
+  border-radius: 4px;
+  box-sizing: border-box;
   outline: none;
   background: transparent;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: .04em;
-  line-height: 36px;
   text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
   overflow: hidden;
   vertical-align: middle;
   user-select: none;
-  box-sizing: border-box;
   -webkit-appearance: none;
-
-  &:not(.mdc-ripple-upgraded) {
-    -webkit-tap-highlight-color: rgba(black, .18);
-  }
-
-  @include mdc-theme-dark {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
-    &:not(.mdc-ripple-upgraded) {
-      -webkit-tap-highlight-color: rgba(white, .18);
-    }
-  }
-
-  @each $theme-style in (primary, secondary) {
-    // Needed for backward compatibility. Theme uses the term "secondary", but button still calls it "accent" for now.
-    $modifier: if($theme-style == "secondary", "accent", $theme-style);
-
-    &.mdc-button--#{$modifier} {
-      @include mdc-ripple-base;
-      @include mdc-ripple-bg((pseudo: "::before", theme-style: $theme-style, opacity: .12));
-      @include mdc-ripple-fg((pseudo: "::after", theme-style: $theme-style, opacity: .12));
-    }
-  }
 
   // postcss-bem-linter: ignore
   &:active {
@@ -90,113 +58,117 @@
     border: 0;
   }
 
-  &--dense {
-    height: 32px;
-    font-size: .8125rem; // 13sp
-    line-height: 32px;
-  }
-
-  // TODO(cristobalchao): Disable ink wash on hover and alter elevation instead for raised surfaces.
-  &--raised {
-    @include mdc-elevation(2);
-    @include mdc-elevation-transition;
-
-    min-width: 88px;
-
-    &:active {
-      @include mdc-elevation(8);
-    }
-
-    @each $theme-style in (primary, secondary) {
-      // Needed for backward compatibility. Theme uses the term "secondary", but button still calls it "accent" for now.
-      $modifier: if($theme-style == "secondary", "accent", $theme-style);
-
-      &.mdc-button--#{$modifier} {
-        @include mdc-ripple-base;
-        @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
-        @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
-      }
-    }
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(background-color, primary);
-      @include mdc-theme-prop(color, text-primary-on-primary);
-
-      // postcss-bem-linter: ignore
-      &::before {
-        // We are explicitly not fully adhering to Material Design here.
-        // This should be the 700-shade when active instead of a black shade.
-        // Due to the complexity involved in adhering fully it is being ignored.
-        // Instead re-using the existing architecture for shading works just fine.
-        color: black;
-      }
-    }
-  }
-
-  &--primary {
-    @include mdc-theme-prop(color, primary);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, primary);
-    }
-
-    // postcss-bem-linter: ignore
-    &.mdc-button--raised {
-      @include mdc-theme-prop(background-color, primary);
-      @include mdc-theme-prop(color, text-primary-on-primary);
-
-      // postcss-bem-linter: ignore
-      &::before {
-        color: black;
-      }
-    }
-  }
-
-  &--accent {
-    @include mdc-theme-prop(color, secondary);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, secondary);
-    }
-
-    // postcss-bem-linter: ignore
-    &.mdc-button--raised {
-      @include mdc-theme-prop(background-color, secondary);
-      @include mdc-theme-prop(color, text-primary-on-secondary);
-
-      // postcss-bem-linter: ignore
-      &::before {
-        color: black;
-      }
-    }
-  }
-
-  &--compact {
-    padding: 0 8px;
+  &:not(.mdc-ripple-upgraded) {
+    -webkit-tap-highlight-color: rgba(black, .3);
   }
 
   fieldset:disabled &,
   &:disabled {
-    color: rgba(0, 0, 0, .26);
+    color: rgba(black, .38);
     cursor: default;
     pointer-events: none;
 
     @include mdc-theme-dark(".mdc-button") {
-      color: rgba(255, 255, 255, .3);
+      @include mdc-theme-prop(color, text-disabled-on-dark);
     }
   }
 
-  fieldset:disabled &--raised,
-  &--raised:disabled {
-    @include mdc-elevation(0);
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
+    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
+    @include mdc-theme-prop(color, text-primary-on-dark);
 
-    background-color: rgba(0, 0, 0, .12);
-    pointer-events: none;
-
-    @include mdc-theme-dark(".mdc-button") {
-      background-color: rgba(255, 255, 255, .12);
+    &:not(.mdc-ripple-upgraded) {
+      -webkit-tap-highlight-color: rgba(white, .18);
     }
   }
 }
 
+.mdc-button--raised {
+  @include mdc-elevation(2);
+  @include mdc-elevation-transition;
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .32));
+  @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .32));
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  background-color: black;
+
+  &:hover,
+  &:focus {
+    @include mdc-elevation(4);
+  }
+
+  &:active {
+    @include mdc-elevation(8);
+  }
+
+  fieldset:disabled &,
+  &:disabled {
+    @include mdc-elevation(0);
+    @include mdc-theme-prop(color, text-primary-on-dark);
+
+    background-color: rgba(black, .15);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+
+      background-color: rgba(255, 255, 255, .15);
+    }
+  }
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg((pseudo: "::before", base-color: black, opacity: .32));
+    @include mdc-ripple-fg((pseudo: "::after", base-color: black, opacity: .32));
+    @include mdc-theme-prop(color, text-primary-on-light);
+
+    background-color: white;
+
+    &:not(.mdc-ripple-upgraded) {
+      -webkit-tap-highlight-color: rgba(black, .18);
+    }
+  }
+}
+
+.mdc-button--compact {
+  padding: 0 8px;
+}
+
+.mdc-button--dense {
+  height: 32px;
+  font-size: .8125rem; // 13sp
+  line-height: 32px;
+}
+
+@each $theme-style in (primary, accent) {
+  // postcss-bem-linter: ignore
+  .mdc-button--#{$theme-style} {
+    $theme-value: map-get($mdc-theme-property-values, $theme-style);
+
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
+    @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
+    @include mdc-theme-prop(color, $theme-style);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-ripple-base;
+      @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
+      @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
+      @include mdc-theme-prop(color, $theme-style);
+    }
+    // postcss-bem-linter: ignore
+    &.mdc-button--raised,
+    &.mdc-button--unelevated {
+      $theme-value: map-get($mdc-theme-property-values, text-primary-on-#{$theme-style});
+
+      @include mdc-ripple-base;
+      @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .32));
+      @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .32));
+      @include mdc-theme-prop(background-color, $theme-style);
+      @include mdc-theme-prop(color, text-primary-on-#{$theme-style});
+    }
+  }
+}
 // postcss-bem-linter: end
