@@ -142,9 +142,12 @@
   line-height: 32px;
 }
 
-@each $theme-style in (primary, accent) {
+@each $theme-style in (primary, secondary) {
+  // Needed for backward compatibility. Theme uses the term "secondary", but button still calls it "accent" for now.
+  $modifier: if($theme-style == "secondary", "accent", $theme-style);
+
   // postcss-bem-linter: ignore
-  .mdc-button--#{$theme-style} {
+  .mdc-button--#{$modifier} {
     $theme-value: map-get($mdc-theme-property-values, $theme-style);
 
     @include mdc-ripple-base;
