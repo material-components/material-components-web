@@ -1,6 +1,6 @@
 {
   "name": "@material/grid-list",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "The Material Components for the web grid list component",
   "license": "Apache-2.0",
   "repository": {
@@ -15,8 +15,8 @@
   "dependencies": {
     "@material/base": "^0.2.3",
     "@material/rtl": "^0.1.7",
-    "@material/theme": "^0.1.6",
-    "@material/typography": "^0.2.3"
+    "@material/theme": "^0.1.7",
+    "@material/typography": "^0.3.0"
   },
   "publishConfig": {
     "access": "public"

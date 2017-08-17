@@ -49,8 +49,8 @@
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-bg((pseudo: "::before", theme-style: accent, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", theme-style: accent, opacity: .16));
+    @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .16));
+    @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .16));
   }
 }
 

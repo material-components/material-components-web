@@ -15,15 +15,15 @@ Custom Property, with plans for CDN support as well, once that service is availa
 
 ## Colors
 
-MDC-Web theming, like Material Design theming, uses two main colors: **primary** and **accent**. The primary color is used
-throughout most of the application and components, as the main color for your application. The accent color is used
+MDC-Web theming, like Material Design theming, uses two main colors: **primary** and **secondary**. The primary color is used
+throughout most of the application and components, as the main color for your application. The secondary color is used
 for floating action buttons and other interactive elements, serving as visual contrast to the primary.
 
-In addition to the primary and accent colors, MDC-Web also defines a _background_ color, which is used as a background in
+In addition to the primary and secondary colors, MDC-Web also defines a _background_ color, which is used as a background in
 components, and usually as the page background as well.
 
 Finally, MDC-Web has a number of text colors, which are used for rendering text and other shapes on top of the primary,
-accent and background colors. These are specified as either dark or light, in order to provide sufficient contrast to
+secondary and background colors. These are specified as either dark or light, in order to provide sufficient contrast to
 what's behind them, and have
 [different levels of opacity depending on usage](https://material.io/guidelines/style/color.html#color-color-schemes):
 - Primary, used for most text.
@@ -141,15 +141,23 @@ However, that would not take advantage of MDC-Web's theming and would thus be br
 copied to your CSS rules, adding a maintenance cost.
 
 MDC-Web provides a number of CSS classes as part of the `mdc-theme` module to help you tackle this problem in a more
-maintainable way. Here are the classes that deal with primary, accent and background colors:
+maintainable way. Here are the classes that deal with primary, secondary and background colors:
 
-| Class                   | Description                                                 |
-| ----------------------- | ----------------------------------------------------------- |
-| `mdc-theme--primary`    | Sets the text color to the theme primary color.             |
-| `mdc-theme--accent`     | Sets the text color to the theme accent color.              |
-| `mdc-theme--background` | Sets the background color to the theme background color.    |
-| `mdc-theme--primary-bg` | Sets the background color to the theme primary color.       |
-| `mdc-theme--accent-bg`  | Sets the background color to the theme accent color.        |
+| Class                           | Description                                                             |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| `mdc-theme--primary`            | Sets the text color to the theme primary color.                         |
+| `mdc-theme--primary-light`      | Sets the text color to the theme primary color (light variant).         |
+| `mdc-theme--primary-dark`       | Sets the text color to the theme primary color (dark variant).          |
+| `mdc-theme--secondary`          | Sets the text color to the theme secondary color.                       |
+| `mdc-theme--secondary-light`    | Sets the text color to the theme secondary color (light variant).       |
+| `mdc-theme--secondary-dark`     | Sets the text color to the theme secondary color (dark variant).        |
+| `mdc-theme--background`         | Sets the background color to the theme background color.                |
+| `mdc-theme--primary-bg`         | Sets the background color to the theme primary color.                   |
+| `mdc-theme--primary-light-bg`   | Sets the background color to the theme primary color (light variant).   |
+| `mdc-theme--primary-dark-bg`    | Sets the background color to the theme primary color (dark variant).    |
+| `mdc-theme--secondary-bg`       | Sets the background color to the theme secondary color.                 |
+| `mdc-theme--secondary-light-bg` | Sets the background color to the theme secondary color (light variant). |
+| `mdc-theme--secondary-dark-bg`  | Sets the background color to the theme secondary color (dark variant).  |
 
 From here, we can see that we want to apply `mdc-theme--primary-bg` to the cards' media areas:
 
@@ -176,13 +184,23 @@ takes into account the primary color, in order to determine whether to overlay w
 `mdc-theme` provides utility classes for that purpose as well. Namely, for overlaying text on a primary color
 background, there are:
 
-| Class                                  | Description                                                                               |
-| -------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `mdc-theme--text-primary-on-primary`   | Set text to suitable color for primary text on top of a theme primary color background.   |
-| `mdc-theme--text-secondary-on-primary` | Set text to suitable color for secondary text on top of a theme primary color background. |
-| `mdc-theme--text-hint-on-primary`      | Set text to suitable color for hint text on top of a theme primary color background.      |
-| `mdc-theme--text-disabled-on-primary`  | Set text to suitable color for disabled text on top of a theme primary color background.  |
-| `mdc-theme--text-icon-on-primary`      | Set text to suitable color for icons on top of a theme primary color background.          |
+| Class                                        | Description                                                                                               |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `mdc-theme--text-primary-on-primary`         | Set text to suitable color for primary text on top of a theme primary color background.                   |
+| `mdc-theme--text-primary-on-primary-light`   | Set text to suitable color for primary text on top of a theme primary color background (light variant).   |
+| `mdc-theme--text-primary-on-primary-dark`    | Set text to suitable color for primary text on top of a theme primary color background (dark variant).    |
+| `mdc-theme--text-secondary-on-primary`       | Set text to suitable color for secondary text on top of a theme primary color background.                 |
+| `mdc-theme--text-secondary-on-primary-light` | Set text to suitable color for secondary text on top of a theme primary color background (light variant). |
+| `mdc-theme--text-secondary-on-primary-dark`  | Set text to suitable color for secondary text on top of a theme primary color background (dark variant).  |
+| `mdc-theme--text-hint-on-primary`            | Set text to suitable color for hint text on top of a theme primary color background.                      |
+| `mdc-theme--text-hint-on-primary-light`      | Set text to suitable color for hint text on top of a theme primary color background (light variant).      |
+| `mdc-theme--text-hint-on-primary-dark`       | Set text to suitable color for hint text on top of a theme primary color background (dark variant).       |
+| `mdc-theme--text-disabled-on-primary`        | Set text to suitable color for disabled text on top of a theme primary color background.                  |
+| `mdc-theme--text-disabled-on-primary-light`  | Set text to suitable color for disabled text on top of a theme primary color background (light variant).  |
+| `mdc-theme--text-disabled-on-primary-dark`   | Set text to suitable color for disabled text on top of a theme primary color background (dark variant).   |
+| `mdc-theme--text-icon-on-primary`            | Set text to suitable color for icons on top of a theme primary color background.                          |
+| `mdc-theme--text-icon-on-primary-light`      | Set text to suitable color for icons on top of a theme primary color background (light variant).          |
+| `mdc-theme--text-icon-on-primary-dark`       | Set text to suitable color for icons on top of a theme primary color background (dark variant).           |
 
 > Note: `primary`, `secondary`, `hint`, `disabled` and `icon` refer to the text's function. The fact that we use the
 word _primary_ in the different contexts of _primary color_ and _primary function text_ can be confusing at first.
@@ -209,20 +227,20 @@ however, the text would be dark again, for the same reason. So how _do_ we chang
 ### Step 3: Changing the theme with Sass
 
 The application-wide theme colors that are used as the default across your entire application can be set in Sass.
-This is as easy as defining three variables (`$mdc-theme-primary`, `$mdc-theme-accent` and `$mdc-theme-background`) in
+This is as easy as defining three variables (`$mdc-theme-primary`, `$mdc-theme-secondary` and `$mdc-theme-background`) in
 your Sass file, before importing any MDC-Web modules.
 
 ```scss
 // My main Sass file.
 $mdc-theme-primary: #9c27b0;
-$mdc-theme-accent: #76ff03;
+$mdc-theme-secondary: #76ff03;
 $mdc-theme-background: #fff;
 
 @import "material-components-web/material-components-web";
 ```
 
 These definitions will override the defaults included in the `mdc-theme` module, which every themeable component depends
-on. As for the text colors, these will all be automatically calculated from the primary, accent and background you
+on. As for the text colors, these will all be automatically calculated from the primary, secondary and background you
 provide, as part of the Sass definitions in `mdc-theme`. Pretty simple!
 
 > Note: theme colors don't have to be part of the Material palette; you can use any valid color. You may want to read
@@ -281,11 +299,15 @@ components, they'd use the correct colors as well.
 
 The custom properties used by MDC-Web follow a similar naming convention to the Sass variables and CSS classes:
 
-| Custom property          | Description                 |
-| ------------------------ | --------------------------- |
-| `--mdc-theme-primary`    | The theme primary color.    |
-| `--mdc-theme-accent`     | The theme accent color.     |
-| `--mdc-theme-background` | The theme background color. |
+| Custom property               | Description                                 |
+| ----------------------------- | ------------------------------------------- |
+| `--mdc-theme-primary`         | The theme primary color.                    |
+| `--mdc-theme-primary-light`   | The theme primary color (light variant).    |
+| `--mdc-theme-primary-dark`    | The theme primary color (dark variant).     |
+| `--mdc-theme-secondary`       | The theme secondary color.                  |
+| `--mdc-theme-secondary-light` | The theme secondary color (light variant).  |
+| `--mdc-theme-secondary-dark`  | The theme secondary color (dark variant).   |
+| `--mdc-theme-background`      | The theme background color.                 |
 
 However, if you look closely at the page, we're not quite done yet. The text colors are incorrect: the wind and water
 cards should have dark text, rather than white. So what's happening?
@@ -294,23 +316,43 @@ The problem is that we only set the `--mdc-theme-primary` custom property. Where
 allows for calculating all the related text colors, it's currently not possible to perform those complex contrast
 calculations in CSS. This means you'll also have to set all the related text colors:
 
-| Custom property                            | Description                                                |
-| ------------------------------------------ | ---------------------------------------------------------- |
-| `--mdc-theme-text-primary-on-primary`      | Primary text on top of a theme primary color background.   |
-| `--mdc-theme-text-secondary-on-primary`    | Secondary text on top of a theme primary color background. |
-| `--mdc-theme-text-hint-on-primary`         | Hint text on top of a theme primary color background.      |
-| `--mdc-theme-text-disabled-on-primary`     | Disabled text on top of a theme primary color background.  |
-| `--mdc-theme-text-icon-on-primary`         | Icons on top of a theme primary color background.          |
+| Custom property                               | Description                                                                |
+| --------------------------------------------- | -------------------------------------------------------------------------- |
+| `--mdc-theme-text-primary-on-primary`         | Primary text on top of a theme primary color background.                   |
+| `--mdc-theme-text-primary-on-primary-light`   | Primary text on top of a theme primary color background (light variant).   |
+| `--mdc-theme-text-primary-on-primary-dark`    | Primary text on top of a theme primary color background (dark variant).    |
+| `--mdc-theme-text-secondary-on-primary`       | Secondary text on top of a theme primary color background.                 |
+| `--mdc-theme-text-secondary-on-primary-light` | Secondary text on top of a theme primary color background (light variant). |
+| `--mdc-theme-text-secondary-on-primary-dark`  | Secondary text on top of a theme primary color background (dark variant).  |
+| `--mdc-theme-text-hint-on-primary`            | Hint text on top of a theme primary color background.                      |
+| `--mdc-theme-text-hint-on-primary-light`      | Hint text on top of a theme primary color background (light variant).      |
+| `--mdc-theme-text-hint-on-primary-dark`       | Hint text on top of a theme primary color background (dark variant).       |
+| `--mdc-theme-text-disabled-on-primary`        | Disabled text on top of a theme primary color background.                  |
+| `--mdc-theme-text-disabled-on-primary-light`  | Disabled text on top of a theme primary color background (light variant).  |
+| `--mdc-theme-text-disabled-on-primary-dark`   | Disabled text on top of a theme primary color background (dark variant).   |
+| `--mdc-theme-text-icon-on-primary`            | Icons on top of a theme primary color background.                          |
+| `--mdc-theme-text-icon-on-primary-light`      | Icons on top of a theme primary color background (light variant).          |
+| `--mdc-theme-text-icon-on-primary-dark`       | Icons on top of a theme primary color background (dark variant).           |
 
-The same pattern is followed for text colors on _accent_ and _background_:
+The same pattern is followed for text colors on _secondary_ and _background_:
 
-| Custom property                            | Description                                                |
-| ------------------------------------------ | ---------------------------------------------------------- |
-| `--mdc-theme-text-primary-on-accent`       | Primary text on top of a theme accent color background.    |
-| `--mdc-theme-text-secondary-on-accent`     | Secondary text on top of a theme accent color background.  |
-| `--mdc-theme-text-hint-on-accent`          | Hint text on top of a theme accent color background.       |
-| `--mdc-theme-text-disabled-on-accent`      | Disabled text on top of a theme accent color background.   |
-| `--mdc-theme-text-icon-on-accent`          | Icons on top of a theme accent color background.           |
+| Custom property                                 | Description                                                                  |
+| ------------------------------------------------| ---------------------------------------------------------------------------- |
+| `--mdc-theme-text-primary-on-secondary`         | Primary text on top of a theme secondary color background.                   |
+| `--mdc-theme-text-primary-on-secondary-light`   | Primary text on top of a theme secondary color background (light variant).   |
+| `--mdc-theme-text-primary-on-secondary-dark`    | Primary text on top of a theme secondary color background (dark variant).    |
+| `--mdc-theme-text-secondary-on-secondary`       | Secondary text on top of a theme secondary color background.                 |
+| `--mdc-theme-text-secondary-on-secondary-light` | Secondary text on top of a theme secondary color background (light variant). |
+| `--mdc-theme-text-secondary-on-secondary-dark`  | Secondary text on top of a theme secondary color background (dark variant).  |
+| `--mdc-theme-text-hint-on-secondary`            | Hint text on top of a theme secondary color background.                      |
+| `--mdc-theme-text-hint-on-secondary-light`      | Hint text on top of a theme secondary color background (light variant).      |
+| `--mdc-theme-text-hint-on-secondary-dark`       | Hint text on top of a theme secondary color background (dark variant).       |
+| `--mdc-theme-text-disabled-on-secondary`        | Disabled text on top of a theme secondary color background.                  |
+| `--mdc-theme-text-disabled-on-secondary-light`  | Disabled text on top of a theme secondary color background (light variant).  |
+| `--mdc-theme-text-disabled-on-secondary-dark`   | Disabled text on top of a theme secondary color background (dark variant).   |
+| `--mdc-theme-text-icon-on-secondary`            | Icons on top of a theme secondary color background.                          |
+| `--mdc-theme-text-icon-on-secondary-light`      | Icons on top of a theme secondary color background (light variant).          |
+| `--mdc-theme-text-icon-on-secondary-dark`       | Icons on top of a theme secondary color background (dark variant).           |
 
 | Custom property                            | Description                                                |
 | ------------------------------------------ | ---------------------------------------------------------- |

@@ -45,8 +45,8 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
   }
 
-  @include mdc-theme-prop(background-color, accent);
-  @include mdc-theme-prop(color, text-primary-on-accent);
+  @include mdc-theme-prop(background-color, secondary);
+  @include mdc-theme-prop(color, text-primary-on-secondary);
   @include mdc-elevation(6);
 
   &--mini {

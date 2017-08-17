@@ -81,9 +81,9 @@
 }
 
 .mdc-icon-toggle--accent {
-  @include mdc-theme-prop(color, accent);
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: accent, opacity: .14));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: accent, opacity: .14));
+  @include mdc-theme-prop(color, secondary);
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .14));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .14));
 }
 
 .mdc-icon-toggle--disabled {

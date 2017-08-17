@@ -15,7 +15,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import {SelectionControlState} from '@material/base/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -54,7 +54,7 @@ export default class MDCCheckboxAdapter {
   /** @param {!EventListener} handler */
   deregisterChangeHandler(handler) {}
 
-  /** @return {!SelectionControlState} */
+  /** @return {!MDCSelectionControlState} */
   getNativeControl() {}
 
   forceLayout() {}

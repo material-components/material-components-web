@@ -128,4 +128,4 @@ The provided modifiers are:
 | `mdc-button--raised`  | Elevates the button and creates a colored background.   |
 | `mdc-button--compact` | Reduces the amount of horizontal padding in the button. |
 | `mdc-button--primary` | Colors the button with the primary color.               |
-| `mdc-button--accent`  | Colors the button with the accent color.                |
+| `mdc-button--accent`  | Colors the button with the secondary color.             |
