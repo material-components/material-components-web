@@ -26,9 +26,10 @@ const OUT_PATH = path.resolve('./build');
 const PUBLIC_PATH = '/assets/';
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
-const IS_FAST_BUILD = process.env.MDC_BUILD === 'fast';
-const GENERATE_SOURCE_MAPS = IS_DEV && !IS_FAST_BUILD && process.env.MDC_GENERATE_SOURCE_MAPS !== 'false';
-const DEVTOOL = process.env.MDC_DEVTOOL || (GENERATE_SOURCE_MAPS ? 'source-map' : false);
+const GENERATE_SOURCE_MAPS =
+    process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
+    (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV);
+const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 
 const banner = [
   '/*!',
@@ -60,7 +61,7 @@ const CSS_LOADER_CONFIG = [
     loader: 'postcss-loader',
     options: {
       sourceMap: GENERATE_SOURCE_MAPS,
-      plugins: () =>[require('autoprefixer')({grid: false})],
+      plugins: () => [require('autoprefixer')({grid: false})],
     },
   },
   {
