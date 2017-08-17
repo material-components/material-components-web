@@ -40,7 +40,10 @@
   width: 56px;
   height: 56px;
   padding: 0;
-  transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
+  transition:
+    box-shadow 280ms $mdc-animation-standard-curve-timing-function,
+    opacity 15ms linear 30ms,
+    mdc-animation-enter(transform, 270ms);
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -96,4 +99,19 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  will-change: transform;
+  transition: mdc-animation-enter(transform, 180ms, 90ms);
+}
+
+@mixin mdc-fab--exited_ {
+  transform: scale(0);
+  transition:
+    opacity 15ms linear 150ms,
+    mdc-animation-exit-permanent(transform, 180ms);
+  opacity: 0;
+
+  .mdc-fab__icon {
+    transform: scale(0);
+    transition: mdc-animation-exit-permanent(transform, 135ms);
+  }
 }

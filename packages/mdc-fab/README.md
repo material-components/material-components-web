@@ -141,7 +141,8 @@ in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35
 
 CSS Class | Description
 --- | ---
-`mdc-fab--mini` | Makes the fab smaller (40 x 40 pixels)
+`mdc-fab--exited` | When this class is added, the FAB will shrink out of view (exit);<br>when it is removed, the FAB will grow into view (enter)
+`mdc-fab--mini` | Makes the FAB smaller (40 x 40 pixels)
 `mdc-fab--plain` | Makes the FAB have a white background
 
 > **NOTE**: No disabled styles are defined for FABs, as they are intended to denote a promoted action, and should not be
@@ -151,7 +152,7 @@ CSS Class | Description
 ### Sass Mixins
 
 The following mixins are intended for advanced users. By default a FAB will inherit its color from the theme.
-These mixins will override the color of the container, ink, or ripple. You can use all of them if you want to 
+These mixins will override the color of the container, ink, or ripple. You can use all of them if you want to
 completely customize a FAB. Or you can use only one of them, e.g. if you only need to override the ripple color.
 It is up to you to pick container, ink, and ripple colors that work together, and meet accessibility standards.
 
