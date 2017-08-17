@@ -147,7 +147,7 @@
   $modifier: if($theme-style == "secondary", "accent", $theme-style);
 
   // postcss-bem-linter: ignore
-  .mdc-button--#{$theme-style} {
+  .mdc-button--#{$modifier} {
     $theme-value: map-get($mdc-theme-property-values, $theme-style);
 
     @include mdc-ripple-base;
