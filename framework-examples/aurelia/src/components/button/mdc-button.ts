@@ -4,7 +4,7 @@ import '@material/button/dist/mdc.button.css';
 @customAttribute('mdc-button')
 @inject(Element)
 export class MdcButton {
-    @bindable() accent = false;
+    @bindable() secondary = false;
     @bindable() raised = false;
 
     constructor(private element: Element) { }
@@ -22,7 +22,7 @@ export class MdcButton {
         this.element.classList.remove(...classes);
     }
 
-    accentChanged(newValue) {
+    secondaryChanged(newValue) {
         if (newValue) {
             this.element.classList.add('mdc-button--accent');
         } else {

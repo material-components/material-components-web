@@ -44,7 +44,7 @@
   }
 
   &--accent .mdc-linear-progress__bar-inner {
-    @include mdc-theme-prop(background-color, accent);
+    @include mdc-theme-prop(background-color, secondary);
   }
 
   &__buffering-dots {

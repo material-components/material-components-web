@@ -65,8 +65,11 @@
     }
   }
 
-  @each $theme-style in (primary, accent) {
-    &.mdc-button--#{$theme-style} {
+  @each $theme-style in (primary, secondary) {
+    // Needed for backward compatibility. Theme uses the term "secondary", but button still calls it "accent" for now.
+    $modifier: if($theme-style == "secondary", "accent", $theme-style);
+
+    &.mdc-button--#{$modifier} {
       @include mdc-ripple-base;
       @include mdc-ripple-bg((pseudo: "::before", theme-style: $theme-style, opacity: .12));
       @include mdc-ripple-fg((pseudo: "::after", theme-style: $theme-style, opacity: .12));
@@ -104,8 +107,11 @@
       @include mdc-elevation(8);
     }
 
-    @each $theme-style in (primary, accent) {
-      &.mdc-button--#{$theme-style} {
+    @each $theme-style in (primary, secondary) {
+      // Needed for backward compatibility. Theme uses the term "secondary", but button still calls it "accent" for now.
+      $modifier: if($theme-style == "secondary", "accent", $theme-style);
+
+      &.mdc-button--#{$modifier} {
         @include mdc-ripple-base;
         @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .14));
         @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .14));
@@ -147,16 +153,16 @@
   }
 
   &--accent {
-    @include mdc-theme-prop(color, accent);
+    @include mdc-theme-prop(color, secondary);
 
     @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, accent);
+      @include mdc-theme-prop(color, secondary);
     }
 
     // postcss-bem-linter: ignore
     &.mdc-button--raised {
-      @include mdc-theme-prop(background-color, accent);
-      @include mdc-theme-prop(color, text-primary-on-accent);
+      @include mdc-theme-prop(background-color, secondary);
+      @include mdc-theme-prop(color, text-primary-on-secondary);
 
       // postcss-bem-linter: ignore
       &::before {

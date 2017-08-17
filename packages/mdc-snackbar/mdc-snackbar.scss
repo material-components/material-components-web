@@ -132,7 +132,7 @@
   /* stylelint-enable plugin/selector-bem-pattern */
 
   &__action-button {
-    @include mdc-theme-prop(color, accent);
+    @include mdc-theme-prop(color, secondary);
 
     @include mdc-theme-dark(".mdc-snackbar") {
       @include mdc-theme-prop(color, primary);
