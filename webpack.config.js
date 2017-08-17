@@ -74,7 +74,8 @@ const SASS_LOADER_CONFIG = [
   },
 ];
 
-const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${WRAP_CSS_IN_JS ? '.js' : ''}`;
+const CSS_JS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css.js`;
+const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css`;
 
 const createCssLoaderConfig = () =>
   WRAP_CSS_IN_JS ?
@@ -84,7 +85,7 @@ const createCssLoaderConfig = () =>
       use: SASS_LOADER_CONFIG,
     });
 
-const createCssExtractTextPlugin = () => new ExtractTextPlugin(`[name]${IS_PROD ? '.min' : ''}.css`);
+const createCssExtractTextPlugin = () => new ExtractTextPlugin(CSS_FILENAME_OUTPUT_PATTERN);
 
 module.exports = [{
   name: 'js-components',
@@ -202,7 +203,7 @@ module.exports = [{
     // In development, these are emitted as js files to facilitate hot module replacement. In
     // all other cases, ExtractTextPlugin is used to generate the final css, so this is given a
     // dummy ".css-entry" extension.
-    filename: CSS_FILENAME_OUTPUT_PATTERN,
+    filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
   },
   devServer: {
     disableHostCheck: true,
@@ -229,7 +230,7 @@ if (IS_DEV) {
     output: {
       path: OUT_PATH,
       publicPath: PUBLIC_PATH,
-      filename: CSS_FILENAME_OUTPUT_PATTERN,
+      filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
     devServer: {
       disableHostCheck: true,
