@@ -154,8 +154,8 @@ by HTML5's form validation API.
 ```
 
 By default an input's validity is checked via `checkValidity()` on blur, and the styles are updated
-accordingly. The validity can also be set via the MDCTextfield.valid variable. When using the `required`
-attribute, an asterisk will be automatically appended to the label text, as per the spec.
+accordingly. Set the MDCTextfield.valid variable to set the input's validity explicitly. MDC Textfield
+automatically appends an asterisk to the label text if the required attribute is set.
 
 Help text can be used to provide additional validation messages. Use
 `mdc-textfield-helptext--validation-msg` to provide styles for using the help text as a validation

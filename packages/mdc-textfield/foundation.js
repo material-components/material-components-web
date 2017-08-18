@@ -57,7 +57,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.inputBlurHandler_ = () => this.deactivateFocus_();
     this.inputInputHandler_ = () => this.autoCompleteFocus_();
     this.inputKeydownHandler_ = () => this.receivedUserInput_ = true;
-    this.useNativeValidityChecking_ = true;
+    this.useCustomValidityChecking_ = false;
   }
 
   init() {
@@ -102,15 +102,14 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   deactivateFocus_() {
     const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
-    const isValid = input.checkValidity();
 
     this.adapter_.removeClass(FOCUSED);
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
       this.receivedUserInput_ = false;
     }
-    if (this.useNativeValidityChecking_) {
-      this.changeValidity_(isValid);
+    if (!this.useCustomValidityChecking_) {
+      this.changeValidity_(input.checkValidity());
     }
   }
 
@@ -177,7 +176,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   setValid(isValid) {
-    this.useNativeValidityChecking_ = false;
+    this.useCustomValidityChecking_ = true;
     this.changeValidity_(isValid);
   }
 }
