@@ -64,7 +64,7 @@ $_mdc-theme-tonal-offset: 7%;
 
 // Generate light and dark variants of the given color, offset by approximately
 // the specified number of indexes within the color's tonal palette.
-@function mdc-theme-tonal-variants($color, $num-indexes: 2) {
+@function mdc-theme-tonal-variants_($color, $num-indexes: 2) {
   $luminance: mdc-theme-luminance($color);
   $amount-1x: mdc-theme-clamp-percentage_($_mdc-theme-tonal-offset * $num-indexes);
   $amount-2x: mdc-theme-clamp-percentage_($_mdc-theme-tonal-offset * $num-indexes * 2);
@@ -101,7 +101,7 @@ $_mdc-theme-tonal-offset: 7%;
 // ensure that the returned value is visually distinct from the light variant
 // (which will actually end up being a dark shade).
 @function mdc-theme-dark-variant($color, $num-indexes: 2) {
-  @return map-get(mdc-theme-tonal-variants($color, $num-indexes), dark);
+  @return map-get(mdc-theme-tonal-variants_($color, $num-indexes), dark);
 }
 
 // Lighten the given color by approximately the specified number of indexes
@@ -114,5 +114,5 @@ $_mdc-theme-tonal-offset: 7%;
 // ensure that the returned value is visually distinct from the dark variant
 // (which will actually end up being a light tint).
 @function mdc-theme-light-variant($color, $num-indexes: 2) {
-  @return map-get(mdc-theme-tonal-variants($color, $num-indexes), light);
+  @return map-get(mdc-theme-tonal-variants_($color, $num-indexes), light);
 }
