@@ -66,26 +66,27 @@ $_mdc-theme-tonal-offset: 7%;
 // the specified number of indexes within the color's tonal palette.
 @function mdc-theme-tonal-variants($color, $num-indexes: 2) {
   $luminance: mdc-theme-luminance($color);
-  $amount: $_mdc-theme-tonal-offset * $num-indexes;
+  $amount-1x: mdc-theme-clamp-percentage_($_mdc-theme-tonal-offset * $num-indexes);
+  $amount-2x: mdc-theme-clamp-percentage_($_mdc-theme-tonal-offset * $num-indexes * 2);
 
   @if $luminance < .2 {
     @return (
-      dark: lighten($color, mdc-theme-clamp-percentage_($amount)),
-      light: lighten($color, mdc-theme-clamp-percentage_($amount * 2))
+      dark: lighten($color, $amount-1x),
+      light: lighten($color, $amount-2x)
     );
   }
 
   @else if $luminance > .8 {
     @return (
-      dark: darken($color, mdc-theme-clamp-percentage_($amount * 2)),
-      light: darken($color, mdc-theme-clamp-percentage_($amount))
+      dark: darken($color, $amount-2x),
+      light: darken($color, $amount-1x)
     );
   }
 
   @else {
     @return (
-      dark: darken($color, mdc-theme-clamp-percentage_($amount)),
-      light: lighten($color, mdc-theme-clamp-percentage_($amount))
+      dark: darken($color, $amount-1x),
+      light: lighten($color, $amount-1x)
     );
   }
 }
