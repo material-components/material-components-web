@@ -64,7 +64,6 @@ function setupTest() {
   const component = new MDCDialog(root);
   const acceptButton = fixture.querySelector('.mdc-dialog__footer__button--accept');
   const cancelButton = fixture.querySelector('.mdc-dialog__footer__button--cancel');
-
   return {openDialog, root, acceptButton, cancelButton, component};
 }
 
