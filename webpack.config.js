@@ -26,9 +26,11 @@ const OUT_PATH = path.resolve('./build');
 const PUBLIC_PATH = '/assets/';
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
+const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS !== 'false' && IS_DEV;
+// Source maps break extract-text-webpack-plugin, so they need to be disabled when WRAP_CSS_IN_JS is set to false.
 const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
-    (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV);
+    (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 
 const banner = [
@@ -72,6 +74,22 @@ const CSS_LOADER_CONFIG = [
     },
   },
 ];
+
+// In development, stylesheets are emitted as JS files to facilitate hot module replacement.
+// In all other cases, ExtractTextPlugin is used to generate the final CSS, so these files are
+// given a dummy ".js-entry" extension.
+const CSS_JS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${IS_DEV ? '.js' : '.js-entry'}`;
+const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css`;
+
+const createCssLoaderConfig = () =>
+  WRAP_CSS_IN_JS ?
+    [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG) :
+    ExtractTextPlugin.extract({
+      fallback: 'style-loader',
+      use: CSS_LOADER_CONFIG,
+    });
+
+const createCssExtractTextPlugin = () => new ExtractTextPlugin(CSS_FILENAME_OUTPUT_PATTERN);
 
 module.exports = [{
   name: 'js-components',
@@ -186,10 +204,7 @@ module.exports = [{
   output: {
     path: OUT_PATH,
     publicPath: PUBLIC_PATH,
-    // In development, these are emitted as js files to facilitate hot module replacement. In
-    // all other cases, ExtractTextPlugin is used to generate the final css, so this is given a
-    // dummy ".css-entry" extension.
-    filename: '[name].' + (IS_PROD ? 'min.' : '') + 'css' + (IS_DEV ? '.js' : '-entry'),
+    filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
   },
   devServer: {
     disableHostCheck: true,
@@ -198,14 +213,11 @@ module.exports = [{
   module: {
     rules: [{
       test: /\.scss$/,
-      use: IS_DEV ? [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG) : ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: CSS_LOADER_CONFIG,
-      }),
+      use: createCssLoaderConfig(),
     }],
   },
   plugins: [
-    new ExtractTextPlugin('[name].' + (IS_PROD ? 'min.' : '') + 'css'),
+    createCssExtractTextPlugin(),
     createBannerPlugin(),
   ],
 }];
@@ -219,7 +231,7 @@ if (IS_DEV) {
     output: {
       path: OUT_PATH,
       publicPath: PUBLIC_PATH,
-      filename: '[name].css.js',
+      filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
     devServer: {
       disableHostCheck: true,
@@ -228,10 +240,11 @@ if (IS_DEV) {
     module: {
       rules: [{
         test: /\.scss$/,
-        use: [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG),
+        use: createCssLoaderConfig(),
       }],
     },
     plugins: [
+      createCssExtractTextPlugin(),
       createBannerPlugin(),
     ],
   });
