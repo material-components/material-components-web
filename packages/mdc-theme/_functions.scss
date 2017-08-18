@@ -57,15 +57,37 @@ $_mdc-theme-tonal-offset: 7%;
   }
 }
 
-// Return the given number if $value >= $min and $value <= $max. If $value falls
-// outside those bounds, return the nearest boundary value ($max or $min).
-@function mdc-theme-clamp-number_($value, $min, $max) {
-  @return max($min, min($max, $value));
+// lighten() and darken() require values to be between 0% and 100%.
+@function mdc-theme-clamp-percentage_($percentage) {
+  @return max(0%, min(100%, $percentage));
 }
 
-// lighten() and darken() require values to be between 0% and 100%.
-@function mdc-theme-clamp-lighten-amount_($percentage) {
-  @return mdc-theme-clamp-number_($percentage, 0%, 100%);
+// Generate light and dark variants of the given color, offset by approximately
+// the specified number of indexes within the color's tonal palette.
+@function mdc-theme-tonal-variants($color, $num-indexes: 2) {
+  $luminance: mdc-theme-luminance($color);
+  $amount: $_mdc-theme-tonal-offset * $num-indexes;
+
+  @if $luminance < .2 {
+    @return (
+      dark: lighten($color, mdc-theme-clamp-percentage_($amount)),
+      light: lighten($color, mdc-theme-clamp-percentage_($amount * 2))
+    );
+  }
+
+  @else if $luminance > .8 {
+    @return (
+      dark: darken($color, mdc-theme-clamp-percentage_($amount * 2)),
+      light: darken($color, mdc-theme-clamp-percentage_($amount))
+    );
+  }
+
+  @else {
+    @return (
+      dark: darken($color, mdc-theme-clamp-percentage_($amount)),
+      light: lighten($color, mdc-theme-clamp-percentage_($amount))
+    );
+  }
 }
 
 // Darken the given color by approximately the specified number of indexes
@@ -78,20 +100,7 @@ $_mdc-theme-tonal-offset: 7%;
 // ensure that the returned value is visually distinct from the light variant
 // (which will actually end up being a dark shade).
 @function mdc-theme-dark-variant($color, $num-indexes: 2) {
-  $offset: $_mdc-theme-tonal-offset;
-  $amount: $offset * $num-indexes;
-
-  @if mdc-theme-luminance($color) < .2 {
-    @return lighten($color, mdc-theme-clamp-lighten-amount_($amount));
-  }
-
-  @else if mdc-theme-luminance($color) > .8 {
-    @return darken($color, mdc-theme-clamp-lighten-amount_($amount * 2));
-  }
-
-  @else {
-    @return darken($color, mdc-theme-clamp-lighten-amount_($amount));
-  }
+  @return map-get(mdc-theme-tonal-variants($color, $num-indexes), dark);
 }
 
 // Lighten the given color by approximately the specified number of indexes
@@ -104,18 +113,5 @@ $_mdc-theme-tonal-offset: 7%;
 // ensure that the returned value is visually distinct from the dark variant
 // (which will actually end up being a light tint).
 @function mdc-theme-light-variant($color, $num-indexes: 2) {
-  $offset: $_mdc-theme-tonal-offset;
-  $amount: $offset * $num-indexes;
-
-  @if mdc-theme-luminance($color) < .2 {
-    @return lighten($color, mdc-theme-clamp-lighten-amount_($amount * 2));
-  }
-
-  @else if mdc-theme-luminance($color) > .8 {
-    @return darken($color, mdc-theme-clamp-lighten-amount_($amount));
-  }
-
-  @else {
-    @return lighten($color, mdc-theme-clamp-lighten-amount_($amount));
-  }
+  @return map-get(mdc-theme-tonal-variants($color, $num-indexes), light);
 }
