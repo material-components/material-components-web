@@ -78,7 +78,7 @@ const CSS_LOADER_CONFIG = [
 // In development, stylesheets are emitted as JS files to facilitate hot module replacement.
 // In all other cases, ExtractTextPlugin is used to generate the final CSS, so these files are
 // given a dummy ".js-entry" extension.
-const CSS_JS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${IS_DEV ? '.js' : '-entry'}`;
+const CSS_JS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${IS_DEV ? '.js' : '.js-entry'}`;
 const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css`;
 
 const createCssLoaderConfig = () =>
