@@ -63,7 +63,7 @@ You can find much more information with respect to building components within ou
 
 ### Running development server
 
-#### Local developement server
+#### Local development server
 
 ```
 npm run dev
@@ -72,7 +72,7 @@ open http://localhost:8080
 
 `npm run dev` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that uses `demos/` as its content base. This should aid you in initial development of a component. It's served on port 8080.
 
-#### Appengine developement server
+#### Appengine development server
 
 ```
 MDC_ENV=development npm run build && gcloud app deploy app.yaml --project google.com:mdc-web-dev --version $USER
