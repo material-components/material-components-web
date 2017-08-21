@@ -19,11 +19,33 @@ const registry = Object.create(null);
 const CONSOLE_WARN = console.warn.bind(console);
 
 /**
+ * Fires a cross-browser-compatible custom event from HTML element or HTML document,
+ * with the given data.
+ * @param {HTMLElement, HTMLDocument} element
+ * @param {string} evtType
+ * @param {!Object} evtData
+ * @param {boolean=} shouldBubble
+ */
+function emit(element, evtType, evtData, shouldBubble = false) {
+  let evt;
+  if (typeof CustomEvent === 'function') {
+    evt = new CustomEvent(evtType, {
+      detail: evtData,
+      bubbles: shouldBubble,
+    });
+  } else {
+    evt = document.createEvent('CustomEvent');
+    evt.initCustomEvent(evtType, shouldBubble, false, evtData);
+  }
+
+  element.dispatchEvent(evt);
+}
+
+/**
  * Auto-initializes all mdc components on a page.
  */
 export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   const nodes = root.querySelectorAll('[data-mdc-auto-init]');
-  let component = null;
   for (let i = 0, node; (node = nodes[i]); i++) {
     const ctorName = node.dataset.mdcAutoInit;
     if (!ctorName) {
@@ -42,7 +64,7 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     }
 
     // TODO: Should we make an eslint rule for an attachTo() static method?
-    component = Ctor.attachTo(node);
+    const component = Ctor.attachTo(node);
     Object.defineProperty(node, ctorName, {
       value: component,
       writable: false,
@@ -51,9 +73,7 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     });
   }
 
-  if (component !== null) {
-    component.emit('MDCAutoInit:End', {}, true);
-  }
+  emit(document, 'MDCAutoInit:End', {}, true);
 }
 
 mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {

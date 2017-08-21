@@ -115,7 +115,7 @@ test('#emit event from MDCComponent on init complete', () => {
   const root = setupTest();
   const handler = td.func('init event handler');
 
-  root.addEventListener('MDCAutoInit:End', handler);
+  document.addEventListener('MDCAutoInit:End', handler);
   mdcAutoInit(root);
 
   td.verify(handler(td.matchers.isA(Object)));
