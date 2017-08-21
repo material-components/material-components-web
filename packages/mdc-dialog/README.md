@@ -112,6 +112,20 @@ Some dialogs will not be tall enough to accomodate everything you would like to 
 Note that unlike the css classnames, the specific ID names used do not have to be _exactly_ the same as listed above.
 They only need to match the values set for their corresponding aria attributes.
 
+### Dialog Action Color ###
+
+Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s secondary color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply secondary color.
+
+```
+<aside class="mdc-dialog">
+  <div class="mdc-dialog__surface">
+    <footer class="mdc-dialog__footer">
+      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
+      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept mdc-dialog__action">Accept</button>
+    </footer>
+</aside>
+```
+
 ### Using the Component
 
 MDC Dialog ships with a Component / Foundation combo which allows for frameworks to richly integrate the
@@ -245,6 +259,7 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `isDialog(el: Element) => boolean` | Returns boolean indicating whether the provided element is the dialog surface element. |
 | `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 | `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
+| `layoutFooterRipples() => void` | Calls `layout` on the ripple components instantiated on buttons in the footer. |
 
 #### Handling Focus Trapping
 

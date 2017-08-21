@@ -5,7 +5,7 @@
         Raised buttons
     </label>
     <label>
-        <mdc-checkbox is-checked.bind="accentButtons" is-indeterminate.bind="isIndeterminate" change.delegate="handleChange()"></mdc-checkbox>
+        <mdc-checkbox is-checked.bind="secondaryButtons" is-indeterminate.bind="isIndeterminate" change.delegate="handleChange()"></mdc-checkbox>
         Colored buttons
     </label>
     <label>
@@ -18,8 +18,8 @@
     </label>
   </section>
   <section>
-      <button mdc-ripple mdc-button="accent.bind: accentButtons; raised.bind: raisedButtons;" disabled.bind="disabledButtons" click.delegate="toggleCheckbox()">toggle raised</button>
-      <button mdc-ripple="unbounded: true;" mdc-button="accent.bind: accentButtons; raised.bind: raisedButtons;" disabled.bind="disabledButtons || isIndeterminate" click.delegate="makeIndeterminate()">make indeterminate</button>
+      <button mdc-ripple mdc-button="secondary.bind: secondaryButtons; raised.bind: raisedButtons;" disabled.bind="disabledButtons" click.delegate="toggleCheckbox()">toggle raised</button>
+      <button mdc-ripple="unbounded: true;" mdc-button="secondary.bind: secondaryButtons; raised.bind: raisedButtons;" disabled.bind="disabledButtons || isIndeterminate" click.delegate="makeIndeterminate()">make indeterminate</button>
   </section>
   <section>
       Change events: ${changeEventCount}

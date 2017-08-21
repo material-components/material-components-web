@@ -1,3 +1,59 @@
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/material-components/material-components-web/compare/v0.17.0...v0.18.0) (2017-08-21)
+
+
+### Bug Fixes
+
+* Make CSS custom properties compatible with sass-spec 3.5 (#1076) ([264c154](https://github.com/material-components/material-components-web/commit/264c154)), closes [#1075](https://github.com/material-components/material-components-web/issues/1075)
+* **button:** Un-break the build by referencing `secondary` theme prop instead of `accent` (#1156) ([d3ff8fc](https://github.com/material-components/material-components-web/commit/d3ff8fc))
+* **demos:** Convert NodeList to array for forEach; avoid fat arrow (#1073) ([c6a1f2a](https://github.com/material-components/material-components-web/commit/c6a1f2a))
+* **dialog:** Layout footer buttons' ripples after open transition ends (#1087) ([c51fcd5](https://github.com/material-components/material-components-web/commit/c51fcd5))
+* **grid-list:** Gracefully degrade tile width. (#1136) ([97575c3](https://github.com/material-components/material-components-web/commit/97575c3))
+* **layout-grid:** Enable setting max width of the layout grid (#1086) ([98ba98c](https://github.com/material-components/material-components-web/commit/98ba98c)), closes [#1085](https://github.com/material-components/material-components-web/issues/1085)
+* **snackbar:** Stop queued data from modifying current data (#1084) ([eb35255](https://github.com/material-components/material-components-web/commit/eb35255)), closes [#1083](https://github.com/material-components/material-components-web/issues/1083)
+* **toolbar:** Wrong placement of last icon when there is a menu (#1068) ([11a8ff3](https://github.com/material-components/material-components-web/commit/11a8ff3)), closes [#1026](https://github.com/material-components/material-components-web/issues/1026)
+
+
+### Features
+
+* **button:** Update text and raise button baseline styles (#1074) ([09a763a](https://github.com/material-components/material-components-web/commit/09a763a))
+* **infrastructure:** Add env var to emit CSS files directly instead of wrapping them in JS (#1133) ([5f6f829](https://github.com/material-components/material-components-web/commit/5f6f829))
+* **infrastructure:** Display webpack-dev-server build progress (#1132) ([0754628](https://github.com/material-components/material-components-web/commit/0754628))
+* **theme:** Add light/dark vars for primary/secondary color; rename `accent` to `secondary` (#1116) ([2314ad5](https://github.com/material-components/material-components-web/commit/2314ad5))
+* **theme:** Add SCSS variables for Material Design color palette (#1117) ([6c26958](https://github.com/material-components/material-components-web/commit/6c26958))
+
+
+### Performance Improvements
+
+* **infrastructure:** Cut build time in half with opt-in env var (#1128) ([e36639f](https://github.com/material-components/material-components-web/commit/e36639f))
+
+
+### BREAKING CHANGES
+
+* **dialog:** Adds a new adapter method, layoutFooterRipples, to allow the foundation to
+communicate with ripples when the dialog's opening transition ends.
+
+
+
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/material-components/material-components-web/compare/v0.16.0...v0.17.0) (2017-08-07)
+
+
+### Bug Fixes
+
+* **dialog:** Dialog buttons should use primary color (#941) ([b4e8b5a](https://github.com/material-components/material-components-web/commit/b4e8b5a)), closes [#940](https://github.com/material-components/material-components-web/issues/940)
+* **ripple:** Feature-detect buggy Edge behavior for custom properties (#1041) ([5cc2115](https://github.com/material-components/material-components-web/commit/5cc2115))
+* **select:** menu positioning logic incorrect when select appears near viewport edge #671 (#680) ([874f043](https://github.com/material-components/material-components-web/commit/874f043))
+* **textfield:** Add font styles to input, remove from mdc wrapper (#908) ([a498a28](https://github.com/material-components/material-components-web/commit/a498a28))
+* **textfield:** Fix textfield input sizes  (#1016) ([e59ee21](https://github.com/material-components/material-components-web/commit/e59ee21)), closes [#1016](https://github.com/material-components/material-components-web/issues/1016) [#1002](https://github.com/material-components/material-components-web/issues/1002)
+
+
+### Features
+
+* **typography:** Add button style to typography (#1064) ([21c7a54](https://github.com/material-components/material-components-web/commit/21c7a54))
+
+
+
 <a name="0.16.0"></a>
 # [0.16.0](https://github.com/material-components/material-components-web/compare/v0.15.0...v0.16.0) (2017-07-24)
 

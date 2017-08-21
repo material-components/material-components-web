@@ -24,7 +24,7 @@
 $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
 :root {
-  --mdc-dialog-dark-theme-bg-color: $mdc-dialog-dark-theme-bg-color;
+  --mdc-dialog-dark-theme-bg-color: #{$mdc-dialog-dark-theme-bg-color};
 }
 
 // postcss-bem-linter: define dialog
@@ -140,6 +140,10 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
       &:last-child {
         @include mdc-rtl-reflexive-box(margin, right, 0);
       }
+    }
+
+    &__action {
+      @include mdc-theme-prop(color, secondary);
     }
   }
 

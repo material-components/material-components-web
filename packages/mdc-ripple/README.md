@@ -31,6 +31,7 @@ path: /catalog/ripples/
     - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
     - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
     - [Specifying known element dimensions](#specifying-known-element-dimensions)
+  - [Caveat: Edge](#caveat-edge)
   - [Caveat: Safari](#caveat-safari)
   - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
   - [The util API](#the-util-api)
@@ -45,9 +46,7 @@ In order to function correctly, MDC Ripple requires a _browser_ implementation o
 
 Because we rely on scoped, dynamic CSS variables, static pre-processors such as [postcss-custom-properties](https://github.com/postcss/postcss-custom-properties) will not work as an adequate polyfill ([...yet?](https://github.com/postcss/postcss-custom-properties/issues/32)).
 
-[Most modern browsers](http://caniuse.com/#feat=css-variables) support CSS variables, so MDC ripple will work just fine. In other cases, MDC ripple will _still work_ if you include it in your codebase. It will simply check if CSS variables are supported upon initialization and if they aren't, gracefully exit. The only exception to this rule is Safari, which does support CSS variables
-but unfortunately ripples are disabled for (see [below](#caveat-safari) for an explanation).
-
+Edge and Safari, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari](#caveat-safari) for an explanation.
 
 ## Installation
 
@@ -242,14 +241,14 @@ a ripple:
 ```
 
 There are also modifier classes that can be used for styling ripple surfaces using the configured
-theme's primary and accent colors
+theme's primary and secondary colors
 
 ```html
 <div class="mdc-ripple-surface mdc-ripple-surface--primary my-surface" tabindex="0">
   Surface with a primary-colored ripple.
 </div>
 <div class="mdc-ripple-surface mdc-ripple-surface--accent my-surface" tabindex="0">
-  Surface with an accent-colored ripple.
+  Surface with a secondary-colored ripple.
 </div>
 ```
 
@@ -263,7 +262,7 @@ ripple to. The adapter API is as follows:
 
 | Method Signature | Description |
 | --- | --- |
-| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Safari considerations](#caveat-safari) into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
+| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
 | `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
 | `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
@@ -380,6 +379,17 @@ this.ripple_ = new MDCRippleFoundation({
 });
 ```
 
+## Caveat: Edge
+
+> TL;DR ripples are disabled in Edge because of issues with its support of CSS variables in pseudo elements.
+
+Edge introduced CSS variables in version 15. Unfortunately, there are
+[known issues](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/)
+involving its implementation for pseudo-elements which cause ripples to behave incorrectly.
+We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not initialize ripples if the bug is
+observed. Earlier versions of Edge (and IE) are not affected, as they do not report support for CSS variables at all,
+and as such ripples are never initialized.
+
 ## Caveat: Safari
 
 > TL;DR ripples are disabled in Safari < 10 because of a nasty CSS variables bug.
@@ -416,13 +426,13 @@ to your theme via a custom variable will not propagate to ripples._ We don't see
 
 External frameworks and libraries can use the following utility methods when integrating a component.
 
-#### util.supportsCssVariables(windowObj) => Boolean
+#### util.supportsCssVariables(windowObj, forceRefresh = false) => Boolean
 
-Determine whether the current browser supports CSS variables (custom properties).
+Determine whether the current browser supports CSS variables (custom properties). This function caches its result; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
 
 #### util.applyPassive(globalObj = window, forceRefresh = false) => object
 
-Determine whether the current browser supports passive event listeners, and if so, use them.
+Determine whether the current browser supports passive event listeners, and if so, use them. This function caches its result; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
 
 #### getMatchesProperty(HTMLElementPrototype) => Function
 

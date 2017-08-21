@@ -19,7 +19,6 @@
     <meta charset="utf-8">
     <title>MDC Toolbar Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <script src="/assets/demo-styles.css.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
@@ -37,10 +36,14 @@
           padding: 16px;
         }
       }
+      #demo-menu {
+        margin-top: 8px;
+        margin-right: 8px;
+      }
     </style>
   </head>
   <body class="mdc-typography mdc-toolbar-demo">
-    <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <a href="#" class="material-icons mdc-toolbar__icon--menu">menu</a>
@@ -49,10 +52,22 @@
         <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
           <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
           <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
-          <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">more_vert</a>
+          <div class="mdc-menu-anchor">
+          <a href="#" class="material-icons mdc-toolbar__icon toggle" aria-label="Bookmark this page" alt="Bookmark this page">more_vert</a>
+          <div class="mdc-simple-menu" tabindex="-1" id="demo-menu">
+            <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true" style="transform: scale(1, 1);">
+              <li class="mdc-list-item" role="menuitem" tabindex="0" style="transition-delay: 0.069s;">Back</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0" style="transition-delay: 0.124s;">Forward</li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0" style="transition-delay: 0.179s;">Reload</li>
+              <li class="mdc-list-divider" role="separator"></li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0" style="transition-delay: 0.236s;">Save As...</li>
+            </ul>
+          </div>
+          </div>
         </section>
       </div>
     </header>
+
     <main>
       <div class="mdc-toolbar-fixed-adjust">
         <p class="demo-paragraph">
@@ -66,22 +81,15 @@
         </p>
       </div>
     </main>
+
     <script src="/assets/material-components-web.js"></script>
-    <script type="text/javascript">
-      (function() {
-        var pollId = 0;
-        pollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-toolbar')).position;
-          if (pos === 'fixed' || pos === 'relative') {
-            init();
-            clearInterval(pollId);
-          }
-        }, 250);
-        function init() {
-          var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
-          toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
-        }
-      })();
+    <script>
+      var menuEl = document.querySelector('#demo-menu');
+      var menu = new mdc.menu.MDCSimpleMenu(menuEl);
+      var toggle = document.querySelector('.toggle');
+      toggle.addEventListener('click', function() {
+        menu.open = !menu.open;
+      });
     </script>
   </body>
 </html>

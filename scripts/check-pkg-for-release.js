@@ -43,7 +43,7 @@ const MASTER_PKG = require(path.join(process.env.PWD, MASTER_PKG_PATH));
 // These few MDC packages work as foundation or utility packages, and are not
 // directly included in webpack or the material-component-web module. But they
 // are necessary since other MDC packages depend on them.
-const CSS_WHITELIST = ['base', 'auto-init', 'rtl'];
+const CSS_WHITELIST = ['base', 'auto-init', 'rtl', 'selection-control'];
 
 main();
 
@@ -146,7 +146,7 @@ function checkCSSDependencyAddedInMDCPackage() {
 
 function checkJSDependencyAddedInMDCPackage() {
   const NOT_IMPORTED = ['animation'];
-  const NOT_AUTOINIT = ['auto-init', 'base'];
+  const NOT_AUTOINIT = ['auto-init', 'base', 'selection-control'];
   const name = pkg.name.split('/')[1];
   if (typeof(pkg.main) !== 'undefined' && NOT_IMPORTED.indexOf(name) === -1) {
     const nameCamel = camelCase(pkg.name.replace('@material/', ''));
