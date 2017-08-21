@@ -18,25 +18,29 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 
-@function mdc-fab-theme-default-config_() {
-  @return (
-    standard: (
-      bg-color: secondary,
-      fg-color: text-primary-on-secondary,
-      ripple: (base-color: white, opacity: .16)
-    ),
-    plain: (
-      bg-color: white,
-      fg-color: text-primary-on-light,
-      ripple: ()
-    ),
-    disabled: (
-      bg-color: rgba(0, 0, 0, .12),
-      fg-color: rgba(0, 0, 0, .26),
-      ripple: null
-    ),
-  );
-}
+// @function mdc-fab-theme-default-config_() {
+//   @return (
+//     standard: (
+//       // Adding border-radius to illustrate a point, since it will be customizable
+//       border-radius: 50%,
+//       bg-color: secondary,
+//       fg-color: text-primary-on-secondary,
+//       ripple: (base-color: white, opacity: .16)
+//     ),
+//     plain: (
+//       border-radius: 50%,
+//       bg-color: white,
+//       fg-color: text-primary-on-light,
+//       ripple: ()
+//     ),
+//     disabled: (
+//       border-radius: 50%,
+//       bg-color: rgba(0, 0, 0, .12),
+//       fg-color: rgba(0, 0, 0, .26),
+//       ripple: null
+//     ),
+//   );
+// }
 
 @function mdc-map-get-child_($parent-map, $keys...) {
   $value: $parent-map;
@@ -59,7 +63,6 @@
   padding: 0;
   transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
   border: none;
-  border-radius: 50%;
   cursor: pointer;
   user-select: none;
   box-sizing: border-box;
@@ -69,6 +72,10 @@
   overflow: hidden;
 
   @include mdc-elevation(6);
+
+  &:not(.mdc-ripple-upgraded) {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
+  }
 
   // stylelint-disable selector-max-type
   &--mini {
@@ -121,34 +128,23 @@
   // stylelint-enable selector-max-type
 }
 
-@mixin mdc-fab-color_($config: (), $type: "standard") {
-  $config: map-merge(mdc-fab-theme-default-config_(), $config);
-  $ripple: mdc-map-get-child_($config, $type, ripple);
+// Thought: Do we want to distinguish "theme" as color-related properties and keep other stuff separate?
+// Or is it better to consistently have one customization mixin per package?
+@mixin mdc-fab-theme($border-radius: null, $bg-color: null, $fg-color: null, $ripple: null) {
+  @if $border-radius != null {
+    border-radius: $border-radius;
+  }
 
   @if $ripple != null {
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple));
     @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple));
   }
 
-  @include mdc-theme-prop(background-color, mdc-map-get-child_($config, $type, bg-color));
-  @include mdc-theme-prop(color, mdc-map-get-child_($config, $type, fg-color));
-}
-
-@mixin mdc-fab-theme($config: ()) {
-  $config: map-merge(mdc-fab-theme-default-config_(), $config);
-
-  &:not(.mdc-ripple-upgraded) {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
+  @if $bg-color != null {
+    @include mdc-theme-prop(background-color, $bg-color);
   }
 
-  @include mdc-fab-color_($config, standard);
-
-  &--plain {
-    @include mdc-fab-color_($config, plain);
-  }
-
-  fieldset:disabled &,
-  &:disabled {
-    @include mdc-fab-color_($config, disabled);
+  @if $fg-color != null {
+    @include mdc-theme-prop(color, $fg-color);
   }
 }

@@ -18,7 +18,35 @@
 
 .mdc-fab {
   @include mdc-fab-base;
-  @include mdc-fab-theme;
+  @include mdc-fab-theme(
+    $border-radius: 50%,
+    $bg-color: secondary,
+    $fg-color: text-primary-on-secondary,
+    $ripple: (base-color: white, opacity: .16)
+  );
+
+  // To be removed?
+  fieldset:disabled &,
+  &:disabled {
+    @include mdc-fab-theme(
+      $bg-color: rgba(0, 0, 0, .12),
+      $fg-color: rgba(0, 0, 0, .26)
+    );
+  }
 }
+
+// To be removed
+.mdc-fab--plain {
+  @include mdc-fab-theme(
+    $bg-color: white,
+    $fg-color: text-primary-on-light,
+    $ripple: ()
+  );
+}
+
+// Testing how much code is added when you just want to override one style
+// .mdc-fab--test {
+//   @include mdc-fab-theme($border-radius: 25%);
+// }
 
 // postcss-bem-linter: end
