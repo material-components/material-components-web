@@ -17,35 +17,13 @@
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
+@import "./variables";
 
-@function mdc-fab-theme-default-config_() {
-  @return (
-    standard: (
-      bg-color: secondary,
-      fg-color: text-primary-on-secondary,
-      ripple: (base-color: white, opacity: .16)
-    ),
-    plain: (
-      bg-color: white,
-      fg-color: text-primary-on-light,
-      ripple: ()
-    ),
-    disabled: (
-      bg-color: rgba(0, 0, 0, .12),
-      fg-color: rgba(0, 0, 0, .26),
-      ripple: null
-    ),
-  );
-}
-
-@function mdc-map-get-child_($parent-map, $keys...) {
-  $value: $parent-map;
-
-  @each $key in join($keys...) {
-    $value: map-get($value, $key);
+@mixin mdc-fab-selector-disabled($selector) {
+  :disabled #{$selector},
+  #{$selector}:disabled {
+    @content;
   }
-
-  @return $value;
 }
 
 @mixin mdc-fab-base {
@@ -68,22 +46,13 @@
   -webkit-appearance: none;
   overflow: hidden;
 
-  @include mdc-elevation(6);
-
-  // stylelint-disable selector-max-type
-  &--mini {
-    width: 40px;
-    height: 40px;
-  }
-  // stylelint-enable selector-max-type
-
   &:active,
   &:focus {
+    // TODO(acdvorak): Should this be paired with states and/or ripple? We don't want to disable outline
+    // (an accessibility/usability feature) unless we're confident that there is also a visual indication that the
+    // element has focus. If the client has customized the DOM in some unexpected way, and is certain that another
+    // element will receive focus instead, they can always override this property manually in their CSS.
     outline: none;
-  }
-
-  &:active {
-    @include mdc-elevation(12);
   }
 
   &:hover {
@@ -104,51 +73,76 @@
     width: 100%;
   }
   // stylelint-enable selector-max-type
-
-  fieldset:disabled &,
-  &:disabled {
-    cursor: default;
-    pointer-events: none;
-  }
-
-  // stylelint-disable selector-max-type
-  &__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-  // stylelint-enable selector-max-type
 }
 
-@mixin mdc-fab-color_($config: (), $type: "standard") {
-  $config: map-merge(mdc-fab-theme-default-config_(), $config);
-  $ripple: mdc-map-get-child_($config, $type, ripple);
+//**
+// @param {color} $config.bg-color
+// @param {color} $config.fg-color
+// @param {RippleConfig} $config.ripple-config @see mdc-ripple-default-config_ in mdc-ripple/_mixins.scss.
+// @param {color} $config.tap-highlight-color
+// @param {int} $config.resting-elevation
+// @param {int} $config.active-elevation
+//*
+@mixin mdc-fab-theme($config: null) {
+  $bg-color: map-get($config, bg-color);
+  $fg-color: map-get($config, fg-color);
+  $ripple-config: map-get($config, ripple-config);
+  $tap-highlight-color: map-get($config, tap-highlight-color);
+  $resting-elevation: map-get($config, resting-elevation);
+  $active-elevation: map-get($config, active-elevation);
 
-  @if $ripple != null {
-    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple));
-    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple));
+  @if $ripple-config {
+    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
   }
 
-  @include mdc-theme-prop(background-color, mdc-map-get-child_($config, $type, bg-color));
-  @include mdc-theme-prop(color, mdc-map-get-child_($config, $type, fg-color));
+  @if $tap-highlight-color {
+    @if $ripple-config {
+      &:not(.mdc-ripple-upgraded) {
+        -webkit-tap-highlight-color: $tap-highlight-color;
+      }
+    }
+
+    @else {
+      -webkit-tap-highlight-color: $tap-highlight-color;
+    }
+  }
+
+  @if $bg-color {
+    @include mdc-theme-prop(background-color, $bg-color);
+  }
+
+  @if $fg-color {
+    @include mdc-theme-prop(color, $fg-color);
+  }
+
+  @if $resting-elevation {
+    @include mdc-elevation($resting-elevation);
+  }
+
+  @if $active-elevation {
+    &:active {
+      @include mdc-elevation($active-elevation);
+    }
+  }
 }
 
-@mixin mdc-fab-theme($config: ()) {
-  $config: map-merge(mdc-fab-theme-default-config_(), $config);
+@mixin mdc-fab-theme--mini() {
+  width: 40px;
+  height: 40px;
+}
 
-  &:not(.mdc-ripple-upgraded) {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
-  }
+@mixin mdc-fab-theme--disabled($fab-theme-config) {
+  @include mdc-fab-base;
+  @include mdc-fab-theme($fab-theme-config);
 
-  @include mdc-fab-color_($config, standard);
+  cursor: default;
+  pointer-events: none;
+}
 
-  &--plain {
-    @include mdc-fab-color_($config, plain);
-  }
-
-  fieldset:disabled &,
-  &:disabled {
-    @include mdc-fab-color_($config, disabled);
-  }
+@mixin mdc-fab-theme__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
