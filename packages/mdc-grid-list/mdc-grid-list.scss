@@ -129,6 +129,9 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 .mdc-grid-tile {
   display: block;
   position: relative;
+
+  /* @alternate */
+  width: $mdc-grid-list-tile-width;
   width: var(--mdc-grid-list-tile-width, $mdc-grid-list-tile-width);
 
   &__primary {
