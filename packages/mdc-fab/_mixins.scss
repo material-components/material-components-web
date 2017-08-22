@@ -76,20 +76,20 @@
 }
 
 //**
-// @param {color} $config.bg-color
-// @param {color} $config.fg-color
-// @param {RippleConfig} $config.ripple-config @see mdc-ripple-default-config_ in mdc-ripple/_mixins.scss.
-// @param {color} $config.tap-highlight-color
-// @param {int} $config.resting-elevation
-// @param {int} $config.active-elevation
+// @param {color} $fab-theme-config.bg-color
+// @param {color} $fab-theme-config.fg-color
+// @param {RippleConfig} $fab-theme-config.ripple-config @see mdc-ripple-default-config_ in mdc-ripple/_mixins.scss.
+// @param {color} $fab-theme-config.tap-highlight-color
+// @param {int} $fab-theme-config.resting-elevation
+// @param {int} $fab-theme-config.active-elevation
 //*
-@mixin mdc-fab-theme($config: null) {
-  $bg-color: map-get($config, bg-color);
-  $fg-color: map-get($config, fg-color);
-  $ripple-config: map-get($config, ripple-config);
-  $tap-highlight-color: map-get($config, tap-highlight-color);
-  $resting-elevation: map-get($config, resting-elevation);
-  $active-elevation: map-get($config, active-elevation);
+@mixin mdc-fab-theme($fab-theme-config) {
+  $bg-color: map-get($fab-theme-config, bg-color);
+  $fg-color: map-get($fab-theme-config, fg-color);
+  $ripple-config: map-get($fab-theme-config, ripple-config);
+  $tap-highlight-color: map-get($fab-theme-config, tap-highlight-color);
+  $resting-elevation: map-get($fab-theme-config, resting-elevation);
+  $active-elevation: map-get($fab-theme-config, active-elevation);
 
   @if $ripple-config {
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
