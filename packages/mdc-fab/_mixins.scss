@@ -76,10 +76,10 @@
 }
 
 //**
-// @param {color} $fab-theme-config.bg-color
-// @param {color} $fab-theme-config.fg-color
+// @param {color|ThemeProp} $fab-theme-config.bg-color
+// @param {color|ThemeProp} $fab-theme-config.fg-color
 // @param {RippleConfig} $fab-theme-config.ripple-config @see mdc-ripple-default-config_ in mdc-ripple/_mixins.scss.
-// @param {color} $fab-theme-config.tap-highlight-color
+// @param {color|ThemeProp} $fab-theme-config.tap-highlight-color
 // @param {int} $fab-theme-config.resting-elevation
 // @param {int} $fab-theme-config.active-elevation
 //*
