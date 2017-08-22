@@ -99,12 +99,12 @@
   @if $tap-highlight-color {
     @if $ripple-config {
       &:not(.mdc-ripple-upgraded) {
-        -webkit-tap-highlight-color: $tap-highlight-color;
+        @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
       }
     }
 
     @else {
-      -webkit-tap-highlight-color: $tap-highlight-color;
+      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
     }
   }
 
