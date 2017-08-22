@@ -27,13 +27,6 @@
   @include mdc-fab-theme(map-get($mdc-fab-theme-config-defaults, plain));
 }
 
-// This rule must appear in the source after the preceding classes in order for its properties to take precedence
-// over them, because they set some of the same properties.
-// TODO(acdvorak): Visually hide the FAB completely when disabled, rather than just changing its color.
-@include mdc-fab-selector-disabled(#{$mdc-fab}) {
-  @include mdc-fab-theme(map-get($mdc-fab-theme-config-defaults, disabled));
-}
-
 // This rule must appear in the source after all other modifier classes in order for its properties to take precedence
 // over them, because they set some of the same properties.
 #{$mdc-fab--mini} {
@@ -44,6 +37,13 @@
 // over them, because they set some of the same properties.
 @include mdc-fab-selector-disabled(#{$mdc-fab--mini}) {
   @include mdc-fab-theme--mini;
+}
+
+// This rule must appear in the source after the preceding classes in order for its properties to take precedence
+// over them, because they set some of the same properties.
+// TODO(acdvorak): Visually hide the FAB completely when disabled, rather than just changing its color.
+@include mdc-fab-selector-disabled(#{$mdc-fab}) {
+  @include mdc-fab-theme--disabled(map-get($mdc-fab-theme-config-defaults, disabled));
 }
 
 #{$mdc-fab__icon} {
