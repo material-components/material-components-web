@@ -133,7 +133,6 @@
 }
 
 @mixin mdc-fab-theme--disabled($fab-theme-config) {
-  @include mdc-fab-base;
   @include mdc-fab-theme($fab-theme-config);
 
   cursor: default;
