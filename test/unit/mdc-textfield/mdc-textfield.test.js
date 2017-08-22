@@ -22,7 +22,7 @@ import {assert} from 'chai';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCTextfield, MDCTextfieldFoundation} from '../../../packages/mdc-textfield';
 
-const {cssClasses} = MDCTextfieldFoundation;
+const {cssClasses, strings} = MDCTextfieldFoundation;
 
 const getFixture = () => bel`
   <div class="mdc-textfield">
@@ -184,6 +184,14 @@ test('#adapter.registerInputBlurHandler adds a "blur" event handler on the input
   td.verify(handler(td.matchers.anything()));
 });
 
+test('#adapter.registerTextFieldInteractionHandler adds a "blur" event handler on the input element', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('textFieldInteractionHandler');
+  component.getDefaultFoundation().adapter_.registerTextFieldInteractionHandler(handler);
+  domEvents.emit(root, 'click');
+  td.verify(handler(td.matchers.anything()));
+});
+
 test('#adapter.deregisterInputBlurHandler removes a "blur" event handler from the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
@@ -304,4 +312,24 @@ test('#adapter.removeHelptextAttr removes an attribute on the help text element'
   component.helptextElement = helptext;
   component.getDefaultFoundation().adapter_.removeHelptextAttr('aria-label');
   assert.isNotOk(helptext.hasAttribute('aria-label'));
+});
+
+test(`#adapter.notifyLeadingIconAction emits ${strings.LEADING_ICON_EVENT}`, () => {
+  const {component} = setupTest();
+  const handler = td.func('leadingHandler');
+
+  component.listen(strings.LEADING_ICON_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyLeadingIconAction();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test(`#adapter.notifyTrailingIconAction emits ${strings.TRAILING_ICON_EVENT}`, () => {
+  const {component} = setupTest();
+  const handler = td.func('trailingHandler');
+
+  component.listen(strings.TRAILING_ICON_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyTrailingIconAction();
+
+  td.verify(handler(td.matchers.anything()));
 });

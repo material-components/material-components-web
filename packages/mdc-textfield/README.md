@@ -176,6 +176,32 @@ UX for client-side form field validation.
 </p>
 ```
 
+### Leading and Trailing Icons
+Leading and trailing icons can be added to MDC Textfields as visual indicators
+as well as interaction targets. To do so, add the relevant classnames to the root element, add
+an `i` element with your preferred icon, and give it either `mdc-textfield__leading-icon` or
+`mdc-textfield__trailing-icon` depending on which you are looking to achieve.
+
+#### Leading:
+```html
+<div class="mdc-textfield mdc-textfield--box mdc-textfield--with-leading-icon">
+  <i class="material-icons mdc-textfield__leading-icon" tabindex="0">event</i>
+  <input type="text" id="my-input" class="mdc-textfield__input">
+  <label for="my-input" class="mdc-textfield__label">Your Name</label>
+  <div class="mdc-textfield__bottom-line"></div>
+</div>
+```
+
+#### Trailing:
+```html
+<div class="mdc-textfield mdc-textfield--box mdc-textfield--with-trailing-icon">
+  <i class="material-icons mdc-textfield__trailing-icon" tabindex="0">event</i>
+  <input type="text" id="my-input" class="mdc-textfield__input">
+  <label for="my-input" class="mdc-textfield__label">Your Name</label>
+  <div class="mdc-textfield__bottom-line"></div>
+</div>
+```
+
 ### Multi-line - With Javascript
 
 ```html
@@ -340,6 +366,11 @@ complicated.
 | removeClass(className: string) => void | Removes a class from the root element |
 | addClassToLabel(className: string) => void | Adds a class to the label element. We recommend you add a conditional check here, and in `removeClassFromLabel` for whether or not the label is present so that the JS component could be used with text fields that don't require a label, such as the full-width text field. |
 | removeClassFromLabel(className: string) => void | Removes a class from the label element |
+| eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
+| registerTextFieldInteractionHandler(handler: EventListener) => void | Registers an event handler on the root element for a "click" event |
+| deregisterTextFieldInteractionHandler(handler: EventListener) => void | Deregisters an event handler on the root element for a "click" event |
+| notifyLeadingIconAction() => void | Broadcasts a custom event "MDCTextfield:leading-icon" denoting a user has clicked the leading icon |
+| notifyTrailingIconAction() => void | Broadcasts a custom event "MDCTextfield:trailing-icon" denoting a user has clicked the trailing icon |
 | addClassToHelptext(className: string) => void | Adds a class to the help text element. Note that in our code we check for whether or not we have a help text element and if we don't, we simply return. |
 | removeClassFromHelptext(className: string) => void | Removes a class from the help text element. |
 | helptextHasClass(className: string) => boolean | Returns whether or not the help text element contains the current class |

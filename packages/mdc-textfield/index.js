@@ -30,6 +30,8 @@ export class MDCTextfield extends MDCComponent {
   initialize(rippleFactory = (el) => new MDCRipple(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
+    this.leadingIconElement = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+    this.trailingIconElement = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.helptextElement = null;
     this.ripple = null;
     if (this.input_.hasAttribute('aria-controls')) {
@@ -75,6 +77,11 @@ export class MDCTextfield extends MDCComponent {
           label.classList.remove(className);
         }
       },
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
+      registerTextFieldInteractionHandler: (handler) => this.root_.addEventListener('click', handler),
+      deregisterTextFieldInteractionHandler: (handler) => this.root_.addEventListener('click', handler),
+      notifyLeadingIconAction: () => this.emit(MDCTextfieldFoundation.strings.LEADING_ICON_EVENT),
+      notifyTrailingIconAction: () => this.emit(MDCTextfieldFoundation.strings.TRAILING_ICON_EVENT),
     }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_()));
   }
 

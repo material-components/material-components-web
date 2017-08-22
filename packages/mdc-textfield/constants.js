@@ -18,6 +18,10 @@ export const strings = {
   ROLE: 'role',
   INPUT_SELECTOR: '.mdc-textfield__input',
   LABEL_SELECTOR: '.mdc-textfield__label',
+  LEADING_ICON_SELECTOR: '.mdc-textfield__leading-icon',
+  TRAILING_ICON_SELECTOR: '.mdc-textfield__trailing-icon',
+  LEADING_ICON_EVENT: 'MDCTextfield:leading-icon',
+  TRAILING_ICON_EVENT: 'MDCTextfield:trailing-icon',
 };
 
 export const cssClasses = {
@@ -30,4 +34,6 @@ export const cssClasses = {
   HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
   LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
   BOX: 'mdc-textfield--box',
+  LEADING_ICON: 'mdc-textfield__leading-icon',
+  TRAILING_ICON: 'mdc-textfield__trailing-icon',
 };

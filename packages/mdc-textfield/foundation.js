@@ -32,6 +32,11 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       addClassToLabel: (/* className: string */) => {},
       removeClassFromLabel: (/* className: string */) => {},
+      eventTargetHasClass: (/* target: HTMLElement, className: string */) => {},
+      registerTextFieldInteractionHandler: () => {},
+      deregisterTextFieldInteractionHandler: () => {},
+      notifyLeadingIconAction: () => {},
+      notifyTrailingIconAction: () => {},
       addClassToHelptext: (/* className: string */) => {},
       removeClassFromHelptext: (/* className: string */) => {},
       helptextHasClass: (/* className: string */) => /* boolean */ false,
@@ -57,6 +62,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.inputBlurHandler_ = () => this.deactivateFocus_();
     this.inputInputHandler_ = () => this.autoCompleteFocus_();
     this.inputKeydownHandler_ = () => this.receivedUserInput_ = true;
+    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction_(evt);
   }
 
   init() {
@@ -65,6 +71,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.registerInputBlurHandler(this.inputBlurHandler_);
     this.adapter_.registerInputInputHandler(this.inputInputHandler_);
     this.adapter_.registerInputKeydownHandler(this.inputKeydownHandler_);
+    this.adapter_.registerTextFieldInteractionHandler(this.textFieldInteractionHandler_);
 
     // Ensure label does not collide with any pre-filled value.
     if (this.getNativeInput_().value) {
@@ -78,6 +85,18 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.deregisterInputBlurHandler(this.inputBlurHandler_);
     this.adapter_.deregisterInputInputHandler(this.inputInputHandler_);
     this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
+    this.adapter_.deregisterTextFieldInteractionHandler(this.textFieldInteractionHandler_);
+  }
+
+  handleTextFieldInteraction_(evt) {
+    const {target} = evt;
+    const {LEADING_ICON, TRAILING_ICON} = MDCTextfieldFoundation.cssClasses;
+
+    if (this.adapter_.eventTargetHasClass(target, LEADING_ICON)) {
+      this.adapter_.notifyLeadingIconAction();
+    } else if (this.adapter_.eventTargetHasClass(target, TRAILING_ICON)) {
+      this.adapter_.notifyTrailingIconAction();
+    }
   }
 
   activateFocus_() {
