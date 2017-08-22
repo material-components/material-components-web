@@ -79,7 +79,7 @@ MDC_ENV=development npm run build && gcloud app deploy app.yaml --project google
 gcloud app browse
 ```
 
-The above script will build and deploy the app to mdc-web's dev server with your userid as its version number, you can switch to your version by adding $USER-dot to the URL. This would be helpful if we need to share work-in-progress work within teams and designers.
+The above script will build and deploy the app to mdc-web's dev server with your userid as its version number, you can switch to your version by prepending `$USER-dot-` to the URL opened when you run `gcloud app browse`. This would be helpful if we need to share work-in-progress work within teams and designers.
 
 ### Building MDC-Web
 
