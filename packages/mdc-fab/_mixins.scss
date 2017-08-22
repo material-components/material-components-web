@@ -17,14 +17,6 @@
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
-@import "./variables";
-
-@mixin mdc-fab-selector-disabled($selector) {
-  :disabled #{$selector},
-  #{$selector}:disabled {
-    @content;
-  }
-}
 
 @mixin mdc-fab-base {
   @include mdc-ripple-base;
@@ -73,6 +65,16 @@
     width: 100%;
   }
   // stylelint-enable selector-max-type
+}
+
+@mixin mdc-fab-mini() {
+  width: 40px;
+  height: 40px;
+}
+
+@mixin mdc-fab-disabled {
+  cursor: default;
+  pointer-events: none;
 }
 
 //**
@@ -127,19 +129,7 @@
   }
 }
 
-@mixin mdc-fab-theme--mini() {
-  width: 40px;
-  height: 40px;
-}
-
-@mixin mdc-fab-theme--disabled($fab-theme-config) {
-  @include mdc-fab-theme($fab-theme-config);
-
-  cursor: default;
-  pointer-events: none;
-}
-
-@mixin mdc-fab-theme__icon {
+@mixin mdc-fab-icon {
   display: flex;
   align-items: center;
   justify-content: center;

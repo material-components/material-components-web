@@ -13,41 +13,47 @@
 // limitations under the License.
 
 @import "./mixins";
-@import "./selectors";
-@import "./variables";
 
 // postcss-bem-linter: define fab
 
-#{$mdc-fab} {
+.mdc-fab {
   @include mdc-fab-base;
-  @include mdc-fab-theme(map-get($mdc-fab-theme-config-defaults, standard));
+  @include mdc-fab-theme((
+    bg-color: secondary,
+    fg-color: text-primary-on-secondary,
+    ripple-config: (base-color: white, opacity: .16),
+    tap-highlight-color: rgba(0, 0, 0, .18),
+    resting-elevation: 6,
+    active-elevation: 12
+  ));
+
+  &__icon {
+    @include mdc-fab-icon;
+  }
 }
 
-#{$mdc-fab--plain} {
-  @include mdc-fab-theme(map-get($mdc-fab-theme-config-defaults, plain));
+.mdc-fab--plain {
+  @include mdc-fab-theme((
+    bg-color: white,
+    fg-color: text-primary-on-light,
+    ripple-config: (),
+    tap-highlight-color: rgba(0, 0, 0, .18),
+    resting-elevation: 6,
+    active-elevation: 12
+  ));
 }
 
-// This rule must appear in the source after all other modifier classes in order for its properties to take precedence
-// over them, because they set some of the same properties.
-#{$mdc-fab--mini} {
-  @include mdc-fab-theme--mini;
+.mdc-fab--mini {
+  @include mdc-fab-mini;
 }
 
-// This rule must appear in the source after all other modifier classes in order for its properties to take precedence
-// over them, because they set some of the same properties.
-@include mdc-fab-selector-disabled(#{$mdc-fab--mini}) {
-  @include mdc-fab-theme--mini;
-}
-
-// This rule must appear in the source after the preceding classes in order for its properties to take precedence
-// over them, because they set some of the same properties.
-// TODO(acdvorak): Visually hide the FAB completely when disabled, rather than just changing its color.
-@include mdc-fab-selector-disabled(#{$mdc-fab}) {
-  @include mdc-fab-theme--disabled(map-get($mdc-fab-theme-config-defaults, disabled));
-}
-
-#{$mdc-fab__icon} {
-  @include mdc-fab-theme__icon;
+:disabled .mdc-fab,
+.mdc-fab:disabled {
+  @include mdc-fab-theme((
+    bg-color: rgba(0, 0, 0, .12),
+    fg-color: rgba(0, 0, 0, .26)
+  ));
+  @include mdc-fab-disabled;
 }
 
 // postcss-bem-linter: end
