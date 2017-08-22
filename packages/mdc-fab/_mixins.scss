@@ -1,0 +1,154 @@
+// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@import "@material/animation/functions";
+@import "@material/animation/variables";
+@import "@material/elevation/mixins";
+@import "@material/ripple/mixins";
+@import "@material/theme/mixins";
+
+@function mdc-fab-theme-default-config_() {
+  @return (
+    standard: (
+      bg-color: secondary,
+      fg-color: text-primary-on-secondary,
+      ripple: (base-color: white, opacity: .16)
+    ),
+    plain: (
+      bg-color: white,
+      fg-color: text-primary-on-light,
+      ripple: ()
+    ),
+    disabled: (
+      bg-color: rgba(0, 0, 0, .12),
+      fg-color: rgba(0, 0, 0, .26),
+      ripple: null
+    ),
+  );
+}
+
+@function mdc-map-get-child_($parent-map, $keys...) {
+  $value: $parent-map;
+
+  @each $key in join($keys...) {
+    $value: map-get($value, $key);
+  }
+
+  @return $value;
+}
+
+@mixin mdc-fab-base {
+  @include mdc-ripple-base;
+
+  display: inline-flex;
+  position: relative;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  fill: currentColor;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+
+  @include mdc-elevation(6);
+
+  // stylelint-disable selector-max-type
+  &--mini {
+    width: 40px;
+    height: 40px;
+  }
+  // stylelint-enable selector-max-type
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    @include mdc-elevation(12);
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  // This allows for using SVGs within them to align properly in all browsers.
+  // Can remove once: https://bugzilla.mozilla.org/show_bug.cgi?id=1294515 is resolved.
+
+  // stylelint-disable selector-max-type
+  // postcss-bem-linter: ignore
+  > svg {
+    width: 100%;
+  }
+  // stylelint-enable selector-max-type
+
+  fieldset:disabled &,
+  &:disabled {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  // stylelint-disable selector-max-type
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  // stylelint-enable selector-max-type
+}
+
+@mixin mdc-fab-color_($config: (), $type: "standard") {
+  $config: map-merge(mdc-fab-theme-default-config_(), $config);
+  $ripple: mdc-map-get-child_($config, $type, ripple);
+
+  @if $ripple != null {
+    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple));
+    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple));
+  }
+
+  @include mdc-theme-prop(background-color, mdc-map-get-child_($config, $type, bg-color));
+  @include mdc-theme-prop(color, mdc-map-get-child_($config, $type, fg-color));
+}
+
+@mixin mdc-fab-theme($config: ()) {
+  $config: map-merge(mdc-fab-theme-default-config_(), $config);
+
+  &:not(.mdc-ripple-upgraded) {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
+  }
+
+  @include mdc-fab-color_($config, standard);
+
+  &--plain {
+    @include mdc-fab-color_($config, plain);
+  }
+
+  fieldset:disabled &,
+  &:disabled {
+    @include mdc-fab-color_($config, disabled);
+  }
+}
