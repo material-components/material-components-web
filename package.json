@@ -9,7 +9,7 @@
     "clean": "del-cli build/**",
     "commitmsg": "validate-commit-msg",
     "dist": "npm run clean && npm run build && npm run build:min",
-    "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --content-base demos --inline --hot --host 0.0.0.0",
+    "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --progress --content-base demos --inline --hot --host 0.0.0.0",
     "fix:js": "eslint --fix packages test webpack.config.js karma.conf.js",
     "fix:css": "stylefmt -r packages/**/*.scss",
     "fix": "npm-run-all --parallel fix:*",

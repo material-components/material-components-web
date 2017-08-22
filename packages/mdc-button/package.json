@@ -1,7 +1,7 @@
 {
   "name": "@material/button",
   "description": "The Material Components for the web button component",
-  "version": "0.3.11",
+  "version": "0.4.0",
   "license": "Apache 2.0",
   "keywords": [
     "material components",
@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@material/elevation": "^0.1.11",
-    "@material/ripple": "^0.8.2",
-    "@material/theme": "^0.1.7",
+    "@material/ripple": "^0.8.3",
+    "@material/theme": "^0.2.0",
     "@material/typography": "^0.3.0"
   }
 }

@@ -19,39 +19,41 @@
     <meta charset="utf-8">
     <title>Drawer (Persistent) - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
-    <script src="../assets/demo-styles.css.js" charset="utf-8"></script>
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/material-components-web.css.js"></script>
+    <script src="/assets/demo-styles.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-    /* Ensure layout covers the entire screen. */
-    html {
-      height: 100%;
-    }
+      /* Ensure layout covers the entire screen. */
+      html {
+        height: 100%;
+      }
 
-    /* Place drawer and content side by side. */
-    .demo-body {
-      display: flex;
-      flex-direction: row;
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-      height: 100%;
-      width: 100%;
-    }
+      /* Place drawer and content side by side. */
+      .demo-body {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        height: 100%;
+        width: 100%;
+      }
 
-    /* Stack toolbar and main on top of each other. */
-    .demo-content {
-      display: inline-flex;
-      flex-direction: column;
-      flex-grow: 1;
-      height: 100%;
-      box-sizing: border-box;
-    }
+      /* Stack toolbar and main on top of each other. */
+      .demo-content {
+        display: inline-flex;
+        flex-direction: column;
+        flex-grow: 1;
+        height: 100%;
+        box-sizing: border-box;
+      }
 
-    .demo-main {
-      padding-left: 16px;
-    }
+      .demo-main {
+        padding-left: 16px;
+      }
     </style>
   </head>
   <body class="demo-body mdc-typography">
@@ -105,7 +107,7 @@
         <p class="mdc-typography--body1">Click the menu icon above to open and close the drawer.</p>
       </main>
 
-      <script src="../assets/material-components-web.js" charset="utf-8"></script>
+      <script src="/assets/material-components-web.js"></script>
       <script>
         var drawerEl = document.querySelector('.mdc-persistent-drawer');
         var MDCPersistentDrawer = mdc.drawer.MDCPersistentDrawer;
