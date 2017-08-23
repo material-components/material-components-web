@@ -65,18 +65,20 @@ $_mdc-theme-tonal-offset: 7%;
 // Generate light and dark variants of the given color, offset by approximately
 // the specified number of indexes within the color's tonal palette.
 @function mdc-theme-tonal-variants_($color, $num-indexes: 2) {
-  $luminance: mdc-theme-luminance($color);
+  $luminance: mdc-theme-luminance($color) * 100%;
   $amount-1x: mdc-theme-clamp-percentage_($_mdc-theme-tonal-offset * $num-indexes);
   $amount-2x: mdc-theme-clamp-percentage_($_mdc-theme-tonal-offset * $num-indexes * 2);
+  $lower-bound: $amount-1x;
+  $upper-bound: 100% - $lower-bound;
 
-  @if $luminance < .2 {
+  @if $luminance <= $lower-bound {
     @return (
       dark: lighten($color, $amount-1x),
       light: lighten($color, $amount-2x)
     );
   }
 
-  @else if $luminance > .8 {
+  @else if $luminance >= $upper-bound {
     @return (
       dark: darken($color, $amount-2x),
       light: darken($color, $amount-1x)
