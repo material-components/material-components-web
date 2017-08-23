@@ -1,7 +1,7 @@
 {
   "name": "@material/list",
   "description": "The Material Components for the web list component",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -15,7 +15,7 @@
   "dependencies": {
     "@material/rtl": "^0.1.7",
     "@material/typography": "^0.3.0",
-    "@material/ripple": "^0.8.2",
-    "@material/theme": "^0.1.7"
+    "@material/ripple": "^0.8.3",
+    "@material/theme": "^0.2.0"
   }
 }

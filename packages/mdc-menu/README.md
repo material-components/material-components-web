@@ -195,7 +195,7 @@ console.log(`Menu is ${menu.open ? 'open' : 'closed'}.`);
 ##### ES2015
 
 ```javascript
-import {MDCSimpleMenu, MDCSimpleMenuFoundation, util} from 'mdc-menu';
+import {MDCSimpleMenu, MDCSimpleMenuFoundation, util} from '@material/menu';
 ```
 
 ##### CommonJS
@@ -239,7 +239,7 @@ mdc.MDCSimpleMenu.attachTo(document.querySelector('.mdc-simple-menu'));
 Simple menus can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import MDCSimpleMenu from 'mdc-menu';
+import {MDCSimpleMenu} from '@material/menu';
 
 const menu = new MDCSimpleMenu(document.querySelector('.mdc-simple-menu'));
 ```

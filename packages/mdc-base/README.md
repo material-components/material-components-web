@@ -25,7 +25,7 @@ Then include it in your code in one of the following ways:
 #### ES2015+
 
 ```javascript
-import {MDCComponent, MDCFoundation} from 'mdc-base';
+import {MDCComponent, MDCFoundation} from '@material/base';
 ```
 #### CommonJS
 
@@ -62,7 +62,7 @@ MDCFoundation provides the basic mechanisms for implementing foundation classes.
 - Provide `init()` and `destroy()` lifecycle methods
 
 ```javascript
-import {MDCFoundation} from 'mdc-base';
+import {MDCFoundation} from '@material/base';
 
 export default class MyFoundation extends MDCFoundation {
   static get cssClasses() {
