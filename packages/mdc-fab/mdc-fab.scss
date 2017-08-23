@@ -22,9 +22,7 @@
     bg-color: secondary,
     fg-color: text-primary-on-secondary,
     ripple-config: (base-color: white, opacity: .16),
-    tap-highlight-color: rgba(0, 0, 0, .18),
-    resting-elevation: 6,
-    active-elevation: 12
+    tap-highlight-color: rgba(0, 0, 0, .18)
   ));
 
   &__icon {
@@ -37,9 +35,7 @@
     bg-color: white,
     fg-color: text-primary-on-light,
     ripple-config: (),
-    tap-highlight-color: rgba(0, 0, 0, .18),
-    resting-elevation: 6,
-    active-elevation: 12
+    tap-highlight-color: rgba(0, 0, 0, .18)
   ));
 }
 

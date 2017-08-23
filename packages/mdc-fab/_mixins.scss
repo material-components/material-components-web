@@ -38,6 +38,12 @@
   -webkit-appearance: none;
   overflow: hidden;
 
+  @include mdc-elevation(6);
+
+  &:active {
+    @include mdc-elevation(12);
+  }
+
   &:active,
   &:focus {
     // TODO(acdvorak): Should this be paired with states and/or ripple? We don't want to disable outline
@@ -82,16 +88,12 @@
 // @param {color|ThemeProp} $fab-theme-config.fg-color
 // @param {RippleConfig} $fab-theme-config.ripple-config @see mdc-ripple-default-config_ in mdc-ripple/_mixins.scss.
 // @param {color|ThemeProp} $fab-theme-config.tap-highlight-color
-// @param {int} $fab-theme-config.resting-elevation
-// @param {int} $fab-theme-config.active-elevation
 //*
 @mixin mdc-fab-theme($fab-theme-config) {
   $bg-color: map-get($fab-theme-config, bg-color);
   $fg-color: map-get($fab-theme-config, fg-color);
   $ripple-config: map-get($fab-theme-config, ripple-config);
   $tap-highlight-color: map-get($fab-theme-config, tap-highlight-color);
-  $resting-elevation: map-get($fab-theme-config, resting-elevation);
-  $active-elevation: map-get($fab-theme-config, active-elevation);
 
   @if $ripple-config {
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
@@ -116,16 +118,6 @@
 
   @if $fg-color {
     @include mdc-theme-prop(color, $fg-color);
-  }
-
-  @if $resting-elevation {
-    @include mdc-elevation($resting-elevation);
-  }
-
-  @if $active-elevation {
-    &:active {
-      @include mdc-elevation($active-elevation);
-    }
   }
 }
 
