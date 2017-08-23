@@ -39,6 +39,15 @@ $mdc-theme-property-values-custom: map-merge(
     tap-highlight-color: fab-default-tap-highlight-color
   ));
 
+  :disabled &,
+  &:disabled {
+    @include mdc-fab-theme((
+      bg-color: fab-disabled-bg-color,
+      fg-color: fab-disabled-fg-color
+    ));
+    @include mdc-fab-disabled;
+  }
+
   &__icon {
     @include mdc-fab-icon;
   }
@@ -55,15 +64,6 @@ $mdc-theme-property-values-custom: map-merge(
 
 .mdc-fab--mini {
   @include mdc-fab-mini;
-}
-
-:disabled .mdc-fab,
-.mdc-fab:disabled {
-  @include mdc-fab-theme((
-    bg-color: fab-disabled-bg-color,
-    fg-color: fab-disabled-fg-color
-  ));
-  @include mdc-fab-disabled;
 }
 
 // postcss-bem-linter: end
