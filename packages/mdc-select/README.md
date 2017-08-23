@@ -77,7 +77,7 @@ npm install --save @material/select
 Then with JS
 
 ```js
-import {MDCSelect} from 'mdc-select';
+import {MDCSelect} from '@material/select';
 
 const select = new MDCSelect(document.querySelector('.mdc-select'));
 select.listen('MDCSelect:change', () => {

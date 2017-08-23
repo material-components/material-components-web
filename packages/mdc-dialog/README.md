@@ -181,7 +181,7 @@ mdc.dialog.MDCDialog.attachTo(document.querySelector('#my-mdc-dialog'));
 Dialogs can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCDialog} from 'mdc-dialog';
+import {MDCDialog} from '@material/dialog';
 
 const dialog = new MDCDialog(document.querySelector('#my-mdc-dialog'));
 ```
