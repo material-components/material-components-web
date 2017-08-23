@@ -124,7 +124,7 @@ states.
 ##### ES2015
 
 ```javascript
-import {MDCCheckbox, MDCCheckboxFoundation} from 'mdc-checkbox';
+import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
 ```
 
 ##### CommonJS
@@ -165,7 +165,7 @@ mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
 Checkboxes can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCCheckbox} from 'mdc-checkbox';
+import {MDCCheckbox} from '@material/checkbox';
 
 const checkbox = new MDCCheckbox(document.querySelector('.mdc-checkbox'));
 ```

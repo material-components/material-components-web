@@ -51,7 +51,7 @@ In order to use MDC Icon Toggle, you will need to import an icon set, such as [M
 Then in JS
 
 ```js
-import {MDCIconToggle} from 'mdc-icon-toggle';
+import {MDCIconToggle} from '@material/icon-toggle';
 
 MDCIconToggle.attachTo(document.querySelector('.mdc-icon-toggle'));
 ```

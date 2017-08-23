@@ -87,7 +87,7 @@ MDC Radio ships with Component / Foundation classes which provide enhanced inter
 ##### ES2015
 
 ```javascript
-import {MDCRadio, MDCRadioFoundation} from 'mdc-radio';
+import {MDCRadio, MDCRadioFoundation} from '@material/radio';
 ```
 
 ##### CommonJS
@@ -128,7 +128,7 @@ mdc.radio.MDCRadio.attachTo(document.querySelector('.mdc-radio'));
 Radios can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCRadio} from 'mdc-radio';
+import {MDCRadio} from '@material/radio';
 
 const radio = new MDCRadio(document.querySelector('.mdc-radio'));
 ```
