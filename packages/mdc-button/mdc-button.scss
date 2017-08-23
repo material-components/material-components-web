@@ -62,17 +62,6 @@
     -webkit-tap-highlight-color: rgba(black, .3);
   }
 
-  fieldset:disabled &,
-  &:disabled {
-    color: rgba(black, .38);
-    cursor: default;
-    pointer-events: none;
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
-  }
-
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-ripple-base;
     @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
@@ -102,20 +91,6 @@
 
   &:active {
     @include mdc-elevation(8);
-  }
-
-  fieldset:disabled &,
-  &:disabled {
-    @include mdc-elevation(0);
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
-    background-color: rgba(black, .15);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-
-      background-color: rgba(255, 255, 255, .15);
-    }
   }
 
   @include mdc-theme-dark(".mdc-button") {
@@ -171,6 +146,37 @@
       @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .32));
       @include mdc-theme-prop(background-color, $theme-style);
       @include mdc-theme-prop(color, text-primary-on-#{$theme-style});
+    }
+  }
+}
+
+// Disabled button styles need to be last to ensure they override other primary/accent/dark styles
+
+.mdc-button {
+  fieldset:disabled &,
+  &:disabled {
+    color: rgba(black, .38);
+    cursor: default;
+    pointer-events: none;
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+    }
+  }
+}
+
+.mdc-button--raised {
+  fieldset:disabled &,
+  &:disabled {
+    @include mdc-elevation(0);
+    @include mdc-theme-prop(color, text-primary-on-dark);
+
+    background-color: rgba(black, .15);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+
+      background-color: rgba(255, 255, 255, .15);
     }
   }
 }

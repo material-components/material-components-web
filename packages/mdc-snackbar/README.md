@@ -80,7 +80,7 @@ messages with optional action.
 ##### ES2015
 
 ```javascript
-import {MDCSnackbar, MDCSnackbarFoundation} from 'mdc-snackbar';
+import {MDCSnackbar, MDCSnackbarFoundation} from '@material/snackbar';
 ```
 
 ##### CommonJS
@@ -121,7 +121,7 @@ mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));
 Snackbars can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCSnackbar} from 'mdc-snackbar';
+import {MDCSnackbar} from '@material/snackbar';
 
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 ```
@@ -159,7 +159,7 @@ To respond to a snackbar action, assign a function to the optional `actionHandle
 ```
 
 ```js
-import {MDCSnackbar} from 'mdc-snackbar';
+import {MDCSnackbar} from '@material/snackbar';
 
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 const dataObj = {

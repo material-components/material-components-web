@@ -152,7 +152,7 @@ your build pipeline.
 Start by importing the component:
 
 ```js
-import {MDCTextfield} from 'mdc-textfield';
+import {MDCTextfield} from '@material/textfield';
 ```
 
 And instantiate a component by calling the constructor on the root node:
