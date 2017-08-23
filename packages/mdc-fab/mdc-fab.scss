@@ -12,9 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@import "@material/theme/variables";
 @import "./mixins";
 
 // postcss-bem-linter: define fab
+
+$mdc-theme-property-values-custom: map-merge(
+  $mdc-theme-property-values-custom, (
+    // Default
+    fab-default-tap-highlight-color: rgba(0, 0, 0, .18),
+    // Plain
+    fab-plain-bg-color: white,
+    fab-plain-tap-highlight-color: rgba(0, 0, 0, .18),
+    // Disabled
+    fab-disabled-bg-color: rgba(0, 0, 0, .12),
+    fab-disabled-fg-color: rgba(0, 0, 0, .26)
+  )
+);
 
 .mdc-fab {
   @include mdc-fab-base;
@@ -22,7 +36,7 @@
     bg-color: secondary,
     fg-color: text-primary-on-secondary,
     ripple-config: (base-color: white, opacity: .16),
-    tap-highlight-color: rgba(0, 0, 0, .18)
+    tap-highlight-color: fab-default-tap-highlight-color
   ));
 
   &__icon {
@@ -32,10 +46,10 @@
 
 .mdc-fab--plain {
   @include mdc-fab-theme((
-    bg-color: white,
+    bg-color: fab-plain-bg-color,
     fg-color: text-primary-on-light,
     ripple-config: (),
-    tap-highlight-color: rgba(0, 0, 0, .18)
+    tap-highlight-color: fab-plain-tap-highlight-color
   ));
 }
 
@@ -46,8 +60,8 @@
 :disabled .mdc-fab,
 .mdc-fab:disabled {
   @include mdc-fab-theme((
-    bg-color: rgba(0, 0, 0, .12),
-    fg-color: rgba(0, 0, 0, .26)
+    bg-color: fab-disabled-bg-color,
+    fg-color: fab-disabled-fg-color
   ));
   @include mdc-fab-disabled;
 }
