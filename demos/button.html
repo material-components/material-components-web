@@ -95,15 +95,28 @@
       <section class="demo-wrapper">
         <div class="mdc-form-field">
           <div class="mdc-checkbox">
-            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-dark" aria-labelledby="toggle-dark-label" />
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-dark" aria-labelledby="toggle-dark-label">
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
               </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
           </div>
           <label for="toggle-dark" id="toggle-dark-label">Dark Theme</label>
+        </div>
+
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-disabled" aria-labelledby="toggle-disabled-label">
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="toggle-disabled" id="toggle-disabled-label">Disable buttons (excluding links)</label>
         </div>
 
         <h1 class="mdc-typography--display2">Ripple Enabled</h1>
@@ -113,17 +126,11 @@
             <button class="mdc-button">
               Baseline
             </button>
-            <a href="javascript:void(0)" class="mdc-button">
-              Link
-            </a>
             <button class="mdc-button mdc-button--compact">
               Compact
             </button>
             <button class="mdc-button mdc-button--dense">
               Dense
-            </button>
-            <button disabled class="mdc-button">
-              Disabled
             </button>
             <button class="mdc-button mdc-button--primary">
               Primary
@@ -131,6 +138,9 @@
             <button class="mdc-button mdc-button--accent">
               Accent
             </button>
+            <a href="javascript:void(0)" class="mdc-button">
+              Link
+            </a>
           </div>
         </fieldset>
 
@@ -140,17 +150,11 @@
             <button class="mdc-button mdc-button--raised">
               Baseline
             </button>
-            <a href="javascript:void(0)" class="mdc-button mdc-button--raised">
-              Link
-            </a>
             <button class="mdc-button mdc-button--raised mdc-button--compact">
               Compact
             </button>
             <button class="mdc-button mdc-button--raised mdc-button--dense">
               Dense
-            </button>
-            <button disabled class="mdc-button mdc-button--raised">
-              Disabled
             </button>
             <button class="mdc-button mdc-button--raised mdc-button--primary">
               Primary
@@ -158,6 +162,9 @@
             <button class="mdc-button mdc-button--raised mdc-button--accent">
               Accent
             </button>
+            <a href="javascript:void(0)" class="mdc-button mdc-button--raised">
+              Link
+            </a>
           </div>
         </fieldset>
 
@@ -168,17 +175,11 @@
             <button class="mdc-button" data-demo-no-js>
               Baseline
             </button>
-            <a href="javascript:void(0)" class="mdc-button" data-demo-no-js>
-              Link
-            </a>
             <button class="mdc-button mdc-button--compact" data-demo-no-js>
               Compact
             </button>
             <button class="mdc-button mdc-button--dense" data-demo-no-js>
               Dense
-            </button>
-            <button disabled class="mdc-button" data-demo-no-js>
-              Disabled
             </button>
             <button class="mdc-button mdc-button--primary" data-demo-no-js>
               Primary
@@ -186,6 +187,9 @@
             <button class="mdc-button mdc-button--accent" data-demo-no-js>
               Accent
             </button>
+            <a href="javascript:void(0)" class="mdc-button" data-demo-no-js>
+              Link
+            </a>
           </div>
         </fieldset>
 
@@ -195,17 +199,11 @@
             <button class="mdc-button mdc-button--raised" data-demo-no-js>
               Baseline
             </button>
-            <a href="javascript:void(0)" class="mdc-button mdc-button--raised" data-demo-no-js>
-              Link
-            </a>
             <button class="mdc-button mdc-button--raised mdc-button--compact" data-demo-no-js>
               Compact
             </button>
             <button class="mdc-button mdc-button--raised mdc-button--dense" data-demo-no-js>
               Dense
-            </button>
-            <button disabled class="mdc-button mdc-button--raised" data-demo-no-js>
-              Disabled
             </button>
             <button class="mdc-button mdc-button--raised mdc-button--primary" data-demo-no-js>
               Primary
@@ -213,6 +211,9 @@
             <button class="mdc-button mdc-button--raised mdc-button--accent" data-demo-no-js>
               Accent
             </button>
+            <a href="javascript:void(0)" class="mdc-button mdc-button--raised" data-demo-no-js>
+              Link
+            </a>
           </div>
         </fieldset>
       </section>
@@ -246,6 +247,11 @@
           } else {
             demoWrapper.classList.remove('mdc-theme--dark');
           }
+        });
+
+        document.getElementById('toggle-disabled').addEventListener('change', function () {
+          var isDisabled = this.checked;
+          [].slice.call(document.querySelectorAll('button')).forEach(button => button.disabled = isDisabled);
         });
       })();
     </script>
