@@ -73,12 +73,12 @@
   // stylelint-enable selector-max-type
 }
 
-@mixin mdc-fab--mini {
+@mixin mdc-fab--mini_ {
   width: 40px;
   height: 40px;
 }
 
-@mixin mdc-fab--disabled {
+@mixin mdc-fab--disabled_ {
   cursor: default;
   pointer-events: none;
 }
@@ -121,7 +121,7 @@
   }
 }
 
-@mixin mdc-fab__icon {
+@mixin mdc-fab__icon_ {
   display: flex;
   align-items: center;
   justify-content: center;

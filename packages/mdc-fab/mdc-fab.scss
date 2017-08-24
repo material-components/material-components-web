@@ -32,7 +32,7 @@
       bg-color: rgba(0, 0, 0, .12),
       fg-color: rgba(0, 0, 0, .26)
     ));
-    @include mdc-fab--disabled;
+    @include mdc-fab--disabled_;
   }
 }
 
@@ -46,11 +46,11 @@
 }
 
 .mdc-fab--mini {
-  @include mdc-fab--mini;
+  @include mdc-fab--mini_;
 }
 
 .mdc-fab__icon {
-  @include mdc-fab__icon;
+  @include mdc-fab__icon_;
 }
 
 // postcss-bem-linter: end
