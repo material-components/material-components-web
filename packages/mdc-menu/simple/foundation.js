@@ -50,6 +50,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
       hasClass: () => false,
       hasNecessaryDom: () => false,
       getAttributeForEventTarget: () => {},
+      eventTargetHasClass: () => {},
       getInnerDimensions: () => ({}),
       hasAnchor: () => false,
       getAnchorDimensions: () => ({}),
@@ -90,12 +91,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     /** @private {function(!Event)} */
     this.keyupHandler_ = (evt) => this.handleKeyboardUp_(evt);
     /** @private {function(!Event)} */
-    this.documentClickHandler_ = (evt) => {
-      if (!evt.target.classList.contains('mdc-list-item')) {
-        this.adapter_.notifyCancel();
-        this.close(evt);
-      }
-    };
+    this.documentClickHandler_ = (evt) => this.handleDocumentClick_(evt);
     /** @private {boolean} */
     this.isOpen_ = false;
     /** @private {number} */
@@ -275,6 +271,25 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
       this.adapter_.focusItemAtIndex(focusIndex);
     }
   }
+
+  /**
+   * Handle clicks and cancel the menu if not a list item
+   * @param {!Event} evt
+   * @private
+   */
+  handleDocumentClick_(evt) {
+    let el = evt.target;
+
+    while (el && el !== document.body) {
+      if (this.adapter_.eventTargetHasClass(el, cssClasses.LIST_ITEM)) {
+        return true;
+      }
+      el = el.parentNode;
+    }
+
+    this.adapter_.notifyCancel();
+    this.close(evt);
+  };
 
   /**
    * Handle keys that we want to repeat on hold (tab and arrows).

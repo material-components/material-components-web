@@ -62,12 +62,13 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'getInnerDimensions',
-    'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale', 'getNumberOfItems',
-    'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
-    'deregisterBodyClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
-    'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
-    'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition', 'getAccurateTime',
+    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget',
+    'eventTargetHasClass', 'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions',
+    'setScale', 'setInnerScale', 'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'registerBodyClickHandler', 'deregisterBodyClickHandler', 'getYParamsForItemAtIndex',
+    'setTransitionDelayForItemAtIndex', 'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus',
+    'restoreFocus', 'isFocused', 'focus', 'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin',
+    'setPosition', 'getAccurateTime',
   ]);
 });
 
@@ -849,6 +850,8 @@ test('on document click cancels and closes the menu', () => {
   td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
     documentClickHandler = handler;
   });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
+    .thenReturn(false);
 
   foundation.init();
   foundation.open();

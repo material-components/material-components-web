@@ -138,7 +138,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deregisterMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
     ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.registerInteractionHandler(evtType, this.setPointerXOffset_);
+      this.adapter_.deregisterInteractionHandler(evtType, this.setPointerXOffset_);
     });
   }
 

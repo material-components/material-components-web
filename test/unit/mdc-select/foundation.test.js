@@ -37,6 +37,7 @@ test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel', 'addClassToBottomLine',
     'removeClassFromBottomLine', 'setBottomLineAttr', 'setAttr', 'rmAttr', 'computeBoundingRect',
+    'registerPointerDownHandler', 'deregisterPointerDownHandler',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'focus', 'makeTabbable',
     'makeUntabbable', 'getComputedStyleValue', 'setStyle', 'create2dRenderingContext',
     'setMenuElStyle', 'setMenuElAttr', 'rmMenuElAttr', 'getMenuElOffsetHeight', 'openMenu',
