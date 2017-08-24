@@ -18,7 +18,7 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 
-@mixin mdc-fab-base {
+@mixin mdc-fab-base_ {
   @include mdc-ripple-base;
 
   display: inline-flex;
@@ -73,21 +73,21 @@
   // stylelint-enable selector-max-type
 }
 
-@mixin mdc-fab-mini {
+@mixin mdc-fab--mini {
   width: 40px;
   height: 40px;
 }
 
-@mixin mdc-fab-disabled {
+@mixin mdc-fab--disabled {
   cursor: default;
   pointer-events: none;
 }
 
 //**
-// @param {color|ThemeProp} $fab-theme-config.bg-color
-// @param {color|ThemeProp} $fab-theme-config.fg-color
-// @param {RippleConfig} $fab-theme-config.ripple-config @see mdc-ripple-default-config_ in mdc-ripple/_mixins.scss.
-// @param {color|ThemeProp} $fab-theme-config.tap-highlight-color
+// @param {ThemeProp|color} $fab-theme-config.bg-color
+// @param {ThemeProp|color} $fab-theme-config.fg-color
+// @param {RippleConfig} $fab-theme-config.ripple-config See mdc-ripple-default-config_ in mdc-ripple/_mixins.scss.
+// @param {ThemeProp|color} $fab-theme-config.tap-highlight-color
 //*
 @mixin mdc-fab-theme($fab-theme-config) {
   $bg-color: map-get($fab-theme-config, bg-color);
@@ -121,7 +121,7 @@
   }
 }
 
-@mixin mdc-fab-icon {
+@mixin mdc-fab__icon {
   display: flex;
   align-items: center;
   justify-content: center;

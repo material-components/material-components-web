@@ -18,7 +18,7 @@
 // postcss-bem-linter: define fab
 
 .mdc-fab {
-  @include mdc-fab-base;
+  @include mdc-fab-base_;
   @include mdc-fab-theme((
     bg-color: secondary,
     fg-color: text-primary-on-secondary,
@@ -32,11 +32,7 @@
       bg-color: rgba(0, 0, 0, .12),
       fg-color: rgba(0, 0, 0, .26)
     ));
-    @include mdc-fab-disabled;
-  }
-
-  &__icon {
-    @include mdc-fab-icon;
+    @include mdc-fab--disabled;
   }
 }
 
@@ -50,7 +46,11 @@
 }
 
 .mdc-fab--mini {
-  @include mdc-fab-mini;
+  @include mdc-fab--mini;
+}
+
+.mdc-fab__icon {
+  @include mdc-fab__icon;
 }
 
 // postcss-bem-linter: end
