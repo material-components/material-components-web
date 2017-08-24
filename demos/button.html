@@ -66,6 +66,15 @@
       .mdc-form-field {
         margin: 50px 0 -20px 30px;
       }
+      .hero {
+        position: relative;
+      }
+      .hero .note {
+        position: absolute;
+        bottom: 10px;
+        left: 36px;
+        color: rgba(33, 33, 33, .38);
+      }
 
     </style>
   </head>
@@ -89,6 +98,7 @@
         <button class="mdc-button mdc-button--raised">
           Raised
         </button>
+        <small class="note">Note: "secondary" was previously called "accent" in the Material spec.</small>
       </section>
 
       <section class="demo-wrapper">
@@ -135,7 +145,7 @@
               Primary
             </button>
             <button class="mdc-button mdc-button--accent">
-              Accent
+              Secondary
             </button>
             <a href="javascript:void(0)" class="mdc-button">
               Link
@@ -159,9 +169,33 @@
               Primary
             </button>
             <button class="mdc-button mdc-button--raised mdc-button--accent">
-              Accent
+              Secondary
             </button>
             <a href="javascript:void(0)" class="mdc-button mdc-button--raised">
+              Link
+            </a>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="mdc-typography--title">Unelevated Button</legend>
+          <div>
+            <button class="mdc-button mdc-button--unelevated">
+              Baseline
+            </button>
+            <button class="mdc-button mdc-button--unelevated mdc-button--compact">
+              Compact
+            </button>
+            <button class="mdc-button mdc-button--unelevated mdc-button--dense">
+              Dense
+            </button>
+            <button class="mdc-button mdc-button--unelevated mdc-button--primary">
+              Primary
+            </button>
+            <button class="mdc-button mdc-button--unelevated mdc-button--accent">
+              Secondary
+            </button>
+            <a href="javascript:void(0)" class="mdc-button mdc-button--unelevated">
               Link
             </a>
           </div>
@@ -184,7 +218,7 @@
               Primary
             </button>
             <button class="mdc-button mdc-button--accent" data-demo-no-js>
-              Accent
+              Secondary
             </button>
             <a href="javascript:void(0)" class="mdc-button" data-demo-no-js>
               Link
@@ -208,9 +242,33 @@
               Primary
             </button>
             <button class="mdc-button mdc-button--raised mdc-button--accent" data-demo-no-js>
-              Accent
+              Secondary
             </button>
             <a href="javascript:void(0)" class="mdc-button mdc-button--raised" data-demo-no-js>
+              Link
+            </a>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="mdc-typography--title">Unelevated Button</legend>
+          <div>
+            <button class="mdc-button mdc-button--unelevated" data-demo-no-js>
+              Baseline
+            </button>
+            <button class="mdc-button mdc-button--unelevated mdc-button--compact" data-demo-no-js>
+              Compact
+            </button>
+            <button class="mdc-button mdc-button--unelevated mdc-button--dense" data-demo-no-js>
+              Dense
+            </button>
+            <button class="mdc-button mdc-button--unelevated mdc-button--primary" data-demo-no-js>
+              Primary
+            </button>
+            <button class="mdc-button mdc-button--unelevated mdc-button--accent" data-demo-no-js>
+              Secondary
+            </button>
+            <a href="javascript:void(0)" class="mdc-button mdc-button--unelevated" data-demo-no-js>
               Link
             </a>
           </div>
@@ -250,7 +308,10 @@
 
         document.getElementById('toggle-disabled').addEventListener('change', function () {
           var isDisabled = this.checked;
-          [].slice.call(document.querySelectorAll('button')).forEach(button => button.disabled = isDisabled);
+          [].slice.call(document.querySelectorAll('button')).forEach(function(button) {
+            button.disabled = isDisabled;
+          });
+
         });
       })();
     </script>

@@ -19,6 +19,7 @@
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
 @import "@material/typography/mixins";
+@import "./mixins";
 
 // postcss-bem-linter: define button
 .mdc-button {
@@ -74,15 +75,14 @@
   }
 }
 
+.mdc-button--raised,
+.mdc-button--unelevated {
+  @include mdc-button-filled;
+}
+
 .mdc-button--raised {
   @include mdc-elevation(2);
   @include mdc-elevation-transition;
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .32));
-  @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .32));
-  @include mdc-theme-prop(color, text-primary-on-dark);
-
-  background-color: black;
 
   &:hover,
   &:focus {
@@ -91,19 +91,6 @@
 
   &:active {
     @include mdc-elevation(8);
-  }
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: black, opacity: .32));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: black, opacity: .32));
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    background-color: white;
-
-    &:not(.mdc-ripple-upgraded) {
-      -webkit-tap-highlight-color: rgba(black, .18);
-    }
   }
 }
 
@@ -165,7 +152,8 @@
   }
 }
 
-.mdc-button--raised {
+.mdc-button--raised,
+.mdc-button--unelevated {
   fieldset:disabled &,
   &:disabled {
     @include mdc-elevation(0);

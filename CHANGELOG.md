@@ -1,3 +1,16 @@
+<a name="0.18.1"></a>
+## [0.18.1](https://github.com/material-components/material-components-web/compare/v0.18.0...v0.18.1) (2017-08-24)
+
+
+### Bug Fixes
+
+* **button:** Restore order of disabled styles (#1176) ([6ffed49](https://github.com/material-components/material-components-web/commit/6ffed49))
+* **demos:** Fix button demo update from #1176 to work in IE 11 (#1178) ([dadc597](https://github.com/material-components/material-components-web/commit/dadc597)), closes [#1176](https://github.com/material-components/material-components-web/issues/1176) [#1178](https://github.com/material-components/material-components-web/issues/1178)
+* **ripple:** Correct unbounded ripple diameter (#1098) ([0f1ca35](https://github.com/material-components/material-components-web/commit/0f1ca35)), closes [#1067](https://github.com/material-components/material-components-web/issues/1067)
+* **textfield:** Add left and right margin to helptext ([3a24bca](https://github.com/material-components/material-components-web/commit/3a24bca))
+
+
+
 <a name="0.18.0"></a>
 # [0.18.0](https://github.com/material-components/material-components-web/compare/v0.17.0...v0.18.0) (2017-08-21)
 
