@@ -17,33 +17,20 @@
 
 // postcss-bem-linter: define fab
 
-$mdc-theme-property-values-custom: map-merge(
-  $mdc-theme-property-values-custom, (
-    // Default
-    fab-default-tap-highlight-color: rgba(0, 0, 0, .18),
-    // Plain
-    fab-plain-bg-color: white,
-    fab-plain-tap-highlight-color: rgba(0, 0, 0, .18),
-    // Disabled
-    fab-disabled-bg-color: rgba(0, 0, 0, .12),
-    fab-disabled-fg-color: rgba(0, 0, 0, .26)
-  )
-);
-
 .mdc-fab {
   @include mdc-fab-base;
   @include mdc-fab-theme((
     bg-color: secondary,
     fg-color: text-primary-on-secondary,
     ripple-config: (base-color: white, opacity: .16),
-    tap-highlight-color: fab-default-tap-highlight-color
+    tap-highlight-color: rgba(0, 0, 0, .18)
   ));
 
   :disabled &,
   &:disabled {
     @include mdc-fab-theme((
-      bg-color: fab-disabled-bg-color,
-      fg-color: fab-disabled-fg-color
+      bg-color: rgba(0, 0, 0, .12),
+      fg-color: rgba(0, 0, 0, .26)
     ));
     @include mdc-fab-disabled;
   }
@@ -55,10 +42,10 @@ $mdc-theme-property-values-custom: map-merge(
 
 .mdc-fab--plain {
   @include mdc-fab-theme((
-    bg-color: fab-plain-bg-color,
+    bg-color: white,
     fg-color: text-primary-on-light,
     ripple-config: (),
-    tap-highlight-color: fab-plain-tap-highlight-color
+    tap-highlight-color: rgba(0, 0, 0, .18)
   ));
 }
 
