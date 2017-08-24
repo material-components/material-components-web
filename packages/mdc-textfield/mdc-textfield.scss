@@ -22,12 +22,12 @@
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 
-$mdc-textfield-error-on-light: #d50000;
-$mdc-textfield-error-on-dark: #ff6e6e;
-$mdc-textfield-divider-on-light: rgba(black, .12);
-$mdc-textfield-divider-on-dark: rgba(white, .12);
-$mdc-textfield-disabled-border-on-light: rgba(#231f20, .26);
-$mdc-textfield-disabled-border-on-dark: rgba(white, .3);
+$mdc-textfield-error-on-light: #d50000 !default;
+$mdc-textfield-error-on-dark: #ff6e6e !default;
+$mdc-textfield-divider-on-light: rgba(black, .12) !default;
+$mdc-textfield-divider-on-dark: rgba(white, .12) !default;
+$mdc-textfield-disabled-border-on-light: rgba(#231f20, .26) !default;
+$mdc-textfield-disabled-border-on-dark: rgba(white, .3) !default;
 
 @function mdc-textfield-transition($property) {
   @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
