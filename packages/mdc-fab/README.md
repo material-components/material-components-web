@@ -144,9 +144,9 @@ CSS Class | Description
 `mdc-fab--mini` | Makes the fab smaller (40 x 40 pixels)
 `mdc-fab--plain` | Makes the FAB have a white background
 
-### Sass Functions
+### Sass Mixins
 
-Function | Description
+Mixin | Description
 --- | ---
 `mdc-fab-base` | Generates CSS properties and element/modifier classes for a basic FAB without any explicit color or theming
-`mdc-fab-theme($config)` | Generates color theme-related CSS properties and element/modifier classes from the given theme config
+`mdc-fab-theme($config)` | Generates theme-related CSS properties and element/modifier classes from the given theme config
