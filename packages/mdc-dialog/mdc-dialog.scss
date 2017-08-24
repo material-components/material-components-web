@@ -24,7 +24,7 @@
 $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
 :root {
-  --mdc-dialog-dark-theme-bg-color: $mdc-dialog-dark-theme-bg-color;
+  --mdc-dialog-dark-theme-bg-color: #{$mdc-dialog-dark-theme-bg-color};
 }
 
 // postcss-bem-linter: define dialog
@@ -144,7 +144,7 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
   }
 
   &__action {
-    @include mdc-theme-prop(color, accent);
+    @include mdc-theme-prop(color, secondary);
   }
 
   // TODO: Replace with breakpoint variable
