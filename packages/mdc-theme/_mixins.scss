@@ -21,14 +21,12 @@
 // $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a literal color value.
 @mixin mdc-theme-prop($property, $style, $important: false) {
   @if type-of($style) == "color" {
-    $value: $style;
-
     @if $important {
-      #{$property}: $value !important;
+      #{$property}: $style !important;
     }
 
     @else {
-      #{$property}: $value;
+      #{$property}: $style;
     }
   }
 
