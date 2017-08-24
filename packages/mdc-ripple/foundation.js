@@ -471,7 +471,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
     this.frame_ = this.adapter_.computeBoundingRect();
 
     const maxDim = Math.max(this.frame_.height, this.frame_.width);
-    const surfaceDiameter = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
+    const surfaceDiameter = Math.min(this.frame_.width, this.frame_.height);
 
     // 60% of the largest dimension of the surface
     this.initialSize_ = maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE;

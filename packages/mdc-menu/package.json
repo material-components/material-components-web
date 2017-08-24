@@ -1,6 +1,6 @@
 {
   "name": "@material/menu",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "The Material Components for the web menu component",
   "license": "Apache-2.0",
   "keywords": [
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@material/animation": "^0.3.1",
-    "@material/base": "^0.2.4",
+    "@material/base": "^0.2.5",
     "@material/elevation": "^0.1.11",
     "@material/theme": "^0.2.0",
     "@material/typography": "^0.3.0"
