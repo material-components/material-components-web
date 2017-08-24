@@ -93,10 +93,8 @@
     cursor: pointer;
   }
 
-  @media (min-width: $mdc-toolbar-mobile-breakpoint) {
-    &__icon:last-of-type {
-      margin-right: 8px;
-    }
+  &__icon:last-of-type {
+    padding-right: 16px;
   }
 
   &__icon--menu {
@@ -115,6 +113,10 @@
 @media (max-width: $mdc-toolbar-mobile-breakpoint) {
   .mdc-toolbar__icon--menu {
     padding: 16px;
+  }
+
+  .mdc-toolbar__icon:last-child {
+    padding: 16px 8px;
   }
 
   .mdc-toolbar__title {
