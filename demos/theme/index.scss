@@ -53,7 +53,7 @@ fieldset {
 }
 
 .demo-component-section + .demo-component-section {
-  margin-top: 36px;
+  margin-top: 48px;
 }
 
 .demo-component-section__heading .demo-component-section__permalink {
@@ -92,7 +92,7 @@ fieldset {
 .demo-card-wrap {
   display: inline-block;
   width: 350px;
-  margin: 24px;
+  margin: 0 24px 24px 0;
   vertical-align: top;
 }
 
