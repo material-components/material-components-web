@@ -17,8 +17,11 @@
 @import "../../packages/mdc-theme/color_palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
+@import "../../packages/mdc-toolbar/variables";
 
-// stylelint-disable selector-class-pattern, selector-max-type
+// stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
+
+$demo-section-margin: 48px;
 
 //
 // Global styles
@@ -44,6 +47,25 @@ fieldset {
   vertical-align: middle;
 }
 
+.demo-anchor-with-toolbar-offset {
+  $margin: $demo-section-margin / 2;
+
+  display: block;
+  position: relative;
+  top: -($mdc-toolbar-row-height + $margin);
+
+  @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+    and (orientation: landscape) {
+    top: -($mdc-toolbar-mobile-landscape-row-height + $margin);
+  }
+
+  @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+    top: -($mdc-toolbar-mobile-row-height + $margin);
+  }
+
+  visibility: hidden;
+}
+
 //
 // Page content
 //
@@ -53,7 +75,7 @@ fieldset {
 }
 
 .demo-component-section + .demo-component-section {
-  margin-top: 48px;
+  margin-top: $demo-section-margin;
 }
 
 .demo-component-section__heading .demo-component-section__permalink {
