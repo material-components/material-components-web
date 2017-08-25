@@ -255,7 +255,7 @@ if (GENERATE_DEMO_THEMES) {
   module.exports.push({
     name: 'demo-theme-css',
     entry: {
-      'demo-theme-styles': path.resolve('./demos/theme/index.scss'),
+      'theme-demo-styles': path.resolve('./demos/theme/index.scss'),
     },
     output: {
       path: OUT_PATH,
