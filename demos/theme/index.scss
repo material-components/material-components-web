@@ -50,17 +50,13 @@ fieldset {
 
 .demo-component-section__heading .demo-component-section__permalink {
   color: inherit;
-  opacity: .15; // TODO(acdvorak): Accessibility
-
-  @include mdc-theme-dark {
-    opacity: .2;
-  }
+  opacity: 0;
 }
 
 .demo-component-section__permalink {
-  .demo-component-section__heading:hover &,
+  .demo-component-section:hover &,
   .demo-component-section__heading--focus & {
-    opacity: 1; // TODO(acdvorak): Accessibility
+    opacity: 1;
   }
 }
 
