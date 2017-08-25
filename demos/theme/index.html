@@ -427,27 +427,9 @@
     <script src="/assets/material-components-web.js" charset="utf-8"></script>
     <script>
       (function() {
-        var toArray = function(arrayish) {
-          return [].slice.call(arrayish);
-        };
-
-        var get = function(parentEl, query) {
-          // Only 1 argument was passed - e.g., get('#foo').
-          if (typeof query === 'undefined') {
-            query = parentEl;
-            parentEl = document;
-          }
-          return parentEl.querySelector(query);
-        };
-
-        var getAll = function(parentEl, query) {
-          // Only 1 argument was passed - e.g., getAll('#foo').
-          if (typeof query === 'undefined') {
-            query = parentEl;
-            parentEl = document;
-          }
-          return toArray(parentEl.querySelectorAll(query));
-        };
+        function getAll(query) {
+          return [].slice.call(document.querySelectorAll(query));
+        }
 
         /*
          * Component section heading permalinks
@@ -512,16 +494,16 @@
          * Checkbox
          */
 
-        get('#indeterminate-checkbox').indeterminate = true;
+        document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
-        get('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
+        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
           var checkboxes = getAll('.demo-checkbox-wrap .mdc-checkbox__native-control');
           checkboxes.forEach(function(checkbox) {
             checkbox.indeterminate = !checkbox.indeterminate;
           });
         });
 
-        get('#checkbox-toggle--align-end').addEventListener('click', function(e) {
+        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
           var formFields = getAll('.demo-checkbox-wrap.mdc-form-field');
           formFields.forEach(function(formField) {
             formField.classList.toggle('mdc-form-field--align-end');
@@ -532,10 +514,10 @@
          * Drawer
          */
 
-        var drawerEl = get('.mdc-temporary-drawer');
+        var drawerEl = document.querySelector('.mdc-temporary-drawer');
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        get('.demo-menu-action').addEventListener('click', function() {
+        document.querySelector('.demo-menu-action').addEventListener('click', function() {
           drawer.open = true;
         });
 
