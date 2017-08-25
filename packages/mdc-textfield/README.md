@@ -179,8 +179,8 @@ UX for client-side form field validation.
 ### Leading and Trailing Icons
 Leading and trailing icons can be added to MDC Textfields as visual indicators
 as well as interaction targets. To do so, add the relevant classnames to the root element, add
-an `i` element with your preferred icon, and give it either `mdc-textfield__leading-icon` or
-`mdc-textfield__trailing-icon` depending on which you are looking to achieve.
+an `i` element with your preferred icon, and give it either a `mdc-textfield__leading-icon` or
+`mdc-textfield__trailing-icon` class depending on which you are looking to achieve.
 
 #### Leading:
 ```html
@@ -201,6 +201,10 @@ an `i` element with your preferred icon, and give it either `mdc-textfield__lead
   <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
+
+>**NOTE:** if you would like to display un-clickable icons, simply remove `tabindex="0"`,
+and the css will ensure the cursor is set to default, and that actioning on an icon doesn't
+do anything unexpected.
 
 ### Multi-line - With Javascript
 
@@ -367,8 +371,8 @@ complicated.
 | addClassToLabel(className: string) => void | Adds a class to the label element. We recommend you add a conditional check here, and in `removeClassFromLabel` for whether or not the label is present so that the JS component could be used with text fields that don't require a label, such as the full-width text field. |
 | removeClassFromLabel(className: string) => void | Removes a class from the label element |
 | eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
-| registerTextFieldInteractionHandler(handler: EventListener) => void | Registers an event handler on the root element for a "click" event |
-| deregisterTextFieldInteractionHandler(handler: EventListener) => void | Deregisters an event handler on the root element for a "click" event |
+| registerTextFieldClickHandler(handler: EventListener) => void | Registers an event handler on the root element for a "click" event |
+| deregisterTextFieldClickHandler(handler: EventListener) => void | Deregisters an event handler on the root element for a "click" event |
 | notifyLeadingIconAction() => void | Broadcasts a custom event "MDCTextfield:leading-icon" denoting a user has clicked the leading icon |
 | notifyTrailingIconAction() => void | Broadcasts a custom event "MDCTextfield:trailing-icon" denoting a user has clicked the trailing icon |
 | addClassToHelptext(className: string) => void | Adds a class to the help text element. Note that in our code we check for whether or not we have a help text element and if we don't, we simply return. |

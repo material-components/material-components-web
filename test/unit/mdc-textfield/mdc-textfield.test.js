@@ -184,10 +184,10 @@ test('#adapter.registerInputBlurHandler adds a "blur" event handler on the input
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.registerTextFieldInteractionHandler adds a "blur" event handler on the input element', () => {
+test('#adapter.registerTextFieldClickHandler adds a "click" event handler on the input element', () => {
   const {root, component} = setupTest();
-  const handler = td.func('textFieldInteractionHandler');
-  component.getDefaultFoundation().adapter_.registerTextFieldInteractionHandler(handler);
+  const handler = td.func('textFieldClickHandler');
+  component.getDefaultFoundation().adapter_.registerTextFieldClickHandler(handler);
   domEvents.emit(root, 'click');
   td.verify(handler(td.matchers.anything()));
 });

@@ -36,7 +36,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextfieldFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel', 'eventTargetHasClass',
-    'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
+    'registerTextFieldClickHandler', 'deregisterTextFieldClickHandler',
     'notifyLeadingIconAction', 'notifyTrailingIconAction',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputFocusHandler', 'deregisterInputFocusHandler',
@@ -146,10 +146,10 @@ test('#init registers input keydown handler', () => {
   td.verify(mockAdapter.registerInputKeydownHandler(td.matchers.isA(Function)));
 });
 
-test('#init registers text field interaction handler', () => {
+test('#init registers text field click handler', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
-  td.verify(mockAdapter.registerTextFieldInteractionHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTextFieldClickHandler(td.matchers.isA(Function)));
 });
 
 test('on input focuses if input event occurs without any other events', () => {
@@ -210,10 +210,10 @@ test('#destroy deregisters keydown handler', () => {
   td.verify(mockAdapter.deregisterInputKeydownHandler(td.matchers.isA(Function)));
 });
 
-test('#destroy deregisters text field interaction handler', () => {
+test('#destroy deregisters text field click handler', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
-  td.verify(mockAdapter.deregisterTextFieldInteractionHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTextFieldClickHandler(td.matchers.isA(Function)));
 });
 
 test('on focus adds mdc-textfield--focused class', () => {
@@ -354,7 +354,7 @@ test('on text field click notifies leading icon event if event target is the lea
   let iconEventHandler;
 
   td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON)).thenReturn(true);
-  td.when(mockAdapter.registerTextFieldInteractionHandler(td.matchers.isA(Function)))
+  td.when(mockAdapter.registerTextFieldClickHandler(td.matchers.isA(Function)))
     .thenDo((handler) => {
       iconEventHandler = handler;
     });
@@ -372,7 +372,7 @@ test('on text field click notifies trailing icon event if event target is the tr
   let iconEventHandler;
 
   td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TRAILING_ICON)).thenReturn(true);
-  td.when(mockAdapter.registerTextFieldInteractionHandler(td.matchers.isA(Function)))
+  td.when(mockAdapter.registerTextFieldClickHandler(td.matchers.isA(Function)))
     .thenDo((handler) => {
       iconEventHandler = handler;
     });

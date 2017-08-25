@@ -78,8 +78,8 @@ export class MDCTextfield extends MDCComponent {
         }
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerTextFieldInteractionHandler: (handler) => this.root_.addEventListener('click', handler),
-      deregisterTextFieldInteractionHandler: (handler) => this.root_.addEventListener('click', handler),
+      registerTextFieldClickHandler: (handler) => this.root_.addEventListener('click', handler),
+      deregisterTextFieldClickHandler: (handler) => this.root_.addEventListener('click', handler),
       notifyLeadingIconAction: () => this.emit(MDCTextfieldFoundation.strings.LEADING_ICON_EVENT),
       notifyTrailingIconAction: () => this.emit(MDCTextfieldFoundation.strings.TRAILING_ICON_EVENT),
     }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_()));
