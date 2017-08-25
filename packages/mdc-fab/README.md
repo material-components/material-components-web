@@ -128,21 +128,36 @@ You can also do this declaratively when using the [material-components-web](../m
 
 FABs are fully aware of ripple styles, so no DOM or CSS changes are required to use them.
 
-## Classes
-
 ### Block
 
 The block class is `mdc-fab`. This defines the top-level button element.
 
 ### Element
+
 The button component has a single `span` element added as a child of the button due to buttons not adhering to flexbox rules
 in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35466231/revisions) for details.
 
-### Modifier
+### CSS Classes
 
-The provided modifiers are:
+CSS Class | Description
+--- | ---
+`mdc-fab--mini` | Makes the fab smaller (40 x 40 pixels)
+`mdc-fab--plain` | Makes the FAB have a white background
 
-| Class             | Description                             |
-| ------------------| --------------------------------------- |
-| `mdc-fab--mini`   | Makes the fab smaller (40 x 40 pixels). |
-| `mdc-fab--plain`  | Makes the FAB have a white background.  |
+### Sass Mixins
+
+#### `mdc-fab-theme($config)`
+
+Generates theme-related CSS properties from the given config map.
+
+All properties are optional. Properties that are `null` or unspecified will not be emitted.
+
+Property | Description
+--- | ---
+`bg-color` | Background color of the FAB
+`fg-color` | Foreground color of the icon
+`ripple-config` | Ripple configuration (see the [mdc-ripple README][ripple-readme])
+`tap-highlight-color` | Color of the [`-webkit-tap-highlight-color`][tap-highlight] property (for mobile devices that support it)
+
+[ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
+[tap-highlight]: https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-tap-highlight-color
