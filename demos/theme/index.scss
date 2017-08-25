@@ -27,12 +27,6 @@ $demo-section-margin: 48px;
 // Global styles
 //
 
-// TODO(acdvorak): Figure out why this is necessary to prevent jank when switching themes.
-fieldset {
-  padding: 0 !important;
-}
-
-// TODO(acdvorak): Should we move this to mdc-theme?
 .mdc-theme--dark {
   @include mdc-theme-prop(color, text-primary-on-dark);
 
@@ -165,12 +159,6 @@ fieldset {
 
 .demo-checkbox-wrap + .demo-checkbox-toggle {
   margin-left: 20px;
-}
-
-.demo-checkbox-wrap {
-  // TODO(acdvorak): Document this requirement in mdc-checkbox or fix it directly
-  //display: inline-flex;
-  //align-items: center;
 }
 
 //
