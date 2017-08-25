@@ -30,6 +30,7 @@ export const cssClasses = {
   HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
   HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
   LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
+  LABEL_SHAKE: 'mdc-textfield__label--shake',
   BOX: 'mdc-textfield--box',
   TEXTAREA: 'mdc-textfield--textarea',
   BOTTOM_LINE_ACTIVE: 'mdc-textfield__bottom-line--active',

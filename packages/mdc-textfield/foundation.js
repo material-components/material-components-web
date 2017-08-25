@@ -98,10 +98,11 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   activateFocus_() {
-    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
+    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
+    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
     this.showHelptext_();
     this.isFocused_ = true;
   }
@@ -139,11 +140,13 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   deactivateFocus_() {
-    const {FOCUSED, INVALID, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, INVALID, LABEL_FLOAT_ABOVE,
+      LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
     const isValid = input.checkValidity();
 
     this.adapter_.removeClass(FOCUSED);
+    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
 
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
@@ -151,8 +154,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     }
     if (isValid) {
       this.adapter_.removeClass(INVALID);
+      this.adapter_.removeClassFromLabel(LABEL_SHAKE);
     } else {
       this.adapter_.addClass(INVALID);
+      this.adapter_.addClassToLabel(LABEL_SHAKE);
     }
     this.updateHelptextOnDeactivation_(isValid);
     this.isFocused_ = false;

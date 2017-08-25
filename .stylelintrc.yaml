@@ -232,6 +232,7 @@ rules:
         - /fieldset/
   # Styles for components should never need the universal selector.
   selector-max-universal: 0
+
   # Ensure any defined symbols are prefixed with "mdc-"
   # TODO: Remove "md-" pattern.
   custom-media-pattern: ^mdc?-.+
