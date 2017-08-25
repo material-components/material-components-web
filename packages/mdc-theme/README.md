@@ -140,7 +140,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-theme-prop($property, $style, $important)` | Applies a theme color to a property
+`mdc-theme-prop($property, $style, $important)` | Applies a theme color or a custom color to a CSS property
 `mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the current selector is within an Dark Theme context
 
 #### `mdc-theme-dark($root-selector, $compound)`
@@ -149,7 +149,7 @@ Creates a rule that is applied when the current selector is within an Dark Theme
 
 #### `mdc-theme-prop` Properties
 
-These properties can be used as the `$property` argument for `mdc-theme-prop` mixin.
+The properties below can be used as the `$style` argument for the `mdc-theme-prop` mixin. Literal color values (e.g., `rgba(0, 0, 0, .75)`) may also be used instead.
 
 > **A note about `<TEXT_STYLE>` and `<THEME_COLOR>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`. `<THEME_COLOR>` represents the lowercase name of the theme colors listed above, e.g. `secondary`. When you put it all together it would be `text-hint-on-secondary`.
 
