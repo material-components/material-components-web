@@ -83,17 +83,11 @@
   pointer-events: none;
 }
 
-//**
-// @param {ThemeProp|color} $fab-theme-config.bg-color
-// @param {ThemeProp|color} $fab-theme-config.fg-color
-// @param {RippleConfig} $fab-theme-config.ripple-config See mdc-ripple-default-config_ in mdc-ripple/_mixins.scss.
-// @param {ThemeProp|color} $fab-theme-config.tap-highlight-color
-//*
-@mixin mdc-fab-theme($fab-theme-config) {
-  $bg-color: map-get($fab-theme-config, bg-color);
-  $fg-color: map-get($fab-theme-config, fg-color);
-  $ripple-config: map-get($fab-theme-config, ripple-config);
-  $tap-highlight-color: map-get($fab-theme-config, tap-highlight-color);
+@mixin mdc-fab-theme($config) {
+  $bg-color: map-get($config, bg-color);
+  $fg-color: map-get($config, fg-color);
+  $ripple-config: map-get($config, ripple-config);
+  $tap-highlight-color: map-get($config, tap-highlight-color);
 
   @if $ripple-config {
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));

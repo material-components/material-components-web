@@ -148,5 +148,20 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-fab-base` | Generates CSS properties and element/modifier classes for a basic FAB without any explicit color or theming
-`mdc-fab-theme($config)` | Generates theme-related CSS properties and element/modifier classes from the given theme config
+`mdc-fab-theme($config)` | Generates theme-related CSS properties from the given config map
+
+#### `mdc-fab-theme($config)`
+
+Generates theme-related CSS properties from the given config map.
+
+All properties are optional. Properties that are `null` or unspecified will not be emitted.
+
+Property | Description
+--- | ---
+`bg-color` | Background color of the FAB
+`fg-color` | Foreground color of the icon
+`ripple-config` | Ripple configuration (see the [mdc-ripple README][ripple-readme])
+`tap-highlight-color` | Color of the [`-webkit-tap-highlight-color`][tap-highlight] property for mobile devices that support it
+
+[ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
+[tap-highlight]: https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-tap-highlight-color
