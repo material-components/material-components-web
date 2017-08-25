@@ -78,7 +78,10 @@
 
     <main class="mdc-toolbar-fixed-adjust demo-main">
       <section class="demo-component-section">
-        <h2 class="mdc-typography--headline demo-component-section__heading">Button</h2>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Button
+          <a href="#button" id="button" class="demo-component-section__permalink" title="Permalink to the theme demo for the button component">#</a>
+        </h2>
 
         <fieldset class="demo-fieldset--button">
           <legend class="mdc-typography--subheading2">Enabled</legend>
@@ -102,7 +105,10 @@
       </section>
 
       <section class="demo-component-section">
-        <h2 class="mdc-typography--headline demo-component-section__heading">Card</h2>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Card
+          <a href="#card" id="card" class="demo-component-section__permalink" title="Permalink to the theme demo for the card component">#</a>
+        </h2>
 
         <div class="demo-card-wrap">
           <div class="mdc-card">
@@ -151,7 +157,10 @@
       </section>
 
       <section class="demo-component-section">
-        <h2 class="mdc-typography--headline demo-component-section__heading">Checkbox</h2>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Checkbox
+          <a href="#checkbox" id="checkbox" class="demo-component-section__permalink" title="Permalink to the theme demo for the checkbox component">#</a>
+        </h2>
 
         <div class="demo-checkbox-row">
           <div class="mdc-form-field demo-checkbox-wrap">
@@ -218,7 +227,10 @@
       </section>
 
       <section class="demo-component-section">
-        <h2 class="mdc-typography--headline demo-component-section__heading">Dialog</h2>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Dialog
+          <a href="#dialog" id="dialog" class="demo-component-section__permalink" title="Permalink to the theme demo for the dialog component">#</a>
+        </h2>
 
         <aside class="mdc-dialog mdc-dialog--open demo-dialog">
           <div class="mdc-dialog__surface">
@@ -239,13 +251,19 @@
       </section>
 
       <section class="demo-component-section">
-        <h2 class="mdc-typography--headline demo-component-section__heading">Drawer</h2>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Drawer
+          <a href="#drawer" id="drawer" class="demo-component-section__permalink" title="Permalink to the theme demo for the drawer component">#</a>
+        </h2>
 
         <p class="mdc-typography--body1">Click the menu icon (<i class="material-icons demo-icon--inline">menu</i>) in the toolbar at the top of the page to open the drawer.</p>
       </section>
 
       <section class="demo-component-section">
-        <h2 class="mdc-typography--headline demo-component-section__heading">Floating Action Button</h2>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Floating Action Button
+          <a href="#fab" id="fab" class="demo-component-section__permalink" title="Permalink to the theme demo for the floating action button component">#</a>
+        </h2>
 
         <fieldset class="demo-fieldset--fab">
           <legend class="mdc-typography--subheading2">Normal FABs</legend>
@@ -297,7 +315,10 @@
       </section>
 
       <section class="demo-component-section">
-        <h2 class="mdc-typography--headline demo-component-section__heading">Icon Toggle</h2>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Icon Toggle
+          <a href="#icon-toggle" id="icon-toggle" class="demo-component-section__permalink" title="Permalink to the theme demo for the icon toggle component">#</a>
+        </h2>
 
         <div class="demo-icon-toggle__row">
           <div class="mdc-elevation--z2 demo-icon-toggle__tile">
@@ -346,7 +367,10 @@
       </section>
 
       <section class="demo-component-section">
-        <h2 class="mdc-typography--headline demo-component-section__heading">Linear Progress</h2>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Linear Progress
+          <a href="#linear-progress" id="linear-progress" class="demo-component-section__permalink" title="Permalink to the theme demo for the linear progress component">#</a>
+        </h2>
 
         <figure class="demo-linear-progress__row">
           <figcaption class="mdc-typography--subheading2">Indeterminate</figcaption>
@@ -421,21 +445,6 @@
          * Component section heading permalinks
          */
 
-        getAll('.demo-component-section__heading').forEach(function(headingEl) {
-          var newId = headingEl.id;
-          if (!newId) {
-            newId = headingEl.innerText;
-            newId = newId.toLowerCase();
-            newId = newId.replace(/[^\w-]+/g, '-');
-            newId = newId.replace(/^-+|-+$/g, '');
-            newId = newId.replace(/-{2,}/g, '-');
-          }
-
-          var span = document.createElement('span');
-          span.innerHTML = '<a href="#' + newId + '" id="' + newId + '" class="demo-component-section__permalink" title="Permalink to this component demo">#</a>';
-          headingEl.appendChild(document.createTextNode(' '));
-          headingEl.appendChild(span.firstElementChild);
-        });
         document.addEventListener('focusin', function(e) {
           if (e.target.classList.contains('demo-component-section__permalink')) {
             e.target.parentElement.classList.add('demo-component-section__heading--focus');
