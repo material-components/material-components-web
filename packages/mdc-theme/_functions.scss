@@ -16,6 +16,11 @@
 
 @import "./constants";
 
+// Used by the functions below to shift a color's luminance by approximately
+// one index within its tonal palette.
+// E.g., shift from Red 500 to Red 400 or Red 600.
+$_mdc-theme-tonal-offset: 7%;
+
 // Calculate the luminance for a color.
 // See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
 @function mdc-theme-luminance($color) {
@@ -50,4 +55,66 @@
   @else {
     @return "light";
   }
+}
+
+// lighten() and darken() require values to be between 0% and 100%.
+@function mdc-theme-clamp-percentage_($percentage) {
+  @return max(0%, min(100%, $percentage));
+}
+
+// Generate light and dark variants of the given color, offset by approximately
+// the specified number of indexes within the color's tonal palette.
+@function mdc-theme-tonal-variants_($color, $num-indexes: 2) {
+  $luminance: mdc-theme-luminance($color) * 100%;
+  $amount-1x: mdc-theme-clamp-percentage_($_mdc-theme-tonal-offset * $num-indexes);
+  $amount-2x: mdc-theme-clamp-percentage_($_mdc-theme-tonal-offset * $num-indexes * 2);
+  $lower-bound: $amount-1x;
+  $upper-bound: 100% - $lower-bound;
+
+  @if $luminance <= $lower-bound {
+    @return (
+      dark: lighten($color, $amount-1x),
+      light: lighten($color, $amount-2x)
+    );
+  }
+
+  @else if $luminance >= $upper-bound {
+    @return (
+      dark: darken($color, $amount-2x),
+      light: darken($color, $amount-1x)
+    );
+  }
+
+  @else {
+    @return (
+      dark: darken($color, $amount-1x),
+      light: lighten($color, $amount-1x)
+    );
+  }
+}
+
+// Darken the given color by approximately the specified number of indexes
+// within its tonal palette.
+//
+// If the color is already very dark, it will be lightened instead of darkened
+// to ensure that the returned value is visually distinct from the input color.
+//
+// If the color is very light, it will be darkened twice as much as usual to
+// ensure that the returned value is visually distinct from the light variant
+// (which will actually end up being a dark shade).
+@function mdc-theme-dark-variant($color, $num-indexes: 2) {
+  @return map-get(mdc-theme-tonal-variants_($color, $num-indexes), dark);
+}
+
+// Lighten the given color by approximately the specified number of indexes
+// within its tonal palette.
+//
+// If the color is already very light, it will be darkened instead of lightened
+// to ensure that the returned value is visually distinct from the input color.
+//
+// If the color is very dark, it will be lightened twice as much as usual to
+// ensure that the returned value is visually distinct from the dark variant
+// (which will actually end up being a light tint).
+@function mdc-theme-light-variant($color, $num-indexes: 2) {
+  @return map-get(mdc-theme-tonal-variants_($color, $num-indexes), light);
 }
