@@ -189,3 +189,24 @@ Determines whether to use light or dark text on top of a given color.
 ```scss
 @debug mdc-theme-light-or-dark(#9c27b0); // light
 ```
+
+#### `mdc-theme-light-variant` and `mdc-theme-dark-variant`
+
+Function | Description
+--- | ---
+`mdc-theme-dark-variant($color, $num-indexes)` | Darken a color by a certain number of indexes within its tonal palette
+`mdc-theme-light-variant($color, $num-indexes)` | Lighten a color by a certain number of indexes within its tonal palette
+
+Both functions are luminance-aware, and will always return a color that is visually distinct from both the input color
+_and_ the other function.
+
+That is, if the color passed to `mdc-theme-dark-variant()` is already so dark that darkening it by the requested amount
+would return `#000000`, the function will _lighten_ the color instead.
+
+Similarly, if the color passed to `mdc-theme-light-variant()` is already so light that lightening it by the requested
+amount would return `#ffffff`, the function will _darken_ the color instead.
+
+To avoid having both functions return the same color in cases of extremely high or low input luminance,
+`mdc-theme-dark-variant()` will return a color that is _twice_ (×2) as dark as requested when the input is already very
+light. Likewise, `mdc-theme-light-variant()` will return a color that is _twice_ (×2) as light as requested when the
+input is already very dark. This ensures that the _light_ variant will always be lighter than the _dark_ variant.

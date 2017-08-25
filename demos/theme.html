@@ -28,6 +28,7 @@
       .demo-theme__color {
         display: inline-flex;
         flex-direction: column;
+        margin-right: 24px;
       }
       .demo-theme__color__label {
         display: inline-block;
@@ -43,6 +44,7 @@
         line-height: 50px;
         text-align: center;
         border: 1px solid #f0f0f0;
+        margin-bottom: 1px;
       }
       .demo-theme__text-styles {
         display: inline-flex;
@@ -139,6 +141,20 @@
         </div>
         <div class="demo-theme__color">
           <div class="demo-theme__color__block mdc-theme--background mdc-theme--text-primary-on-background">Background</div>
+        </div>
+      </section>
+
+      <section class="example">
+        <h3 class="mdc-typography--title">Light and dark tonal variants for extreme input luminance</h3>
+        <div class="demo-theme__color">
+          <div class="demo-theme__color__block demo-theme-bg--low-luminance mdc-theme--text-primary-on-dark">Low Luminance</div>
+          <div class="demo-theme__color__block demo-theme-bg--low-luminance-light mdc-theme--text-primary-on-dark">Light Variant</div>
+          <div class="demo-theme__color__block demo-theme-bg--low-luminance-dark mdc-theme--text-primary-on-dark">Dark Variant</div>
+        </div>
+        <div class="demo-theme__color">
+          <div class="demo-theme__color__block demo-theme-bg--high-luminance mdc-theme--text-primary-on-light">High Luminance</div>
+          <div class="demo-theme__color__block demo-theme-bg--high-luminance-light mdc-theme--text-primary-on-light">Light Variant</div>
+          <div class="demo-theme__color__block demo-theme-bg--high-luminance-dark mdc-theme--text-primary-on-light">Dark Variant</div>
         </div>
       </section>
 
