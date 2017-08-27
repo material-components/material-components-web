@@ -94,6 +94,17 @@
   }
 }
 
+.mdc-button--stroked {
+  @include mdc-theme-prop(border-color, text-primary-on-light);
+
+  border-width: 1px;
+  border-style: solid;
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-theme-prop(border-color, text-primary-on-dark);
+  }
+}
+
 .mdc-button--compact {
   padding: 0 8px;
 }
@@ -134,6 +145,14 @@
       @include mdc-theme-prop(background-color, $theme-style);
       @include mdc-theme-prop(color, text-primary-on-#{$theme-style});
     }
+    // postcss-bem-linter: ignore
+    &.mdc-button--stroked {
+      @include mdc-theme-prop(border-color, $theme-style);
+
+      @include mdc-theme-dark(".mdc-button") {
+        @include mdc-theme-prop(border-color, $theme-style);
+      }
+    }
   }
 }
 
@@ -165,6 +184,17 @@
       @include mdc-theme-prop(color, text-disabled-on-dark);
 
       background-color: rgba(255, 255, 255, .15);
+    }
+  }
+}
+
+.mdc-button--stroked {
+  fieldset:disabled &,
+  &:disabled {
+    border-color: rgba(black, .38);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(border-color, text-disabled-on-dark);
     }
   }
 }
