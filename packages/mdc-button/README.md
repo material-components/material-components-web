@@ -146,7 +146,7 @@ The provided modifiers are:
 | --------------------- | ------------------------------------------------------- |
 | `mdc-button--raised`  | A contained button that is elevated upon the surface.   |
 | `mdc-button--unelevated`  | A contained button that is flush with the surface.  |
-| `mdc-button--stroked`  | A contained button contained by a rectangular shape.  |
+| `mdc-button--stroked`  | A contained button that is flush with the surface and has a visible border. |
 | `mdc-button--dense`   | Compresses the button text to make it slightly smaller. |
 | `mdc-button--compact` | Reduces the amount of horizontal padding in the button. |
 | `mdc-button--primary` | Colors the button with the primary color.               |
