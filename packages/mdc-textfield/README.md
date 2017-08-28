@@ -249,7 +249,7 @@ Material Design text field component.
 ##### ES2015
 
 ```javascript
-import {MDCTextfield, MDCTextfieldFoundation} from 'mdc-textfield';
+import {MDCTextfield, MDCTextfieldFoundation} from '@material/textfield';
 ```
 
 ##### CommonJS
@@ -285,7 +285,7 @@ mdc.textfield.MDCTextfield.attachTo(document.querySelector('.mdc-textfield'));
 #### Manual Instantiation
 
 ```javascript
-import {MDCTextfield} from 'mdc-textfield';
+import {MDCTextfield} from '@material/textfield';
 
 const textfield = new MDCTextfield(document.querySelector('.mdc-textfield'));
 ```

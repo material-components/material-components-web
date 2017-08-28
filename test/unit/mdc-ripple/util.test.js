@@ -15,38 +15,42 @@
  */
 
 import {assert} from 'chai';
+import {createMockWindowForCssVariables} from './helpers';
 import td from 'testdouble';
 import * as util from '../../../packages/mdc-ripple/util';
 
 suite('MDCRipple - util');
 
 test('#supportsCssVariables returns true when CSS.supports() returns true for css vars', () => {
-  const windowObj = {
-    CSS: {
-      supports: td.func('.supports'),
-    },
-  };
+  const windowObj = createMockWindowForCssVariables();
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(true);
-  assert.isOk(util.supportsCssVariables(windowObj));
+  assert.isOk(util.supportsCssVariables(windowObj, true));
+  assert.equal(windowObj.appendedNodes, 0, 'All nodes created in #supportsCssVariables should be removed');
 });
 
 test('#supportsCssVariables returns true when feature-detecting its way around Safari < 10', () => {
-  const windowObj = {
-    CSS: {
-      supports: td.func('.supports'),
-    },
-  };
+  const windowObj = createMockWindowForCssVariables();
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(false);
   td.when(windowObj.CSS.supports(td.matchers.contains('(--css-vars:'))).thenReturn(true);
   td.when(windowObj.CSS.supports('color', '#00000000')).thenReturn(true);
-  assert.isOk(util.supportsCssVariables(windowObj), 'true iff both CSS Vars and #rgba are supported');
+  assert.isOk(util.supportsCssVariables(windowObj, true), 'true iff both CSS Vars and #rgba are supported');
 
   td.when(windowObj.CSS.supports(td.matchers.contains('(--css-vars:'))).thenReturn(false);
-  assert.isNotOk(util.supportsCssVariables(windowObj), 'false if CSS Vars are supported but not #rgba');
+  assert.isNotOk(util.supportsCssVariables(windowObj, true), 'false if #rgba is supported but not CSS Vars');
   td.when(windowObj.CSS.supports(td.matchers.contains('(--css-vars:'))).thenReturn(true);
 
   td.when(windowObj.CSS.supports('color', '#00000000')).thenReturn(false);
-  assert.isNotOk(util.supportsCssVariables(windowObj), 'false if #rgba is supported but not CSS Vars');
+  assert.isNotOk(util.supportsCssVariables(windowObj, true), 'false if CSS Vars are supported but not #rgba');
+  assert.equal(windowObj.appendedNodes, 0, 'All nodes created in #supportsCssVariables should be removed');
+});
+
+test('#supportsCssVariables returns false when feature-detecting Edge var() bug with pseudo selectors', () => {
+  const windowObj = createMockWindowForCssVariables();
+  td.when(windowObj.getComputedStyle(td.matchers.anything())).thenReturn({
+    borderTopStyle: 'solid',
+  });
+  assert.isNotOk(util.supportsCssVariables(windowObj, true), 'false if Edge bug is detected');
+  assert.equal(windowObj.appendedNodes, 0, 'All nodes created in #supportsCssVariables should be removed');
 });
 
 test('#supportsCssVariables returns false when CSS.supports() returns false for css vars', () => {
@@ -56,7 +60,7 @@ test('#supportsCssVariables returns false when CSS.supports() returns false for 
     },
   };
   td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(false);
-  assert.isNotOk(util.supportsCssVariables(windowObj));
+  assert.isNotOk(util.supportsCssVariables(windowObj, true));
 });
 
 test('#supportsCssVariables returns false when CSS.supports is not a function', () => {
@@ -65,14 +69,14 @@ test('#supportsCssVariables returns false when CSS.supports is not a function', 
       supports: 'nope',
     },
   };
-  assert.isNotOk(util.supportsCssVariables(windowObj));
+  assert.isNotOk(util.supportsCssVariables(windowObj, true));
 });
 
 test('#supportsCssVariables returns false when CSS is not an object', () => {
   const windowObj = {
     CSS: null,
   };
-  assert.isNotOk(util.supportsCssVariables(windowObj));
+  assert.isNotOk(util.supportsCssVariables(windowObj, true));
 });
 
 test('applyPassive returns an options object for browsers that support passive event listeners', () => {

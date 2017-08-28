@@ -24,7 +24,7 @@
 $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
 :root {
-  --mdc-dialog-dark-theme-bg-color: $mdc-dialog-dark-theme-bg-color;
+  --mdc-dialog-dark-theme-bg-color: #{$mdc-dialog-dark-theme-bg-color};
 }
 
 // postcss-bem-linter: define dialog
@@ -39,7 +39,7 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
   width: 100%;
   height: 100%;
   visibility: hidden;
-  z-index: 2;
+  z-index: 5;
 
   &__backdrop {
     position: fixed;
@@ -141,6 +141,10 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
         @include mdc-rtl-reflexive-box(margin, right, 0);
       }
     }
+  }
+
+  &__action {
+    @include mdc-theme-prop(color, secondary);
   }
 
   // TODO: Replace with breakpoint variable

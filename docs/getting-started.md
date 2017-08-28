@@ -216,7 +216,7 @@ hit the button, and get a pleasant greeting :wave:
 You may have noticed that the button background, as well as the label and underline on focused text
 input fields, defaults to the Indigo 500 (`#673AB7`) color from the [Material Design color palette](https://material.io/guidelines/style/color.html#color-color-palette).
 This is part of the default theme that ships with MDC-Web; it uses Indigo 500 for a primary color, and
-Pink A200 (`#FF4081`) for an accent color. Let's change the theme's primary color.
+Pink A200 (`#FF4081`) for a secondary color. Let's change the theme's primary color.
 
 A common misconception when implementing Material Design is that the colors you use _must_ come from
 the Material Design color palette. This is not true at all. The only defining guideline for color within Material

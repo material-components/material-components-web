@@ -152,7 +152,7 @@ your build pipeline.
 Start by importing the component:
 
 ```js
-import {MDCTextfield} from 'mdc-textfield';
+import {MDCTextfield} from '@material/textfield';
 ```
 
 And instantiate a component by calling the constructor on the root node:
@@ -271,7 +271,7 @@ importing `@material/theme` or any MDC-Web components that rely on it:
 
 ```scss
 $mdc-theme-primary: #9c27b0;
-$mdc-theme-accent: #ffab40;
+$mdc-theme-secondary: #ffab40;
 $mdc-theme-background: #fff;
 
 @import "@material/theme/mdc-theme";
@@ -287,7 +287,7 @@ end-users’ browsers, you can use the custom properties provided by `@material/
 ```css
 :root {
   --mdc-theme-primary: #9c27b0;
-  --mdc-theme-accent: #ffab40;
+  --mdc-theme-secondary: #ffab40;
   --mdc-theme-background: #fff;
 }
 ```

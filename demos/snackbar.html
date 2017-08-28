@@ -19,12 +19,11 @@
     <meta charset="utf-8">
     <title>Snackbar - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
-    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
-    <script src="assets/demo-styles.css.js" charset="utf-8"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/demo-styles.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
       /* initialize it off screen. */
       .loading .example .mdc-snackbar { transform: translateY(200%); }
@@ -198,7 +197,7 @@
         </div>
       </section>
     </main>
-    <script src="assets/material-components-web.js" charset="utf-8"></script>
+    <script src="/assets/material-components-web.js"></script>
     <script>
       (function(global) {
         'use strict';
@@ -213,7 +212,6 @@
         var actionOnBottomInput = document.getElementById('action-on-bottom');
         var actionOnBottomCheckbox = document.getElementById('action-on-bottom-checkbox');
         var dismissOnActionInput = document.getElementById('dismiss-on-action');
-        var textFields = document.querySelectorAll('.mdc-textfield');
 
         // Since Action on Bottom cannot be checked if Multi-line Input
         // is not, we start with a disabled Action on Bottom option
@@ -271,7 +269,7 @@
           document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
         });
 
-        textFields.forEach(function(tf) {
+        [].slice.call(document.querySelectorAll('.mdc-textfield')).forEach(function(tf) {
           mdc.textfield.MDCTextfield.attachTo(tf);
         })
 
