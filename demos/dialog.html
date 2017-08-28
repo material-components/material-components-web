@@ -113,6 +113,29 @@
           </div>
           <div class="mdc-dialog__backdrop"></div>
         </aside>
+        
+        <aside id="mdc-dialog-colored-footer-buttons"
+        	    class="mdc-dialog"
+        	    role="alertdialog"
+        	    aria-hidden="true"
+        	    aria-labelledby="mdc-dialog-colored-footer-button-label"
+        	    aria-describedby="mdc-dialog-colored-footer-button-description">
+    	    <div class="mdc-dialog__surface">
+    	      <header class="mdc-dialog__header">
+    	        <h2 id="mdc-dialog-colored-footer-button-label" class="mdc-dialog__header__title">
+    	          Use Google's location service?
+    	        </h2>
+    	      </header>
+    	      <section id="mdc-dialog-colored-footer-button-description" class="mdc-dialog__body">
+    	        Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+    	      </section>
+    	      <footer class="mdc-dialog__footer">
+    	        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
+    	        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept mdc-dialog__action">Accept</button>
+    	      </footer>
+    	    </div>
+    	    <div class="mdc-dialog__backdrop"></div>
+      	</aside>
 
         <aside id="mdc-dialog-with-list"
                class="mdc-dialog"
@@ -151,6 +174,7 @@
       </div>
       <section class="example">
         <button id="default-dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Dialog</button>
+        <button id="colored-footer-button-dialog-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Colored Footer Button Dialog</button>
         <button id="dialog-with-list-activation" class="mdc-button mdc-button--primary mdc-button--raised">Show Scrolling Dialog</button>
         <div class="mdc-form-field">
           <div class="mdc-checkbox">
@@ -234,7 +258,12 @@
         document.querySelector('#dialog-with-list-activation').addEventListener('click', function (evt) {
           dialogScrollable.lastFocusedTarget = evt.target;
           dialogScrollable.show();
-        });
+      	});
+        var dialogColoredButton = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-colored-footer-buttons'));
+        document.querySelector('#colored-footer-button-dialog-activation').addEventListener('click', function (evt) {
+      	  dialogColoredButton.lastFocusedTarget = evt.target;
+          dialogColoredButton.show();
+      	});
       })();
     </script>
     <script>
@@ -255,6 +284,7 @@
         setTimeout(function() {
           mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));
           mdc.ripple.MDCRipple.attachTo(document.querySelector('#dialog-with-list-activation'));
+          mdc.ripple.MDCRipple.attachTo(document.querySelector('#colored-footer-button-dialog-activation'));
         }, 200);
       })();
     </script>

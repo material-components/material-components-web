@@ -116,13 +116,14 @@ They only need to match the values set for their corresponding aria attributes.
 
 Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s secondary color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply secondary color.
 
-```
+```html
 <aside class="mdc-dialog">
   <div class="mdc-dialog__surface">
     <footer class="mdc-dialog__footer">
       <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
       <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept mdc-dialog__action">Accept</button>
     </footer>
+  </div>
 </aside>
 ```
 
