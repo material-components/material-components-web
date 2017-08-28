@@ -25,15 +25,6 @@
     ripple-config: (base-color: white, opacity: .16),
     tap-highlight-color: rgba(0, 0, 0, .18)
   ));
-
-  :disabled &,
-  &:disabled {
-    @include mdc-fab-theme((
-      bg-color: rgba(0, 0, 0, .12),
-      fg-color: rgba(0, 0, 0, .26)
-    ));
-    @include mdc-fab--disabled_;
-  }
 }
 
 .mdc-fab--plain {
