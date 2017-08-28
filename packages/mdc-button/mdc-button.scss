@@ -97,11 +97,16 @@
 .mdc-button--stroked {
   @include mdc-theme-prop(border-color, text-primary-on-light);
 
-  border-width: 1px;
+  border-width: 2px;
   border-style: solid;
+  line-height: 32px;
 
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-theme-prop(border-color, text-primary-on-dark);
+  }
+
+  &.mdc-button--dense {
+    line-height: 28px;
   }
 }
 
