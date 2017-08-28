@@ -126,6 +126,19 @@
           <label for="toggle-disabled" id="toggle-disabled-label">Disable radio buttons</label>
         </div>
 
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
+        </div>
+
         <h1 class="mdc-typography--display2">With Javascript</h1>
         <div class="mdc-form-field">
           <div class="mdc-radio">
@@ -169,7 +182,7 @@
           </div>
           <label id="ex1-radio2-label" for="ex1-radio2">Radio 2</label>
         </div>
-        
+
     </section>
     </main>
     <script src="/assets/material-components-web.js"></script>
@@ -209,6 +222,14 @@
             }
             radio.querySelector('input').disabled = isDisabled;
           });
+        });
+
+        document.getElementById('toggle-rtl').addEventListener('change', function () {
+          if (this.checked) {
+            demoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            demoWrapper.removeAttribute('dir');
+          }
         });
 
       })(this);
