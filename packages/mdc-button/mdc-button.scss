@@ -77,7 +77,7 @@
 
 .mdc-button--raised,
 .mdc-button--unelevated {
-  @include mdc-button-filled;
+  @include mdc-button-filled_;
 }
 
 .mdc-button--raised {
