@@ -78,11 +78,6 @@
   height: 40px;
 }
 
-@mixin mdc-fab--disabled_ {
-  cursor: default;
-  pointer-events: none;
-}
-
 @mixin mdc-fab-theme($config) {
   $bg-color: map-get($config, bg-color);
   $fg-color: map-get($config, fg-color);
