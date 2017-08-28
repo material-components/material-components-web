@@ -110,6 +110,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.installPropertyChangeHooks_();
   }
 
   destroy() {
@@ -124,6 +125,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    this.uninstallPropertyChangeHooks_();
   }
 
   /**
@@ -181,6 +183,17 @@ class MDCTextFieldFoundation extends MDCFoundation {
   autoCompleteFocus() {
     if (!this.receivedUserInput_) {
       this.activateFocus();
+    }
+  }
+
+  /**
+   * @private
+   */
+  forceLayout_() {
+    // Don't do anything if the input is still focused.
+    if (!this.isFocused_) {
+      this.activateFocus_();
+      this.deactivateFocus_();
     }
   }
 
@@ -333,6 +346,49 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.useCustomValidityChecking_ = true;
     this.changeValidity_(isValid);
   }
+
+  /** @private */
+  installPropertyChangeHooks_() {
+    const {INPUT_PROTO_PROP} = MDCTextfieldFoundation.strings;
+    const nativeInputElement = this.getNativeInput_();
+    const inputElementProto = Object.getPrototypeOf(nativeInputElement);
+    const desc = Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP);
+
+    // We have to check for this descriptor, since some browsers (Safari) don't support its return.
+    // See: https://bugs.webkit.org/show_bug.cgi?id=49739
+    if (validDescriptor(desc)) {
+      const nativeInputElementDesc = ({
+        get: desc.get,
+        set: (value) => {
+          desc.set.call(nativeInputElement, value);
+          this.forceLayout_();
+        },
+        configurable: desc.configurable,
+        enumerable: desc.enumerable,
+      });
+      Object.defineProperty(nativeInputElement, INPUT_PROTO_PROP, nativeInputElementDesc);
+    }
+  }
+
+  /** @private */
+  uninstallPropertyChangeHooks_() {
+    const {INPUT_PROTO_PROP} = MDCTextfieldFoundation.strings;
+    const nativeInputElement = this.getNativeInput_();
+    const inputElementProto = Object.getPrototypeOf(nativeInputElement);
+    const desc = Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP);
+
+    if (validDescriptor(desc)) {
+      Object.defineProperty(nativeInputElement, INPUT_PROTO_PROP, desc);
+    }
+  }
+}
+
+/**
+ * @param {ObjectPropertyDescriptor|undefined} inputPropDesc
+ * @return {boolean}
+ */
+function validDescriptor(inputPropDesc) {
+  return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
 
 export default MDCTextFieldFoundation;
