@@ -15,6 +15,8 @@
  */
 
 import {assert} from 'chai';
+import bel from 'bel';
+import lolex from 'lolex';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
@@ -23,6 +25,37 @@ import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
 const {cssClasses} = MDCTextFieldFoundation;
+
+const DESC_UNDEFINED = {
+  get: undefined,
+  set: undefined,
+  enumerable: false,
+  configurable: true,
+};
+
+function setupHookTest() {
+  const {foundation, mockAdapter} = setupFoundationTest(MDCTextfieldFoundation);
+  const nativeInput = bel`<input type="text">`;
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  return {foundation, mockAdapter, nativeInput};
+}
+
+// Shims Object.getOwnPropertyDescriptor for the checkbox's WebIDL attributes. Used to test
+// the behavior of overridding WebIDL properties in different browser environments. For example,
+// in Safari WebIDL attributes don't return get/set in descriptors.
+function withMockCheckboxDescriptorReturning(descriptor, runTests) {
+  const originalDesc = Object.getOwnPropertyDescriptor(Object, 'getOwnPropertyDescriptor');
+  const mockGetOwnPropertyDescriptor = td.func('.getOwnPropertyDescriptor');
+
+  td.when(mockGetOwnPropertyDescriptor(HTMLInputElement.prototype, 'value'))
+    .thenReturn(descriptor);
+
+  Object.defineProperty(Object, 'getOwnPropertyDescriptor', Object.assign({}, originalDesc, {
+    value: mockGetOwnPropertyDescriptor,
+  }));
+  runTests(mockGetOwnPropertyDescriptor);
+  Object.defineProperty(Object, 'getOwnPropertyDescriptor', originalDesc);
+}
 
 suite('MDCTextFieldFoundation');
 
@@ -144,6 +177,12 @@ test('#init adds event listeners', () => {
     MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
+test('#destroy removes mdc-textfield--upgraded class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  td.verify(mockAdapter.removeClass(cssClasses.UPGRADED));
+});
+
 test('#destroy removes event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
@@ -179,6 +218,31 @@ test('#init does not add mdc-text-field__label--float-above class if the input d
   });
   foundation.init();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#init handles case when WebIDL attrs cannot be overridden (Safari)', () => {
+  const {foundation, nativeInput} = setupHookTest();
+  withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
+    assert.doesNotThrow(() => {
+      foundation.init();
+      nativeInput.value = nativeInput.value + '_';
+    });
+  });
+});
+
+test('#init handles case when property descriptors are not returned at all (Android Browser)', () => {
+  const {foundation} = setupHookTest();
+  withMockCheckboxDescriptorReturning(undefined, () => {
+    assert.doesNotThrow(() => foundation.init());
+  });
+});
+
+test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', () => {
+  const {foundation} = setupHookTest();
+  withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
+    assert.doesNotThrow(() => foundation.init(), 'init sanity check');
+    assert.doesNotThrow(() => foundation.destroy());
+  });
 });
 
 test('on input focuses if input event occurs without any other events', () => {
@@ -497,4 +561,46 @@ test('interacting with text field does not emit custom events if input is disabl
   textFieldInteraction(mockEvt);
 
   td.verify(mockAdapter.notifyIconAction(), {times: 0});
+});
+
+test('"value" property change hook removes mdc-textfield__label--float-above class', () => {
+  const {foundation, mockAdapter, nativeInput} = setupHookTest();
+  const clock = lolex.install();
+
+  withMockCheckboxDescriptorReturning({
+    get: () => {},
+    set: () => {},
+    enumerable: false,
+    configurable: true,
+  }, () => {
+    nativeInput.value = '_';
+    foundation.init();
+    nativeInput.value = '';
+    td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
+  });
+
+  clock.uninstall();
+});
+
+test('"value" property change hook does nothing if input is focused', () => {
+  const {foundation, mockAdapter, nativeInput} = setupHookTest();
+  const clock = lolex.install();
+
+  withMockCheckboxDescriptorReturning({
+    get: () => {},
+    set: () => {},
+    enumerable: false,
+    configurable: true,
+  }, () => {
+    let focus;
+    td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function))).thenDo((type, handler) => {
+      focus = handler;
+    });
+    foundation.init();
+    focus();
+    nativeInput.value = '';
+    td.verify(mockAdapter.removeClassFromLabel(td.matchers.anything()), {times: 0});
+  });
+
+  clock.uninstall();
 });
