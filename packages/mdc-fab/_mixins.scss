@@ -18,6 +18,38 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 
+@mixin mdc-fab-theme($config) {
+  $bg-color: map-get($config, bg-color);
+  $fg-color: map-get($config, fg-color);
+  $ripple-config: map-get($config, ripple-config);
+  $tap-highlight-color: map-get($config, tap-highlight-color);
+
+  @if $ripple-config {
+    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+  }
+
+  @if $tap-highlight-color {
+    @if $ripple-config {
+      &:not(.mdc-ripple-upgraded) {
+        @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
+      }
+    }
+
+    @else {
+      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
+    }
+  }
+
+  @if $bg-color {
+    @include mdc-theme-prop(background-color, $bg-color);
+  }
+
+  @if $fg-color {
+    @include mdc-theme-prop(color, $fg-color);
+  }
+}
+
 @mixin mdc-fab-base_ {
   @include mdc-ripple-base;
 
@@ -76,38 +108,6 @@
 @mixin mdc-fab--mini_ {
   width: 40px;
   height: 40px;
-}
-
-@mixin mdc-fab-theme($config) {
-  $bg-color: map-get($config, bg-color);
-  $fg-color: map-get($config, fg-color);
-  $ripple-config: map-get($config, ripple-config);
-  $tap-highlight-color: map-get($config, tap-highlight-color);
-
-  @if $ripple-config {
-    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-  }
-
-  @if $tap-highlight-color {
-    @if $ripple-config {
-      &:not(.mdc-ripple-upgraded) {
-        @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-      }
-    }
-
-    @else {
-      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-    }
-  }
-
-  @if $bg-color {
-    @include mdc-theme-prop(background-color, $bg-color);
-  }
-
-  @if $fg-color {
-    @include mdc-theme-prop(color, $fg-color);
-  }
 }
 
 @mixin mdc-fab__icon_ {
