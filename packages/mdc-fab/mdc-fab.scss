@@ -14,6 +14,7 @@
 
 @import "@material/theme/variables";
 @import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define fab
 
@@ -29,9 +30,7 @@
 }
 
 .mdc-fab--plain {
-  @include mdc-fab-container-color(white);
-  @include mdc-fab-ink-color(text-primary-on-light);
-  @include mdc-fab-ripple(()); // default dark ripple
+  @include mdc-fab-accessible(white);
 }
 
 .mdc-fab--mini {
