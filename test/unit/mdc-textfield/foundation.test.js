@@ -92,6 +92,18 @@ test('#setDisabled removes mdc-textfield--disabled when set to false', () => {
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
 });
 
+test('#setValid adds mdc-textfied--invalid when set to false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setValid(false);
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+});
+
+test('#setValid removes mdc-textfied--invalid when set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setValid(true);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+});
+
 test('#init adds mdc-textfield--upgraded class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
@@ -246,17 +258,36 @@ test('on blur does not remove mdc-textfield__label--float-above if input has a v
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
 });
 
-test('on blur removes mdc-textfield--invalid if input.checkValidity() returns true', () => {
+test('on blur removes mdc-textfield--invalid if custom validity is false and' +
+     'input.checkValidity() returns true', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
-test('on blur adds mdc-textfied--invalid if input.checkValidity() returns false', () => {
+test('on blur adds mdc-textfied--invalid if custom validity is false and' +
+     'input.checkValidity() returns false', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.checkValidity = () => false;
   blur();
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
+});
+
+test('on blur does not remove mdc-textfield--invalid if custom validity is true and' +
+     'input.checkValidity() returns true', () => {
+  const {foundation, mockAdapter, blur} = setupBlurTest();
+  foundation.setValid(false);
+  blur();
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});
+});
+
+test('on blur does not add mdc-textfied--invalid if custom validity is true and' +
+     'input.checkValidity() returns false', () => {
+  const {foundation, mockAdapter, blur, nativeInput} = setupBlurTest();
+  nativeInput.checkValidity = () => false;
+  foundation.setValid(true);
+  blur();
+  td.verify(mockAdapter.addClass(cssClasses.INVALID), {times: 0});
 });
 
 test('on blur adds role="alert" to helptext if input is invalid and helptext is being used ' +
