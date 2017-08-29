@@ -22,23 +22,10 @@
   $bg-color: map-get($config, bg-color);
   $fg-color: map-get($config, fg-color);
   $ripple-config: map-get($config, ripple-config);
-  $tap-highlight-color: map-get($config, tap-highlight-color);
 
   @if $ripple-config {
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
     @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-  }
-
-  @if $tap-highlight-color {
-    @if $ripple-config {
-      &:not(.mdc-ripple-upgraded) {
-        @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-      }
-    }
-
-    @else {
-      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-    }
   }
 
   @if $bg-color {
