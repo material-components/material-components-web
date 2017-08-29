@@ -54,4 +54,15 @@
   }
 }
 
+// Styles used to detect buggy behavior of CSS custom properties in Edge
+// See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
+.mdc-ripple-surface--test-edge-var-bug {
+  --mdc-ripple-test-edge-var: 1px solid #000;
+  visibility: hidden;
+
+  &::before {
+    border: var(--mdc-ripple-test-edge-var);
+  }
+}
+
 // postcss-bem-linter: end
