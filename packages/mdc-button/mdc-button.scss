@@ -105,8 +105,9 @@
     @include mdc-theme-prop(border-color, text-primary-on-dark);
   }
 
+  // postcss-bem-linter: ignore
   &.mdc-button--dense {
-    line-height: 28px;
+    line-height: 27px;  // To accommodate odd font size of dense button
   }
 }
 
