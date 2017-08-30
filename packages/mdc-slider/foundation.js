@@ -244,11 +244,19 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
   createDownHandler_(moveEvt, upEvt, getPageX = ({pageX}) => pageX) {
     const moveHandler = (evt) => {
+      if (!this.active_) {
+        return;
+      }
+
       evt.preventDefault();
       this.setValueFromEvt_(evt, getPageX);
     };
 
     const upHandler = () => {
+      if (!this.active_) {
+        return;
+      }
+
       this.setActive_(false);
       this.adapter_.deregisterBodyInteractionHandler(moveEvt, moveHandler);
       this.adapter_.deregisterBodyInteractionHandler(upEvt, upHandler);
