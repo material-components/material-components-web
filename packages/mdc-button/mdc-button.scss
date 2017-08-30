@@ -78,6 +78,10 @@
 .mdc-button--raised,
 .mdc-button--unelevated {
   @include mdc-button-filled_;
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-filled-dark_;
+  }
 }
 
 .mdc-button--raised {

@@ -25,17 +25,17 @@
   @include mdc-theme-prop(color, text-primary-on-dark);
 
   background-color: black;
+}
 
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: black, opacity: .32));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: black, opacity: .32));
-    @include mdc-theme-prop(color, text-primary-on-light);
+@mixin mdc-button-filled-dark_() {
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg((pseudo: "::before", base-color: black, opacity: .32));
+  @include mdc-ripple-fg((pseudo: "::after", base-color: black, opacity: .32));
+  @include mdc-theme-prop(color, text-primary-on-light);
 
-    background-color: white;
+  background-color: white;
 
-    &:not(.mdc-ripple-upgraded) {
-      -webkit-tap-highlight-color: rgba(black, .18);
-    }
+  &:not(.mdc-ripple-upgraded) {
+    -webkit-tap-highlight-color: rgba(black, .18);
   }
 }
