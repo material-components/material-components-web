@@ -649,6 +649,7 @@
             var mainElement = document.querySelector('#tabs-demo-main-section');
             mainElement.hasAttribute('dir') ? mainElement.removeAttribute('dir') : mainElement.setAttribute('dir', 'rtl');
 
+            window.demoTabBar.layout();
             window.basicTabBar.layout();
             window.tabBarScroller.layout();
             window.tabBarScroller.tabBar.layout();
