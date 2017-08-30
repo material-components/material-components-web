@@ -126,3 +126,29 @@ test('#emit dispatches a custom event from a DOM element with supplied data', ()
   assert.equal(evt.type, type);
   assert.deepEqual(evt.detail, data);
 });
+
+test('#emit dispatches an event from a DOM element with supplied data - custom events not supported', () => {
+  const root = document.createElement('div');
+  const handler = td.func('eventHandler');
+  let evt = null;
+
+  td.when(handler(td.matchers.isA(Object))).thenDo((evt_) => {
+    evt = evt_;
+  });
+
+  const data = {evtData: true};
+  const type = 'customeventtype';
+
+  root.addEventListener(type, handler);
+  const {CustomEvent} = window;
+  window.CustomEvent = undefined;
+  try {
+    emit(root, type, data);
+  } finally {
+    window.CustomEvent = CustomEvent;
+  }
+
+  assert.isOk(evt !== null);
+  assert.equal(evt.type, type);
+  assert.deepEqual(evt.detail, data);
+});
