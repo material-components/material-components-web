@@ -18,29 +18,15 @@ import bel from 'bel';
 import td from 'testdouble';
 import {assert} from 'chai';
 import mdcAutoInit from '../../../packages/mdc-auto-init';
-import {MDCComponent} from '../../../packages/mdc-base';
+import {emit} from '../../../packages/mdc-auto-init';
 
-class FakeComponent extends MDCComponent {
+class FakeComponent {
   static attachTo(node) {
     return new this(node);
   }
 
   constructor(node) {
-    super();
-    this.root_ = node;
-  }
-
-  get root() {
-    return this.root_;
-  }
-
-  getDefaultFoundation() {
-    const defaultFoundation = td.object({
-      isDefaultFoundation: true,
-      init: () => {},
-    });
-    defaultFoundation.rootElementAtTimeOfCall = this.root_;
-    return defaultFoundation;
+    this.node = node;
   }
 }
 
@@ -70,7 +56,7 @@ test('passes the node where "data-mdc-auto-init" was found to attachTo()', () =>
   mdcAutoInit(root);
 
   const fake = root.querySelector('.mdc-fake');
-  assert.equal(fake.FakeComponent.root, fake);
+  assert.equal(fake.FakeComponent.node, fake);
 });
 
 test('throws when no constructor name is specified within "data-mdc-auto-init"', () => {
@@ -119,4 +105,24 @@ test('#emit event from MDCComponent on init complete', () => {
   mdcAutoInit(root);
 
   td.verify(handler(td.matchers.isA(Object)));
+});
+
+test('#emit dispatches a custom event from a DOM element with supplied data', () => {
+  const root = document.createElement('div');
+  const handler = td.func('eventHandler');
+  let evt = null;
+
+  td.when(handler(td.matchers.isA(Object))).thenDo((evt_) => {
+    evt = evt_;
+  });
+
+  const data = {evtData: true};
+  const type = 'customeventtype';
+
+  root.addEventListener(type, handler);
+  emit(root, type, data);
+
+  assert.isOk(evt !== null);
+  assert.equal(evt.type, type);
+  assert.deepEqual(evt.detail, data);
 });

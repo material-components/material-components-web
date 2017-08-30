@@ -26,7 +26,7 @@ const CONSOLE_WARN = console.warn.bind(console);
  * @param {!Object} evtData
  * @param {boolean=} shouldBubble
  */
-function emit(element, evtType, evtData, shouldBubble = false) {
+export function emit(element, evtType, evtData, shouldBubble = false) {
   let evt;
   if (typeof CustomEvent === 'function') {
     evt = new CustomEvent(evtType, {
