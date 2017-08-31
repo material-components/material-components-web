@@ -42,11 +42,9 @@ $mdc-theme-background: #fff !default; // White
 $mdc-theme-primary-tone: mdc-theme-light-or-dark($mdc-theme-primary);
 $mdc-theme-primary-light-tone: mdc-theme-light-or-dark($mdc-theme-primary-light);
 $mdc-theme-primary-dark-tone: mdc-theme-light-or-dark($mdc-theme-primary-dark);
-
 $mdc-theme-secondary-tone: mdc-theme-light-or-dark($mdc-theme-secondary);
 $mdc-theme-secondary-light-tone: mdc-theme-light-or-dark($mdc-theme-secondary-light);
 $mdc-theme-secondary-dark-tone: mdc-theme-light-or-dark($mdc-theme-secondary-dark);
-
 $mdc-theme-background-tone: mdc-theme-light-or-dark($mdc-theme-background);
 
 //
@@ -59,14 +57,14 @@ $mdc-theme-text-colors: (
     secondary: rgba(black, .54),
     hint: rgba(black, .38),
     disabled: rgba(black, .38),
-    icon: rgba(black, .38)
+    icon: rgba(black, .38),
   ),
   light: (
     primary: white,
     secondary: rgba(white, .7),
     hint: rgba(white, .5),
     disabled: rgba(white, .5),
-    icon: rgba(white, .5)
+    icon: rgba(white, .5),
   )
 );
 
@@ -138,5 +136,8 @@ $mdc-theme-property-values: (
   text-secondary-on-dark: map-get(map-get($mdc-theme-text-colors, light), secondary),
   text-hint-on-dark: map-get(map-get($mdc-theme-text-colors, light), hint),
   text-disabled-on-dark: map-get(map-get($mdc-theme-text-colors, light), disabled),
-  text-icon-on-dark: map-get(map-get($mdc-theme-text-colors, light), icon)
+  text-icon-on-dark: map-get(map-get($mdc-theme-text-colors, light), icon),
+  text-textfield-background-on-dark: map-get(map-get($mdc-theme-text-colors, light), textfield-background),
+  text-textfield-label-on-dark: map-get(map-get($mdc-theme-text-colors, light), textfield-label),
+  text-textfield-placeholder-on-dark: map-get(map-get($mdc-theme-text-colors, light), textfield-placeholder)
 );

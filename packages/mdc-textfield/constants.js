@@ -22,6 +22,7 @@ export const strings = {
   TRAILING_ICON_SELECTOR: '.mdc-textfield__trailing-icon',
   LEADING_ICON_EVENT: 'MDCTextfield:leading-icon',
   TRAILING_ICON_EVENT: 'MDCTextfield:trailing-icon',
+  BOTTOM_LINE_SELECTOR: '.mdc-textfield__bottom-line',
 };
 
 export const cssClasses = {
@@ -36,4 +37,6 @@ export const cssClasses = {
   BOX: 'mdc-textfield--box',
   LEADING_ICON: 'mdc-textfield__leading-icon',
   TRAILING_ICON: 'mdc-textfield__trailing-icon',
+  TEXTAREA: 'mdc-textfield--textarea',
+  BOTTOM_LINE_ACTIVE: 'mdc-textfield__bottom-line--active',
 };
