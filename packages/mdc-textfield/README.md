@@ -43,6 +43,7 @@ npm install --save @material/textfield
 ```html
 <div class="mdc-textfield">
   <input type="text" id="my-textfield" class="mdc-textfield__input">
+  <div class="mdc-textfield__bottom-line"></div>
   <label class="mdc-textfield__label" for="my-textfield">Hint text</label>
 </div>
 ```
@@ -52,6 +53,7 @@ It's also possible to wrap an input within a `<label>` to avoid dynamic id gener
 ```html
 <label class="mdc-textfield">
   <input type="text" class="mdc-textfield__input">
+  <div class="mdc-textfield__bottom-line"></div>
   <span class="mdc-textfield__label">Hint Text</span>
 </label>
 ```
@@ -65,6 +67,7 @@ It's also possible to wrap an input within a `<label>` to avoid dynamic id gener
 <label for="textfield-no-js">Textfield with no JS: </label>
 <div class="mdc-textfield">
   <input type="text" id="textfield-no-js" class="mdc-textfield__input" placeholder="Hint text">
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -73,6 +76,7 @@ It's also possible to wrap an input within a `<label>` to avoid dynamic id gener
 ```html
 <div class="mdc-textfield mdc-textfield--disabled">
   <input type="text" id="disabled-textfield" class="mdc-textfield__input" disabled>
+  <div class="mdc-textfield__bottom-line"></div>
   <label class="mdc-textfield__label" for="disabled-textfield">Disabled text field</label>
 </div>
 ```
@@ -89,6 +93,7 @@ since it won't be added until that JS runs, adding it manually will prevent an i
 ```html
 <div class="mdc-textfield mdc-textfield--upgraded">
   <input type="text" id="pre-filled" class="mdc-textfield__input" value="Pre-filled value">
+  <div class="mdc-textfield__bottom-line"></div>
   <label class="mdc-textfield__label mdc-textfield__label--float-above" for="pre-filled">
     Label in correct place
   </label>
@@ -103,6 +108,7 @@ information to users, as well for validation messages (covered below).
 ```html
 <div class="mdc-textfield">
   <input type="text" id="username" class="mdc-textfield__input" aria-controls="username-helptext">
+  <div class="mdc-textfield__bottom-line"></div>
   <label for="username" class="mdc-textfield__label">Username</label>
 </div>
 <p id="username-helptext" class="mdc-textfield-helptext" aria-hidden="true">
@@ -121,6 +127,7 @@ If you'd like the help text to always be visible, add the
 ```html
 <div class="mdc-textfield">
   <input type="email" id="email" class="mdc-textfield__input">
+  <div class="mdc-textfield__bottom-line"></div>
   <label for="email" class="mdc-textfield__label">Email address</label>
 </div>
 <p class="mdc-textfield-helptext mdc-textfield-helptext--persistent">
@@ -149,6 +156,7 @@ by HTML5's form validation API.
 ```html
 <div class="mdc-textfield">
   <input type="password" id="pw" class="mdc-textfield__input" required minlength=8>
+  <div class="mdc-textfield__bottom-line"></div>
   <label for="pw" class="mdc-textfield__label">Password</label>
 </div>
 ```
@@ -166,6 +174,7 @@ UX for client-side form field validation.
 <div class="mdc-textfield">
   <input required minlength=8 type="password" class="mdc-textfield__input" id="pw"
          aria-controls="pw-validation-msg">
+  <div class="mdc-textfield__bottom-line"></div>
   <label for="pw" class="mdc-textfield__label">Choose password</label>
 </div>
 <p class="mdc-textfield-helptext
@@ -176,24 +185,55 @@ UX for client-side form field validation.
 </p>
 ```
 
-### Multi-line - With Javascript
+### Leading and Trailing Icons
+Leading and trailing icons can be added to MDC Textfields as visual indicators
+as well as interaction targets. To do so, add the relevant classnames to the root element, add
+an `i` element with your preferred icon, and give it either a `mdc-textfield__leading-icon` or
+`mdc-textfield__trailing-icon` class depending on which you are looking to achieve.
 
+#### Leading:
 ```html
-<div class="mdc-textfield mdc-textfield--multiline">
-  <textarea id="multi-line" class="mdc-textfield__input" rows="8" cols="40"></textarea>
-  <label for="multi-line" class="mdc-textfield__label">Multi-line Label</label>
+<div class="mdc-textfield mdc-textfield--box mdc-textfield--with-leading-icon">
+  <i class="material-icons mdc-textfield__leading-icon" tabindex="0">event</i>
+  <input type="text" id="my-input" class="mdc-textfield__input">
+  <label for="my-input" class="mdc-textfield__label">Your Name</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
-### Multi-line - Gracefully Degraded
+#### Trailing:
+```html
+<div class="mdc-textfield mdc-textfield--box mdc-textfield--with-trailing-icon">
+  <i class="material-icons mdc-textfield__trailing-icon" tabindex="0">event</i>
+  <input type="text" id="my-input" class="mdc-textfield__input">
+  <label for="my-input" class="mdc-textfield__label">Your Name</label>
+  <div class="mdc-textfield__bottom-line"></div>
+</div>
+```
+
+>**NOTE:** if you would like to display un-clickable icons, simply remove `tabindex="0"`,
+and the css will ensure the cursor is set to default, and that actioning on an icon doesn't
+do anything unexpected.
+
+
+### Textarea
 
 ```html
-<label for="css-only-multiline">Multi-line label: </label>
-<div class="mdc-textfield mdc-textfield--multiline">
-  <textarea class="mdc-textfield__input"
-            id="css-only-multiline"
-            rows="8" cols="40"
-            placeholder="Tell the world something about yourself!"></textarea>
+<div class="mdc-textfield mdc-textfield--textarea">
+  <textarea id="textarea" class="mdc-textfield__input" rows="8" cols="40"></textarea>
+  <label for="textarea" class="mdc-textfield__label">Textarea Label</label>
+</div>
+```
+
+### Textarea - CSS Only
+
+```html
+<div class="mdc-textfield mdc-textfield--textarea">
+  <textarea id="textarea-css-only"
+    class="mdc-textfield__input"
+    rows="8"
+    cols="40"
+    placeholder="Enter something about yourself"></textarea>
 </div>
 ```
 
@@ -206,24 +246,24 @@ UX for client-side form field validation.
          placeholder="Full-Width Textfield"
          aria-label="Full-Width Textfield">
 </div>
-<div class="mdc-textfield mdc-textfield--multiline mdc-textfield--fullwidth">
-  <textarea class="mdc-textfield__input"
-            placeholder="Full-Width multiline textfield"
-            rows="8" cols="40"
-            aria-label="Full-Width multiline textfield"></textarea>
+
+<div class="mdc-textfield mdc-textfield--fullwidth mdc-textfield--textarea">
+  <textarea id="full-width-textarea" class="mdc-textfield__input" rows="8"></textarea>
+  <label for="full-width-textarea" class="mdc-textfield__label">Textarea Label</label>
 </div>
 ```
 
 Note that **full-width text fields do not support floating labels**. Labels should not be
-included as part of the DOM structure for full-width text fields.
+included as part of the DOM structure for full-width text fields. Full-width textareas
+behave normally.
 
 ### Text Field Boxes
 
 ```html
 <div class="mdc-textfield mdc-textfield--box">
   <input type="text" id="tf-box" class="mdc-textfield__input">
-  <label for="tf-box" class="mdc-textfield__label">Your Name</label>
   <div class="mdc-textfield__bottom-line"></div>
+  <label for="tf-box" class="mdc-textfield__label">Your Name</label>
 </div>
 ```
 
@@ -236,6 +276,7 @@ text, validation, and dense UI.
 <label for="css-only-textfield-box">Your name:</label>
 <div class="mdc-textfield mdc-textfield--box">
   <input type="text" class="mdc-textfield__input" id="css-only-textfield-box" placeholder="Name">
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -344,19 +385,31 @@ complicated.
 | removeClass(className: string) => void | Removes a class from the root element |
 | addClassToLabel(className: string) => void | Adds a class to the label element. We recommend you add a conditional check here, and in `removeClassFromLabel` for whether or not the label is present so that the JS component could be used with text fields that don't require a label, such as the full-width text field. |
 | removeClassFromLabel(className: string) => void | Removes a class from the label element |
+| eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
+| registerTextFieldClickHandler(handler: EventListener) => void | Registers an event handler on the root element for a "click" event |
+| deregisterTextFieldClickHandler(handler: EventListener) => void | Deregisters an event handler on the root element for a "click" event |
+| notifyLeadingIconAction() => void | Broadcasts a custom event "MDCTextfield:leading-icon" denoting a user has clicked the leading icon |
+| notifyTrailingIconAction() => void | Broadcasts a custom event "MDCTextfield:trailing-icon" denoting a user has clicked the trailing icon |
+| addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
+| removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
 | addClassToHelptext(className: string) => void | Adds a class to the help text element. Note that in our code we check for whether or not we have a help text element and if we don't, we simply return. |
 | removeClassFromHelptext(className: string) => void | Removes a class from the help text element. |
 | helptextHasClass(className: string) => boolean | Returns whether or not the help text element contains the current class |
-| setHelptextAttr(name: string, value: string) => void | Sets an attribute on the help text element |
-| removeHelptextAttr(name: string) => void | Removes an attribute on the help text element |
 | registerInputFocusHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "focus" event |
-| deregisterInputFocusHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "focus" event |
+| deregisterInputFocusHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "focus" event |
 | registerInputBlurHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "blur" event |
-| deregisterInputBlurHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "blur" event |
+| deregisterInputBlurHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "blur" event |
 | registerInputInputHandler(handler: EventListener) => void | Registers an event listener on the native input element for an "input" event |
-| deregisterInputInputHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for an "input" event |
+| deregisterInputInputHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for an "input" event |
 | registerInputKeydownHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "keydown" event |
-| deregisterInputKeydownHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "keydown" event |
+| deregisterInputKeydownHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "keydown" event |
+| registerInputPointerDownHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
+| deregisterInputPointerDownHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
+| registerTransitionEndHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "transitionend" event |
+| deregisterTransitionEndHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "transitionend" event |
+| setBottomLineAttr(attr: string, value: string) => void | Sets an attribute with a given value on the bottom line element |
+| setHelptextAttr(name: string, value: string) => void | Sets an attribute with a given value on the help text element |
+| removeHelptextAttr(name: string) => void | Removes an attribute from the help text element |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 
 #### The full foundation API
