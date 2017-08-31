@@ -168,4 +168,3 @@ Changes the FAB's ink color to the given color.
 Changes the FAB's ripple to the given ripple configuration (see the [mdc-ripple README][ripple-readme]).
 
 [ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
-[tap-highlight]: https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-tap-highlight-color
