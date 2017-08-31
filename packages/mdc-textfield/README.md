@@ -185,24 +185,24 @@ UX for client-side form field validation.
 </p>
 ```
 
-### Multi-line - With Javascript
+### Textarea
 
 ```html
 <div class="mdc-textfield mdc-textfield--textarea">
-  <textarea id="multi-line" class="mdc-textfield__input" rows="8" cols="40"></textarea>
-  <label for="multi-line" class="mdc-textfield__label">Multi-line Label</label>
+  <textarea id="textarea" class="mdc-textfield__input" rows="8" cols="40"></textarea>
+  <label for="textarea" class="mdc-textfield__label">Textarea Label</label>
 </div>
 ```
 
-### Multi-line - Gracefully Degraded
+### Textarea - CSS Only
 
 ```html
-<label for="css-only-multiline">Multi-line label: </label>
 <div class="mdc-textfield mdc-textfield--textarea">
-  <textarea class="mdc-textfield__input"
-            id="css-only-multiline"
-            rows="8" cols="40"
-            placeholder="Tell the world something about yourself!"></textarea>
+  <textarea id="textarea-css-only"
+    class="mdc-textfield__input"
+    rows="8"
+    cols="40"
+    placeholder="Enter something about yourself"></textarea>
 </div>
 ```
 
@@ -215,16 +215,16 @@ UX for client-side form field validation.
          placeholder="Full-Width Textfield"
          aria-label="Full-Width Textfield">
 </div>
-<div class="mdc-textfield mdc-textfield--textarea mdc-textfield--fullwidth">
-  <textarea class="mdc-textfield__input"
-            placeholder="Full-Width multiline textfield"
-            rows="8" cols="40"
-            aria-label="Full-Width multiline textfield"></textarea>
+
+<div class="mdc-textfield mdc-textfield--fullwidth mdc-textfield--textarea">
+  <textarea id="full-width-textarea" class="mdc-textfield__input" rows="8"></textarea>
+  <label for="full-width-textarea" class="mdc-textfield__label">Textarea Label</label>
 </div>
 ```
 
 Note that **full-width text fields do not support floating labels**. Labels should not be
-included as part of the DOM structure for full-width text fields.
+included as part of the DOM structure for full-width text fields. Full-width textareas
+behave normally.
 
 ### Text Field Boxes
 
@@ -360,20 +360,20 @@ complicated.
 | removeClassFromHelptext(className: string) => void | Removes a class from the help text element. |
 | helptextHasClass(className: string) => boolean | Returns whether or not the help text element contains the current class |
 | registerInputFocusHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "focus" event |
-| deregisterInputFocusHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "focus" event |
+| deregisterInputFocusHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "focus" event |
 | registerInputBlurHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "blur" event |
-| deregisterInputBlurHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for a "blur" event |
+| deregisterInputBlurHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "blur" event |
 | registerInputInputHandler(handler: EventListener) => void | Registers an event listener on the native input element for an "input" event |
-| deregisterInputInputHandler(handler: EventListener) => void | Un-registers an event listener on the native input element for an "input" event |
+| deregisterInputInputHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for an "input" event |
 | registerInputKeydownHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "keydown" event |
 | deregisterInputKeydownHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "keydown" event |
-| registerInputPointerDownHandler(handler: EventListener) => void | Registers an event listener on the native input element for a pointer event |
-| deregisterInputPointerDownHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "pointer" event |
+| registerInputPointerDownHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
+| deregisterInputPointerDownHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
 | registerTransitionEndHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "transitionend" event |
 | deregisterTransitionEndHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "transitionend" event |
 | setBottomLineAttr(attr: string, value: string) => void | Sets an attribute with a given value on the bottom line element |
-| setHelptextAttr(name: string, value: string) => void | Sets an attribute on the help text element |
-| removeHelptextAttr(name: string) => void | Removes an attribute on the help text element |
+| setHelptextAttr(name: string, value: string) => void | Sets an attribute with a given value on the help text element |
+| removeHelptextAttr(name: string) => void | Removes an attribute from the help text element |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 
 #### The full foundation API

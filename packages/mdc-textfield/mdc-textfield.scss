@@ -28,8 +28,8 @@ $mdc-textfield-divider-on-light: rgba(black, .12);
 $mdc-textfield-divider-on-dark: rgba(white, .12);
 $mdc-textfield-disabled-border-on-light: rgba(#231f20, .26);
 $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
-$mdc-textfield-underline-on-light-idle: rgba(black, .5);
 $mdc-textfield-underline-on-light: rgba(black, 1);
+$mdc-textfield-underline-on-light-idle: rgba(black, .5);
 $mdc-textfield-underline-on-dark: rgba(white, 1);
 $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
 
@@ -458,31 +458,46 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
 }
 
 .mdc-textfield--textarea {
-  $padding-inset: 4px;
+  $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
   $label-offset-x: $padding-inset;
 
   display: flex;
   height: initial;
   transition: none;
+  border: 1px solid $mdc-textfield-divider-on-light;
+  border-radius: 4px;
+
+  @include mdc-theme-dark(".mdc-textfield") {
+    border-color: $mdc-textfield-divider-on-dark;
+  }
 
   &::after {
     content: initial;
   }
 
   // stylelint-disable plugin/selector-bem-pattern
-
   .mdc-textfield__input {
     padding: $padding-inset;
+    padding-top: $padding-inset * 2;
     transition: mdc-textfield-transition(border-color);
-    border: 1px solid $mdc-textfield-divider-on-light;
+    border: 1px solid transparent;
     border-radius: 2px;
 
-    @include mdc-theme-dark(".mdc-textfield") {
-      border-color: $mdc-textfield-divider-on-dark;
+    &:hover {
+      border-width: 1px;
+      border-color: $mdc-textfield-divider-on-light;
+
+      @include mdc-theme-dark(".mdc-textfield") {
+        border-color: $mdc-textfield-divider-on-dark;
+      }
     }
 
     &:focus {
+      @include mdc-theme-prop(border-color, primary);
+    }
+
+    &:focus:hover {
       @include mdc-theme-prop(border-color, primary);
     }
 
@@ -500,18 +515,14 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
   .mdc-textfield__label {
     top: $label-offset-y;
     bottom: initial;
-    left: $label-offset-x;
 
-    @include mdc-rtl(".mdc-textfield--textarea") {
-      right: $label-offset-x;
-      left: auto;
-    }
+    @include mdc-rtl-reflexive-position(left, $label-offset-x);
 
     &--float-above {
       // Translate above the top of the input, and compensate for the amount of offset needed
       // to position the label within the bounds of the inset padding.
       // Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
-      transform: translateY(calc(-100% - #{$label-offset-y})) scale(.923, .923);
+      transform: translateY(-50%) scale(.923, .923);
     }
   }
 
@@ -526,8 +537,22 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
       }
     }
   }
-  // stylelint-enable plugin/selector-bem-pattern
+
+  &:not(.mdc-textfield--upgraded) {
+    .mdc-textfield__input {
+      padding-top: $padding-inset;
+    }
+  }
 }
+
+.mdc-textfield--textarea.mdc-textfield--focused {
+  @include mdc-theme-prop(border-color, primary);
+}
+
+.mdc-textfield--textarea.mdc-textfield--disabled {
+  background-color: rgba(black, .025);
+}
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-textfield--fullwidth {
   display: block;
@@ -541,51 +566,36 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
   // stylelint-disable plugin/selector-bem-pattern
 
   &:not(.mdc-textfield--textarea) {
+    display: block;
+    width: 100%;
     height: 56px;
-  }
+    box-sizing: border-box;
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid $mdc-textfield-divider-on-light;
+    outline: none;
 
-  &.mdc-textfield--textarea {
-    padding: 20px 0 0;
+    .mdc-textfield__input {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      resize: none;
+      // Use !important here to override all other border treatments
+      border: none !important;
+    }
   }
 
   &.mdc-textfield--dense {
     &:not(.mdc-textfield--textarea) {
       height: 48px;
     }
-
-    &.mdc-textfield--textarea {
-      padding: 16px 0 0;
-    }
-  }
-
-  &.mdc-textfield--disabled {
-    &,
-    &.mdc-textfield--textarea {
-      border-bottom: 1px dotted $mdc-textfield-divider-on-light;
-    }
   }
 
   @include mdc-theme-dark {
     border-bottom: 1px solid $mdc-textfield-divider-on-dark;
-
-    &.mdc-textfield--disabled {
-      &,
-      &.mdc-textfield--textarea {
-        border-bottom: 1px dotted $mdc-textfield-divider-on-dark;
-      }
-    }
   }
 
   // stylelint-enable plugin/selector-bem-pattern
-
-  .mdc-textfield__input {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    resize: none;
-    // Use !important here to override all other border treatments
-    border: none !important;
-  }
 }
 
 // Graceful degredation for css-only inputs

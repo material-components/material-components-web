@@ -133,7 +133,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
     // We need to wait for the bottom line to entirely transparent
     // before removing the class. If we do not, we see the line start to
-    // scale down before disappearing - sheehana
+    // scale down before disappearing
     if (evt.propertyName === 'opacity' && !this.isFocused_) {
       this.adapter_.removeClassFromBottomLine(BOTTOM_LINE_ACTIVE);
     }
