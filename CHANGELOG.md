@@ -1,3 +1,18 @@
+<a name="0.19.0"></a>
+# [0.19.0](https://github.com/material-components/material-components-web/compare/v0.18.1...v0.19.0) (2017-08-25)
+
+
+### Bug Fixes
+
+* **ripple:** Revert #1098 to fix bounded ripples (#1183) ([5769a7b](https://github.com/material-components/material-components-web/commit/5769a7b)), closes [#1183](https://github.com/material-components/material-components-web/issues/1183)
+
+
+### Features
+
+* **button:** implement unelevated button (#1157) ([3cca7ef](https://github.com/material-components/material-components-web/commit/3cca7ef))
+
+
+
 <a name="0.18.1"></a>
 ## [0.18.1](https://github.com/material-components/material-components-web/compare/v0.18.0...v0.18.1) (2017-08-24)
 

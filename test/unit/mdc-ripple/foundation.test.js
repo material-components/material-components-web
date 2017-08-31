@@ -253,7 +253,7 @@ testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference bet
 
   const maxSize = Math.max(width, height);
   const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
-  const surfaceDiameter = Math.min(width, height);
+  const surfaceDiameter = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
   const maxRadius = surfaceDiameter + numbers.PADDING;
   const fgScale = maxRadius / initialSize;
 

@@ -23,15 +23,15 @@
 //
 
 $mdc-theme-primary: #3f51b5 !default; // Indigo 500
-$mdc-theme-primary-light: lighten($mdc-theme-primary, 14%) !default;
-$mdc-theme-primary-dark: darken($mdc-theme-primary, 14%) !default;
+$mdc-theme-primary-light: mdc-theme-light-variant($mdc-theme-primary) !default;
+$mdc-theme-primary-dark: mdc-theme-dark-variant($mdc-theme-primary) !default;
 
 // The $mdc-theme-accent variable is DEPRECATED - it exists purely for backward compatibility.
 // The $mdc-theme-secondary* variables should be used for all new projects.
 $mdc-theme-accent: #ff4081 !default; // Pink A200
 $mdc-theme-secondary: $mdc-theme-accent !default;
-$mdc-theme-secondary-light: lighten($mdc-theme-secondary, 14%) !default;
-$mdc-theme-secondary-dark: darken($mdc-theme-secondary, 14%) !default;
+$mdc-theme-secondary-light: mdc-theme-light-variant($mdc-theme-secondary) !default;
+$mdc-theme-secondary-dark: mdc-theme-dark-variant($mdc-theme-secondary) !default;
 
 $mdc-theme-background: #fff !default; // White
 

@@ -72,7 +72,7 @@ By default, `mdc-layout-grid` behaves like a fluid container, which takes up its
 
 Layout grids set default margins and gutters to 24px on desktop, 16px on tablet and phone.
 
-The Material Design spec recommends 8px, 16px, 24px or 40px as the sizes to choose from, we set those as choices in our demo catalog. However, MDC layout grid doesn't impose any restrictions.
+The Material Design spec recommends 8px/16px/24px/40px as the gutter sizes to choose from and recommends up to 160px as the margin sizes. However, MDC layout grid doesn't impose any restrictions.
 
 
 #### CSS custom properties
