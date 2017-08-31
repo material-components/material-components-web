@@ -42,6 +42,10 @@
       .hero .mdc-textfield {
         min-width: 240px;
       }
+
+      .full-width-textarea-example {
+        margin-top: 16px;
+      }
     </style>
   </head>
   <body>
@@ -60,8 +64,7 @@
       <section class="hero">
         <div class="mdc-textfield">
           <input type="text" class="mdc-textfield__input" id="my-textfield"
-                 name="email" aria-controls="my-textfield-helptext"
-                 data-demo-no-auto-js>
+            aria-controls="my-textfield-helptext" data-demo-no-auto-js>
           <div class="mdc-textfield__bottom-line"></div>
           <label for="my-textfield" class="mdc-textfield__label">Text Field</label>
         </div>
@@ -228,49 +231,51 @@
           </label>
         </div>
       </section>
+
       <section class="example">
-        <h2>Multi-line Textfields</h2>
+        <h2>Textarea</h2>
         <section id="demo-textfield-textarea-wrapper">
           <div class="mdc-textfield mdc-textfield--textarea">
-            <textarea id="multi-line" class="mdc-textfield__input" rows="8" cols="40"></textarea>
-            <label for="multi-line" class="mdc-textfield__label">Multi-line Label</label>
+            <textarea id="textarea" class="mdc-textfield__input" rows="8" cols="40"></textarea>
+            <label for="textarea" class="mdc-textfield__label">Textarea Label</label>
           </div>
         </section>
         <div>
-          <input id="multi-disable" type="checkbox">
-          <label for="multi-disable">Disabled</label>
+          <input id="textarea-disable" type="checkbox">
+          <label for="textarea-disable">Disabled</label>
         </div>
         <div>
-          <input id="multi-rtl" type="checkbox">
-          <label for="multi-rtl">RTL</label>
+          <input id="textarea-rtl" type="checkbox">
+          <label for="textarea-rtl">RTL</label>
         </div>
         <div>
-          <input id="multi-dark-theme" type="checkbox">
-          <label for="multi-dark-theme">Dark Theme</label>
+          <input id="textarea-dark-theme" type="checkbox">
+          <label for="textarea-dark-theme">Dark Theme</label>
         </div>
         <div>
-          <input id="multi-required" type="checkbox">
-          <label for="multi-required">Required</label>
+          <input id="textarea-required" type="checkbox">
+          <label for="textarea-required">Required</label>
         </div>
       </section>
+
       <section class="example">
-        <h2>Multi-line Textfields - CSS Only</h2>
-        <label for="css-only-textarea" style="margin-bottom:4px;">About you:</label>
-        <div class="mdc-textfield mdc-textfield--textarea" data-demo-no-auto-js>
-          <textarea class="mdc-textfield__input"
-                    id="css-only-textarea"
-                    rows="8" cols="40"
-                    placeholder="Tell the world something about yourself!"></textarea>
-        </div>
+        <h2>CSS Only Textarea</h2>
+        <section>
+          <div class="mdc-textfield mdc-textfield--textarea" data-demo-no-auto-js>
+            <textarea id="textarea-css-only" class="mdc-textfield__input" rows="8" cols="40" placeholder="Enter something about yourself"></textarea>
+          </div>
+        </section>
       </section>
+
       <section class="example">
-        <h2>Full-Width Textfields</h2>
+        <h2>Full-Width Textfield and Textarea</h2>
         <div id="demo-fullwidth-wrapper">
           <div class="mdc-textfield mdc-textfield--fullwidth" data-demo-no-auto-js>
             <input class="mdc-textfield__input" type="text" placeholder="Subject" aria-label="Subject">
           </div>
-          <div class="mdc-textfield mdc-textfield--textarea mdc-textfield--fullwidth" data-demo-no-auto-js>
-            <textarea class="mdc-textfield__input" placeholder="Message" rows="8" cols="40" aria-label="Message"></textarea>
+          <div class="mdc-textfield mdc-textfield--fullwidth mdc-textfield--textarea full-width-textarea-example">
+            <textarea id="full-width-textarea" class="mdc-textfield__input" rows="8"></textarea>
+            <label for="full-width-textarea" class="mdc-textfield__label">Textarea Label</label>
           </div>
         </div>
         <div>
@@ -355,11 +360,12 @@
         var section = document.getElementById('demo-textfield-textarea-wrapper');
         var tfRoot = section.querySelector('.mdc-textfield');
         var tf = new mdc.textfield.MDCTextfield(tfRoot);
-        document.getElementById('multi-disable').addEventListener('change', function(evt) {
+
+        document.getElementById('textarea-disable').addEventListener('change', function(evt) {
           var target = evt.target;
           tf.disabled = target.checked;
         });
-        document.getElementById('multi-rtl').addEventListener('change', function(evt) {
+        document.getElementById('textarea-rtl').addEventListener('change', function(evt) {
           var target = evt.target;
           if (target.checked) {
             section.setAttribute('dir', 'rtl');
@@ -367,11 +373,11 @@
             section.removeAttribute('dir');
           }
         });
-        document.getElementById('multi-dark-theme').addEventListener('change', function(evt) {
+        document.getElementById('textarea-dark-theme').addEventListener('change', function(evt) {
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
-        document.getElementById('multi-required').addEventListener('change', function(evt) {
+        document.getElementById('textarea-required').addEventListener('change', function(evt) {
           var target = evt.target;
           tfRoot.querySelector('.mdc-textfield__input').required = target.checked;
         });
