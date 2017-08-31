@@ -32,6 +32,11 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       addClassToLabel: (/* className: string */) => {},
       removeClassFromLabel: (/* className: string */) => {},
+      eventTargetHasClass: (/* target: HTMLElement, className: string */) => {},
+      registerTextFieldClickHandler: () => {},
+      deregisterTextFieldClickHandler: () => {},
+      notifyLeadingIconAction: () => {},
+      notifyTrailingIconAction: () => {},
       addClassToBottomLine: (/* className: string */) => {},
       removeClassFromBottomLine: (/* className: string */) => {},
       addClassToHelptext: (/* className: string */) => {},
@@ -65,6 +70,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.inputBlurHandler_ = () => this.deactivateFocus_();
     this.inputInputHandler_ = () => this.autoCompleteFocus_();
     this.inputKeydownHandler_ = () => this.receivedUserInput_ = true;
+    this.textFieldClickHandler_ = (evt) => this.handleTextFieldClick_(evt);
     this.useCustomValidityChecking_ = false;
     this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin_(evt);
@@ -76,6 +82,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.registerInputBlurHandler(this.inputBlurHandler_);
     this.adapter_.registerInputInputHandler(this.inputInputHandler_);
     this.adapter_.registerInputKeydownHandler(this.inputKeydownHandler_);
+    this.adapter_.registerTextFieldClickHandler(this.textFieldClickHandler_);
     this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
     ['mousedown', 'touchstart'].forEach((evtType) => {
       this.adapter_.registerInputPointerDownHandler(evtType, this.setPointerXOffset_);
@@ -93,6 +100,18 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.deregisterInputBlurHandler(this.inputBlurHandler_);
     this.adapter_.deregisterInputInputHandler(this.inputInputHandler_);
     this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
+    this.adapter_.deregisterTextFieldClickHandler(this.textFieldClickHandler_);
+  }
+
+  handleTextFieldClick_(evt) {
+    const {target} = evt;
+    const {LEADING_ICON, TRAILING_ICON} = MDCTextfieldFoundation.cssClasses;
+
+    if (this.adapter_.eventTargetHasClass(target, LEADING_ICON)) {
+      this.adapter_.notifyLeadingIconAction();
+    } else if (this.adapter_.eventTargetHasClass(target, TRAILING_ICON)) {
+      this.adapter_.notifyTrailingIconAction();
+    }
     ['mousedown', 'touchstart'].forEach((evtType) => {
       this.adapter_.deregisterInputPointerDownHandler(evtType, this.setPointerXOffset_, {passive: true});
     });

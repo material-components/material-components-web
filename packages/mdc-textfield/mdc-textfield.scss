@@ -28,11 +28,14 @@ $mdc-textfield-divider-on-light: rgba(black, .12);
 $mdc-textfield-divider-on-dark: rgba(white, .12);
 $mdc-textfield-disabled-border-on-light: rgba(#231f20, .26);
 $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
+$mdc-textfield-icon-position: 15px;
+$mdc-textfield-icon-padding: 48px;
+$mdc-textfield-dense-icon-position: 12px;
+$mdc-textfield-dense-icon-padding: 38px;
 $mdc-textfield-underline-on-light: rgba(black, 1);
 $mdc-textfield-underline-on-light-idle: rgba(black, .5);
 $mdc-textfield-underline-on-dark: rgba(white, 1);
 $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
-
 $mdc-textfield-dark-background: rgba(black, .02);
 $mdc-textfield-dark-label: rgba(black, .6);
 $mdc-textfield-dark-placeholder: rgba(black, .38);
@@ -233,7 +236,11 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
 
     position: absolute;
     bottom: 20px;
+    width: calc(100% - $mdc-textfield-icon-padding);
     color: rgba(black, .6);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     pointer-events: none;
     // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
@@ -294,8 +301,6 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
   }
 
   &.mdc-textfield--dense {
-    height: 44px;
-
     .mdc-textfield__input {
       padding: 12px 12px 0;
     }
@@ -303,7 +308,7 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     .mdc-textfield__label {
       @include mdc-rtl-reflexive-position(left, 12px);
 
-      bottom: 12px;
+      bottom: 20px;
 
       &--float-above {
         transform: translateY(calc(-75% - 2px)) scale(.923, .923);
@@ -312,6 +317,81 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
   }
   // stylelint-enable plugin/selector-bem-pattern
 }
+
+.mdc-textfield--with-leading-icon .mdc-textfield__leading-icon,
+.mdc-textfield--with-trailing-icon .mdc-textfield__trailing-icon {
+  position: absolute;
+  bottom: 16px;
+  cursor: pointer;
+
+  @include mdc-theme-dark(".mdc-textfield") {
+    @include mdc-theme-prop(color, text-secondary-on-dark);
+  }
+}
+
+.mdc-textfield--with-leading-icon {
+  .mdc-textfield__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-textfield-icon-padding, $mdc-textfield-icon-position);
+  }
+
+  .mdc-textfield__leading-icon {
+    @include mdc-rtl-reflexive-position(left, $mdc-textfield-icon-position);
+  }
+
+  .mdc-textfield__label {
+    @include mdc-rtl-reflexive-position(left, $mdc-textfield-icon-padding);
+  }
+}
+
+.mdc-textfield--with-trailing-icon {
+  .mdc-textfield__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-textfield-icon-position, $mdc-textfield-icon-padding);
+  }
+
+  .mdc-textfield__trailing-icon {
+    @include mdc-rtl-reflexive-position(right, $mdc-textfield-icon-position);
+  }
+}
+
+.mdc-textfield__leading-icon:not([tabindex]),
+.mdc-textfield__leading-icon[tabindex="-1"],
+.mdc-textfield__trailing-icon:not([tabindex]),
+.mdc-textfield__trailing-icon[tabindex="-1"] {
+  pointer-events: none;
+  cursor: default;
+}
+
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-textfield--with-leading-icon.mdc-textfield--dense .mdc-textfield__leading-icon,
+.mdc-textfield--with-trailing-icon.mdc-textfield--dense .mdc-textfield__trailing-icon {
+  bottom: 16px;
+  transform: scale(.8);
+}
+
+.mdc-textfield--with-leading-icon.mdc-textfield--dense {
+  .mdc-textfield__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-textfield-dense-icon-padding, $mdc-textfield-dense-icon-position);
+  }
+
+  .mdc-textfield__leading-icon {
+    @include mdc-rtl-reflexive-position(left, $mdc-textfield-dense-icon-position);
+  }
+
+  .mdc-textfield__label {
+    @include mdc-rtl-reflexive-position(left, $mdc-textfield-dense-icon-padding);
+  }
+}
+
+.mdc-textfield--with-trailing-icon.mdc-textfield--dense {
+  .mdc-textfield__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-textfield-dense-icon-position, $mdc-textfield-dense-icon-padding);
+  }
+
+  .mdc-textfield__trailing-icon {
+    @include mdc-rtl-reflexive-position(right, $mdc-textfield-dense-icon-position);
+  }
+}
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--box) {
   display: inline-flex;
@@ -425,7 +505,7 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield__input,
   .mdc-textfield__label,
-  + .mdc-textfield-helptext {
+  .mdc-textfield-helptext {
     @include mdc-theme-prop(color, text-disabled-on-light);
   }
   // stylelint-enable plugin/selector-bem-pattern
@@ -593,6 +673,8 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
   }
 
   &.mdc-textfield--dense {
+    &:not(.mdc-textfield--multiline),
+    &:not(.mdc-textfield--box),
     &:not(.mdc-textfield--textarea) {
       height: 48px;
     }

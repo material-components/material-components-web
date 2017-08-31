@@ -43,9 +43,20 @@
         min-width: 240px;
       }
 
+      .demo-note {
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #f2f2f2;
+      }
+
+      .custom-textfield-input {
+        width: 300px;
+      }
+      
       .full-width-textarea-example {
         margin-top: 16px;
       }
+      
     </style>
   </head>
   <body>
@@ -200,6 +211,66 @@
           }, 0);
         </script>
       </section>
+
+      <section class="example">
+        <h2>Textfield - Leading/Trailing icons</h2>
+        <div class="demo-note">
+          <em>
+            Note: Some implementations utilizing leading and trailing icons may wish to set a width on the
+            <code>input</code> element to achieve uniform widths on textfields.
+            This demo achieves that by adding a custom class name: <code>custom-textfield-input</code> and setting
+            some style:
+          </em>
+          <br />
+          <!--
+            The following text formatting achieves the visual output we are aiming for
+            since the <pre> tag honors whitespace and line breaks.
+          -->
+          <pre>
+<code>.custom-textfield-input {
+  width: 300px;
+}</code></pre>
+        </div>
+        <div id="demo-tf-box-leading-wrapper">
+          <div id="tf-box-leading-example"
+            class="mdc-textfield mdc-textfield--box mdc-textfield--with-leading-icon" data-demo-no-auto-js>
+            <i class="material-icons mdc-textfield__leading-icon" tabindex="0">event</i>
+            <input type="text" id="tf-box-leading" class="mdc-textfield__input custom-textfield-input">
+            <label for="tf-box-leading" class="mdc-textfield__label">Your Name</label>
+            <div class="mdc-textfield__bottom-line"></div>
+          </div>
+        </div>
+        <div id="demo-tf-box-trailing-wrapper">
+          <div id="tf-box-trailing-example"
+            class="mdc-textfield mdc-textfield--box mdc-textfield--with-trailing-icon" data-demo-no-auto-js>
+            <input type="text" id="tf-box-trailing" class="mdc-textfield__input custom-textfield-input">
+            <label for="tf-box-trailing" class="mdc-textfield__label">Your other name</label>
+            <i class="material-icons mdc-textfield__trailing-icon" tabindex="0">delete</i>
+            <div class="mdc-textfield__bottom-line"></div>
+          </div>
+        </div>
+        <div>
+          <input id="box-disable-leading-trailing" type="checkbox">
+          <label for="box-disable-leading-trailing">Disabled</label>
+        </div>
+        <div>
+          <input id="box-rtl-leading-trailing" type="checkbox">
+          <label for="box-rtl-leading-trailing">RTL</label>
+        </div>
+        <div>
+          <input id="box-dark-theme-leading-trailing" type="checkbox">
+          <label for="box-dark-theme-leading-trailing">Dark Theme</label>
+        </div>
+        <div>
+          <input id="box-dense-leading-trailing" type="checkbox">
+          <label for="box-dense-leading-trailing">Dense</label>
+        </div>
+        <div>
+          <input id="box-unclickable-leading-trailing" type="checkbox">
+          <label for="box-unclickable-leading-trailing">Unclickable icons</label>
+        </div>
+      </section>
+
       <section class="example">
         <h2>CSS Only Textfield</h2>
         <div class="mdc-form-field mdc-form-field--align-end">
@@ -302,6 +373,55 @@
           mdc.textfield.MDCTextfield.attachTo(tf);
         }
       })();
+    </script>
+    <script>
+      setTimeout(function() {
+        var tfLeadingEl = document.getElementById('tf-box-leading-example');
+        var tfLeading = new mdc.textfield.MDCTextfield(tfLeadingEl);
+        var wrapperLeading = document.getElementById('demo-tf-box-leading-wrapper');
+
+        var tfTrailingEl = document.getElementById('tf-box-trailing-example');
+        var tfTrailing = new mdc.textfield.MDCTextfield(tfTrailingEl);
+        var wrapperTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+
+        var tfLeadingIcon = tfLeadingEl.querySelector('.mdc-textfield__leading-icon');
+        var tfTrailingIcon = tfTrailingEl.querySelector('.mdc-textfield__trailing-icon');
+
+        document.getElementById('box-disable-leading-trailing').addEventListener('change', function(evt) {
+          tfLeading.disabled = evt.target.checked;
+          tfTrailing.disabled = evt.target.checked;
+        });
+
+        document.getElementById('box-rtl-leading-trailing').addEventListener('change', function(evt) {
+          if (evt.target.checked) {
+            wrapperLeading.setAttribute('dir', 'rtl');
+            wrapperTrailing.setAttribute('dir', 'rtl');
+          } else {
+            wrapperLeading.removeAttribute('dir');
+            wrapperTrailing.removeAttribute('dir');
+          }
+          tfLeading.ripple.layout();
+          tfTrailing.ripple.layout();
+        });
+
+        document.getElementById('box-dark-theme-leading-trailing').addEventListener('change', function(evt) {
+          wrapperLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
+
+        document.getElementById('box-dense-leading-trailing').addEventListener('change', function(evt) {
+          tfLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-textfield--dense');
+          tfLeading.ripple.layout();
+          tfTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-textfield--dense');
+          tfTrailing.ripple.layout();
+        });
+
+        document.getElementById('box-unclickable-leading-trailing').addEventListener('change', function(evt) {
+          tfLeadingIcon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
+          tfTrailingIcon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
+        });
+
+      }, 0);
     </script>
     <script>
       (function() {
