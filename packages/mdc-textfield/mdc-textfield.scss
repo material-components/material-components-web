@@ -33,6 +33,13 @@ $mdc-textfield-underline-on-light-idle: rgba(black, .5);
 $mdc-textfield-underline-on-dark: rgba(white, 1);
 $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
 
+$mdc-textfield-dark-background: rgba(black, .02);
+$mdc-textfield-dark-label: rgba(black, .6);
+$mdc-textfield-dark-placeholder: rgba(black, .38);
+$mdc-textfield-light-background: rgba(white, .05);
+$mdc-textfield-light-label: rgba(white, .7);
+$mdc-textfield-light-placeholder: rgba(white, .3);
+
 @function mdc-textfield-transition($property) {
   @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
 }
@@ -78,7 +85,7 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
       outline: none;
 
       &::placeholder {
-        @include mdc-theme-prop(color, text-textfield-placeholder-on-light);
+        @include mdc-theme-prop(color, $mdc-textfield-light-placeholder);
       }
     }
 
@@ -102,7 +109,7 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
       }
 
       &:focus::placeholder {
-        @include mdc-theme-prop(color, text-textfield-placeholder-on-dark);
+        @include mdc-theme-prop(color, $mdc-textfield-dark-placeholder);
       }
     }
   }
@@ -147,7 +154,7 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
     // stylelint-enable plugin/selector-bem-pattern
 
     @include mdc-theme-dark(".mdc-textfield") {
-      @include mdc-theme-prop(color, text-textfield-label-on-dark);
+      @include mdc-theme-prop(color, $mdc-textfield-dark-label);
     }
 
     &--float-above {
@@ -267,14 +274,14 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
     border-bottom: none;
     background-color: rgba(black, .02);
 
-    @include mdc-theme-prop(background-color, text-textfield-background-on-light);
-    @include mdc-theme-prop(color, text-textfield-placeholder-on-light);
+    @include mdc-theme-prop(background-color, $mdc-textfield-light-background);
+    @include mdc-theme-prop(color, $mdc-textfield-light-placeholder);
 
     @include mdc-theme-dark(".mdc-textfield", true) {
       border-bottom: none;
 
-      @include mdc-theme-prop(background-color, text-textfield-background-on-dark);
-      @include mdc-theme-prop(color, text-textfield-placeholder-on-dark);
+      @include mdc-theme-prop(background-color, $mdc-textfield-dark-background);
+      @include mdc-theme-prop(color, $mdc-textfield-dark-placeholder);
     }
 
     .mdc-textfield__label {
@@ -380,7 +387,7 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
     }
 
     .mdc-textfield__label {
-      color: $mdc-textfield-error-on-light;
+      @include mdc-theme-prop(color, $mdc-textfield-error-on-light);
     }
   }
 
@@ -392,7 +399,7 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
       }
 
       .mdc-textfield__label {
-        color: $mdc-textfield-error-on-dark;
+        @include mdc-theme-prop(color, $mdc-textfield-error-on-dark);
       }
     }
   }
@@ -612,7 +619,7 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
     }
 
     &:disabled {
-      @include mdc-theme-prop(color, text-textfield-placeholder-on-light);
+      @include mdc-theme-prop(color, $mdc-textfield-dark-placeholder);
 
       border-style: dotted;
       border-color: $mdc-textfield-disabled-border-on-light;
@@ -630,7 +637,7 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
       }
 
       &:disabled {
-        @include mdc-theme-prop(color, text-textfield-placeholder-on-dark);
+        @include mdc-theme-prop(color, $mdc-textfield-dark-placeholder);
 
         border-color: $mdc-textfield-disabled-border-on-dark;
       }
@@ -643,7 +650,7 @@ $mdc-textfield-underline-on-dark-idle: rgba(white, .5);
 }
 
 .mdc-textfield--box:not(.mdc-textfield--upgraded) {
-  height: 36px;
+  height: 56px;
 
   &::before,
   &::after {

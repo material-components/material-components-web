@@ -42,11 +42,9 @@ $mdc-theme-background: #fff !default; // White
 $mdc-theme-primary-tone: mdc-theme-light-or-dark($mdc-theme-primary);
 $mdc-theme-primary-light-tone: mdc-theme-light-or-dark($mdc-theme-primary-light);
 $mdc-theme-primary-dark-tone: mdc-theme-light-or-dark($mdc-theme-primary-dark);
-
 $mdc-theme-secondary-tone: mdc-theme-light-or-dark($mdc-theme-secondary);
 $mdc-theme-secondary-light-tone: mdc-theme-light-or-dark($mdc-theme-secondary-light);
 $mdc-theme-secondary-dark-tone: mdc-theme-light-or-dark($mdc-theme-secondary-dark);
-
 $mdc-theme-background-tone: mdc-theme-light-or-dark($mdc-theme-background);
 
 //
@@ -60,9 +58,6 @@ $mdc-theme-text-colors: (
     hint: rgba(black, .38),
     disabled: rgba(black, .38),
     icon: rgba(black, .38),
-    textfield-background: rgba(black, .02),
-    textfield-label: rgba(black, .6),
-    textfield-placeholder: rgba(black, .38),
   ),
   light: (
     primary: white,
@@ -70,9 +65,6 @@ $mdc-theme-text-colors: (
     hint: rgba(white, .5),
     disabled: rgba(white, .5),
     icon: rgba(white, .5),
-    textfield-background: rgba(white, .05),
-    textfield-label: rgba(white, .7),
-    textfield-placeholder: rgba(white, .3)
   )
 );
 
