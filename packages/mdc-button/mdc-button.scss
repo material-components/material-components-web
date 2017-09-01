@@ -77,7 +77,7 @@
 
 .mdc-button--raised,
 .mdc-button--unelevated {
-  @include mdc-button-filled;
+  @include mdc-button-filled_;
 }
 
 .mdc-button--raised {
@@ -91,6 +91,23 @@
 
   &:active {
     @include mdc-elevation(8);
+  }
+}
+
+.mdc-button--stroked {
+  @include mdc-theme-prop(border-color, text-primary-on-light);
+
+  border-width: 2px;
+  border-style: solid;
+  line-height: 32px;
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-theme-prop(border-color, text-primary-on-dark);
+  }
+
+  // postcss-bem-linter: ignore
+  &.mdc-button--dense {
+    line-height: 27px;  // To accommodate odd font size of dense button
   }
 }
 
@@ -134,6 +151,14 @@
       @include mdc-theme-prop(background-color, $theme-style);
       @include mdc-theme-prop(color, text-primary-on-#{$theme-style});
     }
+    // postcss-bem-linter: ignore
+    &.mdc-button--stroked {
+      @include mdc-theme-prop(border-color, $theme-style);
+
+      @include mdc-theme-dark(".mdc-button") {
+        @include mdc-theme-prop(border-color, $theme-style);
+      }
+    }
   }
 }
 
@@ -165,6 +190,17 @@
       @include mdc-theme-prop(color, text-disabled-on-dark);
 
       background-color: rgba(255, 255, 255, .15);
+    }
+  }
+}
+
+.mdc-button--stroked {
+  fieldset:disabled &,
+  &:disabled {
+    border-color: rgba(black, .38);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(border-color, text-disabled-on-dark);
     }
   }
 }

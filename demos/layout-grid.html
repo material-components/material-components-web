@@ -145,211 +145,276 @@
       </section>
 
       <section class="examples">
-        <div class="mdc-layout-grid">
-          <div class="mdc-layout-grid__inner">
-            <div class="mdc-layout-grid__cell">
-              <div class="demo-controls">
-                Desktop Margin:
-                <select id="desktop-margin">
-                  <option value="8px">8px</option>
-                  <option value="16px">16px</option>
-                  <option value="24px" selected>24px</option>
-                  <option value="40px">40px</option>
-                </select>
+        <h2 class="demo-grid-legend">Layout grid (in fluid container)</h2>
+        <section id="layout-grid-in-fluid-container">
+          <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell">
+                <div class="demo-controls">
+                  Desktop Margin:
+                  <select class="desktop-margin">
+                    <option value="8px">8px</option>
+                    <option value="16px">16px</option>
+                    <option value="24px" selected>24px</option>
+                    <option value="40px">40px</option>
+                  </select>
 
-                <br>
+                  <br>
 
-                Desktop Gutter:
-                <select id="desktop-gutter">
-                  <option value="8px">8px</option>
-                  <option value="16px">16px</option>
-                  <option value="24px" selected>24px</option>
-                  <option value="40px">40px</option>
-                </select>
-              </div>
-            </div>
-            <div class="mdc-layout-grid__cell">
-              <div class="demo-controls">
-                Tablet Margin:
-                <select id="tablet-margin">
-                  <option value="8px">8px</option>
-                  <option value="16px" selected>16px</option>
-                  <option value="24px">24px</option>
-                  <option value="40px">40px</option>
-                </select>
-
-                <br>
-
-                Tablet Gutter:
-                <select id="tablet-gutter">
-                  <option value="8px">8px</option>
-                  <option value="16px" selected>16px</option>
-                  <option value="24px">24px</option>
-                  <option value="40px">40px</option>
-                </select>
-              </div>
-            </div>
-            <div class="mdc-layout-grid__cell">
-              <div class="demo-controls">
-                Phone Margin:
-                <select id="phone-margin">
-                  <option value="8px">8px</option>
-                  <option value="16px" selected>16px</option>
-                  <option value="24px">24px</option>
-                  <option value="40px">40px</option>
-                </select>
-
-                <br>
-
-                Phone Gutter:
-                <select id="phone-gutter">
-                  <option value="8px">8px</option>
-                  <option value="16px" selected>16px</option>
-                  <option value="24px">24px</option>
-                  <option value="40px">40px</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="demo-warning"></div>
-
-        <div class="demo-grid-legend">Grid of default wide (4 columns) items</div>
-        <div class="demo-grid mdc-layout-grid">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-cell mdc-layout-grid__cell">4</div>
-            <div class="demo-cell mdc-layout-grid__cell">4</div>
-            <div class="demo-cell mdc-layout-grid__cell">4</div>
-          </div>
-        </div>
-
-        <div class="demo-grid-legend">Grid of 1 column wide items</div>
-        <div class="demo-grid mdc-layout-grid">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
-          </div>
-        </div>
-
-        <div class="demo-grid-legend">Grid of differently sized items</div>
-        <div class="demo-grid mdc-layout-grid">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6">6</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2">2</div>
-          </div>
-        </div>
-
-        <div class="demo-grid-legend">Grid of items with tweaks at different screen sizes</div>
-        <div class="demo-grid mdc-layout-grid">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">6 (8 tablet)</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-6-tablet">4 (6 tablet)</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-4-phone">2 (4 phone)</div>
-          </div>
-        </div>
-
-        <div class="demo-grid-legend">Grid nested within parent grid cell</div>
-        <div class="demo-grid mdc-layout-grid">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-parent-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
-              <div class="mdc-layout-grid__inner">
-                <div class="demo-child-cell demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
-                  <span>Child 4</span>
-                </div>
-                <div class="demo-child-cell demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
-                  <span>Child 4</span>
-                </div>
-                <div class="demo-child-cell demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
-                  <span>Child 4</span>
+                  Desktop Gutter:
+                  <select class="desktop-gutter">
+                    <option value="8px">8px</option>
+                    <option value="16px">16px</option>
+                    <option value="24px" selected>24px</option>
+                    <option value="40px">40px</option>
+                  </select>
                 </div>
               </div>
-              <span>Parent 4</span>
+              <div class="mdc-layout-grid__cell">
+                <div class="demo-controls">
+                  Tablet Margin:
+                  <select class="tablet-margin">
+                    <option value="8px">8px</option>
+                    <option value="16px" selected>16px</option>
+                    <option value="24px">24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+
+                  <br>
+
+                  Tablet Gutter:
+                  <select class="tablet-gutter">
+                    <option value="8px">8px</option>
+                    <option value="16px" selected>16px</option>
+                    <option value="24px">24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mdc-layout-grid__cell">
+                <div class="demo-controls">
+                  Phone Margin:
+                  <select class="phone-margin">
+                    <option value="8px">8px</option>
+                    <option value="16px" selected>16px</option>
+                    <option value="24px">24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+
+                  <br>
+
+                  Phone Gutter:
+                  <select class="phone-gutter">
+                    <option value="8px">8px</option>
+                    <option value="16px" selected>16px</option>
+                    <option value="24px">24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
           </div>
-        </div>
 
-        <h2 class="demo-grid-legend">Grid with max width</h2>
-        <div class="demo-grid-legend">Grid with max width (1280px) and center alignment by default</div>
-        <div class="demo-grid mdc-layout-grid max-width">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-          </div>
-        </div>
+          <div class="demo-warning"></div>
 
-        <div class="demo-grid-legend">Grid with max width (1280px) and left alignment</div>
-        <div class="demo-grid mdc-layout-grid max-width mdc-layout-grid--align-left">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+          <div class="demo-grid-legend">Grid of default wide (4 columns) items</div>
+          <div class="demo-grid mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-cell mdc-layout-grid__cell">4</div>
+              <div class="demo-cell mdc-layout-grid__cell">4</div>
+              <div class="demo-cell mdc-layout-grid__cell">4</div>
+            </div>
           </div>
-        </div>
+
+          <div class="demo-grid-legend">Grid of 1 column wide items</div>
+          <div class="demo-grid mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1">1</div>
+            </div>
+          </div>
+
+          <div class="demo-grid-legend">Grid of differently sized items</div>
+          <div class="demo-grid mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6">6</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2">2</div>
+            </div>
+          </div>
+
+          <div class="demo-grid-legend">Grid of items with tweaks at different screen sizes</div>
+          <div class="demo-grid mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">6 (8 tablet)</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-6-tablet">4 (6 tablet)</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-2 mdc-layout-grid__cell--span-4-phone">2 (4 phone)</div>
+            </div>
+          </div>
+
+          <div class="demo-grid-legend">Grid nested within parent grid cell</div>
+          <div class="demo-grid mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-parent-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+                <div class="mdc-layout-grid__inner">
+                  <div class="demo-child-cell demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+                    <span>Child 4</span>
+                  </div>
+                  <div class="demo-child-cell demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+                    <span>Child 4</span>
+                  </div>
+                  <div class="demo-child-cell demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+                    <span>Child 4</span>
+                  </div>
+                </div>
+                <span>Parent 4</span>
+              </div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4">4</div>
+            </div>
+          </div>
+
+          <h3 class="demo-grid-legend">Grid with max width</h3>
+          <div class="demo-grid-legend">Grid with max width (1280px) and center alignment by default</div>
+          <div class="demo-grid mdc-layout-grid max-width">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+            </div>
+          </div>
+
+          <div class="demo-grid-legend">Grid with max width (1280px) and left alignment</div>
+          <div class="demo-grid mdc-layout-grid max-width mdc-layout-grid--align-left">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
+            </div>
+          </div>
+        </section>
 
         <h2 class="demo-grid-legend">Fixed column width layout grid</h2>
-        <div class="mdc-layout-grid">
-          <div class="mdc-layout-grid__inner">
-            <div class="mdc-layout-grid__cell">
-              <div class="demo-controls">
-                Desktop Column Width:
-                <select id="desktop-column-width">
-                  <option value="72px" selected>72px</option>
-                  <option value="84px">84px</option>
-                </select>
-              </div>
-            </div>
-            <div class="mdc-layout-grid__cell">
-              <div class="demo-controls">
-                Tablet Column Width:
-                <select id="tablet-column-width">
-                  <option value="72px" selected>72px</option>
-                  <option value="84px">84px</option>
-                </select>
-              </div>
-            </div>
-            <div class="mdc-layout-grid__cell">
-              <div class="demo-controls">
-                Phone Column Width:
-                <select id="phone-column-width">
-                  <option value="72px" >72px</option>
-                  <option value="84px">84px</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="demo-grid-legend">Fixed column width layout grid and center alignment by default</div>
-        <div class="demo-grid mdc-layout-grid mdc-layout-grid--fixed-column-width">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
-          </div>
-        </div>
+        <section id="fixed-column-width-layout-grid">
+          <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell">
+                <div class="demo-controls">
+                  Desktop Margin:
+                  <select class="desktop-margin">
+                    <option value="8px">8px</option>
+                    <option value="16px">16px</option>
+                    <option value="24px" selected>24px</option>
+                    <option value="40px">40px</option>
+                  </select>
 
-        <div class="demo-grid-legend">Fixed column width layout grid and right alignment</div>
-        <div class="demo-grid mdc-layout-grid mdc-layout-grid--fixed-column-width mdc-layout-grid--align-right">
-          <div class="mdc-layout-grid__inner">
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
-            <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+                  <br>
+
+                  Desktop Gutter:
+                  <select class="desktop-gutter">
+                    <option value="8px">8px</option>
+                    <option value="16px">16px</option>
+                    <option value="24px" selected>24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+
+                  <br>
+
+                  Desktop Column Width:
+                  <select class="desktop-column-width">
+                    <option value="72px" selected>72px</option>
+                    <option value="84px">84px</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mdc-layout-grid__cell">
+                <div class="demo-controls">
+                  Tablet Margin:
+                  <select class="tablet-margin">
+                    <option value="8px">8px</option>
+                    <option value="16px" selected>16px</option>
+                    <option value="24px">24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+
+                  <br>
+
+                  Tablet Gutter:
+                  <select class="tablet-gutter">
+                    <option value="8px">8px</option>
+                    <option value="16px" selected>16px</option>
+                    <option value="24px">24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+
+                  <br>
+
+                  Tablet Column Width:
+                  <select class="tablet-column-width">
+                    <option value="72px" selected>72px</option>
+                    <option value="84px">84px</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mdc-layout-grid__cell">
+                <div class="demo-controls">
+                  Phone Margin:
+                  <select class="phone-margin">
+                    <option value="8px">8px</option>
+                    <option value="16px" selected>16px</option>
+                    <option value="24px">24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+
+                  <br>
+
+                  Phone Gutter:
+                  <select class="phone-gutter">
+                    <option value="8px">8px</option>
+                    <option value="16px" selected>16px</option>
+                    <option value="24px">24px</option>
+                    <option value="40px">40px</option>
+                  </select>
+
+                  <br>
+
+                  Phone Column Width:
+                  <select class="phone-column-width">
+                    <option value="72px" >72px</option>
+                    <option value="84px">84px</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+          <div class="demo-grid-legend">Fixed column width layout grid and center alignment by default</div>
+          <div class="demo-grid mdc-layout-grid mdc-layout-grid--fixed-column-width">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+            </div>
+          </div>
+
+          <div class="demo-grid-legend">Fixed column width layout grid and right alignment</div>
+          <div class="demo-grid mdc-layout-grid mdc-layout-grid--fixed-column-width mdc-layout-grid--align-right">
+            <div class="mdc-layout-grid__inner">
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+              <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-1"></div>
+            </div>
+          </div>
+        </section>
 
         <div class="demo-ruler"><div id="current"></div></div>
     </section>
@@ -359,49 +424,82 @@
     <script>
       (function(global) {
         'use strict';
-        var marginSelectDesktop = document.querySelector('#desktop-margin');
-        marginSelectDesktop.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-margin-desktop', marginSelectDesktop.value);
+        var fluidContainerSection = document.getElementById('layout-grid-in-fluid-container');
+        var fixedWidthSection = document.getElementById('fixed-column-width-layout-grid');
+
+        var marginSelectDesktopFluid = fluidContainerSection.querySelector('.desktop-margin');
+        marginSelectDesktopFluid.addEventListener('change', function() {
+          fluidContainerSection.style.setProperty('--mdc-layout-grid-margin-desktop', marginSelectDesktopFluid.value);
         });
 
-        var gutterSelectDesktop = document.querySelector('#desktop-gutter');
-        gutterSelectDesktop.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-gutter-desktop', gutterSelectDesktop.value);
+        var gutterSelectDesktopFluid = fluidContainerSection.querySelector('.desktop-gutter');
+        gutterSelectDesktopFluid.addEventListener('change', function() {
+          fluidContainerSection.style.setProperty('--mdc-layout-grid-gutter-desktop', gutterSelectDesktopFluid.value);
         });
 
-        var marginSelectTablet = document.querySelector('#tablet-margin');
-        marginSelectTablet.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-margin-tablet', marginSelectTablet.value);
+        var marginSelectTabletFluid = fluidContainerSection.querySelector('.tablet-margin');
+        marginSelectTabletFluid.addEventListener('change', function() {
+          fluidContainerSection.style.setProperty('--mdc-layout-grid-margin-tablet', marginSelectTabletFluid.value);
         });
 
-        var gutterSelectTablet = document.querySelector('#tablet-gutter');
-        gutterSelectTablet.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-gutter-tablet', gutterSelectTablet.value);
+        var gutterSelectTabletFluid = fluidContainerSection.querySelector('.tablet-gutter');
+        gutterSelectTabletFluid.addEventListener('change', function() {
+          fluidContainerSection.style.setProperty('--mdc-layout-grid-gutter-tablet', gutterSelectTabletFluid.value);
         });
 
-        var marginSelectPhone = document.querySelector('#phone-margin');
-        marginSelectPhone.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-margin-phone', marginSelectPhone.value);
+        var marginSelectPhoneFluid = fluidContainerSection.querySelector('.phone-margin');
+        marginSelectPhoneFluid.addEventListener('change', function() {
+          fluidContainerSection.style.setProperty('--mdc-layout-grid-margin-phone', marginSelectPhoneFluid.value);
         });
 
-        var gutterSelectPhone = document.querySelector('#phone-gutter');
-        gutterSelectPhone.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-gutter-phone', gutterSelectPhone.value);
+        var gutterSelectPhoneFluid = fluidContainerSection.querySelector('.phone-gutter');
+        gutterSelectPhoneFluid.addEventListener('change', function() {
+          fluidContainerSection.style.setProperty('--mdc-layout-grid-gutter-phone', gutterSelectPhoneFluid.value);
         });
 
-        var columnWidthSelectDesktop = document.querySelector('#desktop-column-width');
-        columnWidthSelectDesktop.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-desktop', columnWidthSelectDesktop.value);
+        var marginSelectDesktopFixed = fixedWidthSection.querySelector('.desktop-margin');
+        marginSelectDesktopFixed.addEventListener('change', function() {
+          fixedWidthSection.style.setProperty('--mdc-layout-grid-margin-desktop', marginSelectDesktopFixed.value);
         });
 
-        var columnWidthSelectTablet = document.querySelector('#tablet-column-width');
-        columnWidthSelectTablet.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-tablet', columnWidthSelectTablet.value);
+        var gutterSelectDesktopFixed = fixedWidthSection.querySelector('.desktop-gutter');
+        gutterSelectDesktopFixed.addEventListener('change', function() {
+          fixedWidthSection.style.setProperty('--mdc-layout-grid-gutter-desktop', gutterSelectDesktopFixed.value);
         });
 
-        var columnWidthSelectPhone = document.querySelector('#phone-column-width');
-        columnWidthSelectPhone.addEventListener('change', function() {
-          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-phone', columnWidthSelectPhone.value);
+        var columnWidthSelectDesktopFixed = document.querySelector('.desktop-column-width');
+        columnWidthSelectDesktopFixed.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-desktop', columnWidthSelectDesktopFixed.value);
+        });
+
+        var marginSelectTabletFixed = fixedWidthSection.querySelector('.tablet-margin');
+        marginSelectTabletFixed.addEventListener('change', function() {
+          fixedWidthSection.style.setProperty('--mdc-layout-grid-margin-tablet', marginSelectTabletFixed.value);
+        });
+
+        var gutterSelectTabletFixed = fixedWidthSection.querySelector('.tablet-gutter');
+        gutterSelectTabletFixed.addEventListener('change', function() {
+          fixedWidthSection.style.setProperty('--mdc-layout-grid-gutter-tablet', gutterSelectTabletFixed.value);
+        });
+
+        var columnWidthSelectTabletFixed = document.querySelector('.tablet-column-width');
+        columnWidthSelectTabletFixed.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-tablet', columnWidthSelectTabletFixed.value);
+        });
+
+        var marginSelectPhoneFixed = fixedWidthSection.querySelector('.phone-margin');
+        marginSelectPhoneFixed.addEventListener('change', function() {
+          fixedWidthSection.style.setProperty('--mdc-layout-grid-margin-phone', marginSelectPhoneFixed.value);
+        });
+
+        var gutterSelectPhoneFixed = fixedWidthSection.querySelector('.phone-gutter');
+        gutterSelectPhoneFixed.addEventListener('change', function() {
+          fixedWidthSection.style.setProperty('--mdc-layout-grid-gutter-phone', gutterSelectPhoneFixed.value);
+        });
+
+        var columnWidthSelectPhoneFixed = document.querySelector('.phone-column-width');
+        columnWidthSelectPhoneFixed.addEventListener('change', function() {
+          document.documentElement.style.setProperty('--mdc-layout-grid-column-width-phone', columnWidthSelectPhoneFixed.value);
         });
 
         var current = document.querySelector('#current');
