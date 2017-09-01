@@ -161,7 +161,5 @@ Property | Description
 `bg-color` | Background color of the FAB
 `fg-color` | Foreground color of the icon
 `ripple-config` | Ripple configuration (see the [mdc-ripple README][ripple-readme])
-`tap-highlight-color` | Color of the [`-webkit-tap-highlight-color`][tap-highlight] property (for mobile devices that support it)
 
 [ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
-[tap-highlight]: https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-tap-highlight-color
