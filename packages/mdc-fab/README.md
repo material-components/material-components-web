@@ -75,12 +75,12 @@ You may include this to use them as shown or use any other icon method you wish.
 ### Absolutely positioned
 
 By default the FAB rests in the page where it sits in the content flow.
-Developers must position it as-needed within their applications designs.
+Developers must position it as needed within their application's design.
 
 ```html
 <!--
   This will position the FAB in the bottom-right corner.
-  Modify to fit your designs requirements.
+  Modify to fit your design's requirements.
 -->
 <style>
 .app-fab--absolute.app-fab--absolute {
@@ -144,6 +144,10 @@ CSS Class | Description
 `mdc-fab--mini` | Makes the fab smaller (40 x 40 pixels)
 `mdc-fab--plain` | Makes the FAB have a white background
 
+> **NOTE**: No disabled styles are defined for FABs, as they are intended to denote a promoted action, and should not be
+> displayed in a disabled state. If there is ever a situation where a FAB should *not* perform an action,
+> an explanation should be presented to the user.
+
 ### Sass Mixins
 
 #### `mdc-fab-theme($config)`
@@ -157,7 +161,5 @@ Property | Description
 `bg-color` | Background color of the FAB
 `fg-color` | Foreground color of the icon
 `ripple-config` | Ripple configuration (see the [mdc-ripple README][ripple-readme])
-`tap-highlight-color` | Color of the [`-webkit-tap-highlight-color`][tap-highlight] property (for mobile devices that support it)
 
 [ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
-[tap-highlight]: https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-tap-highlight-color

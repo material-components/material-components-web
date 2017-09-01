@@ -153,9 +153,9 @@ by HTML5's form validation API.
 </div>
 ```
 
-An input's validity is checked via `checkValidity()` on blur, and the styles are updated
-accordingly. When using the `required` attribute, an asterisk will be automatically appended to the
-label text, as per the spec.
+By default an input's validity is checked via `checkValidity()` on blur, and the styles are updated
+accordingly. Set the MDCTextfield.valid variable to set the input's validity explicitly. MDC Textfield
+automatically appends an asterisk to the label text if the required attribute is set.
 
 Help text can be used to provide additional validation messages. Use
 `mdc-textfield-helptext--validation-msg` to provide styles for using the help text as a validation
@@ -323,6 +323,10 @@ with the corresponding id within the document and automatically assign it to thi
 
 Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
 respectively.
+
+##### MDCTextfield.valid
+
+Boolean setter. Proxies to the foundation's `setValid` method when set.
 
 ##### MDCTextfield.ripple
 

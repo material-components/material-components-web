@@ -119,6 +119,14 @@ test('get/set disabled updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.DISABLED));
 });
 
+test('set valid updates the component styles', () => {
+  const {root, component} = setupTest();
+  component.valid = false;
+  assert.isOk(root.classList.contains(cssClasses.INVALID));
+  component.valid = true;
+  assert.isNotOk(root.classList.contains(cssClasses.INVALID));
+});
+
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');

@@ -57,6 +57,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.inputBlurHandler_ = () => this.deactivateFocus_();
     this.inputInputHandler_ = () => this.autoCompleteFocus_();
     this.inputKeydownHandler_ = () => this.receivedUserInput_ = true;
+    this.useCustomValidityChecking_ = false;
   }
 
   init() {
@@ -99,24 +100,30 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   deactivateFocus_() {
-    const {FOCUSED, INVALID, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
-    const isValid = input.checkValidity();
 
     this.adapter_.removeClass(FOCUSED);
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
       this.receivedUserInput_ = false;
     }
+    if (!this.useCustomValidityChecking_) {
+      this.changeValidity_(input.checkValidity());
+    }
+  }
+
+  changeValidity_(isValid) {
+    const {INVALID} = MDCTextfieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
       this.adapter_.addClass(INVALID);
     }
-    this.updateHelptextOnDeactivation_(isValid);
+    this.updateHelptext_(isValid);
   }
 
-  updateHelptextOnDeactivation_(isValid) {
+  updateHelptext_(isValid) {
     const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextfieldFoundation.cssClasses;
     const {ROLE} = MDCTextfieldFoundation.strings;
     const helptextIsPersistent = this.adapter_.helptextHasClass(HELPTEXT_PERSISTENT);
@@ -166,5 +173,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       disabled: false,
       badInput: false,
     };
+  }
+
+  setValid(isValid) {
+    this.useCustomValidityChecking_ = true;
+    this.changeValidity_(isValid);
   }
 }
