@@ -30,6 +30,13 @@
     ripple-config: (base-color: black, opacity: .16),
     tap-highlight-color: rgba(0, 0, 0, .16)
   ));
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-text-theme((
+      fg-color: text-primary-on-dark,
+      ripple-config: (base-color: white, opacity: .16),
+      tap-highlight-color: rgba(white, .16)
+    ));
+  }
 }
 
 .mdc-button--raised {
@@ -40,6 +47,14 @@
     ripple-config: (base-color: white, opacity: .32),
     tap-highlight-color: rgba(255, 255, 255, .32)
   ));
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-raised-theme((
+      bg-color: white,
+      fg-color: text-primary-on-light,
+      ripple-config: (base-color: black, opacity: .32),
+      tap-highlight-color: rgba(black, .32)
+    ));
+  }
 }
 
 .mdc-button--unelevated {
@@ -49,6 +64,14 @@
     ripple-config: (base-color: white, opacity: .32),
     tap-highlight-color: rgba(255, 255, 255, .32)
   ));
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-unelevated-theme((
+      bg-color: white,
+      fg-color: text-primary-on-light,
+      ripple-config: (base-color: black, opacity: .32),
+      tap-highlight-color: rgba(black, .32)
+    ));
+  }
 }
 
 .mdc-button--stroked {
@@ -57,6 +80,11 @@
     stroke-style: solid,
     stroke-color: text-primary-on-light
   ));
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-stroked-theme((
+      stroke-color: text-primary-on-dark
+    ));
+  }
 }
 
 .mdc-button--compact {
@@ -73,38 +101,54 @@
 
   // postcss-bem-linter: ignore
   .mdc-button--#{$modifier} {
-    $theme-value: map-get($mdc-theme-property-values, $theme-style);
+    $unfilled-text-value: map-get($mdc-theme-property-values, $theme-style);
+    $filled-text-value: map-get($mdc-theme-property-values, text-primary-on-#{$theme-style});
 
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
-    @include mdc-theme-prop(color, $theme-style);
-
+    @include mdc-button-text-theme((
+      fg-color: $unfilled-text-value,
+      ripple-config: (base-color: $unfilled-text-value, opacity: .16),
+      tap-highlight-color: rgba($unfilled-text-value, .16)
+    ));
     @include mdc-theme-dark(".mdc-button") {
-      @include mdc-ripple-base;
-      @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
-      @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
-      @include mdc-theme-prop(color, $theme-style);
+      @include mdc-button-text-theme((
+        fg-color: $unfilled-text-value,
+        ripple-config: (base-color: $unfilled-text-value, opacity: .16),
+        tap-highlight-color: rgba($unfilled-text-value, .16)
+      ));
     }
-    // postcss-bem-linter: ignore
-    &.mdc-button--raised,
-    &.mdc-button--unelevated {
-      $theme-value: map-get($mdc-theme-property-values, text-primary-on-#{$theme-style});
 
-      @include mdc-ripple-base;
-      @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .32));
-      @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .32));
-      @include mdc-theme-prop(background-color, $theme-style);
-      @include mdc-theme-prop(color, text-primary-on-#{$theme-style});
-    }
     // postcss-bem-linter: ignore
     &.mdc-button--stroked {
-      @include mdc-theme-prop(border-color, $theme-style);
-
+      @include mdc-button-stroked-theme((
+        stroke-color: $unfilled-text-value
+      ));
       @include mdc-theme-dark(".mdc-button") {
-        @include mdc-theme-prop(border-color, $theme-style);
+        @include mdc-button-stroked-theme((
+          stroke-color: $unfilled-text-value
+        ));
       }
     }
+
+    // postcss-bem-linter: ignore
+    &.mdc-button--raised{
+      @include mdc-button-raised-theme((
+        bg-color: $theme-style,
+        fg-color: $filled-text-value,
+        ripple-config: (base-color: $filled-text-value, opacity: .32),
+        tap-highlight-color: rgba($filled-text-value, .32)
+      ));
+    }
+
+    // postcss-bem-linter: ignore
+    &.mdc-button--unelevated {
+      @include mdc-button-unelevated-theme((
+        bg-color: $theme-style,
+        fg-color: $filled-text-value,
+        ripple-config: (base-color: $filled-text-value, opacity: .32),
+        tap-highlight-color: rgba($filled-text-value, .32)
+      ));
+    }
+
   }
 }
 
@@ -114,8 +158,13 @@
   fieldset:disabled &,
   &:disabled {
     @include mdc-button-text-theme((
-      fg-color: rgba(0, 0, 0, .38)
+      fg-color: text-disabled-on-light
     ));
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-button-text-theme((
+        fg-color: text-disabled-on-dark
+      ));
+    }
   }
 }
 
@@ -123,14 +172,15 @@
   fieldset:disabled &,
   &:disabled {
     @include mdc-button-raised-theme((
-      bg-color: rgba(black, .15),
+      bg-color: rgba(black, .38),
       fg-color: text-primary-on-dark
     ));
-    // @include mdc-theme-dark(".mdc-button") {
-    //   @include mdc-theme-prop(color, text-disabled-on-dark);
-
-    //   background-color: rgba(255, 255, 255, .15);
-    // }
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-button-raised-theme((
+        bg-color: rgba(white, .38),
+        fg-color: text-disabled-on-dark
+      ));
+    }
   }
 }
 
@@ -138,14 +188,15 @@
   fieldset:disabled &,
   &:disabled {
     @include mdc-button-unelevated-theme((
-      bg-color: rgba(black, .15),
+      bg-color: rgba(black, .38),
       fg-color: text-primary-on-dark
     ));
-    // @include mdc-theme-dark(".mdc-button") {
-    //   @include mdc-theme-prop(color, text-disabled-on-dark);
-
-    //   background-color: rgba(255, 255, 255, .15);
-    // }
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-button-unelevated-theme((
+        bg-color: rgba(white, .38),
+        fg-color: text-disabled-on-dark
+      ));
+    }
   }
 }
 
@@ -153,11 +204,13 @@
   fieldset:disabled &,
   &:disabled {
     @include mdc-button-stroked-theme((
-      stroke-color: rgba(0, 0, 0, .38)
+      stroke-color: text-disabled-on-light
     ));
-    // @include mdc-theme-dark(".mdc-button") {
-    //   @include mdc-theme-prop(border-color, text-disabled-on-dark);
-    // }
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-button-stroked-theme((
+        stroke-color: text-disabled-on-dark
+      ));
+    }
   }
 }
 // postcss-bem-linter: end
