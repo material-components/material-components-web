@@ -215,7 +215,7 @@ When your contents need extra structure that cannot be supported by single layou
 
 The nested layout grid behaves exactly like when they are not nested, e.g, they have 12 columns on desktop, 8 columns on tablet and 4 columns on phone. They also use the **same gutter size** as their parents, but margins are not re-introduced since they are living within another cell.
 
-However, Material guideline do not recommend have a deeply nested grid since it might means a over complicated UX.
+However, Material guideline does not recommend to have a deeply nested grid as it might mean a over complicated UX.
 
 ```html
 <div class="mdc-layout-grid">
