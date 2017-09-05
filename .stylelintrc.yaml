@@ -48,6 +48,8 @@ rules:
     - min-height
     - max-height
 
+    - box-sizing
+
     - margin
     - margin-top
     - margin-right

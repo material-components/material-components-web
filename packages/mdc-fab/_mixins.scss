@@ -39,13 +39,13 @@
   justify-content: center;
   width: 56px;
   height: 56px;
+  box-sizing: border-box;
   padding: 0;
   transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
   border: none;
   border-radius: 50%;
   cursor: pointer;
   user-select: none;
-  box-sizing: border-box;
   fill: currentColor;
   -moz-appearance: none;
   -webkit-appearance: none;
