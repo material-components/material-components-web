@@ -17,25 +17,155 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
+@import "./variables";
 
-@mixin mdc-button-filled_() {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .32));
-  @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .32));
-  @include mdc-theme-prop(color, text-primary-on-dark);
+@mixin mdc-button-base_() {
+  @include mdc-typography(button);
 
-  background-color: black;
+  display: inline-block;
+  position: relative;
+  min-width: 88px;
+  height: $mdc-button-height;
+  padding: 0 16px;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  overflow: hidden;
+  vertical-align: middle;
+  user-select: none;
+  -webkit-appearance: none;
 
-  @include mdc-theme-dark(".mdc-button") {
+  // postcss-bem-linter: ignore
+  &:active {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  fieldset:disabled &,
+  &:disabled {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+@mixin mdc-button--raised_() {
+  @include mdc-elevation(2);
+  @include mdc-elevation-transition;
+
+  &:hover,
+  &:focus {
+    @include mdc-elevation(4);
+  }
+
+  &:active {
+    @include mdc-elevation(8);
+  }
+
+  fieldset:disabled &,
+  &:disabled {
+    @include mdc-elevation(0);
+  }
+}
+
+@mixin mdc-button--compact_() {
+  padding: 0 8px;
+}
+
+@mixin mdc-button--dense_() {
+  height: $mdc-dense-button-height;
+  font-size: .8125rem; // 13sp
+  line-height: $mdc-dense-button-height;
+}
+
+@mixin mdc-button-text-theme($config) {
+  // Filter valid key
+  // which for simplicity I removed the invalid key here
+  @if (map-has-key($config, "stroke-color")) {
+    $config: map-remove($config, "stroke-color")
+  }
+  @if (map-has-key($config, "stroke-width")) {
+    $config: map-remove($config, "stroke-width")
+  }
+  @if (map-has-key($config, "stroke-style")) {
+    $config: map-remove($config, "stroke-style")
+  }
+  @include mdc-button-theme_($config);
+}
+
+@mixin mdc-button-stroked-theme($config) {
+  @include mdc-button-theme_($config);
+}
+
+@mixin mdc-button-raised-theme($config) {
+  @include mdc-button-theme_($config);
+}
+
+@mixin mdc-button-unelevated-theme($config) {
+  @include mdc-button-theme_($config);
+}
+
+@mixin mdc-button-theme_($config) {
+  $bg-color: map-get($config, bg-color);
+  $fg-color: map-get($config, fg-color);
+  $ripple-config: map-get($config, ripple-config);
+  $tap-highlight-color: map-get($config, tap-highlight-color);
+  $stroke-color: map-get($config, stroke-color);
+  $stroke-style: map-get($config, stroke-style);
+  $stroke-width: map-get($config, stroke-width);
+
+  @if $ripple-config {
     @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: black, opacity: .32));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: black, opacity: .32));
-    @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+  }
 
-    background-color: white;
-
-    &:not(.mdc-ripple-upgraded) {
-      -webkit-tap-highlight-color: rgba(black, .18);
+  @if $tap-highlight-color {
+    @if $ripple-config {
+      &:not(.mdc-ripple-upgraded) {
+        @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
+      }
     }
+
+    @else {
+      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
+    }
+  }
+
+  @if $bg-color {
+    @include mdc-theme-prop(background-color, $bg-color);
+  }
+
+  @if $fg-color {
+    @include mdc-theme-prop(color, $fg-color);
+  }
+
+  @if $stroke-color {
+    @include mdc-theme-prop(border-color, $stroke-color);
+  }
+
+  @if $stroke-width {
+    border-width: $stroke-width;
+    line-height: $mdc-button-height - $stroke-width * 2;
+
+    // postcss-bem-linter: ignore
+    &.mdc-button--dense {
+      // Minus extra 1 to accommodate odd font size of dense button
+      line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
+    }
+  }
+
+  @if $stroke-style {
+    border-style: $stroke-style;
   }
 }
