@@ -45,9 +45,9 @@
   display: inline-block;
   position: relative;
   flex: 0 0 $mdc-checkbox-size;
+  box-sizing: content-box;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
-  box-sizing: content-box;
   padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
   line-height: 0;
   white-space: nowrap;
@@ -80,9 +80,9 @@
     align-items: center;
     justify-content: center;
     pointer-events: none;
+    box-sizing: border-box;
     width: $mdc-checkbox-ui-pct;
     height: $mdc-checkbox-ui-pct;
-    box-sizing: border-box;
     transition:
       mdc-checkbox-transition-exit(background-color),
       mdc-checkbox-transition-exit(border-color);

@@ -37,9 +37,9 @@
   display: inline-flex;
   position: relative;
   justify-content: center;
+  box-sizing: border-box;
   width: 56px;
   height: 56px;
-  box-sizing: border-box;
   padding: 0;
   transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
   border: none;

@@ -40,6 +40,8 @@ rules:
     - justify-content
     - order
 
+    - box-sizing
+
     - width
     - min-width
     - max-width
@@ -47,8 +49,6 @@ rules:
     - height
     - min-height
     - max-height
-
-    - box-sizing
 
     - margin
     - margin-top
