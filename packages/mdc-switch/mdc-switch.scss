@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
 @import "./variables";
 
 @function mdc-switch-transition($property) {
-  @return $property 90ms $mdc-switch-transition-curve;
+  @return $property 90ms $mdc-animation-standard-curve-timing-function;
 }
 
 // postcss-bem-linter: define switch
