@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Color Theming - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/demo-styles.css.js"></script>
+    <script src="/assets/theme-demo-styles.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body class="mdc-typography">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <button class="demo-menu-action material-icons mdc-toolbar__icon--menu">menu</button>
+          <span class="mdc-toolbar__title catalog-title">Color Theming</span>
+        </section>
+      </div>
+    </header>
+
+    <aside class="mdc-temporary-drawer">
+      <nav class="mdc-temporary-drawer__drawer">
+        <header class="mdc-temporary-drawer__header">
+          <div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
+            Header here
+          </div>
+        </header>
+        <nav class="mdc-temporary-drawer__content mdc-list-group">
+          <div class="mdc-list">
+            <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
+            </a>
+          </div>
+
+          <hr class="mdc-list-divider">
+
+          <div class="mdc-list">
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
+            </a>
+          </div>
+        </nav>
+      </nav>
+    </aside>
+
+    <main class="mdc-toolbar-fixed-adjust demo-main">
+      <section class="demo-component-section">
+        <i id="button" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Button
+          <a href="#button" class="demo-component-section__permalink" title="Permalink to the theme demo for the button component">#</a>
+        </h2>
+
+        <fieldset class="demo-fieldset--button">
+          <legend class="mdc-typography--subheading2">Enabled</legend>
+
+          <button class="mdc-button demo-button">Flat</button>
+          <button class="mdc-button mdc-button--raised demo-button">Raised</button>
+          <button class="mdc-button mdc-button--raised mdc-button--primary demo-button">Raised + Primary</button>
+          <button class="mdc-button mdc-button--accent demo-button">Flat + Accent</button>
+          <button class="mdc-button mdc-button--raised mdc-button--accent demo-button">Raised + Accent</button>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--button" disabled>
+          <legend class="mdc-typography--subheading2">Disabled</legend>
+
+          <button class="mdc-button demo-button">Flat</button>
+          <button class="mdc-button mdc-button--raised demo-button">Raised</button>
+          <button class="mdc-button mdc-button--raised mdc-button--primary demo-button">Raised + Primary</button>
+          <button class="mdc-button mdc-button--accent demo-button">Flat + Accent</button>
+          <button class="mdc-button mdc-button--raised mdc-button--accent demo-button">Raised + Accent</button>
+        </fieldset>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="card" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Card
+          <a href="#card" class="demo-component-section__permalink" title="Permalink to the theme demo for the card component">#</a>
+        </h2>
+
+        <div class="demo-card-wrap">
+          <div class="mdc-card">
+            <section class="mdc-card__primary">
+              <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
+              <h2 class="mdc-card__subtitle">Subtitle here</h2>
+            </section>
+            <section class="mdc-card__supporting-text">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </section>
+            <section class="mdc-card__actions">
+              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
+              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+            </section>
+          </div>
+        </div>
+
+        <div class="demo-card-wrap">
+          <div class="mdc-card demo-card--with-avatar">
+            <section class="mdc-card__primary">
+              <div class="demo-card__avatar"></div>
+              <h1 class="mdc-card__title">Title</h1>
+              <h2 class="mdc-card__subtitle">Subhead</h2>
+            </section>
+            <section class="mdc-card__supporting-text">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
+            </section>
+            <section class="mdc-card__actions">
+              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
+              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+            </section>
+          </div>
+        </div>
+
+        <div class="demo-card-wrap">
+          <div class="mdc-card demo-card--small">
+            <section class="mdc-card__media">
+              <h1 class="mdc-card__title mdc-card__title--large">Title</h1>
+            </section>
+            <section class="mdc-card__actions">
+              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="checkbox" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Checkbox
+          <a href="#checkbox" class="demo-component-section__permalink" title="Permalink to the theme demo for the checkbox component">#</a>
+        </h2>
+
+        <div class="demo-checkbox-row">
+          <div class="mdc-form-field demo-checkbox-wrap">
+            <div class="mdc-checkbox">
+              <input type="checkbox"
+                     id="enabled-checkbox"
+                     class="mdc-checkbox__native-control"/>
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="enabled-checkbox" id="enabled-checkbox-label">Enabled</label>
+          </div>
+
+          <div class="mdc-form-field demo-checkbox-wrap">
+            <div class="mdc-checkbox">
+              <input type="checkbox"
+                     id="indeterminate-checkbox"
+                     class="mdc-checkbox__native-control"/>
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="indeterminate-checkbox" id="indeterminate-checkbox-label">Indeterminate</label>
+          </div>
+
+          <div class="mdc-form-field demo-checkbox-wrap">
+            <div class="mdc-checkbox mdc-checkbox--disabled">
+              <input type="checkbox"
+                     id="disabled-checkbox"
+                     class="mdc-checkbox__native-control"
+                     disabled />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="disabled-checkbox" id="disabled-checkbox-label">Disabled</label>
+          </div>
+
+          <button type="button" class="mdc-button mdc-button--raised demo-checkbox-toggle" id="checkbox-toggle--indeterminate">Toggle <code class="demo-button__code">indeterminate</code></button>
+          <button type="button" class="mdc-button mdc-button--raised demo-checkbox-toggle" id="checkbox-toggle--align-end">Toggle <code class="demo-button__code">--align-end</code></button>
+        </div>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="dialog" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Dialog
+          <a href="#dialog" class="demo-component-section__permalink" title="Permalink to the theme demo for the dialog component">#</a>
+        </h2>
+
+        <aside class="mdc-dialog mdc-dialog--open demo-dialog">
+          <div class="mdc-dialog__surface">
+            <header class="mdc-dialog__header">
+              <h2 id="mdc-dialog-default-label" class="mdc-dialog__header__title">
+                Fire photon torpedoes?
+              </h2>
+            </header>
+            <section id="mdc-dialog-default-description" class="mdc-dialog__body">
+              Shields at 60% and falling, captain.
+            </section>
+            <footer class="mdc-dialog__footer">
+              <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Belay that order</button>
+              <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Make it so!</button>
+            </footer>
+          </div>
+        </aside>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="drawer" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Drawer
+          <a href="#drawer" class="demo-component-section__permalink" title="Permalink to the theme demo for the drawer component">#</a>
+        </h2>
+
+        <p class="mdc-typography--body1">Click the menu icon (<i class="material-icons demo-icon--inline">menu</i>) in the toolbar at the top of the page to open the drawer.</p>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="fab" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Floating Action Button
+          <a href="#fab" class="demo-component-section__permalink" title="Permalink to the theme demo for the floating action button component">#</a>
+        </h2>
+
+        <fieldset class="demo-fieldset--fab">
+          <legend class="mdc-typography--subheading2">Normal FABs</legend>
+          <button class="mdc-fab material-icons" aria-label="Favorite">
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite">
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite">
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--fab" disabled>
+          <legend class="mdc-typography--subheading2">Disabled FABs</legend>
+          <button class="mdc-fab material-icons" aria-label="Favorite">
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite">
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite">
+            <span class="mdc-fab__icon">
+              favorite_border
+            </span>
+          </button>
+        </fieldset>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="icon-toggle" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Icon Toggle
+          <a href="#icon-toggle" class="demo-component-section__permalink" title="Permalink to the theme demo for the icon toggle component">#</a>
+        </h2>
+
+        <div class="demo-icon-toggle__row">
+          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+            <h3 class="mdc-typography--subheading2">Primary Colored Icon</h3>
+
+            <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
+               role="button"
+               aria-label="Add to favorites"
+               aria-pressed="false"
+               tabindex="0"
+               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+              favorite_border
+            </i>
+          </div>
+
+          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+            <h3 class="mdc-typography--subheading2">Accent Colored Icon</h3>
+
+            <i class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
+               role="button"
+               aria-label="Add to favorites"
+               aria-pressed="false"
+               tabindex="0"
+               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+              favorite_border
+            </i>
+          </div>
+
+          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+            <h3 class="mdc-typography--subheading2">Disabled Icon</h3>
+
+            <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
+               role="button"
+               aria-label="Add to favorites"
+               aria-pressed="false"
+               aria-disabled="true"
+               tabindex="-1"
+               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+              favorite_border
+            </i>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="linear-progress" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Linear Progress
+          <a href="#linear-progress" class="demo-component-section__permalink" title="Permalink to the theme demo for the linear progress component">#</a>
+        </h2>
+
+        <figure class="demo-linear-progress__row">
+          <figcaption class="mdc-typography--subheading2">Indeterminate</figcaption>
+          <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+            <div class="mdc-linear-progress__buffering-dots"></div>
+            <div class="mdc-linear-progress__buffer"></div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+              <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+              <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+          </div>
+        </figure>
+
+        <figure class="demo-linear-progress__row">
+          <figcaption class="mdc-typography--subheading2">Buffer</figcaption>
+          <div role="progressbar" class="mdc-linear-progress" data-buffer="true">
+            <div class="mdc-linear-progress__buffering-dots"></div>
+            <div class="mdc-linear-progress__buffer"></div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+              <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+              <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+          </div>
+        </figure>
+
+        <figure class="demo-linear-progress__row">
+          <figcaption class="mdc-typography--subheading2">Accent</figcaption>
+          <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--accent">
+            <div class="mdc-linear-progress__buffering-dots"></div>
+            <div class="mdc-linear-progress__buffer"></div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+              <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+            <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+              <span class="mdc-linear-progress__bar-inner"></span>
+            </div>
+          </div>
+        </figure>
+      </section>
+    </main>
+
+    <script src="/assets/material-components-web.js" charset="utf-8"></script>
+    <script>
+      (function() {
+        function getAll(query) {
+          return [].slice.call(document.querySelectorAll(query));
+        }
+
+        /*
+         * Component section heading permalinks
+         */
+
+        document.addEventListener('focusin', function(e) {
+          if (e.target.classList.contains('demo-component-section__permalink')) {
+            e.target.parentElement.classList.add('demo-component-section__heading--focus');
+          }
+        });
+        document.addEventListener('focusout', function(e) {
+          if (e.target.classList.contains('demo-component-section__permalink')) {
+            e.target.parentElement.classList.remove('demo-component-section__heading--focus');
+          }
+        });
+
+        /*
+         * Button
+         */
+
+        // Because we load our CSS via webpack, we need to ensure that all of the correct styles
+        // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
+        // elements before our CSS is applied, leading to improper UX.
+        var buttonPollId = setInterval(function() {
+          var pos = getComputedStyle(document.querySelector('.mdc-button')).position;
+          if (pos === 'relative') {
+            attachButtonRipples();
+            clearInterval(buttonPollId);
+          }
+        }, 250);
+
+        function attachButtonRipples() {
+          var btns = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
+          for (var i = 0, btn; btn = btns[i]; i++) {
+            mdc.ripple.MDCRipple.attachTo(btn);
+          }
+        }
+
+        /*
+         * FAB
+         */
+
+        // Because we load our CSS via webpack, we need to ensure that all of the correct styles
+        // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
+        // elements before our CSS is applied, leading to improper UX.
+        var fabPollId = setInterval(function() {
+          var pos = getComputedStyle(document.querySelector('.mdc-fab.material-icons')).position;
+          if (pos === 'relative') {
+            attachFabRipples();
+            clearInterval(fabPollId);
+          }
+        }, 250);
+
+        function attachFabRipples() {
+          var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
+          for (var i = 0, fab; fab = fabs[i]; i++) {
+            mdc.ripple.MDCRipple.attachTo(fab);
+          }
+        }
+
+        /*
+         * Checkbox
+         */
+
+        document.querySelector('#indeterminate-checkbox').indeterminate = true;
+
+        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
+          var checkboxes = getAll('.demo-checkbox-wrap .mdc-checkbox__native-control');
+          checkboxes.forEach(function(checkbox) {
+            checkbox.indeterminate = !checkbox.indeterminate;
+          });
+        });
+
+        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
+          var formFields = getAll('.demo-checkbox-wrap.mdc-form-field');
+          formFields.forEach(function(formField) {
+            formField.classList.toggle('mdc-form-field--align-end');
+          });
+        });
+
+        /*
+         * Drawer
+         */
+
+        var drawerEl = document.querySelector('.mdc-temporary-drawer');
+        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+
+        document.querySelector('.demo-menu-action').addEventListener('click', function() {
+          drawer.open = true;
+        });
+
+        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+          console.log('Received MDCTemporaryDrawer:open');
+        });
+
+        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+          console.log('Received MDCTemporaryDrawer:close');
+        });
+
+        /*
+         * Icon Toggle
+         */
+
+        var iconToggleEls = getAll('.mdc-icon-toggle');
+        for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
+          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
+        }
+
+        /*
+         * Linear Progress
+         */
+
+        var progressEls = getAll('.mdc-linear-progress');
+        for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
+          var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
+          linearProgress.progress = 0.5;
+          if (progressEl.dataset.buffer) {
+            linearProgress.buffer = 0.75;
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

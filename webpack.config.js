@@ -32,6 +32,7 @@ const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
+const GENERATE_DEMO_THEMES = process.env.MDC_GENERATE_DEMO_THEMES === 'true' && IS_DEV;
 
 const banner = [
   '/*!',
@@ -227,6 +228,34 @@ if (IS_DEV) {
     name: 'demo-css',
     entry: {
       'demo-styles': path.resolve('./demos/demos.scss'),
+    },
+    output: {
+      path: OUT_PATH,
+      publicPath: PUBLIC_PATH,
+      filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
+    },
+    devServer: {
+      disableHostCheck: true,
+    },
+    devtool: DEVTOOL,
+    module: {
+      rules: [{
+        test: /\.scss$/,
+        use: createCssLoaderConfig(),
+      }],
+    },
+    plugins: [
+      createCssExtractTextPlugin(),
+      createBannerPlugin(),
+    ],
+  });
+}
+
+if (GENERATE_DEMO_THEMES) {
+  module.exports.push({
+    name: 'demo-theme-css',
+    entry: {
+      'theme-demo-styles': path.resolve('./demos/theme/index.scss'),
     },
     output: {
       path: OUT_PATH,

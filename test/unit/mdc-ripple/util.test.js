@@ -44,8 +44,17 @@ test('#supportsCssVariables returns true when feature-detecting its way around S
   assert.equal(windowObj.appendedNodes, 0, 'All nodes created in #supportsCssVariables should be removed');
 });
 
+test('#supportsCssVariables returns true when getComputedStyle returns null (e.g. Firefox hidden iframes)', () => {
+  const windowObj = createMockWindowForCssVariables();
+  td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(true);
+  td.when(windowObj.getComputedStyle(td.matchers.anything())).thenReturn(null);
+  assert.isOk(util.supportsCssVariables(windowObj, true), 'true if getComputedStyle returns null');
+  assert.equal(windowObj.appendedNodes, 0, 'All nodes created in #supportsCssVariables should be removed');
+});
+
 test('#supportsCssVariables returns false when feature-detecting Edge var() bug with pseudo selectors', () => {
   const windowObj = createMockWindowForCssVariables();
+  td.when(windowObj.CSS.supports('--css-vars', td.matchers.anything())).thenReturn(true);
   td.when(windowObj.getComputedStyle(td.matchers.anything())).thenReturn({
     borderTopStyle: 'solid',
   });

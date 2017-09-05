@@ -16,7 +16,6 @@
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
-@import "./mixins";
 @import "./variables";
 
 @function mdc-switch-transition($property) {
