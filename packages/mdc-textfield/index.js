@@ -59,6 +59,10 @@ export class MDCTextfield extends MDCComponent {
     this.foundation_.setDisabled(disabled);
   }
 
+  set valid(valid) {
+    this.foundation_.setValid(valid);
+  }
+
   getDefaultFoundation() {
     return new MDCTextfieldFoundation(Object.assign({
       addClass: (className) => this.root_.classList.add(className),

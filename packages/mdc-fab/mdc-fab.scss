@@ -22,17 +22,11 @@
   @include mdc-fab-theme((
     bg-color: secondary,
     fg-color: text-primary-on-secondary,
-    ripple-config: (base-color: white, opacity: .16),
-    tap-highlight-color: rgba(0, 0, 0, .18)
+    ripple-config: (base-color: white, opacity: .16)
   ));
 
-  :disabled &,
-  &:disabled {
-    @include mdc-fab-theme((
-      bg-color: rgba(0, 0, 0, .12),
-      fg-color: rgba(0, 0, 0, .26)
-    ));
-    @include mdc-fab--disabled_;
+  &:not(.mdc-ripple-upgraded) {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
   }
 }
 
@@ -40,8 +34,7 @@
   @include mdc-fab-theme((
     bg-color: white,
     fg-color: text-primary-on-light,
-    ripple-config: (),
-    tap-highlight-color: rgba(0, 0, 0, .18)
+    ripple-config: ()
   ));
 }
 
