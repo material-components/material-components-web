@@ -17,7 +17,7 @@
 import {MDCFoundation} from '@material/base';
 import {cssClasses, strings} from './constants';
 
-export default class MDCTextfieldFoundation extends MDCFoundation {
+export default class MDCTextFieldFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -50,7 +50,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   constructor(adapter = {}) {
-    super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
+    super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
 
     this.receivedUserInput_ = false;
     this.inputFocusHandler_ = () => this.activateFocus_();
@@ -61,7 +61,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   init() {
-    this.adapter_.addClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
+    this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     this.adapter_.registerInputFocusHandler(this.inputFocusHandler_);
     this.adapter_.registerInputBlurHandler(this.inputBlurHandler_);
     this.adapter_.registerInputInputHandler(this.inputInputHandler_);
@@ -69,12 +69,12 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
     // Ensure label does not collide with any pre-filled value.
     if (this.getNativeInput_().value) {
-      this.adapter_.addClassToLabel(MDCTextfieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
+      this.adapter_.addClassToLabel(MDCTextFieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
     }
   }
 
   destroy() {
-    this.adapter_.removeClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
+    this.adapter_.removeClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     this.adapter_.deregisterInputFocusHandler(this.inputFocusHandler_);
     this.adapter_.deregisterInputBlurHandler(this.inputBlurHandler_);
     this.adapter_.deregisterInputInputHandler(this.inputInputHandler_);
@@ -82,7 +82,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   activateFocus_() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextFieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.showHelptext_();
@@ -95,12 +95,12 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   showHelptext_() {
-    const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
+    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
     this.adapter_.removeHelptextAttr(ARIA_HIDDEN);
   }
 
   deactivateFocus_() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
     this.adapter_.removeClass(FOCUSED);
@@ -114,7 +114,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   changeValidity_(isValid) {
-    const {INVALID} = MDCTextfieldFoundation.cssClasses;
+    const {INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
@@ -124,8 +124,8 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   updateHelptext_(isValid) {
-    const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextfieldFoundation.cssClasses;
-    const {ROLE} = MDCTextfieldFoundation.strings;
+    const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
+    const {ROLE} = MDCTextFieldFoundation.strings;
     const helptextIsPersistent = this.adapter_.helptextHasClass(HELPTEXT_PERSISTENT);
     const helptextIsValidationMsg = this.adapter_.helptextHasClass(HELPTEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helptextIsValidationMsg && !isValid;
@@ -143,7 +143,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   hideHelptext_() {
-    const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
+    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
     this.adapter_.setHelptextAttr(ARIA_HIDDEN, 'true');
   }
 
@@ -157,7 +157,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   setDisabled(disabled) {
-    const {DISABLED} = MDCTextfieldFoundation.cssClasses;
+    const {DISABLED} = MDCTextFieldFoundation.cssClasses;
     this.getNativeInput_().disabled = disabled;
     if (disabled) {
       this.adapter_.addClass(DISABLED);

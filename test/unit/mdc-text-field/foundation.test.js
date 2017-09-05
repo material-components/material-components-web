@@ -19,22 +19,22 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextfieldFoundation from '../../../packages/mdc-textfield/foundation';
+import MDCTextFieldFoundation from '../../../packages/mdc-text-field/foundation';
 
-const {cssClasses} = MDCTextfieldFoundation;
+const {cssClasses} = MDCTextFieldFoundation;
 
-suite('MDCTextfieldFoundation');
+suite('MDCTextFieldFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextfieldFoundation);
+  assert.isOk('strings' in MDCTextFieldFoundation);
 });
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextfieldFoundation);
+  assert.isOk('cssClasses' in MDCTextFieldFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCTextfieldFoundation, [
+  verifyDefaultAdapter(MDCTextFieldFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputFocusHandler', 'deregisterInputFocusHandler',
@@ -45,7 +45,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTextfieldFoundation);
+const setupTest = () => setupFoundationTest(MDCTextFieldFoundation);
 
 test('#constructor sets disabled to false', () => {
   const {foundation} = setupTest();
@@ -80,37 +80,37 @@ test('#setDisabled handles no native input being returned gracefully', () => {
   assert.doesNotThrow(() => foundation.setDisabled(true));
 });
 
-test('#setDisabled adds mdc-textfield--disabled when set to true', () => {
+test('#setDisabled adds mdc-text-field--disabled when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   td.verify(mockAdapter.addClass(cssClasses.DISABLED));
 });
 
-test('#setDisabled removes mdc-textfield--disabled when set to false', () => {
+test('#setDisabled removes mdc-text-field--disabled when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
 });
 
-test('#setValid adds mdc-textfied--invalid when set to false', () => {
+test('#setValid adds mdc-text-field--invalid when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setValid(false);
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
 
-test('#setValid removes mdc-textfied--invalid when set to true', () => {
+test('#setValid removes mdc-text-field--invalid when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setValid(true);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
-test('#init adds mdc-textfield--upgraded class', () => {
+test('#init adds mdc-text-field--upgraded class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
 
-test('#init adds mdc-textfield__label--float-above class if the input contains a value', () => {
+test('#init adds mdc-text-field__label--float-above class if the input contains a value', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: 'Pre-filled value',
@@ -121,7 +121,7 @@ test('#init adds mdc-textfield__label--float-above class if the input contains a
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('#init does not add mdc-textfield__label--float-above class if the input does not contain a value', () => {
+test('#init does not add mdc-text-field__label--float-above class if the input does not contain a value', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: '',
@@ -160,7 +160,7 @@ test('on input does nothing if input event preceded by keydown event', () => {
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
 });
 
-test('#destroy removes mdc-textfield--upgraded class', () => {
+test('#destroy removes mdc-text-field--upgraded class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
   td.verify(mockAdapter.removeClass(cssClasses.UPGRADED));
@@ -190,7 +190,7 @@ test('#destroy deregisters keydown handler', () => {
   td.verify(mockAdapter.deregisterInputKeydownHandler(td.matchers.isA(Function)));
 });
 
-test('on focus adds mdc-textfield--focused class', () => {
+test('on focus adds mdc-text-field--focused class', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
   td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
@@ -201,7 +201,7 @@ test('on focus adds mdc-textfield--focused class', () => {
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED));
 });
 
-test('on focus adds mdc-textfield__label--float-above class', () => {
+test('on focus adds mdc-text-field__label--float-above class', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
   td.when(mockAdapter.registerInputFocusHandler(td.matchers.isA(Function))).thenDo((handler) => {
@@ -239,26 +239,26 @@ const setupBlurTest = () => {
   return {foundation, mockAdapter, blur, nativeInput};
 };
 
-test('on blur removes mdc-textfield--focused class', () => {
+test('on blur removes mdc-text-field--focused class', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED));
 });
 
-test('on blur removes mdc-textfield__label--float-above when no input value present', () => {
+test('on blur removes mdc-text-field__label--float-above when no input value present', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('on blur does not remove mdc-textfield__label--float-above if input has a value', () => {
+test('on blur does not remove mdc-text-field__label--float-above if input has a value', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.value = 'non-empty value';
   blur();
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
 });
 
-test('on blur removes mdc-textfield--invalid if custom validity is false and' +
+test('on blur removes mdc-text-field--invalid if custom validity is false and' +
      'input.checkValidity() returns true', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
@@ -273,7 +273,7 @@ test('on blur adds mdc-textfied--invalid if custom validity is false and' +
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
 
-test('on blur does not remove mdc-textfield--invalid if custom validity is true and' +
+test('on blur does not remove mdc-text-field--invalid if custom validity is true and' +
      'input.checkValidity() returns true', () => {
   const {foundation, mockAdapter, blur} = setupBlurTest();
   foundation.setValid(false);

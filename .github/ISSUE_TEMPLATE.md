@@ -43,7 +43,7 @@ Follow the template below to ensure the quickest and most accurate response to y
 > as detailed as possible, e.g.
 >
 > 1. run the demo server
-> 2. go to localhost:8080/textfield.html
+> 2. go to localhost:8080/text-field.html
 > 3. Tab-focus on the first text field
 > 4. Observe the component's behavior
 >

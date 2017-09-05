@@ -38,9 +38,9 @@ Then simply include the correct files, write some HTML, and call `mdc.autoInit()
   </head>
   <body>
     <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
-    <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-      <input type="text" class="mdc-textfield__input" id="demo-input">
-      <label for="demo-input" class="mdc-textfield__label">Tell us how you feel!</label>
+    <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+      <input type="text" class="mdc-text-field__input" id="demo-input">
+      <label for="demo-input" class="mdc-text-field__label">Tell us how you feel!</label>
     </div>
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
     <script>mdc.autoInit()</script>
@@ -58,7 +58,7 @@ MDC-Web is modular by design. Each component lives within its own packages under
 [@material npm org](https://www.npmjs.com/org/material).
 
 ```
-npm install --save @material/button @material/card @material/textfield @material/typography
+npm install --save @material/button @material/card @material/text-field @material/typography
 ```
 
 All our components can be found in the [packages](./packages) directory. Each component has a
