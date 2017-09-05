@@ -37,8 +37,13 @@ function detectEdgePseudoVarBug(windowObj) {
   const node = document.createElement('div');
   node.className = 'mdc-ripple-surface--test-edge-var-bug';
   document.body.appendChild(node);
-  // Bug exists if ::before style ends up propagating to the parent element
-  const hasPseudoVarBug = windowObj.getComputedStyle(node).borderTopStyle === 'solid';
+
+  // The bug exists if ::before style ends up propagating to the parent element.
+  // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
+  // but Firefox is known to support CSS custom properties correctly.
+  // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+  const computedStyle = windowObj.getComputedStyle(node);
+  const hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
   node.remove();
   return hasPseudoVarBug;
 }

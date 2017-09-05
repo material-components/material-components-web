@@ -269,8 +269,8 @@
     <script>
       (function() {
         mdc.dialog.MDCDialog.attachTo(document.querySelector('.mdc-dialog'));
-        const demoWrapper = document.querySelector('.demo-body');
-        const hero = document.querySelector('.hero');
+        var demoWrapper = document.querySelector('.demo-body');
+        var hero = document.querySelector('.hero');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
           if (this.checked) {
             demoWrapper.setAttribute('dir', 'rtl');

@@ -182,7 +182,7 @@
     <script>
       var determinates = document.querySelectorAll('.mdc-linear-progress');
       for (var i = 0, determinate; determinate = determinates[i]; i++) {
-        const linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(determinate);
+        var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(determinate);
         linearProgress.progress = 0.5;
         if (determinate.dataset.buffer) {
           linearProgress.buffer = 0.75;
