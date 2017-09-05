@@ -150,16 +150,21 @@ CSS Class | Description
 
 ### Sass Mixins
 
-#### `mdc-fab-theme($config)`
+The following mixins are intended for advanced users. By default a FAB will inherit its color from the theme.
+These mixins will override the color of the container, ink, or ripple. You can use all of them if you want to 
+completely customize a FAB. Or you can use only one of them, e.g. if you only need to override the ripple color.
+It is up to you to pick container, ink, and ripple colors that work together, and meet accessibility standards.
 
-Generates theme-related CSS properties from the given config map.
+#### `mdc-fab-container-color($color)`
 
-All properties are optional. Properties that are `null` or unspecified will not be emitted.
+Changes the FAB's container color to the given color.
 
-Property | Description
---- | ---
-`bg-color` | Background color of the FAB
-`fg-color` | Foreground color of the icon
-`ripple-config` | Ripple configuration (see the [mdc-ripple README][ripple-readme])
+#### `mdc-fab-ink-color($color)`
+
+Changes the FAB's ink color to the given color.
+
+#### `mdc-fab-ripple($ripple-config)`
+
+Changes the FAB's ripple to the given ripple configuration (see the [mdc-ripple README][ripple-readme]).
 
 [ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
