@@ -20,10 +20,6 @@
 @import "./variables";
 @import "./keyframes";
 
-@function mdc-checkbox-transition($property, $timing-function, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
-  @return $property $duration $timing-function $delay;
-}
-
 @function mdc-checkbox-transition-enter($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
   @return mdc-animation-enter($property, $duration, $delay);
 }
