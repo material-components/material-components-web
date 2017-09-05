@@ -157,45 +157,26 @@
 .mdc-button {
   fieldset:disabled &,
   &:disabled {
-    @include mdc-button-text-theme((
-      fg-color: text-disabled-on-light
-    ));
+    color: rgba(black, .38);
+
     @include mdc-theme-dark(".mdc-button") {
-      @include mdc-button-text-theme((
-        fg-color: text-disabled-on-dark
-      ));
+      @include mdc-theme-prop(color, text-disabled-on-dark);
     }
   }
 }
 
-.mdc-button--raised {
-  fieldset:disabled &,
-  &:disabled {
-    @include mdc-button-raised-theme((
-      bg-color: rgba(black, .38),
-      fg-color: text-primary-on-dark
-    ));
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-button-raised-theme((
-        bg-color: rgba(white, .38),
-        fg-color: text-disabled-on-dark
-      ));
-    }
-  }
-}
-
+.mdc-button--raised,
 .mdc-button--unelevated {
   fieldset:disabled &,
   &:disabled {
-    @include mdc-button-unelevated-theme((
-      bg-color: rgba(black, .38),
-      fg-color: text-primary-on-dark
-    ));
+    @include mdc-theme-prop(color, text-primary-on-dark);
+
+    background-color: rgba(black, .15);
+
     @include mdc-theme-dark(".mdc-button") {
-      @include mdc-button-unelevated-theme((
-        bg-color: rgba(white, .38),
-        fg-color: text-disabled-on-dark
-      ));
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+
+      background-color: rgba(255, 255, 255, .15);
     }
   }
 }
@@ -203,13 +184,10 @@
 .mdc-button--stroked {
   fieldset:disabled &,
   &:disabled {
-    @include mdc-button-stroked-theme((
-      stroke-color: text-disabled-on-light
-    ));
+    border-color: rgba(black, .38);
+
     @include mdc-theme-dark(".mdc-button") {
-      @include mdc-button-stroked-theme((
-        stroke-color: text-disabled-on-dark
-      ));
+      @include mdc-theme-prop(border-color, text-disabled-on-dark);
     }
   }
 }
