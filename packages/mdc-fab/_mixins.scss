@@ -18,23 +18,17 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 
-@mixin mdc-fab-theme($config) {
-  $bg-color: map-get($config, bg-color);
-  $fg-color: map-get($config, fg-color);
-  $ripple-config: map-get($config, ripple-config);
+@mixin mdc-fab-container-color($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
 
-  @if $ripple-config {
-    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-  }
+@mixin mdc-fab-ink-color($color) {
+  @include mdc-theme-prop(color, $color);
+}
 
-  @if $bg-color {
-    @include mdc-theme-prop(background-color, $bg-color);
-  }
-
-  @if $fg-color {
-    @include mdc-theme-prop(color, $fg-color);
-  }
+@mixin mdc-fab-ripple($ripple-config) {
+  @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+  @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
 }
 
 @mixin mdc-fab-base_ {
