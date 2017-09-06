@@ -29,16 +29,6 @@ npm install --save @material/animation
 
 ### Sass Variables
 
-Instead of setting CSS classes on elements, you can use the Sass mixins to achieve the same goal.
-
-```scss
-@import "@material/animation/mixins";
-
-.my-element--animating {
-  @include mdc-animation-acceleration-curve;
-}
-```
-
 We provide timing functions which you can use with the `animation` or `transition` CSS properties
 
 ```scss
