@@ -88,84 +88,49 @@
   line-height: $mdc-dense-button-height;
 }
 
-@mixin mdc-button-text-theme($config) {
-  // Filter valid key
-  // which for simplicity I removed the invalid key here
-  @if (map-has-key($config, "stroke-color")) {
-    $config: map-remove($config, "stroke-color")
+@mixin mdc-button-container-fill-color($color) {
+  @at-root #{selector-append("a", &)}, &:enabled {
+    @include mdc-theme-prop(background-color, $color);
   }
-  @if (map-has-key($config, "stroke-width")) {
-    $config: map-remove($config, "stroke-width")
+}
+
+@mixin mdc-button-stroke-color($color) {
+  @at-root #{selector-append("a", &)}, &:enabled {
+    @include mdc-theme-prop(border-color, $color);
   }
-  @if (map-has-key($config, "stroke-style")) {
-    $config: map-remove($config, "stroke-style")
+}
+
+@mixin mdc-button-ink-color($color) {
+  @at-root #{selector-append("a", &)}, &:enabled {
+    @include mdc-theme-prop(color, $color);
   }
-  @include mdc-button-theme_($config);
 }
 
-@mixin mdc-button-stroked-theme($config) {
-  @include mdc-button-theme_($config);
-}
-
-@mixin mdc-button-raised-theme($config) {
-  @include mdc-button-theme_($config);
-}
-
-@mixin mdc-button-unelevated-theme($config) {
-  @include mdc-button-theme_($config);
-}
-
-@mixin mdc-button-theme_($config) {
-  $bg-color: map-get($config, bg-color);
-  $fg-color: map-get($config, fg-color);
-  $ripple-config: map-get($config, ripple-config);
-  $tap-highlight-color: map-get($config, tap-highlight-color);
-  $stroke-color: map-get($config, stroke-color);
-  $stroke-style: map-get($config, stroke-style);
-  $stroke-width: map-get($config, stroke-width);
-
-  @if $ripple-config {
+@mixin mdc-button-ripple($ripple-config) {
+  @at-root #{selector-append("a", &)}, &:enabled{
     @include mdc-ripple-base;
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
     @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-  }
 
-  @if $tap-highlight-color {
-    @if $ripple-config {
-      &:not(.mdc-ripple-upgraded) {
-        @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-      }
-    }
+    &:not(.mdc-ripple-upgraded) {
+      $tap-highlight-color: rgba(map-get($ripple-config, base-color), map-get($ripple-config, opacity));
 
-    @else {
       @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
     }
   }
+}
 
-  @if $bg-color {
-    @include mdc-theme-prop(background-color, $bg-color);
+@mixin mdc-button-stroke-width($stroke-width) {
+  border-width: $stroke-width;
+  line-height: $mdc-button-height - $stroke-width * 2;
+
+  // postcss-bem-linter: ignore
+  &.mdc-button--dense {
+    // Minus extra 1 to accommodate odd font size of dense button
+    line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
   }
+}
 
-  @if $fg-color {
-    @include mdc-theme-prop(color, $fg-color);
-  }
-
-  @if $stroke-color {
-    @include mdc-theme-prop(border-color, $stroke-color);
-  }
-
-  @if $stroke-width {
-    border-width: $stroke-width;
-    line-height: $mdc-button-height - $stroke-width * 2;
-
-    // postcss-bem-linter: ignore
-    &.mdc-button--dense {
-      // Minus extra 1 to accommodate odd font size of dense button
-      line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
-    }
-  }
-
-  @if $stroke-style {
-    border-style: $stroke-style;
-  }
+@mixin mdc-button-stroke-style($stroke-style) {
+  border-style: $stroke-style;
 }
