@@ -150,10 +150,20 @@ CSS Class | Description
 
 ### Sass Mixins
 
-The following mixins are intended for advanced users. By default a FAB will inherit its color from the theme.
-These mixins will override the color of the container, ink, or ripple. You can use all of them if you want to 
-completely customize a FAB. Or you can use only one of them, e.g. if you only need to override the ripple color.
-It is up to you to pick container, ink, and ripple colors that work together, and meet accessibility standards.
+The following mixin is intended for intermediate/advanced users. By default a FAB will inherit its color from
+the theme. This mixin will override the color of the FAB's container, but maintain accessibility standards for the ink and ripple. The mixin is intended for customizing a FAB's color to a non-theme color.
+
+#### `mdc-fab-accessible($container-color)`
+
+Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet 
+accessibility standards.
+
+---
+
+The following mixins are intended for advanced users. These mixins will override the color of the container, 
+ink, or ripple. You can use all of them if you want to completely customize a FAB. Or you can use only one of
+them, e.g. if you only need to override the ripple color. It is up to you to pick container, ink, and ripple 
+colors that work together, and meet accessibility standards.
 
 #### `mdc-fab-container-color($color)`
 

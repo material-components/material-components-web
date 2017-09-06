@@ -16,7 +16,25 @@
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
+@import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "./variables";
+
+@mixin mdc-fab-accessible($container-color) {
+  @include mdc-fab-container-color($container-color);
+  // Calculate whether to use dark or light text on top of given color.
+  $light-or-dark-text: mdc-theme-light-or-dark($container-color);
+
+  @if ($light-or-dark-text == "light") {
+    @include mdc-fab-ink-color(text-primary-on-dark);
+    @include mdc-fab-ripple($mdc-fab-light-ripple-config);
+  }
+
+  @else {
+    @include mdc-fab-ink-color(text-primary-on-light);
+    @include mdc-fab-ripple(()); //default dark ripple
+  }
+}
 
 @mixin mdc-fab-container-color($color) {
   @include mdc-theme-prop(background-color, $color);
