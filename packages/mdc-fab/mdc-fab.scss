@@ -14,6 +14,7 @@
 
 @import "@material/theme/variables";
 @import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define fab
 
@@ -21,7 +22,7 @@
   @include mdc-fab-base_;
   @include mdc-fab-container-color(secondary);
   @include mdc-fab-ink-color(text-primary-on-secondary);
-  @include mdc-fab-ripple((base-color: white, opacity: .16));
+  @include mdc-fab-ripple($mdc-fab-light-ripple-config);
 
   &:not(.mdc-ripple-upgraded) {
     -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
@@ -29,9 +30,7 @@
 }
 
 .mdc-fab--plain {
-  @include mdc-fab-container-color(white);
-  @include mdc-fab-ink-color(text-primary-on-light);
-  @include mdc-fab-ripple(()); // default dark ripple
+  @include mdc-fab-accessible(white);
 }
 
 .mdc-fab--mini {
