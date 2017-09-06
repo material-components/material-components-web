@@ -176,8 +176,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   .mdc-textfield__input {
     align-self: flex-end;
-    height: 100%;
     box-sizing: border-box;
+    height: 100%;
     padding: 20px 16px 0;
   }
 
@@ -316,8 +316,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 .mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--box) {
   display: inline-flex;
   position: relative;
-  box-sizing: border-box;
   align-items: flex-end;
+  box-sizing: border-box;
   margin-top: 16px;
 
   &:not(.mdc-textfield--multiline) {
@@ -546,8 +546,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 .mdc-textfield--fullwidth {
   display: block;
-  width: 100%;
   box-sizing: border-box;
+  width: 100%;
   margin: 0;
   border: none;
   border-bottom: 1px solid $mdc-textfield-divider-on-light;

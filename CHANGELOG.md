@@ -1,3 +1,31 @@
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/material-components/material-components-web/compare/v0.19.0...v0.20.0) (2017-09-05)
+
+
+### Bug Fixes
+
+* **demos:** Fix trailing whitespace and mixed tabs in dialog demo (#1200) ([e1f5d53](https://github.com/material-components/material-components-web/commit/e1f5d53)), closes [#1200](https://github.com/material-components/material-components-web/issues/1200)
+* **demos:** Update first tab bar's layout when toggling RTL (#1204) ([cdd367e](https://github.com/material-components/material-components-web/commit/cdd367e))
+* **dialog:** Fix z-index & wrong CSS (#1094) ([88b7167](https://github.com/material-components/material-components-web/commit/88b7167)), closes [#1094](https://github.com/material-components/material-components-web/issues/1094) [#1095](https://github.com/material-components/material-components-web/issues/1095) [#1096](https://github.com/material-components/material-components-web/issues/1096)
+* **ripple:** Avoid errors in feature-detect within hidden iframes in Firefox (#1216) ([adbcce2](https://github.com/material-components/material-components-web/commit/adbcce2))
+* **ripple:** Don't create dynamic stylesheet for Edge feature-detect (#1206) ([81523a1](https://github.com/material-components/material-components-web/commit/81523a1))
+
+
+### Features
+
+* **button:** Implement stroked button (#1194) ([56bf37d](https://github.com/material-components/material-components-web/commit/56bf37d)), closes [#987](https://github.com/material-components/material-components-web/issues/987)
+* **fab:** Remove disabled styles (#1198) ([959d332](https://github.com/material-components/material-components-web/commit/959d332))
+* **textfield:** Add valid setter, so clients can set custom validity ([cb17052](https://github.com/material-components/material-components-web/commit/cb17052)), closes [#1018](https://github.com/material-components/material-components-web/issues/1018)
+* **theme:** `mdc-theme-prop` accepts literal color values (#1129) ([e47f3e6](https://github.com/material-components/material-components-web/commit/e47f3e6))
+* **theme:** Luminance-aware light/dark tonal variants (#1131) ([90e7556](https://github.com/material-components/material-components-web/commit/90e7556))
+
+
+### BREAKING CHANGES
+
+* **fab:** Removes styles for disabled FABs, as FABs were not designed to be disabled.
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/material-components/material-components-web/compare/v0.18.1...v0.19.0) (2017-08-25)
 

@@ -1,7 +1,7 @@
 {
   "name": "@material/ripple",
   "description": "The Material Components for the web Ink Ripple effect for web element interactions",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "@material/base": "^0.2.5",
-    "@material/theme": "^0.2.0"
+    "@material/theme": "^0.3.0"
   }
 }
