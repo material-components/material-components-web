@@ -44,8 +44,8 @@
 
   display: inline-block;
   position: relative;
-  box-sizing: content-box;
   flex: 0 0 $mdc-checkbox-size;
+  box-sizing: content-box;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
   padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
@@ -79,8 +79,8 @@
     top: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
     pointer-events: none;
+    box-sizing: border-box;
     width: $mdc-checkbox-ui-pct;
     height: $mdc-checkbox-ui-pct;
     transition:
