@@ -141,7 +141,7 @@ in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35
 
 CSS Class | Description
 --- | ---
-`mdc-fab--exited` | When this class is added, the FAB will shrink out of view (exit);<br>when it is removed, the FAB will grow into view (enter)
+`mdc-fab--exited` | Animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
 `mdc-fab--mini` | Makes the FAB smaller (40 x 40 pixels)
 `mdc-fab--plain` | Makes the FAB have a white background
 
