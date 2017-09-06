@@ -15,6 +15,7 @@
 @import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
+@import "@material/elevation/variables";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 
@@ -31,6 +32,9 @@
   @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
 }
 
+$mdc-fab-icon-enter-delay_: 90ms;
+$mdc-fab-icon-enter-duration_: 180ms;
+
 @mixin mdc-fab-base_ {
   @include mdc-ripple-base;
 
@@ -41,9 +45,9 @@
   height: 56px;
   padding: 0;
   transition:
-    box-shadow 280ms $mdc-animation-standard-curve-timing-function,
+    box-shadow $mdc-elevation-transition-duration $mdc-elevation-transition-timing-function,
     opacity 15ms linear 30ms,
-    mdc-animation-enter(transform, 270ms);
+    mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_ + $mdc-fab-icon-enter-delay_);
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -100,7 +104,7 @@
   justify-content: center;
   width: 100%;
   will-change: transform;
-  transition: mdc-animation-enter(transform, 180ms, 90ms);
+  transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
 }
 
 @mixin mdc-fab--exited_ {
