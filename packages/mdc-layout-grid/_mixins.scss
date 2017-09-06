@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import "./variables"
+@import "./variables";
 
 // returns the lower grid boundary or null if the smallest grid is selected
 @function mdc-layout-grid-breakpoint-min($size) {
