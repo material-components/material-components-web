@@ -103,7 +103,7 @@
 }
 
 @mixin mdc-button-ripple($ripple-config) {
-  @at-root #{selector-append("a", &)}, &:enabled{
+  @at-root #{selector-append("a", &)}, &:enabled {
     @include mdc-ripple-base;
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
     @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
