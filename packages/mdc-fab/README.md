@@ -155,8 +155,10 @@ the theme. This mixin will override the color of the FAB's container, but mainta
 
 #### `mdc-fab-accessible($container-color)`
 
-Changes the FAB's container color to the given color, and updates the FABs ink and ripple color to be meet 
+Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet 
 accessibility standards.
+
+---
 
 The following mixins are intended for advanced users. These mixins will override the color of the container, 
 ink, or ripple. You can use all of them if you want to completely customize a FAB. Or you can use only one of
