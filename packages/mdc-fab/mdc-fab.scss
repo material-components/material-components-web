@@ -29,10 +29,6 @@
   }
 }
 
-.mdc-fab--plain {
-  @include mdc-fab-accessible(white);
-}
-
 .mdc-fab--mini {
   @include mdc-fab--mini_;
 }
