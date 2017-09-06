@@ -148,7 +148,6 @@
 .mdc-button--stroked {
   &:disabled {
     border-color: rgba(black, .38);
-    background-color: transparent;
 
     @include mdc-theme-dark(".mdc-button") {
       @include mdc-theme-prop(border-color, text-disabled-on-dark);
