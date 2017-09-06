@@ -27,8 +27,8 @@
   position: relative;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
   box-sizing: border-box;
+  width: 100%;
 
   @include mdc-theme-prop(background-color, primary);
   @include mdc-theme-prop(color, text-primary-on-primary);
@@ -37,10 +37,10 @@
     display: flex;
     position: relative;
     align-items: center;
+    box-sizing: border-box;
     width: 100%;
     height: auto;
     min-height: $mdc-toolbar-row-height;
-    box-sizing: border-box;
 
     // TODO: refactor this out when #23 is implemented
     @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)

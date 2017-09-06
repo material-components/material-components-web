@@ -1,4 +1,3 @@
-//
 // Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +11,5 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
-@import "./variables";
-
-@mixin mdc-animation-deceleration-curve {
-  animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
-}
-
-@mixin mdc-animation-standard-curve {
-  animation-timing-function: $mdc-animation-standard-curve-timing-function;
-}
-
-@mixin mdc-animation-acceleration-curve {
-  animation-timing-function: $mdc-animation-acceleration-curve-timing-function;
-}
-
-@mixin mdc-animation-sharp-curve {
-  animation-timing-function: $mdc-animation-sharp-curve-timing-function;
-}
+$mdc-fab-light-ripple-config: (base-color: white, opacity: .16);

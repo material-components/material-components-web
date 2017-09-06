@@ -20,12 +20,12 @@
 
 @keyframes mdc-ripple-fg-radius-in {
   from {
+    animation-timing-function: $mdc-animation-standard-curve-timing-function;
     // NOTE: For these keyframes, we do not need custom property fallbacks because they are only
     // used in conjunction with `.mdc-ripple-upgraded`. Since MDCRippleFoundation checks to ensure
     // that custom properties are supported within the browser before adding this class, we can
     // safely use them without a fallback.
     transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
-    animation-timing-function: $mdc-animation-standard-curve-timing-function;
   }
 
   to {
@@ -35,8 +35,8 @@
 
 @keyframes mdc-ripple-fg-opacity-in {
   from {
-    opacity: 0;
     animation-timing-function: linear;
+    opacity: 0;
   }
 
   to {
@@ -46,8 +46,8 @@
 
 @keyframes mdc-ripple-fg-opacity-out {
   from {
-    opacity: 1;
     animation-timing-function: linear;
+    opacity: 1;
   }
 
   to {

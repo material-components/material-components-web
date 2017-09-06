@@ -50,9 +50,9 @@
   will-change: initial;
   display: flex;
   position: relative;
-  box-sizing: border-box;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   width: 48px;
   height: 48px;
   padding: 12px;
@@ -64,9 +64,9 @@
   &::after {
     position: absolute;
     border-radius: 50%;
+    pointer-events: none;
     content: "";
     opacity: 0;
-    pointer-events: none;
   }
 
   @include mdc-theme-dark {

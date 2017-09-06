@@ -157,8 +157,8 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 
   &__secondary {
     position: absolute;
-    box-sizing: border-box;
     bottom: 0;
+    box-sizing: border-box;
     height: $mdc-grid-list-oneline-cap-secondary-height;
     padding: $mdc-grid-list-tile-secondary-padding;
 
