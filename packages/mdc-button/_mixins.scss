@@ -85,25 +85,27 @@
 }
 
 @mixin mdc-button-container-fill-color($color) {
-  @at-root #{selector-append("a", &)}, &:enabled {
+  // :not(:disabled) is used to support link styled as button
+  // as link does not support :enabled style
+  &:not(:disabled) {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
 @mixin mdc-button-stroke-color($color) {
-  @at-root #{selector-append("a", &)}, &:enabled {
+  &:not(:disabled) {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-button-ink-color($color) {
-  @at-root #{selector-append("a", &)}, &:enabled {
+  &:not(:disabled) {
     @include mdc-theme-prop(color, $color);
   }
 }
 
 @mixin mdc-button-ripple($ripple-config) {
-  @at-root #{selector-append("a", &)}, &:enabled {
+  &:not(:disabled) {
     @include mdc-ripple-base;
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
     @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));

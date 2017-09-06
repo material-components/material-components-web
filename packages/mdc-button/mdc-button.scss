@@ -78,7 +78,7 @@
   .mdc-button--#{$modifier} {
     $theme-value: map-get($mdc-theme-property-values, $theme-style);
 
-    @at-root #{selector-append("a", &)}, &:enabled {
+    &:not(:disabled) {
       @include mdc-ripple-base;
       @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
       @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
@@ -96,7 +96,7 @@
     &.mdc-button--unelevated {
       $theme-value: map-get($mdc-theme-property-values, text-primary-on-#{$theme-style});
 
-      @at-root #{selector-append("a", &)}, &:enabled {
+      &:not(:disabled) {
         @include mdc-ripple-base;
         @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .32));
         @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .32));
@@ -106,7 +106,7 @@
     }
     // postcss-bem-linter: ignore
     &.mdc-button--stroked {
-      @at-root #{selector-append("a", &)}, &:enabled {
+      &:not(:disabled) {
         @include mdc-theme-prop(border-color, $theme-style);
 
         @include mdc-theme-dark(".mdc-button") {
