@@ -62,9 +62,9 @@
   transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
   border: none;
   border-radius: 50%;
+  fill: currentColor;
   cursor: pointer;
   user-select: none;
-  fill: currentColor;
   -moz-appearance: none;
   -webkit-appearance: none;
   overflow: hidden;
