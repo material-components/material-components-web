@@ -148,9 +148,9 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     height: 100%;
     border-radius: 50%;
     background-color: inherit;
+    pointer-events: none;
     content: "";
     opacity: 0;
-    pointer-events: none;
   }
 
   // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
@@ -413,6 +413,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 }
 
 .mdc-textfield--disabled {
+  border-bottom: 1px dotted $mdc-textfield-disabled-border-on-light;
   pointer-events: none;
 
   &::after {
@@ -423,8 +424,6 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   .mdc-textfield__input {
     padding-bottom: 7px;
   }
-
-  border-bottom: 1px dotted $mdc-textfield-disabled-border-on-light;
 
   @include mdc-theme-dark(".mdc-textfield", true) {
     border-bottom: 1px dotted $mdc-textfield-disabled-border-on-dark;

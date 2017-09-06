@@ -79,7 +79,6 @@
     top: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
     align-items: center;
     justify-content: center;
-    pointer-events: none;
     box-sizing: border-box;
     width: $mdc-checkbox-ui-pct;
     height: $mdc-checkbox-ui-pct;
@@ -89,6 +88,7 @@
     border: $mdc-checkbox-border-width solid $mdc-checkbox-border-color;
     border-radius: 2px;
     background-color: transparent;
+    pointer-events: none;
     will-change: background-color, border-color;
 
     @include mdc-theme-dark(".mdc-checkbox") {
@@ -104,9 +104,9 @@
       transform: scale(0, 0);
       transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
       border-radius: 50%;
+      pointer-events: none;
       content: "";
       opacity: 0;
-      pointer-events: none;
       will-change: opacity, transform;
 
       @include mdc-theme-prop(background, primary);
