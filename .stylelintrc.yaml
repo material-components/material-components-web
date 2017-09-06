@@ -73,6 +73,10 @@ rules:
     - column-count
     - column-width
 
+    - animation
+    - animation-name
+    - animation-timing-function
+
     - transform
     - transform-box
     - transform-origin
