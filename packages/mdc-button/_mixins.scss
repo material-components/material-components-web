@@ -28,7 +28,6 @@
   height: $mdc-button-height;
   padding: 0 16px;
   border: none;
-  border-radius: 4px;
   box-sizing: border-box;
   outline: none;
   text-align: center;
@@ -115,6 +114,10 @@
       @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
     }
   }
+}
+
+@mixin mdc-button-corner-radius($corner-radius) {
+  border-radius: $corner-radius;
 }
 
 @mixin mdc-button-stroke-width($stroke-width) {
