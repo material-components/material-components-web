@@ -37,6 +37,7 @@
   display: inline-flex;
   position: relative;
   justify-content: center;
+  box-sizing: border-box;
   width: 56px;
   height: 56px;
   padding: 0;
@@ -45,7 +46,6 @@
   border-radius: 50%;
   cursor: pointer;
   user-select: none;
-  box-sizing: border-box;
   fill: currentColor;
   -moz-appearance: none;
   -webkit-appearance: none;

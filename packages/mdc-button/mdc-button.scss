@@ -31,12 +31,12 @@
 
   display: inline-block;
   position: relative;
+  box-sizing: border-box;
   min-width: 88px;
   height: 36px;
   padding: 0 16px;
   border: none;
   border-radius: 4px;
-  box-sizing: border-box;
   outline: none;
   background: transparent;
   text-align: center;
