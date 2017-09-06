@@ -52,7 +52,6 @@
     border: 0;
   }
 
-  fieldset:disabled &,
   &:disabled {
     cursor: default;
     pointer-events: none;
@@ -72,7 +71,6 @@
     @include mdc-elevation(8);
   }
 
-  fieldset:disabled &,
   &:disabled {
     @include mdc-elevation(0);
   }

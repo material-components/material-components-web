@@ -119,7 +119,6 @@
 // Disabled button styles need to be last to ensure they override other primary/accent/dark styles
 
 .mdc-button {
-  fieldset:disabled &,
   &:disabled {
     color: rgba(black, .38);
 
@@ -131,7 +130,6 @@
 
 .mdc-button--raised,
 .mdc-button--unelevated {
-  fieldset:disabled &,
   &:disabled {
     @include mdc-theme-prop(color, text-primary-on-dark);
 
@@ -146,7 +144,6 @@
 }
 
 .mdc-button--stroked {
-  fieldset:disabled &,
   &:disabled {
     border-color: rgba(black, .38);
 
