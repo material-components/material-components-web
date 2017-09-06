@@ -126,9 +126,9 @@
 
 @keyframes mdc-checkbox-indeterminate-checked-checkmark {
   from {
+    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
     transform: rotate(45deg);
     opacity: 0;
-    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
   }
 
   to {
@@ -152,9 +152,9 @@
 
 @keyframes mdc-checkbox-indeterminate-checked-mixedmark {
   from {
+    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
     transform: rotate(0deg);
     opacity: 1;
-    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
   }
 
   to {
@@ -165,9 +165,9 @@
 
 @keyframes mdc-checkbox-indeterminate-unchecked-mixedmark {
   0% {
+    animation-timing-function: linear;
     transform: scaleX(1);
     opacity: 1;
-    animation-timing-function: linear;
   }
 
   32.8%,
