@@ -164,6 +164,11 @@ rules:
     - white-space
     - word-spacing
 
+    # Cursor
+
+    - cursor
+    - pointer-events
+
     # Other
 
     - border-collapse
@@ -171,7 +176,6 @@ rules:
     - box-shadow
     - caption-side
     - content
-    - cursor
     - empty-cells
     - opacity
     - overflow

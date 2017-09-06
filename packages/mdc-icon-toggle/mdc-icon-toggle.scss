@@ -64,9 +64,9 @@
   &::after {
     position: absolute;
     border-radius: 50%;
+    pointer-events: none;
     content: "";
     opacity: 0;
-    pointer-events: none;
   }
 
   @include mdc-theme-dark {

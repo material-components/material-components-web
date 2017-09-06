@@ -33,13 +33,13 @@
   transform: translate(-50%, 100%);
   transition: mdc-animation-exit-permanent(transform, .25s);
   background-color: $mdc-snackbar-background-color;
+  pointer-events: none;
 
   @include mdc-theme-dark(".mdc-snackbar") {
     background-color: $mdc-snackbar-background-color-on-dark;
   }
 
   will-change: transform;
-  pointer-events: none;
 
   @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
     left: 0;
@@ -72,8 +72,8 @@
 
   &--active {
     transform: translate(0);
-    pointer-events: auto;
     transition: mdc-animation-enter(transform, .25s);
+    pointer-events: auto;
 
     &:not(.mdc-snackbar--align-start) {
       transform: translate(-50%, 0);
