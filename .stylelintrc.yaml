@@ -176,6 +176,7 @@ rules:
 
     # Other
 
+    - appearance
     - border-collapse
     - border-spacing
     - box-shadow
@@ -183,6 +184,8 @@ rules:
     - content
     - empty-cells
     - overflow
+    - overflow-x
+    - overflow-y
     - quotes
     - speak
     - table-layout
