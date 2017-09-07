@@ -131,6 +131,7 @@ in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35
 
 CSS Class | Description
 --- | ---
+`mdc-fab--exited` | Animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
 `mdc-fab--mini` | Makes the fab smaller (40 x 40 pixels)
 
 > **NOTE**: No disabled styles are defined for FABs, as they are intended to denote a promoted action, and should not be
@@ -144,14 +145,14 @@ the theme. This mixin will override the color of the FAB's container, but mainta
 
 #### `mdc-fab-accessible($container-color)`
 
-Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet 
+Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet
 accessibility standards.
 
 ---
 
-The following mixins are intended for advanced users. These mixins will override the color of the container, 
+The following mixins are intended for advanced users. These mixins will override the color of the container,
 ink, or ripple. You can use all of them if you want to completely customize a FAB. Or you can use only one of
-them, e.g. if you only need to override the ripple color. It is up to you to pick container, ink, and ripple 
+them, e.g. if you only need to override the ripple color. It is up to you to pick container, ink, and ripple
 colors that work together, and meet accessibility standards.
 
 #### `mdc-fab-container-color($color)`

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import "@material/theme/variables";
 @import "./mixins";
 @import "./variables";
 
@@ -35,6 +34,10 @@
 
 .mdc-fab__icon {
   @include mdc-fab__icon_;
+}
+
+.mdc-fab--exited {
+  @include mdc-fab--exited_;
 }
 
 // postcss-bem-linter: end
