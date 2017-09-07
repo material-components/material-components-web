@@ -120,8 +120,8 @@ $mdc-fab-icon-enter-duration_: 180ms;
   align-items: center;
   justify-content: center;
   width: 100%;
-  will-change: transform;
   transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
+  will-change: transform;
 }
 
 @mixin mdc-fab--exited_ {
