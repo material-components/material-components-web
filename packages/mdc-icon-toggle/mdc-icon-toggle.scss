@@ -46,8 +46,6 @@
     @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
   }
 
-  // For some reason, GPU layer promotion makes ripples look terrible on Chrome
-  will-change: initial;
   display: flex;
   position: relative;
   align-items: center;
@@ -60,6 +58,8 @@
   font-size: 1.5rem;
   cursor: pointer;
   user-select: none;
+  // For some reason, GPU layer promotion makes ripples look terrible on Chrome
+  will-change: initial;
 
   &::after {
     position: absolute;
