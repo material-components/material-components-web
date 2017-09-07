@@ -41,9 +41,9 @@
   background: transparent;
   text-align: center;
   user-select: none;
+  -webkit-appearance: none;
   overflow: hidden;
   vertical-align: middle;
-  -webkit-appearance: none;
 
   // postcss-bem-linter: ignore
   &:active {
