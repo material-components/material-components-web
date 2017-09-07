@@ -51,11 +51,9 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 });
 
 test('#init is super.init', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
+  const {foundation} = setupTest();
 
   foundation.init();
-  td.verify(mockAdapter.registerDrawerInteractionHandler('click', isA(Function)));
 });
 
 test('#isRootTransitioningEventTarget_ returns true if the element is the drawer element', () => {
