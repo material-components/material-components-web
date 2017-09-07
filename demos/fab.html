@@ -25,13 +25,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      /* Make the demo look a little bit better */
-      fieldset {
-        margin-bottom: 0.5rem;
+      .demo-fabs {
+        display: flex;
+        flex-wrap: wrap;
       }
 
-      fieldset .mdc-fab {
+      legend {
+        display: block;
+        padding: 16px;
+        padding-top: 64px;
+        padding-bottom: 24px;
+      }
+
+      .mdc-fab {
         margin: 16px;
+      }
+
+      figcaption > div {
+        margin: 8px;
       }
 
       #demo-absolute-fab {
@@ -47,20 +58,6 @@
           right: 1.5rem;
         }
       }
-
-      fieldset legend {
-        display: block;
-        padding: 16px;
-        padding-top: 64px;
-        padding-bottom: 24px;
-      }
-
-      .hero button {
-        margin-left: 32px;
-        margin-right: 32px;
-
-      }
-
     </style>
   </head>
   <body>
@@ -93,52 +90,84 @@
       </button>
 
       <section>
-        <fieldset>
-          <legend>Normal FABs</legend>
-          <button class="mdc-fab material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-        </fieldset>
-        <fieldset>
-          <legend>CSS Only FABs</legend>
-          <button class="mdc-fab material-icons" aria-label="Favorite" data-demo-no-js>
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite" data-demo-no-js>
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite" data-demo-no-js>
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-        </fieldset>
+        <legend>FABs with Ripple</legend>
+        <div class="demo-fabs">
+          <figure>
+            <button class="mdc-fab material-icons" aria-label="Favorite">
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+            <figcaption>
+              <div>Themed FAB</div>
+            </figcaption>
+          </figure>
+          <figure>
+            <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+            <figcaption>
+              <div>Mini FAB</div>
+              <div><code>mdc-fab--mini</code></div>
+            </figcaption>
+          </figure>
+          <figure>
+            <button class="mdc-fab lightGreen800Fab material-icons" aria-label="Favorite">
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+            <figcaption>
+              <div>Customized Accessible FAB</div>
+              <div><code>@include mdc-fab-accessible</code></div>
+            </figcaption>
+          </figure>
+          <figure>
+            <button class="mdc-fab lightGreen800Fab mdc-fab--mini material-icons" aria-label="Favorite">
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+            <figcaption>
+              <div>Customized Accessible Mini FAB</div>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+      <section>
+        <legend>CSS Only FABs</legend>
+        <div class="demo-fabs">
+          <figure>
+            <button class="mdc-fab material-icons" aria-label="Favorite" data-demo-no-js>
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+          </figure>
+          <figure>
+            <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+          </figure>
+          <figure>
+            <button class="mdc-fab lightGreen800Fab material-icons" aria-label="Favorite" data-demo-no-js>
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+          </figure>
+          <figure>
+            <button class="mdc-fab lightGreen800Fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+          </figure>
+        </div>
       </section>
     </main>
     <script src="/assets/material-components-web.js"></script>

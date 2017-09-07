@@ -23,6 +23,13 @@
 $mdc-theme-primary: #212121 !default; // Grey 900
 $mdc-theme-secondary: #64dd17 !default; // Light Green A700
 
+@import "../packages/mdc-theme/color_palette";
+@import "../packages/mdc-fab/mixins";
+
+.mdc-fab.lightGreen800Fab {
+  @include mdc-fab-accessible($material-color-light-green-800);
+}
+
 @import "../packages/material-components-web/material-components-web";
 
 $low-luminance-color: #3e2723;
