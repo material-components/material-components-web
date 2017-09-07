@@ -120,9 +120,9 @@
 
   @supports (display: grid) {
     display: grid;
+    margin: 0;
     grid-gap: $gutter;
     grid-gap: var(--mdc-layout-grid-gutter-#{$size}, $gutter);
-    margin: 0;
     grid-template-columns: repeat(map-get($mdc-layout-grid-columns, $size), minmax(0, 1fr));
   }
 }

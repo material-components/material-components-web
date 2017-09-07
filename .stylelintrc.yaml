@@ -65,6 +65,8 @@ rules:
     - float
     - clear
 
+    - resize
+
     - columns
     - column-gap
     - column-fill
@@ -72,6 +74,9 @@ rules:
     - column-span
     - column-count
     - column-width
+
+    - grid-gap
+    - grid-template-columns
 
     - animation
     - animation-name
