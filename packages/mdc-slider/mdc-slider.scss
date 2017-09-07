@@ -130,8 +130,8 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     // Ensure that touching anywhere within the Y-coordinate space of thumb
     // is considered "clicking on the thumb".
     height: 100%;
-    will-change: transform;
     user-select: none;
+    will-change: transform;
   }
 
   &__thumb {

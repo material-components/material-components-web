@@ -172,6 +172,7 @@ rules:
 
     - cursor
     - pointer-events
+    - user-select
 
     # Other
 
@@ -187,6 +188,7 @@ rules:
     - table-layout
     - vertical-align
     - visibility
+    - will-change
     - z-index
   declaration-property-unit-whitelist:
     font-size:
