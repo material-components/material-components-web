@@ -75,12 +75,12 @@
 
 @mixin mdc-button--filled_() {
   &:disabled {
-    @include mdc-theme-prop(background-color, rgba(black, .38));
-    @include mdc-theme-prop(color, text-primary-on-dark);
+    @include mdc-theme-prop(background-color, rgba(black, .12));
+    @include mdc-theme-prop(color, text-disabled-on-light);
 
     @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(background-color, rgba(white, .38));
-      @include mdc-theme-prop(color, text-disabled-on-dark);
+      @include mdc-theme-prop(background-color, rgba(white, .12));
+      @include mdc-theme-prop(color, text-disabled-on-light);
     }
   }
 }
