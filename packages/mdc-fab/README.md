@@ -62,16 +62,6 @@ You may include this to use them as shown or use any other icon method you wish.
 </button>
 ```
 
-### Plain
-
-```html
-<button class="mdc-fab mdc-fab--plain material-icons" aria-label="favorite">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
-</button>
-```
-
 ### Absolutely positioned
 
 By default the FAB rests in the page where it sits in the content flow.
@@ -141,8 +131,8 @@ in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35
 
 CSS Class | Description
 --- | ---
+`mdc-fab--exited` | Animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
 `mdc-fab--mini` | Makes the fab smaller (40 x 40 pixels)
-`mdc-fab--plain` | Makes the FAB have a white background
 
 > **NOTE**: No disabled styles are defined for FABs, as they are intended to denote a promoted action, and should not be
 > displayed in a disabled state. If there is ever a situation where a FAB should *not* perform an action,
@@ -150,16 +140,31 @@ CSS Class | Description
 
 ### Sass Mixins
 
-#### `mdc-fab-theme($config)`
+The following mixin is intended for intermediate/advanced users. By default a FAB will inherit its color from
+the theme. This mixin will override the color of the FAB's container, but maintain accessibility standards for the ink and ripple. The mixin is intended for customizing a FAB's color to a non-theme color.
 
-Generates theme-related CSS properties from the given config map.
+#### `mdc-fab-accessible($container-color)`
 
-All properties are optional. Properties that are `null` or unspecified will not be emitted.
+Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet
+accessibility standards.
 
-Property | Description
---- | ---
-`bg-color` | Background color of the FAB
-`fg-color` | Foreground color of the icon
-`ripple-config` | Ripple configuration (see the [mdc-ripple README][ripple-readme])
+---
+
+The following mixins are intended for advanced users. These mixins will override the color of the container,
+ink, or ripple. You can use all of them if you want to completely customize a FAB. Or you can use only one of
+them, e.g. if you only need to override the ripple color. It is up to you to pick container, ink, and ripple
+colors that work together, and meet accessibility standards.
+
+#### `mdc-fab-container-color($color)`
+
+Changes the FAB's container color to the given color.
+
+#### `mdc-fab-ink-color($color)`
+
+Changes the FAB's ink color to the given color.
+
+#### `mdc-fab-ripple($ripple-config)`
+
+Changes the FAB's ripple to the given ripple configuration (see the [mdc-ripple README][ripple-readme]).
 
 [ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md

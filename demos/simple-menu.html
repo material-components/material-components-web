@@ -195,7 +195,7 @@
 
       var lastSelected = document.getElementById('last-selected');
       menuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
-        const detail = evt.detail;
+        var detail = evt.detail;
         lastSelected.textContent = '"' + detail.item.textContent.trim() +
           '" at index ' + detail.index;
       });

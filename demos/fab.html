@@ -25,42 +25,69 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      /* Make the demo look a little bit better */
-      fieldset {
-        margin-bottom: 0.5rem;
+      .demo-fabs {
+        display: flex;
+        flex-wrap: wrap;
       }
 
-      fieldset .mdc-fab {
-        margin: 16px;
-      }
-
-      #demo-absolute-fab {
-        position: fixed;
-        bottom: 1rem;
-        right: 1rem;
-        z-index: 1;
-      }
-
-      @media(min-width: 1024px) {
-        #demo-absolute-fab {
-          bottom: 1.5rem;
-          right: 1.5rem;
-        }
-      }
-
-      fieldset legend {
+      legend {
         display: block;
         padding: 16px;
         padding-top: 64px;
         padding-bottom: 24px;
       }
 
-      .hero button {
-        margin-left: 32px;
-        margin-right: 32px;
-
+      figcaption > div {
+        margin: 8px;
       }
 
+      .mdc-fab {
+        margin: 16px;
+      }
+
+      .demo-absolute-fab,
+      .demo-fixed-fab {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 1;
+      }
+
+      .demo-fixed-fab {
+        position: fixed;
+      }
+
+      @media(min-width: 1024px) {
+        .demo-fixed-fab {
+          bottom: 1.5rem;
+          right: 1.5rem;
+        }
+      }
+
+      .fab-motion-container {
+        border: 1px solid #ccc;
+        margin: 1rem;
+        padding: 0 1rem;
+        overflow: hidden;
+        position: relative;
+        height: 10rem;
+        width: 20rem;
+      }
+
+      .fab-motion-container__view {
+        background-color: #fff;
+        box-sizing: border-box;
+        position: absolute;
+        transition: transform 375ms cubic-bezier(0.0, 0.0, 0.2, 1);
+        height: 100%;
+        width: 100%;
+        will-change: transform;
+      }
+
+      .fab-motion-container__view--exited {
+        transition-timing-function: cubic-bezier(.4, 0, 1, 1);
+        transform: translateY(100%);
+      }
     </style>
   </head>
   <body>
@@ -84,7 +111,7 @@
         </button>
       </section>
 
-      <button id="demo-absolute-fab" class="mdc-fab">
+      <button class="mdc-fab demo-fixed-fab">
         <span class="mdc-fab__icon">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
@@ -93,52 +120,101 @@
       </button>
 
       <section>
-        <fieldset>
-          <legend>Normal FABs</legend>
-          <button class="mdc-fab material-icons" aria-label="Favorite">
+        <legend>FABs with Ripple</legend>
+        <div class="demo-fabs">
+          <figure>
+            <button class="mdc-fab material-icons" aria-label="Favorite">
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+            <figcaption>
+              <div>Themed FAB</div>
+            </figcaption>
+          </figure>
+          <figure>
+            <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+            <figcaption>
+              <div>Mini FAB</div>
+              <div><code>mdc-fab--mini</code></div>
+            </figcaption>
+          </figure>
+          <figure>
+            <button class="mdc-fab lightGreen800Fab material-icons" aria-label="Favorite">
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+            <figcaption>
+              <div>Customized Accessible FAB</div>
+              <div><code>@include mdc-fab-accessible</code></div>
+            </figcaption>
+          </figure>
+          <figure>
+            <button class="mdc-fab lightGreen800Fab mdc-fab--mini material-icons" aria-label="Favorite">
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+            <figcaption>
+              <div>Customized Accessible Mini FAB</div>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+      <section>
+        <legend>CSS Only FABs</legend>
+        <div class="demo-fabs">
+          <figure>
+            <button class="mdc-fab material-icons" aria-label="Favorite" data-demo-no-js>
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+          </figure>
+          <figure>
+            <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+          </figure>
+          <figure>
+            <button class="mdc-fab lightGreen800Fab material-icons" aria-label="Favorite" data-demo-no-js>
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+          </figure>
+          <figure>
+            <button class="mdc-fab lightGreen800Fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
+              <span class="mdc-fab__icon">
+                favorite_border
+              </span>
+            </button>
+          </figure>
+        </div>
+      </section>
+      <section>
+        <legend>Example of Enter and Exit Motions</legend>
+        <div class="fab-motion-container">
+          <div class="fab-motion-container__view">
+            <p>View one (with FAB)</p>
+          </div>
+          <div class="fab-motion-container__view fab-motion-container__view--exited">
+            <p>View two (without FAB)</p>
+            <p><button type="button" disabled id="enter-exit-back">Go back</button></p>
+          </div>
+          <button id="enter-exit-add" class="mdc-fab demo-absolute-fab material-icons" aria-label="Add">
             <span class="mdc-fab__icon">
-              favorite_border
+              add
             </span>
           </button>
-          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-        </fieldset>
-        <fieldset>
-          <legend>CSS Only FABs</legend>
-          <button class="mdc-fab material-icons" aria-label="Favorite" data-demo-no-js>
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite" data-demo-no-js>
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite" data-demo-no-js>
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-        </fieldset>
+        </div>
       </section>
     </main>
     <script src="/assets/material-components-web.js"></script>
@@ -161,6 +237,37 @@
             mdc.ripple.MDCRipple.attachTo(fab);
           }
         }
+
+        var addFab = document.getElementById('enter-exit-add');
+        var VIEW_CLASS = 'fab-motion-container__view';
+        var enterExitDemoViews = document.querySelectorAll('.' + VIEW_CLASS);
+        var backButton = document.getElementById('enter-exit-back');
+        var activeView = 0;
+        addFab.addEventListener('click', function() {
+          activeView = 1;
+          enterExitDemoViews[1].classList.remove(VIEW_CLASS + '--exited');
+          addFab.classList.add('mdc-fab--exited');
+          backButton.disabled = false;
+          // Remove tab stop to ensure exited FAB does not receive keyboard focus
+          addFab.tabIndex = -1;
+        });
+
+        backButton.addEventListener('click', function() {
+          activeView = 0;
+          enterExitDemoViews[1].classList.add(VIEW_CLASS + '--exited');
+          addFab.classList.remove('mdc-fab--exited');
+          // Restore tab stop to allow FAB to receive keyboard focus
+          addFab.tabIndex = 0;
+          backButton.disabled = true;
+        });
+
+        enterExitDemoViews[1].addEventListener('transitionend', function() {
+          if (activeView === 0) {
+            addFab.focus();
+          } else {
+            backButton.focus();
+          }
+        });
       })();
     </script>
   </body>

@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
 @import "@material/theme/mixins";
 @import "./variables";
 
@@ -74,7 +75,7 @@
   }
 
   50% {
-    @include mdc-animation-deceleration-curve;
+    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
   }
 
   100% {
@@ -99,8 +100,7 @@
 
 @keyframes mdc-checkbox-checked-unchecked-checkmark-path {
   from {
-    @include mdc-animation-acceleration-curve;
-
+    animation-timing-function: $mdc-animation-acceleration-curve-timing-function;
     opacity: 1;
     stroke-dashoffset: 0;
   }
@@ -113,10 +113,9 @@
 
 @keyframes mdc-checkbox-checked-indeterminate-checkmark {
   from {
+    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
     transform: rotate(0deg);
     opacity: 1;
-
-    @include mdc-animation-deceleration-curve;
   }
 
   to {
@@ -127,9 +126,9 @@
 
 @keyframes mdc-checkbox-indeterminate-checked-checkmark {
   from {
+    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
     transform: rotate(45deg);
     opacity: 0;
-    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
   }
 
   to {
@@ -140,10 +139,9 @@
 
 @keyframes mdc-checkbox-checked-indeterminate-mixedmark {
   from {
+    animation-timing-function: mdc-animation-deceleration-curve-timing-function;
     transform: rotate(-45deg);
     opacity: 0;
-
-    @include mdc-animation-deceleration-curve;
   }
 
   to {
@@ -154,9 +152,9 @@
 
 @keyframes mdc-checkbox-indeterminate-checked-mixedmark {
   from {
+    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
     transform: rotate(0deg);
     opacity: 1;
-    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
   }
 
   to {
@@ -167,9 +165,9 @@
 
 @keyframes mdc-checkbox-indeterminate-unchecked-mixedmark {
   0% {
+    animation-timing-function: linear;
     transform: scaleX(1);
     opacity: 1;
-    animation-timing-function: linear;
   }
 
   32.8%,

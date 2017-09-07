@@ -148,9 +148,9 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     height: 100%;
     border-radius: 50%;
     background-color: inherit;
-    content: "";
     opacity: 0;
     pointer-events: none;
+    content: "";
   }
 
   // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
@@ -176,8 +176,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   .mdc-textfield__input {
     align-self: flex-end;
-    height: 100%;
     box-sizing: border-box;
+    height: 100%;
     padding: 20px 16px 0;
   }
 
@@ -266,8 +266,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       height: 100%;
       transition: mdc-textfield-transition(opacity);
       background-color: $mdc-textfield-error-on-light;
-      content: "";
       opacity: 0;
+      content: "";
     }
 
     @include mdc-theme-dark(".mdc-textfield") {
@@ -316,8 +316,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 .mdc-textfield--upgraded:not(.mdc-textfield--fullwidth):not(.mdc-textfield--box) {
   display: inline-flex;
   position: relative;
-  box-sizing: border-box;
   align-items: flex-end;
+  box-sizing: border-box;
   margin-top: 16px;
 
   &:not(.mdc-textfield--multiline) {
@@ -413,6 +413,7 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 }
 
 .mdc-textfield--disabled {
+  border-bottom: 1px dotted $mdc-textfield-disabled-border-on-light;
   pointer-events: none;
 
   &::after {
@@ -423,8 +424,6 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
   .mdc-textfield__input {
     padding-bottom: 7px;
   }
-
-  border-bottom: 1px dotted $mdc-textfield-disabled-border-on-light;
 
   @include mdc-theme-dark(".mdc-textfield", true) {
     border-bottom: 1px dotted $mdc-textfield-disabled-border-on-dark;
@@ -546,8 +545,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 .mdc-textfield--fullwidth {
   display: block;
-  width: 100%;
   box-sizing: border-box;
+  width: 100%;
   margin: 0;
   border: none;
   border-bottom: 1px solid $mdc-textfield-divider-on-light;
@@ -669,8 +668,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   margin: 0;
   transition: mdc-textfield-transition(opacity);
-  font-size: .75rem;
   opacity: 0;
+  font-size: .75rem;
   will-change: opacity;
 
   @include mdc-theme-dark {
@@ -708,8 +707,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 .mdc-textfield--invalid {
   + .mdc-textfield-helptext--validation-msg {
-    color: $mdc-textfield-error-on-light;
     opacity: 1;
+    color: $mdc-textfield-error-on-light;
   }
 
   @include mdc-theme-dark(".mdc-textfield", true) {
