@@ -40,9 +40,9 @@
   outline: none;
   background: transparent;
   text-align: center;
+  user-select: none;
   overflow: hidden;
   vertical-align: middle;
-  user-select: none;
   -webkit-appearance: none;
 
   // postcss-bem-linter: ignore
