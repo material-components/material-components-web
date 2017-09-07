@@ -86,6 +86,13 @@ $mdc-radio-transition-duration: 120ms;
       content: "";
       opacity: 0;
       pointer-events: none;
+
+      // Needed to prevent IE 10 from showing the background when a disabled radio is hovered.
+      .mdc-radio--disabled &,
+      :disabled &,
+      [aria-disabled="true"] & {
+        display: none;
+      }
     }
   }
 

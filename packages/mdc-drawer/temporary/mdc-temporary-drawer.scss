@@ -34,7 +34,7 @@
   pointer-events: none;
   box-sizing: border-box;
   contain: strict;
-  z-index: 5;
+  z-index: -1; // For IE 10
 
   /* Shaded background */
   &::before {
@@ -117,6 +117,7 @@
 
   &--open {
     pointer-events: auto;
+    z-index: 5;
 
     &::before {
       opacity: 1;

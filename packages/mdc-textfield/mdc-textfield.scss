@@ -55,6 +55,11 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     font-size: inherit;
     appearance: none;
 
+    // Force the stock AOSP browser in Android 4.0 (and possibly other versions) to respect our CSS
+    // when the input has focus.
+    // See https://stackoverflow.com/a/14899001/467582
+    -webkit-user-modify: read-write-plaintext-only;
+
     &::placeholder {
       @include mdc-theme-prop(color, text-hint-on-light);
 
@@ -147,7 +152,10 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background-color: inherit;
+
+    // TODO(acdvorak): This line crashes IE 10
+    // background-color: inherit;
+
     content: "";
     opacity: 0;
     pointer-events: none;

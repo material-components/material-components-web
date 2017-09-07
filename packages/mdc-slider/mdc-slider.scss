@@ -45,6 +45,7 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   height: 48px;
   cursor: pointer;
   touch-action: pan-x;
+  user-select: none;
   -webkit-tap-highlight-color: rgba(black, 0);
 
   &:focus {
@@ -131,7 +132,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     // is considered "clicking on the thumb".
     height: 100%;
     will-change: transform;
-    user-select: none;
   }
 
   &__thumb {

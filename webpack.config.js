@@ -32,6 +32,7 @@ const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
+const AUTOPREFIXER_BROWSERLIST = process.env.MDC_AUTOPREFIXER_BROWSERLIST;
 
 const banner = [
   '/*!',
@@ -52,6 +53,16 @@ if (LIFECYCLE_EVENT == 'test' || LIFECYCLE_EVENT == 'test:watch') {
   process.env.BABEL_ENV = 'test';
 }
 
+// TODO(acdvorak): We should define this value in a BUILD rule instead.
+// The list of browsers below will trigger an "Avoids Old CSS Flexbox" warning in Lighthouse, but it
+// is required for Search compatibility.
+// https://developers.google.com/web/tools/lighthouse/audits/old-flexbox
+const SEARCH_BROWSERLIST = `IE >= 10, last 2 Edge versions,` +
+                           `Chrome >= 5, Safari >= 6, Firefox >= 7, Opera >= 15,` +
+                           `Android >= 2, iOS >= 4,` +
+                           `last 2 ChromeAndroid versions, last 2 FirefoxAndroid versions,` +
+                           `last 2 OperaMobile versions, last 2 UCAndroid versions`;
+
 const CSS_LOADER_CONFIG = [
   {
     loader: 'css-loader',
@@ -63,7 +74,13 @@ const CSS_LOADER_CONFIG = [
     loader: 'postcss-loader',
     options: {
       sourceMap: GENERATE_SOURCE_MAPS,
-      plugins: () => [require('autoprefixer')({grid: false})],
+      plugins: () => [
+        require('autoprefixer')({
+          grid: true,
+          browsers: (AUTOPREFIXER_BROWSERLIST || `defaults, ${SEARCH_BROWSERLIST}`)
+              .split(/\s*,\s*/g).map(value => value.trim()).filter(Boolean)
+        })
+      ],
     },
   },
   {
