@@ -11,6 +11,4 @@ This section includes supporting documentation aimed to both improve the onboard
 
 To jump right in and begin using the library, check out our [Getting Started Guide](./getting-started.md)
 
-If you're interested in a general overview of MDC-Web, check out [our developer guide](./developer.md). If
-you want to take a deep dive through our architectural overview, jump right into
-[architecture](./architecture.md).
+If you're interested in a general overview of MDC-Web, check out [our developer guide](./developer.md).
