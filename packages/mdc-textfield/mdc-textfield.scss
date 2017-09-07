@@ -148,9 +148,9 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
     height: 100%;
     border-radius: 50%;
     background-color: inherit;
+    opacity: 0;
     pointer-events: none;
     content: "";
-    opacity: 0;
   }
 
   // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
@@ -266,8 +266,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
       height: 100%;
       transition: mdc-textfield-transition(opacity);
       background-color: $mdc-textfield-error-on-light;
-      content: "";
       opacity: 0;
+      content: "";
     }
 
     @include mdc-theme-dark(".mdc-textfield") {
@@ -668,8 +668,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
   margin: 0;
   transition: mdc-textfield-transition(opacity);
-  font-size: .75rem;
   opacity: 0;
+  font-size: .75rem;
   will-change: opacity;
 
   @include mdc-theme-dark {
@@ -707,8 +707,8 @@ $mdc-textfield-disabled-border-on-dark: rgba(white, .3);
 
 .mdc-textfield--invalid {
   + .mdc-textfield-helptext--validation-msg {
-    color: $mdc-textfield-error-on-light;
     opacity: 1;
+    color: $mdc-textfield-error-on-light;
   }
 
   @include mdc-theme-dark(".mdc-textfield", true) {

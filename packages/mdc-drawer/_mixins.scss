@@ -118,8 +118,8 @@
     transition: mdc-animation-exit-temporary(opacity, 120ms);
     border-radius: inherit;
     background: currentColor;
-    content: "";
     opacity: 0;
+    content: "";
   }
 
   .mdc-list-item:focus::before {

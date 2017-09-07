@@ -136,6 +136,10 @@ rules:
     - background-position
     - background-size
 
+    - fill
+
+    - opacity
+
     # Text
 
     - color
@@ -177,7 +181,6 @@ rules:
     - caption-side
     - content
     - empty-cells
-    - opacity
     - overflow
     - quotes
     - speak
