@@ -37,26 +37,56 @@
         padding-bottom: 24px;
       }
 
-      .mdc-fab {
-        margin: 16px;
-      }
-
       figcaption > div {
         margin: 8px;
       }
 
-      #demo-absolute-fab {
-        position: fixed;
+      .mdc-fab {
+        margin: 16px;
+      }
+
+      .demo-absolute-fab,
+      .demo-fixed-fab {
+        position: absolute;
         bottom: 1rem;
         right: 1rem;
         z-index: 1;
       }
 
+      .demo-fixed-fab {
+        position: fixed;
+      }
+
       @media(min-width: 1024px) {
-        #demo-absolute-fab {
+        .demo-fixed-fab {
           bottom: 1.5rem;
           right: 1.5rem;
         }
+      }
+
+      .fab-motion-container {
+        border: 1px solid #ccc;
+        margin: 1rem;
+        padding: 0 1rem;
+        overflow: hidden;
+        position: relative;
+        height: 10rem;
+        width: 20rem;
+      }
+
+      .fab-motion-container__view {
+        background-color: #fff;
+        box-sizing: border-box;
+        position: absolute;
+        transition: transform 375ms cubic-bezier(0.0, 0.0, 0.2, 1);
+        height: 100%;
+        width: 100%;
+        will-change: transform;
+      }
+
+      .fab-motion-container__view--exited {
+        transition-timing-function: cubic-bezier(.4, 0, 1, 1);
+        transform: translateY(100%);
       }
     </style>
   </head>
@@ -81,7 +111,7 @@
         </button>
       </section>
 
-      <button id="demo-absolute-fab" class="mdc-fab">
+      <button class="mdc-fab demo-fixed-fab">
         <span class="mdc-fab__icon">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
@@ -169,6 +199,23 @@
           </figure>
         </div>
       </section>
+      <section>
+        <legend>Example of Enter and Exit Motions</legend>
+        <div class="fab-motion-container">
+          <div class="fab-motion-container__view">
+            <p>View one (with FAB)</p>
+          </div>
+          <div class="fab-motion-container__view fab-motion-container__view--exited">
+            <p>View two (without FAB)</p>
+            <p><button type="button" disabled id="enter-exit-back">Go back</button></p>
+          </div>
+          <button id="enter-exit-add" class="mdc-fab demo-absolute-fab material-icons" aria-label="Add">
+            <span class="mdc-fab__icon">
+              add
+            </span>
+          </button>
+        </div>
+      </section>
     </main>
     <script src="/assets/material-components-web.js"></script>
     <script>
@@ -190,6 +237,37 @@
             mdc.ripple.MDCRipple.attachTo(fab);
           }
         }
+
+        var addFab = document.getElementById('enter-exit-add');
+        var VIEW_CLASS = 'fab-motion-container__view';
+        var enterExitDemoViews = document.querySelectorAll('.' + VIEW_CLASS);
+        var backButton = document.getElementById('enter-exit-back');
+        var activeView = 0;
+        addFab.addEventListener('click', function() {
+          activeView = 1;
+          enterExitDemoViews[1].classList.remove(VIEW_CLASS + '--exited');
+          addFab.classList.add('mdc-fab--exited');
+          backButton.disabled = false;
+          // Remove tab stop to ensure exited FAB does not receive keyboard focus
+          addFab.tabIndex = -1;
+        });
+
+        backButton.addEventListener('click', function() {
+          activeView = 0;
+          enterExitDemoViews[1].classList.add(VIEW_CLASS + '--exited');
+          addFab.classList.remove('mdc-fab--exited');
+          // Restore tab stop to allow FAB to receive keyboard focus
+          addFab.tabIndex = 0;
+          backButton.disabled = true;
+        });
+
+        enterExitDemoViews[1].addEventListener('transitionend', function() {
+          if (activeView === 0) {
+            addFab.focus();
+          } else {
+            backButton.focus();
+          }
+        });
       })();
     </script>
   </body>

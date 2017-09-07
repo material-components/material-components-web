@@ -37,4 +37,8 @@
   @include mdc-fab__icon_;
 }
 
+.mdc-fab--exited {
+  @include mdc-fab--exited_;
+}
+
 // postcss-bem-linter: end
