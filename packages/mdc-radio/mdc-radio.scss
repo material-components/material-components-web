@@ -83,9 +83,9 @@ $mdc-radio-transition-duration: 120ms;
       transform: scale(0, 0);
       transition: mdc-radio-exit(opacity), mdc-radio-exit(transform);
       border-radius: 50%;
+      opacity: 0;
       pointer-events: none;
       content: "";
-      opacity: 0;
     }
   }
 
@@ -134,8 +134,8 @@ $mdc-radio-transition-duration: 120ms;
     height: 100%;
     margin: 0;
     padding: 0;
-    cursor: inherit;
     opacity: 0;
+    cursor: inherit;
     z-index: 1;
   }
 }

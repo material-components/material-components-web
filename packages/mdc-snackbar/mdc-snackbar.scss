@@ -112,13 +112,12 @@
     align-items: center;
     height: 48px;
     transition: mdc-animation-exit-permanent(opacity, .3s);
+    opacity: 0;
     color: $mdc-snackbar-foreground-color;
 
     @include mdc-theme-dark(".mdc-snackbar") {
       @include mdc-theme-prop(color, text-primary-on-light);
     }
-
-    opacity: 0;
   }
 
   &--multiline &__text {

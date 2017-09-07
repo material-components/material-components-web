@@ -123,7 +123,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.layout();
     // At last step, provide a reasonable default value to discrete slider
     if (this.isDiscrete_ && this.getStep() == 0) {
-      this.setStep(1);
+      this.step_ = 1;
     }
   }
 

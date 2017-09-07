@@ -62,16 +62,6 @@ You may include this to use them as shown or use any other icon method you wish.
 </button>
 ```
 
-### Plain
-
-```html
-<button class="mdc-fab mdc-fab--plain material-icons" aria-label="favorite">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
-</button>
-```
-
 ### Absolutely positioned
 
 By default the FAB rests in the page where it sits in the content flow.
@@ -142,8 +132,7 @@ in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35
 CSS Class | Description
 --- | ---
 `mdc-fab--exited` | Animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
-`mdc-fab--mini` | Makes the FAB smaller (40 x 40 pixels)
-`mdc-fab--plain` | Makes the FAB have a white background
+`mdc-fab--mini` | Makes the fab smaller (40 x 40 pixels)
 
 > **NOTE**: No disabled styles are defined for FABs, as they are intended to denote a promoted action, and should not be
 > displayed in a disabled state. If there is ever a situation where a FAB should *not* perform an action,

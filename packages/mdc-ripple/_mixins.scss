@@ -91,8 +91,8 @@
   height: $radius * 2;
   transition: opacity 250ms linear;
   border-radius: 50%;
-  pointer-events: none;
   opacity: 0;
+  pointer-events: none;
 }
 
 @mixin mdc-ripple-bg($config: ()) {
@@ -167,8 +167,8 @@
   height: $radius * 2;
   transition: opacity 250ms linear;
   border-radius: 50%;
-  pointer-events: none;
   opacity: 0;
+  pointer-events: none;
 }
 
 @mixin mdc-ripple-fg($config: ()) {

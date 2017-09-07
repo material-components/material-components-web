@@ -104,9 +104,9 @@
       transform: scale(0, 0);
       transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
       border-radius: 50%;
+      opacity: 0;
       pointer-events: none;
       content: "";
-      opacity: 0;
       will-change: opacity, transform;
 
       @include mdc-theme-prop(background, primary);
@@ -121,8 +121,8 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    cursor: inherit;
     opacity: 0;
+    cursor: inherit;
   }
 
   &__checkmark {
@@ -130,8 +130,8 @@
 
     width: 100%;
     transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
-    opacity: 0;
     fill: $mdc-checkbox-mark-color;
+    opacity: 0;
 
     &__path {
       transition:
