@@ -50,9 +50,9 @@ We recommend you load [Material Icons]((https://design.google.com/icons/)) from 
 ### HTML Structure
 
 ```html
-<button class="mdc-fab material-icons" aria-label="Foo label">
+<button class="mdc-fab material-icons" aria-label="Favorite">
   <span class="mdc-fab__icon">
-    foo_icon
+    favorite
   </span>
 </button>
 ```
