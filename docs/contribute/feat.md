@@ -14,10 +14,10 @@ your way up the dependency tree, submiting new PRs until the last PR is merged.
 
 ### Format Commit Message
 
-The final commit message for a feat to the mdc-foo package should look like this:
+The final commit message for a feature to the `mdc-foo` package should look like this:
 
 ```
 feat(foo): Short description of feature
 ```
 
-This commit message is pulled into our CHANGELOG when we [release](../open_source/README.md).
+This commit message is pulled into our CHANGELOG when we [release](../open_source/README.md) and is based on [Angular's Git commit guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit).

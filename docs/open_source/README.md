@@ -11,8 +11,8 @@ modules.
 
 External developers have two critical ways of communicating with us
 
-* [filing GitHub issues](https://github.com/material-components/material-components-web/issues)
-* talking on Discord (See Discord section)
+* [Filing GitHub issues](https://github.com/material-components/material-components-web/issues)
+* Talking on Discord (See Discord section)
 
 We have several ways of pushing content to external developers:
 

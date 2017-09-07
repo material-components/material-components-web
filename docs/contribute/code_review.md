@@ -1,14 +1,14 @@
 # Code Review
 
-MDC Web team members review every single PR before it is merged into the code
-base. We aim for a quick review process, but without sacrificing good component
-APIs and code maintenance.
+MDC Web team members review every single pull request (PR) before it is merged
+into the code base. We aim for a quick review process, but without sacrificing
+good component APIs and code maintenance.
 
-## PR Assignments
+## Pull Request Assignments
 
 We currently have six team members, and we normally have bandwidth to respond to
-two PRs each a day (thats twelve PRs total). We do NOT have an SLA to respond
-to PRs within some timeframe. If there are lots of PRs to review, then we
+two PRs each a day (thats twelve PRs total). We do NOT have a service level agreement
+to respond to PRs within some timeframe. If there are lots of PRs to review, then we
 simply might not get to yours for a couple days.
 
 Once a MDC Web team member has started reviewing a PR, they will be the only
@@ -26,8 +26,8 @@ of having too many open pull requests.
 *  Do tests pass?
 *  Does the demo work?
 
-If either of these don’t work, send that review first before diving into
-API design
+If the tests are failing, or the demo does not work, request changes from the
+developer before reviewing the contents of the PR.
 
 ### API Design
 
@@ -51,8 +51,12 @@ before diving into the rest of this checklist.
 
 CSS needs to be visually verified. So run the catalog server and:
 
-*  Verify there is 100% coverage of CSS modifier classes on catalog page
+*  Verify there is 100% coverage of CSS modifier classes on the catalog page
 *  Verify there is coverage of overflow situations, e.g. long text in a small container
+
+### Test Coverage
+
+Verify there is no decrease in code coverage!
 
 ### Code Maintainability
 
@@ -61,8 +65,9 @@ the code. Reference [isolation best practices](../code/best_practices.md)
 as necessary.
 
 *  Every property of a CSS stanzas should be understandable without too much context
-*  DOM structure should be should be understandable without too much context
+*  DOM structure should be understandable without too much context
 *  Sass functions should not be too long, break up logic with smaller functions
 *  JS Methods should not be too long, break up logic with smaller methods
+*  Vanilla adapter method implementations should be as short as possible. Users will override these methods, so they must be atomic
 
 

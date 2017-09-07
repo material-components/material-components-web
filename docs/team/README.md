@@ -22,11 +22,13 @@ are immediately available on GitHub once it is merged.
 [Pivotal Backlog + Icebox](https://www.pivotaltracker.com/n/projects/1664011)
 
 All feature requests, and chores are filed in the Icebox. Once a week, the
-Scrum Master moves these these tasks into the Backlog. A Pivotal
-feature/bug can have the following status:
+Scrum Master moves these tasks into the Backlog. A Pivotal
+story can have the following status:
 
 * Unstarted: no branch for this feature
 * Started: there is a branch for this feature
 * Delivered: there is a PR for this feature
 * Accepted: the PR is merged!
 
+Each Pivotal story is pointed before it is included in a sprint.
+Points represent both complexity and ambiguity in completing the story.

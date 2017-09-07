@@ -7,7 +7,7 @@ our components fast.
 
 ### Naming
 
-*  Always match [spec](https://material.io/guidelines)
+*  Match [spec](https://material.io/guidelines) whenever possible. If the nomenclature used in spec conflicts with a natively implemented element or pattern, reach out for guidance
 *  Use the [BEM naming convention](http://getbem.com/naming/) for CSS classes
 
 ### Documentation
@@ -23,6 +23,7 @@ TODO: Add more notes about how to isolate subsystems from component specifics
 
 ### Performance
 
+*  Only animate properties that will run on the GPU
+*  Use `requestAnimationFrame`
 *  Avoid constant synchronous DOM reads/writes
-
-TODO: Add more notes about performance fast paths
+*  Reduce the number of composite layers
