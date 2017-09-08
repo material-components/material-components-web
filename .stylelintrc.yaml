@@ -18,6 +18,16 @@ rules:
   # Double-quotes are our convention throughout our codebase within (S)CSS. They also reflect how
   # attribute strings are normally quoted within the DOM.
   string-quotes: double
+  order/order:
+    -
+      -
+        type: at-rule
+        hasBlock: false
+      - custom-properties
+      - declarations
+    -
+      unspecified: ignore
+      disableFix: true
   # https://github.com/sasstools/sass-lint/blob/develop/lib/config/property-sort-orders/smacss.yml
   order/properties-order:
     - display

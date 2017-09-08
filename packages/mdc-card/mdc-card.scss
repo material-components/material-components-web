@@ -46,11 +46,11 @@
   }
 
   &__supporting-text {
-    box-sizing: border-box;
-    padding: 8px 16px;
-
     @include mdc-typography(body1);
     @include mdc-theme-prop(color, text-primary-on-light);
+
+    box-sizing: border-box;
+    padding: 8px 16px;
 
     @include mdc-theme-dark(".mdc-card") {
       @include mdc-theme-prop(color, text-primary-on-dark);
@@ -161,14 +161,14 @@
   }
 
   &__horizontal-block {
+    @include mdc-rtl-reflexive-property(padding, 0, 16px);
+
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
     box-sizing: border-box;
     padding: 0;
-
-    @include mdc-rtl-reflexive-property(padding, 0, 16px);
 
     // postcss-bem-linter: ignore
     .mdc-card__actions--vertical {

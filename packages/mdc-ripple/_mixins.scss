@@ -72,7 +72,9 @@
     @supports (background-color: color(green a(10%))) {
       background-color: color(#{$css-var} a(#{percentage($opacity)}));
     }
-  } @else {
+  }
+
+  @else {
     background-color: rgba($base-color, $opacity);
   }
 
@@ -107,7 +109,9 @@
 
       content: "";
     }
-  } @else {
+  }
+
+  @else {
     @include mdc-ripple-bg-base_($config);
   }
   // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
@@ -183,7 +187,9 @@
 
       content: "";
     }
-  } @else {
+  }
+
+  @else {
     @include mdc-ripple-fg-base_($config);
   }
   // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after

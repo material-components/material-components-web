@@ -30,10 +30,7 @@
   @include mdc-typography(subheading2);
   @include mdc-theme-prop(color, text-primary-on-light);
   @include mdc-rtl-reflexive-box(padding, right, $dd-arrow-padding);
-
-  &::-ms-expand {
-    display: none;
-  }
+  @include mdc-select-dd-arrow-svg-bg_;
 
   display: inline-flex;
   align-items: center;
@@ -49,14 +46,15 @@
   background: none;
   background-repeat: no-repeat;
   background-position: right center;
-
-  @include mdc-select-dd-arrow-svg-bg_;
-
   font-family: Roboto, sans-serif;
   font-size: .936rem;
   cursor: pointer;
   // Resets for <select> element
   appearance: none;
+
+  &::-ms-expand {
+    display: none;
+  }
 
   &:focus {
     @include mdc-theme-prop(border-bottom-color, primary);
@@ -182,31 +180,29 @@
 
 // postcss-bem-linter: define multi-select
 .mdc-multi-select {
+  @include mdc-theme-prop(border-color, text-hint-on-light);
+
   width: 250px;
   padding: 0;
   border: 1px solid;
-
-  @include mdc-theme-prop(border-color, text-hint-on-light);
+  outline: none;
+  appearance: none;
 
   @include mdc-theme-dark {
     @include mdc-theme-prop(border-color, text-hint-on-dark);
   }
 
-  outline: none;
-  appearance: none;
-
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-group {
+    @include mdc-theme-prop(color, text-hint-on-light);
+
     margin: 16px 0 0;
     padding: 0 0 0 16px;
-
-    @include mdc-theme-prop(color, text-hint-on-light);
+    font-weight: normal;
 
     @include mdc-theme-dark {
       @include mdc-theme-prop(color, text-hint-on-dark);
     }
-
-    font-weight: normal;
 
     &:last-child {
       margin-bottom: 16px;
@@ -220,10 +216,10 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-item {
+    @include mdc-theme-prop(color, text-primary-on-light);
+
     margin: 0 0 0 -16px;
     padding: 0 16px;
-
-    @include mdc-theme-prop(color, text-primary-on-light);
 
     @include mdc-theme-dark {
       @include mdc-theme-prop(color, text-primary-on-dark);
@@ -241,9 +237,9 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-item:checked {
-    background-color: rgba(black, .12);
-
     @include mdc-theme-prop(background-color, background);
+
+    background-color: rgba(black, .12);
 
     @include mdc-theme-dark {
       @include mdc-theme-prop(background-color, text-primary-on-dark);

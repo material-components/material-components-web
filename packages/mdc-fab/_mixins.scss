@@ -54,6 +54,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-base;
+  @include mdc-elevation(6);
 
   display: inline-flex;
   position: relative;
@@ -74,8 +75,6 @@ $mdc-fab-icon-enter-duration_: 180ms;
   -moz-appearance: none;
   -webkit-appearance: none;
   overflow: hidden;
-
-  @include mdc-elevation(6);
 
   &:active {
     @include mdc-elevation(12);
