@@ -38,14 +38,10 @@
 .mdc-button--raised,
 .mdc-button--unelevated {
   @include mdc-button--filled_;
-  @include mdc-button-container-fill-color(black);
-  @include mdc-button-ink-color(text-primary-on-dark);
-  @include mdc-button-ripple((base-color: white, opacity: .32));
+  @include mdc-button-filled-accessible(black);
 
   @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-container-fill-color(white);
-    @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-button-ripple((base-color: black, opacity: .32));
+    @include mdc-button-filled-accessible(white);
   }
 }
 
