@@ -17,25 +17,122 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
+@import "./variables";
 
-@mixin mdc-button-filled_() {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .32));
-  @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .32));
-  @include mdc-theme-prop(color, text-primary-on-dark);
+@mixin mdc-button-base_() {
+  @include mdc-typography(button);
 
-  background-color: black;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  min-width: 88px;
+  height: $mdc-button-height;
+  padding: 0 16px;
+  border: none;
+  outline: none;
+  text-align: center;
+  user-select: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+  vertical-align: middle;
 
-  @include mdc-theme-dark(".mdc-button") {
+  // postcss-bem-linter: ignore
+  &:active {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  &:disabled {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+@mixin mdc-button--raised_() {
+  @include mdc-elevation(2);
+  @include mdc-elevation-transition;
+
+  &:hover,
+  &:focus {
+    @include mdc-elevation(4);
+  }
+
+  &:active {
+    @include mdc-elevation(8);
+  }
+
+  &:disabled {
+    @include mdc-elevation(0);
+  }
+}
+
+@mixin mdc-button--compact_() {
+  padding: 0 8px;
+}
+
+@mixin mdc-button--dense_() {
+  height: $mdc-dense-button-height;
+  font-size: .8125rem; // 13sp
+  line-height: $mdc-dense-button-height;
+}
+
+@mixin mdc-button-container-fill-color($color) {
+  // :not(:disabled) is used to support link styled as button
+  // as link does not support :enabled style
+  &:not(:disabled) {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-button-stroke-color($color) {
+  &:not(:disabled) {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-button-ink-color($color) {
+  &:not(:disabled) {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-button-ripple($ripple-config) {
+  &:not(:disabled) {
     @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: black, opacity: .32));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: black, opacity: .32));
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    background-color: white;
+    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
 
     &:not(.mdc-ripple-upgraded) {
-      -webkit-tap-highlight-color: rgba(black, .18);
+      $tap-highlight-color: rgba(map-get($ripple-config, base-color), map-get($ripple-config, opacity));
+
+      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
     }
   }
+}
+
+@mixin mdc-button-corner-radius($corner-radius) {
+  border-radius: $corner-radius;
+}
+
+@mixin mdc-button-stroke-width($stroke-width) {
+  border-width: $stroke-width;
+  line-height: $mdc-button-height - $stroke-width * 2;
+
+  // postcss-bem-linter: ignore
+  &.mdc-button--dense {
+    // Minus extra 1 to accommodate odd font size of dense button
+    line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
+  }
+}
+
+@mixin mdc-button-stroke-style($stroke-style) {
+  border-style: $stroke-style;
 }

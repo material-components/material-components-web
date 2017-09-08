@@ -23,102 +23,51 @@
 
 // postcss-bem-linter: define button
 .mdc-button {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before"));
-  @include mdc-ripple-fg((pseudo: "::after"));
-  @include mdc-typography(button);
-  @include mdc-theme-prop(color, text-primary-on-light);
-
-  display: inline-block;
-  position: relative;
-  box-sizing: border-box;
-  min-width: 88px;
-  height: 36px;
-  padding: 0 16px;
-  border: none;
-  border-radius: 4px;
-  outline: none;
-  background: transparent;
-  text-align: center;
-  user-select: none;
-  -webkit-appearance: none;
-  overflow: hidden;
-  vertical-align: middle;
-
-  // postcss-bem-linter: ignore
-  &:active {
-    outline: none;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-  }
-
-  &:not(.mdc-ripple-upgraded) {
-    -webkit-tap-highlight-color: rgba(black, .3);
-  }
+  @include mdc-button-base_;
+  @include mdc-button-corner-radius(4px);
+  @include mdc-button-container-fill-color(transparent);
+  @include mdc-button-ink-color(text-primary-on-light);
+  @include mdc-button-ripple((base-color: black, opacity: .16));
 
   @include mdc-theme-dark(".mdc-button") {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
-    &:not(.mdc-ripple-upgraded) {
-      -webkit-tap-highlight-color: rgba(white, .18);
-    }
+    @include mdc-button-ink-color(text-primary-on-dark);
+    @include mdc-button-ripple((base-color: white, opacity: .16));
   }
 }
 
 .mdc-button--raised,
 .mdc-button--unelevated {
-  @include mdc-button-filled_;
+  @include mdc-button-container-fill-color(black);
+  @include mdc-button-ink-color(text-primary-on-dark);
+  @include mdc-button-ripple((base-color: white, opacity: .32));
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-container-fill-color(white);
+    @include mdc-button-ink-color(text-primary-on-light);
+    @include mdc-button-ripple((base-color: black, opacity: .32));
+  }
 }
 
 .mdc-button--raised {
-  @include mdc-elevation(2);
-  @include mdc-elevation-transition;
-
-  &:hover,
-  &:focus {
-    @include mdc-elevation(4);
-  }
-
-  &:active {
-    @include mdc-elevation(8);
-  }
+  @include mdc-button--raised_;
 }
 
 .mdc-button--stroked {
-  @include mdc-theme-prop(border-color, text-primary-on-light);
-
-  border-width: 2px;
-  border-style: solid;
-  line-height: 32px;
+  @include mdc-button-stroke-width(2px);
+  @include mdc-button-stroke-style(solid);
+  @include mdc-button-stroke-color(text-primary-on-light);
 
   @include mdc-theme-dark(".mdc-button") {
-    @include mdc-theme-prop(border-color, text-primary-on-dark);
-  }
-
-  // postcss-bem-linter: ignore
-  &.mdc-button--dense {
-    line-height: 27px;  // To accommodate odd font size of dense button
+    @include mdc-button-stroke-color(text-primary-on-dark);
   }
 }
 
 .mdc-button--compact {
-  padding: 0 8px;
+  @include mdc-button--compact_;
 }
 
 .mdc-button--dense {
-  height: 32px;
-  font-size: .8125rem; // 13sp
-  line-height: 32px;
+  @include mdc-button--dense_;
 }
 
 @each $theme-style in (primary, secondary) {
@@ -129,34 +78,40 @@
   .mdc-button--#{$modifier} {
     $theme-value: map-get($mdc-theme-property-values, $theme-style);
 
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
-    @include mdc-theme-prop(color, $theme-style);
-
-    @include mdc-theme-dark(".mdc-button") {
+    &:not(:disabled) {
       @include mdc-ripple-base;
       @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
       @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
       @include mdc-theme-prop(color, $theme-style);
+
+      @include mdc-theme-dark(".mdc-button") {
+        @include mdc-ripple-base;
+        @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
+        @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
+        @include mdc-theme-prop(color, $theme-style);
+      }
     }
     // postcss-bem-linter: ignore
     &.mdc-button--raised,
     &.mdc-button--unelevated {
       $theme-value: map-get($mdc-theme-property-values, text-primary-on-#{$theme-style});
 
-      @include mdc-ripple-base;
-      @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .32));
-      @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .32));
-      @include mdc-theme-prop(background-color, $theme-style);
-      @include mdc-theme-prop(color, text-primary-on-#{$theme-style});
+      &:not(:disabled) {
+        @include mdc-ripple-base;
+        @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .32));
+        @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .32));
+        @include mdc-theme-prop(background-color, $theme-style);
+        @include mdc-theme-prop(color, text-primary-on-#{$theme-style});
+      }
     }
     // postcss-bem-linter: ignore
     &.mdc-button--stroked {
-      @include mdc-theme-prop(border-color, $theme-style);
-
-      @include mdc-theme-dark(".mdc-button") {
+      &:not(:disabled) {
         @include mdc-theme-prop(border-color, $theme-style);
+
+        @include mdc-theme-dark(".mdc-button") {
+          @include mdc-theme-prop(border-color, $theme-style);
+        }
       }
     }
   }
@@ -165,11 +120,9 @@
 // Disabled button styles need to be last to ensure they override other primary/accent/dark styles
 
 .mdc-button {
-  fieldset:disabled &,
   &:disabled {
+    background-color: transparent;
     color: rgba(black, .38);
-    cursor: default;
-    pointer-events: none;
 
     @include mdc-theme-dark(".mdc-button") {
       @include mdc-theme-prop(color, text-disabled-on-dark);
@@ -179,9 +132,7 @@
 
 .mdc-button--raised,
 .mdc-button--unelevated {
-  fieldset:disabled &,
   &:disabled {
-    @include mdc-elevation(0);
     @include mdc-theme-prop(color, text-primary-on-dark);
 
     background-color: rgba(black, .15);
@@ -195,7 +146,6 @@
 }
 
 .mdc-button--stroked {
-  fieldset:disabled &,
   &:disabled {
     border-color: rgba(black, .38);
 
