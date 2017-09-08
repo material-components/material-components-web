@@ -34,21 +34,17 @@ function detectEdgePseudoVarBug(windowObj) {
   // Detect versions of Edge with buggy var() support
   // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
   const document = windowObj.document;
-  const className = 'test-edge-css-var';
-  const styleNode = document.createElement('style');
-  document.head.appendChild(styleNode);
-  const sheet = styleNode.sheet;
-  // Internet Explorer 11 requires indices to always be specified to insertRule
-  sheet.insertRule(`:root { --${className}: 1px solid #000; }`, 0);
-  sheet.insertRule(`.${className} { visibility: hidden; }`, 1);
-  sheet.insertRule(`.${className}::before { border: var(--${className}); }`, 2);
   const node = document.createElement('div');
-  node.className = className;
+  node.className = 'mdc-ripple-surface--test-edge-var-bug';
   document.body.appendChild(node);
-  // Bug exists if ::before style ends up propagating to the parent element
-  const hasPseudoVarBug = windowObj.getComputedStyle(node).borderTopStyle === 'solid';
+
+  // The bug exists if ::before style ends up propagating to the parent element.
+  // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
+  // but Firefox is known to support CSS custom properties correctly.
+  // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+  const computedStyle = windowObj.getComputedStyle(node);
+  const hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
   node.remove();
-  styleNode.remove();
   return hasPseudoVarBug;
 }
 

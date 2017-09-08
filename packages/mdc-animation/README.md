@@ -27,39 +27,9 @@ npm install --save @material/animation
 
 ## Usage
 
-### CSS Classes
+### Sass Variables
 
-Some components already use a set curve for their animation. For example, MDC Checkbox uses deceleration curve for its checkmark animation.
-
-If you want to animate an element that is not a Material Design component, you can apply the following CSS classes.
-
-CSS Class | Description
---- | ---
-`mdc-animation-deceleration-curve` | Sets the `animation-timing-function` to deceleration curve
-`mdc-animation-standard-curve` | Sets the `animation-timing-function` to standard curve, a.k.a quickly accelerate and slowly decelerate
-`mdc-animation-acceleration-curve` | Sets the `animation-timing-function` to acceleration curve
-`mdc-animation-sharp-curve` | Sets the `animation-timing-function` to sharp curve, a.k.a quickly accelerate and decelerate
-
-### Sass Variables and Mixins
-
-Instead of setting CSS classes on elements, you can use the Sass mixins to achieve the same goal.
-
-```scss
-@import "@material/animation/mixins";
-
-.my-element--animating {
-  @include mdc-animation-acceleration-curve;
-}
-```
-
-Mixin | Description
---- | ---
-`mdc-animation-deceleration-curve` | Sets the `animation-timing-function` to deceleration curve
-`mdc-animation-standard-curve` | Sets the `animation-timing-function` to standard curve, a.k.a quickly accelerate and slowly decelerate
-`mdc-animation-acceleration-curve` | Sets the `animation-timing-function` to acceleration curve
-`mdc-animation-sharp-curve` | Sets the `animation-timing-function` to sharp curve, a.k.a quickly accelerate and decelerate
-
-We also provide the timing functions used by these mixins, which you can use with the `animation` or `transition` CSS properties
+We provide timing functions which you can use with the `animation` or `transition` CSS properties
 
 ```scss
 @import "@material/animation/variables";

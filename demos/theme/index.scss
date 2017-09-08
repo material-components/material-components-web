@@ -1,0 +1,218 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "../../packages/mdc-theme/color_palette";
+@import "../../packages/mdc-theme/mixins";
+@import "../../packages/mdc-theme/variables";
+@import "../../packages/mdc-toolbar/variables";
+
+// stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
+
+$demo-section-margin: 48px;
+
+//
+// Global styles
+//
+
+.mdc-theme--dark {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  background-color: $material-color-grey-800;
+}
+
+//
+// Page toolbar
+//
+
+.demo-icon--inline {
+  vertical-align: middle;
+}
+
+.demo-anchor-with-toolbar-offset {
+  $margin: $demo-section-margin / 2;
+
+  display: block;
+  position: relative;
+  top: -($mdc-toolbar-row-height + $margin);
+
+  @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+    and (orientation: landscape) {
+    top: -($mdc-toolbar-mobile-landscape-row-height + $margin);
+  }
+
+  @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+    top: -($mdc-toolbar-mobile-row-height + $margin);
+  }
+
+  visibility: hidden;
+}
+
+//
+// Page content
+//
+
+.demo-main {
+  padding: 24px;
+}
+
+.demo-component-section + .demo-component-section {
+  margin-top: $demo-section-margin;
+}
+
+.demo-component-section__heading .demo-component-section__permalink {
+  color: inherit;
+  opacity: 0;
+}
+
+.demo-component-section__permalink {
+  .demo-component-section:hover &,
+  .demo-component-section__heading--focus & {
+    opacity: 1;
+  }
+}
+
+//
+// Button demo
+//
+
+.demo-fieldset--button + .demo-fieldset--button {
+  margin-top: 16px;
+}
+
+.demo-button {
+  margin: 10px;
+}
+
+.demo-button__code {
+  font-size: smaller;
+  text-transform: none;
+}
+
+//
+// Card demo
+//
+
+.demo-card-wrap {
+  display: inline-block;
+  width: 350px;
+  margin: 0 24px 24px 0;
+  vertical-align: top;
+}
+
+.demo-card--with-avatar .mdc-card__primary {
+  position: relative;
+}
+
+.demo-card--with-avatar .demo-card__avatar {
+  position: absolute;
+  width: 2.5rem; // 40sp
+  height: 2.5rem; // 40sp
+  border-radius: 50%;
+  background: #bdbdbd;
+}
+
+.demo-card--with-avatar .mdc-card__title,
+.demo-card--with-avatar .mdc-card__subtitle {
+  margin-left: 56px;
+}
+
+[dir="rtl"] .demo-card--with-avatar .mdc-card__title,
+[dir="rtl"] .demo-card--with-avatar .mdc-card__subtitle {
+  margin-right: 56px;
+  margin-left: initial;
+}
+
+.demo-card--small .mdc-card__media {
+  height: 10.938rem; // 175sp, for 1:1 ratio with 175sp demo card width
+  background-image: url(/images/1-1.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+//
+// Checkbox demo
+//
+
+.demo-checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.demo-checkbox-wrap,
+.demo-checkbox-toggle {
+  margin-right: 10px;
+}
+
+.demo-checkbox-wrap + .demo-checkbox-toggle {
+  margin-left: 20px;
+}
+
+//
+// Dialog demo
+//
+
+.demo-dialog {
+  position: relative;
+  justify-content: unset;
+}
+
+//
+// Floating Action Button (FAB) demo
+//
+
+.demo-fieldset--fab {
+  margin-bottom: .5rem;
+}
+
+.demo-fieldset--fab .mdc-fab {
+  margin: 16px;
+}
+
+//
+// Icon Toggle demo
+//
+
+.mdc-icon-toggle {
+  // .material-icons and .mdc-icon-toggle each set different `display` values. Whichever CSS file is imported last
+  // will win, so prevent them from fighting by specifying the value we want here.
+  display: inline-flex;
+}
+
+.demo-icon-toggle__row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.demo-icon-toggle__tile {
+  width: 200px;
+  margin: 0 10px 10px 0;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+//
+// Linear Progress demo
+//
+
+.demo-linear-progress__row {
+  margin: 32px 0;
+}
+
+.demo-linear-progress__row + .demo-linear-progress__row {
+  margin-top: 64px;
+}

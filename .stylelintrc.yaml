@@ -40,6 +40,8 @@ rules:
     - justify-content
     - order
 
+    - box-sizing
+
     - width
     - min-width
     - max-width
@@ -63,6 +65,8 @@ rules:
     - float
     - clear
 
+    - resize
+
     - columns
     - column-gap
     - column-fill
@@ -70,6 +74,13 @@ rules:
     - column-span
     - column-count
     - column-width
+
+    - grid-gap
+    - grid-template-columns
+
+    - animation
+    - animation-name
+    - animation-timing-function
 
     - transform
     - transform-box
@@ -130,6 +141,10 @@ rules:
     - background-position
     - background-size
 
+    - fill
+
+    - opacity
+
     # Text
 
     - color
@@ -158,22 +173,30 @@ rules:
     - white-space
     - word-spacing
 
+    # Cursor
+
+    - cursor
+    - pointer-events
+    - user-select
+
     # Other
 
+    - appearance
     - border-collapse
     - border-spacing
     - box-shadow
     - caption-side
     - content
-    - cursor
     - empty-cells
-    - opacity
     - overflow
+    - overflow-x
+    - overflow-y
     - quotes
     - speak
     - table-layout
     - vertical-align
     - visibility
+    - will-change
     - z-index
   declaration-property-unit-whitelist:
     font-size:

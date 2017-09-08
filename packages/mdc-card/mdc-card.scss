@@ -26,8 +26,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 0;
   box-sizing: border-box;
+  padding: 0;
   border-radius: 2px;
   overflow: hidden;
 
@@ -46,8 +46,8 @@
   }
 
   &__supporting-text {
-    padding: 8px 16px;
     box-sizing: border-box;
+    padding: 8px 16px;
 
     @include mdc-typography(body1);
     @include mdc-theme-prop(color, text-primary-on-light);
@@ -70,8 +70,8 @@
 
   &__actions {
     display: flex;
-    padding: 8px;
     box-sizing: border-box;
+    padding: 8px;
 
     // Adjust text color for dark theme.
     @include mdc-theme-dark(".mdc-card") {
@@ -110,8 +110,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 16px;
     box-sizing: border-box;
+    padding: 16px;
   }
 
   &__media-item {

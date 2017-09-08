@@ -15,15 +15,10 @@
 //
 
 @import "@material/animation/functions";
-@import "@material/animation/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "./variables";
 @import "./keyframes";
-
-@function mdc-checkbox-transition($property, $timing-function, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
-  @return $property $duration $timing-function $delay;
-}
 
 @function mdc-checkbox-transition-enter($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
   @return mdc-animation-enter($property, $duration, $delay);
@@ -49,8 +44,8 @@
 
   display: inline-block;
   position: relative;
-  box-sizing: content-box;
   flex: 0 0 $mdc-checkbox-size;
+  box-sizing: content-box;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
   padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
@@ -85,7 +80,6 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    pointer-events: none;
     width: $mdc-checkbox-ui-pct;
     height: $mdc-checkbox-ui-pct;
     transition:
@@ -94,6 +88,7 @@
     border: $mdc-checkbox-border-width solid $mdc-checkbox-border-color;
     border-radius: 2px;
     background-color: transparent;
+    pointer-events: none;
     will-change: background-color, border-color;
 
     @include mdc-theme-dark(".mdc-checkbox") {
@@ -109,9 +104,9 @@
       transform: scale(0, 0);
       transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
       border-radius: 50%;
-      content: "";
       opacity: 0;
       pointer-events: none;
+      content: "";
       will-change: opacity, transform;
 
       @include mdc-theme-prop(background, primary);
@@ -126,8 +121,8 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    cursor: inherit;
     opacity: 0;
+    cursor: inherit;
   }
 
   &__checkmark {
@@ -135,8 +130,8 @@
 
     width: 100%;
     transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
-    opacity: 0;
     fill: $mdc-checkbox-mark-color;
+    opacity: 0;
 
     &__path {
       transition:
