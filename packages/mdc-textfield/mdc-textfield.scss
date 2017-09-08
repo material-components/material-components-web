@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+@import "./keyframes";
+@import "./variables";
 @import "@material/animation/variables";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
@@ -21,27 +23,6 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
-
-$mdc-textfield-error-on-light: #d50000;
-$mdc-textfield-error-on-dark: #ff6e6e;
-$mdc-textfield-divider-on-light: rgba(black, .12);
-$mdc-textfield-divider-on-dark: rgba(white, .12);
-$mdc-textfield-disabled-border-on-light: rgba(#231f20, .26);
-$mdc-textfield-disabled-border-on-dark: rgba(white, .3);
-$mdc-textfield-icon-position: 15px;
-$mdc-textfield-icon-padding: 48px;
-$mdc-textfield-dense-icon-position: 12px;
-$mdc-textfield-dense-icon-padding: 38px;
-$mdc-textfield-underline-on-light: rgba(black, 1);
-$mdc-textfield-underline-on-light-idle: rgba(black, .5);
-$mdc-textfield-underline-on-dark: rgba(white, 1);
-$mdc-textfield-underline-on-dark-idle: rgba(white, .5);
-$mdc-textfield-dark-background: rgba(black, .02);
-$mdc-textfield-dark-label: rgba(black, .6);
-$mdc-textfield-dark-placeholder: rgba(black, .38);
-$mdc-textfield-light-background: rgba(white, .05);
-$mdc-textfield-light-label: rgba(white, .7);
-$mdc-textfield-light-placeholder: rgba(white, .3);
 
 @function mdc-textfield-transition($property) {
   @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
@@ -80,7 +61,6 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     }
 
     &:hover {
-      border-width: 2px;
       border-color: $mdc-textfield-underline-on-light;
     }
 
@@ -104,7 +84,6 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
 
       &:hover {
         border-bottom: 1px solid $mdc-textfield-underline-on-dark;
-        border-width: 2px;
       }
 
       &::placeholder {
@@ -240,8 +219,8 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     color: rgba(black, .6);
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
     pointer-events: none;
+    overflow: hidden;
     // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
@@ -318,8 +297,8 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
   // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-textfield--with-leading-icon .mdc-textfield__leading-icon,
-.mdc-textfield--with-trailing-icon .mdc-textfield__trailing-icon {
+.mdc-textfield--with-leading-icon .mdc-textfield__icon,
+.mdc-textfield--with-trailing-icon .mdc-textfield__icon {
   position: absolute;
   bottom: 16px;
   cursor: pointer;
@@ -334,7 +313,7 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     @include mdc-rtl-reflexive-property(padding, $mdc-textfield-icon-padding, $mdc-textfield-icon-position);
   }
 
-  .mdc-textfield__leading-icon {
+  .mdc-textfield__icon {
     @include mdc-rtl-reflexive-position(left, $mdc-textfield-icon-position);
   }
 
@@ -348,22 +327,20 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     @include mdc-rtl-reflexive-property(padding, $mdc-textfield-icon-position, $mdc-textfield-icon-padding);
   }
 
-  .mdc-textfield__trailing-icon {
+  .mdc-textfield__icon {
     @include mdc-rtl-reflexive-position(right, $mdc-textfield-icon-position);
   }
 }
 
-.mdc-textfield__leading-icon:not([tabindex]),
-.mdc-textfield__leading-icon[tabindex="-1"],
-.mdc-textfield__trailing-icon:not([tabindex]),
-.mdc-textfield__trailing-icon[tabindex="-1"] {
-  pointer-events: none;
+.mdc-textfield__icon:not([tabindex]),
+.mdc-textfield__icon[tabindex="-1"] {
   cursor: default;
+  pointer-events: none;
 }
 
 // stylelint-disable plugin/selector-bem-pattern
-.mdc-textfield--with-leading-icon.mdc-textfield--dense .mdc-textfield__leading-icon,
-.mdc-textfield--with-trailing-icon.mdc-textfield--dense .mdc-textfield__trailing-icon {
+.mdc-textfield--with-leading-icon.mdc-textfield--dense .mdc-textfield__icon,
+.mdc-textfield--with-trailing-icon.mdc-textfield--dense .mdc-textfield__icon {
   bottom: 16px;
   transform: scale(.8);
 }
@@ -373,7 +350,7 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     @include mdc-rtl-reflexive-property(padding, $mdc-textfield-dense-icon-padding, $mdc-textfield-dense-icon-position);
   }
 
-  .mdc-textfield__leading-icon {
+  .mdc-textfield__icon {
     @include mdc-rtl-reflexive-position(left, $mdc-textfield-dense-icon-position);
   }
 
@@ -387,7 +364,7 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     @include mdc-rtl-reflexive-property(padding, $mdc-textfield-dense-icon-position, $mdc-textfield-dense-icon-padding);
   }
 
-  .mdc-textfield__trailing-icon {
+  .mdc-textfield__icon {
     @include mdc-rtl-reflexive-position(right, $mdc-textfield-dense-icon-position);
   }
 }
@@ -447,6 +424,14 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     background-color: $mdc-textfield-error-on-light;
   }
 }
+
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-textfield__label--float-above {
+  &.mdc-textfield__label--shake {
+    animation: invalid-shake-float-above 250ms 1;
+  }
+}
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-textfield--dense {
   margin-top: 12px;
@@ -571,15 +556,6 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
     border: 1px solid transparent;
     border-radius: 2px;
 
-    &:hover {
-      border-width: 1px;
-      border-color: $mdc-textfield-divider-on-light;
-
-      @include mdc-theme-dark(".mdc-textfield") {
-        border-color: $mdc-textfield-divider-on-dark;
-      }
-    }
-
     &:focus {
       @include mdc-theme-prop(border-color, primary);
     }
@@ -602,8 +578,15 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
   .mdc-textfield__label {
     top: $label-offset-y;
     bottom: initial;
+    width: calc(100% - 38px);
+    padding: 8px 16px;
+    background-color: $mdc-textarea-light-background;
 
-    @include mdc-rtl-reflexive-position(left, $label-offset-x);
+    @include mdc-rtl-reflexive-position(left, 1px);
+
+    @include mdc-theme-dark(".mdc-textfield") {
+      background-color: $mdc-textarea-dark-background;
+    }
 
     &--float-above {
       // Translate above the top of the input, and compensate for the amount of offset needed
@@ -630,10 +613,43 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
       padding-top: $padding-inset;
     }
   }
+
+  .mdc-textfield__icon {
+    @include mdc-rtl-reflexive-position(right, 22px);
+
+    position: absolute;
+    top: 18px;
+    color: $mdc-textfield-underline-on-light-idle;
+    cursor: pointer;
+
+    @include mdc-theme-dark(".mdc-textfield") {
+      color: $mdc-textfield-dark-label;
+    }
+  }
+}
+
+.mdc-textfield--textarea-full-width {
+  width: 100%;
+}
+
+.mdc-textfield--textarea-with-icon {
+  .mdc-textfield__input {
+    padding-right: 54px;
+  }
 }
 
 .mdc-textfield--textarea.mdc-textfield--focused {
   @include mdc-theme-prop(border-color, primary);
+}
+
+.mdc-textfield--textarea-with-icon.mdc-textfield--focused {
+  .mdc-textfield__icon {
+    @include mdc-theme-prop(color, text-primary-on-light);
+
+    @include mdc-theme-dark(".mdc-textfield") {
+      @include mdc-theme-prop(color, secondary);
+    }
+  }
 }
 
 .mdc-textfield--textarea.mdc-textfield--disabled {
@@ -654,9 +670,9 @@ $mdc-textfield-light-placeholder: rgba(white, .3);
 
   &:not(.mdc-textfield--textarea) {
     display: block;
+    box-sizing: border-box;
     width: 100%;
     height: 56px;
-    box-sizing: border-box;
     margin: 0;
     border: none;
     border-bottom: 1px solid $mdc-textfield-divider-on-light;

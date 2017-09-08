@@ -52,11 +52,11 @@
       .custom-textfield-input {
         width: 300px;
       }
-      
+
       .full-width-textarea-example {
         margin-top: 16px;
       }
-      
+
     </style>
   </head>
   <body>
@@ -92,8 +92,7 @@
         <section id="demo-textfield-wrapper">
           <div class="mdc-textfield">
             <input type="text" class="mdc-textfield__input" id="my-textfield"
-                   name="email" aria-controls="my-textfield-helptext"
-                   data-demo-no-auto-js autocomplete="email">
+                  aria-controls="my-textfield-helptext" data-demo-no-auto-js>
             <div class="mdc-textfield__bottom-line"></div>
             <label for="my-textfield" class="mdc-textfield__label">Email Address</label>
           </div>
@@ -155,7 +154,7 @@
         <h2>Textfield box</h2>
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-textfield mdc-textfield--box" data-demo-no-auto-js>
-            <input type="text" id="tf-box" class="mdc-textfield__input" required
+            <input required pattern=".{8,}" type="text" id="tf-box" class="mdc-textfield__input" required
                    aria-controls="name-validation-message">
             <label for="tf-box" class="mdc-textfield__label">Your Name</label>
             <div class="mdc-textfield__bottom-line"></div>
@@ -234,7 +233,7 @@
         <div id="demo-tf-box-leading-wrapper">
           <div id="tf-box-leading-example"
             class="mdc-textfield mdc-textfield--box mdc-textfield--with-leading-icon" data-demo-no-auto-js>
-            <i class="material-icons mdc-textfield__leading-icon" tabindex="0">event</i>
+            <i class="material-icons mdc-textfield__icon" tabindex="0">event</i>
             <input type="text" id="tf-box-leading" class="mdc-textfield__input custom-textfield-input">
             <label for="tf-box-leading" class="mdc-textfield__label">Your Name</label>
             <div class="mdc-textfield__bottom-line"></div>
@@ -245,7 +244,7 @@
             class="mdc-textfield mdc-textfield--box mdc-textfield--with-trailing-icon" data-demo-no-auto-js>
             <input type="text" id="tf-box-trailing" class="mdc-textfield__input custom-textfield-input">
             <label for="tf-box-trailing" class="mdc-textfield__label">Your other name</label>
-            <i class="material-icons mdc-textfield__trailing-icon" tabindex="0">delete</i>
+            <i class="material-icons mdc-textfield__icon" tabindex="0">delete</i>
             <div class="mdc-textfield__bottom-line"></div>
           </div>
         </div>
@@ -330,6 +329,25 @@
       </section>
 
       <section class="example">
+        <h2>Textarea with Icon</h2>
+        <section id="demo-textfield-textarea-with-icon-wrapper">
+          <div class="mdc-textfield mdc-textfield--textarea mdc-textfield--textarea-with-icon">
+            <textarea id="textarea-icon" class="mdc-textfield__input" rows="8" cols="40"></textarea>
+            <label for="textarea-icon" class="mdc-textfield__label">Textarea Label</label>
+            <i class="material-icons mdc-textfield__icon" tabindex="0">cancel</i>
+          </div>
+        </section>
+        <div>
+          <input id="textarea-icon-rtl" type="checkbox">
+          <label for="textarea-icon-rtl">RTL</label>
+        </div>
+        <div>
+          <input id="textarea-icon-dark-theme" type="checkbox">
+          <label for="textarea-icon-dark-theme">Dark Theme</label>
+        </div>
+      </section>
+
+      <section class="example">
         <h2>CSS Only Textarea</h2>
         <section>
           <div class="mdc-textfield mdc-textfield--textarea" data-demo-no-auto-js>
@@ -344,7 +362,7 @@
           <div class="mdc-textfield mdc-textfield--fullwidth" data-demo-no-auto-js>
             <input class="mdc-textfield__input" type="text" placeholder="Subject" aria-label="Subject">
           </div>
-          <div class="mdc-textfield mdc-textfield--fullwidth mdc-textfield--textarea full-width-textarea-example">
+          <div class="mdc-textfield mdc-textfield--textarea mdc-textfield--textarea-full-width full-width-textarea-example">
             <textarea id="full-width-textarea" class="mdc-textfield__input" rows="8"></textarea>
             <label for="full-width-textarea" class="mdc-textfield__label">Textarea Label</label>
           </div>
@@ -478,9 +496,9 @@
     <script>
       (function() {
         var section = document.getElementById('demo-textfield-textarea-wrapper');
+        var iconSection = document.getElementById('demo-textfield-textarea-with-icon-wrapper');
         var tfRoot = section.querySelector('.mdc-textfield');
         var tf = new mdc.textfield.MDCTextfield(tfRoot);
-
         document.getElementById('textarea-disable').addEventListener('change', function(evt) {
           var target = evt.target;
           tf.disabled = target.checked;
@@ -493,9 +511,21 @@
             section.removeAttribute('dir');
           }
         });
+        document.getElementById('textarea-icon-rtl').addEventListener('change', function(evt) {
+          var target = evt.target;
+          if (target.checked) {
+            iconSection.setAttribute('dir', 'rtl');
+          } else {
+            iconSection.removeAttribute('dir');
+          }
+        });
         document.getElementById('textarea-dark-theme').addEventListener('change', function(evt) {
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
+        document.getElementById('textarea-icon-dark-theme').addEventListener('change', function (evt) {
+          var target = evt.target;
+          iconSection.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
           var target = evt.target;

@@ -364,22 +364,12 @@ test('#adapter.removeHelptextAttr removes an attribute on the help text element'
   assert.isNotOk(helptext.hasAttribute('aria-label'));
 });
 
-test(`#adapter.notifyLeadingIconAction emits ${strings.LEADING_ICON_EVENT}`, () => {
+test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {
   const {component} = setupTest();
   const handler = td.func('leadingHandler');
 
-  component.listen(strings.LEADING_ICON_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyLeadingIconAction();
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test(`#adapter.notifyTrailingIconAction emits ${strings.TRAILING_ICON_EVENT}`, () => {
-  const {component} = setupTest();
-  const handler = td.func('trailingHandler');
-
-  component.listen(strings.TRAILING_ICON_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyTrailingIconAction();
+  component.listen(strings.ICON_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyIconAction();
 
   td.verify(handler(td.matchers.anything()));
 });

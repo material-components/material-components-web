@@ -35,9 +35,9 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextfieldFoundation, [
-    'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel', 'eventTargetHasClass',
-    'registerTextFieldClickHandler', 'deregisterTextFieldClickHandler',
-    'notifyLeadingIconAction', 'notifyTrailingIconAction',
+    'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
+    'eventTargetHasClass', 'registerTextFieldClickHandler',
+    'deregisterTextFieldClickHandler', 'notifyIconAction',
     'addClassToBottomLine', 'removeClassFromBottomLine',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputFocusHandler', 'deregisterInputFocusHandler',
@@ -394,14 +394,14 @@ test('on blur handles getNativeInput() not returning anything gracefully', () =>
   assert.doesNotThrow(blur);
 });
 
-test('on text field click notifies leading icon event if event target is the leading icon', () => {
+test('on text field click notifies icon event if event target is the leading icon', () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {
     target: {},
   };
   let iconEventHandler;
 
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON)).thenReturn(true);
+  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TEXT_FIELD_ICON)).thenReturn(true);
   td.when(mockAdapter.registerTextFieldClickHandler(td.matchers.isA(Function)))
     .thenDo((handler) => {
       iconEventHandler = handler;
@@ -409,17 +409,17 @@ test('on text field click notifies leading icon event if event target is the lea
 
   foundation.init();
   iconEventHandler(evt);
-  td.verify(mockAdapter.notifyLeadingIconAction());
+  td.verify(mockAdapter.notifyIconAction());
 });
 
-test('on text field click notifies trailing icon event if event target is the trailing icon', () => {
+test('on text field click notifies icon event if event target is the trailing icon', () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {
     target: {},
   };
   let iconEventHandler;
 
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TRAILING_ICON)).thenReturn(true);
+  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TEXT_FIELD_ICON)).thenReturn(true);
   td.when(mockAdapter.registerTextFieldClickHandler(td.matchers.isA(Function)))
     .thenDo((handler) => {
       iconEventHandler = handler;
@@ -427,7 +427,7 @@ test('on text field click notifies trailing icon event if event target is the tr
 
   foundation.init();
   iconEventHandler(evt);
-  td.verify(mockAdapter.notifyTrailingIconAction());
+  td.verify(mockAdapter.notifyIconAction());
 });
 
 test('on transition end removes the bottom line active class if this.isFocused_ is false ' +

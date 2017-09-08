@@ -35,8 +35,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       eventTargetHasClass: (/* target: HTMLElement, className: string */) => {},
       registerTextFieldClickHandler: () => {},
       deregisterTextFieldClickHandler: () => {},
-      notifyLeadingIconAction: () => {},
-      notifyTrailingIconAction: () => {},
+      notifyIconAction: () => {},
       addClassToBottomLine: (/* className: string */) => {},
       removeClassFromBottomLine: (/* className: string */) => {},
       addClassToHelptext: (/* className: string */) => {},
@@ -57,7 +56,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       setBottomLineAttr: (/* attr: string, value: string */) => {},
       setHelptextAttr: (/* name: string, value: string */) => {},
       removeHelptextAttr: (/* name: string */) => {},
-      getNativeInput: () => /* HTMLInputElement */ ({}),
+      getNativeInput: () => /* HTMLInputElement */ {},
     };
   }
 
@@ -105,23 +104,23 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
   handleTextFieldClick_(evt) {
     const {target} = evt;
-    const {LEADING_ICON, TRAILING_ICON} = MDCTextfieldFoundation.cssClasses;
+    const {TEXT_FIELD_ICON} = MDCTextfieldFoundation.cssClasses;
 
-    if (this.adapter_.eventTargetHasClass(target, LEADING_ICON)) {
-      this.adapter_.notifyLeadingIconAction();
-    } else if (this.adapter_.eventTargetHasClass(target, TRAILING_ICON)) {
-      this.adapter_.notifyTrailingIconAction();
+    if (this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON)) {
+      this.adapter_.notifyIconAction();
     }
+
     ['mousedown', 'touchstart'].forEach((evtType) => {
       this.adapter_.deregisterInputPointerDownHandler(evtType, this.setPointerXOffset_, {passive: true});
     });
   }
 
   activateFocus_() {
-    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
+    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
+    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
     this.showHelptext_();
     this.isFocused_ = true;
   }
@@ -159,25 +158,29 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   deactivateFocus_() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
     this.adapter_.removeClass(FOCUSED);
+    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
 
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+      this.adapter_.removeClassFromLabel(LABEL_SHAKE);
       this.receivedUserInput_ = false;
     }
+
     if (!this.useCustomValidityChecking_) {
       this.changeValidity_(input.checkValidity());
     }
   }
 
   changeValidity_(isValid) {
-    const {INVALID} = MDCTextfieldFoundation.cssClasses;
+    const {INVALID, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
+      this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
     }
     this.updateHelptext_(isValid);
