@@ -117,7 +117,7 @@ test('#init checks if slider is discrete and if display track markers', () => {
   raf.restore();
 });
 
-test('#init sets step to one if slider is discrete but with step equals to zero', () => {
+test('#init sets step to one if slider is discrete but step is zero', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
