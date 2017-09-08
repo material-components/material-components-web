@@ -37,6 +37,7 @@
 
 .mdc-button--raised,
 .mdc-button--unelevated {
+  @include mdc-button--filled_;
   @include mdc-button-container-fill-color(black);
   @include mdc-button-ink-color(text-primary-on-dark);
   @include mdc-button-ripple((base-color: white, opacity: .32));
@@ -53,6 +54,7 @@
 }
 
 .mdc-button--stroked {
+  @include mdc-button--stroked_;
   @include mdc-button-stroke-width(2px);
   @include mdc-button-stroke-style(solid);
   @include mdc-button-stroke-color(text-primary-on-light);
@@ -113,44 +115,6 @@
           @include mdc-theme-prop(border-color, $theme-style);
         }
       }
-    }
-  }
-}
-
-// Disabled button styles need to be last to ensure they override other primary/accent/dark styles
-
-.mdc-button {
-  &:disabled {
-    background-color: transparent;
-    color: rgba(black, .38);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
-  }
-}
-
-.mdc-button--raised,
-.mdc-button--unelevated {
-  &:disabled {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
-    background-color: rgba(black, .15);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-
-      background-color: rgba(255, 255, 255, .15);
-    }
-  }
-}
-
-.mdc-button--stroked {
-  &:disabled {
-    border-color: rgba(black, .38);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(border-color, text-disabled-on-dark);
     }
   }
 }
