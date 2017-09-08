@@ -637,7 +637,7 @@ Scrolls the tab bar such that the rightmost tab traverses the scroll frame and b
 
 > **NOTE:** Due to a quirk in event behavior, we allow the rightmost tab to be partially occluded even when tabbed to because clicking on such an element would shift the frame on the `focus` event. This would result in a scenario where the ripple persists and the intended tab would not be selected due to the tab bar shifting before the `mouseup` or `click` events get dispatched.
 
-#### MDCTabBarScrollerFoundation.scrollToTabAtIndex(index) => index
+#### MDCTabBarScrollerFoundation.scrollToTabAtIndex(index) => void
 
 Scrolls the tab bar such that the tab at the index provided traverses the scroll frame and becomes the leftmost tab.
 
