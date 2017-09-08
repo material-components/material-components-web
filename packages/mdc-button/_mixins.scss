@@ -24,17 +24,17 @@
 
   display: inline-block;
   position: relative;
+  box-sizing: border-box;
   min-width: 88px;
   height: $mdc-button-height;
   padding: 0 16px;
   border: none;
-  box-sizing: border-box;
   outline: none;
   text-align: center;
-  overflow: hidden;
-  vertical-align: middle;
   user-select: none;
   -webkit-appearance: none;
+  overflow: hidden;
+  vertical-align: middle;
 
   // postcss-bem-linter: ignore
   &:active {
