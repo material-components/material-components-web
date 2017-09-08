@@ -117,6 +117,21 @@ test('#init checks if slider is discrete and if display track markers', () => {
   raf.restore();
 });
 
+test('#init sets step to one if slider is discrete but step is zero', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  foundation.init();
+
+  raf.flush();
+
+  assert.equal(foundation.getStep(), 1);
+
+  raf.restore();
+});
+
 test('#init performs an initial layout of the component', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
