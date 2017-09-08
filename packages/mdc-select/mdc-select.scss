@@ -31,9 +31,6 @@
   @include mdc-theme-prop(color, text-primary-on-light);
   @include mdc-rtl-reflexive-box(padding, right, $dd-arrow-padding);
 
-  // Resets for <select> element
-  appearance: none;
-
   &::-ms-expand {
     display: none;
   }
@@ -58,6 +55,8 @@
   font-family: Roboto, sans-serif;
   font-size: .936rem;
   cursor: pointer;
+  // Resets for <select> element
+  appearance: none;
 
   &:focus {
     @include mdc-theme-prop(border-bottom-color, primary);
@@ -183,7 +182,6 @@
 
 // postcss-bem-linter: define multi-select
 .mdc-multi-select {
-  appearance: none;
   width: 250px;
   padding: 0;
   border: 1px solid;
@@ -195,6 +193,7 @@
   }
 
   outline: none;
+  appearance: none;
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-group {

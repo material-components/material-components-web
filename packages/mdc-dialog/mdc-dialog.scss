@@ -121,8 +121,8 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
       max-height: 195px;
       border-top: 1px solid rgba(0, 0, 0, .1);
       border-bottom: 1px solid rgba(0, 0, 0, .1);
-      overflow-y: scroll;
       overflow-x: auto;
+      overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
     }
   }
