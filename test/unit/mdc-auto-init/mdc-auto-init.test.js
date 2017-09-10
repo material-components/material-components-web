@@ -97,18 +97,7 @@ test('#register warns when registered key is being overridden', () => {
   td.verify(warn(contains('(mdc-auto-init) Overriding registration')));
 });
 
-test('#emit event from MDCComponent on init complete', () => {
-  const root = setupTest();
-  const handler = td.func('init event handler');
-
-  document.addEventListener('MDCAutoInit:End', handler);
-  mdcAutoInit(root);
-
-  td.verify(handler(td.matchers.isA(Object)));
-});
-
-test('#emit dispatches a custom event from a DOM element with supplied data', () => {
-  const root = document.createElement('div');
+test('#emit dispatches a custom event with supplied data', () => {
   const handler = td.func('eventHandler');
   let evt = null;
 
@@ -117,18 +106,17 @@ test('#emit dispatches a custom event from a DOM element with supplied data', ()
   });
 
   const data = {evtData: true};
-  const type = 'customeventtype';
+  const type = 'MDCAutoInit:End';
 
-  root.addEventListener(type, handler);
-  emit(root, type, data);
+  document.addEventListener(type, handler);
+  emit(type, data);
 
   assert.isOk(evt !== null);
   assert.equal(evt.type, type);
   assert.deepEqual(evt.detail, data);
 });
 
-test('#emit dispatches an event from a DOM element with supplied data - custom events not supported', () => {
-  const root = document.createElement('div');
+test('#emit dispatches an event with supplied data - custom events not supported', () => {
   const handler = td.func('eventHandler');
   let evt = null;
 
@@ -137,13 +125,13 @@ test('#emit dispatches an event from a DOM element with supplied data - custom e
   });
 
   const data = {evtData: true};
-  const type = 'customeventtype';
+  const type = 'MDCAutoInit:End';
 
-  root.addEventListener(type, handler);
+  document.addEventListener(type, handler);
   const {CustomEvent} = window;
   window.CustomEvent = undefined;
   try {
-    emit(root, type, data);
+    emit(type, data);
   } finally {
     window.CustomEvent = CustomEvent;
   }

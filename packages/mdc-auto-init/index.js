@@ -19,14 +19,12 @@ const registry = Object.create(null);
 const CONSOLE_WARN = console.warn.bind(console);
 
 /**
- * Fires a cross-browser-compatible custom event from HTML element or HTML document,
- * with the given data.
- * @param {HTMLElement, HTMLDocument} element
+ * Fires a cross-browser-compatible custom event with the given data
  * @param {string} evtType
  * @param {!Object} evtData
  * @param {boolean=} shouldBubble
  */
-export function emit(element, evtType, evtData, shouldBubble = false) {
+export function emit(evtType, evtData, shouldBubble = false) {
   let evt;
   if (typeof CustomEvent === 'function') {
     evt = new CustomEvent(evtType, {
@@ -38,7 +36,7 @@ export function emit(element, evtType, evtData, shouldBubble = false) {
     evt.initCustomEvent(evtType, shouldBubble, false, evtData);
   }
 
-  element.dispatchEvent(evt);
+  document.dispatchEvent(evt);
 }
 
 /**
@@ -73,7 +71,7 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     });
   }
 
-  emit(document, 'MDCAutoInit:End', {}, true);
+  emit('MDCAutoInit:End', {});
 }
 
 mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {
