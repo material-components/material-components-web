@@ -24,7 +24,7 @@ const CONSOLE_WARN = console.warn.bind(console);
  * @param {!Object} evtData
  * @param {boolean=} shouldBubble
  */
-export function emit(evtType, evtData, shouldBubble = false) {
+function _emit(evtType, evtData, shouldBubble = false) {
   let evt;
   if (typeof CustomEvent === 'function') {
     evt = new CustomEvent(evtType, {
@@ -71,7 +71,7 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     });
   }
 
-  emit('MDCAutoInit:End', {});
+  _emit('MDCAutoInit:End', {});
 }
 
 mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {

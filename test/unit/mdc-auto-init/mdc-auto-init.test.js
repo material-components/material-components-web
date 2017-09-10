@@ -18,7 +18,6 @@ import bel from 'bel';
 import td from 'testdouble';
 import {assert} from 'chai';
 import mdcAutoInit from '../../../packages/mdc-auto-init';
-import {emit} from '../../../packages/mdc-auto-init';
 
 class FakeComponent {
   static attachTo(node) {
@@ -97,7 +96,8 @@ test('#register warns when registered key is being overridden', () => {
   td.verify(warn(contains('(mdc-auto-init) Overriding registration')));
 });
 
-test('#emit dispatches a custom event with supplied data', () => {
+test('#dispatches a MDCAutoInit:End event when all components init is done', () => {
+  const root = document.createElement('div');
   const handler = td.func('eventHandler');
   let evt = null;
 
@@ -105,18 +105,17 @@ test('#emit dispatches a custom event with supplied data', () => {
     evt = evt_;
   });
 
-  const data = {evtData: true};
   const type = 'MDCAutoInit:End';
 
   document.addEventListener(type, handler);
-  emit(type, data);
+  mdcAutoInit(root);
 
   assert.isOk(evt !== null);
   assert.equal(evt.type, type);
-  assert.deepEqual(evt.detail, data);
 });
 
-test('#emit dispatches an event with supplied data - custom events not supported', () => {
+test('#dispatches a MDCAutoInit:End event when all components init is done - custom events not supported', () => {
+  const root = document.createElement('div');
   const handler = td.func('eventHandler');
   let evt = null;
 
@@ -124,19 +123,18 @@ test('#emit dispatches an event with supplied data - custom events not supported
     evt = evt_;
   });
 
-  const data = {evtData: true};
   const type = 'MDCAutoInit:End';
 
   document.addEventListener(type, handler);
+
   const {CustomEvent} = window;
   window.CustomEvent = undefined;
   try {
-    emit(type, data);
+    mdcAutoInit(root);
   } finally {
     window.CustomEvent = CustomEvent;
   }
 
   assert.isOk(evt !== null);
   assert.equal(evt.type, type);
-  assert.deepEqual(evt.detail, data);
 });
