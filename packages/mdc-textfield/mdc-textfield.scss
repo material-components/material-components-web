@@ -78,9 +78,9 @@
     }
 
     @include mdc-theme-dark {
-      border-bottom: 1px solid $mdc-textfield-underline-on-dark-idle;
-
       @include mdc-theme-prop(color, text-primary-on-dark);
+
+      border-bottom: 1px solid $mdc-textfield-underline-on-dark-idle;
 
       &:hover {
         border-bottom: 1px solid $mdc-textfield-underline-on-dark;
@@ -97,6 +97,8 @@
   }
 
   &__bottom-line {
+    @include mdc-theme-prop(background-color, primary);
+
     position: absolute;
     bottom: 0;
     left: 0;
@@ -106,8 +108,6 @@
     transition: mdc-textfield-transition(transform), mdc-textfield-transition(opacity);
     opacity: 0;
     z-index: 2;
-
-    @include mdc-theme-prop(background-color, primary);
   }
 
   &__bottom-line--active {
@@ -257,17 +257,17 @@
   }
 
   &.mdc-textfield--disabled {
-    border-bottom: none;
-    background-color: rgba(black, .02);
-
     @include mdc-theme-prop(background-color, $mdc-textfield-light-background);
     @include mdc-theme-prop(color, $mdc-textfield-light-placeholder);
 
-    @include mdc-theme-dark(".mdc-textfield", true) {
-      border-bottom: none;
+    border-bottom: none;
+    background-color: rgba(black, .02);
 
+    @include mdc-theme-dark(".mdc-textfield", true) {
       @include mdc-theme-prop(background-color, $mdc-textfield-dark-background);
       @include mdc-theme-prop(color, $mdc-textfield-dark-placeholder);
+
+      border-bottom: none;
     }
 
     .mdc-textfield__label {
@@ -576,13 +576,13 @@
   }
 
   .mdc-textfield__label {
+    @include mdc-rtl-reflexive-position(left, 1px);
+
     top: $label-offset-y;
     bottom: initial;
     width: calc(100% - 38px);
     padding: 8px 16px;
     background-color: $mdc-textarea-light-background;
-
-    @include mdc-rtl-reflexive-position(left, 1px);
 
     @include mdc-theme-dark(".mdc-textfield") {
       background-color: $mdc-textarea-dark-background;
@@ -628,10 +628,6 @@
   }
 }
 
-.mdc-textfield--textarea-full-width {
-  width: 100%;
-}
-
 .mdc-textfield--textarea-with-icon {
   .mdc-textfield__input {
     padding-right: 54px;
@@ -658,20 +654,13 @@
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-textfield--fullwidth {
-  display: block;
-  box-sizing: border-box;
   width: 100%;
-  margin: 0;
-  border: none;
-  border-bottom: 1px solid $mdc-textfield-divider-on-light;
-  outline: none;
 
   // stylelint-disable plugin/selector-bem-pattern
 
   &:not(.mdc-textfield--textarea) {
     display: block;
     box-sizing: border-box;
-    width: 100%;
     height: 56px;
     margin: 0;
     border: none;
@@ -685,14 +674,6 @@
       resize: none;
       // Use !important here to override all other border treatments
       border: none !important;
-    }
-  }
-
-  &.mdc-textfield--dense {
-    &:not(.mdc-textfield--multiline),
-    &:not(.mdc-textfield--box),
-    &:not(.mdc-textfield--textarea) {
-      height: 48px;
     }
   }
 

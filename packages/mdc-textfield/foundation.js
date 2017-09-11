@@ -41,16 +41,8 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       addClassToHelptext: (/* className: string */) => {},
       removeClassFromHelptext: (/* className: string */) => {},
       helptextHasClass: (/* className: string */) => /* boolean */ false,
-      registerInputFocusHandler: (/* handler: EventListener */) => {},
-      deregisterInputFocusHandler: (/* handler: EventListener */) => {},
-      registerInputBlurHandler: (/* handler: EventListener */) => {},
-      deregisterInputBlurHandler: (/* handler: EventListener */) => {},
-      registerInputInputHandler: (/* handler: EventListener */) => {},
-      deregisterInputInputHandler: (/* handler: EventListener */) => {},
-      registerInputKeydownHandler: (/* handler: EventListener */) => {},
-      deregisterInputKeydownHandler: (/* handler: EventListener */) => {},
-      registerInputPointerDownHandler: (/* evtType: string, handler: EventListener */) => {},
-      deregisterInputPointerDownHandler: (/* evtType: string, handler: EventListener */) => {},
+      registerInputEventHandler: (/* evtType: string, handler: EventListener */) => {},
+      deregisterInputEventHandler: (/* evtType: string, handler: EventListener */) => {},
       registerTransitionEndHandler: (/* handler: EventListener */) => {},
       deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
       setBottomLineAttr: (/* attr: string, value: string */) => {},
@@ -63,56 +55,61 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   constructor(adapter = {}) {
     super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
 
-    this.receivedUserInput_ = false;
     this.isFocused_ = false;
+    this.receivedUserInput_ = false;
+    this.useCustomValidityChecking_ = false;
     this.inputFocusHandler_ = () => this.activateFocus_();
     this.inputBlurHandler_ = () => this.deactivateFocus_();
     this.inputInputHandler_ = () => this.autoCompleteFocus_();
-    this.inputKeydownHandler_ = () => this.receivedUserInput_ = true;
-    this.textFieldClickHandler_ = (evt) => this.handleTextFieldClick_(evt);
-    this.useCustomValidityChecking_ = false;
-    this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin_(evt);
+    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction_(evt);
+    this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
   }
 
   init() {
     this.adapter_.addClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
-    this.adapter_.registerInputFocusHandler(this.inputFocusHandler_);
-    this.adapter_.registerInputBlurHandler(this.inputBlurHandler_);
-    this.adapter_.registerInputInputHandler(this.inputInputHandler_);
-    this.adapter_.registerInputKeydownHandler(this.inputKeydownHandler_);
-    this.adapter_.registerTextFieldClickHandler(this.textFieldClickHandler_);
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.registerInputPointerDownHandler(evtType, this.setPointerXOffset_);
-    });
-
     // Ensure label does not collide with any pre-filled value.
     if (this.getNativeInput_().value) {
       this.adapter_.addClassToLabel(MDCTextfieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
     }
+
+    this.adapter_.registerInputEventHandler('focus', this.inputFocusHandler_);
+    this.adapter_.registerInputEventHandler('blur', this.inputBlurHandler_);
+    this.adapter_.registerInputEventHandler('input', this.inputInputHandler_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.adapter_.registerInputEventHandler(evtType, this.setPointerXOffset_);
+    });
+    ['click', 'keydown'].forEach((evtType) => {
+      this.adapter_.registerTextFieldEventHandler(evtType, this.textFieldInteractionHandler_);
+    });
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
   }
 
   destroy() {
     this.adapter_.removeClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
-    this.adapter_.deregisterInputFocusHandler(this.inputFocusHandler_);
-    this.adapter_.deregisterInputBlurHandler(this.inputBlurHandler_);
-    this.adapter_.deregisterInputInputHandler(this.inputInputHandler_);
-    this.adapter_.deregisterInputKeydownHandler(this.inputKeydownHandler_);
-    this.adapter_.deregisterTextFieldClickHandler(this.textFieldClickHandler_);
+    this.adapter_.deregisterTextFieldEventHandler('click', this.textFieldClickHandler_);
+    this.adapter_.deregisterInputEventHandler('focus', this.inputFocusHandler_);
+    this.adapter_.deregisterInputEventHandler('blur', this.inputBlurHandler_);
+    this.adapter_.deregisterInputEventHandler('input', this.inputInputHandler_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.adapter_.deregisterInputEventHandler(evtType, this.setPointerXOffset_);
+    });
+    ['click', 'keydown'].forEach((evtType) => {
+      this.adapter_.deregisterTextFieldEventHandler(evtType, this.textFieldInteractionHandler_);
+    });
   }
 
-  handleTextFieldClick_(evt) {
-    const {target} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextfieldFoundation.cssClasses;
+  handleTextFieldInteraction_(evt) {
+    this.receivedUserInput_ = true;
 
-    if (this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON)) {
+    const {target, type} = evt;
+    const {TEXT_FIELD_ICON} = MDCTextfieldFoundation.cssClasses;
+    const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
+    const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
+
+    if (targetIsIcon && eventTriggersNotification) {
       this.adapter_.notifyIconAction();
     }
-
-    ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.deregisterInputPointerDownHandler(evtType, this.setPointerXOffset_, {passive: true});
-    });
   }
 
   activateFocus_() {

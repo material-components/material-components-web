@@ -83,8 +83,8 @@ export class MDCTextfield extends MDCComponent {
         }
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerTextFieldClickHandler: (handler) => this.root_.addEventListener('click', handler),
-      deregisterTextFieldClickHandler: (handler) => this.root_.addEventListener('click', handler),
+      registerTextFieldEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterTextFieldEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT),
     }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_(), this.getBottomLineAdapterMethods_()));
   }
@@ -121,16 +121,8 @@ export class MDCTextfield extends MDCComponent {
 
   getInputAdapterMethods_() {
     return {
-      registerInputFocusHandler: (handler) => this.input_.addEventListener('focus', handler),
-      registerInputBlurHandler: (handler) => this.input_.addEventListener('blur', handler),
-      registerInputInputHandler: (handler) => this.input_.addEventListener('input', handler),
-      registerInputKeydownHandler: (handler) => this.input_.addEventListener('keydown', handler),
-      deregisterInputFocusHandler: (handler) => this.input_.removeEventListener('focus', handler),
-      deregisterInputBlurHandler: (handler) => this.input_.removeEventListener('blur', handler),
-      deregisterInputInputHandler: (handler) => this.input_.removeEventListener('input', handler),
-      deregisterInputKeydownHandler: (handler) => this.input_.removeEventListener('keydown', handler),
-      registerInputPointerDownHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
-      deregisterInputPointerDownHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+      registerInputEventHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
+      deregisterInputEventHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
       getNativeInput: () => this.input_,
     };
   }

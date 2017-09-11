@@ -186,9 +186,9 @@ UX for client-side form field validation.
 ```
 
 ### Leading and Trailing Icons
-Leading and trailing icons can be added to MDC Textfields as visual indicators
+Leading and trailing icons can be added to MDC Text Fields as visual indicators
 as well as interaction targets. To do so, add the relevant classnames to the root element, add
-an `i` element with your preferred icon, and give it either a `mdc-textfield__leading-icon` or
+an `i` element with your preferred icon, and give it either a `mdc-textfield__icon` or
 `mdc-textfield__trailing-icon` class depending on which you are looking to achieve.
 
 #### Leading:
@@ -204,9 +204,9 @@ an `i` element with your preferred icon, and give it either a `mdc-textfield__le
 #### Trailing:
 ```html
 <div class="mdc-textfield mdc-textfield--box mdc-textfield--with-trailing-icon">
-  <i class="material-icons mdc-textfield__trailing-icon" tabindex="0">event</i>
   <input type="text" id="my-input" class="mdc-textfield__input">
   <label for="my-input" class="mdc-textfield__label">Your Name</label>
+  <i class="material-icons mdc-textfield__trailing-icon" tabindex="0">event</i>
   <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
@@ -262,8 +262,8 @@ behave normally.
 ```html
 <div class="mdc-textfield mdc-textfield--box">
   <input type="text" id="tf-box" class="mdc-textfield__input">
-  <div class="mdc-textfield__bottom-line"></div>
   <label for="tf-box" class="mdc-textfield__label">Your Name</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -276,7 +276,6 @@ text, validation, and dense UI.
 <label for="css-only-textfield-box">Your name:</label>
 <div class="mdc-textfield mdc-textfield--box">
   <input type="text" class="mdc-textfield__input" id="css-only-textfield-box" placeholder="Name">
-  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -388,25 +387,16 @@ complicated.
 | eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
 | registerTextFieldClickHandler(handler: EventListener) => void | Registers an event handler on the root element for a "click" event |
 | deregisterTextFieldClickHandler(handler: EventListener) => void | Deregisters an event handler on the root element for a "click" event |
-| notifyLeadingIconAction() => void | Broadcasts a custom event "MDCTextfield:leading-icon" denoting a user has clicked the leading icon |
-| notifyTrailingIconAction() => void | Broadcasts a custom event "MDCTextfield:trailing-icon" denoting a user has clicked the trailing icon |
+| notifyIconAction() => void | Broadcasts a custom event "MDCTextfield:icon" denoting a user has clicked the icon |
 | addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
 | removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
 | addClassToHelptext(className: string) => void | Adds a class to the help text element. Note that in our code we check for whether or not we have a help text element and if we don't, we simply return. |
 | removeClassFromHelptext(className: string) => void | Removes a class from the help text element. |
 | helptextHasClass(className: string) => boolean | Returns whether or not the help text element contains the current class |
-| registerInputFocusHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "focus" event |
-| deregisterInputFocusHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "focus" event |
-| registerInputBlurHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "blur" event |
-| deregisterInputBlurHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "blur" event |
-| registerInputInputHandler(handler: EventListener) => void | Registers an event listener on the native input element for an "input" event |
-| deregisterInputInputHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for an "input" event |
-| registerInputKeydownHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "keydown" event |
-| deregisterInputKeydownHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "keydown" event |
-| registerInputPointerDownHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
-| deregisterInputPointerDownHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
-| registerTransitionEndHandler(handler: EventListener) => void | Registers an event listener on the native input element for a "transitionend" event |
-| deregisterTransitionEndHandler(handler: EventListener) => void | Deregisters an event listener on the native input element for a "transitionend" event |
+| registerInputEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
+| deregisterInputEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
+| registerTransitionEndHandler(handler: EventListener) => void | Registers an event listener on the bottom line element for a "transitionend" event |
+| deregisterTransitionEndHandler(handler: EventListener) => void | Deregisters an event listener on the bottom line element for a "transitionend" event |
 | setBottomLineAttr(attr: string, value: string) => void | Sets an attribute with a given value on the bottom line element |
 | setHelptextAttr(name: string, value: string) => void | Sets an attribute with a given value on the help text element |
 | removeHelptextAttr(name: string) => void | Removes an attribute from the help text element |
