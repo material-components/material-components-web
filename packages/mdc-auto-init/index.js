@@ -18,12 +18,6 @@ const registry = Object.create(null);
 
 const CONSOLE_WARN = console.warn.bind(console);
 
-/**
- * Fires a cross-browser-compatible custom event with the given data
- * @param {string} evtType
- * @param {!Object} evtData
- * @param {boolean=} shouldBubble
- */
 function _emit(evtType, evtData, shouldBubble = false) {
   let evt;
   if (typeof CustomEvent === 'function') {
