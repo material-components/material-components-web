@@ -286,6 +286,21 @@ rules:
     - severity: warning
   # Part of google's style guide
   number-leading-zero: never
+  at-rule-empty-line-before:
+    - always
+    -
+      except:
+        - blockless-after-blockless
+        - first-nested
+      ignore:
+        - after-comment
+      ignoreAtRules:
+        - else
+  block-closing-brace-newline-after:
+    - always
+    - ignoreAtRules:
+      - if
+      - else
 
   # We use Harry Roberts' BEM dialect as our preferred way to format classes.
   # See: http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/
@@ -312,4 +327,8 @@ rules:
   scss/at-import-no-partial-leading-underscore: true
   # Since mixins are explicit (`@include`) and parens are unnecessary for argumentless mixins, they
   # can be omitted.
-  scss/at-mixin-argumentless-call-parentheses: never
+  scss/at-else-closing-brace-newline-after: always-last-in-chain
+  scss/at-else-closing-brace-space-after: always-intermediate
+  scss/at-else-empty-line-before: never
+  scss/at-if-closing-brace-newline-after: always-last-in-chain
+  scss/at-if-closing-brace-space-after: always-intermediate

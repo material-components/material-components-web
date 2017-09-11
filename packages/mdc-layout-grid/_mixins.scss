@@ -48,23 +48,17 @@
     @media (max-width: $max) {
       @content;
     }
-  }
-
-  @else if $min != null and $max != null {
+  } @else if $min != null and $max != null {
     // Tablet
     @media (min-width: $min) and (max-width: $max) {
       @content;
     }
-  }
-
-  @else if $min != null and $max == null {
+  } @else if $min != null and $max == null {
     // Desktop
     @media (min-width: $min) {
       @content;
     }
-  }
-
-  @else {
+  } @else {
     // Fallback - no breakpoints defined
     @content;
   }

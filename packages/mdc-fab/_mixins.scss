@@ -28,9 +28,7 @@
   @if ($light-or-dark-text == "light") {
     @include mdc-fab-ink-color(text-primary-on-dark);
     @include mdc-fab-ripple($mdc-fab-light-ripple-config);
-  }
-
-  @else {
+  } @else {
     @include mdc-fab-ink-color(text-primary-on-light);
     @include mdc-fab-ripple(()); //default dark ripple
   }
