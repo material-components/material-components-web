@@ -96,7 +96,7 @@ test('#register warns when registered key is being overridden', () => {
   td.verify(warn(contains('(mdc-auto-init) Overriding registration')));
 });
 
-test('#dispatches a MDCAutoInit:End event when all components init is done', () => {
+test('#dispatches a MDCAutoInit:End event when all components are initialized', () => {
   const root = document.createElement('div');
   const handler = td.func('eventHandler');
   let evt = null;
@@ -114,7 +114,7 @@ test('#dispatches a MDCAutoInit:End event when all components init is done', () 
   assert.equal(evt.type, type);
 });
 
-test('#dispatches a MDCAutoInit:End event when all components init is done - custom events not supported', () => {
+test('#dispatches a MDCAutoInit:End event when all components are initialized - custom events not supported', () => {
   const root = document.createElement('div');
   const handler = td.func('eventHandler');
   let evt = null;
