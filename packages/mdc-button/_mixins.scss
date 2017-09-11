@@ -121,9 +121,7 @@
   @if ($light-or-dark == "light") {
     @include mdc-button-ink-color(text-primary-on-dark);
     @include mdc-button-ripple((base-color: white, opacity: .32));
-  }
-
-  @else {
+  } @else {
     @include mdc-button-ink-color(text-primary-on-light);
     @include mdc-button-ripple((base-color: black, opacity: .32));
   }
