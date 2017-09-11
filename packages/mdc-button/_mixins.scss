@@ -113,6 +113,22 @@
   line-height: $mdc-dense-button-height;
 }
 
+@mixin mdc-button-filled-accessible($container-fill-color) {
+  $light-or-dark: mdc-theme-light-or-dark($container-fill-color);
+
+  @include mdc-button-container-fill-color($container-fill-color);
+
+  @if ($light-or-dark == "light") {
+    @include mdc-button-ink-color(text-primary-on-dark);
+    @include mdc-button-ripple((base-color: white, opacity: .32));
+  }
+
+  @else {
+    @include mdc-button-ink-color(text-primary-on-light);
+    @include mdc-button-ripple((base-color: black, opacity: .32));
+  }
+}
+
 @mixin mdc-button-container-fill-color($color) {
   // :not(:disabled) is used to support link styled as button
   // as link does not support :enabled style
