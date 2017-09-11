@@ -35,9 +35,7 @@
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
   @if $padding-type == menu {
     padding: $mdc-toobar-element-vertical-padding;
-  }
-
-  @else {
+  } @else {
     padding: $mdc-toobar-element-vertical-padding 8px;
   }
 }
