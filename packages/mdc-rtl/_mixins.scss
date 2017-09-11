@@ -69,9 +69,7 @@
         @content;
       }
     }
-  }
-
-  @else {
+  } @else {
     [dir="rtl"] &,
     &[dir="rtl"] {
       @content;
