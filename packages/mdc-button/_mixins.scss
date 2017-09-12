@@ -19,6 +19,73 @@
 @import "@material/theme/variables";
 @import "./variables";
 
+@mixin mdc-button-filled-accessible($container-fill-color) {
+  $light-or-dark: mdc-theme-light-or-dark($container-fill-color);
+
+  @include mdc-button-container-fill-color($container-fill-color);
+
+  @if ($light-or-dark == "light") {
+    @include mdc-button-ink-color(text-primary-on-dark);
+    @include mdc-button-ripple((base-color: white, opacity: .32));
+  } @else {
+    @include mdc-button-ink-color(text-primary-on-light);
+    @include mdc-button-ripple((base-color: black, opacity: .32));
+  }
+}
+
+@mixin mdc-button-container-fill-color($color) {
+  // :not(:disabled) is used to support link styled as button
+  // as link does not support :enabled style
+  &:not(:disabled) {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-button-stroke-color($color) {
+  &:not(:disabled) {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-button-ink-color($color) {
+  &:not(:disabled) {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-button-ripple($ripple-config) {
+  &:not(:disabled) {
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+
+    &:not(.mdc-ripple-upgraded) {
+      $tap-highlight-color: rgba(map-get($ripple-config, base-color), map-get($ripple-config, opacity));
+
+      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
+    }
+  }
+}
+
+@mixin mdc-button-corner-radius($corner-radius) {
+  border-radius: $corner-radius;
+}
+
+@mixin mdc-button-stroke-width($stroke-width) {
+  border-width: $stroke-width;
+  line-height: $mdc-button-height - $stroke-width * 2;
+
+  // postcss-bem-linter: ignore
+  &.mdc-button--dense {
+    // Minus extra 1 to accommodate odd font size of dense button
+    line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
+  }
+}
+
+@mixin mdc-button-stroke-style($stroke-style) {
+  border-style: $stroke-style;
+}
+
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
 
@@ -111,71 +178,4 @@
   height: $mdc-dense-button-height;
   font-size: .8125rem; // 13sp
   line-height: $mdc-dense-button-height;
-}
-
-@mixin mdc-button-filled-accessible($container-fill-color) {
-  $light-or-dark: mdc-theme-light-or-dark($container-fill-color);
-
-  @include mdc-button-container-fill-color($container-fill-color);
-
-  @if ($light-or-dark == "light") {
-    @include mdc-button-ink-color(text-primary-on-dark);
-    @include mdc-button-ripple((base-color: white, opacity: .32));
-  } @else {
-    @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-button-ripple((base-color: black, opacity: .32));
-  }
-}
-
-@mixin mdc-button-container-fill-color($color) {
-  // :not(:disabled) is used to support link styled as button
-  // as link does not support :enabled style
-  &:not(:disabled) {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
-@mixin mdc-button-stroke-color($color) {
-  &:not(:disabled) {
-    @include mdc-theme-prop(border-color, $color);
-  }
-}
-
-@mixin mdc-button-ink-color($color) {
-  &:not(:disabled) {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-button-ripple($ripple-config) {
-  &:not(:disabled) {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-
-    &:not(.mdc-ripple-upgraded) {
-      $tap-highlight-color: rgba(map-get($ripple-config, base-color), map-get($ripple-config, opacity));
-
-      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-    }
-  }
-}
-
-@mixin mdc-button-corner-radius($corner-radius) {
-  border-radius: $corner-radius;
-}
-
-@mixin mdc-button-stroke-width($stroke-width) {
-  border-width: $stroke-width;
-  line-height: $mdc-button-height - $stroke-width * 2;
-
-  // postcss-bem-linter: ignore
-  &.mdc-button--dense {
-    // Minus extra 1 to accommodate odd font size of dense button
-    line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
-  }
-}
-
-@mixin mdc-button-stroke-style($stroke-style) {
-  border-style: $stroke-style;
 }
