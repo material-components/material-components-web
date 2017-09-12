@@ -118,65 +118,61 @@
 
       <section class="examples">
         <div class="example">
-          <h2>Normal Toolbar <button type="button" onclick="toggleRTL(0)">Toggle RTL</button></h2>
+          <h2>Normal Toolbar <button type="button">Toggle RTL</button></h2>
           <p><a href="./default-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./default-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Fixed Toolbar<button type="button" onclick="toggleRTL(1)">Toggle RTL</button></h2>
+          <h2>Fixed Toolbar<button type="button">Toggle RTL</button></h2>
           <p><a href="./fixed-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./fixed-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Fixed Toolbar with Menu<button type="button" onclick="toggleRTL(1)">Toggle RTL</button></h2>
+          <h2>Fixed Toolbar with Menu<button type="button">Toggle RTL</button></h2>
           <p><a href="./menu-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./menu-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Waterfall Toolbar<button type="button" onclick="toggleRTL(2)">Toggle RTL</button></h2>
+          <h2>Waterfall Toolbar<button type="button">Toggle RTL</button></h2>
           <p><a href="./waterfall-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./waterfall-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Default Flexible Toolbar<button type="button" onclick="toggleRTL(3)">Toggle RTL</button></h2>
+          <h2>Default Flexible Toolbar<button type="button">Toggle RTL</button></h2>
           <p><a href="./default-flexible-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./default-flexible-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Waterfall Flexible Toolbar<button type="button" onclick="toggleRTL(4)">Toggle RTL</button></h2>
+          <h2>Waterfall Flexible Toolbar<button type="button">Toggle RTL</button></h2>
           <p><a href="./waterfall-flexible-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./waterfall-flexible-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Waterfall Toolbar Fix Last Row<button type="button" onclick="toggleRTL(5)">Toggle RTL</button></h2>
+          <h2>Waterfall Toolbar Fix Last Row<button type="button">Toggle RTL</button></h2>
           <p><a href="./waterfall-toolbar-fix-last-row.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./waterfall-toolbar-fix-last-row.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Waterfall Flexible Toolbar with Custom Style<button type="button" onclick="toggleRTL(6)">Toggle RTL</button></h2>
+          <h2>Waterfall Flexible Toolbar with Custom Style<button type="button">Toggle RTL</button></h2>
           <p><a href="./waterfall-flexible-toolbar-custom-style.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./waterfall-flexible-toolbar-custom-style.html" width="320" height="600"></iframe>
         </div>
-
       </section>
-
-
-
-
-
     </main>
     <script>
-      function toggleRTL(iframe_number) {
-        var iframeMainEl = document.querySelectorAll('iframe')[iframe_number].contentWindow.document.querySelector('body');
-        iframeMainEl.getAttribute('dir') === 'rtl' ? iframeMainEl.setAttribute('dir', 'ltr') : iframeMainEl.setAttribute('dir', 'rtl');
-      }
+      [].slice.call(document.querySelectorAll('.examples button')).forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          var iframeMainEl = event.target.parentNode.parentNode.querySelector('iframe').contentWindow.document.querySelector('body');
+          iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+        });
+      });
     </script>
   </body>
 </html>

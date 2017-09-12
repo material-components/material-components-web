@@ -91,7 +91,7 @@ Developers must position MDC FAB as needed within their application's design.
   }
 }
 </style>
-<button class="mdc-fab material icons app-fab--absolute" aria-label="Favorite">
+<button class="mdc-fab material-icons app-fab--absolute" aria-label="Favorite">
   <span class="mdc-fab__icon">
     favorite
   </span>

@@ -24,10 +24,41 @@ $mdc-theme-primary: #212121 !default; // Grey 900
 $mdc-theme-secondary: #64dd17 !default; // Light Green A700
 
 @import "../packages/mdc-theme/color_palette";
+@import "../packages/mdc-button/mixins";
 @import "../packages/mdc-fab/mixins";
 
 .mdc-fab.lightGreen800Fab {
   @include mdc-fab-accessible($material-color-light-green-800);
+}
+
+.mdc-button.secondary-text-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  }
+}
+
+.mdc-button.secondary-filled-button {
+  @include mdc-button-filled-accessible($mdc-theme-secondary);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-filled-accessible($mdc-theme-secondary);
+  }
+}
+
+.mdc-button.secondary-stroked-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-stroke-color($mdc-theme-secondary);
+  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-stroke-color($mdc-theme-secondary);
+    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  }
 }
 
 @import "../packages/material-components-web/material-components-web";

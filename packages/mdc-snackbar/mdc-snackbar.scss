@@ -34,12 +34,11 @@
   transition: mdc-animation-exit-permanent(transform, .25s);
   background-color: $mdc-snackbar-background-color;
   pointer-events: none;
+  will-change: transform;
 
   @include mdc-theme-dark(".mdc-snackbar") {
     background-color: $mdc-snackbar-background-color-on-dark;
   }
-
-  will-change: transform;
 
   @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
     left: 0;
@@ -55,10 +54,9 @@
 
   &--align-start {
     @media (min-width: $mdc-snackbar-tablet-breakpoint) {
-      bottom: 24px;
-
       @include mdc-rtl-reflexive-position(left, 24px);
 
+      bottom: 24px;
       transform: translate(0, 200%);
     }
 
@@ -96,12 +94,12 @@
   }
 
   &--action-on-bottom &__action-wrapper {
+    @include mdc-rtl-reflexive-box(margin, left, auto);
+
     flex-direction: column;
     justify-content: flex-start;
     margin-top: -12px;
     margin-bottom: 8px;
-
-    @include mdc-rtl-reflexive-box(margin, left, auto);
   }
 
   &__text {

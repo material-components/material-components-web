@@ -25,6 +25,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  // stylelint enable
+
+  border: none;
+  background-color: inherit;
+  color: inherit;
+  text-decoration: none;
 
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
   @if $padding-type == menu {
@@ -32,10 +38,4 @@
   } @else {
     padding: $mdc-toobar-element-vertical-padding 8px;
   }
-  // stylelint enable
-
-  border: none;
-  background-color: inherit;
-  color: inherit;
-  text-decoration: none;
 }

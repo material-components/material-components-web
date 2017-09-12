@@ -160,3 +160,10 @@ warning, you could simply pass in a nop.
 ```
 
 This will suppress any warnings about already initialized elements.
+
+### Events
+
+#### MDCAutoInit:End
+Triggered when initialization of all components is complete.
+
+`document.addEventListener("MDCAutoInit:End", () => {...});`

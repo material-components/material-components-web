@@ -23,15 +23,15 @@
 
 // postcss-bem-linter: define toolbar
 .mdc-toolbar {
+  @include mdc-theme-prop(background-color, primary);
+  @include mdc-theme-prop(color, text-primary-on-primary);
+
   display: flex;
   position: relative;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
   width: 100%;
-
-  @include mdc-theme-prop(background-color, primary);
-  @include mdc-theme-prop(color, text-primary-on-primary);
 
   &__row {
     display: flex;
@@ -125,12 +125,12 @@
 }
 
 .mdc-toolbar--fixed {
+  @include mdc-elevation(4);
+
   position: fixed;
   top: 0;
   left: 0;
   z-index: 4;
-
-  @include mdc-elevation(4);
 }
 
 .mdc-toolbar--flexible {

@@ -23,14 +23,10 @@
   @if type-of($style) == "color" {
     @if $important {
       #{$property}: $style !important;
-    }
-
-    @else {
+    } @else {
       #{$property}: $style;
     }
-  }
-
-  @else {
+  } @else {
     @if not map-has-key($mdc-theme-property-values, $style) {
       @error "Invalid style: '#{$style}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
     }
@@ -41,9 +37,7 @@
       /* @alternate */
       #{$property}: $value !important;
       #{$property}: var(--mdc-theme-#{$style}, $value) !important;
-    }
-
-    @else {
+    } @else {
       /* @alternate */
       #{$property}: $value;
       #{$property}: var(--mdc-theme-#{$style}, $value);
@@ -91,18 +85,14 @@
         .mdc-theme--dark & {
           @content;
         }
-      }
-
-      @else {
+      } @else {
         #{$root-selector}--theme-dark &,
         .mdc-theme--dark & {
           @content;
         }
       }
     }
-  }
-
-  @else {
+  } @else {
     &--theme-dark,
     .mdc-theme--dark & {
       @content;
