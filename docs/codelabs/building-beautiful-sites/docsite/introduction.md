@@ -5,6 +5,11 @@ section: codelab
 path: /codelab/
 -->
 
+<!--
+This is a simplified version of Building Beautiful Sites with MDC web
+edited for a non-technical audience
+-->
+
 <link rel="stylesheet" href="css/codelab.css" />
 
 # Building Beautiful Sites Faster with Material Components for the Web

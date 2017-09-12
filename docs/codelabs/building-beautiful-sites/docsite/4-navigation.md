@@ -5,6 +5,11 @@ section: codelab
 path: /codelab/4-navigation/
 -->
 
+<!--
+This is a simplified version of Building Beautiful Sites with MDC web
+edited for a non-technical audience
+-->
+
 <link rel="stylesheet" href="css/codelab.css" />
 
 # Add a navigation drawer

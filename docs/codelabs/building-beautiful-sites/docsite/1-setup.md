@@ -5,6 +5,11 @@ section: codelab
 path: /codelab/1-setup/
 -->
 
+<!--
+This is a simplified version of Building Beautiful Sites with MDC web
+edited for a non-technical audience
+-->
+
 <link rel="stylesheet" href="css/codelab.css" />
 
 # Set up your development environment
