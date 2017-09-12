@@ -130,6 +130,15 @@
   }
 }
 
+@mixin mdc-button__icon_ {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
 @mixin mdc-button--stroked_() {
   &:disabled {
     @include mdc-theme-prop(border-color, text-disabled-on-light);
