@@ -28,12 +28,12 @@ Wrap each one of the `mdc-card` product items in a `mdc-layout-grid__cell` div, 
 
 ```html
 <div class="mdc-layout-grid__cell">
-  <div class="mdc-card shrine-product-card">
-    <section class="mdc-card__primary">
-      <span class="mdc-card__title shrine-product-card__price">$20</span>
-    </section>
-    <img class="shrine-product-card__image" width="240" height="240" alt="Sunglasses" src="assets/sunnies.png">
-  </div>
+  <div class="mdc-card shrine-product-card">
+    <section class="mdc-card__primary">
+      <span class="mdc-card__title shrine-product-card__price">$20</span>
+    </section>
+    <img class="shrine-product-card__image" width="240" height="240" alt="Sunglasses" src="assets/sunnies.png">
+  </div>
 </div>
 <!-- ... -->
 ```
@@ -44,12 +44,12 @@ Add the following at the bottom of `app.css`:
 
 ```css
 #shrine-products {
-  --mdc-layout-grid-gutter: 8px;
+  --mdc-layout-grid-gutter: 8px;
 }
 
 #shrine-products .mdc-layout-grid__cell {
-  display: flex;
-  justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 ```
 
@@ -59,10 +59,10 @@ Alter the `.shrine-product-card` class so that it looks like the following:
 
 ```css
 .shrine-product-card {
-  width: 320px;
-  border-radius: 4px;
-  margin-bottom: 8px;
-  background-color: white;
+  width: 320px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background-color: white;
 }
 ```
 

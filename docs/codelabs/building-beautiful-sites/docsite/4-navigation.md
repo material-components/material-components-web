@@ -22,14 +22,14 @@ Add the markup below for the temporary drawer in `index.html`, right below the m
 
 ```html
 <aside id="shrine-nav-menu" class="mdc-temporary-drawer" data-mdc-auto-init="MDCTemporaryDrawer">
-  <nav class="mdc-temporary-drawer__drawer">
-    <header class="mdc-temporary-drawer__header"></header>
-    <nav class="mdc-temporary-drawer__content mdc-list">
-      <a class="mdc-list-item" href="#">Home</a>
-      <a class="mdc-list-item" href="#">Clothing</a>
-      <a class="mdc-list-item" href="#">Popsicles</a>
-    </nav>
-  </nav>
+  <nav class="mdc-temporary-drawer__drawer">
+    <header class="mdc-temporary-drawer__header"></header>
+    <nav class="mdc-temporary-drawer__content mdc-list">
+      <a class="mdc-list-item" href="#">Home</a>
+      <a class="mdc-list-item" href="#">Clothing</a>
+      <a class="mdc-list-item" href="#">Popsicles</a>
+    </nav>
+  </nav>
 </aside>
 ```
 
@@ -39,32 +39,32 @@ Add the following to `app.css` to style the drawer to reflect the mocks:
 
 ```css
 #shrine-nav-menu {
-  text-transform: uppercase;
-  padding-left: 16px;
+  text-transform: uppercase;
+  padding-left: 16px;
 }
 
 #shrine-nav-menu .mdc-temporary-drawer__drawer {
-  background-color: #fafafa;
+  background-color: #fafafa;
 }
 
 #shrine-nav-menu .mdc-temporary-drawer__header {
-  background: url(assets/logo.png) 32px 32px no-repeat;
-  background-size: 30%;
+  background: url(assets/logo.png) 32px 32px no-repeat;
+  background-size: 30%;
 }
 
 #shrine-nav-menu .mdc-temporary-drawer__header::before {
-  padding-top: 30%;
+  padding-top: 30%;
 }
 
 #shrine-nav-menu .mdc-temporary-drawer__content {
-  background: url(assets/diamond.svg) -32px bottom no-repeat;
-  background-size: 50%;
+  background: url(assets/diamond.svg) -32px bottom no-repeat;
+  background-size: 50%;
 }
 
 #shrine-nav-menu .mdc-list-item {
-  height: 32px;
-  padding-left: 32px;
-  letter-spacing: .2em;
+  height: 32px;
+  padding-left: 32px;
+  letter-spacing: .2em;
 }
 ```
 
@@ -74,11 +74,11 @@ Alter the `<script>mdc.autoInit()</script>` tag to show the following:
 
 ```html
 <script>
-  mdc.autoInit();
-  document.getElementById('shrine-nav-icon').addEventListener('click', function(evt) {
-    evt.preventDefault();
-    document.getElementById('shrine-nav-menu').MDCTemporaryDrawer.open = true;
-  });
+  mdc.autoInit();
+  document.getElementById('shrine-nav-icon').addEventListener('click', function(evt) {
+    evt.preventDefault();
+    document.getElementById('shrine-nav-menu').MDCTemporaryDrawer.open = true;
+  });
 </script>
 ```
 

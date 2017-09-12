@@ -34,16 +34,16 @@ In `index.html`, replace the `h1` tag with the following markup:
 
 ```html
 <header id="shrine-header"
-        class="mdc-toolbar mdc-toolbar--fixed mdc-theme--text-primary-on-background">
-  <div class="mdc-toolbar__row">
-    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-      <a id="shrine-nav-icon" class="material-icons" href="#"
-         aria-label="Click to show the navigation menu"
-         aria-controls="shrine-nav-menu">menu</a>
-      <h1 id="shrine-logo"          
-          class="mdc-toolbar__title"><span>Shrine</span></h1>
-    </section>
-  </div>
+        class="mdc-toolbar mdc-toolbar--fixed mdc-theme--text-primary-on-background">
+  <div class="mdc-toolbar__row">
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+      <a id="shrine-nav-icon" class="material-icons" href="#"
+         aria-label="Click to show the navigation menu"
+         aria-controls="shrine-nav-menu">menu</a>
+      <h1 id="shrine-logo"
+          class="mdc-toolbar__title"><span>Shrine</span></h1>
+    </section>
+  </div>
 </header>
 ```
 
@@ -53,44 +53,44 @@ Add the following styles to `app.css`:
 
 ```css
 #shrine-header {
-  background-color: var(--mdc-theme-background);
-  color: var(--mdc-theme-text-primary-on-background);
+  background-color: var(--mdc-theme-background);
+  color: var(--mdc-theme-text-primary-on-background);
 }
 
 #shrine-header .mdc-toolbar__section {
-  overflow: visible;
+  overflow: visible;
 }
 
 #shrine-logo {
-  background: url(assets/logo.png) left center no-repeat;
-  background-size: contain;
-  width: 100%;
-  height: 100%;
+  background: url(assets/logo.png) left center no-repeat;
+  background-size: contain;
+  width: 100%;
+  height: 100%;
 }
 
 /* Hide actual text for screen readers */
 #shrine-logo > span {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }
 
 #shrine-nav-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 40px;
-  text-decoration: none;
+  width: 24px;
+  height: 24px;
+  margin-right: 40px;
+  text-decoration: none;
 }
 
 #shrine-nav-icon:visited,
 #shrine-nav-icon:active,
 #shrine-nav-icon:focus {
-  color: var(--mdc-theme-text-primary-on-background);
+  color: var(--mdc-theme-text-primary-on-background);
 }
 ```
 
@@ -120,12 +120,12 @@ The user will touch or click on options in the navigation menu and receive feedb
 Alter the `<a id="shrine-nav-icon" ...>` element to look like this:
 
 ```html
-<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"  
-   href="#"
-   aria-label="Click to show the navigation menu"
-   aria-controls="shrine-nav-menu"
-   data-mdc-auto-init="MDCRipple"
-   data-mdc-ripple-is-unbounded>menu</a>
+<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"
+   href="#"
+   aria-label="Click to show the navigation menu"
+   aria-controls="shrine-nav-menu"
+   data-mdc-auto-init="MDCRipple"
+   data-mdc-ripple-is-unbounded>menu</a>
 ```
 
 Add the following markup at the bottom of `index.html`, right above the closing `</body>` tag:
@@ -140,8 +140,8 @@ That's it! You will see an ink ripple when you click on the navigation icon.
 
 There are a few key items to notice:
 
-- To make arbitrary elements ripple-compatible, use the `mdc-ripple-surface` from the [mdc-ripple](https://github.com/material-components/material-components-web/tree/master/packages/mdc-ripple) package. While most of our interactive components have ripples included by default, we need to add `mdc-ripple-surface` for the navigation icon element.
+- To make arbitrary elements ripple-compatible, use the `mdc-ripple-surface` from the [mdc-ripple](https://github.com/material-components/material-components-web/tree/master/packages/mdc-ripple) package. While most of our interactive components have ripples included by default, we need to add `mdc-ripple-surface` for the navigation icon element.
 - To style the navigation icon ripples as [unbounded](https://github.com/material-components/material-components-web/tree/master/packages/mdc-ripple#unbounded-ripples), use `data-mdc-ripple-is-unbounded`.
-- To automatically instantiate the JavaScript necessary for the ripple, use `data-mdc-auto-init="MDCRipple"`  with the one-line `mdc.autoInit()` call at the bottom of the page. These idioms come from our [mdc-auto-init package](https://github.com/material-components/material-components-web/tree/master/packages/mdc-auto-init), which is responsible for transparently instantiating MDC-Web elements for static sites.
+- To automatically instantiate the JavaScript necessary for the ripple, use `data-mdc-auto-init="MDCRipple"`  with the one-line `mdc.autoInit()` call at the bottom of the page. These idioms come from our [mdc-auto-init package](https://github.com/material-components/material-components-web/tree/master/packages/mdc-auto-init), which is responsible for transparently instantiating MDC-Web elements for static sites.
 
 The toolbar is complete. To make the navigation icon functional, let's add a navigation drawer.
