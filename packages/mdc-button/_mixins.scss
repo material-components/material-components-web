@@ -28,10 +28,10 @@
 
   @if ($light-or-dark == "light") {
     @include mdc-button-ink-color(text-primary-on-dark);
-    @include mdc-button-ripple((base-color: white, opacity: .32));
+    @include mdc-button-ripple((base-color: text-primary-on-dark, opacity: $mdc-filled-button-ripple-opacity));
   } @else {
     @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-button-ripple((base-color: black, opacity: .32));
+    @include mdc-button-ripple((base-color: text-primary-on-light, opacity: $mdc-filled-button-ripple-opacity));
   }
 }
 
@@ -57,6 +57,14 @@
 
 @mixin mdc-button-ripple($ripple-config) {
   &:not(:disabled) {
+    // TODO(yiranm): Move base-color and tap-highlight-color into ripple
+    $base-color: map-get($ripple-config, base-color);
+
+    @if type-of($base-color) != color {
+      $base-color-value: map-get($mdc-theme-property-values, $base-color);
+      $ripple-config: map-merge($ripple-config, (base-color: $base-color-value));
+    }
+
     @include mdc-ripple-base;
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
     @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
