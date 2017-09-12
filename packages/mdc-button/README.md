@@ -41,47 +41,30 @@ npm install --save @material/button
 
 ## Usage
 
-### Button type
+### HTML Structure
+```html
+<button class="mdc-button">
+  Button
+</button>
+```
 
 > Note: Examples and documents use generic `<button>`, but users can also apply
 `mdc-button` to `<a class="mdc-button">Link Button</a>` in cases where it is
 semantically correct.
 
-#### Text Button
+### CSS Classes
 
-```html
-<button class="mdc-button">
-  Text button
-</button>
-```
+| Class                 | Description                                             |
+| --------------------- | ------------------------------------------------------- |
+| `mdc-button`          | Mandatory, defaults to a text button that is flush with the surface.|
+| `mdc-button--raised`  | Optional, a contained button that is elevated upon the surface.   |
+| `mdc-button--unelevated`  | Optional, a contained button that is flush with the surface.  |
+| `mdc-button--stroked`  | Optional, a contained button that is flush with the surface and has a visible border. |
+| `mdc-button--dense`   | Optional, compresses the button text to make it slightly smaller. |
+| `mdc-button--compact` | Optional, reduces the amount of horizontal padding in the button. |
 
-#### Raised Button
 
-```html
-<button class="mdc-button mdc-button--raised">
-  Raised button
-</button>
-```
-
-#### Unelevated Button
-
-```html
-<button class="mdc-button mdc-button--unelevated">
-  Unelevated button
-</button>
-```
-
-#### Stroked Button
-
-```html
-<button class="mdc-button mdc-button--stroked">
-  Stroked button
-</button>
-```
-
-### Button state
-
-#### Disabled
+### Disabled Button
 
 Users can add `disabled` directly to the button element or set the fieldset containing
 the button to `disabled` to disable a button. Disabled buttons cannot be interacted
@@ -93,23 +76,7 @@ with and have no visual interaction effect.
 </button>
 ```
 
-### Colored
-
-MDC Buttons have a default baseline color, but it is also possible to adopt the
-application's primary or secondary color by adding the `mdc-button--primary` or
-`mdc-button--accent` modifier.
-
-> Note: "Secondary" was previously called "accent" in the Material spec. See
-[mdc-theme](https://github.com/material-components/material-components-web/tree/master/packages/mdc-theme)
-for details.
-
-```html
-<button class="mdc-button mdc-button--accent">
-  Colored button
-</button>
-```
-
-### Adding ripples to buttons
+### Adding MDC Ripple
 
 To add the ink ripple effect to a button, attach a [ripple](../mdc-ripple) instance to the
 button element.
@@ -128,26 +95,27 @@ You can also do this declaratively when using the [material-components-web](../m
 
 Buttons are fully aware of ripple styles, so no DOM or CSS changes are required to use them.
 
-## Classes
+### Sass Mixins
 
-### Block
+By default an MDC Button will inherit its color from the theme and align with [Material Design button requirements](https://material.io/guidelines/components/buttons.html). To customize a Button's color and properties, you can use the following mixins.
 
-The block class is `mdc-button`. This defines the top-level button element.
+#### `mdc-button-filled-accessible($container-fill-color)`
 
-### Element
+This mixin is provided for customizing a *raised* or *unelevated* button's color. It changes the Button's
+container color to the given color, and updates the Button's ink and ripple color to meet accessibility standards.
 
-The button component has no inner elements.
+### Advanced Sass Mixins
 
-### Modifier
+> **A note about advanced mixins**, The following mixins are intended for advanced users. These mixins will override the color of the container, ink, stroke or ripple. You can use all of them if you want to completely customize a Button. Or you can use only one of them, e.g. if you only need to override the ripple color. **It is up to you to pick container, ink, stroke and ripple colors that work together, and meet accessibility standards.**
 
-The provided modifiers are:
-
-| Class                 | Description                                             |
+| Mixin                 | Description                                             |
 | --------------------- | ------------------------------------------------------- |
-| `mdc-button--raised`  | A contained button that is elevated upon the surface.   |
-| `mdc-button--unelevated`  | A contained button that is flush with the surface.  |
-| `mdc-button--stroked`  | A contained button that is flush with the surface and has a visible border. |
-| `mdc-button--dense`   | Compresses the button text to make it slightly smaller. |
-| `mdc-button--compact` | Reduces the amount of horizontal padding in the button. |
-| `mdc-button--primary` | Colors the button with the primary color.               |
-| `mdc-button--accent`  | Colors the button with the secondary color.             |
+| `mdc-button-container-fill-color` | Sets the container color to the given color |
+| `mdc-button-ink-color` | Sets the ink color to the given color |
+| `mdc-button-stroke-color` | Sets the stroke color to the given color |
+| `mdc-button-ripple` | Sets the ripple to the given [ripple configuration](https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md) |
+| `mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 4px) |
+| `mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px) |
+| `mdc-button-stroke-style` | Sets the stroke style to the given style (defaults to solid line) |
+
+
