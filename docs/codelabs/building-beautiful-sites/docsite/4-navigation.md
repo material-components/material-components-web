@@ -82,7 +82,7 @@ Alter the `<script>mdc.autoInit()</script>` tag to show the following:
 </script>
 ```
 
-> Note that the MDCTemporaryDrawer property on the shrine-nav-menu element is the automatically instantiated MDCTemporaryDrawer instance, attached as part of mdc-auto-init.
+> Note that the `MDCTemporaryDrawer` property on the `shrine-nav-menu` element is the automatically instantiated `MDCTemporaryDrawer` instance, attached as part of `mdc-auto-init`.
 {: .hint}
 
 Clicking the navigation icon within the toolbar will display a navigation drawer.

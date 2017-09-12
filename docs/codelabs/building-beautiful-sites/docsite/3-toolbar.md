@@ -20,7 +20,7 @@ It is easy to implement the toolbar using MDC-Web’s [mdc-toolbar](https://gith
 
 To show the hamburger menu navigation icon in the mocks, add the [Material Icons](http://google.github.io/material-design-icons/#icon-font-for-the-web) font to the web page.
 
-In `index.html`, add the following directly before the `<link>` to `material-components-web.css`
+In index.html, add the following directly before `<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.css">`
 
 ```html
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

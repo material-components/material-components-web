@@ -46,6 +46,9 @@ Open up `index.html` in the starter directory. It should look like the following
 
 The first thing to notice here is that we’re using a `<link>` tag to load a fully-built version of MDC-Web via the [unpkg CDN](https://unpkg.com/#/). We publish MDC-Web via NPM. Using unpkg is a great way to experiment with MDC-Web without the need to immediately include it as a dependency. Note that we include [normalize.css](https://necolas.github.io/normalize.css/) for consistent cross-browser rendering, as well as the [Roboto font](https://fonts.google.com/specimen/Roboto) from Google Fonts.
 
+> Note that we pinned the version to `0.9.1` for the purpose of this codelab, as the `latest` version is under active development. For available components and the latest APIs, please checkout our [Github Repository](https://github.com/material-components/material-components-web) and [demo site](http://material-components-web.appspot.com/).
+{: .hint}
+
 
 Let’s look at what’s in the `<body>` of the document. What you’ll mainly notice is a bunch of mdc-* CSS classes. These css classes are provided to you by MDC-Web (free of charge 😉). Some of the classes already in use are:
 
