@@ -29,7 +29,7 @@
   @include mdc-button-ink-color(text-primary-on-light);
   @include mdc-button-ripple((base-color: black, opacity: .16));
 
-  @include mdc-theme-dark(".mdc-button") {
+  @include mdc-theme-dark(".mdc-button", true /* compound */) {
     @include mdc-button-ink-color(text-primary-on-dark);
     @include mdc-button-ripple((base-color: white, opacity: .16));
   }
@@ -40,7 +40,7 @@
   @include mdc-button--filled_;
   @include mdc-button-filled-accessible(black);
 
-  @include mdc-theme-dark(".mdc-button") {
+  @include mdc-theme-dark(".mdc-button", true /* compound */) {
     @include mdc-button-filled-accessible(white);
   }
 }
@@ -55,7 +55,7 @@
   @include mdc-button-stroke-style(solid);
   @include mdc-button-stroke-color(text-primary-on-light);
 
-  @include mdc-theme-dark(".mdc-button") {
+  @include mdc-theme-dark(".mdc-button", true /* compound */) {
     @include mdc-button-stroke-color(text-primary-on-dark);
   }
 }
