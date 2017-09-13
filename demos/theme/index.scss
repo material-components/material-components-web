@@ -14,10 +14,23 @@
 // limitations under the License.
 //
 
+@import "../common";
+@import "../../packages/mdc-button/mdc-button";
+@import "../../packages/mdc-card/mdc-card";
+@import "../../packages/mdc-checkbox/mdc-checkbox";
+@import "../../packages/mdc-dialog/mdc-dialog";
+@import "../../packages/mdc-elevation/mdc-elevation";
+@import "../../packages/mdc-fab/mdc-fab";
+@import "../../packages/mdc-form-field/mdc-form-field";
+@import "../../packages/mdc-icon-toggle/mdc-icon-toggle";
+@import "../../packages/mdc-linear-progress/mdc-linear-progress";
+@import "../../packages/mdc-list/mdc-list";
+@import "../../packages/mdc-drawer/temporary/mdc-temporary-drawer";
 @import "../../packages/mdc-theme/color_palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
+@import "../../packages/mdc-typography/mdc-typography";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
