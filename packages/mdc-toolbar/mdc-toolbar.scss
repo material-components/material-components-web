@@ -84,6 +84,11 @@
     padding: $mdc-toobar-element-vertical-padding 0;
     line-height: 1.5rem;
     z-index: 1;
+
+    @include mdc-rtl {
+      margin: 0;
+      margin-right: 24px;
+    }
   }
 
   &__icon {
