@@ -40,3 +40,5 @@ In this codelab, you're going to complete Shrine, an e-commerce app that sells c
 - Layout Grid
 
 Code blocks are for you to simply copy and paste.
+
+[Next step: Set up your development environment](/web/codelab/1-setup/)

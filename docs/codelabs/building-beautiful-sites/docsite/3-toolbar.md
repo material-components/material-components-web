@@ -169,3 +169,5 @@ And save.
 The toolbar is complete! Head on over to the web browser to see your work.
 
 To make the navigation icon functional, let's add a navigation drawer.
+
+[Next step: Add a navigation drawer](/web/codelab/4-navigation/)

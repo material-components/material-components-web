@@ -30,3 +30,5 @@ Run `npm run dev` in the same directory (starter directory) in which you just ra
 {: .warning}
 
 Voilà! Shrine is running in your browser. You can scroll through the page to see a list of product cards.
+
+[Next step: Explore the starter code](/web/codelab/2-explore/)

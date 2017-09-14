@@ -54,9 +54,11 @@ semantically correct.
 
 ### CSS Classes
 
+
 CSS Class | Description
 --- | ---
 `mdc-button` | Mandatory, defaults to a text button that is flush with the surface
+`mdc-button__icon`    | Optional, for the icon element
 `mdc-button--raised` | Optional, a contained button that is elevated upon the surface
 `mdc-button--unelevated` | Optional, a contained button that is flush with the surface
 `mdc-button--stroked` | Optional, a contained button that is flush with the surface and has a visible border
