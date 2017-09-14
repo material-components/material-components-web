@@ -28,6 +28,7 @@ In this codelab, you're going to complete Shrine, an e-commerce app that sells c
 - Display a list of product [cards](https://material.io/guidelines/components/cards.html#) using [layout grid](https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints) , providing a beautiful experience regardless of form factor.
 
 ![MDC Shrine](img/07-responsive.png)
+{: .codelab-img}
 
 ## Components you'll be using
 
