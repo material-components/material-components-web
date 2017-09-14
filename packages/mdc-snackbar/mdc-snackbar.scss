@@ -129,19 +129,26 @@
   /* stylelint-enable plugin/selector-bem-pattern */
 
   &__action-button {
+    @include mdc-typography(button);
     @include mdc-theme-prop(color, secondary);
 
     @include mdc-theme-dark(".mdc-snackbar") {
       @include mdc-theme-prop(color, primary);
     }
 
-    @include mdc-rtl-reflexive-box(margin, right, -16px, ".mdc-snackbar");
-
-    min-width: auto;
-    height: inherit;
     transition: mdc-animation-exit-permanent(opacity, .3s);
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
     opacity: 0;
+    user-select: none;
+    -webkit-appearance: none;
     visibility: hidden;
+
+    &:hover {
+      cursor: pointer;
+    }
 
     &::-moz-focus-inner {
       border: 0;
