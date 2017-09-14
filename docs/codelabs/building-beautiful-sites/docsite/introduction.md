@@ -39,10 +39,4 @@ In this codelab, you're going to complete Shrine, an e-commerce app that sells c
 - List
 - Layout Grid
 
-## What you’ll need
-
-- A recent version of [NodeJS](https://nodejs.org/en/) (which comes bundled with [npm](https://www.npmjs.com/), a JavaScript package manager).
-- [The sample code](https://github.com/material-components/material-components-web/archive/master.zip) (note: the sample code is located in the `docs/codelabs/building-beautiful-sites` subdirectory)
-- Basic web application programming knowledge (HTML, CSS, JavaScript)
-
-This codelab is focused on using Material Components. (Non-relevant concepts will not be covered.) Code blocks are for you to simply copy and paste.
+Code blocks are for you to simply copy and paste.
