@@ -80,7 +80,7 @@ Here's the markup:
           <h2 class="mdc-card__subtitle">A solid decision.</h2>
         </section>
         <section class="mdc-card__actions">
-          <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+          <button class="mdc-button mdc-button--compact mdc-card__action">Pick this element</button>
         </section>
       </div>
 
@@ -90,7 +90,7 @@ Here's the markup:
           <h2 class="mdc-card__subtitle">Stormy weather ahead.</h2>
         </section>
         <section class="mdc-card__actions">
-          <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+          <button class="mdc-button mdc-button--compact mdc-card__action">Pick this element</button>
         </section>
       </div>
 
@@ -100,7 +100,7 @@ Here's the markup:
           <h2 class="mdc-card__subtitle">Hot-headed much?</h2>
         </section>
         <section class="mdc-card__actions">
-          <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+          <button class="mdc-button mdc-button--compact mdc-card__action">Pick this element</button>
         </section>
       </div>
 
@@ -110,7 +110,7 @@ Here's the markup:
           <h2 class="mdc-card__subtitle">Go with the flow.</h2>
         </section>
         <section class="mdc-card__actions">
-          <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+          <button class="mdc-button mdc-button--compact mdc-card__action">Pick this element</button>
         </section>
       </div>
     </div>
@@ -118,8 +118,7 @@ Here's the markup:
 </html>
 ```
 
-You'll see that we have a number of pretty empty looking cards, with black text on a white background. The only hint of
-color comes from the buttons, which we've made use the primary color by adding the `mdc-button--primary` class.
+You'll see that we have a number of pretty empty looking cards, with black text on a white background. For buttons, they adopt the baseline color by default.
 
 
 ### Step 2: Use the MDC-Web colors in your own markup
@@ -168,7 +167,7 @@ From here, we can see that we want to apply `mdc-theme--primary-bg` to the cards
     <h2 class="mdc-card__subtitle">A solid decision.</h2>
   </section>
   <section class="mdc-card__actions">
-    <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+    <button class="mdc-button mdc-button--compact mdc-card__action">Pick this element</button>
   </section>
 </div>
 ```
@@ -215,7 +214,7 @@ media area, but that won't work because of scoping issues. If we apply it direct
     <h2 class="mdc-card__subtitle mdc-theme--text-primary-on-primary">A solid decision.</h2>
   </section>
   <section class="mdc-card__actions">
-    <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+    <button class="mdc-button mdc-button--compact mdc-card__action">Pick this element</button>
   </section>
 </div>
 ```
@@ -263,9 +262,9 @@ context or user preference.
 Let's take a closer look at how MDC-Web does things. Here's an excerpt of a compiled MDC-Web CSS rule:
 
 ```css
-.mdc-button--primary.mdc-button--raised {
-  background-color: #3f51b5;
-  background-color: var(--mdc-theme-primary, #3f51b5);
+.mdc-button--raised:not(:disabled) {
+  color: white;
+  color: var(--mdc-theme-text-primary-on-dark, white);
 }
 ```
 
