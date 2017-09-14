@@ -20,7 +20,7 @@ While far from the end result we want, our skeleton site is looking pretty good 
 
 In Terminal, press `command + T` to open another tab.
 
-Then copy and paste into the new tab `open -a Sublime app.css; open -a Sublime index.html`.
+Then copy and paste into the new tab `open -a "Sublime Text" app.css index.html`.
 
 Sublime should open two files: `index.html` and `app.css`.
 
