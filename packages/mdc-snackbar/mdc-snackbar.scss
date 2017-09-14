@@ -137,6 +137,7 @@
     }
 
     transition: mdc-animation-exit-permanent(opacity, .3s);
+    padding: 0;
     border: none;
     outline: none;
     background-color: transparent;
