@@ -17,44 +17,107 @@ edited for a non-technical audience
 Duration: 6:00
 {: .duration}
 
-Let’s say you bring your beautiful e-commerce skeleton site to a designer on your team. The first thing the designer suggests is to add a [toolbar](https://material.io/guidelines/components/toolbars.html) to better convey the branding and ensure the user always knows where they are.
+Let’s add a [toolbar](https://material.io/guidelines/components/toolbars.html) to better convey the branding and ensure the user always knows where they are.
 
 It is easy to implement the toolbar using MDC-Web’s [mdc-toolbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-toolbar) component. Use a [fixed toolbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-toolbar#fixed-toolbars), because it has elevation and floats above the main content.
 
-## Add the Material Icons font
+## Add the toolbar in index.html
 
-To show the hamburger menu navigation icon in the mocks, add the [Material Icons](http://google.github.io/material-design-icons/#icon-font-for-the-web) font to the web page.
-
-In index.html, add the following directly before `<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.css">`
+In `index.html`, replace the whole file with the following:
 
 ```html
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-```
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Shrine (MDC-Web Example App)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" sizes="192x192" href="https://material.io/static/images/simple-lp/favicons/components-192x192.png">
+  <link rel="shortcut icon" href="https://material.io/static/images/simple-lp/favicons/components-72x72.png">
 
-You may use the icon font as soon as it loads onto the web page.
-
-## Add the proper mdc-toolbar markup
-
-In `index.html`, replace the `h1` tag with the following markup:
-
-```html
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet"
+        href="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="mdc-typography">
 <header id="shrine-header"
         class="mdc-toolbar mdc-toolbar--fixed mdc-theme--text-primary-on-background">
   <div class="mdc-toolbar__row">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-      <a id="shrine-nav-icon" class="material-icons" href="#"
-         aria-label="Click to show the navigation menu"
-         aria-controls="shrine-nav-menu">menu</a>
-      <h1 id="shrine-logo"
+			<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"  
+			    href="#" 
+			   aria-label="Click to show the navigation menu"
+			   aria-controls="shrine-nav-menu"
+			   data-mdc-auto-init="MDCRipple"
+			   data-mdc-ripple-is-unbounded>menu</a>
+      <h1 id="shrine-logo"          
           class="mdc-toolbar__title"><span>Shrine</span></h1>
     </section>
   </div>
-</header>
+	</header>
+  <main class="mdc-toolbar-fixed-adjust">
+    <div class="mdc-card shrine-product-card">
+      <section class="mdc-card__primary">
+        <span class="mdc-card__title shrine-product-card__price">$20</span>
+      </section>
+      <img class="shrine-product-card__image" width="240" height="240" alt="Sunglasses" src="assets/sunnies.png">
+    </div>
+    <div class="mdc-card shrine-product-card">
+      <section class="mdc-card__primary">
+        <span class="mdc-card__title shrine-product-card__price">$80</span>
+      </section>
+      <img class="shrine-product-card__image" width="240" height="240" alt="Shoes" src="assets/chucks.png">
+    </div>
+    <div class="mdc-card shrine-product-card">
+      <section class="mdc-card__primary">
+        <span class="mdc-card__title shrine-product-card__price">$90</span>
+      </section>
+      <img class="shrine-product-card__image" width="240" height="240" alt="Beach ball" src="assets/beachball.png">
+    </div>
+    <div class="mdc-card shrine-product-card">
+      <section class="mdc-card__primary">
+        <span class="mdc-card__title shrine-product-card__price">$30</span>
+      </section>
+      <img class="shrine-product-card__image" width="240" height="240" alt="Backpack" src="assets/backpack.png">
+    </div>
+    <div class="mdc-card shrine-product-card">
+      <section class="mdc-card__primary">
+        <span class="mdc-card__title shrine-product-card__price">$90</span>
+      </section>
+      <img class="shrine-product-card__image" width="240" height="240" alt="Clock" src="assets/clock.png">
+    </div>
+    <div class="mdc-card shrine-product-card">
+      <section class="mdc-card__primary">
+        <span class="mdc-card__title shrine-product-card__price">$30</span>
+      </section>
+      <img class="shrine-product-card__image" width="240" height="240" alt="Fish bowl" src="assets/fishbowl.png">
+    </div>
+  </main>
+	<script src="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.js">
+	</script>
+	<script>mdc.autoInit()</script>
+</body>
+</html>
 ```
 
-## Add the custom mdc-toolbar styles
+And save.
 
-Add the following styles to `app.css`:
+## Change the styles
+
+In `app.css`, find this section near the bottom:
+ 
+```css
+.shrine-product-card__image {
+  margin: 0 auto;
+}
+```
+
+Right below that, paste the following:
 
 ```css
 #shrine-header {
@@ -99,54 +162,10 @@ Add the following styles to `app.css`:
 }
 ```
 
-## Adjust the main content margin to account for a fixed toolbar
+And save.
 
-Alter the opening `<main>` tag so it will look like this:
+## Look at your work
 
-```html
-<main class="mdc-toolbar-fixed-adjust">
-```
+The toolbar is complete! Head on over to the web browser to see your work.
 
-You will now see a toolbar! There was no JavaScript required!
-
-Explanation:
-
-- To add basic fixed toolbar markup to our site, we used the `mdc-toolbar` markup along with the `mdc-toolbar--fixed` modifier class.
-- To move the main content down so that it won't be occluded by the fixed toolbar, we used the `mdc-toolbar-fixed-adjust` class.
-- To get the design treatments correct, we added custom styles for some singleton elements on the page, such as the logo, navigation icon, and header. Note the use of [CSS custom properties here](https://developer.mozilla.org/en-US/docs/Web/CSS/--*), e.g. `var(--mdc-theme-text-primary-on-background)`. Custom properties are the primary means of how mdc-web handles theming. All of the thematic elements within all components are provided via theme variables, which you can both reference and modify.
-
-> While encouraged, CSS custom properties are simply one way to theme an MDC-Web app. Check out our [theming guide](https://github.com/material-components/material-components-web/blob/master/docs/theming.md), as well as the [mdc-theme package](https://github.com/material-components/material-components-web/tree/master/packages/mdc-theme), for all of the different ways to handle customizing the theme of your Material Design application.
-{: .hint}
-
-## Finishing Touch: Add an ink ripple to the nav icon
-
-The user will touch or click on options in the navigation menu and receive feedback from the ink ripple, the insignia of Material Design. The ink ripple is the first component we're using that requires JavaScript, so we'll add it to the page. Thankfully, instantiating MDC-Web JS components is simple.
-
-Alter the `<a id="shrine-nav-icon" ...>` element to look like this:
-
-```html
-<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"
-   href="#"
-   aria-label="Click to show the navigation menu"
-   aria-controls="shrine-nav-menu"
-   data-mdc-auto-init="MDCRipple"
-   data-mdc-ripple-is-unbounded>menu</a>
-```
-
-Add the following markup at the bottom of `index.html`, right above the closing `</body>` tag:
-
-```html
-<script src="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.js">
-</script>
-<script>mdc.autoInit()</script>
-```
-
-That's it! You will see an ink ripple when you click on the navigation icon.
-
-There are a few key items to notice:
-
-- To make arbitrary elements ripple-compatible, use the `mdc-ripple-surface` from the [mdc-ripple](https://github.com/material-components/material-components-web/tree/master/packages/mdc-ripple) package. While most of our interactive components have ripples included by default, we need to add `mdc-ripple-surface` for the navigation icon element.
-- To style the navigation icon ripples as [unbounded](https://github.com/material-components/material-components-web/tree/master/packages/mdc-ripple#unbounded-ripples), use `data-mdc-ripple-is-unbounded`.
-- To automatically instantiate the JavaScript necessary for the ripple, use `data-mdc-auto-init="MDCRipple"`  with the one-line `mdc.autoInit()` call at the bottom of the page. These idioms come from our [mdc-auto-init package](https://github.com/material-components/material-components-web/tree/master/packages/mdc-auto-init), which is responsible for transparently instantiating MDC-Web elements for static sites.
-
-The toolbar is complete. To make the navigation icon functional, let's add a navigation drawer.
+To make the navigation icon functional, let's add a navigation drawer.
