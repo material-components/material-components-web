@@ -10,7 +10,6 @@ This is a simplified version of Building Beautiful Sites with MDC web
 edited for a non-technical audience
 -->
 
-<link rel="stylesheet" href="css/codelab.css" />
 
 # Wrapping up
 

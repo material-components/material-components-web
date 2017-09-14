@@ -10,7 +10,6 @@ This is a simplified version of Building Beautiful Sites with MDC web
 edited for a non-technical audience
 -->
 
-<link rel="stylesheet" href="css/codelab.css" />
 
 # Explore the starter code
 
@@ -21,5 +20,7 @@ While far from the end result we want, our skeleton site is looking pretty good 
 Copy and paste into Terminal `open -a Sublime app.css; open -a Sublime index.html`.
 
 Sublime should open two files: `index.html` and `app.css`.
+
+![Open files](img/04-open.png)
 
 Now that you’ve opened the code, let’s implement our first feature!

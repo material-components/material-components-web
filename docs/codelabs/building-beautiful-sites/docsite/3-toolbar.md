@@ -10,12 +10,11 @@ This is a simplified version of Building Beautiful Sites with MDC web
 edited for a non-technical audience
 -->
 
-<link rel="stylesheet" href="css/codelab.css" />
 
 # Add a Toolbar
 
 Duration: 6:00
-{: .duration}
+ {: .codelab-duration}
 
 Let’s add a [toolbar](https://material.io/guidelines/components/toolbars.html) to better convey the branding and ensure the user always knows where they are.
 
@@ -49,13 +48,13 @@ In `index.html`, replace the whole file with the following:
         class="mdc-toolbar mdc-toolbar--fixed mdc-theme--text-primary-on-background">
   <div class="mdc-toolbar__row">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-			<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"  
-			    href="#" 
+			<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"
+			    href="#"
 			   aria-label="Click to show the navigation menu"
 			   aria-controls="shrine-nav-menu"
 			   data-mdc-auto-init="MDCRipple"
 			   data-mdc-ripple-is-unbounded>menu</a>
-      <h1 id="shrine-logo"          
+      <h1 id="shrine-logo"
           class="mdc-toolbar__title"><span>Shrine</span></h1>
     </section>
   </div>
@@ -110,7 +109,7 @@ And save.
 ## Change the styles
 
 In `app.css`, find this section near the bottom:
- 
+
 ```css
 .shrine-product-card__image {
   margin: 0 auto;
@@ -167,5 +166,7 @@ And save.
 ## Look at your work
 
 The toolbar is complete! Head on over to the web browser to see your work.
+
+![Toolbar](img/05-toolbar.png)
 
 To make the navigation icon functional, let's add a navigation drawer.
