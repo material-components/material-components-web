@@ -20,7 +20,7 @@ Duration: 5:00
 
 ## Install the project’s dependencies
 
-From the starter directory (it should be your current directory if you follow the above step), run `npm install`. You will see a lot of activity and at the end, the output will show a successful install.
+From the starter directory (it should be your current directory), run `npm install`. You will see a lot of activity and at the end, the output will show a successful install.
 
 ## Run the starter app
 
