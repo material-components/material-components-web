@@ -167,4 +167,4 @@ Clicking the navigation icon within the toolbar will display a navigation drawer
 ![Drawer](img/06-drawer.png)
 {: .codelab-img}
 
-[Next step: Lay out the product items](/web/codelab/5-layout/)
+[Next step: Lay out the product items](/components/web/codelab/5-layout/)
