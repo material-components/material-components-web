@@ -111,7 +111,7 @@ And save.
 
 In `app.css`, find this section near the bottom:
  
-```html
+```css
 .shrine-product-card__image {
   margin: 0 auto;
 }

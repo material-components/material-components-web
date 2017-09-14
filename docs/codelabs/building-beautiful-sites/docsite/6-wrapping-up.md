@@ -18,8 +18,8 @@ By using some simple markup, ~100 lines of CSS, ~4 lines of JavaScript, and the 
 
 ## Material Components
 
-This was a quick example with just a few components but Material Components has so much more it can do on all platforms! Have your engineers go to material.io/components to see the amazing open-source code available for web, iOS, and Android.
+This was a quick example with just a few components but Material Components has so much more it can do on all platforms! Have your engineers go to [material.io/components](https://material.io/components) to see the amazing open-source code available for web, iOS, and Android.
 
-You'll be amazed at the time and effort they save using the many free frameworks at tools available at material.io.
+You'll be amazed at the time and effort they save using the many free frameworks at tools available at [material.io](https://material.io).
 
 Let's build beautiful apps faster!

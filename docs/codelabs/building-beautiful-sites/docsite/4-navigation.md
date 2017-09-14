@@ -21,7 +21,7 @@ Let's add this to our app.
 
 ## Add the drawer markup
 
-Replace the entire index.html file with this:
+Replace the entire `index.html` file with this:
 
 ```html
 <!doctype html>
