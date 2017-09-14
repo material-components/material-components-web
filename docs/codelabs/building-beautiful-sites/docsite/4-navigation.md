@@ -10,14 +10,13 @@ This is a simplified version of Building Beautiful Sites with MDC web
 edited for a non-technical audience
 -->
 
-<link rel="stylesheet" href="css/codelab.css" />
 
 # Add a navigation drawer
 
 Duration: 6:00
-{: .duration}
+ {: .codelab-duration}
 
-Let's add this to our app. 
+Let's add this to our app.
 
 ## Add the drawer markup
 
@@ -47,13 +46,13 @@ Replace the entire `index.html` file with this:
         class="mdc-toolbar mdc-toolbar--fixed mdc-theme--text-primary-on-background">
   <div class="mdc-toolbar__row">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-			<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"  
-			    href="#" 
+			<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"
+			    href="#"
 			   aria-label="Click to show the navigation menu"
 			   aria-controls="shrine-nav-menu"
 			   data-mdc-auto-init="MDCRipple"
 			   data-mdc-ripple-is-unbounded>menu</a>
-      <h1 id="shrine-logo"          
+      <h1 id="shrine-logo"
           class="mdc-toolbar__title"><span>Shrine</span></h1>
     </section>
   </div>
@@ -164,5 +163,8 @@ And save.
 Go over to the browser to see your work.
 
 Clicking the navigation icon within the toolbar will display a navigation drawer.
+
+![Drawer](img/06-drawer.png)
+{: .codelab-img}
 
 [Next step: Lay out the product items](/web/codelab/5-layout/)

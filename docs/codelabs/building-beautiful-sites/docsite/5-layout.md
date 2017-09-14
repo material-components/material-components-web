@@ -10,12 +10,11 @@ This is a simplified version of Building Beautiful Sites with MDC web
 edited for a non-technical audience
 -->
 
-<link rel="stylesheet" href="css/codelab.css" />
 
 # Lay out the product items
 
 Duration: 4:00
-{: .duration}
+ {: .codelab-duration}
 
 The Shrine app is coming along nicely! The final step in the design is to lay out the product items to look better than a bunch of vertical cards. Use [mdc-layout-grid](https://github.com/material-components/material-components-web/tree/master/packages/mdc-layout-grid) because it implements Material Design's [Responsive UI Grid](https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-grid), making product items look great across all form factors.
 
@@ -47,13 +46,13 @@ Replace the entire `index.html` with this:
         class="mdc-toolbar mdc-toolbar--fixed mdc-theme--text-primary-on-background">
   <div class="mdc-toolbar__row">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-			<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"  
-			    href="#" 
+			<a id="shrine-nav-icon" class="material-icons mdc-ripple-surface"
+			    href="#"
 			   aria-label="Click to show the navigation menu"
 			   aria-controls="shrine-nav-menu"
 			   data-mdc-auto-init="MDCRipple"
 			   data-mdc-ripple-is-unbounded>menu</a>
-      <h1 id="shrine-logo"          
+      <h1 id="shrine-logo"
           class="mdc-toolbar__title"><span>Shrine</span></h1>
     </section>
   </div>
@@ -77,7 +76,7 @@ Replace the entire `index.html` with this:
       <img class="shrine-product-card__image" width="240" height="240" alt="Sunglasses" src="assets/sunnies.png">
     </div>
     </div>
-   
+
 		<div class="mdc-layout-grid__cell">
 		<div class="mdc-card shrine-product-card">
       <section class="mdc-card__primary">
@@ -86,7 +85,7 @@ Replace the entire `index.html` with this:
       <img class="shrine-product-card__image" width="240" height="240" alt="Shoes" src="assets/chucks.png">
     </div>
     </div>
-    
+
 		<div class="mdc-layout-grid__cell">
 		<div class="mdc-card shrine-product-card">
       <section class="mdc-card__primary">
@@ -95,7 +94,7 @@ Replace the entire `index.html` with this:
       <img class="shrine-product-card__image" width="240" height="240" alt="Beach ball" src="assets/beachball.png">
     </div>
     </div>
-    
+
 		<div class="mdc-layout-grid__cell">
 		<div class="mdc-card shrine-product-card">
       <section class="mdc-card__primary">
@@ -104,7 +103,7 @@ Replace the entire `index.html` with this:
       <img class="shrine-product-card__image" width="240" height="240" alt="Backpack" src="assets/backpack.png">
     </div>
     </div>
-    
+
 		<div class="mdc-layout-grid__cell">
 		<div class="mdc-card shrine-product-card">
       <section class="mdc-card__primary">
@@ -113,7 +112,7 @@ Replace the entire `index.html` with this:
       <img class="shrine-product-card__image" width="240" height="240" alt="Clock" src="assets/clock.png">
     </div>
     </div>
-    
+
 		<div class="mdc-layout-grid__cell">
 		<div class="mdc-card shrine-product-card">
       <section class="mdc-card__primary">
@@ -122,7 +121,7 @@ Replace the entire `index.html` with this:
       <img class="shrine-product-card__image" width="240" height="240" alt="Fish bowl" src="assets/fishbowl.png">
     </div>
     </div>
-		
+
   </main>
 	<script src="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.js">
 	</script>
@@ -253,7 +252,10 @@ And save.
 
 Go check your work in the browser.
 
-That's it! You should have a responsive product grid that looks great across all form factors. 
+That's it! You should have a responsive product grid that looks great across all form factors.
+
+![Product grid](img/07-responsive.png)
+{: .codelab-img}
 
 Test it out yourself by resizing the browser window.
 
