@@ -20,6 +20,6 @@ While far from the end result we want, our skeleton site is looking pretty good 
 
 Copy and paste into Terminal `open -a Sublime app.css; open -a Sublime index.html`.
 
-Sublime should open two files: index.html and app.css.
+Sublime should open two files: `index.html` and `app.css`.
 
 Now that you’ve opened the code, let’s implement our first feature!

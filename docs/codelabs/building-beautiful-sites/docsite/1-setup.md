@@ -24,9 +24,9 @@ From the starter directory (it should be your current directory), run `npm insta
 
 ## Run the starter app
 
-Run `npm run dev` in the same directory (starter directory) in which you just ran npm install. The live-server will start. It watches the directory for source code changes and launches a web browser pointing to the page.
+Run `npm run dev` in the same directory (starter directory) in which you just ran `npm install`. The live-server will start. It watches the directory for source code changes and launches a web browser pointing to the page.
 
 > If you were unable to run `npm install` or `npm run dev` successfully, stop and troubleshoot your developer environment.
 {: .warning}
 
-Voila! Shrine is running in your browser. You can scroll through the page to see a list of product cards.
+Voilà! Shrine is running in your browser. You can scroll through the page to see a list of product cards.

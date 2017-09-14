@@ -109,12 +109,15 @@ And save.
 
 ## Change the styles
 
-Copy and paste the following into `app.css` at the bottom, after 
-```html 
+In `app.css`, find this section near the bottom:
+ 
+```html
 .shrine-product-card__image {
   margin: 0 auto;
 }
-```:
+```
+
+Right below that, paste the following:
 
 ```css
 #shrine-header {
