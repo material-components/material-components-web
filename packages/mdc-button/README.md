@@ -54,15 +54,16 @@ semantically correct.
 
 ### CSS Classes
 
-| Class                 | Description                                             |
-| --------------------- | ------------------------------------------------------- |
-| `mdc-button`          | Mandatory, defaults to a text button that is flush with the surface.|
-| `mdc-button__icon`    | Optional, for the icon element. |
-| `mdc-button--raised`  | Optional, a contained button that is elevated upon the surface.   |
-| `mdc-button--unelevated`  | Optional, a contained button that is flush with the surface.  |
-| `mdc-button--stroked`  | Optional, a contained button that is flush with the surface and has a visible border. |
-| `mdc-button--dense`   | Optional, compresses the button text to make it slightly smaller. |
-| `mdc-button--compact` | Optional, reduces the amount of horizontal padding in the button. |
+
+CSS Class | Description
+--- | ---
+`mdc-button` | Mandatory, defaults to a text button that is flush with the surface
+`mdc-button__icon`    | Optional, for the icon element
+`mdc-button--raised` | Optional, a contained button that is elevated upon the surface
+`mdc-button--unelevated` | Optional, a contained button that is flush with the surface
+`mdc-button--stroked` | Optional, a contained button that is flush with the surface and has a visible border
+`mdc-button--dense` | Optional, compresses the button text to make it slightly smaller
+`mdc-button--compact` | Optional, reduces the amount of horizontal padding in the button
 
 
 ### Disabled Button
@@ -109,12 +110,11 @@ container color to the given color, and updates the Button's ink and ripple colo
 
 > **A note about advanced mixins**, The following mixins are intended for advanced users. These mixins will override the color of the container, ink, stroke or ripple. You can use all of them if you want to completely customize a Button. Or you can use only one of them, e.g. if you only need to override the ripple color. **It is up to you to pick container, ink, stroke and ripple colors that work together, and meet accessibility standards.**
 
-| Mixin                 | Description                                             |
-| --------------------- | ------------------------------------------------------- |
-| `mdc-button-container-fill-color` | Sets the container color to the given color |
-| `mdc-button-ink-color` | Sets the ink color to the given color |
-| `mdc-button-stroke-color` | Sets the stroke color to the given color |
-| `mdc-button-ripple` | Sets the ripple to the given [ripple configuration](https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md) |
-| `mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 4px) |
-| `mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px) |
-| `mdc-button-stroke-style` | Sets the stroke style to the given style (defaults to solid line) |
+Mixin | Description
+--- | ---
+`mdc-button-container-fill-color` | Sets the container color to the given color
+`mdc-button-ink-color` | Sets the ink color to the given color
+`mdc-button-stroke-color` | Sets the stroke color to the given color
+`mdc-button-ripple` | Sets the ripple to the given [ripple configuration](https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md)
+`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 4px)
+`mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px)
