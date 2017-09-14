@@ -43,7 +43,6 @@
   border: none;
   border-bottom: 1px solid rgba(black, .12);
   border-radius: 0;
-  background: none;
   background-repeat: no-repeat;
   background-position: right center;
   font-family: Roboto, sans-serif;
@@ -184,7 +183,8 @@
 
   width: 250px;
   padding: 0;
-  border: 1px solid;
+  border-width: 1px;
+  border-style: solid;
   outline: none;
   appearance: none;
 
@@ -238,8 +238,6 @@
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-item:checked {
     @include mdc-theme-prop(background-color, background);
-
-    background-color: rgba(black, .12);
 
     @include mdc-theme-dark {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
