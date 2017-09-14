@@ -57,6 +57,7 @@ semantically correct.
 | Class                 | Description                                             |
 | --------------------- | ------------------------------------------------------- |
 | `mdc-button`          | Mandatory, defaults to a text button that is flush with the surface.|
+| `mdc-button__icon`    | Optional, for the icon element. |
 | `mdc-button--raised`  | Optional, a contained button that is elevated upon the surface.   |
 | `mdc-button--unelevated`  | Optional, a contained button that is flush with the surface.  |
 | `mdc-button--stroked`  | Optional, a contained button that is flush with the surface and has a visible border. |
@@ -117,5 +118,3 @@ container color to the given color, and updates the Button's ink and ripple colo
 | `mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 4px) |
 | `mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px) |
 | `mdc-button-stroke-style` | Sets the stroke style to the given style (defaults to solid line) |
-
-
