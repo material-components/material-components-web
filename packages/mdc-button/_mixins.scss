@@ -73,6 +73,8 @@
 
 @mixin mdc-button-stroke-width($stroke-width) {
   border-width: $stroke-width;
+  // Note: line height is adjusted for stroke button because borders are not
+  // considered as space available to text on the Web
   line-height: $mdc-button-height - $stroke-width * 2;
 
   // postcss-bem-linter: ignore
@@ -80,10 +82,6 @@
     // Minus extra 1 to accommodate odd font size of dense button
     line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
   }
-}
-
-@mixin mdc-button-stroke-style($stroke-style) {
-  border-style: $stroke-style;
 }
 
 @mixin mdc-button-base_() {
@@ -131,6 +129,8 @@
 }
 
 @mixin mdc-button--stroked_() {
+  border-style: solid;
+
   &:disabled {
     @include mdc-theme-prop(border-color, text-disabled-on-light);
 
