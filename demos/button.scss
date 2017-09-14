@@ -50,3 +50,11 @@
     @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
   }
 }
+
+.mdc-button.big-round-corner-button {
+  @include mdc-button-corner-radius(8px);
+}
+
+.mdc-button.thick-stroke-button {
+  @include mdc-button-stroke-width(4px);
+}
