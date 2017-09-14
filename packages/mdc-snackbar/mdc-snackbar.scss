@@ -136,8 +136,8 @@
       @include mdc-theme-prop(color, primary);
     }
 
-    transition: mdc-animation-exit-permanent(opacity, .3s);
     padding: 0;
+    transition: mdc-animation-exit-permanent(opacity, .3s);
     border: none;
     outline: none;
     background-color: transparent;
