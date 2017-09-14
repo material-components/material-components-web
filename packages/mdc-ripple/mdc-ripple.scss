@@ -54,20 +54,4 @@
   }
 }
 
-// Styles used to detect buggy behavior of CSS custom properties in Edge
-// See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-
-.mdc-ripple-surface--test-edge-var-bug {
-  // stylelint-disable plugin/selector-bem-pattern
-  // bem linter is disabled because it cannot correctly reconcile mdc prefix for css variables.
-  --mdc-ripple-surface-test-edge-var: 1px solid #000;
-  // stylelint-enable plugin/selector-bem-pattern
-
-  visibility: hidden;
-
-  &::before {
-    border: var(--mdc-ripple-surface-test-edge-var);
-  }
-}
-
 // postcss-bem-linter: end
