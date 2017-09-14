@@ -75,6 +75,8 @@
 
 @mixin mdc-button-stroke-width($stroke-width) {
   border-width: $stroke-width;
+  // Note: line height is adjusted for stroke button because borders are not
+  // considered as space available to text on the Web
   line-height: $mdc-button-height - $stroke-width * 2;
 
   // postcss-bem-linter: ignore
@@ -129,6 +131,8 @@
 }
 
 @mixin mdc-button--stroked_() {
+  border-style: solid;
+
   &:disabled {
     @include mdc-theme-prop(border-color, text-disabled-on-light);
 
