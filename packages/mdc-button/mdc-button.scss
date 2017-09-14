@@ -67,4 +67,8 @@
 .mdc-button--dense {
   @include mdc-button--dense_;
 }
+
+.mdc-button__icon {
+  @include mdc-button__icon_;
+}
 // postcss-bem-linter: end

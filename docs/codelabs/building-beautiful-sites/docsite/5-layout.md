@@ -255,5 +255,8 @@ Go check your work in the browser.
 That's it! You should have a responsive product grid that looks great across all form factors.
 
 ![Product grid](img/07-responsive.png)
+{: .codelab-img}
 
 Test it out yourself by resizing the browser window.
+
+[Next step: Wrapping up](/web/codelab/6-wrapping-up/)

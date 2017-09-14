@@ -165,3 +165,6 @@ Go over to the browser to see your work.
 Clicking the navigation icon within the toolbar will display a navigation drawer.
 
 ![Drawer](img/06-drawer.png)
+{: .codelab-img}
+
+[Next step: Lay out the product items](/web/codelab/5-layout/)
