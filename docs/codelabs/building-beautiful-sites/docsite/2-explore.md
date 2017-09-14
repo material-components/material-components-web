@@ -28,4 +28,4 @@ Sublime should open two files: `index.html` and `app.css`.
 
 Now that you’ve opened the code, let’s implement our first feature!
 
-[Next step: Add a toolbar](/web/codelab/3-toolbar/)
+[Next step: Add a toolbar](/components/web/codelab/3-toolbar/)
