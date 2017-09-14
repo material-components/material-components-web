@@ -14,11 +14,7 @@
 // limitations under the License.
 //
 
-@import "@material/elevation/mixins";
-@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "@material/typography/mixins";
 @import "./mixins";
 
 // postcss-bem-linter: define button
@@ -52,7 +48,6 @@
 .mdc-button--stroked {
   @include mdc-button--stroked_;
   @include mdc-button-stroke-width(2px);
-  @include mdc-button-stroke-style(solid);
   @include mdc-button-stroke-color(text-primary-on-light);
 
   @include mdc-theme-dark(".mdc-button") {
