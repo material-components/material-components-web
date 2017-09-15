@@ -1,8 +1,8 @@
 <!--docs:
 title: "Building Beautiful Sites"
 layout: landing
-section: codelab
-path: /codelab/
+section: codelabs
+path: /codelabs/beautiful-sites-simplified/
 -->
 
 <!--
@@ -10,7 +10,6 @@ This is a simplified version of Building Beautiful Sites with MDC web
 edited for a non-technical audience
 -->
 
-<link rel="stylesheet" href="css/codelab.css" />
 
 # Building Beautiful Sites Faster with Material Components for the Web
 
@@ -28,7 +27,8 @@ In this codelab, you're going to complete Shrine, an e-commerce app that sells c
 - Contain a side [navigation drawer](https://material.io/guidelines/patterns/navigation-drawer.html) displaying a Material Design list of different product categories.
 - Display a list of product [cards](https://material.io/guidelines/components/cards.html#) using [layout grid](https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints) , providing a beautiful experience regardless of form factor.
 
-![MDC Shrine](img/image7.png)
+![MDC Shrine](img/07-responsive.png)
+{: .codelab-img}
 
 ## Components you'll be using
 
@@ -40,3 +40,5 @@ In this codelab, you're going to complete Shrine, an e-commerce app that sells c
 - Layout Grid
 
 Code blocks are for you to simply copy and paste.
+
+[Next step: Set up your development environment](/components/web/codelabs/beautiful-sites-simplified/1-setup/)
