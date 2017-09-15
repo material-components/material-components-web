@@ -1,8 +1,8 @@
 <!--docs:
 title: "3. Add a toolbar"
 layout: landing
-section: codelab
-path: /codelab/3-toolbar/
+section: codelabs
+path: /codelabs/beautiful-sites-simplified/3-toolbar/
 -->
 
 <!--
@@ -172,4 +172,4 @@ The toolbar is complete! Head on over to the web browser to see your work.
 
 To make the navigation icon functional, let's add a navigation drawer.
 
-[Next step: Add a navigation drawer](/components/web/codelab/4-navigation/)
+[Next step: Add a navigation drawer](/components/web/codelabs/beautiful-sites-simplified/4-navigation/)

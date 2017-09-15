@@ -1,8 +1,8 @@
 <!--docs:
 title: "2. Explore the starter code"
 layout: landing
-section: codelab
-path: /codelab/2-explore/
+section: codelabs
+path: /codelabs/beautiful-sites-simplified/2-explore/
 -->
 
 <!--
@@ -28,4 +28,4 @@ Sublime should open two files: `index.html` and `app.css`.
 
 Now that you’ve opened the code, let’s implement our first feature!
 
-[Next step: Add a toolbar](/components/web/codelab/3-toolbar/)
+[Next step: Add a toolbar](/components/web/codelabs/beautiful-sites-simplified/3-toolbar/)

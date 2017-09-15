@@ -1,8 +1,8 @@
 <!--docs:
 title: "Building Beautiful Sites"
 layout: landing
-section: codelab
-path: /codelab/
+section: codelabs
+path: /codelabs/beautiful-sites-simplified/
 -->
 
 <!--
@@ -41,4 +41,4 @@ In this codelab, you're going to complete Shrine, an e-commerce app that sells c
 
 Code blocks are for you to simply copy and paste.
 
-[Next step: Set up your development environment](/components/web/codelab/1-setup/)
+[Next step: Set up your development environment](/components/web/codelabs/beautiful-sites-simplified/1-setup/)
