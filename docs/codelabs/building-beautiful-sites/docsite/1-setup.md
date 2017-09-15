@@ -1,8 +1,8 @@
 <!--docs:
 title: "1. Set up your development environment"
 layout: landing
-section: codelab
-path: /codelab/1-setup/
+section: codelabs
+path: /codelabs/beautiful-sites-simplified/1-setup/
 -->
 
 <!--
@@ -38,4 +38,4 @@ Voilà! Shrine is running in your browser. You can scroll through the page to se
 ![Shrine](img/03-starter.png)
 {: .codelab-img}
 
-[Next step: Explore the starter code](/components/web/codelab/2-explore/)
+[Next step: Explore the starter code](/components/web/codelabs/beautiful-sites-simplified/2-explore/)

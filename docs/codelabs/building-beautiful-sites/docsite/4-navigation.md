@@ -1,8 +1,8 @@
 <!--docs:
 title: "4. Add a navigation drawer"
 layout: landing
-section: codelab
-path: /codelab/4-navigation/
+section: codelabs
+path: /codelabs/beautiful-sites-simplified/4-navigation/
 -->
 
 <!--
@@ -167,4 +167,4 @@ Clicking the navigation icon within the toolbar will display a navigation drawer
 ![Drawer](img/06-drawer.png)
 {: .codelab-img}
 
-[Next step: Lay out the product items](/components/web/codelab/5-layout/)
+[Next step: Lay out the product items](/components/web/codelabs/beautiful-sites-simplified/5-layout/)
