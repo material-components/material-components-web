@@ -50,10 +50,6 @@ $demo-section-margin: 48px;
 // Page toolbar
 //
 
-.demo-icon--inline {
-  vertical-align: middle;
-}
-
 .demo-anchor-with-toolbar-offset {
   $margin: $demo-section-margin / 2;
 
@@ -181,6 +177,15 @@ $demo-section-margin: 48px;
 .demo-dialog {
   position: relative;
   justify-content: unset;
+}
+
+//
+// Drawer demo
+//
+
+.demo-drawer-toggle {
+  vertical-align: middle;
+  cursor: pointer;
 }
 
 //
