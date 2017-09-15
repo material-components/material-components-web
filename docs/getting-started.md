@@ -258,7 +258,6 @@ Add the following to your `scss` file if you are using SASS:
 .mdc-button.mdc-button--raised {
   @include mdc-button-filled-accessible(#FF9800);
 }
-
 ```
 
 #### CSS
