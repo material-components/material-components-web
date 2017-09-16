@@ -183,6 +183,7 @@ $demo-custom-color: $material-color-red-500;
 .demo-dialog {
   position: relative;
   justify-content: unset;
+  z-index: unset;
 }
 
 //
