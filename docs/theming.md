@@ -72,6 +72,7 @@ Here's the markup:
       .element-card > .mdc-card__media {
         height: 9em;
       }
+
       #demo-absolute-fab {
         position: fixed;
         bottom: 1rem;
@@ -402,7 +403,7 @@ In addition, we also define custom properties for known dark and light backgroun
 
 
 Ideally, we should set all of the text colors on primary, since we never know which one an MDC-Web component might use.
-So let's keep it simple for now:
+Since our cards only contain text and no components, let's keep it simple for now:
 
 ```css
 .element-card.earth {
