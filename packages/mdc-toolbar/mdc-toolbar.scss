@@ -90,18 +90,21 @@
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
+    padding-right: $mdc-toobar-element-horizontal-padding-desktop / 2;
+    padding-left: $mdc-toobar-element-horizontal-padding-desktop / 2;
     cursor: pointer;
   }
 
   &__icon:last-of-type {
-    padding-right: 16px;
+    padding-right: $mdc-toobar-element-horizontal-padding-desktop;
   }
 
   &__icon--menu {
-    @include mdc-shared-icon-style(menu);
+    @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
-    padding: 16px 24px;
+    padding-right: $mdc-toobar-element-horizontal-padding-desktop;
+    padding-left: $mdc-toobar-element-horizontal-padding-desktop;
     cursor: pointer;
   }
 }
@@ -111,16 +114,26 @@
 }
 
 @media (max-width: $mdc-toolbar-mobile-breakpoint) {
-  .mdc-toolbar__icon--menu {
-    padding: 16px;
-  }
-
-  .mdc-toolbar__icon:last-child {
-    padding: 16px 8px;
-  }
-
   .mdc-toolbar__title {
-    margin-left: 16px !important;
+    margin-left: $mdc-toobar-element-horizontal-padding-mobile;
+  }
+
+  .mdc-toolbar__icon {
+    padding-right: $mdc-toobar-element-horizontal-padding-mobile / 2;
+    padding-left: $mdc-toobar-element-horizontal-padding-mobile / 2;
+  }
+
+  .mdc-toolbar__icon:last-of-type {
+    padding-right: $mdc-toobar-element-horizontal-padding-mobile;
+  }
+
+  .mdc-toolbar__icon--menu {
+    padding-right: $mdc-toobar-element-horizontal-padding-mobile;
+    padding-left: $mdc-toobar-element-horizontal-padding-mobile;
+  }
+
+  .mdc-toolbar__icon--menu + .mdc-toolbar__title {
+    margin-left: 16px;
   }
 }
 
