@@ -52,6 +52,24 @@ npm install --save @material/button
 `mdc-button` to `<a class="mdc-button">Link Button</a>` in cases where it is
 semantically correct.
 
+### Adding Icon
+
+Users can nest `mdc-button__icon` inside the button element to add an icon. The icon in button
+is set to 18px to meet legibility requirements.
+
+We recommend you load [Material Icons]((https://design.google.com/icons/)) from Google Fonts
+
+```html
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<button class="mdc-button">
+  <i class="material-icons mdc-button__icon">favorite</i>
+  Button
+</button>
+```
+
 ### CSS Classes
 
 
