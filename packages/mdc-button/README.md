@@ -116,5 +116,5 @@ Mixin | Description
 `mdc-button-ink-color` | Sets the ink color to the given color
 `mdc-button-stroke-color` | Sets the stroke color to the given color
 `mdc-button-ripple` | Sets the ripple to the given [ripple configuration](https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md)
-`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 4px)
+`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px)
 `mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px)
