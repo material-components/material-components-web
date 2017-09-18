@@ -1,3 +1,48 @@
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/material-components/material-components-web/compare/v0.20.0...v0.21.0) (2017-09-18)
+
+
+### Bug Fixes
+
+* **ripple:** Move feature detect CSS to mixins (#1302) ([628b8c4](https://github.com/material-components/material-components-web/commit/628b8c4))
+* **slider:** Add two test cases to cover give default value to step for discrete slider (#1262) ([38c40f7](https://github.com/material-components/material-components-web/commit/38c40f7))
+* **slider:** Set default step value directly when initialize (#1173) (#1245) ([148f510](https://github.com/material-components/material-components-web/commit/148f510)), closes [#1173](https://github.com/material-components/material-components-web/issues/1173)
+* **snackbar:** Drop mdc-button from snackbar's dependency (#1292) ([be502c8](https://github.com/material-components/material-components-web/commit/be502c8))
+* **snackbar:** Fix lint error (#1303) ([648f985](https://github.com/material-components/material-components-web/commit/648f985)), closes [#1303](https://github.com/material-components/material-components-web/issues/1303)
+
+
+### Chores
+
+* **animation:** Removing mixins and CSS classes (#1242) ([3f8c49b](https://github.com/material-components/material-components-web/commit/3f8c49b))
+* **fab:** Remove the mdc-fab--plain modifier (#1249) ([f561560](https://github.com/material-components/material-components-web/commit/f561560)), closes [#1143](https://github.com/material-components/material-components-web/issues/1143)
+
+
+### Code Refactoring
+
+* **button:** Remove primary and accent modifier (#1270) ([3e3c869](https://github.com/material-components/material-components-web/commit/3e3c869))
+
+
+### Features
+
+* **auto-init:** Fire event on mdcAutoInit complete (#1012) ([08b5a32](https://github.com/material-components/material-components-web/commit/08b5a32)), closes [#954](https://github.com/material-components/material-components-web/issues/954)
+* **button:** Add mdc-button-filled-accessible mixin (#1256) ([d37132f](https://github.com/material-components/material-components-web/commit/d37132f))
+* **button:** create theme mixin for button (#1244) ([5266776](https://github.com/material-components/material-components-web/commit/5266776))
+* **button:** Move disabled style into private base mixin  (#1255) ([2336128](https://github.com/material-components/material-components-web/commit/2336128))
+* **button:** Support icon in button (#1281) ([b727c14](https://github.com/material-components/material-components-web/commit/b727c14))
+* **fab:** Add mdc-fab-accessible mixin (#1238) ([4ed8b5e](https://github.com/material-components/material-components-web/commit/4ed8b5e))
+* **fab:** Implement enter/exit transitions (#1241) ([6d6ba4a](https://github.com/material-components/material-components-web/commit/6d6ba4a))
+* **tabs:** Publicize MDCTabBarScrollerFoundation#scrollToTabAtIndex (#1267) ([a8f7216](https://github.com/material-components/material-components-web/commit/a8f7216))
+
+
+### BREAKING CHANGES
+
+* **snackbar:** Removed the dependency of mdc-button from DOM structure of snackbar.
+* **button:** Remove support of `mdc-button--primary` and `mdc-button--accent` modifier classes. For custom and theme button implementation, use button mixins instead. See `demos.scss` for details.
+* **fab:** Removes mdc-fab--plain, please update your code to use mdc-fab-accessible mixin instead.
+* **animation:** Removes mdc-animation mixins and CSS classes, please reference mdc-animation Sass variables directly.
+
+
+
 <a name="0.20.0"></a>
 # [0.20.0](https://github.com/material-components/material-components-web/compare/v0.19.0...v0.20.0) (2017-09-05)
 
