@@ -84,7 +84,7 @@ export class MDCTextfield extends MDCComponent {
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerTextFieldEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterTextFieldEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterTextFieldEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT),
     }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_(), this.getBottomLineAdapterMethods_()));
   }

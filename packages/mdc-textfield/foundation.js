@@ -33,8 +33,8 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       addClassToLabel: (/* className: string */) => {},
       removeClassFromLabel: (/* className: string */) => {},
       eventTargetHasClass: (/* target: HTMLElement, className: string */) => {},
-      registerTextFieldClickHandler: () => {},
-      deregisterTextFieldClickHandler: () => {},
+      registerTextFieldEventHandler: () => {},
+      deregisterTextFieldEventHandler: () => {},
       notifyIconAction: () => {},
       addClassToBottomLine: (/* className: string */) => {},
       removeClassFromBottomLine: (/* className: string */) => {},
@@ -87,7 +87,6 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
   destroy() {
     this.adapter_.removeClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
-    this.adapter_.deregisterTextFieldEventHandler('click', this.textFieldClickHandler_);
     this.adapter_.deregisterInputEventHandler('focus', this.inputFocusHandler_);
     this.adapter_.deregisterInputEventHandler('blur', this.inputBlurHandler_);
     this.adapter_.deregisterInputEventHandler('input', this.inputInputHandler_);
@@ -97,6 +96,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldEventHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
   }
 
   handleTextFieldInteraction_(evt) {
@@ -146,7 +146,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   transitionEnd_(evt) {
     const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
 
-    // We need to wait for the bottom line to entirely transparent
+    // We need to wait for the bottom line to be entirely transparent
     // before removing the class. If we do not, we see the line start to
     // scale down before disappearing
     if (evt.propertyName === 'opacity' && !this.isFocused_) {
@@ -163,7 +163,6 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
 
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
-      this.adapter_.removeClassFromLabel(LABEL_SHAKE);
       this.receivedUserInput_ = false;
     }
 

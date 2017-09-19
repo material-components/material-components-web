@@ -208,84 +208,41 @@ test('#adapter.removeClassFromLabel does nothing if no label element present', (
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLabel('foo'));
 });
 
-test('#adapter.registerInputFocusHandler adds a "focus" event handler on the input element', () => {
+test('#adapter.registerInputEventHandler adds a handler to the input element for a given event', () => {
   const {root, component} = setupTest();
-  const handler = td.func('focusHandler');
-  component.getDefaultFoundation().adapter_.registerInputFocusHandler(handler);
-  domEvents.emit(root.querySelector('.mdc-textfield__input'), 'focus');
+  const input = root.querySelector('.mdc-textfield__input');
+  const handler = td.func('eventHandler');
+  component.getDefaultFoundation().adapter_.registerInputEventHandler('click', handler);
+  domEvents.emit(input, 'click');
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInputFocusHandler removes a "focus" event handler from the input element', () => {
+test('#adapter.deregisterInputEventHandler removes a handler to the input element for a given event', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
-  const handler = td.func('focusHandler');
-  input.addEventListener('focus', handler);
-  component.getDefaultFoundation().adapter_.deregisterInputFocusHandler(handler);
-  domEvents.emit(input, 'focus');
+  const handler = td.func('eventHandler');
+
+  input.addEventListener('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterInputEventHandler('click', handler);
+  domEvents.emit(input, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.registerInputBlurHandler adds a "blur" event handler on the input element', () => {
+test('#adapter.registerTextFieldEventHandler adds an event handler for a given event on the root', () => {
   const {root, component} = setupTest();
-  const handler = td.func('blurHandler');
-  component.getDefaultFoundation().adapter_.registerInputBlurHandler(handler);
-  domEvents.emit(root.querySelector('.mdc-textfield__input'), 'blur');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.registerTextFieldClickHandler adds a "click" event handler on the input element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('textFieldClickHandler');
-  component.getDefaultFoundation().adapter_.registerTextFieldClickHandler(handler);
+  const handler = td.func('textFieldEventHandler');
+  component.getDefaultFoundation().adapter_.registerTextFieldEventHandler('click', handler);
   domEvents.emit(root, 'click');
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInputBlurHandler removes a "blur" event handler from the input element', () => {
+test('#adapter.deregisterTextFieldEventHandler removes an event handler for a given event from the root', () => {
   const {root, component} = setupTest();
-  const input = root.querySelector('.mdc-textfield__input');
-  const handler = td.func('blurHandler');
-  input.addEventListener('blur', handler);
-  component.getDefaultFoundation().adapter_.deregisterInputBlurHandler(handler);
-  domEvents.emit(input, 'blur');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('#adapter.registerInputInputHandler adds an "input" event handler on the input element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('inputHandler');
-  component.getDefaultFoundation().adapter_.registerInputInputHandler(handler);
-  domEvents.emit(root.querySelector('.mdc-textfield__input'), 'input');
+  const handler = td.func('textFieldEventHandler');
+  root.addEventListener('click', handler);
+  component.getDefaultFoundation().adapter_.registerTextFieldEventHandler('click', handler);
+  domEvents.emit(root, 'click');
   td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterInputInputHandler removes an "input" event handler from the input element', () => {
-  const {root, component} = setupTest();
-  const input = root.querySelector('.mdc-textfield__input');
-  const handler = td.func('inputHandler');
-  input.addEventListener('input', handler);
-  component.getDefaultFoundation().adapter_.deregisterInputInputHandler(handler);
-  domEvents.emit(input, 'input');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('#adapter.registerInputKeydownHandler adds a "keydown" event handler on the input element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('inputHandler');
-  component.getDefaultFoundation().adapter_.registerInputKeydownHandler(handler);
-  domEvents.emit(root.querySelector('.mdc-textfield__input'), 'keydown');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterInputInputHandler removes a "keydown" event handler from the input element', () => {
-  const {root, component} = setupTest();
-  const input = root.querySelector('.mdc-textfield__input');
-  const handler = td.func('keydownHandler');
-  input.addEventListener('keydown', handler);
-  component.getDefaultFoundation().adapter_.deregisterInputKeydownHandler(handler);
-  domEvents.emit(input, 'keydown');
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('#adapter.getNativeInput returns the component input element', () => {

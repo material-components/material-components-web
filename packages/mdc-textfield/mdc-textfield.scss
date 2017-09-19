@@ -277,6 +277,14 @@
     .mdc-textfield__input {
       padding-bottom: 0;
     }
+
+    .mdc-textfield__icon {
+      @include mdc-theme-prop(color, $mdc-textfield-disabled-icon-on-light);
+
+      @include mdc-theme-dark() {
+        @include mdc-theme-prop(color, $mdc-textfield-disabled-icon-on-dark);
+      }
+    }
   }
 
   &.mdc-textfield--dense {
