@@ -109,7 +109,7 @@
 }
 
 .mdc-toolbar__icon--menu + .mdc-toolbar__title {
-  @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-icon-menu-desktop);
+  @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-desktop);
 }
 
 @media (max-width: $mdc-toolbar-mobile-breakpoint) {
@@ -132,7 +132,7 @@
   }
 
   .mdc-toolbar__icon--menu + .mdc-toolbar__title {
-    @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-icon-menu-mobile);
+    @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-mobile);
   }
 }
 
