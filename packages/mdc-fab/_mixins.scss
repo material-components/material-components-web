@@ -74,6 +74,11 @@ $mdc-fab-icon-enter-duration_: 180ms;
   -webkit-appearance: none;
   overflow: hidden;
 
+  &:hover,
+  &:focus {
+    @include mdc-elevation(8);
+  }
+
   &:active {
     @include mdc-elevation(12);
   }
