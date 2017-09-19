@@ -1,6 +1,6 @@
 {
   "name": "@material/drawer",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "The Material Components Web drawer component",
   "license": "Apache-2.0",
   "keywords": [
@@ -15,11 +15,11 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.3.1",
+    "@material/animation": "^0.4.0",
     "@material/base": "^0.2.5",
-    "@material/elevation": "^0.1.11",
-    "@material/rtl": "^0.1.7",
-    "@material/theme": "^0.3.0",
+    "@material/elevation": "^0.1.12",
+    "@material/rtl": "^0.1.8",
+    "@material/theme": "^0.3.1",
     "@material/typography": "^0.3.0"
   }
 }

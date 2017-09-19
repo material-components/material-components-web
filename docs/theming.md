@@ -54,7 +54,10 @@ Here's the markup:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Elements</title>
-    <link rel="stylesheet" href="/node_modules/material-components-web/dist/material-components-web.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
     <style>
       .cards {
         display: flex;
@@ -69,6 +72,13 @@ Here's the markup:
       .element-card > .mdc-card__media {
         height: 9em;
       }
+
+      #demo-absolute-fab {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 1;
+      }
     </style>
   </head>
   <body>
@@ -79,8 +89,9 @@ Here's the markup:
           <h1 class="mdc-card__title mdc-card__title--large">Earth</h1>
           <h2 class="mdc-card__subtitle">A solid decision.</h2>
         </section>
-        <section class="mdc-card__actions">
-          <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+        <section class="mdc-card__supporting-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </section>
       </div>
 
@@ -89,8 +100,9 @@ Here's the markup:
           <h1 class="mdc-card__title mdc-card__title--large">Wind</h1>
           <h2 class="mdc-card__subtitle">Stormy weather ahead.</h2>
         </section>
-        <section class="mdc-card__actions">
-          <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+        <section class="mdc-card__supporting-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </section>
       </div>
 
@@ -99,8 +111,9 @@ Here's the markup:
           <h1 class="mdc-card__title mdc-card__title--large">Fire</h1>
           <h2 class="mdc-card__subtitle">Hot-headed much?</h2>
         </section>
-        <section class="mdc-card__actions">
-          <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+        <section class="mdc-card__supporting-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </section>
       </div>
 
@@ -109,17 +122,22 @@ Here's the markup:
           <h1 class="mdc-card__title mdc-card__title--large">Water</h1>
           <h2 class="mdc-card__subtitle">Go with the flow.</h2>
         </section>
-        <section class="mdc-card__actions">
-          <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+        <section class="mdc-card__supporting-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </section>
       </div>
     </div>
+    <button class="mdc-fab material-icons" id="demo-absolute-fab" aria-label="Favorite">
+      <span class="mdc-fab__icon">
+        favorite
+      </span>
+    </button>
   </body>
 </html>
 ```
 
-You'll see that we have a number of pretty empty looking cards, with black text on a white background. The only hint of
-color comes from the buttons, which we've made use the primary color by adding the `mdc-button--primary` class.
+You'll see that we have a number of pretty empty looking cards, with black text on a white background. The only hint of color comes from the FAB, which adopts the secondary color by default.
 
 
 ### Step 2: Use the MDC-Web colors in your own markup
@@ -167,14 +185,15 @@ From here, we can see that we want to apply `mdc-theme--primary-bg` to the cards
     <h1 class="mdc-card__title mdc-card__title--large">Earth</h1>
     <h2 class="mdc-card__subtitle">A solid decision.</h2>
   </section>
-  <section class="mdc-card__actions">
-    <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+  <section class="mdc-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
   </section>
 </div>
 ```
 
 All the cards now use the default primary color (Indigo 500 from the Material palette) as the background for the media
-area, the same color that's being used for the text in the buttons.
+area.
 
 However, you'll notice that the text in the media area is still black, which provides very little contrast to the
 default primary color. Not all primary colors are dark, though, so you can't just switch the text color to white and
@@ -214,8 +233,9 @@ media area, but that won't work because of scoping issues. If we apply it direct
     <h1 class="mdc-card__title mdc-card__title--large mdc-theme--text-primary-on-primary">Earth</h1>
     <h2 class="mdc-card__subtitle mdc-theme--text-primary-on-primary">A solid decision.</h2>
   </section>
-  <section class="mdc-card__actions">
-    <button class="mdc-button mdc-button--primary mdc-button--compact mdc-card__action">Pick this element</button>
+  <section class="mdc-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
   </section>
 </div>
 ```
@@ -263,9 +283,9 @@ context or user preference.
 Let's take a closer look at how MDC-Web does things. Here's an excerpt of a compiled MDC-Web CSS rule:
 
 ```css
-.mdc-button--primary.mdc-button--raised {
-  background-color: #3f51b5;
-  background-color: var(--mdc-theme-primary, #3f51b5);
+.mdc-fab {
+  background-color: #ff4081;
+  background-color: var(--mdc-theme-secondary, #ff4081);
 }
 ```
 
@@ -294,7 +314,7 @@ some level. So if we want to apply it to our cards, we can take advantage of the
 }
 ```
 
-It works! You can see that the colors get applied to both the backgrounds and the buttons. If the cards had any other
+It works! You can see that the colors get applied to the backgrounds. If the cards had any other
 components, they'd use the correct colors as well.
 
 The custom properties used by MDC-Web follow a similar naming convention to the Sass variables and CSS classes:
@@ -383,7 +403,7 @@ In addition, we also define custom properties for known dark and light backgroun
 
 
 Ideally, we should set all of the text colors on primary, since we never know which one an MDC-Web component might use.
-Since we're just using buttons, though, let's keep it simple for now:
+Since our cards only contain text and no components, let's keep it simple for now:
 
 ```css
 .element-card.earth {
@@ -420,10 +440,10 @@ backgrounds), but the default is always light.
 > Note: When using a dark theme, you probably want to choose a dark color as the background for your page, and adjust
 the MDC-Web `background` color to match.
 
-In order to apply a dark theme to a single element, you can use its `--dark` class. For example, for a button:
+In order to apply a dark theme to a single element, you can use its `--theme-dark` class. For example, for a button:
 
 ```html
-<button class="mdc-button mdc-button--raised mdc-button--dark">
+<button class="mdc-button mdc-button--raised mdc-button--theme-dark">
   Raised dark button
 </button>
 ```

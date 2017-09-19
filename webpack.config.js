@@ -223,39 +223,20 @@ module.exports = [{
 }];
 
 if (IS_DEV) {
+  const demoStyleEntry = {};
+  const exceptions = {};
+  if (!GENERATE_DEMO_THEMES) {
+    exceptions['demos/theme/index.scss'] = true;
+  }
+  glob.sync('demos/**/*.scss').forEach((filename) => {
+    if (!exceptions[filename]) {
+      demoStyleEntry[filename.slice(6, -5)] = path.resolve(filename);
+    }
+  });
+
   module.exports.push({
     name: 'demo-css',
-    entry: {
-      'demo-styles': path.resolve('./demos/demos.scss'),
-    },
-    output: {
-      path: OUT_PATH,
-      publicPath: PUBLIC_PATH,
-      filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
-    },
-    devServer: {
-      disableHostCheck: true,
-    },
-    devtool: DEVTOOL,
-    module: {
-      rules: [{
-        test: /\.scss$/,
-        use: createCssLoaderConfig(),
-      }],
-    },
-    plugins: [
-      createCssExtractTextPlugin(),
-      createBannerPlugin(),
-    ],
-  });
-}
-
-if (GENERATE_DEMO_THEMES) {
-  module.exports.push({
-    name: 'demo-theme-css',
-    entry: {
-      'theme-demo-styles': path.resolve('./demos/theme/index.scss'),
-    },
+    entry: demoStyleEntry,
     output: {
       path: OUT_PATH,
       publicPath: PUBLIC_PATH,
