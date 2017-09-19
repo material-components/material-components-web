@@ -37,6 +37,7 @@ function _emit(evtType, evtData, shouldBubble = false) {
  * Auto-initializes all mdc components on a page.
  */
 export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
+  const components = [];
   const nodes = root.querySelectorAll('[data-mdc-auto-init]');
   for (let i = 0, node; (node = nodes[i]); i++) {
     const ctorName = node.dataset.mdcAutoInit;
@@ -63,9 +64,11 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
       enumerable: false,
       configurable: true,
     });
+    components.push(component);
   }
 
   _emit('MDCAutoInit:End', {});
+  return components;
 }
 
 mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {
