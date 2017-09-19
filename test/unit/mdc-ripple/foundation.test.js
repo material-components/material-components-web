@@ -77,24 +77,6 @@ testFoundation('#init gracefully exits when css variables are not supported', fa
     td.verify(adapter.addClass(cssClasses.ROOT), {times: 0});
   });
 
-testFoundation(`#init sets ${strings.VAR_SURFACE_WIDTH} css variable to the clientRect's width`,
-  ({foundation, adapter, mockRaf}) => {
-    td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
-    foundation.init();
-    mockRaf.flush();
-
-    td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '200px'));
-  });
-
-testFoundation(`#init sets ${strings.VAR_SURFACE_HEIGHT} css variable to the clientRect's height`,
-  ({foundation, adapter, mockRaf}) => {
-    td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
-    foundation.init();
-    mockRaf.flush();
-
-    td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '100px'));
-  });
-
 testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
   ({foundation, adapter, mockRaf}) => {
     const size = 200;
@@ -209,24 +191,6 @@ testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mock
     td.verify(adapter.updateCssVariable(cssVar, null));
   });
 });
-
-testFoundation(`#layout sets ${strings.VAR_SURFACE_WIDTH} css variable to the clientRect's width`,
-  ({foundation, adapter, mockRaf}) => {
-    td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
-    foundation.layout();
-    mockRaf.flush();
-
-    td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '200px'));
-  });
-
-testFoundation(`#layout sets ${strings.VAR_SURFACE_HEIGHT} css variable to the clientRect's height`,
-  ({foundation, adapter, mockRaf}) => {
-    td.when(adapter.computeBoundingRect()).thenReturn({width: 200, height: 100});
-    foundation.layout();
-    mockRaf.flush();
-
-    td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '100px'));
-  });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
   ({foundation, adapter, mockRaf}) => {

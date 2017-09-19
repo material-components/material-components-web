@@ -29,8 +29,6 @@
 }
 
 @mixin mdc-ripple-base() {
-  --mdc-ripple-surface-width: 0;
-  --mdc-ripple-surface-height: 0;
   --mdc-ripple-fg-size: 0;
   --mdc-ripple-left: 0;
   --mdc-ripple-top: 0;
