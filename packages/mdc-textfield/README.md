@@ -385,8 +385,8 @@ complicated.
 | addClassToLabel(className: string) => void | Adds a class to the label element. We recommend you add a conditional check here, and in `removeClassFromLabel` for whether or not the label is present so that the JS component could be used with text fields that don't require a label, such as the full-width text field. |
 | removeClassFromLabel(className: string) => void | Removes a class from the label element |
 | eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
-| registerTextFieldClickHandler(handler: EventListener) => void | Registers an event handler on the root element for a "click" event |
-| deregisterTextFieldClickHandler(handler: EventListener) => void | Deregisters an event handler on the root element for a "click" event |
+| registerTextFieldEventHandler(evtType: string, handler: EventListener) => void | Registers an event handler on the root element for a given event |
+| deregisterTextFieldEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event handler on the root element for a given event |
 | notifyIconAction() => void | Broadcasts a custom event "MDCTextfield:icon" denoting a user has clicked the icon |
 | addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
 | removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |

@@ -329,25 +329,6 @@
       </section>
 
       <section class="example">
-        <h2>Textarea with Icon</h2>
-        <section id="demo-textfield-textarea-with-icon-wrapper">
-          <div class="mdc-textfield mdc-textfield--textarea mdc-textfield--textarea-with-icon">
-            <textarea id="textarea-icon" class="mdc-textfield__input" rows="8" cols="40"></textarea>
-            <label for="textarea-icon" class="mdc-textfield__label">Textarea Label</label>
-            <i class="material-icons mdc-textfield__icon" tabindex="0">cancel</i>
-          </div>
-        </section>
-        <div>
-          <input id="textarea-icon-rtl" type="checkbox">
-          <label for="textarea-icon-rtl">RTL</label>
-        </div>
-        <div>
-          <input id="textarea-icon-dark-theme" type="checkbox">
-          <label for="textarea-icon-dark-theme">Dark Theme</label>
-        </div>
-      </section>
-
-      <section class="example">
         <h2>CSS Only Textarea</h2>
         <section>
           <div class="mdc-textfield mdc-textfield--textarea" data-demo-no-auto-js>
@@ -496,7 +477,6 @@
     <script>
       (function() {
         var section = document.getElementById('demo-textfield-textarea-wrapper');
-        var iconSection = document.getElementById('demo-textfield-textarea-with-icon-wrapper');
         var tfRoot = section.querySelector('.mdc-textfield');
         var tf = new mdc.textfield.MDCTextfield(tfRoot);
         document.getElementById('textarea-disable').addEventListener('change', function(evt) {
@@ -511,21 +491,9 @@
             section.removeAttribute('dir');
           }
         });
-        document.getElementById('textarea-icon-rtl').addEventListener('change', function(evt) {
-          var target = evt.target;
-          if (target.checked) {
-            iconSection.setAttribute('dir', 'rtl');
-          } else {
-            iconSection.removeAttribute('dir');
-          }
-        });
         document.getElementById('textarea-dark-theme').addEventListener('change', function(evt) {
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
-        });
-        document.getElementById('textarea-icon-dark-theme').addEventListener('change', function (evt) {
-          var target = evt.target;
-          iconSection.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
           var target = evt.target;

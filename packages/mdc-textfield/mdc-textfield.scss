@@ -621,39 +621,10 @@
       padding-top: $padding-inset;
     }
   }
-
-  .mdc-textfield__icon {
-    @include mdc-rtl-reflexive-position(right, 22px);
-
-    position: absolute;
-    top: 18px;
-    color: $mdc-textfield-underline-on-light-idle;
-    cursor: pointer;
-
-    @include mdc-theme-dark(".mdc-textfield") {
-      color: $mdc-textfield-dark-label;
-    }
-  }
-}
-
-.mdc-textfield--textarea-with-icon {
-  .mdc-textfield__input {
-    padding-right: 54px;
-  }
 }
 
 .mdc-textfield--textarea.mdc-textfield--focused {
   @include mdc-theme-prop(border-color, primary);
-}
-
-.mdc-textfield--textarea-with-icon.mdc-textfield--focused {
-  .mdc-textfield__icon {
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    @include mdc-theme-dark(".mdc-textfield") {
-      @include mdc-theme-prop(color, secondary);
-    }
-  }
 }
 
 .mdc-textfield--textarea.mdc-textfield--disabled {
