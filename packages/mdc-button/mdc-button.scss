@@ -14,17 +14,13 @@
 // limitations under the License.
 //
 
-@import "@material/elevation/mixins";
-@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "@material/typography/mixins";
 @import "./mixins";
 
 // postcss-bem-linter: define button
 .mdc-button {
   @include mdc-button-base_;
-  @include mdc-button-corner-radius(4px);
+  @include mdc-button-corner-radius(2px);
   @include mdc-button-container-fill-color(transparent);
   @include mdc-button-ink-color(text-primary-on-light);
   @include mdc-button-ripple((base-color: black, opacity: .16));
@@ -52,7 +48,6 @@
 .mdc-button--stroked {
   @include mdc-button--stroked_;
   @include mdc-button-stroke-width(2px);
-  @include mdc-button-stroke-style(solid);
   @include mdc-button-stroke-color(text-primary-on-light);
 
   @include mdc-theme-dark(".mdc-button") {
@@ -68,50 +63,7 @@
   @include mdc-button--dense_;
 }
 
-@each $theme-style in (primary, secondary) {
-  // Needed for backward compatibility. Theme uses the term "secondary", but button still calls it "accent" for now.
-  $modifier: if($theme-style == "secondary", "accent", $theme-style);
-
-  // postcss-bem-linter: ignore
-  .mdc-button--#{$modifier} {
-    $theme-value: map-get($mdc-theme-property-values, $theme-style);
-
-    &:not(:disabled) {
-      @include mdc-ripple-base;
-      @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
-      @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
-      @include mdc-theme-prop(color, $theme-style);
-
-      @include mdc-theme-dark(".mdc-button") {
-        @include mdc-ripple-base;
-        @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .16));
-        @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .16));
-        @include mdc-theme-prop(color, $theme-style);
-      }
-    }
-    // postcss-bem-linter: ignore
-    &.mdc-button--raised,
-    &.mdc-button--unelevated {
-      $theme-value: map-get($mdc-theme-property-values, text-primary-on-#{$theme-style});
-
-      &:not(:disabled) {
-        @include mdc-ripple-base;
-        @include mdc-ripple-bg((pseudo: "::before", base-color: $theme-value, opacity: .32));
-        @include mdc-ripple-fg((pseudo: "::after", base-color: $theme-value, opacity: .32));
-        @include mdc-theme-prop(background-color, $theme-style);
-        @include mdc-theme-prop(color, text-primary-on-#{$theme-style});
-      }
-    }
-    // postcss-bem-linter: ignore
-    &.mdc-button--stroked {
-      &:not(:disabled) {
-        @include mdc-theme-prop(border-color, $theme-style);
-
-        @include mdc-theme-dark(".mdc-button") {
-          @include mdc-theme-prop(border-color, $theme-style);
-        }
-      }
-    }
-  }
+.mdc-button__icon {
+  @include mdc-button__icon_;
 }
 // postcss-bem-linter: end
