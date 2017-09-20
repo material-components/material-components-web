@@ -187,14 +187,14 @@ UX for client-side form field validation.
 
 ### Leading and Trailing Icons
 Leading and trailing icons can be added to MDC Text Fields as visual indicators
-as well as interaction targets. To do so, add the relevant classnames to the root element, add
-an `i` element with your preferred icon, and give it either a `mdc-textfield__icon` or
-`mdc-textfield__trailing-icon` class depending on which you are looking to achieve.
+as well as interaction targets. To do so, add the relevant classes
+(`mdc-textfield--with-leading-icon` or `mdc-textfield--with-trailing-icon`) to the root element, add
+an `i` element with your preferred icon, and give it a class of `mdc-textfield__icon`.
 
 #### Leading:
 ```html
 <div class="mdc-textfield mdc-textfield--box mdc-textfield--with-leading-icon">
-  <i class="material-icons mdc-textfield__leading-icon" tabindex="0">event</i>
+  <i class="material-icons mdc-textfield__icon" tabindex="0">event</i>
   <input type="text" id="my-input" class="mdc-textfield__input">
   <label for="my-input" class="mdc-textfield__label">Your Name</label>
   <div class="mdc-textfield__bottom-line"></div>
@@ -206,7 +206,7 @@ an `i` element with your preferred icon, and give it either a `mdc-textfield__ic
 <div class="mdc-textfield mdc-textfield--box mdc-textfield--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-textfield__input">
   <label for="my-input" class="mdc-textfield__label">Your Name</label>
-  <i class="material-icons mdc-textfield__trailing-icon" tabindex="0">event</i>
+  <i class="material-icons mdc-textfield__icon" tabindex="0">event</i>
   <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```

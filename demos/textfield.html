@@ -384,8 +384,7 @@
         var tfTrailing = new mdc.textfield.MDCTextfield(tfTrailingEl);
         var wrapperTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
 
-        var tfLeadingIcon = tfLeadingEl.querySelector('.mdc-textfield__leading-icon');
-        var tfTrailingIcon = tfTrailingEl.querySelector('.mdc-textfield__trailing-icon');
+        var tfIcons = document.querySelectorAll('.mdc-textfield__icon');
 
         document.getElementById('box-disable-leading-trailing').addEventListener('change', function(evt) {
           tfLeading.disabled = evt.target.checked;
@@ -417,8 +416,9 @@
         });
 
         document.getElementById('box-unclickable-leading-trailing').addEventListener('change', function(evt) {
-          tfLeadingIcon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
-          tfTrailingIcon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
+          tfIcons.forEach(function (icon) {
+            icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
+          });
         });
 
       }, 0);
