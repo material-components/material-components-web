@@ -568,10 +568,6 @@
       @include mdc-theme-prop(border-color, primary);
     }
 
-    &:focus:hover {
-      @include mdc-theme-prop(border-color, primary);
-    }
-
     &:invalid:not(:focus) {
       border-color: $mdc-textfield-error-on-light;
     }
