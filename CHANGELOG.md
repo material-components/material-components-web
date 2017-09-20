@@ -1,3 +1,14 @@
+<a name="0.21.1"></a>
+## [0.21.1](https://github.com/material-components/material-components-web/compare/v0.21.0...v0.21.1) (2017-09-20)
+
+
+### Bug Fixes
+
+* **fab:** Fix transitions by importing correct mdc-animation resource (#1325) ([e005460](https://github.com/material-components/material-components-web/commit/e005460)), closes [#1325](https://github.com/material-components/material-components-web/issues/1325)
+* **toolbar:** Fix toolbar padding on desktop and mobile (#1327) ([9b79871](https://github.com/material-components/material-components-web/commit/9b79871)), closes [#1327](https://github.com/material-components/material-components-web/issues/1327)
+
+
+
 <a name="0.21.0"></a>
 # [0.21.0](https://github.com/material-components/material-components-web/compare/v0.20.0...v0.21.0) (2017-09-18)
 
