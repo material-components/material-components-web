@@ -83,8 +83,8 @@ export class MDCTextfield extends MDCComponent {
         }
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerTextFieldEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterTextFieldEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT),
     }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_(), this.getBottomLineAdapterMethods_()));
   }
@@ -121,8 +121,8 @@ export class MDCTextfield extends MDCComponent {
 
   getInputAdapterMethods_() {
     return {
-      registerInputEventHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
-      deregisterInputEventHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+      registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
+      deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
       getNativeInput: () => this.input_,
     };
   }

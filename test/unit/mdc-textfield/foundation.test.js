@@ -36,11 +36,11 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextfieldFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
-    'eventTargetHasClass', 'registerTextFieldEventHandler',
-    'deregisterTextFieldEventHandler', 'notifyIconAction',
+    'eventTargetHasClass', 'registerTextFieldInteractionHandler',
+    'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'addClassToBottomLine', 'removeClassFromBottomLine',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
-    'registerInputEventHandler', 'deregisterInputEventHandler',
+    'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
     'setBottomLineAttr', 'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
   ]);
@@ -115,13 +115,13 @@ test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
-  td.verify(mockAdapter.registerInputEventHandler('focus', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerInputEventHandler('blur', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerInputEventHandler('input', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerInputEventHandler('mousedown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerInputEventHandler('touchstart', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerTextFieldEventHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerTextFieldEventHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInputInteractionHandler('blur', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInputInteractionHandler('input', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInputInteractionHandler('mousedown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInputInteractionHandler('touchstart', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function)));
 });
 
@@ -129,13 +129,13 @@ test('#destroy removes event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
 
-  td.verify(mockAdapter.deregisterInputEventHandler('focus', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterInputEventHandler('blur', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterInputEventHandler('input', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterInputEventHandler('mousedown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterInputEventHandler('touchstart', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterTextFieldEventHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterTextFieldEventHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInputInteractionHandler('focus', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInputInteractionHandler('blur', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInputInteractionHandler('input', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInputInteractionHandler('mousedown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInputInteractionHandler('touchstart', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)));
 });
 
@@ -165,9 +165,10 @@ test('on input focuses if input event occurs without any other events', () => {
   const {foundation, mockAdapter} = setupTest();
   let input;
 
-  td.when(mockAdapter.registerInputEventHandler('input', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    input = handler;
-  });
+  td.when(mockAdapter.registerInputInteractionHandler('input', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      input = handler;
+    });
   foundation.init();
   input();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
@@ -181,13 +182,14 @@ test('on input does nothing if input event preceded by keydown event', () => {
   };
   let keydown;
   let input;
-  td.when(mockAdapter.registerTextFieldEventHandler('keydown', td.matchers.isA(Function)))
+  td.when(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       keydown = handler;
     });
-  td.when(mockAdapter.registerInputEventHandler('input', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    input = handler;
-  });
+  td.when(mockAdapter.registerInputInteractionHandler('input', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      input = handler;
+    });
   foundation.init();
   keydown(mockEvt);
   input();
@@ -197,9 +199,10 @@ test('on input does nothing if input event preceded by keydown event', () => {
 test('on focus adds mdc-textfield--focused class', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
-  td.when(mockAdapter.registerInputEventHandler('focus', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    focus = handler;
-  });
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focus = handler;
+    });
   foundation.init();
   focus();
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED));
@@ -208,9 +211,10 @@ test('on focus adds mdc-textfield--focused class', () => {
 test('on focus adds mdc-textfield__label--float-above class', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
-  td.when(mockAdapter.registerInputEventHandler('focus', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    focus = handler;
-  });
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focus = handler;
+    });
   foundation.init();
   focus();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
@@ -219,9 +223,10 @@ test('on focus adds mdc-textfield__label--float-above class', () => {
 test('on focus removes aria-hidden from helptext', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
-  td.when(mockAdapter.registerInputEventHandler('focus', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    focus = handler;
-  });
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focus = handler;
+    });
   foundation.init();
   focus();
   td.verify(mockAdapter.removeHelptextAttr('aria-hidden'));
@@ -230,7 +235,7 @@ test('on focus removes aria-hidden from helptext', () => {
 const setupBlurTest = () => {
   const {foundation, mockAdapter} = setupTest();
   let blur;
-  td.when(mockAdapter.registerInputEventHandler('blur', td.matchers.isA(Function))).thenDo((evtType, handler) => {
+  td.when(mockAdapter.registerInputInteractionHandler('blur', td.matchers.isA(Function))).thenDo((evtType, handler) => {
     blur = handler;
   });
   const nativeInput = {
@@ -352,7 +357,7 @@ test('on text field click notifies icon event if event target is the leading ico
   let iconEventHandler;
 
   td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TEXT_FIELD_ICON)).thenReturn(true);
-  td.when(mockAdapter.registerTextFieldEventHandler('click', td.matchers.isA(Function)))
+  td.when(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       iconEventHandler = handler;
     });
@@ -371,7 +376,7 @@ test('on text field click notifies icon event if event target is the trailing ic
   let iconEventHandler;
 
   td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TEXT_FIELD_ICON)).thenReturn(true);
-  td.when(mockAdapter.registerTextFieldEventHandler('click', td.matchers.isA(Function)))
+  td.when(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       iconEventHandler = handler;
     });
@@ -413,7 +418,7 @@ test('mousedown on the input sets the bottom line origin', () => {
 
   let clickHandler;
 
-  td.when(mockAdapter.registerInputEventHandler('mousedown', td.matchers.isA(Function)))
+  td.when(mockAdapter.registerInputInteractionHandler('mousedown', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       clickHandler = handler;
     });
@@ -438,7 +443,7 @@ test('touchstart on the input sets the bottom line origin', () => {
 
   let clickHandler;
 
-  td.when(mockAdapter.registerInputEventHandler('touchstart', td.matchers.isA(Function)))
+  td.when(mockAdapter.registerInputInteractionHandler('touchstart', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       clickHandler = handler;
     });

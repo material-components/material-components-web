@@ -208,39 +208,39 @@ test('#adapter.removeClassFromLabel does nothing if no label element present', (
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLabel('foo'));
 });
 
-test('#adapter.registerInputEventHandler adds a handler to the input element for a given event', () => {
+test('#adapter.registerInputInteractionHandler adds a handler to the input element for a given event', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
   const handler = td.func('eventHandler');
-  component.getDefaultFoundation().adapter_.registerInputEventHandler('click', handler);
+  component.getDefaultFoundation().adapter_.registerInputInteractionHandler('click', handler);
   domEvents.emit(input, 'click');
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInputEventHandler removes a handler to the input element for a given event', () => {
+test('#adapter.deregisterInputInteractionHandler removes a handler to the input element for a given event', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
   const handler = td.func('eventHandler');
 
   input.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterInputEventHandler('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterInputInteractionHandler('click', handler);
   domEvents.emit(input, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.registerTextFieldEventHandler adds an event handler for a given event on the root', () => {
+test('#adapter.registerTextFieldInteractionHandler adds an event handler for a given event on the root', () => {
   const {root, component} = setupTest();
-  const handler = td.func('textFieldEventHandler');
-  component.getDefaultFoundation().adapter_.registerTextFieldEventHandler('click', handler);
+  const handler = td.func('TextFieldInteractionHandler');
+  component.getDefaultFoundation().adapter_.registerTextFieldInteractionHandler('click', handler);
   domEvents.emit(root, 'click');
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterTextFieldEventHandler removes an event handler for a given event from the root', () => {
+test('#adapter.deregisterTextFieldInteractionHandler removes an event handler for a given event from the root', () => {
   const {root, component} = setupTest();
-  const handler = td.func('textFieldEventHandler');
+  const handler = td.func('TextFieldInteractionHandler');
   root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.registerTextFieldEventHandler('click', handler);
+  component.getDefaultFoundation().adapter_.registerTextFieldInteractionHandler('click', handler);
   domEvents.emit(root, 'click');
   td.verify(handler(td.matchers.anything()));
 });
