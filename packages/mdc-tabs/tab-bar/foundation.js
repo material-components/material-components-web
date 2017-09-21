@@ -82,10 +82,10 @@ export default class MDCTabBarFoundation extends MDCFoundation {
   layoutInternal_() {
     this.forEachTabIndex_((index) => this.adapter_.measureTabAtIndex(index));
     this.computedWidth_ = this.adapter_.getOffsetWidth();
-    this.layoutIndicator_();
+    this.layoutIndicator();
   }
 
-  layoutIndicator_() {
+  layoutIndicator() {
     const isIndicatorFirstRender = !this.isIndicatorShown_;
 
     // Ensure that indicator appears in the right position immediately for correct first render.
@@ -157,7 +157,7 @@ export default class MDCTabBarFoundation extends MDCFoundation {
         this.adapter_.setTabActiveAtIndex(prevActiveTabIndex, false);
       }
       this.adapter_.setTabActiveAtIndex(this.activeTabIndex_, true);
-      this.layoutIndicator_();
+      this.layoutIndicator();
       if (shouldNotify) {
         this.adapter_.notifyChange({activeTabIndex: this.activeTabIndex_});
       }

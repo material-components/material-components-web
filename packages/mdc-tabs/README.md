@@ -557,6 +557,10 @@ classes, an adapter object must be provided.
 
 Sets layout for the Tab Bar component.
 
+#### MDCTabBarFoundation.layoutIndicator() => void
+
+Sets layout and styles for the Tab Bar indicator based on active tab width and position.
+
 #### MDCTabBarFoundation.getActiveTabIndex() => number
 
 Returns index of currently active tab
