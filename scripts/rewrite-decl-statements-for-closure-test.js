@@ -95,14 +95,47 @@ function transform(srcFile, rootDir) {
   });
 
   traverse(ast, {
-    'ImportDeclaration|ExportNamedDeclaration'({node}) {
-      if (node.source) {
-        rewriteDeclarationSource(node, srcFile, rootDir);
-      }
+    ExportNamedDeclaration(path) {
+      const properties = [];
+      path.node.specifiers.forEach((specifier) => {
+        properties.push(t.objectProperty(specifier.exported, specifier.exported, false, true, []));
+      });
+      const right = t.objectExpression(properties);
+      const expression = t.assignmentExpression('=', t.identifier('exports'), right);
+      path.replaceWith(t.expressionStatement(expression));
     },
   });
 
-  const {code: outputCode} = recast.print(ast, {
+  traverse(ast, {
+    ExportDefaultDeclaration(path) {
+      const expression = t.assignmentExpression('=', t.identifier('exports'), path.node.declaration);
+      path.replaceWith(t.expressionStatement(expression));
+    },
+  });
+
+  traverse(ast, {
+    ImportDeclaration(path) {
+      const callee = t.memberExpression(t.identifier('goog'), t.identifier('require'), false);
+      const packageStr = rewriteDeclarationSource(path.node, srcFile, rootDir);
+      const callExpression = t.callExpression(callee, [t.stringLiteral(packageStr)]);
+
+      let variableDeclaratorId;
+      if (path.node.specifiers.length > 1) {
+        const properties = [];
+        path.node.specifiers.forEach((specifier) => {
+          properties.push(t.objectProperty(specifier.local, specifier.local, false, true, []));
+        });
+        variableDeclaratorId = t.objectPattern(properties);
+      } else {
+        variableDeclaratorId = path.node.specifiers[0].local;
+      }
+
+      const variableDeclarator = t.variableDeclarator(variableDeclaratorId, callExpression);
+      path.replaceWith(t.variableDeclaration('const', [variableDeclarator]));
+    },
+  });
+
+  let {code: outputCode} = recast.print(ast, {
     objectCurlySpacing: false,
     quote: 'single',
     trailingComma: {
@@ -112,6 +145,11 @@ function transform(srcFile, rootDir) {
     },
   });
 
+  const relativePath = path.relative(rootDir, srcFile);
+  const packageParts = relativePath.replace('mdc-', '').replace('.js', '').split('/');
+  const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
+
+  outputCode = 'goog.module(\'' + packageStr + '\')\n' + outputCode;
   fs.writeFileSync(srcFile, outputCode, 'utf8');
   console.log(`[rewrite] ${srcFile}`);
 }
@@ -127,7 +165,7 @@ function rewriteDeclarationSource(node, srcFile, rootDir) {
     source = rewrittenSource;
   }
 
-  patchNodeForDeclarationSource(source, srcFile, rootDir, node);
+  return patchNodeForDeclarationSource(source, srcFile, rootDir, node);
 }
 
 function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
@@ -148,7 +186,9 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
       }));
     }
   }
-  node.source = t.stringLiteral(resolvedSource);
+  const packageParts = resolvedSource.replace('mdc-', '').replace('.js', '').split('/');
+  const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
+  return packageStr;
 }
 
 function patchDefaultImportIfNeeded(node) {

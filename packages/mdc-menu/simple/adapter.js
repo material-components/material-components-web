@@ -35,7 +35,7 @@
  *
  * @record
  */
-export default class MDCSimpleMenuAdapter {
+class MDCSimpleMenuAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -158,3 +158,5 @@ export default class MDCSimpleMenuAdapter {
   /** @return {number} */
   getAccurateTime() {}
 }
+
+export default MDCSimpleMenuAdapter;

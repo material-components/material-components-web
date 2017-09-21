@@ -31,7 +31,7 @@
  *
  * @record
  */
-export default class MDCFormFieldAdapter {
+class MDCFormFieldAdapter {
   /**
    * @param {string} type
    * @param {!EventListener} handler
@@ -48,3 +48,5 @@ export default class MDCFormFieldAdapter {
 
   deactivateInputRipple() {}
 }
+
+export default MDCFormFieldAdapter;

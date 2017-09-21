@@ -15,7 +15,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control';
+import * as selectionControl from '@material/selection-control';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -34,13 +34,15 @@ import {MDCSelectionControlState} from '@material/selection-control';
  *
  * @record
  */
-export default class MDCRadioAdapter {
+class MDCRadioAdapter {
   /** @param {string} className */
   addClass(className) {}
 
   /** @param {string} className */
   removeClass(className) {}
 
-  /** @return {!MDCSelectionControlState} */
+  /** @return {!selectionControl.MDCSelectionControlState} */
   getNativeControl() {}
 }
+
+export default MDCRadioAdapter;

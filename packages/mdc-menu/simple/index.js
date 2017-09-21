@@ -16,14 +16,12 @@
 
 import MDCComponent from '@material/base/component';
 import MDCSimpleMenuFoundation from './foundation';
-import {getTransformPropertyName} from '../util';
-
-export {MDCSimpleMenuFoundation};
+import * as util from '../util';
 
 /**
  * @extends MDCComponent<!MDCSimpleMenuFoundation>
  */
-export class MDCSimpleMenu extends MDCComponent {
+class MDCSimpleMenu extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
@@ -99,10 +97,10 @@ export class MDCSimpleMenu extends MDCComponent {
         return {width: window.innerWidth, height: window.innerHeight};
       },
       setScale: (x, y) => {
-        this.root_.style[getTransformPropertyName(window)] = `scale(${x}, ${y})`;
+        this.root_.style[util.getTransformPropertyName(window)] = `scale(${x}, ${y})`;
       },
       setInnerScale: (x, y) => {
-        this.itemsContainer_.style[getTransformPropertyName(window)] = `scale(${x}, ${y})`;
+        this.itemsContainer_.style[util.getTransformPropertyName(window)] = `scale(${x}, ${y})`;
       },
       getNumberOfItems: () => this.items.length,
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
@@ -135,7 +133,7 @@ export class MDCSimpleMenu extends MDCComponent {
       focusItemAtIndex: (index) => this.items[index].focus(),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       setTransformOrigin: (origin) => {
-        this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;
+        this.root_.style[`${util.getTransformPropertyName(window)}-origin`] = origin;
       },
       setPosition: (position) => {
         this.root_.style.left = 'left' in position ? position.left : null;
@@ -147,3 +145,5 @@ export class MDCSimpleMenu extends MDCComponent {
     });
   }
 }
+
+export {MDCSimpleMenuFoundation, MDCSimpleMenu};
