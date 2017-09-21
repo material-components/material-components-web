@@ -1,7 +1,7 @@
 {
   "name": "material-components-web",
   "description": "Modular and customizable Material Design UI components for the web",
-  "version": "0.21.0",
+  "version": "0.21.1",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -22,7 +22,7 @@
     "@material/dialog": "^0.4.4",
     "@material/drawer": "^0.5.8",
     "@material/elevation": "^0.1.12",
-    "@material/fab": "^0.5.0",
+    "@material/fab": "^0.5.1",
     "@material/form-field": "^0.2.16",
     "@material/grid-list": "^0.2.12",
     "@material/icon-toggle": "^0.1.21",
@@ -41,7 +41,7 @@
     "@material/tabs": "^0.3.0",
     "@material/textfield": "^0.4.1",
     "@material/theme": "^0.3.1",
-    "@material/toolbar": "^0.4.9",
+    "@material/toolbar": "^0.4.10",
     "@material/typography": "^0.3.0"
   }
 }
