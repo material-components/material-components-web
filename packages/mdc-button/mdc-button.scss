@@ -14,17 +14,13 @@
 // limitations under the License.
 //
 
-@import "@material/elevation/mixins";
-@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "@material/typography/mixins";
 @import "./mixins";
 
 // postcss-bem-linter: define button
 .mdc-button {
   @include mdc-button-base_;
-  @include mdc-button-corner-radius(4px);
+  @include mdc-button-corner-radius(2px);
   @include mdc-button-container-fill-color(transparent);
   @include mdc-button-ink-color(text-primary-on-light);
   @include mdc-button-ripple((base-color: black, opacity: .16));
@@ -52,7 +48,6 @@
 .mdc-button--stroked {
   @include mdc-button--stroked_;
   @include mdc-button-stroke-width(2px);
-  @include mdc-button-stroke-style(solid);
   @include mdc-button-stroke-color(text-primary-on-light);
 
   @include mdc-theme-dark(".mdc-button") {
@@ -66,5 +61,9 @@
 
 .mdc-button--dense {
   @include mdc-button--dense_;
+}
+
+.mdc-button__icon {
+  @include mdc-button__icon_;
 }
 // postcss-bem-linter: end
