@@ -498,7 +498,7 @@
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield__input,
   .mdc-textfield__label,
-  .mdc-textfield-helptext {
+  + .mdc-textfield-helptext {
     @include mdc-theme-prop(color, text-disabled-on-light);
   }
   // stylelint-enable plugin/selector-bem-pattern

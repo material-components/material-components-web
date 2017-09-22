@@ -32,6 +32,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       addClassToLabel: (/* className: string */) => {},
       removeClassFromLabel: (/* className: string */) => {},
+      setIconAttr: (/* name: string, value: string */) => {},
       eventTargetHasClass: (/* target: HTMLElement, className: string */) => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
@@ -225,8 +226,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.getNativeInput_().disabled = disabled;
     if (disabled) {
       this.adapter_.addClass(DISABLED);
+      this.adapter_.setIconAttr('tabindex', '-1');
     } else {
       this.adapter_.removeClass(DISABLED);
+      this.adapter_.setIconAttr('tabindex', '-1');
     }
   }
 

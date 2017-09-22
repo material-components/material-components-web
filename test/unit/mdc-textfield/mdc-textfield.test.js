@@ -26,6 +26,7 @@ const {cssClasses, strings} = MDCTextfieldFoundation;
 
 const getFixture = () => bel`
   <div class="mdc-textfield">
+    <i class="material-icons mdc-textfield__icon" tabindex="0">event</i>
     <input type="text" class="mdc-textfield__input" id="my-textfield">
     <label class="mdc-textfield__label" for="my-textfield">My Label</label>
     <div class="mdc-textfield__bottom-line"></div>
@@ -94,8 +95,9 @@ test('#destroy accounts for ripple nullability', () => {
 function setupTest() {
   const root = getFixture();
   const bottomLine = root.querySelector('.mdc-textfield__bottom-line');
+  const icon = root.querySelector('.mdc-textfield__icon');
   const component = new MDCTextfield(root);
-  return {root, bottomLine, component};
+  return {root, bottomLine, icon, component};
 }
 
 test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
@@ -141,6 +143,13 @@ test('#adapter.removeClassFromBottomLine removes a class from the bottom line', 
   bottomLine.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
   assert.isFalse(bottomLine.classList.contains('foo'));
+});
+
+test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
+  const {icon, component} = setupTest();
+
+  component.getDefaultFoundation().adapter_.setIconAttr('tabindex', '-1');
+  assert.equal(icon.getAttribute('tabindex'), '-1');
 });
 
 test('#adapter.setBottomLineAttr adds a given attribute to the bottom line', () => {

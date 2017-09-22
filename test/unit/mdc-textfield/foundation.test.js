@@ -36,7 +36,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextfieldFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
-    'eventTargetHasClass', 'registerTextFieldInteractionHandler',
+    'setIconAttr', 'eventTargetHasClass', 'registerTextFieldInteractionHandler',
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'addClassToBottomLine', 'removeClassFromBottomLine',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
@@ -87,10 +87,10 @@ test('#setDisabled adds mdc-textfield--disabled when set to true', () => {
   td.verify(mockAdapter.addClass(cssClasses.DISABLED));
 });
 
-test('#setDisabled removes mdc-textfield--disabled when set to false', () => {
+test('#setDisabled sets icon tabindex to -1 when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.setDisabled(false);
-  td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
+  foundation.setDisabled(true);
+  td.verify(mockAdapter.setIconAttr('tabindex', '-1'));
 });
 
 test('#setValid adds mdc-textfied--invalid when set to false', () => {

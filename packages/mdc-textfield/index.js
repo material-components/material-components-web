@@ -41,6 +41,9 @@ export class MDCTextfield extends MDCComponent {
     if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
       this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
     };
+    if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
+      this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
+    };
   }
 
   destroy() {
@@ -86,7 +89,18 @@ export class MDCTextfield extends MDCComponent {
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT),
-    }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_(), this.getBottomLineAdapterMethods_()));
+    }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_(), this.getBottomLineAdapterMethods_(),
+    this.getIconAdapterMethods_()));
+  }
+
+  getIconAdapterMethods_() {
+    return {
+      setIconAttr: (name, value) => {
+        if (this.icon_) {
+          this.icon_.setAttribute(name, value);
+        }
+      },
+    };
   }
 
   getBottomLineAdapterMethods_() {
