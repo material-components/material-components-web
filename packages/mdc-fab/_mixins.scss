@@ -43,8 +43,7 @@
 }
 
 @mixin mdc-fab-ripple($ripple-config) {
-  @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-  @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+  @include mdc-ripple-theme($ripple-config);
 }
 
 $mdc-fab-icon-enter-delay_: 90ms;

@@ -22,8 +22,7 @@
 
 .mdc-ripple-surface {
   @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before"));
-  @include mdc-ripple-fg((pseudo: "::after"));
+  @include mdc-ripple-theme(());
 
   position: relative;
   outline: none;
@@ -39,8 +38,7 @@
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16));
+    @include mdc-ripple-theme((theme-style: primary, opacity: .16));
   }
 
   &--accent {
@@ -49,8 +47,7 @@
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .16));
+    @include mdc-ripple-theme((theme-style: secondary, opacity: .16));
   }
 }
 

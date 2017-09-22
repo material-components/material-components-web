@@ -92,8 +92,7 @@ To add a ripple to our surface, first we include the proper Sass mixins within o
 
 .surface {
   @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before"));
-  @include mdc-ripple-fg((pseudo: "::after"));
+  @include mdc-ripple-theme(());
   // ...
 
   /* "Bound" the ripple, preventing the pseudo-elements from bleeding out of the box. */
