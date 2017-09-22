@@ -100,6 +100,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   handleTextFieldInteraction_(evt) {
+    if (this.adapter_.getNativeInput().disabled) {
+      return;
+    }
+
     this.receivedUserInput_ = true;
 
     const {target, type} = evt;
@@ -158,6 +162,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
+    this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
 
@@ -180,7 +185,6 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       this.adapter_.addClass(INVALID);
     }
     this.updateHelptext_(isValid);
-    this.isFocused_ = false;
   }
 
   updateHelptext_(isValid) {

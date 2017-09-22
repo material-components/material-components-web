@@ -180,8 +180,13 @@ test('on input does nothing if input event preceded by keydown event', () => {
     type: 'keydown',
     key: 'Enter',
   };
+  const mockInput = {
+    disabled: false,
+  };
   let keydown;
   let input;
+
+  td.when(mockAdapter.getNativeInput()).thenReturn(mockInput);
   td.when(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       keydown = handler;
@@ -348,33 +353,18 @@ test('on blur handles getNativeInput() not returning anything gracefully', () =>
   assert.doesNotThrow(blur);
 });
 
-test('on text field click notifies icon event if event target is the leading icon', () => {
+test('on text field click notifies icon event if event target is an icon', () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {
     target: {},
     type: 'click',
   };
-  let iconEventHandler;
-
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TEXT_FIELD_ICON)).thenReturn(true);
-  td.when(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      iconEventHandler = handler;
-    });
-
-  foundation.init();
-  iconEventHandler(evt);
-  td.verify(mockAdapter.notifyIconAction());
-});
-
-test('on text field click notifies icon event if event target is the trailing icon', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const evt = {
-    target: {},
-    type: 'click',
+  const mockInput = {
+    disabled: false,
   };
   let iconEventHandler;
 
+  td.when(mockAdapter.getNativeInput()).thenReturn(mockInput);
   td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TEXT_FIELD_ICON)).thenReturn(true);
   td.when(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
@@ -452,4 +442,27 @@ test('touchstart on the input sets the bottom line origin', () => {
   clickHandler(mockEvt);
 
   td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+});
+
+test('interacting with text field does not emit custom events if input is disabled', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    target: {},
+    key: 'Enter',
+  };
+  const mockInput = {
+    disabled: true,
+  };
+  let textFieldInteraction;
+
+  td.when(mockAdapter.getNativeInput()).thenReturn(mockInput);
+  td.when(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)))
+    .thenDo((evt, handler) => {
+      textFieldInteraction = handler;
+    });
+
+  foundation.init();
+  textFieldInteraction(mockEvt);
+
+  td.verify(mockAdapter.notifyIconAction(), {times: 0});
 });

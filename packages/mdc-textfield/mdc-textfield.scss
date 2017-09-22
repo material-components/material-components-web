@@ -215,7 +215,7 @@
 
     position: absolute;
     bottom: 20px;
-    width: calc(100% - $mdc-textfield-icon-padding);
+    width: calc(100% - #{$mdc-textfield-icon-padding});
     color: rgba(black, .6);
     text-overflow: ellipsis;
     white-space: nowrap;

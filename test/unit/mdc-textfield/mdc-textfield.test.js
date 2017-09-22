@@ -27,8 +27,8 @@ const {cssClasses, strings} = MDCTextfieldFoundation;
 const getFixture = () => bel`
   <div class="mdc-textfield">
     <input type="text" class="mdc-textfield__input" id="my-textfield">
-    <div class="mdc-textfield__bottom-line"></div>
     <label class="mdc-textfield__label" for="my-textfield">My Label</label>
+    <div class="mdc-textfield__bottom-line"></div>
   </div>
 `;
 
@@ -217,7 +217,7 @@ test('#adapter.registerInputInteractionHandler adds a handler to the input eleme
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInputInteractionHandler removes a handler to the input element for a given event', () => {
+test('#adapter.deregisterInputInteractionHandler removes a handler from the input element for a given event', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-textfield__input');
   const handler = td.func('eventHandler');

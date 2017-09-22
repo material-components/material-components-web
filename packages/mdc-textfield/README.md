@@ -387,7 +387,7 @@ complicated.
 | eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
 | registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event handler on the root element for a given event |
 | deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event handler on the root element for a given event |
-| notifyIconAction() => void | Broadcasts a custom event "MDCTextfield:icon" denoting a user has clicked the icon |
+| notifyIconAction() => void | Emits a custom event "MDCTextfield:icon" denoting a user has clicked the icon |
 | addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
 | removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
 | addClassToHelptext(className: string) => void | Adds a class to the help text element. Note that in our code we check for whether or not we have a help text element and if we don't, we simply return. |
