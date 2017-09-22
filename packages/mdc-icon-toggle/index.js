@@ -16,9 +16,6 @@
 
 import MDCComponent from '@material/base/component';
 import MDCIconToggleFoundation from './foundation';
-/* eslint-disable no-unused-vars */
-import {MDCRippleAdapter} from '@material/ripple/adapter';
-/* eslint-enable no-unused-vars */
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 
 export {MDCIconToggleFoundation};

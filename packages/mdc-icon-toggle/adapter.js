@@ -34,7 +34,7 @@
  *
  * @record
  */
-export default class MDCIconToggleAdapter {
+export class MDCIconToggleAdapter {
   /** @param {string} className */
   addClass(className) {}
 

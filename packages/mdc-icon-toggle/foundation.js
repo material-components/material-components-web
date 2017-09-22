@@ -197,7 +197,7 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
  *   keyCode: number
  * }}
  */
-export let KeyboardKey;
+let KeyboardKey;
 
 /**
  * @param {!KeyboardKey} keyboardKey

@@ -111,7 +111,7 @@ CSS Custom property | Description
 
 ### CSS Classes
 
-Some components can change their appearance when a theme-based modifier CSS class is applied. For example, `mdc-button--primary` will make the MDC Button the primary color. For more documentation on these modifier classes, consult the documentation for each component.
+MDC-Web provides SASS mixins, such as `mdc-button-filled-accessible`, to facilitate customization of some components. For more information, consult the documentation for each component.
 
 If you want to modify an element, which is not a Material Design component, you can apply the following modifier CSS classes.
 
