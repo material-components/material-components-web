@@ -35,6 +35,7 @@
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
 $demo-section-margin: 48px;
+$demo-custom-color: $material-color-red-500;
 
 //
 // Global styles
@@ -218,12 +219,29 @@ $demo-section-margin: 48px;
 // Floating Action Button (FAB) demo
 //
 
-.demo-fieldset--fab {
-  margin-bottom: .5rem;
+.demo-fab-row {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.demo-fieldset--fab .mdc-fab {
-  margin: 16px;
+.demo-fab {
+  margin: 16px 0 0 0;
+}
+
+.demo-fab--custom {
+  @include mdc-fab-accessible($demo-custom-color);
+}
+
+.demo-fab-tile {
+  margin: 0 48px 1em 0;
+}
+
+.demo-fab-tile__title {
+  font-weight: 500;
+}
+
+.demo-fab-tile__snippet {
+  height: 2em;
 }
 
 //

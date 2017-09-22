@@ -301,56 +301,57 @@
       <section class="demo-component-section">
         <i id="fab" class="demo-anchor-with-toolbar-offset"></i>
         <h2 class="mdc-typography--headline demo-component-section__heading">
-          Floating Action Button
+          Floating Action Button (FAB)
           <a href="#fab" class="demo-component-section__permalink" title="Permalink to the theme demo for the floating action button component">#</a>
         </h2>
 
-        <fieldset class="demo-fieldset--fab">
-          <legend class="mdc-typography--subheading2">Normal FABs</legend>
-          <button class="mdc-fab material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-        </fieldset>
-
-        <fieldset class="demo-fieldset--fab" disabled>
-          <legend class="mdc-typography--subheading2">Disabled FABs</legend>
-          <button class="mdc-fab material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
+        <fieldset>
+          <div class="demo-fab-row">
+            <figure class="demo-fab-tile">
+              <figcaption>
+                <div class="demo-fab-tile__title">Default</div>
+                <div class="demo-fab-tile__snippet mdc-typography--body1">Secondary theme color</div>
+              </figcaption>
+              <button class="mdc-fab material-icons demo-fab" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  favorite_border
+                </span>
+              </button>
+            </figure>
+            <figure class="demo-fab-tile">
+              <figcaption>
+                <div class="demo-fab-tile__title">Mini</div>
+                <div class="demo-fab-tile__snippet mdc-typography--body1"><code>mdc-fab--mini</code></div>
+              </figcaption>
+              <button class="mdc-fab mdc-fab--mini material-icons demo-fab" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  favorite_border
+                </span>
+              </button>
+            </figure>
+            <figure class="demo-fab-tile">
+              <figcaption>
+                <div class="demo-fab-tile__title">Custom Color with Accessible Ink</div>
+                <div class="demo-fab-tile__snippet mdc-typography--body1"><code>@include mdc-fab-accessible</code></div>
+              </figcaption>
+              <button class="mdc-fab material-icons demo-fab demo-fab--custom" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  favorite_border
+                </span>
+              </button>
+            </figure>
+            <figure class="demo-fab-tile">
+              <figcaption>
+                <div class="demo-fab-tile__title">Custom Color with Accessible Ink (Mini)</div>
+                <div class="demo-fab-tile__snippet mdc-typography--body1"></div>
+              </figcaption>
+              <button class="mdc-fab mdc-fab--mini material-icons demo-fab demo-fab--custom" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  favorite_border
+                </span>
+              </button>
+            </figure>
+          </div>
         </fieldset>
       </section>
 
