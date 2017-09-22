@@ -85,7 +85,6 @@
     left: 0;
     max-height: 100%;
     transform-origin: center center;
-    overflow-y: scroll;
     z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
   }
 
