@@ -14,11 +14,10 @@ frameworks.
 
 ## Examples
 
-Our [framework-examples](../framework-examples) directory contains sample applications built in various frameworks,
-such as [react](../framework-examples/react) and [angular2](../framework-examples/angular2) that show how to wrap our
-components. If there's an example framework you'd like to see, or if you're a framework author who
-wants to provide an example, please consider letting us know and we'll work with you to have it
-contributed!
+We maintain a list of component libraries, which wrap MDC Web for other frameworks, on our main [README](../README.md). Each library must:
+- Serve components in an à-la-carte delivery model
+- Have existed for longer than 6 weeks and show continued maintenance over time
+- Provide usage documentation per component
 
 ## Approaches
 
