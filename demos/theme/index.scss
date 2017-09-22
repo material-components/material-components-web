@@ -101,6 +101,36 @@ $demo-section-margin: 48px;
 // Button demo
 //
 
+.mdc-button.secondary-text-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  }
+}
+
+.mdc-button.secondary-filled-button {
+  @include mdc-button-filled-accessible($mdc-theme-secondary);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-filled-accessible($mdc-theme-secondary);
+  }
+}
+
+.mdc-button.secondary-stroked-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-stroke-color($mdc-theme-secondary);
+  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-stroke-color($mdc-theme-secondary);
+    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  }
+}
+
 .demo-fieldset--button + .demo-fieldset--button {
   margin-top: 16px;
 }
