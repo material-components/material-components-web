@@ -239,6 +239,7 @@ for any display size.
 
 ```html
 <aside class="mdc-temporary-drawer mdc-typography">
+  <div class="mdc-temporary-drawer__backdrop"></div>
   <nav class="mdc-temporary-drawer__drawer">
     <header class="mdc-temporary-drawer__header">
       <div class="mdc-temporary-drawer__header-content">
@@ -271,6 +272,7 @@ very useful for visual alignment and consistency. Note that you can place conten
 
 ```html
 <aside class="mdc-temporary-drawer mdc-typography">
+  <div class="mdc-temporary-drawer__backdrop"></div>
   <nav class="mdc-temporary-drawer__drawer">
 
     <div class="mdc-temporary-drawer__toolbar-spacer"></div>
@@ -294,6 +296,7 @@ for placing the actual content, which will be bottom-aligned.
 
 ```html
 <aside class="mdc-temporary-drawer mdc-typography">
+  <div class="mdc-temporary-drawer__backdrop"></div>
   <nav class="mdc-temporary-drawer__drawer">
 
     <header class="mdc-temporary-drawer__header">
@@ -319,6 +322,7 @@ CSS classes:
 | Class                                  | Description                                                                |
 | -------------------------------------- | -------------------------------------------------------------------------- |
 | `mdc-temporary-drawer`                 | Mandatory. Needs to be set on the root element of the component.           |
+| `mdc-temporary-drawer__backdrop`       | Mandatory. Needs to be set on the backdrop element of the component.       |
 | `mdc-temporary-drawer__drawer`         | Mandatory. Needs to be set on the container node for the drawer content.   |
 | `mdc-temporary-drawer__content`        | Optional. Should be set on the list of items inside the drawer.            |
 | `mdc-temporary-drawer__toolbar-spacer` | Optional. Add to node to provide the matching amount of space for toolbar. |
@@ -409,13 +413,15 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
 | `registerDrawerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the drawer container sub-element, for the specified event name. |
 | `deregisterDrawerInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from drawer container sub-element, for the specified event name. |
+| `registerBackdropInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the backdrop container sub-element, for the specified event name. |
+| `deregisterBackdropInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from backdrop container sub-element, for the specified event name. |
 | `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when a `transitionend` event is triggered on the drawer container sub-element element. |
 | `deregisterTransitionEndHandler(handler: EventListener) => void` | Deregisters an event handler from a `transitionend` event listener. This will only be called with handlers that have previously been passed to `registerTransitionEndHandler` calls. |
 | `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
 | `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
 | `getDrawerWidth() => number` | Returns the current drawer width, in pixels. |
 | `setTranslateX(value: number) => void` | Sets the current position for the drawer, in pixels from the border. |
-| `updateCssVariable(value: string) => void` | Sets a CSS custom property, for controlling the current background opacity when manually dragging the drawer. |
+| `updateBackdropOpacity(value: number) => void` | Sets the current backdrop opacity when manually dragging the drawer. |
 | `getFocusableElements() => NodeList` | Returns the node list of focusable elements inside the drawer. |
 | `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
 | `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
