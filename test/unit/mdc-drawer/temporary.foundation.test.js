@@ -45,29 +45,30 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass', 'addBodyClass', 'removeBodyClass',
     'hasNecessaryDom', 'registerInteractionHandler',
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
+    'registerBackdropInteractionHandler', 'deregisterBackdropInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',
     'deregisterDocumentKeydownHandler', 'setTranslateX', 'getFocusableElements',
     'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable',
     'notifyOpen', 'notifyClose', 'isRtl', 'getDrawerWidth', 'isDrawer',
-    'updateCssVariable',
+    'updateBackdropOpacity',
   ]);
 });
 
-test('#init calls component and drawer event registrations', () => {
+test('#init calls component and backdrop event registrations', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
   foundation.init();
-  td.verify(mockAdapter.registerInteractionHandler('click', isA(Function)));
+  td.verify(mockAdapter.registerBackdropInteractionHandler('click', isA(Function)));
 });
 
-test('#destroy calls component and drawer event deregistrations', () => {
+test('#destroy calls component and backdrop event deregistrations', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
   foundation.init();
   foundation.destroy();
-  td.verify(mockAdapter.deregisterInteractionHandler('click', isA(Function)));
+  td.verify(mockAdapter.deregisterBackdropInteractionHandler('click', isA(Function)));
 });
 
 test('on touch start updates the drawer to the touch target coordinates', () => {
@@ -82,7 +83,7 @@ test('on touch start updates the drawer to the touch target coordinates', () => 
     touches: [{pageX: 50}],
   });
   raf.flush();
-  td.verify(mockAdapter.updateCssVariable(1));
+  td.verify(mockAdapter.updateBackdropOpacity(1));
 
   raf.restore();
 });
@@ -99,7 +100,7 @@ test('on touch start does not update the drawer when drawer not open', () => {
     touches: [{pageX: 50}],
   });
   raf.flush();
-  td.verify(mockAdapter.updateCssVariable(1), {times: 0});
+  td.verify(mockAdapter.updateBackdropOpacity(1), {times: 0});
 
   raf.restore();
 });
@@ -117,7 +118,7 @@ test('on touch start works for pointer events', () => {
     pageX: 50,
   });
   raf.flush();
-  td.verify(mockAdapter.updateCssVariable(1));
+  td.verify(mockAdapter.updateBackdropOpacity(1));
 
   raf.restore();
 });
@@ -135,7 +136,7 @@ test('on touch start does not update the drawer when pointertype != touch', () =
     pageX: 50,
   });
   raf.flush();
-  td.verify(mockAdapter.updateCssVariable(1), {times: 0});
+  td.verify(mockAdapter.updateBackdropOpacity(1), {times: 0});
 
   raf.restore();
 });
@@ -160,7 +161,7 @@ test('on touch move updates currentX causing the drawer to update', () => {
   });
   raf.flush();
 
-  td.verify(mockAdapter.updateCssVariable(0.98));
+  td.verify(mockAdapter.updateBackdropOpacity(0.98));
 
   handlers.touchmove({
     touches: [{pageX: 495}],
@@ -168,7 +169,7 @@ test('on touch move updates currentX causing the drawer to update', () => {
   });
   raf.flush();
 
-  td.verify(mockAdapter.updateCssVariable(0.99));
+  td.verify(mockAdapter.updateBackdropOpacity(0.99));
   raf.restore();
 });
 
@@ -192,7 +193,7 @@ test('on touch move does not allow the drawer to move past its width', () => {
   });
   raf.flush();
 
-  td.verify(mockAdapter.updateCssVariable(1));
+  td.verify(mockAdapter.updateBackdropOpacity(1));
   raf.restore();
 });
 
@@ -217,7 +218,7 @@ test('on touch move does not allow the drawer to move past its width in RTL', ()
   });
   raf.flush();
 
-  td.verify(mockAdapter.updateCssVariable(1));
+  td.verify(mockAdapter.updateBackdropOpacity(1));
   raf.restore();
 });
 
@@ -242,7 +243,7 @@ test('on touch move works for pointer events', () => {
     preventDefault: () => {},
   });
   raf.flush();
-  td.verify(mockAdapter.updateCssVariable(0.98));
+  td.verify(mockAdapter.updateBackdropOpacity(0.98));
 
   raf.restore();
 });
@@ -267,7 +268,7 @@ test('on touch move does not update the drawer when pointertype != touch', () =>
     pageX: 490,
   });
   raf.flush();
-  td.verify(mockAdapter.updateCssVariable(0.98), {times: 0});
+  td.verify(mockAdapter.updateBackdropOpacity(0.98), {times: 0});
 
   raf.restore();
 });
@@ -287,7 +288,7 @@ test('on touch end resets touch update styles', () => {
   raf.flush();
 
   handlers.touchend({});
-  td.verify(mockAdapter.updateCssVariable(''));
+  td.verify(mockAdapter.updateBackdropOpacity(''));
   raf.restore();
 });
 
@@ -304,13 +305,23 @@ test('on touch end does not update drawer', () => {
     touches: [{pageX: 500}],
   });
   raf.flush();
-  td.verify(mockAdapter.updateCssVariable(1), {times: 1});
+  td.verify(mockAdapter.updateBackdropOpacity(1), {times: 1});
 
   handlers.touchend({});
   raf.flush();
-  td.verify(mockAdapter.updateCssVariable(1), {times: 1});
+  td.verify(mockAdapter.updateBackdropOpacity(1), {times: 1});
 
   raf.restore();
+});
+
+test('click on the backdrop closes the drawer', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const backdropHandlers = captureHandlers(mockAdapter, 'registerBackdropInteractionHandler');
+  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  foundation.init();
+
+  backdropHandlers.click({});
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
 test('#isRootTransitioningEventTarget_ returns true if the element is the drawer element', () => {
