@@ -337,3 +337,15 @@ test('adapter#removeBodyClass remove a class from the body', () => {
   component.getDefaultFoundation().adapter_.removeBodyClass('mdc-drawer--scroll-lock');
   assert.isNotOk(body.classList.contains('mdc-drawer--scroll-lock'));
 });
+
+test('propagation of click events is not stopped', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('clickHandler');
+  const link = document.createElement('a');
+  link.href = '#foo';
+  component.drawer.appendChild(link);
+  document.body.appendChild(root);
+  document.body.addEventListener('click', handler);
+  link.click();
+  td.verify(handler(td.matchers.anything()));
+});
