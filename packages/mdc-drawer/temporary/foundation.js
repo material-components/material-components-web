@@ -31,7 +31,9 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       isDrawer: () => false,
-      updateCssVariable: (/* value: string */) => {},
+      updateBackdropOpacity: (/* value: string */) => {},
+      registerBackdropInteractionHandler: (/* evt: string, handler: EventListener */) => {},
+      deregisterBackdropInteractionHandler: (/* evt: string, handler: EventListener */) => {},
     });
   }
 
@@ -42,7 +44,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       MDCTemporaryDrawerFoundation.cssClasses.ANIMATING,
       MDCTemporaryDrawerFoundation.cssClasses.OPEN);
 
-    this.componentClickHandler_ = () => this.close();
+    this.backdropClickHandler_ = () => this.close();
   }
 
   init() {
@@ -50,28 +52,28 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
 
     // Make browser aware of custom property being used in this element.
     // Workaround for certain types of hard-to-reproduce heisenbugs.
-    this.adapter_.updateCssVariable(0);
-    this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
+    this.adapter_.updateBackdropOpacity(0);
+    this.adapter_.registerBackdropInteractionHandler('click', this.backdropClickHandler_);
   }
 
   destroy() {
     super.destroy();
 
-    this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
+    this.adapter_.deregisterBackdropInteractionHandler('click', this.backdropClickHandler_);
     this.enableScroll_();
   }
 
   open() {
     this.disableScroll_();
     // Make sure custom property values are cleared before starting.
-    this.adapter_.updateCssVariable('');
+    this.adapter_.updateBackdropOpacity('');
 
     super.open();
   }
 
   close() {
     // Make sure custom property values are cleared before making any changes.
-    this.adapter_.updateCssVariable('');
+    this.adapter_.updateBackdropOpacity('');
 
     super.close();
   }
@@ -79,14 +81,14 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
   prepareForTouchEnd_() {
     super.prepareForTouchEnd_();
 
-    this.adapter_.updateCssVariable('');
+    this.adapter_.updateBackdropOpacity('');
   }
 
   updateDrawer_() {
     super.updateDrawer_();
 
     const newOpacity = Math.max(0, 1 + this.direction_ * (this.newPosition_ / this.drawerWidth_));
-    this.adapter_.updateCssVariable(newOpacity);
+    this.adapter_.updateBackdropOpacity(newOpacity);
   }
 
   isRootTransitioningEventTarget_(el) {
