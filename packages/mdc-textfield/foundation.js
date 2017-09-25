@@ -229,7 +229,7 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
       this.adapter_.setIconAttr('tabindex', '-1');
     } else {
       this.adapter_.removeClass(DISABLED);
-      this.adapter_.setIconAttr('tabindex', '-1');
+      this.adapter_.setIconAttr('tabindex', '0');
     }
   }
 

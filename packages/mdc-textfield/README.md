@@ -43,8 +43,8 @@ npm install --save @material/textfield
 ```html
 <div class="mdc-textfield">
   <input type="text" id="my-textfield" class="mdc-textfield__input">
-  <div class="mdc-textfield__bottom-line"></div>
   <label class="mdc-textfield__label" for="my-textfield">Hint text</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -53,8 +53,8 @@ It's also possible to wrap an input within a `<label>` to avoid dynamic id gener
 ```html
 <label class="mdc-textfield">
   <input type="text" class="mdc-textfield__input">
-  <div class="mdc-textfield__bottom-line"></div>
   <span class="mdc-textfield__label">Hint Text</span>
+  <div class="mdc-textfield__bottom-line"></div>
 </label>
 ```
 
@@ -76,8 +76,8 @@ It's also possible to wrap an input within a `<label>` to avoid dynamic id gener
 ```html
 <div class="mdc-textfield mdc-textfield--disabled">
   <input type="text" id="disabled-textfield" class="mdc-textfield__input" disabled>
-  <div class="mdc-textfield__bottom-line"></div>
   <label class="mdc-textfield__label" for="disabled-textfield">Disabled text field</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -93,10 +93,10 @@ since it won't be added until that JS runs, adding it manually will prevent an i
 ```html
 <div class="mdc-textfield mdc-textfield--upgraded">
   <input type="text" id="pre-filled" class="mdc-textfield__input" value="Pre-filled value">
-  <div class="mdc-textfield__bottom-line"></div>
   <label class="mdc-textfield__label mdc-textfield__label--float-above" for="pre-filled">
     Label in correct place
   </label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -108,8 +108,8 @@ information to users, as well for validation messages (covered below).
 ```html
 <div class="mdc-textfield">
   <input type="text" id="username" class="mdc-textfield__input" aria-controls="username-helptext">
-  <div class="mdc-textfield__bottom-line"></div>
   <label for="username" class="mdc-textfield__label">Username</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 <p id="username-helptext" class="mdc-textfield-helptext" aria-hidden="true">
   This will be displayed on your public profile
@@ -127,8 +127,8 @@ If you'd like the help text to always be visible, add the
 ```html
 <div class="mdc-textfield">
   <input type="email" id="email" class="mdc-textfield__input">
-  <div class="mdc-textfield__bottom-line"></div>
   <label for="email" class="mdc-textfield__label">Email address</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 <p class="mdc-textfield-helptext mdc-textfield-helptext--persistent">
   We will <em>never</em> share your email address with third parties
@@ -156,8 +156,8 @@ by HTML5's form validation API.
 ```html
 <div class="mdc-textfield">
   <input type="password" id="pw" class="mdc-textfield__input" required minlength=8>
-  <div class="mdc-textfield__bottom-line"></div>
   <label for="pw" class="mdc-textfield__label">Password</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -174,8 +174,8 @@ UX for client-side form field validation.
 <div class="mdc-textfield">
   <input required minlength=8 type="password" class="mdc-textfield__input" id="pw"
          aria-controls="pw-validation-msg">
-  <div class="mdc-textfield__bottom-line"></div>
   <label for="pw" class="mdc-textfield__label">Choose password</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 <p class="mdc-textfield-helptext
           mdc-textfield-helptext--persistent
