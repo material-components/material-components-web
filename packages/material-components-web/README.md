@@ -6,7 +6,7 @@ sibling packages up into one comprehensive library for convenience.
 ## Installation
 
 ```
-npm install --save material-components-web
+yarn add material-components-web
 ```
 
 ## Usage

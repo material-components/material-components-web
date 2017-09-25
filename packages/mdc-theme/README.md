@@ -25,7 +25,7 @@ The text contrast colors are automatically calculated at the Sass level and expo
 ## Installation
 
 ```
-npm install --save @material/theme
+yarn add @material/theme
 ```
 
 ## Usage

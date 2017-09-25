@@ -7,7 +7,7 @@ Lists are design to be accessible and RTL aware.
 ## Installation
 
 ```
-npm install --save @material/list
+yarn add @material/list
 ```
 
 ## Usage

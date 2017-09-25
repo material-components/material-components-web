@@ -5,7 +5,7 @@ mdc-animation is a sass / css library which provides variables, mixins, and clas
 ## Installation
 
 ```
-npm install --save @material/animation
+yarn add @material/animation
 ```
 
 ## Usage

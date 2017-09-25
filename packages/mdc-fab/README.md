@@ -8,7 +8,7 @@ If you initiate the JavaScript object for a button, then it will be enhanced wit
 ## Installation
 
 ```
-npm install --save @material/fab
+yarn add @material/fab
 ```
 
 ## Usage

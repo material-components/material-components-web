@@ -14,7 +14,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 Install the library
 
 ```
-npm install --save material-components-web
+yarn add material-components-web
 ```
 
 Then simply include the correct files, write some HTML, and call `mdc.autoInit()` within a closing
@@ -50,7 +50,7 @@ MDC-Web is modular by design. Each component lives within its own packages under
 [@material npm scope](https://www.npmjs.com/~material).
 
 ```
-npm install --save @material/button @material/card @material/textfield @material/typography
+yarn add @material/button @material/card @material/textfield @material/typography
 ```
 
 All our components can be found in the [packages](./packages) directory. Each component has a
@@ -122,14 +122,14 @@ Setup the repo:
 
 ```
 git clone https://github.com/material-components/material-components-web.git && cd material-components-web
-npm i
+yarn
 ```
 
 Run the development server (served out of `demos/`):
 
 ```
 cd /path/to/material-components-web
-npm run dev
+yarn run dev
 open http://localhost:8080
 ```
 

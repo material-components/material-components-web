@@ -45,7 +45,7 @@ Given this, it is important that you _provide gracefully degraded interaction st
 ## Installation
 
 ```
-npm install --save @material/ripple
+yarn add @material/ripple
 ```
 
 ## Usage

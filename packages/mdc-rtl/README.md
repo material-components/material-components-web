@@ -7,7 +7,7 @@ that any MDC-Web component that needs RTL support leverage this package.
 ## Installation
 
 ```
-npm install --save @material/rtl
+yarn add @material/rtl
 ```
 
 ## Usage

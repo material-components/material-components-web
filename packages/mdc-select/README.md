@@ -13,7 +13,7 @@ in conjunction with the browser's native element. Both are fully accessible, and
 ## Installation
 
 ```
-npm install --save @material/select
+yarn add @material/select
 ```
 
 ## Usage

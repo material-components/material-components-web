@@ -5,8 +5,8 @@
 To run the app execute the following command:
 
 ```shell
-npm install
-npm start
+yarn
+yarn run start
 ```
 
 This command starts the webpack development server that serves the build bundles.

@@ -19,7 +19,7 @@ components we have to offer.
 
 ### Setting up the project
 
-Before setting up the project, you will need to have a recent version of [NodeJS](https://nodejs.org/). Install it with the [NodeJS installer](https://nodejs.org/en/download/) or through [nvm](https://github.com/creationix/nvm). The [npm](https://www.npmjs.com/) command should made be available on your `$PATH`.
+Before setting up the project, you will need to have a recent version of [NodeJS](https://nodejs.org/). Install it with the [NodeJS installer](https://nodejs.org/en/download/) or through [nvm](https://github.com/creationix/nvm). You'll also need a package manager like [`npm`](https://www.npmjs.com/) or [`yarn`](https://yarnpkg.com/en/).  This example uses `yarn`.
 
 Let's begin creating the project by first creating the directory for the app and add MDC-Web.
 This will install MDC-Web into the `node_modules` folder inside of the `greeting-app` directory.
@@ -27,22 +27,26 @@ This will install MDC-Web into the `node_modules` folder inside of the `greeting
 ```
 mkdir greeting-app
 cd greeting-app
-npm init -y  # adds a package.json file into the directory
-npm install --save material-components-web
+yarn init -y  # adds a package.json file into the directory
+yarn add material-components-web
 ```
 
 We recommend installing and using [live-server](http://tapiov.net/live-server/) as the local
-development server that will automatically reload when changes are made.
+development server, which will automatically reload when changes are made.
+
+Run this command:
 
 ```
-npm install --global live-server
+yarn add live-server
 ```
 
-> NOTE: You may need to use `sudo` to install npm packages globally, depending on how your node
-installation is configured.
+and then add this chunk to your `package.json`:
 
-The `--global` flag tells npm to install the package globally, so that the `live-server` program
-will be available on your `$PATH`.
+```json
+  "scripts": {
+    "start": "live-server"
+  },
+```
 
 ### Creating the skeleton index.html file
 
@@ -67,13 +71,13 @@ the assets needed for MDC-Web. Put the following within `index.html` in the `gre
 </html>
 ```
 
-View this page by running `live-server` within the `greeting-app` directory. This will open up your
-browser to the URL which is serving our `index.html` file. You can leave `live-server` running for
-the duration of this guide.
+View this page by running `yarn run start` within the `greeting-app` directory. This will open up
+your browser to the URL which is serving our `index.html` file. You can leave `live-server` running
+for the duration of this guide.
 
 ```
 cd greeting-app
-live-server
+yarn run start
 ```
 
 Let's take a look at a few aspects of the above HTML.

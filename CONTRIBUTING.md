@@ -29,11 +29,11 @@ We strive to make developing Material Components Web as frictionless as possible
 
 You'll need a recent version of [nodejs](https://nodejs.org/en/) to work on MDC-Web. We [test our builds](https://travis-ci.org/material-components/material-components-web) using both the latest and LTS node versions, so use of one of those is recommended. You can use [nvm](https://github.com/creationix/nvm) to easily install and manage different versions of node on your system.
 
-Once node is installed, simply clone our repo (or your fork of it) and run `npm install`
+Once node is installed, simply clone our repo (or your fork of it) and run `yarn`
 
 ```
 git clone git@github.com:material-components/material-components-web.git  # or a path to your fork
-cd material-components-web && npm i
+cd material-components-web && yarn
 ```
 
 ### Building Components
@@ -51,34 +51,34 @@ You can find much more information with respect to building components within ou
 ### Running the development server
 
 ```
-npm run dev
+yarn run dev
 open http://localhost:8080
 ```
 
-`npm run dev` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that uses `demos/` as its content base. This should aid you in initial development of a component. It's served on port 8080.
+`yarn run dev` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that uses `demos/` as its content base. This should aid you in initial development of a component. It's served on port 8080.
 
 ### Building MDC-Web
 
 ```
-npm run build # Builds an unminified version of MDC-Web within build/
-npm run build:min # Same as above, but enables minification
-npm run dist # Cleans out build/ and runs both of the above commands sequentially
+yarn run build # Builds an unminified version of MDC-Web within build/
+yarn run build:min # Same as above, but enables minification
+yarn run dist # Cleans out build/ and runs both of the above commands sequentially
 ```
 
 ### Linting / Testing / Coverage Enforcement
 
 ```
-npm run lint:js # Lints javascript using eslint
-npm run lint:css # Lints (S)CSS using stylelint
-npm run lint # Runs both of the above commands in parallel
+yarn run lint:js # Lints javascript using eslint
+yarn run lint:css # Lints (S)CSS using stylelint
+yarn run lint # Runs both of the above commands in parallel
 
-npm run fix:js # Runs eslint with the --fix option enabled
-npm run fix:css # Runs stylefmt, which helps fix simple stylelint errors
-npm run fix # Runs both of the above commands in parallel
+yarn run fix:js # Runs eslint with the --fix option enabled
+yarn run fix:css # Runs stylefmt, which helps fix simple stylelint errors
+yarn run fix # Runs both of the above commands in parallel
 
-npm run test:watch # Runs karma on Chrome, re-running when source files change
+yarn run test:watch # Runs karma on Chrome, re-running when source files change
 
-npm test # Lints all files, runs karma, and then runs coverage enforcement checks.
+yarn run test # Lints all files, runs karma, and then runs coverage enforcement checks.
 ```
 
 #### Running Tests across browsers
@@ -90,11 +90,11 @@ If you're making big changes or developing new components, we encourage you to b
 3. Navigate to your dashboard, scroll down to where it says "Access Key", and click "Show"
 4. Enter your password when prompted
 5. Copy your access key
-6. Run `SAUCE_USERNAME=<your-saucelabs-username> SAUCE_ACCESS_KEY=<your-saucelabs-access-key> npm test`
+6. Run `SAUCE_USERNAME=<your-saucelabs-username> SAUCE_ACCESS_KEY=<your-saucelabs-access-key> yarn run test`
 
 This will have karma run our unit tests across all browsers we support, and ensure your changes will not introduce regressions.
 
-Alternatively, you can run `npm run test:watch` and manually open browsers / use VMs / use emulators to test your changes.
+Alternatively, you can run `yarn run test:watch` and manually open browsers / use VMs / use emulators to test your changes.
 
 ### Coding Style
 
@@ -118,7 +118,7 @@ Finally, it helps to make sure that your branch/fork is up to date with what's c
 
 To release MDC-Web, you should perform the following steps.
 
-1. Run `./scripts/pre-release.sh`. This will run `npm test`, build MDC-Web, copy the built assets over
+1. Run `./scripts/pre-release.sh`. This will run `yarn run test`, build MDC-Web, copy the built assets over
    to each module's `dist/` folder, and then print out a summary of all of the new versions that
    should be used for changed components. The summary is printed out to both the console, as well
    as a `.new-versions.log` file in the repo root. This information should be used within the

@@ -6,8 +6,8 @@ It is based off of [angular2-seed](https://github.com/angular/angular2-seed)
 
 ## Setup
 
-1. Run `npm install` within this folder
-2. Run `npm start` to start the demo server
+1. Run `yarn` within this folder
+2. Run `yarn run start` to start the demo server
 3. Navigate to http://localhost:3000 to view the demo.
 
 ## Notes

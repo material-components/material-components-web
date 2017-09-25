@@ -7,7 +7,7 @@ not require any javascript.
 ## Installation
 
 ```
-npm install --save @material/textfield
+yarn add @material/textfield
 ```
 
 ## Usage

@@ -6,8 +6,8 @@ It is based off of [react-hot-boilerplate](https://github.com/gaearon/react-hot-
 
 ## Setup
 
-1. Run `npm install` within this folder
-2. Run `npm start` to start the demo server
+1. Run `yarn` within this folder
+2. Run `yarn run start` to start the demo server
 3. Navigate to http://localhost:3000 to view the demo.
 
 ## Notes

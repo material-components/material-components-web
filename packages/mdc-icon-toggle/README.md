@@ -6,7 +6,7 @@ designed to work with any icon set.
 ## Installation
 
 ```
-npm install --save @material/icon-toggle
+yarn add @material/icon-toggle
 ```
 
 ## Usage

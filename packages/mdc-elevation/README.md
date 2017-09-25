@@ -18,7 +18,7 @@ which was created in collaboration with the designers on the Material Design tea
 ## Installation
 
 ```
-npm install --save @material/elevation
+yarn add @material/elevation
 ```
 
 ## Usage

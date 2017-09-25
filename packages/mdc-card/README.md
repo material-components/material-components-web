@@ -7,7 +7,7 @@ developers as a set of CSS classes.
 ## Installation
 
 ```
-npm install --save @material/card
+yarn add @material/card
 ```
 
 ## Usage

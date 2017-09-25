@@ -7,7 +7,7 @@ It requires JavaScript the trigger the display and hide of the snackbar.
 ## Installation
 
 ```
-npm install --save @material/snackbar
+yarn add @material/snackbar
 ```
 
 ## Usage
@@ -66,7 +66,7 @@ const MDCSnackbarFoundation = mdc.snackbar.MDCSnackbarFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the snackbar, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));

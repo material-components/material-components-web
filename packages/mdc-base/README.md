@@ -9,7 +9,7 @@ Most of the time, you shouldn't need to depend on `mdc-base` directly. It is use
 First install the module:
 
 ```
-npm install --save @material/base
+yarn add @material/base
 ```
 
 Then include it in your code in one of the following ways:

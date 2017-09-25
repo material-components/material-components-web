@@ -8,7 +8,7 @@ first render.
 ## Installation
 
 ```
-npm install --save @material/menu
+yarn add @material/menu
 ```
 
 ## Simple menu usage
@@ -180,7 +180,7 @@ const MDCSimpleMenuFoundation = mdc.Menu.MDCSimpleMenuFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the simple menu, simply call `attachTo()` and pass it a
-DOM element.  
+DOM element.
 
 ```javascript
 mdc.MDCSimpleMenu.attachTo(document.querySelector('.mdc-simple-menu'));

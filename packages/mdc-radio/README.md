@@ -7,7 +7,7 @@ interaction UX as well as a component-level API for state modification.
 ## Installation
 
 ```
-npm install --save @material/radio
+yarn add @material/radio
 ```
 
 ## Usage
@@ -90,7 +90,7 @@ const MDCRadioFoundation = mdc.radio.MDCRadioFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the radio, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.radio.MDCRadio.attachTo(document.querySelector('.mdc-radio'));

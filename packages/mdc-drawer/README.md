@@ -8,7 +8,7 @@ temporary drawers require JavaScript to function, in order to respond to user in
 ## Installation
 
 ```
-npm install --save @material/drawer
+yarn add @material/drawer
 ```
 
 ## Permanent drawer usage
@@ -207,7 +207,7 @@ const MDCTemporaryDrawerFoundation = mdc.drawer.MDCTemporaryDrawerFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the temporary drawer, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.drawer.MDCTemporaryDrawer.attachTo(document.querySelector('.mdc-temporary-drawer'));

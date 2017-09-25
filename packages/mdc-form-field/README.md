@@ -6,7 +6,7 @@ form field + label combos.
 ## Installation
 
 ```
-npm install --save @material/form-field
+yarn add @material/form-field
 ```
 
 ## Usage

@@ -7,7 +7,7 @@ It works without JavaScript with basic functionality for all states. If you use 
 ## Installation
 
 ```
-npm install --save @material/checkbox
+yarn add @material/checkbox
 ```
 
 ## Usage
@@ -100,7 +100,7 @@ const MDCCheckboxFoundation = mdc.checkbox.MDCCheckboxFoundation;
 #### Automatic Instantiation
 
 If you do not care about retaining the component instance for the checkbox, simply call `attachTo()`
-and pass it a DOM element.  
+and pass it a DOM element.
 
 ```javascript
 mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
