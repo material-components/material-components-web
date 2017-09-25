@@ -234,11 +234,14 @@ following to the `<head>` tag of `index.html`:
 </style>
 ```
 
-If you're using any supported browser, besides IE 11, you'll see that the button background as well as the focused underline and label on text
+If you're using any supported browser, besides IE 11, you'll see that the focused underline and label on text
 fields are now a nice, dark shade of blue.
 
 > Note that using CSS Variables is just one way of theming using MDC-Web. Check out our
 [theming documentation](./theming.md) for more info.
+
+> Starting from version `0.21.0` is no longer possible styling buttons using the `mdc-theme--primary` and `mdc-theme--secondary` CSS variables. In order to change a button style read the SASS mixins section.
+
 
 ### Finishing touches: adding custom styles
 
