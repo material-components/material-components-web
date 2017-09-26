@@ -15,17 +15,24 @@
  */
 
 /**
- * @fileoverview Rewrites import statements such that:
+ * @fileoverview Rewrites JS to match a goog.module format. That means
+ *  * Add goog.module to the top of the source code
+ *  * Rewrite export {foo, bar} to exports = {foo, bar}
+ *  * Rewrite export default Foo, to exports = Foo
+ *  * Rewrite import Foo from ‘./foo’ to const Foo = goog.require(‘mdc.foo’)
+ *  * Rewrite import {foo, bar} from ‘./util’ to const {foo, bar} = goog.require(‘mdc.util)
+ *
+ *  
+ * This script rewrites import statements such that:
  *
  * ```js
  * import [<SPECIFIERS> from] '@material/$PKG[/files...]';
  * ```
  * becomes
  * ```js
- * import [<SPECIFIERS> from] 'mdc-$PKG/<RESOLVED_FILE_PATH>';
+ * const [<SPECIFIERS>] = goog.require('mdc.$PKG.<RESOLVED_FILE_NAMESPACE>');
  * ```
- * The RESOLVED_FILE_PATH is the file that node's module resolution algorithm would have resolved the import
- * source to.
+ * The RESOLVED_FILE_NAMESPACE is a namespace matching the directory structure.
  *
  * This script also handles third-party dependencies, e.g.
  *
@@ -36,7 +43,7 @@
  * becomes
  *
  * ```js
- * import {thing1, thing2} from 'goog:mdc.thirdparty.thirdPartyLib';
+ * const {thing1, thing2} = goog.require('goog:mdc.thirdparty.thirdPartyLib');
  * ```
  *
  * and
@@ -48,7 +55,7 @@
  * becomes
  *
  * ```js
- * import {default as someDefaultExport} from 'goog:mdc.thirdparty.thirdPartyLib'
+ * const {someDefaultExport} = goog.require('goog:mdc.thirdparty.thirdPartyLib')
  * ```
  *
  * This is so closure is able to properly build and check our files without breaking when it encounters
