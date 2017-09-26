@@ -17,7 +17,7 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCRippleAdapter from './adapter';
 import {cssClasses, strings, numbers} from './constants';
-import * as util from './util';
+import {getNormalizedEventCoords} from './util';
 
 /**
  * @typedef {!{
@@ -313,7 +313,7 @@ class MDCRippleFoundation extends MDCFoundation {
 
     let startPoint;
     if (wasActivatedByPointer) {
-      startPoint = util.getNormalizedEventCoords(
+      startPoint = getNormalizedEventCoords(
         /** @type {!Event} */ (activationEvent),
         this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect()
       );

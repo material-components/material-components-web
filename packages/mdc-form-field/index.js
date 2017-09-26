@@ -17,7 +17,7 @@
 import MDCComponent from '@material/base/component';
 import MDCFormFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
-import * as selectionControl from '@material/selection-control';
+import {MDCSelectionControl} from '@material/selection-control';
 /* eslint-enable no-unused-vars */
 
 /**
@@ -28,12 +28,12 @@ class MDCFormField extends MDCComponent {
     return new MDCFormField(root);
   }
 
-  /** @param {?selectionControl.MDCSelectionControl} input */
+  /** @param {?MDCSelectionControl} input */
   set input(input) {
     this.input_ = input;
   }
 
-  /** @return {?selectionControl.MDCSelectionControl} */
+  /** @return {?MDCSelectionControl} */
   get input() {
     return this.input_;
   }
@@ -41,7 +41,7 @@ class MDCFormField extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {?selectionControl.MDCSelectionControl} */
+    /** @private {?MDCSelectionControl} */
     this.input_;
   }
 

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as animation from '@material/animation';
+import {getCorrectEventName} from '@material/animation';
 import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
 import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control';
 /* eslint-enable no-unused-vars */
 import MDCCheckboxFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
-import * as util from '@material/ripple/util';
+import {getMatchesProperty} from '@material/ripple/util';
 
 /**
  * @extends MDCComponent<!MDCCheckboxFoundation>
@@ -56,7 +56,7 @@ class MDCCheckbox extends MDCComponent {
    * @private
    */
   initRipple_() {
-    const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
+    const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
       isUnbounded: () => true,
       isSurfaceActive: () => this.nativeCb_[MATCHES](':active'),
@@ -85,9 +85,9 @@ class MDCCheckbox extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       registerAnimationEndHandler:
-        (handler) => this.root_.addEventListener(animation.getCorrectEventName(window, 'animationend'), handler),
+        (handler) => this.root_.addEventListener(getCorrectEventName(window, 'animationend'), handler),
       deregisterAnimationEndHandler:
-        (handler) => this.root_.removeEventListener(animation.getCorrectEventName(window, 'animationend'), handler),
+        (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'animationend'), handler),
       registerChangeHandler: (handler) => this.nativeCb_.addEventListener('change', handler),
       deregisterChangeHandler: (handler) => this.nativeCb_.removeEventListener('change', handler),
       getNativeControl: () => this.nativeCb_,

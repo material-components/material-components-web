@@ -120,7 +120,7 @@ function transform(srcFile, rootDir) {
       const callExpression = t.callExpression(callee, [t.stringLiteral(packageStr)]);
 
       let variableDeclaratorId;
-      if (path.node.specifiers.length > 1) {
+      if (path.node.specifiers.length > 1 || (src.substr(path.node.specifiers[0].start - 1, 1) === '{')) {
         const properties = [];
         path.node.specifiers.forEach((specifier) => {
           properties.push(t.objectProperty(specifier.local, specifier.local, false, true, []));

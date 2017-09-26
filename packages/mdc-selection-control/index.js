@@ -15,7 +15,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import * as ripple from '@material/ripple';
+import {MDCRipple} from '@material/ripple';
 /* eslint-enable no-unused-vars */
 
 /**
@@ -32,7 +32,7 @@ let MDCSelectionControlState;
  * @record
  */
 class MDCSelectionControl {
-  /** @return {?ripple.MDCRipple} */
+  /** @return {?MDCRipple} */
   get ripple() {}
 }
 

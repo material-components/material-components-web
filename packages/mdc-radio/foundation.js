@@ -16,7 +16,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import * as selectionControl from '@material/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control';
 import MDCRadioAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
@@ -40,7 +40,7 @@ class MDCRadioFoundation extends MDCFoundation {
     return /** @type {!MDCRadioAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      getNativeControl: () => /* !selectionControl.MDCSelectionControlState */ {},
+      getNativeControl: () => /* !MDCSelectionControlState */ {},
     });
   }
 
@@ -81,7 +81,7 @@ class MDCRadioFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!selectionControl.MDCSelectionControlState}
+   * @return {!MDCSelectionControlState}
    * @private
    */
   getNativeControl_() {
