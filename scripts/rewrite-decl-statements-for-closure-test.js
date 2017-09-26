@@ -19,8 +19,8 @@
  *  * Add goog.module to the top of the source code
  *  * Rewrite export {foo, bar} to exports = {foo, bar}
  *  * Rewrite export default Foo, to exports = Foo
- *  * Rewrite import Foo from ‘./foo’ to const Foo = goog.require(‘mdc.foo’)
- *  * Rewrite import {foo, bar} from ‘./util’ to const {foo, bar} = goog.require(‘mdc.util)
+ *  * Rewrite import Foo from './foo' to const Foo = goog.require('mdc.foo')
+ *  * Rewrite import {foo, bar} from './util' to const {foo, bar} = goog.require('mdc.util')
  *
  *  
  * This script rewrites import statements such that:
