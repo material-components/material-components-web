@@ -22,7 +22,7 @@ import {cssClasses, strings} from './constants';
 /**
  * @extends {MDCFoundation<!MDCIconToggleAdapter>}
  */
-export default class MDCIconToggleFoundation extends MDCFoundation {
+class MDCIconToggleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -228,3 +228,5 @@ IconToggleState.prototype.content;
  * @export {string|undefined}
  */
 IconToggleState.prototype.cssClass;
+
+export default MDCIconToggleFoundation;

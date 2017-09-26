@@ -15,11 +15,13 @@
  */
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   ROOT: 'mdc-form-field',
 };
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   LABEL_SELECTOR: '.mdc-form-field > label',
 };
+
+export {cssClasses, strings};
