@@ -576,6 +576,10 @@
         border-bottom-color: transparent;
       }
 
+      &:focus {
+        @include mdc-theme-prop(border-color, secondary);
+      }
+
       &:invalid:not(:focus) {
         border-color: $mdc-textfield-error-on-dark;
       }
@@ -603,9 +607,11 @@
   }
 
   &.mdc-textfield--disabled {
+    border-style: solid;
     background-color: $mdc-textarea-disabled-background-on-light;
 
     @include mdc-theme-dark(".mdc-textfield") {
+      border-color: $mdc-textfield-disabled-border-on-dark;
       background-color: $mdc-textarea-disabled-background-on-dark;
     }
 
