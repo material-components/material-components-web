@@ -608,6 +608,7 @@
 
   &.mdc-textfield--disabled {
     border-style: solid;
+    border-color: $mdc-textfield-disabled-border-on-light;
     background-color: $mdc-textarea-disabled-background-on-light;
 
     @include mdc-theme-dark(".mdc-textfield") {
