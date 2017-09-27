@@ -549,7 +549,7 @@
   border-radius: 4px;
 
   @include mdc-theme-dark(".mdc-textfield") {
-    border-color: $mdc-textfield-divider-on-dark;
+    border-color: $mdc-textarea-border-on-dark;
   }
 
   &::after {
@@ -625,7 +625,7 @@
 
     .mdc-textfield__input {
       @include mdc-theme-dark(".mdc-textfield") {
-        border-color: $mdc-textfield-disabled-border-on-dark;
+        border-color: transparent;
       }
     }
   }
@@ -690,8 +690,7 @@
     &:disabled {
       @include mdc-theme-prop(color, $mdc-textfield-dark-placeholder);
 
-      border-color: transparent;
-      background-color: $mdc-textarea-disabled-background-on-light;
+      border-bottom-style: dotted;
     }
 
     &:invalid:not(:focus) {
