@@ -457,6 +457,62 @@
           </div>
         </figure>
       </section>
+
+      <section class="demo-component-section">
+        <i id="ripple" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Ripple
+          <a href="#ripple" class="demo-component-section__permalink" title="Permalink to the theme demo for the ripple component">#</a>
+        </h2>
+
+        <figure class="demo-ripple__row">
+          <figcaption class="mdc-typography--subheading2">Bounded</figcaption>
+          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-surface" tabindex="0">
+            Default
+          </div>
+          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-surface demo-ripple-surface--primary" tabindex="0">
+            Primary Color
+          </div>
+          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-surface demo-ripple-surface--secondary" tabindex="0">
+            Secondary Color
+          </div>
+          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-surface demo-ripple-surface--custom" tabindex="0">
+            Custom Color
+          </div>
+        </figure>
+
+        <figure class="demo-ripple__row">
+          <figcaption class="mdc-typography--subheading2">Unbounded</figcaption>
+          <div class="demo-ripple-box">
+            Default
+            <div class="mdc-ripple-surface material-icons demo-ripple-surface" data-mdc-ripple-is-unbounded
+                 aria-label="Favorite" tabindex="0">
+              favorite
+            </div>
+          </div>
+          <div class="demo-ripple-box">
+            Primary Color
+            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--primary" data-mdc-ripple-is-unbounded
+                 aria-label="Favorite" tabindex="0">
+              favorite
+            </div>
+          </div>
+          <div class="demo-ripple-box">
+            Secondary Color
+            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--secondary" data-mdc-ripple-is-unbounded
+                 aria-label="Favorite" tabindex="0">
+              favorite
+            </div>
+          </div>
+          <div class="demo-ripple-box">
+            Custom Color
+            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--custom" data-mdc-ripple-is-unbounded
+                 aria-label="Favorite" tabindex="0">
+              favorite
+            </div>
+          </div>
+        </figure>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" charset="utf-8"></script>
@@ -466,124 +522,119 @@
           return [].slice.call(document.querySelectorAll(query));
         }
 
-        /*
-         * Component section heading permalinks
-         */
-
-        document.addEventListener('focusin', function(e) {
-          if (e.target.classList.contains('demo-component-section__permalink')) {
-            e.target.parentElement.classList.add('demo-component-section__heading--focus');
-          }
-        });
-        document.addEventListener('focusout', function(e) {
-          if (e.target.classList.contains('demo-component-section__permalink')) {
-            e.target.parentElement.classList.remove('demo-component-section__heading--focus');
-          }
-        });
-
-        /*
-         * Button
-         */
-
         // Because we load our CSS via webpack, we need to ensure that all of the correct styles
         // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
         // elements before our CSS is applied, leading to improper UX.
-        var buttonPollId = setInterval(function() {
+        var cssPollId = setInterval(function() {
           var pos = getComputedStyle(document.querySelector('.mdc-button')).position;
           if (pos === 'relative') {
-            attachButtonRipples();
-            clearInterval(buttonPollId);
+            init();
+            clearInterval(cssPollId);
           }
         }, 250);
 
-        function attachButtonRipples() {
-          var btns = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
-          for (var i = 0, btn; btn = btns[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(btn);
+        function init() {
+          /*
+           * Permalinks for component section headings
+           */
+
+          document.addEventListener('focusin', function(e) {
+            if (e.target.classList.contains('demo-component-section__permalink')) {
+              e.target.parentElement.classList.add('demo-component-section__heading--focus');
+            }
+          });
+          document.addEventListener('focusout', function(e) {
+            if (e.target.classList.contains('demo-component-section__permalink')) {
+              e.target.parentElement.classList.remove('demo-component-section__heading--focus');
+            }
+          });
+
+          /*
+           * Button
+           */
+
+          var buttons = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
+          for (var i = 0, button; button = buttons[i]; i++) {
+            mdc.ripple.MDCRipple.attachTo(button);
           }
-        }
 
-        /*
-         * FAB
-         */
+          /*
+           * FAB
+           */
 
-        // Because we load our CSS via webpack, we need to ensure that all of the correct styles
-        // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
-        // elements before our CSS is applied, leading to improper UX.
-        var fabPollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-fab.material-icons')).position;
-          if (pos === 'relative') {
-            attachFabRipples();
-            clearInterval(fabPollId);
-          }
-        }, 250);
-
-        function attachFabRipples() {
           var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
           for (var i = 0, fab; fab = fabs[i]; i++) {
             mdc.ripple.MDCRipple.attachTo(fab);
           }
-        }
 
-        /*
-         * Checkbox
-         */
+          /*
+           * Checkbox
+           */
 
-        document.querySelector('#indeterminate-checkbox').indeterminate = true;
+          document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
-        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
-          var checkboxes = getAll('.demo-checkbox-wrap .mdc-checkbox__native-control');
-          checkboxes.forEach(function(checkbox) {
-            checkbox.indeterminate = !checkbox.indeterminate;
+          document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
+            var checkboxes = getAll('.demo-checkbox-wrap .mdc-checkbox__native-control');
+            checkboxes.forEach(function(checkbox) {
+              checkbox.indeterminate = !checkbox.indeterminate;
+            });
           });
-        });
 
-        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
-          var formFields = getAll('.demo-checkbox-wrap.mdc-form-field');
-          formFields.forEach(function(formField) {
-            formField.classList.toggle('mdc-form-field--align-end');
+          document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
+            var formFields = getAll('.demo-checkbox-wrap.mdc-form-field');
+            formFields.forEach(function(formField) {
+              formField.classList.toggle('mdc-form-field--align-end');
+            });
           });
-        });
 
-        /*
-         * Drawer
-         */
+          /*
+           * Drawer
+           */
 
-        var drawerEl = document.querySelector('.mdc-temporary-drawer');
-        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+          var drawerEl = document.querySelector('.mdc-temporary-drawer');
+          var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        document.querySelector('.demo-menu-action').addEventListener('click', function() {
-          drawer.open = true;
-        });
+          document.querySelector('.demo-menu-action').addEventListener('click', function() {
+            drawer.open = true;
+          });
 
-        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
-          console.log('Received MDCTemporaryDrawer:open');
-        });
+          drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+            console.log('Received MDCTemporaryDrawer:open');
+          });
 
-        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
-          console.log('Received MDCTemporaryDrawer:close');
-        });
+          drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+            console.log('Received MDCTemporaryDrawer:close');
+          });
 
-        /*
-         * Icon Toggle
-         */
+          /*
+           * Icon Toggle
+           */
 
-        var iconToggleEls = getAll('.mdc-icon-toggle');
-        for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
-          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
-        }
-
-        /*
-         * Linear Progress
-         */
-
-        var progressEls = getAll('.mdc-linear-progress');
-        for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
-          var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
-          linearProgress.progress = 0.5;
-          if (progressEl.dataset.buffer) {
-            linearProgress.buffer = 0.75;
+          var iconToggleEls = getAll('.mdc-icon-toggle');
+          for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
+            mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
           }
+
+          /*
+           * Linear Progress
+           */
+
+          var progressEls = getAll('.mdc-linear-progress');
+          for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
+            var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
+            linearProgress.progress = 0.5;
+            if (progressEl.dataset.buffer) {
+              linearProgress.buffer = 0.75;
+            }
+          }
+
+          /*
+           * Ripple
+           */
+
+          getAll('.mdc-ripple-surface:not([data-demo-no-js])').forEach(function(surface) {
+            mdc.ripple.MDCRipple.attachTo(surface);
+          });
         }
       })();
     </script>

@@ -26,6 +26,7 @@
 @import "../../packages/mdc-linear-progress/mdc-linear-progress";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-drawer/temporary/mdc-temporary-drawer";
+@import "../../packages/mdc-ripple/mdc-ripple";
 @import "../../packages/mdc-theme/color_palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
@@ -277,4 +278,79 @@ $demo-custom-color: $material-color-red-500;
 
 .demo-linear-progress__row + .demo-linear-progress__row {
   margin-top: 64px;
+}
+
+//
+// Ripple demo
+//
+
+.demo-ripple__row {
+  margin: 32px 0;
+}
+
+.demo-ripple-box,
+.demo-ripple-surface {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-ripple-box {
+  vertical-align: top;
+  width: 200px;
+  height: 100px;
+  padding: 1rem;
+  margin: 16px 16px 0 0;
+}
+
+.demo-ripple-surface {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.demo-ripple-surface--primary {
+  &::before,
+  &::after {
+    @include mdc-theme-prop(background-color, primary);
+  }
+
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16));
+}
+
+.demo-ripple-surface--secondary {
+  &::before,
+  &::after {
+    @include mdc-theme-prop(background-color, secondary);
+  }
+
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .16));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .16));
+}
+
+.demo-ripple-surface--custom {
+  &::before,
+  &::after {
+    @include mdc-theme-prop(background-color, $demo-custom-color);
+  }
+
+  @include mdc-ripple-bg((pseudo: "::before", base-color: $demo-custom-color, opacity: .16));
+  @include mdc-ripple-fg((pseudo: "::after", base-color: $demo-custom-color, opacity: .16));
+}
+
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
 }
