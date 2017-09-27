@@ -479,7 +479,6 @@
 }
 
 .mdc-textfield--disabled {
-  border-bottom: 1px dotted $mdc-textfield-disabled-border-on-light;
   pointer-events: none;
 
   &::after {
@@ -489,6 +488,7 @@
   // Account for offset by border
   .mdc-textfield__input {
     padding-bottom: 7px;
+    border-bottom: 1px dotted $mdc-textfield-disabled-border-on-light;
   }
 
   @include mdc-theme-dark(".mdc-textfield", true) {
@@ -572,6 +572,10 @@
     }
 
     @include mdc-theme-dark(".mdc-textfield") {
+      &:hover {
+        border-bottom-color: transparent;
+      }
+
       &:invalid:not(:focus) {
         border-color: $mdc-textfield-error-on-dark;
       }
@@ -599,8 +603,11 @@
   }
 
   &.mdc-textfield--disabled {
-    border-bottom: none;
     background-color: $mdc-textarea-disabled-background-on-light;
+
+    @include mdc-theme-dark(".mdc-textfield") {
+      background-color: $mdc-textarea-disabled-background-on-dark;
+    }
 
     .mdc-textfield__label {
       background-color: $mdc-textarea-disabled-background-on-light;
@@ -611,8 +618,6 @@
     }
 
     .mdc-textfield__input {
-      border: 1px dotted $mdc-textfield-disabled-border-on-light;
-
       @include mdc-theme-dark(".mdc-textfield") {
         border-color: $mdc-textfield-disabled-border-on-dark;
       }
@@ -630,13 +635,6 @@
   @include mdc-theme-prop(border-color, primary);
 }
 
-.mdc-textfield--textarea.mdc-textfield--disabled {
-  background-color: $mdc-textarea-disabled-background-on-light;
-
-  @include mdc-theme-dark(".mdc-textfield") {
-    background-color: $mdc-textarea-disabled-background-on-dark;
-  }
-}
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-textfield--fullwidth {
