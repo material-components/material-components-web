@@ -612,6 +612,21 @@
           return [].slice.call(document.querySelectorAll(query));
         }
 
+        function matches(elem, selector) {
+          var nativeMatches = elem.matches || elem.webkitMatchesSelector || elem.mozMatchesSelector || elem.msMatchesSelector || elem.oMatchesSelector;
+          return nativeMatches.call(elem, selector);
+        }
+
+        function closest(elem, selector) {
+          while (elem) {
+            if (matches(elem, selector)) {
+              return elem;
+            }
+            elem = elem.parentElement;
+          }
+          return null;
+        }
+
         // Because we load our CSS via webpack, we need to ensure that all of the correct styles
         // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
         // elements before our CSS is applied, leading to improper UX.
@@ -638,6 +653,30 @@
               e.target.parentElement.classList.remove('demo-component-section__heading--focus');
             }
           });
+
+          function flashCurrentSection() {
+            var id = location.href.split('#')[1];
+            if (!id) {
+              return;
+            }
+            var anchor = document.getElementById(id);
+            if (!anchor) {
+              return;
+            }
+            var section = closest(anchor, '.demo-component-section');
+            if (!section) {
+              return;
+            }
+            section.classList.add('demo-component-section--flash');
+            setTimeout(function() {
+              section.classList.remove('demo-component-section--flash');
+            }, 200);
+          }
+
+          window.addEventListener('hashchange', function(e) {
+            flashCurrentSection();
+          });
+          flashCurrentSection();
 
           /*
            * Button

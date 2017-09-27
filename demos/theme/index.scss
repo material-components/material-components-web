@@ -87,8 +87,31 @@ $demo-custom-color: $material-color-red-500;
   padding: 24px;
 }
 
+.demo-component-section {
+  position: relative;
+}
+
 .demo-component-section + .demo-component-section {
   margin-top: $demo-section-margin;
+}
+
+.demo-component-section::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  right: -16px;
+  bottom: -16px;
+  z-index: -1;
+  background: $material-color-yellow-700;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.demo-component-section--flash::before {
+  opacity: 0.5;
+  transition: none;
 }
 
 .demo-component-section__heading .demo-component-section__permalink {
