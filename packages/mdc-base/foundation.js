@@ -17,7 +17,7 @@
 /**
  * @template A
  */
-export default class MDCFoundation {
+class MDCFoundation {
   /** @return enum{cssClasses} */
   static get cssClasses() {
     // Classes extending MDCFoundation should implement this method to return an object which exports every
@@ -63,3 +63,5 @@ export default class MDCFoundation {
     // Subclasses should override this method to perform de-initialization routines (de-registering events, etc.)
   }
 }
+
+export default MDCFoundation;

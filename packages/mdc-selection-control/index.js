@@ -26,12 +26,14 @@ import {MDCRipple} from '@material/ripple';
  *   value: ?string
  * }}
  */
-export let MDCSelectionControlState;
+let MDCSelectionControlState;
 
 /**
  * @record
  */
-export class MDCSelectionControl {
+class MDCSelectionControl {
   /** @return {?MDCRipple} */
   get ripple() {}
 }
+
+export {MDCSelectionControlState, MDCSelectionControl};

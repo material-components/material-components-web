@@ -16,17 +16,12 @@
 
 import MDCComponent from '@material/base/component';
 import MDCIconToggleFoundation from './foundation';
-/* eslint-disable no-unused-vars */
-import {MDCRippleAdapter} from '@material/ripple/adapter';
-/* eslint-enable no-unused-vars */
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
-
-export {MDCIconToggleFoundation};
 
 /**
  * @extends {MDCComponent<!MDCIconToggleFoundation>}
  */
-export class MDCIconToggle extends MDCComponent {
+class MDCIconToggle extends MDCComponent {
   static attachTo(root) {
     return new MDCIconToggle(root);
   }
@@ -121,3 +116,5 @@ export class MDCIconToggle extends MDCComponent {
     this.foundation_.refreshToggleData();
   }
 }
+
+export {MDCIconToggle, MDCIconToggleFoundation};

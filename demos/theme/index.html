@@ -86,21 +86,56 @@
         <fieldset class="demo-fieldset--button">
           <legend class="mdc-typography--subheading2">Enabled</legend>
 
-          <button class="mdc-button demo-button">Flat</button>
-          <button class="mdc-button mdc-button--raised demo-button">Raised</button>
-          <button class="mdc-button mdc-button--raised mdc-button--primary demo-button">Raised + Primary</button>
-          <button class="mdc-button mdc-button--accent demo-button">Flat + Accent</button>
-          <button class="mdc-button mdc-button--raised mdc-button--accent demo-button">Raised + Accent</button>
+          <div>
+            <h3 class="mdc-typography--body1">Default (primary theme color)</h3>
+            <button class="mdc-button">
+              Text
+            </button>
+            <button class="mdc-button mdc-button--raised">
+              Raised
+            </button>
+            <button class="mdc-button mdc-button--unelevated">
+              Unelevated
+            </button>
+            <button class="mdc-button mdc-button--stroked">
+              Stroked
+            </button>
+          </div>
+
+          <div>
+            <h3 class="mdc-typography--body1">Custom (secondary theme color)</h3>
+            <button class="mdc-button secondary-text-button">
+              Text
+            </button>
+            <button class="mdc-button mdc-button--raised secondary-filled-button">
+              Raised
+            </button>
+            <button class="mdc-button mdc-button--unelevated secondary-filled-button">
+              Unelevated
+            </button>
+            <button class="mdc-button mdc-button--stroked secondary-stroked-button">
+              Stroked
+            </button>
+          </div>
         </fieldset>
 
         <fieldset class="demo-fieldset--button" disabled>
           <legend class="mdc-typography--subheading2">Disabled</legend>
 
-          <button class="mdc-button demo-button">Flat</button>
-          <button class="mdc-button mdc-button--raised demo-button">Raised</button>
-          <button class="mdc-button mdc-button--raised mdc-button--primary demo-button">Raised + Primary</button>
-          <button class="mdc-button mdc-button--accent demo-button">Flat + Accent</button>
-          <button class="mdc-button mdc-button--raised mdc-button--accent demo-button">Raised + Accent</button>
+          <div>
+            <button class="mdc-button">
+              Text
+            </button>
+            <button class="mdc-button mdc-button--raised">
+              Raised
+            </button>
+            <button class="mdc-button mdc-button--unelevated">
+              Unelevated
+            </button>
+            <button class="mdc-button mdc-button--stroked">
+              Stroked
+            </button>
+          </div>
         </fieldset>
       </section>
 
@@ -266,56 +301,57 @@
       <section class="demo-component-section">
         <i id="fab" class="demo-anchor-with-toolbar-offset"></i>
         <h2 class="mdc-typography--headline demo-component-section__heading">
-          Floating Action Button
+          Floating Action Button (FAB)
           <a href="#fab" class="demo-component-section__permalink" title="Permalink to the theme demo for the floating action button component">#</a>
         </h2>
 
-        <fieldset class="demo-fieldset--fab">
-          <legend class="mdc-typography--subheading2">Normal FABs</legend>
-          <button class="mdc-fab material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-        </fieldset>
-
-        <fieldset class="demo-fieldset--fab" disabled>
-          <legend class="mdc-typography--subheading2">Disabled FABs</legend>
-          <button class="mdc-fab material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
-          <button class="mdc-fab mdc-fab--mini mdc-fab--plain material-icons" aria-label="Favorite">
-            <span class="mdc-fab__icon">
-              favorite_border
-            </span>
-          </button>
+        <fieldset>
+          <div class="demo-fab-row">
+            <figure class="demo-fab-tile">
+              <figcaption>
+                <div class="demo-fab-tile__title">Default</div>
+                <div class="demo-fab-tile__snippet mdc-typography--body1">Secondary theme color</div>
+              </figcaption>
+              <button class="mdc-fab material-icons demo-fab" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  favorite_border
+                </span>
+              </button>
+            </figure>
+            <figure class="demo-fab-tile">
+              <figcaption>
+                <div class="demo-fab-tile__title">Mini</div>
+                <div class="demo-fab-tile__snippet mdc-typography--body1"><code>mdc-fab--mini</code></div>
+              </figcaption>
+              <button class="mdc-fab mdc-fab--mini material-icons demo-fab" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  favorite_border
+                </span>
+              </button>
+            </figure>
+            <figure class="demo-fab-tile">
+              <figcaption>
+                <div class="demo-fab-tile__title">Custom Color with Accessible Ink</div>
+                <div class="demo-fab-tile__snippet mdc-typography--body1"><code>@include mdc-fab-accessible</code></div>
+              </figcaption>
+              <button class="mdc-fab material-icons demo-fab demo-fab--custom" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  favorite_border
+                </span>
+              </button>
+            </figure>
+            <figure class="demo-fab-tile">
+              <figcaption>
+                <div class="demo-fab-tile__title">Custom Color with Accessible Ink (Mini)</div>
+                <div class="demo-fab-tile__snippet mdc-typography--body1"></div>
+              </figcaption>
+              <button class="mdc-fab mdc-fab--mini material-icons demo-fab demo-fab--custom" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  favorite_border
+                </span>
+              </button>
+            </figure>
+          </div>
         </fieldset>
       </section>
 

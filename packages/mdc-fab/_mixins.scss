@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import "@material/animation/variables";
+@import "@material/animation/functions";
 @import "@material/elevation/mixins";
 @import "@material/elevation/variables";
 @import "@material/ripple/mixins";
@@ -73,6 +73,11 @@ $mdc-fab-icon-enter-duration_: 180ms;
   -moz-appearance: none;
   -webkit-appearance: none;
   overflow: hidden;
+
+  &:hover,
+  &:focus {
+    @include mdc-elevation(8);
+  }
 
   &:active {
     @include mdc-elevation(12);

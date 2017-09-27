@@ -19,13 +19,10 @@ import MDCRippleAdapter from './adapter';
 import MDCRippleFoundation from './foundation';
 import * as util from './util';
 
-export {MDCRippleFoundation};
-export {util};
-
 /**
  * @extends MDCComponent<!MDCRippleFoundation>
  */
-export class MDCRipple extends MDCComponent {
+class MDCRipple extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
@@ -136,3 +133,5 @@ RippleCapableSurface.prototype.unbounded;
  * @type {boolean|undefined}
  */
 RippleCapableSurface.prototype.disabled;
+
+export {MDCRipple, MDCRippleFoundation, util};

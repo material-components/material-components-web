@@ -74,7 +74,7 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
 /**
  * @extends {MDCFoundation<!MDCRippleAdapter>}
  */
-export default class MDCRippleFoundation extends MDCFoundation {
+class MDCRippleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -506,3 +506,5 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
   }
 }
+
+export default MDCRippleFoundation;
