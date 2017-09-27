@@ -26,7 +26,7 @@
   @include mdc-button-ink-color(text-primary-on-light);
   @include mdc-button-ripple((theme-style: text-primary-on-light, opacity: $mdc-unfilled-button-ripple-opacity));
 
-  @include mdc-theme-dark(".mdc-button") {
+  @include mdc-theme-dark(".mdc-button", true /* compound */) {
     @include mdc-button-ink-color(text-primary-on-dark);
     @include mdc-button-ripple((theme-style: text-primary-on-dark, opacity: $mdc-unfilled-button-ripple-opacity));
   }
@@ -37,7 +37,7 @@
   @include mdc-button--filled_;
   @include mdc-button-filled-accessible(black);
 
-  @include mdc-theme-dark(".mdc-button") {
+  @include mdc-theme-dark(".mdc-button", true /* compound */) {
     @include mdc-button-filled-accessible(white);
   }
 }
@@ -51,7 +51,7 @@
   @include mdc-button-stroke-width(2px);
   @include mdc-button-stroke-color(text-primary-on-light);
 
-  @include mdc-theme-dark(".mdc-button") {
+  @include mdc-theme-dark(".mdc-button", true /* compound */) {
     @include mdc-button-stroke-color(text-primary-on-dark);
   }
 }
