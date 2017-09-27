@@ -684,8 +684,8 @@
     &:disabled {
       @include mdc-theme-prop(color, $mdc-textfield-dark-placeholder);
 
-      border-style: dotted;
-      border-color: $mdc-textfield-disabled-border-on-light;
+      border-color: transparent;
+      background-color: $mdc-textarea-disabled-background-on-light;
     }
 
     &:invalid:not(:focus) {
@@ -703,6 +703,7 @@
         @include mdc-theme-prop(color, $mdc-textfield-dark-placeholder);
 
         border-color: $mdc-textfield-disabled-border-on-dark;
+        background-color: $mdc-textarea-disabled-background-on-dark;
       }
 
       &:invalid:not(:focus) {
