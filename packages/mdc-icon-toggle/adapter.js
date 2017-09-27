@@ -34,7 +34,8 @@
  *
  * @record
  */
-export default class MDCIconToggleAdapter {
+
+class MDCIconToggleAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -86,4 +87,6 @@ export default class MDCIconToggleAdapter {
  *   isOn: boolean,
  * }}
  */
-export let IconToggleEvent;
+let IconToggleEvent;
+
+export {MDCIconToggleAdapter, IconToggleEvent};

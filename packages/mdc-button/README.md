@@ -52,6 +52,24 @@ npm install --save @material/button
 `mdc-button` to `<a class="mdc-button">Link Button</a>` in cases where it is
 semantically correct.
 
+### Adding Icon
+
+Users can nest `mdc-button__icon` inside the button element to add an icon. The icon in button
+is set to 18px to meet legibility requirements.
+
+We recommend you load [Material Icons]((https://design.google.com/icons/)) from Google Fonts
+
+```html
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<button class="mdc-button">
+  <i class="material-icons mdc-button__icon">favorite</i>
+  Button
+</button>
+```
+
 ### CSS Classes
 
 
@@ -116,5 +134,5 @@ Mixin | Description
 `mdc-button-ink-color` | Sets the ink color to the given color
 `mdc-button-stroke-color` | Sets the stroke color to the given color
 `mdc-button-ripple` | Sets the ripple to the given [ripple configuration](https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md)
-`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 4px)
+`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px)
 `mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px)

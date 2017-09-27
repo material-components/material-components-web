@@ -1,5 +1,4 @@
 export class Welcome {
-  secondaryButtons = false;
   raisedButtons = false;
   isIndeterminate = false;
   changeEventCount: number = 0;

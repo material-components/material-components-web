@@ -63,7 +63,7 @@ the assets needed for MDC-Web. Put the following within `index.html` in the `gre
   </head>
   <body>
     <h1 class="mdc-typography--display1">Hello, World!</h1>
-    <button type="button" class="mdc-button mdc-button--raised mdc-button--primary">
+    <button type="button" class="mdc-button mdc-button--raised">
       Press Me
     </button>
   </body>
@@ -131,7 +131,6 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
     <button type="submit"
             class="mdc-button
                    mdc-button--raised
-                   mdc-button--primary
                    mdc-ripple-surface"
             data-mdc-auto-init="MDCRipple">
       Print Greeting
@@ -244,19 +243,32 @@ fields are now a nice, dark shade of blue.
 ### Finishing touches: adding custom styles
 
 Every site is different, and we cannot hope to build a user interface library that
-anticipates every design choice a user may want.  MDC-Web uses plain old CSS to make it trivial to
-customize and modify its styles to your liking. Let's change the ripple color to be a
-more opaque shade of white, as well as add some auxiliary styles to bump up the vertical spacing
+anticipates every design choice a user may want.
+
+#### SASS mixins
+
+MDC-Web provides SASS mixins to some components to help users do customization. Let's
+change the background color of the raised button to be a bright orange color (#FF9800)
+using one of those mixins.
+
+Add the following to your `scss` file if you are using SASS:
+
+```scss
+@import "@material/mdc-button/mixins";
+.mdc-button.mdc-button--raised {
+  @include mdc-button-filled-accessible(#FF9800);
+}
+```
+
+#### CSS
+
+MDC-Web also uses plain old CSS to make it trivial to customize and modify its
+styles to your liking. Let's add some auxiliary styles to bump up the vertical spacing
 between the form fields and the submit button.
 
 Add the following to the `<style>` tag within `<head>`:
 
 ```css
-.mdc-ripple-surface.mdc-ripple-upgraded.mdc-button--primary::before,
-.mdc-ripple-surface.mdc-ripple-upgraded.mdc-button--primary::after {
-  background-color: rgba(255, 255, 255, .2);
-}
-
 #greeting-form > button {
   margin-top: 8px;
 }
