@@ -550,6 +550,32 @@
           </div>
         </div>
       </section>
+
+      <section class="demo-component-section">
+        <i id="slider" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Slider
+          <a href="#slider" class="demo-component-section__permalink" title="Permalink to the theme demo for the slider component">#</a>
+        </h2>
+
+        <div class="mdc-slider mdc-slider--discrete mdc-slider--display-markers" tabindex="0" role="slider"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="30"
+             aria-labelledby="example-ds-marker-label">
+          <div class="mdc-slider__track-container">
+            <div class="mdc-slider__track"></div>
+            <div class="mdc-slider__track-marker-container"></div>
+          </div>
+          <div class="mdc-slider__thumb-container">
+            <div class="mdc-slider__pin">
+              <span class="mdc-slider__pin-value-marker">30</span>
+            </div>
+            <svg class="mdc-slider__thumb" width="21" height="21">
+              <circle cx="10.5" cy="10.5" r="7.875"></circle>
+            </svg>
+            <div class="mdc-slider__focus-ring"></div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" charset="utf-8"></script>
@@ -679,6 +705,14 @@
 
           getAll('.mdc-select:not(select)').forEach(function(select) {
             mdc.select.MDCSelect.attachTo(select);
+          });
+
+          /*
+           * Slider
+           */
+
+          getAll('.mdc-slider').forEach(function(slider) {
+            mdc.slider.MDCSlider.attachTo(slider);
           });
         }
       })();
