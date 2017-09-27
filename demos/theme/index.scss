@@ -31,6 +31,7 @@
 @import "../../packages/mdc-select/mdc-select";
 @import "../../packages/mdc-slider/mdc-slider";
 @import "../../packages/mdc-switch/mdc-switch";
+@import "../../packages/mdc-tabs/mdc-tabs";
 @import "../../packages/mdc-theme/color_palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
@@ -50,6 +51,11 @@ $demo-custom-color: $material-color-red-500;
   @include mdc-theme-prop(color, text-primary-on-dark);
 
   background-color: $material-color-grey-800;
+}
+
+figure {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 //

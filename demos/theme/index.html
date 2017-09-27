@@ -603,6 +603,72 @@
           <label for="basic-switch" class="mdc-switch-label">disabled</label>
         </fieldset>
       </section>
+
+      <section class="demo-component-section">
+        <i id="tabs" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Tabs
+          <a href="#tabs" class="demo-component-section__permalink" title="Permalink to the theme demo for the tabs component">#</a>
+        </h2>
+
+        <figure>
+          <figcaption>Default</figcaption>
+
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </figure>
+        <figure>
+          <figcaption>Primary Color</figcaption>
+
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-primary">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </figure>
+        <figure>
+          <figcaption>Secondary Color</figcaption>
+
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-accent">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </figure>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" charset="utf-8"></script>
@@ -779,6 +845,14 @@
 
           getAll('.mdc-slider').forEach(function(slider) {
             mdc.slider.MDCSlider.attachTo(slider);
+          });
+
+          /*
+           * Tabs
+           */
+
+          getAll('.mdc-tab-bar').forEach(function(tabBar) {
+            mdc.tabs.MDCTabBar.attachTo(tabBar);
           });
         }
       })();
