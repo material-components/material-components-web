@@ -560,7 +560,6 @@
   .mdc-textfield__input {
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
-    transition: mdc-textfield-transition(border-color);
     border: 1px solid transparent;
     border-radius: 2px;
 
@@ -583,8 +582,7 @@
     @include mdc-rtl-reflexive-position(left, 1px);
 
     top: $label-offset-y;
-    bottom: initial;
-    width: calc(100% - 38px);
+    bottom: auto;
     padding: 8px 16px;
     background-color: $mdc-textarea-light-background;
 
@@ -602,6 +600,15 @@
 
   &.mdc-textfield--disabled {
     border-bottom: none;
+    background-color: $mdc-textarea-disabled-background-on-light;
+
+    .mdc-textfield__label {
+      background-color: $mdc-textarea-disabled-background-on-light;
+
+      @include mdc-theme-dark(".mdc-textfield") {
+        background-color: $mdc-textarea-disabled-background-on-dark;
+      }
+    }
 
     .mdc-textfield__input {
       border: 1px dotted $mdc-textfield-disabled-border-on-light;
@@ -624,7 +631,11 @@
 }
 
 .mdc-textfield--textarea.mdc-textfield--disabled {
-  background-color: rgba(black, .025);
+  background-color: $mdc-textarea-disabled-background-on-light;
+
+  @include mdc-theme-dark(".mdc-textfield") {
+    background-color: $mdc-textarea-disabled-background-on-dark;
+  }
 }
 // stylelint-enable plugin/selector-bem-pattern
 
