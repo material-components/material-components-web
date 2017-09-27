@@ -545,7 +545,7 @@
   display: flex;
   height: initial;
   transition: none;
-  border: 1px solid $mdc-textfield-divider-on-light;
+  border: 1px solid $mdc-textarea-border-on-light;
   border-radius: 4px;
 
   @include mdc-theme-dark(".mdc-textfield") {
@@ -620,12 +620,6 @@
 
       @include mdc-theme-dark(".mdc-textfield") {
         background-color: $mdc-textarea-disabled-background-on-dark;
-      }
-    }
-
-    .mdc-textfield__input {
-      @include mdc-theme-dark(".mdc-textfield") {
-        border-color: transparent;
       }
     }
   }
