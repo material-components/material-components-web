@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-@import "./keyframes";
+@import "./mixins";
 @import "./variables";
 @import "@material/animation/variables";
 @import "@material/ripple/mixins";
@@ -27,6 +27,9 @@
 @function mdc-textfield-transition($property) {
   @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
 }
+
+@include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
+@include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
 
 // postcss-bem-linter: define textfield
 .mdc-textfield {
@@ -417,7 +420,7 @@
 
 .mdc-textfield__label--float-above {
   &.mdc-textfield__label--shake {
-    animation: invalid-shake-float-above 250ms 1;
+    animation: invalid-shake-float-above-standard 250ms 1;
   }
 }
 // stylelint-enable plugin/selector-bem-pattern
@@ -509,10 +512,6 @@
 
   @include mdc-theme-dark(".mdc-textfield") {
     border-color: $mdc-textarea-border-on-dark;
-  }
-
-  &::after {
-    content: initial;
   }
 
   // stylelint-disable plugin/selector-bem-pattern
