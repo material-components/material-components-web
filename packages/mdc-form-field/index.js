@@ -20,12 +20,10 @@ import MDCFormFieldFoundation from './foundation';
 import {MDCSelectionControl} from '@material/selection-control';
 /* eslint-enable no-unused-vars */
 
-export {MDCFormFieldFoundation};
-
 /**
  * @extends MDCComponent<!MDCFormFieldFoundation>
  */
-export class MDCFormField extends MDCComponent {
+class MDCFormField extends MDCComponent {
   static attachTo(root) {
     return new MDCFormField(root);
   }
@@ -74,3 +72,5 @@ export class MDCFormField extends MDCComponent {
     });
   }
 }
+
+export {MDCFormField, MDCFormFieldFoundation};

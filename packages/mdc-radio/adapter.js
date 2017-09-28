@@ -34,7 +34,7 @@ import {MDCSelectionControlState} from '@material/selection-control';
  *
  * @record
  */
-export default class MDCRadioAdapter {
+class MDCRadioAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -44,3 +44,5 @@ export default class MDCRadioAdapter {
   /** @return {!MDCSelectionControlState} */
   getNativeControl() {}
 }
+
+export default MDCRadioAdapter;

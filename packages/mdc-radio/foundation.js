@@ -24,7 +24,7 @@ import {cssClasses, strings} from './constants';
 /**
  * @extends {MDCFoundation<!MDCRadioAdapter>}
  */
-export default class MDCRadioFoundation extends MDCFoundation {
+class MDCRadioFoundation extends MDCFoundation {
   /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -92,3 +92,5 @@ export default class MDCRadioFoundation extends MDCFoundation {
     };
   }
 }
+
+export default MDCRadioFoundation;

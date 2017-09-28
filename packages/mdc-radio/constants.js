@@ -15,12 +15,14 @@
  */
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control',
 };
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   ROOT: 'mdc-radio',
   DISABLED: 'mdc-radio--disabled',
 };
+
+export {strings, cssClasses};

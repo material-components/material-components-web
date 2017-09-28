@@ -35,7 +35,7 @@ import {MDCSelectionControlState} from '@material/selection-control';
  *
  * @record
  */
-export default class MDCCheckboxAdapter {
+class MDCCheckboxAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -62,3 +62,5 @@ export default class MDCCheckboxAdapter {
   /** @return {boolean} */
   isAttachedToDOM() {}
 }
+
+export default MDCCheckboxAdapter;
