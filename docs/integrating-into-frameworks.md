@@ -58,7 +58,7 @@ a more robust approach is required. We provide foundations and adapters to accom
 case.
 
 > If you are interested in wrapping our components using foundations/adapters, you should first read
-> through our [architecture overview](./architecture.md) in order to familiarize yourself with the
+> through our [architecture overview](code/architecture.md) in order to familiarize yourself with the
 > general concepts behind them.
 
 Every component comes with a complementary foundation class, which is usually called
