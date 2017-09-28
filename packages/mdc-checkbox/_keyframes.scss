@@ -18,6 +18,8 @@
 @import "@material/theme/mixins";
 @import "./variables";
 
+// TODO(acdvorak): Make colors parameterizable
+
 @keyframes mdc-checkbox-fade-in-background {
   0% {
     border-color: $mdc-checkbox-border-color;
@@ -25,16 +27,16 @@
   }
 
   50% {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
+    @include mdc-theme-prop(border-color, secondary);
+    @include mdc-theme-prop(background-color, secondary);
   }
 }
 
 @keyframes mdc-checkbox-fade-out-background {
   0%,
   80% {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
+    @include mdc-theme-prop(border-color, secondary);
+    @include mdc-theme-prop(background-color, secondary);
   }
 
   100% {
@@ -50,16 +52,16 @@
   }
 
   50% {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
+    @include mdc-theme-prop(border-color, secondary);
+    @include mdc-theme-prop(background-color, secondary);
   }
 }
 
 @keyframes mdc-checkbox-fade-out-background-dark {
   0%,
   80% {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
+    @include mdc-theme-prop(border-color, secondary);
+    @include mdc-theme-prop(background-color, secondary);
   }
 
   100% {

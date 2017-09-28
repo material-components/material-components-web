@@ -44,6 +44,7 @@
 }
 
 @mixin mdc-checkbox-ripple($ripple-config) {
+  // TODO(acdvorak): Is this selector necessary? If so, does it belong here, or in mdc-checkbox.scss?
   &:not(.mdc-checkbox--disabled) {
     @include mdc-ripple-base;
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
@@ -68,6 +69,7 @@
   cursor: pointer;
   vertical-align: bottom;
 
+  // TODO(acdvorak): Should pseudo-element selectors go in mdc-checkbox.scss?
   &::before,
   &::after {
     top: 0;
@@ -108,23 +110,42 @@
 
   // The frame's ::before element is used as a focus indicator for the checkbox
   &::before {
-    @include mdc-checkbox-cover-element_;
-    @include mdc-theme-prop(background, primary);
 
-    width: 100%;
-    height: 100%;
-    transform: scale(0, 0);
-    transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
-    content: "";
-    will-change: opacity, transform;
-
-    .mdc-ripple-upgraded--unbounded & {
-      content: none;
-    }
   }
+}
+
+@mixin mdc-checkbox__background--checked_ {
+  // TODO(acdvorak): Refactoring into mixins breaks the clear relationship between transitions properties and color properties.
+  // E.g., "Why are we transitioning border-color and background-color here?" Answer: Because that's what the color mixins use.
+  transition:
+    mdc-checkbox-transition-enter(border-color),
+    mdc-checkbox-transition-enter(background-color);
+}
+
+@mixin mdc-checkbox__background-focus-indicator_ {
+  @include mdc-checkbox-cover-element_;
+
+  width: 100%;
+  height: 100%;
+  transform: scale(0, 0);
+  transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  content: "";
+  will-change: opacity, transform;
+}
+
+@mixin mdc-checkbox__background-focus-indicator--focused_ {
+  transform: scale(2.75, 2.75);
+  transition:
+    mdc-checkbox-transition-enter(opacity, 0ms, 80ms),
+    mdc-checkbox-transition-enter(transform, 0ms, 80ms);
+  opacity: .26;
+}
+
+@mixin mdc-checkbox__background-focus-indicator--ripple-upgraded-unbounded_ {
+  content: none;
 }
 
 @mixin mdc-checkbox__native-control_ {
@@ -145,7 +166,13 @@
   width: 100%;
   transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
   opacity: 0;
+}
 
+@mixin mdc-checkbox__checkmark--checked_ {
+  transition:
+    mdc-checkbox-transition-enter(opacity, 0ms, $mdc-checkbox-transition-duration * 2),
+    mdc-checkbox-transition-enter(transform, 0ms, $mdc-checkbox-transition-duration * 2);
+  opacity: 1;
 }
 
 @mixin mdc-checkbox__checkmark__path_ {
@@ -160,10 +187,18 @@
   stroke-dasharray: $_mdc-checkbox-mark-path-length;
 }
 
+@mixin mdc-checkbox__checkmark__path--checked_ {
+  stroke-dashoffset: 0;
+}
+
 @mixin mdc-checkbox__mixedmark_ {
   width: 100%;
   height: floor($mdc-checkbox-mark-stroke-size);
   transform: scaleX(0) rotate(0deg);
   transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
   opacity: 0;
+}
+
+@mixin mdc-checkbox__mixedmark--checked_ {
+  transform: scaleX(1) rotate(-45deg);
 }

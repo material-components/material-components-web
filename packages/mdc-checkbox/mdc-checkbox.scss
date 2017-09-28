@@ -31,6 +31,26 @@
   @include mdc-theme-dark(".mdc-checkbox") {
     @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
   }
+
+  .mdc-checkbox__native-control:checked ~ & {
+    @include mdc-checkbox__background--checked_;
+    @include mdc-checkbox-stroke-color(secondary);
+    @include mdc-checkbox-container-color(secondary);
+  }
+
+  // The frame's ::before element is used as a focus indicator for the checkbox
+  &::before {
+    @include mdc-checkbox__background-focus-indicator_;
+    @include mdc-checkbox-container-color(secondary);
+
+    .mdc-checkbox__native-control:focus ~ & {
+      @include mdc-checkbox__background-focus-indicator--focused_;
+    }
+
+    .mdc-ripple-upgraded--unbounded & {
+      @include mdc-checkbox__background-focus-indicator--ripple-upgraded-unbounded_;
+    }
+  }
 }
 
 .mdc-checkbox__native-control {
@@ -41,58 +61,34 @@
   @include mdc-checkbox__checkmark_;
   // TODO(acdvorak): Is this needed? Removing it doesn't appear to affect anything.
   // @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
+
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__checkmark--checked_;
+  }
 }
 
 .mdc-checkbox__checkmark__path {
   @include mdc-checkbox__checkmark__path_;
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
+
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__checkmark__path--checked_;
+  }
 }
 
 .mdc-checkbox__mixedmark {
   @include mdc-checkbox__mixedmark_;
   @include mdc-checkbox-container-color($mdc-checkbox-mark-color);
-}
 
-.mdc-checkbox__native-control:focus {
-  ~ .mdc-checkbox__background::before {
-    transform: scale(2.75, 2.75);
-    transition:
-      mdc-checkbox-transition-enter(opacity, 0ms, 80ms),
-      mdc-checkbox-transition-enter(transform, 0ms, 80ms);
-    opacity: .26;
-  }
-}
-
-.mdc-checkbox__native-control:checked {
-  ~ .mdc-checkbox__background {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
-
-    transition:
-      mdc-checkbox-transition-enter(border-color),
-      mdc-checkbox-transition-enter(background-color);
-
-    .mdc-checkbox__checkmark {
-      transition:
-        mdc-checkbox-transition-enter(opacity, 0ms, $mdc-checkbox-transition-duration * 2),
-        mdc-checkbox-transition-enter(transform, 0ms, $mdc-checkbox-transition-duration * 2);
-      opacity: 1;
-
-      &__path {
-        stroke-dashoffset: 0;
-      }
-    }
-
-    .mdc-checkbox__mixedmark {
-      transform: scaleX(1) rotate(-45deg);
-    }
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__mixedmark--checked_;
   }
 }
 
 .mdc-checkbox__native-control:indeterminate {
   ~ .mdc-checkbox__background {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
+    @include mdc-theme-prop(border-color, secondary);
+    @include mdc-theme-prop(background-color, secondary);
 
     .mdc-checkbox__checkmark {
       transform: rotate(45deg);
