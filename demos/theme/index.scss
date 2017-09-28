@@ -32,6 +32,7 @@
 @import "../../packages/mdc-slider/mdc-slider";
 @import "../../packages/mdc-switch/mdc-switch";
 @import "../../packages/mdc-tabs/mdc-tabs";
+@import "../../packages/mdc-textfield/mdc-textfield";
 @import "../../packages/mdc-theme/color_palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
@@ -393,6 +394,15 @@ figure {
 //
 
 .demo-switch-wrap {
+  display: inline-block;
+  margin: 16px 16px 0 0;
+}
+
+//
+// Text Field demo
+//
+
+.demo-textfield-wrap {
   display: inline-block;
   margin: 16px 16px 0 0;
 }

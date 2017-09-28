@@ -669,6 +669,50 @@
           </nav>
         </figure>
       </section>
+
+      <section class="demo-component-section">
+        <i id="textfield" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Text Field
+          <a href="#textfield" class="demo-component-section__permalink" title="Permalink to the theme demo for the text field component">#</a>
+        </h2>
+
+        <figure class="demo-textfield-wrap">
+          <div class="mdc-textfield">
+            <input type="text" class="mdc-textfield__input" id="demo-textfield-default"
+                   name="email" aria-controls="demo-textfield-default-helptext"
+                   data-demo-no-js autocomplete="email">
+            <label for="demo-textfield-default" class="mdc-textfield__label">Default</label>
+          </div>
+          <p class="mdc-textfield-helptext" id="demo-textfield-default-helptext"
+             aria-hidden="true">
+            Help text
+          </p>
+        </figure>
+        <figure class="demo-textfield-wrap">
+          <div class="mdc-textfield">
+            <input type="text" class="mdc-textfield__input" id="demo-textfield-required" required
+                   name="email" aria-controls="demo-textfield-required-helptext"
+                   data-demo-no-js autocomplete="email">
+            <label for="demo-textfield-required" class="mdc-textfield__label">Required</label>
+          </div>
+          <p class="mdc-textfield-helptext mdc-textfield-helptext--validation-msg" id="demo-textfield-required-helptext">
+            Must provide a name
+          </p>
+        </figure>
+        <figure class="demo-textfield-wrap">
+          <div class="mdc-textfield mdc-textfield--box">
+            <input type="text" class="mdc-textfield__input" id="demo-textfield-box"
+                   aria-controls="name-validation-message">
+            <label for="demo-textfield-box" class="mdc-textfield__label">With <code>--box</code> modifier</label>
+            <div class="mdc-textfield__bottom-line"></div>
+          </div>
+          <p class="mdc-textfield-helptext" id="demo-textfield-box-helptext"
+             aria-hidden="true">
+            Help text
+          </p>
+        </figure>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" charset="utf-8"></script>
@@ -853,6 +897,14 @@
 
           getAll('.mdc-tab-bar').forEach(function(tabBar) {
             mdc.tabs.MDCTabBar.attachTo(tabBar);
+          });
+
+          /*
+           * Textfield
+           */
+
+          getAll('.mdc-textfield:not([data-demo-no-js])').forEach(function(textField) {
+            mdc.textfield.MDCTextfield.attachTo(textField);
           });
         }
       })();
