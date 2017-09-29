@@ -18,7 +18,6 @@
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "./functions";
-@import "./keyframes";
 @import "./variables";
 
 //
@@ -75,7 +74,7 @@
   }
 }
 
-@mixin mdc-checkbox-cover-element_ {
+@mixin mdc-checkbox-cover-parent_ {
   position: absolute;
   top: 0;
   right: 0;
@@ -86,7 +85,7 @@
 // Background
 
 @mixin mdc-checkbox__background_ {
-  @include mdc-checkbox-cover-element_;
+  @include mdc-checkbox-cover-parent_;
   @include mdc-rtl-reflexive-position(
     left, ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2, ".mdc-checkbox");
 
@@ -107,15 +106,7 @@
   will-change: background-color, border-color;
 }
 
-@mixin mdc-checkbox__background--checked_ {
-  // TODO(acdvorak): Refactoring into mixins breaks the clear relationship between transitions properties and color properties.
-  // E.g., "Why are we transitioning border-color and background-color here?" Answer: Because that's what the color mixins use.
-  transition:
-    mdc-checkbox-transition-enter(border-color),
-    mdc-checkbox-transition-enter(background-color);
-}
-
-@mixin mdc-checkbox__background--indeterminate_ {
+@mixin mdc-checkbox__background--filled_ {
   // TODO(acdvorak): Refactoring into mixins breaks the clear relationship between transitions properties and color properties.
   // E.g., "Why are we transitioning border-color and background-color here?" Answer: Because that's what the color mixins use.
   transition:
@@ -126,7 +117,7 @@
 // Background focus indicator
 
 @mixin mdc-checkbox__focus-indicator_ {
-  @include mdc-checkbox-cover-element_;
+  @include mdc-checkbox-cover-parent_;
 
   width: 100%;
   height: 100%;
@@ -168,7 +159,7 @@
 // Check mark
 
 @mixin mdc-checkbox__checkmark_ {
-  @include mdc-checkbox-cover-element_;
+  @include mdc-checkbox-cover-parent_;
 
   width: 100%;
   transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
@@ -204,11 +195,7 @@
   stroke-dasharray: $mdc-checkbox-mark-path-length_;
 }
 
-@mixin mdc-checkbox__checkmark__path--checked_ {
-  stroke-dashoffset: 0;
-}
-
-@mixin mdc-checkbox__checkmark__path--indeterminate_ {
+@mixin mdc-checkbox__checkmark__path--filled_ {
   stroke-dashoffset: 0;
 }
 

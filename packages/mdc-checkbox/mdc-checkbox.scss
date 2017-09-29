@@ -16,6 +16,7 @@
 
 @import "@material/theme/mixins";
 @import "./functions";
+@import "./keyframes";
 @import "./mixins";
 @import "./variables";
 
@@ -131,14 +132,9 @@
     @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
   }
 
-  .mdc-checkbox__native-control:checked ~ & {
-    @include mdc-checkbox__background--checked_;
-    @include mdc-checkbox-stroke-color(secondary);
-    @include mdc-checkbox-container-color(secondary);
-  }
-
+  .mdc-checkbox__native-control:checked ~ &,
   .mdc-checkbox__native-control:indeterminate ~ & {
-    @include mdc-checkbox__background--indeterminate_;
+    @include mdc-checkbox__background--filled_;
     @include mdc-checkbox-stroke-color(secondary);
     @include mdc-checkbox-container-color(secondary);
   }
@@ -200,17 +196,15 @@
   }
 }
 
+// TODO(acdvorak): Rename to .mdc-checkbox__checkmark-path
 .mdc-checkbox__checkmark__path {
   @include mdc-checkbox__checkmark__path_;
   // TODO(acdvorak): Accessibility
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
 
-  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__checkmark__path--checked_;
-  }
-
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background &,
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__checkmark__path--indeterminate_;
+    @include mdc-checkbox__checkmark__path--filled_;
   }
 }
 
