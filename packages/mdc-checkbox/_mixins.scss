@@ -49,6 +49,7 @@
   }
 }
 
+// TODO(acdvorak): Figure out why a pre-checked checkbox janks when `indeterminate` is toggled for the first time.
 @mixin mdc-checkbox-color($color) {
   $ripple-config: (base-color: $color);
 
