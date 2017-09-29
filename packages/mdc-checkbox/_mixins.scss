@@ -18,6 +18,7 @@
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "./functions";
+@import "./keyframes";
 @import "./variables";
 
 //
@@ -117,6 +118,11 @@
   vertical-align: bottom;
 }
 
+@mixin mdc-checkbox--disabled_ {
+  cursor: default;
+  pointer-events: none;
+}
+
 @mixin mdc-checkbox-ripple-size_ {
   top: 0;
   left: 0;
@@ -124,7 +130,7 @@
   height: 100%;
 }
 
-@mixin mdc-checkbox-cover-parent_ {
+@mixin mdc-checkbox__child--cover-parent_ {
   position: absolute;
   top: 0;
   right: 0;
@@ -132,10 +138,104 @@
   left: 0;
 }
 
+@mixin mdc-checkbox__child--upgraded_ {
+  // Due to the myriad of selector combos used to properly style a CSS-only checkbox, all of
+  // which have varying selector precedence and make use of transitions, it is cleaner and more
+  // efficient here to simply use !important, since the mdc-checkbox--anim-* classes will take
+  // over from here.
+  transition: none !important;
+}
+
+// Animation
+
+@mixin mdc-checkbox--anim_ {
+  $mdc-checkbox-indeterminate-change-duration_: 500ms;
+  $uid: mdc-checkbox-keyframes-color-uid();
+
+  @include mdc-checkbox-keyframes-color(secondary, $uid);
+
+  &-unchecked-checked,
+  &-unchecked-indeterminate {
+    .mdc-checkbox__background {
+      animation: mdc-checkbox-fade-in-background-#{$uid} $mdc-checkbox-transition-duration * 2 linear;
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        animation-name: mdc-checkbox-fade-in-background-dark-#{$uid};
+      }
+    }
+  }
+
+  &-checked-unchecked,
+  &-indeterminate-unchecked {
+    .mdc-checkbox__background {
+      animation: mdc-checkbox-fade-out-background-#{$uid} $mdc-checkbox-transition-duration * 2 linear;
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        animation-name: mdc-checkbox-fade-out-background-dark-#{$uid};
+      }
+    }
+  }
+
+  &-unchecked-checked {
+    .mdc-checkbox__checkmark__path {
+      // Instead of delaying the animation, we simply multiply its length by 2 and begin the
+      // animation at 50% in order to prevent a flash of styles applied to a checked checkmark
+      // as the background is fading in before the animation begins.
+      animation: $mdc-checkbox-transition-duration * 2 linear 0s mdc-checkbox-unchecked-checked-checkmark-path;
+      transition: none;
+    }
+  }
+
+  &-unchecked-indeterminate {
+    .mdc-checkbox__mixedmark {
+      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-unchecked-indeterminate-mixedmark;
+      transition: none;
+    }
+  }
+
+  &-checked-unchecked {
+    .mdc-checkbox__checkmark__path {
+      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-unchecked-checkmark-path;
+      transition: none;
+    }
+  }
+
+  &-checked-indeterminate {
+    .mdc-checkbox__checkmark {
+      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-indeterminate-checkmark;
+      transition: none;
+    }
+
+    .mdc-checkbox__mixedmark {
+      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-indeterminate-mixedmark;
+      transition: none;
+    }
+  }
+
+  &-indeterminate-checked {
+    .mdc-checkbox__checkmark {
+      animation: $mdc-checkbox-indeterminate-change-duration_ linear 0s mdc-checkbox-indeterminate-checked-checkmark;
+      transition: none;
+    }
+
+    .mdc-checkbox__mixedmark {
+      animation: $mdc-checkbox-indeterminate-change-duration_ linear 0s mdc-checkbox-indeterminate-checked-mixedmark;
+      transition: none;
+    }
+  }
+
+  &-indeterminate-unchecked {
+    .mdc-checkbox__mixedmark {
+      animation: $mdc-checkbox-indeterminate-change-duration_ * .6 linear 0s mdc-checkbox-indeterminate-unchecked-mixedmark;
+      transition: none;
+    }
+  }
+}
+
 // Background
 
 @mixin mdc-checkbox__background_ {
-  @include mdc-checkbox-cover-parent_;
+  @include mdc-checkbox__child--cover-parent_;
   @include mdc-rtl-reflexive-position(
     left, ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2, ".mdc-checkbox");
 
@@ -167,7 +267,7 @@
 // Background focus indicator
 
 @mixin mdc-checkbox__focus-indicator_ {
-  @include mdc-checkbox-cover-parent_;
+  @include mdc-checkbox__child--cover-parent_;
 
   width: 100%;
   height: 100%;
@@ -209,7 +309,7 @@
 // Check mark
 
 @mixin mdc-checkbox__checkmark_ {
-  @include mdc-checkbox-cover-parent_;
+  @include mdc-checkbox__child--cover-parent_;
 
   width: 100%;
   transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);

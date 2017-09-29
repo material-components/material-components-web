@@ -15,21 +15,19 @@
 //
 
 @import "@material/theme/mixins";
-@import "./functions";
-@import "./keyframes";
 @import "./mixins";
 @import "./variables";
 
 // postcss-bem-linter: define checkbox
+
 .mdc-checkbox {
   @include mdc-checkbox-base_;
   @include mdc-checkbox-ripple((theme-style: secondary, opacity: .14));
 }
 
-// Needed for CSS-only (non-JS) checkboxes
+// Needed to disable hover effects on CSS-only (non-JS) checkboxes
 .mdc-checkbox--disabled {
-  cursor: default;
-  pointer-events: none;
+  @include mdc-checkbox--disabled_;
 }
 
 // JS checkbox
@@ -38,96 +36,12 @@
   .mdc-checkbox__checkmark,
   .mdc-checkbox__checkmark__path,
   .mdc-checkbox__mixedmark {
-    // Due to the myriad of selector combos used to properly style a CSS-only checkbox, all of
-    // which have varying selector precedence and make use of transitions, it is cleaner and more
-    // efficient here to simply use !important, since the mdc-checkbox--anim-* classes will take
-    // over from here.
-    transition: none !important;
+    @include mdc-checkbox__child--upgraded_;
   }
 }
 
 .mdc-checkbox--anim {
-  $mdc-checkbox-indeterminate-change-duration_: 500ms;
-  $uid: mdc-checkbox-keyframes-color-uid();
-
-  @include mdc-checkbox-keyframes-color(secondary, $uid);
-
-  &-unchecked-checked,
-  &-unchecked-indeterminate {
-    .mdc-checkbox__background {
-      animation: mdc-checkbox-fade-in-background-#{$uid} $mdc-checkbox-transition-duration * 2 linear;
-
-      @include mdc-theme-dark(".mdc-checkbox") {
-        animation-name: mdc-checkbox-fade-in-background-dark-#{$uid};
-      }
-    }
-  }
-
-  &-checked-unchecked,
-  &-indeterminate-unchecked {
-    .mdc-checkbox__background {
-      animation: mdc-checkbox-fade-out-background-#{$uid} $mdc-checkbox-transition-duration * 2 linear;
-
-      @include mdc-theme-dark(".mdc-checkbox") {
-        animation-name: mdc-checkbox-fade-out-background-dark-#{$uid};
-      }
-    }
-  }
-
-  &-unchecked-checked {
-    .mdc-checkbox__checkmark__path {
-      // Instead of delaying the animation, we simply multiply its length by 2 and begin the
-      // animation at 50% in order to prevent a flash of styles applied to a checked checkmark
-      // as the background is fading in before the animation begins.
-      animation: $mdc-checkbox-transition-duration * 2 linear 0s mdc-checkbox-unchecked-checked-checkmark-path;
-      transition: none;
-    }
-  }
-
-  &-unchecked-indeterminate {
-    .mdc-checkbox__mixedmark {
-      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-unchecked-indeterminate-mixedmark;
-      transition: none;
-    }
-  }
-
-  &-checked-unchecked {
-    .mdc-checkbox__checkmark__path {
-      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-unchecked-checkmark-path;
-      transition: none;
-    }
-  }
-
-  &-checked-indeterminate {
-    .mdc-checkbox__checkmark {
-      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-indeterminate-checkmark;
-      transition: none;
-    }
-
-    .mdc-checkbox__mixedmark {
-      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-indeterminate-mixedmark;
-      transition: none;
-    }
-  }
-
-  &-indeterminate-checked {
-    .mdc-checkbox__checkmark {
-      animation: $mdc-checkbox-indeterminate-change-duration_ linear 0s mdc-checkbox-indeterminate-checked-checkmark;
-      transition: none;
-    }
-
-    .mdc-checkbox__mixedmark {
-      animation: $mdc-checkbox-indeterminate-change-duration_ linear 0s mdc-checkbox-indeterminate-checked-mixedmark;
-      transition: none;
-    }
-  }
-
-  &-indeterminate-unchecked {
-    .mdc-checkbox__mixedmark {
-      animation: $mdc-checkbox-indeterminate-change-duration_ * .6 linear 0s mdc-checkbox-indeterminate-unchecked-mixedmark;
-      transition: none;
-    }
-  }
+  @include mdc-checkbox--anim_;
 }
 
 .mdc-checkbox__background {
@@ -186,7 +100,7 @@
 
   &:disabled,
   [aria-disabled="true"] & {
-    cursor: default;
+    @include mdc-checkbox--disabled_;
   }
 }
 
@@ -227,4 +141,5 @@
     @include mdc-checkbox__mixedmark--indeterminate_;
   }
 }
+
 // postcss-bem-linter: end
