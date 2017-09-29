@@ -35,7 +35,7 @@
   }
 
   @include mdc-checkbox-ripple-color(map-merge((opacity: .14), $ripple-config));
-  @include mdc-checkbox-animation-color($color);
+  @include mdc-checkbox-state-transition-color($color);
 
   // The frame's ::before element is used as a focus indicator for the checkbox
   .mdc-checkbox__native-control:not(:disabled) ~ .mdc-checkbox__background::before {
@@ -68,7 +68,7 @@
   @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
 }
 
-@mixin mdc-checkbox-animation-color($color) {
+@mixin mdc-checkbox-state-transition-color($color) {
   $uid: mdc-checkbox-keyframes-color-uid();
 
   @include mdc-checkbox-keyframes-color($color, $uid);
