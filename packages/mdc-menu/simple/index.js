@@ -18,12 +18,10 @@ import MDCComponent from '@material/base/component';
 import MDCSimpleMenuFoundation from './foundation';
 import {getTransformPropertyName} from '../util';
 
-export {MDCSimpleMenuFoundation};
-
 /**
  * @extends MDCComponent<!MDCSimpleMenuFoundation>
  */
-export class MDCSimpleMenu extends MDCComponent {
+class MDCSimpleMenu extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
@@ -147,3 +145,5 @@ export class MDCSimpleMenu extends MDCComponent {
     });
   }
 }
+
+export {MDCSimpleMenuFoundation, MDCSimpleMenu};

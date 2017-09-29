@@ -23,13 +23,11 @@ import MDCCheckboxFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 import {getMatchesProperty} from '@material/ripple/util';
 
-export {MDCCheckboxFoundation};
-
 /**
  * @extends MDCComponent<!MDCCheckboxFoundation>
  * @implements {MDCSelectionControl}
  */
-export class MDCCheckbox extends MDCComponent {
+class MDCCheckbox extends MDCComponent {
   static attachTo(root) {
     return new MDCCheckbox(root);
   }
@@ -148,3 +146,5 @@ export class MDCCheckbox extends MDCComponent {
     super.destroy();
   }
 }
+
+export {MDCCheckboxFoundation, MDCCheckbox};

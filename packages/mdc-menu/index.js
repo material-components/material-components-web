@@ -15,5 +15,5 @@
  */
 
 import * as util from './util';
-export {MDCSimpleMenu, MDCSimpleMenuFoundation} from './simple';
-export {util};
+import {MDCSimpleMenu, MDCSimpleMenuFoundation} from './simple';
+export {MDCSimpleMenu, MDCSimpleMenuFoundation, util};

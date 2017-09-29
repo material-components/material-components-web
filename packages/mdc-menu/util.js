@@ -23,7 +23,7 @@ let storedTransformPropertyName_;
  * @param {boolean=} forceRefresh
  * @return {string}
  */
-export function getTransformPropertyName(globalObj, forceRefresh = false) {
+function getTransformPropertyName(globalObj, forceRefresh = false) {
   if (storedTransformPropertyName_ === undefined || forceRefresh) {
     const el = globalObj.document.createElement('div');
     const transformPropertyName = ('transform' in el.style ? 'transform' : 'webkitTransform');
@@ -40,7 +40,7 @@ export function getTransformPropertyName(globalObj, forceRefresh = false) {
  * @param {number} max
  * @return {number}
  */
-export function clamp(value, min = 0, max = 1) {
+function clamp(value, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
 
@@ -61,7 +61,7 @@ export function clamp(value, min = 0, max = 1) {
  * @param {number} y2
  * @return {number}
  */
-export function bezierProgress(time, x1, y1, x2, y2) {
+function bezierProgress(time, x1, y1, x2, y2) {
   return getBezierCoordinate_(solvePositionFromXValue_(time, x1, x2), y1, y2);
 }
 
@@ -151,3 +151,5 @@ function solvePositionFromXValue_(xVal, x1, x2) {
   }
   return t;
 }
+
+export {getTransformPropertyName, clamp, bezierProgress};

@@ -17,17 +17,19 @@
 @import "./common";
 @import "../packages/mdc-button/mdc-button";
 @import "../packages/mdc-button/mixins";
+@import "../packages/mdc-button/variables";
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-typography/mdc-typography";
 
 .mdc-button.secondary-text-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  @include mdc-button-ripple((theme-style: secondary, opacity: $mdc-unfilled-button-ripple-opacity));
 
   @include mdc-theme-dark(".mdc-button") {
+    // TODO(yiranm): Revisit ripple initialization after ripple refactoring
     @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+    @include mdc-button-ripple((theme-style: secondary, opacity: $mdc-unfilled-button-ripple-opacity));
   }
 }
 
@@ -42,12 +44,12 @@
 .mdc-button.secondary-stroked-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-button-stroke-color($mdc-theme-secondary);
-  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  @include mdc-button-ripple((theme-style: secondary, opacity: $mdc-unfilled-button-ripple-opacity));
 
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-button-ink-color($mdc-theme-secondary);
     @include mdc-button-stroke-color($mdc-theme-secondary);
-    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+    @include mdc-button-ripple((theme-style: secondary, opacity: $mdc-unfilled-button-ripple-opacity));
   }
 }
 

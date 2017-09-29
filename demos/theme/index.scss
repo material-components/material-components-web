@@ -35,6 +35,7 @@
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
 $demo-section-margin: 48px;
+$demo-custom-color: $material-color-red-500;
 
 //
 // Global styles
@@ -100,6 +101,36 @@ $demo-section-margin: 48px;
 //
 // Button demo
 //
+
+.mdc-button.secondary-text-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  }
+}
+
+.mdc-button.secondary-filled-button {
+  @include mdc-button-filled-accessible($mdc-theme-secondary);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-filled-accessible($mdc-theme-secondary);
+  }
+}
+
+.mdc-button.secondary-stroked-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-stroke-color($mdc-theme-secondary);
+  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-stroke-color($mdc-theme-secondary);
+    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  }
+}
 
 .demo-fieldset--button + .demo-fieldset--button {
   margin-top: 16px;
@@ -188,12 +219,29 @@ $demo-section-margin: 48px;
 // Floating Action Button (FAB) demo
 //
 
-.demo-fieldset--fab {
-  margin-bottom: .5rem;
+.demo-fab-row {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.demo-fieldset--fab .mdc-fab {
-  margin: 16px;
+.demo-fab {
+  margin: 16px 0 0 0;
+}
+
+.demo-fab--custom {
+  @include mdc-fab-accessible($demo-custom-color);
+}
+
+.demo-fab-tile {
+  margin: 0 48px 1em 0;
+}
+
+.demo-fab-tile__title {
+  font-weight: 500;
+}
+
+.demo-fab-tile__snippet {
+  height: 2em;
 }
 
 //

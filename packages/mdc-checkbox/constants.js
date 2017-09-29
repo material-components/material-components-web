@@ -18,7 +18,7 @@
 const ROOT = 'mdc-checkbox';
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   UPGRADED: 'mdc-checkbox--upgraded',
   CHECKED: 'mdc-checkbox--checked',
   INDETERMINATE: 'mdc-checkbox--indeterminate',
@@ -32,7 +32,7 @@ export const cssClasses = {
 };
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
   TRANSITION_STATE_INIT: 'init',
   TRANSITION_STATE_CHECKED: 'checked',
@@ -41,6 +41,8 @@ export const strings = {
 };
 
 /** @enum {number} */
-export const numbers = {
+const numbers = {
   ANIM_END_LATCH_MS: 100,
 };
+
+export {cssClasses, strings, numbers};
