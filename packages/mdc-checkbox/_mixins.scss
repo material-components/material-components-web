@@ -39,11 +39,13 @@
 }
 
 @mixin mdc-checkbox-ripple($ripple-config) {
-  // TODO(acdvorak): Is this selector necessary? If so, does it belong here, or in mdc-checkbox.scss?
-  &:not(.mdc-checkbox--disabled) {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+  @include mdc-ripple-base;
+  @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+  @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+
+  &::before,
+  &::after {
+    @include mdc-checkbox-ripple-size_;
   }
 }
 
@@ -112,15 +114,13 @@
   white-space: nowrap;
   cursor: pointer;
   vertical-align: bottom;
+}
 
-  // TODO(acdvorak): Should pseudo-element selectors go in mdc-checkbox.scss?
-  &::before,
-  &::after {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
+@mixin mdc-checkbox-ripple-size_ {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 @mixin mdc-checkbox-cover-parent_ {
