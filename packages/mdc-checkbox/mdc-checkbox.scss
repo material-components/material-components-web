@@ -53,6 +53,7 @@
 .mdc-checkbox__background {
   @include mdc-checkbox__background_;
   @include mdc-checkbox-stroke-color($mdc-checkbox-border-color);
+
   @include mdc-theme-dark(".mdc-checkbox") {
     @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
   }
@@ -66,6 +67,7 @@
   .mdc-checkbox__native-control:disabled ~ &,
   [aria-disabled="true"] .mdc-checkbox__native-control ~ & {
     @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color);
+
     @include mdc-theme-dark(".mdc-checkbox") {
       @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color-dark);
     }

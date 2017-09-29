@@ -28,5 +28,6 @@ $mdc-checkbox-keyframes-color-uid_: -1;
 
 @function mdc-checkbox-keyframes-color-uid() {
   $mdc-checkbox-keyframes-color-uid_: $mdc-checkbox-keyframes-color-uid_ + 1 !global;
+
   @return $mdc-checkbox-keyframes-color-uid_;
 }

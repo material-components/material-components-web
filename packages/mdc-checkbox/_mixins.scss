@@ -149,6 +149,8 @@
 @mixin mdc-checkbox--anim_ {
   $mdc-checkbox-indeterminate-change-duration_: 500ms;
 
+  // stylelint-disable selector-max-type
+
   &-unchecked-checked,
   &-unchecked-indeterminate,
   &-checked-unchecked,
@@ -213,6 +215,8 @@
       transition: none;
     }
   }
+
+  // stylelint-enable selector-max-type
 }
 
 // Background
