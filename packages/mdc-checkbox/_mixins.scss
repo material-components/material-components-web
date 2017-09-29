@@ -50,6 +50,34 @@
   }
 }
 
+@mixin mdc-checkbox-animation-color($color) {
+  $uid: mdc-checkbox-keyframes-color-uid();
+
+  @include mdc-checkbox-keyframes-color($color, $uid);
+
+  &-unchecked-checked,
+  &-unchecked-indeterminate {
+    .mdc-checkbox__background {
+      animation-name: mdc-checkbox-fade-in-background-#{$uid};
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        animation-name: mdc-checkbox-fade-in-background-dark-#{$uid};
+      }
+    }
+  }
+
+  &-checked-unchecked,
+  &-indeterminate-unchecked {
+    .mdc-checkbox__background {
+      animation-name: mdc-checkbox-fade-out-background-#{$uid};
+
+      @include mdc-theme-dark(".mdc-checkbox") {
+        animation-name: mdc-checkbox-fade-out-background-dark-#{$uid};
+      }
+    }
+  }
+}
+
 // TODO(acdvorak): Figure out why a pre-checked checkbox janks when `indeterminate` is toggled for the first time.
 @mixin mdc-checkbox-color($color) {
   $ripple-config: (base-color: $color);
@@ -62,31 +90,7 @@
   @include mdc-checkbox-ripple(map-merge($ripple-config, (opacity: .14)));
 
   &.mdc-checkbox--anim {
-    $uid: mdc-checkbox-keyframes-color-uid();
-
-    @include mdc-checkbox-keyframes-color($color, $uid);
-
-    &-unchecked-checked,
-    &-unchecked-indeterminate {
-      .mdc-checkbox__background {
-        animation-name: mdc-checkbox-fade-in-background-#{$uid};
-
-        @include mdc-theme-dark(".mdc-checkbox") {
-          animation-name: mdc-checkbox-fade-in-background-dark-#{$uid};
-        }
-      }
-    }
-
-    &-checked-unchecked,
-    &-indeterminate-unchecked {
-      .mdc-checkbox__background {
-        animation-name: mdc-checkbox-fade-out-background-#{$uid};
-
-        @include mdc-theme-dark(".mdc-checkbox") {
-          animation-name: mdc-checkbox-fade-out-background-dark-#{$uid};
-        }
-      }
-    }
+    @include mdc-checkbox-animation-color($color);
   }
 
   .mdc-checkbox__native-control:not(:disabled):checked ~ .mdc-checkbox__background,
@@ -150,29 +154,14 @@
 
 @mixin mdc-checkbox--anim_ {
   $mdc-checkbox-indeterminate-change-duration_: 500ms;
-  $uid: mdc-checkbox-keyframes-color-uid();
-
-  @include mdc-checkbox-keyframes-color(secondary, $uid);
 
   &-unchecked-checked,
-  &-unchecked-indeterminate {
-    .mdc-checkbox__background {
-      animation: mdc-checkbox-fade-in-background-#{$uid} $mdc-checkbox-transition-duration * 2 linear;
-
-      @include mdc-theme-dark(".mdc-checkbox") {
-        animation-name: mdc-checkbox-fade-in-background-dark-#{$uid};
-      }
-    }
-  }
-
+  &-unchecked-indeterminate,
   &-checked-unchecked,
   &-indeterminate-unchecked {
     .mdc-checkbox__background {
-      animation: mdc-checkbox-fade-out-background-#{$uid} $mdc-checkbox-transition-duration * 2 linear;
-
-      @include mdc-theme-dark(".mdc-checkbox") {
-        animation-name: mdc-checkbox-fade-out-background-dark-#{$uid};
-      }
+      animation-duration: $mdc-checkbox-transition-duration * 2;
+      animation-timing-function: linear;
     }
   }
 
