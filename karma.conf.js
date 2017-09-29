@@ -170,6 +170,5 @@ module.exports = function(config) {
 };
 
 function determineBrowsers() {
-  return Object.keys(SL_LAUNCHERS);
-  // return USING_SL ? Object.keys(SL_LAUNCHERS) : ['Chrome'];
+  return USING_SL ? Object.keys(SL_LAUNCHERS) : ['Chrome'];
 }
