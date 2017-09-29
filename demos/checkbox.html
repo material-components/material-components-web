@@ -351,9 +351,8 @@
         var MDCCheckbox = global.mdc.checkbox.MDCCheckbox;
         var MDCFormField = global.mdc.formField.MDCFormField;
 
-        var checkboxes = document.querySelectorAll('.mdc-checkbox[data-js]');
-        for (var i = 0; i < checkboxes.length; i++) {
-          var checkbox = checkboxes[i];
+        var checkboxes = [].slice.call(document.querySelectorAll('.mdc-checkbox[data-js]'));
+        checkboxes.forEach(function(checkbox) {
           var checkboxInstance = new MDCCheckbox(checkbox);
 
           var formField = checkbox.parentElement;
@@ -368,7 +367,7 @@
           row.querySelector('.toggle-disabled').addEventListener('click', function() {
             checkboxInstance.disabled = !checkboxInstance.disabled;
           });
-        }
+        });
       })(this);
     </script>
   </body>
