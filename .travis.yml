@@ -8,11 +8,11 @@ matrix:
     - node_js: 7
       env:
         global:
-          - SAUCE_USERNAME=material-sauce
+          - SAUCE_USERNAME=mdc-web
       addons:
         sauce_connect: true
         jwt:
-          secure: e4MtddCSnfI/7wT6Vd58w5P5gGVSCIUF9AXWJsGwqfSMosVZ0l1voadWdYCNpLju2qxQFfx48k+ojSCIZq5ZCbwGL8hIJyiTM88pkGSC5iASv0YYkDEIniwz3Pd4Acj0GSGrSa0JkrNyA7rP+7ZAFcizCP8fHdW5pvIq1GJ9vEJttC0pk3OsbX8SLdRjtiOuXHXDOTlZZW9JQv0HyaFvKQNz6hK7KDLn8yq+QFB/17OSPqtMfFUKG83VlddPYTGQKsixl63Bfu+mkJ45D4akS+Gd5Hcg87sKYcXW09+eqE3l5qihRIz3vZXJ8u94heWP4TebV+WeIbrBGGMsNtmqEe7VfOmr5xe+B8wOClUqlpBlu7y0ZFzFxgs31Q0JhsWB6b4vs24Yr6IlPWox7uJckig8XMJX5iFHIHGFEknzAcZBpqSpYkiT2BC8eLaybGwl5VYz23cko3rxHLPxahbMVMW6i5B8XiZozsh4NFKqbERv4bJPPXyybLyR31MOrFMj6hdUd1Gk56RfEulNbCek0aSxuV3Vzxl8+5csTtAdQeqMGImTFDxlmQEoKk8dReOLFxDfNXj7W4YNXpof6YyzXIFelUJ148iODIwE8ET0EJvzR7+mOLmFMKnTWb4Uf8k6Jp4ZZa3zEWzZszG7UfAC4klGoiWhUGS/DpyF0G2BFs8=
+          secure: EkqjJU3syQ0UsgxGtzs6OZelr0UcK7NfO0HBNuB8BBKUgSibt3Qwr622Kx1RmuT0bmqQYVgO5MsCmUWF16n7WOkJGbgi3We6r7nJSHc3U/V0hhwFs1x5cVk9RFRezMcS5jaQMvUdy/FXIT1YrN5TbTVLTLGHDlx83fd8p7D6TJfCoL1b39h67xXfs3lZSpaJADSr+FCqp7yxLyRjCHfgVIu7Um8E844oT9Z2wKjBOc3aoA8LpdBEcKarIwpY4aMY5ulsH5jNx4YD/G/7Of3wTl1Fqo+bdJYAbXiKBME/jrkfHcR23yuupGAyAgM7uC6pWojYkEMpWcqnzx94CANY/1QuBdkspQPfeEeRxqrz11zfED9nfYtXtW1TwN4Mx9pFcmH6A1pZ/Juu8g08XALAUygeqAiX3QYgTDSYnV6BmYlLa2I0iSMJYjbx3PrdpQxq241+3FA7DRHgxcZztOX8uLLOk62pwWa2A2ipM1FqS7xw+8TpdVksfLe22JVLrC+bIFUTJp4HrjvE1g49hPJi6GXWvYqyMf9EtwJzag6hs+SnquzxEYSdUocxJpjyQpy64x+wll1HQstf5kgy84l9cDK+7X9WXBTrfptASSn3CadokxAQVtynkWe8Wgbi/NXKtXebp/Cp1w7SaLRQgPn+j32j98WnTr9sRzvz9bIkL8M=
       script: npm run pretest && npm run test:unit && npm run posttest
       after_success:
         - codecov
@@ -20,11 +20,11 @@ matrix:
     - node_js: --lts # LTS: See https://github.com/creationix/nvm/pull/1070
       env:
         global:
-          - SAUCE_USERNAME=material-sauce
+          - SAUCE_USERNAME=mdc-web
       addons:
         sauce_connect: true
         jwt:
-          secure: e4MtddCSnfI/7wT6Vd58w5P5gGVSCIUF9AXWJsGwqfSMosVZ0l1voadWdYCNpLju2qxQFfx48k+ojSCIZq5ZCbwGL8hIJyiTM88pkGSC5iASv0YYkDEIniwz3Pd4Acj0GSGrSa0JkrNyA7rP+7ZAFcizCP8fHdW5pvIq1GJ9vEJttC0pk3OsbX8SLdRjtiOuXHXDOTlZZW9JQv0HyaFvKQNz6hK7KDLn8yq+QFB/17OSPqtMfFUKG83VlddPYTGQKsixl63Bfu+mkJ45D4akS+Gd5Hcg87sKYcXW09+eqE3l5qihRIz3vZXJ8u94heWP4TebV+WeIbrBGGMsNtmqEe7VfOmr5xe+B8wOClUqlpBlu7y0ZFzFxgs31Q0JhsWB6b4vs24Yr6IlPWox7uJckig8XMJX5iFHIHGFEknzAcZBpqSpYkiT2BC8eLaybGwl5VYz23cko3rxHLPxahbMVMW6i5B8XiZozsh4NFKqbERv4bJPPXyybLyR31MOrFMj6hdUd1Gk56RfEulNbCek0aSxuV3Vzxl8+5csTtAdQeqMGImTFDxlmQEoKk8dReOLFxDfNXj7W4YNXpof6YyzXIFelUJ148iODIwE8ET0EJvzR7+mOLmFMKnTWb4Uf8k6Jp4ZZa3zEWzZszG7UfAC4klGoiWhUGS/DpyF0G2BFs8=
+          secure: EkqjJU3syQ0UsgxGtzs6OZelr0UcK7NfO0HBNuB8BBKUgSibt3Qwr622Kx1RmuT0bmqQYVgO5MsCmUWF16n7WOkJGbgi3We6r7nJSHc3U/V0hhwFs1x5cVk9RFRezMcS5jaQMvUdy/FXIT1YrN5TbTVLTLGHDlx83fd8p7D6TJfCoL1b39h67xXfs3lZSpaJADSr+FCqp7yxLyRjCHfgVIu7Um8E844oT9Z2wKjBOc3aoA8LpdBEcKarIwpY4aMY5ulsH5jNx4YD/G/7Of3wTl1Fqo+bdJYAbXiKBME/jrkfHcR23yuupGAyAgM7uC6pWojYkEMpWcqnzx94CANY/1QuBdkspQPfeEeRxqrz11zfED9nfYtXtW1TwN4Mx9pFcmH6A1pZ/Juu8g08XALAUygeqAiX3QYgTDSYnV6BmYlLa2I0iSMJYjbx3PrdpQxq241+3FA7DRHgxcZztOX8uLLOk62pwWa2A2ipM1FqS7xw+8TpdVksfLe22JVLrC+bIFUTJp4HrjvE1g49hPJi6GXWvYqyMf9EtwJzag6hs+SnquzxEYSdUocxJpjyQpy64x+wll1HQstf5kgy84l9cDK+7X9WXBTrfptASSn3CadokxAQVtynkWe8Wgbi/NXKtXebp/Cp1w7SaLRQgPn+j32j98WnTr9sRzvz9bIkL8M=
       script: npm run pretest && npm run test:unit && npm run posttest
     # Closure compiler type checking. Note that TravisCI has Java 7 enabled by default which should
     # work for using closure.
