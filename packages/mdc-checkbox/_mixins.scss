@@ -25,6 +25,30 @@
 // Public
 //
 
+// TODO(acdvorak): Figure out why a pre-checked checkbox janks when `indeterminate` is toggled for the first time.
+@mixin mdc-checkbox-color($color) {
+  $ripple-config: (base-color: $color);
+
+  // TODO(acdvorak): Refactor ripple mixin to do this @if check automatically, or use mdc-theme-prop()
+  @if (map-has-key($mdc-theme-property-values, $color)) {
+    $ripple-config: (theme-style: $color);
+  }
+
+  @include mdc-checkbox-ripple-color(map-merge((opacity: .14), $ripple-config));
+  @include mdc-checkbox-animation-color($color);
+
+  // The frame's ::before element is used as a focus indicator for the checkbox
+  .mdc-checkbox__native-control:not(:disabled) ~ .mdc-checkbox__background::before {
+    @include mdc-checkbox-container-color($color);
+  }
+
+  .mdc-checkbox__native-control:not(:disabled):checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control:not(:disabled):indeterminate ~ .mdc-checkbox__background {
+    @include mdc-checkbox-stroke-color($color);
+    @include mdc-checkbox-container-color($color);
+  }
+}
+
 @mixin mdc-checkbox-stroke-color($color) {
   @include mdc-theme-prop(border-color, $color);
 }
@@ -71,30 +95,6 @@
         }
       }
     }
-  }
-}
-
-// TODO(acdvorak): Figure out why a pre-checked checkbox janks when `indeterminate` is toggled for the first time.
-@mixin mdc-checkbox-color($color) {
-  $ripple-config: (base-color: $color);
-
-  // TODO(acdvorak): Refactor ripple mixin to do this @if check automatically, or use mdc-theme-prop()
-  @if (map-has-key($mdc-theme-property-values, $color)) {
-    $ripple-config: (theme-style: $color);
-  }
-
-  @include mdc-checkbox-ripple-color(map-merge((opacity: .14), $ripple-config));
-  @include mdc-checkbox-animation-color($color);
-
-  // The frame's ::before element is used as a focus indicator for the checkbox
-  .mdc-checkbox__native-control:not(:disabled) ~ .mdc-checkbox__background::before {
-    @include mdc-checkbox-container-color($color);
-  }
-
-  .mdc-checkbox__native-control:not(:disabled):checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:not(:disabled):indeterminate ~ .mdc-checkbox__background {
-    @include mdc-checkbox-stroke-color($color);
-    @include mdc-checkbox-container-color($color);
   }
 }
 
