@@ -22,7 +22,13 @@
 
 .mdc-checkbox {
   @include mdc-checkbox-base_;
+  @include mdc-ripple-base;
   @include mdc-checkbox-color(secondary);
+
+  &::before,
+  &::after {
+    @include mdc-checkbox-ripple-size_;
+  }
 }
 
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes
