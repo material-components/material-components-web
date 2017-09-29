@@ -20,11 +20,9 @@
 
 // postcss-bem-linter: define checkbox
 
-$mdc-checkbox-default-color_: secondary;
-
 .mdc-checkbox {
   @include mdc-checkbox-base_;
-  @include mdc-checkbox-ripple((theme-style: $mdc-checkbox-default-color_, opacity: .14));
+  @include mdc-checkbox-color(secondary);
 }
 
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes
@@ -44,7 +42,6 @@ $mdc-checkbox-default-color_: secondary;
 
 .mdc-checkbox--anim {
   @include mdc-checkbox--anim_;
-  @include mdc-checkbox-animation-color($mdc-checkbox-default-color_);
 }
 
 .mdc-checkbox__background {
@@ -57,8 +54,6 @@ $mdc-checkbox-default-color_: secondary;
   .mdc-checkbox__native-control:not(:disabled):checked ~ &,
   .mdc-checkbox__native-control:not(:disabled):indeterminate ~ & {
     @include mdc-checkbox__background--filled_;
-    @include mdc-checkbox-stroke-color($mdc-checkbox-default-color_);
-    @include mdc-checkbox-container-color($mdc-checkbox-default-color_);
   }
 
   // TODO(acdvorak): Is aria-disabled necessary?
@@ -87,7 +82,6 @@ $mdc-checkbox-default-color_: secondary;
 // The frame's ::before element is used as a focus indicator for the checkbox
 .mdc-checkbox__background::before {
   @include mdc-checkbox__focus-indicator_;
-  @include mdc-checkbox-container-color($mdc-checkbox-default-color_);
 
   .mdc-checkbox__native-control:focus ~ & {
     @include mdc-checkbox__focus-indicator--focused_;
