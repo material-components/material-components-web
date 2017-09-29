@@ -39,7 +39,7 @@
 
   // The frame's ::before element is used as a focus indicator for the checkbox
   .mdc-checkbox__native-control:not(:disabled) ~ .mdc-checkbox__background::before {
-    @include mdc-checkbox-container-color($color);
+    @include mdc-checkbox-container-color($color, $edgeOptOut: true);
   }
 
   .mdc-checkbox__native-control:not(:disabled):checked ~ .mdc-checkbox__background,
@@ -53,8 +53,8 @@
   @include mdc-theme-prop(border-color, $color);
 }
 
-@mixin mdc-checkbox-container-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-checkbox-container-color($color, $edgeOptOut: false) {
+  @include mdc-theme-prop(background-color, $color, $edgeOptOut);
 }
 
 @mixin mdc-checkbox-ink-color($color) {
