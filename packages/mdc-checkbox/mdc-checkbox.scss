@@ -26,11 +26,13 @@
   @include mdc-checkbox-ripple((theme-style: secondary, opacity: .14));
 }
 
+// Needed for CSS-only (non-JS) checkboxes
 .mdc-checkbox--disabled {
   cursor: default;
   pointer-events: none;
 }
 
+// JS checkbox
 .mdc-checkbox--upgraded {
   .mdc-checkbox__background,
   .mdc-checkbox__checkmark,
@@ -46,14 +48,17 @@
 
 .mdc-checkbox--anim {
   $mdc-checkbox-indeterminate-change-duration_: 500ms;
+  $uid: mdc-checkbox-keyframes-color-uid();
+
+  @include mdc-checkbox-keyframes-color(secondary, $uid);
 
   &-unchecked-checked,
   &-unchecked-indeterminate {
     .mdc-checkbox__background {
-      animation: mdc-checkbox-fade-in-background $mdc-checkbox-transition-duration * 2 linear;
+      animation: mdc-checkbox-fade-in-background-#{$uid} $mdc-checkbox-transition-duration * 2 linear;
 
       @include mdc-theme-dark(".mdc-checkbox") {
-        animation-name: mdc-checkbox-fade-in-background-dark;
+        animation-name: mdc-checkbox-fade-in-background-dark-#{$uid};
       }
     }
   }
@@ -61,10 +66,10 @@
   &-checked-unchecked,
   &-indeterminate-unchecked {
     .mdc-checkbox__background {
-      animation: mdc-checkbox-fade-out-background $mdc-checkbox-transition-duration * 2 linear;
+      animation: mdc-checkbox-fade-out-background-#{$uid} $mdc-checkbox-transition-duration * 2 linear;
 
       @include mdc-theme-dark(".mdc-checkbox") {
-        animation-name: mdc-checkbox-fade-out-background-dark;
+        animation-name: mdc-checkbox-fade-out-background-dark-#{$uid};
       }
     }
   }
@@ -132,13 +137,14 @@
     @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
   }
 
-  .mdc-checkbox__native-control:checked ~ &,
-  .mdc-checkbox__native-control:indeterminate ~ & {
+  .mdc-checkbox__native-control:not(:disabled):checked ~ &,
+  .mdc-checkbox__native-control:not(:disabled):indeterminate ~ & {
     @include mdc-checkbox__background--filled_;
     @include mdc-checkbox-stroke-color(secondary);
     @include mdc-checkbox-container-color(secondary);
   }
 
+  // TODO(acdvorak): Is aria-disabled necessary?
   .mdc-checkbox__native-control:disabled ~ &,
   [aria-disabled="true"] .mdc-checkbox__native-control ~ & {
     @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color);

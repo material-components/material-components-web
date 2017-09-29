@@ -18,55 +18,55 @@
 @import "@material/theme/mixins";
 @import "./variables";
 
-// TODO(acdvorak): Make colors parameterizable
+@mixin mdc-checkbox-keyframes-color($color, $uid) {
+  @keyframes mdc-checkbox-fade-in-background-#{$uid} {
+    0% {
+      border-color: $mdc-checkbox-border-color;
+      background-color: transparent;
+    }
 
-@keyframes mdc-checkbox-fade-in-background {
-  0% {
-    border-color: $mdc-checkbox-border-color;
-    background-color: transparent;
+    50% {
+      @include mdc-theme-prop(border-color, $color);
+      @include mdc-theme-prop(background-color, $color);
+    }
   }
 
-  50% {
-    @include mdc-theme-prop(border-color, secondary);
-    @include mdc-theme-prop(background-color, secondary);
-  }
-}
+  @keyframes mdc-checkbox-fade-out-background-#{$uid} {
+    0%,
+    80% {
+      @include mdc-theme-prop(border-color, $color);
+      @include mdc-theme-prop(background-color, $color);
+    }
 
-@keyframes mdc-checkbox-fade-out-background {
-  0%,
-  80% {
-    @include mdc-theme-prop(border-color, secondary);
-    @include mdc-theme-prop(background-color, secondary);
-  }
-
-  100% {
-    border-color: $mdc-checkbox-border-color;
-    background-color: transparent;
-  }
-}
-
-@keyframes mdc-checkbox-fade-in-background-dark {
-  0% {
-    border-color: $mdc-checkbox-border-color-dark;
-    background-color: transparent;
+    100% {
+      border-color: $mdc-checkbox-border-color;
+      background-color: transparent;
+    }
   }
 
-  50% {
-    @include mdc-theme-prop(border-color, secondary);
-    @include mdc-theme-prop(background-color, secondary);
-  }
-}
+  @keyframes mdc-checkbox-fade-in-background-dark-#{$uid} {
+    0% {
+      border-color: $mdc-checkbox-border-color-dark;
+      background-color: transparent;
+    }
 
-@keyframes mdc-checkbox-fade-out-background-dark {
-  0%,
-  80% {
-    @include mdc-theme-prop(border-color, secondary);
-    @include mdc-theme-prop(background-color, secondary);
+    50% {
+      @include mdc-theme-prop(border-color, $color);
+      @include mdc-theme-prop(background-color, $color);
+    }
   }
 
-  100% {
-    border-color: $mdc-checkbox-border-color-dark;
-    background-color: transparent;
+  @keyframes mdc-checkbox-fade-out-background-dark-#{$uid} {
+    0%,
+    80% {
+      @include mdc-theme-prop(border-color, $color);
+      @include mdc-theme-prop(background-color, $color);
+    }
+
+    100% {
+      border-color: $mdc-checkbox-border-color-dark;
+      background-color: transparent;
+    }
   }
 }
 
