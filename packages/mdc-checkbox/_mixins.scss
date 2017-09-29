@@ -54,7 +54,7 @@
 }
 
 @mixin mdc-checkbox-container-color($color, $edgeOptOut: false) {
-  @include mdc-theme-prop(background-color, $color, $edgeOptOut);
+  @include mdc-theme-prop(background-color, $color, $edgeOptOut: $edgeOptOut);
 }
 
 @mixin mdc-checkbox-ink-color($color) {
