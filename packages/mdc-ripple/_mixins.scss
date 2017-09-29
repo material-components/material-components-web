@@ -21,8 +21,8 @@
 @function mdc-ripple-default-config_() {
   @return (
     // TODO: Remove these and build them directly into selectors
-    bg-pseudo: ':before',
-    fg-pseudo: ':after',
+    bg-pseudo: '::before',
+    fg-pseudo: '::after',
     radius: 100%,
     base-color: black,
     opacity: .06,
