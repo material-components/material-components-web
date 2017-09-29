@@ -73,7 +73,7 @@
 @keyframes mdc-checkbox-unchecked-checked-checkmark-path {
   0%,
   50% {
-    stroke-dashoffset: $_mdc-checkbox-mark-path-length;
+    stroke-dashoffset: $mdc-checkbox-mark-path-length_;
   }
 
   50% {
@@ -109,7 +109,7 @@
 
   to {
     opacity: 0;
-    stroke-dashoffset: $_mdc-checkbox-mark-path-length * -1;
+    stroke-dashoffset: $mdc-checkbox-mark-path-length_ * -1;
   }
 }
 
@@ -128,7 +128,7 @@
 
 @keyframes mdc-checkbox-indeterminate-checked-checkmark {
   from {
-    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
+    animation-timing-function: $mdc-checkbox-indeterminate-checked-easing-function_;
     transform: rotate(45deg);
     opacity: 0;
   }
@@ -154,7 +154,7 @@
 
 @keyframes mdc-checkbox-indeterminate-checked-mixedmark {
   from {
-    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
+    animation-timing-function: $mdc-checkbox-indeterminate-checked-easing-function_;
     transform: rotate(0deg);
     opacity: 1;
   }

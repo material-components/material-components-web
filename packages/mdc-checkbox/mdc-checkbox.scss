@@ -25,118 +25,6 @@
   @include mdc-checkbox-ripple((theme-style: secondary, opacity: .14));
 }
 
-.mdc-checkbox__background {
-  @include mdc-checkbox__background_;
-  @include mdc-checkbox-stroke-color($mdc-checkbox-border-color);
-  @include mdc-theme-dark(".mdc-checkbox") {
-    @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
-  }
-
-  .mdc-checkbox__native-control:checked ~ & {
-    @include mdc-checkbox__background--checked_;
-    @include mdc-checkbox-stroke-color(secondary);
-    @include mdc-checkbox-container-color(secondary);
-  }
-
-  // The frame's ::before element is used as a focus indicator for the checkbox
-  &::before {
-    @include mdc-checkbox__background-focus-indicator_;
-    @include mdc-checkbox-container-color(secondary);
-
-    .mdc-checkbox__native-control:focus ~ & {
-      @include mdc-checkbox__background-focus-indicator--focused_;
-    }
-
-    .mdc-ripple-upgraded--unbounded & {
-      @include mdc-checkbox__background-focus-indicator--ripple-upgraded-unbounded_;
-    }
-  }
-}
-
-.mdc-checkbox__native-control {
-  @include mdc-checkbox__native-control_;
-}
-
-.mdc-checkbox__checkmark {
-  @include mdc-checkbox__checkmark_;
-  // TODO(acdvorak): Is this needed? Removing it doesn't appear to affect anything.
-  // @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
-
-  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__checkmark--checked_;
-  }
-}
-
-.mdc-checkbox__checkmark__path {
-  @include mdc-checkbox__checkmark__path_;
-  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
-
-  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__checkmark__path--checked_;
-  }
-}
-
-.mdc-checkbox__mixedmark {
-  @include mdc-checkbox__mixedmark_;
-  @include mdc-checkbox-container-color($mdc-checkbox-mark-color);
-
-  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__mixedmark--checked_;
-  }
-}
-
-.mdc-checkbox__native-control:indeterminate {
-  ~ .mdc-checkbox__background {
-    @include mdc-theme-prop(border-color, secondary);
-    @include mdc-theme-prop(background-color, secondary);
-
-    .mdc-checkbox__checkmark {
-      transform: rotate(45deg);
-      transition:
-        mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration),
-        mdc-checkbox-transition-exit(transform, 0ms, $mdc-checkbox-transition-duration);
-      opacity: 0;
-
-      &__path {
-        stroke-dashoffset: 0;
-      }
-    }
-
-    .mdc-checkbox__mixedmark {
-      transform: scaleX(1) rotate(0deg);
-      opacity: 1;
-    }
-  }
-}
-
-.mdc-checkbox__native-control:disabled,
-fieldset:disabled .mdc-checkbox__native-control,
-[aria-disabled="true"] .mdc-checkbox__native-control {
-  cursor: default;
-
-  // postcss-bem-linter: ignore
-  ~ .mdc-checkbox__background {
-    border-color: $mdc-checkbox-disabled-color;
-
-    @include mdc-theme-dark(".mdc-checkbox") {
-      border-color: $mdc-checkbox-disabled-color-dark;
-    }
-  }
-
-  &:checked,
-  &:indeterminate {
-    ~ .mdc-checkbox__background {
-      border-color: transparent;
-      background-color: $mdc-checkbox-disabled-color;
-      // stylelint-disable selector-max-compound-selectors, selector-max-specificity
-      @include mdc-theme-dark(".mdc-checkbox") {
-        background-color: $mdc-checkbox-disabled-color-dark;
-      }
-      // stylelint-enable selector-max-compound-selectors, selector-max-specificity
-    }
-  }
-}
-
 .mdc-checkbox--disabled {
   cursor: default;
   pointer-events: none;
@@ -156,7 +44,7 @@ fieldset:disabled .mdc-checkbox__native-control,
 }
 
 .mdc-checkbox--anim {
-  $_mdc-checkbox-indeterminate-change-duration: 500ms;
+  $mdc-checkbox-indeterminate-change-duration_: 500ms;
 
   &-unchecked-checked,
   &-unchecked-indeterminate {
@@ -218,21 +106,125 @@ fieldset:disabled .mdc-checkbox__native-control,
 
   &-indeterminate-checked {
     .mdc-checkbox__checkmark {
-      animation: $_mdc-checkbox-indeterminate-change-duration linear 0s mdc-checkbox-indeterminate-checked-checkmark;
+      animation: $mdc-checkbox-indeterminate-change-duration_ linear 0s mdc-checkbox-indeterminate-checked-checkmark;
       transition: none;
     }
 
     .mdc-checkbox__mixedmark {
-      animation: $_mdc-checkbox-indeterminate-change-duration linear 0s mdc-checkbox-indeterminate-checked-mixedmark;
+      animation: $mdc-checkbox-indeterminate-change-duration_ linear 0s mdc-checkbox-indeterminate-checked-mixedmark;
       transition: none;
     }
   }
 
   &-indeterminate-unchecked {
     .mdc-checkbox__mixedmark {
-      animation: $_mdc-checkbox-indeterminate-change-duration * .6 linear 0s mdc-checkbox-indeterminate-unchecked-mixedmark;
+      animation: $mdc-checkbox-indeterminate-change-duration_ * .6 linear 0s mdc-checkbox-indeterminate-unchecked-mixedmark;
       transition: none;
     }
+  }
+}
+
+.mdc-checkbox__background {
+  @include mdc-checkbox__background_;
+  @include mdc-checkbox-stroke-color($mdc-checkbox-border-color);
+  @include mdc-theme-dark(".mdc-checkbox") {
+    @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
+  }
+
+  .mdc-checkbox__native-control:checked ~ & {
+    @include mdc-checkbox__background--checked_;
+    @include mdc-checkbox-stroke-color(secondary);
+    @include mdc-checkbox-container-color(secondary);
+  }
+
+  .mdc-checkbox__native-control:indeterminate ~ & {
+    @include mdc-checkbox__background--indeterminate_;
+    @include mdc-checkbox-stroke-color(secondary);
+    @include mdc-checkbox-container-color(secondary);
+  }
+
+  .mdc-checkbox__native-control:disabled ~ &,
+  [aria-disabled="true"] .mdc-checkbox__native-control ~ & {
+    @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color);
+    @include mdc-theme-dark(".mdc-checkbox") {
+      @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color-dark);
+    }
+  }
+
+  .mdc-checkbox__native-control:disabled:checked ~ &,
+  .mdc-checkbox__native-control:disabled:indeterminate ~ &,
+  [aria-disabled="true"] .mdc-checkbox__native-control:checked ~ &,
+  [aria-disabled="true"] .mdc-checkbox__native-control:indeterminate ~ & {
+    @include mdc-checkbox-stroke-color(transparent);
+    @include mdc-checkbox-container-color($mdc-checkbox-disabled-color);
+    // stylelint-disable selector-max-compound-selectors, selector-max-specificity
+    @include mdc-theme-dark(".mdc-checkbox") {
+      @include mdc-checkbox-container-color($mdc-checkbox-disabled-color-dark);
+    }
+    // stylelint-enable selector-max-compound-selectors, selector-max-specificity
+  }
+}
+
+// The frame's ::before element is used as a focus indicator for the checkbox
+.mdc-checkbox__background::before {
+  @include mdc-checkbox__focus-indicator_;
+  @include mdc-checkbox-container-color(secondary);
+
+  .mdc-checkbox__native-control:focus ~ & {
+    @include mdc-checkbox__focus-indicator--focused_;
+  }
+
+  .mdc-ripple-upgraded--unbounded & {
+    @include mdc-checkbox__focus-indicator--ripple-upgraded-unbounded_;
+  }
+}
+
+.mdc-checkbox__native-control {
+  @include mdc-checkbox__native-control_;
+
+  &:disabled,
+  [aria-disabled="true"] & {
+    cursor: default;
+  }
+}
+
+.mdc-checkbox__checkmark {
+  @include mdc-checkbox__checkmark_;
+
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__checkmark--checked_;
+  }
+
+  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__checkmark--indeterminate_;
+  }
+}
+
+.mdc-checkbox__checkmark__path {
+  @include mdc-checkbox__checkmark__path_;
+  // TODO(acdvorak): Accessibility
+  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
+
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__checkmark__path--checked_;
+  }
+
+  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__checkmark__path--indeterminate_;
+  }
+}
+
+.mdc-checkbox__mixedmark {
+  @include mdc-checkbox__mixedmark_;
+  // TODO(acdvorak): Accessibility
+  @include mdc-checkbox-container-color($mdc-checkbox-mark-color);
+
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__mixedmark--checked_;
+  }
+
+  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
+    @include mdc-checkbox__mixedmark--indeterminate_;
   }
 }
 // postcss-bem-linter: end
