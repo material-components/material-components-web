@@ -457,11 +457,113 @@
           </div>
         </figure>
       </section>
+
+      <section class="demo-component-section">
+        <i id="radio" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Radio Button
+          <a href="#radio" class="demo-component-section__permalink" title="Permalink to the theme demo for the radio button component">#</a>
+        </h2>
+
+        <figure class="demo-radio-group">
+          <div class="mdc-form-field demo-radio-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-1" checked name="demo-radio-group-1">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="demo-radio-1-label" for="demo-radio-1">Default 1</label>
+          </div>
+          <div class="mdc-form-field demo-radio-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-2" name="demo-radio-group-1">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="demo-radio-2-label" for="demo-radio-2">Default 2</label>
+          </div>
+        </figure>
+
+        <figure class="demo-radio-group">
+          <div class="mdc-form-field demo-radio-form-field">
+            <div class="mdc-radio demo-radio--secondary">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-3" checked name="demo-radio-group-2">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="demo-radio-3-label" for="demo-radio-3">Secondary 1</label>
+          </div>
+          <div class="mdc-form-field demo-radio-form-field">
+            <div class="mdc-radio demo-radio--secondary">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-4" name="demo-radio-group-2">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="demo-radio-4-label" for="demo-radio-4">Secondary 2</label>
+          </div>
+        </figure>
+
+        <figure class="demo-radio-group">
+          <div class="mdc-form-field demo-radio-form-field">
+            <div class="mdc-radio demo-radio--custom">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-5" checked name="demo-radio-group-3">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="demo-radio-5-label" for="demo-radio-5">Custom 1</label>
+          </div>
+          <div class="mdc-form-field demo-radio-form-field">
+            <div class="mdc-radio demo-radio--custom">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-6" name="demo-radio-group-3">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="demo-radio-6-label" for="demo-radio-6">Custom 2</label>
+          </div>
+        </figure>
+
+        <figure class="demo-radio-group">
+          <div class="mdc-form-field demo-radio-form-field">
+            <div class="mdc-radio mdc-radio--disabled">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-7" disabled checked name="demo-radio-group-4">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="demo-radio-7-label" for="demo-radio-7">Disabled 1</label>
+          </div>
+          <div class="mdc-form-field demo-radio-form-field">
+            <div class="mdc-radio mdc-radio--disabled">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-8" disabled name="demo-radio-group-4">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="demo-radio-8-label" for="demo-radio-8">Disabled 2</label>
+          </div>
+        </figure>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" charset="utf-8"></script>
     <script>
       (function() {
+        'use strict';
+
         function getAll(query) {
           return [].slice.call(document.querySelectorAll(query));
         }
@@ -585,6 +687,24 @@
           linearProgress.progress = 0.5;
           if (progressEl.dataset.buffer) {
             linearProgress.buffer = 0.75;
+          }
+        }
+
+        /*
+         * Radio Button
+         */
+
+        var MDCFormField = mdc.formField.MDCFormField;
+        var MDCRadio = mdc.radio.MDCRadio;
+
+        var formFields = getAll('.mdc-form-field.demo-radio-form-field');
+        for (var i = 0, formField; formField = formFields[i]; i++) {
+          var formFieldInstance = new MDCFormField(formField);
+
+          var radio = formField.querySelector('.mdc-radio:not([data-demo-no-js])');
+          if (radio) {
+            var radioInstance = new MDCRadio(radio);
+            formFieldInstance.input = radioInstance;
           }
         }
       })();
