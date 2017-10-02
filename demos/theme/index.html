@@ -29,7 +29,7 @@
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <button class="demo-menu-action material-icons mdc-toolbar__icon--menu">menu</button>
+          <button class="material-icons mdc-toolbar__icon--menu demo-drawer-toggle">menu</button>
           <span class="mdc-toolbar__title catalog-title">Color Theming</span>
         </section>
       </div>
@@ -295,7 +295,7 @@
           <a href="#drawer" class="demo-component-section__permalink" title="Permalink to the theme demo for the drawer component">#</a>
         </h2>
 
-        <p class="mdc-typography--body1">Click the menu icon (<i class="material-icons demo-icon--inline">menu</i>) in the toolbar at the top of the page to open the drawer.</p>
+        <p class="mdc-typography--body1">Tap the menu icon (<i class="material-icons demo-drawer-toggle">menu</i>) in the toolbar at the top of the page to open the drawer.</p>
       </section>
 
       <section class="demo-component-section">
@@ -552,8 +552,10 @@
         var drawerEl = document.querySelector('.mdc-temporary-drawer');
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        document.querySelector('.demo-menu-action').addEventListener('click', function() {
-          drawer.open = true;
+        getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
+          toggleElem.addEventListener('click', function() {
+            drawer.open = true;
+          });
         });
 
         drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {

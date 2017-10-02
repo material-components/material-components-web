@@ -51,10 +51,6 @@ $demo-custom-color: $material-color-red-500;
 // Page toolbar
 //
 
-.demo-icon--inline {
-  vertical-align: middle;
-}
-
 .demo-anchor-with-toolbar-offset {
   $margin: $demo-section-margin / 2;
 
@@ -213,6 +209,15 @@ $demo-custom-color: $material-color-red-500;
   position: relative;
   justify-content: unset;
   z-index: unset;
+}
+
+//
+// Drawer demo
+//
+
+.demo-drawer-toggle {
+  vertical-align: middle;
+  cursor: pointer;
 }
 
 //
