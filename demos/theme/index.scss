@@ -19,6 +19,7 @@
 @import "../../packages/mdc-card/mdc-card";
 @import "../../packages/mdc-checkbox/mdc-checkbox";
 @import "../../packages/mdc-dialog/mdc-dialog";
+@import "../../packages/mdc-drawer/temporary/mdc-temporary-drawer";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-fab/mdc-fab";
 @import "../../packages/mdc-form-field/mdc-form-field";
@@ -26,7 +27,7 @@
 @import "../../packages/mdc-linear-progress/mdc-linear-progress";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-menu/mdc-menu";
-@import "../../packages/mdc-drawer/temporary/mdc-temporary-drawer";
+@import "../../packages/mdc-radio/mdc-radio";
 @import "../../packages/mdc-ripple/mdc-ripple";
 @import "../../packages/mdc-select/mdc-select";
 @import "../../packages/mdc-slider/mdc-slider";
@@ -62,10 +63,6 @@ figure {
 //
 // Page toolbar
 //
-
-.demo-icon--inline {
-  vertical-align: middle;
-}
 
 .demo-anchor-with-toolbar-offset {
   $margin: $demo-section-margin / 2;
@@ -251,6 +248,15 @@ figure {
 }
 
 //
+// Drawer demo
+//
+
+.demo-drawer-toggle {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+//
 // Floating Action Button (FAB) demo
 //
 
@@ -312,6 +318,43 @@ figure {
 
 .demo-linear-progress__row + .demo-linear-progress__row {
   margin-top: 64px;
+}
+
+//
+// Radio Button demo
+//
+
+.demo-radio-group {
+  display: inline-block;
+  margin: 0 24px 24px 0;
+}
+
+.demo-radio-form-field {
+  margin-right: 8px;
+}
+
+@mixin demo-radio-color($color) {
+  .mdc-radio__native-control:checked + .mdc-radio__background {
+    &::before {
+      @include mdc-theme-prop(background-color, $color);
+    }
+
+    .mdc-radio__outer-circle {
+      @include mdc-theme-prop(border-color, $color);
+    }
+
+    .mdc-radio__inner-circle {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+.demo-radio--secondary {
+  @include demo-radio-color($mdc-theme-secondary);
+}
+
+.demo-radio--custom {
+  @include demo-radio-color($demo-custom-color);
 }
 
 //

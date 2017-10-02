@@ -176,7 +176,6 @@ $mdc-radio-transition-duration: 120ms;
 }
 
 .mdc-radio__native-control:disabled,
-fieldset:disabled .mdc-radio__native-control,
 [aria-disabled="true"] .mdc-radio__native-control {
   + .mdc-radio__background {
     cursor: default;
