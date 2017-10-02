@@ -39,7 +39,7 @@
   // :not(:disabled) is used to support link styled as button
   // as link does not support :enabled style
   &:not(:disabled) {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
   }
 }
 
