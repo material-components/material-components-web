@@ -184,7 +184,7 @@ figure {
 // Card demo
 //
 
-.demo-card-wrap {
+.demo-card-wrapper {
   display: inline-block;
   width: 350px;
   margin: 0 24px 24px 0;
@@ -231,12 +231,12 @@ figure {
   align-items: center;
 }
 
-.demo-checkbox-wrap,
+.demo-checkbox-wrapper,
 .demo-checkbox-toggle {
   margin-right: 10px;
 }
 
-.demo-checkbox-wrap + .demo-checkbox-toggle {
+.demo-checkbox-wrapper + .demo-checkbox-toggle {
   margin-left: 20px;
 }
 
@@ -406,7 +406,7 @@ figure {
 // Switch demo
 //
 
-.demo-switch-wrap {
+.demo-switch-wrapper {
   display: inline-block;
   margin: 16px 16px 0 0;
 }
@@ -415,7 +415,7 @@ figure {
 // Text Field demo
 //
 
-.demo-textfield-wrap {
+.demo-textfield-wrapper {
   display: inline-block;
   margin: 16px 16px 0 0;
 }
