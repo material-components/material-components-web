@@ -139,6 +139,7 @@ function transform(srcFile, rootDir) {
 
       const variableDeclarator = t.variableDeclarator(variableDeclaratorId, callExpression);
       const variableDeclaration = t.variableDeclaration('const', [variableDeclarator]);
+      // Preserve comments above import statements, since this is most likely the license comment.
       if (path.node.comments && path.node.comments.length > 0) {
         const commentValue = path.node.comments[0].value;
         variableDeclaration.comments = variableDeclaration.comments || [];
