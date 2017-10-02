@@ -336,6 +336,19 @@ figure {
   height: 100px;
   padding: 1rem;
   margin: 16px 16px 0 0;
+  font-weight: 500;
+}
+
+.demo-ripple-box--primary {
+  @include mdc-theme-prop(color, primary);
+}
+
+.demo-ripple-box--secondary {
+  @include mdc-theme-prop(color, secondary);
+}
+
+.demo-ripple-box--custom {
+  @include mdc-theme-prop(color, $demo-custom-color);
 }
 
 .demo-ripple-surface {
