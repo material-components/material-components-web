@@ -38,6 +38,12 @@ export class MDCTextfield extends MDCComponent {
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = rippleFactory(this.root_);
     };
+    if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
+      this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    };
+    if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
+      this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
+    };
   }
 
   destroy() {
@@ -79,19 +85,58 @@ export class MDCTextfield extends MDCComponent {
           label.classList.remove(className);
         }
       },
-    }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_()));
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
+      registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT),
+    }, this.getInputAdapterMethods_(), this.getHelptextAdapterMethods_(), this.getBottomLineAdapterMethods_(),
+    this.getIconAdapterMethods_()));
+  }
+
+  getIconAdapterMethods_() {
+    return {
+      setIconAttr: (name, value) => {
+        if (this.icon_) {
+          this.icon_.setAttribute(name, value);
+        }
+      },
+    };
+  }
+
+  getBottomLineAdapterMethods_() {
+    return {
+      addClassToBottomLine: (className) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.classList.add(className);
+        }
+      },
+      removeClassFromBottomLine: (className) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.classList.remove(className);
+        }
+      },
+      setBottomLineAttr: (attr, value) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.setAttribute(attr, value);
+        }
+      },
+      registerTransitionEndHandler: (handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.addEventListener('transitionend', handler);
+        }
+      },
+      deregisterTransitionEndHandler: (handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.removeEventListener('transitionend', handler);
+        }
+      },
+    };
   }
 
   getInputAdapterMethods_() {
     return {
-      registerInputFocusHandler: (handler) => this.input_.addEventListener('focus', handler),
-      registerInputBlurHandler: (handler) => this.input_.addEventListener('blur', handler),
-      registerInputInputHandler: (handler) => this.input_.addEventListener('input', handler),
-      registerInputKeydownHandler: (handler) => this.input_.addEventListener('keydown', handler),
-      deregisterInputFocusHandler: (handler) => this.input_.removeEventListener('focus', handler),
-      deregisterInputBlurHandler: (handler) => this.input_.removeEventListener('blur', handler),
-      deregisterInputInputHandler: (handler) => this.input_.removeEventListener('input', handler),
-      deregisterInputKeydownHandler: (handler) => this.input_.removeEventListener('keydown', handler),
+      registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
+      deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
       getNativeInput: () => this.input_,
     };
   }
