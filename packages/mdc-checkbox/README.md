@@ -255,4 +255,11 @@ not return an object.
 
 ## Theming
 
-> TK once mdc-theming lands.
+MDC Checkboxes use the theme's primary color by default for checked and indeterminate states, and are completely dark theme
+aware.
+
+### Caveat: Edge and CSS Variables
+
+In browsers that fully support CSS variables, MDC Checkbox references CSS variables wherever theme properties are used.
+However, due to Edge's buggy CSS variable support, the `background-color` for `.mdc-checkbox__background::before` will not honor CSS variables in Edge.
+This means you will need to override this style manually for Edge if you alter the CSS variable for the primary color.
