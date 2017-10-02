@@ -102,6 +102,9 @@ module.exports = [{
     libraryTarget: 'umd',
     library: 'mdc',
   },
+  // See https://github.com/webpack/webpack-dev-server/issues/882
+  // Because we only spin up dev servers temporarily, and all of our assets are publicly
+  // available on GitHub, we can safely disable this check.
   devServer: {
     disableHostCheck: true,
   },
@@ -153,12 +156,6 @@ if (!IS_DEV) {
       libraryTarget: 'umd',
       library: ['mdc', '[name]'],
     },
-    // See https://github.com/webpack/webpack-dev-server/issues/882
-    // Because we only spin up dev servers temporarily, and all of our assets are publicly
-    // available on GitHub, we can safely disable this check.
-    devServer: {
-      disableHostCheck: true,
-    },
     devtool: DEVTOOL,
     module: {
       rules: [{
@@ -209,9 +206,6 @@ if (!IS_DEV) {
       publicPath: PUBLIC_PATH,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
-    devServer: {
-      disableHostCheck: true,
-    },
     devtool: DEVTOOL,
     module: {
       rules: [{
@@ -245,9 +239,6 @@ if (IS_DEV) {
       path: OUT_PATH,
       publicPath: PUBLIC_PATH,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
-    },
-    devServer: {
-      disableHostCheck: true,
     },
     devtool: DEVTOOL,
     module: {
