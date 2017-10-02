@@ -136,3 +136,10 @@ Mixin | Description
 `mdc-button-ripple` | Sets the ripple to the given [ripple configuration](https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md)
 `mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px)
 `mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px)
+
+#### Caveat: Edge and CSS Variables
+
+In browsers that fully support CSS variables, the above mixins will hook up styles using CSS variables if a theme property is passed.
+However, due to Edge's buggy CSS variable support, `mdc-button-container-fill-color` will not honor CSS variables in Edge.
+This means you will need to override button container styles manually for Edge if you are altering the affected CSS variables for theme properties
+(raised and unelevated buttons use primary by default for the container fill color).
