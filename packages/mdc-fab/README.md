@@ -138,3 +138,9 @@ Mixin | Description
 `mdc-fab-ripple($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
 
 [ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
+
+#### Caveat: Edge and CSS Variables
+
+In browsers that fully support CSS variables, the above mixins will hook up styles using CSS variables if a theme property is passed.
+However, due to Edge's buggy CSS variable support, `mdc-fab-container-color` will not honor CSS variables in Edge.
+This means you will need to override FAB container styles manually for Edge if you are altering the affected CSS variables for theme properties (FAB uses secondary by default for the container fill color).

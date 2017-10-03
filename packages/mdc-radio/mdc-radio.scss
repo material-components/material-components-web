@@ -73,7 +73,7 @@ $mdc-radio-transition-duration: 120ms;
     height: $mdc-radio-ui-pct;
 
     &::before {
-      @include mdc-theme-prop(background-color, primary);
+      @include mdc-theme-prop(background-color, primary, $edgeOptOut: true);
 
       position: absolute;
       top: 0;
@@ -176,7 +176,6 @@ $mdc-radio-transition-duration: 120ms;
 }
 
 .mdc-radio__native-control:disabled,
-fieldset:disabled .mdc-radio__native-control,
 [aria-disabled="true"] .mdc-radio__native-control {
   + .mdc-radio__background {
     cursor: default;

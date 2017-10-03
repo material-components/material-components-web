@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +16,13 @@
  */
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   ROOT: 'mdc-form-field',
 };
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   LABEL_SELECTOR: '.mdc-form-field > label',
 };
+
+export {cssClasses, strings};

@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,7 +75,7 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
 /**
  * @extends {MDCFoundation<!MDCRippleAdapter>}
  */
-export default class MDCRippleFoundation extends MDCFoundation {
+class MDCRippleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -506,3 +507,5 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
   }
 }
+
+export default MDCRippleFoundation;

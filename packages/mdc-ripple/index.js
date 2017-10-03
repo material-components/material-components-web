@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,13 +20,10 @@ import MDCRippleAdapter from './adapter';
 import MDCRippleFoundation from './foundation';
 import * as util from './util';
 
-export {MDCRippleFoundation};
-export {util};
-
 /**
  * @extends MDCComponent<!MDCRippleFoundation>
  */
-export class MDCRipple extends MDCComponent {
+class MDCRipple extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
@@ -136,3 +134,5 @@ RippleCapableSurface.prototype.unbounded;
  * @type {boolean|undefined}
  */
 RippleCapableSurface.prototype.disabled;
+
+export {MDCRipple, MDCRippleFoundation, util};
