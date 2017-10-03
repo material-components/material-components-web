@@ -17,7 +17,7 @@
 const path = require('path');
 const webpackConfig = require('./webpack.config')[0];
 
-const USING_TRAVISCI = Boolean(process.env.TRAVIS);
+// const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
 const SL_LAUNCHERS = {
