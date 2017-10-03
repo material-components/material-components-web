@@ -93,35 +93,14 @@ const createCssLoaderConfig = () =>
 const createCssExtractTextPlugin = () => new ExtractTextPlugin(CSS_FILENAME_OUTPUT_PATTERN);
 
 module.exports = [{
-  name: 'js-components',
-  entry: {
-    animation: [path.resolve('./packages/mdc-animation/index.js')],
-    autoInit: [path.resolve('./packages/mdc-auto-init/index.js')],
-    base: [path.resolve('./packages/mdc-base/index.js')],
-    checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
-    dialog: [path.resolve('./packages/mdc-dialog/index.js')],
-    drawer: [path.resolve('./packages/mdc-drawer/index.js')],
-    formField: [path.resolve('./packages/mdc-form-field/index.js')],
-    gridList: [path.resolve('./packages/mdc-grid-list/index.js')],
-    iconToggle: [path.resolve('./packages/mdc-icon-toggle/index.js')],
-    linearProgress: [path.resolve('./packages/mdc-linear-progress/index.js')],
-    menu: [path.resolve('./packages/mdc-menu/index.js')],
-    radio: [path.resolve('./packages/mdc-radio/index.js')],
-    ripple: [path.resolve('./packages/mdc-ripple/index.js')],
-    select: [path.resolve('./packages/mdc-select/index.js')],
-    selectionControl: [path.resolve('./packages/mdc-selection-control/index.js')],
-    slider: [path.resolve('./packages/mdc-slider/index.js')],
-    snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
-    tabs: [path.resolve('./packages/mdc-tabs/index.js')],
-    textfield: [path.resolve('./packages/mdc-textfield/index.js')],
-    toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
-  },
+  name: 'js-all',
+  entry: path.resolve('./packages/material-components-web/index.js'),
   output: {
     path: OUT_PATH,
     publicPath: PUBLIC_PATH,
-    filename: 'mdc.[name].' + (IS_PROD ? 'min.' : '') + 'js',
+    filename: 'material-components-web.' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
-    library: ['mdc', '[name]'],
+    library: 'mdc',
   },
   // See https://github.com/webpack/webpack-dev-server/issues/882
   // Because we only spin up dev servers temporarily, and all of our assets are publicly
@@ -143,84 +122,103 @@ module.exports = [{
   plugins: [
     createBannerPlugin(),
   ],
-}, {
-  name: 'js-all',
-  entry: path.resolve('./packages/material-components-web/index.js'),
-  output: {
-    path: OUT_PATH,
-    publicPath: PUBLIC_PATH,
-    filename: 'material-components-web.' + (IS_PROD ? 'min.' : '') + 'js',
-    libraryTarget: 'umd',
-    library: 'mdc',
-  },
-  devServer: {
-    disableHostCheck: true,
-  },
-  devtool: DEVTOOL,
-  module: {
-    rules: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader',
-      options: {
-        cacheDirectory: true,
-      },
-    }],
-  },
-  plugins: [
-    createBannerPlugin(),
-  ],
-}, {
-  name: 'css',
-  entry: {
-    'material-components-web': path.resolve(
-      './packages/material-components-web/material-components-web.scss'),
-    'mdc.button': path.resolve('./packages/mdc-button/mdc-button.scss'),
-    'mdc.card': path.resolve('./packages/mdc-card/mdc-card.scss'),
-    'mdc.checkbox': path.resolve('./packages/mdc-checkbox/mdc-checkbox.scss'),
-    'mdc.dialog': path.resolve('./packages/mdc-dialog/mdc-dialog.scss'),
-    'mdc.drawer': path.resolve('./packages/mdc-drawer/mdc-drawer.scss'),
-    'mdc.elevation': path.resolve('./packages/mdc-elevation/mdc-elevation.scss'),
-    'mdc.fab': path.resolve('./packages/mdc-fab/mdc-fab.scss'),
-    'mdc.form-field': path.resolve('./packages/mdc-form-field/mdc-form-field.scss'),
-    'mdc.grid-list': path.resolve('./packages/mdc-grid-list/mdc-grid-list.scss'),
-    'mdc.icon-toggle': path.resolve('./packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
-    'mdc.layout-grid': path.resolve('./packages/mdc-layout-grid/mdc-layout-grid.scss'),
-    'mdc.linear-progress': path.resolve('./packages/mdc-linear-progress/mdc-linear-progress.scss'),
-    'mdc.list': path.resolve('./packages/mdc-list/mdc-list.scss'),
-    'mdc.menu': path.resolve('./packages/mdc-menu/mdc-menu.scss'),
-    'mdc.radio': path.resolve('./packages/mdc-radio/mdc-radio.scss'),
-    'mdc.ripple': path.resolve('./packages/mdc-ripple/mdc-ripple.scss'),
-    'mdc.select': path.resolve('./packages/mdc-select/mdc-select.scss'),
-    'mdc.slider': path.resolve('./packages/mdc-slider/mdc-slider.scss'),
-    'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
-    'mdc.switch': path.resolve('./packages/mdc-switch/mdc-switch.scss'),
-    'mdc.tabs': path.resolve('./packages/mdc-tabs/mdc-tabs.scss'),
-    'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
-    'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
-    'mdc.toolbar': path.resolve('./packages/mdc-toolbar/mdc-toolbar.scss'),
-    'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
-  },
-  output: {
-    path: OUT_PATH,
-    publicPath: PUBLIC_PATH,
-    filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
-  },
-  devServer: {
-    disableHostCheck: true,
-  },
-  devtool: DEVTOOL,
-  module: {
-    rules: [{
-      test: /\.scss$/,
-      use: createCssLoaderConfig(),
-    }],
-  },
-  plugins: [
-    createCssExtractTextPlugin(),
-    createBannerPlugin(),
-  ],
 }];
+
+if (!IS_DEV) {
+  module.exports.push({
+    name: 'js-components',
+    entry: {
+      animation: [path.resolve('./packages/mdc-animation/index.js')],
+      autoInit: [path.resolve('./packages/mdc-auto-init/index.js')],
+      base: [path.resolve('./packages/mdc-base/index.js')],
+      checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
+      dialog: [path.resolve('./packages/mdc-dialog/index.js')],
+      drawer: [path.resolve('./packages/mdc-drawer/index.js')],
+      formField: [path.resolve('./packages/mdc-form-field/index.js')],
+      gridList: [path.resolve('./packages/mdc-grid-list/index.js')],
+      iconToggle: [path.resolve('./packages/mdc-icon-toggle/index.js')],
+      linearProgress: [path.resolve('./packages/mdc-linear-progress/index.js')],
+      menu: [path.resolve('./packages/mdc-menu/index.js')],
+      radio: [path.resolve('./packages/mdc-radio/index.js')],
+      ripple: [path.resolve('./packages/mdc-ripple/index.js')],
+      select: [path.resolve('./packages/mdc-select/index.js')],
+      selectionControl: [path.resolve('./packages/mdc-selection-control/index.js')],
+      slider: [path.resolve('./packages/mdc-slider/index.js')],
+      snackbar: [path.resolve('./packages/mdc-snackbar/index.js')],
+      tabs: [path.resolve('./packages/mdc-tabs/index.js')],
+      textfield: [path.resolve('./packages/mdc-textfield/index.js')],
+      toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
+    },
+    output: {
+      path: OUT_PATH,
+      publicPath: PUBLIC_PATH,
+      filename: 'mdc.[name].' + (IS_PROD ? 'min.' : '') + 'js',
+      libraryTarget: 'umd',
+      library: ['mdc', '[name]'],
+    },
+    devtool: DEVTOOL,
+    module: {
+      rules: [{
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        },
+      }],
+    },
+    plugins: [
+      createBannerPlugin(),
+    ],
+  }, {
+    name: 'css',
+    entry: {
+      'material-components-web': path.resolve(
+        './packages/material-components-web/material-components-web.scss'),
+      'mdc.button': path.resolve('./packages/mdc-button/mdc-button.scss'),
+      'mdc.card': path.resolve('./packages/mdc-card/mdc-card.scss'),
+      'mdc.checkbox': path.resolve('./packages/mdc-checkbox/mdc-checkbox.scss'),
+      'mdc.dialog': path.resolve('./packages/mdc-dialog/mdc-dialog.scss'),
+      'mdc.drawer': path.resolve('./packages/mdc-drawer/mdc-drawer.scss'),
+      'mdc.elevation': path.resolve('./packages/mdc-elevation/mdc-elevation.scss'),
+      'mdc.fab': path.resolve('./packages/mdc-fab/mdc-fab.scss'),
+      'mdc.form-field': path.resolve('./packages/mdc-form-field/mdc-form-field.scss'),
+      'mdc.grid-list': path.resolve('./packages/mdc-grid-list/mdc-grid-list.scss'),
+      'mdc.icon-toggle': path.resolve('./packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
+      'mdc.layout-grid': path.resolve('./packages/mdc-layout-grid/mdc-layout-grid.scss'),
+      'mdc.linear-progress': path.resolve('./packages/mdc-linear-progress/mdc-linear-progress.scss'),
+      'mdc.list': path.resolve('./packages/mdc-list/mdc-list.scss'),
+      'mdc.menu': path.resolve('./packages/mdc-menu/mdc-menu.scss'),
+      'mdc.radio': path.resolve('./packages/mdc-radio/mdc-radio.scss'),
+      'mdc.ripple': path.resolve('./packages/mdc-ripple/mdc-ripple.scss'),
+      'mdc.select': path.resolve('./packages/mdc-select/mdc-select.scss'),
+      'mdc.slider': path.resolve('./packages/mdc-slider/mdc-slider.scss'),
+      'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
+      'mdc.switch': path.resolve('./packages/mdc-switch/mdc-switch.scss'),
+      'mdc.tabs': path.resolve('./packages/mdc-tabs/mdc-tabs.scss'),
+      'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
+      'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
+      'mdc.toolbar': path.resolve('./packages/mdc-toolbar/mdc-toolbar.scss'),
+      'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
+    },
+    output: {
+      path: OUT_PATH,
+      publicPath: PUBLIC_PATH,
+      filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
+    },
+    devtool: DEVTOOL,
+    module: {
+      rules: [{
+        test: /\.scss$/,
+        use: createCssLoaderConfig(),
+      }],
+    },
+    plugins: [
+      createCssExtractTextPlugin(),
+      createBannerPlugin(),
+    ],
+  });
+}
 
 if (IS_DEV) {
   const demoStyleEntry = {};
@@ -241,9 +239,6 @@ if (IS_DEV) {
       path: OUT_PATH,
       publicPath: PUBLIC_PATH,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
-    },
-    devServer: {
-      disableHostCheck: true,
     },
     devtool: DEVTOOL,
     module: {

@@ -63,7 +63,7 @@ specifically for MDC-Web, and is best suited for those looking to contribute dir
 project.
 
 Note that this document assumes you are familiar with the library and its
-[architecture](./architecture.md). If that is not the case, we recommend reading that first. If you
+[architecture](code/architecture.md). If that is not the case, we recommend reading that first. If you
 are brand new to the project, we recommend starting with our [general developer documentation](./developer.md).
 
 ## How to build a component
