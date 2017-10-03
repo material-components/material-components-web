@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +16,14 @@
  */
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control',
 };
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   ROOT: 'mdc-radio',
   DISABLED: 'mdc-radio--disabled',
 };
+
+export {strings, cssClasses};

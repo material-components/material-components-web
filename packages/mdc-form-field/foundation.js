@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +16,13 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCFormFieldAdapter} from './adapter';
+import MDCFormFieldAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCFormFieldAdapter>}
  */
-export default class MDCFormFieldFoundation extends MDCFoundation {
+class MDCFormFieldFoundation extends MDCFoundation {
   /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -64,3 +65,5 @@ export default class MDCFormFieldFoundation extends MDCFoundation {
     requestAnimationFrame(() => this.adapter_.deactivateInputRipple());
   }
 }
+
+export default MDCFormFieldFoundation;

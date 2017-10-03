@@ -116,6 +116,22 @@ import MDCFoundation from '@material/base/foundation';
 
 This is an unfortunate side-effect of how [closure's module naming mechanism works](https://github.com/google/closure-compiler/issues/2257).
 
+#### All `export` statements must be consolidated into one line at the end of the file.
+
+```js
+// BAD
+export function getFoo() {
+...
+export function getBar() {
+// GOOD
+function getFoo() {
+...
+function getBar() {
+...
+export {getFoo, getBar};
+```
+
+
 #### Standard foundation constants must be defined as `@enum` types
 
 - `cssClasses` should be defined as `/** @enum {string} */`

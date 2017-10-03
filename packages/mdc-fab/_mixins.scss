@@ -35,7 +35,7 @@
 }
 
 @mixin mdc-fab-container-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+  @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
 }
 
 @mixin mdc-fab-ink-color($color) {

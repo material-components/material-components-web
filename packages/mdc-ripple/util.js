@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +54,8 @@ function detectEdgePseudoVarBug(windowObj) {
  * @param {boolean=} forceRefresh
  * @return {boolean|undefined}
  */
-export function supportsCssVariables(windowObj, forceRefresh = false) {
+
+function supportsCssVariables(windowObj, forceRefresh = false) {
   if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
     return supportsCssVariables_;
   }
@@ -86,7 +88,7 @@ export function supportsCssVariables(windowObj, forceRefresh = false) {
  * @param {boolean=} forceRefresh
  * @return {boolean|{passive: boolean}}
  */
-export function applyPassive(globalObj = window, forceRefresh = false) {
+function applyPassive(globalObj = window, forceRefresh = false) {
   if (supportsPassive_ === undefined || forceRefresh) {
     let isSupported = false;
     try {
@@ -105,7 +107,7 @@ export function applyPassive(globalObj = window, forceRefresh = false) {
  * @param {!Object} HTMLElementPrototype
  * @return {!Array<string>}
  */
-export function getMatchesProperty(HTMLElementPrototype) {
+function getMatchesProperty(HTMLElementPrototype) {
   return [
     'webkitMatchesSelector', 'msMatchesSelector', 'matches',
   ].filter((p) => p in HTMLElementPrototype).pop();
@@ -117,7 +119,7 @@ export function getMatchesProperty(HTMLElementPrototype) {
  * @param {!ClientRect} clientRect
  * @return {!{x: number, y: number}}
  */
-export function getNormalizedEventCoords(ev, pageOffset, clientRect) {
+function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   const {x, y} = pageOffset;
   const documentX = x + clientRect.left;
   const documentY = y + clientRect.top;
@@ -135,3 +137,5 @@ export function getNormalizedEventCoords(ev, pageOffset, clientRect) {
 
   return {x: normalizedX, y: normalizedY};
 }
+
+export {supportsCssVariables, applyPassive, getMatchesProperty, getNormalizedEventCoords};

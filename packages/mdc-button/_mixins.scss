@@ -28,10 +28,10 @@
 
   @if ($light-or-dark == "light") {
     @include mdc-button-ink-color(text-primary-on-dark);
-    @include mdc-button-ripple((base-color: white, opacity: .32));
+    @include mdc-button-ripple((theme-style: text-primary-on-dark, opacity: $mdc-filled-button-ripple-opacity));
   } @else {
     @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-button-ripple((base-color: black, opacity: .32));
+    @include mdc-button-ripple((theme-style: text-primary-on-light, opacity: $mdc-filled-button-ripple-opacity));
   }
 }
 
@@ -39,7 +39,7 @@
   // :not(:disabled) is used to support link styled as button
   // as link does not support :enabled style
   &:not(:disabled) {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
   }
 }
 
@@ -60,12 +60,6 @@
     @include mdc-ripple-base;
     @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
     @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-
-    &:not(.mdc-ripple-upgraded) {
-      $tap-highlight-color: rgba(map-get($ripple-config, base-color), map-get($ripple-config, opacity));
-
-      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-    }
   }
 }
 
@@ -100,6 +94,7 @@
   text-align: center;
   user-select: none;
   -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   overflow: hidden;
   vertical-align: middle;
 
