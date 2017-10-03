@@ -18,7 +18,7 @@ const path = require('path');
 const webpackConfig = require('./webpack.config')[0];
 
 const USING_TRAVISCI = Boolean(process.env.TRAVIS);
-const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
+const USING_SL = Boolean(process.env.SAUCE_USERNAME);
 
 const SL_LAUNCHERS = {
   'sl-chrome-stable': {
@@ -164,7 +164,7 @@ module.exports = function(config) {
       },
       // Attempt to de-flake Sauce Labs tests on TravisCI.
       transports: ['polling'],
-      browserDisconnectTolerance: 3,
+      browserDisconnectTolerance: 5,
     });
   }
 };
