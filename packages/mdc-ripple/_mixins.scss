@@ -18,9 +18,10 @@
 @import "@material/theme/variables";
 @import "./keyframes";
 
+$mdc-ripple-radius: 100%;
+
 @function mdc-ripple-default-config_() {
   @return (
-    radius: 100%,
     base-color: black,
     opacity: .06
   );
@@ -64,15 +65,13 @@
 }
 
 @mixin mdc-ripple-theme-base_($config) {
-  $radius: map-get($config, radius);
-
   @include mdc-ripple-color_($config);
 
   position: absolute;
-  top: calc(50% - #{$radius});
-  left: calc(50% - #{$radius});
-  width: $radius * 2;
-  height: $radius * 2;
+  top: calc(50% - #{$mdc-ripple-radius});
+  left: calc(50% - #{$mdc-ripple-radius});
+  width: $mdc-ripple-radius * 2;
+  height: $mdc-ripple-radius * 2;
   transition: opacity 250ms linear;
   border-radius: 50%;
   opacity: 0;
@@ -81,7 +80,6 @@
 
 @mixin mdc-ripple-theme($config: ()) {
   $config: map-merge(mdc-ripple-default-config_(), $config);
-  $radius: map-get($config, radius);
 
   &::before, &::after {
     @include mdc-ripple-theme-base_($config);
@@ -102,10 +100,10 @@
   // Background ripple styles
 
   &.mdc-ripple-upgraded::before {
-    top: calc(50% - #{$radius});
-    left: calc(50% - #{$radius});
-    width: $radius * 2;
-    height: $radius * 2;
+    top: calc(50% - #{$mdc-ripple-radius});
+    left: calc(50% - #{$mdc-ripple-radius});
+    width: $mdc-ripple-radius * 2;
+    height: $mdc-ripple-radius * 2;
 
     /* @alternate */
     transform: scale(0);
@@ -123,20 +121,20 @@
 
   &.mdc-ripple-upgraded--unbounded::before {
     /* @alternate */
-    top: calc(50% - #{$radius / 2});
-    top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
+    top: calc(50% - #{$mdc-ripple-radius / 2});
+    top: var(--mdc-ripple-top, calc(50% - #{$mdc-ripple-radius / 2}));
 
     /* @alternate */
-    left: calc(50% - #{$radius / 2});
-    left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
+    left: calc(50% - #{$mdc-ripple-radius / 2});
+    left: var(--mdc-ripple-left, calc(50% - #{$mdc-ripple-radius / 2}));
 
     /* @alternate */
-    width: $radius;
-    width: var(--mdc-ripple-fg-size, $radius);
+    width: $mdc-ripple-radius;
+    width: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
 
     /* @alternate */
-    height: $radius;
-    height: var(--mdc-ripple-fg-size, $radius);
+    height: $mdc-ripple-radius;
+    height: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
 
     /* @alternate */
     transform: scale(0);
@@ -150,12 +148,12 @@
     left: 0;
 
     /* @alternate */
-    width: $radius;
-    width: var(--mdc-ripple-fg-size, $radius);
+    width: $mdc-ripple-radius;
+    width: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
 
     /* @alternate */
-    height: $radius;
-    height: var(--mdc-ripple-fg-size, $radius);
+    height: $mdc-ripple-radius;
+    height: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
     transform: scale(0);
     transform-origin: center center;
     opacity: 0;
@@ -177,12 +175,12 @@
 
     // TODO: Are these not redundant of .mdc-ripple-upgraded (since both classes will be applied)?
     /* @alternate */
-    width: $radius;
-    width: var(--mdc-ripple-fg-size, $radius);
+    width: $mdc-ripple-radius;
+    width: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
 
     /* @alternate */
-    height: $radius;
-    height: var(--mdc-ripple-fg-size, $radius);
+    height: $mdc-ripple-radius;
+    height: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
     transform: scale(0);
     transform-origin: center center;
   }
