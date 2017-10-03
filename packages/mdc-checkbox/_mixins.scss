@@ -26,7 +26,74 @@
 //
 
 // TODO(acdvorak): Figure out why a pre-checked checkbox janks when `indeterminate` is toggled for the first time.
-@mixin mdc-checkbox-color($color) {
+// TODO(acdvorak): Accessibility
+// TODO(acdvorak): Do we need [aria-disabled="true"] selectors?
+
+// NOTE: Child selector MUST begin with `.mdc-checkbox__background`
+@mixin mdc-checkbox-background-unfilled-enabled {
+  .mdc-checkbox__native-control:not(:disabled) ~ {
+    @content;
+  }
+}
+
+// NOTE: Child selector MUST begin with `.mdc-checkbox__background`
+@mixin mdc-checkbox-background-unfilled-disabled {
+  .mdc-checkbox__native-control:disabled ~ {
+    @content;
+  }
+}
+
+// NOTE: Child selector MUST begin with `.mdc-checkbox__background`
+@mixin mdc-checkbox-background-filled-enabled {
+  .mdc-checkbox__native-control:not(:disabled):checked ~,
+  .mdc-checkbox__native-control:not(:disabled):indeterminate ~ {
+    @content;
+  }
+}
+
+// NOTE: Child selector MUST begin with `.mdc-checkbox__background`
+@mixin mdc-checkbox-background-filled-disabled {
+  .mdc-checkbox__native-control:disabled:checked ~,
+  .mdc-checkbox__native-control:disabled:indeterminate ~ {
+    @content;
+  }
+}
+
+@mixin mdc-checkbox-stroke-color($color) {
+  .mdc-checkbox__background {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-checkbox-container-color($color) {
+  .mdc-checkbox__background {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-checkbox-focus-color($color) {
+  // The ::before element is used as a focus indicator for the checkbox
+  .mdc-checkbox__background::before {
+    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+  }
+}
+
+@mixin mdc-checkbox-ink-color($color) {
+  // TODO(acdvorak): Rename to .mdc-checkbox__checkmark-path
+  .mdc-checkbox__checkmark__path {
+    // !important is needed here because a stroke must be set as an attribute on the SVG in order
+    // for line animation to work properly.
+    @include mdc-theme-prop(stroke, $color, $important: true);
+  }
+
+  .mdc-checkbox__mixedmark {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-checkbox-ripple-color($color, $opacity: .14) {
+  // TODO(acdvorak): Refactor ripple SCSS to so that we can override color only.
+
   $ripple-config: (base-color: $color);
 
   // TODO(acdvorak): Refactor ripple mixin to do this @if check automatically, or use mdc-theme-prop()
@@ -34,37 +101,7 @@
     $ripple-config: (theme-style: $color);
   }
 
-  @include mdc-checkbox-ripple-color(map-merge((opacity: .14), $ripple-config));
-  @include mdc-checkbox-state-transition-color($color);
-
-  // The frame's ::before element is used as a focus indicator for the checkbox
-  .mdc-checkbox__native-control:not(:disabled) ~ .mdc-checkbox__background::before {
-    @include mdc-checkbox-container-color($color, $edgeOptOut: true);
-  }
-
-  .mdc-checkbox__native-control:not(:disabled):checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:not(:disabled):indeterminate ~ .mdc-checkbox__background {
-    @include mdc-checkbox-stroke-color($color);
-    @include mdc-checkbox-container-color($color);
-  }
-}
-
-@mixin mdc-checkbox-stroke-color($color) {
-  @include mdc-theme-prop(border-color, $color);
-}
-
-@mixin mdc-checkbox-container-color($color, $edgeOptOut: false) {
-  @include mdc-theme-prop(background-color, $color, $edgeOptOut: $edgeOptOut);
-}
-
-@mixin mdc-checkbox-ink-color($color) {
-  // !important is needed here because a stroke must be set as an attribute on the SVG in order
-  // for line animation to work properly.
-  @include mdc-theme-prop(stroke, $color, $important: true);
-}
-
-@mixin mdc-checkbox-ripple-color($ripple-config) {
-  // TODO(acdvorak): Refactor ripple SCSS to so that we can override color only.
+  $ripple-config: map-merge((opacity: $opacity), $ripple-config);
 
   @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
   @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));

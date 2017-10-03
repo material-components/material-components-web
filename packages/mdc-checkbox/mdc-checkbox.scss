@@ -23,7 +23,43 @@
 .mdc-checkbox {
   @include mdc-checkbox-base_;
   @include mdc-ripple-base;
-  @include mdc-checkbox-color(secondary);
+  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
+
+  @include mdc-checkbox-background-unfilled-enabled {
+    @include mdc-checkbox-stroke-color($mdc-checkbox-border-color);
+  }
+
+  @include mdc-checkbox-background-unfilled-disabled {
+    @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color);
+  }
+
+  @include mdc-checkbox-background-filled-disabled {
+    @include mdc-checkbox-stroke-color(transparent);
+    @include mdc-checkbox-container-color($mdc-checkbox-disabled-color);
+  }
+
+  @include mdc-theme-dark {
+    @include mdc-checkbox-background-unfilled-enabled {
+      @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
+    }
+
+    @include mdc-checkbox-background-unfilled-disabled {
+      @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color-dark);
+    }
+
+    @include mdc-checkbox-background-filled-disabled {
+      @include mdc-checkbox-container-color($mdc-checkbox-disabled-color-dark);
+    }
+  }
+
+  @include mdc-checkbox-focus-color(secondary);
+  @include mdc-checkbox-state-transition-color(secondary);
+  @include mdc-checkbox-ripple-color(secondary);
+
+  @include mdc-checkbox-background-filled-enabled {
+    @include mdc-checkbox-stroke-color(secondary);
+    @include mdc-checkbox-container-color(secondary);
+  }
 }
 
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes
@@ -47,38 +83,10 @@
 
 .mdc-checkbox__background {
   @include mdc-checkbox__background_;
-  @include mdc-checkbox-stroke-color($mdc-checkbox-border-color);
-
-  @include mdc-theme-dark(".mdc-checkbox") {
-    @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
-  }
 
   .mdc-checkbox__native-control:not(:disabled):checked ~ &,
   .mdc-checkbox__native-control:not(:disabled):indeterminate ~ & {
     @include mdc-checkbox__background--filled_;
-  }
-
-  // TODO(acdvorak): Is aria-disabled necessary?
-  .mdc-checkbox__native-control:disabled ~ &,
-  [aria-disabled="true"] .mdc-checkbox__native-control ~ & {
-    @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color);
-
-    @include mdc-theme-dark(".mdc-checkbox") {
-      @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color-dark);
-    }
-  }
-
-  .mdc-checkbox__native-control:disabled:checked ~ &,
-  .mdc-checkbox__native-control:disabled:indeterminate ~ &,
-  [aria-disabled="true"] .mdc-checkbox__native-control:checked ~ &,
-  [aria-disabled="true"] .mdc-checkbox__native-control:indeterminate ~ & {
-    @include mdc-checkbox-stroke-color(transparent);
-    @include mdc-checkbox-container-color($mdc-checkbox-disabled-color);
-    // stylelint-disable selector-max-compound-selectors, selector-max-specificity
-    @include mdc-theme-dark(".mdc-checkbox") {
-      @include mdc-checkbox-container-color($mdc-checkbox-disabled-color-dark);
-    }
-    // stylelint-enable selector-max-compound-selectors, selector-max-specificity
   }
 }
 
@@ -98,8 +106,7 @@
 .mdc-checkbox__native-control {
   @include mdc-checkbox__native-control_;
 
-  &:disabled,
-  [aria-disabled="true"] & {
+  &:disabled {
     @include mdc-checkbox--disabled_;
   }
 }
@@ -119,8 +126,6 @@
 // TODO(acdvorak): Rename to .mdc-checkbox__checkmark-path
 .mdc-checkbox__checkmark__path {
   @include mdc-checkbox__checkmark__path_;
-  // TODO(acdvorak): Accessibility
-  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background &,
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
@@ -130,8 +135,6 @@
 
 .mdc-checkbox__mixedmark {
   @include mdc-checkbox__mixedmark_;
-  // TODO(acdvorak): Accessibility
-  @include mdc-checkbox-container-color($mdc-checkbox-mark-color);
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
     @include mdc-checkbox__mixedmark--checked_;
