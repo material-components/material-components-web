@@ -76,9 +76,9 @@
 }
 
 @mixin mdc-checkbox-state-transition-color($color) {
-  $uid: mdc-checkbox-keyframes-color-uid();
+  $uid: mdc-checkbox-state-transition-keyframes-uid();
 
-  @include mdc-checkbox-keyframes-color($color, $uid);
+  @include mdc-checkbox-state-transition-keyframes($color, $uid);
 
   &.mdc-checkbox--anim {
     &-unchecked-checked,
