@@ -146,7 +146,7 @@
           <a href="#card" class="demo-component-section__permalink" title="Permalink to the theme demo for the card component">#</a>
         </h2>
 
-        <div class="demo-card-wrap">
+        <div class="demo-card-wrapper">
           <div class="mdc-card">
             <section class="mdc-card__primary">
               <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
@@ -163,7 +163,7 @@
           </div>
         </div>
 
-        <div class="demo-card-wrap">
+        <div class="demo-card-wrapper">
           <div class="mdc-card demo-card--with-avatar">
             <section class="mdc-card__primary">
               <div class="demo-card__avatar"></div>
@@ -180,7 +180,7 @@
           </div>
         </div>
 
-        <div class="demo-card-wrap">
+        <div class="demo-card-wrapper">
           <div class="mdc-card demo-card--small">
             <section class="mdc-card__media">
               <h1 class="mdc-card__title mdc-card__title--large">Title</h1>
@@ -200,7 +200,7 @@
         </h2>
 
         <div class="demo-checkbox-row">
-          <div class="mdc-form-field demo-checkbox-wrap">
+          <div class="mdc-form-field demo-checkbox-wrapper">
             <div class="mdc-checkbox">
               <input type="checkbox"
                      id="enabled-checkbox"
@@ -219,7 +219,7 @@
             <label for="enabled-checkbox" id="enabled-checkbox-label">Enabled</label>
           </div>
 
-          <div class="mdc-form-field demo-checkbox-wrap">
+          <div class="mdc-form-field demo-checkbox-wrapper">
             <div class="mdc-checkbox">
               <input type="checkbox"
                      id="indeterminate-checkbox"
@@ -238,7 +238,7 @@
             <label for="indeterminate-checkbox" id="indeterminate-checkbox-label">Indeterminate</label>
           </div>
 
-          <div class="mdc-form-field demo-checkbox-wrap">
+          <div class="mdc-form-field demo-checkbox-wrapper">
             <div class="mdc-checkbox mdc-checkbox--disabled">
               <input type="checkbox"
                      id="disabled-checkbox"
@@ -557,6 +557,264 @@
           </div>
         </figure>
       </section>
+
+      <section class="demo-component-section">
+        <i id="ripple" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Ripple
+          <a href="#ripple" class="demo-component-section__permalink" title="Permalink to the theme demo for the ripple component">#</a>
+        </h2>
+
+        <figure class="demo-ripple__row">
+          <figcaption class="mdc-typography--subheading2">Bounded</figcaption>
+          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-surface" tabindex="0">
+            Default
+          </div>
+          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-box--primary demo-ripple-surface demo-ripple-surface--primary" tabindex="0">
+            Primary Color
+          </div>
+          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-box--secondary demo-ripple-surface demo-ripple-surface--secondary" tabindex="0">
+            Secondary Color
+          </div>
+          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-box--custom demo-ripple-surface demo-ripple-surface--custom" tabindex="0">
+            Custom Color
+          </div>
+        </figure>
+
+        <figure class="demo-ripple__row">
+          <figcaption class="mdc-typography--subheading2">Unbounded</figcaption>
+          <div class="demo-ripple-box">
+            Default
+            <div class="mdc-ripple-surface material-icons demo-ripple-surface" data-mdc-ripple-is-unbounded
+                 aria-label="Favorite" tabindex="0">
+              favorite
+            </div>
+          </div>
+          <div class="demo-ripple-box demo-ripple-box--primary">
+            Primary Color
+            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--primary" data-mdc-ripple-is-unbounded
+                 aria-label="Favorite" tabindex="0">
+              favorite
+            </div>
+          </div>
+          <div class="demo-ripple-box demo-ripple-box--secondary">
+            Secondary Color
+            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--secondary" data-mdc-ripple-is-unbounded
+                 aria-label="Favorite" tabindex="0">
+              favorite
+            </div>
+          </div>
+          <div class="demo-ripple-box demo-ripple-box--custom">
+            Custom Color
+            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--custom" data-mdc-ripple-is-unbounded
+                 aria-label="Favorite" tabindex="0">
+              favorite
+            </div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="select" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Select
+          <a href="#select" class="demo-component-section__permalink" title="Permalink to the theme demo for the select component">#</a>
+        </h2>
+
+        <div class="mdc-select" role="listbox" tabindex="0">
+          <span class="mdc-select__selected-text">Pick a food group</span>
+          <div class="mdc-simple-menu mdc-select__menu">
+            <ul class="mdc-list mdc-simple-menu__items">
+              <li class="mdc-list-item" role="option" id="grains" aria-disabled="true">
+                Pick a food group
+              </li>
+              <li class="mdc-list-item" role="option" id="grains" tabindex="0">
+                Bread, Cereal, Rice, and Pasta
+              </li>
+              <li class="mdc-list-item" role="option" id="vegetables" aria-disabled="true" tabindex="0">
+                Vegetables
+              </li>
+              <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
+                Fruit
+              </li>
+              <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
+                Milk, Yogurt, and Cheese
+              </li>
+              <li class="mdc-list-item" role="option" id="meat" tabindex="0">
+                Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
+              </li>
+              <li class="mdc-list-item" role="option" id="fats" tabindex="0">
+                Fats, Oils, and Sweets
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="slider" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Slider
+          <a href="#slider" class="demo-component-section__permalink" title="Permalink to the theme demo for the slider component">#</a>
+        </h2>
+
+        <div class="mdc-slider mdc-slider--discrete mdc-slider--display-markers" tabindex="0" role="slider"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="30"
+             aria-labelledby="example-ds-marker-label">
+          <div class="mdc-slider__track-container">
+            <div class="mdc-slider__track"></div>
+            <div class="mdc-slider__track-marker-container"></div>
+          </div>
+          <div class="mdc-slider__thumb-container">
+            <div class="mdc-slider__pin">
+              <span class="mdc-slider__pin-value-marker">30</span>
+            </div>
+            <svg class="mdc-slider__thumb" width="21" height="21">
+              <circle cx="10.5" cy="10.5" r="7.875"></circle>
+            </svg>
+            <div class="mdc-slider__focus-ring"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="switch" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Switch
+          <a href="#switch" class="demo-component-section__permalink" title="Permalink to the theme demo for the switch component">#</a>
+        </h2>
+
+        <fieldset class="demo-switch-wrapper">
+          <div class="mdc-switch">
+            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" checked />
+            <div class="mdc-switch__background">
+              <div class="mdc-switch__knob"></div>
+            </div>
+          </div>
+          <label for="basic-switch" class="mdc-switch-label">off/on</label>
+        </fieldset>
+        <fieldset class="demo-switch-wrapper" disabled>
+          <div class="mdc-switch">
+            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" checked />
+            <div class="mdc-switch__background">
+              <div class="mdc-switch__knob"></div>
+            </div>
+          </div>
+          <label for="basic-switch" class="mdc-switch-label">disabled</label>
+        </fieldset>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="tabs" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Tabs
+          <a href="#tabs" class="demo-component-section__permalink" title="Permalink to the theme demo for the tabs component">#</a>
+        </h2>
+
+        <figure>
+          <figcaption>Default</figcaption>
+
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </figure>
+        <figure>
+          <figcaption>Primary Color</figcaption>
+
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-primary">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </figure>
+        <figure>
+          <figcaption>Secondary Color</figcaption>
+
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-accent">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </figure>
+      </section>
+
+      <section class="demo-component-section">
+        <i id="textfield" class="demo-anchor-with-toolbar-offset"></i>
+        <h2 class="mdc-typography--headline demo-component-section__heading">
+          Text Field
+          <a href="#textfield" class="demo-component-section__permalink" title="Permalink to the theme demo for the text field component">#</a>
+        </h2>
+
+        <figure class="demo-textfield-wrapper">
+          <div class="mdc-textfield">
+            <input type="text" class="mdc-textfield__input" id="demo-textfield-default"
+                   name="email" aria-controls="demo-textfield-default-helptext"
+                   data-demo-no-js autocomplete="email">
+            <label for="demo-textfield-default" class="mdc-textfield__label">Default</label>
+            <div class="mdc-textfield__bottom-line"></div>
+          </div>
+          <p class="mdc-textfield-helptext" id="demo-textfield-default-helptext"
+             aria-hidden="true">
+            Help text
+          </p>
+        </figure>
+        <figure class="demo-textfield-wrapper">
+          <div class="mdc-textfield">
+            <input type="text" class="mdc-textfield__input" id="demo-textfield-required" required
+                   name="email" aria-controls="demo-textfield-required-helptext"
+                   data-demo-no-js autocomplete="email">
+            <label for="demo-textfield-required" class="mdc-textfield__label">Required</label>
+            <div class="mdc-textfield__bottom-line"></div>
+          </div>
+          <p class="mdc-textfield-helptext mdc-textfield-helptext--validation-msg" id="demo-textfield-required-helptext">
+            Must provide a name
+          </p>
+        </figure>
+        <figure class="demo-textfield-wrapper">
+          <div class="mdc-textfield mdc-textfield--box">
+            <input type="text" class="mdc-textfield__input" id="demo-textfield-box"
+                   aria-controls="name-validation-message">
+            <label for="demo-textfield-box" class="mdc-textfield__label">With <code>--box</code> modifier</label>
+            <div class="mdc-textfield__bottom-line"></div>
+          </div>
+          <p class="mdc-textfield-helptext" id="demo-textfield-box-helptext"
+             aria-hidden="true">
+            Help text
+          </p>
+        </figure>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" charset="utf-8"></script>
@@ -568,126 +826,192 @@
           return [].slice.call(document.querySelectorAll(query));
         }
 
-        /*
-         * Component section heading permalinks
-         */
-
-        document.addEventListener('focusin', function(e) {
-          if (e.target.classList.contains('demo-component-section__permalink')) {
-            e.target.parentElement.classList.add('demo-component-section__heading--focus');
-          }
-        });
-        document.addEventListener('focusout', function(e) {
-          if (e.target.classList.contains('demo-component-section__permalink')) {
-            e.target.parentElement.classList.remove('demo-component-section__heading--focus');
-          }
-        });
-
-        /*
-         * Button
-         */
-
-        // Because we load our CSS via webpack, we need to ensure that all of the correct styles
-        // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
-        // elements before our CSS is applied, leading to improper UX.
-        var buttonPollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-button')).position;
-          if (pos === 'relative') {
-            attachButtonRipples();
-            clearInterval(buttonPollId);
-          }
-        }, 250);
-
-        function attachButtonRipples() {
-          var btns = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
-          for (var i = 0, btn; btn = btns[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(btn);
-          }
+        function matches(elem, selector) {
+          var nativeMatches = elem.matches || elem.webkitMatchesSelector || elem.mozMatchesSelector || elem.msMatchesSelector || elem.oMatchesSelector;
+          return nativeMatches.call(elem, selector);
         }
 
-        /*
-         * FAB
-         */
+        function closest(elem, selector) {
+          while (elem) {
+            if (matches(elem, selector)) {
+              return elem;
+            }
+            elem = elem.parentElement;
+          }
+          return null;
+        }
 
         // Because we load our CSS via webpack, we need to ensure that all of the correct styles
         // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
         // elements before our CSS is applied, leading to improper UX.
-        var fabPollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-fab.material-icons')).position;
+        var cssPollId = setInterval(function() {
+          var pos = getComputedStyle(document.querySelector('.mdc-button')).position;
           if (pos === 'relative') {
-            attachFabRipples();
-            clearInterval(fabPollId);
+            init();
+            clearInterval(cssPollId);
           }
         }, 250);
 
-        function attachFabRipples() {
+        function init() {
+          /*
+           * Permalinks for component section headings
+           */
+
+          document.addEventListener('focusin', function(e) {
+            if (e.target.classList.contains('demo-component-section__permalink')) {
+              e.target.parentElement.classList.add('demo-component-section__heading--focus');
+            }
+          });
+          document.addEventListener('focusout', function(e) {
+            if (e.target.classList.contains('demo-component-section__permalink')) {
+              e.target.parentElement.classList.remove('demo-component-section__heading--focus');
+            }
+          });
+
+          function flashCurrentSection() {
+            var id = location.href.split('#')[1];
+            if (!id) {
+              return;
+            }
+            var anchor = document.getElementById(id);
+            if (!anchor) {
+              return;
+            }
+            var section = closest(anchor, '.demo-component-section');
+            if (!section) {
+              return;
+            }
+            section.classList.add('demo-component-section--flash');
+            setTimeout(function() {
+              section.classList.remove('demo-component-section--flash');
+            }, 200);
+          }
+
+          window.addEventListener('hashchange', function(e) {
+            flashCurrentSection();
+          });
+          flashCurrentSection();
+
+          /*
+           * Button
+           */
+
+          var buttons = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
+          for (var i = 0, button; button = buttons[i]; i++) {
+            mdc.ripple.MDCRipple.attachTo(button);
+          }
+
+          /*
+           * FAB
+           */
+
           var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
           for (var i = 0, fab; fab = fabs[i]; i++) {
             mdc.ripple.MDCRipple.attachTo(fab);
           }
-        }
 
-        /*
-         * Checkbox
-         */
+          /*
+           * Checkbox
+           */
 
-        document.querySelector('#indeterminate-checkbox').indeterminate = true;
+          document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
-        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
-          var checkboxes = getAll('.demo-checkbox-wrap .mdc-checkbox__native-control');
-          checkboxes.forEach(function(checkbox) {
-            checkbox.indeterminate = !checkbox.indeterminate;
+          document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
+            var checkboxes = getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
+            checkboxes.forEach(function(checkbox) {
+              checkbox.indeterminate = !checkbox.indeterminate;
+            });
           });
-        });
 
-        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
-          var formFields = getAll('.demo-checkbox-wrap.mdc-form-field');
-          formFields.forEach(function(formField) {
-            formField.classList.toggle('mdc-form-field--align-end');
+          document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
+            var formFields = getAll('.demo-checkbox-wrapper.mdc-form-field');
+            formFields.forEach(function(formField) {
+              formField.classList.toggle('mdc-form-field--align-end');
+            });
           });
-        });
 
-        /*
-         * Drawer
-         */
+          /*
+           * Drawer
+           */
 
-        var drawerEl = document.querySelector('.mdc-temporary-drawer');
-        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+          var drawerEl = document.querySelector('.mdc-temporary-drawer');
+          var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
-          toggleElem.addEventListener('click', function() {
-            drawer.open = true;
+          getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
+            toggleElem.addEventListener('click', function() {
+              drawer.open = true;
+            });
           });
-        });
 
-        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
-          console.log('Received MDCTemporaryDrawer:open');
-        });
+          drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+            console.log('Received MDCTemporaryDrawer:open');
+          });
 
-        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
-          console.log('Received MDCTemporaryDrawer:close');
-        });
+          drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+            console.log('Received MDCTemporaryDrawer:close');
+          });
 
-        /*
-         * Icon Toggle
-         */
+          /*
+           * Icon Toggle
+           */
 
-        var iconToggleEls = getAll('.mdc-icon-toggle');
-        for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
-          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
-        }
-
-        /*
-         * Linear Progress
-         */
-
-        var progressEls = getAll('.mdc-linear-progress');
-        for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
-          var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
-          linearProgress.progress = 0.5;
-          if (progressEl.dataset.buffer) {
-            linearProgress.buffer = 0.75;
+          var iconToggleEls = getAll('.mdc-icon-toggle');
+          for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
+            mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
           }
+
+          /*
+           * Linear Progress
+           */
+
+          var progressEls = getAll('.mdc-linear-progress');
+          for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
+            var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
+            linearProgress.progress = 0.5;
+            if (progressEl.dataset.buffer) {
+              linearProgress.buffer = 0.75;
+            }
+          }
+
+          /*
+           * Ripple
+           */
+
+          getAll('.mdc-ripple-surface:not([data-demo-no-js])').forEach(function(surface) {
+            mdc.ripple.MDCRipple.attachTo(surface);
+          });
+
+          /*
+           * Select
+           */
+
+          getAll('.mdc-select:not(select)').forEach(function(select) {
+            mdc.select.MDCSelect.attachTo(select);
+          });
+
+          /*
+           * Slider
+           */
+
+          getAll('.mdc-slider').forEach(function(slider) {
+            mdc.slider.MDCSlider.attachTo(slider);
+          });
+
+          /*
+           * Tabs
+           */
+
+          getAll('.mdc-tab-bar').forEach(function(tabBar) {
+            mdc.tabs.MDCTabBar.attachTo(tabBar);
+          });
+
+          /*
+           * Textfield
+           */
+
+          getAll('.mdc-textfield:not([data-demo-no-js])').forEach(function(textField) {
+            mdc.textfield.MDCTextfield.attachTo(textField);
+          });
         }
 
         /*
