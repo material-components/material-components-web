@@ -17,7 +17,7 @@
 const path = require('path');
 const webpackConfig = require('./webpack.config')[0];
 
-// const USING_TRAVISCI = Boolean(process.env.TRAVIS);
+const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
 const SL_LAUNCHERS = {
@@ -153,23 +153,22 @@ module.exports = function(config) {
   });
 
   // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
-  // if (USING_TRAVISCI) {
-  config.set({
-    sauceLabs: {
-      testName: 'Material Components Web Unit Tests - CI',
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-      username: 'material-sauce',
-      accessKey: process.env.SAUCE_ACCESS_KEY,
-      startConnect: false,
-    },
-    // Attempt to de-flake Sauce Labs tests on TravisCI.
-    transports: ['polling'],
-    browserDisconnectTolerance: 3,
-  });
-  // }
+  if (USING_TRAVISCI) {
+    config.set({
+      sauceLabs: {
+        testName: 'Material Components Web Unit Tests - CI',
+        tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+        username: 'material-sauce',
+        accessKey: process.env.SAUCE_ACCESS_KEY,
+        startConnect: false,
+      },
+      // Attempt to de-flake Sauce Labs tests on TravisCI.
+      transports: ['polling'],
+      browserDisconnectTolerance: 3,
+    });
+  }
 };
 
 function determineBrowsers() {
-  return Object.keys(SL_LAUNCHERS);
-  // return USING_SL ? Object.keys(SL_LAUNCHERS) : ['Chrome'];
+  return USING_SL ? Object.keys(SL_LAUNCHERS) : ['Chrome'];
 }
