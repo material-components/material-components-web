@@ -5,7 +5,7 @@ branches:
 matrix:
   include:
     # Unit tests on Node Stable
-    - node_js: 7
+    - node_js: 7.10.1
       env:
         global:
           - SAUCE_USERNAME=mdc-web
