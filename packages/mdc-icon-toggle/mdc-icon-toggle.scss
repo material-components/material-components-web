@@ -74,12 +74,12 @@
 
 .mdc-icon-toggle--primary {
   @include mdc-theme-prop(color, primary);
-  @include mdc-ripple-theme((theme-style: primary, opacity: .14));
+  @include mdc-ripple-theme((base-color: primary, opacity: .14));
 }
 
 .mdc-icon-toggle--accent {
   @include mdc-theme-prop(color, secondary);
-  @include mdc-ripple-theme((theme-style: secondary, opacity: .14));
+  @include mdc-ripple-theme((base-color: secondary, opacity: .14));
 }
 
 .mdc-icon-toggle--disabled {

@@ -20,13 +20,9 @@
 
 @function mdc-ripple-default-config_() {
   @return (
-    // TODO: Remove these and build them directly into selectors
-    bg-pseudo: '::before',
-    fg-pseudo: '::after',
     radius: 100%,
     base-color: black,
-    opacity: .06,
-    theme-style: null
+    opacity: .06
   );
 }
 
@@ -45,26 +41,26 @@
 @mixin mdc-ripple-color_($config) {
   $base-color: map-get($config, base-color);
   $opacity: map-get($config, opacity);
-  $theme-style: map-get($config, theme-style);
 
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
-  @if ($theme-style) {
-    $theme-value: map-get($mdc-theme-property-values, $theme-style);
+  @if type-of($base-color) == "color" {
+    background-color: rgba($base-color, $opacity);
+  } @else {
+    $theme-value: map-get($mdc-theme-property-values, $base-color);
 
     /* @alternate */
     $css-var: $theme-value;
-    $css-var: var(--mdc-theme-#{$theme-style}, $theme-value);
+    $css-var: var(--mdc-theme-#{$base-color}, $theme-value);
 
     background-color: rgba($theme-value, $opacity);
 
+    // TODO: consider just removing this since it's not useful now?
     // See: https://drafts.csswg.org/css-color/#modifying-colors
     // While this is currently unsupported as of now, it will begin to work by default as browsers
     // begin to implement the CSS 4 color spec.
     @supports (background-color: color(green a(10%))) {
       background-color: color(#{$css-var} a(#{percentage($opacity)}));
     }
-  } @else {
-    background-color: rgba($base-color, $opacity);
   }
 
   // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
@@ -88,11 +84,9 @@
 
 @mixin mdc-ripple-theme($config: ()) {
   $config: map-merge(mdc-ripple-default-config_(), $config);
-  $bg-pseudo: map-get($config, bg-pseudo);
-  $fg-pseudo: map-get($config, fg-pseudo);
   $radius: map-get($config, radius);
 
-  &#{$bg-pseudo}, &#{$fg-pseudo} {
+  &::before, &::after {
     @include mdc-ripple-theme-base_($config);
 
     content: "";
@@ -110,7 +104,7 @@
 
   // Background ripple styles
 
-  &.mdc-ripple-upgraded#{$bg-pseudo} {
+  &.mdc-ripple-upgraded::before {
     top: calc(50% - #{$radius});
     left: calc(50% - #{$radius});
     width: $radius * 2;
@@ -121,16 +115,16 @@
     transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
 
-  &.mdc-ripple-upgraded--background-focused#{$bg-pseudo} {
+  &.mdc-ripple-upgraded--background-focused::before {
     opacity: .99999;
   }
 
-  &.mdc-ripple-upgraded--background-active-fill#{$bg-pseudo} {
+  &.mdc-ripple-upgraded--background-active-fill::before {
     transition-duration: 120ms;
     opacity: 1;
   }
 
-  &.mdc-ripple-upgraded--unbounded#{$bg-pseudo} {
+  &.mdc-ripple-upgraded--unbounded::before {
     /* @alternate */
     top: calc(50% - #{$radius / 2});
     top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
@@ -154,7 +148,7 @@
 
   // Foreground ripple styles
 
-  &.mdc-ripple-upgraded#{$fg-pseudo} {
+  &.mdc-ripple-upgraded::after {
     top: 0;
     left: 0;
 
@@ -170,12 +164,12 @@
     opacity: 0;
   }
 
-  &:not(.mdc-ripple-upgraded--unbounded)#{$fg-pseudo} {
+  &:not(.mdc-ripple-upgraded--unbounded)::after {
     // TODO: is this not redundant of above?
     transform-origin: center center;
   }
 
-  &.mdc-ripple-upgraded--unbounded#{$fg-pseudo} {
+  &.mdc-ripple-upgraded--unbounded::after {
     /* @alternate */
     top: 0;
     top: var(--mdc-ripple-top, 0);
@@ -196,11 +190,11 @@
     transform-origin: center center;
   }
 
-  &.mdc-ripple-upgraded--foreground-activation#{$fg-pseudo} {
+  &.mdc-ripple-upgraded--foreground-activation::after {
     animation: 300ms mdc-ripple-fg-radius-in forwards, 83ms mdc-ripple-fg-opacity-in forwards;
   }
 
-  &.mdc-ripple-upgraded--foreground-deactivation#{$fg-pseudo} {
+  &.mdc-ripple-upgraded--foreground-deactivation::after {
     animation: 83ms mdc-ripple-fg-opacity-out;
     // Retain transform from mdc-ripple-fg-radius-in activation
     transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));

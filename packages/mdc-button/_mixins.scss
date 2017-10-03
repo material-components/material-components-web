@@ -28,10 +28,10 @@
 
   @if ($light-or-dark == "light") {
     @include mdc-button-ink-color(text-primary-on-dark);
-    @include mdc-button-ripple((theme-style: text-primary-on-dark, opacity: $mdc-filled-button-ripple-opacity));
+    @include mdc-button-ripple((base-color: text-primary-on-dark, opacity: $mdc-filled-button-ripple-opacity));
   } @else {
     @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-button-ripple((theme-style: text-primary-on-light, opacity: $mdc-filled-button-ripple-opacity));
+    @include mdc-button-ripple((base-color: text-primary-on-light, opacity: $mdc-filled-button-ripple-opacity));
   }
 }
 

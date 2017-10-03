@@ -38,7 +38,7 @@
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-theme((theme-style: primary, opacity: .16));
+    @include mdc-ripple-theme((base-color: primary, opacity: .16));
   }
 
   &--accent {
@@ -47,7 +47,7 @@
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-theme((theme-style: secondary, opacity: .16));
+    @include mdc-ripple-theme((base-color: secondary, opacity: .16));
   }
 }
 
