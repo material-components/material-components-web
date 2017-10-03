@@ -158,7 +158,7 @@ module.exports = function(config) {
       sauceLabs: {
         testName: 'Material Components Web Unit Tests - CI',
         tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-        username: 'material-sauce',
+        username: process.env.SAUCE_USERNAME,
         accessKey: process.env.SAUCE_ACCESS_KEY,
         startConnect: false,
       },
