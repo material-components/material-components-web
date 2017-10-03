@@ -64,8 +64,15 @@
 }
 
 @mixin mdc-checkbox-ripple-color($ripple-config) {
+  // TODO(acdvorak): Refactor ripple SCSS to so that we can override color only.
+
   @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
   @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+
+  &::before,
+  &::after {
+    @include mdc-checkbox-ripple-size_;
+  }
 }
 
 @mixin mdc-checkbox-state-transition-color($color) {
@@ -251,7 +258,7 @@
     mdc-checkbox-transition-enter(background-color);
 }
 
-// Background focus indicator
+// Focus indicator
 
 @mixin mdc-checkbox__focus-indicator_ {
   @include mdc-checkbox__child--cover-parent_;
