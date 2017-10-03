@@ -47,9 +47,6 @@
     background-color: rgba($base-color, $opacity);
   } @else {
     $theme-value: map-get($mdc-theme-property-values, $base-color);
-
-    /* @alternate */
-    $css-var: $theme-value;
     $css-var: var(--mdc-theme-#{$base-color}, $theme-value);
 
     background-color: rgba($theme-value, $opacity);
