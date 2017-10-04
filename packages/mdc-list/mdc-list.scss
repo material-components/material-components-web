@@ -67,6 +67,8 @@ $mdc-list-side-padding: 16px;
 // postcss-bem-linter: define list-item
 
 .mdc-list-item {
+  @include mdc-typography-overflow-ellipsis;
+
   display: flex;
   align-items: center;
   justify-content: flex-start;

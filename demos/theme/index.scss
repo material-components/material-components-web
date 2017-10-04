@@ -26,7 +26,14 @@
 @import "../../packages/mdc-icon-toggle/mdc-icon-toggle";
 @import "../../packages/mdc-linear-progress/mdc-linear-progress";
 @import "../../packages/mdc-list/mdc-list";
+@import "../../packages/mdc-menu/mdc-menu";
 @import "../../packages/mdc-radio/mdc-radio";
+@import "../../packages/mdc-ripple/mdc-ripple";
+@import "../../packages/mdc-select/mdc-select";
+@import "../../packages/mdc-slider/mdc-slider";
+@import "../../packages/mdc-switch/mdc-switch";
+@import "../../packages/mdc-tabs/mdc-tabs";
+@import "../../packages/mdc-textfield/mdc-textfield";
 @import "../../packages/mdc-theme/color_palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
@@ -46,6 +53,11 @@ $demo-custom-color: $material-color-red-500;
   @include mdc-theme-prop(color, text-primary-on-dark);
 
   background-color: $material-color-grey-800;
+}
+
+figure {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 //
@@ -79,8 +91,31 @@ $demo-custom-color: $material-color-red-500;
   padding: 24px;
 }
 
+.demo-component-section {
+  position: relative;
+}
+
 .demo-component-section + .demo-component-section {
   margin-top: $demo-section-margin;
+}
+
+.demo-component-section::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  right: -16px;
+  bottom: -16px;
+  z-index: -1;
+  background: $material-color-yellow-700;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.demo-component-section--flash::before {
+  opacity: 0.5;
+  transition: none;
 }
 
 .demo-component-section__heading .demo-component-section__permalink {
@@ -146,7 +181,7 @@ $demo-custom-color: $material-color-red-500;
 // Card demo
 //
 
-.demo-card-wrap {
+.demo-card-wrapper {
   display: inline-block;
   width: 350px;
   margin: 0 24px 24px 0;
@@ -193,12 +228,12 @@ $demo-custom-color: $material-color-red-500;
   align-items: center;
 }
 
-.demo-checkbox-wrap,
+.demo-checkbox-wrapper,
 .demo-checkbox-toggle {
   margin-right: 10px;
 }
 
-.demo-checkbox-wrap + .demo-checkbox-toggle {
+.demo-checkbox-wrapper + .demo-checkbox-toggle {
   margin-left: 20px;
 }
 
@@ -320,4 +355,110 @@ $demo-custom-color: $material-color-red-500;
 
 .demo-radio--custom {
   @include demo-radio-color($demo-custom-color);
+}
+
+//
+// Ripple demo
+//
+
+.demo-ripple__row {
+  margin: 32px 0;
+}
+
+.demo-ripple-box,
+.demo-ripple-surface {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-ripple-box {
+  vertical-align: top;
+  width: 200px;
+  height: 100px;
+  padding: 1rem;
+  margin: 16px 16px 0 0;
+  font-weight: 500;
+}
+
+.demo-ripple-box--primary {
+  @include mdc-theme-prop(color, primary);
+}
+
+.demo-ripple-box--secondary {
+  @include mdc-theme-prop(color, secondary);
+}
+
+.demo-ripple-box--custom {
+  @include mdc-theme-prop(color, $demo-custom-color);
+}
+
+.demo-ripple-surface {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.demo-ripple-surface--primary {
+  &::before,
+  &::after {
+    @include mdc-theme-prop(background-color, primary);
+  }
+
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16));
+}
+
+.demo-ripple-surface--secondary {
+  &::before,
+  &::after {
+    @include mdc-theme-prop(background-color, secondary);
+  }
+
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .16));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .16));
+}
+
+.demo-ripple-surface--custom {
+  &::before,
+  &::after {
+    @include mdc-theme-prop(background-color, $demo-custom-color);
+  }
+
+  @include mdc-ripple-bg((pseudo: "::before", base-color: $demo-custom-color, opacity: .16));
+  @include mdc-ripple-fg((pseudo: "::after", base-color: $demo-custom-color, opacity: .16));
+}
+
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+//
+// Switch demo
+//
+
+.demo-switch-wrapper {
+  display: inline-block;
+  margin: 16px 16px 0 0;
+}
+
+//
+// Text Field demo
+//
+
+.demo-textfield-wrapper {
+  display: inline-block;
+  margin: 16px 16px 0 0;
 }
