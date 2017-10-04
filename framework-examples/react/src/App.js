@@ -16,8 +16,8 @@
 
 /* eslint-disable */
 
-import React, {PureComponent, PropTypes} from 'react';
-
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Checkbox from './Checkbox';
 import CheckboxLabel from './CheckboxLabel';
 import FormField from './FormField';
@@ -28,7 +28,7 @@ export default class App extends PureComponent {
     disabled: false,
     indeterminate: false,
     changeEventCount: 0
-  }
+  };
 
   toggleChecked(evt) {
     this.setState({
@@ -39,23 +39,35 @@ export default class App extends PureComponent {
   }
 
   render() {
-    const {checked, disabled, indeterminate, status, changeEventCount} = this.state;
+    const {
+      checked,
+      disabled,
+      indeterminate,
+      status,
+      changeEventCount
+    } = this.state;
     return (
       <main>
         <h1>MDC-Web Checkbox - React Example</h1>
         <FormField>
-          <Checkbox id="my-checkbox"
-                    labelId="my-checkbox-label"
-                    disabled={disabled}
-                    indeterminate={indeterminate}
-                    toggleChecked={this.toggleChecked.bind(this)}/>
+          <Checkbox
+            id="my-checkbox"
+            labelId="my-checkbox-label"
+            disabled={disabled}
+            indeterminate={indeterminate}
+            toggleChecked={this.toggleChecked.bind(this)}
+          />
           <CheckboxLabel id="my-checkbox-label" for="my-checkbox">
             The checkbox is currently {this.status()}
           </CheckboxLabel>
         </FormField>
-        <div style={{paddingTop: '12px'}}>
-          <button onClick={() => this.setState({indeterminate: true})}>Make Indeterminate</button>
-          <button onClick={() => this.setState({disabled: !disabled})}>Toggle Disabled</button>
+        <div style={{ paddingTop: '12px' }}>
+          <button onClick={() => this.setState({ indeterminate: true })}>
+            Make Indeterminate
+          </button>
+          <button onClick={() => this.setState({ disabled: !disabled })}>
+            Toggle Disabled
+          </button>
         </div>
         <p>{changeEventCount} change events so far</p>
       </main>

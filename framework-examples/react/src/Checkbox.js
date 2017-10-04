@@ -22,21 +22,25 @@
  * allows it to perform UI operations in a way idiomatic to React.
  */
 
-import React, {PureComponent, PropTypes} from 'react';
-import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { Set as ImmutableSet, Map as ImmutableMap } from 'immutable';
 // Temporarily using relative reference until we publish on npm.
-import {getCorrectEventName} from '@material/animation/dist/mdc.animation';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/dist/mdc.ripple';
-import {MDCCheckboxFoundation} from '@material/checkbox/dist/mdc.checkbox';
+import { getCorrectEventName } from '@material/animation/dist/mdc.animation';
+import {
+  MDCRipple,
+  MDCRippleFoundation
+} from '@material/ripple/dist/mdc.ripple';
+import { MDCCheckboxFoundation } from '@material/checkbox/dist/mdc.checkbox';
 import '@material/checkbox/dist/mdc.checkbox.css';
 
 function getMatchesProperty(HTMLElementPrototype) {
-  return [
-    'webkitMatchesSelector', 'msMatchesSelector', 'matches',
-  ].filter((p) => p in HTMLElementPrototype).pop();
+  return ['webkitMatchesSelector', 'msMatchesSelector', 'matches']
+    .filter(p => p in HTMLElementPrototype)
+    .pop();
 }
 
-const {ANIM_END_EVENT_NAME} = MDCCheckboxFoundation.strings;
+const { ANIM_END_EVENT_NAME } = MDCCheckboxFoundation.strings;
 
 const MATCHES = getMatchesProperty(HTMLElement.prototype);
 
@@ -48,14 +52,14 @@ export default class Checkbox extends PureComponent {
     disabled: PropTypes.bool,
     indeterminate: PropTypes.bool,
     onChange: PropTypes.func
-  }
+  };
 
   static defaultProps = {
     checked: false,
     disabled: false,
     indeterminate: false,
     onChange: () => {}
-  }
+  };
 
   state = {
     classes: new ImmutableSet(),
@@ -63,25 +67,33 @@ export default class Checkbox extends PureComponent {
     checkedInternal: this.props.checked,
     disabledInternal: this.props.disabled,
     indeterminateInternal: this.props.indeterminate
-  }
+  };
 
   // Here we initialize a foundation class, passing it an adapter which tells it how to
   // work with the React component in an idiomatic way.
   foundation = new MDCCheckboxFoundation({
-    addClass: className => this.setState(prevState => ({
-      classes: prevState.classes.add(className)
-    })),
-    removeClass: className => this.setState(prevState => ({
-      classes: prevState.classes.remove(className)
-    })),
+    addClass: className =>
+      this.setState(prevState => ({
+        classes: prevState.classes.add(className)
+      })),
+    removeClass: className =>
+      this.setState(prevState => ({
+        classes: prevState.classes.remove(className)
+      })),
     registerAnimationEndHandler: handler => {
       if (this.refs.root) {
-        this.refs.root.addEventListener(getCorrectEventName(window, 'animationend'), handler);
+        this.refs.root.addEventListener(
+          getCorrectEventName(window, 'animationend'),
+          handler
+        );
       }
     },
     deregisterAnimationEndHandler: handler => {
       if (this.refs.root) {
-        this.refs.root.removeEventListener(getCorrectEventName(window, 'animationend'), handler)
+        this.refs.root.removeEventListener(
+          getCorrectEventName(window, 'animationend'),
+          handler
+        );
       }
     },
     registerChangeHandler: handler => {
@@ -110,47 +122,49 @@ export default class Checkbox extends PureComponent {
         this.refs.nativeCb.offsetWidth;
       }
     },
-    isAttachedToDOM: () => Boolean(this.refs.nativeCb),
+    isAttachedToDOM: () => Boolean(this.refs.nativeCb)
   });
 
   // For browser compatibility we extend the default adapter which checks for css variable support.
-  rippleFoundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
-    isUnbounded: () => true,
-    isSurfaceActive: () => this.refs.nativeCb[MATCHES](':active'),
-    addClass: className => {
-      this.setState(prevState => ({
-        classes: prevState.classes.add(className)
-      }));
-    },
-    removeClass: className => {
-      this.setState(prevState => ({
-        classes: prevState.classes.remove(className)
-      }));
-    },
-    registerInteractionHandler: (evtType, handler) => {
-      this.refs.nativeCb.addEventListener(evtType, handler);
-    },
-    deregisterInteractionHandler: (evtType, handler) => {
-      this.refs.nativeCb.removeEventListener(evtType, handler);
-    },
-    updateCssVariable: (varName, value) => {
-      this.setState(prevState => ({
-        rippleCss: prevState.rippleCss.set(varName, value)
-      }));
-    },
-    computeBoundingRect: () => {
-      const {left, top} = this.refs.root.getBoundingClientRect();
-      const DIM = 40;
-      return {
-        top,
-        left,
-        right: left + DIM,
-        bottom: top + DIM,
-        width: DIM,
-        height: DIM,
-      };
-    },
-  }));
+  rippleFoundation = new MDCRippleFoundation(
+    Object.assign(MDCRipple.createAdapter(this), {
+      isUnbounded: () => true,
+      isSurfaceActive: () => this.refs.nativeCb[MATCHES](':active'),
+      addClass: className => {
+        this.setState(prevState => ({
+          classes: prevState.classes.add(className)
+        }));
+      },
+      removeClass: className => {
+        this.setState(prevState => ({
+          classes: prevState.classes.remove(className)
+        }));
+      },
+      registerInteractionHandler: (evtType, handler) => {
+        this.refs.nativeCb.addEventListener(evtType, handler);
+      },
+      deregisterInteractionHandler: (evtType, handler) => {
+        this.refs.nativeCb.removeEventListener(evtType, handler);
+      },
+      updateCssVariable: (varName, value) => {
+        this.setState(prevState => ({
+          rippleCss: prevState.rippleCss.set(varName, value)
+        }));
+      },
+      computeBoundingRect: () => {
+        const { left, top } = this.refs.root.getBoundingClientRect();
+        const DIM = 40;
+        return {
+          top,
+          left,
+          right: left + DIM,
+          bottom: top + DIM,
+          width: DIM,
+          height: DIM
+        };
+      }
+    })
+  );
 
   changeHandler(evt) {
     this.props.toggleChecked(evt);
@@ -159,23 +173,29 @@ export default class Checkbox extends PureComponent {
   render() {
     // Within render, we generate the html needed to render a proper MDC-Web checkbox.
     return (
-      <div ref="root" className={`mdc-checkbox ${this.state.classes.toJS().join(' ')}`}>
-        <input ref="nativeCb"
-               id={this.props.id}
-               type="checkbox"
-               className="mdc-checkbox__native-control"
-               aria-labelledby={this.props.labelId}
-               disabled={this.state.disabledInternal}
-               onChange={this.changeHandler.bind(this)}/>
+      <div
+        ref="root"
+        className={`mdc-checkbox ${this.state.classes.toJS().join(' ')}`}
+      >
+        <input
+          ref="nativeCb"
+          id={this.props.id}
+          type="checkbox"
+          className="mdc-checkbox__native-control"
+          aria-labelledby={this.props.labelId}
+          disabled={this.state.disabledInternal}
+          onChange={this.changeHandler.bind(this)}
+        />
         <div className="mdc-checkbox__background">
-          <svg className="mdc-checkbox__checkmark"
-               viewBox="0 0 24 24">
-            <path className="mdc-checkbox__checkmark__path"
-                  fill="none"
-                  stroke="white"
-                  d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+          <svg className="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+            <path
+              className="mdc-checkbox__checkmark__path"
+              fill="none"
+              stroke="white"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+            />
           </svg>
-          <div className="mdc-checkbox__mixedmark"></div>
+          <div className="mdc-checkbox__mixedmark" />
         </div>
       </div>
     );
@@ -195,13 +215,16 @@ export default class Checkbox extends PureComponent {
   // Here we synchronize the internal state of the UI component based on what the user has specified.
   componentWillReceiveProps(props) {
     if (props.checked !== this.props.checked) {
-      this.setState({checkedInternal: props.checked, indeterminateInternal: false});
+      this.setState({
+        checkedInternal: props.checked,
+        indeterminateInternal: false
+      });
     }
     if (props.indeterminate !== this.props.indeterminate) {
-      this.setState({indeterminateInternal: props.indeterminate});
+      this.setState({ indeterminateInternal: props.indeterminate });
     }
     if (props.disabled !== this.props.disabled) {
-      this.setState({disabledInternal: props.disabled});
+      this.setState({ disabledInternal: props.disabled });
     }
   }
 
