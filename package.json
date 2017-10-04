@@ -69,7 +69,7 @@
     "lerna": "2.0.0-beta.36",
     "lolex": "^2.0.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.2.0",
+    "mocha": "^4.0.0",
     "node-sass": "^4.0.0",
     "npm-run-all": "^4.1.1",
     "postcss-loader": "^2.0.3",
