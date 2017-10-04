@@ -155,7 +155,7 @@ a.mdc-list-item {
 
 .mdc-list-item.mdc-ripple-upgraded {
   @include mdc-ripple-base;
-  @include mdc-ripple-theme(());
+  @include mdc-ripple-theme;
   @include mdc-rtl-reflexive-position(left, $mdc-list-side-padding * -1);
 
   position: relative;
@@ -170,7 +170,7 @@ a.mdc-list-item {
   }
 
   @include mdc-theme-dark(".mdc-list") {
-    @include mdc-ripple-theme((base-color: white, opacity: .12));
+    @include mdc-ripple-theme(white, .12);
   }
 }
 

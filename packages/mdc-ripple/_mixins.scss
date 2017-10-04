@@ -20,13 +20,6 @@
 
 $mdc-ripple-radius: 100%;
 
-@function mdc-ripple-default-config_() {
-  @return (
-    base-color: black,
-    opacity: .06
-  );
-}
-
 @mixin mdc-ripple-base() {
   --mdc-ripple-fg-size: 0;
   --mdc-ripple-left: 0;
@@ -39,14 +32,12 @@ $mdc-ripple-radius: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-@mixin mdc-ripple-color_($config) {
-  $base-color: map-get($config, base-color);
-  $opacity: map-get($config, opacity);
-
+@mixin mdc-ripple-color_($base-color, $opacity) {
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
   @if type-of($base-color) == "color" {
     background-color: rgba($base-color, $opacity);
   } @else {
+    // Assume $base-color is a theme property name
     $theme-value: map-get($mdc-theme-property-values, $base-color);
     $css-var: var(--mdc-theme-#{$base-color}, $theme-value);
 
@@ -60,12 +51,14 @@ $mdc-ripple-radius: 100%;
       background-color: color(#{$css-var} a(#{percentage($opacity)}));
     }
   }
-
   // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
 }
 
-@mixin mdc-ripple-theme-base_($config) {
-  @include mdc-ripple-color_($config);
+// TODO: Make a radius mixin and include it with 100% as default
+// TODO: Figure out better names for the "theme" things
+
+@mixin mdc-ripple-theme-base_($base-color, $opacity) {
+  @include mdc-ripple-color_($base-color, $opacity);
 
   position: absolute;
   top: calc(50% - #{$mdc-ripple-radius});
@@ -78,11 +71,9 @@ $mdc-ripple-radius: 100%;
   pointer-events: none;
 }
 
-@mixin mdc-ripple-theme($config: ()) {
-  $config: map-merge(mdc-ripple-default-config_(), $config);
-
+@mixin mdc-ripple-theme($base-color: black, $opacity: .06) {
   &::before, &::after {
-    @include mdc-ripple-theme-base_($config);
+    @include mdc-ripple-theme-base_($base-color, $opacity);
 
     content: "";
   }

@@ -18,6 +18,7 @@
 @import "../packages/mdc-button/mdc-button";
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
+@import "../packages/mdc-ripple/mixins";
 @import "../packages/mdc-theme/color_palette";
 @import "../packages/mdc-theme/mixins";
 @import "../packages/mdc-typography/mdc-typography";
@@ -26,7 +27,7 @@
   $color: $material-color-red-500;
 
   @include mdc-checkbox-focus-indicator-color($color);
-  @include mdc-checkbox-ripple((base-color: $color, opacity: $mdc-checkbox-ripple-opacity));
+  @include mdc-ripple-theme($color, $mdc-checkbox-ripple-opacity);
   @include mdc-checkbox-container-colors(
     $unmarked-stroke-color: $color,
     $unmarked-fill-color: rgba($color, .25),

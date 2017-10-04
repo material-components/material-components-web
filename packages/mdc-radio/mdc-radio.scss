@@ -33,7 +33,7 @@
   @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
-  @include mdc-radio-ripple((base-color: $mdc-radio-baseline-theme-color));
+  @include mdc-ripple-theme($mdc-radio-baseline-theme-color, $mdc-radio-ripple-opacity);
 
   display: inline-block;
   position: relative;

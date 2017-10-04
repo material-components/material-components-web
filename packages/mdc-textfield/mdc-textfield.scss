@@ -249,7 +249,7 @@
   &.mdc-ripple-upgraded {
     @include mdc-ripple-base;
     // TODO: This intentionally had only -fg pending #194/#998, so revisit after merging
-    @include mdc-ripple-theme((opacity: .04));
+    @include mdc-ripple-theme(black, .04);
 
     &::before {
       top: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
@@ -264,7 +264,7 @@
     }
 
     @include mdc-theme-dark(".mdc-textfield", true) {
-      @include mdc-ripple-theme((base-color: white, opacity: .05));
+      @include mdc-ripple-theme(white, .05);
     }
   }
 

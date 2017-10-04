@@ -28,10 +28,10 @@
 
   @if ($light-or-dark == "light") {
     @include mdc-button-ink-color(text-primary-on-dark);
-    @include mdc-button-ripple((base-color: text-primary-on-dark, opacity: $mdc-filled-button-ripple-opacity));
+    @include mdc-button-ripple(text-primary-on-dark, $mdc-filled-button-ripple-opacity);
   } @else {
     @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-button-ripple((base-color: text-primary-on-light, opacity: $mdc-filled-button-ripple-opacity));
+    @include mdc-button-ripple(text-primary-on-light, $mdc-filled-button-ripple-opacity);
   }
 }
 
@@ -55,10 +55,10 @@
   }
 }
 
-@mixin mdc-button-ripple($ripple-config) {
+@mixin mdc-button-ripple($base-color, $opacity) {
   &:not(:disabled) {
     @include mdc-ripple-base;
-    @include mdc-ripple-theme($ripple-config);
+    @include mdc-ripple-theme($base-color, $opacity);
   }
 }
 

@@ -22,7 +22,7 @@
 
 .mdc-ripple-surface {
   @include mdc-ripple-base;
-  @include mdc-ripple-theme(());
+  @include mdc-ripple-theme();
 
   position: relative;
   outline: none;
@@ -38,7 +38,7 @@
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-theme((base-color: primary, opacity: .16));
+    @include mdc-ripple-theme(primary, .16);
   }
 
   &--accent {
@@ -47,7 +47,7 @@
       @include mdc-theme-prop(background-color, primary);
     }
 
-    @include mdc-ripple-theme((base-color: secondary, opacity: .16));
+    @include mdc-ripple-theme(secondary, .16);
   }
 }
 
