@@ -80,7 +80,7 @@
     "scss-parser": "^1.0.0",
     "semver": "^5.3.0",
     "standard-changelog": "1.0.2",
-    "style-loader": "^0.18.0",
+    "style-loader": "^0.19.0",
     "stylelint": "^8.0.0",
     "stylelint-config-standard": "^17.0.0",
     "stylelint-order": "^0.7.0",
