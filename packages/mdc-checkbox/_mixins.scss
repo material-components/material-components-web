@@ -28,6 +28,7 @@
 // TODO(acdvorak): Figure out why a pre-checked checkbox janks when `indeterminate` is toggled for the first time.
 // TODO(acdvorak): Accessibility
 // TODO(acdvorak): Do we need [aria-disabled="true"] selectors?
+// TODO(acdvorak): Update docs
 
 // NOTE: Child selector MUST begin with `.mdc-checkbox__background`
 @mixin mdc-checkbox-background-unfilled-enabled {
