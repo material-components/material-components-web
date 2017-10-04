@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +38,7 @@
  *
  * @record
  */
-export default class MDCRippleAdapter {
+class MDCRippleAdapter {
   /** @return {boolean} */
   browserSupportsCssVars() {}
 
@@ -90,3 +91,5 @@ export default class MDCRippleAdapter {
   /** @return {{x: number, y: number}} */
   getWindowPageOffset() {}
 }
+
+export default MDCRippleAdapter;

@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,13 +22,11 @@ import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection
 import MDCRadioFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 
-export {MDCRadioFoundation};
-
 /**
  * @extends MDCComponent<!MDCRadioFoundation>
  * @implements {MDCSelectionControl}
  */
-export class MDCRadio extends MDCComponent {
+class MDCRadio extends MDCComponent {
   static attachTo(root) {
     return new MDCRadio(root);
   }
@@ -129,3 +128,6 @@ export class MDCRadio extends MDCComponent {
     });
   }
 }
+
+
+export {MDCRadio, MDCRadioFoundation};

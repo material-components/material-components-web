@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +28,7 @@ const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 /**
  * @extends {MDCFoundation<!MDCCheckboxAdapter>}
  */
-export default class MDCCheckboxFoundation extends MDCFoundation {
+class MDCCheckboxFoundation extends MDCFoundation {
   /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -284,3 +285,5 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
 function validDescriptor(inputPropDesc) {
   return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
+
+export default MDCCheckboxFoundation;

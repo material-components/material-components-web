@@ -12,6 +12,8 @@ Material Components for the web is the successor to [Material Design Lite](https
 - Production-ready components consumable in an a-la-carte fashion
 - Best-in-class performance and adherence to the [Material Design guidelines](https://material.io/guidelines)
 - Seamless integration with other JS frameworks and libraries
+  - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
+  - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](docs/integrating-into-frameworks.md).
 
 MDC-Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
 
