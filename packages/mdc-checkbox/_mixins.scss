@@ -316,7 +316,8 @@
   transition:
     mdc-checkbox-transition-exit(background-color),
     mdc-checkbox-transition-exit(border-color);
-  border: $mdc-checkbox-border-width solid currentColor; // Color is overridden by the mdc-checkbox-unmarked-stroke-color() mixin
+  // border-color is overridden by the mdc-checkbox-unmarked-stroke-color() mixin
+  border: $mdc-checkbox-border-width solid currentColor;
   border-radius: 2px;
   background-color: transparent;
   pointer-events: none;
@@ -324,8 +325,6 @@
 }
 
 @mixin mdc-checkbox__background--marked_ {
-  // TODO(acdvorak): Refactoring into mixins breaks the clear relationship between transitions properties and color properties.
-  // E.g., "Why are we transitioning border-color and background-color here?" Answer: Because that's what the color mixins use.
   transition:
     mdc-checkbox-transition-enter(border-color),
     mdc-checkbox-transition-enter(background-color);
