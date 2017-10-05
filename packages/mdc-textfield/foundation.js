@@ -78,17 +78,17 @@ class MDCTextfieldFoundation extends MDCFoundation {
     this.receivedUserInput_ = false;
     /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
-    /** @private {function()} */
+    /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus_();
-    /** @private {function()} */
+    /** @private {function(): undefined} */
     this.inputBlurHandler_ = () => this.deactivateFocus_();
-    /** @private {function()} */
+    /** @private {function(): undefined} */
     this.inputInputHandler_ = () => this.autoCompleteFocus_();
-    /** @private {function(!Event)} */
+    /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin_(evt);
-    /** @private {function(!Event)} */
+    /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction_(evt);
-    /** @private {function(!Event)} */
+    /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
   }
 
@@ -323,7 +323,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
    */
   getNativeInput_() {
     return this.adapter_.getNativeInput() ||
-    /** @type {NativeInputType} */ ({
+    /** @type {!NativeInputType} */ ({
       checkValidity: () => true,
       value: '',
       disabled: false,

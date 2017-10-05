@@ -30,17 +30,17 @@ class MDCTextfield extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {HTMLInputElement} */
+    /** @private {?HTMLInputElement} */
     this.input_;
-    /** @private {HTMLElement} */
+    /** @private {?HTMLElement} */
     this.label_;
-    /** @type {HTMLElement} */
+    /** @type {?HTMLElement} */
     this.helptextElement;
-    /** @type {MDCRipple} */
+    /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {HTMLElement} */
+    /** @private {?HTMLElement} */
     this.bottomLine_;
-    /** @private {HTMLElement} */
+    /** @private {?HTMLElement} */
     this.icon_;
   }
 
@@ -143,7 +143,7 @@ class MDCTextfield extends MDCComponent {
 
   /**
    * @return {!{
-   *   setIconAttr: function(string, string),
+   *   setIconAttr: function(string, string): undefined,
    * }}
    */
   getIconAdapterMethods_() {
@@ -158,11 +158,11 @@ class MDCTextfield extends MDCComponent {
 
   /**
    * @return {!{
-   *   addClassToBottomLine: function(string),
-   *   removeClassFromBottomLine: function(string),
-   *   setBottomLineAttr: function(string, string),
-   *   registerTransitionEndHandler: function(function()),
-   *   deregisterTransitionEndHandler: function(function()),
+   *   addClassToBottomLine: function(string): undefined,
+   *   removeClassFromBottomLine: function(string): undefined,
+   *   setBottomLineAttr: function(string, string): undefined,
+   *   registerTransitionEndHandler: function(function()): undefined,
+   *   deregisterTransitionEndHandler: function(function()): undefined,
    * }}
    */
   getBottomLineAdapterMethods_() {
@@ -197,9 +197,9 @@ class MDCTextfield extends MDCComponent {
 
   /**
    * @return {!{
-   *   registerInputInteractionHandler: function(!string, function()),
-   *   deregisterInputInteractionHandler: function(!string, function()),
-   *   getNaviteInput: (function(): ?Element),
+   *   registerInputInteractionHandler: function(string, function()): undefined,
+   *   deregisterInputInteractionHandler: function(string, function()): undefined,
+   *   getNativeInput: function(): ?Element,
    * }}
    */
   getInputAdapterMethods_() {
@@ -212,11 +212,11 @@ class MDCTextfield extends MDCComponent {
 
   /**
    * @return {!{
-   *   addClassToHelptext: function(!string),
-   *   removeClassFromHelptext: function(!string),
-   *   helptextHasClass: (function(!string): !boolean),
-   *   setHelptextAttr: function(!string, !string),
-   *   removeHelptextAttr: function(!string),
+   *   addClassToHelptext: function(string): undefined,
+   *   removeClassFromHelptext: function(string): undefined,
+   *   helptextHasClass: function(string): boolean,
+   *   setHelptextAttr: function(string, string): undefined,
+   *   removeHelptextAttr: function(string): undefined,
    * }}
    */
   getHelptextAdapterMethods_() {

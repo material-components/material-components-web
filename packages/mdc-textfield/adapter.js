@@ -74,7 +74,7 @@ class MDCTextfieldAdapter {
 
   /**
    * Returns true if classname exists for a given target element.
-   * @param {HTMLElement} target
+   * @param {?HTMLElement} target
    * @param {string} className
    * @return {boolean}
    */
@@ -83,14 +83,14 @@ class MDCTextfieldAdapter {
   /**
    * Registers an event handler on the root element for a given event.
    * @param {string} type
-   * @param {function(!Event)} handler
+   * @param {function(!Event): undefined} handler
    */
   registerTextFieldInteractionHandler(type, handler) {}
 
   /**
    * Deregisters an event handler on the root element for a given event.
    * @param {string} type
-   * @param {function(!Event)} handler
+   * @param {function(!Event): undefined} handler
    */
   deregisterTextFieldInteractionHandler(type, handler) {}
 
@@ -135,26 +135,26 @@ class MDCTextfieldAdapter {
   /**
    * Registers an event listener on the native input element for a given event.
    * @param {string} evtType
-   * @param {function(!Event)} handler
+   * @param {function(!Event): undefined} handler
    */
   registerInputInteractionHandler(evtType, handler) {}
 
   /**
    * Deregisters an event listener on the native input element for a given event.
    * @param {string} evtType
-   * @param {function(!Event)} handler
+   * @param {function(!Event): undefined} handler
    */
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
    * Registers an event listener on the bottom line element for a "transitionend" event.
-   * @param {function(!Event)} handler
+   * @param {function(!Event): undefined} handler
    */
   registerTransitionEndHandler(handler) {}
 
   /**
    * Deregisters an event listener on the bottom line element for a "transitionend" event.
-   * @param {function(!Event)} handler
+   * @param {function(!Event): undefined} handler
    */
   deregisterTransitionEndHandler(handler) {}
 
@@ -186,7 +186,7 @@ class MDCTextfieldAdapter {
    * property, so if you choose to duck-type the return value for this method
    * in your implementation it's important to keep this in mind. Also note that
    * this method can return null, which the foundation will handle gracefully.
-   * @return {HTMLInputElement|NativeInputType}
+   * @return {?HTMLInputElement|?NativeInputType}
    */
   getNativeInput() {}
 }
