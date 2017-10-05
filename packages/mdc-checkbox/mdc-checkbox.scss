@@ -24,14 +24,14 @@
   @include mdc-checkbox-base_;
   @include mdc-ripple-base;
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
-  @include mdc-checkbox-unfilled-stroke-color($mdc-checkbox-border-color);
+  @include mdc-checkbox-unmarked-stroke-color($mdc-checkbox-border-color);
 
   @include mdc-theme-dark {
-    @include mdc-checkbox-unfilled-stroke-color($mdc-checkbox-border-color-dark);
+    @include mdc-checkbox-unmarked-stroke-color($mdc-checkbox-border-color-dark);
   }
 
-  @include mdc-checkbox-filled-stroke-color(secondary);
-  @include mdc-checkbox-filled-container-fill-color(secondary);
+  @include mdc-checkbox-marked-stroke-color(secondary);
+  @include mdc-checkbox-marked-container-fill-color(secondary);
   @include mdc-checkbox-focus-indicator-color(secondary);
   @include mdc-checkbox-ripple-color(secondary);
   @include mdc-checkbox-check-animation(secondary);
@@ -61,7 +61,7 @@
 
   .mdc-checkbox__native-control:enabled:checked ~ &,
   .mdc-checkbox__native-control:enabled:indeterminate ~ & {
-    @include mdc-checkbox__background--filled_;
+    @include mdc-checkbox__background--marked_;
   }
 }
 
@@ -104,7 +104,7 @@
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background &,
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__checkmark__path--filled_;
+    @include mdc-checkbox__checkmark__path--marked_;
   }
 }
 

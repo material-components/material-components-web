@@ -30,21 +30,21 @@
 // Public
 //
 
-@mixin mdc-checkbox-unfilled-stroke-color($color) {
-  @include mdc-checkbox-unfilled-background-selector-enabled_ {
+@mixin mdc-checkbox-unmarked-stroke-color($color) {
+  @include mdc-checkbox-unmarked-background-selector-enabled_ {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-checkbox-filled-stroke-color($color) {
-  @include mdc-checkbox-filled-background-selector-enabled_ {
+@mixin mdc-checkbox-marked-stroke-color($color) {
+  @include mdc-checkbox-marked-background-selector-enabled_ {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-// TODO(acdvorak): Should we allow clients to customized unfilled container color?
-@mixin mdc-checkbox-filled-container-fill-color($color) {
-  @include mdc-checkbox-filled-background-selector-enabled_ {
+// TODO(acdvorak): Should we allow clients to customized unmarked container color?
+@mixin mdc-checkbox-marked-container-fill-color($color) {
+  @include mdc-checkbox-marked-background-selector-enabled_ {
     @include mdc-theme-prop(background-color, $color);
   }
 }
@@ -150,21 +150,21 @@
   cursor: pointer;
   vertical-align: bottom;
 
-  @include mdc-checkbox-unfilled-background-selector-disabled_ {
+  @include mdc-checkbox-unmarked-background-selector-disabled_ {
     @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color);
   }
 
-  @include mdc-checkbox-filled-background-selector-disabled_ {
+  @include mdc-checkbox-marked-background-selector-disabled_ {
     @include mdc-theme-prop(border-color, transparent);
     @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color);
   }
 
   @include mdc-theme-dark {
-    @include mdc-checkbox-unfilled-background-selector-disabled_ {
+    @include mdc-checkbox-unmarked-background-selector-disabled_ {
       @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color-dark);
     }
 
-    @include mdc-checkbox-filled-background-selector-disabled_ {
+    @include mdc-checkbox-marked-background-selector-disabled_ {
       @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color-dark);
     }
   }
@@ -275,26 +275,26 @@
 
 // Background
 
-@mixin mdc-checkbox-unfilled-background-selector-enabled_ {
+@mixin mdc-checkbox-unmarked-background-selector-enabled_ {
   .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
     @content;
   }
 }
 
-@mixin mdc-checkbox-unfilled-background-selector-disabled_ {
+@mixin mdc-checkbox-unmarked-background-selector-disabled_ {
   .mdc-checkbox__native-control:disabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
     @content;
   }
 }
 
-@mixin mdc-checkbox-filled-background-selector-enabled_ {
+@mixin mdc-checkbox-marked-background-selector-enabled_ {
   .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
   .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
     @content;
   }
 }
 
-@mixin mdc-checkbox-filled-background-selector-disabled_ {
+@mixin mdc-checkbox-marked-background-selector-disabled_ {
   .mdc-checkbox__native-control:disabled:checked ~ .mdc-checkbox__background,
   .mdc-checkbox__native-control:disabled:indeterminate ~ .mdc-checkbox__background {
     @content;
@@ -316,14 +316,14 @@
   transition:
     mdc-checkbox-transition-exit(background-color),
     mdc-checkbox-transition-exit(border-color);
-  border: $mdc-checkbox-border-width solid currentColor; // Color is overridden by the mdc-checkbox-unfilled-stroke-color() mixin
+  border: $mdc-checkbox-border-width solid currentColor; // Color is overridden by the mdc-checkbox-unmarked-stroke-color() mixin
   border-radius: 2px;
   background-color: transparent;
   pointer-events: none;
   will-change: background-color, border-color;
 }
 
-@mixin mdc-checkbox__background--filled_ {
+@mixin mdc-checkbox__background--marked_ {
   // TODO(acdvorak): Refactoring into mixins breaks the clear relationship between transitions properties and color properties.
   // E.g., "Why are we transitioning border-color and background-color here?" Answer: Because that's what the color mixins use.
   transition:
@@ -412,7 +412,7 @@
   stroke-dasharray: $mdc-checkbox-mark-path-length_;
 }
 
-@mixin mdc-checkbox__checkmark__path--filled_ {
+@mixin mdc-checkbox__checkmark__path--marked_ {
   stroke-dashoffset: 0;
 }
 
