@@ -27,6 +27,6 @@ $demo-custom-color: $material-color-red-500;
   @include mdc-checkbox-marked-stroke-color($demo-custom-color);
   @include mdc-checkbox-marked-container-fill-color($demo-custom-color);
   @include mdc-checkbox-focus-indicator-color($demo-custom-color);
-  @include mdc-checkbox-ripple-color($demo-custom-color);
+  @include mdc-checkbox-ripple((base-color: $demo-custom-color, opacity: $mdc-checkbox-ripple-opacity));
   @include mdc-checkbox-check-animation($container-color: $demo-custom-color, $stroke-color: $demo-custom-color);
 }

@@ -25,6 +25,8 @@
 // TODO(acdvorak): Accessibility
 // TODO(acdvorak): Do we need [aria-disabled="true"] selectors?
 // TODO(acdvorak): Update docs
+// TODO(acdvorak): Refactor ripple mixin to auto-detect base-color vs. theme-style
+// TODO(acdvorak): Refactor ripple mixin to allow overriding color only, without setting sizes
 
 //
 // Public
@@ -69,17 +71,8 @@
   }
 }
 
-@mixin mdc-checkbox-ripple-color($color, $opacity: $mdc-checkbox-ripple-opacity) {
-  // TODO(acdvorak): Refactor ripple SCSS to so that we can override color only.
-
-  $ripple-config: (base-color: $color);
-
-  // TODO(acdvorak): Refactor ripple mixin to do this @if check automatically, or use mdc-theme-prop()
-  @if (map-has-key($mdc-theme-property-values, $color)) {
-    $ripple-config: (theme-style: $color);
-  }
-
-  $ripple-config: map-merge((opacity: $opacity), $ripple-config);
+@mixin mdc-checkbox-ripple($ripple-config) {
+  $ripple-config: map-merge((opacity: $mdc-checkbox-ripple-opacity), $ripple-config);
 
   @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
   @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
@@ -88,8 +81,6 @@
   &::after {
     // This needs to be included immediately after mdc-ripple-bg and mdc-ripple-fg
     // to override their default dimensions.
-    // TODO(acdvorak): Refactor ripple to accept size arguments, or move the size stuff
-    // out of mdc-ripple-bg and mdc-ripple-fg and into mdc-ripple-base.
     @include mdc-checkbox-ripple-size_;
   }
 }
