@@ -18,7 +18,7 @@
 @import "@material/theme/mixins";
 @import "./variables";
 
-@mixin mdc-checkbox-check-animation-keyframes($container-color, $stroke-color, $uid) {
+@mixin mdc-checkbox-mark-animation-keyframes($container-color, $stroke-color, $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
       border-color: $mdc-checkbox-border-color;

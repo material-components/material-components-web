@@ -34,7 +34,7 @@
   @include mdc-checkbox-marked-container-fill-color(secondary);
   @include mdc-checkbox-focus-indicator-color(secondary);
   @include mdc-checkbox-ripple((theme-style: secondary, opacity: $mdc-checkbox-ripple-opacity));
-  @include mdc-checkbox-check-animation(secondary);
+  @include mdc-checkbox-mark-animation(secondary);
 }
 
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes

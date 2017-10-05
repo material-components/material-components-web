@@ -85,9 +85,9 @@
   }
 }
 
-@mixin mdc-checkbox-check-animation($container-color: null, $stroke-color: null) {
+@mixin mdc-checkbox-mark-animation($container-color: null, $stroke-color: null) {
   @if not $container-color and not $stroke-color {
-    @error "At least one argument must be passed to mdc-checkbox-check-animation: $container-color or $stroke-color";
+    @error "At least one argument must be passed to mdc-checkbox-mark-animation: $container-color or $stroke-color";
   }
 
   // Note: To disable this behavior, pass `$stroke-color: false`
@@ -95,9 +95,9 @@
     $stroke-color: $container-color;
   }
 
-  $uid: mdc-checkbox-check-animation-keyframes-uid();
+  $uid: mdc-checkbox-mark-animation-keyframes-uid();
 
-  @include mdc-checkbox-check-animation-keyframes($container-color, $stroke-color, $uid);
+  @include mdc-checkbox-mark-animation-keyframes($container-color, $stroke-color, $uid);
 
   &.mdc-checkbox--anim {
     &-unchecked-checked,
