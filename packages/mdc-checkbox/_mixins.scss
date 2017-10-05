@@ -95,6 +95,10 @@
 }
 
 @mixin mdc-checkbox-check-animation($container-color: null, $stroke-color: null) {
+  @if not $container-color and not $stroke-color {
+    @error "At least one argument must be passed to mdc-checkbox-check-animation: $container-color or $stroke-color";
+  }
+
   $uid: mdc-checkbox-check-animation-keyframes-uid();
 
   @include mdc-checkbox-check-animation-keyframes($container-color, $stroke-color, $uid);
