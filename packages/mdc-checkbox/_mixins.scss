@@ -137,7 +137,7 @@
 //
 
 @mixin mdc-checkbox-unfilled-background-selector-enabled_ {
-  .mdc-checkbox__native-control:not(:disabled):not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
     @content;
   }
 }
@@ -149,8 +149,8 @@
 }
 
 @mixin mdc-checkbox-filled-background-selector-enabled_ {
-  .mdc-checkbox__native-control:not(:disabled):checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:not(:disabled):indeterminate ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
     @content;
   }
 }
