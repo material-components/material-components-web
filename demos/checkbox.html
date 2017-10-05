@@ -130,7 +130,7 @@
               </div>
               <label for="basic-indeterminate-checkbox">Indeterminate checkbox</label>
             </div>
-            <script type="text/javascript">
+            <script>
               document.getElementById('basic-indeterminate-checkbox').indeterminate = true;
             </script>
           </div>
@@ -204,6 +204,9 @@
           </div>
           <button type="button" class="toggle-indeterminate">Toggle <code>indeterminate</code></button>
           <button type="button" class="toggle-disabled">Toggle <code>disabled</code></button>
+          <script>
+            document.getElementById('native-js-checkbox-indeterminate').indeterminate = true;
+          </script>
         </div>
         <div>
           <div class="mdc-form-field">
@@ -228,12 +231,6 @@
           <button type="button" class="toggle-indeterminate">Toggle <code>indeterminate</code></button>
           <button type="button" class="toggle-disabled">Toggle <code>disabled</code></button>
         </div>
-
-        <script>
-          (function() {
-            document.getElementById('native-js-checkbox-indeterminate').indeterminate = true;
-          })();
-        </script>
       </section>
 
       <section class="example mdc-theme--dark">
