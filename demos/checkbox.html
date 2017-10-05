@@ -184,6 +184,29 @@
         </div>
         <div>
           <div class="mdc-form-field">
+            <div class="mdc-checkbox" data-js>
+              <input type="checkbox"
+                     id="native-js-checkbox-indeterminate"
+                     class="mdc-checkbox__native-control"
+                     checked/>
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="native-js-checkbox-indeterminate">Indeterminate checkbox</label>
+          </div>
+          <button type="button" class="toggle-indeterminate">Toggle <code>indeterminate</code></button>
+          <button type="button" class="toggle-disabled">Toggle <code>disabled</code></button>
+        </div>
+        <div>
+          <div class="mdc-form-field">
             <div class="mdc-checkbox demo-checkbox--custom" data-js>
               <input type="checkbox"
                      id="native-js-checkbox-custom"
@@ -205,6 +228,12 @@
           <button type="button" class="toggle-indeterminate">Toggle <code>indeterminate</code></button>
           <button type="button" class="toggle-disabled">Toggle <code>disabled</code></button>
         </div>
+
+        <script>
+          (function() {
+            document.getElementById('native-js-checkbox-indeterminate').indeterminate = true;
+          })();
+        </script>
       </section>
 
       <section class="example mdc-theme--dark">
