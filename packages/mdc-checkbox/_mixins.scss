@@ -137,32 +137,6 @@
 // Private
 //
 
-@mixin mdc-checkbox-unfilled-background-selector-enabled_ {
-  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
-    @content;
-  }
-}
-
-@mixin mdc-checkbox-unfilled-background-selector-disabled_ {
-  .mdc-checkbox__native-control:disabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
-    @content;
-  }
-}
-
-@mixin mdc-checkbox-filled-background-selector-enabled_ {
-  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
-    @content;
-  }
-}
-
-@mixin mdc-checkbox-filled-background-selector-disabled_ {
-  .mdc-checkbox__native-control:disabled:checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:disabled:indeterminate ~ .mdc-checkbox__background {
-    @content;
-  }
-}
-
 @mixin mdc-checkbox-base_ {
   display: inline-block;
   position: relative;
@@ -300,6 +274,32 @@
 }
 
 // Background
+
+@mixin mdc-checkbox-unfilled-background-selector-enabled_ {
+  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+    @content;
+  }
+}
+
+@mixin mdc-checkbox-unfilled-background-selector-disabled_ {
+  .mdc-checkbox__native-control:disabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+    @content;
+  }
+}
+
+@mixin mdc-checkbox-filled-background-selector-enabled_ {
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
+    @content;
+  }
+}
+
+@mixin mdc-checkbox-filled-background-selector-disabled_ {
+  .mdc-checkbox__native-control:disabled:checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control:disabled:indeterminate ~ .mdc-checkbox__background {
+    @content;
+  }
+}
 
 @mixin mdc-checkbox__background_ {
   @include mdc-checkbox__child--cover-parent_;
