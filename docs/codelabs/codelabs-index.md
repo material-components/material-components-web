@@ -9,4 +9,4 @@ path: /codelabs/
 
 Google codelabs provide a guided, hands-on coding experience.
 
-* [Building Beautiful Sites with MDC Web](./beautiful-sites-simplified)
+* [Building Beautiful Sites with MDC Web](./building-beautiful-sites/docsite/introduction.md)

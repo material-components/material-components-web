@@ -259,4 +259,4 @@ That's it! You should have a responsive product grid that looks great across all
 
 Test it out yourself by resizing the browser window.
 
-[Next step: Wrapping up](/components/web/codelabs/beautiful-sites-simplified/6-wrapping-up/)
+[Next step: Wrapping up](./6-wrapping-up.md)
