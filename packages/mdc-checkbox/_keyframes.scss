@@ -18,12 +18,6 @@
 @import "@material/theme/mixins";
 @import "./variables";
 
-@mixin mdc-checkbox-theme-prop_($property-name, $property-value-or-null) {
-  @if ($property-value-or-null) {
-    @include mdc-theme-prop($property-name, $property-value-or-null);
-  }
-}
-
 @mixin mdc-checkbox-check-animation-keyframes($container-color, $stroke-color, $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
@@ -73,6 +67,12 @@
       border-color: $mdc-checkbox-border-color-dark;
       background-color: transparent;
     }
+  }
+}
+
+@mixin mdc-checkbox-theme-prop_($name, $value) {
+  @if $value {
+    @include mdc-theme-prop($name, $value);
   }
 }
 
