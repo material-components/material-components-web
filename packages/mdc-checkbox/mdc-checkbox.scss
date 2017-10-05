@@ -33,8 +33,8 @@
   @include mdc-checkbox-filled-stroke-color(secondary);
   @include mdc-checkbox-filled-container-fill-color(secondary);
   @include mdc-checkbox-focus-indicator-color(secondary);
-  @include mdc-checkbox-state-transition-color(secondary);
   @include mdc-checkbox-ripple-color(secondary);
+  @include mdc-checkbox-check-animation($container-color: secondary, $stroke-color: secondary);
 }
 
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes

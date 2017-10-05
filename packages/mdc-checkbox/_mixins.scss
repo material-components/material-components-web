@@ -69,7 +69,7 @@
   }
 }
 
-@mixin mdc-checkbox-ripple-color($color, $opacity: .14) {
+@mixin mdc-checkbox-ripple-color($color, $opacity: $mdc-checkbox-ripple-opacity) {
   // TODO(acdvorak): Refactor ripple SCSS to so that we can override color only.
 
   $ripple-config: (base-color: $color);
@@ -86,14 +86,18 @@
 
   &::before,
   &::after {
+    // This needs to be included immediately after mdc-ripple-bg and mdc-ripple-fg
+    // to override their default dimensions.
+    // TODO(acdvorak): Refactor ripple to accept size arguments, or move the size stuff
+    // out of mdc-ripple-bg and mdc-ripple-fg and into mdc-ripple-base.
     @include mdc-checkbox-ripple-size_;
   }
 }
 
-@mixin mdc-checkbox-state-transition-color($color) {
-  $uid: mdc-checkbox-state-transition-keyframes-uid();
+@mixin mdc-checkbox-check-animation($container-color: null, $stroke-color: null) {
+  $uid: mdc-checkbox-check-animation-keyframes-uid();
 
-  @include mdc-checkbox-state-transition-keyframes($color, $uid);
+  @include mdc-checkbox-check-animation-keyframes($container-color, $stroke-color, $uid);
 
   &.mdc-checkbox--anim {
     &-unchecked-checked,

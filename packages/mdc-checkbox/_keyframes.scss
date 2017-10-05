@@ -18,7 +18,13 @@
 @import "@material/theme/mixins";
 @import "./variables";
 
-@mixin mdc-checkbox-state-transition-keyframes($color, $uid) {
+@mixin mdc-checkbox-theme-prop_($property-name, $property-value-or-null) {
+  @if ($property-value-or-null) {
+    @include mdc-theme-prop($property-name, $property-value-or-null);
+  }
+}
+
+@mixin mdc-checkbox-check-animation-keyframes($container-color, $stroke-color, $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
       border-color: $mdc-checkbox-border-color;
@@ -26,16 +32,16 @@
     }
 
     50% {
-      @include mdc-theme-prop(border-color, $color);
-      @include mdc-theme-prop(background-color, $color);
+      @include mdc-checkbox-theme-prop_(border-color, $stroke-color);
+      @include mdc-checkbox-theme-prop_(background-color, $container-color);
     }
   }
 
   @keyframes mdc-checkbox-fade-out-background-#{$uid} {
     0%,
     80% {
-      @include mdc-theme-prop(border-color, $color);
-      @include mdc-theme-prop(background-color, $color);
+      @include mdc-checkbox-theme-prop_(border-color, $stroke-color);
+      @include mdc-checkbox-theme-prop_(background-color, $container-color);
     }
 
     100% {
@@ -51,16 +57,16 @@
     }
 
     50% {
-      @include mdc-theme-prop(border-color, $color);
-      @include mdc-theme-prop(background-color, $color);
+      @include mdc-checkbox-theme-prop_(border-color, $stroke-color);
+      @include mdc-checkbox-theme-prop_(background-color, $container-color);
     }
   }
 
   @keyframes mdc-checkbox-fade-out-background-dark-#{$uid} {
     0%,
     80% {
-      @include mdc-theme-prop(border-color, $color);
-      @include mdc-theme-prop(background-color, $color);
+      @include mdc-checkbox-theme-prop_(border-color, $stroke-color);
+      @include mdc-checkbox-theme-prop_(background-color, $container-color);
     }
 
     100% {

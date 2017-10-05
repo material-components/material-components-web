@@ -16,7 +16,7 @@
 
 @import "@material/theme/functions";
 
-$mdc-checkbox-state-transition-keyframes-uid_: -1;
+$mdc-checkbox-check-animation-keyframes-uid_: -1;
 
 @function mdc-checkbox-transition-enter($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
   @return mdc-animation-enter($property, $duration, $delay);
@@ -26,8 +26,8 @@ $mdc-checkbox-state-transition-keyframes-uid_: -1;
   @return mdc-animation-exit-temporary($property, $duration, $delay);
 }
 
-@function mdc-checkbox-state-transition-keyframes-uid() {
-  $mdc-checkbox-state-transition-keyframes-uid_: $mdc-checkbox-state-transition-keyframes-uid_ + 1 !global;
+@function mdc-checkbox-check-animation-keyframes-uid() {
+  $mdc-checkbox-check-animation-keyframes-uid_: $mdc-checkbox-check-animation-keyframes-uid_ + 1 !global;
 
-  @return $mdc-checkbox-state-transition-keyframes-uid_;
+  @return $mdc-checkbox-check-animation-keyframes-uid_;
 }
