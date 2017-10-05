@@ -21,58 +21,35 @@
 @import "./keyframes";
 @import "./variables";
 
-//
-// Public
-//
-
 // TODO(acdvorak): Figure out why a pre-checked checkbox janks when `indeterminate` is toggled for the first time.
 // TODO(acdvorak): Accessibility
 // TODO(acdvorak): Do we need [aria-disabled="true"] selectors?
 // TODO(acdvorak): Update docs
 
-// NOTE: Child selector MUST begin with `.mdc-checkbox__background`
-@mixin mdc-checkbox-background-unfilled-enabled {
-  .mdc-checkbox__native-control:not(:disabled) ~ {
-    @content;
-  }
-}
+//
+// Public
+//
 
-// NOTE: Child selector MUST begin with `.mdc-checkbox__background`
-@mixin mdc-checkbox-background-unfilled-disabled {
-  .mdc-checkbox__native-control:disabled ~ {
-    @content;
-  }
-}
-
-// NOTE: Child selector MUST begin with `.mdc-checkbox__background`
-@mixin mdc-checkbox-background-filled-enabled {
-  .mdc-checkbox__native-control:not(:disabled):checked ~,
-  .mdc-checkbox__native-control:not(:disabled):indeterminate ~ {
-    @content;
-  }
-}
-
-// NOTE: Child selector MUST begin with `.mdc-checkbox__background`
-@mixin mdc-checkbox-background-filled-disabled {
-  .mdc-checkbox__native-control:disabled:checked ~,
-  .mdc-checkbox__native-control:disabled:indeterminate ~ {
-    @content;
-  }
-}
-
-@mixin mdc-checkbox-stroke-color($color) {
-  .mdc-checkbox__background {
+@mixin mdc-checkbox-unfilled-stroke-color($color) {
+  @include mdc-checkbox-unfilled-background-selector-enabled_ {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-checkbox-container-color($color) {
-  .mdc-checkbox__background {
+@mixin mdc-checkbox-filled-stroke-color($color) {
+  @include mdc-checkbox-filled-background-selector-enabled_ {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+// TODO(acdvorak): Should we allow clients to customized unfilled container color?
+@mixin mdc-checkbox-filled-container-fill-color($color) {
+  @include mdc-checkbox-filled-background-selector-enabled_ {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-checkbox-focus-color($color) {
+@mixin mdc-checkbox-focus-indicator-color($color) {
   // The ::before element is used as a focus indicator for the checkbox
   .mdc-checkbox__background::before {
     @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
@@ -147,6 +124,32 @@
 // Private
 //
 
+@mixin mdc-checkbox-unfilled-background-selector-enabled_ {
+  .mdc-checkbox__native-control:not(:disabled):not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+    @content;
+  }
+}
+
+@mixin mdc-checkbox-unfilled-background-selector-disabled_ {
+  .mdc-checkbox__native-control:disabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+    @content;
+  }
+}
+
+@mixin mdc-checkbox-filled-background-selector-enabled_ {
+  .mdc-checkbox__native-control:not(:disabled):checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control:not(:disabled):indeterminate ~ .mdc-checkbox__background {
+    @content;
+  }
+}
+
+@mixin mdc-checkbox-filled-background-selector-disabled_ {
+  .mdc-checkbox__native-control:disabled:checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control:disabled:indeterminate ~ .mdc-checkbox__background {
+    @content;
+  }
+}
+
 @mixin mdc-checkbox-base_ {
   display: inline-block;
   position: relative;
@@ -159,6 +162,25 @@
   white-space: nowrap;
   cursor: pointer;
   vertical-align: bottom;
+
+  @include mdc-checkbox-unfilled-background-selector-disabled_ {
+    @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color);
+  }
+
+  @include mdc-checkbox-filled-background-selector-disabled_ {
+    @include mdc-theme-prop(border-color, transparent);
+    @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color);
+  }
+
+  @include mdc-theme-dark {
+    @include mdc-checkbox-unfilled-background-selector-disabled_ {
+      @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color-dark);
+    }
+
+    @include mdc-checkbox-filled-background-selector-disabled_ {
+      @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color-dark);
+    }
+  }
 }
 
 @mixin mdc-checkbox--disabled_ {
@@ -281,7 +303,7 @@
   transition:
     mdc-checkbox-transition-exit(background-color),
     mdc-checkbox-transition-exit(border-color);
-  border: $mdc-checkbox-border-width solid currentColor; // Color is overridden by the mdc-checkbox-stroke-color() mixin
+  border: $mdc-checkbox-border-width solid currentColor; // Color is overridden by the mdc-checkbox-unfilled-stroke-color() mixin
   border-radius: 2px;
   background-color: transparent;
   pointer-events: none;

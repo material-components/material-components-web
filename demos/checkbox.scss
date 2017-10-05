@@ -24,12 +24,9 @@
 $demo-custom-color: $material-color-red-500;
 
 .demo-checkbox--custom {
-  @include mdc-checkbox-focus-color($demo-custom-color);
+  @include mdc-checkbox-filled-stroke-color($demo-custom-color);
+  @include mdc-checkbox-filled-container-fill-color($demo-custom-color);
+  @include mdc-checkbox-focus-indicator-color($demo-custom-color);
   @include mdc-checkbox-state-transition-color($demo-custom-color);
   @include mdc-checkbox-ripple-color($demo-custom-color);
-
-  @include mdc-checkbox-background-filled-enabled {
-    @include mdc-checkbox-stroke-color($demo-custom-color);
-    @include mdc-checkbox-container-color($demo-custom-color);
-  }
 }

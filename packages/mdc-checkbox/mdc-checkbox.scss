@@ -24,42 +24,17 @@
   @include mdc-checkbox-base_;
   @include mdc-ripple-base;
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
-
-  @include mdc-checkbox-background-unfilled-enabled {
-    @include mdc-checkbox-stroke-color($mdc-checkbox-border-color);
-  }
-
-  @include mdc-checkbox-background-unfilled-disabled {
-    @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color);
-  }
-
-  @include mdc-checkbox-background-filled-disabled {
-    @include mdc-checkbox-stroke-color(transparent);
-    @include mdc-checkbox-container-color($mdc-checkbox-disabled-color);
-  }
+  @include mdc-checkbox-unfilled-stroke-color($mdc-checkbox-border-color);
 
   @include mdc-theme-dark {
-    @include mdc-checkbox-background-unfilled-enabled {
-      @include mdc-checkbox-stroke-color($mdc-checkbox-border-color-dark);
-    }
-
-    @include mdc-checkbox-background-unfilled-disabled {
-      @include mdc-checkbox-stroke-color($mdc-checkbox-disabled-color-dark);
-    }
-
-    @include mdc-checkbox-background-filled-disabled {
-      @include mdc-checkbox-container-color($mdc-checkbox-disabled-color-dark);
-    }
+    @include mdc-checkbox-unfilled-stroke-color($mdc-checkbox-border-color-dark);
   }
 
-  @include mdc-checkbox-focus-color(secondary);
+  @include mdc-checkbox-filled-stroke-color(secondary);
+  @include mdc-checkbox-filled-container-fill-color(secondary);
+  @include mdc-checkbox-focus-indicator-color(secondary);
   @include mdc-checkbox-state-transition-color(secondary);
   @include mdc-checkbox-ripple-color(secondary);
-
-  @include mdc-checkbox-background-filled-enabled {
-    @include mdc-checkbox-stroke-color(secondary);
-    @include mdc-checkbox-container-color(secondary);
-  }
 }
 
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes
