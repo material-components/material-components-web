@@ -99,6 +99,7 @@
     @error "At least one argument must be passed to mdc-checkbox-check-animation: $container-color or $stroke-color";
   }
 
+  // Note: To disable this behavior, pass `$stroke-color: false`
   @if $stroke-color == null {
     $stroke-color: $container-color;
   }
