@@ -234,10 +234,10 @@
       </section>
 
       <section class="example mdc-theme--dark">
-        <h2>Dark Theme (mdc-theme--dark) - CSS Only</h2>
+        <h2>Dark Theme (mdc-theme--dark) - With JavaScript</h2>
         <div>
           <div class="mdc-form-field">
-            <div class="mdc-checkbox">
+            <div class="mdc-checkbox" data-js>
               <input type="checkbox"
                      id="checkbox-dark"
                      class="mdc-checkbox__native-control"/>
@@ -257,7 +257,7 @@
         </div>
         <div>
           <div class="mdc-form-field">
-            <div class="mdc-checkbox mdc-checkbox--disabled">
+            <div class="mdc-checkbox mdc-checkbox--disabled" data-js>
               <input type="checkbox"
                      id="basic-disabled-checkbox-dark"
                      class="mdc-checkbox__native-control"
@@ -278,7 +278,7 @@
         </div>
         <div>
           <div class="mdc-form-field">
-            <div class="mdc-checkbox">
+            <div class="mdc-checkbox" data-js>
               <input type="checkbox"
                      id="basic-indeterminate-checkbox-dark"
                      class="mdc-checkbox__native-control"/>
@@ -301,7 +301,7 @@
         </div>
         <div>
           <div class="mdc-form-field">
-            <div class="mdc-checkbox demo-checkbox--custom">
+            <div class="mdc-checkbox demo-checkbox--custom" data-js>
               <input type="checkbox"
                      id="basic-custom-checkbox-dark"
                      class="mdc-checkbox__native-control"
@@ -428,13 +428,20 @@
           formFieldInstance.input = checkboxInstance;
 
           var row = formField.parentElement;
-          row.querySelector('.toggle-indeterminate').addEventListener('click', function() {
-            checkboxInstance.indeterminate = !checkboxInstance.indeterminate;
-          });
 
-          row.querySelector('.toggle-disabled').addEventListener('click', function() {
-            checkboxInstance.disabled = !checkboxInstance.disabled;
-          });
+          var indeterminateToggle = row.querySelector('.toggle-indeterminate');
+          if (indeterminateToggle) {
+            indeterminateToggle.addEventListener('click', function() {
+              checkboxInstance.indeterminate = !checkboxInstance.indeterminate;
+            });
+          }
+
+          var disabledToggle = row.querySelector('.toggle-disabled');
+          if (disabledToggle) {
+            disabledToggle.addEventListener('click', function() {
+              checkboxInstance.disabled = !checkboxInstance.disabled;
+            });
+          }
         });
       })(this);
     </script>
