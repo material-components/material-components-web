@@ -362,6 +362,10 @@
   width: 100%;
   transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
   opacity: 0;
+
+  .mdc-checkbox--upgraded & {
+    opacity: 1;
+  }
 }
 
 @mixin mdc-checkbox__checkmark--checked_ {
