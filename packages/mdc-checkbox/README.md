@@ -266,7 +266,7 @@ Mixin | Description
 --- | ---
 `mdc-checkbox-unmarked-stroke-color($color)` | Sets the stroke color of an _unmarked_ checkbox
 `mdc-checkbox-marked-stroke-color($color)` | Sets the stroke color of a _marked_ checkbox
-`mdc-checkbox-marked-container-fill-color($color)` | Sets the container a fill color of _marked_ checkbox
+`mdc-checkbox-marked-container-fill-color($color)` | Sets the container fill color of _marked_ checkbox
 `mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
 `mdc-checkbox-ripple($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
