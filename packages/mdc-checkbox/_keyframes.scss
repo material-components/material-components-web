@@ -19,11 +19,11 @@
 @import "./variables";
 
 @mixin mdc-checkbox-mark-animation-keyframes_(
-    $from-stroke-color,
-    $to-stroke-color,
-    $from-container-color,
-    $to-container-color,
-    $uid) {
+  $from-stroke-color,
+  $to-stroke-color,
+  $from-container-color,
+  $to-container-color,
+  $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
       border-color: $from-stroke-color;

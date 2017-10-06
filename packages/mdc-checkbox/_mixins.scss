@@ -77,10 +77,11 @@
 }
 
 @mixin mdc-checkbox-mark-animation(
-    $unmarked-stroke-color,
-    $marked-stroke-color,
-    $unmarked-container-color,
-    $marked-container-color) {
+  $unmarked-stroke-color,
+  $marked-stroke-color,
+  $unmarked-container-color,
+  $marked-container-color) {
+
   $uid: mdc-checkbox-mark-animation-keyframes-uid_();
 
   @include mdc-checkbox-mark-animation-keyframes_(

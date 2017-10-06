@@ -35,17 +35,17 @@
   @include mdc-checkbox-focus-indicator-color(secondary);
   @include mdc-checkbox-ripple((theme-style: secondary, opacity: $mdc-checkbox-ripple-opacity));
   @include mdc-checkbox-mark-animation(
-      $unmarked-stroke-color: $mdc-checkbox-border-color,
-      $marked-stroke-color: secondary,
-      $unmarked-container-color: transparent,
-      $marked-container-color: secondary);
+    $unmarked-stroke-color: $mdc-checkbox-border-color,
+    $marked-stroke-color: secondary,
+    $unmarked-container-color: transparent,
+    $marked-container-color: secondary);
 
   @include mdc-theme-dark {
     @include mdc-checkbox-mark-animation(
-        $unmarked-stroke-color: $mdc-checkbox-border-color-dark,
-        $marked-stroke-color: secondary,
-        $unmarked-container-color: transparent,
-        $marked-container-color: secondary);
+      $unmarked-stroke-color: $mdc-checkbox-border-color-dark,
+      $marked-stroke-color: secondary,
+      $unmarked-container-color: transparent,
+      $marked-container-color: secondary);
   }
 }
 
