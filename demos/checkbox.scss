@@ -33,4 +33,8 @@ $demo-custom-color: $material-color-red-500;
     $marked-stroke-color: $demo-custom-color,
     $unmarked-container-color: transparent,
     $marked-container-color: $demo-custom-color);
+
+  @include mdc-theme-dark {
+    @include mdc-checkbox-ink-color(black);
+  }
 }
