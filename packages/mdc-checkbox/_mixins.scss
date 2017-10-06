@@ -90,9 +90,9 @@
     $marked-stroke-color,
     $unmarked-container-color,
     $marked-container-color) {
-  $uid: mdc-checkbox-mark-animation-keyframes-uid();
+  $uid: mdc-checkbox-mark-animation-keyframes-uid_();
 
-  @include mdc-checkbox-mark-animation-keyframes(
+  @include mdc-checkbox-mark-animation-keyframes_(
     $from-stroke-color: $unmarked-stroke-color,
     $to-stroke-color: $marked-stroke-color,
     $from-container-color: $unmarked-container-color,

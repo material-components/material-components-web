@@ -18,7 +18,7 @@
 @import "@material/theme/mixins";
 @import "./variables";
 
-@mixin mdc-checkbox-mark-animation-keyframes(
+@mixin mdc-checkbox-mark-animation-keyframes_(
     $from-stroke-color,
     $to-stroke-color,
     $from-container-color,

@@ -26,7 +26,7 @@ $mdc-checkbox-mark-animation-keyframes-uid_: -1;
   @return mdc-animation-exit-temporary($property, $duration, $delay);
 }
 
-@function mdc-checkbox-mark-animation-keyframes-uid() {
+@function mdc-checkbox-mark-animation-keyframes-uid_() {
   $mdc-checkbox-mark-animation-keyframes-uid_: $mdc-checkbox-mark-animation-keyframes-uid_ + 1 !global;
 
   @return $mdc-checkbox-mark-animation-keyframes-uid_;
