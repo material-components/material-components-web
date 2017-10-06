@@ -63,17 +63,10 @@
 }
 
 @mixin mdc-checkbox-ripple($ripple-config) {
-  $ripple-config: map-merge((opacity: $mdc-checkbox-ripple-opacity), $ripple-config);
+  $ripple-config: map-merge((opacity: $mdc-checkbox-ripple-opacity, radius: 50%), $ripple-config);
 
   @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
   @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-
-  &::before,
-  &::after {
-    // This needs to be included immediately after mdc-ripple-bg and mdc-ripple-fg
-    // to override their default dimensions.
-    @include mdc-checkbox-ripple-size_;
-  }
 }
 
 @mixin mdc-checkbox-mark-animation(
@@ -148,13 +141,6 @@
 @mixin mdc-checkbox--disabled_ {
   cursor: default;
   pointer-events: none;
-}
-
-@mixin mdc-checkbox-ripple-size_ {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 }
 
 @mixin mdc-checkbox__child--cover-parent_ {
