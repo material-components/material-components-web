@@ -21,13 +21,6 @@
 @import "./keyframes";
 @import "./variables";
 
-// TODO(acdvorak): Figure out why a pre-checked checkbox janks when `indeterminate` is toggled for the first time.
-// TODO(acdvorak): Accessibility
-// TODO(acdvorak): Do we need [aria-disabled="true"] selectors?
-// TODO(acdvorak): Update docs
-// TODO(acdvorak): Refactor ripple mixin to auto-detect base-color vs. theme-style
-// TODO(acdvorak): Refactor ripple mixin to allow overriding color only, without setting sizes
-
 //
 // Public
 //
@@ -44,7 +37,6 @@
   }
 }
 
-// TODO(acdvorak): Should we allow clients to customized unmarked container color?
 @mixin mdc-checkbox-marked-container-fill-color($color) {
   @include mdc-checkbox-marked-background-selector-enabled_ {
     @include mdc-theme-prop(background-color, $color);
@@ -59,7 +51,6 @@
 }
 
 @mixin mdc-checkbox-ink-color($color) {
-  // TODO(acdvorak): Rename to .mdc-checkbox__checkmark-path
   .mdc-checkbox__checkmark__path {
     // !important is needed here because a stroke must be set as an attribute on the SVG in order
     // for line animation to work properly.
