@@ -43,13 +43,6 @@
   }
 }
 
-@mixin mdc-checkbox-focus-indicator-color($color) {
-  // The ::before element is used as a focus indicator for the checkbox
-  .mdc-checkbox__background::before {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
-  }
-}
-
 @mixin mdc-checkbox-ink-color($color) {
   .mdc-checkbox__checkmark__path {
     // !important is needed here because a stroke must be set as an attribute on the SVG in order
@@ -59,6 +52,13 @@
 
   .mdc-checkbox__mixedmark {
     @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-checkbox-focus-indicator-color($color) {
+  // The ::before element is used as a focus indicator for the checkbox
+  .mdc-checkbox__background::before {
+    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
   }
 }
 
