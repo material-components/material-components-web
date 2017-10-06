@@ -111,7 +111,7 @@ easily position checkboxes and their labels.
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
 
-Note that `mdc-checkbox--disabled` is necessary on the root element to prevent hover states from activating.
+Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class.
 
 ### Using the JS Component
 
@@ -255,8 +255,24 @@ not return an object.
 
 ## Theming
 
-MDC Checkboxes use the theme's primary color by default for checked and indeterminate states, and are completely dark theme
+MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate), and are completely dark theme
 aware.
+
+### Sass Mixins
+
+The following mixins apply only to _enabled_ checkboxes. It is not currently possible to customize the color of a _disabled_ checkbox.
+
+Mixin | Description
+--- | ---
+`mdc-checkbox-unmarked-stroke-color($color)` | Sets the stroke color of an _unmarked_ checkbox
+`mdc-checkbox-marked-stroke-color($color)` | Sets the stroke color of a _marked_ checkbox
+`mdc-checkbox-marked-container-fill-color($color)` | Sets the container a fill color of _marked_ checkbox
+`mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
+`mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
+`mdc-checkbox-ripple($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
+`mdc-checkbox-mark-animation($unmarked-stroke-color, $marked-stroke-color, $unmarked-container-color, $marked-container-color)` | Generates CSS classes and `@keyframes` to animate a checkbox's color when it transitions between unmarked and marked states
+
+[ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
 
 ### Caveat: Edge and CSS Variables
 
