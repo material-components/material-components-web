@@ -20,19 +20,19 @@
 @import "../packages/mdc-theme/color_palette";
 @import "../packages/mdc-typography/mdc-typography";
 
-$demo-custom-color: $material-color-red-500;
+$demo-checkbox-custom-color: $material-color-red-500;
 
 .mdc-checkbox.demo-checkbox--custom {
-  @include mdc-checkbox-unmarked-stroke-color($demo-custom-color);
-  @include mdc-checkbox-marked-stroke-color($demo-custom-color);
-  @include mdc-checkbox-marked-container-fill-color($demo-custom-color);
-  @include mdc-checkbox-focus-indicator-color($demo-custom-color);
-  @include mdc-checkbox-ripple((base-color: $demo-custom-color, opacity: $mdc-checkbox-ripple-opacity));
+  @include mdc-checkbox-unmarked-stroke-color($demo-checkbox-custom-color);
+  @include mdc-checkbox-marked-stroke-color($demo-checkbox-custom-color);
+  @include mdc-checkbox-marked-container-fill-color($demo-checkbox-custom-color);
+  @include mdc-checkbox-focus-indicator-color($demo-checkbox-custom-color);
+  @include mdc-checkbox-ripple((base-color: $demo-checkbox-custom-color, opacity: $mdc-checkbox-ripple-opacity));
   @include mdc-checkbox-mark-animation(
-    $unmarked-stroke-color: $demo-custom-color,
-    $marked-stroke-color: $demo-custom-color,
+    $unmarked-stroke-color: $demo-checkbox-custom-color,
+    $marked-stroke-color: $demo-checkbox-custom-color,
     $unmarked-container-color: transparent,
-    $marked-container-color: $demo-custom-color);
+    $marked-container-color: $demo-checkbox-custom-color);
 
   @include mdc-theme-dark {
     @include mdc-checkbox-ink-color(black);
