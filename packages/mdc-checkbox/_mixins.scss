@@ -85,20 +85,25 @@
   }
 }
 
-@mixin mdc-checkbox-mark-animation($container-color, $stroke-color) {
+@mixin mdc-checkbox-mark-animation(
+    $unmarked-stroke-color,
+    $marked-stroke-color,
+    $unmarked-container-color,
+    $marked-container-color) {
   $uid: mdc-checkbox-mark-animation-keyframes-uid();
 
-  @include mdc-checkbox-mark-animation-keyframes($container-color, $stroke-color, $uid);
+  @include mdc-checkbox-mark-animation-keyframes(
+    $from-stroke-color: $unmarked-stroke-color,
+    $to-stroke-color: $marked-stroke-color,
+    $from-container-color: $unmarked-container-color,
+    $to-container-color: $marked-container-color,
+    $uid: $uid);
 
   &.mdc-checkbox--anim {
     &-unchecked-checked,
     &-unchecked-indeterminate {
       .mdc-checkbox__background {
         animation-name: mdc-checkbox-fade-in-background-#{$uid};
-
-        @include mdc-theme-dark(".mdc-checkbox") {
-          animation-name: mdc-checkbox-fade-in-background-dark-#{$uid};
-        }
       }
     }
 
@@ -106,10 +111,6 @@
     &-indeterminate-unchecked {
       .mdc-checkbox__background {
         animation-name: mdc-checkbox-fade-out-background-#{$uid};
-
-        @include mdc-theme-dark(".mdc-checkbox") {
-          animation-name: mdc-checkbox-fade-out-background-dark-#{$uid};
-        }
       }
     }
   }

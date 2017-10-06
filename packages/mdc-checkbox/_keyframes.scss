@@ -18,54 +18,34 @@
 @import "@material/theme/mixins";
 @import "./variables";
 
-@mixin mdc-checkbox-mark-animation-keyframes($container-color, $stroke-color, $uid) {
+@mixin mdc-checkbox-mark-animation-keyframes(
+    $from-stroke-color,
+    $to-stroke-color,
+    $from-container-color,
+    $to-container-color,
+    $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
-      border-color: $mdc-checkbox-border-color;
-      background-color: transparent;
+      border-color: $from-stroke-color;
+      background-color: $from-container-color;
     }
 
     50% {
-      @include mdc-checkbox-theme-prop_(border-color, $stroke-color);
-      @include mdc-checkbox-theme-prop_(background-color, $container-color);
+      @include mdc-checkbox-theme-prop_(border-color, $to-stroke-color);
+      @include mdc-checkbox-theme-prop_(background-color, $to-container-color);
     }
   }
 
   @keyframes mdc-checkbox-fade-out-background-#{$uid} {
     0%,
     80% {
-      @include mdc-checkbox-theme-prop_(border-color, $stroke-color);
-      @include mdc-checkbox-theme-prop_(background-color, $container-color);
+      @include mdc-checkbox-theme-prop_(border-color, $to-stroke-color);
+      @include mdc-checkbox-theme-prop_(background-color, $to-container-color);
     }
 
     100% {
-      border-color: $mdc-checkbox-border-color;
-      background-color: transparent;
-    }
-  }
-
-  @keyframes mdc-checkbox-fade-in-background-dark-#{$uid} {
-    0% {
-      border-color: $mdc-checkbox-border-color-dark;
-      background-color: transparent;
-    }
-
-    50% {
-      @include mdc-checkbox-theme-prop_(border-color, $stroke-color);
-      @include mdc-checkbox-theme-prop_(background-color, $container-color);
-    }
-  }
-
-  @keyframes mdc-checkbox-fade-out-background-dark-#{$uid} {
-    0%,
-    80% {
-      @include mdc-checkbox-theme-prop_(border-color, $stroke-color);
-      @include mdc-checkbox-theme-prop_(background-color, $container-color);
-    }
-
-    100% {
-      border-color: $mdc-checkbox-border-color-dark;
-      background-color: transparent;
+      border-color: $from-stroke-color;
+      background-color: $from-container-color;
     }
   }
 }
