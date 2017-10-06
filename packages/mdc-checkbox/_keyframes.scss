@@ -31,28 +31,22 @@
     }
 
     50% {
-      @include mdc-checkbox-theme-prop_(border-color, $to-stroke-color);
-      @include mdc-checkbox-theme-prop_(background-color, $to-container-color);
+      @include mdc-theme-prop(border-color, $to-stroke-color);
+      @include mdc-theme-prop(background-color, $to-container-color);
     }
   }
 
   @keyframes mdc-checkbox-fade-out-background-#{$uid} {
     0%,
     80% {
-      @include mdc-checkbox-theme-prop_(border-color, $to-stroke-color);
-      @include mdc-checkbox-theme-prop_(background-color, $to-container-color);
+      @include mdc-theme-prop(border-color, $to-stroke-color);
+      @include mdc-theme-prop(background-color, $to-container-color);
     }
 
     100% {
       border-color: $from-stroke-color;
       background-color: $from-container-color;
     }
-  }
-}
-
-@mixin mdc-checkbox-theme-prop_($name, $value) {
-  @if $value {
-    @include mdc-theme-prop($name, $value);
   }
 }
 
