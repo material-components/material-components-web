@@ -326,7 +326,7 @@
   transition:
     mdc-checkbox-transition-enter(opacity, 0ms, 80ms),
     mdc-checkbox-transition-enter(transform, 0ms, 80ms);
-  opacity: .26;
+  opacity: $mdc-checkbox-focus-indicator-opacity;
 }
 
 @mixin mdc-checkbox__focus-indicator--ripple-upgraded-unbounded_ {
