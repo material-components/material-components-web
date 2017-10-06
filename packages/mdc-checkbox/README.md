@@ -91,6 +91,8 @@ easily position checkboxes and their labels.
 
 #### Disabled Checkboxes
 
+Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class; a `disabled` attribute on the `<input>` element is sufficient.
+
 ```html
 <div class="mdc-checkbox mdc-checkbox--disabled">
   <input type="checkbox"
@@ -110,8 +112,6 @@ easily position checkboxes and their labels.
 </div>
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
-
-Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class.
 
 ### Using the JS Component
 
