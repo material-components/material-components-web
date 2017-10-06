@@ -18,6 +18,7 @@ import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple';
 
 import {cssClasses, strings} from './constants';
+import {MDCTextfieldAdapter} from './adapter';
 import MDCTextfieldFoundation from './foundation';
 
 /**
