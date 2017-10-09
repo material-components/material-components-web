@@ -77,22 +77,22 @@
 
 @mixin mdc-checkbox-stroke-and-container-fill-color(
   $unmarked-stroke-color: $mdc-checkbox-border-color,
-  $unmarked-container-color: transparent,
+  $unmarked-container-fill-color: transparent,
   $marked-stroke-color: $mdc-checkbox-baseline-theme-color,
-  $marked-container-color: $mdc-checkbox-baseline-theme-color) {
+  $marked-container-fill-color: $mdc-checkbox-baseline-theme-color) {
 
   $uid: mdc-checkbox-mark-animation-keyframes-uid_();
 
   @include mdc-checkbox-unmarked-stroke-color($unmarked-stroke-color);
   @include mdc-checkbox-marked-stroke-color($marked-stroke-color);
-  @include mdc-checkbox-unmarked-container-fill-color($unmarked-container-color);
-  @include mdc-checkbox-marked-container-fill-color($marked-container-color);
+  @include mdc-checkbox-unmarked-container-fill-color($unmarked-container-fill-color);
+  @include mdc-checkbox-marked-container-fill-color($marked-container-fill-color);
 
   @include mdc-checkbox-mark-animation-keyframes_(
     $from-stroke-color: $unmarked-stroke-color,
     $to-stroke-color: $marked-stroke-color,
-    $from-container-color: $unmarked-container-color,
-    $to-container-color: $marked-container-color,
+    $from-container-fill-color: $unmarked-container-fill-color,
+    $to-container-fill-color: $marked-container-fill-color,
     $uid: $uid);
 
   &.mdc-checkbox--anim {

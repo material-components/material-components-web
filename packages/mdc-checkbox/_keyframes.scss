@@ -21,18 +21,18 @@
 @mixin mdc-checkbox-mark-animation-keyframes_(
   $from-stroke-color,
   $to-stroke-color,
-  $from-container-color,
-  $to-container-color,
+  $from-container-fill-color,
+  $to-container-fill-color,
   $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
       border-color: $from-stroke-color;
-      background-color: $from-container-color;
+      background-color: $from-container-fill-color;
     }
 
     50% {
       @include mdc-theme-prop(border-color, $to-stroke-color);
-      @include mdc-theme-prop(background-color, $to-container-color);
+      @include mdc-theme-prop(background-color, $to-container-fill-color);
     }
   }
 
@@ -40,12 +40,12 @@
     0%,
     80% {
       @include mdc-theme-prop(border-color, $to-stroke-color);
-      @include mdc-theme-prop(background-color, $to-container-color);
+      @include mdc-theme-prop(background-color, $to-container-fill-color);
     }
 
     100% {
       border-color: $from-stroke-color;
-      background-color: $from-container-color;
+      background-color: $from-container-fill-color;
     }
   }
 }
