@@ -263,14 +263,14 @@ The following mixins apply only to _enabled_ checkboxes. It is not currently pos
 
 Mixin | Description
 --- | ---
-`mdc-checkbox-stroke-and-container-fill-color($unmarked-stroke-color, $unmarked-container-fill-color, $marked-stroke-color, $marked-container-fill-color, $animate)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
+`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $animate)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
 `mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
 `mdc-checkbox-ripple($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
 
 [ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
 
-#### `mdc-checkbox-stroke-and-container-fill-color($unmarked-stroke-color, $unmarked-container-fill-color, $marked-stroke-color, $marked-container-fill-color, $animate)`
+#### `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $animate)`
 
 Generates CSS classes to set the stroke color and/or container fill color of a checkbox in its marked and unmarked states.
 
