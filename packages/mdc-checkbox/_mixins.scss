@@ -30,7 +30,7 @@
   $unmarked-fill-color: transparent,
   $marked-stroke-color: $mdc-checkbox-baseline-theme-color,
   $marked-fill-color: $mdc-checkbox-baseline-theme-color,
-  $animate: true) {
+  $generate-keyframes: true) {
   @include mdc-checkbox-unmarked-background-selector-enabled_ {
     @include mdc-theme-prop(border-color, $unmarked-stroke-color);
   }
@@ -47,7 +47,7 @@
     @include mdc-theme-prop(background-color, $marked-fill-color);
   }
 
-  @if $animate {
+  @if $generate-keyframes {
     $uid: mdc-checkbox-container-keyframes-uid_();
 
     @include mdc-checkbox-container-keyframes_(
