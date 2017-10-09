@@ -255,8 +255,7 @@ not return an object.
 
 ## Theming
 
-MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate), and are completely dark theme
-aware.
+MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate), and are completely dark theme aware.
 
 ### Sass Mixins
 
