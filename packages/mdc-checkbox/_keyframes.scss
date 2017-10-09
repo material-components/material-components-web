@@ -26,8 +26,8 @@
   $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
-      border-color: $from-stroke-color;
-      background-color: $from-container-fill-color;
+      @include mdc-theme-prop(border-color, $from-stroke-color);
+      @include mdc-theme-prop(background-color, $from-container-fill-color);
     }
 
     50% {
@@ -44,8 +44,8 @@
     }
 
     100% {
-      border-color: $from-stroke-color;
-      background-color: $from-container-fill-color;
+      @include mdc-theme-prop(border-color, $from-stroke-color);
+      @include mdc-theme-prop(background-color, $from-container-fill-color);
     }
   }
 }
