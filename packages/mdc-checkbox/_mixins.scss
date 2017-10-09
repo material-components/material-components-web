@@ -37,6 +37,12 @@
   }
 }
 
+@mixin mdc-checkbox-unmarked-container-fill-color($color) {
+  @include mdc-checkbox-unmarked-background-selector-enabled_ {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
 @mixin mdc-checkbox-marked-container-fill-color($color) {
   @include mdc-checkbox-marked-background-selector-enabled_ {
     @include mdc-theme-prop(background-color, $color);
@@ -69,13 +75,18 @@
   @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
 }
 
-@mixin mdc-checkbox-mark-animation(
-  $unmarked-stroke-color,
-  $marked-stroke-color,
-  $unmarked-container-color,
-  $marked-container-color) {
+@mixin mdc-checkbox-stroke-and-container-fill-color(
+  $unmarked-stroke-color: $mdc-checkbox-border-color,
+  $unmarked-container-color: transparent,
+  $marked-stroke-color: $mdc-checkbox-baseline-theme-color,
+  $marked-container-color: $mdc-checkbox-baseline-theme-color) {
 
   $uid: mdc-checkbox-mark-animation-keyframes-uid_();
+
+  @include mdc-checkbox-unmarked-stroke-color($unmarked-stroke-color);
+  @include mdc-checkbox-marked-stroke-color($marked-stroke-color);
+  @include mdc-checkbox-unmarked-container-fill-color($unmarked-container-color);
+  @include mdc-checkbox-marked-container-fill-color($marked-container-color);
 
   @include mdc-checkbox-mark-animation-keyframes_(
     $from-stroke-color: $unmarked-stroke-color,

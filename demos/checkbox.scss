@@ -18,23 +18,38 @@
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-theme/color_palette";
+@import "../packages/mdc-theme/functions";
 @import "../packages/mdc-typography/mdc-typography";
 
-$demo-checkbox-custom-color: $material-color-red-500;
+.mdc-checkbox.demo-checkbox--custom-stroke-and-fill {
+  $color: $material-color-red-500;
 
-.mdc-checkbox.demo-checkbox--custom {
-  @include mdc-checkbox-unmarked-stroke-color($demo-checkbox-custom-color);
-  @include mdc-checkbox-marked-stroke-color($demo-checkbox-custom-color);
-  @include mdc-checkbox-marked-container-fill-color($demo-checkbox-custom-color);
-  @include mdc-checkbox-focus-indicator-color($demo-checkbox-custom-color);
-  @include mdc-checkbox-ripple((base-color: $demo-checkbox-custom-color, opacity: $mdc-checkbox-ripple-opacity));
-  @include mdc-checkbox-mark-animation(
-    $unmarked-stroke-color: $demo-checkbox-custom-color,
-    $marked-stroke-color: $demo-checkbox-custom-color,
-    $unmarked-container-color: transparent,
-    $marked-container-color: $demo-checkbox-custom-color);
+  @include mdc-checkbox-focus-indicator-color($color);
+  @include mdc-checkbox-ripple((base-color: $color, opacity: $mdc-checkbox-ripple-opacity));
+  @include mdc-checkbox-stroke-and-container-fill-color(
+    $unmarked-stroke-color: $color,
+    $unmarked-container-color: rgba($color, .25),
+    $marked-stroke-color: $color,
+    $marked-container-color: $color);
 
-  @include mdc-theme-dark {
+  @include mdc-theme-dark(".mdc-checkbox", $compound: true) {
     @include mdc-checkbox-ink-color(black);
+    @include mdc-checkbox-stroke-and-container-fill-color(
+      $unmarked-stroke-color: $color,
+      $unmarked-container-color: rgba($color, .35),
+      $marked-stroke-color: $color,
+      $marked-container-color: $color);
+  }
+}
+
+.mdc-checkbox.demo-checkbox--custom-stroke {
+  @include mdc-checkbox-stroke-and-container-fill-color(
+    $unmarked-stroke-color: $material-color-blue-400,
+    $marked-stroke-color: $material-color-blue-700);
+
+  @include mdc-theme-dark(".mdc-checkbox", $compound: true) {
+    @include mdc-checkbox-stroke-and-container-fill-color(
+      $unmarked-stroke-color: $material-color-blue-400,
+      $marked-stroke-color: $material-color-blue-500);
   }
 }

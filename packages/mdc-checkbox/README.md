@@ -270,7 +270,7 @@ Mixin | Description
 `mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
 `mdc-checkbox-ripple($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
-`mdc-checkbox-mark-animation($unmarked-stroke-color, $marked-stroke-color, $unmarked-container-color, $marked-container-color)` | Generates CSS classes and `@keyframes` to animate a checkbox's color when it transitions between unmarked and marked states
+`mdc-checkbox-stroke-and-container-fill-color($unmarked-stroke-color, $unmarked-container-color, $marked-stroke-color, $marked-container-color)` | Generates CSS classes and `@keyframes` to set the stroke and/or container fill color of a checkbox and animate it when it transitions between unmarked and marked states
 
 [ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
 
