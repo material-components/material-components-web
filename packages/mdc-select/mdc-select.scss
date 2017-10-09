@@ -42,7 +42,8 @@
     mdc-animation-exit-temporary(background-color, 150ms);
   border: none;
   border-bottom: 1px solid rgba(black, .12);
-  border-radius: 0;
+  border-radius: 0;  
+  background-color: transparent;
   background-repeat: no-repeat;
   background-position: right center;
   font-family: Roboto, sans-serif;
@@ -94,6 +95,12 @@
       mdc-animation-exit-temporary(transform, 125ms);
     white-space: nowrap;
     overflow: hidden;
+  }
+
+  option.mdc-list-item{
+    @include mdc-theme-dark {
+      background-color: #424242;
+    }
   }
 }
 
