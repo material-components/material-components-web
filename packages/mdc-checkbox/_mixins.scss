@@ -25,27 +25,53 @@
 // Public
 //
 
-@mixin mdc-checkbox-unmarked-stroke-color($color) {
+@mixin mdc-checkbox-stroke-and-container-fill-color(
+  $unmarked-stroke-color: $mdc-checkbox-border-color,
+  $unmarked-container-fill-color: transparent,
+  $marked-stroke-color: $mdc-checkbox-baseline-theme-color,
+  $marked-container-fill-color: $mdc-checkbox-baseline-theme-color,
+  $animate: true) {
   @include mdc-checkbox-unmarked-background-selector-enabled_ {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop(border-color, $unmarked-stroke-color);
   }
-}
 
-@mixin mdc-checkbox-marked-stroke-color($color) {
   @include mdc-checkbox-marked-background-selector-enabled_ {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop(border-color, $marked-stroke-color);
   }
-}
 
-@mixin mdc-checkbox-unmarked-container-fill-color($color) {
   @include mdc-checkbox-unmarked-background-selector-enabled_ {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, $unmarked-container-fill-color);
   }
-}
 
-@mixin mdc-checkbox-marked-container-fill-color($color) {
   @include mdc-checkbox-marked-background-selector-enabled_ {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, $marked-container-fill-color);
+  }
+
+  @if $animate {
+    $uid: mdc-checkbox-mark-animation-keyframes-uid_();
+
+    @include mdc-checkbox-mark-animation-keyframes_(
+      $from-stroke-color: $unmarked-stroke-color,
+      $to-stroke-color: $marked-stroke-color,
+      $from-container-fill-color: $unmarked-container-fill-color,
+      $to-container-fill-color: $marked-container-fill-color,
+      $uid: $uid);
+
+    &.mdc-checkbox--anim {
+      &-unchecked-checked,
+      &-unchecked-indeterminate {
+        .mdc-checkbox__background {
+          animation-name: mdc-checkbox-fade-in-background-#{$uid};
+        }
+      }
+
+      &-checked-unchecked,
+      &-indeterminate-unchecked {
+        .mdc-checkbox__background {
+          animation-name: mdc-checkbox-fade-out-background-#{$uid};
+        }
+      }
+    }
   }
 }
 
@@ -73,43 +99,6 @@
 
   @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
   @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-}
-
-@mixin mdc-checkbox-stroke-and-container-fill-color(
-  $unmarked-stroke-color: $mdc-checkbox-border-color,
-  $unmarked-container-fill-color: transparent,
-  $marked-stroke-color: $mdc-checkbox-baseline-theme-color,
-  $marked-container-fill-color: $mdc-checkbox-baseline-theme-color) {
-
-  $uid: mdc-checkbox-mark-animation-keyframes-uid_();
-
-  @include mdc-checkbox-unmarked-stroke-color($unmarked-stroke-color);
-  @include mdc-checkbox-marked-stroke-color($marked-stroke-color);
-  @include mdc-checkbox-unmarked-container-fill-color($unmarked-container-fill-color);
-  @include mdc-checkbox-marked-container-fill-color($marked-container-fill-color);
-
-  @include mdc-checkbox-mark-animation-keyframes_(
-    $from-stroke-color: $unmarked-stroke-color,
-    $to-stroke-color: $marked-stroke-color,
-    $from-container-fill-color: $unmarked-container-fill-color,
-    $to-container-fill-color: $marked-container-fill-color,
-    $uid: $uid);
-
-  &.mdc-checkbox--anim {
-    &-unchecked-checked,
-    &-unchecked-indeterminate {
-      .mdc-checkbox__background {
-        animation-name: mdc-checkbox-fade-in-background-#{$uid};
-      }
-    }
-
-    &-checked-unchecked,
-    &-indeterminate-unchecked {
-      .mdc-checkbox__background {
-        animation-name: mdc-checkbox-fade-out-background-#{$uid};
-      }
-    }
-  }
 }
 
 //
