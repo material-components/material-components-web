@@ -28,7 +28,7 @@ const path = require('path');
 const {default: traverse} = require('babel-traverse');
 const babylon = require('babylon');
 const camelCase = require('camel-case');
-const cssom = require('CSSOM');
+const cssom = require('cssom');
 const recast = require('recast');
 
 const pkg = require(path.join(process.env.PWD, process.argv[process.argv.length - 1]));

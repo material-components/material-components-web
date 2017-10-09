@@ -14,56 +14,81 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import MDCFoundation from '@material/base/foundation';
+import {MDCTextfieldAdapter, NativeInputType} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export default class MDCTextfieldFoundation extends MDCFoundation {
+
+/**
+ * @extends {MDCFoundation<!MDCTextfieldAdapter>}
+ * @final
+ */
+class MDCTextfieldFoundation extends MDCFoundation {
+  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
+  /**
+   * {@see MDCTextfieldAdapter} for typing information on parameters and return
+   * types.
+   * @return {!MDCTextfieldAdapter}
+   */
   static get defaultAdapter() {
-    return {
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      addClassToLabel: (/* className: string */) => {},
-      removeClassFromLabel: (/* className: string */) => {},
-      setIconAttr: (/* name: string, value: string */) => {},
-      eventTargetHasClass: (/* target: HTMLElement, className: string */) => {},
+    return /** @type {!MDCTextfieldAdapter} */ ({
+      addClass: () => {},
+      removeClass: () => {},
+      addClassToLabel: () => {},
+      removeClassFromLabel: () => {},
+      setIconAttr: () => {},
+      eventTargetHasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       notifyIconAction: () => {},
-      addClassToBottomLine: (/* className: string */) => {},
-      removeClassFromBottomLine: (/* className: string */) => {},
-      addClassToHelptext: (/* className: string */) => {},
-      removeClassFromHelptext: (/* className: string */) => {},
-      helptextHasClass: (/* className: string */) => /* boolean */ false,
-      registerInputInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      deregisterInputInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      registerTransitionEndHandler: (/* handler: EventListener */) => {},
-      deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
-      setBottomLineAttr: (/* attr: string, value: string */) => {},
-      setHelptextAttr: (/* name: string, value: string */) => {},
-      removeHelptextAttr: (/* name: string */) => {},
-      getNativeInput: () => /* HTMLInputElement */ {},
-    };
+      addClassToBottomLine: () => {},
+      removeClassFromBottomLine: () => {},
+      addClassToHelptext: () => {},
+      removeClassFromHelptext: () => {},
+      helptextHasClass: () => false,
+      registerInputInteractionHandler: () => {},
+      deregisterInputInteractionHandler: () => {},
+      registerTransitionEndHandler: () => {},
+      deregisterTransitionEndHandler: () => {},
+      setBottomLineAttr: () => {},
+      setHelptextAttr: () => {},
+      removeHelptextAttr: () => {},
+      getNativeInput: () => {},
+    });
   }
 
+  /**
+   * @param {!MDCTextfieldAdapter=} adapter
+   */
   constructor(adapter = {}) {
     super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
 
+    /** @private {boolean} */
     this.isFocused_ = false;
+    /** @private {boolean} */
     this.receivedUserInput_ = false;
+    /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
+    /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus_();
+    /** @private {function(): undefined} */
     this.inputBlurHandler_ = () => this.deactivateFocus_();
+    /** @private {function(): undefined} */
     this.inputInputHandler_ = () => this.autoCompleteFocus_();
+    /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin_(evt);
+    /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction_(evt);
+    /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
   }
 
@@ -100,6 +125,11 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
   }
 
+  /**
+   * Handles all user interactions with the Textfield.
+   * @param {!Event} evt
+   * @private
+   */
   handleTextFieldInteraction_(evt) {
     if (this.adapter_.getNativeInput().disabled) {
       return;
@@ -117,6 +147,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Activates the text field focus state.
+   * @private
+   */
   activateFocus_() {
     const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
@@ -127,6 +161,12 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
   }
 
+  /**
+   * Sets the transform-origin of the bottom line, causing it to animate out
+   * from the user's click location.
+   * @param {!Event} evt
+   * @private
+   */
   setBottomLineTransformOrigin_(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();
     const evtCoords = {x: evt.clientX, y: evt.clientY};
@@ -137,17 +177,32 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.adapter_.setBottomLineAttr('style', attributeString);
   }
 
+  /**
+   * Activates the Textfield's focus state in cases when the input value
+   * changes without user input (e.g. programatically).
+   * @private
+   */
   autoCompleteFocus_() {
     if (!this.receivedUserInput_) {
       this.activateFocus_();
     }
   }
 
+  /**
+   * Makes the help text visible to screen readers.
+   * @private
+   */
   showHelptext_() {
     const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
     this.adapter_.removeHelptextAttr(ARIA_HIDDEN);
   }
 
+  /**
+   * Fires when animation transition ends, performing actions that must wait
+   * for animations to finish.
+   * @param {!Event} evt
+   * @private
+   */
   transitionEnd_(evt) {
     const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
 
@@ -159,6 +214,10 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Deactives the Textfield's focus state.
+   * @private
+   */
   deactivateFocus_() {
     const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
@@ -177,6 +236,11 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Updates the Textfield's valid state based on the supplied validity.
+   * @param {boolean} isValid
+   * @private
+   */
   changeValidity_(isValid) {
     const {INVALID, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     if (isValid) {
@@ -188,6 +252,11 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.updateHelptext_(isValid);
   }
 
+  /**
+   * Updates the state of the Textfield's help text based on validity and
+   * the Textfield's options.
+   * @param {boolean} isValid
+   */
   updateHelptext_(isValid) {
     const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextfieldFoundation.cssClasses;
     const {ROLE} = MDCTextfieldFoundation.strings;
@@ -207,20 +276,34 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     this.hideHelptext_();
   }
 
+  /**
+   * Hides the help text from screen readers.
+   * @private
+   */
   hideHelptext_() {
     const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
     this.adapter_.setHelptextAttr(ARIA_HIDDEN, 'true');
   }
 
+  /**
+   * @return {boolean} True if the Textfield input fails validity checks.
+   * @private
+   */
   isBadInput_() {
     const input = this.getNativeInput_();
     return input.validity ? input.validity.badInput : input.badInput;
   }
 
+  /**
+   * @return {boolean} True if the Textfield is disabled.
+   */
   isDisabled() {
     return this.getNativeInput_().disabled;
   }
 
+  /**
+   * @param {boolean} disabled Sets the textfield disabled or enabled.
+   */
   setDisabled(disabled) {
     const {DISABLED} = MDCTextfieldFoundation.cssClasses;
     this.getNativeInput_().disabled = disabled;
@@ -233,17 +316,28 @@ export default class MDCTextfieldFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * @return {!HTMLInputElement|!NativeInputType} The native text input from the
+   * host environment, or a dummy if none exists.
+   * @private
+   */
   getNativeInput_() {
-    return this.adapter_.getNativeInput() || {
+    return this.adapter_.getNativeInput() ||
+    /** @type {!NativeInputType} */ ({
       checkValidity: () => true,
       value: '',
       disabled: false,
       badInput: false,
-    };
+    });
   }
 
+  /**
+   * @param {boolean} isValid Sets the validity state of the Textfield.
+   */
   setValid(isValid) {
     this.useCustomValidityChecking_ = true;
     this.changeValidity_(isValid);
   }
 }
+
+export default MDCTextfieldFoundation;
