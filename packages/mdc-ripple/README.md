@@ -390,6 +390,7 @@ We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not
 observed. Earlier versions of Edge (and IE) are not affected, as they do not report support for CSS variables at all,
 and as such ripples are never initialized.
 
+<a name="caveat-safari"></a>
 ## Caveat: Safari < 10
 
 > TL;DR ripples are disabled in Safari < 10 because of a nasty CSS variables bug.
