@@ -17,19 +17,8 @@
 @import "@material/animation/functions";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
-
-$mdc-radio-touch-area: 40px;
-$mdc-radio-ui-size: 20px;
-$mdc-radio-ui-pct: percentage($mdc-radio-ui-size / $mdc-radio-touch-area);
-$mdc-radio-transition-duration: 120ms;
-
-@function mdc-radio-enter($name) {
-  @return mdc-animation-enter($name, $mdc-radio-transition-duration);
-}
-
-@function mdc-radio-exit($name) {
-  @return mdc-animation-exit-temporary($name, $mdc-radio-transition-duration);
-}
+@import "./functions";
+@import "./variables";
 
 // postcss-bem-linter: define radio
 .mdc-radio {
