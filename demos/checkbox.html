@@ -156,6 +156,26 @@
           </div>
           <div>
             <div class="mdc-form-field">
+              <div class="mdc-checkbox demo-checkbox--custom-all">
+                <input type="checkbox"
+                       id="basic-custom-checkbox-all"
+                       class="mdc-checkbox__native-control" />
+                <div class="mdc-checkbox__background">
+                  <svg class="mdc-checkbox__checkmark"
+                       viewBox="0 0 24 24">
+                    <path class="mdc-checkbox__checkmark__path"
+                          fill="none"
+                          stroke="white"
+                          d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                  </svg>
+                  <div class="mdc-checkbox__mixedmark"></div>
+                </div>
+              </div>
+              <label for="basic-custom-checkbox-all">Custom colored checkbox (stroke, fill, ripple, and focus)</label>
+            </div>
+          </div>
+          <div>
+            <div class="mdc-form-field">
               <div class="mdc-checkbox demo-checkbox--custom-stroke-and-fill">
                 <input type="checkbox"
                        id="basic-custom-checkbox-stroke-and-fill"
@@ -171,27 +191,7 @@
                   <div class="mdc-checkbox__mixedmark"></div>
                 </div>
               </div>
-              <label for="basic-custom-checkbox-stroke-and-fill">Custom colored checkbox (stroke, fill, ripple, and focus)</label>
-            </div>
-          </div>
-          <div>
-            <div class="mdc-form-field">
-              <div class="mdc-checkbox demo-checkbox--custom-stroke">
-                <input type="checkbox"
-                       id="basic-custom-checkbox-stroke"
-                       class="mdc-checkbox__native-control" />
-                <div class="mdc-checkbox__background">
-                  <svg class="mdc-checkbox__checkmark"
-                       viewBox="0 0 24 24">
-                    <path class="mdc-checkbox__checkmark__path"
-                          fill="none"
-                          stroke="white"
-                          d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                  </svg>
-                  <div class="mdc-checkbox__mixedmark"></div>
-                </div>
-              </div>
-              <label for="basic-custom-checkbox-stroke">Custom colored checkbox (stroke only)</label>
+              <label for="basic-custom-checkbox-stroke-and-fill">Custom colored checkbox (stroke and fill only)</label>
             </div>
           </div>
         </div>
@@ -253,9 +253,9 @@
         </div>
         <div>
           <div class="mdc-form-field">
-            <div class="mdc-checkbox demo-checkbox--custom-stroke-and-fill" data-js>
+            <div class="mdc-checkbox demo-checkbox--custom-all" data-js>
               <input type="checkbox"
-                     id="native-js-checkbox-custom"
+                     id="native-js-checkbox-custom-all"
                      class="mdc-checkbox__native-control" />
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
@@ -268,7 +268,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="native-js-checkbox-custom">Custom colored checkbox (stroke, fill, ripple, and focus)</label>
+            <label for="native-js-checkbox-custom-all">Custom colored checkbox (stroke, fill, ripple, and focus)</label>
           </div>
           <div class="demo-toggle-group">
             <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-indeterminate">Toggle <code>indeterminate</code></button>
@@ -277,9 +277,9 @@
         </div>
         <div>
           <div class="mdc-form-field">
-            <div class="mdc-checkbox demo-checkbox--custom-stroke" data-js>
+            <div class="mdc-checkbox demo-checkbox--custom-stroke-and-fill" data-js>
               <input type="checkbox"
-                     id="native-js-checkbox-custom-2"
+                     id="native-js-checkbox-custom-stroke-and-fill"
                      class="mdc-checkbox__native-control" />
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
@@ -292,7 +292,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="native-js-checkbox-custom-2">Custom colored checkbox (stroke only)</label>
+            <label for="native-js-checkbox-custom-stroke-and-fill">Custom colored checkbox (stroke and fill only)</label>
           </div>
           <div class="demo-toggle-group">
             <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-indeterminate">Toggle <code>indeterminate</code></button>
@@ -369,6 +369,26 @@
         </div>
         <div>
           <div class="mdc-form-field">
+            <div class="mdc-checkbox demo-checkbox--custom-all" data-js>
+              <input type="checkbox"
+                     id="basic-checkbox-dark-custom-all"
+                     class="mdc-checkbox__native-control" />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="basic-checkbox-dark-custom-all">Custom colored checkbox (stroke, fill, ripple, focus, and ink)</label>
+          </div>
+        </div>
+        <div>
+          <div class="mdc-form-field">
             <div class="mdc-checkbox demo-checkbox--custom-stroke-and-fill" data-js>
               <input type="checkbox"
                      id="basic-checkbox-dark-custom-stroke-and-fill"
@@ -384,27 +404,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="basic-checkbox-dark-custom-stroke-and-fill">Custom colored checkbox (stroke, fill, ripple, focus, and ink)</label>
-          </div>
-        </div>
-        <div>
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox demo-checkbox--custom-stroke" data-js>
-              <input type="checkbox"
-                     id="basic-checkbox-dark-custom-stroke"
-                     class="mdc-checkbox__native-control" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-checkbox-dark-custom-stroke">Custom colored checkbox (stroke only)</label>
+            <label for="basic-checkbox-dark-custom-stroke-and-fill">Custom colored checkbox (stroke and fill only)</label>
           </div>
         </div>
       </section>
@@ -477,6 +477,26 @@
         </div>
         <div>
           <div class="mdc-form-field mdc-form-field--theme-dark">
+            <div class="mdc-checkbox mdc-checkbox--theme-dark demo-checkbox--custom-all">
+              <input type="checkbox"
+                     id="basic-checkbox-dark-custom-all-2"
+                     class="mdc-checkbox__native-control" />
+              <div class="mdc-checkbox__background">
+                <svg class="mdc-checkbox__checkmark"
+                     viewBox="0 0 24 24">
+                  <path class="mdc-checkbox__checkmark__path"
+                        fill="none"
+                        stroke="white"
+                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                </svg>
+                <div class="mdc-checkbox__mixedmark"></div>
+              </div>
+            </div>
+            <label for="basic-checkbox-dark-custom-all-2">Custom colored checkbox (stroke, fill, ripple, focus, and ink)</label>
+          </div>
+        </div>
+        <div>
+          <div class="mdc-form-field mdc-form-field--theme-dark">
             <div class="mdc-checkbox mdc-checkbox--theme-dark demo-checkbox--custom-stroke-and-fill">
               <input type="checkbox"
                      id="basic-checkbox-dark-custom-stroke-and-fill-2"
@@ -492,27 +512,7 @@
                 <div class="mdc-checkbox__mixedmark"></div>
               </div>
             </div>
-            <label for="basic-checkbox-dark-custom-stroke-and-fill-2">Custom colored checkbox (stroke, fill, ripple, focus, and ink)</label>
-          </div>
-        </div>
-        <div>
-          <div class="mdc-form-field mdc-form-field--theme-dark">
-            <div class="mdc-checkbox mdc-checkbox--theme-dark demo-checkbox--custom-stroke">
-              <input type="checkbox"
-                     id="basic-checkbox-dark-custom-stroke-2"
-                     class="mdc-checkbox__native-control" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-checkbox-dark-custom-stroke-2">Custom colored checkbox (stroke only)</label>
+            <label for="basic-checkbox-dark-custom-stroke-and-fill-2">Custom colored checkbox (stroke and fill only)</label>
           </div>
         </div>
       </section>
