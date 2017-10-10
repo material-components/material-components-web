@@ -140,19 +140,21 @@ export {getFoo, getBar};
 
 ```js
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   // ...
 };
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   // ...
 };
 
 /** @enum {number} */
-export const numbers = {
+const numbers = {
   // ...
 };
+
+export {cssClasses, strings, numbers};
 ```
 
 #### All adapters must be defined as `@record` types
@@ -167,7 +169,7 @@ inline comments present in the methods within `defaultAdapter`_.
 // adapter.js
 
 /** @record */
-export default class MDCComponentAdapter {
+class MDCComponentAdapter {
   /**
    * Adds a class to the root element.
    * @param {string} className
@@ -180,6 +182,8 @@ export default class MDCComponentAdapter {
    */
   removeClass(className) {}
 }
+
+export default MDCComponentAdapter;
 ```
 
 #### All foundation and component classes must be marked as `@final`
@@ -201,8 +205,11 @@ Foundations must extend `MDCFoundation` parameterized by their respective adapte
 import MDCFoundation from '@material/base/foundation';
 import MDCComponentAdapter from './adapter';
 
-/** @final @extends {MDCFoundation<!MDCComponentAdapter>} */
-export default class MDCComponentFoundation extends MDCFoundation {
+/**
+ * @extends {MDCFoundation<!MDCComponentAdapter>}
+ * @final
+ */
+class MDCComponentFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return {
       addClass: () => {},
@@ -210,6 +217,8 @@ export default class MDCComponentFoundation extends MDCFoundation {
     };
   }
 }
+
+export default MDCComponentFoundation;
 ```
 
 #### Component classes must extend `MDCComponent`
@@ -222,15 +231,21 @@ Components must extend `MDCComponent` parameterized by their respective foundati
 import MDCComponent from '@material/base/component';
 import MDCComponentFoundation from './foundation';
 
-/** @final @extends {MDCComponent<!MDCComponentFoundation>} */
-export class MDCAwesomeComponent extends MDCComponent {
+/**
+ * @extends {MDCComponent<!MDCComponentFoundation>}
+ * @final
+ */
+class MDCAwesomeComponent extends MDCComponent {
+  /** @return {!MDCComponentFoundation} */
   getDefaultFoundation() {
-    return new MDCComponentFoundation({
+    return new MDCComponentFoundation(/** @type {!MDCComponentAdapter} */ ({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-    });
+    }));
   }
 }
+
+export default MDCAwesomeComponent;
 ```
 
 #### @typedefs are always `let` declarations, always pascal case, and always end in `Type`
@@ -247,7 +262,7 @@ let EventDataType;
 /**
  * @typedef {{foo: string, bar: number}}
  */
-export let EventDataType;
+let EventDataType;
 
 // BAD
 /**
@@ -342,28 +357,30 @@ components for closure.
 ```js
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   FADE_IN: 'mdc-example--fade-in',
   FADE_OUT: 'mdc-example--fade-out',
   IMPORTANT_MSG_FLASH: 'mdc-example__important-msg--flash',
 };
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   IMPORTANT_MSG_SELECTOR: '.mdc-example__important-msg',
 };
 
 /** @enum {number} */
-export const numbers = {
+const numbers = {
   FADE_DURATION_MS: 3000,
 };
+
+export {cssClasses, strings, numbers};
 ```
 
 #### adapter.js
 
 ```js
 /** @record */
-export default class MDCExampleAdapter {
+class MDCExampleAdapter {
   /**
    * Adds a class to the root element.
    * @param {string} className
@@ -379,14 +396,14 @@ export default class MDCExampleAdapter {
   /**
    * Registers an event listener `handler` for event type `type` on the root element.
    * @param {string} type
-   * @param {!Function} handler
+   * @param {function(!Event): undefined} handler
    */
   registerInteractionHandler(type, handler) {}
 
   /**
    * Un-registers an event listener `handler` for event type `type` on the root element.
    * @param {string} type
-   * @param {!Function} handler
+   * @param {function(!Event): undefined} handler
    */
   deregisterInteractionHandler(type, handler) {}
 
@@ -402,6 +419,8 @@ export default class MDCExampleAdapter {
    */
   removeClassFromImportantMsg(className) {}
 }
+
+export default MDCExampleAdapter;
 ```
 
 #### foundation.js
@@ -411,33 +430,36 @@ import MDCFoundation from '@material/base/foundation';
 import MDCExampleAdapter from './adapter';
 import {cssClasses, strings, numbers} from './constants';
 
-/** @final @extends {MDCFoundation<!MDCExampleAdapter>} */
-export default class MDCExampleFoundation extends MDCFoundation {
-  /** @return enum{cssClasses} */
+/**
+ * @extends {MDCFoundation<!MDCExampleAdapter>}
+ * @final
+ */
+class MDCExampleFoundation extends MDCFoundation {
+  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum{strings} */
+  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
-  /** @return enum{numbers} */
+  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
 
   /** @return {!MDCExampleAdapter} */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCExampleAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       addClassToImportantMsg: () => {},
       removeClassFromImportantMsg: () => {},
-    };
+    });
   }
 
   /**
@@ -494,6 +516,8 @@ export default class MDCExampleFoundation extends MDCFoundation {
     }, FADE_DURATION_MS);
   }
 }
+
+export default MDCExampleFoundation;
 ```
 
 #### index.js
@@ -505,8 +529,11 @@ import {strings} from './constants';
 
 export {MDCExampleFoundation};
 
-/** @final @extends {MDCComponent<!MDCExampleFoundation>} */
-export class MDCExample {
+/**
+ * @extends {MDCComponent<!MDCExampleFoundation>}
+ * @final
+ */
+class MDCExample {
   /**
    * @param {!Element} root
    * @return {!MDCExample}
@@ -534,7 +561,7 @@ export class MDCExample {
    */
   constructor(...args) {
     super(...args);
-    /** @private {!Element} */
+    /** @private {?Element} */
     this.importantMsg_;
   }
 
@@ -562,6 +589,8 @@ export class MDCExample {
     this.active = 'active' in this.root_.dataset;
   }
 }
+
+export MDCExample;
 ```
 
 ## Closure idioms in our codebase
@@ -595,7 +624,8 @@ class MDCComponentAdapter {
 }
 ```
 
-This is the syntax we use for specifying [structural types](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler) within closure. The class methods, their parameters, and corresponding JSDoc specify the shape of an
+This is the syntax we use for specifying [structural types](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler) within closure.
+The class methods, their parameters, and corresponding JSDoc specify the shape of an
 object that must contain these methods with their specified parameters and return values. This is
 mostly used to specify the shape of adapters, as mentioned above.
 
@@ -619,7 +649,9 @@ let ActivationStateType;
 /**
  * @typedef {{foo: number}}
  */
-export let MyExportedType;
+let MyExportedType;
+
+export MyExportedType;
 ```
 <!--{% endraw %} -->
 
@@ -641,7 +673,7 @@ const SETTINGS = {
 
 window.settings = SETTINGS;
 
-/** @const {!Object<string, string>} **/
+/** @const {!Object<string, string>} */
 const DEACTIVATION_ACTIVATION_PAIRS = {
   'mouseup': 'mousedown',
   'pointerup': 'pointerdown',
@@ -695,14 +727,17 @@ the constructor via a different function.
 **Example:**
 
 ```js
-/** @final @extends {MDCComponent<!MyComponentFoundation>} */
+/**
+ * @extends {MDCComponent<!MyComponentFoundation>}
+ * @final
+ */
 class MyComponent extends MDCComponent {
   /**
    * @param {...?} args
    */
   constructor(...args) {
     super(...args);
-    /** @private {!Element} */
+    /** @private {?Element} */
     this.innerEl_;  // Sentinel expression statement
   }
 
@@ -717,7 +752,7 @@ closure mandates that `super()` be the first expression within a method.
 
 ```
 constructor(...args) {
-    /** @private {!Element} */
+    /** @private {?Element} */
     this.innerEl_ = DEFAULT_VALUE;
     super(...args);
   }
