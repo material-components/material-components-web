@@ -160,7 +160,9 @@ var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.query
 var dots = document.querySelector('.dots');
 var panels = document.querySelector('.panels');
 
-dynamicTabBar.preventDefaultOnClick = true;
+dynamicTabBar.tabs.forEach(function(tab) {
+  tab.preventDefaultOnClick = true;
+});
 
 function updateDot(index) {
   var activeDot = dots.querySelector('.dot.active');
