@@ -53,14 +53,14 @@
     &.mdc-checkbox--anim {
       &-unchecked-checked,
       &-unchecked-indeterminate {
-        .mdc-checkbox__background {
+        .mdc-checkbox__native-control:enabled ~ .mdc-checkbox__background {
           animation-name: mdc-checkbox-fade-in-background-#{$uid};
         }
       }
 
       &-checked-unchecked,
       &-indeterminate-unchecked {
-        .mdc-checkbox__background {
+        .mdc-checkbox__native-control:enabled ~ .mdc-checkbox__background {
           animation-name: mdc-checkbox-fade-out-background-#{$uid};
         }
       }
