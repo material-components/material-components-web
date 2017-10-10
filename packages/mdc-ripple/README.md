@@ -114,8 +114,7 @@ argument, with which you can specify the following parameters:
 | --- | --- | --- |
 | `pseudo` | The name of the pseudo-element you want to use to style the ripple. Using pseudo-elements to style ripples obviates the need for any extra DOM and is recommended. However, if given `null` it will style the element directly, rather than attaching styles to the pseudo element. | `null` |
 | `radius` | For _bounded_ ripples, specifies radii of the ripple circles. Can be any valid numeric CSS unit. | `100%` |
-| `theme-style` | When provided, will use a style specified by `mdc-theme` to provide colors to the ripple. For example, passing `(theme-style: primary)` would make the ripples the color of the theme's primary color. Note that there are some current limitations here. See [below](#caveat-theme-custom-variables) | `null` |
-| `base-color` | The RGB color (_without_ an alpha component) of the ripple. This will only be used if `theme-style` isn't specified. | `black` |
+| `color` | A raw color value (e.g., `blue`, `#33cc00`) or a theme property name from `$mdc-theme-property-values` (e.g., `primary`, `secondary-dark`) to provide color for the ripple. Note that there are some current limitations here. See [below](#caveat-theme-custom-variables) | `null` |
 | `opacity` | A unitless number from `0-1` specifying the opacity that either the `base-color` or the `theme-style` color will take on. | `.06` |
 
 #### Adding the ripple JS
@@ -411,11 +410,11 @@ build that can handle our usage of CSS variables.
 > [CSS 4 color-mod functions](https://drafts.csswg.org/css-color/).
 
 The way that [mdc-theme works](../mdc-theme#mdc-theme-prop-mixin) is that it emits two properties: one with the hard-coded sass variable, and another for a
-CSS variable that can be interpolated. The problem is that ripple backgrounds need to have an opacity, and currently there's no way to opacify a pre-existing color defined by a CSS variable.
+CSS variable that can be interpolated. The problem is that ripple backgrounds need to have an opacity, and currently there's no way to opacity a pre-existing color defined by a CSS variable.
 There is an editor's draft for a `color-mod` function (see link in TL;DR) that _can_ do this:
 
 ```css
-background: color(var(--mdc-theme-primary) a(6%));
+background: color-mod(var(--mdc-theme-primary) a(6%));
 ```
 
 But as far as we know, no browsers yet support it. We have added a `@supports` clause into our code
