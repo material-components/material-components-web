@@ -21,24 +21,8 @@
 // Public
 //
 
-// Track
-
-@mixin mdc-switch-unchecked-track-color($color) {
-  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background::before {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
 @mixin mdc-switch-checked-track-color($color) {
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background::before {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
-// Knob
-
-@mixin mdc-switch-unchecked-knob-color($color) {
-  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob {
     @include mdc-theme-prop(background-color, $color);
   }
 }
@@ -46,14 +30,6 @@
 @mixin mdc-switch-checked-knob-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background .mdc-switch__knob {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
-// Focus indicator
-
-@mixin mdc-switch-unchecked-focus-indicator-color($color) {
-  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob::before {
     @include mdc-theme-prop(background-color, $color);
   }
 }
@@ -68,6 +44,24 @@
 //
 // Private
 //
+
+@mixin mdc-switch-unchecked-track-color_($color) {
+  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background::before {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-switch-unchecked-knob-color_($color) {
+  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-switch-unchecked-focus-indicator-color_($color) {
+  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob::before {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
 
 @mixin mdc-switch-tap-target_ {
   position: absolute;

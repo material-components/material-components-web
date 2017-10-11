@@ -22,14 +22,14 @@
 
 // postcss-bem-linter: define switch
 .mdc-switch {
-  @include mdc-switch-unchecked-track-color($mdc-switch-unchecked-track-color);
-  @include mdc-switch-unchecked-knob-color($mdc-switch-unchecked-knob-color);
-  @include mdc-switch-unchecked-focus-indicator-color($mdc-switch-unchecked-focus-ring-color);
+  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
+  @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
+  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
 
   @include mdc-theme-dark {
-    @include mdc-switch-unchecked-track-color($mdc-switch-unchecked-track-color-dark);
-    @include mdc-switch-unchecked-knob-color($mdc-switch-unchecked-knob-color-dark);
-    @include mdc-switch-unchecked-focus-indicator-color($mdc-switch-unchecked-focus-ring-color-dark);
+    @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color-dark);
+    @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color-dark);
+    @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color-dark);
   }
 
   @include mdc-switch-checked-track-color($mdc-switch-checked-baseline-theme-color);
