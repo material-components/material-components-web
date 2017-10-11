@@ -42,9 +42,7 @@
 }
 
 .mdc-checkbox.demo-checkbox--custom-stroke-and-fill {
-  $color: $material-color-blue-500;
-
   @include mdc-checkbox-container-colors(
-    $unmarked-stroke-color: $color,
-    $marked-fill-color: $color);
+    $unmarked-stroke-color: $material-color-blue-500,
+    $marked-fill-color: $material-color-purple-500);
 }
