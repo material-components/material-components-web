@@ -51,14 +51,8 @@
   }
 }
 
-@mixin mdc-radio-ripple-color($color) {
-  $color-config: (base-color: $color);
-
-  @if map-has-key($mdc-theme-property-values, $color) {
-    $color-config: (theme-style: $color);
-  }
-
-  $ripple-config: map-merge($color-config, (opacity: $mdc-radio-ripple-opacity, radius: 50%));
+@mixin mdc-radio-ripple($ripple-config) {
+  $ripple-config: map-merge((opacity: $mdc-radio-ripple-opacity, radius: 50%), $ripple-config);
 
   @include mdc-ripple-bg(map-merge($ripple-config, (pseudo: "::before")));
   @include mdc-ripple-fg(map-merge($ripple-config, (pseudo: "::after")));

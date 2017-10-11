@@ -29,7 +29,7 @@
   @include mdc-radio-checked-stroke-color($mdc-radio-checked-baseline-theme-color);
   @include mdc-radio-checked-ink-color($mdc-radio-checked-baseline-theme-color);
   @include mdc-radio-focus-indicator-color($mdc-radio-checked-baseline-theme-color);
-  @include mdc-radio-ripple-color($mdc-radio-checked-baseline-theme-color);
+  @include mdc-radio-ripple((theme-style: $mdc-radio-checked-baseline-theme-color));
 
   @include mdc-theme-dark {
     @include mdc-radio-unchecked-stroke-color(text-secondary-on-dark);
