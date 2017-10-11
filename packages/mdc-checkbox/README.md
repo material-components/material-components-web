@@ -91,6 +91,8 @@ easily position checkboxes and their labels.
 
 #### Disabled Checkboxes
 
+Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class; a `disabled` attribute on the `<input>` element is sufficient.
+
 ```html
 <div class="mdc-checkbox mdc-checkbox--disabled">
   <input type="checkbox"
@@ -110,8 +112,6 @@ easily position checkboxes and their labels.
 </div>
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
-
-Note that `mdc-checkbox--disabled` is necessary on the root element to prevent hover states from activating.
 
 ### Using the JS Component
 
@@ -255,8 +255,30 @@ not return an object.
 
 ## Theming
 
-MDC Checkboxes use the theme's primary color by default for checked and indeterminate states, and are completely dark theme
-aware.
+MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate), and are completely dark theme aware.
+
+### Sass Mixins
+
+The following mixins apply only to _enabled_ checkboxes. It is not currently possible to customize the color of a _disabled_ checkbox.
+
+Mixin | Description
+--- | ---
+`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
+`mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
+`mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
+`mdc-checkbox-ripple($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
+
+[ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
+
+#### `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)`
+
+Generates CSS classes to set the container stroke color and/or fill color of a checkbox in its marked and unmarked states.
+In the unmarked state, stroke and fill color may be customized independently; in the marked state, only the fill color
+may be customized, and the stroke will automatically match the fill color.
+
+All parameters are optional, and if left unspecified will use their default values.
+
+If you plan to use CSS-only checkboxes, set `$generate-keyframes` to `false` to prevent the mixin from generating `@keyframes` and CSS classes used by the JavaScript component.
 
 ### Caveat: Edge and CSS Variables
 
