@@ -252,4 +252,32 @@ if (IS_DEV) {
       createBannerPlugin(),
     ],
   });
+
+  if (GENERATE_DEMO_THEMES) {
+    module.exports.push({
+      name: 'demo-theme-css',
+      entry: {
+        'demo-theme-grey-900': path.resolve('./demos/theme/theme-grey-900.scss'),
+        'demo-theme-deep-purple-a700': path.resolve('./demos/theme/theme-deep-purple-a700.scss'),
+        'demo-theme-yellow-500': path.resolve('./demos/theme/theme-yellow-500.scss'),
+        'demo-theme-white': path.resolve('./demos/theme/theme-white.scss'),
+      },
+      output: {
+        path: OUT_PATH,
+        publicPath: PUBLIC_PATH,
+        filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
+      },
+      devtool: DEVTOOL,
+      module: {
+        rules: [{
+          test: /\.scss$/,
+          use: createCssLoaderConfig(),
+        }],
+      },
+      plugins: [
+        createCssExtractTextPlugin(),
+        createBannerPlugin(),
+      ],
+    });
+  }
 }

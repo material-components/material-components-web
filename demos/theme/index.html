@@ -24,6 +24,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="/assets/theme/index.css.js"></script>
+    <script>
+      (function() {
+        let theme = 'grey-900';
+
+        const qsList = location.search.replace(/^[?]/, '').split('&');
+        const qsMap = {};
+        qsList.forEach(function(query) {
+          const split = query.split('=');
+          const key = split[0];
+          const value = split[1] || '';
+          if (!(key in qsMap)) {
+            qsMap[key] = [];
+          }
+          qsMap[key].push(value);
+        });
+
+        if ('theme' in qsMap) {
+          const values = qsMap['theme'];
+          theme = values[values.length - 1];
+        }
+
+        document.write('<link rel="stylesheet" href="/assets/demo-theme-' + theme + '.css" id="theme-stylesheet" data-hot>');
+      })();
+    </script>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
@@ -31,6 +55,60 @@
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <button class="material-icons mdc-toolbar__icon--menu demo-drawer-toggle">menu</button>
           <span class="mdc-toolbar__title catalog-title">Color Theming</span>
+        </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <div class="mdc-menu-anchor">
+            <button id="theme-action" class="material-icons mdc-toolbar__icon" aria-label="Change color theme">palette</button>
+            <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="theme-menu">
+              <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+                <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-color="grey-900">
+                  <div class="mdc-list-item__start-detail">
+                    <i class="mdc-color-radio">
+                      <span class="mdc-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  Grey 900 / Light Green A700
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-color="deep-purple-a700">
+                  <div class="mdc-list-item__start-detail">
+                    <i class="mdc-color-radio">
+                      <span class="mdc-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  Deep Purple A700 / Teal A400
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-color="yellow-500">
+                  <div class="mdc-list-item__start-detail">
+                    <i class="mdc-color-radio">
+                      <span class="mdc-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  Yellow 500 / Blue 500
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-color="white">
+                  <div class="mdc-list-item__start-detail">
+                    <i class="mdc-color-radio">
+                      <span class="mdc-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  White / Orange 500
+                </li>
+                <li class="mdc-list-divider" role="separator"></li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" id="theme-toggle--dark-mode">
+                  <div class="mdc-list-item__start-detail">
+                    <i class="material-icons" style="visibility: hidden;">check</i>
+                  </div>
+                  Dark mode
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" id="theme-toggle--rtl">
+                  <div class="mdc-list-item__start-detail">
+                    <i class="material-icons" style="visibility: hidden;">check</i>
+                  </div>
+                  RTL
+                </li>
+              </ul>
+            </div>
+          </div>
         </section>
       </div>
     </header>
@@ -822,8 +900,9 @@
       (function() {
         'use strict';
 
-        function getAll(query) {
-          return [].slice.call(document.querySelectorAll(query));
+        function getAll(query, parentNode) {
+          parentNode = parentNode || document;
+          return [].slice.call(parentNode.querySelectorAll(query));
         }
 
         function matches(elem, selector) {
@@ -891,6 +970,98 @@
             flashCurrentSection();
           });
           flashCurrentSection();
+
+          /*
+           * Theme
+           */
+
+          const themeActionEl = document.querySelector('#theme-action');
+          const themeMenuEl = document.querySelector('#theme-menu');
+          const themeMenu = new mdc.menu.MDCSimpleMenu(themeMenuEl);
+
+          themeActionEl.addEventListener('click', function() {
+            themeMenu.open = !themeMenu.open;
+          });
+
+          themeMenuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
+            const detail = evt.detail;
+            const item = detail.item;
+            const color = item.dataset.color;
+
+            if (color) {
+              swapTheme(color);
+            } else if (item.id === 'theme-toggle--dark-mode') {
+              const toggleIconEl = item.querySelector('.material-icons');
+              const rootClassList = document.documentElement.classList;
+              rootClassList.toggle('mdc-theme--dark');
+              if (rootClassList.contains('mdc-theme--dark')) {
+                toggleIconEl.style.setProperty('visibility', '');
+              } else {
+                toggleIconEl.style.setProperty('visibility', 'hidden');
+              }
+            } else if (item.id === 'theme-toggle--rtl') {
+              const rootEl = document.documentElement;
+              const toggleIcon = item.querySelector('.material-icons');
+              if (rootEl.getAttribute('dir') === 'rtl') {
+                rootEl.setAttribute('dir', 'ltr');
+                toggleIcon.style.setProperty('visibility', 'hidden');
+              } else {
+                rootEl.setAttribute('dir', 'rtl');
+                toggleIcon.style.setProperty('visibility', '');
+              }
+            }
+          });
+
+          // TODO(acdvorak): Add IE 11 support
+          window.addEventListener('message', function(event) {
+            if (typeof event.data === 'string' && event.data.indexOf('webpackHotUpdate') === 0) {
+              getAll('link[data-hot]', document.head).forEach(function(link) {
+                link.href = link.href;
+              });
+            }
+          });
+
+          window.addEventListener('popstate', function(event) {
+            var color = (event.state || {}).color;
+            swapThemeImpl(color);
+          });
+
+          function swapTheme(color) {
+            history.pushState({color: color}, '', '?theme=' + color);
+            swapThemeImpl(color);
+          }
+
+          function swapThemeImpl(color) {
+            color = color || 'grey-900';
+            document.title = color.replace(/-/g, ' ');
+            document.querySelector('#theme-stylesheet').href = '/assets/demo-theme-' + color + '.css';
+
+            const selectedItems = getAll('[data-color].demo-theme-menu__list-item--selected', themeMenuEl);
+            selectedItems.forEach(function(colorIcon) {
+              colorIcon.classList.remove('demo-theme-menu__list-item--selected');
+            });
+            document.querySelector('[data-color="' + color + '"]').classList.add('demo-theme-menu__list-item--selected');
+          }
+
+          // TODO(acdvorak): De-dupe this logic w/ the JS in <head>
+          // TODO(acdvorak): Create a constant for the default theme color
+          var qsColor = 'grey-900';
+          const qsList = location.search.replace(/^[?]/, '').split('&');
+          const qsMap = {};
+          qsList.forEach(function(query) {
+            const split = query.split('=');
+            const key = split[0];
+            const value = split[1] || '';
+            if (!(key in qsMap)) {
+              qsMap[key] = [];
+            }
+            qsMap[key].push(value);
+          });
+          if ('theme' in qsMap) {
+            const values = qsMap['theme'];
+            qsColor = values[values.length - 1];
+          }
+          swapThemeImpl(qsColor);
 
           /*
            * Button
