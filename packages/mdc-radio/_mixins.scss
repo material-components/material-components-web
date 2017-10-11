@@ -17,20 +17,6 @@
 @import "@material/theme/variables";
 @import "./variables";
 
-@mixin mdc-radio-unchecked-ink-color($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-radio__native-control:enabled:not(:checked) + .mdc-radio__background .mdc-radio__inner-circle {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
-@mixin mdc-radio-checked-ink-color($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__inner-circle {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
 @mixin mdc-radio-unchecked-stroke-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled:not(:checked) + .mdc-radio__background .mdc-radio__outer-circle {
@@ -42,6 +28,13 @@
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
     @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-radio-ink-color($color) {
+  // stylelint-disable-next-line selector-max-specificity
+  .mdc-radio__native-control:enabled + .mdc-radio__background .mdc-radio__inner-circle {
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 
