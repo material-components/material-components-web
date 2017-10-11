@@ -57,7 +57,7 @@ semantically correct.
 Users can nest `mdc-button__icon` inside the button element to add an icon. The icon in button
 is set to 18px to meet legibility requirements.
 
-We recommend you load [Material Icons]((https://design.google.com/icons/)) from Google Fonts
+We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts
 
 ```html
 <head>
