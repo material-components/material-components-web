@@ -25,6 +25,7 @@
 .mdc-radio.demo-radio--custom {
   $color: $material-color-red-500;
 
+  @include mdc-radio-unchecked-stroke-color($color);
   @include mdc-radio-checked-stroke-color($color);
   @include mdc-radio-checked-ink-color($color);
   @include mdc-radio-focus-indicator-color($color);
