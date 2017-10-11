@@ -15,6 +15,7 @@
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
+@import "./mixins";
 @import "./variables";
 
 @function mdc-switch-transition($property) {
@@ -23,6 +24,20 @@
 
 // postcss-bem-linter: define switch
 .mdc-switch {
+  @include mdc-switch-unchecked-track-color($mdc-switch-unchecked-track-color);
+  @include mdc-switch-unchecked-knob-color($mdc-switch-unchecked-knob-color);
+  @include mdc-switch-unchecked-focus-indicator-color($mdc-switch-unchecked-focus-ring-color);
+
+  @include mdc-theme-dark {
+    @include mdc-switch-unchecked-track-color($mdc-switch-unchecked-track-color-dark);
+    @include mdc-switch-unchecked-knob-color($mdc-switch-unchecked-knob-color-dark);
+    @include mdc-switch-unchecked-focus-indicator-color($mdc-switch-unchecked-focus-ring-color-dark);
+  }
+
+  @include mdc-switch-checked-track-color($mdc-switch-checked-baseline-theme-color);
+  @include mdc-switch-checked-knob-color($mdc-switch-checked-baseline-theme-color);
+  @include mdc-switch-checked-focus-indicator-color($mdc-switch-checked-baseline-theme-color);
+
   display: inline-block;
   position: relative;
 
@@ -45,14 +60,10 @@
     height: $mdc-switch-track-height;
     border-radius: 7px;
     outline: none;
-    background-color: transparent;
     cursor: pointer;
     user-select: none;
 
-    @include mdc-theme-dark(".mdc-switch") {
-      background-color: transparent;
-    }
-
+    // Track
     &::before {
       display: block;
       position: absolute;
@@ -64,12 +75,10 @@
         mdc-switch-transition(opacity),
         mdc-switch-transition(background-color);
       border-radius: 7px;
-      background-color: $mdc-switch-unchecked-track-color;
       opacity: .38;
       content: "";
 
       @include mdc-theme-dark(".mdc-switch") {
-        background-color: $mdc-switch-unchecked-track-color-dark;
         opacity: .3;
       }
     }
@@ -89,13 +98,9 @@
         mdc-switch-transition(transform),
         mdc-switch-transition(background-color);
       border-radius: $mdc-switch-knob-diameter / 2;
-      background-color: $mdc-switch-unchecked-knob-color;
       z-index: 1;
 
-      @include mdc-theme-dark(".mdc-switch") {
-        background-color: $mdc-switch-unchecked-knob-color-dark;
-      }
-
+      // Focus indicator
       // postcss-bem-linter: ignore
       &::before {
         position: absolute;
@@ -108,7 +113,6 @@
           mdc-switch-transition(transform),
           mdc-switch-transition(background-color);
         border-radius: $mdc-switch-focus-ring-diameter / 2;
-        background-color: transparent;
         opacity: .2;
         content: "";
       }
@@ -118,6 +122,7 @@
 
 .mdc-switch__native-control:focus ~ .mdc-switch__background {
   .mdc-switch__knob {
+    // Focus indicator
     &::before {
       position: absolute;
       width: $mdc-switch-focus-ring-diameter;
@@ -127,10 +132,8 @@
         mdc-switch-transition(transform),
         mdc-switch-transition(background-color);
       border-radius: $mdc-switch-focus-ring-diameter / 2;
-      background-color: $mdc-switch-unchecked-focus-ring-color;
 
       @include mdc-theme-dark(".mdc-switch") {
-        background-color: $mdc-switch-unchecked-focus-ring-color-dark;
         opacity: .14;
       }
     }
@@ -138,27 +141,19 @@
 }
 
 .mdc-switch__native-control:checked ~ .mdc-switch__background {
+  // Track
   &::before {
-    @include mdc-theme-prop(background-color, primary);
-
     opacity: .5;
   }
 
   .mdc-switch__knob {
-    @include mdc-theme-prop(background-color, primary);
-
     transform: translateX($mdc-switch-track-width - $mdc-switch-knob-diameter);
     transition:
       mdc-switch-transition(transform),
       mdc-switch-transition(background-color);
 
+    // Focus indicator
     &::before {
-      @include mdc-theme-prop(background-color, primary);
-
-      @include mdc-theme-dark(".mdc-switch") {
-        @include mdc-theme-prop(background-color, primary);
-      }
-
       opacity: .15;
     }
   }
@@ -171,6 +166,7 @@
 }
 
 .mdc-switch__native-control:disabled ~ .mdc-switch__background {
+  // Track
   &::before {
     background-color: $mdc-switch-unchecked-track-color;
     opacity: .12;
