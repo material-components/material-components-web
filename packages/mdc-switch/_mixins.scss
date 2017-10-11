@@ -52,14 +52,14 @@
 }
 
 @mixin mdc-switch-unchecked-knob-color_($color) {
-  // style-lint-disable-next-line selector-max-specificity
+  // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
 @mixin mdc-switch-unchecked-focus-indicator-color_($color) {
-  // style-lint-disable-next-line selector-max-specificity
+  // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob::before {
     @include mdc-theme-prop(background-color, $color);
   }
