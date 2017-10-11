@@ -40,12 +40,15 @@
   position: relative;
 
   &__native-control {
+    @include mdc-switch-tap-target_;
+
+    &:checked {
+      transform: translateX($mdc-switch-knob-active-margin);
+    }
+
     display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: $mdc-switch-track-width;
-    height: $mdc-switch-track-height;
+    margin-top: $mdc-switch-knob-vertical-offset_;
+    transition: mdc-switch-transition(transform);
     opacity: 0;
     cursor: pointer;
     z-index: 2;
@@ -58,7 +61,6 @@
     height: $mdc-switch-track-height;
     border-radius: 7px;
     outline: none;
-    cursor: pointer;
     user-select: none;
 
     // Track
@@ -87,7 +89,7 @@
 
       display: block;
       position: absolute;
-      top: -3px;
+      top: $mdc-switch-knob-vertical-offset_;
       left: 0;
       width: $mdc-switch-knob-diameter;
       height: $mdc-switch-knob-diameter;
@@ -101,11 +103,8 @@
       // Focus indicator
       // postcss-bem-linter: ignore
       &::before {
-        position: absolute;
-        top: -14px;
-        left: -14px;
-        width: $mdc-switch-focus-ring-diameter;
-        height: $mdc-switch-focus-ring-diameter;
+        @include mdc-switch-tap-target_;
+
         transform: scale(0);
         transition:
           mdc-switch-transition(transform),
@@ -145,7 +144,7 @@
   }
 
   .mdc-switch__knob {
-    transform: translateX($mdc-switch-track-width - $mdc-switch-knob-diameter);
+    transform: translateX($mdc-switch-knob-active-margin);
     transition:
       mdc-switch-transition(transform),
       mdc-switch-transition(background-color);
