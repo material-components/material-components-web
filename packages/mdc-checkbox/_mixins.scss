@@ -230,12 +230,14 @@
 // Background
 
 @mixin mdc-checkbox-unmarked-background-selector-enabled_ {
+  // stylelint-disable-next-line selector-max-specificity
   .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
     @content;
   }
 }
 
 @mixin mdc-checkbox-unmarked-background-selector-disabled_ {
+  // stylelint-disable-next-line selector-max-specificity
   .mdc-checkbox__native-control:disabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
     @content;
   }
