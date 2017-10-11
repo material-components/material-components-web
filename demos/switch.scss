@@ -16,4 +16,30 @@
 
 @import "./common";
 @import "../packages/mdc-switch/mdc-switch";
+@import "../packages/mdc-theme/color_palette";
 @import "../packages/mdc-typography/mdc-typography";
+
+// stylelint-disable
+
+.demo-switch-wrapper {
+  display: inline-block;
+  margin-right: 16px;
+}
+
+.demo-switch--custom {
+  $color: $material-color-red-500;
+
+  @include mdc-switch-unchecked-track-color($color);
+  @include mdc-switch-unchecked-knob-color(desaturate($color, 60%));
+  @include mdc-switch-unchecked-focus-indicator-color($color);
+
+  @include mdc-theme-dark {
+    @include mdc-switch-unchecked-track-color($color);
+    @include mdc-switch-unchecked-knob-color(desaturate($color, 60%));
+    @include mdc-switch-unchecked-focus-indicator-color($color);
+  }
+
+  @include mdc-switch-checked-track-color($color);
+  @include mdc-switch-checked-knob-color($color);
+  @include mdc-switch-checked-focus-indicator-color($color);
+}
