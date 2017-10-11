@@ -32,10 +32,10 @@
     @include mdc-radio-unchecked-ink-color(text-secondary-on-dark);
   }
 
-  @include mdc-radio-checked-stroke-color($mdc-radio-checked-baseline-theme-color);
-  @include mdc-radio-checked-ink-color($mdc-radio-checked-baseline-theme-color);
-  @include mdc-radio-focus-indicator-color($mdc-radio-checked-baseline-theme-color);
-  @include mdc-radio-ripple((theme-style: $mdc-radio-checked-baseline-theme-color));
+  @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color);
+  @include mdc-radio-checked-ink-color($mdc-radio-baseline-theme-color);
+  @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
+  @include mdc-radio-ripple((theme-style: $mdc-radio-baseline-theme-color));
 
   display: inline-block;
   position: relative;
