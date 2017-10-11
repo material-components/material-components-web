@@ -272,7 +272,9 @@ Mixin | Description
 
 #### `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)`
 
-Generates CSS classes to set the stroke color and/or container fill color of a checkbox in its marked and unmarked states. In the unmarked state, stroke and fill color may be customized independently; in the marked state, the stroke disappears, and only the fill may be customized.
+Generates CSS classes to set the container stroke color and/or fill color of a checkbox in its marked and unmarked states.
+In the unmarked state, stroke and fill color may be customized independently; in the marked state, only the fill color
+may be customized, and the stroke will automatically match the fill color.
 
 All parameters are optional, and if left unspecified will use their default values.
 
