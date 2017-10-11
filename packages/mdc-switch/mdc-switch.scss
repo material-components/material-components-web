@@ -42,16 +42,16 @@
   &__native-control {
     @include mdc-switch-tap-target_;
 
-    &:checked {
-      transform: translateX($mdc-switch-knob-active-margin);
-    }
-
     display: inline-block;
     margin-top: $mdc-switch-knob-vertical-offset_;
     transition: mdc-switch-transition(transform);
     opacity: 0;
     cursor: pointer;
     z-index: 2;
+
+    &:checked {
+      transform: translateX($mdc-switch-knob-active-margin);
+    }
   }
 
   &__background {
