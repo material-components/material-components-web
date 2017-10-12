@@ -106,17 +106,6 @@ class MDCRippleFoundation extends MDCFoundation {
     };
   }
 
-  /**
-   * We compute this property so that we are not querying information about the client
-   * until the point in time where the foundation requests it. This prevents scenarios where
-   * client-side feature-detection may happen too early, such as when components are rendered on the server
-   * and then initialized at mount time on the client.
-   * @return {boolean}
-   */
-  get isSupported_() {
-    return this.adapter_.browserSupportsCssVars();
-  }
-
   constructor(adapter) {
     super(Object.assign(MDCRippleFoundation.defaultAdapter, adapter));
 
@@ -188,6 +177,18 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   /**
+   * We compute this property so that we are not querying information about the client
+   * until the point in time where the foundation requests it. This prevents scenarios where
+   * client-side feature-detection may happen too early, such as when components are rendered on the server
+   * and then initialized at mount time on the client.
+   * @return {boolean}
+   * @private
+   */
+  isSupported_() {
+    return this.adapter_.browserSupportsCssVars();
+  }
+
+  /**
    * @return {!ActivationStateType}
    */
   defaultActivationState_() {
@@ -203,7 +204,7 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   init() {
-    if (!this.isSupported_) {
+    if (!this.isSupported_()) {
       return;
     }
     this.addEventListeners_();
@@ -266,6 +267,9 @@ class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
+  /**
+   * @param {?Event=} e Optional event containing position information.
+   */
   activate() {
     this.activate_(null);
   }
@@ -405,6 +409,9 @@ class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
+  /**
+   * @param {?Event=} e Optional event containing position information.
+   */
   deactivate() {
     this.deactivate_(null);
   }
@@ -424,7 +431,7 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   destroy() {
-    if (!this.isSupported_) {
+    if (!this.isSupported_()) {
       return;
     }
     this.removeEventListeners_();
