@@ -56,9 +56,18 @@
           <span class="mdc-toolbar__title catalog-title">Color Theming</span>
         </section>
         <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-action" class="mdc-toolbar__icon material-icons" title="Toggle RTL">format_align_left</button>
+
+          <!-- lightbulb_outline --> <!-- brightness_medium --> <!-- settings_brightness -->
+          <button id="dark-mode-action" class="mdc-toolbar__icon material-icons" title="Toggle dark mode">brightness_high</button>
+
           <div class="mdc-menu-anchor">
-            <button id="theme-action" class="material-icons mdc-toolbar__icon" aria-label="Change color theme">palette</button>
-            <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="theme-menu">
+            <button id="theme-color-action" class="mdc-toolbar__icon demo-toolbar-icon--last" title="Change theme colors" data-color="grey-900">
+              <i class="demo-theme-color-radio">
+                <span class="demo-theme-color-radio__inner"></span>
+              </i>
+            </button>
+            <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
               <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
                 <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-color="grey-900">
                   <div class="mdc-list-item__start-detail">
@@ -91,19 +100,6 @@
                     </i>
                   </div>
                   White / Orange 500
-                </li>
-                <li class="mdc-list-divider" role="separator"></li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" id="theme-toggle--dark-mode">
-                  <div class="mdc-list-item__start-detail">
-                    <i class="material-icons" style="visibility: hidden;">check</i>
-                  </div>
-                  Dark mode
-                </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" id="theme-toggle--rtl">
-                  <div class="mdc-list-item__start-detail">
-                    <i class="material-icons" style="visibility: hidden;">check</i>
-                  </div>
-                  RTL
                 </li>
               </ul>
             </div>
@@ -994,41 +990,37 @@
            * Theme
            */
 
-          const themeActionEl = document.querySelector('#theme-action');
-          const themeMenuEl = document.querySelector('#theme-menu');
+          const themeActionEl = document.querySelector('#theme-color-action');
+          const themeMenuEl = document.querySelector('#theme-color-menu');
           const themeMenu = new mdc.menu.MDCSimpleMenu(themeMenuEl);
 
           themeActionEl.addEventListener('click', function() {
             themeMenu.open = !themeMenu.open;
           });
 
-          themeMenuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
-            const detail = evt.detail;
-            const item = detail.item;
-            const color = item.dataset.color;
-
-            if (color) {
-              swapTheme(color);
-            } else if (item.id === 'theme-toggle--dark-mode') {
-              const toggleIconEl = item.querySelector('.material-icons');
-              const rootClassList = document.documentElement.classList;
-              rootClassList.toggle('mdc-theme--dark');
-              if (rootClassList.contains('mdc-theme--dark')) {
-                toggleIconEl.style.setProperty('visibility', '');
-              } else {
-                toggleIconEl.style.setProperty('visibility', 'hidden');
-              }
-            } else if (item.id === 'theme-toggle--rtl') {
-              const rootEl = document.documentElement;
-              const toggleIcon = item.querySelector('.material-icons');
-              if (rootEl.getAttribute('dir') === 'rtl') {
-                rootEl.setAttribute('dir', 'ltr');
-                toggleIcon.style.setProperty('visibility', 'hidden');
-              } else {
-                rootEl.setAttribute('dir', 'rtl');
-                toggleIcon.style.setProperty('visibility', '');
-              }
+          document.querySelector('#dark-mode-action').addEventListener('click', function(e) {
+            const rootClassList = document.documentElement.classList;
+            rootClassList.toggle('mdc-theme--dark');
+            if (rootClassList.contains('mdc-theme--dark')) {
+              e.target.innerHTML = 'brightness_low';
+            } else {
+              e.target.innerHTML = 'brightness_high';
             }
+          });
+
+          document.querySelector('#rtl-action').addEventListener('click', function(e) {
+            const rootEl = document.documentElement;
+            if (rootEl.getAttribute('dir') === 'rtl') {
+              rootEl.setAttribute('dir', 'ltr');
+              e.target.innerHTML = 'format_align_left';
+            } else {
+              rootEl.setAttribute('dir', 'rtl');
+              e.target.innerHTML = 'format_align_right';
+            }
+          });
+
+          themeMenuEl.addEventListener('MDCSimpleMenu:selected', function(e) {
+            swapTheme(e.detail.item.dataset.color);
           });
 
           var hotSwapAllStylesheets = debounce(function() {
@@ -1056,7 +1048,9 @@
 
           function swapThemeImpl(color) {
             color = color || 'grey-900';
+
             document.title = color.replace(/-/g, ' ');
+
             hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/demo-theme-' + color + '.css');
 
             const selectedItems = getAll('.demo-theme-menu__list-item--selected[data-color]', themeMenuEl);
@@ -1064,6 +1058,8 @@
               colorIcon.classList.remove('demo-theme-menu__list-item--selected');
             });
             document.querySelector('.mdc-list-item[data-color="' + color + '"]').classList.add('demo-theme-menu__list-item--selected');
+
+            document.querySelector('#theme-color-action').dataset.color = color;
           }
 
           function hotSwapStylesheet(oldLink, newUrl) {

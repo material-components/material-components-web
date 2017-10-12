@@ -84,6 +84,16 @@ figure {
   visibility: hidden;
 }
 
+.mdc-toolbar__icon,
+.mdc-toolbar__icon:last-of-type {
+  padding: 16px;
+}
+
+.demo-toolbar-icon--last,
+.demo-toolbar-icon--last:last-of-type {
+  padding-right: 24px;
+}
+
 //
 // Page content
 //
