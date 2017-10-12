@@ -150,7 +150,6 @@ open http://localhost:8080
 - [Demos](demos/)
 - [Framework Integration Examples](framework-examples/)
 - [Contributing](CONTRIBUTING.md)
-- [Developing MDC-Web Components](docs/developer.md)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
 
