@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -83,6 +84,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   init() {
+    this.currentCheckState_ = this.determineCheckState_(this.getNativeControl_());
     this.adapter_.addClass(cssClasses.UPGRADED);
     this.adapter_.registerChangeHandler(this.changeHandler_);
     this.installPropertyChangeHooks_();

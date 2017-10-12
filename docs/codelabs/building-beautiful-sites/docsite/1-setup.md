@@ -38,4 +38,4 @@ Voilà! Shrine is running in your browser. You can scroll through the page to se
 ![Shrine](img/03-starter.png)
 {: .codelab-img}
 
-[Next step: Explore the starter code](/components/web/codelabs/beautiful-sites-simplified/2-explore/)
+[Next step: Explore the starter code](./2-explore.md)

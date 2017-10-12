@@ -38,28 +38,38 @@
     @if $important {
       /* @alternate */
       #{$property}: $value !important;
+
       @if $edgeOptOut {
+        // stylelint-disable max-nesting-depth
         @at-root {
           @supports not (-ms-ime-align:auto) {
+            // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
               #{$property}: var(--mdc-theme-#{$style}, $value) !important;
             }
+            // stylelint-enable scss/selector-no-redundant-nesting-selector
           }
         }
+        // stylelint-enable max-nesting-depth
       } @else {
         #{$property}: var(--mdc-theme-#{$style}, $value) !important;
       }
     } @else {
       /* @alternate */
       #{$property}: $value;
+
       @if $edgeOptOut {
+        // stylelint-disable max-nesting-depth
         @at-root {
           @supports not (-ms-ime-align:auto) {
+            // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
               #{$property}: var(--mdc-theme-#{$style}, $value);
             }
+            // stylelint-enable scss/selector-no-redundant-nesting-selector
           }
         }
+        // stylelint-enable max-nesting-depth
       } @else {
         #{$property}: var(--mdc-theme-#{$style}, $value);
       }

@@ -646,9 +646,11 @@
       border-bottom-style: dotted;
     }
 
+    // stylelint-disable selector-max-specificity
     &:invalid:not(:focus) {
       border-color: $mdc-textfield-error-on-light;
     }
+    // stylelint-enable selector-max-specificity
   }
 
   @include mdc-theme-dark {
@@ -664,9 +666,11 @@
         background-color: $mdc-textarea-disabled-background-on-dark;
       }
 
+      // stylelint-disable selector-max-specificity
       &:invalid:not(:focus) {
         border-color: $mdc-textfield-error-on-dark;
       }
+      // stylelint-enable selector-max-specificity
     }
   }
 }
