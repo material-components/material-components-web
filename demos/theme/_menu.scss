@@ -40,7 +40,7 @@
 // Radios
 //
 
-.mdc-color-radio {
+.demo-theme-color-radio {
   display: block;
   border: 1px solid $material-color-grey-500;
   border-radius: 50%;
@@ -50,24 +50,24 @@
   }
 }
 
-.mdc-color-radio__inner {
+.demo-theme-color-radio__inner {
   display: block;
   border: 11px solid;
   border-radius: 50%;
 }
 
-[data-color="grey-900"] .mdc-color-radio__inner {
+[data-color="grey-900"] .demo-theme-color-radio__inner {
   border-color: $material-color-grey-900 $material-color-light-green-a700 $material-color-light-green-a700 $material-color-grey-900;
 }
 
-[data-color="deep-purple-a700"] .mdc-color-radio__inner {
+[data-color="deep-purple-a700"] .demo-theme-color-radio__inner {
   border-color: $material-color-deep-purple-a700 $material-color-teal-a400 $material-color-teal-a400 $material-color-deep-purple-a700;
 }
 
-[data-color="yellow-500"] .mdc-color-radio__inner {
+[data-color="yellow-500"] .demo-theme-color-radio__inner {
   border-color: $material-color-yellow-500 $material-color-blue-500 $material-color-blue-500 $material-color-yellow-500;
 }
 
-[data-color="white"] .mdc-color-radio__inner {
+[data-color="white"] .demo-theme-color-radio__inner {
   border-color: #fff $material-color-orange-500 $material-color-orange-500 #fff;
 }
