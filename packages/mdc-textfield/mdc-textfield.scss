@@ -250,6 +250,7 @@
     @include mdc-ripple-base;
     // TODO: This intentionally had only -fg pending #194/#998, so revisit after merging
     @include mdc-ripple-theme(black, .04);
+    @include mdc-ripple-radius;
 
     &::before {
       top: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);

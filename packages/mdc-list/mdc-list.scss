@@ -156,6 +156,7 @@ a.mdc-list-item {
 .mdc-list-item.mdc-ripple-upgraded {
   @include mdc-ripple-base;
   @include mdc-ripple-theme;
+  @include mdc-ripple-radius;
   @include mdc-rtl-reflexive-position(left, $mdc-list-side-padding * -1);
 
   position: relative;

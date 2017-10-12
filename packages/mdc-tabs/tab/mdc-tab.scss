@@ -160,6 +160,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 .mdc-tab.mdc-ripple-upgraded {
   @include mdc-ripple-base;
   @include mdc-ripple-theme;
+  @include mdc-ripple-radius;
 
   @include mdc-theme-dark(".mdc-tab-bar") {
     @include mdc-ripple-theme(text-primary-on-dark, .16);

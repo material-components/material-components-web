@@ -39,6 +39,7 @@
   // E.g. for black 12% opacity:
   // https://www.wolframalpha.com/input/?i=x+%2B+x(1+-+x)+%3D+.12,+x+%3C%3D+1,+x+%3E%3D+0
   @include mdc-ripple-theme(black, .062);
+  @include mdc-ripple-radius;
 
   @include mdc-theme-dark(".mdc-icon-toggle", true) {
     @include mdc-ripple-theme(white, .16);

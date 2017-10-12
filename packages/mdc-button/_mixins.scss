@@ -59,6 +59,7 @@
   &:not(:disabled) {
     @include mdc-ripple-base;
     @include mdc-ripple-theme($base-color, $opacity);
+    @include mdc-ripple-radius;
   }
 }
 

@@ -18,8 +18,6 @@
 @import "@material/theme/variables";
 @import "./keyframes";
 
-$mdc-ripple-radius: 100%;
-
 @mixin mdc-ripple-base() {
   --mdc-ripple-fg-size: 0;
   --mdc-ripple-left: 0;
@@ -30,6 +28,16 @@ $mdc-ripple-radius: 100%;
 
   will-change: transform, opacity;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  &::before, &::after {
+    position: absolute;
+
+    transition: opacity 250ms linear;
+    border-radius: 50%;
+    pointer-events: none;
+
+    content: "";
+  }
 }
 
 @mixin mdc-ripple-color_($base-color, $opacity) {
@@ -54,31 +62,17 @@ $mdc-ripple-radius: 100%;
   // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
 }
 
-// TODO: Make a radius mixin and include it with 100% as default
-// TODO: Figure out better names for the "theme" things
-
-@mixin mdc-ripple-theme-base_($base-color, $opacity) {
-  @include mdc-ripple-color_($base-color, $opacity);
-
-  position: absolute;
-  top: calc(50% - #{$mdc-ripple-radius});
-  left: calc(50% - #{$mdc-ripple-radius});
-  width: $mdc-ripple-radius * 2;
-  height: $mdc-ripple-radius * 2;
-  transition: opacity 250ms linear;
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
-}
+// TODO: Split up color/radius mixins better, possibly move upgraded stuff into base or even into mdc-ripple.scss
 
 @mixin mdc-ripple-theme($base-color: black, $opacity: .06) {
+  // Opacity styles are here (rather than in base) to ensure that opacity is re-initialized for cases where this mixin
+  // is used to override another inherited use of itself, without needing to re-include base.
   &::before, &::after {
-    @include mdc-ripple-theme-base_($base-color, $opacity);
-
-    content: "";
+    @include mdc-ripple-color_($base-color, $opacity);
+    opacity: 0;
   }
 
-  // When :active is applied, :focus is already applied, which will effectively double the effect.
+  // Note: when :active is applied, :focus is already applied, which will effectively double the effect.
   &:not(.mdc-ripple-upgraded) {
     &:hover::before,
     &:focus::before,
@@ -86,17 +80,6 @@ $mdc-ripple-radius: 100%;
       transition-duration: 85ms;
       opacity: .6;
     }
-  }
-
-  // Background ripple styles
-
-  &.mdc-ripple-upgraded::before {
-    top: calc(50% - #{$mdc-ripple-radius});
-    left: calc(50% - #{$mdc-ripple-radius});
-    width: $mdc-ripple-radius * 2;
-    height: $mdc-ripple-radius * 2;
-
-    transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
 
   &.mdc-ripple-upgraded--background-focused::before {
@@ -108,29 +91,10 @@ $mdc-ripple-radius: 100%;
     opacity: 1;
   }
 
-  &.mdc-ripple-upgraded--unbounded::before {
-    top: var(--mdc-ripple-top, calc(50% - #{$mdc-ripple-radius / 2}));
-    left: var(--mdc-ripple-left, calc(50% - #{$mdc-ripple-radius / 2}));
-    width: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
-    height: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
-    transform: scale(var(--mdc-ripple-fg-scale, 0));
-  }
-
   // Foreground ripple styles
 
   &.mdc-ripple-upgraded::after {
-    top: 0;
-    left: 0;
-    width: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
-    height: var(--mdc-ripple-fg-size, $mdc-ripple-radius);
-    transform: scale(0);
-    transform-origin: center center;
     opacity: 0;
-  }
-
-  &.mdc-ripple-upgraded--unbounded::after {
-    top: var(--mdc-ripple-top, 0);
-    left: var(--mdc-ripple-left, 0);
   }
 
   &.mdc-ripple-upgraded--foreground-activation::after {
@@ -142,6 +106,49 @@ $mdc-ripple-radius: 100%;
     // Retain transform from mdc-ripple-fg-radius-in activation
     transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
   }
+}
+
+@mixin mdc-ripple-radius($radius: 100%) {
+    &::before, &::after {
+      top: calc(50% - #{$radius});
+      left: calc(50% - #{$radius});
+      width: $radius * 2;
+      height: $radius * 2;
+    }
+
+    // Background ripple styles
+
+    &.mdc-ripple-upgraded::before {
+      top: calc(50% - #{$radius});
+      left: calc(50% - #{$radius});
+      width: $radius * 2;
+      height: $radius * 2;
+
+      transform: scale(var(--mdc-ripple-fg-scale, 0));
+    }
+
+    &.mdc-ripple-upgraded--unbounded::before {
+      top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
+      left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
+      width: var(--mdc-ripple-fg-size, $radius);
+      height: var(--mdc-ripple-fg-size, $radius);
+      transform: scale(var(--mdc-ripple-fg-scale, 0));
+    }
+
+    // Foreground ripple styles
+    &.mdc-ripple-upgraded::after {
+      top: 0;
+      left: 0;
+      width: var(--mdc-ripple-fg-size, $radius);
+      height: var(--mdc-ripple-fg-size, $radius);
+      transform: scale(0);
+      transform-origin: center center;
+    }
+
+    &.mdc-ripple-upgraded--unbounded::after {
+      top: var(--mdc-ripple-top, 0);
+      left: var(--mdc-ripple-left, 0);
+    }
 }
 
 // Styles used to detect buggy behavior of CSS custom properties in Edge.

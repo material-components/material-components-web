@@ -22,7 +22,8 @@
 
 .mdc-ripple-surface {
   @include mdc-ripple-base;
-  @include mdc-ripple-theme();
+  @include mdc-ripple-theme;
+  @include mdc-ripple-radius;
 
   position: relative;
   outline: none;

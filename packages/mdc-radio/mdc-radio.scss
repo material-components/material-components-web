@@ -34,6 +34,7 @@
   @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
   @include mdc-ripple-theme($mdc-radio-baseline-theme-color, $mdc-radio-ripple-opacity);
+  @include mdc-ripple-radius($mdc-radio-ripple-radius);
 
   display: inline-block;
   position: relative;
