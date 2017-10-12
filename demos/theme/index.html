@@ -919,6 +919,26 @@
           return null;
         }
 
+        // Returns a function, that, as long as it continues to be invoked, will not
+        // be triggered. The function will be called after it stops being called for
+        // N milliseconds. If `immediate` is passed, trigger the function on the
+        // leading edge, instead of the trailing.
+        // From https://davidwalsh.name/javascript-debounce-function
+        function debounce(func, wait, immediate) {
+          var timeout;
+          return function() {
+            var context = this, args = arguments;
+            var later = function() {
+              timeout = null;
+              if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+          };
+        };
+
         // Because we load our CSS via webpack, we need to ensure that all of the correct styles
         // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
         // elements before our CSS is applied, leading to improper UX.
@@ -1011,12 +1031,16 @@
             }
           });
 
+          var hotSwapAllStylesheets = debounce(function() {
+            getAll('link[data-hot]', document.head).forEach(function(link) {
+              hotSwapStylesheet(link);
+            });
+          }, 250);
+
           // TODO(acdvorak): Add IE 11 support
           window.addEventListener('message', function(event) {
             if (typeof event.data === 'string' && event.data.indexOf('webpackHotUpdate') === 0) {
-              getAll('link[data-hot]', document.head).forEach(function(link) {
-                link.href = link.href;
-              });
+              hotSwapAllStylesheets();
             }
           });
 
@@ -1033,25 +1057,31 @@
           function swapThemeImpl(color) {
             color = color || 'grey-900';
             document.title = color.replace(/-/g, ' ');
-            var oldStylesheet = document.querySelector('#theme-stylesheet');
-            var newStylesheet = document.createElement('link');
-            newStylesheet.setAttribute('rel', 'stylesheet');
-            newStylesheet.setAttribute('href', '/assets/demo-theme-' + color + '.css');
-            newStylesheet.setAttribute('data-hot', '');
-            newStylesheet.addEventListener('load', function(e) {
-              console.log('Loaded!', e);
-              setTimeout(function() {
-                oldStylesheet.parentNode.removeChild(oldStylesheet);
-                newStylesheet.id = 'theme-stylesheet';
-              }, 0);
-            });
-            oldStylesheet.parentNode.insertBefore(newStylesheet, oldStylesheet);
+            hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/demo-theme-' + color + '.css');
 
             const selectedItems = getAll('[data-color].demo-theme-menu__list-item--selected', themeMenuEl);
             selectedItems.forEach(function(colorIcon) {
               colorIcon.classList.remove('demo-theme-menu__list-item--selected');
             });
             document.querySelector('[data-color="' + color + '"]').classList.add('demo-theme-menu__list-item--selected');
+          }
+
+          function hotSwapStylesheet(oldLink, newUrl) {
+            var swapMessage = '"' + oldLink.getAttribute('href') + '"' + (newUrl ? ' with "' + newUrl + '"' : '');
+            console.log('Hot swapping stylesheet ' + swapMessage + '...');
+
+            var newLink = oldLink.cloneNode(false);
+            if (newUrl) {
+              newLink.href = newUrl;
+            }
+            newLink.addEventListener('load', function() {
+              console.log('Hot swapped stylesheet ' + swapMessage + '!');
+              setTimeout(function() {
+                oldLink.parentNode.removeChild(oldLink);
+              }, 0);
+            });
+
+            oldLink.parentNode.insertBefore(newLink, oldLink);
           }
 
           // TODO(acdvorak): De-dupe this logic w/ the JS in <head>
