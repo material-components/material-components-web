@@ -1059,11 +1059,11 @@
             document.title = color.replace(/-/g, ' ');
             hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/demo-theme-' + color + '.css');
 
-            const selectedItems = getAll('[data-color].demo-theme-menu__list-item--selected', themeMenuEl);
+            const selectedItems = getAll('.demo-theme-menu__list-item--selected[data-color]', themeMenuEl);
             selectedItems.forEach(function(colorIcon) {
               colorIcon.classList.remove('demo-theme-menu__list-item--selected');
             });
-            document.querySelector('[data-color="' + color + '"]').classList.add('demo-theme-menu__list-item--selected');
+            document.querySelector('.mdc-list-item[data-color="' + color + '"]').classList.add('demo-theme-menu__list-item--selected');
           }
 
           function hotSwapStylesheet(oldLink, newUrl) {
