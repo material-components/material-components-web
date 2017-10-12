@@ -270,8 +270,8 @@ class MDCRippleFoundation extends MDCFoundation {
   /**
    * @param {?Event=} e Optional event containing position information.
    */
-  activate() {
-    this.activate_(null);
+  activate(e) {
+    this.activate_(e ? e : null);
   }
 
   /** @private */
@@ -412,8 +412,8 @@ class MDCRippleFoundation extends MDCFoundation {
   /**
    * @param {?Event=} e Optional event containing position information.
    */
-  deactivate() {
-    this.deactivate_(null);
+  deactivate(e) {
+    this.deactivate_(e ? e : null);
   }
 
   /**
