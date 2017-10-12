@@ -1034,7 +1034,19 @@
           function swapThemeImpl(color) {
             color = color || 'grey-900';
             document.title = color.replace(/-/g, ' ');
-            document.querySelector('#theme-stylesheet').href = '/assets/demo-theme-' + color + '.css';
+            var oldStylesheet = document.querySelector('#theme-stylesheet');
+            var newStylesheet = document.createElement('link');
+            newStylesheet.setAttribute('rel', 'stylesheet');
+            newStylesheet.setAttribute('href', '/assets/demo-theme-' + color + '.css');
+            newStylesheet.setAttribute('data-hot', '');
+            newStylesheet.addEventListener('load', function(e) {
+              console.log('Loaded!', e);
+              setTimeout(function() {
+                oldStylesheet.parentNode.removeChild(oldStylesheet);
+                newStylesheet.id = 'theme-stylesheet';
+              }, 0);
+            });
+            oldStylesheet.parentNode.insertBefore(newStylesheet, oldStylesheet);
 
             const selectedItems = getAll('[data-color].demo-theme-menu__list-item--selected', themeMenuEl);
             selectedItems.forEach(function(colorIcon) {
