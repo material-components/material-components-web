@@ -81,6 +81,17 @@
         </div>
       </section>
 
+      <section class="example">
+        <div id="tf-outlined-example" class="mdc-textfield mdc-textfield--upgraded mdc-textfield--outlined custom-textfield-input" data-demo-no-auto-js>
+          <div class="mdc-textfield__label">First Name</div>
+          <svg class="mdc-textfield__outline">
+            <path id='outline-path' class="mdc-textfield__focus-outline"/>
+          </svg>
+          <div class="mdc-textfield__idle-outline"></div>
+          <input id="svg-text-input" class="mdc-textfield__input"/>
+        </div>
+      </section>
+
       <section class="example"><em>
         Note that in browsers that support custom properties, we alter theme's primary
         color when using the dark theme toggles so that the text fields appears more
@@ -376,6 +387,12 @@
     </script>
     <script>
       setTimeout(function() {
+        var tfEl = document.getElementById('tf-outlined-example');
+        var tf = new mdc.textfield.MDCTextfield(tfEl, foundation = undefined, 4);
+      }, 200);
+      </script>
+    <script>
+      setTimeout(function() {
         var tfLeadingEl = document.getElementById('tf-box-leading-example');
         var tfLeading = new mdc.textfield.MDCTextfield(tfLeadingEl);
         var wrapperLeading = document.getElementById('demo-tf-box-leading-wrapper');
@@ -530,5 +547,6 @@
         });
       })();
     </script>
+
   </body>
 </html>

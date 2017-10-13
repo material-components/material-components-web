@@ -30,6 +30,7 @@
 
 @include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 124%);
 
 // postcss-bem-linter: define textfield
 .mdc-textfield {
@@ -160,10 +161,13 @@
 }
 
 .mdc-textfield--box {
+  @include mdc-text-field-corner-radius-all(0);
+  @include mdc-text-field-corner-radius(top-left, 4px);
+  @include mdc-text-field-corner-radius(top-right, 4px);
+
   display: inline-flex;
   position: relative;
   height: 56px;
-  border-radius: 4px 4px 0 0;
   background-color: rgba(black, .04);
   overflow: hidden;
 
@@ -173,12 +177,13 @@
 
   &::before,
   &::after {
+    @include mdc-text-field-corner-radius-all(50%);
+
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 50%;
     background-color: inherit;
     opacity: 0;
     pointer-events: none;
@@ -310,6 +315,101 @@
   // stylelint-enable plugin/selector-bem-pattern
 }
 
+.mdc-textfield--outlined {
+  height: 56px;
+  border: none;
+
+  .mdc-textfield__outline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 250ms ease;
+    opacity: 0;
+    z-index: 2;
+
+    &--visible {
+      opacity: 1;
+    }
+  }
+
+  .mdc-textfield__idle-outline {
+    @include mdc-text-field-corner-radius-all(4px);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    transition: opacity 200ms ease;
+    border: 2px solid #c9c9c9;
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .mdc-textfield__focus-outline {
+    @include mdc-theme-prop(stroke, primary);
+
+    stroke-width: 2px;
+    transition: opacity 250ms ease;
+    fill: transparent;
+  }
+
+  .mdc-textfield__input {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    border: none;
+    background-color: transparent;
+    z-index: 3;
+  }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-textfield__label {
+    position: absolute;
+    bottom: 20px;
+    left: 16px;
+    transform-origin: center;
+    transition: transform 260ms ease;
+    z-index: 2;
+
+    &--float-above {
+      @include mdc-theme-prop(color, primary);
+
+      transform: translateY(-124%) scale(.75, .75);
+
+      &.mdc-textfield__label--shake {
+        animation: invalid-shake-float-above-outlined 250ms 1;
+      }
+    }
+  }
+
+  &.mdc-textfield--focused .mdc-textfield__idle-outline {
+    opacity: 0;
+  }
+
+  &.mdc-textfield--focused .mdc-textfield__outline {
+    opacity: 1;
+  }
+
+  .mdc-textfield__label--float-above {
+    @include mdc-theme-prop(color, primary);
+
+    transform: scale(.85) translate(-10px, -30px);
+  }
+
+  .mdc-textfield__label--float-above ~ .mdc-textfield__idle-outline {
+    opacity: 0;
+  }
+
+  .mdc-textfield__label--float-above ~ .mdc-textfield__outline {
+    opacity: 1;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+}
+
 .mdc-textfield--with-leading-icon .mdc-textfield__icon,
 .mdc-textfield--with-trailing-icon .mdc-textfield__icon {
   position: absolute;
@@ -390,7 +490,7 @@
   box-sizing: border-box;
   margin-top: 16px;
 
-  &:not(.mdc-textfield--textarea) {
+  &:not(.mdc-textfield--textarea):not(.mdc-textfield--outlined) {
     height: 48px;
   }
 
@@ -504,22 +604,24 @@
   $label-offset-y: $padding-inset + 2;
   $label-offset-x: $padding-inset;
 
-  display: flex;
-  height: initial;
-  transition: none;
-  border: 1px solid $mdc-textarea-border-on-light;
-  border-radius: 4px;
+  @include mdc-text-field-corner-radius-all(4px);
 
   @include mdc-theme-dark(".mdc-textfield") {
     border-color: $mdc-textarea-border-on-dark;
   }
 
+  display: flex;
+  height: initial;
+  transition: none;
+  border: 1px solid $mdc-textarea-border-on-light;
+
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield__input {
+    @include mdc-text-field-corner-radius-all(4px);
+
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
     border: 1px solid transparent;
-    border-radius: 2px;
 
     &:focus {
       @include mdc-theme-prop(border-color, primary);
@@ -680,7 +782,7 @@
 
   &::before,
   &::after {
-    border-radius: 0;
+    @include mdc-text-field-corner-radius-all(0);
   }
 
   .mdc-textfield__input {

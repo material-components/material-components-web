@@ -1,7 +1,7 @@
 /**
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -63,6 +63,11 @@ class MDCTextfieldFoundation extends MDCFoundation {
       setHelptextAttr: () => {},
       removeHelptextAttr: () => {},
       getNativeInput: () => {},
+      addClassToFocusOutline: () => {},
+      removeClassFromFocusOutline: () => {},
+      registerOutlineTransitionEndHandler: () => {},
+      deregisterOutlineTransitionEndHandler: () => {},
+      getComputedLabelWidth: () => {},
     });
   }
 
@@ -84,6 +89,8 @@ class MDCTextfieldFoundation extends MDCFoundation {
     this.inputBlurHandler_ = () => this.deactivateFocus_();
     /** @private {function(): undefined} */
     this.inputInputHandler_ = () => this.autoCompleteFocus_();
+    /** @private {function(): undefined} */
+    this.outlineTransitionEndHandler_ = () => this.handleOutlineTransitionEnd_();
     /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin_(evt);
     /** @private {function(!Event): undefined} */
@@ -99,6 +106,10 @@ class MDCTextfieldFoundation extends MDCFoundation {
       this.adapter_.addClassToLabel(MDCTextfieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
     }
 
+    if (this.adapter_.getTextFieldOutline()) {
+      this.updateSVGPath_();
+    }
+
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.registerInputInteractionHandler('blur', this.inputBlurHandler_);
     this.adapter_.registerInputInteractionHandler('input', this.inputInputHandler_);
@@ -109,6 +120,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.registerOutlineTransitionEndHandler(this.outlineTransitionEndHandler_);
   }
 
   destroy() {
@@ -123,6 +135,28 @@ class MDCTextfieldFoundation extends MDCFoundation {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.deregisterOutlineTransitionEndHandler(this.outlineTransitionEndHandler_);
+  }
+
+  updateSVGPath_() {
+    const {width, height} = this.adapter_.getComputedTextFieldDimensions();
+    const outlinedTextFieldFloatingLabelPadding = 6;
+    const computedLabelWidth = this.adapter_.getComputedLabelWidth() + outlinedTextFieldFloatingLabelPadding;
+    const radius = this.adapter_.getTextFieldCornerRadius();
+    let path = '';
+
+    path = 'M' + computedLabelWidth + ',' + 1
+       + 'h' + (width - radius - computedLabelWidth - 2)
+       + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
+       + 'v' + (height - 2.5 * radius)
+       + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
+       + 'h' + (-width + 3 * radius)
+       + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
+       + 'v' + (-height + 2.5 * radius)
+       + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
+       + 'h' + 2;
+
+    this.adapter_.setOutlinePathAttr(path);
   }
 
   /**
@@ -152,13 +186,25 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   activateFocus_() {
-    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE,
+      LABEL_SHAKE, OUTLINE_VISIBLE} = MDCTextfieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
+    this.adapter_.addClassToFocusOutline(OUTLINE_VISIBLE);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
     this.showHelptext_();
     this.isFocused_ = true;
+  }
+
+  /**
+   * Handles transition end of the focus outline opacity.
+   * @private
+   */
+  handleOutlineTransitionEnd_() {
+    if (this.isFocused_) {
+      this.adapter_.addClassToFocusOutline(OUTLINE_VISIBLE);
+    }
   }
 
   /**
@@ -219,12 +265,13 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   deactivateFocus_() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE, OUTLINE_VISIBLE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
+    this.adapter_.removeClassFromFocusOutline(OUTLINE_VISIBLE);
 
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);

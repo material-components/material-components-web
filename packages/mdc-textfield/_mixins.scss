@@ -35,3 +35,11 @@
     }
   }
 }
+
+@mixin mdc-text-field-corner-radius($position, $radius) {
+  border-#{$position}-radius: $radius;
+}
+
+@mixin mdc-text-field-corner-radius-all($radius) {
+  border-radius: $radius;
+}

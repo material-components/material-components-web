@@ -23,6 +23,9 @@ const strings = {
   ICON_SELECTOR: '.mdc-textfield__icon',
   ICON_EVENT: 'MDCTextfield:icon',
   BOTTOM_LINE_SELECTOR: '.mdc-textfield__bottom-line',
+  OUTLINE_SELECTOR: '.mdc-textfield__outline',
+  OUTLINE_PATH_SELECTOR: '.mdc-textfield__focus-outline',
+  FOCUS_OUTLINE_SELECTOR: '.mdc-textfield__focus-outline',
 };
 
 /** @enum {string} */
@@ -40,6 +43,7 @@ const cssClasses = {
   TEXT_FIELD_ICON: 'mdc-textfield__icon',
   TEXTAREA: 'mdc-textfield--textarea',
   BOTTOM_LINE_ACTIVE: 'mdc-textfield__bottom-line--active',
+  OUTLINE_VISIBLE: 'mdc-textfield__outline--visible',
 };
 
 export {cssClasses, strings};

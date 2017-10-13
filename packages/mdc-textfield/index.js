@@ -42,6 +42,10 @@ class MDCTextfield extends MDCComponent {
     /** @private {?Element} */
     this.bottomLine_;
     /** @private {?Element} */
+    this.outline_;
+    /** @private {?Element} */
+    this.outlinePath_;
+    /** @private {?Element} */
     this.icon_;
   }
 
@@ -57,9 +61,12 @@ class MDCTextfield extends MDCComponent {
    * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which
    * creates a new MDCRipple.
    */
-  initialize(rippleFactory = (el) => new MDCRipple(el)) {
+  initialize(rippleFactory = (el) => new MDCRipple(el), foundation, ...args) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
+    this.outline_ = this.root_.querySelector(strings.OUTLINE_SELECTOR);
+    this.outlinePath_ = this.root_.querySelector(strings.OUTLINE_PATH_SELECTOR);
+    this.cornerRadius_ = arguments[0];
     this.helptextElement = null;
     this.ripple = null;
     if (this.input_.hasAttribute('aria-controls')) {
@@ -131,15 +138,60 @@ class MDCTextfield extends MDCComponent {
           label.classList.remove(className);
         }
       },
+      getComputedLabelWidth: () => {
+        const label = this.label_;
+        if (label) {
+          return label.offsetWidth;
+        }
+      },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT, {}),
     },
-    this.getInputAdapterMethods_(),
-    this.getHelptextAdapterMethods_(),
     this.getBottomLineAdapterMethods_(),
-    this.getIconAdapterMethods_())));
+    this.getHelptextAdapterMethods_(),
+    this.getInputAdapterMethods_(),
+    this.getIconAdapterMethods_(),
+    this.getOutlinedTextFieldAdapterMethods_())));
+  }
+
+  getOutlinedTextFieldAdapterMethods_() {
+    return {
+      addClassToFocusOutline: (className) => {
+        if (this.outline_) {
+          this.outline_.classList.add(className);
+        }
+      },
+      removeClassFromFocusOutline: (className) => {
+        if (this.outline_) {
+          this.outline_.classList.remove(className);
+        }
+      },
+      setOutlinePathAttr: (value) => {
+        if (this.outlinePath_) {
+          this.outlinePath_.setAttribute('d', value);
+        }
+      },
+      registerOutlineTransitionEndHandler: (handler) => {
+        if (this.outline_) {
+          this.outline_.addEventListener('opacity', handler);
+        }
+      },
+      deregisterOutlineTransitionEndHandler: (handler) => {
+        if (this.outline_) {
+          this.outline_.removeEventListener('opacity', handler);
+        }
+      },
+      getComputedTextFieldDimensions: () => {
+        return {
+          width: this.root_.offsetWidth,
+          height: this.root_.offsetHeight,
+        };
+      },
+      getTextFieldCornerRadius: () => this.cornerRadius_,
+      getTextFieldOutline: () => this.outline_,
+    };
   }
 
   /**
