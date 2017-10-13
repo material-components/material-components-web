@@ -53,6 +53,7 @@
     border: none;
     border-bottom: 1px solid $mdc-textfield-underline-on-light-idle;
     background: none;
+    /* alternate */
     font-size: inherit;
     appearance: none;
 
@@ -266,7 +267,6 @@
   }
 
   &.mdc-textfield--disabled {
-    @include mdc-theme-prop(background-color, $mdc-textfield-light-background);
     @include mdc-theme-prop(color, $mdc-textfield-light-placeholder);
 
     border-bottom: none;
