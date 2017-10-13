@@ -58,7 +58,7 @@ Wrap the items with `mdc-toolbar` class in the following way:
 <header class="mdc-toolbar">
   <div class="mdc-toolbar__row">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-      <a href="#" class="material-icons mdc-toolbar__icon--menu">menu</a>
+      <a href="#" class="material-icons mdc-toolbar__menu-icon">menu</a>
       <span class="mdc-toolbar__title">Title</span>
     </section>
   </div>
@@ -71,7 +71,7 @@ MDC Toolbars can accommodate multiple rows using the wrapper `mdc-toolbar__row`:
 <header class="mdc-toolbar">
   <div class="mdc-toolbar__row">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-      <a href="#" class="material-icons mdc-toolbar__icon--menu">menu</a>
+      <a href="#" class="material-icons mdc-toolbar__menu-icon">menu</a>
       <span class="mdc-toolbar__title">Title</span>
     </section>
   </div>
@@ -140,7 +140,7 @@ a page's title, or an application name.
 #### Toolbar Icons
 
 Icons can be added as anchor tags, `span`s, or `button`s to `mdc-toolbar`. There are two types of icons,
-`mdc-toolbar__icon--menu` represents the left most icon in `mdc-toolbar` usually to the left of `mdc-toolbar__title`.
+`mdc-toolbar__menu-icon` represents the left most icon in `mdc-toolbar` usually to the left of `mdc-toolbar__title`.
 `mdc-toolbar__icon` represents any icons placed on the right side of an `mdc-toolbar`.
 
 ### Fixed toolbars

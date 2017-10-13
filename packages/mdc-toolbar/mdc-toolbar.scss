@@ -98,7 +98,7 @@
     @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-desktop / 2, $mdc-toolbar-element-horizontal-padding-desktop);
   }
 
-  &__icon--menu {
+  &__menu-icon {
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
@@ -108,7 +108,7 @@
   }
 }
 
-.mdc-toolbar__icon--menu + .mdc-toolbar__title {
+.mdc-toolbar__menu-icon + .mdc-toolbar__title {
   @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-desktop);
 }
 
@@ -126,12 +126,12 @@
     @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-mobile / 2, $mdc-toolbar-element-horizontal-padding-mobile);
   }
 
-  .mdc-toolbar__icon--menu {
+  .mdc-toolbar__menu-icon {
     padding-right: $mdc-toolbar-element-horizontal-padding-mobile;
     padding-left: $mdc-toolbar-element-horizontal-padding-mobile;
   }
 
-  .mdc-toolbar__icon--menu + .mdc-toolbar__title {
+  .mdc-toolbar__menu-icon + .mdc-toolbar__title {
     @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-mobile);
   }
 }
