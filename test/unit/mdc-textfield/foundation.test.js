@@ -599,7 +599,7 @@ test('"value" property change hook does nothing if input is focused', () => {
     foundation.init();
     focus();
     nativeInput.value = '';
-    td.verify(mockAdapter.removeClassFromLabel(td.matchers.anything()), {times: 0});
+    td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
   });
 
   clock.uninstall();
