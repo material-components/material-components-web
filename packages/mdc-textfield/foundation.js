@@ -357,7 +357,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // We have to check for this descriptor, since some browsers (Safari) don't support its return.
     // See: https://bugs.webkit.org/show_bug.cgi?id=49739
     if (validDescriptor(desc)) {
-      const nativeInputElementDesc = ({
+      const nativeInputElementDesc = /** @type {!ObjectPropertyDescriptor} */ ({
         get: desc.get,
         set: (value) => {
           desc.set.call(nativeInputElement, value);
@@ -375,8 +375,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const {INPUT_PROTO_PROP} = MDCTextfieldFoundation.strings;
     const nativeInputElement = this.getNativeInput_();
     const inputElementProto = Object.getPrototypeOf(nativeInputElement);
-    const desc = Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP);
-
+    const desc = /** @type {!ObjectPropertyDescriptor} */ (
+      Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP));
     if (validDescriptor(desc)) {
       Object.defineProperty(nativeInputElement, INPUT_PROTO_PROP, desc);
     }
