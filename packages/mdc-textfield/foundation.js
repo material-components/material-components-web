@@ -189,13 +189,28 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * Changes the floating label's state
    * @private
    */
-  forceLayout_() {
-    // Don't do anything if the input is still focused.
+  updateLabelFloat_() {
+    // Don't do anything if the input is focused.
     if (!this.isFocused_) {
-      this.activateFocus_();
-      this.deactivateFocus_();
+      const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+      const input = this.getNativeInput_();
+
+      this.adapter_.removeClassFromLabel(LABEL_SHAKE);
+      this.showHelptext_();
+
+      if (input.value) {
+        this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
+      }
+      else{
+        this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+      }
+
+      if (!this.useCustomValidityChecking_) {
+        this.changeValidity_(input.checkValidity());
+      }
     }
   }
 
@@ -361,7 +376,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
         get: desc.get,
         set: (value) => {
           desc.set.call(nativeInputElement, value);
-          this.forceLayout_();
+          this.updateLabelFloat_();
         },
         configurable: desc.configurable,
         enumerable: desc.enumerable,
