@@ -203,8 +203,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
       if (input.value) {
         this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
-      }
-      else{
+      } else {
         this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
       }
 
