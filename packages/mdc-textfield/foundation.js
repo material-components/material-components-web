@@ -196,9 +196,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
       const input = this.getNativeInput_();
 
-      this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-      this.showHelptext_();
-
       if (input.value) {
         this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
       } else {
@@ -206,6 +203,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       }
 
       if (!this.useCustomValidityChecking_) {
+        this.adapter_.removeClassFromLabel(LABEL_SHAKE);
+        this.showHelptext_();
         this.changeValidity_(input.checkValidity());
       }
     }
