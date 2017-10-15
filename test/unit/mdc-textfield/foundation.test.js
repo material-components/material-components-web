@@ -16,7 +16,6 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
-import lolex from 'lolex';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
@@ -40,10 +39,10 @@ function setupHookTest() {
   return {foundation, mockAdapter, nativeInput};
 }
 
-// Shims Object.getOwnPropertyDescriptor for the checkbox's WebIDL attributes. Used to test
+// Shims Object.getOwnPropertyDescriptor for the input's WebIDL attributes. Used to test
 // the behavior of overridding WebIDL properties in different browser environments. For example,
 // in Safari WebIDL attributes don't return get/set in descriptors.
-function withMockCheckboxDescriptorReturning(descriptor, runTests) {
+function withMockInputDescriptorReturning(descriptor, runTests) {
   const originalDesc = Object.getOwnPropertyDescriptor(Object, 'getOwnPropertyDescriptor');
   const mockGetOwnPropertyDescriptor = td.func('.getOwnPropertyDescriptor');
 
@@ -222,7 +221,7 @@ test('#init does not add mdc-text-field__label--float-above class if the input d
 
 test('#init handles case when WebIDL attrs cannot be overridden (Safari)', () => {
   const {foundation, nativeInput} = setupHookTest();
-  withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
+  withMockInputDescriptorReturning(DESC_UNDEFINED, () => {
     assert.doesNotThrow(() => {
       foundation.init();
       nativeInput.value = nativeInput.value + '_';
@@ -232,14 +231,14 @@ test('#init handles case when WebIDL attrs cannot be overridden (Safari)', () =>
 
 test('#init handles case when property descriptors are not returned at all (Android Browser)', () => {
   const {foundation} = setupHookTest();
-  withMockCheckboxDescriptorReturning(undefined, () => {
+  withMockInputDescriptorReturning(undefined, () => {
     assert.doesNotThrow(() => foundation.init());
   });
 });
 
 test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', () => {
   const {foundation} = setupHookTest();
-  withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
+  withMockInputDescriptorReturning(DESC_UNDEFINED, () => {
     assert.doesNotThrow(() => foundation.init(), 'init sanity check');
     assert.doesNotThrow(() => foundation.destroy());
   });
@@ -563,32 +562,33 @@ test('interacting with text field does not emit custom events if input is disabl
   td.verify(mockAdapter.notifyIconAction(), {times: 0});
 });
 
-test('"value" property change hook removes mdc-textfield__label--float-above class', () => {
+test('"value" property change hook works properly', () => {
   const {foundation, mockAdapter, nativeInput} = setupHookTest();
-  const clock = lolex.install();
+  let inputValue = '';
 
-  withMockCheckboxDescriptorReturning({
-    get: () => {},
-    set: () => {},
+  withMockInputDescriptorReturning({
+    get: () => inputValue,
+    set: (value) => inputValue = value,
     enumerable: false,
     configurable: true,
   }, () => {
-    nativeInput.value = '_';
     foundation.init();
+
+    nativeInput.value = '_';
+    td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
+
     nativeInput.value = '';
     td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
   });
-
-  clock.uninstall();
 });
 
 test('"value" property change hook does nothing if input is focused', () => {
   const {foundation, mockAdapter, nativeInput} = setupHookTest();
-  const clock = lolex.install();
+  let inputValue = '';
 
-  withMockCheckboxDescriptorReturning({
-    get: () => {},
-    set: () => {},
+  withMockInputDescriptorReturning({
+    get: () => inputValue,
+    set: (value) => inputValue = value,
     enumerable: false,
     configurable: true,
   }, () => {
@@ -598,9 +598,12 @@ test('"value" property change hook does nothing if input is focused', () => {
     });
     foundation.init();
     focus();
+    td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+
+    nativeInput.value = '_';
+    td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+
     nativeInput.value = '';
     td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
   });
-
-  clock.uninstall();
 });
