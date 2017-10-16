@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +16,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import {SelectionControlState} from '@material/base/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -35,7 +36,7 @@ import {SelectionControlState} from '@material/base/selection-control';
  *
  * @record
  */
-export default class MDCCheckboxAdapter {
+class MDCCheckboxAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -54,7 +55,7 @@ export default class MDCCheckboxAdapter {
   /** @param {!EventListener} handler */
   deregisterChangeHandler(handler) {}
 
-  /** @return {!SelectionControlState} */
+  /** @return {!MDCSelectionControlState} */
   getNativeControl() {}
 
   forceLayout() {}
@@ -62,3 +63,5 @@ export default class MDCCheckboxAdapter {
   /** @return {boolean} */
   isAttachedToDOM() {}
 }
+
+export default MDCCheckboxAdapter;

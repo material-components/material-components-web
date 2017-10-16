@@ -114,15 +114,16 @@ They only need to match the values set for their corresponding aria attributes.
 
 ### Dialog Action Color ###
 
-Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s accent color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply accent color.
+Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s secondary color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply secondary color.
 
-```
+```html
 <aside class="mdc-dialog">
   <div class="mdc-dialog__surface">
     <footer class="mdc-dialog__footer">
       <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
       <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept mdc-dialog__action">Accept</button>
     </footer>
+  </div>
 </aside>
 ```
 
@@ -181,7 +182,7 @@ mdc.dialog.MDCDialog.attachTo(document.querySelector('#my-mdc-dialog'));
 Dialogs can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCDialog} from 'mdc-dialog';
+import {MDCDialog} from '@material/dialog';
 
 const dialog = new MDCDialog(document.querySelector('#my-mdc-dialog'));
 ```
@@ -259,6 +260,7 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `isDialog(el: Element) => boolean` | Returns boolean indicating whether the provided element is the dialog surface element. |
 | `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 | `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
+| `layoutFooterRipples() => void` | Calls `layout` on the ripple components instantiated on buttons in the footer. |
 
 #### Handling Focus Trapping
 

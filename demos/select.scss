@@ -14,22 +14,8 @@
 // limitations under the License.
 //
 
-@import "./mixins";
-
-.mdc-animation {
-  &-deceleration-curve {
-    @include mdc-animation-deceleration-curve;
-  }
-
-  &-standard-curve {
-    @include mdc-animation-standard-curve;
-  }
-
-  &-acceleration-curve {
-    @include mdc-animation-acceleration-curve;
-  }
-
-  &-sharp-curve {
-    @include mdc-animation-sharp-curve;
-  }
-}
+@import "./common";
+@import "../packages/mdc-list/mdc-list";
+@import "../packages/mdc-menu/mdc-menu";
+@import "../packages/mdc-select/mdc-select";
+@import "../packages/mdc-typography/mdc-typography";

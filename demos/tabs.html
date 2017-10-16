@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <!--
-Copyright 2017 Google Inc. All rights reserved.
+  Copyright 2017 Google Inc. All rights reserved.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-https://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
 -->
 <html>
   <head>
     <meta charset="utf-8">
     <title>MDC-Web Tab Bar Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
-    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
-    <script src="assets/demo-styles.css.js" charset="utf-8"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/tabs.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
       fieldset {
         padding: 24px;
@@ -150,7 +151,7 @@ limitations under the License
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Tabs</span>
         </section>
@@ -168,8 +169,8 @@ limitations under the License
       </section>
 
       <section class="demo-buttons">
-        <button type="button" class="mdc-button mdc-button--raised mdc-button--primary" id="toggle-rtl">Toggle RTL</button>
-        <button type="button" class="mdc-button mdc-button--raised mdc-button--primary" id="toggle-dark-theme">Toggle Dark Theme</button>
+        <button type="button" class="mdc-button mdc-button--raised" id="toggle-rtl">Toggle RTL</button>
+        <button type="button" class="mdc-button mdc-button--raised" id="toggle-dark-theme">Toggle Dark Theme</button>
       </section>
 
       <section>
@@ -332,8 +333,8 @@ limitations under the License
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Accent Color Indicator</legend>
-          <nav id="accent-indicator-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
+          <legend class="mdc-typography--title">Secondary Color Indicator</legend>
+          <nav id="secondary-indicator-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
             <a class="mdc-tab" href="#three">Three</a>
@@ -344,7 +345,7 @@ limitations under the License
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Accent Color Indicator - CSS-Only</legend>
+          <legend class="mdc-typography--title">Secondary Color Indicator - CSS-Only</legend>
           <nav class="mdc-tab-bar mdc-tab-bar--indicator-accent">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
@@ -449,7 +450,7 @@ limitations under the License
           <div class="demo-note">
             <em>Note: Changing the toolbar's background color here so that the primary indicator can be visible</em>
           </div>
-          <div class="mdc-toolbar mdc-theme--accent-bg">
+          <div class="mdc-toolbar mdc-theme--secondary-bg">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
                 <h1 class="mdc-toolbar__title">Title</h1>
@@ -471,7 +472,7 @@ limitations under the License
       <section>
         <fieldset>
           <legend class="mdc-typography--title">Within mdc-toolbar + primary indicator, CSS-Only</legend>
-          <div class="mdc-toolbar mdc-theme--accent-bg">
+          <div class="mdc-toolbar mdc-theme--secondary-bg">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
                 <h1 class="mdc-toolbar__title">Title</h1>
@@ -493,7 +494,7 @@ limitations under the License
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + accent indicator</legend>
+          <legend class="mdc-typography--title">Within mdc-toolbar + secondary color indicator</legend>
           <div class="mdc-toolbar">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
@@ -501,7 +502,7 @@ limitations under the License
               </div>
               <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
                 <div>
-                  <nav id="toolbar-tab-bar-accent-indicator" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
+                  <nav id="toolbar-tab-bar-secondary-indicator" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
                     <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
                     <a class="mdc-tab" href="#two">Item Two</a>
                     <a class="mdc-tab" href="#three">Item Three</a>
@@ -516,7 +517,7 @@ limitations under the License
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + accent indicator, CSS-Only</legend>
+          <legend class="mdc-typography--title">Within mdc-toolbar + secondary color indicator, CSS-Only</legend>
           <div class="mdc-toolbar">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
@@ -570,7 +571,7 @@ limitations under the License
       </section>
 
     </main>
-    <script src="assets/material-components-web.js" charset="utf-8"></script>
+    <script src="/assets/material-components-web.js"></script>
     <script>
       (function() {
         setTimeout(function () {
@@ -583,9 +584,9 @@ limitations under the License
           window.toolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar'));
           window.toolbarTabBarModified = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-modified'));
           window.primaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#primary-indicator-tab-bar'));
-          window.accentIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#accent-indicator-tab-bar'));
+          window.secondaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#secondary-indicator-tab-bar'));
           window.primaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-primary-indicator'));
-          window.accentIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-accent-indicator'));
+          window.secondaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-secondary-indicator'));
 
           var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
           var dots = document.querySelector('.dots');
@@ -648,6 +649,7 @@ limitations under the License
             var mainElement = document.querySelector('#tabs-demo-main-section');
             mainElement.hasAttribute('dir') ? mainElement.removeAttribute('dir') : mainElement.setAttribute('dir', 'rtl');
 
+            window.demoTabBar.layout();
             window.basicTabBar.layout();
             window.tabBarScroller.layout();
             window.tabBarScroller.tabBar.layout();
@@ -655,9 +657,9 @@ limitations under the License
             window.iconTextTabBar.layout();
             window.toolbarTabBar.layout();
             window.primaryIndicatorTabBar.layout();
-            window.accentIndicatorTabBar.layout();
+            window.secondaryIndicatorTabBar.layout();
             window.primaryIndicatorToolbarTabBar.layout();
-            window.accentIndicatorToolbarTabBar.layout();
+            window.secondaryIndicatorToolbarTabBar.layout();
             window.dynamicTabBar.layout();
             toolbarTabBarModified.layout();
           });

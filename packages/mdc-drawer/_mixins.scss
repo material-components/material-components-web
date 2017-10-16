@@ -26,10 +26,10 @@
     flex-direction: row;
     flex-shrink: 0;
     align-items: flex-center;
+    box-sizing: border-box;
     height: 56px;
     padding: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, .12);
-    box-sizing: border-box;
 
     @include mdc-theme-dark(quote(#{&})) {
       border-bottom: 1px solid rgba(255, 255, 255, .12);
@@ -64,8 +64,8 @@
     bottom: 0;
     left: 0;
     align-items: flex-end;
-    padding: 16px;
     box-sizing: border-box;
+    padding: 16px;
   }
   // stylelint-enable selector-max-type
 }
@@ -78,13 +78,13 @@
   }
 
   .mdc-list-item {
+    @include mdc-typography(body2);
+
     position: relative;
     padding: 0 16px;
     outline: none;
     color: inherit;
     text-decoration: none;
-
-    @include mdc-typography(body2);
 
     // Remove the 16px left offset since we already expand the padding of the list item to take up
     // the width of the drawer.
@@ -118,8 +118,8 @@
     transition: mdc-animation-exit-temporary(opacity, 120ms);
     border-radius: inherit;
     background: currentColor;
-    content: "";
     opacity: 0;
+    content: "";
   }
 
   .mdc-list-item:focus::before {

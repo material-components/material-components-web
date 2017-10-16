@@ -131,7 +131,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       }
     }
 
-    this.scrollToTabAtIndex_(scrollTargetIndex);
+    this.scrollToTabAtIndex(scrollTargetIndex);
   }
 
   scrollForward(evt = null) {
@@ -164,7 +164,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       }
     }
 
-    this.scrollToTabAtIndex_(scrollTargetIndex);
+    this.scrollToTabAtIndex(scrollTargetIndex);
   }
 
   layout() {
@@ -221,7 +221,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.updateIndicatorEnabledStates_();
   }
 
-  scrollToTabAtIndex_(index) {
+  scrollToTabAtIndex(index) {
     const scrollTargetOffsetLeft = this.adapter_.getComputedLeftForTabAtIndex(index);
     const scrollTargetOffsetWidth = this.adapter_.getComputedWidthForTabAtIndex(index);
 

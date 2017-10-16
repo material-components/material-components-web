@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +15,25 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import MDCFoundation from '@material/base/foundation';
+import MDCFormFieldAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
-export default class MDCFormFieldFoundation extends MDCFoundation {
+/**
+ * @extends {MDCFoundation<!MDCFormFieldAdapter>}
+ */
+class MDCFormFieldFoundation extends MDCFoundation {
+  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
 
+  /** @return {!MDCFormFieldAdapter} */
   static get defaultAdapter() {
     return {
       registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
@@ -37,7 +45,10 @@ export default class MDCFormFieldFoundation extends MDCFoundation {
 
   constructor(adapter) {
     super(Object.assign(MDCFormFieldFoundation.defaultAdapter, adapter));
-    this.clickHandler_ = (evt) => this.handleClick_(evt);
+
+    /** @private {!EventListener} */
+    this.clickHandler_ = /** @type {!EventListener} */ (
+      () => this.handleClick_());
   }
 
   init() {
@@ -48,8 +59,11 @@ export default class MDCFormFieldFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
   }
 
+  /** @private */
   handleClick_() {
     this.adapter_.activateInputRipple();
     requestAnimationFrame(() => this.adapter_.deactivateInputRipple());
   }
 }
+
+export default MDCFormFieldFoundation;

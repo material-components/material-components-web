@@ -1,0 +1,140 @@
+// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@import "@material/animation/functions";
+@import "@material/elevation/mixins";
+@import "@material/elevation/variables";
+@import "@material/ripple/mixins";
+@import "@material/theme/functions";
+@import "@material/theme/mixins";
+@import "./variables";
+
+@mixin mdc-fab-accessible($container-color) {
+  @include mdc-fab-container-color($container-color);
+  // Calculate whether to use dark or light text on top of given color.
+  $light-or-dark-text: mdc-theme-light-or-dark($container-color);
+
+  @if ($light-or-dark-text == "light") {
+    @include mdc-fab-ink-color(text-primary-on-dark);
+    @include mdc-fab-ripple($mdc-fab-light-ripple-config);
+  } @else {
+    @include mdc-fab-ink-color(text-primary-on-light);
+    @include mdc-fab-ripple(()); //default dark ripple
+  }
+}
+
+@mixin mdc-fab-container-color($color) {
+  @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+}
+
+@mixin mdc-fab-ink-color($color) {
+  @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-fab-ripple($ripple-config) {
+  @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+  @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+}
+
+$mdc-fab-icon-enter-delay_: 90ms;
+$mdc-fab-icon-enter-duration_: 180ms;
+
+@mixin mdc-fab-base_ {
+  @include mdc-ripple-base;
+  @include mdc-elevation(6);
+
+  display: inline-flex;
+  position: relative;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  transition:
+    box-shadow $mdc-elevation-transition-duration $mdc-elevation-transition-timing-function,
+    opacity 15ms linear 30ms,
+    mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_ + $mdc-fab-icon-enter-delay_);
+  border: none;
+  border-radius: 50%;
+  fill: currentColor;
+  cursor: pointer;
+  user-select: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+
+  &:hover,
+  &:focus {
+    @include mdc-elevation(8);
+  }
+
+  &:active {
+    @include mdc-elevation(12);
+  }
+
+  &:active,
+  &:focus {
+    // TODO(acdvorak): Should this be paired with states and/or ripple? We don't want to disable outline
+    // (an accessibility/usability feature) unless we're confident that there is also a visual indication that the
+    // element has focus. If the client has customized the DOM in some unexpected way, and is certain that another
+    // element will receive focus instead, they can always override this property manually in their CSS.
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  // This allows for using SVGs within them to align properly in all browsers.
+  // Can remove once: https://bugzilla.mozilla.org/show_bug.cgi?id=1294515 is resolved.
+
+  // stylelint-disable selector-max-type
+  // postcss-bem-linter: ignore
+  > svg {
+    width: 100%;
+  }
+  // stylelint-enable selector-max-type
+}
+
+@mixin mdc-fab--mini_ {
+  width: 40px;
+  height: 40px;
+}
+
+@mixin mdc-fab__icon_ {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
+  will-change: transform;
+}
+
+@mixin mdc-fab--exited_ {
+  transform: scale(0);
+  transition:
+    opacity 15ms linear 150ms,
+    mdc-animation-exit-permanent(transform, 180ms);
+  opacity: 0;
+
+  .mdc-fab__icon {
+    transform: scale(0);
+    transition: mdc-animation-exit-permanent(transform, 135ms);
+  }
+}

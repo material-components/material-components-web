@@ -46,13 +46,11 @@
     @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
   }
 
-  // For some reason, GPU layer promotion makes ripples look terrible on Chrome
-  will-change: initial;
   display: flex;
   position: relative;
-  box-sizing: border-box;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   width: 48px;
   height: 48px;
   padding: 12px;
@@ -60,13 +58,15 @@
   font-size: 1.5rem;
   cursor: pointer;
   user-select: none;
+  // For some reason, GPU layer promotion makes ripples look terrible on Chrome
+  will-change: initial;
 
   &::after {
     position: absolute;
     border-radius: 50%;
-    content: "";
     opacity: 0;
     pointer-events: none;
+    content: "";
   }
 
   @include mdc-theme-dark {
@@ -81,9 +81,9 @@
 }
 
 .mdc-icon-toggle--accent {
-  @include mdc-theme-prop(color, accent);
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: accent, opacity: .14));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: accent, opacity: .14));
+  @include mdc-theme-prop(color, secondary);
+  @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .14));
+  @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .14));
 }
 
 .mdc-icon-toggle--disabled {

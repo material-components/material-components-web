@@ -14,20 +14,7 @@
 // limitations under the License.
 //
 
-@import "./variables";
-
-@mixin mdc-animation-deceleration-curve {
-  animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
-}
-
-@mixin mdc-animation-standard-curve {
-  animation-timing-function: $mdc-animation-standard-curve-timing-function;
-}
-
-@mixin mdc-animation-acceleration-curve {
-  animation-timing-function: $mdc-animation-acceleration-curve-timing-function;
-}
-
-@mixin mdc-animation-sharp-curve {
-  animation-timing-function: $mdc-animation-sharp-curve-timing-function;
-}
+@import "./common";
+@import "../packages/mdc-form-field/mdc-form-field";
+@import "../packages/mdc-radio/mdc-radio";
+@import "../packages/mdc-typography/mdc-typography";

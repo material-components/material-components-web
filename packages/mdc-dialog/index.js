@@ -83,6 +83,7 @@ export class MDCDialog extends MDCComponent {
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
       isDialog: (el) => el === this.dialogSurface_,
+      layoutFooterRipples: () => this.footerBtnRipples_.forEach((ripple) => ripple.layout()),
     });
   }
 }

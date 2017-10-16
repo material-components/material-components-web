@@ -1,0 +1,188 @@
+//
+// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/elevation/mixins";
+@import "@material/ripple/mixins";
+@import "@material/theme/functions";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+@import "./variables";
+
+@mixin mdc-button-filled-accessible($container-fill-color) {
+  $light-or-dark: mdc-theme-light-or-dark($container-fill-color);
+
+  @include mdc-button-container-fill-color($container-fill-color);
+
+  @if ($light-or-dark == "light") {
+    @include mdc-button-ink-color(text-primary-on-dark);
+    @include mdc-button-ripple((theme-style: text-primary-on-dark, opacity: $mdc-filled-button-ripple-opacity));
+  } @else {
+    @include mdc-button-ink-color(text-primary-on-light);
+    @include mdc-button-ripple((theme-style: text-primary-on-light, opacity: $mdc-filled-button-ripple-opacity));
+  }
+}
+
+@mixin mdc-button-container-fill-color($color) {
+  // :not(:disabled) is used to support link styled as button
+  // as link does not support :enabled style
+  &:not(:disabled) {
+    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+  }
+}
+
+@mixin mdc-button-stroke-color($color) {
+  &:not(:disabled) {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-button-ink-color($color) {
+  &:not(:disabled) {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-button-ripple($ripple-config) {
+  &:not(:disabled) {
+    @include mdc-ripple-base;
+    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+  }
+}
+
+@mixin mdc-button-corner-radius($corner-radius) {
+  border-radius: $corner-radius;
+}
+
+@mixin mdc-button-stroke-width($stroke-width) {
+  border-width: $stroke-width;
+  // Note: line height is adjusted for stroke button because borders are not
+  // considered as space available to text on the Web
+  line-height: $mdc-button-height - $stroke-width * 2;
+
+  // postcss-bem-linter: ignore
+  &.mdc-button--dense {
+    // Minus extra 1 to accommodate odd font size of dense button
+    line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
+  }
+}
+
+@mixin mdc-button-base_() {
+  @include mdc-typography(button);
+
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  min-width: 88px;
+  height: $mdc-button-height;
+  padding: 0 16px;
+  border: none;
+  outline: none;
+  text-align: center;
+  user-select: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  overflow: hidden;
+  vertical-align: middle;
+
+  // postcss-bem-linter: ignore
+  &:active {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  &:disabled {
+    @include mdc-theme-prop(background-color, transparent);
+    @include mdc-theme-prop(color, text-disabled-on-light);
+
+    cursor: default;
+    pointer-events: none;
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+    }
+  }
+}
+
+@mixin mdc-button__icon_ {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  font-size: 18px;
+  line-height: inherit;
+  vertical-align: top;
+}
+
+@mixin mdc-button--stroked_() {
+  border-style: solid;
+
+  &:disabled {
+    @include mdc-theme-prop(border-color, text-disabled-on-light);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(border-color, text-disabled-on-dark);
+    }
+  }
+}
+
+@mixin mdc-button--filled_() {
+  &:disabled {
+    @include mdc-theme-prop(background-color, rgba(black, .12));
+    @include mdc-theme-prop(color, text-disabled-on-light);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(background-color, rgba(white, .12));
+      @include mdc-theme-prop(color, text-disabled-on-light);
+    }
+  }
+}
+
+@mixin mdc-button--raised_() {
+  @include mdc-elevation(2);
+  @include mdc-elevation-transition;
+
+  &:hover,
+  &:focus {
+    @include mdc-elevation(4);
+  }
+
+  &:active {
+    @include mdc-elevation(8);
+  }
+
+  &:disabled {
+    @include mdc-elevation(0);
+  }
+}
+
+@mixin mdc-button--compact_() {
+  padding: 0 8px;
+}
+
+@mixin mdc-button--dense_() {
+  height: $mdc-dense-button-height;
+  font-size: .8125rem; // 13sp
+  line-height: $mdc-dense-button-height;
+}

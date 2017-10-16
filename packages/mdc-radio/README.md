@@ -87,7 +87,7 @@ MDC Radio ships with Component / Foundation classes which provide enhanced inter
 ##### ES2015
 
 ```javascript
-import {MDCRadio, MDCRadioFoundation} from 'mdc-radio';
+import {MDCRadio, MDCRadioFoundation} from '@material/radio';
 ```
 
 ##### CommonJS
@@ -128,7 +128,7 @@ mdc.radio.MDCRadio.attachTo(document.querySelector('.mdc-radio'));
 Radios can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCRadio} from 'mdc-radio';
+import {MDCRadio} from '@material/radio';
 
 const radio = new MDCRadio(document.querySelector('.mdc-radio'));
 ```
@@ -201,3 +201,9 @@ not return an object.
 
 MDC Radios use the theme's primary color by default for on states, and are completely dark theme
 aware.
+
+### Caveat: Edge and CSS Variables
+
+In browsers that fully support CSS variables, MDC Radio references CSS variables wherever theme properties are used.
+However, due to Edge's buggy CSS variable support, the `background-color` for `.mdc-radio__background::before` will not honor CSS variables in Edge.
+This means you will need to override this style manually for Edge if you alter the CSS variable for the primary color.

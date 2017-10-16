@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +17,5 @@
 
 import MDCFoundation from './foundation';
 import MDCComponent from './component';
-import {SelectionControlState} from './selection-control';
 
-export {MDCFoundation, MDCComponent, SelectionControlState};
+export {MDCFoundation, MDCComponent};

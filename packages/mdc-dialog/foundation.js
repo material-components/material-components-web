@@ -46,6 +46,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
       isDialog: (/* el: Element */) => /* boolean */ false,
+      layoutFooterRipples: () => {},
     };
   }
 
@@ -137,6 +138,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
       if (this.isOpen_) {
         this.adapter_.trapFocusOnSurface();
+        this.adapter_.layoutFooterRipples();
       } else {
         this.enableScroll_();
       };

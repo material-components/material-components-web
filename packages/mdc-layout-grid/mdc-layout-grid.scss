@@ -17,9 +17,9 @@
 
 :root {
   @each $size in map-keys($mdc-layout-grid-columns) {
-    --mdc-layout-grid-margin-#{$size}: map-get($mdc-layout-grid-default-margin, $size);
-    --mdc-layout-grid-gutter-#{$size}: map-get($mdc-layout-grid-default-gutter, $size);
-    --mdc-layout-grid-column-width-#{$size}: map-get($mdc-layout-grid-column-width, $size);
+    --mdc-layout-grid-margin-#{$size}: #{map-get($mdc-layout-grid-default-margin, $size)};
+    --mdc-layout-grid-gutter-#{$size}: #{map-get($mdc-layout-grid-default-gutter, $size)};
+    --mdc-layout-grid-column-width-#{$size}: #{map-get($mdc-layout-grid-column-width, $size)};
   }
 }
 

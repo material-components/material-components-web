@@ -19,6 +19,7 @@ $mdc-checkbox-border-color: rgba(black, .54) !default;
 $mdc-checkbox-border-color-dark: white !default;
 $mdc-checkbox-disabled-color: rgba(black, .26) !default;
 $mdc-checkbox-disabled-color-dark: rgba(white, .3) !default;
+$mdc-checkbox-baseline-theme-color: secondary !default;
 
 $mdc-checkbox-touch-area: 40px;
 $mdc-checkbox-size: 18px;
@@ -27,7 +28,9 @@ $mdc-checkbox-mark-stroke-size: 2/15 * $mdc-checkbox-size;
 $mdc-checkbox-border-width: 2px;
 $mdc-checkbox-transition-duration: 90ms;
 $mdc-checkbox-item-spacing: 4px;
+$mdc-checkbox-ripple-opacity: .14;
+$mdc-checkbox-focus-indicator-opacity: .26;
 
-/* Manual calculation done on SVG */
-$_mdc-checkbox-mark-path-length: 29.7833385;
-$_mdc-checkbox-indeterminate-checked-easing-function: cubic-bezier(.14, 0, 0, 1);
+// Manual calculation done on SVG
+$mdc-checkbox-mark-path-length_: 29.7833385;
+$mdc-checkbox-indeterminate-checked-easing-function_: cubic-bezier(.14, 0, 0, 1);
