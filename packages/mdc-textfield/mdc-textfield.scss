@@ -165,11 +165,11 @@
   position: relative;
   height: 56px;
   border-radius: 4px 4px 0 0;
-  background-color: rgba(black, .04);
+  background-color: $mdc-textfield-box-background;
   overflow: hidden;
 
   @include mdc-theme-dark(".mdc-textfield", true) {
-    background-color: rgba(white, .1);
+    background-color: $mdc-textfield-box-background-dark;
   }
 
   &::before,
@@ -220,7 +220,7 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-textfield-icon-padding});
-    color: rgba(black, .6);
+    color: $mdc-textfield-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -270,7 +270,7 @@
     @include mdc-theme-prop(color, $mdc-textfield-light-placeholder);
 
     border-bottom: none;
-    background-color: rgba(black, .02);
+    background-color: $mdc-textfield-box-disabled-background;
 
     @include mdc-theme-dark(".mdc-textfield", true) {
       @include mdc-theme-prop(background-color, $mdc-textfield-dark-background);
