@@ -1,7 +1,7 @@
 {
   "name": "@material/icon-toggle",
   "description": "The Material Components for the web icon toggle component",
-  "version": "0.1.22",
+  "version": "0.23.0",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@material/animation": "^0.4.1",
     "@material/base": "^0.2.6",
-    "@material/ripple": "^0.8.8",
+    "@material/ripple": "^0.23.0",
     "@material/theme": "^0.4.0"
   }
 }
