@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,17 +17,16 @@
 
 import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
-import {SelectionControlState} from '@material/base/selection-control';
+import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control';
 /* eslint-enable no-unused-vars */
 import MDCRadioFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 
-export {MDCRadioFoundation};
-
 /**
  * @extends MDCComponent<!MDCRadioFoundation>
+ * @implements {MDCSelectionControl}
  */
-export class MDCRadio extends MDCComponent {
+class MDCRadio extends MDCComponent {
   static attachTo(root) {
     return new MDCRadio(root);
   }
@@ -104,12 +104,12 @@ export class MDCRadio extends MDCComponent {
 
   /**
    * Returns the state of the native control element, or null if the native control element is not present.
-   * @return {?SelectionControlState}
+   * @return {?MDCSelectionControlState}
    * @private
    */
   get nativeControl_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
-    const el = /** @type {?SelectionControlState} */ (
+    const el = /** @type {?MDCSelectionControlState} */ (
       this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
     return el;
   }
@@ -128,3 +128,6 @@ export class MDCRadio extends MDCComponent {
     });
   }
 }
+
+
+export {MDCRadio, MDCRadioFoundation};

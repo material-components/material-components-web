@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {SelectionControlState} from '@material/base/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control';
 import MDCRadioAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
@@ -24,7 +25,7 @@ import {cssClasses, strings} from './constants';
 /**
  * @extends {MDCFoundation<!MDCRadioAdapter>}
  */
-export default class MDCRadioFoundation extends MDCFoundation {
+class MDCRadioFoundation extends MDCFoundation {
   /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -40,7 +41,7 @@ export default class MDCRadioFoundation extends MDCFoundation {
     return /** @type {!MDCRadioAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      getNativeControl: () => /* !SelectionControlState */ {},
+      getNativeControl: () => /* !MDCSelectionControlState */ {},
     });
   }
 
@@ -81,7 +82,7 @@ export default class MDCRadioFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!SelectionControlState}
+   * @return {!MDCSelectionControlState}
    * @private
    */
   getNativeControl_() {
@@ -92,3 +93,5 @@ export default class MDCRadioFoundation extends MDCFoundation {
     };
   }
 }
+
+export default MDCRadioFoundation;

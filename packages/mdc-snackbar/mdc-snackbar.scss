@@ -33,13 +33,12 @@
   transform: translate(-50%, 100%);
   transition: mdc-animation-exit-permanent(transform, .25s);
   background-color: $mdc-snackbar-background-color;
+  pointer-events: none;
+  will-change: transform;
 
   @include mdc-theme-dark(".mdc-snackbar") {
     background-color: $mdc-snackbar-background-color-on-dark;
   }
-
-  will-change: transform;
-  pointer-events: none;
 
   @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
     left: 0;
@@ -55,10 +54,9 @@
 
   &--align-start {
     @media (min-width: $mdc-snackbar-tablet-breakpoint) {
-      bottom: 24px;
-
       @include mdc-rtl-reflexive-position(left, 24px);
 
+      bottom: 24px;
       transform: translate(0, 200%);
     }
 
@@ -72,8 +70,8 @@
 
   &--active {
     transform: translate(0);
-    pointer-events: auto;
     transition: mdc-animation-enter(transform, .25s);
+    pointer-events: auto;
 
     &:not(.mdc-snackbar--align-start) {
       transform: translate(-50%, 0);
@@ -96,12 +94,12 @@
   }
 
   &--action-on-bottom &__action-wrapper {
+    @include mdc-rtl-reflexive-box(margin, left, auto);
+
     flex-direction: column;
     justify-content: flex-start;
     margin-top: -12px;
     margin-bottom: 8px;
-
-    @include mdc-rtl-reflexive-box(margin, left, auto);
   }
 
   &__text {
@@ -112,13 +110,12 @@
     align-items: center;
     height: 48px;
     transition: mdc-animation-exit-permanent(opacity, .3s);
+    opacity: 0;
     color: $mdc-snackbar-foreground-color;
 
     @include mdc-theme-dark(".mdc-snackbar") {
       @include mdc-theme-prop(color, text-primary-on-light);
     }
-
-    opacity: 0;
   }
 
   &--multiline &__text {
@@ -132,19 +129,26 @@
   /* stylelint-enable plugin/selector-bem-pattern */
 
   &__action-button {
-    @include mdc-theme-prop(color, accent);
+    @include mdc-typography(button);
+    @include mdc-theme-prop(color, secondary);
 
     @include mdc-theme-dark(".mdc-snackbar") {
       @include mdc-theme-prop(color, primary);
     }
 
-    @include mdc-rtl-reflexive-box(margin, right, -16px, ".mdc-snackbar");
-
-    min-width: auto;
-    height: inherit;
+    padding: 0;
     transition: mdc-animation-exit-permanent(opacity, .3s);
+    border: none;
+    outline: none;
+    background-color: transparent;
     opacity: 0;
+    user-select: none;
+    -webkit-appearance: none;
     visibility: hidden;
+
+    &:hover {
+      cursor: pointer;
+    }
 
     &::-moz-focus-inner {
       border: 0;

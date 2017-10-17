@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
-@import "./mixins";
 @import "./variables";
 
 @function mdc-switch-transition($property) {
-  @return $property 90ms $mdc-switch-transition-curve;
+  @return $property 90ms $mdc-animation-standard-curve-timing-function;
 }
 
 // postcss-bem-linter: define switch
@@ -35,8 +33,8 @@
     left: 0;
     width: $mdc-switch-track-width;
     height: $mdc-switch-track-height;
-    cursor: pointer;
     opacity: 0;
+    cursor: pointer;
     z-index: 2;
   }
 
@@ -67,8 +65,8 @@
         mdc-switch-transition(background-color);
       border-radius: 7px;
       background-color: $mdc-switch-unchecked-track-color;
-      content: "";
       opacity: .38;
+      content: "";
 
       @include mdc-theme-dark(".mdc-switch") {
         background-color: $mdc-switch-unchecked-track-color-dark;
@@ -78,6 +76,8 @@
 
     // postcss-bem-linter: ignore
     .mdc-switch__knob {
+      @include mdc-elevation(2);
+
       display: block;
       position: absolute;
       top: -3px;
@@ -90,14 +90,11 @@
         mdc-switch-transition(background-color);
       border-radius: $mdc-switch-knob-diameter / 2;
       background-color: $mdc-switch-unchecked-knob-color;
+      z-index: 1;
 
       @include mdc-theme-dark(".mdc-switch") {
         background-color: $mdc-switch-unchecked-knob-color-dark;
       }
-
-      @include mdc-elevation(2);
-
-      z-index: 1;
 
       // postcss-bem-linter: ignore
       &::before {
@@ -112,8 +109,8 @@
           mdc-switch-transition(background-color);
         border-radius: $mdc-switch-focus-ring-diameter / 2;
         background-color: transparent;
-        content: "";
         opacity: .2;
+        content: "";
       }
     }
   }
@@ -148,12 +145,12 @@
   }
 
   .mdc-switch__knob {
+    @include mdc-theme-prop(background-color, primary);
+
     transform: translateX($mdc-switch-track-width - $mdc-switch-knob-diameter);
     transition:
       mdc-switch-transition(transform),
       mdc-switch-transition(background-color);
-
-    @include mdc-theme-prop(background-color, primary);
 
     &::before {
       @include mdc-theme-prop(background-color, primary);

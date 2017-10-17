@@ -58,12 +58,6 @@ export function createMockWindowForCssVariables() {
       appendChild: () => mockWindow.appendedNodes++,
     },
     createElement: td.func('document.createElement'),
-    head: {
-      appendChild: () => mockWindow.appendedNodes++,
-    },
-  };
-  const mockSheet = {
-    insertRule: () => {},
   };
 
   td.when(getComputedStyle(td.matchers.anything())).thenReturn({
@@ -72,11 +66,6 @@ export function createMockWindowForCssVariables() {
 
   td.when(mockDoc.createElement('div')).thenReturn({
     remove: remove,
-  });
-
-  td.when(mockDoc.createElement('style')).thenReturn({
-    remove: remove,
-    sheet: mockSheet,
   });
 
   const mockWindow = {

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Toolbar Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/assets/toolbar/toolbar.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      .mdc-toolbar-demo {
+        margin: 0px;
+      }
+      .demo-paragraph {
+        margin: 0px;
+        padding: 20px 28px;
+      }
+      @media (max-width: 599px) {
+        .demo-paragraph {
+          padding: 16px;
+        }
+      }
+      #demo-menu {
+        margin-top: 8px;
+        margin-right: 8px;
+      }
+    </style>
+  </head>
+  <body class="mdc-typography mdc-toolbar-demo">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a href="#" class="material-icons mdc-toolbar__menu-icon">menu</a>
+          <span class="mdc-toolbar__title">Title</span>
+        </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
+          <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
+          <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
+          <a href="#" class="material-icons mdc-toolbar__icon toggle" aria-label="More" alt="More">more_vert</a>
+          <div class="mdc-menu-anchor">
+            <div class="mdc-simple-menu" tabindex="-1" id="demo-menu">
+              <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true" style="transform: scale(1, 1);">
+                <li class="mdc-list-item" role="menuitem" tabindex="0" style="transition-delay: 0.069s;">Back</li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" style="transition-delay: 0.124s;">Forward</li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" style="transition-delay: 0.179s;">Reload</li>
+                <li class="mdc-list-divider" role="separator"></li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" style="transition-delay: 0.236s;">Save As...</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <div class="mdc-toolbar-fixed-adjust">
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+      </div>
+    </main>
+
+    <script src="/assets/material-components-web.js"></script>
+    <script>
+      var menuEl = document.querySelector('#demo-menu');
+      var menu = new mdc.menu.MDCSimpleMenu(menuEl);
+      var toggle = document.querySelector('.toggle');
+      toggle.addEventListener('click', function() {
+        menu.open = !menu.open;
+      });
+    </script>
+  </body>
+</html>

@@ -37,7 +37,8 @@ $mdc-simple-menu-item-fade-duration: .3s;
   background-color: white;
   white-space: nowrap;
   opacity: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
   will-change: transform, opacity;
   z-index: 4;
@@ -176,6 +177,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
     background: currentColor;
     content: "";
     opacity: 0;
+    pointer-events: none;
   }
 
   .mdc-list-item:focus::before {

@@ -33,6 +33,10 @@ $mdc-select-arrow-padding: 24px;
 
 // postcss-bem-linter: define select
 .mdc-select {
+  @include mdc-typography(subheading2);
+  @include mdc-theme-prop(color, text-primary-on-light);
+  @include mdc-select-dd-arrow-svg-bg_;
+
   display: inline-flex;
   position: relative;
   align-items: center;
@@ -41,16 +45,14 @@ $mdc-select-arrow-padding: 24px;
   border: none;
   border-radius: 4px 4px 0 0;
   outline: none;
-  background: none;
   background-repeat: no-repeat;
   background-position: right 10px center;
-
-  @include mdc-select-dd-arrow-svg-bg_;
-
-  font-family: Roboto, sans-serif;
-  font-size: .936rem;
   cursor: pointer;
   overflow: visible;
+
+  @include mdc-rtl(".mdc-select") {
+    background-position: left 10px center;
+  }
 
   &:focus {
     .mdc-select__bottom-line {
@@ -70,10 +72,6 @@ $mdc-select-arrow-padding: 24px;
     }
   }
 
-  @include mdc-rtl(".mdc-select") {
-    background-position: left center;
-  }
-
   @include mdc-theme-dark(".mdc-textfield", true) {
     background-color: rgba(white, .1);
   }
@@ -84,7 +82,6 @@ $mdc-select-arrow-padding: 24px;
     left: 0;
     max-height: 100%;
     transform-origin: center center;
-    overflow-y: scroll;
     z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
   }
 
@@ -92,9 +89,6 @@ $mdc-select-arrow-padding: 24px;
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-primary-on-light);
     @include mdc-rtl-reflexive-box(padding, right, $mdc-select-arrow-padding);
-
-    // Resets for <select> element
-    appearance: none;
 
     &::-ms-expand {
       display: none;
@@ -108,7 +102,10 @@ $mdc-select-arrow-padding: 24px;
     padding-left: 16px;
     border: none;
     border-radius: 4px 4px 0 0;
+    outline: none;
     background-color: rgba(black, .04);
+    // Resets for <select> element
+    appearance: none;
     overflow: hidden;
 
     &::before,
@@ -331,31 +328,30 @@ $mdc-select-arrow-padding: 24px;
 
 // postcss-bem-linter: define multi-select
 .mdc-multi-select {
-  appearance: none;
+  @include mdc-theme-prop(border-color, text-hint-on-light);
+
   width: 250px;
   padding: 0;
-  border: 1px solid;
-
-  @include mdc-theme-prop(border-color, text-hint-on-light);
+  border-width: 1px;
+  border-style: solid;
+  outline: none;
+  appearance: none;
 
   @include mdc-theme-dark {
     @include mdc-theme-prop(border-color, text-hint-on-dark);
   }
 
-  outline: none;
-
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-group {
+    @include mdc-theme-prop(color, text-hint-on-light);
+
     margin: 16px 0 0;
     padding: 0 0 0 16px;
-
-    @include mdc-theme-prop(color, text-hint-on-light);
+    font-weight: normal;
 
     @include mdc-theme-dark {
       @include mdc-theme-prop(color, text-hint-on-dark);
     }
-
-    font-weight: normal;
 
     &:last-child {
       margin-bottom: 16px;
@@ -369,10 +365,10 @@ $mdc-select-arrow-padding: 24px;
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-item {
+    @include mdc-theme-prop(color, text-primary-on-light);
+
     margin: 0 0 0 -16px;
     padding: 0 16px;
-
-    @include mdc-theme-prop(color, text-primary-on-light);
 
     @include mdc-theme-dark {
       @include mdc-theme-prop(color, text-primary-on-dark);
@@ -390,8 +386,6 @@ $mdc-select-arrow-padding: 24px;
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-item:checked {
-    background-color: rgba(black, .12);
-
     @include mdc-theme-prop(background-color, background);
 
     @include mdc-theme-dark {
