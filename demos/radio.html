@@ -25,8 +25,27 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      .mdc-theme--dark {
-        background-color: #303030;
+
+      .demo-wrapper {
+        padding-bottom: 100px;
+      }
+
+      .demo-wrapper.mdc-theme--dark{
+        background-color: #333;
+      }
+
+      .demo-wrapper.mdc-theme--dark fieldset legend, .demo-wrapper.mdc-theme--dark h1 {
+        color: #f0f0f0;
+      }
+
+      .mdc-form-field {
+        margin: 50px 0 -20px 30px;
+      }
+
+      h1 {
+        padding-left: 36px;
+        padding-top: 64px;
+        padding-bottom: 8px;
       }
 
       /* Example of manually theming a radio. In a real app, the primary color would have enough
@@ -43,11 +62,6 @@
       .mdc-theme--dark .mdc-radio.mdc-ripple-upgraded::before,
       .mdc-theme--dark .mdc-radio.mdc-ripple-upgraded::after {
         background-color: rgba(233, 31, 99, .2);
-      }
-
-      .example {
-        margin: 24px;
-        padding: 24px;
       }
     </style>
   </head>
@@ -85,8 +99,47 @@
       </section>
 
 
-      <section class="example">
-        <h2>With Javascript</h2>
+      <section class="demo-wrapper">
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-dark" aria-labelledby="toggle-dark-label">
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="toggle-dark" id="toggle-dark-label">Dark Theme</label>
+        </div>
+
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-disabled" aria-labelledby="toggle-disabled-label">
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="toggle-disabled" id="toggle-disabled-label">Disable radio buttons</label>
+        </div>
+
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
+        </div>
+
+        <h1 class="mdc-typography--display2">With Javascript</h1>
         <div class="mdc-form-field">
           <div class="mdc-radio">
             <input class="mdc-radio__native-control" type="radio" id="ex0-radio1" checked name="ex0">
@@ -107,10 +160,8 @@
           </div>
           <label id="ex0-radio2-label" for="ex0-radio2">Radio 2</label>
         </div>
-      </section>
 
-      <section class="example">
-        <h2>CSS Only</h2>
+        <h1 class="mdc-typography--display2">CSS Only</h1>
         <div class="mdc-form-field">
           <div class="mdc-radio" data-demo-no-js>
             <input class="mdc-radio__native-control" type="radio" id="ex1-radio1" checked name="ex1">
@@ -131,106 +182,8 @@
           </div>
           <label id="ex1-radio2-label" for="ex1-radio2">Radio 2</label>
         </div>
-      </section>
 
-      <section class="example">
-        <h2>CSS Only - Disabled</h2>
-        <div class="mdc-form-field">
-          <div class="mdc-radio mdc-radio--disabled" data-demo-no-js>
-            <input class="mdc-radio__native-control" type="radio" id="ex2-radio1" checked name="ex2" disabled>
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
-            </div>
-          </div>
-          <label id="ex2-radio1-label" for="ex2-radio1">Radio 1</label>
-        </div>
-        <div class="mdc-form-field">
-          <div class="mdc-radio mdc-radio--disabled" data-demo-no-js>
-            <input class="mdc-radio__native-control" type="radio" id="ex2-radio2" name="ex2" disabled>
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
-            </div>
-          </div>
-          <label id="ex2-radio2-label" for="ex2-radio2">Radio 2</label>
-        </div>
-      </section>
-
-
-      <section class="example mdc-theme--dark">
-        <h2 class="mdc-theme--text-primary-on-dark">Dark Theme</h2>
-
-        <div class="mdc-form-field">
-          <div class="mdc-radio">
-            <input class="mdc-radio__native-control" type="radio" id="ex3-radio1" checked name="ex3">
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
-            </div>
-          </div>
-          <label id="ex3-radio1-label" for="ex3-radio1">Radio 1</label>
-        </div>
-        <div class="mdc-form-field">
-          <div class="mdc-radio">
-            <input class="mdc-radio__native-control" type="radio" id="ex3-radio2" name="ex3">
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
-            </div>
-          </div>
-          <label id="ex3-radio2-label" for="ex3-radio2">Radio 2</label>
-        </div>
-      </section>
-
-      <section class="example">
-        <h2>Disabled</h2>
-
-        <div>
-          <div class="mdc-form-field">
-            <div class="mdc-radio mdc-radio--disabled">
-              <input class="mdc-radio__native-control" type="radio" id="ex4a-radio1" checked disabled name="ex4a">
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label id="ex4a-radio1-label" for="ex4a-radio1">Disabled Radio 1</label>
-          </div>
-          <div class="mdc-form-field">
-            <div class="mdc-radio mdc-radio--disabled">
-              <input class="mdc-radio__native-control" type="radio" id="ex4a-radio2" disabled name="ex4a">
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label id="ex4a-radio2-label" for="ex4a-radio2">Disabled Radio 2</label>
-          </div>
-        </div>
-        <div class="mdc-theme--dark">
-          <div class="mdc-form-field">
-            <div class="mdc-radio mdc-radio--disabled">
-              <input class="mdc-radio__native-control" type="radio" id="ex4b-radio1" checked disabled name="ex4b">
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label id="ex4b-radio1-label" for="ex4b-radio1">Disabled Radio 1</label>
-          </div>
-          <div class="mdc-form-field">
-            <div class="mdc-radio mdc-radio--disabled">
-              <input class="mdc-radio__native-control" type="radio" id="ex4b-radio2" name="ex4b" disabled>
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label id="ex4b-radio2-label" for="ex4b-radio2">Disabled Radio 2</label>
-          </div>
-        </div>
-      </section>
+    </section>
     </main>
     <script src="/assets/material-components-web.js"></script>
     <script>
@@ -249,6 +202,36 @@
             formFieldInstance.input = radioInstance;
           }
         }
+
+        var demoWrapper = document.querySelector('.demo-wrapper');
+        document.getElementById('toggle-dark').addEventListener('change', function () {
+          if (this.checked) {
+            demoWrapper.classList.add('mdc-theme--dark');
+          } else {
+            demoWrapper.classList.remove('mdc-theme--dark');
+          }
+        });
+
+        document.getElementById('toggle-disabled').addEventListener('change', function () {
+          var isDisabled = this.checked;
+          [].slice.call(document.querySelector('.demo-wrapper').getElementsByClassName('mdc-radio')).forEach(function(radio) {
+            if(isDisabled){
+              radio.classList.add('mdc-radio--disabled');
+            } else {
+              radio.classList.remove('mdc-radio--disabled');
+            }
+            radio.querySelector('input').disabled = isDisabled;
+          });
+        });
+
+        document.getElementById('toggle-rtl').addEventListener('change', function () {
+          if (this.checked) {
+            demoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            demoWrapper.removeAttribute('dir');
+          }
+        });
+
       })(this);
     </script>
   </body>
