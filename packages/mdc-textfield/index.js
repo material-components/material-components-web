@@ -18,6 +18,7 @@ import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple';
 
 import {cssClasses, strings} from './constants';
+import {MDCTextfieldAdapter} from './adapter';
 import MDCTextfieldFoundation from './foundation';
 
 /**
@@ -30,22 +31,22 @@ class MDCTextfield extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?HTMLInputElement} */
+    /** @private {?Element} */
     this.input_;
-    /** @private {?HTMLElement} */
+    /** @private {?Element} */
     this.label_;
-    /** @type {?HTMLElement} */
+    /** @type {?Element} */
     this.helptextElement;
     /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {?HTMLElement} */
+    /** @private {?Element} */
     this.bottomLine_;
-    /** @private {?HTMLElement} */
+    /** @private {?Element} */
     this.icon_;
   }
 
   /**
-   * @param {!HTMLElement} root
+   * @param {!Element} root
    * @return {!MDCTextfield}
    */
   static attachTo(root) {
@@ -115,7 +116,7 @@ class MDCTextfield extends MDCComponent {
    * @return {!MDCTextfieldFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextfieldFoundation(Object.assign({
+    return new MDCTextfieldFoundation(/** @type {!MDCTextfieldAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       addClassToLabel: (className) => {
@@ -133,12 +134,12 @@ class MDCTextfield extends MDCComponent {
       eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT),
+      notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT, {}),
     },
     this.getInputAdapterMethods_(),
     this.getHelptextAdapterMethods_(),
     this.getBottomLineAdapterMethods_(),
-    this.getIconAdapterMethods_()));
+    this.getIconAdapterMethods_())));
   }
 
   /**

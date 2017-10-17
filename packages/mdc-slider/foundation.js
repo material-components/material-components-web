@@ -129,8 +129,8 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
   destroy() {
     this.adapter_.deregisterInteractionHandler('mousedown', this.mousedownHandler_);
-    this.adapter_.deregisterInteractionHandler('pointerdown', this.mousedownHandler_);
-    this.adapter_.deregisterInteractionHandler('touchstart', this.mousedownHandler_);
+    this.adapter_.deregisterInteractionHandler('pointerdown', this.pointerdownHandler_);
+    this.adapter_.deregisterInteractionHandler('touchstart', this.touchstartHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);

@@ -168,6 +168,7 @@
     "mdc-menu",
     "mdc-radio",
     "mdc-ripple",
-    "mdc-selection-control"
+    "mdc-selection-control",
+    "mdc-textfield"
   ]
 }
