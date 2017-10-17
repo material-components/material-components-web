@@ -13,6 +13,7 @@
 // limitations under the License.
 
 @import "@material/animation/variables";
+@import "@material/typography/mixins";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
 @import "./variables";
@@ -188,4 +189,12 @@
       background-color: $mdc-switch-disabled-knob-color-dark;
     }
   }
+}
+
+.mdc-switch-label {
+  @include mdc-typography(body1);
+}
+
+.mdc-switch--disabled + .mdc-switch-label {
+  opacity: .38;
 }
