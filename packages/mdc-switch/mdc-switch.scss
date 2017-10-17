@@ -32,9 +32,9 @@
     @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color-dark);
   }
 
-  @include mdc-switch-checked-track-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-checked-knob-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-checked-focus-indicator-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
 
   display: inline-block;
   position: relative;

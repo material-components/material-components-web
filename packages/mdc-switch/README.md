@@ -80,6 +80,6 @@ It is not currently possible to customize the color of a _disabled_ or _off_ (un
 
 Mixin | Description
 --- | ---
-`mdc-switch-checked-track-color($color)` | Sets the track color
-`mdc-switch-checked-knob-color($color)` | Sets the knob color
-`mdc-switch-checked-focus-indicator-color($color)` | Sets the focus indicator color
+`mdc-switch-track-color($color)` | Sets the track color
+`mdc-switch-knob-color($color)` | Sets the knob color
+`mdc-switch-focus-indicator-color($color)` | Sets the focus indicator color

@@ -21,20 +21,20 @@
 // Public
 //
 
-@mixin mdc-switch-checked-track-color($color) {
+@mixin mdc-switch-track-color($color) {
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background::before {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-switch-checked-knob-color($color) {
+@mixin mdc-switch-knob-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background .mdc-switch__knob {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-switch-checked-focus-indicator-color($color) {
+@mixin mdc-switch-focus-indicator-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background .mdc-switch__knob::before {
     @include mdc-theme-prop(background-color, $color);
