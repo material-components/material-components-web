@@ -28,10 +28,10 @@
 
   @if ($light-or-dark-text == "light") {
     @include mdc-fab-ink-color(text-primary-on-dark);
-    @include mdc-fab-ripple(text-primary-on-dark, $mdc-ripple-pressed-light-ink-opacity);
+    @include mdc-ripple-color(text-primary-on-dark, $mdc-ripple-pressed-light-ink-opacity);
   } @else {
     @include mdc-fab-ink-color(text-primary-on-light);
-    @include mdc-fab-ripple(text-primary-on-light, $mdc-ripple-pressed-dark-ink-opacity);
+    @include mdc-ripple-color(text-primary-on-light, $mdc-ripple-pressed-dark-ink-opacity);
   }
 }
 
@@ -43,17 +43,12 @@
   @include mdc-theme-prop(color, $color);
 }
 
-// TODO(kfranqueiro): See if it's feasible to eventually automatically decide opacity, possibly within ripple
-@mixin mdc-fab-ripple($base-color, $opacity) {
-  @include mdc-ripple-color($base-color, $opacity);
-  @include mdc-ripple-radius;
-}
-
 $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
   @include mdc-elevation(6);
 
   display: inline-flex;
