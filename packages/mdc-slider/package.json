@@ -1,6 +1,6 @@
 {
   "name": "@material/slider",
-  "version": "0.2.7",
+  "version": "0.23.0",
   "description": "The Material Components for the web slider component",
   "main": "index.js",
   "license": "Apache-2.0",
