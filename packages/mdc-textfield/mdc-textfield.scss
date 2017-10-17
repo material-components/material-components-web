@@ -43,7 +43,10 @@
     @include mdc-typography-base;
     // We use only a subset of the MDC typography values here as changing things such as line-height
     // affects how the labels are transformed.
-    @each $prop in (font-size, letter-spacing) {
+    // TODO: Re-add setting the font-size from mdc-typography-styles (currently
+    // setting it here has no effect because it is overriden by the font-size
+    // given below).
+    @each $prop in (letter-spacing) {
       #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
     }
 
@@ -164,11 +167,11 @@
   position: relative;
   height: 56px;
   border-radius: 4px 4px 0 0;
-  background-color: rgba(black, .04);
+  background-color: $mdc-textfield-box-background;
   overflow: hidden;
 
   @include mdc-theme-dark(".mdc-textfield", true) {
-    background-color: rgba(white, .1);
+    background-color: $mdc-textfield-box-background-dark;
   }
 
   &::before,
@@ -219,7 +222,7 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-textfield-icon-padding});
-    color: rgba(black, .6);
+    color: $mdc-textfield-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -266,11 +269,10 @@
   }
 
   &.mdc-textfield--disabled {
-    @include mdc-theme-prop(background-color, $mdc-textfield-light-background);
     @include mdc-theme-prop(color, $mdc-textfield-light-placeholder);
 
     border-bottom: none;
-    background-color: rgba(black, .02);
+    background-color: $mdc-textfield-box-disabled-background;
 
     @include mdc-theme-dark(".mdc-textfield", true) {
       @include mdc-theme-prop(background-color, $mdc-textfield-dark-background);

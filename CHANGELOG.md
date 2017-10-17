@@ -1,3 +1,29 @@
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/material-components/material-components-web/compare/v0.22.0...v0.23.0) (2017-10-16)
+
+
+### Bug Fixes
+
+* **list item:** Add overflow hidden (#1290) ([05b1201](https://github.com/material-components/material-components-web/commit/05b1201)), closes [#1261](https://github.com/material-components/material-components-web/issues/1261)
+* **menu:** Add pointer-events: none to avoid blocking click events (#1421) ([b77895b](https://github.com/material-components/material-components-web/commit/b77895b))
+* **slider:** Deregister correct handlers on destroy (#1431) ([928d6b4](https://github.com/material-components/material-components-web/commit/928d6b4))
+* **toolbar:** Update menu-icon className (#992) (#1373) ([36577ab](https://github.com/material-components/material-components-web/commit/36577ab))
+
+
+### Features
+
+* **checkbox:** Add color theme mixins and update default color to secondary (#1365) ([cc7538f](https://github.com/material-components/material-components-web/commit/cc7538f)), closes [#1146](https://github.com/material-components/material-components-web/issues/1146)
+* **ripple:** Add optional event parameters to activate/deactivate methods ([891e962](https://github.com/material-components/material-components-web/commit/891e962))
+* **textfield:** Add textfield to the Closure whitelist. (#1394) ([8b05e88](https://github.com/material-components/material-components-web/commit/8b05e88))
+* **textfield:** Annotate textfield for Closure Compiler. (#1386) ([1152b8d](https://github.com/material-components/material-components-web/commit/1152b8d))
+
+
+### BREAKING CHANGES
+
+* Please update `mdc-toolbar__icon--menu` to `mdc-toolbar__menu-icon`
+
+
+
 <a name="0.22.0"></a>
 # [0.22.0](https://github.com/material-components/material-components-web/compare/v0.21.1...v0.22.0) (2017-10-02)
 
