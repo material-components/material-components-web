@@ -91,8 +91,9 @@ To add a ripple to our surface, first we include the proper Sass mixins within o
 @import "@material/ripple/mixins";
 
 .surface {
-  @include mdc-ripple-base;
-  @include mdc-ripple-theme(());
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color;
+  @include mdc-ripple-radius;
   // ...
 
   /* "Bound" the ripple, preventing the pseudo-elements from bleeding out of the box. */

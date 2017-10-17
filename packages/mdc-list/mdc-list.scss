@@ -154,8 +154,8 @@ a.mdc-list-item {
 // stylelint-enable selector-max-type,selector-no-qualifying-type
 
 .mdc-list-item.mdc-ripple-upgraded {
-  @include mdc-ripple-base;
-  @include mdc-ripple-theme;
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color;
   @include mdc-ripple-radius;
   @include mdc-rtl-reflexive-position(left, $mdc-list-side-padding * -1);
 
@@ -171,7 +171,7 @@ a.mdc-list-item {
   }
 
   @include mdc-theme-dark(".mdc-list") {
-    @include mdc-ripple-theme(white, .12);
+    @include mdc-ripple-color(white, .12);
   }
 }
 

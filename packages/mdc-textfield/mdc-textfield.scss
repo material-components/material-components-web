@@ -247,9 +247,9 @@
   }
 
   &.mdc-ripple-upgraded {
-    @include mdc-ripple-base;
+    @include mdc-ripple-surface;
     // TODO: This intentionally had only -fg pending #194/#998, so revisit after merging
-    @include mdc-ripple-theme(black, .04);
+    @include mdc-ripple-color(black, .04);
     @include mdc-ripple-radius;
 
     &::before {
@@ -265,7 +265,7 @@
     }
 
     @include mdc-theme-dark(".mdc-textfield", true) {
-      @include mdc-ripple-theme(white, .05);
+      @include mdc-ripple-color(white, .05);
     }
   }
 

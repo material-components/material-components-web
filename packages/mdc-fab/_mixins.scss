@@ -45,7 +45,7 @@
 
 // TODO(kfranqueiro): See if it's feasible to eventually automatically decide opacity, possibly within ripple
 @mixin mdc-fab-ripple($base-color, $opacity) {
-  @include mdc-ripple-theme($base-color, $opacity);
+  @include mdc-ripple-color($base-color, $opacity);
   @include mdc-ripple-radius;
 }
 
@@ -53,7 +53,7 @@ $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab-base_ {
-  @include mdc-ripple-base;
+  @include mdc-ripple-surface;
   @include mdc-elevation(6);
 
   display: inline-flex;

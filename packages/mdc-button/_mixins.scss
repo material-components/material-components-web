@@ -57,8 +57,8 @@
 
 @mixin mdc-button-ripple($base-color, $opacity) {
   &:not(:disabled) {
-    @include mdc-ripple-base;
-    @include mdc-ripple-theme($base-color, $opacity);
+    @include mdc-ripple-surface;
+    @include mdc-ripple-color($base-color, $opacity);
     @include mdc-ripple-radius;
   }
 }
