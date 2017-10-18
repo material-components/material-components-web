@@ -43,9 +43,9 @@
     @error "$color must have an alpha of 1, but '#{$color}' has an alpha of #{alpha($color)}";
   }
 
-  $umbra-color: rgba($color, .2);
-  $penumbra-color: rgba($color, .14);
-  $ambient-color: rgba($color, .12);
+  $umbra-color: rgba($color, $mdc-elevation-umbra-opacity);
+  $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity);
+  $ambient-color: rgba($color, $mdc-elevation-ambient-opacity);
 
   #{$mdc-elevation-property}:
     #{"#{map-get($mdc-elevation-umbra-map, $z-value)} #{$umbra-color}"},
