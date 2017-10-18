@@ -210,3 +210,17 @@ To avoid having both functions return the same color in cases of extremely high 
 `mdc-theme-dark-variant()` will return a color that is _twice_ (×2) as dark as requested when the input is already very
 light. Likewise, `mdc-theme-light-variant()` will return a color that is _twice_ (×2) as light as requested when the
 input is already very dark. This ensures that the _light_ variant will always be lighter than the _dark_ variant.
+
+#### `mdc-theme-resolve-prop`
+
+Looks up the given theme property from `mdc-theme-prop` and returns its value if it exists.
+Otherwise, returns the property verbatim.
+
+This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
+
+> NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
+
+```scss
+@debug mdc-theme-resolve-prop(primary); // #3f51b5
+@debug mdc-theme-resolve-prop(blue);    // blue
+```

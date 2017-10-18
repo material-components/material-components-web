@@ -140,3 +140,22 @@ $mdc-theme-property-values: (
   text-disabled-on-dark: map-get(map-get($mdc-theme-text-colors, light), disabled),
   text-icon-on-dark: map-get(map-get($mdc-theme-text-colors, light), icon)
 );
+
+// Looks up the given theme property from `mdc-theme-prop` and returns its value if it exists.
+// Otherwise, returns the property verbatim.
+//
+// This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
+//
+// Examples:
+//
+// 1. mdc-theme-resolve-prop(primary) => "#3f51b5"
+// 2. mdc-theme-resolve-prop(blue) => "blue"
+//
+// NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
+@function mdc-theme-resolve-prop($property) {
+  @if map-has-key($mdc-theme-property-values, $property) {
+    @return map-get($mdc-theme-property-values, $property);
+  }
+
+  @return $property;
+}
