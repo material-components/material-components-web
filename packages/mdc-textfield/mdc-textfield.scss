@@ -174,18 +174,12 @@
     background-color: $mdc-textfield-box-background-dark;
   }
 
-  &::before,
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: inherit;
-    opacity: 0;
-    pointer-events: none;
-    content: "";
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color(black, .04);
+  @include mdc-ripple-radius;
+
+  @include mdc-theme-dark(".mdc-textfield", true) {
+    @include mdc-ripple-color(white, .05);
   }
 
   // NOTE: For some reason, stylelint complains that the patterns below don't follow BEM.
@@ -227,16 +221,6 @@
   .mdc-textfield__label--float-above {
     &.mdc-textfield__label--shake {
       animation: invalid-shake-float-above-box 250ms 1;
-    }
-  }
-
-  &.mdc-ripple-upgraded {
-    @include mdc-ripple-surface;
-    @include mdc-ripple-color(black, .04);
-    @include mdc-ripple-radius;
-
-    @include mdc-theme-dark(".mdc-textfield", true) {
-      @include mdc-ripple-color(white, .05);
     }
   }
 
