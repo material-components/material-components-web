@@ -163,10 +163,13 @@
 }
 
 .mdc-textfield--box {
+  @include mdc-text-field-corner-radius-all(0);
+  @include mdc-text-field-corner-radius(top-left, 4px);
+  @include mdc-text-field-corner-radius(top-right, 4px);
+
   display: inline-flex;
   position: relative;
   height: 56px;
-  border-radius: 4px 4px 0 0;
   background-color: $mdc-textfield-box-background;
   overflow: hidden;
 
@@ -176,12 +179,13 @@
 
   &::before,
   &::after {
+    @include mdc-text-field-corner-radius-all(50%);
+
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 50%;
     background-color: inherit;
     opacity: 0;
     pointer-events: none;
@@ -502,6 +506,8 @@
 }
 
 .mdc-textfield--textarea {
+  @include mdc-text-field-corner-radius-all(4px);
+
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
   $label-offset-x: $padding-inset;
@@ -510,7 +516,6 @@
   height: initial;
   transition: none;
   border: 1px solid $mdc-textarea-border-on-light;
-  border-radius: 4px;
 
   @include mdc-theme-dark(".mdc-textfield") {
     border-color: $mdc-textarea-border-on-dark;
@@ -518,10 +523,11 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield__input {
+    @include mdc-text-field-corner-radius-all(2px);
+
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
     border: 1px solid transparent;
-    border-radius: 2px;
 
     &:focus {
       @include mdc-theme-prop(border-color, primary);
@@ -682,7 +688,7 @@
 
   &::before,
   &::after {
-    border-radius: 0;
+    @include mdc-text-field-corner-radius-all(0);
   }
 
   .mdc-textfield__input {
