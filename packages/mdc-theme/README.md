@@ -166,7 +166,7 @@ Property Name | Description
 `text-<TEXT_STYLE>-on-light` | TEXT_STYLE on top of a light background
 `text-<TEXT_STYLE>-on-dark` | TEXT_STYLE on top of a dark background
 
-#### `mdc-theme-luminance`
+#### `mdc-theme-luminance($color)`
 
 Calculates the luminance value (0 - 1) of a given color.
 
@@ -174,7 +174,7 @@ Calculates the luminance value (0 - 1) of a given color.
 @debug mdc-theme-luminance(#9c27b0); // 0.11654
 ```
 
-#### `mdc-theme-contrast`
+#### `mdc-theme-contrast($back, $front)`
 
 Calculates the contrast ratio between two colors.
 
@@ -182,7 +182,7 @@ Calculates the contrast ratio between two colors.
 @debug mdc-theme-contrast(#9c27b0, #000); // 3.33071
 ```
 
-#### `mdc-theme-light-or-dark`
+#### `mdc-theme-light-or-dark($color)`
 
 Determines whether to use light or dark text on top of a given color.
 
@@ -190,7 +190,7 @@ Determines whether to use light or dark text on top of a given color.
 @debug mdc-theme-light-or-dark(#9c27b0); // light
 ```
 
-#### `mdc-theme-light-variant` and `mdc-theme-dark-variant`
+#### `mdc-theme-light-variant($color)` and `mdc-theme-dark-variant($color)`
 
 Function | Description
 --- | ---
