@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2016 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,13 @@
 // limitations under the License.
 //
 
+@import "@material/animation/functions";
 @import "./variables";
 
-/**
- * Applies styles to the different types of icons that can exist in toolbars.
- * Both .mdc-toolbar__icon and .mdc-toolbar__menu-icon share all styles except for
- * horizontal padding.
- */
-@mixin mdc-shared-icon-style() {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $mdc-toolbar-element-vertical-padding;
-  border: none;
-  background-color: inherit;
-  color: inherit;
-  text-decoration: none;
+@function mdc-radio-enter($name) {
+  @return mdc-animation-enter($name, $mdc-radio-transition-duration);
+}
+
+@function mdc-radio-exit($name) {
+  @return mdc-animation-exit-temporary($name, $mdc-radio-transition-duration);
 }
