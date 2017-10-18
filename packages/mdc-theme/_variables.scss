@@ -148,11 +148,11 @@ $mdc-theme-property-values: (
 //
 // Examples:
 //
-// 1. mdc-theme-resolve-prop(primary) => "#3f51b5"
-// 2. mdc-theme-resolve-prop(blue) => "blue"
+// 1. mdc-theme-prop-value(primary) => "#3f51b5"
+// 2. mdc-theme-prop-value(blue) => "blue"
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
-@function mdc-theme-resolve-prop($property) {
+@function mdc-theme-prop-value($property) {
   @if map-has-key($mdc-theme-property-values, $property) {
     @return map-get($mdc-theme-property-values, $property);
   }
