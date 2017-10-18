@@ -22,9 +22,8 @@
   @return (
     pseudo: null,
     radius: 100%,
-    base-color: black,
-    opacity: .06,
-    theme-style: null
+    color: black,
+    opacity: .06
   );
 }
 
@@ -52,31 +51,53 @@
 }
 
 @mixin mdc-ripple-color_($config) {
-  $base-color: map-get($config, base-color);
+  $color: map-get($config, color);
   $opacity: map-get($config, opacity);
+
+  // These two properties are deprecated; they exist for backward compatibility only
+  $base-color: map-get($config, base-color);
   $theme-style: map-get($config, theme-style);
 
-  // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
-  @if ($theme-style) {
-    $theme-value: map-get($mdc-theme-property-values, $theme-style);
+  $theme-prop: null;
+  $color-value: null;
 
-    /* @alternate */
-    $css-var: $theme-value;
-    $css-var: var(--mdc-theme-#{$theme-style}, $theme-value);
+  // stylelint-disable scss/at-if-closing-brace-newline-after, scss/at-if-closing-brace-space-after, scss/at-else-closing-brace-newline-after, scss/at-else-closing-brace-space-after
+  @if map-has-key($mdc-theme-property-values, $theme-style) {
+    $theme-prop: $theme-style;
+    $color-value: map-get($mdc-theme-property-values, $theme-style);
+  }
+  @else if map-has-key($mdc-theme-property-values, $base-color) {
+    $theme-prop: $base-color;
+    $color-value: map-get($mdc-theme-property-values, $base-color);
+  }
+  @else if map-has-key($mdc-theme-property-values, $color) {
+    $theme-prop: $color;
+    $color-value: map-get($mdc-theme-property-values, $color);
+  }
 
-    background-color: rgba($theme-value, $opacity);
+  @if not $color-value {
+    @if $theme-style {
+      $color-value: $theme-style;
+    }
+    @else if $base-color {
+      $color-value: $base-color;
+    }
+    @else if $color {
+      $color-value: $color;
+    }
+  }
+  // stylelint-enable scss/at-if-closing-brace-newline-after, scss/at-if-closing-brace-space-after, scss/at-else-closing-brace-newline-after, scss/at-else-closing-brace-space-after
 
+  background-color: rgba($color-value, $opacity);
+
+  @if $theme-prop {
     // See: https://drafts.csswg.org/css-color/#modifying-colors
     // While this is currently unsupported as of now, it will begin to work by default as browsers
     // begin to implement the CSS 4 color spec.
-    @supports (background-color: color(green a(10%))) {
-      background-color: color(#{$css-var} a(#{percentage($opacity)}));
+    @supports (background-color: color-mod(green a(10%))) {
+      background-color: color-mod(var(--mdc-theme-#{$theme-prop}, $color-value) a(#{percentage($opacity)}));
     }
-  } @else {
-    background-color: rgba($base-color, $opacity);
   }
-
-  // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
 }
 
 @mixin mdc-ripple-bg-base_($config) {
@@ -101,7 +122,7 @@
   $radius: map-get($config, radius);
 
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
-  @if ($pseudo) {
+  @if $pseudo {
     &#{$pseudo} {
       @include mdc-ripple-bg-base_($config);
 
@@ -177,7 +198,7 @@
   $radius: map-get($config, radius);
 
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
-  @if ($pseudo) {
+  @if $pseudo {
     &#{$pseudo} {
       @include mdc-ripple-fg-base_($config);
 
