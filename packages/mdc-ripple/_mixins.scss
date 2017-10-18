@@ -260,13 +260,12 @@
   will-change: transform, opacity;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
-  &::before, &::after {
+  &::before,
+  &::after {
     position: absolute;
-
     transition: opacity 250ms linear;
     border-radius: 50%;
     pointer-events: none;
-
     content: "";
   }
 }
@@ -295,8 +294,10 @@
 @mixin mdc-ripple-color($color: black, $opacity: .06) {
   // Opacity styles are here (rather than in base) to ensure that opacity is re-initialized for cases where this mixin
   // is used to override another inherited use of itself, without needing to re-include base.
-  &::before, &::after {
+  &::before,
+  &::after {
     @include mdc-ripple-color_($color, $opacity);
+
     opacity: 0;
   }
 
@@ -337,7 +338,8 @@
 }
 
 @mixin mdc-ripple-radius($radius: 100%) {
-  &::before, &::after {
+  &::before,
+  &::after {
     top: calc(50% - #{$radius});
     left: calc(50% - #{$radius});
     width: $radius * 2;
@@ -351,7 +353,6 @@
     left: calc(50% - #{$radius});
     width: $radius * 2;
     height: $radius * 2;
-
     transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
 

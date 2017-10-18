@@ -188,9 +188,9 @@
     content: "";
   }
 
-  // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
+  // NOTE: For some reason, stylelint complains that the patterns below don't follow BEM.
   // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
-  // we would normally disable it (&.mdc-textfield--disabled) as a workaround.
+  // we would normally disable it (on combined selectors) as a workaround.
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-textfield__input {
