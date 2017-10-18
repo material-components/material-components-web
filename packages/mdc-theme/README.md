@@ -219,6 +219,9 @@ such theme property exists, an error is thrown.
 
 This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
 
+Unlike the `mdc-theme-prop` mixin, this function does _not_ support CSS custom properties, because there's no reasonable
+way to do that. It only returns the raw literal color value of the specified theme property.
+
 > NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
 
 ```scss
