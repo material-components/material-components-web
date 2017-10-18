@@ -22,6 +22,7 @@ import {assert} from 'chai';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
 import {MDCIconToggle, MDCIconToggleFoundation} from '../../../packages/mdc-icon-toggle';
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
 function setupTest({useInnerIconElement = false} = {}) {
@@ -105,6 +106,11 @@ test('intially set to disabled if root has aria-disabled=true', () => {
   const root = bel`<i class="mdc-icon-toggle" aria-disabled="true"></i>`;
   const component = new MDCIconToggle(root);
   assert.isOk(component.disabled);
+});
+
+test('get ripple returns a MDCRipple instance', () => {
+  const {component} = setupTest();
+  assert.isOk(component.ripple instanceof MDCRipple);
 });
 
 test('#adapter.addClass adds a class to the root element', () => {

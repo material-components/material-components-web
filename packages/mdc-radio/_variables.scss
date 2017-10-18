@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2016 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,9 @@
 // limitations under the License.
 //
 
-@import "./common";
-@import "../packages/mdc-switch/mdc-switch";
-@import "../packages/mdc-theme/color_palette";
-@import "../packages/mdc-typography/mdc-typography";
-
-.demo-switch-wrapper {
-  display: inline-block;
-  margin-right: 16px;
-}
-
-.demo-switch--custom {
-  $color: $material-color-red-500;
-
-  @include mdc-switch-track-color($color);
-  @include mdc-switch-knob-color($color);
-  @include mdc-switch-focus-indicator-color($color);
-}
+$mdc-radio-touch-area: 40px;
+$mdc-radio-ui-size: 20px;
+$mdc-radio-ui-pct: percentage($mdc-radio-ui-size / $mdc-radio-touch-area);
+$mdc-radio-transition-duration: 120ms;
+$mdc-radio-ripple-opacity: .14;
+$mdc-radio-baseline-theme-color: secondary;

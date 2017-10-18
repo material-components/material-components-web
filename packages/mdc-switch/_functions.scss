@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2016 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,8 @@
 // limitations under the License.
 //
 
-@import "./common";
-@import "../packages/mdc-switch/mdc-switch";
-@import "../packages/mdc-theme/color_palette";
-@import "../packages/mdc-typography/mdc-typography";
+@import "@material/animation/variables";
 
-.demo-switch-wrapper {
-  display: inline-block;
-  margin-right: 16px;
-}
-
-.demo-switch--custom {
-  $color: $material-color-red-500;
-
-  @include mdc-switch-track-color($color);
-  @include mdc-switch-knob-color($color);
-  @include mdc-switch-focus-indicator-color($color);
+@function mdc-switch-transition($property) {
+  @return $property 90ms $mdc-animation-standard-curve-timing-function;
 }
