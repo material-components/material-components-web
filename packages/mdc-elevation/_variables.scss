@@ -16,9 +16,7 @@
 
 @import "@material/animation/variables";
 
-$mdc-elevation-umbra-color: rgba(black, .2);
-$mdc-elevation-penumbra-color: rgba(black, .14);
-$mdc-elevation-ambient-color: rgba(black, .12);
+$mdc-elevation-baseline-color: black;
 
 $mdc-elevation-umbra-map: (
   0: "0px 0px 0px 0px",

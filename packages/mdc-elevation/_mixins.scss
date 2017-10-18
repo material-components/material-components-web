@@ -14,25 +14,43 @@
 // limitations under the License.
 //
 
+@import "@material/theme/variables";
 @import "./variables";
 
 /**
- * Applies the correct css rules to an element to give it the elevation specified by $z-value.
+ * Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
  * The $z-value must be between 0 and 24.
+ * The $color must have an alpha of 1 (e.g., `rgba(0, 0, 0, .9)` is not permitted).
  */
-@mixin mdc-elevation($z-value) {
+@mixin mdc-elevation($z-value, $color: $mdc-elevation-baseline-color) {
   @if type-of($z-value) != number or not unitless($z-value) {
-    @error "$z-value must be a unitless number";
+    @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }
 
   @if $z-value < 0 or $z-value > 24 {
-    @error "$z-value must be between 0 and 24";
+    @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
   }
 
+  @if map-has-key($mdc-theme-property-values, $color) {
+    $color: map-get($mdc-theme-property-values, $color);
+  }
+
+  @if type-of($color) != color {
+    @error "$color must be a valid color, but '#{$color}' is of type #{type-of($color)}";
+  }
+
+  @if alpha($color) < 1 {
+    @error "$color must have an alpha of 1, but '#{$color}' has an alpha of #{alpha($color)}";
+  }
+
+  $umbra-color: rgba($color, .2);
+  $penumbra-color: rgba($color, .14);
+  $ambient-color: rgba($color, .12);
+
   #{$mdc-elevation-property}:
-    #{"#{map-get($mdc-elevation-umbra-map, $z-value)} #{$mdc-elevation-umbra-color}"},
-    #{"#{map-get($mdc-elevation-penumbra-map, $z-value)} #{$mdc-elevation-penumbra-color}"},
-    #{map-get($mdc-elevation-ambient-map, $z-value)} $mdc-elevation-ambient-color;
+    #{"#{map-get($mdc-elevation-umbra-map, $z-value)} #{$umbra-color}"},
+    #{"#{map-get($mdc-elevation-penumbra-map, $z-value)} #{$penumbra-color}"},
+    #{map-get($mdc-elevation-ambient-map, $z-value)} $ambient-color;
 }
 
 /**
