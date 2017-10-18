@@ -38,11 +38,11 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
     @include mdc-rtl-reflexive-position(left, 0);
 
     @include mdc-theme-dark {
-      background-color: $mdc-persistent-drawer-dark-theme-bg-color;
-      background-color: var(--mdc-persistent-drawer-dark-theme-bg-color, #{$mdc-persistent-drawer-dark-theme-bg-color});
-
       @include mdc-theme-prop(color, text-primary-on-dark);
       @include mdc-rtl-reflexive-box(border, right, 1px solid rgba(white, .12));
+
+      background-color: $mdc-persistent-drawer-dark-theme-bg-color;
+      background-color: var(--mdc-persistent-drawer-dark-theme-bg-color, #{$mdc-persistent-drawer-dark-theme-bg-color});
     }
 
     @include mdc-slideable-drawer;
