@@ -214,8 +214,8 @@ input is already very dark. This ensures that the _light_ variant will always be
 #### `mdc-theme-prop-value($property)`
 
 If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
-corresponding theme property (from `mdc-theme-prop`) is returned. If `$property` is not a color and no such theme
-property exists, an error is thrown.
+corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
+such theme property exists, an error is thrown.
 
 This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
 
