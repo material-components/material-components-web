@@ -9,36 +9,31 @@ path: /catalog/ripples/
 
 # Ripples
 
-- [MDC Ripple](#mdc-ripple)
-    - [An aside regarding browser support](#an-aside-regarding-browser-support)
-  - [Installation](#installation)
-  - [Usage](#usage)
-      - [Adding the ripple Sass](#adding-the-ripple-sass)
-        - [The full Sass API](#the-full-sass-api)
-      - [Adding the ripple JS](#adding-the-ripple-js)
-        - [ES2015](#es2015)
-        - [CommonJS](#commonjs)
-        - [AMD](#amd)
-        - [Global](#global)
-    - [Unbounded Ripples](#unbounded-ripples)
-      - [Using JS](#using-js)
-      - [Using DOM (Component Only)](#using-dom-component-only)
-    - [The mdc-ripple-surface class](#the-mdc-ripple-surface-class)
-    - [Using the foundation](#using-the-foundation)
-    - [Using the vanilla DOM adapter](#using-the-vanilla-DOM-adapter)
-  - [Tips/Tricks](#tipstricks)
-    - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
-    - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
-    - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
-    - [Specifying known element dimensions](#specifying-known-element-dimensions)
-  - [Caveat: Edge](#caveat-edge)
-  - [Caveat: Safari](#caveat-safari)
-  - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
-  - [The util API](#the-util-api)
+MDC Ripple provides the JavaScript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
 
-MDC Ripple provides the Javascript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
+MDC Ripple also works without JavaScript, where it gracefully degrades to a simpler CSS-Only implementation.
 
-MDC Ripple also works without javascript, where it gracefully degrades to a simpler CSS-Only implementation.
+## Table of Contents
+
+- [An aside regarding browser support](#an-aside-regarding-browser-support)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Adding Ripple styles](#adding-ripple-styles)
+  - [Adding Ripple JS](#adding-ripple-js)
+  - [Ripple JS API](#ripple-js-api)
+  - [Unbounded Ripples](#unbounded-ripples)
+  - [The mdc-ripple-surface class](#the-mdc-ripple-surface-class)
+  - [Using the foundation](#using-the-foundation)
+  - [Using the vanilla DOM adapter](#using-the-vanilla-dom-adapter)
+- [Tips/Tricks](#tipstricks)
+  - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
+  - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
+  - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
+  - [Specifying known element dimensions](#specifying-known-element-dimensions)
+- [Caveat: Edge](#caveat-edge)
+- [Caveat: Safari](#caveat-safari)
+- [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
+- [The util API](#the-util-api)
 
 ### An aside regarding browser support
 
@@ -73,7 +68,7 @@ Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Adds base styles for a ripple surface
 `mdc-ripple-color($color, $opacity)` | Adds styles for the color and opacity of the ripple effect
-`mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect, for both bounded and unbounded ripples
+`mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
 
 #### Legacy Sass API
 
