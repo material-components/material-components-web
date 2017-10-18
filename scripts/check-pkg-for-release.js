@@ -44,6 +44,7 @@ const MASTER_PKG = require(path.join(process.env.PWD, MASTER_PKG_PATH));
 // directly included in webpack or the material-component-web module. But they
 // are necessary since other MDC packages depend on them.
 const CSS_WHITELIST = ['base', 'animation', 'auto-init', 'rtl', 'selection-control'];
+const NOT_PUBLISHABLE = ['shape'];
 
 main();
 
@@ -51,6 +52,8 @@ function main() {
   checkPublicConfigForNewComponent();
   if (pkg.name !== MASTER_PKG.name) {
     checkNameIsPresentInAllowedScope();
+  }
+  if (NOT_PUBLISHABLE.indexOf(pkg.name) !== -1) {
     checkDependencyAddedInWebpackConfig();
     checkDependencyAddedInMDCPackage();
   }

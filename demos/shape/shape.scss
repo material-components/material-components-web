@@ -1,0 +1,22 @@
+
+@import "../common";
+@import "../../packages/mdc-shape/mdc-shape";
+
+fieldset {
+  margin: 24px;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.mdc-shape {
+  --mdc-shape-elevation: 4;
+  --mdc-shape-background: #FF00FF;
+  width: 100px;
+  height: 100px;
+  margin: 16px auto;
+}
+.demo-input, .demo-button {
+  text-align: center;
+}
+#heart-ripple {
+  height: 100%;
+}
