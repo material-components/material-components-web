@@ -141,21 +141,26 @@ $mdc-theme-property-values: (
   text-icon-on-dark: map-get(map-get($mdc-theme-text-colors, light), icon)
 );
 
-// Looks up the given theme property from `mdc-theme-prop` and returns its value if it exists.
-// Otherwise, returns the property verbatim.
+// If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
+// corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
+// such theme property exists, an error is thrown.
 //
 // This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
 //
 // Examples:
 //
 // 1. mdc-theme-prop-value(primary) => "#3f51b5"
-// 2. mdc-theme-prop-value(blue) => "blue"
+// 2. mdc-theme-prop-value(blue)    => "blue"
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
 @function mdc-theme-prop-value($property) {
-  @if map-has-key($mdc-theme-property-values, $property) {
-    @return map-get($mdc-theme-property-values, $property);
+  @if type-of($property) == color {
+    @return $property;
   }
 
-  @return $property;
+  @if not map-has-key($mdc-theme-property-values, $property) {
+    @error "Invalid theme property: '#{$property}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
+  }
+
+  @return map-get($mdc-theme-property-values, $property);
 }

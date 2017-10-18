@@ -211,10 +211,11 @@ To avoid having both functions return the same color in cases of extremely high 
 light. Likewise, `mdc-theme-light-variant()` will return a color that is _twice_ (×2) as light as requested when the
 input is already very dark. This ensures that the _light_ variant will always be lighter than the _dark_ variant.
 
-#### `mdc-theme-prop-value`
+#### `mdc-theme-prop-value($property)`
 
-Looks up the given theme property from `mdc-theme-prop` and returns its value if it exists.
-Otherwise, returns the property verbatim.
+If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
+corresponding theme property (from `mdc-theme-prop`) is returned. If `$property` is not a color and no such theme
+property exists, an error is thrown.
 
 This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
 
