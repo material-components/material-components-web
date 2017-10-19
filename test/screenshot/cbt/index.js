@@ -1,7 +1,7 @@
 // Adapted from https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
 
 const BrowserConfig = require('./browser-config');
-const {CBTFlow} = require('./cbt-api');
+const {CBTFlow} = require('./cbt-flow');
 
 const remoteHub = process.env.CBT_REMOTE_HUB || 'http://hub.crossbrowsertesting.com:80/wd/hub';
 const username = process.env.CBT_USERNAME;
