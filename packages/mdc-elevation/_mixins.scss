@@ -43,14 +43,18 @@
     @error "$color must have an alpha of 1, but '#{$color}' has an alpha of #{alpha($color)}";
   }
 
+  $umbra-z-value: map-get($mdc-elevation-umbra-map, $z-value);
+  $penumbra-z-value: map-get($mdc-elevation-penumbra-map, $z-value);
+  $ambient-z-value: map-get($mdc-elevation-ambient-map, $z-value);
+
   $umbra-color: rgba($color, $mdc-elevation-umbra-opacity);
   $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity);
   $ambient-color: rgba($color, $mdc-elevation-ambient-opacity);
 
-  #{$mdc-elevation-property}:
-    #{"#{map-get($mdc-elevation-umbra-map, $z-value)} #{$umbra-color}"},
-    #{"#{map-get($mdc-elevation-penumbra-map, $z-value)} #{$penumbra-color}"},
-    #{map-get($mdc-elevation-ambient-map, $z-value)} $ambient-color;
+  box-shadow:
+    #{"#{$umbra-z-value} #{$umbra-color}"},
+    #{"#{$penumbra-z-value} #{$penumbra-color}"},
+    #{$ambient-z-value} $ambient-color;
 }
 
 /**
