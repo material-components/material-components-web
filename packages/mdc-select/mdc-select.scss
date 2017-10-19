@@ -117,9 +117,9 @@ $mdc-select-arrow-padding: 24px;
       height: 100%;
       border-radius: 50%;
       background-color: inherit;
-      content: "";
       opacity: 0;
       pointer-events: none;
+      content: "";
     }
 
     // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
@@ -127,48 +127,10 @@ $mdc-select-arrow-padding: 24px;
     // we would normally disable it (&.mdc-textfield--disabled) as a workaround.
 
     // stylelint-disable plugin/selector-bem-pattern
-    // TODO: Refactor this out once #194 lands
-    $opacity-duration: 83ms;
-
-    &::before {
-      transition: opacity 17ms linear, transform 0ms $opacity-duration+2 linear;
-    }
-
     &:hover {
       .mdc-select__bottom-line {
         transform: scaleY(2);
         background-color: rgba(black, .8);
-      }
-
-      &::before {
-        transition:
-          opacity $opacity-duration linear 17ms,
-          transform 250ms $mdc-animation-deceleration-curve-timing-function 17ms;
-        opacity: 1;
-      }
-    }
-
-    &.mdc-ripple-upgraded {
-      @include mdc-ripple-base;
-      // TODO: Add ::before as ripple bg once #194 lands
-      @include mdc-ripple-fg((pseudo: "::after", opacity: .04));
-
-      &::before {
-        top: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
-        left: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
-        width: var(--mdc-ripple-fg-size, 100%);
-        height: var(--mdc-ripple-fg-size, 100%);
-        transform: scale(.8);
-        content: "";
-      }
-
-      &:hover::before {
-        transform: scale(calc(var(--mdc-ripple-fg-scale, 1) + .1));
-      }
-      // stylelint-enable
-
-      @include mdc-theme-dark(".mdc-textfield", true) {
-        @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .05));
       }
     }
   }
@@ -224,6 +186,8 @@ $mdc-select-arrow-padding: 24px;
     background-color: rgba(black, .4);
 
     &::after {
+      @include mdc-theme-prop(background-color, primary);
+
       position: absolute;
       bottom: -1px;
       left: 0;
@@ -231,11 +195,9 @@ $mdc-select-arrow-padding: 24px;
       height: 2px;
       transform: scaleX(0);
       transition: mdc-select-transition(transform);
-      content: "";
       opacity: 0;
+      content: "";
       z-index: 2;
-
-      @include mdc-theme-prop(background-color, primary);
     }
   }
 
@@ -341,7 +303,6 @@ $mdc-select-arrow-padding: 24px;
     @include mdc-theme-prop(border-color, text-hint-on-dark);
   }
 
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-group {
     @include mdc-theme-prop(color, text-hint-on-light);
 
