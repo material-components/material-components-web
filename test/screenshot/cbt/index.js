@@ -1,7 +1,7 @@
 // Adapted from https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
 
-const BrowserConfig = require('./browser-config');
-const {CBTFlow} = require('./cbt-flow');
+const {CbtBrowserConfig} = require('./cbt-browser-config');
+const {CbtFlow} = require('./cbt-flow');
 
 const remoteHub = process.env.CBT_REMOTE_HUB || 'http://hub.crossbrowsertesting.com:80/wd/hub';
 const username = process.env.CBT_USERNAME;
@@ -15,9 +15,9 @@ const globalConfig = {
   build: `[commit: ${build}]`,
   name: 'Button demo page',
 };
-const browsers = BrowserConfig.all(globalConfig);
+const browsers = CbtBrowserConfig.all(globalConfig);
 
-const cbtFlow = new CBTFlow({globalConfig, browsers});
+const cbtFlow = new CbtFlow({globalConfig, browsers});
 cbtFlow.on('cbt:session-started', (session) => {
   session.driver.get('https://material-components-web.appspot.com/button.html');
 

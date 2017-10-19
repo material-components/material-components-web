@@ -13,7 +13,7 @@ const DEFAULTS = {
 };
 
 // TODO(acdvorak): Use builder pattern instead?
-class BrowserConfig {
+class CbtBrowserConfig {
   static all(...overrides) {
     return [
       ...this.desktop(...overrides),
@@ -68,4 +68,4 @@ class BrowserConfig {
   }
 }
 
-module.exports = BrowserConfig;
+module.exports = {CbtBrowserConfig};

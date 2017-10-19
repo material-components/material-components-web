@@ -1,7 +1,7 @@
 const webdriver = require('selenium-webdriver');
 const request = require('request');
 
-class CBTSession {
+class CbtSession {
   constructor({globalConfig, driver, sessionId} = {}) {
     this.globalConfig_ = globalConfig;
     this.driver_ = driver;
@@ -124,4 +124,4 @@ class CBTSession {
   }
 }
 
-module.exports = {CBTSession};
+module.exports = {CbtSession};

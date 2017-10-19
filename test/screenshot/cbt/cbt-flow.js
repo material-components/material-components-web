@@ -1,8 +1,8 @@
 const EventEmitter = require('events');
 const webdriver = require('selenium-webdriver');
-const {CBTSession} = require('./cbt-session');
+const {CbtSession} = require('./cbt-session');
 
-class CBTFlow extends EventEmitter {
+class CbtFlow extends EventEmitter {
   constructor({globalConfig, browsers} = {}) {
     super();
     this.globalConfig_ = globalConfig;
@@ -39,7 +39,7 @@ class CBTFlow extends EventEmitter {
         driver.getSession().then(
           (sessionData) => {
             const sessionId = sessionData.id_;
-            const session = new CBTSession({
+            const session = new CbtSession({
               globalConfig: this.globalConfig_,
               driver,
               sessionId,
@@ -55,4 +55,4 @@ class CBTFlow extends EventEmitter {
   }
 }
 
-module.exports = {CBTFlow};
+module.exports = {CbtFlow};
