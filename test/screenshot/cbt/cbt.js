@@ -1,48 +1,16 @@
 // Adapted from https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
 
 const webdriver = require('selenium-webdriver');
-const SeleniumServer = require('selenium-webdriver/remote').SeleniumServer;
 const request = require('request');
-const remoteHub = 'http://hub.crossbrowsertesting.com:80/wd/hub';
 
+const BrowserConfig = require('./browser-config');
+
+const remoteHub = process.env.CBT_REMOTE_HUB || 'http://hub.crossbrowsertesting.com:80/wd/hub';
 const username = process.env.CBT_USERNAME;
 const authkey = process.env.CBT_AUTHKEY;
+const build = process.env.CBT_BUILD || '7521e673f5e9c4faed464407840d1938a1366b80';
 
-const browserConfigFactory = {
-  common: function(...overrides) {
-    return Object.assign({
-      'build': '1.0',
-      'record_video': 'true',
-      'record_network': 'true',
-      'username': username,
-      'password': authkey,
-    }, ...overrides);
-  },
-
-  desktop: function(...overrides) {
-    return browserConfigFactory.common({
-      'screenResolution': '1400x900',
-    }, ...overrides);
-  },
-};
-
-const browsers = [
-  browserConfigFactory.desktop({
-    'browserName': 'Chrome',
-    'version': '48x64',
-    'platform': 'Mac OSX 10.8',
-  }),
-  browserConfigFactory.desktop({
-    'browserName': 'Firefox',
-    'version': '46',
-    'platform': 'Mac OSX 10.8',
-  }),
-  browserConfigFactory.desktop({
-    'browserName': 'Safari',
-    'version': '6.2',
-    'platform': 'Mac OSX 10.8',
-  }),
-];
+const browsers = BrowserConfig.all({username, password: authkey, build: `[commit: ${build}]`});
 
 // eslint-disable-next-line no-unused-vars
 const flows = browsers.map(function(browser) {
