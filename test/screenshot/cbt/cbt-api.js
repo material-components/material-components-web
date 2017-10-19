@@ -11,7 +11,6 @@ class CBTFlow extends EventEmitter {
   }
 
   catchErrors_(flow) {
-    // webdriver.promise.controlFlow()
     flow.on('uncaughtException', (error) => this.handleWebDriverError_(error));
   }
 
@@ -46,7 +45,7 @@ class CBTFlow extends EventEmitter {
               driver,
               sessionId,
             });
-            this.emit('cbt:session-started', {session, driver});
+            this.emit('cbt:session-started', session);
             console.log(`${sessionId} - See your test run: https://app.crossbrowsertesting.com/selenium/${sessionId}`);
           },
           (error) => {
@@ -65,6 +64,10 @@ class CBTSession {
     this.catchErrors_();
   }
 
+  get driver() {
+    return this.driver_;
+  }
+
   pass() {
     return this.setScore_('pass');
   }
@@ -74,7 +77,7 @@ class CBTSession {
   }
 
   takeSnapshot() {
-    return this.driver_.call(() => {
+    return this.driver.call(() => {
       // webdriver has built-in promise to use
       const deferred = webdriver.promise.defer();
       const result = {error: false, message: null};
@@ -92,7 +95,6 @@ class CBTSession {
             result.error = false;
             result.message = 'success';
           }
-          // console.log('fulfilling promise in takeSnapshot')
           deferred.fulfill(result);
         })
         .auth(this.globalConfig_.username, this.globalConfig_.authkey);
@@ -101,19 +103,50 @@ class CBTSession {
     });
   }
 
+  waitFor(selector, timeoutInMs) {
+    const by = webdriver.By.css(selector);
+    const element = this.driver.findElement(by);
+    timeoutInMs = timeoutInMs || 10000;
+
+    return {
+      toBePresent: () => {
+        return this.driver.wait(webdriver.until.elementLocated(by), timeoutInMs);
+      },
+      toBeVisible: () => {
+        return this.driver.wait(webdriver.until.elementIsVisible(element), timeoutInMs).then();
+      },
+    };
+  }
+
+  querySelector(selector) {
+    return this.driver.findElement(webdriver.By.css(selector));
+  }
+
+  querySelectorAll(selector) {
+    return this.driver.findElements(webdriver.By.css(selector));
+  }
+
+  mouseDown(selector) {
+    return this.driver.actions().mouseDown(this.querySelector(selector)).perform();
+  }
+
+  mouseUp(selector) {
+    return this.driver.actions().mouseUp(this.querySelector(selector)).perform();
+  }
+
   catchErrors_() {
     webdriver.promise.controlFlow().on('uncaughtException', (error) => this.handleWebDriverError_(error));
   }
 
   handleWebDriverError_(/* error */) {
-    this.driver_.quit();
+    this.driver.quit();
     this.fail().then((result) => {
       console.error(`${this.sessionId_} - set score to fail; result = `, result);
     });
   }
 
   setScore_(score) {
-    return this.driver_.call(() => {
+    return this.driver.call(() => {
       // webdriver has built-in promise to use
       const deferred = webdriver.promise.defer();
       const result = {error: false, message: null};
@@ -146,4 +179,4 @@ class CBTSession {
   }
 }
 
-module.exports = {CBTFlow, CBTSession};
+module.exports = {CBTFlow};

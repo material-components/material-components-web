@@ -1,7 +1,5 @@
 // Adapted from https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
 
-const webdriver = require('selenium-webdriver');
-
 const BrowserConfig = require('./browser-config');
 const {CBTFlow} = require('./cbt-api');
 
@@ -20,36 +18,19 @@ const globalConfig = {
 const browsers = BrowserConfig.all(globalConfig);
 
 const cbtFlow = new CBTFlow({globalConfig, browsers});
-cbtFlow.on('cbt:session-started', ({session, driver} = {}) => {
-  // load your URL
-  driver.get('https://material-components-web.appspot.com/button.html');
+cbtFlow.on('cbt:session-started', (session) => {
+  session.driver.get('https://material-components-web.appspot.com/button.html');
 
-  driver.wait(webdriver.until.elementLocated(webdriver.By.css('.mdc-button')), 10000);
-
+  session.waitFor('.mdc-button').toBeVisible();
   session.takeSnapshot();
 
-  // // find checkout and click it
-  // driver.findElement(webdriver.By.id('username')).sendKeys('tester@crossbrowsertesting.com');
-  //
-  // // send keys to element to enter text
-  // driver.findElement(webdriver.By.xpath('//*[@type=\'password\']')).sendKeys('test123');
-  //
-  // // take snapshot via cbt api
-  // driver.call(() => session.takeSnapshot());
-  //
-  // // click the archive button
-  // driver.findElement(webdriver.By.css('button[type=submit]')).click();
-  //
-  // // wait on logged in message
-  // driver.wait(webdriver.until.elementLocated(webdriver.By.id('logged-in-message')), 10000);
-  //
-  // // take snapshot via cbt api
-  // driver.call(() => session.takeSnapshot());
+  session.mouseDown('.mdc-button');
+  session.takeSnapshot();
 
-  // quit the driver
-  driver.quit();
+  session.mouseUp('.mdc-button');
+  session.takeSnapshot();
 
-  // set the score as passing
+  session.driver.quit();
   session.pass().then(function(result) {
     console.log(`${session.sessionId_} - set score to pass; result = `, result);
   });
