@@ -20,9 +20,10 @@
 /**
  * Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
  * The $z-value must be between 0 and 24.
- * The $color must have an alpha of 1 (e.g., `rgba(0, 0, 0, .9)` is not permitted).
+ * If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
+ * $opacity-boost.
  */
-@mixin mdc-elevation($z-value, $color: $mdc-elevation-baseline-color) {
+@mixin mdc-elevation($z-value, $color: $mdc-elevation-baseline-color, $opacity-boost: 0) {
   @if type-of($z-value) != number or not unitless($z-value) {
     @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }
@@ -39,17 +40,13 @@
     @error "$color must be a valid color, but '#{$color}' is of type #{type-of($color)}";
   }
 
-  @if alpha($color) < 1 {
-    @error "$color must have an alpha of 1, but '#{$color}' has an alpha of #{alpha($color)}";
-  }
-
   $umbra-z-value: map-get($mdc-elevation-umbra-map, $z-value);
   $penumbra-z-value: map-get($mdc-elevation-penumbra-map, $z-value);
   $ambient-z-value: map-get($mdc-elevation-ambient-map, $z-value);
 
-  $umbra-color: rgba($color, $mdc-elevation-umbra-opacity);
-  $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity);
-  $ambient-color: rgba($color, $mdc-elevation-ambient-opacity);
+  $umbra-color: rgba($color, $mdc-elevation-umbra-opacity + $opacity-boost);
+  $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity + $opacity-boost);
+  $ambient-color: rgba($color, $mdc-elevation-ambient-opacity + $opacity-boost);
 
   box-shadow:
     #{"#{$umbra-z-value} #{$umbra-color}"},
