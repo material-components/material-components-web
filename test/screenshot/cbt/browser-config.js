@@ -62,7 +62,9 @@ class BrowserConfig {
   }
 
   static merge_(browsers, ...overrides) {
-    return browsers.map((browser) => Object.assign({}, browser, ...overrides));
+    return browsers
+      .map((browser) => Object.assign(browser, ...overrides))
+      .map((browser) => Object.assign({password: browser.authkey}, browser));
   }
 }
 
