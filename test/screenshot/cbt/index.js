@@ -80,26 +80,27 @@ const flows = browsers.map(function(browser) {
       const result = {error: false, message: null};
 
       if (sessionId) {
-        request({
-          method: 'PUT',
-          uri: 'https://crossbrowsertesting.com/api/v3/selenium/' + sessionId,
-          body: {'action': 'set_score', 'score': score},
-          json: true,
-        },
-        function(error, response, body) {
-          if (error) {
-            result.error = true;
-            result.message = error;
-          } else if (response.statusCode !== 200) {
-            result.error = true;
-            result.message = body;
-          } else {
-            result.error = false;
-            result.message = 'success';
-          }
+        request(
+          {
+            method: 'PUT',
+            uri: 'https://crossbrowsertesting.com/api/v3/selenium/' + sessionId,
+            body: {'action': 'set_score', 'score': score},
+            json: true,
+          },
+          function(error, response, body) {
+            if (error) {
+              result.error = true;
+              result.message = error;
+            } else if (response.statusCode !== 200) {
+              result.error = true;
+              result.message = body;
+            } else {
+              result.error = false;
+              result.message = 'success';
+            }
 
-          deferred.fulfill(result);
-        })
+            deferred.fulfill(result);
+          })
           .auth(username, authkey);
       } else {
         result.error = true;
