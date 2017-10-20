@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-@mixin mdc-text-field-box-corner-radius($top-left-radius, $top-right-radius: $top-left-radius) {
-  border-radius: $top-left-radius $top-right-radius 0 0;
+@mixin mdc-text-field-box-corner-radius($radius) {
+  border-radius: $radius $radius 0 0;
 }
 
 @mixin mdc-text-field-textarea-corner-radius($radius) {

@@ -163,7 +163,7 @@
 }
 
 .mdc-textfield--box {
-  @include mdc-text-field-box-corner-radius($mdc-textfield-default-border-radius);
+  @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
 
   display: inline-flex;
   position: relative;
@@ -503,7 +503,7 @@
 }
 
 .mdc-textfield--textarea {
-  @include mdc-text-field-textarea-corner-radius($mdc-textfield-default-border-radius);
+  @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
 
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
