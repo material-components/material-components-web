@@ -23,7 +23,10 @@ const DEFAULTS = {
     'record_network': 'true',
   },
   desktop: {
-    'screenResolution': '1400x900',
+    // Leave screenResolution unspecified. CBT appears to use 1366x768 by default for all browsers/OSes. Not every
+    // browser/OS supports every resolution, so explicitly specifying one can cause errors if it isn't supported by one
+    // of the browsers/OS configurations.
+    // 'screenResolution': '1366x768',
   },
   mobile: {
   },
