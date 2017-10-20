@@ -39,15 +39,18 @@ cbtFlow.on('cbt:session-started', (session) => {
   session.waitFor('.mdc-button').toBeVisible();
   session.takeSnapshot();
 
-  session.mouseDown('.mdc-button');
-  session.takeSnapshot();
+  // NOTE(acdvorak): Mouse events are not supported in Safari (mobile or desktop) and Firefox.
+  // They are only supported in Chrome, Edge, and IE 11.
+  // We might be able to use JS to simulate it instead.
 
-  session.mouseUp('.mdc-button');
-  session.takeSnapshot();
+  // session.mouseDown('.mdc-button');
+  // session.takeSnapshot();
+  //
+  // session.mouseUp('.mdc-button');
+  // session.takeSnapshot();
 
-  session.driver.quit();
-  session.pass().then(function(result) {
-    console.log(`${session.sessionId_} - set score to pass; result = `, result);
-  });
+  // Because all driver actions are async, this function will always be called.
+  // However, it will only be executed if all previous driver commands succeed.
+  session.pass().finally(() => session.quit());
 });
 cbtFlow.start();

@@ -31,7 +31,7 @@ class CbtFlow extends EventEmitter {
   }
 
   handleWebDriverError_(error) {
-    console.error('Unhandled exception:', error);
+    this.error_(`${this.constructor.name}: WebDriver error:`, error);
     this.emit('cbt:error', error);
   }
 
@@ -41,7 +41,7 @@ class CbtFlow extends EventEmitter {
       return webdriver.promise.createFlow((flow) => {
         this.catchErrors_(flow);
 
-        console.log('Connecting to the CrossBrowserTesting remote server...');
+        this.log_('Connecting to the CrossBrowserTesting remote server...');
         this.emit('cbt:session-starting');
 
         const driver = new webdriver.Builder()
@@ -51,7 +51,7 @@ class CbtFlow extends EventEmitter {
 
         // All driver calls are automatically queued by flow control.
         // Async functions outside of driver can use call() function.
-        console.log('Waiting on the browser to be launched and the session to start...');
+        this.log_('Waiting on the browser to be launched and the session to start...');
 
         driver.getSession().then(
           (sessionData) => {
@@ -62,13 +62,25 @@ class CbtFlow extends EventEmitter {
               sessionId,
             });
             this.emit('cbt:session-started', session);
-            console.log(`${sessionId} - See your test run: https://app.crossbrowsertesting.com/selenium/${sessionId}`);
+            this.log_(`${sessionId} - See your test run: https://app.crossbrowsertesting.com/selenium/${sessionId}`);
           },
           (error) => {
             this.handleWebDriverError_(error);
           });
       });
     });
+  }
+
+  log_(message, ...args) {
+    console.log('');
+    console.log(`>>> ${message}`, ...args);
+    console.log('');
+  }
+
+  error_(message, ...args) {
+    console.error('');
+    console.error(`>>> ${message}`, ...args);
+    console.error('');
   }
 }
 

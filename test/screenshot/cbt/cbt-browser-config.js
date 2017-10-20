@@ -29,6 +29,123 @@ const DEFAULTS = {
     // 'screenResolution': '1366x768',
   },
   mobile: {
+    'deviceOrientation': 'portrait',
+  },
+};
+
+const BROWSERS = {
+  desktop: {
+    mac: {
+      safari: {
+        latest: {
+          'browserName': 'Safari',
+          'version': '10',
+          'platform': 'Mac OSX 10.12', // TODO(acdvorak): Can we comment this out?
+        },
+        previous: {
+          'browserName': 'Safari',
+          'version': '9',
+          'platform': 'Mac OSX 10.11', // TODO(acdvorak): Can we comment this out?
+        },
+      },
+    },
+
+    windows: {
+      chrome: {
+        latest: {
+          'browserName': 'Chrome',
+          'version': '61x64',
+          'platform': 'Windows 10',
+        },
+        previous: {
+          'browserName': 'Chrome',
+          'version': '60x64',
+          'platform': 'Windows 10',
+        },
+      },
+
+      firefox: {
+        latest: {
+          'browserName': 'Firefox',
+          'version': '55x64',
+          'platform': 'Windows 10',
+        },
+        previous: {
+          'browserName': 'Firefox',
+          'version': '54x64',
+          'platform': 'Windows 10',
+        },
+      },
+
+      edge: {
+        latest: {
+          'browserName': 'MicrosoftEdge',
+          'version': '15',
+          'platform': 'Windows 10',
+        },
+        previous: {
+          'browserName': 'MicrosoftEdge',
+          'version': '14',
+          'platform': 'Windows 10',
+        },
+      },
+
+      ie: {
+        latest: {
+          'browserName': 'Internet Explorer',
+          'version': '11',
+          'platform': 'Windows 10',
+        },
+        previous: {
+          'browserName': 'Internet Explorer',
+          'version': '10',
+          'platform': 'Windows 7 64-Bit',
+        },
+      },
+    },
+  },
+
+  mobile: {
+    android: {
+      v07: {
+        'browserName': 'Chrome',
+        'deviceName': 'Nexus 6P',
+        'platformVersion': '7.0',
+        'platformName': 'Android',
+      },
+      v06: {
+        'browserName': 'Chrome',
+        'deviceName': 'Nexus 9',
+        'platformVersion': '6.0',
+        'platformName': 'Android',
+      },
+      v05: {
+        'browserName': 'Chrome',
+        'deviceName': 'Nexus 6',
+        'platformVersion': '5.0',
+        'platformName': 'Android',
+      },
+      // v04: {
+      //   'browserName': 'Chrome',
+      //   'deviceName': 'Galaxy Note 3',
+      //   'platformVersion': '4.4',
+      //   'platformName': 'Android',
+      // },
+    },
+    ios: {
+      v10: {
+        'browserName': 'Safari',
+        'deviceName': 'iPhone 7 Simulator',
+        'platformVersion': '10.0',
+        'platformName': 'iOS',
+      },
+      v09: {
+        'browserName': 'Safari',
+        'deviceName': 'iPhone 6s Simulator',
+        'platformVersion': '9.3',
+        'platformName': 'iOS',
+      },
+    },
   },
 };
 
@@ -44,21 +161,16 @@ class CbtBrowserConfig {
   static desktop(...overrides) {
     return this.merge_(
       [
-        {
-          'browserName': 'Chrome',
-          'version': '48x64',
-          'platform': 'Mac OSX 10.8',
-        },
-        {
-          'browserName': 'Firefox',
-          'version': '46',
-          'platform': 'Mac OSX 10.8',
-        },
-        {
-          'browserName': 'Safari',
-          'version': '6.2',
-          'platform': 'Mac OSX 10.8',
-        },
+        BROWSERS.desktop.mac.safari.latest,
+        // BROWSERS.desktop.mac.safari.previous,
+        BROWSERS.desktop.windows.chrome.latest,
+        // BROWSERS.desktop.windows.chrome.previous,
+        BROWSERS.desktop.windows.firefox.latest,
+        // BROWSERS.desktop.windows.firefox.previous,
+        BROWSERS.desktop.windows.edge.latest,
+        // BROWSERS.desktop.windows.edge.previous,
+        BROWSERS.desktop.windows.ie.latest,
+        // BROWSERS.desktop.windows.ie.previous,
       ],
       DEFAULTS.allBrowsers,
       DEFAULTS.desktop,
@@ -68,13 +180,11 @@ class CbtBrowserConfig {
   static mobile(...overrides) {
     return this.merge_(
       [
-        {
-          'browserName': 'Safari',
-          'deviceName': 'iPad 3 Simulator',
-          'platformVersion': '6.1',
-          'platformName': 'iOS',
-          'deviceOrientation': 'landscape',
-        },
+        // BROWSERS.mobile.android.v07,
+        // BROWSERS.mobile.android.v06,
+        // BROWSERS.mobile.android.v05,
+        // BROWSERS.mobile.ios.v10,
+        // BROWSERS.mobile.ios.v09,
       ],
       DEFAULTS.allBrowsers,
       DEFAULTS.mobile,
@@ -84,6 +194,7 @@ class CbtBrowserConfig {
   static merge_(browsers, ...overrides) {
     return browsers
       .map((browser) => Object.assign(browser, ...overrides))
+      // CBT's API uses the name `password` instead of `authkey`,
       .map((browser) => Object.assign({password: browser.authkey}, browser));
   }
 }
