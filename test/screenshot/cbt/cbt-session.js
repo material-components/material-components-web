@@ -83,19 +83,21 @@ class CbtSession {
     });
   }
 
-  waitFor(selector, timeoutInMs) {
+  waitFor(selector, timeoutInMs = 10000) {
     const by = webdriver.By.css(selector);
-    const element = this.driver.findElement(by);
-    timeoutInMs = timeoutInMs || 10000;
 
-    return {
+    const wait = {
       toBePresent: () => {
         return this.driver.wait(webdriver.until.elementLocated(by), timeoutInMs);
       },
       toBeVisible: () => {
-        return this.driver.wait(webdriver.until.elementIsVisible(element), timeoutInMs).then();
+        return wait.toBePresent().then(() => {
+          return this.driver.wait(webdriver.until.elementIsVisible(this.driver.findElement(by)), timeoutInMs).then();
+        });
       },
     };
+
+    return wait;
   }
 
   querySelector(selector) {
@@ -126,14 +128,6 @@ class CbtSession {
 
   getElement_(elementOrSelector) {
     return typeof elementOrSelector === 'string' ? this.querySelector(elementOrSelector) : elementOrSelector;
-  }
-
-  catchErrors_() {
-    webdriver.promise.controlFlow().on('uncaughtException', (error) => this.handleWebDriverError_(error));
-  }
-
-  handleWebDriverError_(/* error */) {
-    this.quit().then(() => this.fail());
   }
 
   setScore_(score) {
@@ -175,6 +169,14 @@ class CbtSession {
 
       return deferred.promise;
     });
+  }
+
+  catchErrors_() {
+    webdriver.promise.controlFlow().on('uncaughtException', (error) => this.handleWebDriverError_(error));
+  }
+
+  handleWebDriverError_(/* error */) {
+    this.quit().then(() => this.fail());
   }
 
   log_(message, ...args) {
