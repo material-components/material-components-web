@@ -55,7 +55,7 @@ test('#init is super.init', () => {
   const {isA} = td.matchers;
 
   foundation.init();
-  td.verify(mockAdapter.registerDrawerInteractionHandler('click', isA(Function)));
+  td.verify(mockAdapter.registerDrawerInteractionHandler('touchstart', isA(Function)));
 });
 
 test('#isRootTransitioningEventTarget_ returns true if the element is the drawer element', () => {

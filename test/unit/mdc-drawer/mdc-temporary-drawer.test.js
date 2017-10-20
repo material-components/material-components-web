@@ -21,13 +21,13 @@ import td from 'testdouble';
 
 import {MDCTemporaryDrawer} from '../../../packages/mdc-drawer/temporary';
 import {strings} from '../../../packages/mdc-drawer/temporary/constants';
-import {getTransformPropertyName, supportsCssCustomProperties} from '../../../packages/mdc-drawer/util';
+import {getTransformPropertyName} from '../../../packages/mdc-drawer/util';
 
 function getFixture() {
   return bel`
     <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-      </nav>
+      <div class="mdc-temporary-drawer__backdrop"></div>
+      <nav class="mdc-temporary-drawer__drawer"></nav>
     </aside>
   `;
 }
@@ -87,7 +87,7 @@ test('adapter#hasClass returns false if the root element does not have specified
   assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
-test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', () => {
+test('adapter#hasNecessaryDom returns true if the DOM includes a drawer and a backdrop', () => {
   const {component} = setupTest();
   assert.isOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());
 });
@@ -96,6 +96,13 @@ test('adapter#hasNecessaryDom returns false if the DOM does not include a drawer
   const {root, component} = setupTest();
   const drawer = root.querySelector(strings.DRAWER_SELECTOR);
   root.removeChild(drawer);
+  assert.isNotOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());
+});
+
+test('adapter#hasNecessaryDom returns false if the DOM does not include a backdrop', () => {
+  const {root, component} = setupTest();
+  const backdrop = root.querySelector(strings.BACKDROP_SELECTOR);
+  root.removeChild(backdrop);
   assert.isNotOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());
 });
 
@@ -139,6 +146,29 @@ test('adapter#deregisterDrawerInteractionHandler removes an event listener from 
 
   component.getDefaultFoundation().adapter_.deregisterDrawerInteractionHandler('click', handler);
   domEvents.emit(drawer, 'click');
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('adapter#registerBackdropInteractionHandler adds an event listener to the backdrop element', () => {
+  const {root, component} = setupTest();
+  const backdrop = root.querySelector(strings.BACKDROP_SELECTOR);
+  const handler = td.func('eventHandler');
+
+  component.getDefaultFoundation().adapter_.registerBackdropInteractionHandler('click', handler);
+  domEvents.emit(backdrop, 'click');
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#deregisterBackdropInteractionHandler removes an event listener from the backdrop element', () => {
+  const {root, component} = setupTest();
+  const backdrop = root.querySelector(strings.BACKDROP_SELECTOR);
+  const handler = td.func('eventHandler');
+  backdrop.addEventListener('click', handler);
+
+  component.getDefaultFoundation().adapter_.deregisterBackdropInteractionHandler('click', handler);
+  domEvents.emit(backdrop, 'click');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
@@ -189,17 +219,17 @@ test('adapter#setTranslateX sets translateX to null when given the null value', 
   );
 });
 
-test('adapter#updateCssVariable sets custom property on root', () => {
+test('adapter#updateBackdropOpacity sets backdrop opacity', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.updateCssVariable('0');
-  if (supportsCssCustomProperties()) {
-    assert.equal(root.style.getPropertyValue(strings.OPACITY_VAR_NAME), '0');
-  }
+  const backdrop = root.querySelector(strings.BACKDROP_SELECTOR);
+  component.getDefaultFoundation().adapter_.updateBackdropOpacity(0.5);
+  assert.equal(backdrop.style.opacity, 0.5);
 });
 
 test('adapter#getFocusableElements returns all the focusable elements in the drawer', () => {
   const root = bel`
     <aside class="mdc-temporary-drawer">
+      <div class="mdc-temporary-drawer__backdrop"></div>
       <nav class="mdc-temporary-drawer__drawer">
         <div class="mdc-temporary-drawer__toolbar-spacer"></div>
         <button></button>
@@ -216,6 +246,7 @@ test('adapter#getFocusableElements returns all the focusable elements in the dra
 test('adapter#restoreElementTabState restores tabindex and removes data-mdc-tabindex', () => {
   const root = bel`
     <aside class="mdc-temporary-drawer">
+      <div class="mdc-temporary-drawer__backdrop"></div>
       <nav class="mdc-temporary-drawer__drawer">
         <div id="foo" tabindex="0"></div>
       </nav>
@@ -232,6 +263,7 @@ test('adapter#restoreElementTabState restores tabindex and removes data-mdc-tabi
 test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () => {
   const root = bel`
     <aside class="mdc-temporary-drawer mdc-temporary-drawer--open">
+      <div class="mdc-temporary-drawer__backdrop"></div>
       <nav class="mdc-temporary-drawer__drawer">
         <a id="foo" href="foo"></a>
       </nav>
@@ -262,8 +294,8 @@ test(`adapter#notifyClose fires an ${strings.CLOSE_EVENT} custom event`, () => {
 test('adapter#isRtl returns true for RTL documents', () => {
   const root = bel`
     <aside dir="rtl" class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-      </nav>
+      <div class="mdc-temporary-drawer__backdrop"></div>
+      <nav class="mdc-temporary-drawer__drawer"></nav>
     </aside>
   `;
   document.body.appendChild(root);
@@ -274,8 +306,8 @@ test('adapter#isRtl returns true for RTL documents', () => {
 test('adapter#isRtl returns false for explicit LTR documents', () => {
   const root = bel`
     <aside dir="ltr" class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-      </nav>
+      <div class="mdc-temporary-drawer__backdrop"></div>
+      <nav class="mdc-temporary-drawer__drawer"></nav>
     </aside>
   `;
   document.body.appendChild(root);
@@ -286,8 +318,8 @@ test('adapter#isRtl returns false for explicit LTR documents', () => {
 test('adapter#isRtl returns false for implicit LTR documents', () => {
   const root = bel`
     <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-      </nav>
+      <div class="mdc-temporary-drawer__backdrop"></div>
+      <nav class="mdc-temporary-drawer__drawer"></nav>
     </aside>
   `;
   document.body.appendChild(root);
@@ -336,4 +368,16 @@ test('adapter#removeBodyClass remove a class from the body', () => {
   body.classList.add('mdc-drawer--scroll-lock');
   component.getDefaultFoundation().adapter_.removeBodyClass('mdc-drawer--scroll-lock');
   assert.isNotOk(body.classList.contains('mdc-drawer--scroll-lock'));
+});
+
+test('propagation of click events is not stopped', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('clickHandler');
+  const link = document.createElement('a');
+  link.href = '#foo';
+  component.drawer.appendChild(link);
+  document.body.appendChild(root);
+  document.body.addEventListener('click', handler);
+  link.click();
+  td.verify(handler(td.matchers.anything()));
 });

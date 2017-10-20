@@ -26,6 +26,10 @@ export class MDCTemporaryDrawer extends MDCComponent {
     return new MDCTemporaryDrawer(root);
   }
 
+  initialize() {
+    this.backdrop_ = this.root_.querySelector(MDCTemporaryDrawerFoundation.strings.BACKDROP_SELECTOR);
+  }
+
   get open() {
     return this.foundation_.isOpen();
   }
@@ -44,7 +48,7 @@ export class MDCTemporaryDrawer extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {FOCUSABLE_ELEMENTS, OPACITY_VAR_NAME} = MDCTemporaryDrawerFoundation.strings;
+    const {FOCUSABLE_ELEMENTS} = MDCTemporaryDrawerFoundation.strings;
 
     return new MDCTemporaryDrawerFoundation({
       addClass: (className) => this.root_.classList.add(className),
@@ -52,7 +56,7 @@ export class MDCTemporaryDrawer extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       addBodyClass: (className) => document.body.classList.add(className),
       removeBodyClass: (className) => document.body.classList.remove(className),
-      hasNecessaryDom: () => Boolean(this.drawer),
+      hasNecessaryDom: () => Boolean(this.drawer) && this.root_.contains(this.backdrop_),
       registerInteractionHandler: (evt, handler) =>
         this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       deregisterInteractionHandler: (evt, handler) =>
@@ -61,6 +65,10 @@ export class MDCTemporaryDrawer extends MDCComponent {
         this.drawer.addEventListener(util.remapEvent(evt), handler),
       deregisterDrawerInteractionHandler: (evt, handler) =>
         this.drawer.removeEventListener(util.remapEvent(evt), handler),
+      registerBackdropInteractionHandler: (evt, handler) =>
+        this.backdrop_.addEventListener(util.remapEvent(evt), handler),
+      deregisterBackdropInteractionHandler: (evt, handler) =>
+        this.backdrop_.removeEventListener(util.remapEvent(evt), handler),
       registerTransitionEndHandler: (handler) => this.drawer.addEventListener('transitionend', handler),
       deregisterTransitionEndHandler: (handler) => this.drawer.removeEventListener('transitionend', handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
@@ -68,11 +76,7 @@ export class MDCTemporaryDrawer extends MDCComponent {
       getDrawerWidth: () => this.drawer.offsetWidth,
       setTranslateX: (value) => this.drawer.style.setProperty(
         util.getTransformPropertyName(), value === null ? null : `translateX(${value}px)`),
-      updateCssVariable: (value) => {
-        if (util.supportsCssCustomProperties()) {
-          this.root_.style.setProperty(OPACITY_VAR_NAME, value);
-        }
-      },
+      updateBackdropOpacity: (value) => this.backdrop_.style.opacity = value,
       getFocusableElements: () => this.drawer.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),
