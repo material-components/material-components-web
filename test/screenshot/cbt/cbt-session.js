@@ -18,26 +18,55 @@
 const webdriver = require('selenium-webdriver');
 const request = require('request');
 
+const promiseFulfill = function(...args) {
+  return webdriver.promise.Promise.resolve(...args);
+};
+
+const promiseRejected = function(...args) {
+  return webdriver.promise.Promise.reject(...args);
+};
+
+const LOG_LEVELS = {
+  info: 1,
+  log: 2,
+  warn: 3,
+  error: 4,
+};
+
+const LOG_LEVEL = LOG_LEVELS.log;
+
 class CbtSession {
   constructor({globalConfig, driver, sessionId} = {}) {
     this.globalConfig_ = globalConfig;
     this.driver_ = driver;
     this.sessionId_ = sessionId;
     this.hasQuit_ = false;
+    this.score_ = null;
     this.catchErrors_();
   }
 
-  get driver() {
-    return this.driver_;
+  enqueue(callback) {
+    if (this.hasQuit_) {
+      this.info_('Unable to enqueue driver command: Driver has already quit (1)');
+      return promiseRejected('FROM enqueue(1)');
+    }
+    return this.driver_.call(() => {
+      if (this.hasQuit_) {
+        this.info_('Unable to execute driver command: Driver has already quit (2)');
+        // TODO(acdvorak): Figure out why this triggers CbtFlow#handleWebDriverError_
+        return promiseRejected('FROM enqueue(2)');
+      }
+      return callback(this.driver_);
+    });
   }
 
   pass() {
     return this.setScore_('pass')
-      .then(() => {
-        this.log_('SUCCESSFULLY set score to "pass"');
+      .then((result) => {
+        this.log_('SUCCESSFULLY set score to "pass"; setScore result = ', result);
       })
-      .catch(() => {
-        this.log_('FAILED to set score to "pass"');
+      .catch((result) => {
+        this.error_('FAILED to set score to "pass"; setScore result = ', result);
       });
   }
 
@@ -45,35 +74,29 @@ class CbtSession {
     return this.setScore_('fail')
       .then((result) => {
         this.error_('SUCCESSFULLY set score to "fail"; setScore result = ', result);
+        this.quit();
       })
-      .catch(() => {
+      .catch((result) => {
         this.error_('FAILED to set score to "fail"; setScore result = ', result);
       });
   }
 
   quit() {
-    // webdriver has built-in promise to use
-    const deferred = webdriver.promise.defer();
-
     if (this.hasQuit_) {
-      this.log_('Already quit driver; ignoring');
-      deferred.fulfill();
-      return deferred.promise;
+      this.info_('Driver already quit; ignoring');
+      return promiseFulfill('FROM quit(1)');
     }
 
-    this.log_('Quitting driver...');
-
-    try {
-      this.driver.quit();
-      deferred.fulfill();
-    } catch (e) {
-      this.error_('Error: Unable to quit driver: ', e);
-      deferred.rejected(e);
-    }
-
+    this.info_('Quitting driver...');
     this.hasQuit_ = true;
 
-    return deferred.promise;
+    try {
+      this.driver_.quit();
+      return promiseFulfill('FROM quit(2)');
+    } catch (e) {
+      this.error_('Error: Unable to quit driver: ', e);
+      return promiseRejected(e);
+    }
   }
 
   takeSnapshot() {
@@ -88,11 +111,19 @@ class CbtSession {
 
     const wait = {
       toBePresent: () => {
-        return this.driver.wait(webdriver.until.elementLocated(by), timeoutInMs);
+        if (this.hasQuit_) {
+          this.info_('Unable to wait for element toBePresent(): Driver has already quit');
+          return promiseRejected('FROM waitFor(1)');
+        }
+        return this.driver_.wait(webdriver.until.elementLocated(by), timeoutInMs);
       },
       toBeVisible: () => {
         return wait.toBePresent().then(() => {
-          return this.driver.wait(webdriver.until.elementIsVisible(this.driver.findElement(by)), timeoutInMs).then();
+          if (this.hasQuit_) {
+            this.info_('Unable to wait for element toBeVisible(): Driver has already quit');
+            return promiseRejected('FROM waitFor(2)');
+          }
+          return this.driver_.wait(webdriver.until.elementIsVisible(this.driver_.findElement(by)), timeoutInMs).then();
         });
       },
     };
@@ -101,11 +132,19 @@ class CbtSession {
   }
 
   querySelector(selector) {
-    return this.driver.findElement(webdriver.By.css(selector));
+    if (this.hasQuit_) {
+      this.info_('Unable to execute querySelector(): Driver has already quit');
+      return promiseRejected('FROM querySelector()');
+    }
+    return this.driver_.findElement(webdriver.By.css(selector));
   }
 
   querySelectorAll(selector) {
-    return this.driver.findElements(webdriver.By.css(selector));
+    if (this.hasQuit_) {
+      this.info_('Unable to execute querySelectorAll(): Driver has already quit');
+      return promiseRejected('FROM querySelectorAll()');
+    }
+    return this.driver_.findElements(webdriver.By.css(selector));
   }
 
   mouseDown(elementOrSelector) {
@@ -121,9 +160,13 @@ class CbtSession {
   }
 
   performAction_(actionName, elementOrSelector) {
+    if (this.hasQuit_) {
+      this.info_(`Unable to execute performAction_(${actionName}, ${elementOrSelector}): Driver has already quit`);
+      return promiseRejected('FROM performAction_()');
+    }
     const element = this.getElement_(elementOrSelector);
-    const actions = this.driver.actions();
-    return actions[actionName](element).perform();
+    const actions = this.driver_.actions();
+    return actions[actionName](element).perform().catch(() => this.fail());
   }
 
   getElement_(elementOrSelector) {
@@ -131,6 +174,20 @@ class CbtSession {
   }
 
   setScore_(score) {
+    if (score === this.score_) {
+      this.warn_(`Score was already set to '${this.score_}'; ignoring`);
+      return promiseRejected('FROM setScore_(1)');
+    }
+
+    if (this.score_ === 'fail') {
+      this.warn_(`Unable to set score to '${score}': It was already set to '${this.score_}'`);
+      return promiseRejected('FROM setScore_(2)');
+    }
+
+    this.score_ = score;
+
+    this.info_(`Enqueueing RPC to setScore('${score}')...`);
+
     return this.rpc_({
       method: 'PUT',
       uri: 'https://crossbrowsertesting.com/api/v3/selenium/' + this.sessionId_,
@@ -140,14 +197,21 @@ class CbtSession {
   }
 
   rpc_(requestObject) {
-    return this.driver.call(() => {
+    const debugId = `rpc_(${requestObject.uri}, ${JSON.stringify(requestObject.body)})`;
+
+    return this.enqueue(() => {
+      if (this.hasQuit_) {
+        this.info_(`Unable to execute ${debugId}: Driver has already quit`);
+        return;
+      }
+
       // webdriver has built-in promise to use
       const deferred = webdriver.promise.defer();
       const result = {error: false, message: null};
 
       request(
         requestObject,
-        function(error, response, body) {
+        (error, response, body) => {
           if (error) {
             result.error = true;
             result.message = error;
@@ -160,8 +224,10 @@ class CbtSession {
           }
 
           if (result.error) {
+            this.info_(`About to call deferred.rejected(${JSON.stringify(result)}) in ${debugId}`);
             deferred.rejected(result);
           } else {
+            this.info_(`About to call deferred.fulfill(${JSON.stringify(result)}) in ${debugId}`);
             deferred.fulfill(result);
           }
         })
@@ -176,18 +242,42 @@ class CbtSession {
   }
 
   handleWebDriverError_(/* error */) {
-    this.quit().then(() => this.fail());
+    this.fail().finally(() => this.quit());
+  }
+
+  info_(message, ...args) {
+    if (LOG_LEVEL > LOG_LEVELS.info) {
+      return;
+    }
+    console.info('');
+    console.info(`>>> INFO(${this.constructor.name} / ${this.sessionId_}) - ${message}`, ...args);
+    console.info('');
   }
 
   log_(message, ...args) {
+    if (LOG_LEVEL > LOG_LEVELS.log) {
+      return;
+    }
     console.log('');
-    console.log(`>>> ${this.constructor.name}: ${this.sessionId_} - ${message}`, ...args);
+    console.log(`>>> LOG(${this.constructor.name} / ${this.sessionId_}) - ${message}`, ...args);
     console.log('');
   }
 
+  warn_(message, ...args) {
+    if (LOG_LEVEL > LOG_LEVELS.warn) {
+      return;
+    }
+    console.warn('');
+    console.warn(`>>> WARN(${this.constructor.name} / ${this.sessionId_}) - ${message}`, ...args);
+    console.warn('');
+  }
+
   error_(message, ...args) {
+    if (LOG_LEVEL > LOG_LEVELS.error) {
+      return;
+    }
     console.error('');
-    console.error(`>>> ${this.constructor.name}: ${this.sessionId_} - ${message}`, ...args);
+    console.error(`>>> ERROR(${this.constructor.name} / ${this.sessionId_}) - ${message}`, ...args);
     console.error('');
   }
 }

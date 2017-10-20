@@ -34,7 +34,7 @@ const browsers = CbtBrowserConfig.allBrowsers(globalConfig);
 
 const cbtFlow = new CbtFlow({globalConfig, browsers});
 cbtFlow.on('cbt:session-started', (session) => {
-  session.driver.get('https://material-components-web.appspot.com/button.html');
+  session.enqueue((driver) => driver.get('https://material-components-web.appspot.com/button.html'));
 
   session.waitFor('.mdc-button').toBeVisible();
   session.takeSnapshot();
