@@ -15,7 +15,7 @@ your framework that wraps MDC-Web, check out our [framework integration guide](.
 ## MDC-Web quick start: building a simple greeting app
 
 The best way to learn any new technology is to get your hands dirty and build something with it, so
-that is what we will do here!  You will be building a simple greeting page which lets you enter a name and greets you as such. Here is the [finished example](https://plnkr.co/edit/ahd84pIgOF7OTKgavvPP?p=preview).
+that is what we will do here!  You will be building a simple greeting page which lets you enter a name and greets you as such.
 
 As you go through this guide, we encourage you to code along with it. By the end, you will have
 learned the fundamentals incorporating MDC-Web into simple sites, as well as worked with some of the
