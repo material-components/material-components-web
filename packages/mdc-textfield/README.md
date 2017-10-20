@@ -287,11 +287,11 @@ of the variant, you can override $mdc-text-field-border-radius in Sass.
 
 #### `mdc-text-field-box-corner-radius($radius)`
 
-This mixin is provided for customizing the border radius for Text Field Box.
+This mixin customizes the border radius for a Text Field Box.
 
 #### `mdc-text-field-textarea-corner-radius($radius)`
 
-This mixin is provided for customizing the border radius for a Text Field `textarea`.
+This mixin customizes the border radius for a Text Field `textarea`.
 
 ### Using the JS component
 

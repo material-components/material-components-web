@@ -22,7 +22,9 @@
   border-radius: $radius;
 
   .mdc-textfield__label {
-    border-radius: $radius;
+    // Bottom corners are square to prevent weird edge cases
+    // where text would be visible outside of the curve.
+    border-radius: $radius $radius 0 0;
   }
 
   .mdc-textfield__input {
@@ -30,12 +32,8 @@
     // of the radius of its parent. This prevents an ugly space of
     // background between the two borders in each corner when the
     // textarea is focused. This also means we need to guard against
-    // invalid output with @if/@else directives.
-    @if ($radius >= 2) {
-      border-radius: $radius - 2;
-    } @else {
-      border-radius: 0;
-    }
+    // invalid output.
+    border-radius: max($radius - 2, 0);
   }
 }
 
