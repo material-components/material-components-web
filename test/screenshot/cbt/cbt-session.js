@@ -22,7 +22,7 @@ const promiseFulfill = function(...args) {
   return webdriver.promise.Promise.resolve(...args);
 };
 
-const promiseRejected = function(...args) {
+const promiseReject = function(...args) {
   return webdriver.promise.Promise.reject(...args);
 };
 
@@ -48,13 +48,13 @@ class CbtSession {
   enqueue(callback) {
     if (this.hasQuit_) {
       this.info_('Unable to enqueue driver command: Driver has already quit (1)');
-      return promiseRejected('FROM enqueue(1)');
+      return promiseReject('FROM enqueue(1)');
     }
     return this.driver_.call(() => {
       if (this.hasQuit_) {
         this.info_('Unable to execute driver command: Driver has already quit (2)');
         // TODO(acdvorak): Figure out why this triggers CbtFlow#handleWebDriverError_
-        return promiseRejected('FROM enqueue(2)');
+        return promiseReject('FROM enqueue(2)');
       }
       return callback(this.driver_);
     });
@@ -95,7 +95,7 @@ class CbtSession {
       return promiseFulfill('FROM quit(2)');
     } catch (e) {
       this.error_('Error: Unable to quit driver: ', e);
-      return promiseRejected(e);
+      return promiseReject(e);
     }
   }
 
@@ -113,7 +113,7 @@ class CbtSession {
       toBePresent: () => {
         if (this.hasQuit_) {
           this.info_('Unable to wait for element toBePresent(): Driver has already quit');
-          return promiseRejected('FROM waitFor(1)');
+          return promiseReject('FROM waitFor(1)');
         }
         return this.driver_.wait(webdriver.until.elementLocated(by), timeoutInMs);
       },
@@ -121,7 +121,7 @@ class CbtSession {
         return wait.toBePresent().then(() => {
           if (this.hasQuit_) {
             this.info_('Unable to wait for element toBeVisible(): Driver has already quit');
-            return promiseRejected('FROM waitFor(2)');
+            return promiseReject('FROM waitFor(2)');
           }
           return this.driver_.wait(webdriver.until.elementIsVisible(this.driver_.findElement(by)), timeoutInMs).then();
         });
@@ -134,7 +134,7 @@ class CbtSession {
   querySelector(selector) {
     if (this.hasQuit_) {
       this.info_('Unable to execute querySelector(): Driver has already quit');
-      return promiseRejected('FROM querySelector()');
+      return promiseReject('FROM querySelector()');
     }
     return this.driver_.findElement(webdriver.By.css(selector));
   }
@@ -142,7 +142,7 @@ class CbtSession {
   querySelectorAll(selector) {
     if (this.hasQuit_) {
       this.info_('Unable to execute querySelectorAll(): Driver has already quit');
-      return promiseRejected('FROM querySelectorAll()');
+      return promiseReject('FROM querySelectorAll()');
     }
     return this.driver_.findElements(webdriver.By.css(selector));
   }
@@ -162,7 +162,7 @@ class CbtSession {
   performAction_(actionName, elementOrSelector) {
     if (this.hasQuit_) {
       this.info_(`Unable to execute performAction_(${actionName}, ${elementOrSelector}): Driver has already quit`);
-      return promiseRejected('FROM performAction_()');
+      return promiseReject('FROM performAction_()');
     }
     const element = this.getElement_(elementOrSelector);
     const actions = this.driver_.actions();
@@ -176,12 +176,12 @@ class CbtSession {
   setScore_(score) {
     if (score === this.score_) {
       this.warn_(`Score was already set to '${this.score_}'; ignoring`);
-      return promiseRejected('FROM setScore_(1)');
+      return promiseReject('FROM setScore_(1)');
     }
 
     if (this.score_ === 'fail') {
       this.warn_(`Unable to set score to '${score}': It was already set to '${this.score_}'`);
-      return promiseRejected('FROM setScore_(2)');
+      return promiseReject('FROM setScore_(2)');
     }
 
     this.score_ = score;
@@ -224,8 +224,8 @@ class CbtSession {
           }
 
           if (result.error) {
-            this.info_(`About to call deferred.rejected(${JSON.stringify(result)}) in ${debugId}`);
-            deferred.rejected(result);
+            this.info_(`About to call deferred.reject(${JSON.stringify(result)}) in ${debugId}`);
+            deferred.reject(result);
           } else {
             this.info_(`About to call deferred.fulfill(${JSON.stringify(result)}) in ${debugId}`);
             deferred.fulfill(result);
