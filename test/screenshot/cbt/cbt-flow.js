@@ -73,13 +73,13 @@ class CbtFlow extends EventEmitter {
 
   log_(message, ...args) {
     console.log('');
-    console.log(`>>> ${this.constructor.name}: ${message}`, ...args);
+    console.log(`>>> LOG(${this.constructor.name}): ${message}`, ...args);
     console.log('');
   }
 
   error_(message, ...args) {
     console.error('');
-    console.error(`>>> ${this.constructor.name}: ${message}`, ...args);
+    console.error(`>>> ERROR(${this.constructor.name}): ${message}`, ...args);
     console.error('');
   }
 }
