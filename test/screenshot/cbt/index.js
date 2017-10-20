@@ -30,7 +30,7 @@ const globalConfig = {
   build: `[commit: ${build}]`,
   name: 'Button demo page',
 };
-const browsers = CbtBrowserConfig.all(globalConfig);
+const browsers = CbtBrowserConfig.allBrowsers(globalConfig);
 
 const cbtFlow = new CbtFlow({globalConfig, browsers});
 cbtFlow.on('cbt:session-started', (session) => {

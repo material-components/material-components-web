@@ -18,9 +18,9 @@
 // Browser config object generator: https://app.crossbrowsertesting.com/selenium/run
 
 const DEFAULTS = {
-  common: {
-    record_video: 'true',
-    record_network: 'true',
+  allBrowsers: {
+    'record_video': 'true',
+    'record_network': 'true',
   },
   desktop: {
     'screenResolution': '1400x900',
@@ -31,7 +31,7 @@ const DEFAULTS = {
 
 // TODO(acdvorak): Use builder pattern instead?
 class CbtBrowserConfig {
-  static all(...overrides) {
+  static allBrowsers(...overrides) {
     return [
       ...this.desktop(...overrides),
       ...this.mobile(...overrides),
@@ -57,7 +57,7 @@ class CbtBrowserConfig {
           'platform': 'Mac OSX 10.8',
         },
       ],
-      DEFAULTS.common,
+      DEFAULTS.allBrowsers,
       DEFAULTS.desktop,
       ...overrides);
   }
@@ -73,7 +73,7 @@ class CbtBrowserConfig {
           'deviceOrientation': 'landscape',
         },
       ],
-      DEFAULTS.common,
+      DEFAULTS.allBrowsers,
       DEFAULTS.mobile,
       ...overrides);
   }
