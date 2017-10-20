@@ -17,11 +17,13 @@
 
 const EventEmitter = require('events');
 const webdriver = require('selenium-webdriver');
+const {CbtLogger} = require('./cbt-logger');
 const {CbtSession} = require('./cbt-session');
 
 class CbtFlow extends EventEmitter {
   constructor({globalConfig, browsers} = {}) {
     super();
+    this.logger_ = new CbtLogger(this);
     this.globalConfig_ = globalConfig;
     this.browsers_ = browsers;
   }
@@ -71,16 +73,20 @@ class CbtFlow extends EventEmitter {
     this.emit('cbt:error', error);
   }
 
+  info_(message, ...args) {
+    this.logger_.info(message, ...args);
+  }
+
   log_(message, ...args) {
-    console.log('');
-    console.log(`>>> LOG(${this.constructor.name}): ${message}`, ...args);
-    console.log('');
+    this.logger_.log(message, ...args);
+  }
+
+  warn_(message, ...args) {
+    this.logger_.warn(message, ...args);
   }
 
   error_(message, ...args) {
-    console.error('');
-    console.error(`>>> ERROR(${this.constructor.name}): ${message}`, ...args);
-    console.error('');
+    this.logger_.error(message, ...args);
   }
 }
 

@@ -17,6 +17,7 @@
 
 const webdriver = require('selenium-webdriver');
 const request = require('request');
+const {CbtLogger} = require('./cbt-logger');
 
 const promiseFulfill = function(...args) {
   return webdriver.promise.Promise.resolve(...args);
@@ -26,17 +27,9 @@ const promiseReject = function(...args) {
   return webdriver.promise.Promise.reject(...args);
 };
 
-const LOG_LEVELS = {
-  info: 1,
-  log: 2,
-  warn: 3,
-  error: 4,
-};
-
-const LOG_LEVEL = LOG_LEVELS.log;
-
 class CbtSession {
   constructor({globalConfig, driver, sessionId} = {}) {
+    this.logger_ = new CbtLogger(this);
     this.globalConfig_ = globalConfig;
     this.driver_ = driver;
     this.sessionId_ = sessionId;
@@ -246,39 +239,19 @@ class CbtSession {
   }
 
   info_(message, ...args) {
-    if (LOG_LEVEL > LOG_LEVELS.info) {
-      return;
-    }
-    console.info('');
-    console.info(`>>> INFO(${this.constructor.name} / ${this.sessionId_}) - ${message}`, ...args);
-    console.info('');
+    this.logger_.info(`[${this.sessionId_}] - ${message}`, ...args);
   }
 
   log_(message, ...args) {
-    if (LOG_LEVEL > LOG_LEVELS.log) {
-      return;
-    }
-    console.log('');
-    console.log(`>>> LOG(${this.constructor.name} / ${this.sessionId_}) - ${message}`, ...args);
-    console.log('');
+    this.logger_.log(`[${this.sessionId_}] - ${message}`, ...args);
   }
 
   warn_(message, ...args) {
-    if (LOG_LEVEL > LOG_LEVELS.warn) {
-      return;
-    }
-    console.warn('');
-    console.warn(`>>> WARN(${this.constructor.name} / ${this.sessionId_}) - ${message}`, ...args);
-    console.warn('');
+    this.logger_.warn(`[${this.sessionId_}] - ${message}`, ...args);
   }
 
   error_(message, ...args) {
-    if (LOG_LEVEL > LOG_LEVELS.error) {
-      return;
-    }
-    console.error('');
-    console.error(`>>> ERROR(${this.constructor.name} / ${this.sessionId_}) - ${message}`, ...args);
-    console.error('');
+    this.logger_.error(`[${this.sessionId_}] - ${message}`, ...args);
   }
 }
 
