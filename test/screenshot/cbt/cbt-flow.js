@@ -26,15 +26,6 @@ class CbtFlow extends EventEmitter {
     this.browsers_ = browsers;
   }
 
-  catchErrors_(flow) {
-    flow.on('uncaughtException', (error) => this.handleWebDriverError_(error));
-  }
-
-  handleWebDriverError_(error) {
-    this.error_(`${this.constructor.name}: WebDriver error:`, error);
-    this.emit('cbt:error', error);
-  }
-
   start() {
     // eslint-disable-next-line no-unused-vars
     const flows = this.browsers_.map((browser) => {
@@ -53,33 +44,42 @@ class CbtFlow extends EventEmitter {
         // Async functions outside of driver can use call() function.
         this.log_('Waiting on the browser to be launched and the session to start...');
 
-        driver.getSession().then(
-          (sessionData) => {
+        driver.getSession()
+          .then((sessionData) => {
             const sessionId = sessionData.id_;
             const session = new CbtSession({
               globalConfig: this.globalConfig_,
               driver,
               sessionId,
             });
-            this.emit('cbt:session-started', session);
             this.log_(`${sessionId} - See your test run: https://app.crossbrowsertesting.com/selenium/${sessionId}`);
-          },
-          (error) => {
+            this.emit('cbt:session-started', session);
+          })
+          .catch((error) => {
             this.handleWebDriverError_(error);
           });
       });
     });
   }
 
+  catchErrors_(flow) {
+    flow.on('uncaughtException', (error) => this.handleWebDriverError_(error));
+  }
+
+  handleWebDriverError_(error) {
+    this.error_('WebDriver error:', error);
+    this.emit('cbt:error', error);
+  }
+
   log_(message, ...args) {
     console.log('');
-    console.log(`>>> ${message}`, ...args);
+    console.log(`>>> ${this.constructor.name}: ${message}`, ...args);
     console.log('');
   }
 
   error_(message, ...args) {
     console.error('');
-    console.error(`>>> ${message}`, ...args);
+    console.error(`>>> ${this.constructor.name}: ${message}`, ...args);
     console.error('');
   }
 }

@@ -179,13 +179,13 @@ class CbtSession {
 
   log_(message, ...args) {
     console.log('');
-    console.log(`>>> ${this.sessionId_} - ${message}`, ...args);
+    console.log(`>>> ${this.constructor.name}: ${this.sessionId_} - ${message}`, ...args);
     console.log('');
   }
 
   error_(message, ...args) {
     console.error('');
-    console.error(`>>> ${this.sessionId_} - ${message}`, ...args);
+    console.error(`>>> ${this.constructor.name}: ${this.sessionId_} - ${message}`, ...args);
     console.error('');
   }
 }
