@@ -552,7 +552,6 @@
     top: $label-offset-y;
     bottom: auto;
     padding: 8px 16px;
-    background-color: $mdc-textarea-light-background;
 
     @include mdc-theme-dark(".mdc-textfield") {
       background-color: $mdc-textarea-dark-background;
