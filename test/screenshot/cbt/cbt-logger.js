@@ -78,7 +78,7 @@ class CbtLogger {
       return;
     }
     const timestamp = this.getAndUpdateTimestamp_();
-    console.info(`>>> INFO(${this.name_}) - [${this.id_}] - [${timestamp}] - ${message}`, ...args);
+    console.info(`>>> INFO(${this.name_}) - [${timestamp}] - [${this.id_}] - ${message}`, ...args);
   }
 
   log(message, ...args) {
@@ -86,7 +86,7 @@ class CbtLogger {
       return;
     }
     const timestamp = this.getAndUpdateTimestamp_();
-    console.log(`>>> LOG(${this.name_}) - [${this.id_}] - [${timestamp}] - ${message}`, ...args);
+    console.log(`>>> LOG(${this.name_}) - [${timestamp}] - [${this.id_}] - ${message}`, ...args);
   }
 
   warn(message, ...args) {
@@ -94,7 +94,7 @@ class CbtLogger {
       return;
     }
     const timestamp = this.getAndUpdateTimestamp_();
-    console.warn(`>>> WARN(${this.name_}) - [${this.id_}] - [${timestamp}] - ${message}`, ...args);
+    console.warn(`>>> WARN(${this.name_}) - [${timestamp}] - [${this.id_}] - ${message}`, ...args);
   }
 
   error(message, ...args) {
@@ -102,7 +102,7 @@ class CbtLogger {
       return;
     }
     const timestamp = this.getAndUpdateTimestamp_();
-    console.error(`>>> ERROR(${this.name_}) - [${this.id_}] - [${timestamp}] - ${message}`, ...args);
+    console.error(`>>> ERROR(${this.name_}) - [${timestamp}] - [${this.id_}] - ${message}`, ...args);
   }
 
   getAndUpdateTimestamp_() {
