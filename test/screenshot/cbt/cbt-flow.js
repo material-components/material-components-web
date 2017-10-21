@@ -53,6 +53,7 @@ class CbtFlow extends EventEmitter {
               globalConfig: this.globalConfig_,
               driver,
               sessionId,
+              browser,
             });
             this.log_(`${sessionId} - See your test run: https://app.crossbrowsertesting.com/selenium/${sessionId}`);
             this.emit('cbt:session-started', session);

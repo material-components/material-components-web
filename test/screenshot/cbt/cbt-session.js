@@ -28,11 +28,12 @@ const promiseReject = function(...args) {
 };
 
 class CbtSession {
-  constructor({globalConfig, driver, sessionId} = {}) {
+  constructor({globalConfig, driver, sessionId, browser} = {}) {
     this.logger_ = new CbtLogger(this);
     this.globalConfig_ = globalConfig;
     this.driver_ = driver;
     this.sessionId_ = sessionId;
+    this.browser_ = browser;
     this.hasQuit_ = false;
     this.score_ = null;
     this.catchErrors_();
