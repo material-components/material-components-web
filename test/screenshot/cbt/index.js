@@ -39,16 +39,21 @@ cbtFlow.on('cbt:session-started', (session) => {
   session.waitFor('.mdc-button').toBeVisible();
   session.takeSnapshot();
 
-  // NOTE(acdvorak): With the exception of `click`, mouse events are not yet supported in Firefox, iOS Safari, and
-  // desktop Safari < 10. They are only supported in Chrome, Edge, IE 11, and desktop Safari 10+.
-  // Realistically, we cannot simulate mouse events in JS because they are not "trusted" events (see
-  // https://stackoverflow.com/a/17226753/467582 for more info).
+  session.interact((command) => {
+    command.mouseDown('.mdc-button');
+    session.takeSnapshot();
 
-  // session.mouseDown('.mdc-button');
-  // session.takeSnapshot();
-  //
-  // session.mouseUp('.mdc-button');
-  // session.takeSnapshot();
+    command.mouseMove('.mdc-button--raised');
+    command.mouseUp();
+    session.takeSnapshot();
+
+    command.sendKeys('\t');
+
+    // TODO(acdvorak): Figure out why the timeout doesn't block the driver for 5 seconds.
+    session.wait(5000);
+
+    session.takeSnapshot();
+  });
 
   // Because all driver actions are async, this function will always be called.
   // However, it will only be executed if all previous driver commands succeed.

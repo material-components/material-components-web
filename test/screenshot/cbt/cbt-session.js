@@ -58,6 +58,81 @@ class CbtSession {
     return this.enqueue((driver) => driver.get(uri));
   }
 
+  interact(callback) {
+    if (!this.constructor.supportsAdvancedUserInteractions_(this.browser_)) {
+      return;
+    }
+
+    callback({
+      ModifierKey: webdriver.Key,
+      MouseButton: webdriver.Button,
+
+      click: (elementOrSelector) => {
+        return this.performMouseAction_('click', elementOrSelector);
+      },
+
+      doubleClick: (elementOrSelector) => {
+        return this.performMouseAction_('doubleClick', elementOrSelector);
+      },
+
+      /**
+       * @param dragElementOrSelector {string|!WebElement}
+       * @param dropLocation {string|!WebElement|{x: number, y: number}}
+       */
+      dragAndDrop: (dragElementOrSelector, dropLocation) => {
+        if (typeof dropLocation === 'string') {
+          dropLocation = this.getElement_(dropLocation);
+        }
+        return this.performMouseAction_('dragAndDrop', dragElementOrSelector, dropLocation);
+      },
+
+      // NOTE(acdvorak): Firefox < 55 only supports SHIFT, CONTROL, and ALT.
+      // See https://github.com/SeleniumHQ/selenium/issues/3750
+      modifierKeyDown: (key) => {
+        return this.performKeyboardAction_('keyDown', key);
+      },
+
+      // NOTE(acdvorak): Firefox < 55 only supports SHIFT, CONTROL, and ALT.
+      // See https://github.com/SeleniumHQ/selenium/issues/3750
+      modifierKeyUp: (key) => {
+        return this.performKeyboardAction_('keyUp', key);
+      },
+
+      sendKeys: (...keys) => {
+        return this.performKeyboardAction_('sendKeys', ...keys);
+      },
+
+      /**
+       * @param elementOrSelectorOrButton {string|!WebElement|webdriver.Button=}
+       * @param button {webdriver.Button=}
+       * @returns {*}
+       */
+      mouseDown: (elementOrSelectorOrButton = undefined, button = undefined) => {
+        return this.performMouseAction_('mouseDown', elementOrSelectorOrButton, button);
+      },
+
+      /**
+       * @param elementOrSelectorOrButton {string|!WebElement|webdriver.Button=}
+       * @param button {webdriver.Button=}
+       * @returns {*}
+       */
+      mouseUp: (elementOrSelectorOrButton = undefined, button = undefined) => {
+        return this.performMouseAction_('mouseUp', elementOrSelectorOrButton, button);
+      },
+
+      /**
+       * @param location {string|!WebElement|{x: number, y: number}}
+       * @param offsetFromElementOrigin {{x: number, y: number}=}
+       */
+      mouseMove: (location, offsetFromElementOrigin = undefined) => {
+        if (typeof location === 'string') {
+          location = this.getElement_(location);
+        }
+        return this.performGenericAction_('mouseMove', location, offsetFromElementOrigin);
+      },
+    });
+  }
+
   pass() {
     return this.setScore_('pass')
       .then((result) => {
@@ -105,13 +180,37 @@ class CbtSession {
     });
   }
 
-  waitFor(selector, timeoutInMs = 10000) {
+  wait(condition, timeoutInMs = undefined, message = undefined) {
+    if (this.hasQuit_) {
+      this.info_('Unable to wait(): Driver has already quit');
+      return promiseReject('FROM wait()');
+    }
+
+    if (typeof condition === 'number') {
+      // webdriver has built-in promise to use
+      const deferred = webdriver.promise.defer();
+
+      // Shift arguments
+      message = timeoutInMs;
+      timeoutInMs = condition + 1000;
+      condition = () => deferred.promise;
+
+      setTimeout(() => {
+        deferred.fulfill(true);
+      }, timeoutInMs);
+    }
+
+    // TODO(acdvorak): Figure out why the timeout doesn't block the driver for 5 seconds.
+    return this.driver_.wait(condition, timeoutInMs, message);
+  }
+
+  waitFor(selector, timeoutInMs = 5000) {
     const by = webdriver.By.css(selector);
 
     const wait = {
       toBePresent: () => {
         if (this.hasQuit_) {
-          this.info_('Unable to wait for element toBePresent(): Driver has already quit');
+          this.info_('Unable to waitFor(element).toBePresent(): Driver has already quit');
           return promiseReject('FROM waitFor(1)');
         }
         return this.driver_.wait(webdriver.until.elementLocated(by), timeoutInMs);
@@ -119,7 +218,7 @@ class CbtSession {
       toBeVisible: () => {
         return wait.toBePresent().then(() => {
           if (this.hasQuit_) {
-            this.info_('Unable to wait for element toBeVisible(): Driver has already quit');
+            this.info_('Unable to waitFor(element).toBeVisible(): Driver has already quit');
             return promiseReject('FROM waitFor(2)');
           }
           return this.driver_.wait(webdriver.until.elementIsVisible(this.driver_.findElement(by)), timeoutInMs);
@@ -146,24 +245,30 @@ class CbtSession {
     return this.driver_.findElements(webdriver.By.css(selector));
   }
 
-  mouseDown(elementOrSelector) {
-    return this.performAction_('mouseDown', elementOrSelector);
+  static supportsAdvancedUserInteractions_(browser) {
+    // NOTE(acdvorak): With the exception of `click`, mouse events are not yet supported in Firefox, iOS Safari, and
+    // desktop Safari < 10. They are only supported in Chrome, Edge, IE, and desktop Safari 10+.
+    // Realistically, we cannot simulate mouse events in JS because they are not "trusted" events (see
+    // https://stackoverflow.com/a/17226753/467582 for more info).
+    return /^(?:Chrome|Edge|MicrosoftEdge|IE|Internet Explorer)$/i.test(browser.browserName);
   }
 
-  mouseUp(elementOrSelector) {
-    return this.performAction_('mouseUp', elementOrSelector);
+  performKeyboardAction_(actionName, key, ...args) {
+    return this.performGenericAction_(actionName, key, ...args);
   }
 
-  click(elementOrSelector) {
-    return this.performAction_('click', elementOrSelector);
-  }
-
-  performAction_(actionName, elementOrSelector) {
-    if (this.hasQuit_) {
-      this.info_(`Unable to execute performAction_(${actionName}, ${elementOrSelector}): Driver has already quit`);
-      return promiseReject('FROM performAction_()');
+  performMouseAction_(actionName, elementOrSelectorOrButton, ...args) {
+    if (typeof elementOrSelectorOrButton === 'string') {
+      elementOrSelectorOrButton = this.getElement_(elementOrSelectorOrButton);
     }
-    const element = this.getElement_(elementOrSelector);
+    return this.performGenericAction_(actionName, elementOrSelectorOrButton, ...args);
+  }
+
+  performGenericAction_(actionName, ...args) {
+    if (this.hasQuit_) {
+      this.info_(`Unable to execute performGenericAction_('${actionName}'): Driver has already quit`);
+      return promiseReject('FROM performGenericAction_()');
+    }
     const actions = this.driver_.actions();
     return actions[actionName](...args).perform().catch(() => this.quit());
   }
