@@ -48,7 +48,11 @@ cbtFlow.on('cbt:session-started', (session) => {
     session.takeSnapshot();
 
     command.sendKeys('\t');
-    session.wait(5000);
+    session.wait(1000);
+    command.sendKeys(command.ModifierKey.SHIFT, '\t', command.ModifierKey.SHIFT);
+    session.wait(1000);
+    command.sendKeys('\t');
+    session.wait(1000);
     session.takeSnapshot();
   });
 
