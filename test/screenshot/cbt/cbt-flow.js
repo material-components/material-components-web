@@ -34,7 +34,8 @@ class CbtFlow extends EventEmitter {
       return webdriver.promise.createFlow((flow) => {
         this.catchErrors_(flow);
 
-        this.log_('Connecting to the CrossBrowserTesting remote server...');
+        const prettyArgs = CbtLogger.prettifyArgs(browser);
+        this.log_(`Connecting to the CrossBrowserTesting remote server; requesting browser ${prettyArgs}...`);
         this.emit('cbt:session-starting');
 
         const driver = new webdriver.Builder()
@@ -57,7 +58,7 @@ class CbtFlow extends EventEmitter {
               sessionId,
               browser,
             });
-            this.log_(`${sessionId} - See your test run: https://app.crossbrowsertesting.com/selenium/${sessionId}`);
+            this.log_(`Session started! https://app.crossbrowsertesting.com/selenium/${sessionId}`);
             this.emit('cbt:session-started', session);
           })
           .catch((error) => {

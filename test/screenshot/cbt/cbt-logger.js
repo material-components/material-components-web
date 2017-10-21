@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+const webdriver = require('selenium-webdriver');
+
 const LOG_LEVELS = {
   info: 1,
   log: 2,
@@ -58,6 +60,51 @@ class CbtLogger {
       return;
     }
     console.error(`>>> ERROR(${this.name_}) - ${message}`, ...args);
+  }
+
+  static prettifyArgs(...args) {
+    let prevWasUndefined = true;
+
+    const prettyArgs = args
+      .reverse()
+      .filter((value) => {
+        if (prevWasUndefined && typeof value === 'undefined') {
+          prevWasUndefined = true;
+          return false;
+        }
+        return true;
+      })
+      .reverse()
+      .map((value) => {
+        if (value instanceof webdriver.WebElement ||
+            value instanceof webdriver.WebElementPromise ||
+            value instanceof webdriver.promise.Promise ||
+            value instanceof webdriver.promise.Thenable ||
+            value instanceof webdriver.ThenableWebDriver) {
+          return value.constructor.name;
+        }
+        if (value.browserName) {
+          const browser = {};
+          [
+            'platform',
+            'platformName',
+            'platformVersion',
+            'browserName',
+            'version',
+            'deviceName',
+            'deviceOrientation',
+          ].forEach((key) => {
+            if (value[key]) {
+              browser[key] = value[key];
+            }
+          });
+          return browser;
+        }
+        return value;
+      });
+
+    // "[1,2,3]" -> "1,2,3"
+    return JSON.stringify(prettyArgs).replace(/^\[|]$/g, '');
   }
 }
 

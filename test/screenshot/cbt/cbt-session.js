@@ -27,34 +27,6 @@ const promiseReject = function(...args) {
   return webdriver.promise.Promise.reject(...args);
 };
 
-const prettifyArgs = function(...args) {
-  let prevWasUndefined = true;
-
-  const prettyArgs = args
-    .map((value) => {
-      if (value instanceof webdriver.WebElement ||
-          value instanceof webdriver.WebElementPromise ||
-          value instanceof webdriver.promise.Promise ||
-          value instanceof webdriver.promise.Thenable ||
-          value instanceof webdriver.ThenableWebDriver) {
-        return value.constructor.name;
-      }
-      return value;
-    })
-    .reverse()
-    .filter((value) => {
-      if (prevWasUndefined && typeof value === 'undefined') {
-        prevWasUndefined = true;
-        return false;
-      }
-      return true;
-    })
-    .reverse();
-
-  // "[1,2,3]" -> "1,2,3"
-  return JSON.stringify(prettyArgs).replace(/^\[|]$/g, '');
-};
-
 class CbtSession {
   constructor({globalConfig, driver, sessionId, browser} = {}) {
     this.logger_ = new CbtLogger(this);
@@ -116,14 +88,12 @@ class CbtSession {
         return this.performMouseAction_('dragAndDrop', dragElementOrSelector, dropLocation);
       },
 
-      // NOTE(acdvorak): Firefox < 55 only supports SHIFT, CONTROL, and ALT.
-      // See https://github.com/SeleniumHQ/selenium/issues/3750
+      // NOTE(acdvorak): This API might not be supported by WebDriver yet, at least in Firefox.
       modifierKeyDown: (key) => {
         return this.performKeyboardAction_('keyDown', key);
       },
 
-      // NOTE(acdvorak): Firefox < 55 only supports SHIFT, CONTROL, and ALT.
-      // See https://github.com/SeleniumHQ/selenium/issues/3750
+      // NOTE(acdvorak): This API might not be supported by WebDriver yet, at least in Firefox.
       modifierKeyUp: (key) => {
         return this.performKeyboardAction_('keyUp', key);
       },
@@ -165,8 +135,9 @@ class CbtSession {
 
   pass() {
     return this.setScore_('pass')
+      // eslint-disable-next-line no-unused-vars
       .then((result) => {
-        this.log_('SUCCESSFULLY set score to "pass"; setScore result = ', result);
+        this.log_('Test PASSED!');
       })
       .catch((result) => {
         this.error_('FAILED to set score to "pass"; setScore result = ', result);
@@ -176,8 +147,9 @@ class CbtSession {
 
   fail() {
     return this.setScore_('fail')
+      // eslint-disable-next-line no-unused-vars
       .then((result) => {
-        this.error_('SUCCESSFULLY set score to "fail"; setScore result = ', result);
+        this.error_('Test FAILED!');
       })
       .catch((result) => {
         this.error_('FAILED to set score to "fail"; setScore result = ', result);
@@ -231,7 +203,7 @@ class CbtSession {
       }
 
       // eslint-disable-next-line prefer-rest-params
-      const prettyArgs = prettifyArgs(...Array.from(arguments));
+      const prettyArgs = CbtLogger.prettifyArgs(...Array.from(arguments));
       this.log_(`wait(${prettyArgs})`);
 
       return this.driver_.wait(condition, timeoutInMs, message);
@@ -240,7 +212,7 @@ class CbtSession {
 
   waitFor(selector, timeoutInMs = 5000) {
     // eslint-disable-next-line prefer-rest-params
-    const prettyArgs = prettifyArgs(...Array.from(arguments));
+    const prettyArgs = CbtLogger.prettifyArgs(...Array.from(arguments));
     const by = webdriver.By.css(selector);
 
     const wait = {
@@ -308,7 +280,7 @@ class CbtSession {
 
   performGenericAction_(actionName, ...args) {
     this.enqueue(() => {
-      const prettyArgs = prettifyArgs(...args);
+      const prettyArgs = CbtLogger.prettifyArgs(...args);
       this.log_(`${actionName}(${prettyArgs})`);
 
       const actions = this.driver_.actions();
