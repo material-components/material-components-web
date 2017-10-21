@@ -25,6 +25,7 @@ const LOG_LEVELS = {
 const ENV_LOG_LEVEL_KEY = process.env.CBT_LOG_LEVEL;
 const DEFAULT_LOG_LEVEL = ENV_LOG_LEVEL_KEY ? LOG_LEVELS[ENV_LOG_LEVEL_KEY] : LOG_LEVELS.log;
 
+// TODO(acdvorak): Switch to NLog's Appender/Logger paradigm
 class CbtLogger {
   constructor(caller, level = DEFAULT_LOG_LEVEL) {
     this.name_ = typeof caller === 'string' ? caller : caller.constructor.name;
