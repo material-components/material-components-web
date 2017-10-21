@@ -165,7 +165,7 @@ class CbtSession {
     }
     const element = this.getElement_(elementOrSelector);
     const actions = this.driver_.actions();
-    return actions[actionName](element).perform().catch(() => this.fail());
+    return actions[actionName](...args).perform().catch(() => this.quit());
   }
 
   getElement_(elementOrSelector) {
@@ -241,7 +241,7 @@ class CbtSession {
   }
 
   handleWebDriverError_(/* error */) {
-    this.fail();
+    this.quit();
   }
 
   info_(message, ...args) {
