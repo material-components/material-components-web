@@ -54,6 +54,10 @@ class CbtSession {
     });
   }
 
+  navigate(uri) {
+    return this.enqueue((driver) => driver.get(uri));
+  }
+
   pass() {
     return this.setScore_('pass')
       .then((result) => {
