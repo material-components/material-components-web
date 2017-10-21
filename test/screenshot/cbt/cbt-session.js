@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-const webdriver = require('selenium-webdriver');
 const request = require('request');
+const webdriver = require('selenium-webdriver');
 const {CbtLogger} = require('./cbt-logger');
 
 const promiseFulfill = function(...args) {
