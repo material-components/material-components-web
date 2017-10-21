@@ -39,9 +39,10 @@ cbtFlow.on('cbt:session-started', (session) => {
   session.waitFor('.mdc-button').toBeVisible();
   session.takeSnapshot();
 
-  // NOTE(acdvorak): Mouse events are not supported in Safari (mobile or desktop) and Firefox.
-  // They are only supported in Chrome, Edge, and IE 11.
-  // We might be able to use JS to simulate it instead.
+  // NOTE(acdvorak): With the exception of `click`, mouse events are not yet supported in Firefox, iOS Safari, and
+  // desktop Safari < 10. They are only supported in Chrome, Edge, IE 11, and desktop Safari 10+.
+  // Realistically, we cannot simulate mouse events in JS because they are not "trusted" events (see
+  // https://stackoverflow.com/a/17226753/467582 for more info).
 
   // session.mouseDown('.mdc-button');
   // session.takeSnapshot();
