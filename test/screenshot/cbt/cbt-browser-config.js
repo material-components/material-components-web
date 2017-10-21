@@ -125,12 +125,12 @@ const BROWSERS = {
         'platformVersion': '5.0',
         'platformName': 'Android',
       },
-      // v04: {
-      //   'browserName': 'Chrome',
-      //   'deviceName': 'Galaxy Note 3',
-      //   'platformVersion': '4.4',
-      //   'platformName': 'Android',
-      // },
+      v04: {
+        'browserName': 'Chrome',
+        'deviceName': 'Galaxy Note 3',
+        'platformVersion': '4.4',
+        'platformName': 'Android',
+      },
     },
 
     ios: {
@@ -184,6 +184,7 @@ class CbtBrowserConfig {
         // BROWSERS.mobile.android.v07,
         // BROWSERS.mobile.android.v06,
         // BROWSERS.mobile.android.v05,
+        // BROWSERS.mobile.android.v04,
         // BROWSERS.mobile.ios.v10,
         // BROWSERS.mobile.ios.v09,
       ],
