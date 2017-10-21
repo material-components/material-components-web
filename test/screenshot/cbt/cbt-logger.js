@@ -167,12 +167,13 @@ class CbtLogger {
   }
 
   static browserDescription(browser) {
-    return [
-      ['platform', 'platformName', 'platformVersion'],
-      ['browserName', 'version'],
-      ['deviceName'],
-      ['deviceOrientation'],
-    ]
+    return (
+      [
+        ['platform', 'platformName', 'platformVersion'],
+        ['browserName', 'version'],
+        ['deviceName'],
+        ['deviceOrientation'],
+      ]
       .map((propertyNames) => {
         return propertyNames
           .map((prop) => browser[prop])
@@ -180,7 +181,8 @@ class CbtLogger {
           .join(' ');
       })
       .filter((flatProps) => Boolean(flatProps))
-      .join(' • ');
+      .join(' • ')
+    );
   }
 }
 
