@@ -46,10 +46,12 @@ class CbtFlow extends EventEmitter {
         // Async functions outside of driver can use call() function.
         this.log_('Waiting on the browser to be launched and the session to start...');
 
+        let session;
+
         driver.getSession()
           .then((sessionData) => {
             const sessionId = sessionData.id_;
-            const session = new CbtSession({
+            session = new CbtSession({
               globalConfig: this.globalConfig_,
               driver,
               sessionId,
@@ -59,7 +61,7 @@ class CbtFlow extends EventEmitter {
             this.emit('cbt:session-started', session);
           })
           .catch((error) => {
-            this.handleWebDriverError_(error);
+            this.handleWebDriverError_(error, session);
           });
       });
     });
@@ -69,8 +71,13 @@ class CbtFlow extends EventEmitter {
     flow.on('uncaughtException', (error) => this.handleWebDriverError_(error));
   }
 
-  handleWebDriverError_(error) {
+  handleWebDriverError_(error, session) {
     this.error_('WebDriver error:', error);
+
+    if (session) {
+      session.quit();
+    }
+
     this.emit('cbt:error', error);
   }
 
