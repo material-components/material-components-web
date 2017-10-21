@@ -23,7 +23,7 @@ const {CbtSession} = require('./cbt-session');
 class CbtFlow extends EventEmitter {
   constructor({globalConfig, browsers} = {}) {
     super();
-    this.logger_ = new CbtLogger(this);
+    this.logger_ = CbtLogger.newBuilder().name(this).build();
     this.globalConfig_ = globalConfig;
     this.browsers_ = browsers;
   }

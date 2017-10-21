@@ -27,39 +27,98 @@ const LOG_LEVELS = {
 const ENV_LOG_LEVEL_KEY = process.env.CBT_LOG_LEVEL;
 const DEFAULT_LOG_LEVEL = ENV_LOG_LEVEL_KEY ? LOG_LEVELS[ENV_LOG_LEVEL_KEY] : LOG_LEVELS.log;
 
+let nextId_ = -1;
+
+class CbtLoggerBuilder {
+  constructor() {
+    this.logId_ = ++nextId_;
+    this.logName_ = null;
+    this.logLevel_ = DEFAULT_LOG_LEVEL;
+  }
+
+  id(id) {
+    this.logId_ = id;
+    return this;
+  }
+
+  name(caller) {
+    this.logName_ = typeof caller === 'string' ? caller : caller.constructor.name;
+    return this;
+  }
+
+  level(level) {
+    this.logLevel_ = level;
+    return this;
+  }
+
+  build() {
+    return new CbtLogger({
+      id: this.logId_,
+      name: this.logName_,
+      level: this.logLevel_,
+    });
+  }
+}
+
 // TODO(acdvorak): Switch to NLog's Appender/Logger paradigm
 class CbtLogger {
-  constructor(caller, level = DEFAULT_LOG_LEVEL) {
-    this.name_ = typeof caller === 'string' ? caller : caller.constructor.name;
+  static newBuilder() {
+    return new CbtLoggerBuilder();
+  }
+
+  constructor({id, name, level} = {}) {
+    this.id_ = id;
+    this.name_ = name;
     this.level_ = level;
+    this.prevTimestamp_ = null;
   }
 
   info(message, ...args) {
     if (this.level_ > LOG_LEVELS.info) {
       return;
     }
-    console.info(`>>> INFO(${this.name_}) - ${message}`, ...args);
+    const timestamp = this.getAndUpdateTimestamp_();
+    console.info(`>>> INFO(${this.name_}) - [${this.id_}] - [${timestamp}] - ${message}`, ...args);
   }
 
   log(message, ...args) {
     if (this.level_ > LOG_LEVELS.log) {
       return;
     }
-    console.log(`>>> LOG(${this.name_}) - ${message}`, ...args);
+    const timestamp = this.getAndUpdateTimestamp_();
+    console.log(`>>> LOG(${this.name_}) - [${this.id_}] - [${timestamp}] - ${message}`, ...args);
   }
 
   warn(message, ...args) {
     if (this.level_ > LOG_LEVELS.warn) {
       return;
     }
-    console.warn(`>>> WARN(${this.name_}) - ${message}`, ...args);
+    const timestamp = this.getAndUpdateTimestamp_();
+    console.warn(`>>> WARN(${this.name_}) - [${this.id_}] - [${timestamp}] - ${message}`, ...args);
   }
 
   error(message, ...args) {
     if (this.level_ > LOG_LEVELS.error) {
       return;
     }
-    console.error(`>>> ERROR(${this.name_}) - ${message}`, ...args);
+    const timestamp = this.getAndUpdateTimestamp_();
+    console.error(`>>> ERROR(${this.name_}) - [${this.id_}] - [${timestamp}] - ${message}`, ...args);
+  }
+
+  getAndUpdateTimestamp_() {
+    const nowDate = new Date();
+
+    if (!this.prevTimestamp_) {
+      this.prevTimestamp_ = nowDate;
+    }
+
+    const parts = [];
+    const deltaMs = nowDate.getTime() - this.prevTimestamp_.getTime();
+    parts.push(nowDate.toJSON());
+    parts.push(`+${Math.round(deltaMs / 1000)}s`);
+
+    this.prevTimestamp_ = nowDate;
+    return parts.join('][');
   }
 
   static prettifyArgs(...args) {
@@ -105,6 +164,23 @@ class CbtLogger {
 
     // "[1,2,3]" -> "1,2,3"
     return JSON.stringify(prettyArgs).replace(/^\[|]$/g, '');
+  }
+
+  static browserDescription(browser) {
+    return [
+      ['platform', 'platformName', 'platformVersion'],
+      ['browserName', 'version'],
+      ['deviceName'],
+      ['deviceOrientation'],
+    ]
+      .map((propertyNames) => {
+        return propertyNames
+          .map((prop) => browser[prop])
+          .filter((prop) => Boolean(prop))
+          .join(' ');
+      })
+      .filter((flatProps) => Boolean(flatProps))
+      .join(' • ');
   }
 }
 

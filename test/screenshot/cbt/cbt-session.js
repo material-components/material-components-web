@@ -29,7 +29,7 @@ const promiseReject = function(...args) {
 
 class CbtSession {
   constructor({globalConfig, driver, sessionId, browser} = {}) {
-    this.logger_ = new CbtLogger(this);
+    this.logger_ = CbtLogger.newBuilder().name(this).id(sessionId).build();
     this.globalConfig_ = globalConfig;
     this.driver_ = driver;
     this.sessionId_ = sessionId;
@@ -62,6 +62,8 @@ class CbtSession {
 
   interact(callback) {
     if (!this.constructor.supportsAdvancedUserInteractions_(this.browser_)) {
+      const prettyArgs = CbtLogger.prettifyArgs(this.browser_);
+      this.warn_(`Skipping interactive tests: Browser ${prettyArgs} does not support Advanced User Interactions`);
       return;
     }
 
@@ -365,19 +367,23 @@ class CbtSession {
   }
 
   info_(message, ...args) {
-    this.logger_.info(`[${this.sessionId_}] - ${message}`, ...args);
+    const browserDescription = CbtLogger.browserDescription(this.browser_);
+    this.logger_.info(`[${browserDescription}] - ${message}`, ...args);
   }
 
   log_(message, ...args) {
-    this.logger_.log(`[${this.sessionId_}] - ${message}`, ...args);
+    const browserDescription = CbtLogger.browserDescription(this.browser_);
+    this.logger_.log(`[${browserDescription}] - ${message}`, ...args);
   }
 
   warn_(message, ...args) {
-    this.logger_.warn(`[${this.sessionId_}] - ${message}`, ...args);
+    const browserDescription = CbtLogger.browserDescription(this.browser_);
+    this.logger_.warn(`[${browserDescription}] - ${message}`, ...args);
   }
 
   error_(message, ...args) {
-    this.logger_.error(`[${this.sessionId_}] - ${message}`, ...args);
+    const browserDescription = CbtLogger.browserDescription(this.browser_);
+    this.logger_.error(`[${browserDescription}] - ${message}`, ...args);
   }
 }
 
