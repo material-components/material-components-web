@@ -27,6 +27,34 @@ const promiseReject = function(...args) {
   return webdriver.promise.Promise.reject(...args);
 };
 
+const prettifyArgs = function(...args) {
+  let prevWasUndefined = true;
+
+  const prettyArgs = args
+    .map((value) => {
+      if (value instanceof webdriver.WebElement ||
+          value instanceof webdriver.WebElementPromise ||
+          value instanceof webdriver.promise.Promise ||
+          value instanceof webdriver.promise.Thenable ||
+          value instanceof webdriver.ThenableWebDriver) {
+        return value.constructor.name;
+      }
+      return value;
+    })
+    .reverse()
+    .filter((value) => {
+      if (prevWasUndefined && typeof value === 'undefined') {
+        prevWasUndefined = true;
+        return false;
+      }
+      return true;
+    })
+    .reverse();
+
+  // "[1,2,3]" -> "1,2,3"
+  return JSON.stringify(prettyArgs).replace(/^\[|]$/g, '');
+};
+
 class CbtSession {
   constructor({globalConfig, driver, sessionId, browser} = {}) {
     this.logger_ = new CbtLogger(this);
@@ -44,12 +72,14 @@ class CbtSession {
       this.info_('Unable to enqueue driver command: Driver has already quit (1)');
       return promiseReject('FROM enqueue(1)');
     }
+
     return this.driver_.call(() => {
       if (this.hasQuit_) {
         this.info_('Unable to execute driver command: Driver has already quit (2)');
         // TODO(acdvorak): Figure out why this triggers CbtFlow#handleWebDriverError_
         return promiseReject('FROM enqueue(2)');
       }
+
       return callback(this.driver_);
     });
   }
@@ -174,37 +204,43 @@ class CbtSession {
   }
 
   takeSnapshot() {
-    return this.rpc_({
-      method: 'POST',
-      uri: 'https://crossbrowsertesting.com/api/v3/selenium/' + this.sessionId_ + '/snapshots',
-    });
+    return this
+      .rpc_({
+        method: 'POST',
+        uri: 'https://crossbrowsertesting.com/api/v3/selenium/' + this.sessionId_ + '/snapshots',
+      })
+      .then(() => {
+        this.log_('takeSnapshot()');
+      });
   }
 
   wait(condition, timeoutInMs = undefined, message = undefined) {
-    if (this.hasQuit_) {
-      this.info_('Unable to wait(): Driver has already quit');
-      return promiseReject('FROM wait()');
-    }
+    return this.enqueue(() => {
+      if (typeof condition === 'number') {
+        // webdriver has built-in promise to use
+        const deferred = webdriver.promise.defer();
 
-    if (typeof condition === 'number') {
-      // webdriver has built-in promise to use
-      const deferred = webdriver.promise.defer();
+        // Shift arguments
+        message = timeoutInMs;
+        timeoutInMs = condition + 1000;
+        condition = () => deferred.promise;
 
-      // Shift arguments
-      message = timeoutInMs;
-      timeoutInMs = condition + 1000;
-      condition = () => deferred.promise;
+        setTimeout(() => {
+          deferred.fulfill(true);
+        }, timeoutInMs);
+      }
 
-      setTimeout(() => {
-        deferred.fulfill(true);
-      }, timeoutInMs);
-    }
+      // eslint-disable-next-line prefer-rest-params
+      const prettyArgs = prettifyArgs(...Array.from(arguments));
+      this.log_(`wait(${prettyArgs})`);
 
-    // TODO(acdvorak): Figure out why the timeout doesn't block the driver for 5 seconds.
-    return this.driver_.wait(condition, timeoutInMs, message);
+      return this.driver_.wait(condition, timeoutInMs, message);
+    });
   }
 
   waitFor(selector, timeoutInMs = 5000) {
+    // eslint-disable-next-line prefer-rest-params
+    const prettyArgs = prettifyArgs(...Array.from(arguments));
     const by = webdriver.By.css(selector);
 
     const wait = {
@@ -213,6 +249,9 @@ class CbtSession {
           this.info_('Unable to waitFor(element).toBePresent(): Driver has already quit');
           return promiseReject('FROM waitFor(1)');
         }
+
+        this.log_(`waitFor(${prettyArgs}).toBePresent()`);
+
         return this.driver_.wait(webdriver.until.elementLocated(by), timeoutInMs);
       },
       toBeVisible: () => {
@@ -221,6 +260,9 @@ class CbtSession {
             this.info_('Unable to waitFor(element).toBeVisible(): Driver has already quit');
             return promiseReject('FROM waitFor(2)');
           }
+
+          this.log_(`waitFor(${prettyArgs}).toBeVisible()`);
+
           return this.driver_.wait(webdriver.until.elementIsVisible(this.driver_.findElement(by)), timeoutInMs);
         });
       },
@@ -265,12 +307,13 @@ class CbtSession {
   }
 
   performGenericAction_(actionName, ...args) {
-    if (this.hasQuit_) {
-      this.info_(`Unable to execute performGenericAction_('${actionName}'): Driver has already quit`);
-      return promiseReject('FROM performGenericAction_()');
-    }
-    const actions = this.driver_.actions();
-    return actions[actionName](...args).perform().catch(() => this.quit());
+    this.enqueue(() => {
+      const prettyArgs = prettifyArgs(...args);
+      this.log_(`${actionName}(${prettyArgs})`);
+
+      const actions = this.driver_.actions();
+      return actions[actionName](...args).perform().catch(() => this.quit());
+    });
   }
 
   getElement_(elementOrSelector) {
@@ -301,11 +344,11 @@ class CbtSession {
   }
 
   rpc_(requestObject) {
-    const debugId = `rpc_(${requestObject.uri}, ${JSON.stringify(requestObject.body)})`;
+    const methodSignature = `rpc_(${requestObject.uri}, ${JSON.stringify(requestObject.body)})`;
 
     return this.enqueue(() => {
       if (this.hasQuit_) {
-        this.info_(`Unable to execute ${debugId}: Driver has already quit`);
+        this.info_(`Unable to execute ${methodSignature}: Driver has already quit`);
         return;
       }
 
@@ -328,10 +371,10 @@ class CbtSession {
           }
 
           if (result.error) {
-            this.info_(`About to call deferred.reject(${JSON.stringify(result)}) in ${debugId}`);
+            this.info_(`About to call deferred.reject(${JSON.stringify(result)}) in ${methodSignature}`);
             deferred.reject(result);
           } else {
-            this.info_(`About to call deferred.fulfill(${JSON.stringify(result)}) in ${debugId}`);
+            this.info_(`About to call deferred.fulfill(${JSON.stringify(result)}) in ${methodSignature}`);
             deferred.fulfill(result);
           }
         })

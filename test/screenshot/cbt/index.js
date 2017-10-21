@@ -48,10 +48,7 @@ cbtFlow.on('cbt:session-started', (session) => {
     session.takeSnapshot();
 
     command.sendKeys('\t');
-
-    // TODO(acdvorak): Figure out why the timeout doesn't block the driver for 5 seconds.
     session.wait(5000);
-
     session.takeSnapshot();
   });
 
