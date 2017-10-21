@@ -117,7 +117,7 @@ class CbtSession {
             this.info_('Unable to wait for element toBeVisible(): Driver has already quit');
             return promiseReject('FROM waitFor(2)');
           }
-          return this.driver_.wait(webdriver.until.elementIsVisible(this.driver_.findElement(by)), timeoutInMs).then();
+          return this.driver_.wait(webdriver.until.elementIsVisible(this.driver_.findElement(by)), timeoutInMs);
         });
       },
     };
