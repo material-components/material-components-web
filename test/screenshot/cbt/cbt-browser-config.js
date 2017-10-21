@@ -24,8 +24,8 @@ const DEFAULTS = {
   },
   desktop: {
     // Leave screenResolution unspecified. CBT appears to use 1366x768 by default for all browsers/OSes. Not every
-    // browser/OS supports every resolution, so explicitly specifying one can cause errors if it isn't supported by one
-    // of the browsers/OS configurations.
+    // browser/OS supports every resolution, so explicitly specifying one can cause errors if that resolution isn't
+    // supported by one of the browser/OS configurations.
     // 'screenResolution': '1366x768',
   },
   mobile: {
