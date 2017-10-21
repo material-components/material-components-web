@@ -35,36 +35,28 @@ class CbtLogger {
     if (this.level_ > LOG_LEVELS.info) {
       return;
     }
-    // console.info('');
     console.info(`>>> INFO(${this.name_}) - ${message}`, ...args);
-    // console.info('');
   }
 
   log(message, ...args) {
     if (this.level_ > LOG_LEVELS.log) {
       return;
     }
-    // console.log('');
     console.log(`>>> LOG(${this.name_}) - ${message}`, ...args);
-    // console.log('');
   }
 
   warn(message, ...args) {
     if (this.level_ > LOG_LEVELS.warn) {
       return;
     }
-    // console.warn('');
     console.warn(`>>> WARN(${this.name_}) - ${message}`, ...args);
-    // console.warn('');
   }
 
   error(message, ...args) {
     if (this.level_ > LOG_LEVELS.error) {
       return;
     }
-    // console.error('');
     console.error(`>>> ERROR(${this.name_}) - ${message}`, ...args);
-    // console.error('');
   }
 }
 
