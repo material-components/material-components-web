@@ -28,7 +28,7 @@ const DEFAULT_LOG_LEVEL = ENV_LOG_LEVEL_KEY ? LOG_LEVELS[ENV_LOG_LEVEL_KEY] : LO
 class CbtLogger {
   constructor(caller, level = DEFAULT_LOG_LEVEL) {
     this.name_ = typeof caller === 'string' ? caller : caller.constructor.name;
-    this.level_ = 0; // level;
+    this.level_ = level;
   }
 
   info(message, ...args) {
