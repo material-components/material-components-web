@@ -61,18 +61,19 @@ class CbtSession {
       })
       .catch((result) => {
         this.error_('FAILED to set score to "pass"; setScore result = ', result);
-      });
+      })
+      .finally(() => this.quit());
   }
 
   fail() {
     return this.setScore_('fail')
       .then((result) => {
         this.error_('SUCCESSFULLY set score to "fail"; setScore result = ', result);
-        this.quit();
       })
       .catch((result) => {
         this.error_('FAILED to set score to "fail"; setScore result = ', result);
-      });
+      })
+      .finally(() => this.quit());
   }
 
   quit() {
@@ -236,7 +237,7 @@ class CbtSession {
   }
 
   handleWebDriverError_(/* error */) {
-    this.fail().finally(() => this.quit());
+    this.fail();
   }
 
   info_(message, ...args) {

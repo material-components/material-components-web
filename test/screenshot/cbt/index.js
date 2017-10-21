@@ -52,6 +52,6 @@ cbtFlow.on('cbt:session-started', (session) => {
 
   // Because all driver actions are async, this function will always be called.
   // However, it will only be executed if all previous driver commands succeed.
-  session.pass().finally(() => session.quit());
+  session.pass();
 });
 cbtFlow.start();
