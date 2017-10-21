@@ -27,8 +27,8 @@ const globalConfig = {
   username,
   authkey,
   remoteHub,
-  build: `[commit: ${build}]`,
-  name: 'Button demo page',
+  build: `[${build.substr(0, 7)}]`,
+  name: 'PR #123 by acdvorak',
 };
 const browsers = CbtBrowserConfig.allBrowsers(globalConfig);
 
