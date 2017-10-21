@@ -132,6 +132,7 @@ const BROWSERS = {
       //   'platformName': 'Android',
       // },
     },
+
     ios: {
       v10: {
         'browserName': 'Safari',
