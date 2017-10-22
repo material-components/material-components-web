@@ -69,7 +69,7 @@ class MDCRipple extends MDCComponent {
         // add the listener at the window level. Otherwise, add it to the element.
         if (!UP_EVENTS.find( (type) => {
           if ( type === evtType) {
-            window.addEventListener(evtType, handler, {passive: util.applyPassive()});
+            window.addEventListener(evtType, handler, util.applyPassive());
             return true;
           }
         })) {
@@ -81,7 +81,7 @@ class MDCRipple extends MDCComponent {
         // remove the listener from the window level. Otherwise, remove it from the element.
         if (!UP_EVENTS.find( (type) => {
           if ( type === evtType) {
-            window.removeEventListener(evtType, handler, {passive: util.applyPassive()});
+            window.removeEventListener(evtType, handler, util.applyPassive());
             return true;
           }
         })) {
