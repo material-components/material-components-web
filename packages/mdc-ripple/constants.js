@@ -43,4 +43,11 @@ const numbers = {
   FG_DEACTIVATION_MS: 83,
 };
 
-export {cssClasses, strings, numbers};
+const events = {
+  // 'Up' events needs to be at the window level, because if they
+  // are at the component level they will not fire if the mouse
+  // moves off of the element (or if the touch event has movement)
+  UP_EVENTS: ['mouseup', 'pointerup', 'touchend'],
+};
+
+export {cssClasses, strings, numbers, events};
