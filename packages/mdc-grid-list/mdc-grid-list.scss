@@ -33,6 +33,7 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 
 @mixin mdc-grid-list-tile-gutter($gutter-width) {
   .mdc-grid-tile {
+    box-sizing: content-box;
     margin: $gutter-width/2 0;
     padding: 0 $gutter-width/2;
 

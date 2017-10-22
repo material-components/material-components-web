@@ -35,6 +35,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
+  box-sizing: content-box;
   max-width: calc(100% - #{$dd-arrow-padding});
   height: 32px;
   transition:
