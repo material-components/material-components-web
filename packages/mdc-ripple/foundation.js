@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCRippleAdapter from './adapter';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings, numbers, events} from './constants';
 import {getNormalizedEventCoords} from './util';
 
 /**
@@ -86,6 +86,10 @@ class MDCRippleFoundation extends MDCFoundation {
 
   static get numbers() {
     return numbers;
+  }
+
+  static get events() {
+    return events;
   }
 
   static get defaultAdapter() {
@@ -240,6 +244,13 @@ class MDCRippleFoundation extends MDCFoundation {
 
     const {activationState_: activationState} = this;
     if (activationState.isActivated) {
+      // Even when using touch, the effect can be activated by a
+      // 'mousedown'. But if the finger slides off, then there is
+      // no 'mouseup'. So we overwrite the event with 'touchstart',
+      // ifand when one occurs.
+      if (e.type === 'touchstart' && e.type !== activationState.activationEvent.type) {
+        activationState.activationEvent = e;
+      }
       return;
     }
 
@@ -371,6 +382,7 @@ class MDCRippleFoundation extends MDCFoundation {
    */
   deactivate_(e) {
     const {activationState_: activationState} = this;
+    const {DEACTIVATION_TIMEOUT_MS} = MDCRippleFoundation.numbers;
     // This can happen in scenarios such as when you have a keyup event that blurs the element.
     if (!activationState.isActivated) {
       return;
@@ -393,8 +405,11 @@ class MDCRippleFoundation extends MDCFoundation {
     const needsDeactivationUX = actualActivationType === expectedActivationType;
     let needsActualDeactivation = needsDeactivationUX;
     if (activationState.wasActivatedByPointer) {
-      needsActualDeactivation = e.type === 'mouseup';
+      // We need to check for 'touchend' here as well because if the finger slides off the
+      // element before lifting, 'mouseup' is never fired
+      needsActualDeactivation = e.type === 'mouseup' || e.type === 'touchend';
     }
+    console.log(e.type + ':' + needsActualDeactivation);
 
     const state = /** @type {!ActivationStateType} */ (Object.assign({}, activationState));
     requestAnimationFrame(() => {
@@ -404,7 +419,10 @@ class MDCRippleFoundation extends MDCFoundation {
       }
 
       if (needsActualDeactivation) {
-        this.activationState_ = this.defaultActivationState_();
+        // Prevents double-animation when 'mouse' and 'touch' events fire sequentially
+        setTimeout(()=>{
+          this.activationState_ = this.defaultActivationState_();
+        }, DEACTIVATION_TIMEOUT_MS);
       }
     });
   }
