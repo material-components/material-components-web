@@ -18,13 +18,14 @@
 
 set -e
 
-# Nuke any changed or untracked files
-git add .
+# Nuke any modified or untracked files
 git reset --hard HEAD
+git clean -d --force
 
-# Get the latest code
-git fetch --tags --prune
+# Get the latest code and prune obsolete branches/tags
+git fetch --tags
 git checkout master
+git fetch --prune
 
 . /scripts/source-nvm.sh
 

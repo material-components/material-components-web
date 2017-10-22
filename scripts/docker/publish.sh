@@ -18,12 +18,11 @@
 
 set -e
 
-cd scripts/docker/
+cd "`dirname ${BASH_SOURCE[0]}`"
 
-docker build -t dev-server:latest .
-docker tag dev-server:latest us.gcr.io/material-components-web/dev-server:latest
-gcloud docker -- push us.gcr.io/material-components-web/dev-server:latest
+gcloud container builds submit --config cloudbuild.yaml .
 
-#gcloud container builds submit --config cloudbuild.yaml .
-#gcloud docker -- pull us.gcr.io/material-components-web/dev-server:latest
-#docker run -p 8080:8080 us.gcr.io/material-components-web/dev-server:latest
+# Alternatively, you can build locally and upload the image to GCloud:
+#docker build -t dev-server:latest .
+#docker tag dev-server:latest us.gcr.io/material-components-web/dev-server:latest
+#gcloud docker -- push us.gcr.io/material-components-web/dev-server:latest

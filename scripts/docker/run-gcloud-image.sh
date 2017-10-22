@@ -16,11 +16,9 @@
 #  limitations under the License.
 #
 
-apt-get update \
-  && apt-get install -y curl git less vim \
-  && apt-get autoclean -y
+set -e
 
-useradd --create-home --shell /bin/bash demobot
-chown -R demobot:demobot .
+cd "`dirname ${BASH_SOURCE[0]}`"
 
-
+gcloud docker -- pull us.gcr.io/material-components-web/dev-server:latest
+docker run --interactive --tty -p 8080:8080 us.gcr.io/material-components-web/dev-server:latest

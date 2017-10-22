@@ -18,13 +18,6 @@
 
 set -e
 
-cd scripts/docker/
+cd "`dirname ${BASH_SOURCE[0]}`"
 
-gcloud docker -- pull us.gcr.io/material-components-web/dev-server:latest
-gcloud container images list --repository us.gcr.io/material-components-web
-docker ps -l
-docker images
-docker run -p 8080:8080 us.gcr.io/material-components-web/dev-server:latest
-#DOCKER_ID=`docker ps -lq`
-#docker exec -t -i $DOCKER_ID /bin/bash
-#docker run -it -p 8080:8080 dev-server
+docker build -t dev-server:latest .

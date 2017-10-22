@@ -16,11 +16,8 @@
 #  limitations under the License.
 #
 
-apt-get update \
-  && apt-get install -y curl git less vim \
-  && apt-get autoclean -y
+set -e
 
-useradd --create-home --shell /bin/bash demobot
-chown -R demobot:demobot .
+cd "`dirname ${BASH_SOURCE[0]}`"
 
-
+docker run --interactive --tty -p 8080:8080 dev-server:latest
