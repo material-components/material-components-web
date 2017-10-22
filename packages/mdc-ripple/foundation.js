@@ -409,7 +409,6 @@ class MDCRippleFoundation extends MDCFoundation {
       // element before lifting, 'mouseup' is never fired
       needsActualDeactivation = e.type === 'mouseup' || e.type === 'touchend';
     }
-    console.log(e.type + ':' + needsActualDeactivation);
 
     const state = /** @type {!ActivationStateType} */ (Object.assign({}, activationState));
     requestAnimationFrame(() => {
