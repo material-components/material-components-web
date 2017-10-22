@@ -18,26 +18,13 @@
 
 set -e
 
-function log() {
-  echo '\033[36m[run-demo-container]\033[0m' "$@"
-}
+cd scripts/docker/
 
-#REGISTRY_HOST='us.gcr.io'
-#PROJECT_ID='material-components-web'
-#CONTAINER_ID='dev-server'
-#TAG='latest'
-#REGISTRY_NAME="$REGISTRY_HOST/$PROJECT_ID/$CONTAINER_ID:$TAG"
-
-export REGISTRY_HOST='us.gcr.io'
-export PROJECT_ID='material-components-web'
-export CONTAINER_ID='dev-server'
-export TAG='latest'
-export REGISTRY_NAME='us.gcr.io/material-components-web/dev-server:latest'
-
-gcloud docker -- pull us.gcr.io/material-components-web/dev-server
+gcloud docker -- pull us.gcr.io/material-components-web/dev-server:latest
 gcloud container images list --repository us.gcr.io/material-components-web
 docker ps -l
 docker images
-docker run -p 8080:8080 us.gcr.io/material-components-web/dev-server
-DOCKER_ID=`docker ps -lq`
-docker exec -t -i $DOCKER_ID /bin/bash
+docker run -p 8080:8080 us.gcr.io/material-components-web/dev-server:latest
+#DOCKER_ID=`docker ps -lq`
+#docker exec -t -i $DOCKER_ID /bin/bash
+#docker run -it -p 8080:8080 dev-server

@@ -18,20 +18,12 @@
 
 set -e
 
-function log() {
-  echo '\033[36m[publish-demo-container]\033[0m' "$@"
-}
+cd scripts/docker/
 
-export REGISTRY_HOST='us.gcr.io'
-export PROJECT_ID='material-components-web'
-export CONTAINER_ID='dev-server'
-export TAG='latest'
-export REGISTRY_NAME='us.gcr.io/material-components-web/dev-server:latest'
-
-#docker build -t dev-server .
-#docker tag dev-server us.gcr.io/material-components-web/dev-server:latest
-#gcloud docker -- push us.gcr.io/material-components-web/dev-server:latest
+docker build -t dev-server:latest .
+docker tag dev-server:latest us.gcr.io/material-components-web/dev-server:latest
+gcloud docker -- push us.gcr.io/material-components-web/dev-server:latest
 
 #gcloud container builds submit --config cloudbuild.yaml .
-#gcloud docker -- pull us.gcr.io/material-components-web/dev-server
-#docker run -p 8080:8080 us.gcr.io/material-components-web/dev-server
+#gcloud docker -- pull us.gcr.io/material-components-web/dev-server:latest
+#docker run -p 8080:8080 us.gcr.io/material-components-web/dev-server:latest
