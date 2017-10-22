@@ -55,6 +55,7 @@ class MDCRipple extends MDCComponent {
    */
   static createAdapter(instance) {
     const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
+    const {UP_EVENTS} = MDCRippleFoundation.events;
 
     return {
       browserSupportsCssVars: () => util.supportsCssVariables(window),
@@ -63,10 +64,30 @@ class MDCRipple extends MDCComponent {
       isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
-      registerInteractionHandler: (evtType, handler) =>
-        instance.root_.addEventListener(evtType, handler, util.applyPassive()),
-      deregisterInteractionHandler: (evtType, handler) =>
-        instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
+      registerInteractionHandler: (evtType, handler) => {
+        // If this is an 'up event' (the event name exists in the UP_EVENTS array),
+        // add the listener at the window level. Otherwise, add it to the element.
+        if (!UP_EVENTS.find( (type) => {
+          if ( type === evtType) {
+            window.addEventListener(evtType, handler, {passive: util.applyPassive()});
+            return true;
+          }
+        })) {
+          instance.root_.addEventListener(evtType, handler, util.applyPassive());
+        }
+      },
+      deregisterInteractionHandler: (evtType, handler) => {
+        // If this is an 'up event' (the event name exists in the UP_EVENTS array),
+        // remove the listener from the window level. Otherwise, remove it from the element.
+        if (!UP_EVENTS.find( (type) => {
+          if ( type === evtType) {
+            window.removeEventListener(evtType, handler, {passive: util.applyPassive()});
+            return true;
+          }
+        })) {
+          instance.root_.removeEventListener(evtType, handler, util.applyPassive());
+        }
+      },
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       updateCssVariable: (varName, value) => instance.root_.style.setProperty(varName, value),
