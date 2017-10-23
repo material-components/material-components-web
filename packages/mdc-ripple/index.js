@@ -67,26 +67,28 @@ class MDCRipple extends MDCComponent {
       registerInteractionHandler: (evtType, handler) => {
         // If this is an 'up event' (the event name exists in the UP_EVENTS array),
         // add the listener at the window level. Otherwise, add it to the element.
-        if (!UP_EVENTS.find( (type) => {
+        // NOTE: IE11 precludes us from using Array.prototype.find
+        for (let i = 0, type; (type = UP_EVENTS[i]); i ++) {
           if ( type === evtType) {
             window.addEventListener(evtType, handler, util.applyPassive());
-            return true;
+            return;
           }
-        })) {
-          instance.root_.addEventListener(evtType, handler, util.applyPassive());
         }
+
+        instance.root_.addEventListener(evtType, handler, util.applyPassive());
       },
       deregisterInteractionHandler: (evtType, handler) => {
         // If this is an 'up event' (the event name exists in the UP_EVENTS array),
         // remove the listener from the window level. Otherwise, remove it from the element.
-        if (!UP_EVENTS.find( (type) => {
+        // NOTE: IE11 precludes us from using Array.prototype.find
+        for (let i = 0, type; (type = UP_EVENTS[i]); i ++) {
           if ( type === evtType) {
             window.removeEventListener(evtType, handler, util.applyPassive());
-            return true;
+            return;
           }
-        })) {
-          instance.root_.removeEventListener(evtType, handler, util.applyPassive());
         }
+
+        instance.root_.removeEventListener(evtType, handler, util.applyPassive());
       },
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
