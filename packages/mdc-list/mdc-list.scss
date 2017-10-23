@@ -154,9 +154,9 @@ a.mdc-list-item {
 // stylelint-enable selector-max-type,selector-no-qualifying-type
 
 .mdc-list-item.mdc-ripple-upgraded {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before"));
-  @include mdc-ripple-fg((pseudo: "::after"));
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color;
+  @include mdc-ripple-radius;
   @include mdc-rtl-reflexive-position(left, $mdc-list-side-padding * -1);
 
   position: relative;
@@ -171,8 +171,7 @@ a.mdc-list-item {
   }
 
   @include mdc-theme-dark(".mdc-list") {
-    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .12));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .12));
+    @include mdc-ripple-color(white, .12);
   }
 }
 
