@@ -279,6 +279,20 @@ text, validation, and dense UI.
 </div>
 ```
 
+### Sass Mixins
+
+To customize a Filled Text Field or a Text Field `textarea`'s border radius, you can use the following mixins.
+Alternatively, if you would like to change the border radius for every instance of MDC Text Field uniformly, regardless
+of the variant, you can override $mdc-text-field-border-radius in Sass.
+
+#### `mdc-text-field-box-corner-radius($radius)`
+
+This mixin customizes the border radius for a Text Field Box.
+
+#### `mdc-text-field-textarea-corner-radius($radius)`
+
+This mixin customizes the border radius for a Text Field `textarea`.
+
 ### Using the JS component
 
 MDC Textfield ships with Component / Foundation classes which are used to provide a full-fidelity

@@ -163,10 +163,11 @@
 }
 
 .mdc-textfield--box {
+  @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
+
   display: inline-flex;
   position: relative;
   height: 56px;
-  border-radius: 4px 4px 0 0;
   background-color: $mdc-textfield-box-background;
   overflow: hidden;
 
@@ -502,6 +503,8 @@
 }
 
 .mdc-textfield--textarea {
+  @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
+
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
   $label-offset-x: $padding-inset;
@@ -510,7 +513,7 @@
   height: initial;
   transition: none;
   border: 1px solid $mdc-textarea-border-on-light;
-  border-radius: 4px;
+  overflow: hidden;
 
   @include mdc-theme-dark(".mdc-textfield") {
     border-color: $mdc-textarea-border-on-dark;
@@ -521,7 +524,6 @@
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
     border: 1px solid transparent;
-    border-radius: 2px;
 
     &:focus {
       @include mdc-theme-prop(border-color, primary);
