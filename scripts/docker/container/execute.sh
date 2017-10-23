@@ -16,7 +16,11 @@
 #  limitations under the License.
 #
 
+. /scripts/execute-args.sh
+. /scripts/source-nvm.sh
+
 set -e
+set -x
 
 # Nuke any modified or untracked files
 git reset --hard HEAD
@@ -24,10 +28,11 @@ git clean -d --force
 
 # Get the latest code and prune obsolete branches/tags
 git fetch --tags
-git checkout master
+git checkout -b "pr/${PR}" origin/master
+git pull "${REMOTE_URL}" "${REMOTE_BRANCH}"
 git fetch --prune
 
-. /scripts/source-nvm.sh
+set +x
 
 echo 'Installing node modules...'
 npm install
