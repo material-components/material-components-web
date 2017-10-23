@@ -9,36 +9,31 @@ path: /catalog/ripples/
 
 # Ripples
 
-- [MDC Ripple](#mdc-ripple)
-    - [An aside regarding browser support](#an-aside-regarding-browser-support)
-  - [Installation](#installation)
-  - [Usage](#usage)
-      - [Adding the ripple Sass](#adding-the-ripple-sass)
-        - [The full Sass API](#the-full-sass-api)
-      - [Adding the ripple JS](#adding-the-ripple-js)
-        - [ES2015](#es2015)
-        - [CommonJS](#commonjs)
-        - [AMD](#amd)
-        - [Global](#global)
-    - [Unbounded Ripples](#unbounded-ripples)
-      - [Using JS](#using-js)
-      - [Using DOM (Component Only)](#using-dom-component-only)
-    - [The mdc-ripple-surface class](#the-mdc-ripple-surface-class)
-    - [Using the foundation](#using-the-foundation)
-    - [Using the vanilla DOM adapter](#using-the-vanilla-DOM-adapter)
-  - [Tips/Tricks](#tipstricks)
-    - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
-    - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
-    - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
-    - [Specifying known element dimensions](#specifying-known-element-dimensions)
-  - [Caveat: Edge](#caveat-edge)
-  - [Caveat: Safari](#caveat-safari)
-  - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
-  - [The util API](#the-util-api)
+MDC Ripple provides the JavaScript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
 
-MDC Ripple provides the Javascript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
+MDC Ripple also works without JavaScript, where it gracefully degrades to a simpler CSS-Only implementation.
 
-MDC Ripple also works without javascript, where it gracefully degrades to a simpler CSS-Only implementation.
+## Table of Contents
+
+- [An aside regarding browser support](#an-aside-regarding-browser-support)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Adding Ripple styles](#adding-ripple-styles)
+  - [Adding Ripple JS](#adding-ripple-js)
+  - [Ripple JS API](#ripple-js-api)
+  - [Unbounded Ripples](#unbounded-ripples)
+  - [The mdc-ripple-surface class](#the-mdc-ripple-surface-class)
+  - [Using the foundation](#using-the-foundation)
+  - [Using the vanilla DOM adapter](#using-the-vanilla-dom-adapter)
+- [Tips/Tricks](#tipstricks)
+  - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
+  - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
+  - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
+  - [Specifying known element dimensions](#specifying-known-element-dimensions)
+- [Caveat: Edge](#caveat-edge)
+- [Caveat: Safari](#caveat-safari)
+- [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
+- [The util API](#the-util-api)
 
 ### An aside regarding browser support
 
@@ -56,58 +51,40 @@ npm install --save @material/ripple
 
 ## Usage
 
-For many components, providing a ripple interaction is straightforward.
+### Adding Ripple styles
 
-Let's say we have a `surface` element that represents a basic surface.
+General notes:
 
-```html
-<div class="surface" tabindex="0">
-  <p>A surface</p>
-</div>
-```
+* Ripple mixins can be applied to a variety of elements representing interactive surfaces. These mixins are also used by other MDC Web components such as Button, FAB, Checkbox, Radio, etc.
+* Surfaces for bounded ripples should have `overflow` set to `hidden`, while surfaces for unbounded ripples should have it set to `visible`
+* When a ripple is successfully initialized on an element using JS, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple JS is not initialized but Sass mixins are included on the surface, the ripple will still work, but it uses a simpler, CSS-only implementation which relies on `:hover`, `:focus`, and `:active`.
 
-We also have some basic styles for our surface that
-use [mdc-elevation](../mdc-elevation) to raise it up off of its background.
+#### Sass API
 
-```scss
-@import "@material/elevation/mixins";
+These APIs implicitly use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
+All three of the following mixins are mandatory in order to fully style the ripple effect; from that point, it is feasible to further override only the parts necessary (e.g. `mdc-ripple-color` specifically) for variants of a component.
 
-.surface {
-  @include mdc-elevation(2);
+Mixin | Description
+--- | ---
+`mdc-ripple-surface` | Adds base styles for a ripple surface
+`mdc-ripple-color($color, $opacity)` | Adds styles for the color and opacity of the ripple effect
+`mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
 
-  position: relative;
-  border-radius: 2px;
-  text-align: center;
-  /* Indicate to user element is interactive. */
-  cursor: pointer;
-```
+#### Legacy Sass API
 
-#### Adding the ripple Sass
+> Note: This API is deprecated and will be removed soon. Please use the APIs above instead, which establish the same styles with a simpler API.
 
-To add a ripple to our surface, first we include the proper Sass mixins within our surface's styles. We also add a few additional properties that ensure the ripple's UX is correct.
+All three of the following mixins are mandatory in order to fully style the ripple effect.
 
-```scss
-@import "@material/elevation/mixins";
-@import "@material/ripple/mixins";
+Mixin | Description
+--- | ---
+`mdc-ripple-base` | Adds base styles for a ripple surface
+`mdc-ripple-bg($config)` | Adds styles for the ripple's background (i.e. fade effects)
+`mdc-ripple-fg($config)` | Adds styles for the ripple's foreground (i.e. the ink wash)
 
-.surface {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before"));
-  @include mdc-ripple-fg((pseudo: "::after"));
-  // ...
+##### Ripple Configuration Map
 
-  /* "Bound" the ripple, preventing the pseudo-elements from bleeding out of the box. */
-  overflow: hidden;
-}
-```
-
-This code sets up `.surface` with the correct css variables as well as `will-change` properties to support the ripple. It then dynamically generates the correct selectors such that the surface's `::before` element functions as a background ripple, and the surface's `::after` element functions as a foreground ripple.
-
-When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple is not initialized but Sass mixins are included within our surface, the ripple will still work, but it would use a simpler, CSS-Only implementation which relies on `:hover`, `:active`, and `:focus`.
-
-##### The full Sass API
-
-Both `mdc-ripple-bg` and `mdc-ripple-fg` take an `$config` map as an optional
+Both `mdc-ripple-bg` and `mdc-ripple-fg` take a `$config` map as an optional
 argument, with which you can specify the following parameters:
 
 | Parameter | Description | Default |
@@ -118,11 +95,11 @@ argument, with which you can specify the following parameters:
 | `base-color` | The RGB color (_without_ an alpha component) of the ripple. This will only be used if `theme-style` isn't specified. | `black` |
 | `opacity` | A unitless number from `0-1` specifying the opacity that either the `base-color` or the `theme-style` color will take on. | `.06` |
 
-#### Adding the ripple JS
+### Adding Ripple JS
 
-First import the ripple JS
+First import the ripple JS.
 
-##### ES2015
+#### ES2015
 
 ```javascript
 import {MDCRipple, MDCRippleFoundation, util} from '@material/ripple';
@@ -134,7 +111,7 @@ import {MDCRipple, MDCRippleFoundation, util} from '@material/ripple';
 const {MDCRipple, MDCRippleFoundation, util} = require('@material/ripple');
 ```
 
-##### AMD
+#### AMD
 
 ```javascript
 require('path/to/@material/ripple', function(mdcRipple) {
@@ -144,7 +121,7 @@ require('path/to/@material/ripple', function(mdcRipple) {
 });
 ```
 
-##### Global
+#### Global
 
 ```javascript
 const MDCRipple = mdc.ripple.MDCRipple;
@@ -166,7 +143,7 @@ ripple.
 MDCRipple.attachTo(document.querySelector('.surface'));
 ```
 
-### Ripple API
+### Ripple JS API
 
 The component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
 components. This is used for making form field labels trigger the ripples in their corresponding input elements, for
