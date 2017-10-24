@@ -401,33 +401,15 @@ figure {
 }
 
 .demo-ripple-surface--primary {
-  &::before,
-  &::after {
-    @include mdc-theme-prop(background-color, primary);
-  }
-
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16));
+  @include mdc-ripple-color(primary, $mdc-ripple-pressed-dark-ink-opacity);
 }
 
 .demo-ripple-surface--secondary {
-  &::before,
-  &::after {
-    @include mdc-theme-prop(background-color, secondary);
-  }
-
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .16));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .16));
+  @include mdc-ripple-color(secondary, $mdc-ripple-pressed-dark-ink-opacity);
 }
 
 .demo-ripple-surface--custom {
-  &::before,
-  &::after {
-    @include mdc-theme-prop(background-color, $demo-custom-color);
-  }
-
-  @include mdc-ripple-bg((pseudo: "::before", base-color: $demo-custom-color, opacity: .16));
-  @include mdc-ripple-fg((pseudo: "::after", base-color: $demo-custom-color, opacity: .16));
+  @include mdc-ripple-color($demo-custom-color, $mdc-ripple-pressed-dark-ink-opacity);
 }
 
 .mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
