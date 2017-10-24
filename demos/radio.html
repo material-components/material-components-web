@@ -29,22 +29,6 @@
         background-color: #303030;
       }
 
-      /* Example of manually theming a radio. In a real app, the primary color would have enough
-         contrast from the dark background that this wouldn't be necessary. */
-      .mdc-theme--dark .mdc-radio__native-control:checked:not(:disabled) ~ .mdc-radio__background .mdc-radio__outer-circle {
-        border-color: #e91e63;
-      }
-      .mdc-theme--dark .mdc-radio__native-control:checked:not(:disabled) ~ .mdc-radio__background .mdc-radio__inner-circle {
-        background-color: #e91e63;
-      }
-      .mdc-theme--dark .mdc-radio__background::before {
-        background-color: #e91e63;
-      }
-      .mdc-theme--dark .mdc-radio.mdc-ripple-upgraded::before,
-      .mdc-theme--dark .mdc-radio.mdc-ripple-upgraded::after {
-        background-color: rgba(233, 31, 99, .2);
-      }
-
       .example {
         margin: 24px;
         padding: 24px;
@@ -56,7 +40,7 @@
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Radio</span>
         </section>
@@ -86,100 +70,147 @@
 
 
       <section class="example">
-        <h2>With Javascript</h2>
-        <div class="mdc-form-field">
-          <div class="mdc-radio">
-            <input class="mdc-radio__native-control" type="radio" id="ex0-radio1" checked name="ex0">
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
+        <h2>With JavaScript</h2>
+        <div class="demo-radio-row">
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="ex0-default-radio1" checked name="ex0-default">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
             </div>
+            <label id="ex0-default-radio1-label" for="ex0-default-radio1">Default Radio 1</label>
           </div>
-          <label id="ex0-radio1-label" for="ex0-radio1">Radio 1</label>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="ex0-default-radio2" name="ex0-default">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="ex0-default-radio2-label" for="ex0-default-radio2">Default Radio 2</label>
+          </div>
         </div>
-        <div class="mdc-form-field">
-          <div class="mdc-radio">
-            <input class="mdc-radio__native-control" type="radio" id="ex0-radio2" name="ex0">
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
+        <div class="demo-radio-row">
+          <div class="mdc-form-field">
+            <div class="mdc-radio demo-radio--custom">
+              <input class="mdc-radio__native-control" type="radio" id="ex0-custom-radio1" checked name="ex0-custom">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
             </div>
+            <label id="ex0-custom-radio1-label" for="ex0-custom-radio1">Custom Radio 1</label>
           </div>
-          <label id="ex0-radio2-label" for="ex0-radio2">Radio 2</label>
+          <div class="mdc-form-field">
+            <div class="mdc-radio demo-radio--custom">
+              <input class="mdc-radio__native-control" type="radio" id="ex0-custom-radio2" name="ex0-custom">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="ex0-custom-radio2-label" for="ex0-custom-radio2">Custom Radio 2</label>
+          </div>
         </div>
       </section>
 
       <section class="example">
         <h2>CSS Only</h2>
-        <div class="mdc-form-field">
-          <div class="mdc-radio" data-demo-no-js>
-            <input class="mdc-radio__native-control" type="radio" id="ex1-radio1" checked name="ex1">
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
+        <div class="demo-radio-row">
+          <div class="mdc-form-field">
+            <div class="mdc-radio" data-demo-no-js>
+              <input class="mdc-radio__native-control" type="radio" id="ex1-default-radio1" checked name="ex1-default">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
             </div>
+            <label id="ex1-default-radio1-label" for="ex1-default-radio1">Default Radio 1</label>
           </div>
-          <label id="ex1-radio1-label" for="ex1-radio1">Radio 1</label>
+          <div class="mdc-form-field">
+            <div class="mdc-radio" data-demo-no-js>
+              <input class="mdc-radio__native-control" type="radio" id="ex1-default-radio2" name="ex1-default">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="ex1-default-radio2-label" for="ex1-default-radio2">Default Radio 2</label>
+          </div>
         </div>
-        <div class="mdc-form-field">
-          <div class="mdc-radio" data-demo-no-js>
-            <input class="mdc-radio__native-control" type="radio" id="ex1-radio2" name="ex1">
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
+        <div class="demo-radio-row">
+          <div class="mdc-form-field">
+            <div class="mdc-radio demo-radio--custom" data-demo-no-js>
+              <input class="mdc-radio__native-control" type="radio" id="ex1-custom-radio1" checked name="ex1-custom">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
             </div>
+            <label id="ex1-custom-radio1-label" for="ex1-custom-radio1">Custom Radio 1</label>
           </div>
-          <label id="ex1-radio2-label" for="ex1-radio2">Radio 2</label>
+          <div class="mdc-form-field">
+            <div class="mdc-radio demo-radio--custom" data-demo-no-js>
+              <input class="mdc-radio__native-control" type="radio" id="ex1-custom-radio2" name="ex1-custom">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="ex1-custom-radio2-label" for="ex1-custom-radio2">Custom Radio 2</label>
+          </div>
         </div>
       </section>
-
-      <section class="example">
-        <h2>CSS Only - Disabled</h2>
-        <div class="mdc-form-field">
-          <div class="mdc-radio mdc-radio--disabled" data-demo-no-js>
-            <input class="mdc-radio__native-control" type="radio" id="ex2-radio1" checked name="ex2" disabled>
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
-            </div>
-          </div>
-          <label id="ex2-radio1-label" for="ex2-radio1">Radio 1</label>
-        </div>
-        <div class="mdc-form-field">
-          <div class="mdc-radio mdc-radio--disabled" data-demo-no-js>
-            <input class="mdc-radio__native-control" type="radio" id="ex2-radio2" name="ex2" disabled>
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
-            </div>
-          </div>
-          <label id="ex2-radio2-label" for="ex2-radio2">Radio 2</label>
-        </div>
-      </section>
-
 
       <section class="example mdc-theme--dark">
         <h2 class="mdc-theme--text-primary-on-dark">Dark Theme</h2>
 
-        <div class="mdc-form-field">
-          <div class="mdc-radio">
-            <input class="mdc-radio__native-control" type="radio" id="ex3-radio1" checked name="ex3">
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
+        <div class="demo-radio-row">
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="ex3-default-radio1" checked name="ex3-default">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
             </div>
+            <label id="ex3-default-radio1-label" for="ex3-default-radio1">Default Radio 1</label>
           </div>
-          <label id="ex3-radio1-label" for="ex3-radio1">Radio 1</label>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="ex3-default-radio2" name="ex3-default">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="ex3-default-radio2-label" for="ex3-default-radio2">Default Radio 2</label>
+          </div>
         </div>
-        <div class="mdc-form-field">
-          <div class="mdc-radio">
-            <input class="mdc-radio__native-control" type="radio" id="ex3-radio2" name="ex3">
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
+        <div class="demo-radio-row">
+          <div class="mdc-form-field">
+            <div class="mdc-radio demo-radio--custom">
+              <input class="mdc-radio__native-control" type="radio" id="ex3-custom-radio1" checked name="ex3-custom">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
             </div>
+            <label id="ex3-custom-radio1-label" for="ex3-custom-radio1">Custom Radio 1</label>
           </div>
-          <label id="ex3-radio2-label" for="ex3-radio2">Radio 2</label>
+          <div class="mdc-form-field">
+            <div class="mdc-radio demo-radio--custom">
+              <input class="mdc-radio__native-control" type="radio" id="ex3-custom-radio2" name="ex3-custom">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label id="ex3-custom-radio2-label" for="ex3-custom-radio2">Custom Radio 2</label>
+          </div>
         </div>
       </section>
 

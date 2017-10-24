@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const strings = {
+
+/** @enum {string} */
+const strings = {
   ARIA_HIDDEN: 'aria-hidden',
   ROLE: 'role',
   INPUT_SELECTOR: '.mdc-textfield__input',
@@ -23,7 +25,8 @@ export const strings = {
   BOTTOM_LINE_SELECTOR: '.mdc-textfield__bottom-line',
 };
 
-export const cssClasses = {
+/** @enum {string} */
+const cssClasses = {
   ROOT: 'mdc-textfield',
   UPGRADED: 'mdc-textfield--upgraded',
   DISABLED: 'mdc-textfield--disabled',
@@ -38,3 +41,5 @@ export const cssClasses = {
   TEXTAREA: 'mdc-textfield--textarea',
   BOTTOM_LINE_ACTIVE: 'mdc-textfield__bottom-line--active',
 };
+
+export {cssClasses, strings};

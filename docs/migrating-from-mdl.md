@@ -93,6 +93,7 @@ MDC-Web:
 <div class="mdc-textfield">
   <input class="mdc-textfield__input" type="text" id="input">
   <label for="input" class="mdc-textfield__label">Input Label</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -118,6 +119,7 @@ element, with the component’s class name as the value. For example:
 <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
   <input class="mdc-textfield__input" type="text" id="input">
   <label for="input" class="mdc-textfield__label">Input Label</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -198,6 +200,7 @@ Like in MDL, styling components with CSS classes is simply a matter of applied t
 <div class="mdc-textfield">
   <input type="text" id="my-textfield" class="mdc-textfield__input">
   <label class="mdc-textfield__label" for="my-textfield">Hint text</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -329,7 +332,7 @@ The following table summarizes the current situation (TBI = to be implemented):
 | `mdl-menu` | [`@material/menu`](../packages/mdc-menu/README.md) | Very different DOM. |
 | `mdl-palette` | TBI | [#27](https://github.com/material-components/material-components-web/issues/27) |
 | `mdl-progress` | TBI | [#29](https://github.com/material-components/material-components-web/issues/29) |
-| `mdl-radio` | [`@material/radi`](../opackages/mdc-radio/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
+| `mdl-radio` | [`@material/radio`](../packages/mdc-radio/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
 | `mdl-resets` | None. | There are plans for an [optional resets/defaults library](https://github.com/material-components/material-components-web/issues/42). |
 | `mdl-ripple` | [`@material/ripple`](../packages/mdc-ripple/README.md) | Very different usage; much improved in MDC-Web. |
 | `mdl-shadow` | [`@material/elevation`](../packages/mdc-elevation/README.md) | Similar usage. |

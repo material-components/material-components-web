@@ -1,8 +1,12 @@
 # Release Process
 
+> **Note**: This process changed somewhat when we switched lerna to fixed mode
+> for v0.23.0. Look at older versions for reference of how this worked in
+> independent mode.
+
 ### Setup Local Environment
 
-> Employees are suppose to do this as part of onboarding, but we've put it here
+> Employees are supposed to do this as part of onboarding, but we've put it here
 > as a reminder.
 
 `npm login`
@@ -31,28 +35,25 @@ This will pull the latest of `master` onto your git clone.
 
 `./scripts/pre-release.sh`
 
-This will print out a summary of all of the new versions that should be used
-for changed components. The summary is printed out to both the console, as well
-as a .new-versions.log file in the repo root.
+This will ensure you can publish/tag, build all release files, ensure all tests
+pass, and update our CHANGELOG prior to releasing (lerna will update the tag
+for us in the next step).
+
+> Make sure that a CHANGELOG commit actually appears in your `git log`!
 
 ### Release
 
 `$(npm bin)/lerna publish -m "chore: Publish"`
 
-When prompted for versions for each component, you should use the version info
-output above.
-
-### Post-Release
-
-`./scripts/post-release.sh`
-
-This will update our CHANGELOG.md and generate a vX.Y.Z semver tag.
+When prompted for version, you should pick Minor for typical releases,
+or Patch for hotfix releases with no breaking changes.
 
 ### Push
 
 `git push && git push --tags`
 
-This will push the CHANGELOG.md and tags to the remote git repository.
+This will ensure the commits *and* tags are pushed to the remote git repository.
+(This shouldn't be necessary; lerna should already do this in fixed mode.)
 
 ### Deploy Catalog Server
 
