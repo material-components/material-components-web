@@ -40,6 +40,7 @@
 
   &__input {
     @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-theme-prop(caret-color, primary);
     @include mdc-typography-base;
     // We use only a subset of the MDC typography values here as changing things such as line-height
     // affects how the labels are transformed.
@@ -223,7 +224,6 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-textfield-icon-padding});
-    color: $mdc-textfield-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -231,10 +231,6 @@
     // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
-
-    @include mdc-theme-dark(".mdc-textfield") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
 
     &--float-above {
       transform: translateY(-50%) scale(.75, .75);
@@ -400,6 +396,10 @@
   .mdc-textfield__label {
     pointer-events: none;
   }
+}
+
+.mdc-textfield--focused .mdc-textfield__label {
+  @include mdc-theme-prop(color, primary);
 }
 
 .mdc-textfield--invalid {
