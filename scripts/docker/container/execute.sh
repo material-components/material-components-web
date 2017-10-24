@@ -28,7 +28,13 @@ git clean -d --force
 
 # Get the latest code and prune obsolete branches/tags
 git fetch --tags
-git checkout -b "pr/${PR}" origin/master
+if [[ -n "${PR}" ]]; then
+  git checkout -b "pr/${PR}" origin/master
+elif [[ -n "${REMOTE_BRANCH}" ]] && [[ "${REMOTE_BRANCH}" != 'master' ]]; then
+  git checkout -b "${REMOTE_BRANCH}"
+else
+  git checkout master
+fi
 git pull "${REMOTE_URL}" "${REMOTE_BRANCH}"
 git fetch --prune
 

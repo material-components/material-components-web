@@ -20,9 +20,13 @@ set +e
 
 # Adapted from https://stackoverflow.com/a/29754866/467582
 
-AUTHOR=''
+# GitHub pull request number
 PR=''
+# GitHub username of the author of the pull request
+AUTHOR=''
+# URL of the remote Git repository to pull
 REMOTE_URL='https://github.com/material-components/material-components-web.git'
+# name of the remote branch to checkout
 REMOTE_BRANCH='master'
 
 getopt --test > /dev/null
@@ -31,8 +35,10 @@ if [[ $? -ne 4 ]]; then
   exit 1
 fi
 
-OPTIONS=a:p:u:b:
-LONGOPTIONS=author:,pr:,remote-url:,remote-branch:
+# A single colon after an option char/name (e.g, `a:`) means that it has a REQUIRED argument;
+# Two colons after an option char/name (e.g, `a::`) means that it has an OPTIONAL argument.
+OPTIONS=pau:b:
+LONGOPTIONS=pr,author,remote-url:,remote-branch:
 
 # -temporarily store output to be able to check for errors
 # -activate advanced mode getopt quoting e.g. via “--options”
@@ -51,12 +57,12 @@ set -e
 # now enjoy the options in order and nicely split until we see --
 while true; do
   case "$1" in
-    -a|--author)
-      AUTHOR="$2"
-      shift 2
-      ;;
     -p|--pr)
       PR="$2"
+      shift 2
+      ;;
+    -a|--author)
+      AUTHOR="$2"
       shift 2
       ;;
     -u|--remote-url)
@@ -78,14 +84,9 @@ while true; do
   esac
 done
 
-if [[ -z "$AUTHOR" ]]; then
-  echo 'Error: --author is required (GitHub username of pull request author)'
-  exit 3
-fi
-
-if [[ -z "$PR" ]]; then
-  echo 'Error: --pr is required (GitHub pull request number)'
-  exit 3
+if [[ ! "${PR}" =~ ^[1-9][0-9]*$ ]]; then
+  echo 'Error: --pr must be a positive integer value'
+  exit 4
 fi
 
 if [[ -z "$REMOTE_URL" ]]; then
