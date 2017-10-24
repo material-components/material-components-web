@@ -243,12 +243,14 @@ class MDCRippleFoundation extends MDCFoundation {
     }
 
     const {activationState_: activationState} = this;
-    // We don't want to re-activate the ripple if it is already active -
-    // UNLESS there is a touch event - because even though 'mousedown' or 'pointerdown' will
-    // fire on a touch event, 'mouseup' or 'pointerup' will not fire if the finger moves off of the element
-    // before being removed, so we need the 'touchend' to be able to deactivate the
-    // state triggered by 'touchstart'.
-    if (activationState.isActivated && !(e.type === 'touchstart' && e.type !== activationState.activationEvent.type)) {
+    if (activationState.isActivated) {
+      // Even when using touch, the effect can be activated by a
+      // 'mousedown'. But if the finger slides off, then there is
+      // no 'mouseup'. So we overwrite the event with 'touchstart',
+      // if and when one occurs (but not if it's already a touchstart).
+      if (e.type === 'touchstart' && e.type !== activationState.activationEvent.type) {
+        activationState.activationEvent = e;
+      }
       return;
     }
 
