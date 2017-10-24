@@ -135,7 +135,7 @@ Mixin | Description
 `mdc-layout-grid-cell-align($position)` | Aligns a cell vertically inside a grid
 
 
-#### `mdc-layout-grid($type-of-device, $margin, $max-width)`		
+#### `mdc-layout-grid($type-of-device, $margin, $max-width)`
 
 Generates CSS for a grid container on certain device type. The mixin takes three parameters:
 
