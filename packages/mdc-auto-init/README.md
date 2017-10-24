@@ -33,6 +33,7 @@ writing the markup, simply insert a script tag that calls `mdc.autoInit()`. Make
 <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
   <input class="mdc-textfield__input" type="text" id="input">
   <label for="input" class="mdc-textfield__label">Input Label</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 
 <!-- at the bottom of the page -->
@@ -52,6 +53,7 @@ using a property whose name is the value of `data-mdc-auto-init`. For example, g
 <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
   <input class="mdc-textfield__input" type="text" id="input">
   <label for="input" class="mdc-textfield__label">Input Label</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -160,3 +162,10 @@ warning, you could simply pass in a nop.
 ```
 
 This will suppress any warnings about already initialized elements.
+
+### Events
+
+#### MDCAutoInit:End
+Triggered when initialization of all components is complete.
+
+`document.addEventListener("MDCAutoInit:End", () => {...});`

@@ -135,11 +135,11 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
   width: var(--mdc-grid-list-tile-width, $mdc-grid-list-tile-width);
 
   &__primary {
-    position: relative;
-    height: 0;
-
     @include mdc-theme-prop(background-color, background);
     @include mdc-theme-prop(color, text-primary-on-background);
+
+    position: relative;
+    height: 0;
 
     &-content {
       position: absolute;
@@ -156,25 +156,25 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
   }
 
   &__secondary {
-    position: absolute;
-    box-sizing: border-box;
-    bottom: 0;
-    height: $mdc-grid-list-oneline-cap-secondary-height;
-    padding: $mdc-grid-list-tile-secondary-padding;
-
     @include mdc-theme-prop(background-color, primary);
     @include mdc-theme-prop(color, text-primary-on-primary);
+
+    position: absolute;
+    bottom: 0;
+    box-sizing: border-box;
+    height: $mdc-grid-list-oneline-cap-secondary-height;
+    padding: $mdc-grid-list-tile-secondary-padding;
   }
 
   &__title {
+    @include mdc-typography-overflow-ellipsis;
+
     display: block;
     margin: 0;
     padding: 0;
     font-size: 1rem;
     font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
     line-height: 1rem;
-
-    @include mdc-typography-overflow-ellipsis;
   }
 
   &__support-text {

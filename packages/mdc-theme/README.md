@@ -111,7 +111,7 @@ CSS Custom property | Description
 
 ### CSS Classes
 
-Some components can change their appearance when a theme-based modifier CSS class is applied. For example, `mdc-button--primary` will make the MDC Button the primary color. For more documentation on these modifier classes, consult the documentation for each component.
+MDC-Web provides SASS mixins, such as `mdc-button-filled-accessible`, to facilitate customization of some components. For more information, consult the documentation for each component.
 
 If you want to modify an element, which is not a Material Design component, you can apply the following modifier CSS classes.
 
@@ -140,7 +140,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-theme-prop($property, $style, $important)` | Applies a theme color or a custom color to a CSS property
+`mdc-theme-prop($property, $style, $important, $edgeOptOut)` | Applies a theme color or a custom color to a CSS property, optionally with `!important`. If `$edgeOptOut` is `true` and a theme color is passed, the style will be wrapped in a `@supports` clause to exclude the style in Edge to avoid issues with its buggy CSS variable support.
 `mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the current selector is within an Dark Theme context
 
 #### `mdc-theme-dark($root-selector, $compound)`
@@ -166,7 +166,7 @@ Property Name | Description
 `text-<TEXT_STYLE>-on-light` | TEXT_STYLE on top of a light background
 `text-<TEXT_STYLE>-on-dark` | TEXT_STYLE on top of a dark background
 
-#### `mdc-theme-luminance`
+#### `mdc-theme-luminance($color)`
 
 Calculates the luminance value (0 - 1) of a given color.
 
@@ -174,7 +174,7 @@ Calculates the luminance value (0 - 1) of a given color.
 @debug mdc-theme-luminance(#9c27b0); // 0.11654
 ```
 
-#### `mdc-theme-contrast`
+#### `mdc-theme-contrast($back, $front)`
 
 Calculates the contrast ratio between two colors.
 
@@ -182,7 +182,7 @@ Calculates the contrast ratio between two colors.
 @debug mdc-theme-contrast(#9c27b0, #000); // 3.33071
 ```
 
-#### `mdc-theme-light-or-dark`
+#### `mdc-theme-light-or-dark($color)`
 
 Determines whether to use light or dark text on top of a given color.
 
@@ -190,7 +190,7 @@ Determines whether to use light or dark text on top of a given color.
 @debug mdc-theme-light-or-dark(#9c27b0); // light
 ```
 
-#### `mdc-theme-light-variant` and `mdc-theme-dark-variant`
+#### `mdc-theme-light-variant($color)` and `mdc-theme-dark-variant($color)`
 
 Function | Description
 --- | ---
@@ -210,3 +210,21 @@ To avoid having both functions return the same color in cases of extremely high 
 `mdc-theme-dark-variant()` will return a color that is _twice_ (×2) as dark as requested when the input is already very
 light. Likewise, `mdc-theme-light-variant()` will return a color that is _twice_ (×2) as light as requested when the
 input is already very dark. This ensures that the _light_ variant will always be lighter than the _dark_ variant.
+
+#### `mdc-theme-prop-value($property)`
+
+If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
+corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
+such theme property exists, an error is thrown.
+
+This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
+
+Unlike the `mdc-theme-prop` mixin, this function does _not_ support CSS custom properties.
+It only returns the raw color value of the specified theme property.
+
+> NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
+
+```scss
+@debug mdc-theme-prop-value(primary); // #3f51b5
+@debug mdc-theme-prop-value(blue);    // blue
+```

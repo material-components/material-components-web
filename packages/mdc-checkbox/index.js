@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,13 +24,11 @@ import MDCCheckboxFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 import {getMatchesProperty} from '@material/ripple/util';
 
-export {MDCCheckboxFoundation};
-
 /**
  * @extends MDCComponent<!MDCCheckboxFoundation>
  * @implements {MDCSelectionControl}
  */
-export class MDCCheckbox extends MDCComponent {
+class MDCCheckbox extends MDCComponent {
   static attachTo(root) {
     return new MDCCheckbox(root);
   }
@@ -148,3 +147,5 @@ export class MDCCheckbox extends MDCComponent {
     super.destroy();
   }
 }
+
+export {MDCCheckboxFoundation, MDCCheckbox};

@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +32,7 @@
  *
  * @record
  */
-export default class MDCFormFieldAdapter {
+class MDCFormFieldAdapter {
   /**
    * @param {string} type
    * @param {!EventListener} handler
@@ -48,3 +49,5 @@ export default class MDCFormFieldAdapter {
 
   deactivateInputRipple() {}
 }
+
+export default MDCFormFieldAdapter;

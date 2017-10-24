@@ -1,3 +1,141 @@
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/material-components/material-components-web/compare/v0.22.0...v0.23.0) (2017-10-16)
+
+
+### Bug Fixes
+
+* **list item:** Add overflow hidden (#1290) ([05b1201](https://github.com/material-components/material-components-web/commit/05b1201)), closes [#1261](https://github.com/material-components/material-components-web/issues/1261)
+* **menu:** Add pointer-events: none to avoid blocking click events (#1421) ([b77895b](https://github.com/material-components/material-components-web/commit/b77895b))
+* **slider:** Deregister correct handlers on destroy (#1431) ([928d6b4](https://github.com/material-components/material-components-web/commit/928d6b4))
+* **toolbar:** Update menu-icon className (#992) (#1373) ([36577ab](https://github.com/material-components/material-components-web/commit/36577ab))
+
+
+### Features
+
+* **checkbox:** Add color theme mixins and update default color to secondary (#1365) ([cc7538f](https://github.com/material-components/material-components-web/commit/cc7538f)), closes [#1146](https://github.com/material-components/material-components-web/issues/1146)
+* **ripple:** Add optional event parameters to activate/deactivate methods ([891e962](https://github.com/material-components/material-components-web/commit/891e962))
+* **textfield:** Add textfield to the Closure whitelist. (#1394) ([8b05e88](https://github.com/material-components/material-components-web/commit/8b05e88))
+* **textfield:** Annotate textfield for Closure Compiler. (#1386) ([1152b8d](https://github.com/material-components/material-components-web/commit/1152b8d))
+
+
+### BREAKING CHANGES
+
+* Please update `mdc-toolbar__icon--menu` to `mdc-toolbar__menu-icon`
+
+
+
+<a name="0.22.0"></a>
+# [0.22.0](https://github.com/material-components/material-components-web/compare/v0.21.1...v0.22.0) (2017-10-02)
+
+
+### Bug Fixes
+
+* **button:** Default to primary color ([#1356](https://github.com/material-components/material-components-web/issues/1356)) ([0b808b8](https://github.com/material-components/material-components-web/commit/0b808b8))
+* **button:** Ignore CSS variables in Edge for mdc-button-container-fill-color ([5c55e92](https://github.com/material-components/material-components-web/commit/5c55e92))
+* **checkbox:** Ignore CSS variables in Edge for __background::before ([67129e9](https://github.com/material-components/material-components-web/commit/67129e9))
+* **demos:** Update misleading textfield validation message ([#1377](https://github.com/material-components/material-components-web/issues/1377)) ([99c9596](https://github.com/material-components/material-components-web/commit/99c9596))
+* **fab:** Add hover/focus elevation ([#1331](https://github.com/material-components/material-components-web/issues/1331)) ([cb9995d](https://github.com/material-components/material-components-web/commit/cb9995d))
+* **fab:** Ignore CSS variables in Edge for mdc-fab-container-color ([bf0f722](https://github.com/material-components/material-components-web/commit/bf0f722))
+* **menu:** Only show scrollbar when menu item is too big  ([fe7d4c8](https://github.com/material-components/material-components-web/commit/fe7d4c8)), closes [#1247](https://github.com/material-components/material-components-web/issues/1247)
+* **radio:** Ignore CSS variables in Edge for __background::before ([a7e2db4](https://github.com/material-components/material-components-web/commit/a7e2db4))
+
+
+### Features
+
+* **textfield:** Implement updated UX states for text fields ([#998](https://github.com/material-components/material-components-web/issues/998)) ([45c6cf6](https://github.com/material-components/material-components-web/commit/45c6cf6))
+* **theme:** Add Edge opt-out option to mdc-theme-prop ([262e17b](https://github.com/material-components/material-components-web/commit/262e17b))
+
+
+### BREAKING CHANGES
+
+* **textfield:** DOM change to add a bottom line element. Adapter API changes to consolidate event handlers. Renamed multi-line text field to textarea.
+
+
+
+<a name="0.21.1"></a>
+## [0.21.1](https://github.com/material-components/material-components-web/compare/v0.21.0...v0.21.1) (2017-09-20)
+
+
+### Bug Fixes
+
+* **fab:** Fix transitions by importing correct mdc-animation resource (#1325) ([e005460](https://github.com/material-components/material-components-web/commit/e005460)), closes [#1325](https://github.com/material-components/material-components-web/issues/1325)
+* **toolbar:** Fix toolbar padding on desktop and mobile (#1327) ([9b79871](https://github.com/material-components/material-components-web/commit/9b79871)), closes [#1327](https://github.com/material-components/material-components-web/issues/1327)
+
+
+
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/material-components/material-components-web/compare/v0.20.0...v0.21.0) (2017-09-18)
+
+
+### Bug Fixes
+
+* **ripple:** Move feature detect CSS to mixins (#1302) ([628b8c4](https://github.com/material-components/material-components-web/commit/628b8c4))
+* **slider:** Add two test cases to cover give default value to step for discrete slider (#1262) ([38c40f7](https://github.com/material-components/material-components-web/commit/38c40f7))
+* **slider:** Set default step value directly when initialize (#1173) (#1245) ([148f510](https://github.com/material-components/material-components-web/commit/148f510)), closes [#1173](https://github.com/material-components/material-components-web/issues/1173)
+* **snackbar:** Drop mdc-button from snackbar's dependency (#1292) ([be502c8](https://github.com/material-components/material-components-web/commit/be502c8))
+* **snackbar:** Fix lint error (#1303) ([648f985](https://github.com/material-components/material-components-web/commit/648f985)), closes [#1303](https://github.com/material-components/material-components-web/issues/1303)
+
+
+### Chores
+
+* **animation:** Removing mixins and CSS classes (#1242) ([3f8c49b](https://github.com/material-components/material-components-web/commit/3f8c49b))
+* **fab:** Remove the mdc-fab--plain modifier (#1249) ([f561560](https://github.com/material-components/material-components-web/commit/f561560)), closes [#1143](https://github.com/material-components/material-components-web/issues/1143)
+
+
+### Code Refactoring
+
+* **button:** Remove primary and accent modifier (#1270) ([3e3c869](https://github.com/material-components/material-components-web/commit/3e3c869))
+
+
+### Features
+
+* **auto-init:** Fire event on mdcAutoInit complete (#1012) ([08b5a32](https://github.com/material-components/material-components-web/commit/08b5a32)), closes [#954](https://github.com/material-components/material-components-web/issues/954)
+* **button:** Add mdc-button-filled-accessible mixin (#1256) ([d37132f](https://github.com/material-components/material-components-web/commit/d37132f))
+* **button:** create theme mixin for button (#1244) ([5266776](https://github.com/material-components/material-components-web/commit/5266776))
+* **button:** Move disabled style into private base mixin  (#1255) ([2336128](https://github.com/material-components/material-components-web/commit/2336128))
+* **button:** Support icon in button (#1281) ([b727c14](https://github.com/material-components/material-components-web/commit/b727c14))
+* **fab:** Add mdc-fab-accessible mixin (#1238) ([4ed8b5e](https://github.com/material-components/material-components-web/commit/4ed8b5e))
+* **fab:** Implement enter/exit transitions (#1241) ([6d6ba4a](https://github.com/material-components/material-components-web/commit/6d6ba4a))
+* **tabs:** Publicize MDCTabBarScrollerFoundation#scrollToTabAtIndex (#1267) ([a8f7216](https://github.com/material-components/material-components-web/commit/a8f7216))
+
+
+### BREAKING CHANGES
+
+* **snackbar:** Removed the dependency of mdc-button from DOM structure of snackbar.
+* **button:** Remove support of `mdc-button--primary` and `mdc-button--accent` modifier classes. For custom and theme button implementation, use button mixins instead. See `demos.scss` for details.
+* **fab:** Removes mdc-fab--plain, please update your code to use mdc-fab-accessible mixin instead.
+* **animation:** Removes mdc-animation mixins and CSS classes, please reference mdc-animation Sass variables directly.
+
+
+
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/material-components/material-components-web/compare/v0.19.0...v0.20.0) (2017-09-05)
+
+
+### Bug Fixes
+
+* **demos:** Fix trailing whitespace and mixed tabs in dialog demo (#1200) ([e1f5d53](https://github.com/material-components/material-components-web/commit/e1f5d53)), closes [#1200](https://github.com/material-components/material-components-web/issues/1200)
+* **demos:** Update first tab bar's layout when toggling RTL (#1204) ([cdd367e](https://github.com/material-components/material-components-web/commit/cdd367e))
+* **dialog:** Fix z-index & wrong CSS (#1094) ([88b7167](https://github.com/material-components/material-components-web/commit/88b7167)), closes [#1094](https://github.com/material-components/material-components-web/issues/1094) [#1095](https://github.com/material-components/material-components-web/issues/1095) [#1096](https://github.com/material-components/material-components-web/issues/1096)
+* **ripple:** Avoid errors in feature-detect within hidden iframes in Firefox (#1216) ([adbcce2](https://github.com/material-components/material-components-web/commit/adbcce2))
+* **ripple:** Don't create dynamic stylesheet for Edge feature-detect (#1206) ([81523a1](https://github.com/material-components/material-components-web/commit/81523a1))
+
+
+### Features
+
+* **button:** Implement stroked button (#1194) ([56bf37d](https://github.com/material-components/material-components-web/commit/56bf37d)), closes [#987](https://github.com/material-components/material-components-web/issues/987)
+* **fab:** Remove disabled styles (#1198) ([959d332](https://github.com/material-components/material-components-web/commit/959d332))
+* **textfield:** Add valid setter, so clients can set custom validity ([cb17052](https://github.com/material-components/material-components-web/commit/cb17052)), closes [#1018](https://github.com/material-components/material-components-web/issues/1018)
+* **theme:** `mdc-theme-prop` accepts literal color values (#1129) ([e47f3e6](https://github.com/material-components/material-components-web/commit/e47f3e6))
+* **theme:** Luminance-aware light/dark tonal variants (#1131) ([90e7556](https://github.com/material-components/material-components-web/commit/90e7556))
+
+
+### BREAKING CHANGES
+
+* **fab:** Removes styles for disabled FABs, as FABs were not designed to be disabled.
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/material-components/material-components-web/compare/v0.18.1...v0.19.0) (2017-08-25)
 

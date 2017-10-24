@@ -160,7 +160,9 @@ var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.query
 var dots = document.querySelector('.dots');
 var panels = document.querySelector('.panels');
 
-dynamicTabBar.preventDefaultOnClick = true;
+dynamicTabBar.tabs.forEach(function(tab) {
+  tab.preventDefaultOnClick = true;
+});
 
 function updateDot(index) {
   var activeDot = dots.querySelector('.dot.active');
@@ -636,6 +638,10 @@ Scrolls the tab bar such that the leftmost tab traverses the scroll frame and be
 Scrolls the tab bar such that the rightmost tab traverses the scroll frame and becomes the leftmost tab. This tabs left offset will line up with the left edge of the scroll frame, and never be partially or fully occluded.
 
 > **NOTE:** Due to a quirk in event behavior, we allow the rightmost tab to be partially occluded even when tabbed to because clicking on such an element would shift the frame on the `focus` event. This would result in a scenario where the ripple persists and the intended tab would not be selected due to the tab bar shifting before the `mouseup` or `click` events get dispatched.
+
+#### MDCTabBarScrollerFoundation.scrollToTabAtIndex(index: number) => void
+
+Scrolls the tab bar such that the tab at the index provided traverses the scroll frame and becomes the leftmost tab.
 
 #### MDCTabBarScrollerFoundation.layout() => void
 

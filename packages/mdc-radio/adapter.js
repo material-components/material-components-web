@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +35,7 @@ import {MDCSelectionControlState} from '@material/selection-control';
  *
  * @record
  */
-export default class MDCRadioAdapter {
+class MDCRadioAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -44,3 +45,5 @@ export default class MDCRadioAdapter {
   /** @return {!MDCSelectionControlState} */
   getNativeControl() {}
 }
+
+export default MDCRadioAdapter;

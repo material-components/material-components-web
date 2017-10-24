@@ -4,7 +4,6 @@ We'd love for you to contribute and make Material Components for the web even be
 Here are the guidelines we'd like you to follow:
 
 - [General Contributing Guidelines](#general-contributing-guidelines)
-- [Finding an Issue to Work On](#finding-an-issue-to-work-on)
 - [Development Process](#development-process)
   - [Setting up your development environment](#setting-up-your-development-environment)
   - [Building Components](#building-components)
@@ -14,16 +13,10 @@ Here are the guidelines we'd like you to follow:
     - [Running Tests across browsers](#running-tests-across-browsers)
   - [Coding Style](#coding-style)
   - [Submitting Pull Requests](#submitting-pull-requests)
-  - [Releasing MDC-Web](#releasing-mdc-web)
-- ["What's the core team up to?"](#whats-the-core-team-up-to)
 
 ## General Contributing Guidelines
 
 The Material Components contributing policies and procedures can be found in the main Material Components documentation repository’s [contributing page](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md).
-
-## Finding an Issue to Work On
-
-Material Components Web uses GitHub to file and track issues. To find an issue you'd like to work on, filter the issues list by the [help wanted](https://github.com/material-components/material-components-web/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) label. If you have found a bug, or would like to request a feature not represented in the list of GitHub issues, please refer to the documentation for [Contributing](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md#issues-and-bugs)
 
 ## Development Process
 
@@ -64,7 +57,9 @@ Each component requires the following items in order to be complete:
 
 You can find much more information with respect to building components within our [authoring components guide](./docs/authoring-components.md)
 
-### Running the development server
+### Running development server
+
+#### Local development server
 
 ```
 npm run dev
@@ -72,6 +67,15 @@ open http://localhost:8080
 ```
 
 `npm run dev` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that uses `demos/` as its content base. This should aid you in initial development of a component. It's served on port 8080.
+
+#### Appengine development server
+
+```
+MDC_ENV=development npm run build && gcloud app deploy app.yaml --project google.com:mdc-web-dev --version $USER
+gcloud app browse
+```
+
+The above script will build and deploy the app to mdc-web's dev server with your userid as its version number, you can switch to your version by prepending `$USER-dot-` to the URL opened when you run `gcloud app browse`. This would be helpful if we need to share work-in-progress work within teams and designers.
 
 ### Building MDC-Web
 
@@ -132,87 +136,6 @@ If you've done some experimental work on your branch/fork and committed these vi
 Finally, it helps to make sure that your branch/fork is up to date with what's currently on master. You can ensure this by running `git pull --rebase origin master` on your branch.
 
 > **NOTE**: Please do _not merge_ master into your branch. _Always_ `pull --rebase` instead. This ensures a linear history by always putting the work you've done after the work that's already on master, regardless of the date in which those commits were made.
-
-### Releasing MDC-Web
-
-> NOTE: This section is for collaborators only. Contributors without repo write access can ignore
-> this section.
-
-#### Pre-requisites
-
-Before releasing MDC-Web, ensure that you have the following:
-
-- Write access to the material-components-web repo
-- Correct credentials for npm
-- The [Google Cloud SDK](https://cloud.google.com/sdk/) installed. Please run `gcloud init` command
-to login to your Google Cloud account and choose `material-components-web` if this is your first
-time working with the SDK.
-- Access to the `material-components-web` Google Cloud project
-
-You should ping a core team member regarding any/all of these items if you're unsure whether or not
-they are all set up.
-
-#### Performing the release.
-
-To release MDC-Web, you perform the following steps.
-
-1. Ensure you are on master, and you have the latest changes: run `git fetch && git fetch --tags && git pull` to be sure.
-1. Run `./scripts/pre-release.sh`. This will run `npm test`, build MDC-Web, copy the built assets over
-   to each module's `dist/` folder, and then print out a summary of all of the new versions that
-   should be used for changed components. The summary is printed out to both the console, as well
-   as a `.new-versions.log` file in the repo root. This information should be used within the
-   following steps.
-1. From the root directory of the repo, run `$(npm bin)/lerna publish -m "chore: Publish"`. When prompted for versions for each component, you should use the
-   version info output above. In some cases, e.g. repo-wide refactors that cause all component
-   versions to be updated, you can ignore this info. However, _it is strongly recommended to adhere
-   to those specified versions in order to minimize human error_.
-1. Run `./scripts/post-release.sh`. This will update our `CHANGELOG.md` with information for the
-   current release of the overarching `material-components-web` library, and commit those changes. It will also generate a `vX.Y.Z` semver tag for the entire repo, and commit the tag as such.
-1. Run `git push && git push --tags` to push the changelog changes and semver tag to master.
-1. Run `MDC_ENV=development npm run build && gcloud app deploy`. This will deploy demo pages to our [App Engine demo site](https://material-components-web.appspot.com).
-1. Call it a day! :tada: :rocket: :package:
-
-#### Aborting from a release
-
-Sometimes, things go wrong :upside_down_face:. A stale repo, misconfigured environment, or
-dependency update may cause something in the release pipeline to fail. This will almost always
-happen while running lerna's `publish` command. If that does happen, you probably need to reset your
-repo to a clean state in order to be able to re-run the command.
-
-**If you make a mistake while inputting new component versions into the lerna prompt**:
-
-Simply `Ctrl+C` / abort the lerna command. No changes should have been made locally.
-
-**If something goes wrong while lerna is creating its publish commit**:
-
-1. After the lerna command fails, run `git reset HEAD`
-1. Run `git co -- .`. This will restore the repo to its state before lerna attempted to bump
-   versions and commit.
-1. Re-run the publish command. Note that the new component versions are saved to `.new-versions.log`
-   in the repo's root directory, which you can use to re-enter the new versions.
-
-**If something goes wrong while lerna is publishing to npm**:
-
-1. `Ctrl+C` / abort the lerna command. Your repo now has a newly created commit and tags that you
-   have to get rid of in order to re-run the lerna command successfully.
-1. Remove the publish commit by running `git reset --hard HEAD~1`.
-1. Re-sync all of the local tags in your repo to only reflect the tags on GitHub by running
-   `git tag | xargs -n1 git tag -d && git fetch --tags` (taken from [this StackOverflow response](http://stackoverflow.com/a/10644209/1509082))
-1. Re-run the publish command. Note that the new component versions are saved to `.new-versions.log`
-   in the repo's root directory, which you can use to re-enter the new versions.
-
-**If something goes wrong while lerna is pushing the published changes / tags to GitHub**:
-
-1. `Ctrl+C` / abort the lerna command.
-1. Run `git push && git push --tags`. This does the equivalent of what lerna would have done.
-
-## "What's the core team up to?"
-
-The core team maintains a [public Pivotal Tracker](https://www.pivotaltracker.com/n/projects/1664011) (**tracker** for short) which details all the items we're working on within our current two-week [iteration](https://www.agilealliance.org/glossary/iteration/). This tracker mirrors in what's in our GH issues. It is used _purely for planning and prioritization purposes, **not** for discussions or community issue filing_. That being said, it's a great place to look at the overall state of our project as well as some the big ticket issues we're working on.
-
-Each tracker story contains a link to its corresponding GH issue within its description. Each GH issue present in tracker is tagged with an `in-tracker` label. This will hopefully make it easy to move between the two if so desired.
-
-**Our team prioritizes responding to as many engineering and user experience questions as possible. We do not support responses to questions outside of these areas at this time.**
 
 [js-style-guide]: https://google.github.io/styleguide/jsguide.html
 [css-style-guide]: https://github.com/material-components/material-components-web/blob/master/.stylelintrc.yaml

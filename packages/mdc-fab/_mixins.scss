@@ -13,32 +13,71 @@
 // limitations under the License.
 
 @import "@material/animation/functions";
-@import "@material/animation/variables";
 @import "@material/elevation/mixins";
+@import "@material/elevation/variables";
 @import "@material/ripple/mixins";
+@import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "./variables";
+
+@mixin mdc-fab-accessible($container-color) {
+  @include mdc-fab-container-color($container-color);
+  // Calculate whether to use dark or light text on top of given color.
+  $light-or-dark-text: mdc-theme-light-or-dark($container-color);
+
+  @if ($light-or-dark-text == "light") {
+    @include mdc-fab-ink-color(text-primary-on-dark);
+    @include mdc-fab-ripple($mdc-fab-light-ripple-config);
+  } @else {
+    @include mdc-fab-ink-color(text-primary-on-light);
+    @include mdc-fab-ripple(()); //default dark ripple
+  }
+}
+
+@mixin mdc-fab-container-color($color) {
+  @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+}
+
+@mixin mdc-fab-ink-color($color) {
+  @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-fab-ripple($ripple-config) {
+  @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
+  @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
+}
+
+$mdc-fab-icon-enter-delay_: 90ms;
+$mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-base;
+  @include mdc-elevation(6);
 
   display: inline-flex;
   position: relative;
   justify-content: center;
+  box-sizing: border-box;
   width: 56px;
   height: 56px;
   padding: 0;
-  transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
+  transition:
+    box-shadow $mdc-elevation-transition-duration $mdc-elevation-transition-timing-function,
+    opacity 15ms linear 30ms,
+    mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_ + $mdc-fab-icon-enter-delay_);
   border: none;
   border-radius: 50%;
+  fill: currentColor;
   cursor: pointer;
   user-select: none;
-  box-sizing: border-box;
-  fill: currentColor;
   -moz-appearance: none;
   -webkit-appearance: none;
   overflow: hidden;
 
-  @include mdc-elevation(6);
+  &:hover,
+  &:focus {
+    @include mdc-elevation(8);
+  }
 
   &:active {
     @include mdc-elevation(12);
@@ -78,46 +117,24 @@
   height: 40px;
 }
 
-@mixin mdc-fab--disabled_ {
-  cursor: default;
-  pointer-events: none;
-}
-
-@mixin mdc-fab-theme($config) {
-  $bg-color: map-get($config, bg-color);
-  $fg-color: map-get($config, fg-color);
-  $ripple-config: map-get($config, ripple-config);
-  $tap-highlight-color: map-get($config, tap-highlight-color);
-
-  @if $ripple-config {
-    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-  }
-
-  @if $tap-highlight-color {
-    @if $ripple-config {
-      &:not(.mdc-ripple-upgraded) {
-        @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-      }
-    }
-
-    @else {
-      @include mdc-theme-prop(-webkit-tap-highlight-color, $tap-highlight-color);
-    }
-  }
-
-  @if $bg-color {
-    @include mdc-theme-prop(background-color, $bg-color);
-  }
-
-  @if $fg-color {
-    @include mdc-theme-prop(color, $fg-color);
-  }
-}
-
 @mixin mdc-fab__icon_ {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
+  will-change: transform;
+}
+
+@mixin mdc-fab--exited_ {
+  transform: scale(0);
+  transition:
+    opacity 15ms linear 150ms,
+    mdc-animation-exit-permanent(transform, 180ms);
+  opacity: 0;
+
+  .mdc-fab__icon {
+    transform: scale(0);
+    transition: mdc-animation-exit-permanent(transform, 135ms);
+  }
 }

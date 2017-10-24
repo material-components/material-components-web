@@ -17,10 +17,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Linear Progress - Material Compoonents Catalog</title>
+    <title>Linear Progress - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <script src="/assets/demo-styles.css.js"></script>
+    <script src="/assets/linear-progress.css.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -51,7 +51,7 @@
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Linear Progress Indicators</span>
         </section>
@@ -182,7 +182,7 @@
     <script>
       var determinates = document.querySelectorAll('.mdc-linear-progress');
       for (var i = 0, determinate; determinate = determinates[i]; i++) {
-        const linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(determinate);
+        var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(determinate);
         linearProgress.progress = 0.5;
         if (determinate.dataset.buffer) {
           linearProgress.buffer = 0.75;

@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +21,10 @@ import MDCFormFieldFoundation from './foundation';
 import {MDCSelectionControl} from '@material/selection-control';
 /* eslint-enable no-unused-vars */
 
-export {MDCFormFieldFoundation};
-
 /**
  * @extends MDCComponent<!MDCFormFieldFoundation>
  */
-export class MDCFormField extends MDCComponent {
+class MDCFormField extends MDCComponent {
   static attachTo(root) {
     return new MDCFormField(root);
   }
@@ -74,3 +73,5 @@ export class MDCFormField extends MDCComponent {
     });
   }
 }
+
+export {MDCFormField, MDCFormFieldFoundation};

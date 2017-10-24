@@ -48,7 +48,7 @@ npm install --save @material/snackbar
      aria-hidden="true">
   <div class="mdc-snackbar__text"></div>
   <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+    <button type="button" class="mdc-snackbar__action-button"></button>
   </div>
 </div>
 ```
@@ -65,7 +65,7 @@ snackbar, add the `mdc-snackbar--align-start` modifier class to the root element
      aria-hidden="true">
   <div class="mdc-snackbar__text"></div>
   <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+    <button type="button" class="mdc-snackbar__action-button"></button>
   </div>
 </div>
 ```
@@ -153,7 +153,7 @@ To respond to a snackbar action, assign a function to the optional `actionHandle
      aria-hidden="true">
   <div class="mdc-snackbar__text"></div>
   <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+    <button type="button" class="mdc-snackbar__action-button"></button>
   </div>
 </div>
 ```

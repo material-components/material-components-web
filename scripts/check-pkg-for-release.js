@@ -28,7 +28,7 @@ const path = require('path');
 const {default: traverse} = require('babel-traverse');
 const babylon = require('babylon');
 const camelCase = require('camel-case');
-const cssom = require('CSSOM');
+const cssom = require('cssom');
 const recast = require('recast');
 
 const pkg = require(path.join(process.env.PWD, process.argv[process.argv.length - 1]));
@@ -43,7 +43,7 @@ const MASTER_PKG = require(path.join(process.env.PWD, MASTER_PKG_PATH));
 // These few MDC packages work as foundation or utility packages, and are not
 // directly included in webpack or the material-component-web module. But they
 // are necessary since other MDC packages depend on them.
-const CSS_WHITELIST = ['base', 'auto-init', 'rtl', 'selection-control'];
+const CSS_WHITELIST = ['base', 'animation', 'auto-init', 'rtl', 'selection-control'];
 
 main();
 

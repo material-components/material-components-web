@@ -50,9 +50,7 @@ $_mdc-theme-tonal-offset: 7%;
 
   @if ($lightContrast < $minimumContrast) and ($darkContrast > $lightContrast) {
     @return "dark";
-  }
-
-  @else {
+  } @else {
     @return "light";
   }
 }
@@ -76,16 +74,12 @@ $_mdc-theme-tonal-offset: 7%;
       dark: lighten($color, $amount-1x),
       light: lighten($color, $amount-2x)
     );
-  }
-
-  @else if $luminance >= $upper-bound {
+  } @else if $luminance >= $upper-bound {
     @return (
       dark: darken($color, $amount-2x),
       light: darken($color, $amount-1x)
     );
-  }
-
-  @else {
+  } @else {
     @return (
       dark: darken($color, $amount-1x),
       light: lighten($color, $amount-1x)

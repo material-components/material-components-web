@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +25,7 @@ import {cssClasses, strings} from './constants';
 /**
  * @extends {MDCFoundation<!MDCRadioAdapter>}
  */
-export default class MDCRadioFoundation extends MDCFoundation {
+class MDCRadioFoundation extends MDCFoundation {
   /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -92,3 +93,5 @@ export default class MDCRadioFoundation extends MDCFoundation {
     };
   }
 }
+
+export default MDCRadioFoundation;

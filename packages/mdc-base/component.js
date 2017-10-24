@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +20,7 @@ import MDCFoundation from './foundation';
 /**
  * @template F
  */
-export default class MDCComponent {
+class MDCComponent {
   /**
    * @param {!Element} root
    * @return {!MDCComponent}
@@ -120,3 +121,5 @@ export default class MDCComponent {
     this.root_.dispatchEvent(evt);
   }
 }
+
+export default MDCComponent;

@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,5 +16,5 @@
  */
 
 import * as util from './util';
-export {MDCSimpleMenu, MDCSimpleMenuFoundation} from './simple';
-export {util};
+import {MDCSimpleMenu, MDCSimpleMenuFoundation} from './simple';
+export {MDCSimpleMenu, MDCSimpleMenuFoundation, util};

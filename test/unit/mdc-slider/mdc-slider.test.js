@@ -22,7 +22,7 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {TRANSFORM_PROP} from './helpers';
 
-import {strings} from '../../../packages/mdc-slider/constants';
+import {cssClasses, strings} from '../../../packages/mdc-slider/constants';
 import {MDCSlider} from '../../../packages/mdc-slider';
 
 suite('MDCSlider');
@@ -149,8 +149,17 @@ test('#initialSyncWithDOM adds an aria-valuemax attribute if not present', () =>
   assert.equal(root.getAttribute('aria-valuemax'), String(component.max));
 });
 
-test('#initialSyncWithDOM syncs the value property with aria-valuenow', () => {
+test('#initialSyncWithDOM syncs the value property with aria-valuenow for continuous slider', () => {
   const root = getFixture();
+  root.setAttribute('aria-valuenow', '30');
+
+  const component = new MDCSlider(root);
+  assert.equal(component.value, 30);
+});
+
+test('#initialSyncWithDOM syncs the value property with aria-valuenow for discrete slider', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.DISCRETE);
   root.setAttribute('aria-valuenow', '30');
 
   const component = new MDCSlider(root);
