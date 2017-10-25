@@ -23,7 +23,7 @@ EXPOSE 80 443 8080
 WORKDIR /mdc-web
 
 COPY container/* /scripts/
-RUN chmod +x /scripts/*.sh
+RUN chmod ugo+x /scripts/*.sh
 
 RUN /scripts/setup-root.sh
 USER demobot
