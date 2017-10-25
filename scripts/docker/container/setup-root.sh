@@ -21,6 +21,6 @@ apt-get update \
   && apt-get autoclean -y
 
 useradd --create-home --shell /bin/bash demobot
-chown -R demobot:demobot .
+chown -R demobot:demobot . /scripts/
 
 
