@@ -37,8 +37,8 @@ fi
 
 # A single colon after an option char/name (e.g, `a:`) means that it has a REQUIRED argument;
 # Two colons after an option char/name (e.g, `a::`) means that it has an OPTIONAL argument.
-OPTIONS=pau:b:
-LONGOPTIONS=pr,author,remote-url:,remote-branch:
+OPTIONS=p:a:u:b:
+LONGOPTIONS=pr:,author:,remote-url:,remote-branch:
 
 # -temporarily store output to be able to check for errors
 # -activate advanced mode getopt quoting e.g. via “--options”

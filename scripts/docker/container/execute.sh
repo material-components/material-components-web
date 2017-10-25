@@ -26,17 +26,23 @@ set -x
 git reset --hard HEAD
 git clean -d --force
 
-# Get the latest code and prune obsolete branches/tags
-git fetch --tags
+# Fetch the latest changes and prune obsolete branches/tags
+git fetch --tags --prune origin
+
+DATE_SAFE="`date '+%Y-%m-%d@%H-%M-%S'`"
+REPO_NAME_SAFE="`echo "${REMOTE_URL}" | sed -E -e 's%.*github.com%%' -e 's%^[/:]|[.]git$%%g' -e 's%[^a-zA-Z0-9-]+%-%g' -e 's%-{2,}%-%g' -e 's%^-|-$%%g'`"
+
 if [[ -n "${PR}" ]]; then
-  git checkout -b "pr/${PR}" origin/master
-elif [[ -n "${REMOTE_BRANCH}" ]] && [[ "${REMOTE_BRANCH}" != 'master' ]]; then
-  git checkout -b "${REMOTE_BRANCH}"
+  REMOTE_NAME="pr-${PR}"
+  LOCAL_BRANCH="pr/${PR}"
 else
-  git checkout master
+  REMOTE_NAME="temp_${REPO_NAME_SAFE}_${DATE_SAFE}"
+  LOCAL_BRANCH="temp/${REPO_NAME_SAFE}/${DATE_SAFE}"
 fi
-git pull "${REMOTE_URL}" "${REMOTE_BRANCH}"
-git fetch --prune
+
+git remote add -t "${REMOTE_BRANCH}" "${REMOTE_NAME}" "${REMOTE_URL}"
+git fetch "${REMOTE_NAME}"
+git checkout -b "${LOCAL_BRANCH}" "${REMOTE_NAME}/${REMOTE_BRANCH}"
 
 set +x
 
