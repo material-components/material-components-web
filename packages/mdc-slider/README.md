@@ -35,6 +35,9 @@ the Material Design team.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/sliders.html">Material Design guidelines: Sliders</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/slider.html">Demo</a>
+  </li>
 </ul>
 
 ## Installation

@@ -27,12 +27,13 @@ npm install --save @material/auto-init
 If you are using mdc-auto-init as part of the [material-components-web](../material-components-web)
 package, simply write the necessary DOM needed for a component, and attach a `data-mdc-auto-init`
 attribute to the root element with its value set to the Component's class name. Then, after
-writing the markup, simply insert a script tag that calls `mdc.autoInit()`.
+writing the markup, simply insert a script tag that calls `mdc.autoInit()`. Make sure you call `mdc.autoInit()` after all scripts are loaded so it works properly.
 
 ```html
 <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
   <input class="mdc-textfield__input" type="text" id="input">
   <label for="input" class="mdc-textfield__label">Input Label</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 
 <!-- at the bottom of the page -->
@@ -52,6 +53,7 @@ using a property whose name is the value of `data-mdc-auto-init`. For example, g
 <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
   <input class="mdc-textfield__input" type="text" id="input">
   <label for="input" class="mdc-textfield__label">Input Label</label>
+  <div class="mdc-textfield__bottom-line"></div>
 </div>
 ```
 
@@ -71,8 +73,8 @@ mapping between `data-mdc-auto-init` attribute values and the components which t
 be achieved via `mdcAutoInit.register`.
 
 ```js
-import mdcAutoInit from 'mdc-auto-init';
-import {MDCTextfield} from 'mdc-textfield';
+import mdcAutoInit from '@material/auto-init';
+import {MDCTextfield} from '@material/textfield';
 
 mdcAutoInit.register('MDCTextfield', MDCTextfield);
 ```
@@ -85,8 +87,8 @@ convenience.
 Also note that a component can be mapped to any string, not necessarily the name of its constructor.
 
 ```js
-import mdcAutoInit from 'mdc-auto-init';
-import {MDCTextfield} from 'mdc-textfield';
+import mdcAutoInit from '@material/auto-init';
+import {MDCTextfield} from '@material/textfield';
 
 mdcAutoInit.register('My amazing text field!!!', MDCTextfield);
 ```
@@ -160,3 +162,10 @@ warning, you could simply pass in a nop.
 ```
 
 This will suppress any warnings about already initialized elements.
+
+### Events
+
+#### MDCAutoInit:End
+Triggered when initialization of all components is complete.
+
+`document.addEventListener("MDCAutoInit:End", () => {...});`

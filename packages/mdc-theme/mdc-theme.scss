@@ -18,11 +18,11 @@
 
 :root {
   @each $style in map-keys($mdc-theme-property-values) {
-    --mdc-theme-#{$style}: map-get($mdc-theme-property-values, $style);
+    --mdc-theme-#{$style}: #{map-get($mdc-theme-property-values, $style)};
   }
 }
 
-/* Special case, so that .mdc-theme--background changes background color, not text color. */
+// Special case, so that .mdc-theme--background changes background color, not text color.
 .mdc-theme--background {
   @include mdc-theme-prop(background-color, background);
 }
@@ -35,8 +35,8 @@
   }
 }
 
-/* CSS rules for using primary and accent as background colors. */
-@each $style in ("primary", "accent") {
+// CSS rules for using primary and secondary (plus light/dark variants) as background colors.
+@each $style in ("primary", "primary-light", "primary-dark", "secondary", "secondary-light", "secondary-dark") {
   .mdc-theme--#{$style}-bg {
     @include mdc-theme-prop(background-color, $style, true);
   }

@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {SelectionControlState} from '@material/base/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control';
 import MDCCheckboxAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
@@ -27,7 +28,7 @@ const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 /**
  * @extends {MDCFoundation<!MDCCheckboxAdapter>}
  */
-export default class MDCCheckboxFoundation extends MDCFoundation {
+class MDCCheckboxFoundation extends MDCFoundation {
   /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -52,7 +53,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
       deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
       deregisterChangeHandler: (/* handler: EventListener */) => {},
-      getNativeControl: () => /* !SelectionControlState */ {},
+      getNativeControl: () => /* !MDCSelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
     });
@@ -83,6 +84,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   init() {
+    this.currentCheckState_ = this.determineCheckState_(this.getNativeControl_());
     this.adapter_.addClass(cssClasses.UPGRADED);
     this.adapter_.registerChangeHandler(this.changeHandler_);
     this.installPropertyChangeHooks_();
@@ -208,7 +210,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!SelectionControlState} nativeCb
+   * @param {!MDCSelectionControlState} nativeCb
    * @return {string}
    * @private
    */
@@ -264,7 +266,7 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!SelectionControlState}
+   * @return {!MDCSelectionControlState}
    * @private
    */
   getNativeControl_() {
@@ -284,3 +286,5 @@ export default class MDCCheckboxFoundation extends MDCFoundation {
 function validDescriptor(inputPropDesc) {
   return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
+
+export default MDCCheckboxFoundation;

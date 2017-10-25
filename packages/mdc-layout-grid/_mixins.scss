@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@import "./variables";
+
 // returns the lower grid boundary or null if the smallest grid is selected
 @function mdc-layout-grid-breakpoint-min($size) {
   @if not map-has-key($mdc-layout-grid-columns, $size) {
@@ -48,23 +50,17 @@
     @media (max-width: $max) {
       @content;
     }
-  }
-
-  @else if $min != null and $max != null {
+  } @else if $min != null and $max != null {
     // Tablet
     @media (min-width: $min) and (max-width: $max) {
       @content;
     }
-  }
-
-  @else if $min != null and $max == null {
+  } @else if $min != null and $max == null {
     // Desktop
     @media (min-width: $min) {
       @content;
     }
-  }
-
-  @else {
+  } @else {
     // Fallback - no breakpoints defined
     @content;
   }
@@ -98,13 +94,12 @@
 
   box-sizing: border-box;
   margin: 0 auto;
+  padding: $margin;
+  padding: var(--mdc-layout-grid-margin-#{$size}, #{$margin});
 
   @if $max-width {
     max-width: $max-width;
   }
-
-  padding: $margin;
-  padding: var(--mdc-layout-grid-margin-#{$size}, #{$margin});
 }
 
 @mixin mdc-layout-grid-inner($size, $margin, $gutter) {
@@ -120,9 +115,9 @@
 
   @supports (display: grid) {
     display: grid;
+    margin: 0;
     grid-gap: $gutter;
     grid-gap: var(--mdc-layout-grid-gutter-#{$size}, $gutter);
-    margin: 0;
     grid-template-columns: repeat(map-get($mdc-layout-grid-columns, $size), minmax(0, 1fr));
   }
 }
@@ -132,6 +127,8 @@
     @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
   }
 
+  @include mdc-layout-grid-cell-span_($size, $default-span, $gutter);
+
   box-sizing: border-box;
   margin: $gutter / 2;
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2);
@@ -139,8 +136,6 @@
   @supports (display: grid) {
     margin: 0;
   }
-
-  @include mdc-layout-grid-cell-span_($size, $default-span, $gutter);
 }
 
 @mixin mdc-layout-grid-cell-order($order) {

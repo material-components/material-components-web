@@ -12,98 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import "@material/animation/functions";
-@import "@material/animation/variables";
-@import "@material/elevation/mixins";
-@import "@material/ripple/mixins";
-@import "@material/theme/mixins";
+@import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define fab
-.mdc-fab {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
-  @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
 
-  display: inline-flex;
-  position: relative;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  padding: 0;
-  transition: box-shadow 280ms $mdc-animation-standard-curve-timing-function;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  user-select: none;
-  box-sizing: border-box;
-  fill: currentColor;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  overflow: hidden;
+.mdc-fab {
+  @include mdc-fab-base_;
+  @include mdc-fab-container-color(secondary);
+  @include mdc-fab-ink-color(text-primary-on-secondary);
+  @include mdc-fab-ripple($mdc-fab-light-ripple-config);
 
   &:not(.mdc-ripple-upgraded) {
     -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
   }
+}
 
-  @include mdc-theme-prop(background-color, accent);
-  @include mdc-theme-prop(color, text-primary-on-accent);
-  @include mdc-elevation(6);
-
-  &--mini {
-    width: 40px;
-    height: 40px;
-  }
-
-  &--plain {
-    background-color: white;
-
-    @include mdc-theme-prop(color, text-primary-on-light);
-    @include mdc-ripple-bg((pseudo: "::before"));
-    @include mdc-ripple-fg((pseudo: "::after"));
-  }
-
-  &:active,
-  &:focus {
-    outline: none;
-  }
-
-  &:active {
-    @include mdc-elevation(12);
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-  }
-
-  // This allows for using SVGs within them to align properly in all browsers.
-  // Can remove once: https://bugzilla.mozilla.org/show_bug.cgi?id=1294515 is resolved.
-
-  // stylelint-disable selector-max-type
-  // postcss-bem-linter: ignore
-  > svg {
-    width: 100%;
-  }
-  // stylelint-enable selector-max-type
-
-  fieldset:disabled &,
-  &:disabled {
-    background-color: rgba(0, 0, 0, .12);
-    color: rgba(0, 0, 0, .26);
-    cursor: default;
-    pointer-events: none;
-  }
+.mdc-fab--mini {
+  @include mdc-fab--mini_;
 }
 
 .mdc-fab__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+  @include mdc-fab__icon_;
+}
+
+.mdc-fab--exited {
+  @include mdc-fab--exited_;
 }
 
 // postcss-bem-linter: end

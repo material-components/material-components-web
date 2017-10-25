@@ -14,67 +14,50 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
 @import "@material/theme/mixins";
 @import "./variables";
 
-@keyframes mdc-checkbox-fade-in-background {
-  0% {
-    border-color: $mdc-checkbox-border-color;
-    background-color: transparent;
+@mixin mdc-checkbox-container-keyframes_(
+  $from-stroke-color,
+  $to-stroke-color,
+  $from-fill-color,
+  $to-fill-color,
+  $uid) {
+  @keyframes mdc-checkbox-fade-in-background-#{$uid} {
+    0% {
+      @include mdc-theme-prop(border-color, $from-stroke-color);
+      @include mdc-theme-prop(background-color, $from-fill-color);
+    }
+
+    50% {
+      @include mdc-theme-prop(border-color, $to-stroke-color);
+      @include mdc-theme-prop(background-color, $to-fill-color);
+    }
   }
 
-  50% {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
-  }
-}
+  @keyframes mdc-checkbox-fade-out-background-#{$uid} {
+    0%,
+    80% {
+      @include mdc-theme-prop(border-color, $to-stroke-color);
+      @include mdc-theme-prop(background-color, $to-fill-color);
+    }
 
-@keyframes mdc-checkbox-fade-out-background {
-  0%,
-  80% {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
-  }
-
-  100% {
-    border-color: $mdc-checkbox-border-color;
-    background-color: transparent;
-  }
-}
-
-@keyframes mdc-checkbox-fade-in-background-dark {
-  0% {
-    border-color: $mdc-checkbox-border-color-dark;
-    background-color: transparent;
-  }
-
-  50% {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
-  }
-}
-
-@keyframes mdc-checkbox-fade-out-background-dark {
-  0%,
-  80% {
-    @include mdc-theme-prop(border-color, primary);
-    @include mdc-theme-prop(background-color, primary);
-  }
-
-  100% {
-    border-color: $mdc-checkbox-border-color-dark;
-    background-color: transparent;
+    100% {
+      @include mdc-theme-prop(border-color, $from-stroke-color);
+      @include mdc-theme-prop(background-color, $from-fill-color);
+    }
   }
 }
 
 @keyframes mdc-checkbox-unchecked-checked-checkmark-path {
   0%,
   50% {
-    stroke-dashoffset: $_mdc-checkbox-mark-path-length;
+    stroke-dashoffset: $mdc-checkbox-mark-path-length_;
   }
 
   50% {
-    @include mdc-animation-deceleration-curve;
+    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
   }
 
   100% {
@@ -99,24 +82,22 @@
 
 @keyframes mdc-checkbox-checked-unchecked-checkmark-path {
   from {
-    @include mdc-animation-acceleration-curve;
-
+    animation-timing-function: $mdc-animation-acceleration-curve-timing-function;
     opacity: 1;
     stroke-dashoffset: 0;
   }
 
   to {
     opacity: 0;
-    stroke-dashoffset: $_mdc-checkbox-mark-path-length * -1;
+    stroke-dashoffset: $mdc-checkbox-mark-path-length_ * -1;
   }
 }
 
 @keyframes mdc-checkbox-checked-indeterminate-checkmark {
   from {
+    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
     transform: rotate(0deg);
     opacity: 1;
-
-    @include mdc-animation-deceleration-curve;
   }
 
   to {
@@ -127,9 +108,9 @@
 
 @keyframes mdc-checkbox-indeterminate-checked-checkmark {
   from {
+    animation-timing-function: $mdc-checkbox-indeterminate-checked-easing-function_;
     transform: rotate(45deg);
     opacity: 0;
-    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
   }
 
   to {
@@ -140,10 +121,9 @@
 
 @keyframes mdc-checkbox-checked-indeterminate-mixedmark {
   from {
+    animation-timing-function: mdc-animation-deceleration-curve-timing-function;
     transform: rotate(-45deg);
     opacity: 0;
-
-    @include mdc-animation-deceleration-curve;
   }
 
   to {
@@ -154,9 +134,9 @@
 
 @keyframes mdc-checkbox-indeterminate-checked-mixedmark {
   from {
+    animation-timing-function: $mdc-checkbox-indeterminate-checked-easing-function_;
     transform: rotate(0deg);
     opacity: 1;
-    animation-timing-function: $_mdc-checkbox-indeterminate-checked-easing-function;
   }
 
   to {
@@ -167,9 +147,9 @@
 
 @keyframes mdc-checkbox-indeterminate-unchecked-mixedmark {
   0% {
+    animation-timing-function: linear;
     transform: scaleX(1);
     opacity: 1;
-    animation-timing-function: linear;
   }
 
   32.8%,

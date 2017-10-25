@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +15,10 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
+import {MDCRipple} from '@material/ripple';
+/* eslint-enable no-unused-vars */
+
 /**
  * @typedef {!{
  *   checked: boolean,
@@ -22,4 +27,14 @@
  *   value: ?string
  * }}
  */
-export let SelectionControlState;
+let MDCSelectionControlState;
+
+/**
+ * @record
+ */
+class MDCSelectionControl {
+  /** @return {?MDCRipple} */
+  get ripple() {}
+}
+
+export {MDCSelectionControlState, MDCSelectionControl};

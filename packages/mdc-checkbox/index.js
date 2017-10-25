@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,30 +18,29 @@
 import {getCorrectEventName} from '@material/animation';
 import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
-import {SelectionControlState} from '@material/base/selection-control';
+import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control';
 /* eslint-enable no-unused-vars */
 import MDCCheckboxFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 import {getMatchesProperty} from '@material/ripple/util';
 
-export {MDCCheckboxFoundation};
-
 /**
  * @extends MDCComponent<!MDCCheckboxFoundation>
+ * @implements {MDCSelectionControl}
  */
-export class MDCCheckbox extends MDCComponent {
+class MDCCheckbox extends MDCComponent {
   static attachTo(root) {
     return new MDCCheckbox(root);
   }
 
   /**
    * Returns the state of the native control element, or null if the native control element is not present.
-   * @return {?SelectionControlState}
+   * @return {?MDCSelectionControlState}
    * @private
    */
   get nativeCb_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    const cbEl = /** @type {?SelectionControlState} */ (
+    const cbEl = /** @type {?MDCSelectionControlState} */ (
       this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
     return cbEl;
   }
@@ -147,3 +147,5 @@ export class MDCCheckbox extends MDCComponent {
     super.destroy();
   }
 }
+
+export {MDCCheckboxFoundation, MDCCheckbox};

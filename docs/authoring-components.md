@@ -63,8 +63,8 @@ specifically for MDC-Web, and is best suited for those looking to contribute dir
 project.
 
 Note that this document assumes you are familiar with the library and its
-[architecture](./architecture.md). If that is not the case, we recommend reading that first. If you
-are brand new to the project, we recommend starting with our [general developer documentation](./developer.md).
+[architecture](code/architecture.md). If that is not the case, we recommend reading that first. If you
+are brand new to the project, we recommend starting with our [Getting Started Guide](./getting-started.md).
 
 ## How to build a component
 
@@ -386,7 +386,7 @@ our [@material/rtl](../packages/mdc-rtl) library to assist us with this.
 ### Support for theming
 
 A component should be able to be altered according to a **theme**. A theme can be defined any way
-you wish. It may be by using _primary_ and _accent_ colors, or you may choose to expose scss
+you wish. It may be by using _primary_ and _secondary_ colors, or you may choose to expose scss
 variables or CSS Custom properties specific to your component. Whichever way you choose, ensure that
 _clients can easily alter common aesthetic elements of your component to make it fit with their
 overall design_. We use [@material/theme](../packages/mdc-theme) for this purpose.

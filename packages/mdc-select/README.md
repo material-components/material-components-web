@@ -77,7 +77,7 @@ npm install --save @material/select
 Then with JS
 
 ```js
-import {MDCSelect} from 'mdc-select';
+import {MDCSelect} from '@material/select';
 
 const select = new MDCSelect(document.querySelector('.mdc-select'));
 select.listen('MDCSelect:change', () => {
@@ -195,7 +195,7 @@ on a mobile device. It does not require any javascript, nor any CSS for `mdc-men
 
 ```html
 <select class="mdc-select">
-  <option value="" default selected>Pick a food</option>
+  <option value="" selected>Pick a food</option>
   <option value="grains">Bread, Cereal, Rice, and Pasta</option>
   <option value="vegetables">Vegetables</option>
   <optgroup label="Fruits">

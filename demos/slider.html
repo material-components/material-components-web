@@ -19,12 +19,11 @@
     <meta charset="utf-8">
     <title>Slider - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
-    <script src="assets/material-components-web.css.js" charset="utf-8"></script>
-    <script src="assets/demo-styles.css.js" charset="utf-8"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/slider.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
       #hero-slider-wrapper {
         margin: 0 auto;
@@ -59,7 +58,7 @@
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Slider</span>
         </section>
@@ -219,7 +218,7 @@
         </div>
       </section>
     </main>
-    <script src="assets/material-components-web.js" charset="utf-8"></script>
+    <script src="/assets/material-components-web.js"></script>
     <script>
       (function() {
         setTimeout(function() {
@@ -288,8 +287,7 @@
           });
 
           darkTheme.addEventListener('change', function() {
-            var examples = demoRoot.querySelectorAll('.example-slider-wrapper');
-            examples.forEach((example) => {
+            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
               example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
             });
           });
@@ -301,15 +299,13 @@
           });
 
           useCustomColor.addEventListener('change', function() {
-            var examples = demoRoot.querySelectorAll('.example-slider-wrapper');
-            examples.forEach((example) => {
+            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
               example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
             });
           });
 
           rtl.addEventListener('change', function() {
-            var examples = demoRoot.querySelectorAll('.example-slider-wrapper');
-            examples.forEach((example) => {
+            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
               if (rtl.checked) {
                 example.setAttribute('dir', 'rtl');
               } else {

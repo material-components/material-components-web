@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +15,51 @@
  * limitations under the License.
  */
 
-/** @private {boolean|undefined} */
+/**
+ * Stores result from supportsCssVariables to avoid redundant processing to detect CSS custom variable support.
+ * @private {boolean|undefined}
+ */
+let supportsCssVariables_;
+
+/**
+ * Stores result from applyPassive to avoid redundant processing to detect passive event listener support.
+ * @private {boolean|undefined}
+ */
 let supportsPassive_;
 
 /**
  * @param {!Window} windowObj
+ * @return {boolean}
+ */
+function detectEdgePseudoVarBug(windowObj) {
+  // Detect versions of Edge with buggy var() support
+  // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
+  const document = windowObj.document;
+  const node = document.createElement('div');
+  node.className = 'mdc-ripple-surface--test-edge-var-bug';
+  document.body.appendChild(node);
+
+  // The bug exists if ::before style ends up propagating to the parent element.
+  // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
+  // but Firefox is known to support CSS custom properties correctly.
+  // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+  const computedStyle = windowObj.getComputedStyle(node);
+  const hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
+  node.remove();
+  return hasPseudoVarBug;
+}
+
+/**
+ * @param {!Window} windowObj
+ * @param {boolean=} forceRefresh
  * @return {boolean|undefined}
  */
-export function supportsCssVariables(windowObj) {
+
+function supportsCssVariables(windowObj, forceRefresh = false) {
+  if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
+    return supportsCssVariables_;
+  }
+
   const supportsFunctionPresent = windowObj.CSS && typeof windowObj.CSS.supports === 'function';
   if (!supportsFunctionPresent) {
     return;
@@ -34,7 +72,13 @@ export function supportsCssVariables(windowObj) {
     windowObj.CSS.supports('(--css-vars: yes)') &&
     windowObj.CSS.supports('color', '#00000000')
   );
-  return explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus;
+
+  if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
+    supportsCssVariables_ = !detectEdgePseudoVarBug(windowObj);
+  } else {
+    supportsCssVariables_ = false;
+  }
+  return supportsCssVariables_;
 }
 
 //
@@ -44,7 +88,7 @@ export function supportsCssVariables(windowObj) {
  * @param {boolean=} forceRefresh
  * @return {boolean|{passive: boolean}}
  */
-export function applyPassive(globalObj = window, forceRefresh = false) {
+function applyPassive(globalObj = window, forceRefresh = false) {
   if (supportsPassive_ === undefined || forceRefresh) {
     let isSupported = false;
     try {
@@ -63,7 +107,7 @@ export function applyPassive(globalObj = window, forceRefresh = false) {
  * @param {!Object} HTMLElementPrototype
  * @return {!Array<string>}
  */
-export function getMatchesProperty(HTMLElementPrototype) {
+function getMatchesProperty(HTMLElementPrototype) {
   return [
     'webkitMatchesSelector', 'msMatchesSelector', 'matches',
   ].filter((p) => p in HTMLElementPrototype).pop();
@@ -75,7 +119,7 @@ export function getMatchesProperty(HTMLElementPrototype) {
  * @param {!ClientRect} clientRect
  * @return {!{x: number, y: number}}
  */
-export function getNormalizedEventCoords(ev, pageOffset, clientRect) {
+function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   const {x, y} = pageOffset;
   const documentX = x + clientRect.left;
   const documentY = y + clientRect.top;
@@ -93,3 +137,5 @@ export function getNormalizedEventCoords(ev, pageOffset, clientRect) {
 
   return {x: normalizedX, y: normalizedY};
 }
+
+export {supportsCssVariables, applyPassive, getMatchesProperty, getNormalizedEventCoords};

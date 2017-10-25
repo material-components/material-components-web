@@ -47,3 +47,35 @@ export function captureHandlers(adapter) {
   const handlers = baseCaptureHandlers(adapter, 'registerInteractionHandler');
   return handlers;
 }
+
+// Creates a mock window object with all members necessary to test util.supportsCssVariables
+// in cases where window.CSS.supports indicates the feature is supported.
+export function createMockWindowForCssVariables() {
+  const getComputedStyle = td.func('window.getComputedStyle');
+  const remove = () => mockWindow.appendedNodes--;
+  const mockDoc = {
+    body: {
+      appendChild: () => mockWindow.appendedNodes++,
+    },
+    createElement: td.func('document.createElement'),
+  };
+
+  td.when(getComputedStyle(td.matchers.anything())).thenReturn({
+    borderTopStyle: 'none',
+  });
+
+  td.when(mockDoc.createElement('div')).thenReturn({
+    remove: remove,
+  });
+
+  const mockWindow = {
+    // Expose count of nodes that have been appended and not removed, to be verified in tests
+    appendedNodes: 0,
+    CSS: {
+      supports: td.func('.supports'),
+    },
+    document: mockDoc,
+    getComputedStyle: getComputedStyle,
+  };
+  return mockWindow;
+}

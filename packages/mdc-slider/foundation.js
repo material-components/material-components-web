@@ -123,14 +123,14 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.layout();
     // At last step, provide a reasonable default value to discrete slider
     if (this.isDiscrete_ && this.getStep() == 0) {
-      this.setStep(1);
+      this.step_ = 1;
     }
   }
 
   destroy() {
     this.adapter_.deregisterInteractionHandler('mousedown', this.mousedownHandler_);
-    this.adapter_.deregisterInteractionHandler('pointerdown', this.mousedownHandler_);
-    this.adapter_.deregisterInteractionHandler('touchstart', this.mousedownHandler_);
+    this.adapter_.deregisterInteractionHandler('pointerdown', this.pointerdownHandler_);
+    this.adapter_.deregisterInteractionHandler('touchstart', this.touchstartHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);

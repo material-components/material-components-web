@@ -1,3 +1,4 @@
+//
 // Copyright 2016 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,33 +12,46 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
 
-@import "@material/animation/functions";
-@import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
+@import "./functions";
 @import "./mixins";
 @import "./variables";
 
-@function mdc-switch-transition($property) {
-  @return $property 90ms $mdc-switch-transition-curve;
-}
-
 // postcss-bem-linter: define switch
 .mdc-switch {
+  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
+  @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
+  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
+
+  @include mdc-theme-dark {
+    @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color-dark);
+    @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color-dark);
+    @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color-dark);
+  }
+
+  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
+
   display: inline-block;
   position: relative;
 
   &__native-control {
+    @include mdc-switch-tap-target_;
+
     display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: $mdc-switch-track-width;
-    height: $mdc-switch-track-height;
-    cursor: pointer;
+    margin-top: $mdc-switch-knob-vertical-offset_;
+    transition: mdc-switch-transition(transform);
     opacity: 0;
+    cursor: pointer;
     z-index: 2;
+
+    &:checked {
+      transform: translateX($mdc-switch-knob-active-margin);
+    }
   }
 
   &__background {
@@ -47,14 +61,9 @@
     height: $mdc-switch-track-height;
     border-radius: 7px;
     outline: none;
-    background-color: transparent;
-    cursor: pointer;
     user-select: none;
 
-    @include mdc-theme-dark(".mdc-switch") {
-      background-color: transparent;
-    }
-
+    // Track
     &::before {
       display: block;
       position: absolute;
@@ -66,21 +75,21 @@
         mdc-switch-transition(opacity),
         mdc-switch-transition(background-color);
       border-radius: 7px;
-      background-color: $mdc-switch-unchecked-track-color;
-      content: "";
       opacity: .38;
+      content: "";
 
       @include mdc-theme-dark(".mdc-switch") {
-        background-color: $mdc-switch-unchecked-track-color-dark;
         opacity: .3;
       }
     }
 
     // postcss-bem-linter: ignore
     .mdc-switch__knob {
+      @include mdc-elevation(2);
+
       display: block;
       position: absolute;
-      top: -3px;
+      top: $mdc-switch-knob-vertical-offset_;
       left: 0;
       width: $mdc-switch-knob-diameter;
       height: $mdc-switch-knob-diameter;
@@ -89,31 +98,20 @@
         mdc-switch-transition(transform),
         mdc-switch-transition(background-color);
       border-radius: $mdc-switch-knob-diameter / 2;
-      background-color: $mdc-switch-unchecked-knob-color;
-
-      @include mdc-theme-dark(".mdc-switch") {
-        background-color: $mdc-switch-unchecked-knob-color-dark;
-      }
-
-      @include mdc-elevation(2);
-
       z-index: 1;
 
+      // Focus indicator
       // postcss-bem-linter: ignore
       &::before {
-        position: absolute;
-        top: -14px;
-        left: -14px;
-        width: $mdc-switch-focus-ring-diameter;
-        height: $mdc-switch-focus-ring-diameter;
+        @include mdc-switch-tap-target_;
+
         transform: scale(0);
         transition:
           mdc-switch-transition(transform),
           mdc-switch-transition(background-color);
         border-radius: $mdc-switch-focus-ring-diameter / 2;
-        background-color: transparent;
-        content: "";
         opacity: .2;
+        content: "";
       }
     }
   }
@@ -121,6 +119,7 @@
 
 .mdc-switch__native-control:focus ~ .mdc-switch__background {
   .mdc-switch__knob {
+    // Focus indicator
     &::before {
       position: absolute;
       width: $mdc-switch-focus-ring-diameter;
@@ -130,10 +129,8 @@
         mdc-switch-transition(transform),
         mdc-switch-transition(background-color);
       border-radius: $mdc-switch-focus-ring-diameter / 2;
-      background-color: $mdc-switch-unchecked-focus-ring-color;
 
       @include mdc-theme-dark(".mdc-switch") {
-        background-color: $mdc-switch-unchecked-focus-ring-color-dark;
         opacity: .14;
       }
     }
@@ -141,27 +138,19 @@
 }
 
 .mdc-switch__native-control:checked ~ .mdc-switch__background {
+  // Track
   &::before {
-    @include mdc-theme-prop(background-color, primary);
-
     opacity: .5;
   }
 
   .mdc-switch__knob {
-    transform: translateX($mdc-switch-track-width - $mdc-switch-knob-diameter);
+    transform: translateX($mdc-switch-knob-active-margin);
     transition:
       mdc-switch-transition(transform),
       mdc-switch-transition(background-color);
 
-    @include mdc-theme-prop(background-color, primary);
-
+    // Focus indicator
     &::before {
-      @include mdc-theme-prop(background-color, primary);
-
-      @include mdc-theme-dark(".mdc-switch") {
-        @include mdc-theme-prop(background-color, primary);
-      }
-
       opacity: .15;
     }
   }
@@ -174,6 +163,7 @@
 }
 
 .mdc-switch__native-control:disabled ~ .mdc-switch__background {
+  // Track
   &::before {
     background-color: $mdc-switch-unchecked-track-color;
     opacity: .12;
