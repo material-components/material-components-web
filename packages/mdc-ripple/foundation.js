@@ -419,7 +419,7 @@ class MDCRippleFoundation extends MDCFoundation {
 
       if (needsActualDeactivation) {
         // Prevents double-animation when 'mouse' and 'touch' events fire sequentially
-        setTimeout(()=>{
+        setTimeout(() => {
           this.activationState_ = this.defaultActivationState_();
         }, DEACTIVATION_TIMEOUT_MS);
       }
