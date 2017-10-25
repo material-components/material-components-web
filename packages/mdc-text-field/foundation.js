@@ -15,15 +15,15 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCTextfieldAdapter, NativeInputType} from './adapter';
+import {MDCTextFieldAdapter, NativeInputType} from './adapter';
 import {cssClasses, strings} from './constants';
 
 
 /**
- * @extends {MDCFoundation<!MDCTextfieldAdapter>}
+ * @extends {MDCFoundation<!MDCTextFieldAdapter>}
  * @final
  */
-class MDCTextfieldFoundation extends MDCFoundation {
+class MDCTextFieldFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
@@ -35,12 +35,12 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * {@see MDCTextfieldAdapter} for typing information on parameters and return
+   * {@see MDCTextFieldAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCTextfieldAdapter}
+   * @return {!MDCTextFieldAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTextfieldAdapter} */ ({
+    return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
       addClassToLabel: () => {},
@@ -67,10 +67,10 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextfieldAdapter=} adapter
+   * @param {!MDCTextFieldAdapter=} adapter
    */
-  constructor(adapter = /** @type {!MDCTextfieldAdapter} */ ({})) {
-    super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
+  constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({})) {
+    super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -93,10 +93,10 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   init() {
-    this.adapter_.addClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
+    this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
     if (this.getNativeInput_().value) {
-      this.adapter_.addClassToLabel(MDCTextfieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
+      this.adapter_.addClassToLabel(MDCTextFieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -112,7 +112,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   destroy() {
-    this.adapter_.removeClass(MDCTextfieldFoundation.cssClasses.UPGRADED);
+    this.adapter_.removeClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     this.adapter_.deregisterInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.deregisterInputInteractionHandler('blur', this.inputBlurHandler_);
     this.adapter_.deregisterInputInteractionHandler('input', this.inputInputHandler_);
@@ -126,7 +126,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles all user interactions with the Textfield.
+   * Handles all user interactions with the TextField.
    * @param {!Event} evt
    * @private
    */
@@ -138,7 +138,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
     this.receivedUserInput_ = true;
 
     const {target, type} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextfieldFoundation.cssClasses;
+    const {TEXT_FIELD_ICON} = MDCTextFieldFoundation.cssClasses;
     const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
     const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
 
@@ -152,7 +152,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   activateFocus_() {
-    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
@@ -178,7 +178,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Activates the Textfield's focus state in cases when the input value
+   * Activates the TextField's focus state in cases when the input value
    * changes without user input (e.g. programatically).
    * @private
    */
@@ -193,7 +193,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   showHelptext_() {
-    const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
+    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
     this.adapter_.removeHelptextAttr(ARIA_HIDDEN);
   }
 
@@ -204,7 +204,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   transitionEnd_(evt) {
-    const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
+    const {BOTTOM_LINE_ACTIVE} = MDCTextFieldFoundation.cssClasses;
 
     // We need to wait for the bottom line to be entirely transparent
     // before removing the class. If we do not, we see the line start to
@@ -215,11 +215,11 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Deactives the Textfield's focus state.
+   * Deactives the TextField's focus state.
    * @private
    */
   deactivateFocus_() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
     this.isFocused_ = false;
@@ -237,12 +237,12 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the Textfield's valid state based on the supplied validity.
+   * Updates the TextField's valid state based on the supplied validity.
    * @param {boolean} isValid
    * @private
    */
   changeValidity_(isValid) {
-    const {INVALID, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {INVALID, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
@@ -253,13 +253,13 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the state of the Textfield's help text based on validity and
-   * the Textfield's options.
+   * Updates the state of the TextField's help text based on validity and
+   * the TextField's options.
    * @param {boolean} isValid
    */
   updateHelptext_(isValid) {
-    const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextfieldFoundation.cssClasses;
-    const {ROLE} = MDCTextfieldFoundation.strings;
+    const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
+    const {ROLE} = MDCTextFieldFoundation.strings;
     const helptextIsPersistent = this.adapter_.helptextHasClass(HELPTEXT_PERSISTENT);
     const helptextIsValidationMsg = this.adapter_.helptextHasClass(HELPTEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helptextIsValidationMsg && !isValid;
@@ -281,12 +281,12 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   hideHelptext_() {
-    const {ARIA_HIDDEN} = MDCTextfieldFoundation.strings;
+    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
     this.adapter_.setHelptextAttr(ARIA_HIDDEN, 'true');
   }
 
   /**
-   * @return {boolean} True if the Textfield input fails validity checks.
+   * @return {boolean} True if the TextField input fails validity checks.
    * @private
    */
   isBadInput_() {
@@ -295,17 +295,17 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {boolean} True if the Textfield is disabled.
+   * @return {boolean} True if the TextField is disabled.
    */
   isDisabled() {
     return this.getNativeInput_().disabled;
   }
 
   /**
-   * @param {boolean} disabled Sets the textfield disabled or enabled.
+   * @param {boolean} disabled Sets the text-field disabled or enabled.
    */
   setDisabled(disabled) {
-    const {DISABLED} = MDCTextfieldFoundation.cssClasses;
+    const {DISABLED} = MDCTextFieldFoundation.cssClasses;
     this.getNativeInput_().disabled = disabled;
     if (disabled) {
       this.adapter_.addClass(DISABLED);
@@ -332,7 +332,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {boolean} isValid Sets the validity state of the Textfield.
+   * @param {boolean} isValid Sets the validity state of the TextField.
    */
   setValid(isValid) {
     this.useCustomValidityChecking_ = true;
@@ -340,4 +340,4 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 }
 
-export default MDCTextfieldFoundation;
+export default MDCTextFieldFoundation;

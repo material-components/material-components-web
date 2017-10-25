@@ -143,7 +143,7 @@
           "snackbar",
           "switch",
           "tabs",
-          "textfield",
+          "text-field",
           "theme",
           "toolbar",
           "typography",
@@ -169,6 +169,6 @@
     "mdc-radio",
     "mdc-ripple",
     "mdc-selection-control",
-    "mdc-textfield"
+    "mdc-text-field"
   ]
 }
