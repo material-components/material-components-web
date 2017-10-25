@@ -84,7 +84,7 @@ while true; do
   esac
 done
 
-if [[ ! "${PR}" =~ ^[1-9][0-9]*$ ]]; then
+if [[ -n "${PR}" ]] && [[ ! "${PR}" =~ ^[1-9][0-9]*$ ]]; then
   echo 'Error: --pr must be a positive integer value'
   exit 4
 fi
