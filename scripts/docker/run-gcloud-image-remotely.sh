@@ -26,21 +26,24 @@ AUTHORS=(iamJoeTaylor bonniezhou kfranqueiro)
 REMOTE_URLS=(https://github.com/iamJoeTaylor/material-components-web.git https://github.com/material-components/material-components-web.git https://github.com/material-components/material-components-web.git)
 REMOTE_BRANCHES=(joetaylor/issue-1435-textfield-hightlight-color rename-textfield fix/slider-up-events)
 
-CLUSTER=pr-demo-cluster-test
-
 for i in `seq 1 1 3`; do
-  # Create a cluster of server instances
-  gcloud container clusters create "${CLUSTER}-${i}" --num-nodes=1
-#  gcloud container clusters get-credentials "${CLUSTER}-${i}"
+  CLUSTER="pr-demo-cluster-${i}"
+  DEPLOYMENT="pr-demo-deployment-${i}"
 
-  # Deploy the application and create 1 pod with 1 cluster
-  kubectl run "${CLUSTER}-${i}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}"
+  # Create a cluster of 1 server instances
+  gcloud container clusters create "${CLUSTER}" --num-nodes=1
+
+  # Configure kubectl to use the previously-created cluster
+  gcloud container clusters get-credentials "${CLUSTER}"
+
+  # Deploy the application and create 1 pod with 1 cluster with 1 nodes
+  kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}"
 
   # Expose the server to the internet
-  kubectl expose deployment "${CLUSTER}-${i}" --type=LoadBalancer --port 80 --target-port 8080
+  kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
 
-  IP_ADDR=`kubectl get service | grep -E -e "^${CLUSTER} " | awk '{ print $3 }'`
-  echo "${CLUSTER}: ${IP_ADDR}"
+  IP_ADDR=`kubectl get service | grep -E -e "^${DEPLOYMENT} " | awk '{ print $3 }'`
+  echo "${DEPLOYMENT}: ${IP_ADDR}"
 done
 
 set +x
