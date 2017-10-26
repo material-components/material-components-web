@@ -70,31 +70,6 @@ Mixin | Description
 `mdc-ripple-color($color, $opacity)` | Adds styles for the color and opacity of the ripple effect
 `mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
 
-#### Legacy Sass API
-
-> Note: This API is deprecated and will be removed soon. Please use the APIs above instead, which establish the same styles with a simpler API.
-
-All three of the following mixins are mandatory in order to fully style the ripple effect.
-
-Mixin | Description
---- | ---
-`mdc-ripple-base` | Adds base styles for a ripple surface
-`mdc-ripple-bg($config)` | Adds styles for the ripple's background (i.e. fade effects)
-`mdc-ripple-fg($config)` | Adds styles for the ripple's foreground (i.e. the ink wash)
-
-##### Ripple Configuration Map
-
-Both `mdc-ripple-bg` and `mdc-ripple-fg` take a `$config` map as an optional
-argument, with which you can specify the following parameters:
-
-| Parameter | Description | Default |
-| --- | --- | --- |
-| `pseudo` | The name of the pseudo-element you want to use to style the ripple. Using pseudo-elements to style ripples obviates the need for any extra DOM and is recommended. However, if given `null` it will style the element directly, rather than attaching styles to the pseudo element. | `null` |
-| `radius` | For _bounded_ ripples, specifies radii of the ripple circles. Can be any valid numeric CSS unit. | `100%` |
-| `theme-style` | When provided, will use a style specified by `mdc-theme` to provide colors to the ripple. For example, passing `(theme-style: primary)` would make the ripples the color of the theme's primary color. Note that there are some current limitations here. See [below](#caveat-theme-custom-variables) | `null` |
-| `base-color` | The RGB color (_without_ an alpha component) of the ripple. This will only be used if `theme-style` isn't specified. | `black` |
-| `opacity` | A unitless number from `0-1` specifying the opacity that either the `base-color` or the `theme-style` color will take on. | `.06` |
-
 ### Adding Ripple JS
 
 First import the ripple JS.
