@@ -37,8 +37,8 @@ for i in `seq 0 1 2`; do
   # Configure kubectl to use the previously-created cluster
   gcloud container clusters get-credentials "${CLUSTER}"
 
-  # Deploy the application and create 1 pod with 1 cluster with 1 nodes
-  kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}"
+  # Deploy the application and create 1 pod with 1 cluster with 1 node
+  kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}" "$@"
 
   # Expose the server to the internet
   kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
