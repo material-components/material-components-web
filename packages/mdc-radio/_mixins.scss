@@ -43,10 +43,3 @@
     @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
   }
 }
-
-@mixin mdc-radio-ripple($ripple-config) {
-  $ripple-config: map-merge((opacity: $mdc-radio-ripple-opacity, radius: 50%), $ripple-config);
-
-  @include mdc-ripple-bg(map-merge($ripple-config, (pseudo: "::before")));
-  @include mdc-ripple-fg(map-merge($ripple-config, (pseudo: "::after")));
-}
