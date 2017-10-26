@@ -17,7 +17,7 @@
 #
 
 apt-get update \
-  && apt-get install -y curl git less vim aptitude util-linux \
+  && apt-get install -y curl git util-linux \
   && apt-get autoclean -y
 
 useradd --create-home --shell /bin/bash demobot
