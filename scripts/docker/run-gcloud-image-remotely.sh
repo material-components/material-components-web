@@ -26,12 +26,13 @@ AUTHORS=(iamJoeTaylor bonniezhou kfranqueiro)
 REMOTE_URLS=(https://github.com/iamJoeTaylor/material-components-web.git https://github.com/material-components/material-components-web.git https://github.com/material-components/material-components-web.git)
 REMOTE_BRANCHES=(joetaylor/issue-1435-textfield-hightlight-color rename-textfield fix/slider-up-events)
 
-for i in `seq 1 1 3`; do
-  CLUSTER="pr-demo-cluster-${i}"
-  DEPLOYMENT="pr-demo-deployment-${i}"
+DATE_SAFE="`date '+%Y-%m-%dt%H-%M-%S'`"
 
-  # Create a cluster of 1 server instances
-  gcloud container clusters create "${CLUSTER}" --num-nodes=1
+CLUSTER="pr-demo-cluster"
+#gcloud container clusters create "${CLUSTER}" --num-nodes=10
+
+for i in `seq 1 1 3`; do
+  DEPLOYMENT="pr-demo-deployment-${i}-${DATE_SAFE}"
 
   # Configure kubectl to use the previously-created cluster
   gcloud container clusters get-credentials "${CLUSTER}"
