@@ -34,7 +34,7 @@
 @import "../../packages/mdc-switch/mdc-switch";
 @import "../../packages/mdc-tabs/mdc-tabs";
 @import "../../packages/mdc-textfield/mdc-textfield";
-@import "../../packages/mdc-theme/color_palette";
+@import "../../packages/mdc-theme/color-palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
@@ -136,11 +136,11 @@ figure {
 
 .mdc-button.secondary-text-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
 
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+    @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
   }
 }
 
@@ -155,12 +155,12 @@ figure {
 .mdc-button.secondary-stroked-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-button-stroke-color($mdc-theme-secondary);
-  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
 
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-button-ink-color($mdc-theme-secondary);
     @include mdc-button-stroke-color($mdc-theme-secondary);
-    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+    @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
   }
 }
 
