@@ -44,6 +44,8 @@ git remote add -t "${REMOTE_BRANCH}" "${REMOTE_NAME}" "${REMOTE_URL}"
 git fetch "${REMOTE_NAME}"
 git checkout -b "${LOCAL_BRANCH}" "${REMOTE_NAME}/${REMOTE_BRANCH}"
 
+set +e
+
 # https://stackoverflow.com/a/1655389/467582
 IFS='' read -r -d '' INFO_HTML <<EOF
 <!doctype html>
@@ -88,6 +90,7 @@ EOF
 mkdir -p demos/info/
 echo "${INFO_HTML}" > demos/info/index.html
 
+set -e
 set +x
 
 echo 'Installing node modules...'
