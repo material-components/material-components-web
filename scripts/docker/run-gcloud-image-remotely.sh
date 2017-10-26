@@ -29,9 +29,9 @@ REMOTE_BRANCHES=(joetaylor/issue-1435-textfield-hightlight-color rename-textfiel
 DATE_SAFE="`date '+%Y-%m-%dt%H-%M-%S'`"
 
 CLUSTER="pr-demo-cluster"
-#gcloud container clusters create "${CLUSTER}" --num-nodes=10
+#gcloud container clusters create "${CLUSTER}" --num-nodes=8
 
-for i in `seq 1 1 3`; do
+for i in `seq 0 1 2`; do
   DEPLOYMENT="pr-demo-deployment-${i}-${DATE_SAFE}"
 
   # Configure kubectl to use the previously-created cluster
