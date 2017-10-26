@@ -44,6 +44,50 @@ git remote add -t "${REMOTE_BRANCH}" "${REMOTE_NAME}" "${REMOTE_URL}"
 git fetch "${REMOTE_NAME}"
 git checkout -b "${LOCAL_BRANCH}" "${REMOTE_NAME}/${REMOTE_BRANCH}"
 
+# https://stackoverflow.com/a/1655389/467582
+IFS='' read -r -d '' INFO_HTML <<EOF
+<!doctype html>
+<html>
+  <head>
+    <title>Demo Info - MDC-Web</title>
+  </head>
+  <body>
+    <h1>MDC-Web Demo</h1>
+    <table>
+      <tbody>
+        <tr>
+          <td>--pr=</td>
+          <td>'${PR}'</td>
+        </tr>
+        <tr>
+          <td>--author=</td>
+          <td>'${AUTHOR}'</td>
+        </tr>
+        <tr>
+          <td>--remote-branch=</td>
+          <td>'${REMOTE_BRANCH}'</td>
+        </tr>
+        <tr>
+          <td>--remote-url=</td>
+          <td>'${REMOTE_URL}'</td>
+        </tr>
+        <tr>
+          <td>Remote name:</td>
+          <td>'${REMOTE_NAME}'</td>
+        </tr>
+        <tr>
+          <td>Local branch:</td>
+          <td>'${LOCAL_BRANCH}'</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
+EOF
+
+mkdir -p demos/info/
+echo "${INFO_HTML}" > demos/info/index.html
+
 set +x
 
 echo 'Installing node modules...'
