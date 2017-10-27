@@ -87,7 +87,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
     }
   }
 
-  &.mdc-ripple-upgraded--background-focused::before {
+  &.mdc-ripple-upgraded:focus::before {
     opacity: .99999;
   }
 

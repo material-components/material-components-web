@@ -36,9 +36,7 @@ let ActivationStateType;
 /**
  * @typedef {!{
  *   activate: (string|undefined),
- *   deactivate: (string|undefined),
- *   focus: (string|undefined),
- *   blur: (string|undefined)
+ *   deactivate: (string|undefined)
  * }}
  */
 let ListenerInfoType;
@@ -46,9 +44,7 @@ let ListenerInfoType;
 /**
  * @typedef {!{
  *   activate: function(!Event),
- *   deactivate: function(!Event),
- *   focus: function(),
- *   blur: function()
+ *   deactivate: function(!Event)
  * }}
  */
 let ListenersType;
@@ -133,19 +129,12 @@ class MDCRippleFoundation extends MDCFoundation {
       {activate: 'pointerdown', deactivate: 'pointerup'},
       {activate: 'mousedown', deactivate: 'mouseup'},
       {activate: 'keydown', deactivate: 'keyup'},
-      {focus: 'focus', blur: 'blur'},
     ];
 
     /** @private {!ListenersType} */
     this.listeners_ = {
       activate: (e) => this.activate_(e),
       deactivate: (e) => this.deactivate_(e),
-      focus: () => requestAnimationFrame(
-        () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-      ),
-      blur: () => requestAnimationFrame(
-        () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-      ),
     };
 
     /** @private {!Function} */
@@ -422,10 +411,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @private
    */
   animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive}) {
-    const {BG_FOCUSED} = MDCRippleFoundation.cssClasses;
     if (wasActivatedByPointer || wasElementMadeActive) {
-      // Remove class left over by element being focused
-      this.adapter_.removeClass(BG_FOCUSED);
       this.runDeactivationUXLogicIfReady_();
     }
   }
