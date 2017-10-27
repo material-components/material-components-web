@@ -112,7 +112,6 @@ testFoundation('#init registers events for all types of common interactions', ({
     'touchstart', 'touchend',
     'pointerdown', 'pointerup',
     'keydown', 'keyup',
-    'focus', 'blur',
   ];
   foundation.init();
 
