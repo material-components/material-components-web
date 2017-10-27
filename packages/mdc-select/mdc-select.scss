@@ -135,6 +135,7 @@
 .mdc-select__menu {
   position: absolute;
   z-index: 3;
+
   .mdc-list-item {
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-secondary-on-light);
