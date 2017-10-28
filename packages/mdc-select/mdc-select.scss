@@ -259,6 +259,11 @@
   }
 }
 
+.mdc-select-scroll-lock {
+  height: 100vh;
+  overflow: hidden;
+}
+
 // height for option elements cannot be controlled
 // with CSS. Use the font-size rule instead.
 

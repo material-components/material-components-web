@@ -17,6 +17,7 @@ export const cssClasses = {
   ROOT: 'mdc-select',
   OPEN: 'mdc-select--open',
   DISABLED: 'mdc-select--disabled',
+  SCROLL_LOCK: 'mdc-select-scroll-lock',
 };
 
 export const strings = {
