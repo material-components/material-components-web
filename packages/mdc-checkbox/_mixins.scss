@@ -156,8 +156,8 @@
   &-checked-unchecked,
   &-indeterminate-unchecked {
     .mdc-checkbox__background {
-      animation-duration: $mdc-checkbox-transition-duration * 2;
       animation-timing-function: linear;
+      animation-duration: $mdc-checkbox-transition-duration * 2;
     }
   }
 
