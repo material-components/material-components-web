@@ -247,13 +247,13 @@ export default class MDCSelectFoundation extends MDCFoundation {
       this.displayHandler_(evt);
     }
   }
-  
-   disableScroll_() {
-     this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
-   }
- 
-   enableScroll_() {
-     this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
-   }
+
+  disableScroll_() {
+    this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
+  }
+
+  enableScroll_() {
+    this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
+  }
 }
 
