@@ -80,7 +80,7 @@
   }
 
   &__menu {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     max-height: 100%;
@@ -133,9 +133,6 @@
 // postcss-bem-linter: end
 
 .mdc-select__menu {
-  position: absolute;
-  z-index: 3;
-
   .mdc-list-item {
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-secondary-on-light);
