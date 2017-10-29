@@ -42,7 +42,7 @@ writing the markup, simply insert a script tag that calls `mdc.autoInit()`. Make
 </script>
 ```
 
-This will attach an [MDCTextField](../mdc-text-field) instance to the root `<div>` element.
+This will attach an [MDCTextField](../mdc-textfield) instance to the root `<div>` element.
 
 #### Accessing the component instance
 

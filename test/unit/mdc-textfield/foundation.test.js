@@ -19,7 +19,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldFoundation from '../../../packages/mdc-text-field/foundation';
+import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 
 const {cssClasses} = MDCTextFieldFoundation;
 

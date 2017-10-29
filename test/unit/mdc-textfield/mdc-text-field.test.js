@@ -20,7 +20,7 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCTextField, MDCTextFieldFoundation} from '../../../packages/mdc-text-field';
+import {MDCTextField, MDCTextFieldFoundation} from '../../../packages/mdc-textfield';
 
 const {cssClasses, strings} = MDCTextFieldFoundation;
 

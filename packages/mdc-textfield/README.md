@@ -317,7 +317,7 @@ const MDCTextFieldFoundation = mdcTextField.MDCTextFieldFoundation;
 ##### AMD
 
 ```javascript
-require(['path/to/mdc-text-field'], mdcTextField => {
+require(['path/to/mdc-textfield'], mdcTextField => {
   const MDCTextField = mdcTextField.MDCTextField;
   const MDCTextFieldFoundation = mdcTextField.MDCTextFieldFoundation;
 });
