@@ -211,9 +211,8 @@ Mixin | Description
 `mdc-radio-checked-stroke-color($color)` | Sets the stroke color of a checked radio
 `mdc-radio-ink-color($color)` | Sets the ink color
 `mdc-radio-focus-indicator-color($color)` | Sets the color of the focus indicator
-`mdc-radio-ripple-color($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
 
-[ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
+The ripple effect for the Radio Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
 ### Caveat: Edge and CSS Variables
 

@@ -108,8 +108,8 @@ require(['path/to/mdc-form-field'], mdcFormField => {
 #### Global
 
 ```javascript
-const MDCFormField = mdc.radio.MDCFormField;
-const MDCFormFieldFoundation = mdc.radio.MDCFormFieldFoundation;
+const MDCFormField = mdc.formField.MDCFormField;
+const MDCFormFieldFoundation = mdc.formField.MDCFormFieldFoundation;
 ```
 
 ### Instantiation
