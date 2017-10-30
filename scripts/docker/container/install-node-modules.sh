@@ -18,12 +18,6 @@
 
 set -e
 
-# Needed in case `git pull` needs to merge
-git config --global user.email demobot@example.com
-git config --global user.name demobot
-
-git clone "https://github.com/material-components/material-components-web.git" .
-curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh" | bash
 . /scripts/source-nvm.sh
 
 echo 'Installing node modules...'

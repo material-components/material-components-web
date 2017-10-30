@@ -22,12 +22,38 @@ EXPOSE 80 443 8080
 
 WORKDIR /mdc-web
 
-COPY container/* /scripts/
-RUN chmod ugo+x /scripts/*.sh
+# Install OS utility packages
+RUN apt-get update && apt-get install -y curl git util-linux && apt-get autoclean -y
 
-RUN /scripts/setup-root.sh
+# Create non-root user account
+RUN useradd --create-home --shell /bin/bash demobot
+RUN chown -R demobot:demobot .
 USER demobot
-RUN /scripts/setup-user.sh
+
+# Needed in case `git pull` needs to merge
+RUN git config --global user.email demobot@example.com
+RUN git config --global user.name demobot
+
+# Clone MDC-Web Git repo and install nvm
+RUN git clone "https://github.com/material-components/material-components-web.git" .
+RUN curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh" | bash
+
+# Copy scripts needed to install node modules
+USER root
+COPY container/source-nvm.sh /scripts/
+COPY container/install-node-modules.sh /scripts/
+RUN chmod ugo+x /scripts/*.sh
+USER demobot
+
+# Install node modules
+RUN /scripts/install-node-modules.sh
+
+# Copy scripts needed to run on startup
+USER root
+COPY container/execute.sh /scripts/
+COPY container/execute-args.sh /scripts/
+RUN chmod ugo+x /scripts/*.sh
+USER demobot
 
 ENTRYPOINT ["/scripts/execute.sh"]
 #CMD [ \
