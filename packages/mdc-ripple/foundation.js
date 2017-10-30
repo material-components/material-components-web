@@ -129,6 +129,7 @@ class MDCRippleFoundation extends MDCFoundation {
       {activate: 'pointerdown', deactivate: 'pointerup'},
       {activate: 'mousedown', deactivate: 'mouseup'},
       {activate: 'keydown', deactivate: 'keyup'},
+      {activate: 'focus', deactivate: 'blur'},
     ];
 
     /** @private {!ListenersType} */
