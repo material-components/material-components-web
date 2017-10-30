@@ -30,9 +30,9 @@ USER demobot
 RUN /scripts/setup-user.sh
 
 ENTRYPOINT ["/scripts/execute.sh"]
-CMD [ \
-  "--author", "Spetnik", \
-  "--pr", "1461", \
-  "--remote-url", "https://github.com/Spetnik/material-components-web.git", \
-  "--remote-branch", "fix/ripple-mouseup" \
-]
+#CMD [ \
+#  "--author", "Spetnik", \
+#  "--pr", "1461", \
+#  "--remote-url", "https://github.com/Spetnik/material-components-web.git", \
+#  "--remote-branch", "fix/ripple-mouseup" \
+#]
