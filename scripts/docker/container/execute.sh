@@ -27,7 +27,15 @@ git reset --hard HEAD
 git clean -d --force
 
 # Fetch the latest changes and prune obsolete branches/tags
+git checkout master
 git fetch --tags --prune origin
+git pull
+
+# Delete old remotes
+git remote | grep -v '^origin$' | tr '\n' '\0' | xargs -0 -n1 --no-run-if-empty git remote rm
+
+# Delete old branches
+git branch | grep -v -E '^[*]' | tr -d ' ' | grep -v '^master$' | tr '\n' '\0' | xargs -0 -n1 --no-run-if-empty git branch -D
 
 DATE_SAFE="`date '+%Y-%m-%d@%H-%M-%S'`"
 REPO_NAME_SAFE="`echo "${REMOTE_URL}" | sed -E -e 's%.*github.com%%' -e 's%^[/:]|[.]git$%%g' -e 's%[^a-zA-Z0-9-]+%-%g' -e 's%-{2,}%-%g' -e 's%^-|-$%%g'`"
