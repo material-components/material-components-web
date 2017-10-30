@@ -20,4 +20,4 @@ set -e
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-docker run --interactive --tty -p 8080:8080 dev-server:latest -- "$@"
+docker run --interactive --tty -p 8080:8080 dev-server:latest "$@"
