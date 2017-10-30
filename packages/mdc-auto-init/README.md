@@ -74,7 +74,7 @@ be achieved via `mdcAutoInit.register`.
 
 ```js
 import mdcAutoInit from '@material/auto-init';
-import {MDCTextField} from '@material/text-field';
+import {MDCTextField} from '@material/textfield';
 
 mdcAutoInit.register('MDCTextField', MDCTextField);
 ```
@@ -88,7 +88,7 @@ Also note that a component can be mapped to any string, not necessarily the name
 
 ```js
 import mdcAutoInit from '@material/auto-init';
-import {MDCTextField} from '@material/text-field';
+import {MDCTextField} from '@material/textfield';
 
 mdcAutoInit.register('My amazing text field!!!', MDCTextField);
 ```

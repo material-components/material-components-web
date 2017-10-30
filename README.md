@@ -60,7 +60,7 @@ MDC-Web is modular by design. Each component lives within its own packages under
 [@material npm org](https://www.npmjs.com/org/material).
 
 ```
-npm install --save @material/button @material/card @material/text-field @material/typography
+npm install --save @material/button @material/card @material/textfield @material/typography
 ```
 
 All our components can be found in the [packages](./packages) directory. Each component has a

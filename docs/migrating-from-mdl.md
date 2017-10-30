@@ -154,7 +154,7 @@ your build pipeline.
 Start by importing the component:
 
 ```js
-import {MDCTextField} from '@material/text-field';
+import {MDCTextField} from '@material/textfield';
 ```
 
 And instantiate a component by calling the constructor on the root node:
@@ -341,7 +341,7 @@ The following table summarizes the current situation (TBI = to be implemented):
 | `mdl-spinner` | TBI | [#30](https://github.com/material-components/material-components-web/issues/30) |
 | `mdl-switch` | [`@material/switch`](../packages/mdc-switch/README.md) | Very different DOM. |
 | `mdl-tabs` | [`@material/tabs`](../packages/mdc-tabs/README.md) | Very different DOM. |
-| `mdl-text-field` | [`@material/text-field`](../packages/mdc-textfield/README.md) | Very different DOM. |
+| `mdl-text-field` | [`@material/textfield`](../packages/mdc-textfield/README.md) | Very different DOM. |
 | `mdl-tooltip` | TBI | [#24](https://github.com/material-components/material-components-web/issues/24) |
 | `mdl-typography` | [`@material/typography`](../packages/mdc-typography/README.md) | Somewhat different usage. |
 

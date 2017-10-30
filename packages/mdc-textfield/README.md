@@ -33,7 +33,7 @@ not require any javascript.
 ## Installation
 
 ```
-npm install --save @material/text-field
+npm install --save @material/textfield
 ```
 
 ## Usage
@@ -303,7 +303,7 @@ Material Design text field component.
 ##### ES2015
 
 ```javascript
-import {MDCTextField, MDCTextFieldFoundation} from '@material/text-field';
+import {MDCTextField, MDCTextFieldFoundation} from '@material/textfield';
 ```
 
 ##### CommonJS
@@ -339,7 +339,7 @@ mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field'));
 #### Manual Instantiation
 
 ```javascript
-import {MDCTextField} from '@material/text-field';
+import {MDCTextField} from '@material/textfield';
 
 const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 ```
