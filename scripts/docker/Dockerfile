@@ -40,8 +40,8 @@ RUN curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.s
 
 # Copy scripts needed to install node modules
 USER root
-COPY container/source-nvm.sh /scripts/
-COPY container/install-node-modules.sh /scripts/
+COPY runtime/source-nvm.sh /scripts/
+COPY runtime/install-node-modules.sh /scripts/
 RUN chmod ugo+x /scripts/*.sh
 USER demobot
 
@@ -50,12 +50,12 @@ RUN /scripts/install-node-modules.sh
 
 # Copy scripts needed to run on startup
 USER root
-COPY container/execute.sh /scripts/
-COPY container/execute-args.sh /scripts/
+COPY runtime/startup.sh /scripts/
+COPY runtime/startup-args.sh /scripts/
 RUN chmod ugo+x /scripts/*.sh
 USER demobot
 
-ENTRYPOINT ["/scripts/execute.sh"]
+ENTRYPOINT ["/scripts/startup.sh"]
 #CMD [ \
 #  "--author", "Spetnik", \
 #  "--pr", "1461", \

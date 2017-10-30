@@ -16,7 +16,7 @@
 #  limitations under the License.
 #
 
-. /scripts/execute-args.sh
+. /scripts/startup-args.sh
 . /scripts/source-nvm.sh
 
 set -e
