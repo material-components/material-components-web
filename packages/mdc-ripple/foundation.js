@@ -334,18 +334,24 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /** @private */
   runDeactivationUXLogicIfReady_() {
-    const {FG_DEACTIVATION} = MDCRippleFoundation.cssClasses;
-    const {hasDeactivationUXRun, isActivated} = this.activationState_;
-    const activationHasEnded = hasDeactivationUXRun || !isActivated;
-
     // This method is called both when a pointing device is released, and when the activation animation ends.
-    // The deactivation animation should only run after both of those occur.
-    if (activationHasEnded && this.activationAnimationHasEnded_) {
+    // The deactivation animation should only run after both of those occur, except in the case of focus, in which case
+    // it should run when the first of the two occurs.
+    const {FG_DEACTIVATION} = MDCRippleFoundation.cssClasses;
+    const {activationEvent, hasDeactivationUXRun, isActivated} = this.activationState_;
+    const activationHasEnded = hasDeactivationUXRun || !isActivated;
+    const isReady = activationEvent && activationEvent.type === 'focus' ?
+      activationHasEnded || this.activationAnimationHasEnded_ :
+      activationHasEnded && this.activationAnimationHasEnded_;
+
+    if (isReady) {
       this.rmBoundedActivationClasses_();
       this.adapter_.addClass(FG_DEACTIVATION);
       this.fgDeactivationRemovalTimer_ = setTimeout(() => {
         this.adapter_.removeClass(FG_DEACTIVATION);
       }, numbers.FG_DEACTIVATION_MS);
+      // Ensure activationTimer_ is cleared, in case of blur before activation animation ending
+      clearTimeout(this.activationTimer_);
     }
   }
 
