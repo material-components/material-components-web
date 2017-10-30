@@ -98,10 +98,6 @@ $mdc-ripple-common-styles-emitted_: false !default;
 
   // Foreground ripple styles
 
-  &.mdc-ripple-upgraded::after {
-    opacity: 0;
-  }
-
   &.mdc-ripple-upgraded--foreground-activation::after {
     animation: 300ms mdc-ripple-fg-radius-in forwards, 83ms mdc-ripple-fg-opacity-in forwards;
   }
