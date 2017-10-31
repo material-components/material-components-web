@@ -17,7 +17,7 @@
 #
 
 . /scripts/startup-args.sh
-. /scripts/source-nvm.sh
+. /scripts/source.sh
 
 set -e
 set -x
@@ -101,8 +101,7 @@ echo "${INFO_HTML}" > demos/info/index.html
 set -e
 set +x
 
-echo 'Installing node modules...'
-npm install
+/scripts/install-deps.sh
 
 echo 'Starting demo server...'
 npm run dev

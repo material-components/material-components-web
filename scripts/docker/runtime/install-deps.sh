@@ -18,7 +18,7 @@
 
 set -e
 
-. /scripts/source-nvm.sh
+. /scripts/source.sh
 
 echo 'Installing node modules...'
 npm install

@@ -40,13 +40,13 @@ RUN curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.s
 
 # Copy scripts needed to install node modules
 USER root
-COPY runtime/source-nvm.sh /scripts/
-COPY runtime/install-node-modules.sh /scripts/
+COPY runtime/source.sh /scripts/
+COPY runtime/install-deps.sh /scripts/
 RUN chmod ugo+x /scripts/*.sh
 USER demobot
 
 # Install node modules
-RUN /scripts/install-node-modules.sh
+RUN /scripts/install-deps.sh
 
 # Copy scripts needed to run on startup
 USER root
