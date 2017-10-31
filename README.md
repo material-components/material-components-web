@@ -4,7 +4,7 @@
 
 # Material Components for the web
 
-Material Components for the web (MDC-Web) help developers execute [Material Design](https://www.material.io).
+Material Components for the web (MDC-Web) helps developers execute [Material Design](https://www.material.io).
 Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
 
 Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
