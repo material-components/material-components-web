@@ -97,7 +97,7 @@ function run-screenshot-tests() {
       curl "http://${IP_ADDRESSES[$i]}/" > /dev/null
 
       # Run screenshot tests
-      node ../../test/screenshot/cbt/index.js --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --commit `git rev-parse HEAD` --host "${IP_ADDRESSES[$i]}"
+      node ../../../test/screenshot/cbt/index.js --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --commit `git rev-parse HEAD` --host "${IP_ADDRESSES[$i]}"
 
       # Tear down the container
       POD_ID=`kubectl get pods --selector="run=${DEPLOYMENT_NAMES[$i]}" --output=go-template --template='{{(index .items 0).metadata.name}}'`
