@@ -41,6 +41,9 @@
  * Caveats:
  * 1) This is to be used as an AID, not as a replacement for human verification.
  * 2) This assumes there is at least one tag in the repo. If not, it will not work.
+ *
+ * NOTE: This script is no longer used since we switched to lerna fixed mode. It may prove useful again if we switch
+ * back to independent mode in the future.
  */
 
 const childProcess = require('child_process');

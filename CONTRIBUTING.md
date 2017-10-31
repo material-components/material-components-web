@@ -20,7 +20,7 @@ The Material Components contributing policies and procedures can be found in the
 
 ## Development Process
 
-We strive to make developing Material Components Web as frictionless as possible, both for ourselves and for our community. This section should get you up and running working on the MDC-Web codebase. Before beginning development, you may want to read through our brief [developer guide](./docs/developer.md) to get a better understanding of our overall architecture.
+We strive to make developing Material Components Web as frictionless as possible, both for ourselves and for our community. This section should get you up and running working on the MDC-Web codebase. Before beginning development, you may want to read through our overview on [architecture and best practices](./docs/code) to get a better understanding of our overall structure.
 
 ### Setting up your development environment
 
