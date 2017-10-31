@@ -87,6 +87,16 @@ for i in `seq 0 1 2`; do
 
   if is-ip-address "${IP_ADDRESSES[$i]}"; then
     echo "${DEPLOYMENT_NAMES[$i]}: ${IP_ADDRESSES[$i]}"
+
+    # Run screenshot tests
+    node ../../test/screenshot/cbt/index.js --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --commit `git rev-parse HEAD` --host "${IP_ADDRESSES[$i]}"
+
+    # Tear down the container
+    POD_ID=`kubectl get pods --selector="run=${DEPLOYMENT_NAMES[$i]}" --output=go-template --template='{{(index .items 0).metadata.name}}'`
+    kubectl delete pod "${POD_ID}"
+    kubectl delete deployment "${DEPLOYMENT_NAMES[$i]}"
+    kubectl delete service "${DEPLOYMENT_NAMES[$i]}"
+    # TODO(acdvorak): Notify boss container that server was downed, to add it back to the pool
   else
     echo "${DEPLOYMENT_NAMES[$i]}: ERROR: External IP address not found after 120 seconds"
   fi
