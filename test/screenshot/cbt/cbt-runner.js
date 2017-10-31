@@ -21,43 +21,57 @@ const {CbtFlow} = require('./cbt-flow');
 const remoteHub = process.env.CBT_REMOTE_HUB || 'http://hub.crossbrowsertesting.com:80/wd/hub';
 const username = process.env.CBT_USERNAME;
 const authkey = process.env.CBT_AUTHKEY;
-const build = process.env.CBT_BUILD || '7521e673f5e9c4faed464407840d1938a1366b80';
 
-const globalConfig = {
-  username,
-  authkey,
-  remoteHub,
-  build: `[${build.substr(0, 7)}]`,
-  name: 'PR #123 by acdvorak',
-};
-const browsers = CbtBrowserConfig.allBrowsers(globalConfig);
+class CbtRunner {
+  constructor({pr, author, commit, host} = {}) {
+    this.pr_ = pr;
+    this.author_ = author;
+    this.commit_ = commit;
+    this.host_ = host;
+  }
 
-const cbtFlow = new CbtFlow({globalConfig, browsers});
-cbtFlow.on('cbt:session-started', (session) => {
-  session.navigate('https://material-components-web.appspot.com/button.html');
+  run() {
+    const globalConfig = {
+      username,
+      authkey,
+      remoteHub,
+      build: `[${this.commit_.substr(0, 7)}]`,
+      name: `PR #${this.pr_} by ${this.author_}`,
+    };
+    const browsers = CbtBrowserConfig.allBrowsers(globalConfig);
 
-  session.waitFor('.mdc-button').toBeVisible();
-  session.takeSnapshot();
+    const cbtFlow = new CbtFlow({globalConfig, browsers});
+    cbtFlow.on('cbt:session-started', (session) => {
+      // TODO(acdvorak): TLS
+      session.navigate(`http://${this.host_}/button.html`);
 
-  session.interact((command) => {
-    command.mouseDown('.mdc-button');
-    session.takeSnapshot();
+      session.waitFor('.mdc-button').toBeVisible();
+      session.takeSnapshot();
 
-    command.mouseMove('.mdc-button--raised');
-    command.mouseUp();
-    session.takeSnapshot();
+      session.interact((command) => {
+        command.mouseDown('.mdc-button');
+        session.takeSnapshot();
 
-    command.sendKeys('\t');
-    session.wait(1000);
-    command.sendKeys(command.ModifierKey.SHIFT, '\t', command.ModifierKey.SHIFT);
-    session.wait(1000);
-    command.sendKeys('\t');
-    session.wait(1000);
-    session.takeSnapshot();
-  });
+        command.mouseMove('.mdc-button--raised');
+        command.mouseUp();
+        session.takeSnapshot();
 
-  // Because all driver actions are async, this function will always be called.
-  // However, it will only be executed if all previous driver commands succeed.
-  session.pass();
-});
-cbtFlow.start();
+        command.sendKeys('\t');
+        session.wait(1000);
+        command.sendKeys(command.ModifierKey.SHIFT, '\t', command.ModifierKey.SHIFT);
+        session.wait(1000);
+        command.sendKeys('\t');
+        session.wait(1000);
+        session.takeSnapshot();
+      });
+
+      // Because all driver actions are async, this function will always be called.
+      // However, it will only be executed if all previous driver commands succeed.
+      session.pass();
+    });
+
+    cbtFlow.start();
+  }
+}
+
+module.exports = {CbtRunner};
