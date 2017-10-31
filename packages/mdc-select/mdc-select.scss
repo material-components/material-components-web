@@ -133,11 +133,6 @@ $mdc-select-label-padding: 16px;
       content: "";
     }
 
-    // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
-    // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
-    // we would normally disable it (&.mdc-textfield--disabled) as a workaround.
-
-    // stylelint-disable plugin/selector-bem-pattern
     &:hover {
       .mdc-select__bottom-line {
         transform: scaleY(2);
@@ -320,6 +315,7 @@ $mdc-select-label-padding: 16px;
     @include mdc-theme-prop(border-color, text-hint-on-dark);
   }
 
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-group {
     @include mdc-theme-prop(color, text-hint-on-light);
 
@@ -338,8 +334,8 @@ $mdc-select-label-padding: 16px;
     .mdc-list-divider {
       margin-left: -16px;
     }
+    // stylelint-enable
   }
-  // stylelint-enable plugin/selector-bem-pattern
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-item {
