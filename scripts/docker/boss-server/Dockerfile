@@ -23,7 +23,7 @@ EXPOSE 80 443 3000
 WORKDIR /mdc-web
 
 # Install OS utility packages
-RUN apt-get update && apt-get install -y curl git python util-linux && apt-get autoclean -y
+RUN apt-get update && apt-get install -y build-essential curl git python util-linux && apt-get autoclean -y
 
 # Create non-root user account
 RUN useradd --create-home --shell /bin/bash demobot
@@ -35,11 +35,20 @@ USER demobot
 RUN git config --global user.email demobot@example.com
 RUN git config --global user.name demobot
 
+# Copy auth credentials for API access
+COPY runtime/auth /scripts/auth
+
 # Clone MDC-Web Git repo; install nvm and gcloud
 #RUN git clone "https://github.com/material-components/material-components-web.git" .
 RUN curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh" | bash
 RUN curl -sSL https://sdk.cloud.google.com | bash -s -- --disable-prompts
+RUN ~/google-cloud-sdk/bin/gcloud --quiet components install kubectl
+
+# Configure environment
 RUN echo '. ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
+RUN echo '. /scripts/auth/cbt-account.bash.inc' >> ~/.bashrc
+RUN echo 'gcloud auth activate-service-account --key-file /scripts/auth/gcloud-service-account.json' >> ~/.bashrc
+RUN ~/google-cloud-sdk/bin/gcloud config set project material-components-web
 
 # Copy scripts needed to install node modules
 COPY runtime/install-deps.sh /scripts/
@@ -54,12 +63,11 @@ RUN /scripts/install-deps.sh
 
 # Copy scripts needed to run on startup
 COPY runtime/index.js /scripts/
-COPY runtime/service-account.json /scripts/
 COPY runtime/startup.sh /scripts/
 COPY runtime/startup-args.sh /scripts/
 COPY runtime/run-screenshot-test.sh /scripts/
 COPY runtime/run-screenshot-test-args.sh /scripts/
-COPY runtime/cbt /scripts/
+COPY runtime/cbt /scripts/cbt
 USER root
 RUN chmod ugo+x /scripts/*.sh
 USER demobot

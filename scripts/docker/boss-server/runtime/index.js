@@ -21,12 +21,16 @@ const app = express();
 app.use(require('body-parser').json());
 
 app.all('/webhook/github', (req, res) => {
-  const spawn = require('child_process').spawnSync('/scripts/run-screenshot-test.sh', [
+  const args = [
     '--pr', req.body.pull_request.number,
     '--author', req.body.pull_request.user.login,
     '--remote-url', req.body.pull_request.head.repo.clone_url,
     '--remote-branch', req.body.pull_request.head.ref,
-  ], {shell: true});
+  ];
+
+  console.log(`${new Date()} - Request: ${args}`);
+
+  const spawn = require('child_process').spawnSync('/scripts/run-screenshot-test.sh', args, {shell: true});
   const stdout = (spawn.stdout || '').toString().trim();
   const stderr = (spawn.stderr || '').toString().trim();
 

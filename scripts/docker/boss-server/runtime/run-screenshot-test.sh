@@ -23,6 +23,8 @@ cd "`dirname ${BASH_SOURCE[0]}`"
 
 [[ -z "${ENV}" ]] && ENV='dev'
 
+echo Args: "$@"
+
 . /scripts/run-screenshot-test-args.sh
 
 DATE_SAFE="`date '+%Y-%m-%dt%H-%M-%S'`"
@@ -37,18 +39,27 @@ TEST_CLUSTER_ZONE='us-east1-b'
 #gcloud container clusters create "${DEMO_CLUSTER_NAME}" --num-nodes=8 --zone "${DEMO_CLUSTER_ZONE}"
 #gcloud container clusters create "${TEST_CLUSTER_NAME}" --num-nodes=1 --zone "${TEST_CLUSTER_ZONE}"
 
-DEPLOYMENT=''
+DEPLOYMENT="${ENV}-pr-${PR}-test-deployment"
 IP_ADDRESS=''
 
 function auth() {
+  true
 #  gcloud auth application-default login
-  gcloud auth activate-service-account --key-file /scripts/service-account.json
+  gcloud auth activate-service-account --key-file /scripts/auth/gcloud-service-account.json
+  . /scripts/auth/cbt-account.bash.inc
 }
 
+# TODO(acdvorak): Detect whether we are running locally, and if so, run docker commands instead
+function delete-resources() {
+  set +e
+  kubectl delete deployment,service "${DEPLOYMENT}"
+  kubectl delete pod --selector="run=${DEPLOYMENT}"
+  set -e
+}
+
+# TODO(acdvorak): Detect whether we are running locally, and if so, run docker commands instead
 function start-demo-server() {
   set -x
-
-  DEPLOYMENT="${ENV}-pr-${PR}-test-deployment"
 
   # Configure kubectl to use the previously-created cluster
   gcloud container clusters get-credentials --zone "${TEST_CLUSTER_ZONE}" "${TEST_CLUSTER_NAME}"
@@ -92,16 +103,16 @@ function run-screenshot-tests() {
     # requests almost immediately after running `npm run dev`, but delays its response until compilation has finished.
     # By sending an initial HTTP request, we effectively pause the script until the server is ready to receive UI
     # tests without timing out.
+    set +e
     curl "http://${IP_ADDRESS}/" > /dev/null
+    set -e
 
     # Run screenshot tests
+    env
     node cbt/index.js --pr "${PR}" --author "${AUTHOR}" --host "${IP_ADDRESS}"
 
-    # Tear down the container
-    POD_ID=`kubectl get pods --selector="run=${DEPLOYMENT}" --output=go-template --template='{{(index .items 0).metadata.name}}'`
-    kubectl delete pod "${POD_ID}"
-    kubectl delete deployment "${DEPLOYMENT}"
-    kubectl delete service "${DEPLOYMENT}"
+    # Tear down the container and its associated GCloud resources
+    delete-resources
     # TODO(acdvorak): Notify boss container that server was downed, to add it back to the pool
   else
     echo "${DEPLOYMENT}: ERROR: External IP address not found after 120 seconds"
@@ -115,7 +126,11 @@ function is-ip-address() {
   return $?
 }
 
+env
+pwd
+ls -Al
 auth
+delete-resources
 start-demo-server
 run-screenshot-tests
 

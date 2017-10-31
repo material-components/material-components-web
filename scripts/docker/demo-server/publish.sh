@@ -24,5 +24,5 @@ gcloud container builds submit --config cloudbuild.yaml .
 
 # Alternatively, you can build locally and upload the image to GCloud:
 #docker build -t dev-server:latest .
-#docker tag dev-server:latest us.gcr.io/material-components-web/dev-server:latest
-#gcloud docker -- push us.gcr.io/material-components-web/dev-server:latest
+#docker tag dev-server:latest us.gcr.io/material-components-web/dev-demo-server:latest
+#gcloud docker -- push us.gcr.io/material-components-web/dev-demo-server:latest

@@ -23,7 +23,7 @@ EXPOSE 80 443 8080
 WORKDIR /mdc-web
 
 # Install OS utility packages
-RUN apt-get update && apt-get install -y curl git python util-linux && apt-get autoclean -y
+RUN apt-get update && apt-get install -y build-essential curl git python util-linux && apt-get autoclean -y
 
 # Create non-root user account
 RUN useradd --create-home --shell /bin/bash demobot

@@ -21,13 +21,13 @@ set +e
 # Adapted from https://stackoverflow.com/a/29754866/467582
 
 # GitHub pull request number
-PR=''
+export PR=''
 # GitHub username of the author of the pull request
-AUTHOR=''
+export AUTHOR=''
 # URL of the remote Git repository to pull
-REMOTE_URL='https://github.com/material-components/material-components-web.git'
+export REMOTE_URL='https://github.com/material-components/material-components-web.git'
 # name of the remote branch to checkout
-REMOTE_BRANCH='master'
+export REMOTE_BRANCH='master'
 
 getopt --test > /dev/null
 if [[ $? -ne 4 ]]; then
@@ -58,19 +58,19 @@ set -e
 while true; do
   case "$1" in
     -p|--pr)
-      PR="$2"
+      export PR="$2"
       shift 2
       ;;
     -a|--author)
-      AUTHOR="$2"
+      export AUTHOR="$2"
       shift 2
       ;;
     -u|--remote-url)
-      REMOTE_URL="$2"
+      export REMOTE_URL="$2"
       shift 2
       ;;
     -b|--remote-branch)
-      REMOTE_BRANCH="$2"
+      export REMOTE_BRANCH="$2"
       shift 2
       ;;
     --)

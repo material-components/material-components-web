@@ -43,6 +43,10 @@ TEST_CLUSTER_ZONE='us-east1-b'
 DEPLOYMENT_NAMES=()
 IP_ADDRESSES=()
 
+function release-gcloud-resources() {
+  kubectl delete pod,service,deployment --all
+}
+
 function start-servers() {
   set -x
   for i in `seq 0 1 2`; do
@@ -53,7 +57,7 @@ function start-servers() {
     gcloud container clusters get-credentials --zone "${TEST_CLUSTER_ZONE}" "${TEST_CLUSTER_NAME}"
 
     # Deploy the application and create 1 pod with 1 cluster with 1 node
-    kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}" "$@"
+    kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-demo-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}" "$@"
 
     # Expose the server to the internet
     kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
@@ -94,9 +98,12 @@ function run-screenshot-tests() {
       # requests almost immediately after running `npm run dev`, but delays its response until compilation has finished.
       # By sending an initial HTTP request, we effectively pause the script until the server is ready to receive UI
       # tests without timing out.
+      set +e
       curl "http://${IP_ADDRESSES[$i]}/" > /dev/null
+      set -e
 
       # Run screenshot tests
+      # TODO(acdvorak): Fix this path?
       node ../../../test/screenshot/cbt/index.js --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --commit `git rev-parse HEAD` --host "${IP_ADDRESSES[$i]}"
 
       # Tear down the container
@@ -118,6 +125,7 @@ function is-ip-address() {
   return $?
 }
 
+release-gcloud-resources
 start-servers
 run-screenshot-tests
 
