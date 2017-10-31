@@ -58,6 +58,7 @@ COPY runtime/startup.sh /scripts/
 COPY runtime/startup-args.sh /scripts/
 COPY runtime/run-screenshot-test.sh /scripts/
 COPY runtime/run-screenshot-test-args.sh /scripts/
+COPY runtime/cbt /scripts/
 USER root
 RUN chmod ugo+x /scripts/*.sh
 USER demobot
