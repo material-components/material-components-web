@@ -15,12 +15,14 @@
  * limitations under the License.
  */
 
+const argv = require('minimist')(process.argv.slice(2));
+
 const {CbtRunner} = require('./cbt-runner');
 
 const runner = new CbtRunner({
-  pr: 1202,
-  author: 'jecisc',
-  commit: '1163c4c7b9a9bb360c3902cf151344e592eb90c3',
-  host: 'material-components-web.appspot.com',
+  pr: argv['pr'] || 'UNKNOWN',
+  author: argv['author'] || 'UNKNOWN',
+  commit: argv['commit'] || 'UNKNOWN',
+  host: argv['host'] || 'material-components-web.appspot.com',
 });
 runner.run();
