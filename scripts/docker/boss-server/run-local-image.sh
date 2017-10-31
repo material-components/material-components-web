@@ -20,4 +20,6 @@ set -e
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-docker run --interactive --tty -p 8080:8080 dev-server:latest "$@"
+[[ -z "${ENV}" ]] && ENV='dev'
+
+docker run --interactive --tty -p 3000:3000 "${ENV}-boss-server:latest" "$@"

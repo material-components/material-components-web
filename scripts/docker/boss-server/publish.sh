@@ -20,9 +20,11 @@ set -e
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-gcloud container builds submit --config cloudbuild.yaml .
+[[ -z "${ENV}" ]] && ENV='dev'
+
+gcloud container builds submit --config "cloudbuild.${ENV}.yaml" .
 
 # Alternatively, you can build locally and upload the image to GCloud:
-#docker build -t dev-server:latest .
-#docker tag dev-server:latest us.gcr.io/material-components-web/dev-server:latest
-#gcloud docker -- push us.gcr.io/material-components-web/dev-server:latest
+#docker build -t dev-boss-server:latest .
+#docker tag dev-boss-server:latest us.gcr.io/material-components-web/dev-boss-server:latest
+#gcloud docker -- push us.gcr.io/material-components-web/dev-boss-server:latest

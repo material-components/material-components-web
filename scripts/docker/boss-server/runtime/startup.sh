@@ -22,89 +22,14 @@
 set -e
 set -x
 
-# Nuke any modified or untracked files
-git reset --hard HEAD
-git clean -d --force
+cd /scripts
 
-# Fetch the latest changes and prune obsolete branches/tags
-git checkout master
-git fetch --tags --prune origin
-git pull
-
-# Delete old remotes
-git remote | grep -v '^origin$' | tr '\n' '\0' | xargs -0 -n1 --no-run-if-empty git remote rm
-
-# Delete old branches
-git branch | grep -v -E '^[*]' | tr -d ' ' | grep -v '^master$' | tr '\n' '\0' | xargs -0 -n1 --no-run-if-empty git branch -D
-
-DATE_SAFE="`date '+%Y-%m-%d@%H-%M-%S'`"
-REPO_NAME_SAFE="`echo "${REMOTE_URL}" | sed -E -e 's%.*github.com%%' -e 's%^[/:]|[.]git$%%g' -e 's%[^a-zA-Z0-9-]+%-%g' -e 's%-{2,}%-%g' -e 's%^-|-$%%g'`"
-
-if [[ -n "${PR}" ]]; then
-  REMOTE_NAME="pr-${PR}"
-  LOCAL_BRANCH="pr/${PR}"
-else
-  REMOTE_NAME="temp_${REPO_NAME_SAFE}_${DATE_SAFE}"
-  LOCAL_BRANCH="temp/${REPO_NAME_SAFE}/${DATE_SAFE}"
-fi
-
-git remote add -t "${REMOTE_BRANCH}" "${REMOTE_NAME}" "${REMOTE_URL}"
-git fetch "${REMOTE_NAME}"
-git checkout -b "${LOCAL_BRANCH}" "${REMOTE_NAME}/${REMOTE_BRANCH}"
-
-set +e
-
-# https://stackoverflow.com/a/1655389/467582
-IFS='' read -r -d '' INFO_HTML <<EOF
-<!doctype html>
-<html>
-  <head>
-    <title>Demo Info - MDC-Web</title>
-  </head>
-  <body>
-    <h1>MDC-Web Demo</h1>
-    <table>
-      <tbody>
-        <tr>
-          <td>--pr=</td>
-          <td>'${PR}'</td>
-        </tr>
-        <tr>
-          <td>--author=</td>
-          <td>'${AUTHOR}'</td>
-        </tr>
-        <tr>
-          <td>--remote-branch=</td>
-          <td>'${REMOTE_BRANCH}'</td>
-        </tr>
-        <tr>
-          <td>--remote-url=</td>
-          <td>'${REMOTE_URL}'</td>
-        </tr>
-        <tr>
-          <td>Remote name:</td>
-          <td>'${REMOTE_NAME}'</td>
-        </tr>
-        <tr>
-          <td>Local branch:</td>
-          <td>'${LOCAL_BRANCH}'</td>
-        </tr>
-      </tbody>
-    </table>
-  </body>
-</html>
-EOF
-
-mkdir -p demos/info/
-echo "${INFO_HTML}" > demos/info/index.html
-
-set -e
 set +x
-
 /scripts/install-deps.sh
+set -x
 
 echo 'Installing kubectl...'
-gcloud components install kubectl --quiet
+gcloud --quiet components install kubectl
 
-echo 'Starting demo server...'
-npm run dev
+echo 'Starting boss server...'
+node index.js

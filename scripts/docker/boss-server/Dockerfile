@@ -18,7 +18,7 @@
 # https://hub.docker.com/_/debian/
 FROM debian:latest
 
-EXPOSE 80 443 8080
+EXPOSE 80 443 3000
 
 WORKDIR /mdc-web
 
@@ -27,7 +27,8 @@ RUN apt-get update && apt-get install -y curl git python util-linux && apt-get a
 
 # Create non-root user account
 RUN useradd --create-home --shell /bin/bash demobot
-RUN chown -R demobot:demobot .
+RUN mkdir -p /scripts
+RUN chown -R demobot:demobot . /scripts
 USER demobot
 
 # Needed in case `git pull` needs to merge
@@ -35,15 +36,16 @@ RUN git config --global user.email demobot@example.com
 RUN git config --global user.name demobot
 
 # Clone MDC-Web Git repo; install nvm and gcloud
-RUN git clone "https://github.com/material-components/material-components-web.git" .
+#RUN git clone "https://github.com/material-components/material-components-web.git" .
 RUN curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh" | bash
 RUN curl -sSL https://sdk.cloud.google.com | bash -s -- --disable-prompts
 RUN echo '. ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
 
 # Copy scripts needed to install node modules
-USER root
-COPY runtime/source.sh /scripts/
 COPY runtime/install-deps.sh /scripts/
+COPY runtime/package.json /scripts/
+COPY runtime/source.sh /scripts/
+USER root
 RUN chmod ugo+x /scripts/*.sh
 USER demobot
 
@@ -51,9 +53,12 @@ USER demobot
 RUN /scripts/install-deps.sh
 
 # Copy scripts needed to run on startup
-USER root
+COPY runtime/index.js /scripts/
 COPY runtime/startup.sh /scripts/
 COPY runtime/startup-args.sh /scripts/
+COPY runtime/run-screenshot-test.sh /scripts/
+COPY runtime/run-screenshot-test-args.sh /scripts/
+USER root
 RUN chmod ugo+x /scripts/*.sh
 USER demobot
 

@@ -103,8 +103,8 @@ set +x
 
 /scripts/install-deps.sh
 
-echo 'Installing kubectl...'
-gcloud components install kubectl --quiet
+#echo 'Installing kubectl...'
+#gcloud --quiet components install kubectl
 
 echo 'Starting demo server...'
 npm run dev

@@ -23,6 +23,8 @@ cd "`dirname ${BASH_SOURCE[0]}`"
 
 [[ -z "${ENV}" ]] && ENV='dev'
 
+. /scripts/run-screenshot-test-args.sh
+
 DATE_SAFE="`date '+%Y-%m-%dt%H-%M-%S'`"
 
 BOSS_CLUSTER_NAME="${ENV}-pr-boss-cluster"
@@ -35,23 +37,31 @@ TEST_CLUSTER_ZONE='us-east1-b'
 #gcloud container clusters create "${DEMO_CLUSTER_NAME}" --num-nodes=8 --zone "${DEMO_CLUSTER_ZONE}"
 #gcloud container clusters create "${TEST_CLUSTER_NAME}" --num-nodes=1 --zone "${TEST_CLUSTER_ZONE}"
 
-DEPLOYMENT="${ENV}-boss-deployment"
+DEPLOYMENT=''
 IP_ADDRESS=''
 
-function start-boss-server() {
-  # Configure kubectl to use the previously-created cluster
-  gcloud container clusters get-credentials --zone "${BOSS_CLUSTER_ZONE}" "${BOSS_CLUSTER_NAME}"
-
-  # Deploy the application and create 1 pod with 1 cluster with 1 node
-  kubectl run "${DEPLOYMENT}" --image="us.gcr.io/material-components-web/${ENV}-boss-server:latest" --port 3000 -- "$@"
-
-  # Expose the server to the internet
-  kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 3000
+function auth() {
+  true
+  gcloud auth application-default login
+#  gcloud auth activate-service-account --key-file [KEY_FILE]
 }
 
-function print-ip-address() {
-  set +x
+function start-demo-server() {
+  set -x
 
+  DEPLOYMENT="${ENV}-pr-${PR}-test-deployment"
+
+  # Configure kubectl to use the previously-created cluster
+  gcloud container clusters get-credentials --zone "${TEST_CLUSTER_ZONE}" "${TEST_CLUSTER_NAME}"
+
+  # Deploy the application and create 1 pod with 1 cluster with 1 node
+  kubectl run "${DEPLOYMENT}" --image="us.gcr.io/material-components-web/${ENV}-demo-server:latest" --port 8080 -- "$@"
+
+  # Expose the server to the internet
+  kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
+}
+
+function run-screenshot-tests() {
   echo -n "${DEPLOYMENT}: "
 
   ATTEMPT_COUNT=0
@@ -74,13 +84,26 @@ function print-ip-address() {
   echo
 
   if is-ip-address "${IP_ADDRESS}"; then
+    set -x
+
     echo "${DEPLOYMENT}: ${IP_ADDRESS}"
+    echo
 
     # While webpack-dev-server is compiling, an express server is already running in the background. It accepts HTTP
     # requests almost immediately after running `npm run dev`, but delays its response until compilation has finished.
     # By sending an initial HTTP request, we effectively pause the script until the server is ready to receive UI
     # tests without timing out.
     curl "http://${IP_ADDRESS}/" > /dev/null
+
+    # Run screenshot tests
+    node ../../../test/screenshot/cbt/index.js --pr "${PR}" --author "${AUTHOR}" --host "${IP_ADDRESS}"
+
+    # Tear down the container
+    POD_ID=`kubectl get pods --selector="run=${DEPLOYMENT}" --output=go-template --template='{{(index .items 0).metadata.name}}'`
+    kubectl delete pod "${POD_ID}"
+    kubectl delete deployment "${DEPLOYMENT}"
+    kubectl delete service "${DEPLOYMENT}"
+    # TODO(acdvorak): Notify boss container that server was downed, to add it back to the pool
   else
     echo "${DEPLOYMENT}: ERROR: External IP address not found after 120 seconds"
   fi
@@ -93,7 +116,8 @@ function is-ip-address() {
   return $?
 }
 
-start-boss-server
-print-ip-address
+auth
+start-demo-server
+run-screenshot-tests
 
 set +x

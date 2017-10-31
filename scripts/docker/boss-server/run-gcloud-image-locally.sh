@@ -20,5 +20,7 @@ set -e
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-gcloud docker -- pull us.gcr.io/material-components-web/dev-server:latest
-docker run --interactive --tty -p 8080:8080 us.gcr.io/material-components-web/dev-server:latest "$@"
+[[ -z "${ENV}" ]] && ENV='dev'
+
+gcloud docker -- pull "us.gcr.io/material-components-web/${ENV}-boss-server:latest"
+docker run --interactive --tty -p 3000:3000 "us.gcr.io/material-components-web/${ENV}-boss-server:latest" "$@"

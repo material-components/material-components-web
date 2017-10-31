@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 ##
 # Copyright 2017 Google Inc. All Rights Reserved.
 #
@@ -16,10 +14,9 @@
 #  limitations under the License.
 #
 
-set -e
+steps:
 
-cd "`dirname ${BASH_SOURCE[0]}`"
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '--tag=us.gcr.io/$PROJECT_ID/dev-boss-server', '.']
 
-[[ -z "${ENV}" ]] && ENV='dev'
-
-docker build -t "${ENV}-boss-server:latest" .
+images: ['us.gcr.io/$PROJECT_ID/dev-boss-server']
