@@ -283,7 +283,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
 
     while (el && el !== document.body) {
       if (this.adapter_.eventTargetHasClass(el, cssClasses.LIST_ITEM)) {
-        return true;
+        return;
       }
       el = el.parentNode;
     }

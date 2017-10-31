@@ -56,6 +56,12 @@ export class MDCSelect extends MDCComponent {
     this.foundation_.setDisabled(disabled);
   }
 
+  constructor(...args) {
+    super(...args);
+
+    this.ripple_ = MDCRipple.attachTo(this.surface_);
+  }
+
   item(index) {
     return this.options[index] || null;
   }

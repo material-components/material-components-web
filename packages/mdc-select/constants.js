@@ -35,5 +35,6 @@ export const strings = {
 };
 
 export const numbers = {
-  SURFACE_HORIZONTAL_PADDING: 26,
+  SURFACE_RIGHT_PADDING: 26,
+  SURFACE_LEFT_PADDING: 16,
 };

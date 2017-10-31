@@ -260,21 +260,21 @@ test('adapter#focus focuses on the root element', () => {
   document.body.removeChild(fixture);
 });
 
-test('adapter#makeTabbable sets the root element\'s tabindex to 0', () => {
+test('adapter#makeTabbable sets the menu element\'s tabindex to 0', () => {
   const {component, menuEl} = setupTest();
   menuEl.tabIndex = -1;
   component.getDefaultFoundation().adapter_.makeTabbable();
   assert.equal(menuEl.tabIndex, 0);
 });
 
-test('adapter#makeUntabbable sets the root element\'s tabindex to -1', () => {
+test('adapter#makeUntabbable sets the menu element\'s tabindex to -1', () => {
   const {component, menuEl} = setupTest();
   menuEl.tabIndex = 0;
   component.getDefaultFoundation().adapter_.makeUntabbable();
   assert.equal(menuEl.tabIndex, -1);
 });
 
-test('adapter#getComputedStyleValue gets the computed style value of the prop from the root element', () => {
+test('adapter#getComputedStyleValue gets the computed style value of the prop from the surface element', () => {
   const {component, fixture, surface} = setupTest();
   document.body.appendChild(fixture);
   surface.style.width = '500px';
