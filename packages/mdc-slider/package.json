@@ -1,6 +1,6 @@
 {
   "name": "@material/slider",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "description": "The Material Components for the web slider component",
   "main": "index.js",
   "license": "Apache-2.0",
@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@material/animation": "^0.4.1",
-    "@material/base": "^0.2.6",
+    "@material/base": "^0.24.0",
     "@material/rtl": "^0.1.8",
-    "@material/theme": "^0.4.0"
+    "@material/theme": "^0.24.0"
   }
 }
