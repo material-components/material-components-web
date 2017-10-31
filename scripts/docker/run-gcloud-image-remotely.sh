@@ -44,11 +44,11 @@ DEPLOYMENT_NAMES=()
 IP_ADDRESSES=()
 
 for i in `seq 0 1 2`; do
-  DEPLOYMENT="${ENV}-pr-demo-deployment-${i}"
+  DEPLOYMENT="${ENV}-pr-test-deployment-${i}"
   DEPLOYMENT_NAMES[$i]="${DEPLOYMENT}"
 
   # Configure kubectl to use the previously-created cluster
-  gcloud container clusters get-credentials --zone "${DEMO_CLUSTER_ZONE}" "${DEMO_CLUSTER_NAME}"
+  gcloud container clusters get-credentials --zone "${TEST_CLUSTER_ZONE}" "${TEST_CLUSTER_NAME}"
 
   # Deploy the application and create 1 pod with 1 cluster with 1 node
   kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}" "$@"
