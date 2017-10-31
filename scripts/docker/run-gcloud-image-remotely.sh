@@ -43,60 +43,82 @@ TEST_CLUSTER_ZONE='us-east1-b'
 DEPLOYMENT_NAMES=()
 IP_ADDRESSES=()
 
-for i in `seq 0 1 2`; do
-  DEPLOYMENT="${ENV}-pr-test-deployment-${i}"
-  DEPLOYMENT_NAMES[$i]="${DEPLOYMENT}"
+function start-servers() {
+  set -x
+  for i in `seq 0 1 2`; do
+    DEPLOYMENT="${ENV}-pr-test-deployment-${i}"
+    DEPLOYMENT_NAMES[$i]="${DEPLOYMENT}"
 
-  # Configure kubectl to use the previously-created cluster
-  gcloud container clusters get-credentials --zone "${TEST_CLUSTER_ZONE}" "${TEST_CLUSTER_NAME}"
+    # Configure kubectl to use the previously-created cluster
+    gcloud container clusters get-credentials --zone "${TEST_CLUSTER_ZONE}" "${TEST_CLUSTER_NAME}"
 
-  # Deploy the application and create 1 pod with 1 cluster with 1 node
-  kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}" "$@"
+    # Deploy the application and create 1 pod with 1 cluster with 1 node
+    kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}" "$@"
 
-  # Expose the server to the internet
-  kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
-done
+    # Expose the server to the internet
+    kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
+  done
+}
 
-set +x
+function run-screenshot-tests() {
+  set +x
+  for i in `seq 0 1 2`; do
+    echo -n "${DEPLOYMENT_NAMES[$i]}: "
+
+    ATTEMPT_COUNT=0
+    while [[ $ATTEMPT_COUNT -lt 120 ]] && ! is-ip-address "${IP_ADDRESSES[$i]}"; do
+      IP_ADDRESSES[$i]=`kubectl get -o go-template --template='{{if .status.loadBalancer.ingress}}{{index (index .status.loadBalancer.ingress 0) "ip"}}{{end}}' "service/${DEPLOYMENT_NAMES[$i]}"`
+      ATTEMPT_COUNT=$(($ATTEMPT_COUNT + 1))
+
+      if ! is-ip-address "${IP_ADDRESSES[$i]}"; then
+        echo -n '.'
+        sleep 1
+      fi
+    done
+
+    # Clear the line
+    # https://unix.stackexchange.com/a/26592/17460
+    echo -n -e "\033[2K\r"
+
+    echo
+    echo '======================================'
+    echo
+
+    if is-ip-address "${IP_ADDRESSES[$i]}"; then
+      set -x
+
+      echo "${DEPLOYMENT_NAMES[$i]}: ${IP_ADDRESSES[$i]}"
+      echo
+
+      # While webpack-dev-server is compiling, an express server is already running in the background. It accepts HTTP
+      # requests almost immediately after running `npm run dev`, but delays its response until compilation has finished.
+      # By sending an initial HTTP request, we effectively pause the script until the server is ready to receive UI
+      # tests without timing out.
+      curl "http://${IP_ADDRESSES[$i]}/" > /dev/null
+
+      # Run screenshot tests
+      node ../../test/screenshot/cbt/index.js --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --commit `git rev-parse HEAD` --host "${IP_ADDRESSES[$i]}"
+
+      # Tear down the container
+      POD_ID=`kubectl get pods --selector="run=${DEPLOYMENT_NAMES[$i]}" --output=go-template --template='{{(index .items 0).metadata.name}}'`
+      kubectl delete pod "${POD_ID}"
+      kubectl delete deployment "${DEPLOYMENT_NAMES[$i]}"
+      kubectl delete service "${DEPLOYMENT_NAMES[$i]}"
+      # TODO(acdvorak): Notify boss container that server was downed, to add it back to the pool
+    else
+      echo "${DEPLOYMENT_NAMES[$i]}: ERROR: External IP address not found after 120 seconds"
+    fi
+
+    echo
+  done
+}
 
 function is-ip-address() {
   [[ "$1" =~ ^[0-9] ]]
   return $?
 }
 
-for i in `seq 0 1 2`; do
-  echo -n "${DEPLOYMENT_NAMES[$i]}: "
-
-  ATTEMPT_COUNT=0
-  while [[ $ATTEMPT_COUNT -lt 120 ]] && ! is-ip-address "${IP_ADDRESSES[$i]}"; do
-    IP_ADDRESSES[$i]=`kubectl get -o go-template --template='{{if .status.loadBalancer.ingress}}{{index (index .status.loadBalancer.ingress 0) "ip"}}{{end}}' "service/${DEPLOYMENT_NAMES[$i]}"`
-    ATTEMPT_COUNT=$(($ATTEMPT_COUNT + 1))
-
-    if ! is-ip-address "${IP_ADDRESSES[$i]}"; then
-      echo -n '.'
-      sleep 1
-    fi
-  done
-
-  # Clear the line
-  # https://unix.stackexchange.com/a/26592/17460
-  echo -n -e "\033[2K\r"
-
-  if is-ip-address "${IP_ADDRESSES[$i]}"; then
-    echo "${DEPLOYMENT_NAMES[$i]}: ${IP_ADDRESSES[$i]}"
-
-    # Run screenshot tests
-    node ../../test/screenshot/cbt/index.js --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --commit `git rev-parse HEAD` --host "${IP_ADDRESSES[$i]}"
-
-    # Tear down the container
-    POD_ID=`kubectl get pods --selector="run=${DEPLOYMENT_NAMES[$i]}" --output=go-template --template='{{(index .items 0).metadata.name}}'`
-    kubectl delete pod "${POD_ID}"
-    kubectl delete deployment "${DEPLOYMENT_NAMES[$i]}"
-    kubectl delete service "${DEPLOYMENT_NAMES[$i]}"
-    # TODO(acdvorak): Notify boss container that server was downed, to add it back to the pool
-  else
-    echo "${DEPLOYMENT_NAMES[$i]}: ERROR: External IP address not found after 120 seconds"
-  fi
-done
+start-servers
+run-screenshot-tests
 
 set +x
