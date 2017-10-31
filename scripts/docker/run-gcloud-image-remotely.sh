@@ -55,9 +55,6 @@ for i in `seq 0 1 2`; do
 
   # Expose the server to the internet
   kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
-
-#  IP_ADDR=`kubectl get service | grep -E -e "^${DEPLOYMENT} " | awk '{ print $3 }'`
-#  echo "${DEPLOYMENT}: ${IP_ADDR}"
 done
 
 set +x
