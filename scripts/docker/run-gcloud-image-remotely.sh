@@ -38,7 +38,7 @@ TEST_CLUSTER_NAME="${ENV}-pr-test-cluster"
 TEST_CLUSTER_ZONE='us-east1-b'
 #gcloud container clusters create "${BOSS_CLUSTER_NAME}" --num-nodes=1 --zone "${BOSS_CLUSTER_ZONE}"
 #gcloud container clusters create "${DEMO_CLUSTER_NAME}" --num-nodes=8 --zone "${DEMO_CLUSTER_ZONE}"
-#gcloud container clusters create "${TEST_CLUSTER_NAME}" --num-nodes=8 --zone "${TEST_CLUSTER_ZONE}"
+#gcloud container clusters create "${TEST_CLUSTER_NAME}" --num-nodes=1 --zone "${TEST_CLUSTER_ZONE}"
 
 DEPLOYMENT_NAMES=()
 IP_ADDRESSES=()
