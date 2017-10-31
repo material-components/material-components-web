@@ -40,8 +40,12 @@ TEST_CLUSTER_ZONE='us-east1-b'
 #gcloud container clusters create "${DEMO_CLUSTER_NAME}" --num-nodes=8 --zone "${DEMO_CLUSTER_ZONE}"
 #gcloud container clusters create "${TEST_CLUSTER_NAME}" --num-nodes=8 --zone "${TEST_CLUSTER_ZONE}"
 
+DEPLOYMENT_NAMES=()
+IP_ADDRESSES=()
+
 for i in `seq 0 1 2`; do
   DEPLOYMENT="${ENV}-pr-demo-deployment-${i}"
+  DEPLOYMENT_NAMES[$i]="${DEPLOYMENT}"
 
   # Configure kubectl to use the previously-created cluster
   gcloud container clusters get-credentials --zone "${DEMO_CLUSTER_ZONE}" "${DEMO_CLUSTER_NAME}"
@@ -50,10 +54,42 @@ for i in `seq 0 1 2`; do
   kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}" "$@"
 
   # Expose the server to the internet
-  kubectl expose deployment "${DEPLOYMENT}" --type=NodePort --target-port 8080
+  kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
 
-  IP_ADDR=`kubectl get service | grep -E -e "^${DEPLOYMENT} " | awk '{ print $3 }'`
-  echo "${DEPLOYMENT}: ${IP_ADDR}"
+#  IP_ADDR=`kubectl get service | grep -E -e "^${DEPLOYMENT} " | awk '{ print $3 }'`
+#  echo "${DEPLOYMENT}: ${IP_ADDR}"
+done
+
+set +x
+
+function is-ip-address() {
+  [[ "$1" =~ ^[0-9] ]]
+  return $?
+}
+
+for i in `seq 0 1 2`; do
+  echo -n "${DEPLOYMENT_NAMES[$i]}: "
+
+  ATTEMPT_COUNT=0
+  while [[ $ATTEMPT_COUNT -lt 120 ]] && ! is-ip-address "${IP_ADDRESSES[$i]}"; do
+    IP_ADDRESSES[$i]=`kubectl get -o go-template --template='{{if .status.loadBalancer.ingress}}{{index (index .status.loadBalancer.ingress 0) "ip"}}{{end}}' "service/${DEPLOYMENT_NAMES[$i]}"`
+    ATTEMPT_COUNT=$(($ATTEMPT_COUNT + 1))
+
+    if ! is-ip-address "${IP_ADDRESSES[$i]}"; then
+      echo -n '.'
+      sleep 1
+    fi
+  done
+
+  # Clear the line
+  # https://unix.stackexchange.com/a/26592/17460
+  echo -n -e "\033[2K\r"
+
+  if is-ip-address "${IP_ADDRESSES[$i]}"; then
+    echo "${DEPLOYMENT_NAMES[$i]}: ${IP_ADDRESSES[$i]}"
+  else
+    echo "${DEPLOYMENT_NAMES[$i]}: ERROR: External IP address not found after 120 seconds"
+  fi
 done
 
 set +x
