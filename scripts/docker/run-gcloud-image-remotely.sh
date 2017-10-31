@@ -21,6 +21,8 @@ set -x
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
+ENV=dev
+
 PRS=(1469 1485 1484)
 AUTHORS=(iamJoeTaylor bonniezhou kfranqueiro)
 REMOTE_URLS=(https://github.com/iamJoeTaylor/material-components-web.git https://github.com/material-components/material-components-web.git https://github.com/material-components/material-components-web.git)
@@ -28,20 +30,27 @@ REMOTE_BRANCHES=(joetaylor/issue-1435-textfield-hightlight-color rename-textfiel
 
 DATE_SAFE="`date '+%Y-%m-%dt%H-%M-%S'`"
 
-CLUSTER="pr-demo-cluster"
-#gcloud container clusters create "${CLUSTER}" --num-nodes=8
+BOSS_CLUSTER_NAME="${ENV}-pr-boss-cluster"
+BOSS_CLUSTER_ZONE='us-west1-b'
+DEMO_CLUSTER_NAME="${ENV}-pr-demo-cluster"
+DEMO_CLUSTER_ZONE='us-central1-b'
+TEST_CLUSTER_NAME="${ENV}-pr-test-cluster"
+TEST_CLUSTER_ZONE='us-east1-b'
+#gcloud container clusters create "${BOSS_CLUSTER_NAME}" --num-nodes=1 --zone "${BOSS_CLUSTER_ZONE}"
+#gcloud container clusters create "${DEMO_CLUSTER_NAME}" --num-nodes=8 --zone "${DEMO_CLUSTER_ZONE}"
+#gcloud container clusters create "${TEST_CLUSTER_NAME}" --num-nodes=8 --zone "${TEST_CLUSTER_ZONE}"
 
 for i in `seq 0 1 2`; do
-  DEPLOYMENT="pr-demo-deployment-${i}-${DATE_SAFE}"
+  DEPLOYMENT="${ENV}-pr-demo-deployment-${i}"
 
   # Configure kubectl to use the previously-created cluster
-  gcloud container clusters get-credentials "${CLUSTER}"
+  gcloud container clusters get-credentials --zone "${DEMO_CLUSTER_ZONE}" "${DEMO_CLUSTER_NAME}"
 
   # Deploy the application and create 1 pod with 1 cluster with 1 node
   kubectl run "${DEPLOYMENT}" --image=us.gcr.io/material-components-web/dev-server:latest --port 8080 -- --pr "${PRS[$i]}" --author "${AUTHORS[$i]}" --remote-url "${REMOTE_URLS[$i]}" --remote-branch "${REMOTE_BRANCHES[$i]}" "$@"
 
   # Expose the server to the internet
-  kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 8080
+  kubectl expose deployment "${DEPLOYMENT}" --type=NodePort --target-port 8080
 
   IP_ADDR=`kubectl get service | grep -E -e "^${DEPLOYMENT} " | awk '{ print $3 }'`
   echo "${DEPLOYMENT}: ${IP_ADDR}"
