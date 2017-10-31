@@ -23,7 +23,6 @@
 
 // postcss-bem-linter: define radio
 .mdc-radio {
-  @include mdc-ripple-base;
   @include mdc-radio-unchecked-stroke-color(text-secondary-on-light);
 
   @include mdc-theme-dark {
@@ -33,7 +32,9 @@
   @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
-  @include mdc-radio-ripple((theme-style: $mdc-radio-baseline-theme-color));
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color($mdc-radio-baseline-theme-color, $mdc-radio-ripple-opacity);
+  @include mdc-ripple-radius($mdc-radio-ripple-radius);
 
   display: inline-block;
   position: relative;

@@ -1,7 +1,7 @@
 {
   "name": "@material/auto-init",
   "description": "Declarative, easy-to-use auto-initialization for Material Components for the web",
-  "version": "0.2.0",
+  "version": "0.24.0",
   "main": "index.js",
   "license": "Apache-2.0",
   "repository": {
