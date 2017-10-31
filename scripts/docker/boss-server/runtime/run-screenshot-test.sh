@@ -41,9 +41,8 @@ DEPLOYMENT=''
 IP_ADDRESS=''
 
 function auth() {
-  true
-  gcloud auth application-default login
-#  gcloud auth activate-service-account --key-file [KEY_FILE]
+#  gcloud auth application-default login
+  gcloud auth activate-service-account --key-file /scripts/service-account.json
 }
 
 function start-demo-server() {

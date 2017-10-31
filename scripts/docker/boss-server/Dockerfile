@@ -54,6 +54,7 @@ RUN /scripts/install-deps.sh
 
 # Copy scripts needed to run on startup
 COPY runtime/index.js /scripts/
+COPY runtime/service-account.json /scripts/
 COPY runtime/startup.sh /scripts/
 COPY runtime/startup-args.sh /scripts/
 COPY runtime/run-screenshot-test.sh /scripts/
