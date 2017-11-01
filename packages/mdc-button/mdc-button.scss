@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 @import "./mixins";
 @import "./variables";
@@ -24,7 +25,7 @@
   @include mdc-button-corner-radius(2px);
   @include mdc-button-container-fill-color(transparent);
   @include mdc-button-ink-color(primary);
-  @include mdc-button-ripple((theme-style: primary, opacity: $mdc-unfilled-button-ripple-opacity));
+  @include mdc-ripple-color(primary, $mdc-unfilled-button-ripple-opacity);
 }
 
 .mdc-button--raised,
@@ -32,7 +33,7 @@
   @include mdc-button--filled_;
   @include mdc-button-container-fill-color(primary);
   @include mdc-button-ink-color(text-primary-on-primary);
-  @include mdc-button-ripple((theme-style: text-primary-on-primary, opacity: $mdc-filled-button-ripple-opacity));
+  @include mdc-ripple-color(text-primary-on-primary, $mdc-filled-button-ripple-opacity);
 }
 
 .mdc-button--raised {

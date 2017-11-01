@@ -28,8 +28,6 @@ const cssClasses = {
 };
 
 const strings = {
-  VAR_SURFACE_WIDTH: '--mdc-ripple-surface-width',
-  VAR_SURFACE_HEIGHT: '--mdc-ripple-surface-height',
   VAR_FG_SIZE: '--mdc-ripple-fg-size',
   VAR_LEFT: '--mdc-ripple-left',
   VAR_TOP: '--mdc-ripple-top',

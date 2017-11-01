@@ -28,6 +28,7 @@
   left: 50%;
   align-items: center;
   justify-content: flex-start;
+  box-sizing: border-box;
   padding-right: 24px;
   padding-left: 24px;
   transform: translate(-50%, 100%);
@@ -42,7 +43,7 @@
 
   @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
     left: 0;
-    width: calc(100% - 48px);
+    width: 100%;
     transform: translate(0, 100%);
   }
 
@@ -63,7 +64,7 @@
     @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
       bottom: 0;
       left: 0;
-      width: calc(100% - 48px);
+      width: 100%;
       transform: translate(0, 100%);
     }
   }
@@ -79,7 +80,7 @@
       @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
         bottom: 0;
         left: 0;
-        width: calc(100% - 48px);
+        width: 100%;
         transform: translate(0);
       }
     }

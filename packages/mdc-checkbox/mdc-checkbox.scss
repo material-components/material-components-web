@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 @import "./mixins";
 @import "./variables";
@@ -22,10 +23,11 @@
 
 .mdc-checkbox {
   @include mdc-checkbox-base_;
-  @include mdc-ripple-base;
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
   @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
-  @include mdc-checkbox-ripple((theme-style: $mdc-checkbox-baseline-theme-color, opacity: $mdc-checkbox-ripple-opacity));
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color($mdc-checkbox-baseline-theme-color, $mdc-checkbox-ripple-opacity);
+  @include mdc-ripple-radius($mdc-checkbox-ripple-radius);
   @include mdc-checkbox-container-colors();
 
   @include mdc-theme-dark {

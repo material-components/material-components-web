@@ -1,7 +1,7 @@
 {
   "name": "@material/switch",
   "description": "The Material Components for the web switch component",
-  "version": "0.1.15",
+  "version": "0.24.0",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -15,7 +15,7 @@
   "dependencies": {
     "@material/animation": "^0.4.1",
     "@material/elevation": "^0.1.13",
-    "@material/theme": "^0.4.0"
+    "@material/theme": "^0.24.0"
   },
   "publishConfig": {
     "access": "public"

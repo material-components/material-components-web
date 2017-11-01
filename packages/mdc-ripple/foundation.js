@@ -494,12 +494,9 @@ class MDCRippleFoundation extends MDCFoundation {
   /** @private */
   updateLayoutCssVars_() {
     const {
-      VAR_SURFACE_WIDTH, VAR_SURFACE_HEIGHT, VAR_FG_SIZE,
-      VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
+      VAR_FG_SIZE, VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
     } = MDCRippleFoundation.strings;
 
-    this.adapter_.updateCssVariable(VAR_SURFACE_WIDTH, `${this.frame_.width}px`);
-    this.adapter_.updateCssVariable(VAR_SURFACE_HEIGHT, `${this.frame_.height}px`);
     this.adapter_.updateCssVariable(VAR_FG_SIZE, `${this.initialSize_}px`);
     this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
 
