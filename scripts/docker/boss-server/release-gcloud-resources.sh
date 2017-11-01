@@ -26,7 +26,5 @@ cd "`dirname ${BASH_SOURCE[0]}`"
 DEPLOYMENT="${ENV}-boss-deployment"
 
 # Tear down the container
-POD_ID=`kubectl get pods --selector="run=${DEPLOYMENT}" --output=go-template --template='{{(index .items 0).metadata.name}}'`
-kubectl delete pod "${POD_ID}"
-kubectl delete deployment "${DEPLOYMENT}"
-kubectl delete service "${DEPLOYMENT}"
+kubectl delete pod --selector="run=${DEPLOYMENT}"
+kubectl delete deployment,service "${DEPLOYMENT}"
