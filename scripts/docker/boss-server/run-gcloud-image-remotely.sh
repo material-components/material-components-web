@@ -80,7 +80,9 @@ function print-ip-address() {
     # requests almost immediately after running `npm run dev`, but delays its response until compilation has finished.
     # By sending an initial HTTP request, we effectively pause the script until the server is ready to receive UI
     # tests without timing out.
+    set +e
     curl "http://${IP_ADDRESS}/" > /dev/null
+    set -e
   else
     echo "${DEPLOYMENT}: ERROR: External IP address not found after 120 seconds"
   fi
