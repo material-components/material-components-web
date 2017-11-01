@@ -24,12 +24,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script>
-      if (!window.CSS || !window.CSS.supports ||
-        !window.CSS.supports('--css-vars', 'yes') && !(window.CSS.supports('color', '#00000000'))) {
-        document.documentElement.classList.add('unsupported');
-      }
-    </script>
     <style>
       .demo-surface {
         display: flex;
@@ -77,6 +71,8 @@
         color: red;
         border-radius: 4px;
         display: none;
+        position: absolute;
+        z-index: 10;
       }
 
       .unsupported #unsupported-msg {
@@ -119,13 +115,13 @@
   <body>
     <aside id="unsupported-msg">
       It appears your browser does not support custom properties, or has a broken implementation.
-      Please try this in Desktop Chrome or Desktop Firefox.
+      Please try this in Chrome, Firefox, or Safari 10+.
     </aside>
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Ripple</span>
         </section>
@@ -210,6 +206,10 @@
     <script src="/assets/material-components-web.js"></script>
     <script>
       (function(global) {
+        if (!mdc.ripple.util.supportsCssVariables(global)) {
+          document.documentElement.classList.add('unsupported');
+        }
+
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface:not([data-demo-no-js])'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
         });

@@ -17,4 +17,16 @@
 @import "./common";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-radio/mdc-radio";
+@import "../packages/mdc-ripple/mixins";
+@import "../packages/mdc-theme/color-palette";
 @import "../packages/mdc-typography/mdc-typography";
+
+.mdc-radio.demo-radio--custom {
+  $color: $material-color-red-500;
+
+  @include mdc-radio-unchecked-stroke-color($color);
+  @include mdc-radio-checked-stroke-color($color);
+  @include mdc-radio-ink-color($material-color-orange-500);
+  @include mdc-radio-focus-indicator-color($color);
+  @include mdc-ripple-color($color, $mdc-radio-ripple-opacity);
+}

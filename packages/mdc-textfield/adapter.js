@@ -29,7 +29,7 @@ let NativeInputType;
 
 /**
  * Adapter for MDC Textfield.
- * 
+ *
  * Defines the shape of the adapter expected by the foundation. Implement this
  * adapter to integrate the Textfield into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
@@ -74,7 +74,7 @@ class MDCTextfieldAdapter {
 
   /**
    * Returns true if classname exists for a given target element.
-   * @param {?HTMLElement} target
+   * @param {?EventTarget} target
    * @param {string} className
    * @return {boolean}
    */
@@ -186,7 +186,7 @@ class MDCTextfieldAdapter {
    * property, so if you choose to duck-type the return value for this method
    * in your implementation it's important to keep this in mind. Also note that
    * this method can return null, which the foundation will handle gracefully.
-   * @return {?HTMLInputElement|?NativeInputType}
+   * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
 }

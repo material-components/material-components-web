@@ -93,6 +93,11 @@ class MDCIconToggle extends MDCComponent {
     this.disabled = this.root_.getAttribute(MDCIconToggleFoundation.strings.ARIA_DISABLED) === 'true';
   }
 
+  /** @return {!MDCRipple} */
+  get ripple() {
+    return this.ripple_;
+  }
+
   /** @return {boolean} */
   get on() {
     return this.foundation_.isOn();

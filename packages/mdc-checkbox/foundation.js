@@ -84,6 +84,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   init() {
+    this.currentCheckState_ = this.determineCheckState_(this.getNativeControl_());
     this.adapter_.addClass(cssClasses.UPGRADED);
     this.adapter_.registerChangeHandler(this.changeHandler_);
     this.installPropertyChangeHooks_();

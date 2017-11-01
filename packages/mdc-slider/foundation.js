@@ -30,6 +30,9 @@ const KEY_IDS = {
   PAGE_DOWN: 'PageDown',
 };
 
+// Events that can constitute the user releasing drag on a slider
+const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
+
 export default class MDCSliderFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
@@ -97,10 +100,10 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.thumbContainerPointerHandler_ = () => {
       this.handlingThumbTargetEvt_ = true;
     };
-    this.mousedownHandler_ = this.createDownHandler_('mousemove', 'mouseup');
-    this.pointerdownHandler_ = this.createDownHandler_('pointermove', 'pointerup');
+    this.mousedownHandler_ = this.createDownHandler_('mousemove');
+    this.pointerdownHandler_ = this.createDownHandler_('pointermove');
     this.touchstartHandler_ = this.createDownHandler_(
-      'touchmove', 'touchend', ({targetTouches}) => targetTouches[0].pageX);
+      'touchmove', ({targetTouches}) => targetTouches[0].pageX);
     this.keydownHandler_ = (evt) => this.handleKeydown_(evt);
     this.focusHandler_ = () => this.handleFocus_();
     this.blurHandler_ = () => this.handleBlur_();
@@ -129,8 +132,8 @@ export default class MDCSliderFoundation extends MDCFoundation {
 
   destroy() {
     this.adapter_.deregisterInteractionHandler('mousedown', this.mousedownHandler_);
-    this.adapter_.deregisterInteractionHandler('pointerdown', this.mousedownHandler_);
-    this.adapter_.deregisterInteractionHandler('touchstart', this.mousedownHandler_);
+    this.adapter_.deregisterInteractionHandler('pointerdown', this.pointerdownHandler_);
+    this.adapter_.deregisterInteractionHandler('touchstart', this.touchstartHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
@@ -242,16 +245,19 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
   }
 
-  createDownHandler_(moveEvt, upEvt, getPageX = ({pageX}) => pageX) {
+  createDownHandler_(moveEvt, getPageX = ({pageX}) => pageX) {
     const moveHandler = (evt) => {
       evt.preventDefault();
       this.setValueFromEvt_(evt, getPageX);
     };
 
+    // Note: upHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
+    // do not always fire these consistently in pairs.
+    // (See https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
       this.setActive_(false);
       this.adapter_.deregisterBodyInteractionHandler(moveEvt, moveHandler);
-      this.adapter_.deregisterBodyInteractionHandler(upEvt, upHandler);
+      UP_EVENTS.forEach((type) => this.adapter_.deregisterBodyInteractionHandler(type, upHandler));
       this.adapter_.notifyChange();
     };
 
@@ -267,7 +273,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
       this.setActive_(true);
 
       this.adapter_.registerBodyInteractionHandler(moveEvt, moveHandler);
-      this.adapter_.registerBodyInteractionHandler(upEvt, upHandler);
+      UP_EVENTS.forEach((type) => this.adapter_.registerBodyInteractionHandler(type, upHandler));
       this.setValueFromEvt_(evt, getPageX);
     };
 

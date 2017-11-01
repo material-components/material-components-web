@@ -28,10 +28,10 @@
 
   @if ($light-or-dark == "light") {
     @include mdc-button-ink-color(text-primary-on-dark);
-    @include mdc-button-ripple((theme-style: text-primary-on-dark, opacity: $mdc-filled-button-ripple-opacity));
+    @include mdc-ripple-color(text-primary-on-dark, $mdc-filled-button-ripple-opacity);
   } @else {
     @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-button-ripple((theme-style: text-primary-on-light, opacity: $mdc-filled-button-ripple-opacity));
+    @include mdc-ripple-color(text-primary-on-light, $mdc-filled-button-ripple-opacity);
   }
 }
 
@@ -55,14 +55,6 @@
   }
 }
 
-@mixin mdc-button-ripple($ripple-config) {
-  &:not(:disabled) {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-  }
-}
-
 @mixin mdc-button-corner-radius($corner-radius) {
   border-radius: $corner-radius;
 }
@@ -82,11 +74,13 @@
 
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
 
   display: inline-block;
   position: relative;
   box-sizing: border-box;
-  min-width: 88px;
+  min-width: 64px;
   height: $mdc-button-height;
   padding: 0 16px;
   border: none;

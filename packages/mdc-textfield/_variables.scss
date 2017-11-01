@@ -36,9 +36,18 @@ $mdc-textfield-dark-placeholder: rgba(black, .38);
 $mdc-textfield-light-background: rgba(white, 1);
 $mdc-textfield-light-label: rgba(white, .7);
 $mdc-textfield-light-placeholder: rgba(white, .3);
+
+$mdc-textfield-box-background: rgba(black, .04);
+$mdc-textfield-box-background-dark: rgba(white, .1);
+$mdc-textfield-box-disabled-background: rgba(black, .02);
+$mdc-textfield-box-disabled-background-dark: rgba(white, .05);
+$mdc-textfield-box-secondary-text: rgba(black, .6);
+
 $mdc-textarea-border-on-light: rgba(black, .73);
 $mdc-textarea-border-on-dark: rgba(white, 1);
 $mdc-textarea-light-background: rgba(white, 1);
 $mdc-textarea-dark-background: rgba(48, 48, 48, 1);
 $mdc-textarea-disabled-background-on-light: rgba(249, 249, 249, 1);
 $mdc-textarea-disabled-background-on-dark: rgba(47, 47, 47, 1);
+
+$mdc-text-field-border-radius: 4px !default;

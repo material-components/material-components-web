@@ -39,7 +39,7 @@ npm install --save @material/fab
 
 ### Load Material Icons
 
-We recommend you load [Material Icons]((https://design.google.com/icons/)) from Google Fonts
+We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts
 
 ```html
 <head>
@@ -135,9 +135,8 @@ Mixin | Description
 --- | ---
 `mdc-fab-container-color($color)` | Sets the container color to the given color
 `mdc-fab-ink-color($color)` | Sets the ink color to the given color
-`mdc-fab-ripple($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
 
-[ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
+The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
 #### Caveat: Edge and CSS Variables
 

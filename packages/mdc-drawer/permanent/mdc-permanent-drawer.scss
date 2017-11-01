@@ -32,29 +32,29 @@ $mdc-permanent-drawer-dark-theme-bg-color: #212121 !default;
   @include mdc-rtl-reflexive-position(left, 0);
 
   @include mdc-theme-dark {
-    background-color: $mdc-permanent-drawer-dark-theme-bg-color;
-    background-color: var(--mdc-permanent-drawer-dark-theme-bg-color, #{$mdc-permanent-drawer-dark-theme-bg-color});
-
     @include mdc-theme-prop(color, text-primary-on-dark);
     @include mdc-rtl-reflexive-box(border, right, 1px solid rgba(white, .12));
+
+    background-color: $mdc-permanent-drawer-dark-theme-bg-color;
+    background-color: var(--mdc-permanent-drawer-dark-theme-bg-color, #{$mdc-permanent-drawer-dark-theme-bg-color});
   }
 
   display: inline-flex;
-  flex-direction: column;
   flex: 0 0 auto;
-  width: $mdc-permanent-drawer-width;
+  flex-direction: column;
   box-sizing: border-box;
+  width: $mdc-permanent-drawer-width;
   overflow: hidden;
 
   &--floating {
-    background: none;
-
     @include mdc-rtl-reflexive-box(border, right, none);
 
-    @include mdc-theme-dark {
-      background: none;
+    background: none;
 
+    @include mdc-theme-dark {
       @include mdc-rtl-reflexive-box(border, right, none);
+
+      background: none;
     }
   }
 }

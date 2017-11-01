@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -69,7 +70,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
   /**
    * @param {!MDCTextfieldAdapter=} adapter
    */
-  constructor(adapter = {}) {
+  constructor(adapter = /** @type {!MDCTextfieldAdapter} */ ({})) {
     super(Object.assign(MDCTextfieldFoundation.defaultAdapter, adapter));
 
     /** @private {boolean} */
@@ -317,7 +318,7 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!HTMLInputElement|!NativeInputType} The native text input from the
+   * @return {!Element|!NativeInputType} The native text input from the
    * host environment, or a dummy if none exists.
    * @private
    */

@@ -43,7 +43,10 @@
     @include mdc-typography-base;
     // We use only a subset of the MDC typography values here as changing things such as line-height
     // affects how the labels are transformed.
-    @each $prop in (font-size, letter-spacing) {
+    // TODO: Re-add setting the font-size from mdc-typography-styles (currently
+    // setting it here has no effect because it is overriden by the font-size
+    // given below).
+    @each $prop in (letter-spacing) {
       #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
     }
 
@@ -160,52 +163,30 @@
 }
 
 .mdc-textfield--box {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color(black, .04);
+  @include mdc-ripple-radius;
+  @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
+
   display: inline-flex;
   position: relative;
   height: 56px;
-  border-radius: 4px 4px 0 0;
-  background-color: rgba(black, .04);
+  background-color: $mdc-textfield-box-background;
   overflow: hidden;
 
   @include mdc-theme-dark(".mdc-textfield", true) {
-    background-color: rgba(white, .1);
+    background-color: $mdc-textfield-box-background-dark;
   }
 
-  &::before,
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: inherit;
-    opacity: 0;
-    pointer-events: none;
-    content: "";
+  @include mdc-theme-dark(".mdc-textfield", true) {
+    @include mdc-ripple-color(white, .05);
   }
 
-  // NOTE: For some reasons, stylelint complains that the two patterns below don't follow BEM.
+  // NOTE: For some reason, stylelint complains that the patterns below don't follow BEM.
   // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
-  // we would normally disable it (&.mdc-textfield--disabled) as a workaround.
+  // we would normally disable it (on combined selectors) as a workaround.
 
   // stylelint-disable plugin/selector-bem-pattern
-  // TODO: Refactor this out once #194 lands
-  $opacity-duration: 83ms;
-
-  &::before {
-    transition: opacity 17ms linear, transform 0ms $opacity-duration+2 linear;
-  }
-
-  &:hover {
-    &::before {
-      transition:
-        opacity $opacity-duration linear 17ms,
-        transform 250ms $mdc-animation-deceleration-curve-timing-function 17ms;
-      opacity: 1;
-    }
-  }
-
   .mdc-textfield__input {
     align-self: flex-end;
     box-sizing: border-box;
@@ -219,7 +200,7 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-textfield-icon-padding});
-    color: rgba(black, .6);
+    color: $mdc-textfield-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -243,34 +224,11 @@
     }
   }
 
-  &.mdc-ripple-upgraded {
-    @include mdc-ripple-base;
-    // TODO: Add ::before as ripple bg once #194 lands
-    @include mdc-ripple-fg((pseudo: "::after", opacity: .04));
-
-    &::before {
-      top: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
-      left: calc(50% - var(--mdc-ripple-fg-size, 100%) / 2);
-      width: var(--mdc-ripple-fg-size, 100%);
-      height: var(--mdc-ripple-fg-size, 100%);
-      transform: scale(.8);
-    }
-
-    &:hover::before {
-      transform: scale(calc(var(--mdc-ripple-fg-scale, 1) + .1));
-    }
-
-    @include mdc-theme-dark(".mdc-textfield", true) {
-      @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .05));
-    }
-  }
-
   &.mdc-textfield--disabled {
-    @include mdc-theme-prop(background-color, $mdc-textfield-light-background);
     @include mdc-theme-prop(color, $mdc-textfield-light-placeholder);
 
     border-bottom: none;
-    background-color: rgba(black, .02);
+    background-color: $mdc-textfield-box-disabled-background;
 
     @include mdc-theme-dark(".mdc-textfield", true) {
       @include mdc-theme-prop(background-color, $mdc-textfield-dark-background);
@@ -500,6 +458,8 @@
 }
 
 .mdc-textfield--textarea {
+  @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
+
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
   $label-offset-x: $padding-inset;
@@ -508,7 +468,7 @@
   height: initial;
   transition: none;
   border: 1px solid $mdc-textarea-border-on-light;
-  border-radius: 4px;
+  overflow: hidden;
 
   @include mdc-theme-dark(".mdc-textfield") {
     border-color: $mdc-textarea-border-on-dark;
@@ -519,7 +479,6 @@
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
     border: 1px solid transparent;
-    border-radius: 2px;
 
     &:focus {
       @include mdc-theme-prop(border-color, primary);

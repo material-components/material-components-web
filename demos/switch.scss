@@ -16,4 +16,18 @@
 
 @import "./common";
 @import "../packages/mdc-switch/mdc-switch";
+@import "../packages/mdc-theme/color-palette";
 @import "../packages/mdc-typography/mdc-typography";
+
+.demo-switch-wrapper {
+  display: inline-block;
+  margin-right: 16px;
+}
+
+.demo-switch--custom {
+  $color: $material-color-red-500;
+
+  @include mdc-switch-track-color($color);
+  @include mdc-switch-knob-color($color);
+  @include mdc-switch-focus-indicator-color($color);
+}
