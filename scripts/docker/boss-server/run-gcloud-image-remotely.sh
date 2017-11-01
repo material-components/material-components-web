@@ -38,6 +38,10 @@ TEST_CLUSTER_ZONE='us-east1-b'
 DEPLOYMENT="${ENV}-boss-deployment"
 IP_ADDRESS=''
 
+function release-gcloud-resources() {
+  kubectl delete pod,service,deployment --all
+}
+
 function start-boss-server() {
   # Configure kubectl to use the previously-created cluster
   gcloud container clusters get-credentials --zone "${BOSS_CLUSTER_ZONE}" "${BOSS_CLUSTER_NAME}"
@@ -95,6 +99,7 @@ function is-ip-address() {
   return $?
 }
 
+release-gcloud-resources
 start-boss-server
 print-ip-address
 
