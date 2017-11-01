@@ -158,18 +158,16 @@ $mdc-tab-with-icon-and-text-height: 72px;
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-tab.mdc-ripple-upgraded {
-  @include mdc-ripple-base;
-  @include mdc-ripple-fg((pseudo: "::after"));
-  @include mdc-ripple-bg((pseudo: "::before"));
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color;
+  @include mdc-ripple-radius;
 
   @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-ripple-bg((pseudo: "::before", base-color: map-get($mdc-theme-property-values, text-primary-on-dark), opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: map-get($mdc-theme-property-values, text-primary-on-dark), opacity: .16));
+    @include mdc-ripple-color(text-primary-on-dark, .16);
   }
 
   .mdc-toolbar & {
-    @include mdc-ripple-bg((pseudo: "::before", base-color: map-get($mdc-theme-property-values, text-primary-on-primary), opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: map-get($mdc-theme-property-values, text-primary-on-primary), opacity: .16));
+    @include mdc-ripple-color(text-primary-on-primary, .16);
   }
 
   // stylelint-disable plugin/selector-bem-pattern

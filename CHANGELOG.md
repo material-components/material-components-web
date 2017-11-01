@@ -1,3 +1,45 @@
+<a name="0.24.0"></a>
+# [0.24.0](https://github.com/material-components/material-components-web/compare/v0.23.0...v0.24.0) (2017-10-30)
+
+
+### Bug Fixes
+
+* **button:** Revise button minimum width ([#1487](https://github.com/material-components/material-components-web/issues/1487)) ([cb73283](https://github.com/material-components/material-components-web/commit/cb73283))
+* **layout-grid:** Import the variables in the mixin ([#1232](https://github.com/material-components/material-components-web/issues/1232)) ([924144b](https://github.com/material-components/material-components-web/commit/924144b))
+* **ripple:** Avoid duplicating common styles ([#1463](https://github.com/material-components/material-components-web/issues/1463)) ([756d8a6](https://github.com/material-components/material-components-web/commit/756d8a6))
+* **snackbar:** Explicitly use border-box ([#1453](https://github.com/material-components/material-components-web/issues/1453)) ([7455978](https://github.com/material-components/material-components-web/commit/7455978))
+
+
+### Features
+
+* **button:** Use new ripple mixins, and remove unnecessary mixin ([#1471](https://github.com/material-components/material-components-web/issues/1471)) ([510f356](https://github.com/material-components/material-components-web/commit/510f356))
+* **checkbox:** Use new ripple mixins, and remove unnecessary mixin ([#1472](https://github.com/material-components/material-components-web/issues/1472)) ([92b22eb](https://github.com/material-components/material-components-web/commit/92b22eb))
+* **fab:** Use new ripple mixins; remove unnecessary mixin/variable ([#1473](https://github.com/material-components/material-components-web/issues/1473)) ([fb798db](https://github.com/material-components/material-components-web/commit/fb798db))
+* **icon-toggle:** Add public API for MDCRipple in icon-toggle ([#1396](https://github.com/material-components/material-components-web/issues/1396)) ([f496581](https://github.com/material-components/material-components-web/commit/f496581))
+* **icon-toggle:** Use new ripple mixins ([#1474](https://github.com/material-components/material-components-web/issues/1474)) ([cbc3e1c](https://github.com/material-components/material-components-web/commit/cbc3e1c))
+* **list:** Use new ripple mixins ([#1475](https://github.com/material-components/material-components-web/issues/1475)) ([0647576](https://github.com/material-components/material-components-web/commit/0647576))
+* **radio:** Add theme color mixins and update default color to secondary ([#1410](https://github.com/material-components/material-components-web/issues/1410)) ([da9d48f](https://github.com/material-components/material-components-web/commit/da9d48f)), closes [#1149](https://github.com/material-components/material-components-web/issues/1149)
+* **radio:** Use new ripple mixins, and remove unnecessary mixin ([#1476](https://github.com/material-components/material-components-web/issues/1476)) ([94a826d](https://github.com/material-components/material-components-web/commit/94a826d))
+* **ripple:** Add new simpler mixins and remove unused CSS vars ([#1452](https://github.com/material-components/material-components-web/issues/1452)) ([a983c01](https://github.com/material-components/material-components-web/commit/a983c01))
+* **ripple:** Remove old complex mixins ([#1496](https://github.com/material-components/material-components-web/issues/1496)) ([47c6859](https://github.com/material-components/material-components-web/commit/47c6859))
+* **switch:** Add color theme mixins and update default color to secondary ([#1411](https://github.com/material-components/material-components-web/issues/1411)) ([e4b4fa7](https://github.com/material-components/material-components-web/commit/e4b4fa7)), closes [#1144](https://github.com/material-components/material-components-web/issues/1144)
+* **tabs:** Use new ripple mixins ([#1492](https://github.com/material-components/material-components-web/issues/1492)) ([253fba0](https://github.com/material-components/material-components-web/commit/253fba0))
+* **textfield:** Add mixin allowing customization of border radii ([#1446](https://github.com/material-components/material-components-web/issues/1446)) ([483e3d5](https://github.com/material-components/material-components-web/commit/483e3d5))
+* **textfield:** Use new ripple mixins and remove hover ripple styles ([#1477](https://github.com/material-components/material-components-web/issues/1477)) ([2a71ef7](https://github.com/material-components/material-components-web/commit/2a71ef7))
+* **theme:** rename all color_palette instances ([#1479](https://github.com/material-components/material-components-web/issues/1479)) ([375661d](https://github.com/material-components/material-components-web/commit/375661d))
+
+
+### BREAKING CHANGES
+
+* **ripple:** The existing MDC Ripple Sass mixins mdc-ripple-base, mdc-ripple-fg, and mdc-ripple-bg have been removed, replaced by the new easier-to-use mixins mdc-ripple-surface, mdc-ripple-color, and mdc-ripple-radius.
+* **radio:** The mdc-radio-ripple mixin has been removed; use mdc-ripple-color directly.
+* **fab:** The mdc-fab-ripple mixin and $mdc-fab-light-ripple-config variable have been removed; use MDC Ripple's mdc-ripple-color mixin and opacity variables directly.
+* **checkbox:** The mdc-checkbox-ripple mixin has been removed; use mdc-ripple-color directly.
+* **button:** The mdc-button-ripple mixin has been removed; use mdc-ripple-color directly.
+* **theme:** _color_palette.scss has been renamed to _color-palette.scss in mdc-theme
+
+
+
 <a name="0.23.0"></a>
 # [0.23.0](https://github.com/material-components/material-components-web/compare/v0.22.0...v0.23.0) (2017-10-16)
 
