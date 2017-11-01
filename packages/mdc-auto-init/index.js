@@ -18,6 +18,21 @@ const registry = Object.create(null);
 
 const CONSOLE_WARN = console.warn.bind(console);
 
+function _emit(evtType, evtData, shouldBubble = false) {
+  let evt;
+  if (typeof CustomEvent === 'function') {
+    evt = new CustomEvent(evtType, {
+      detail: evtData,
+      bubbles: shouldBubble,
+    });
+  } else {
+    evt = document.createEvent('CustomEvent');
+    evt.initCustomEvent(evtType, shouldBubble, false, evtData);
+  }
+
+  document.dispatchEvent(evt);
+}
+
 /**
  * Auto-initializes all mdc components on a page.
  */
@@ -49,6 +64,8 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
       configurable: true,
     });
   }
+
+  _emit('MDCAutoInit:End', {});
 }
 
 mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {

@@ -17,43 +17,34 @@
 @import "@material/animation/functions";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
-
-$mdc-radio-touch-area: 40px;
-$mdc-radio-ui-size: 20px;
-$mdc-radio-ui-pct: percentage($mdc-radio-ui-size / $mdc-radio-touch-area);
-$mdc-radio-transition-duration: 120ms;
-
-@function mdc-radio-enter($name) {
-  @return mdc-animation-enter($name, $mdc-radio-transition-duration);
-}
-
-@function mdc-radio-exit($name) {
-  @return mdc-animation-exit-temporary($name, $mdc-radio-transition-duration);
-}
+@import "./functions";
+@import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define radio
 .mdc-radio {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
+  @include mdc-radio-unchecked-stroke-color(text-secondary-on-light);
+
+  @include mdc-theme-dark {
+    @include mdc-radio-unchecked-stroke-color(text-secondary-on-dark);
+  }
+
+  @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color);
+  @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
+  @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color($mdc-radio-baseline-theme-color, $mdc-radio-ripple-opacity);
+  @include mdc-ripple-radius($mdc-radio-ripple-radius);
 
   display: inline-block;
   position: relative;
-  box-sizing: border-box;
   flex: 0 0 auto;
+  box-sizing: border-box;
   width: $mdc-radio-touch-area;
   height: $mdc-radio-touch-area;
   padding: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;
   cursor: pointer;
   will-change: opacity, transform, border-color, background-color, color;
-
-  &::before,
-  &::after {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
 
   // stylelint-disable plugin/selector-bem-pattern
   &.mdc-ripple-upgraded {
@@ -68,13 +59,11 @@ $mdc-radio-transition-duration: 120ms;
     display: inline-block;
     position: absolute;
     left: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;
+    box-sizing: border-box;
     width: $mdc-radio-ui-pct;
     height: $mdc-radio-ui-pct;
-    box-sizing: border-box;
 
     &::before {
-      @include mdc-theme-prop(background-color, primary);
-
       position: absolute;
       top: 0;
       left: 0;
@@ -83,47 +72,35 @@ $mdc-radio-transition-duration: 120ms;
       transform: scale(0, 0);
       transition: mdc-radio-exit(opacity), mdc-radio-exit(transform);
       border-radius: 50%;
-      content: "";
       opacity: 0;
       pointer-events: none;
+      content: "";
     }
   }
 
   &__outer-circle {
-    @include mdc-theme-prop(border-color, text-secondary-on-light);
-
-    @include mdc-theme-dark(".mdc-radio") {
-      @include mdc-theme-prop(border-color, text-secondary-on-dark);
-    }
-
     position: absolute;
     top: 0;
     left: 0;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     transition: mdc-radio-exit(border-color);
     border-width: 2px;
     border-style: solid;
     border-radius: 50%;
-    box-sizing: border-box;
   }
 
   &__inner-circle {
-    @include mdc-theme-prop(background-color, text-secondary-on-light);
-
-    @include mdc-theme-dark(".mdc-radio") {
-      @include mdc-theme-prop(background-color, text-secondary-on-dark);
-    }
-
     position: absolute;
     top: 0;
     left: 0;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     transform: scale(0, 0);
     transition: mdc-radio-exit(transform), mdc-radio-exit(background-color);
     border-radius: 50%;
-    box-sizing: border-box;
   }
 
   &__native-control {
@@ -134,8 +111,8 @@ $mdc-radio-transition-duration: 120ms;
     height: 100%;
     margin: 0;
     padding: 0;
-    cursor: inherit;
     opacity: 0;
+    cursor: inherit;
     z-index: 1;
   }
 }
@@ -162,13 +139,7 @@ $mdc-radio-transition-duration: 120ms;
 
 .mdc-radio__native-control:checked {
   + .mdc-radio__background {
-    .mdc-radio__outer-circle {
-      @include mdc-theme-prop(border-color, primary);
-    }
-
     .mdc-radio__inner-circle {
-      @include mdc-theme-prop(background-color, primary);
-
       transform: scale(.5);
       transition: mdc-radio-enter(transform), mdc-radio-enter(background-color);
     }
@@ -176,7 +147,6 @@ $mdc-radio-transition-duration: 120ms;
 }
 
 .mdc-radio__native-control:disabled,
-fieldset:disabled .mdc-radio__native-control,
 [aria-disabled="true"] .mdc-radio__native-control {
   + .mdc-radio__background {
     cursor: default;

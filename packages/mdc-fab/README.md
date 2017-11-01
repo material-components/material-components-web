@@ -1,24 +1,22 @@
 <!--docs:
-title: "Floating Action Buttons"
+title: "Floating Action Button"
 layout: detail
 section: components
+excerpt: "A floating action button represents the primary action in an application"
 iconId: button
 path: /catalog/buttons/floating-action-buttons/
 -->
 
-# Floating Action Buttons
+# Floating Action Button
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/fab.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/fabs.png" width="78" alt="Floating action buttons screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/fabs.png" width="78" alt="Floating action button screenshot">
   </a>
 </div>-->
 
-The MDC FAB component is a spec-aligned button component adhering to the
-[Material Design FAB requirements](https://material.io/guidelines/components/buttons-floating-action-button.html).
-It works without JavaScript with basic functionality for all states.
-If you initiate the JavaScript object for a button, then it will be enhanced with ripple effects. (Not yet implemented)
+A floating action button represents the primary action in an application.
 
 ## Design & API Documentation
 
@@ -39,10 +37,17 @@ npm install --save @material/fab
 
 ## Usage
 
-The demonstrations use the [Material Design Icon Font](https://design.google.com/icons/).
-You may include this to use them as shown or use any other icon method you wish.
+### Load Material Icons
 
-### Default
+We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts
+
+```html
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+```
+
+### HTML Structure
 
 ```html
 <button class="mdc-fab material-icons" aria-label="Favorite">
@@ -52,65 +57,51 @@ You may include this to use them as shown or use any other icon method you wish.
 </button>
 ```
 
-### Mini
+### CSS Classes
 
-```html
-<button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
-</button>
-```
+CSS Class | Description
+--- | ---
+`mdc-fab` | Mandatory, for the button element
+`mdc-fab__icon` | Mandatory, for the icon element
+`mdc-fab--mini` | Optional, modifies the FAB to a smaller size
+`mdc-fab--exited` | Optional, animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
 
-### Plain
+> **A note about `:disabled`**, No disabled styles are defined for FABs. The FAB promotes action, and should not be displayed in a disabled state. If you want to present a FAB that does *not* perform an action, you should also present an explanation to the user.
 
-```html
-<button class="mdc-fab mdc-fab--plain material-icons" aria-label="favorite">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
-</button>
-```
+### Absolutely Positioned
 
-### Absolutely positioned
-
-By default the FAB rests in the page where it sits in the content flow.
-Developers must position it as-needed within their applications designs.
+Developers must position MDC FAB as needed within their application's design.
 
 ```html
 <!--
   This will position the FAB in the bottom-right corner.
-  Modify to fit your designs requirements.
+  Modify to fit your design's requirements.
 -->
 <style>
-.app-fab--absolute.app-fab--absolute {
+.app-fab--absolute {
   position: fixed;
   bottom: 1rem;
   right: 1rem;
 }
 
 @media(min-width: 1024px) {
-   .app-fab--absolute.app-fab--absolute {
+   .app-fab--absolute {
     bottom: 1.5rem;
     right: 1.5rem;
   }
 }
 </style>
-<button class="mdc-fab app-fab--absolute" aria-label="Edit">
+<button class="mdc-fab material-icons app-fab--absolute" aria-label="Favorite">
   <span class="mdc-fab__icon">
-    <svg width="24" height="24" viewBox="0 0 24 24">
-      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-    </svg>
+    favorite
   </span>
 </button>
 ```
 
-> **Note** In this example we are using an SVG icon. When you are using SVG icons do _not_ specifiy the `fill` attribute. Fill is set by the components where SVGs may be used.
+### Adding MDC Ripple
 
-### Adding ripples to FABs
-
-To add the ink ripple effect to a FAB, attach a [ripple](../mdc-ripple) instance to the
-FAB element.
+To add the ripple effect to an MDC FAB, attach a [ripple](../mdc-ripple) instance to the
+`mdc-fab` element.
 
 ```js
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-fab'));
@@ -126,23 +117,29 @@ You can also do this declaratively when using the [material-components-web](../m
 </button>
 ```
 
-FABs are fully aware of ripple styles, so no DOM or CSS changes are required to use them.
+MDC FAB is fully aware of MDC Ripple styles, so no DOM or CSS changes are required.
 
-## Classes
+### Sass Mixins
 
-### Block
+By default an MDC FAB will inherit its color from the theme. This mixin will override the color of the MDC FAB's container, but maintain accessibility standards for the ink and ripple. The mixin is intended for customizing an MDC FAB's color to a non-theme color.
 
-The block class is `mdc-fab`. This defines the top-level button element.
+#### `mdc-fab-accessible($container-color)`
 
-### Element
-The button component has a single `span` element added as a child of the button due to buttons not adhering to flexbox rules
-in all browsers. See [this Stackoverflow post](http://stackoverflow.com/posts/35466231/revisions) for details.
+Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
 
-### Modifier
+### Advanced Sass Mixins
 
-The provided modifiers are:
+> **A note about advanced mixins**, The following mixins are intended for advanced users. These mixins will override the color of the container, ink, or ripple. You can use all of them if you want to completely customize a FAB. Or you can use only one of them, e.g. if you only need to override the ripple color. **It is up to you to pick container, ink, and ripple colors that work together, and meet accessibility standards.**
 
-| Class             | Description                             |
-| ------------------| --------------------------------------- |
-| `mdc-fab--mini`   | Makes the fab smaller (40 x 40 pixels). |
-| `mdc-fab--plain`  | Makes the FAB have a white background.  |
+Mixin | Description
+--- | ---
+`mdc-fab-container-color($color)` | Sets the container color to the given color
+`mdc-fab-ink-color($color)` | Sets the ink color to the given color
+
+The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
+
+#### Caveat: Edge and CSS Variables
+
+In browsers that fully support CSS variables, the above mixins will hook up styles using CSS variables if a theme property is passed.
+However, due to Edge's buggy CSS variable support, `mdc-fab-container-color` will not honor CSS variables in Edge.
+This means you will need to override FAB container styles manually for Edge if you are altering the affected CSS variables for theme properties (FAB uses secondary by default for the container fill color).

@@ -1,12 +1,12 @@
-// 
+//
 // Copyright 2016 Google Inc. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //      http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,8 +26,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 0;
   box-sizing: border-box;
+  padding: 0;
   border-radius: 2px;
   overflow: hidden;
 
@@ -46,11 +46,11 @@
   }
 
   &__supporting-text {
-    padding: 8px 16px;
-    box-sizing: border-box;
-
     @include mdc-typography(body1);
     @include mdc-theme-prop(color, text-primary-on-light);
+
+    box-sizing: border-box;
+    padding: 8px 16px;
 
     @include mdc-theme-dark(".mdc-card") {
       @include mdc-theme-prop(color, text-primary-on-dark);
@@ -70,8 +70,8 @@
 
   &__actions {
     display: flex;
-    padding: 8px;
     box-sizing: border-box;
+    padding: 8px;
 
     // Adjust text color for dark theme.
     @include mdc-theme-dark(".mdc-card") {
@@ -110,8 +110,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 16px;
     box-sizing: border-box;
+    padding: 16px;
   }
 
   &__media-item {
@@ -161,14 +161,13 @@
   }
 
   &__horizontal-block {
+    @include mdc-rtl-reflexive-property(padding, 0, 16px);
+
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
     box-sizing: border-box;
-    padding: 0;
-
-    @include mdc-rtl-reflexive-property(padding, 0, 16px);
 
     // postcss-bem-linter: ignore
     .mdc-card__actions--vertical {

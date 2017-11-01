@@ -1,0 +1,62 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "./common";
+@import "../packages/mdc-button/mdc-button";
+@import "../packages/mdc-button/mixins";
+@import "../packages/mdc-button/variables";
+@import "../packages/mdc-checkbox/mdc-checkbox";
+@import "../packages/mdc-form-field/mdc-form-field";
+@import "../packages/mdc-ripple/mixins";
+@import "../packages/mdc-typography/mdc-typography";
+
+.mdc-button.secondary-text-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-ripple-color(secondary, $mdc-unfilled-button-ripple-opacity);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-ripple-color(secondary, $mdc-unfilled-button-ripple-opacity);
+  }
+}
+
+.mdc-button.secondary-filled-button {
+  @include mdc-button-filled-accessible($mdc-theme-secondary);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-filled-accessible($mdc-theme-secondary);
+  }
+}
+
+.mdc-button.secondary-stroked-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-stroke-color($mdc-theme-secondary);
+  @include mdc-ripple-color(secondary, $mdc-unfilled-button-ripple-opacity);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-stroke-color($mdc-theme-secondary);
+    @include mdc-ripple-color(secondary, $mdc-unfilled-button-ripple-opacity);
+  }
+}
+
+.mdc-button.big-round-corner-button {
+  @include mdc-button-corner-radius(8px);
+}
+
+.mdc-button.thick-stroke-button {
+  @include mdc-button-stroke-width(4px);
+}

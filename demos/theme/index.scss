@@ -1,0 +1,446 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "../common";
+@import "../../packages/mdc-button/mdc-button";
+@import "../../packages/mdc-card/mdc-card";
+@import "../../packages/mdc-checkbox/mdc-checkbox";
+@import "../../packages/mdc-dialog/mdc-dialog";
+@import "../../packages/mdc-drawer/temporary/mdc-temporary-drawer";
+@import "../../packages/mdc-elevation/mdc-elevation";
+@import "../../packages/mdc-fab/mdc-fab";
+@import "../../packages/mdc-form-field/mdc-form-field";
+@import "../../packages/mdc-icon-toggle/mdc-icon-toggle";
+@import "../../packages/mdc-linear-progress/mdc-linear-progress";
+@import "../../packages/mdc-list/mdc-list";
+@import "../../packages/mdc-menu/mdc-menu";
+@import "../../packages/mdc-radio/mdc-radio";
+@import "../../packages/mdc-ripple/mdc-ripple";
+@import "../../packages/mdc-select/mdc-select";
+@import "../../packages/mdc-slider/mdc-slider";
+@import "../../packages/mdc-switch/mdc-switch";
+@import "../../packages/mdc-tabs/mdc-tabs";
+@import "../../packages/mdc-textfield/mdc-textfield";
+@import "../../packages/mdc-theme/color-palette";
+@import "../../packages/mdc-theme/mixins";
+@import "../../packages/mdc-theme/variables";
+@import "../../packages/mdc-toolbar/variables";
+@import "../../packages/mdc-typography/mdc-typography";
+
+// stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
+
+$demo-section-margin: 48px;
+$demo-custom-color: $material-color-red-500;
+
+//
+// Global styles
+//
+
+.mdc-theme--dark {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  background-color: $material-color-grey-800;
+}
+
+figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+//
+// Page toolbar
+//
+
+.demo-anchor-with-toolbar-offset {
+  $margin: $demo-section-margin / 2;
+
+  display: block;
+  position: relative;
+  top: -($mdc-toolbar-row-height + $margin);
+
+  @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+    and (orientation: landscape) {
+    top: -($mdc-toolbar-mobile-landscape-row-height + $margin);
+  }
+
+  @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+    top: -($mdc-toolbar-mobile-row-height + $margin);
+  }
+
+  visibility: hidden;
+}
+
+//
+// Page content
+//
+
+.demo-main {
+  padding: 24px;
+}
+
+.demo-component-section {
+  position: relative;
+}
+
+.demo-component-section + .demo-component-section {
+  margin-top: $demo-section-margin;
+}
+
+.demo-component-section::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  right: -16px;
+  bottom: -16px;
+  z-index: -1;
+  background: $material-color-yellow-700;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.demo-component-section--flash::before {
+  opacity: 0.5;
+  transition: none;
+}
+
+.demo-component-section__heading .demo-component-section__permalink {
+  color: inherit;
+  opacity: 0;
+}
+
+.demo-component-section__permalink {
+  .demo-component-section:hover &,
+  .demo-component-section__heading--focus & {
+    opacity: 1;
+  }
+}
+
+//
+// Button demo
+//
+
+.mdc-button.secondary-text-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
+  }
+}
+
+.mdc-button.secondary-filled-button {
+  @include mdc-button-filled-accessible($mdc-theme-secondary);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-filled-accessible($mdc-theme-secondary);
+  }
+}
+
+.mdc-button.secondary-stroked-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-stroke-color($mdc-theme-secondary);
+  @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-stroke-color($mdc-theme-secondary);
+    @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
+  }
+}
+
+.demo-fieldset--button + .demo-fieldset--button {
+  margin-top: 16px;
+}
+
+.demo-button {
+  margin: 10px;
+}
+
+.demo-button__code {
+  font-size: smaller;
+  text-transform: none;
+}
+
+//
+// Card demo
+//
+
+.demo-card-wrapper {
+  display: inline-block;
+  width: 350px;
+  margin: 0 24px 24px 0;
+  vertical-align: top;
+}
+
+.demo-card--with-avatar .mdc-card__primary {
+  position: relative;
+}
+
+.demo-card--with-avatar .demo-card__avatar {
+  position: absolute;
+  width: 2.5rem; // 40sp
+  height: 2.5rem; // 40sp
+  border-radius: 50%;
+  background: #bdbdbd;
+}
+
+.demo-card--with-avatar .mdc-card__title,
+.demo-card--with-avatar .mdc-card__subtitle {
+  margin-left: 56px;
+}
+
+[dir="rtl"] .demo-card--with-avatar .mdc-card__title,
+[dir="rtl"] .demo-card--with-avatar .mdc-card__subtitle {
+  margin-right: 56px;
+  margin-left: initial;
+}
+
+.demo-card--small .mdc-card__media {
+  height: 10.938rem; // 175sp, for 1:1 ratio with 175sp demo card width
+  background-image: url(/images/1-1.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+//
+// Checkbox demo
+//
+
+.demo-checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.demo-checkbox-wrapper,
+.demo-checkbox-toggle {
+  margin-right: 10px;
+}
+
+.demo-checkbox-wrapper + .demo-checkbox-toggle {
+  margin-left: 20px;
+}
+
+//
+// Dialog demo
+//
+
+.demo-dialog {
+  position: relative;
+  justify-content: unset;
+  z-index: unset;
+}
+
+//
+// Drawer demo
+//
+
+.demo-drawer-toggle {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+//
+// Floating Action Button (FAB) demo
+//
+
+.demo-fab-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.demo-fab {
+  margin: 16px 0 0 0;
+}
+
+.demo-fab--custom {
+  @include mdc-fab-accessible($demo-custom-color);
+}
+
+.demo-fab-tile {
+  margin: 0 48px 1em 0;
+}
+
+.demo-fab-tile__title {
+  font-weight: 500;
+}
+
+.demo-fab-tile__snippet {
+  height: 2em;
+}
+
+//
+// Icon Toggle demo
+//
+
+.mdc-icon-toggle {
+  // .material-icons and .mdc-icon-toggle each set different `display` values. Whichever CSS file is imported last
+  // will win, so prevent them from fighting by specifying the value we want here.
+  display: inline-flex;
+}
+
+.demo-icon-toggle__row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.demo-icon-toggle__tile {
+  width: 200px;
+  margin: 0 10px 10px 0;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+//
+// Linear Progress demo
+//
+
+.demo-linear-progress__row {
+  margin: 32px 0;
+}
+
+.demo-linear-progress__row + .demo-linear-progress__row {
+  margin-top: 64px;
+}
+
+//
+// Radio Button demo
+//
+
+.demo-radio-group {
+  display: inline-block;
+  margin: 0 24px 24px 0;
+}
+
+.demo-radio-form-field {
+  margin-right: 8px;
+}
+
+@mixin demo-radio-color($color) {
+  .mdc-radio__native-control:checked + .mdc-radio__background {
+    &::before {
+      @include mdc-theme-prop(background-color, $color);
+    }
+
+    .mdc-radio__outer-circle {
+      @include mdc-theme-prop(border-color, $color);
+    }
+
+    .mdc-radio__inner-circle {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+.demo-radio--secondary {
+  @include demo-radio-color($mdc-theme-secondary);
+}
+
+.demo-radio--custom {
+  @include demo-radio-color($demo-custom-color);
+}
+
+//
+// Ripple demo
+//
+
+.demo-ripple__row {
+  margin: 32px 0;
+}
+
+.demo-ripple-box,
+.demo-ripple-surface {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-ripple-box {
+  vertical-align: top;
+  width: 200px;
+  height: 100px;
+  padding: 1rem;
+  margin: 16px 16px 0 0;
+  font-weight: 500;
+}
+
+.demo-ripple-box--primary {
+  @include mdc-theme-prop(color, primary);
+}
+
+.demo-ripple-box--secondary {
+  @include mdc-theme-prop(color, secondary);
+}
+
+.demo-ripple-box--custom {
+  @include mdc-theme-prop(color, $demo-custom-color);
+}
+
+.demo-ripple-surface {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.demo-ripple-surface--primary {
+  @include mdc-ripple-color(primary, $mdc-ripple-pressed-dark-ink-opacity);
+}
+
+.demo-ripple-surface--secondary {
+  @include mdc-ripple-color(secondary, $mdc-ripple-pressed-dark-ink-opacity);
+}
+
+.demo-ripple-surface--custom {
+  @include mdc-ripple-color($demo-custom-color, $mdc-ripple-pressed-dark-ink-opacity);
+}
+
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+//
+// Switch demo
+//
+
+.demo-switch-wrapper {
+  display: inline-block;
+  margin: 16px 16px 0 0;
+}
+
+//
+// Text Field demo
+//
+
+.demo-textfield-wrapper {
+  display: inline-block;
+  margin: 16px 16px 0 0;
+}

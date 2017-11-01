@@ -1,0 +1,105 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// stylelint-disable
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");
+
+@import "../packages/mdc-theme/color-palette";
+
+// Base style
+$mdc-theme-primary: $material-color-grey-900 !default;
+$mdc-theme-secondary: $material-color-light-green-a700 !default;
+
+// Import button and ripple mixins to apply overrides for dark theme
+// TODO(kfranqueiro): Pending further design discussion around how to manage dark theme
+@import "../packages/mdc-button/mixins";
+@import "../packages/mdc-ripple/mixins";
+// All demo pages have a top toolbar, and most of them use theme variables.
+// Import these *after* setting theme colors to override defaults in mdc-theme.
+@import "../packages/mdc-theme/mdc-theme";
+@import "../packages/mdc-toolbar/mdc-toolbar";
+
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.mdc-toolbar {
+  a {
+    color: #f0f0f0;
+    text-decoration: none;
+  }
+}
+
+$dark-button-color: $material-color-light-green-a200;
+.mdc-button {
+  @include mdc-theme-dark {
+    @include mdc-button-ink-color($dark-button-color);
+    @include mdc-ripple-color($dark-button-color, $mdc-unfilled-button-ripple-opacity);
+  }
+}
+
+.mdc-button--raised,
+.mdc-button--unelevated {
+  @include mdc-theme-dark(".mdc-button", true) {
+    @include mdc-button-filled-accessible($dark-button-color);
+  }
+}
+
+.mdc-button--stroked {
+  @include mdc-theme-dark(".mdc-button", true) {
+    @include mdc-button-stroke-color($dark-button-color);
+  }
+}
+
+.catalog-title {
+  font-family: "Roboto Mono", monospace;
+}
+
+.catalog-logo,
+.catalog-back {
+  padding-right: 24px;
+  color: #eee;
+  text-decoration: none;
+}
+
+.hero {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  height: 360px;
+  min-height: 360px;
+  background-color: rgba(0, 0, 0, .05);
+}
+
+/* Default padding on all examples. */
+section.example {
+  margin: 24px;
+  padding: 24px;
+}
+
+section.example {
+  h2 {
+    margin-left: 0;
+  }
+}

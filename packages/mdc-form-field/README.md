@@ -85,7 +85,7 @@ color when used within a dark theme.
 #### ES2015
 
 ```javascript
-import {MDCFormField, MDCFormFieldFoundation} from 'mdc-form-field';
+import {MDCFormField, MDCFormFieldFoundation} from '@material/form-field';
 ```
 
 #### CommonJS
@@ -108,14 +108,14 @@ require(['path/to/mdc-form-field'], mdcFormField => {
 #### Global
 
 ```javascript
-const MDCFormField = mdc.radio.MDCFormField;
-const MDCFormFieldFoundation = mdc.radio.MDCFormFieldFoundation;
+const MDCFormField = mdc.formField.MDCFormField;
+const MDCFormFieldFoundation = mdc.formField.MDCFormFieldFoundation;
 ```
 
 ### Instantiation
 
 ```javascript
-import {MDCFormField} from 'mdc-form-field';
+import {MDCFormField} from '@material/form-field';
 
 const formField = new MDCFormField(document.querySelector('.mdc-form-field'));
 ```

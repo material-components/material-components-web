@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <!--
   Copyright 2016 Google Inc. All rights reserved.
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
+
       https://www.apache.org/licenses/LICENSE-2.0
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,13 +17,12 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Toolbar - Material Compoonents Catalog</title>
+    <title>Toolbar - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png" />
-    <script src="../assets/material-components-web.css.js" charset="utf-8"></script>
-    <script src="../assets/demo-styles.css.js" charset="utf-8"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/toolbar/toolbar.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
       .demo-container {
@@ -77,7 +79,7 @@
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Toolbar</span>
         </section>
@@ -89,13 +91,13 @@
           <header class="mdc-toolbar">
             <div class="mdc-toolbar__row">
               <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-                <i class="material-icons mdc-toolbar__icon--menu">menu</i>
+                <i class="material-icons mdc-toolbar__menu-icon">menu</i>
                 <span class="mdc-toolbar__title">Toolbar</span>
               </section>
               <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
                 <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
                 <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
-                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">more_vert</a>
+                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
               </section>
             </div>
           </header>
@@ -116,65 +118,61 @@
 
       <section class="examples">
         <div class="example">
-          <h2>Normal Toolbar <button type="button" onclick="toggleRTL(0)">Toggle RTL</button></h2>
+          <h2>Normal Toolbar <button type="button">Toggle RTL</button></h2>
           <p><a href="./default-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./default-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Fixed Toolbar<button type="button" onclick="toggleRTL(1)">Toggle RTL</button></h2>
+          <h2>Fixed Toolbar<button type="button">Toggle RTL</button></h2>
           <p><a href="./fixed-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./fixed-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Fixed Toolbar with Menu<button type="button" onclick="toggleRTL(1)">Toggle RTL</button></h2>
+          <h2>Fixed Toolbar with Menu<button type="button">Toggle RTL</button></h2>
           <p><a href="./menu-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./menu-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Waterfall Toolbar<button type="button" onclick="toggleRTL(2)">Toggle RTL</button></h2>
+          <h2>Waterfall Toolbar<button type="button">Toggle RTL</button></h2>
           <p><a href="./waterfall-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./waterfall-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Default Flexible Toolbar<button type="button" onclick="toggleRTL(3)">Toggle RTL</button></h2>
+          <h2>Default Flexible Toolbar<button type="button">Toggle RTL</button></h2>
           <p><a href="./default-flexible-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./default-flexible-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Waterfall Flexible Toolbar<button type="button" onclick="toggleRTL(4)">Toggle RTL</button></h2>
+          <h2>Waterfall Flexible Toolbar<button type="button">Toggle RTL</button></h2>
           <p><a href="./waterfall-flexible-toolbar.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./waterfall-flexible-toolbar.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Waterfall Toolbar Fix Last Row<button type="button" onclick="toggleRTL(5)">Toggle RTL</button></h2>
+          <h2>Waterfall Toolbar Fix Last Row<button type="button">Toggle RTL</button></h2>
           <p><a href="./waterfall-toolbar-fix-last-row.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./waterfall-toolbar-fix-last-row.html" width="320" height="600"></iframe>
         </div>
 
         <div class="example">
-          <h2>Waterfall Flexible Toolbar with Custom Style<button type="button" onclick="toggleRTL(6)">Toggle RTL</button></h2>
+          <h2>Waterfall Flexible Toolbar with Custom Style<button type="button">Toggle RTL</button></h2>
           <p><a href="./waterfall-flexible-toolbar-custom-style.html" target="_blank">View in separate window</a></p>
           <iframe class="demo-container" src="./waterfall-flexible-toolbar-custom-style.html" width="320" height="600"></iframe>
         </div>
-
       </section>
-
-
-
-
-
     </main>
     <script>
-      function toggleRTL(iframe_number) {
-        var iframeMainEl = document.querySelectorAll('iframe')[iframe_number].contentWindow.document.querySelector('body');
-        iframeMainEl.getAttribute('dir') === 'rtl' ? iframeMainEl.setAttribute('dir', 'ltr') : iframeMainEl.setAttribute('dir', 'rtl');
-      }
+      [].slice.call(document.querySelectorAll('.examples button')).forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          var iframeMainEl = event.target.parentNode.parentNode.querySelector('iframe').contentWindow.document.querySelector('body');
+          iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+        });
+      });
     </script>
   </body>
 </html>

@@ -70,8 +70,13 @@ Dialogs inform users about a specific task and may contain critical information 
 In the example above, we've created a dialog box in an `aside` element. Note that you can place content inside
 the dialog. There are two types: dialog & dialogs with scrollable content. These are declared using CSS classes.
 
-Some dialogs will not be tall enough to accomodate everything you would like to display in them. For this there is a
-`mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
+In most cases, dialog content should be able to fit without scrolling. However, certain special cases call for the
+ability to scroll the dialog's contents (see "Scrollable content exception" under
+[Behavior](https://material.io/guidelines/components/dialogs.html#dialogs-behavior)). For these special cases, there is
+a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
+
+> **Note**: The body of a scrollable dialog is styled with a default max-height; this can be overridden as necessary via
+> the `.mdc-dialog__body--scrollable` selector.
 
 ```html
   <aside id="mdc-dialog-with-list"
@@ -114,15 +119,16 @@ They only need to match the values set for their corresponding aria attributes.
 
 ### Dialog Action Color ###
 
-Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s accent color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply accent color.
+Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s secondary color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply secondary color.
 
-```
+```html
 <aside class="mdc-dialog">
   <div class="mdc-dialog__surface">
     <footer class="mdc-dialog__footer">
       <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
       <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept mdc-dialog__action">Accept</button>
     </footer>
+  </div>
 </aside>
 ```
 
@@ -181,7 +187,7 @@ mdc.dialog.MDCDialog.attachTo(document.querySelector('#my-mdc-dialog'));
 Dialogs can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCDialog} from 'mdc-dialog';
+import {MDCDialog} from '@material/dialog';
 
 const dialog = new MDCDialog(document.querySelector('#my-mdc-dialog'));
 ```
@@ -259,6 +265,7 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `isDialog(el: Element) => boolean` | Returns boolean indicating whether the provided element is the dialog surface element. |
 | `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 | `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
+| `layoutFooterRipples() => void` | Calls `layout` on the ripple components instantiated on buttons in the footer. |
 
 #### Handling Focus Trapping
 

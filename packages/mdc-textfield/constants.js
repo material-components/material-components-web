@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const strings = {
+
+/** @enum {string} */
+const strings = {
   ARIA_HIDDEN: 'aria-hidden',
   ROLE: 'role',
   INPUT_SELECTOR: '.mdc-textfield__input',
   LABEL_SELECTOR: '.mdc-textfield__label',
+  ICON_SELECTOR: '.mdc-textfield__icon',
+  ICON_EVENT: 'MDCTextfield:icon',
+  BOTTOM_LINE_SELECTOR: '.mdc-textfield__bottom-line',
 };
 
-export const cssClasses = {
+/** @enum {string} */
+const cssClasses = {
   ROOT: 'mdc-textfield',
   UPGRADED: 'mdc-textfield--upgraded',
   DISABLED: 'mdc-textfield--disabled',
@@ -29,5 +36,11 @@ export const cssClasses = {
   HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
   HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
   LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
+  LABEL_SHAKE: 'mdc-textfield__label--shake',
   BOX: 'mdc-textfield--box',
+  TEXT_FIELD_ICON: 'mdc-textfield__icon',
+  TEXTAREA: 'mdc-textfield--textarea',
+  BOTTOM_LINE_ACTIVE: 'mdc-textfield__bottom-line--active',
 };
+
+export {cssClasses, strings};

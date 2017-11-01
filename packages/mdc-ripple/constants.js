@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,7 @@
  * limitations under the License.
  */
 
-export const cssClasses = {
+const cssClasses = {
   // Ripple is a special case where the "root" component is really a "mixin" of sorts,
   // given that it's an 'upgrade' to an existing component. That being said it is the root
   // CSS class that all other CSS classes derive from.
@@ -26,9 +27,7 @@ export const cssClasses = {
   FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
 };
 
-export const strings = {
-  VAR_SURFACE_WIDTH: '--mdc-ripple-surface-width',
-  VAR_SURFACE_HEIGHT: '--mdc-ripple-surface-height',
+const strings = {
   VAR_FG_SIZE: '--mdc-ripple-fg-size',
   VAR_LEFT: '--mdc-ripple-left',
   VAR_TOP: '--mdc-ripple-top',
@@ -37,9 +36,11 @@ export const strings = {
   VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
 };
 
-export const numbers = {
+const numbers = {
   PADDING: 10,
   INITIAL_ORIGIN_SCALE: 0.6,
   DEACTIVATION_TIMEOUT_MS: 300,
   FG_DEACTIVATION_MS: 83,
 };
+
+export {cssClasses, strings, numbers};

@@ -1,0 +1,17 @@
+{
+  "name": "@material/selection-control",
+  "description": "The set of base classes for Material selection controls",
+  "version": "0.24.0",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "dependencies": {
+    "@material/ripple": "^0.24.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

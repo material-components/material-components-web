@@ -39,9 +39,11 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
   width: 100%;
   height: 100%;
   visibility: hidden;
-  z-index: 2;
+  z-index: 5;
 
   &__backdrop {
+    @include mdc-theme-prop(background-color, text-primary-on-light);
+
     position: fixed;
     top: 0;
     left: 0;
@@ -49,26 +51,22 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     justify-content: center;
     width: 100%;
     height: 100%;
-
-    @include mdc-theme-prop(background-color, text-primary-on-light);
-
     opacity: 0;
     z-index: -1;
   }
 
   &__surface {
+    @include mdc-elevation(24);
+    @include mdc-theme-prop(background-color, background);
+
     display: inline-flex;
     flex-direction: column;
-
-    @include mdc-elevation(24);
-
     width: calc(100% - 30px);
     min-width: 640px;
     max-width: 865px;
     transform: translateY(150px) scale(.8);
     border-radius: 2px;
-
-    @include mdc-theme-prop(background-color, background);
+    opacity: 0;
 
     @include mdc-theme-dark(".mdc-dialog") {
       @include mdc-theme-prop(color, text-primary-on-dark);
@@ -80,8 +78,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     @include mdc-rtl(".mdc-dialog") {
       text-align: right;
     }
-
-    opacity: 0;
   }
 
   &__header {
@@ -98,31 +94,30 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     }
 
     &__title {
+      @include mdc-typography(title);
+
       flex: 1;
       margin: 0;
-
-      @include mdc-typography(title);
     }
   }
 
   &__body {
+    @include mdc-theme-prop(color, text-secondary-on-light);
+    @include mdc-typography(body1);
+
     margin-top: 20px;
     padding: 0 24px 24px;
-
-    @include mdc-theme-prop(color, text-secondary-on-light);
 
     @include mdc-theme-dark(".mdc-dialog", true) {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
 
-    @include mdc-typography(body1);
-
     &--scrollable {
       max-height: 195px;
       border-top: 1px solid rgba(0, 0, 0, .1);
       border-bottom: 1px solid rgba(0, 0, 0, .1);
-      overflow-y: scroll;
       overflow-x: auto;
+      overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
     }
   }
@@ -141,10 +136,10 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
         @include mdc-rtl-reflexive-box(margin, right, 0);
       }
     }
+  }
 
-    &__action {
-      @include mdc-theme-prop(color, accent);
-    }
+  &__action {
+    @include mdc-theme-prop(color, secondary);
   }
 
   // TODO: Replace with breakpoint variable

@@ -48,7 +48,7 @@ npm install --save @material/snackbar
      aria-hidden="true">
   <div class="mdc-snackbar__text"></div>
   <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+    <button type="button" class="mdc-snackbar__action-button"></button>
   </div>
 </div>
 ```
@@ -65,7 +65,7 @@ snackbar, add the `mdc-snackbar--align-start` modifier class to the root element
      aria-hidden="true">
   <div class="mdc-snackbar__text"></div>
   <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+    <button type="button" class="mdc-snackbar__action-button"></button>
   </div>
 </div>
 ```
@@ -80,7 +80,7 @@ messages with optional action.
 ##### ES2015
 
 ```javascript
-import {MDCSnackbar, MDCSnackbarFoundation} from 'mdc-snackbar';
+import {MDCSnackbar, MDCSnackbarFoundation} from '@material/snackbar';
 ```
 
 ##### CommonJS
@@ -121,7 +121,7 @@ mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));
 Snackbars can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCSnackbar} from 'mdc-snackbar';
+import {MDCSnackbar} from '@material/snackbar';
 
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 ```
@@ -153,13 +153,13 @@ To respond to a snackbar action, assign a function to the optional `actionHandle
      aria-hidden="true">
   <div class="mdc-snackbar__text"></div>
   <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+    <button type="button" class="mdc-snackbar__action-button"></button>
   </div>
 </div>
 ```
 
 ```js
-import {MDCSnackbar} from 'mdc-snackbar';
+import {MDCSnackbar} from '@material/snackbar';
 
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 const dataObj = {

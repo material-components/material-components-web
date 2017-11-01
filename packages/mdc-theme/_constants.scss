@@ -14,18 +14,16 @@
 // limitations under the License.
 //
 
-/*
-  Precomputed linear color channel values, for use in contrast calculations.
-  See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
-
-  Algorithm, for c in 0 to 255:
-  f(c) {
-    c = c / 255;
-    return c < 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  }
-
-  This lookup table is needed since there is no `pow` in SASS.
-*/
+// Precomputed linear color channel values, for use in contrast calculations.
+// See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
+//
+// Algorithm, for c in 0 to 255:
+// f(c) {
+//   c = c / 255;
+//   return c < 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+// }
+//
+// This lookup table is needed since there is no `pow` in SASS.
 $mdc-theme-linear-channel-values:
   0
   .0003035269835488375

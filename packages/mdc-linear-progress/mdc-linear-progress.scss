@@ -25,10 +25,10 @@
   overflow: hidden;
 
   &__bar {
-    animation: none;
     position: absolute;
     width: 100%;
     height: 100%;
+    animation: none;
     transform-origin: top left;
     transition: mdc-animation-exit-temporary(transform, 250ms);
   }
@@ -36,27 +36,27 @@
   &__bar-inner {
     @include mdc-theme-prop(background-color, primary);
 
-    animation: none;
     display: inline-block;
     position: absolute;
     width: 100%;
     height: 100%;
+    animation: none;
   }
 
   &--accent .mdc-linear-progress__bar-inner {
-    @include mdc-theme-prop(background-color, accent);
+    @include mdc-theme-prop(background-color, secondary);
   }
 
   &__buffering-dots {
     position: absolute;
     width: 100%;
     height: 100%;
+    animation: buffering 250ms infinite linear;
     // SVG is optimized for data URI (https://codepen.io/tigt/post/optimizing-svgs-in-data-uris)
     // stylelint-disable-next-line function-url-quotes
     background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23e6e6e6'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
     background-size: 10px 4px;
-    animation: buffering 250ms infinite linear;
   }
 
   &__buffer {
@@ -78,8 +78,8 @@
     }
 
     .mdc-linear-progress__primary-bar {
-      animation: primary-indeterminate-translate 2s infinite linear;
       left: -145.166611%;
+      animation: primary-indeterminate-translate 2s infinite linear;
 
       > .mdc-linear-progress__bar-inner {
         animation: primary-indeterminate-scale 2s infinite linear;
@@ -87,8 +87,8 @@
     }
 
     .mdc-linear-progress__secondary-bar {
-      animation: secondary-indeterminate-translate 2s infinite linear;
       left: -54.888891%;
+      animation: secondary-indeterminate-translate 2s infinite linear;
       visibility: visible;
 
       > .mdc-linear-progress__bar-inner {

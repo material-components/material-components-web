@@ -23,24 +23,24 @@
 
 // postcss-bem-linter: define toolbar
 .mdc-toolbar {
+  @include mdc-theme-prop(background-color, primary);
+  @include mdc-theme-prop(color, text-primary-on-primary);
+
   display: flex;
   position: relative;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
   box-sizing: border-box;
-
-  @include mdc-theme-prop(background-color, primary);
-  @include mdc-theme-prop(color, text-primary-on-primary);
+  width: 100%;
 
   &__row {
     display: flex;
     position: relative;
     align-items: center;
+    box-sizing: border-box;
     width: 100%;
     height: auto;
     min-height: $mdc-toolbar-row-height;
-    box-sizing: border-box;
 
     // TODO: refactor this out when #23 is implemented
     @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
@@ -77,11 +77,10 @@
   &__title {
     @include mdc-typography(title);
     @include mdc-typography-overflow-ellipsis;
+    @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-element-horizontal-padding-desktop);
 
     align-self: center;
-    margin: 0;
-    margin-left: 24px;
-    padding: $mdc-toobar-element-vertical-padding 0;
+    padding: $mdc-toolbar-element-vertical-padding 0;
     line-height: 1.5rem;
     z-index: 1;
   }
@@ -90,47 +89,60 @@
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
+    padding-right: $mdc-toolbar-element-horizontal-padding-desktop / 2;
+    padding-left: $mdc-toolbar-element-horizontal-padding-desktop / 2;
     cursor: pointer;
   }
 
   &__icon:last-of-type {
-    padding-right: 16px;
+    @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-desktop / 2, $mdc-toolbar-element-horizontal-padding-desktop);
   }
 
-  &__icon--menu {
-    @include mdc-shared-icon-style(menu);
+  &__menu-icon {
+    @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
-    padding: 16px 24px;
+    padding-right: $mdc-toolbar-element-horizontal-padding-desktop;
+    padding-left: $mdc-toolbar-element-horizontal-padding-desktop;
     cursor: pointer;
   }
 }
 
-.mdc-toolbar__icon--menu + .mdc-toolbar__title {
-  margin-left: 8px;
+.mdc-toolbar__menu-icon + .mdc-toolbar__title {
+  @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-desktop);
 }
 
 @media (max-width: $mdc-toolbar-mobile-breakpoint) {
-  .mdc-toolbar__icon--menu {
-    padding: 16px;
-  }
-
-  .mdc-toolbar__icon:last-child {
-    padding: 16px 8px;
-  }
-
   .mdc-toolbar__title {
-    margin-left: 16px !important;
+    @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-element-horizontal-padding-mobile);
+  }
+
+  .mdc-toolbar__icon {
+    padding-right: $mdc-toolbar-element-horizontal-padding-mobile / 2;
+    padding-left: $mdc-toolbar-element-horizontal-padding-mobile / 2;
+  }
+
+  .mdc-toolbar__icon:last-of-type {
+    @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-mobile / 2, $mdc-toolbar-element-horizontal-padding-mobile);
+  }
+
+  .mdc-toolbar__menu-icon {
+    padding-right: $mdc-toolbar-element-horizontal-padding-mobile;
+    padding-left: $mdc-toolbar-element-horizontal-padding-mobile;
+  }
+
+  .mdc-toolbar__menu-icon + .mdc-toolbar__title {
+    @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-mobile);
   }
 }
 
 .mdc-toolbar--fixed {
+  @include mdc-elevation(4);
+
   position: fixed;
   top: 0;
   left: 0;
   z-index: 4;
-
-  @include mdc-elevation(4);
 }
 
 .mdc-toolbar--flexible {
