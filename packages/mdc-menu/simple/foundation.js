@@ -119,6 +119,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     this.startTime_;
     /** @private {number} */
     this.itemHeight_;
+
+    /** @private {number} */
+    this.offsetX_ = 0;
+    /** @private {number} */
+    this.offsetY_ = 0;
   }
 
   init() {
@@ -149,6 +154,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('keyup', this.keyupHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
+  }
+
+  setOffset(x, y) {
+    this.offsetX_ = x;
+    this.offsetY_ = y;
   }
 
   /**
@@ -398,10 +408,12 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     const topOverflow = anchor.top + this.dimensions_.height - windowDimensions.height;
     const bottomOverflow = this.dimensions_.height - anchor.bottom;
     const extendsBeyondTopBounds = topOverflow > 0;
-
+    let horizontalOffset = this.offsetX_;
+    let verticalOffset = this.offsetY_;
     if (extendsBeyondTopBounds) {
       if (bottomOverflow < topOverflow) {
         vertical = 'bottom';
+        verticalOffset = 0;//this.dimensions_.height - this.offsetY_;
       }
     }
 
@@ -409,7 +421,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     const rightOverflow = this.dimensions_.width - anchor.right;
     const extendsBeyondLeftBounds = leftOverflow > 0;
     const extendsBeyondRightBounds = rightOverflow > 0;
-
+    debugger;
     if (this.adapter_.isRtl()) {
       // In RTL, we prefer to open from the right.
       horizontal = 'right';
@@ -418,6 +430,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       }
     } else if (extendsBeyondLeftBounds && rightOverflow < leftOverflow) {
       horizontal = 'right';
+      horizontalOffset = 0; //this.dimensions_.width - this.offsetX_;
     }
 
     const position = {
@@ -425,7 +438,16 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       [vertical]: '0',
     };
 
+    if (this.offsetX_) {
+      position[horizontal] = horizontalOffset + 'px';
+    }
+
+    if (this.offsetY_) {
+      position[vertical] = verticalOffset + 'px';
+    }
     this.adapter_.setTransformOrigin(`${vertical} ${horizontal}`);
+    // debugger;
+    window.console.log(position);
     this.adapter_.setPosition(position);
   }
 

@@ -62,6 +62,14 @@ class MDCSimpleMenu extends MDCComponent {
   }
 
   /**
+   * @param {number} x Horizontal offset in pixels.
+   * @param {number} y Vertical offset in pixels.
+   */
+  setOffset(x, y) {
+    this.foundation_.setOffset(x, y);
+  }
+
+  /**
    * Return the item container element inside the component.
    * @return {?Element}
    */
