@@ -23,8 +23,17 @@ MDC-Web strives to seamlessly incorporate into a wider range of usage contexts, 
 
 Install the library
 
+Trough npm:
+
 ```
 npm install --save material-components-web
+```
+
+Or include it via CDN:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/material-components-web@0/dist/material-components-web.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-components-web@0/dist/material-components-web.min.css">
 ```
 
 Then simply include the correct files, write some HTML, and call `mdc.autoInit()` within a closing
