@@ -16,7 +16,7 @@
 #  limitations under the License.
 #
 
-set -e
+set +e
 set -x
 
 cd "`dirname ${BASH_SOURCE[0]}`"
