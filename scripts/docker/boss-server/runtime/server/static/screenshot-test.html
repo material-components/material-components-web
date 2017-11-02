@@ -214,6 +214,9 @@
           const allDone = () => {
             clearInterval(interval);
             submitButton.disabled = false;
+            installNodeModuleProgress.determinate = true;
+            demoServerBuildProgress.determinate = true;
+            screenshotTestProgress.determinate = true;
           };
 
           let last_response_len = false;
