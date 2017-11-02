@@ -21,7 +21,7 @@ const {Duration} = require('./duration');
 const {CbtLogger} = require('./cbt-logger');
 const {CbtSession} = require('./cbt-session');
 
-const TIMEOUT = Duration.seconds(30);
+const TIMEOUT = Duration.minutes(1);
 const TIMEOUT_MS = TIMEOUT.totalMilliseconds();
 const TIMEOUT_STR = TIMEOUT.toString();
 
