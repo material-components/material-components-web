@@ -1,0 +1,9 @@
+{
+  "name": "runtime",
+  "version": "0.0.1",
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "request": "^2.83.0",
+    "selenium-webdriver": "^3.6.0"
+  }
+}

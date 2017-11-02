@@ -21,10 +21,7 @@
 set -e
 set -x
 
-cd /scripts
-
-echo 'Installing node modules...'
-npm install
+cd /scripts/server
 
 echo 'Starting boss server...'
 node index.js

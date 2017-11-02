@@ -97,7 +97,7 @@ function run-screenshot-tests() {
     set -e
 
     # Run screenshot tests
-    node cbt/index.js --pr "${PR}" --author "${AUTHOR}" --host "${IP_ADDRESS}"
+    node /scripts/cbt/index.js --pr "${PR}" --author "${AUTHOR}" --host "${IP_ADDRESS}"
 
     # Tear down the container and its associated GCloud resources
     kill-demo-server
