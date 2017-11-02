@@ -36,18 +36,13 @@
         width: 8em;
       }
 
-      .outputs {
-        display: flex;
-      }
-
       .output {
-        flex-grow: 1;
-        margin: 16px;
+        margin: 24px 0;
       }
 
       textarea {
         width: 100%;
-        height: 30em;
+        height: 15em;
         font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
         font-size: small;
         padding: 10px;
@@ -95,17 +90,16 @@
             <button type="submit" id="submit" class="mdc-button mdc-button--stroked">Start Screenshot Tests</button>
           </form>
 
-          <div class="outputs">
-            <div class="output">
-              <h2 class="mdc-typography--subheading2">stdout</h2>
-              <textarea readonly id="stdout"></textarea>
-            </div>
-
-            <div class="output">
-              <h2 class="mdc-typography--subheading2">stderr</h2>
-              <textarea readonly id="stderr"></textarea>
-            </div>
+          <div class="output">
+            <h2 class="mdc-typography--subheading2">stdout</h2>
+            <textarea readonly id="stdout"></textarea>
           </div>
+
+          <div class="output">
+            <h2 class="mdc-typography--subheading2">stderr</h2>
+            <textarea readonly id="stderr"></textarea>
+          </div>
+
           <div class="output">
             <h2 class="mdc-typography--subheading2">other</h2>
             <textarea readonly id="other"></textarea>
@@ -121,13 +115,34 @@
         $('.mdc-button').each((i, button) => mdc.ripple.MDCRipple.attachTo(button));
         $('.mdc-textfield').each((i, textField) => mdc.textfield.MDCTextfield.attachTo(textField));
 
-        const $stdout = $('#stdout');
-        const $stderr = $('#stderr');
-        const $other = $('#other');
+        const stdoutEl = $('#stdout')[0];
+        const stderrEl = $('#stderr')[0];
+        const otherEl = $('#other')[0];
+
+        const appendAndScroll = (textarea, lines) => {
+          const scrollTop = textarea.scrollTop;
+          const scrollHeight = textarea.scrollHeight;
+          const height = parseInt(window.getComputedStyle(textarea).height);
+          const shouldScroll = scrollTop + height >= scrollHeight;
+
+          textarea.value = lines.join('\n');
+          if (shouldScroll) {
+            textarea.scrollTop = textarea.scrollHeight;
+          }
+        };
 
         $('form').on('submit', (event) => {
           event.preventDefault();
 
+          const stdoutLines = [];
+          const stderrLines = [];
+          const otherLines = [];
+
+          let interval = setInterval(() => {
+            appendAndScroll(stdoutEl, stdoutLines);
+            appendAndScroll(stderrEl, stderrLines);
+            appendAndScroll(otherEl, otherLines);
+          }, 250);
           let last_response_len = false;
 
           $.ajax({
@@ -161,21 +176,17 @@
                     return;
                   }
                   if (parsed.stdout) {
-                    $stdout.val($stdout.val() + '\n' + parsed.stdout);
-                    $stdout.get(0).scrollTop = $stdout.get(0).scrollHeight;
+                    stdoutLines.push(parsed.stdout);
                   } else if (parsed.stderr) {
-                    $stderr.val($stderr.val() + '\n' + parsed.stderr);
-                    $stderr.get(0).scrollTop = $stderr.get(0).scrollHeight;
+                    stderrLines.push(parsed.stderr);
                   } else {
-                    $other.val($other.val() + '\n' + JSON.stringify(parsed, null, 2));
-                    $other.get(0).scrollTop = $other.get(0).scrollHeight;
+                    otherLines.push(JSON.stringify(parsed, null, 2));
                   }
                 })
               }
             },
           }).then((response) => {
-            $('textarea').val(response.stderr);
-            console.log(response.stderr);
+            clearInterval(interval);
           })
         });
       })();

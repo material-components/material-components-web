@@ -35,20 +35,30 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
     res.write(JSON.stringify(json) + '\n');
   };
 
+  const stdioToString = (buffer) => {
+    return buffer.toString().replace(/\n$/, '');
+  };
+
   console.log(`${new Date()} - Request: ${args}`);
 
   const spawn = require('child_process').spawn('/scripts/run-screenshot-test.sh', args, {
     stdio: 'pipe',
     shell: true,
   });
-  spawn.stdout.on('data', (data) => {
-    writeln({stdout: data.toString()});
-    if (data.toString().indexOf('webpack: Compiled successfully.') > -1) {
+  spawn.stdout.on('data', (buffer) => {
+    const stdoutStr = stdioToString(buffer);
+    if (stdoutStr) {
+      writeln({stdout: stdoutStr});
+    }
+    if (stdoutStr.indexOf('webpack: Compiled successfully.') > -1) {
       writeln({demo_server_status: 'running'});
     }
   });
-  spawn.stderr.on('data', (data) => {
-    writeln({stderr: data.toString()});
+  spawn.stderr.on('data', (buffer) => {
+    const stderrStr = stdioToString(buffer);
+    if (stderrStr) {
+      writeln({stderr: stderrStr});
+    }
   });
   spawn.on('close', (code) => {
     res.end();
