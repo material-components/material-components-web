@@ -30,11 +30,11 @@ REMOTE_BRANCHES=(joetaylor/issue-1435-textfield-hightlight-color rename-textfiel
 
 DATE_SAFE="`date '+%Y-%m-%dt%H-%M-%S'`"
 
-BOSS_CLUSTER_NAME="${ENV}-pr-boss-cluster"
+BOSS_CLUSTER_NAME="${MCW_ENV}-pr-boss-cluster"
 BOSS_CLUSTER_ZONE='us-west1-b'
-DEMO_CLUSTER_NAME="${ENV}-pr-demo-cluster"
+DEMO_CLUSTER_NAME="${MCW_ENV}-pr-demo-cluster"
 DEMO_CLUSTER_ZONE='us-central1-b'
-TEST_CLUSTER_NAME="${ENV}-pr-test-cluster"
+TEST_CLUSTER_NAME="${MCW_ENV}-pr-test-cluster"
 TEST_CLUSTER_ZONE='us-east1-b'
 #gcloud container clusters create "${BOSS_CLUSTER_NAME}" --num-nodes=1 --zone "${BOSS_CLUSTER_ZONE}"
 #gcloud container clusters create "${DEMO_CLUSTER_NAME}" --num-nodes=8 --zone "${DEMO_CLUSTER_ZONE}"
@@ -50,7 +50,7 @@ function release-gcloud-resources() {
 function start-servers() {
   set -x
   for i in `seq 0 1 2`; do
-    DEPLOYMENT="${ENV}-pr-test-deployment-${i}"
+    DEPLOYMENT="${MCW_ENV}-pr-test-deployment-${i}"
     DEPLOYMENT_NAMES[$i]="${DEPLOYMENT}"
 
     # Configure kubectl to use the previously-created cluster

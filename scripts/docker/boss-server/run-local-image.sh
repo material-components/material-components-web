@@ -20,6 +20,6 @@ set -e
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-[[ -z "${ENV}" ]] && ENV='dev'
+[[ -z "${MCW_ENV}" ]] && MCW_ENV='dev'
 
-docker run --interactive --tty -p 3000:3000 "${ENV}-boss-server:latest" "$@"
+docker run --interactive --tty -p 3000:3000 "${MCW_ENV}-boss-server:latest" "$@"

@@ -21,21 +21,21 @@ set -x
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-[[ -z "${ENV}" ]] && ENV='dev'
+[[ -z "${MCW_ENV}" ]] && MCW_ENV='dev'
 
 DATE_SAFE="`date '+%Y-%m-%dt%H-%M-%S'`"
 
-BOSS_CLUSTER_NAME="${ENV}-pr-boss-cluster"
+BOSS_CLUSTER_NAME="${MCW_ENV}-pr-boss-cluster"
 BOSS_CLUSTER_ZONE='us-west1-b'
-DEMO_CLUSTER_NAME="${ENV}-pr-demo-cluster"
+DEMO_CLUSTER_NAME="${MCW_ENV}-pr-demo-cluster"
 DEMO_CLUSTER_ZONE='us-central1-b'
-TEST_CLUSTER_NAME="${ENV}-pr-test-cluster"
+TEST_CLUSTER_NAME="${MCW_ENV}-pr-test-cluster"
 TEST_CLUSTER_ZONE='us-east1-b'
 #gcloud container clusters create "${BOSS_CLUSTER_NAME}" --num-nodes=1 --zone "${BOSS_CLUSTER_ZONE}"
 #gcloud container clusters create "${DEMO_CLUSTER_NAME}" --num-nodes=8 --zone "${DEMO_CLUSTER_ZONE}"
 #gcloud container clusters create "${TEST_CLUSTER_NAME}" --num-nodes=1 --zone "${TEST_CLUSTER_ZONE}"
 
-DEPLOYMENT="${ENV}-boss-deployment"
+DEPLOYMENT="${MCW_ENV}-boss-deployment"
 IP_ADDRESS=''
 
 function release-gcloud-resources() {
@@ -47,7 +47,7 @@ function start-boss-server() {
   gcloud container clusters get-credentials --zone "${BOSS_CLUSTER_ZONE}" "${BOSS_CLUSTER_NAME}"
 
   # Deploy the application and create 1 pod with 1 cluster with 1 node
-  kubectl run "${DEPLOYMENT}" --image="us.gcr.io/material-components-web/${ENV}-boss-server:latest" --port 3000 -- "$@"
+  kubectl run "${DEPLOYMENT}" --image="us.gcr.io/material-components-web/${MCW_ENV}-boss-server:latest" --port 3000 -- "$@"
 
   # Expose the server to the internet
   kubectl expose deployment "${DEPLOYMENT}" --type=LoadBalancer --port 80 --target-port 3000

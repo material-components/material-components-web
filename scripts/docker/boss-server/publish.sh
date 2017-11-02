@@ -20,9 +20,9 @@ set -e
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-[[ -z "${ENV}" ]] && ENV='dev'
+[[ -z "${MCW_ENV}" ]] && MCW_ENV='dev'
 
-gcloud container builds submit --config "cloudbuild.${ENV}.yaml" .
+gcloud container builds submit --config "cloudbuild.${MCW_ENV}.yaml" .
 
 # Alternatively, you can build locally and upload the image to GCloud:
 #docker build -t dev-boss-server:latest .

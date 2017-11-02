@@ -20,7 +20,7 @@ set -e
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-[[ -z "${ENV}" ]] && ENV='dev'
+[[ -z "${MCW_ENV}" ]] && MCW_ENV='dev'
 
-gcloud docker -- pull "us.gcr.io/material-components-web/${ENV}-boss-server:latest"
-docker run --interactive --tty -p 3000:3000 "us.gcr.io/material-components-web/${ENV}-boss-server:latest" "$@"
+gcloud docker -- pull "us.gcr.io/material-components-web/${MCW_ENV}-boss-server:latest"
+docker run --interactive --tty -p 3000:3000 "us.gcr.io/material-components-web/${MCW_ENV}-boss-server:latest" "$@"

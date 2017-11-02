@@ -21,9 +21,9 @@ set -x
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-[[ -z "${ENV}" ]] && ENV='dev'
+[[ -z "${MCW_ENV}" ]] && MCW_ENV='dev'
 
-DEPLOYMENT="${ENV}-boss-deployment"
+DEPLOYMENT="${MCW_ENV}-boss-deployment"
 
 # Tear down the container
 kubectl delete pod --selector="run=${DEPLOYMENT}"
