@@ -91,10 +91,10 @@ fi
 
 if [[ -z "$REMOTE_URL" ]]; then
   echo 'Error: --remote-url is required (URL of remote Git repository to pull)'
-  exit 3
+  exit 4
 fi
 
 if [[ -z "$REMOTE_BRANCH" ]]; then
   echo 'Error: --remote-branch is required (name of remote branch to checkout)'
-  exit 3
+  exit 4
 fi
