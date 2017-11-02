@@ -22,7 +22,7 @@
  *  * Rewrite import Foo from './foo' to const Foo = goog.require('mdc.foo')
  *  * Rewrite import {foo, bar} from './util' to const {foo, bar} = goog.require('mdc.util')
  *
- *  
+ *
  * This script rewrites import statements such that:
  *
  * ```js

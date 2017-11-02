@@ -15,7 +15,6 @@
 //
 
 @import "@material/animation/functions";
-@import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "./functions";
 @import "./keyframes";
@@ -85,13 +84,6 @@
   .mdc-checkbox__background::before {
     @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
   }
-}
-
-@mixin mdc-checkbox-ripple($ripple-config) {
-  $ripple-config: map-merge((opacity: $mdc-checkbox-ripple-opacity, radius: 50%), $ripple-config);
-
-  @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-  @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
 }
 
 //
