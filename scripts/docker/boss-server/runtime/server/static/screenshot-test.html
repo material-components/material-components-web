@@ -187,7 +187,7 @@
               </div>
             </article>
 
-            <article class="top-article" style="display: none">
+            <article class="top-article test-result-article">
               <h1 class="mdc-typography--title">Screenshot Test Results</h1>
 
               <table id="test-result-table"></table>
@@ -221,12 +221,20 @@
         $('.mdc-button').each((i, button) => mdc.ripple.MDCRipple.attachTo(button));
         $('.mdc-textfield').each((i, textField) => mdc.textfield.MDCTextfield.attachTo(textField));
 
+        const submitButton = $('#submit')[0];
+        const stdoutEl = $('#stdout')[0];
+        const stderrEl = $('#stderr')[0];
+        const otherEl = $('#other')[0];
+
+        const $progressArticle = $('.progress-article');
+        const $testResultArticle = $('.test-result-article');
         const $installNodeModuleProgress = $('#node-module-progress');
         const installNodeModuleProgress = mdc.linearProgress.MDCLinearProgress.attachTo($installNodeModuleProgress[0]);
         const $demoServerBuildProgress = $('#demo-server-build-progress');
         const demoServerBuildProgress = mdc.linearProgress.MDCLinearProgress.attachTo($demoServerBuildProgress[0]);
         const $screenshotTestProgress = $('#screenshot-test-progress');
         const screenshotTestProgress = mdc.linearProgress.MDCLinearProgress.attachTo($screenshotTestProgress[0]);
+        const $outputs = $('.outputs');
 
         function setInstallNodeModuleProgress(percentage) {
           installNodeModuleProgress.progress = percentage / 100;
@@ -235,6 +243,7 @@
               .find('.progress-label__percentage').text(percentage)
           ;
         }
+
         function setDemoServerBuildProgress(percentage) {
           demoServerBuildProgress.progress = percentage / 100;
           $demoServerBuildProgress.closest('.progress-bucket')
@@ -242,6 +251,7 @@
               .find('.progress-label__percentage').text(percentage)
           ;
         }
+
         function setScreenshotTestProgress(browsers) {
           const finishedBrowsers = browsers.filter((browser) => browser.endTime);
           const numTotal = browsers.length;
@@ -277,17 +287,20 @@
           }
         }
 
-        setInstallNodeModuleProgress(0);
-        setDemoServerBuildProgress(0);
-        setScreenshotTestProgress([]);
+        function setDeterminateAll(isDeterminate) {
+          installNodeModuleProgress.determinate = isDeterminate;
+          demoServerBuildProgress.determinate = isDeterminate;
+          screenshotTestProgress.determinate = isDeterminate;
+        }
 
-        const submitButton = $('#submit')[0];
+        function resetProgressBars({isDeterminate = false} = {}) {
+          setDeterminateAll(isDeterminate);
+          setInstallNodeModuleProgress(0);
+          setDemoServerBuildProgress(0);
+          setScreenshotTestProgress([]);
+        }
 
-        const stdoutEl = $('#stdout')[0];
-        const stderrEl = $('#stderr')[0];
-        const otherEl = $('#other')[0];
-
-        const appendAndScroll = (textarea, lines) => {
+        function appendAndScroll(textarea, lines) {
           const scrollTop = textarea.scrollTop;
           const scrollHeight = textarea.scrollHeight;
           const height = parseInt(window.getComputedStyle(textarea).height);
@@ -297,15 +310,19 @@
           if (shouldScroll) {
             textarea.scrollTop = textarea.scrollHeight;
           }
-        };
+        }
+
+        resetProgressBars({isDeterminate: true});
+        $progressArticle.hide();
+        $testResultArticle.hide();
+        $outputs.hide();
 
         $('form').on('submit', (event) => {
-          installNodeModuleProgress.determinate = false;
-          demoServerBuildProgress.determinate = false;
-          screenshotTestProgress.determinate = false;
-
           event.preventDefault();
           submitButton.disabled = true;
+          resetProgressBars({isDeterminate: false});
+          $progressArticle.show();
+          $outputs.show();
 
           const stdoutLines = [];
           const stderrLines = [];

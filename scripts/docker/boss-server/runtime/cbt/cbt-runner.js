@@ -41,7 +41,7 @@ class CbtRunner {
     const browsers = CbtBrowserConfig.allBrowsers(globalConfig);
 
     const cbtFlow = new CbtFlow({globalConfig, browsers});
-    cbtFlow.on('cbt:session-started', (session) => {
+    cbtFlow.on('cbt:session:started', (session) => {
       // TODO(acdvorak): TLS
 
       session.navigate(`http://${this.host_}/info/`);

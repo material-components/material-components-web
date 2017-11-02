@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+const EventEmitter = require('events');
 const request = require('request');
 const webdriver = require('selenium-webdriver');
 const {CbtLogger} = require('./cbt-logger');
@@ -27,8 +28,9 @@ const promiseReject = function(...args) {
   return webdriver.promise.Promise.reject(...args);
 };
 
-class CbtSession {
+class CbtSession extends EventEmitter {
   constructor({globalConfig, driver, sessionId, browser} = {}) {
+    super();
     this.logger_ = CbtLogger.newBuilder().name(this).id(sessionId).build();
     this.globalConfig_ = globalConfig;
     this.driver_ = driver;
@@ -165,7 +167,7 @@ class CbtSession {
       return promiseFulfill('FROM quit(1)');
     }
 
-    this.info_('Quitting driver...');
+    this.log_('Quitting driver...');
     this.hasQuit_ = true;
 
     try {
@@ -174,6 +176,8 @@ class CbtSession {
     } catch (e) {
       this.error_('Error: Unable to quit driver: ', e);
       return promiseReject(e);
+    } finally {
+      this.emit('cbt:session:quit');
     }
   }
 
@@ -320,11 +324,15 @@ class CbtSession {
   rpc_(requestObject) {
     const methodSignature = `rpc_(${requestObject.uri}, ${JSON.stringify(requestObject.body)})`;
 
+    this.emit('cbt:rpc:enqueue');
+
     return this.enqueue(() => {
       if (this.hasQuit_) {
         this.info_(`Unable to execute ${methodSignature}: Driver has already quit`);
         return;
       }
+
+      this.emit('cbt:rpc:dequeue');
 
       // webdriver has built-in promise to use
       const deferred = webdriver.promise.defer();
@@ -351,6 +359,8 @@ class CbtSession {
             this.info_(`About to call deferred.fulfill(${JSON.stringify(result)}) in ${methodSignature}`);
             deferred.fulfill(result);
           }
+
+          this.emit('cbt:rpc:response');
         })
         .auth(this.globalConfig_.username, this.globalConfig_.authkey);
 

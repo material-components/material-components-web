@@ -17,8 +17,13 @@
 
 const EventEmitter = require('events');
 const webdriver = require('selenium-webdriver');
+const {Duration} = require('./duration');
 const {CbtLogger} = require('./cbt-logger');
 const {CbtSession} = require('./cbt-session');
+
+const TIMEOUT = Duration.seconds(30);
+const TIMEOUT_MS = TIMEOUT.totalMilliseconds();
+const TIMEOUT_STR = TIMEOUT.toString();
 
 class CbtFlow extends EventEmitter {
   constructor({globalConfig, browsers} = {}) {
@@ -36,7 +41,7 @@ class CbtFlow extends EventEmitter {
 
         const browserDescription = CbtLogger.browserDescription(browser);
         this.log_(`Connecting to the CrossBrowserTesting remote server; requesting browser [${browserDescription}]...`);
-        this.emit('cbt:session-starting');
+        this.emit('cbt:session:starting');
 
         const driver = new webdriver.Builder()
           .usingServer(this.globalConfig_.remoteHub)
@@ -48,6 +53,19 @@ class CbtFlow extends EventEmitter {
         this.log_('Waiting on the browser to be launched and the session to start...');
 
         let session;
+        let timer;
+
+        const stopTimeout = () => {
+          clearTimeout(timer);
+        };
+
+        const resetTimeout = () => {
+          stopTimeout();
+          timer = setTimeout(() => {
+            this.error_(`Session timed out due to inactivity after ${TIMEOUT_STR}`);
+            session.quit();
+          }, TIMEOUT_MS);
+        };
 
         driver.getSession()
           .then((sessionData) => {
@@ -58,10 +76,18 @@ class CbtFlow extends EventEmitter {
               sessionId,
               browser,
             });
+
             this.log_(`Session started! https://app.crossbrowsertesting.com/selenium/${sessionId}`);
-            this.emit('cbt:session-started', session);
+            this.emit('cbt:session:started', session);
+
+            resetTimeout();
+            session.on('cbt:rpc:enqueue', resetTimeout);
+            session.on('cbt:rpc:dequeue', resetTimeout);
+            session.on('cbt:rpc:response', resetTimeout);
+            session.on('cbt:session:quit', stopTimeout);
           })
           .catch((error) => {
+            stopTimeout();
             this.handleWebDriverError_(error, session);
           });
       });

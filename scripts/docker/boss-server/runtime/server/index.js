@@ -23,9 +23,16 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(require('body-parser').json());
 
-const requestQueue = [];
+function writelnCommon(res, ...json) {
+  const currentDate = new Date();
+  res.write(JSON.stringify(Object.assign({}, ...json, {
+    nowMillis: currentDate.getTime(),
+    nowIso8601: currentDate.toJSON(),
+  })) + '\n');
+}
 
-let nextId = 0;
+let nextRequestId = 0;
+const requestQueue = [];
 
 const getQueuePosition = (id) => {
   for (let i = 0; i < requestQueue.length; i++) {
@@ -37,7 +44,7 @@ const getQueuePosition = (id) => {
 };
 
 const enqueueStartScreenshotRequest = (pullRequest, res) => {
-  const id = nextId++;
+  const id = nextRequestId++;
 
   let destroyed = false;
 
@@ -45,13 +52,10 @@ const enqueueStartScreenshotRequest = (pullRequest, res) => {
     if (destroyed) {
       return;
     }
-    const currentDate = new Date();
-    res.write(JSON.stringify(Object.assign({}, json, {
-      nowMs: currentDate.getTime(),
-      nowIso8601: currentDate.toJSON(),
+    writelnCommon(res, json, {
       queuePosition: getQueuePosition(id),
       queueLength: requestQueue.length,
-    })) + '\n');
+    });
   };
 
   const interval = setInterval(() => screenshotRequest.tickle(), 5000);
@@ -95,15 +99,15 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
   console.log(`${new Date()} - Handle request (${requestQueue.length} in queue): ${args}`);
 
   const writeln = (json) => {
-    res.write(JSON.stringify(Object.assign({}, json, {now: Date.now()})) + '\n');
+    writelnCommon(res, json);
   };
 
   const stdioToString = (buffer) => {
     // eslint-disable no-multi-spaces
     const sanitized = buffer.toString()
-      .replace(/\n$/, '')
+      .replace(/\n$/, '')            // strip trailing newline
       .replace(/\u0008+\s*/gu, ' ')  // replace backspace characters with a space
-      .replace(/\s{2,}/g, ' ')       // replace multiple spaces with one
+      .replace(/ {2,}/g, ' ')        // replace multiple spaces with one
     ;
     // eslint-enable no-multi-spaces
     return /^\s*$/.test(sanitized) ? '' : sanitized;
