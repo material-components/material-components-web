@@ -89,6 +89,31 @@ easily position checkboxes and their labels.
 </div>
 ```
 
+Please note that if you are using IE, you have to close the `<path>` tag to avoid console warnings.
+
+```html
+<div class="mdc-form-field">
+  <div class="mdc-checkbox">
+    <input type="checkbox"
+           id="my-checkbox"
+           class="mdc-checkbox__native-control"/>
+    <div class="mdc-checkbox__background">
+      <svg class="mdc-checkbox__checkmark"
+           viewBox="0 0 24 24">
+        <path class="mdc-checkbox__checkmark__path"
+              fill="none"
+              stroke="white"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+      </svg>
+      <div class="mdc-checkbox__mixedmark"></div>
+    </div>
+  </div>
+
+  <label for="my-checkbox">My Checkbox Label</label>
+</div>
+```
+
+
 #### Disabled Checkboxes
 
 Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class; a `disabled` attribute on the `<input>` element is sufficient.
