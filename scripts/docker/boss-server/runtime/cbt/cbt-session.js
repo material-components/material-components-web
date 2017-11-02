@@ -171,8 +171,7 @@ class CbtSession extends EventEmitter {
     this.hasQuit_ = true;
 
     try {
-      this.driver_.quit();
-      return promiseFulfill('FROM quit(2)');
+      return this.driver_.quit();
     } catch (e) {
       this.error_('Error: Unable to quit driver: ', e);
       return promiseReject(e);
