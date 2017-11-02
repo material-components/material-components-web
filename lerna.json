@@ -1,6 +1,6 @@
 {
   "lerna": "2.0.0-beta.36",
-  "version": "independent",
+  "version": "0.24.0",
   "commands": {
     "publish": {
       "ignore": [

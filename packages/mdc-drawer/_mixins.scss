@@ -25,7 +25,7 @@
     position: relative;
     flex-direction: row;
     flex-shrink: 0;
-    align-items: flex-center;
+    align-items: center;
     box-sizing: border-box;
     height: 56px;
     padding: 16px;
@@ -101,12 +101,12 @@
     }
   }
 
-  /* stylelint-disable selector-no-qualifying-type */
+  // stylelint-disable selector-no-qualifying-type
   &--selected.mdc-list-item,
   &--selected.mdc-list-item .mdc-list-item__start-detail {
     @include mdc-theme-prop(color, primary);
   }
-  /* stylelint-enable selector-no-qualifying-type */
+  // stylelint-enable selector-no-qualifying-type
 
   /* TODO(sgomes): Revisit when we have interactive lists. */
   .mdc-list-item::before {
