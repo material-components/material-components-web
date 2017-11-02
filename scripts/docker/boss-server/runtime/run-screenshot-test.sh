@@ -42,13 +42,8 @@ TEST_CLUSTER_ZONE='us-east1-b'
 DEPLOYMENT="${ENV}-pr-${PR}-test-deployment"
 IP_ADDRESS=''
 
-function auth() {
-  gcloud auth activate-service-account --key-file /scripts/auth/gcloud-service-account.json
-  . /scripts/auth/cbt-account.bash.inc
-}
-
 # TODO(acdvorak): Detect whether we are running locally, and if so, run docker commands instead
-function delete-resources() {
+function kill-demo-server() {
   set +e
   kubectl delete deployment,service "${DEPLOYMENT}"
   kubectl delete pod --selector="run=${DEPLOYMENT}"
@@ -57,8 +52,6 @@ function delete-resources() {
 
 # TODO(acdvorak): Detect whether we are running locally, and if so, run docker commands instead
 function start-demo-server() {
-  set -x
-
   # Configure kubectl to use the previously-created cluster
   gcloud container clusters get-credentials --zone "${TEST_CLUSTER_ZONE}" "${TEST_CLUSTER_NAME}"
 
@@ -92,8 +85,6 @@ function run-screenshot-tests() {
   echo
 
   if is-ip-address "${IP_ADDRESS}"; then
-    set -x
-
     echo "${DEPLOYMENT}: ${IP_ADDRESS}"
     echo
 
@@ -106,11 +97,10 @@ function run-screenshot-tests() {
     set -e
 
     # Run screenshot tests
-    env
     node cbt/index.js --pr "${PR}" --author "${AUTHOR}" --host "${IP_ADDRESS}"
 
     # Tear down the container and its associated GCloud resources
-    delete-resources
+    kill-demo-server
     # TODO(acdvorak): Notify boss container that server was downed, to add it back to the pool
   else
     echo "${DEPLOYMENT}: ERROR: External IP address not found after 120 seconds"
@@ -124,12 +114,6 @@ function is-ip-address() {
   return $?
 }
 
-env
-pwd
-ls -Al
-auth
-delete-resources
+kill-demo-server
 start-demo-server
 run-screenshot-tests
-
-set +x
