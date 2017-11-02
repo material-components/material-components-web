@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css">
     <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
       /* apply a natural box layout model to all elements, but allowing components to change */
@@ -23,6 +23,15 @@
         height: 100%;
       }
 
+      th,
+      td {
+        text-align: left;
+      }
+
+      th {
+        font-weight: 500;
+      }
+
       .page {
         /* Hack to force the margin-top of .mdc-toolbar-fixed-adjust to collapse */
         border-top: 1px solid transparent;
@@ -36,16 +45,38 @@
         display: flex;
       }
 
-      .progress-section {
-        margin-left: 48px;
+      .top-article {
+        margin: 0 48px 48px 0;
+      }
+
+      .progress-article {
+        min-width: 275px;
       }
 
       #pr-number {
         width: 8em;
       }
 
+      .progress-label {
+        margin-bottom: 8px;
+        margin-top: 16px;
+      }
+
+      .progress-label__numbers {
+        visibility: hidden;
+      }
+
+      .progress-label__numbers--visible {
+        visibility: visible;
+      }
+
       .output {
         margin: 24px 0;
+      }
+
+      #test-result-table th:not(:last-of-type),
+      #test-result-table td:not(:last-of-type) {
+        padding-right: 16px;
       }
 
       textarea {
@@ -72,7 +103,7 @@
       <main class="main">
         <section>
           <div class="top-section">
-            <div class="form-wrapper">
+            <article class="top-article">
               <h1 class="mdc-typography--title">GitHub Pull Request</h1>
               <form action="/github/pr">
                 <div class="pr-form-field">
@@ -99,62 +130,85 @@
                 </div>
                 <button type="submit" id="submit" class="mdc-button mdc-button--stroked">Start Screenshot Tests</button>
               </form>
-            </div>
+            </article>
 
-            <div class="progress-section">
+            <article class="top-article progress-article">
               <h1 class="mdc-typography--title">Progress</h1>
 
-              <p>Node Module Installation</p>
-              <div role="progressbar" class="mdc-linear-progress" id="node-module-progress">
-                <div class="mdc-linear-progress__buffering-dots"></div>
-                <div class="mdc-linear-progress__buffer"></div>
-                <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-                  <span class="mdc-linear-progress__bar-inner"></span>
+              <div class="progress-bucket">
+                <div class="mdc-typography--body1 progress-label">
+                  Node Module Installation
+                  <i class="progress-label__numbers">(<i class="progress-label__percentage">0</i>%)</i>
                 </div>
-                <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-                  <span class="mdc-linear-progress__bar-inner"></span>
-                </div>
-              </div>
-
-              <p>Demo Server Build</p>
-              <div role="progressbar" class="mdc-linear-progress" id="demo-server-build-progress">
-                <div class="mdc-linear-progress__buffering-dots"></div>
-                <div class="mdc-linear-progress__buffer"></div>
-                <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-                  <span class="mdc-linear-progress__bar-inner"></span>
-                </div>
-                <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-                  <span class="mdc-linear-progress__bar-inner"></span>
+                <div role="progressbar" class="mdc-linear-progress" id="node-module-progress">
+                  <div class="mdc-linear-progress__buffering-dots"></div>
+                  <div class="mdc-linear-progress__buffer"></div>
+                  <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                    <span class="mdc-linear-progress__bar-inner"></span>
+                  </div>
+                  <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                    <span class="mdc-linear-progress__bar-inner"></span>
+                  </div>
                 </div>
               </div>
 
-              <p>Screenshot Tests</p>
-              <div role="progressbar" class="mdc-linear-progress" id="screenshot-test-progress">
-                <div class="mdc-linear-progress__buffering-dots"></div>
-                <div class="mdc-linear-progress__buffer"></div>
-                <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-                  <span class="mdc-linear-progress__bar-inner"></span>
+              <div class="progress-bucket">
+                <div class="mdc-typography--body1 progress-label">
+                  Demo Server Build
+                  <i class="progress-label__numbers">(<i class="progress-label__percentage">0</i>%)</i>
                 </div>
-                <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-                  <span class="mdc-linear-progress__bar-inner"></span>
+                <div role="progressbar" class="mdc-linear-progress" id="demo-server-build-progress">
+                  <div class="mdc-linear-progress__buffering-dots"></div>
+                  <div class="mdc-linear-progress__buffer"></div>
+                  <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                    <span class="mdc-linear-progress__bar-inner"></span>
+                  </div>
+                  <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                    <span class="mdc-linear-progress__bar-inner"></span>
+                  </div>
                 </div>
               </div>
+
+              <div class="progress-bucket">
+                <div class="mdc-typography--body1 progress-label">
+                  Screenshot Tests
+                  <i class="progress-label__numbers">(<i class="progress-label__remaining">0</i> of <i class="progress-label__total">0</i> remaining)</i>
+                </div>
+                <div role="progressbar" class="mdc-linear-progress" id="screenshot-test-progress">
+                  <div class="mdc-linear-progress__buffering-dots"></div>
+                  <div class="mdc-linear-progress__buffer"></div>
+                  <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                    <span class="mdc-linear-progress__bar-inner"></span>
+                  </div>
+                  <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                    <span class="mdc-linear-progress__bar-inner"></span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="top-article" style="display: none">
+              <h1 class="mdc-typography--title">Screenshot Test Results</h1>
+
+              <table id="test-result-table"></table>
+            </article>
+          </div>
+
+          <div class="outputs">
+            <div class="output">
+              <h2 class="mdc-typography--subheading2">stdout</h2>
+              <textarea readonly id="stdout"></textarea>
             </div>
-          </div>
 
-          <div class="output">
-            <h2 class="mdc-typography--subheading2">stdout</h2>
-            <textarea readonly id="stdout"></textarea>
-          </div>
+            <div class="output">
+              <h2 class="mdc-typography--subheading2">stderr</h2>
+              <textarea readonly id="stderr"></textarea>
+            </div>
 
-          <div class="output">
-            <h2 class="mdc-typography--subheading2">stderr</h2>
-            <textarea readonly id="stderr"></textarea>
-          </div>
-
-          <div class="output">
-            <h2 class="mdc-typography--subheading2">other</h2>
-            <textarea readonly id="other"></textarea>
+            <div class="output">
+              <h2 class="mdc-typography--subheading2">other</h2>
+              <textarea readonly id="other"></textarea>
+            </div>
           </div>
         </section>
       </main>
@@ -167,13 +221,65 @@
         $('.mdc-button').each((i, button) => mdc.ripple.MDCRipple.attachTo(button));
         $('.mdc-textfield').each((i, textField) => mdc.textfield.MDCTextfield.attachTo(textField));
 
-        const installNodeModuleProgress = mdc.linearProgress.MDCLinearProgress.attachTo($('#node-module-progress')[0]);
-        const demoServerBuildProgress = mdc.linearProgress.MDCLinearProgress.attachTo($('#demo-server-build-progress')[0]);
-        const screenshotTestProgress = mdc.linearProgress.MDCLinearProgress.attachTo($('#screenshot-test-progress')[0]);
+        const $installNodeModuleProgress = $('#node-module-progress');
+        const installNodeModuleProgress = mdc.linearProgress.MDCLinearProgress.attachTo($installNodeModuleProgress[0]);
+        const $demoServerBuildProgress = $('#demo-server-build-progress');
+        const demoServerBuildProgress = mdc.linearProgress.MDCLinearProgress.attachTo($demoServerBuildProgress[0]);
+        const $screenshotTestProgress = $('#screenshot-test-progress');
+        const screenshotTestProgress = mdc.linearProgress.MDCLinearProgress.attachTo($screenshotTestProgress[0]);
 
-        installNodeModuleProgress.progress = 0;
-        demoServerBuildProgress.progress = 0;
-        screenshotTestProgress.progress = 0;
+        function setInstallNodeModuleProgress(percentage) {
+          installNodeModuleProgress.progress = percentage / 100;
+          $installNodeModuleProgress.closest('.progress-bucket')
+            .find('.progress-label__numbers').addClass('progress-label__numbers--visible')
+              .find('.progress-label__percentage').text(percentage)
+          ;
+        }
+        function setDemoServerBuildProgress(percentage) {
+          demoServerBuildProgress.progress = percentage / 100;
+          $demoServerBuildProgress.closest('.progress-bucket')
+            .find('.progress-label__numbers').addClass('progress-label__numbers--visible')
+              .find('.progress-label__percentage').text(percentage)
+          ;
+        }
+        function setScreenshotTestProgress(browsers) {
+          const finishedBrowsers = browsers.filter((browser) => browser.endTime);
+          const numTotal = browsers.length;
+          const numFinished = finishedBrowsers.length;
+          const numRemaining = numTotal - numFinished;
+          screenshotTestProgress.progress = numTotal === 0 ? 0 : (numFinished / numTotal);
+          $screenshotTestProgress.closest('.progress-bucket')
+            .find('.progress-label__numbers').addClass('progress-label__numbers--visible')
+              .find('.progress-label__remaining').text(numRemaining)
+              .end()
+              .find('.progress-label__total').text(numTotal)
+          ;
+          const $testResultTable = $('#test-result-table');
+
+          if (browsers.length) {
+            $testResultTable.empty().html(`
+              <thead>
+                <th>Browser/OS/Device</th>
+                <th>Result</th>
+              </thead>
+              <tbody>
+              ${browsers.map((browser) => `
+                <tr>
+                  <td>${browser.description}</td>
+                  <td>${browser.endTime ? `${browser.testResult}!` : 'Running...'}</td>
+                </tr>
+              `).join('\n')}
+              </tbody>
+            `);
+            $testResultTable.closest('.top-article').show();
+          } else {
+            $testResultTable.closest('.top-article').hide();
+          }
+        }
+
+        setInstallNodeModuleProgress(0);
+        setDemoServerBuildProgress(0);
+        setScreenshotTestProgress([]);
 
         const submitButton = $('#submit')[0];
 
@@ -255,21 +361,20 @@
                     stdoutLines.push(parsed.stdout);
                   } else if (parsed.stderr) {
                     stderrLines.push(parsed.stderr);
-                  } else if (Number.isFinite(parsed.demoServerBuildPercentage)) {
-                    demoServerBuildProgress.determinate = true;
-                    demoServerBuildProgress.progress = parsed.demoServerBuildPercentage / 100;
-                  } else if (parsed.eventType === 'browserStart' || parsed.eventType === 'browserFinish') {
-                    const finishedBrowsers = parsed.browserList.filter((browser) => browser.endTime);
-                    screenshotTestProgress.determinate = true;
-                    screenshotTestProgress.progress = finishedBrowsers.length / parsed.browserList.length;
-                    // TODO(acdvorak): Display pass/fail
                   } else if (Number.isFinite(parsed.installNodeModulePercentage)) {
                     installNodeModuleProgress.determinate = true;
-                    installNodeModuleProgress.progress = parsed.installNodeModulePercentage / 100;
+                    setInstallNodeModuleProgress(parsed.installNodeModulePercentage);
+                  } else if (Number.isFinite(parsed.demoServerBuildPercentage)) {
+                    demoServerBuildProgress.determinate = true;
+                    setDemoServerBuildProgress(parsed.demoServerBuildPercentage);
+                  } else if (parsed.eventType === 'browserStart' || parsed.eventType === 'browserFinish') {
+                    screenshotTestProgress.determinate = true;
+                    setScreenshotTestProgress(parsed.browserList);
+                    // TODO(acdvorak): Display pass/fail
                   } else if (parsed.eventType === 'shuttingDownDemoServer') {
                     allDone();
                   } else {
-                    otherLines.push(JSON.stringify(parsed, null, 2));
+                    otherLines.push(JSON.stringify(parsed));
                   }
                 });
               }

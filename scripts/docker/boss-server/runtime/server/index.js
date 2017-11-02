@@ -39,17 +39,31 @@ const getQueuePosition = (id) => {
 const enqueueStartScreenshotRequest = (pullRequest, res) => {
   const id = nextId++;
 
+  let destroyed = false;
+
   const writeln = (json) => {
-    res.write(JSON.stringify(json) + '\n');
+    if (destroyed) {
+      return;
+    }
+    const currentDate = new Date();
+    res.write(JSON.stringify(Object.assign({}, json, {
+      nowMs: currentDate.getTime(),
+      nowIso8601: currentDate.toJSON(),
+      queuePosition: getQueuePosition(id),
+      queueLength: requestQueue.length,
+    })) + '\n');
   };
 
-  const interval = setInterval(() => screenshotRequest.tickle(), 2000);
+  const interval = setInterval(() => screenshotRequest.tickle(), 5000);
   const screenshotRequest = {
     id,
-    tickle: () => writeln({queuePosition: getQueuePosition(id)}),
-    handle: () => {
+    tickle: () => writeln({eventType: 'keepalive'}),
+    handle: () => handleStartScreenshotRequest(pullRequest, res),
+    destroy: () => {
+      destroyed = true;
       clearInterval(interval);
-      handleStartScreenshotRequest(pullRequest, res);
+      writeln({eventType: 'requestFinish'});
+      res.end();
     },
   };
 
@@ -78,10 +92,10 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
     '--remote-branch', pullRequest.head.ref,
   ];
 
-  console.log(`${new Date()} - Handle request: ${args}`);
+  console.log(`${new Date()} - Handle request (${requestQueue.length} in queue): ${args}`);
 
   const writeln = (json) => {
-    res.write(JSON.stringify(json) + '\n');
+    res.write(JSON.stringify(Object.assign({}, json, {now: Date.now()})) + '\n');
   };
 
   const stdioToString = (buffer) => {
@@ -139,7 +153,7 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
         browserList,
       });
     } else if (stdoutStr.indexOf('Test PASSED') > -1 || stdoutStr.indexOf('Test FAILED') > -1) {
-      const browserMatch = /\[([^\]]+)] - Test (PASSED|FAILED)/.exec(stdoutStr);
+      const browserMatch = /\[([^\]]+)] - Test (PASSED|FAILED)/i.exec(stdoutStr);
       if (!browserMatch) {
         const errorMessage = `ERROR: Unable to parse browser name from stdout: "${stdoutStr}"`;
         console.error(errorMessage);
@@ -202,8 +216,7 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
   });
 
   spawn.on('close', (code) => {
-    res.end();
-    requestQueue.shift();
+    requestQueue.shift().destroy();
     executeNextStartScreenshotRequest();
   });
 };
