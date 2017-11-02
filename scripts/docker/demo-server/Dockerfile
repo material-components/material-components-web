@@ -53,7 +53,7 @@ RUN git clone 'https://github.com/material-components/material-components-web.gi
 # Install node modules
 RUN ["/bin/bash", "-c", ". ~/.nvm/nvm.sh && npm install"]
 
-# Copy all remaining files
+# Copy all remaining files. We do this last to speed up local docker builds by optimizing intermediate image caching.
 COPY --chown=demobot:demobot \
      runtime/ \
      /scripts/
