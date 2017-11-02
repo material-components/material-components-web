@@ -26,7 +26,7 @@ PR=''
 AUTHOR=''
 # URL of the remote Git repository to pull
 REMOTE_URL='https://github.com/material-components/material-components-web.git'
-# name of the remote branch to checkout
+# Name of the remote branch to checkout
 REMOTE_BRANCH='master'
 
 getopt --test > /dev/null
