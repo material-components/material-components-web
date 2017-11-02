@@ -249,7 +249,7 @@ class MDCRippleFoundation extends MDCFoundation {
       // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
       activationState.wasElementMadeActive = (e && e.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
       if (activationState.wasElementMadeActive) {
-        this.animateActivation_();
+        this.animateActivation_(e);
       } else {
         // Reset activation state immediately if element was not made active.
         this.activationState_ = this.defaultActivationState_();
@@ -264,14 +264,13 @@ class MDCRippleFoundation extends MDCFoundation {
     this.activate_(event);
   }
 
-  /** @private */
-  animateActivation_() {
+  /**
+   * @param {Event} e
+   * @private
+   */
+  animateActivation_(e) {
     const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
-    const {
-      BG_ACTIVE_FILL,
-      FG_DEACTIVATION,
-      FG_ACTIVATION,
-    } = MDCRippleFoundation.cssClasses;
+    const {FG_DEACTIVATION, FG_ACTIVATION, FOCUSING} = MDCRippleFoundation.cssClasses;
     const {DEACTIVATION_TIMEOUT_MS} = MDCRippleFoundation.numbers;
 
     let translateStart = '';
@@ -290,11 +289,14 @@ class MDCRippleFoundation extends MDCFoundation {
     clearTimeout(this.fgDeactivationRemovalTimer_);
     this.rmBoundedActivationClasses_();
     this.adapter_.removeClass(FG_DEACTIVATION);
+    this.adapter_.removeClass(FOCUSING);
 
     // Force layout in order to re-trigger the animation.
     this.adapter_.computeBoundingRect();
-    this.adapter_.addClass(BG_ACTIVE_FILL);
     this.adapter_.addClass(FG_ACTIVATION);
+    if (e.type === 'focus') {
+      this.adapter_.addClass(FOCUSING);
+    }
     this.activationTimer_ = setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);
   }
 
@@ -337,7 +339,7 @@ class MDCRippleFoundation extends MDCFoundation {
     // This method is called both when a pointing device is released, and when the activation animation ends.
     // The deactivation animation should only run after both of those occur, except in the case of focus, in which case
     // it should run when the first of the two occurs.
-    const {FG_DEACTIVATION} = MDCRippleFoundation.cssClasses;
+    const {FG_DEACTIVATION, FOCUSING} = MDCRippleFoundation.cssClasses;
     const {activationEvent, hasDeactivationUXRun, isActivated} = this.activationState_;
     const activationHasEnded = hasDeactivationUXRun || !isActivated;
     const isReady = activationEvent && activationEvent.type === 'focus' ?
@@ -349,6 +351,7 @@ class MDCRippleFoundation extends MDCFoundation {
       this.adapter_.addClass(FG_DEACTIVATION);
       this.fgDeactivationRemovalTimer_ = setTimeout(() => {
         this.adapter_.removeClass(FG_DEACTIVATION);
+        this.adapter_.removeClass(FOCUSING);
       }, numbers.FG_DEACTIVATION_MS);
       // Ensure activationTimer_ is cleared, in case of blur before activation animation ending
       clearTimeout(this.activationTimer_);
@@ -357,8 +360,7 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /** @private */
   rmBoundedActivationClasses_() {
-    const {BG_ACTIVE_FILL, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-    this.adapter_.removeClass(BG_ACTIVE_FILL);
+    const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     this.adapter_.removeClass(FG_ACTIVATION);
     this.activationAnimationHasEnded_ = false;
     this.adapter_.computeBoundingRect();

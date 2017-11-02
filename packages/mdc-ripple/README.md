@@ -67,7 +67,7 @@ All three of the following mixins are mandatory in order to fully style the ripp
 Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Adds base styles for a ripple surface
-`mdc-ripple-color($color, $opacity)` | Adds styles for the color and opacity of the ripple effect
+`mdc-ripple-color($color, $opacity-map)` | Adds ripple and state styles for the indicated color, optionally using the specified set of opacities (if unspecified, uses opacities appropriate to the given color)
 `mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
 
 ### Adding Ripple JS

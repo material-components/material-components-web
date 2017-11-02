@@ -14,5 +14,17 @@
 // limitations under the License.
 //
 
-$mdc-ripple-pressed-dark-ink-opacity: .16;
-$mdc-ripple-pressed-light-ink-opacity: .32;
+$mdc-ripple-translate-duration: 225ms;
+$mdc-states-wash-duration: 15ms;
+
+$mdc-ripple-dark-ink-opacities: (
+  hover: .04,
+  focus: .12,
+  press: .16
+);
+
+$mdc-ripple-light-ink-opacities: (
+  hover: .08,
+  focus: .24,
+  press: .32
+);

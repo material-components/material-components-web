@@ -54,7 +54,7 @@ $dark-button-color: $material-color-light-green-a200;
 .mdc-button {
   @include mdc-theme-dark {
     @include mdc-button-ink-color($dark-button-color);
-    @include mdc-ripple-color($dark-button-color, $mdc-unfilled-button-ripple-opacity);
+    @include mdc-ripple-color($dark-button-color);
   }
 }
 
