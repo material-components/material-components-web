@@ -21,7 +21,5 @@
 set -e
 set -x
 
-cd /scripts/server
-
 echo 'Starting boss server...'
-node index.js
+node /scripts/server/index.js
