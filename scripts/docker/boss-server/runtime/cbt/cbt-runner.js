@@ -43,6 +43,10 @@ class CbtRunner {
     const cbtFlow = new CbtFlow({globalConfig, browsers});
     cbtFlow.on('cbt:session-started', (session) => {
       // TODO(acdvorak): TLS
+
+      session.navigate(`http://${this.host_}/info/`);
+      session.takeSnapshot();
+
       session.navigate(`http://${this.host_}/button.html`);
 
       session.waitFor('.mdc-button').toBeVisible();
