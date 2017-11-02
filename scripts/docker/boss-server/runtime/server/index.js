@@ -37,12 +37,13 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
 
   const stdioToString = (buffer) => {
     // eslint-disable no-multi-spaces
-    return buffer.toString()
+    const sanitized = buffer.toString()
       .replace(/\n$/, '')
       .replace(/\u0008+\s*/gu, ' ')  // replace backspace characters with a space
       .replace(/\s{2,}/g, ' ')       // replace multiple spaces with one
     ;
     // eslint-enable no-multi-spaces
+    return /^\s*$/.test(sanitized) ? '' : sanitized;
   };
 
   console.log(`${new Date()} - Request: ${args}`);
@@ -67,6 +68,8 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
     if (stdoutStr.indexOf('webpack: Compiled successfully.') > -1) {
       writeln({demoServerBuildPercentage: 100});
     } else if (stdoutStr.indexOf('Connecting to the CrossBrowserTesting remote server') > -1) {
+      // TODO: Figure out why this `if` condition (or something inside it) mysteriously fails to match at least one
+      // browser per request.
       const browserMatch = /requesting browser \[([^\]]+)]/.exec(stdoutStr);
 
       let browserDescription = 'UNKNOWN BROWSER';
@@ -102,7 +105,17 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
 
       const browserDescription = browserMatch[1];
       const testResult = browserMatch[2];
-      const browser = browserMap[browserDescription];
+
+      let browser = browserMap[browserDescription];
+      // TODO(acdvorak): This should never happen - figure out why it does
+      if (!browser) {
+        browser = browserMap[browserDescription] = {
+          description: browserDescription,
+          startTime: -1,
+        };
+        browserList.push(browser);
+      }
+
       browser.endTime = Date.now();
       browser.testResult = testResult;
 
@@ -110,6 +123,18 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
         eventType: 'browserFinish',
         browser,
         browserList,
+      });
+    } else if (stdoutStr.indexOf('Installing node modules') > -1) {
+      writeln({
+        installNodeModulePercentage: 1,
+      });
+    } else if (/Successfully bootstrapped \d+ packages/.test(stdoutStr)) {
+      writeln({
+        installNodeModulePercentage: 100,
+      });
+    } else if (stdoutStr.indexOf('Shutting down demo server') > -1) {
+      writeln({
+        eventType: 'shuttingDownDemoServer',
       });
     }
   });

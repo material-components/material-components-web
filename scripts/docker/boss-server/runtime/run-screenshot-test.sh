@@ -118,7 +118,8 @@ function run-screenshot-tests() {
     echo
 
     if [[ "$HOST_ENV" == 'local' ]]; then
-      sleep 60
+      # TODO(acdvorak): Find a better way
+      sleep 50
     fi
 
     # While webpack-dev-server is compiling, an express server is already running in the background. It accepts HTTP
@@ -133,6 +134,7 @@ function run-screenshot-tests() {
     node /scripts/cbt/index.js --host "${DEMO_HOST_FOR_CBT}" "${SCRIPT_ARGS[@]}"
 
     # Tear down the container and its associated GCloud resources
+    echo 'Shutting down demo server...'
     kill-demo-server
     # TODO(acdvorak): Notify boss container that server was downed, to add it back to the pool
   else

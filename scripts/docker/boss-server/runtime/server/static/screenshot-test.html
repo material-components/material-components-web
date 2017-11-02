@@ -32,6 +32,14 @@
         padding: 24px;
       }
 
+      .top-section {
+        display: flex;
+      }
+
+      .progress-section {
+        margin-left: 48px;
+      }
+
       #pr-number {
         width: 8em;
       }
@@ -63,32 +71,76 @@
 
       <main class="main">
         <section>
-          <h1 class="mdc-typography--title">GitHub Pull Request</h1>
-          <form action="/github/pr">
-            <div class="pr-form-field">
-              <div class="mdc-textfield mdc-textfield--box">
-                <input type="number"
-                       min="1"
-                       max="99999"
-                       step="1"
-                       size="6"
-                       class="mdc-textfield__input"
-                       aria-controls="name-validation-message"
-                       id="pr-number"
-                       name="pr_number"
-                       value="1469"
-                       required
-                       autofocus>
-                <label for="pr-number" class="mdc-textfield__label">PR #</label>
-                <div class="mdc-textfield__bottom-line"></div>
-              </div>
-              <p class="mdc-textfield-helptext mdc-textfield-helptext--validation-msg"
-                 id="name-validation-msg">
-                1-99999 required
-              </p>
+          <div class="top-section">
+            <div class="form-wrapper">
+              <h1 class="mdc-typography--title">GitHub Pull Request</h1>
+              <form action="/github/pr">
+                <div class="pr-form-field">
+                  <div class="mdc-textfield mdc-textfield--box">
+                    <input type="number"
+                           min="1"
+                           max="99999"
+                           step="1"
+                           size="6"
+                           class="mdc-textfield__input"
+                           aria-controls="name-validation-message"
+                           id="pr-number"
+                           name="pr_number"
+                           value="1469"
+                           required
+                           autofocus>
+                    <label for="pr-number" class="mdc-textfield__label">PR #</label>
+                    <div class="mdc-textfield__bottom-line"></div>
+                  </div>
+                  <p class="mdc-textfield-helptext mdc-textfield-helptext--validation-msg"
+                     id="name-validation-msg">
+                    1-99999 required
+                  </p>
+                </div>
+                <button type="submit" id="submit" class="mdc-button mdc-button--stroked">Start Screenshot Tests</button>
+              </form>
             </div>
-            <button type="submit" id="submit" class="mdc-button mdc-button--stroked">Start Screenshot Tests</button>
-          </form>
+
+            <div class="progress-section">
+              <h1 class="mdc-typography--title">Progress</h1>
+
+              <p>Node Module Installation</p>
+              <div role="progressbar" class="mdc-linear-progress" id="node-module-progress">
+                <div class="mdc-linear-progress__buffering-dots"></div>
+                <div class="mdc-linear-progress__buffer"></div>
+                <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                  <span class="mdc-linear-progress__bar-inner"></span>
+                </div>
+                <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                  <span class="mdc-linear-progress__bar-inner"></span>
+                </div>
+              </div>
+
+              <p>Demo Server Build</p>
+              <div role="progressbar" class="mdc-linear-progress" id="demo-server-build-progress">
+                <div class="mdc-linear-progress__buffering-dots"></div>
+                <div class="mdc-linear-progress__buffer"></div>
+                <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                  <span class="mdc-linear-progress__bar-inner"></span>
+                </div>
+                <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                  <span class="mdc-linear-progress__bar-inner"></span>
+                </div>
+              </div>
+
+              <p>Screenshot Tests</p>
+              <div role="progressbar" class="mdc-linear-progress" id="screenshot-test-progress">
+                <div class="mdc-linear-progress__buffering-dots"></div>
+                <div class="mdc-linear-progress__buffer"></div>
+                <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                  <span class="mdc-linear-progress__bar-inner"></span>
+                </div>
+                <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                  <span class="mdc-linear-progress__bar-inner"></span>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="output">
             <h2 class="mdc-typography--subheading2">stdout</h2>
@@ -115,6 +167,14 @@
         $('.mdc-button').each((i, button) => mdc.ripple.MDCRipple.attachTo(button));
         $('.mdc-textfield').each((i, textField) => mdc.textfield.MDCTextfield.attachTo(textField));
 
+        const installNodeModuleProgress = mdc.linearProgress.MDCLinearProgress.attachTo($('#node-module-progress')[0]);
+        const demoServerBuildProgress = mdc.linearProgress.MDCLinearProgress.attachTo($('#demo-server-build-progress')[0]);
+        const screenshotTestProgress = mdc.linearProgress.MDCLinearProgress.attachTo($('#screenshot-test-progress')[0]);
+
+        installNodeModuleProgress.progress = 0;
+        demoServerBuildProgress.progress = 0;
+        screenshotTestProgress.progress = 0;
+
         const submitButton = $('#submit')[0];
 
         const stdoutEl = $('#stdout')[0];
@@ -134,6 +194,10 @@
         };
 
         $('form').on('submit', (event) => {
+          installNodeModuleProgress.determinate = false;
+          demoServerBuildProgress.determinate = false;
+          screenshotTestProgress.determinate = false;
+
           event.preventDefault();
           submitButton.disabled = true;
 
@@ -146,6 +210,11 @@
             appendAndScroll(stderrEl, stderrLines);
             appendAndScroll(otherEl, otherLines);
           }, 250);
+
+          const allDone = () => {
+            clearInterval(interval);
+            submitButton.disabled = false;
+          };
 
           let last_response_len = false;
 
@@ -183,16 +252,26 @@
                     stdoutLines.push(parsed.stdout);
                   } else if (parsed.stderr) {
                     stderrLines.push(parsed.stderr);
+                  } else if (Number.isFinite(parsed.demoServerBuildPercentage)) {
+                    demoServerBuildProgress.determinate = true;
+                    demoServerBuildProgress.progress = parsed.demoServerBuildPercentage / 100;
+                  } else if (parsed.eventType === 'browserStart' || parsed.eventType === 'browserFinish') {
+                    const finishedBrowsers = parsed.browserList.filter((browser) => browser.endTime);
+                    screenshotTestProgress.determinate = true;
+                    screenshotTestProgress.progress = finishedBrowsers.length / parsed.browserList.length;
+                    // TODO(acdvorak): Display pass/fail
+                  } else if (Number.isFinite(parsed.installNodeModulePercentage)) {
+                    installNodeModuleProgress.determinate = true;
+                    installNodeModuleProgress.progress = parsed.installNodeModulePercentage / 100;
+                  } else if (parsed.eventType === 'shuttingDownDemoServer') {
+                    allDone();
                   } else {
                     otherLines.push(JSON.stringify(parsed, null, 2));
                   }
-                })
+                });
               }
             },
-          }).then((response) => {
-            clearInterval(interval);
-            submitButton.disabled = false;
-          });
+          }).then((response) => allDone());
         });
       })();
     </script>
