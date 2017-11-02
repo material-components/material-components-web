@@ -36,30 +36,99 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
   };
 
   const stdioToString = (buffer) => {
-    return buffer.toString().replace(/\n$/, '');
+    // eslint-disable no-multi-spaces
+    return buffer.toString()
+      .replace(/\n$/, '')
+      .replace(/\u0008+\s*/gu, ' ')  // replace backspace characters with a space
+      .replace(/\s{2,}/g, ' ')       // replace multiple spaces with one
+    ;
+    // eslint-enable no-multi-spaces
   };
 
   console.log(`${new Date()} - Request: ${args}`);
+
+  const browserList = [];
+  const browserMap = {};
+  let unknownBrowserCount = 0;
 
   const spawn = require('child_process').spawn('/scripts/run-screenshot-test.sh', args, {
     stdio: 'pipe',
     shell: true,
   });
+
   spawn.stdout.on('data', (buffer) => {
     const stdoutStr = stdioToString(buffer);
-    if (stdoutStr) {
-      writeln({stdout: stdoutStr});
+    if (!stdoutStr) {
+      return;
     }
+
+    writeln({stdout: stdoutStr});
+
     if (stdoutStr.indexOf('webpack: Compiled successfully.') > -1) {
-      writeln({demo_server_status: 'running'});
+      writeln({demoServerBuildPercentage: 100});
+    } else if (stdoutStr.indexOf('Connecting to the CrossBrowserTesting remote server') > -1) {
+      const browserMatch = /requesting browser \[([^\]]+)]/.exec(stdoutStr);
+
+      let browserDescription = 'UNKNOWN BROWSER';
+      if (browserMatch) {
+        browserDescription = browserMatch[1];
+      } else {
+        browserDescription = `UNKNOWN BROWSER #${unknownBrowserCount++}`;
+      }
+
+      const browser = {
+        description: browserDescription,
+        startTime: Date.now(),
+      };
+      browserMap[browserDescription] = browser;
+      browserList.push(browser);
+
+      writeln({
+        eventType: 'browserStart',
+        browser,
+        browserList,
+      });
+    } else if (stdoutStr.indexOf('Test PASSED') > -1 || stdoutStr.indexOf('Test FAILED') > -1) {
+      const browserMatch = /\[([^\]]+)] - Test (PASSED|FAILED)/.exec(stdoutStr);
+      if (!browserMatch) {
+        const errorMessage = `ERROR: Unable to parse browser name from stdout: "${stdoutStr}"`;
+        console.error(errorMessage);
+        writeln({
+          eventType: 'error',
+          errorMessage,
+        });
+        return;
+      }
+
+      const browserDescription = browserMatch[1];
+      const testResult = browserMatch[2];
+      const browser = browserMap[browserDescription];
+      browser.endTime = Date.now();
+      browser.testResult = testResult;
+
+      writeln({
+        eventType: 'browserFinish',
+        browser,
+        browserList,
+      });
     }
   });
+
   spawn.stderr.on('data', (buffer) => {
     const stderrStr = stdioToString(buffer);
-    if (stderrStr) {
-      writeln({stderr: stderrStr});
+    if (!stderrStr) {
+      return;
+    }
+
+    writeln({stderr: stderrStr});
+
+    const webpackBuildPercentageMatch = /^\s*(\d+)% \[\d+] /.exec(stderrStr);
+    if (webpackBuildPercentageMatch) {
+      const webpackBuildPercentage = parseInt(webpackBuildPercentageMatch[1]);
+      writeln({demoServerBuildPercentage: webpackBuildPercentage});
     }
   });
+
   spawn.on('close', (code) => {
     res.end();
   });
