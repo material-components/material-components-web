@@ -31,25 +31,27 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
     '--remote-branch', pullRequest.head.ref,
   ];
 
+  const writeln = (json) => {
+    res.write(JSON.stringify(json) + '\n');
+  };
+
   console.log(`${new Date()} - Request: ${args}`);
 
   const spawn = require('child_process').spawn('/scripts/run-screenshot-test.sh', args, {
-    stdio: 'inherit',
+    stdio: 'pipe',
     shell: true,
   });
+  spawn.stdout.on('data', (data) => {
+    writeln({stdout: data.toString()});
+    if (data.toString().indexOf('webpack: Compiled successfully.') > -1) {
+      writeln({demo_server_status: 'running'});
+    }
+  });
+  spawn.stderr.on('data', (data) => {
+    writeln({stderr: data.toString()});
+  });
   spawn.on('close', (code) => {
-    const stdout = (spawn.stdout || '').toString().trim();
-    const stderr = (spawn.stderr || '').toString().trim();
-
-    res.send({
-      stdout,
-      stderr,
-      status: spawn.status,
-      envPairs: spawn.envPairs,
-      options: spawn.options,
-      args: spawn.args,
-      file: spawn.file,
-    });
+    res.end();
   });
 };
 

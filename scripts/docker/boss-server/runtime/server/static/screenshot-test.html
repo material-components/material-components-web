@@ -36,6 +36,15 @@
         width: 8em;
       }
 
+      .outputs {
+        display: flex;
+      }
+
+      .output {
+        flex-grow: 1;
+        margin: 16px;
+      }
+
       textarea {
         width: 100%;
         height: 30em;
@@ -86,8 +95,21 @@
             <button type="submit" id="submit" class="mdc-button mdc-button--stroked">Start Screenshot Tests</button>
           </form>
 
-          <h2 class="mdc-typography--subheading2">Response</h2>
-          <textarea readonly></textarea>
+          <div class="outputs">
+            <div class="output">
+              <h2 class="mdc-typography--subheading2">stdout</h2>
+              <textarea readonly id="stdout"></textarea>
+            </div>
+
+            <div class="output">
+              <h2 class="mdc-typography--subheading2">stderr</h2>
+              <textarea readonly id="stderr"></textarea>
+            </div>
+          </div>
+          <div class="output">
+            <h2 class="mdc-typography--subheading2">other</h2>
+            <textarea readonly id="other"></textarea>
+          </div>
         </section>
       </main>
     </div>
@@ -99,8 +121,15 @@
         $('.mdc-button').each((i, button) => mdc.ripple.MDCRipple.attachTo(button));
         $('.mdc-textfield').each((i, textField) => mdc.textfield.MDCTextfield.attachTo(textField));
 
+        const $stdout = $('#stdout');
+        const $stderr = $('#stderr');
+        const $other = $('#other');
+
         $('form').on('submit', (event) => {
           event.preventDefault();
+
+          let last_response_len = false;
+
           $.ajax({
             method: 'POST',
             url: event.target.action,
@@ -109,6 +138,41 @@
             data: JSON.stringify({
               pr_number: $('#pr-number').val(),
             }),
+            xhrFields: {
+              onprogress: function(e) {
+                let this_response, response = e.currentTarget.response;
+                if (last_response_len === false) {
+                  this_response = response;
+                  last_response_len = response.length;
+                }
+                else {
+                  this_response = response.substring(last_response_len);
+                  last_response_len = response.length;
+                }
+                const lines = this_response.split(/[\n\r\f]+/g).filter((line) => Boolean(line));
+                lines.forEach((line) => {
+                  let parsed;
+                  try {
+                    parsed = JSON.parse(line);
+                  } catch (e) {
+                    console.warn('Error while parsing this response:');
+                    console.warn(line);
+                    console.error(e);
+                    return;
+                  }
+                  if (parsed.stdout) {
+                    $stdout.val($stdout.val() + '\n' + parsed.stdout);
+                    $stdout.get(0).scrollTop = $stdout.get(0).scrollHeight;
+                  } else if (parsed.stderr) {
+                    $stderr.val($stderr.val() + '\n' + parsed.stderr);
+                    $stderr.get(0).scrollTop = $stderr.get(0).scrollHeight;
+                  } else {
+                    $other.val($other.val() + '\n' + JSON.stringify(parsed, null, 2));
+                    $other.get(0).scrollTop = $other.get(0).scrollHeight;
+                  }
+                })
+              }
+            },
           }).then((response) => {
             $('textarea').val(response.stderr);
             console.log(response.stderr);

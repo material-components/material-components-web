@@ -46,10 +46,10 @@ TEST_CLUSTER_ZONE='us-east1-b'
 #gcloud container clusters create "${TEST_CLUSTER_NAME}" --num-nodes=1 --zone "${TEST_CLUSTER_ZONE}"
 
 DEPLOYMENT="${MCW_ENV}-pr-${PR}-test-deployment"
-CBT_DEMO_HOST=''
+DEMO_HOST_FOR_CBT=''
+DEMO_HOST_FOR_CURL=''
 INTERNAL_PORT=8080
 EXTERNAL_PORT=80
-LOCAL_DEMO_SERVER_NAME=
 
 # TODO(acdvorak): Detect whether we are running locally, and if so, run docker commands instead
 function kill-demo-server() {
@@ -83,18 +83,20 @@ function start-demo-server() {
 
 function get-demo-ip-address() {
   if [[ "$HOST_ENV" == 'local' ]]; then
-    CBT_DEMO_HOST='local:8080'
-    CLIENT_DEMO_HOST='localhost:8080'
+    # CBT tunneling requires 'local' rather than 'localhost'.
+    # Local clients (such as curl) require 'localhost'. Sigh.
+    DEMO_HOST_FOR_CBT='local:8080'
+    DEMO_HOST_FOR_CURL='localhost:8080'
   else
     echo -n "${DEPLOYMENT}: "
 
     ATTEMPT_COUNT=0
-    while [[ $ATTEMPT_COUNT -lt 120 ]] && ! is-valid-host "${CBT_DEMO_HOST}"; do
-      CBT_DEMO_HOST=`kubectl get -o go-template --template='{{if .status.loadBalancer.ingress}}{{index (index .status.loadBalancer.ingress 0) "ip"}}{{end}}' "service/${DEPLOYMENT}"`
-      LOCAL_DEMO_HOST="$CBT_DEMO_HOST"
+    while [[ $ATTEMPT_COUNT -lt 120 ]] && ! is-valid-host "${DEMO_HOST_FOR_CBT}"; do
+      DEMO_HOST_FOR_CBT=`kubectl get -o go-template --template='{{if .status.loadBalancer.ingress}}{{index (index .status.loadBalancer.ingress 0) "ip"}}{{end}}' "service/${DEPLOYMENT}"`
+      DEMO_HOST_FOR_CURL="$DEMO_HOST_FOR_CBT"
       ATTEMPT_COUNT=$(($ATTEMPT_COUNT + 1))
 
-      if ! is-valid-host "${CBT_DEMO_HOST}"; then
+      if ! is-valid-host "${DEMO_HOST_FOR_CBT}"; then
         echo -n '.'
         sleep 1
       fi
@@ -111,8 +113,8 @@ function run-screenshot-tests() {
   echo '======================================'
   echo
 
-  if is-valid-host "${CBT_DEMO_HOST}"; then
-    echo "${DEPLOYMENT}: ${CBT_DEMO_HOST}"
+  if is-valid-host "${DEMO_HOST_FOR_CBT}"; then
+    echo "${DEPLOYMENT}: ${DEMO_HOST_FOR_CBT}"
     echo
 
     if [[ "$HOST_ENV" == 'local' ]]; then
@@ -124,11 +126,11 @@ function run-screenshot-tests() {
     # By sending an initial HTTP request, we effectively pause the script until the server is ready to receive UI
     # tests without timing out.
     set +e
-    curl "http://${LOCAL_DEMO_HOST}/" > /dev/null
+    curl "http://${DEMO_HOST_FOR_CURL}/" > /dev/null
     set -e
 
     # Run screenshot tests
-    node /scripts/cbt/index.js --host "${CBT_DEMO_HOST}" "${SCRIPT_ARGS[@]}"
+    node /scripts/cbt/index.js --host "${DEMO_HOST_FOR_CBT}" "${SCRIPT_ARGS[@]}"
 
     # Tear down the container and its associated GCloud resources
     kill-demo-server
