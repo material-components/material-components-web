@@ -63,7 +63,7 @@ COPY --chown=demobot:demobot \
 RUN chmod ugo+x /scripts/*.sh
 
 ENV BASH_ENV=/scripts/env.sh
-ENTRYPOINT ["/bin/bash", "-c", "/scripts/startup.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/scripts/startup.sh", "--"]
 #CMD [ \
 #  "--author", "Spetnik", \
 #  "--pr", "1461", \

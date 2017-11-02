@@ -88,4 +88,4 @@ RUN chmod ugo+x /scripts/*.sh
 
 RUN echo '. /scripts/env.sh' >> ~/.bashrc
 ENV BASH_ENV=/scripts/env.sh
-ENTRYPOINT ["/bin/bash", "-c", "/scripts/startup.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/scripts/startup.sh", "--"]
