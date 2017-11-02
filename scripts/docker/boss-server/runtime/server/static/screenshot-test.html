@@ -236,6 +236,11 @@
         const screenshotTestProgress = mdc.linearProgress.MDCLinearProgress.attachTo($screenshotTestProgress[0]);
         const $outputs = $('.outputs');
 
+        function endsWithNRF(str) {
+          const lastChar = str.substr(-1, 1);
+          return lastChar === '\n' || lastChar === '\r' || lastChar === '\f' || str.indexOf('\r') > -1;
+        }
+
         function setInstallNodeModuleProgress(percentage) {
           installNodeModuleProgress.progress = percentage / 100;
           $installNodeModuleProgress.closest('.progress-bucket')
@@ -342,7 +347,7 @@
             screenshotTestProgress.determinate = true;
           };
 
-          let last_response_len = false;
+          let prevFullResponseLength = -1;
 
           $.ajax({
             method: 'POST',
@@ -354,16 +359,22 @@
             }),
             xhrFields: {
               onprogress: function(e) {
-                let this_response, response = e.currentTarget.response;
-                if (last_response_len === false) {
-                  this_response = response;
-                  last_response_len = response.length;
+                let thisResponse, fullResponse = e.currentTarget.response;
+                if (prevFullResponseLength === -1) {
+                  thisResponse = fullResponse;
+                } else {
+                  thisResponse = fullResponse.substring(prevFullResponseLength);
                 }
-                else {
-                  this_response = response.substring(last_response_len);
-                  last_response_len = response.length;
+
+                // Partial response; wait for more
+                if (!endsWithNRF(thisResponse)) {
+                  return;
                 }
-                const lines = this_response.split(/[\n\r\f]+/g).filter((line) => Boolean(line));
+
+                prevFullResponseLength = fullResponse.length;
+
+                const lines = thisResponse.split(/[\n]+/g).filter((line) => Boolean(line));
+
                 lines.forEach((line) => {
                   let parsed;
                   try {
