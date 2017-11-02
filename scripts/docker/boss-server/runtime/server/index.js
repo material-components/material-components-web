@@ -23,6 +23,53 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(require('body-parser').json());
 
+const requestQueue = [];
+
+let nextId = 0;
+
+const getQueuePosition = (id) => {
+  for (let i = 0; i < requestQueue.length; i++) {
+    if (requestQueue[i].id === id) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+const enqueueStartScreenshotRequest = (pullRequest, res) => {
+  const id = nextId++;
+
+  const writeln = (json) => {
+    res.write(JSON.stringify(json) + '\n');
+  };
+
+  const interval = setInterval(() => screenshotRequest.tickle(), 2000);
+  const screenshotRequest = {
+    id,
+    tickle: () => writeln({queuePosition: getQueuePosition(id)}),
+    handle: () => {
+      clearInterval(interval);
+      handleStartScreenshotRequest(pullRequest, res);
+    },
+  };
+
+  requestQueue.push(screenshotRequest);
+  requestQueue[0].tickle();
+
+  console.log(`Enqueue request at position ${getQueuePosition(id)}`);
+
+  if (getQueuePosition(id) === 0) {
+    executeNextStartScreenshotRequest();
+  }
+};
+
+const executeNextStartScreenshotRequest = () => {
+  const request = requestQueue[0];
+  if (request) {
+    request.handle();
+  }
+};
+
 const handleStartScreenshotRequest = (pullRequest, res) => {
   const args = [
     '--pr', pullRequest.number,
@@ -30,6 +77,8 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
     '--remote-url', pullRequest.head.repo.clone_url,
     '--remote-branch', pullRequest.head.ref,
   ];
+
+  console.log(`${new Date()} - Handle request: ${args}`);
 
   const writeln = (json) => {
     res.write(JSON.stringify(json) + '\n');
@@ -45,8 +94,6 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
     // eslint-enable no-multi-spaces
     return /^\s*$/.test(sanitized) ? '' : sanitized;
   };
-
-  console.log(`${new Date()} - Request: ${args}`);
 
   const browserList = [];
   const browserMap = {};
@@ -156,11 +203,13 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
 
   spawn.on('close', (code) => {
     res.end();
+    requestQueue.shift();
+    executeNextStartScreenshotRequest();
   });
 };
 
 app.all('/webhook/github', (req, res) => {
-  handleStartScreenshotRequest(req.body.pull_request, res);
+  enqueueStartScreenshotRequest(req.body.pull_request, res);
 });
 
 app.post('/github/pr', (req, res) => {
@@ -170,7 +219,7 @@ app.post('/github/pr', (req, res) => {
     repo: 'material-components-web',
     number: req.body.pr_number,
   }).then((response) => {
-    handleStartScreenshotRequest(response.data, res);
+    enqueueStartScreenshotRequest(response.data, res);
   });
 });
 
