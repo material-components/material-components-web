@@ -16,6 +16,4 @@
 #  limitations under the License.
 #
 
-. ~/.bashrc
 . ~/.nvm/nvm.sh
-nvm install node

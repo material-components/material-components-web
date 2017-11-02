@@ -59,7 +59,6 @@ COPY --chown=demobot:demobot \
      /scripts/auth
 
 # Configure environment
-RUN echo '. /scripts/source.sh' >> ~/.bashrc
 RUN gcloud config set project material-components-web && \
     gcloud auth activate-service-account --key-file /scripts/auth/gcloud-service-account.json
 
@@ -69,7 +68,7 @@ COPY --chown=demobot:demobot \
      /scripts/
 
 # Install node modules
-RUN ["/bin/bash", "-c", ". ~/.nvm/nvm.sh && cd /scripts && npm install"]
+RUN ["/bin/bash", "-c", "cd /scripts && . ~/.nvm/nvm.sh && npm install"]
 
 # Copy all remaining files
 COPY --chown=demobot:demobot \
