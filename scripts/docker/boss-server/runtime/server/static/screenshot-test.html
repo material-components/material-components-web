@@ -115,6 +115,8 @@
         $('.mdc-button').each((i, button) => mdc.ripple.MDCRipple.attachTo(button));
         $('.mdc-textfield').each((i, textField) => mdc.textfield.MDCTextfield.attachTo(textField));
 
+        const submitButton = $('#submit')[0];
+
         const stdoutEl = $('#stdout')[0];
         const stderrEl = $('#stderr')[0];
         const otherEl = $('#other')[0];
@@ -133,6 +135,7 @@
 
         $('form').on('submit', (event) => {
           event.preventDefault();
+          submitButton.disabled = true;
 
           const stdoutLines = [];
           const stderrLines = [];
@@ -143,6 +146,7 @@
             appendAndScroll(stderrEl, stderrLines);
             appendAndScroll(otherEl, otherLines);
           }, 250);
+
           let last_response_len = false;
 
           $.ajax({
@@ -187,7 +191,8 @@
             },
           }).then((response) => {
             clearInterval(interval);
-          })
+            submitButton.disabled = false;
+          });
         });
       })();
     </script>
