@@ -23,8 +23,14 @@ cd "`dirname ${BASH_SOURCE[0]}`"
 
 [[ -z "${MCW_ENV}" ]] && MCW_ENV='dev'
 
-gcloud container builds submit --config "cloudbuild.${MCW_ENV}.yaml" .
-
-# Alternatively, you can build locally and upload the image to GCloud:
-#docker build -t "${MCW_ENV}-demo-server:latest" -t "us.gcr.io/material-components-web/${MCW_ENV}-demo-server:latest" .
-#gcloud docker -- push "us.gcr.io/material-components-web/${MCW_ENV}-demo-server:latest"
+# Default to local builds for now. GCloud's version of Docker doesn't support the --chown option on COPY.
+# It can be worked around, but doing so increases the number of layers and the size of the final container image.
+# See https://stackoverflow.com/a/44766666/467582 for details.
+if [[ "$1" == '--remote-build' ]]; then
+  # Upload the build manifest to GCloud, and run the build remotely:
+  gcloud container builds submit --config "cloudbuild.${MCW_ENV}.yaml" .
+else
+  # Build locally and upload the image to GCloud:
+  docker build -t "${MCW_ENV}-demo-server:latest" -t "us.gcr.io/material-components-web/${MCW_ENV}-demo-server:latest" .
+  gcloud docker -- push "us.gcr.io/material-components-web/${MCW_ENV}-demo-server:latest"
+fi
