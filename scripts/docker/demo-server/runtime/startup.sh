@@ -101,5 +101,4 @@ echo 'Installing node modules...'
 npm install
 
 echo 'Starting demo server...'
-PATH="$PATH:$PWD/node_modules/.bin"
 MDC_ENV=development webpack-dev-server --progress --content-base demos --host 0.0.0.0

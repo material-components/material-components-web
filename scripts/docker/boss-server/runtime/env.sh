@@ -16,6 +16,8 @@
 #  limitations under the License.
 #
 
+export PATH="$PATH:./node_modules/.bin"
+
 . ~/.nvm/nvm.sh
 . ~/google-cloud-sdk/path.bash.inc
 . /scripts/auth/cbt-account.bash.inc
