@@ -54,15 +54,19 @@ class CbtFlow extends EventEmitter {
 
         let session;
         let timer;
+        let timedOut = false;
 
         const stopTimeout = () => {
           clearTimeout(timer);
+          if (timedOut) {
+            this.error_(`Session timed out due to inactivity after ${TIMEOUT_STR}`);
+          }
         };
 
         const resetTimeout = () => {
           stopTimeout();
           timer = setTimeout(() => {
-            this.error_(`Session timed out due to inactivity after ${TIMEOUT_STR}`);
+            timedOut = true;
             session.quit();
           }, TIMEOUT_MS);
         };
