@@ -20,4 +20,6 @@ set -e
 
 cd "`dirname ${BASH_SOURCE[0]}`"
 
-docker build -t dev-server:latest .
+[[ -z "${ENV}" ]] && ENV='dev'
+
+docker build -t "${ENV}-demo-server:latest" .
