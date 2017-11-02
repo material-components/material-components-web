@@ -163,11 +163,11 @@ $mdc-tab-with-icon-and-text-height: 72px;
   @include mdc-ripple-radius;
 
   @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-ripple-color(text-primary-on-dark, .16);
+    @include mdc-ripple-color(text-primary-on-dark);
   }
 
   .mdc-toolbar & {
-    @include mdc-ripple-color(text-primary-on-primary, .16);
+    @include mdc-ripple-color(text-primary-on-primary);
   }
 
   // stylelint-disable plugin/selector-bem-pattern

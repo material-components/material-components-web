@@ -40,7 +40,6 @@ testFoundation('runs deactivation UX on touchend after touchstart', ({foundation
   // NOTE: here and below, we use {times: 2} as these classes are removed during activation
   // as well in order to support re-triggering the ripple. We want to test that this is called a *second*
   // time when deactivating.
-  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
 
@@ -63,7 +62,6 @@ testFoundation('runs deactivation UX on pointerup after pointerdown', ({foundati
   mockRaf.flush();
   clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
 
@@ -86,7 +84,6 @@ testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, 
   mockRaf.flush();
   clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
 
@@ -112,7 +109,6 @@ testFoundation('runs deactivation on keyup after keydown when keydown makes surf
     mockRaf.flush();
     clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
 
@@ -140,7 +136,6 @@ testFoundation('does not run deactivation on keyup after keydown if keydown did 
 
     // Note that all of these should be called 0 times since a keydown that does not make a surface active should never
     // activate it in the first place.
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 0});
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 0});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
     clock.uninstall();
@@ -159,7 +154,6 @@ testFoundation('runs deactivation UX on public deactivate() call', ({foundation,
   mockRaf.flush();
   clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
 
@@ -183,7 +177,6 @@ testFoundation('runs deactivation UX when activation UX timer finishes first (ac
     handlers.mouseup();
     mockRaf.flush();
 
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
 
@@ -219,7 +212,6 @@ testFoundation('clears any pending deactivation UX timers when re-triggered', ({
   // - Once during the initial activation
   // - Once again during the second activation when the ripple was re-triggered
   // - A third and final time when the deactivation UX timer runs
-  td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 3});
   td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 3});
   td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
@@ -274,7 +266,6 @@ testFoundation('waits until activation UX timer runs before removing active fill
     mockRaf.flush();
     clock.tick(DEACTIVATION_TIMEOUT_MS - 1);
 
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 1});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
     clock.uninstall();
@@ -292,7 +283,6 @@ testFoundation('waits until actual deactivation UX is needed if animation finish
     mockRaf.flush();
     clock.tick(DEACTIVATION_TIMEOUT_MS);
 
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 1});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
     clock.uninstall();
@@ -317,7 +307,6 @@ testFoundation('only re-activates when there are no additional pointer events to
 
     // At this point, the deactivation UX should have run, since the initial activation was triggered by
     // a pointerdown event.
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
@@ -325,7 +314,6 @@ testFoundation('only re-activates when there are no additional pointer events to
     mockRaf.flush();
 
     // Verify that deactivation UX has not been run redundantly
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
@@ -333,7 +321,6 @@ testFoundation('only re-activates when there are no additional pointer events to
     mockRaf.flush();
 
     // Verify that activation only happened once, at pointerdown
-    td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
 
     handlers.mouseup();
@@ -343,7 +330,6 @@ testFoundation('only re-activates when there are no additional pointer events to
     // Finally, verify that since mouseup happened, we can re-activate the ripple.
     handlers.mousedown({pageX: 0, pageY: 0});
     mockRaf.flush();
-    td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 2});
     clock.uninstall();
   });
