@@ -26,6 +26,5 @@ cd "`dirname ${BASH_SOURCE[0]}`"
 gcloud container builds submit --config "cloudbuild.${MCW_ENV}.yaml" .
 
 # Alternatively, you can build locally and upload the image to GCloud:
-#docker build -t "${MCW_ENV}-demo-server:latest" .
-#docker tag "${MCW_ENV}-demo-server:latest" "us.gcr.io/material-components-web/${MCW_ENV}-demo-server:latest"
+#docker build -t "${MCW_ENV}-demo-server:latest" -t "us.gcr.io/material-components-web/${MCW_ENV}-demo-server:latest" .
 #gcloud docker -- push "us.gcr.io/material-components-web/${MCW_ENV}-demo-server:latest"
