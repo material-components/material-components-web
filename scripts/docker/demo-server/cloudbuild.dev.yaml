@@ -17,6 +17,6 @@
 steps:
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=us.gcr.io/$PROJECT_ID/dev-demo-server', '.']
+  args: ['build', '--tag=us.gcr.io/$PROJECT_ID/dev-demo-server:latest', '.']
 
-images: ['us.gcr.io/$PROJECT_ID/dev-demo-server']
+images: ['us.gcr.io/$PROJECT_ID/dev-demo-server:latest']
