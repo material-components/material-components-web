@@ -17,7 +17,6 @@
 #
 
 . /scripts/startup-args.sh
-. /scripts/source.sh
 
 set -e
 set -x
