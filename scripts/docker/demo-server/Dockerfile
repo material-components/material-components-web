@@ -59,7 +59,7 @@ COPY --chown=demobot:demobot \
      /scripts/
 RUN chmod ugo+x /scripts/*.sh
 
-ENTRYPOINT ["/scripts/startup.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/scripts/startup.sh"]
 #CMD [ \
 #  "--author", "Spetnik", \
 #  "--pr", "1461", \

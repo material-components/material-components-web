@@ -52,9 +52,8 @@ git remote add -t "${REMOTE_BRANCH}" "${REMOTE_NAME}" "${REMOTE_URL}"
 git fetch "${REMOTE_NAME}"
 git checkout -b "${LOCAL_BRANCH}" "${REMOTE_NAME}/${REMOTE_BRANCH}"
 
-set +e
-
 # https://stackoverflow.com/a/1655389/467582
+set +e
 IFS='' read -r -d '' INFO_HTML <<EOF
 <!doctype html>
 <html>
@@ -94,14 +93,13 @@ IFS='' read -r -d '' INFO_HTML <<EOF
   </body>
 </html>
 EOF
+set -e
 
 mkdir -p demos/info/
 echo "${INFO_HTML}" > demos/info/index.html
 
-set -e
-set +x
-
-/scripts/install-deps.sh
+echo 'Installing node modules...'
+npm install
 
 echo 'Starting demo server...'
 npm run dev

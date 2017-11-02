@@ -77,4 +77,4 @@ COPY --chown=demobot:demobot \
      /scripts/
 RUN chmod ugo+x /scripts/*.sh
 
-CMD ["/bin/bash", "-c", "/scripts/startup.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/scripts/startup.sh"]

@@ -24,11 +24,8 @@ set -x
 
 cd /scripts
 
-set +x
-/scripts/install-deps.sh
-set -x
+echo 'Installing node modules...'
+npm install
 
 echo 'Starting boss server...'
-env
-ls -Al
 node index.js
