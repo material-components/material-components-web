@@ -1,0 +1,10 @@
+{
+  "name": "boss-server-static-assets",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "apache2",
+  "private": true,
+  "dependencies": {
+    "material-components-web": "^0.24.0"
+  }
+}

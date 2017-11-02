@@ -15,34 +15,56 @@
  * limitations under the License.
  */
 
+const path = require('path');
 const express = require('express');
+const GitHubApi = require('github');
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'static')));
 app.use(require('body-parser').json());
 
-app.all('/webhook/github', (req, res) => {
+const handleStartScreenshotRequest = (pullRequest, res) => {
   const args = [
-    '--pr', req.body.pull_request.number,
-    '--author', req.body.pull_request.user.login,
-    '--remote-url', req.body.pull_request.head.repo.clone_url,
-    '--remote-branch', req.body.pull_request.head.ref,
+    '--pr', pullRequest.number,
+    '--author', pullRequest.user.login,
+    '--remote-url', pullRequest.head.repo.clone_url,
+    '--remote-branch', pullRequest.head.ref,
   ];
 
   console.log(`${new Date()} - Request: ${args}`);
 
-  const spawn = require('child_process').spawnSync('/scripts/run-screenshot-test.sh', args, {shell: true});
-  const stdout = (spawn.stdout || '').toString().trim();
-  const stderr = (spawn.stderr || '').toString().trim();
+  const spawn = require('child_process').spawn('/scripts/run-screenshot-test.sh', args, {
+    stdio: 'inherit',
+    shell: true,
+  });
+  spawn.on('close', (code) => {
+    const stdout = (spawn.stdout || '').toString().trim();
+    const stderr = (spawn.stderr || '').toString().trim();
 
-  res.send({
-    method: req.method,
-    stdout,
-    stderr,
-    status: spawn.status,
-    envPairs: spawn.envPairs,
-    options: spawn.options,
-    args: spawn.args,
-    file: spawn.file,
+    res.send({
+      stdout,
+      stderr,
+      status: spawn.status,
+      envPairs: spawn.envPairs,
+      options: spawn.options,
+      args: spawn.args,
+      file: spawn.file,
+    });
+  });
+};
+
+app.all('/webhook/github', (req, res) => {
+  handleStartScreenshotRequest(req.body.pull_request, res);
+});
+
+app.post('/github/pr', (req, res) => {
+  const github = new GitHubApi();
+  github.pullRequests.get({
+    owner: 'material-components',
+    repo: 'material-components-web',
+    number: req.body.pr_number,
+  }).then((response) => {
+    handleStartScreenshotRequest(response.data, res);
   });
 });
 

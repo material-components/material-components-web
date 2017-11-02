@@ -22,4 +22,4 @@ cd "`dirname ${BASH_SOURCE[0]}`"
 
 [[ -z "${MCW_ENV}" ]] && MCW_ENV='dev'
 
-docker run --interactive --tty -p 8080:8080 "${MCW_ENV}-demo-server:latest" "$@"
+docker run -e HOST_ENV=local --interactive --tty -p 8080:8080 --label "${MCW_ENV}-demo-server" "${MCW_ENV}-demo-server:latest" "$@"

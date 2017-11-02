@@ -1,0 +1,120 @@
+<!doctype html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>Screenshot Test - MDC-Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css">
+    <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      /* apply a natural box layout model to all elements, but allowing components to change */
+      html {
+        box-sizing: border-box;
+      }
+      *, *:before, *:after {
+        box-sizing: inherit;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      .page {
+        /* Hack to force the margin-top of .mdc-toolbar-fixed-adjust to collapse */
+        border-top: 1px solid transparent;
+      }
+
+      .main {
+        padding: 24px;
+      }
+
+      #pr-number {
+        width: 8em;
+      }
+
+      textarea {
+        width: 100%;
+        height: 30em;
+        font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+        font-size: small;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="mdc-toolbar__title catalog-title">Screenshot Test</span>
+        </section>
+      </div>
+    </header>
+
+    <div class="page">
+      <div class="mdc-toolbar-fixed-adjust"></div>
+
+      <main class="main">
+        <section>
+          <h1 class="mdc-typography--title">GitHub Pull Request</h1>
+          <form action="/github/pr">
+            <div class="pr-form-field">
+              <div class="mdc-textfield mdc-textfield--box">
+                <input type="number"
+                       min="1"
+                       max="99999"
+                       step="1"
+                       size="6"
+                       class="mdc-textfield__input"
+                       aria-controls="name-validation-message"
+                       id="pr-number"
+                       name="pr_number"
+                       value="1469"
+                       required
+                       autofocus>
+                <label for="pr-number" class="mdc-textfield__label">PR #</label>
+                <div class="mdc-textfield__bottom-line"></div>
+              </div>
+              <p class="mdc-textfield-helptext mdc-textfield-helptext--validation-msg"
+                 id="name-validation-msg">
+                1-99999 required
+              </p>
+            </div>
+            <button type="submit" id="submit" class="mdc-button mdc-button--stroked">Start Screenshot Tests</button>
+          </form>
+
+          <h2 class="mdc-typography--subheading2">Response</h2>
+          <textarea readonly></textarea>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <script>
+      (() => {
+        $('.mdc-button').each((i, button) => mdc.ripple.MDCRipple.attachTo(button));
+        $('.mdc-textfield').each((i, textField) => mdc.textfield.MDCTextfield.attachTo(textField));
+
+        $('form').on('submit', (event) => {
+          event.preventDefault();
+          $.ajax({
+            method: 'POST',
+            url: event.target.action,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+              pr_number: $('#pr-number').val(),
+            }),
+          }).then((response) => {
+            $('textarea').val(response.stderr);
+            console.log(response.stderr);
+          })
+        });
+      })();
+    </script>
+  </body>
+</html>

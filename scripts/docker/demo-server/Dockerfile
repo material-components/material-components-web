@@ -24,10 +24,13 @@ WORKDIR /mdc-web
 # Install OS packages
 RUN apt-get update && \
     apt-get install -y \
+        apt-utils \
         build-essential \
         curl \
         git \
+        procps \
         python \
+        sudo \
         util-linux \
     && \
     apt-get autoclean -y

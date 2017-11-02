@@ -22,4 +22,8 @@ cd "`dirname ${BASH_SOURCE[0]}`"
 
 [[ -z "${MCW_ENV}" ]] && MCW_ENV='dev'
 
-docker run --interactive --tty -p 3000:3000 "${MCW_ENV}-boss-server:latest" "$@"
+# https://stackoverflow.com/a/2173421/467582
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+cbt_tunnels --username "${CBT_USERNAME}" --authkey "${CBT_AUTHKEY}" > /dev/null &
+docker run -e HOST_ENV=local -v /var/run/docker.sock:/var/run/docker.sock --interactive --tty -p 3000:3000 --label "${MCW_ENV}-boss-server" "${MCW_ENV}-boss-server:latest" "$@"

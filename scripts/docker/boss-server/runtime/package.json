@@ -4,6 +4,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "github": "^12.0.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "request": "^2.83.0",

@@ -24,18 +24,28 @@ WORKDIR /mdc-web
 # Install OS packages
 RUN apt-get update && \
     apt-get install -y \
+        apt-utils \
         build-essential \
         curl \
         git \
+        procps \
         python \
+        sudo \
         util-linux \
     && \
     apt-get autoclean -y
+
+# Install docker
+# https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#using-pipes
+RUN ["/bin/bash", "-c", "set -o pipefail && curl -fsSL get.docker.com | bash && apt-get update && apt-get upgrade -y docker"]
+
+#RUN dockerd -H unix:///var/run/docker.sock
 
 # Create non-root user account
 RUN useradd --create-home --shell /bin/bash demobot && \
     mkdir -p /scripts && \
     chown -R demobot:demobot . /scripts
+RUN echo 'demobot ALL=(root) NOPASSWD: /usr/bin/docker' >> /etc/sudoers
 USER demobot
 
 # Required in case `git pull` needs to merge
@@ -68,13 +78,14 @@ COPY --chown=demobot:demobot \
      /scripts/
 
 # Install node modules
-RUN ["/bin/bash", "-c", "cd /scripts && . ~/.nvm/nvm.sh && npm install"]
+RUN ["/bin/bash", "-c", "cd /scripts && . ~/.nvm/nvm.sh && npm install && npm install -g cbt_tunnels"]
 
 # Copy all remaining files. We do this last to speed up local docker builds by optimizing intermediate image caching.
 COPY --chown=demobot:demobot \
-     runtime/ \
+     runtime/   \
      /scripts/
 RUN chmod ugo+x /scripts/*.sh
 
+RUN echo '. /scripts/env.sh' >> ~/.bashrc
 ENV BASH_ENV=/scripts/env.sh
 ENTRYPOINT ["/bin/bash", "-c", "/scripts/startup.sh"]
