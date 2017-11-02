@@ -20,6 +20,8 @@ set +e
 
 # Adapted from https://stackoverflow.com/a/29754866/467582
 
+STARTUP_ARGS=("$@")
+
 # GitHub pull request number
 PR=''
 # GitHub username of the author of the pull request
