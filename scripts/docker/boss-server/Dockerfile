@@ -64,14 +64,11 @@ RUN gcloud config set project material-components-web && \
 
 # Copy files needed to install node modules
 COPY --chown=demobot:demobot \
-     runtime/cbt \
-     /scripts/cbt
-COPY --chown=demobot:demobot \
-     runtime/server \
-     /scripts/server
+     runtime/package.json \
+     /scripts/
 
 # Install node modules
-RUN ["/bin/bash", "-c", ". ~/.nvm/nvm.sh && cd /scripts/server && npm install && cd /scripts/cbt && npm install"]
+RUN ["/bin/bash", "-c", "cd /scripts && . ~/.nvm/nvm.sh && npm install"]
 
 # Copy all remaining files. We do this last to speed up local docker builds by optimizing intermediate image caching.
 COPY --chown=demobot:demobot \
