@@ -92,6 +92,11 @@ $mdc-ripple-common-styles-emitted_: false !default;
     opacity: map-get($opacity-map, 'focus');
   }
 
+  &:not(.mdc-ripple-upgraded):focus::before {
+    // Note that this is only effective on focus, not blur
+    transition-duration: 75ms;
+  }
+
   // Styles for non-upgraded (CSS-only) stateful surfaces
 
   &:not(.mdc-ripple-upgraded) {
@@ -126,13 +131,18 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 
   &.mdc-ripple-upgraded--foreground-activation::after {
-    animation: 300ms mdc-ripple-fg-radius-in forwards, 83ms mdc-ripple-fg-opacity-in forwards;
+    animation: 225ms mdc-ripple-fg-radius-in forwards, 75ms mdc-ripple-fg-opacity-in forwards;
   }
 
   &.mdc-ripple-upgraded--foreground-deactivation::after {
-    animation: 83ms mdc-ripple-fg-opacity-out;
+    animation: 150ms mdc-ripple-fg-opacity-out;
     // Retain transform from mdc-ripple-fg-radius-in activation
     transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+  }
+
+  // FIXME: This is seemingly never applying
+  &.mdc-ripple-upgraded--focusing.mdc-ripple-upgraded--foreground-deactivation::after {
+    animation-duration: 30ms;
   }
 }
 
