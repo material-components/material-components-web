@@ -405,7 +405,8 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     const anchor = this.adapter_.getAnchorDimensions();
     const windowDimensions = this.adapter_.getWindowDimensions();
 
-    const topOverflow = anchor.top + this.dimensions_.height - windowDimensions.height;
+    const topOverflow = anchor.top + this.offsetY_ + this.dimensions_.height
+        - windowDimensions.height;
     const bottomOverflow = this.dimensions_.height - anchor.bottom;
     const extendsBeyondTopBounds = topOverflow > 0;
     let horizontalOffset = this.offsetX_;
@@ -413,24 +414,25 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     if (extendsBeyondTopBounds) {
       if (bottomOverflow < topOverflow) {
         vertical = 'bottom';
-        verticalOffset = 0;//this.dimensions_.height - this.offsetY_;
       }
     }
 
-    const leftOverflow = anchor.left + this.dimensions_.width - windowDimensions.width;
+    const leftOverflow = anchor.left + this.offsetX_ + this.dimensions_.width
+        - windowDimensions.width;
     const rightOverflow = this.dimensions_.width - anchor.right;
     const extendsBeyondLeftBounds = leftOverflow > 0;
     const extendsBeyondRightBounds = rightOverflow > 0;
-    debugger;
     if (this.adapter_.isRtl()) {
       // In RTL, we prefer to open from the right.
       horizontal = 'right';
       if (extendsBeyondRightBounds && leftOverflow < rightOverflow) {
         horizontal = 'left';
+      } else {
+        horizontalOffset = anchor.width - this.offsetX_;
       }
     } else if (extendsBeyondLeftBounds && rightOverflow < leftOverflow) {
       horizontal = 'right';
-      horizontalOffset = 0; //this.dimensions_.width - this.offsetX_;
+      horizontalOffset = anchor.width - this.offsetX_;
     }
 
     const position = {
@@ -438,16 +440,15 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       [vertical]: '0',
     };
 
-    if (this.offsetX_) {
-      position[horizontal] = horizontalOffset + 'px';
+    // Flip offsets for bottom and right positioning.
+    if (this.offsetX_ && vertical === 'bottom') {
+      position[vertical] = (anchor.height - this.offsetY_) + 'px';
+    }
+    if (this.offsetY_ && horizontal === 'right') {
+      position[horizontal] = (anchor.width - this.offsetX_) + 'px';
     }
 
-    if (this.offsetY_) {
-      position[vertical] = verticalOffset + 'px';
-    }
     this.adapter_.setTransformOrigin(`${vertical} ${horizontal}`);
-    // debugger;
-    window.console.log(position);
     this.adapter_.setPosition(position);
   }
 
