@@ -14,49 +14,50 @@
 #  limitations under the License.
 #
 
-# Set the base image to Debian.
 # https://hub.docker.com/_/debian/
 FROM debian:latest
 
-EXPOSE 80 443 8080
+EXPOSE 8080
 
 WORKDIR /mdc-web
 
-# Install OS utility packages
-RUN apt-get update && apt-get install -y build-essential curl git python util-linux && apt-get autoclean -y
+# Install OS packages
+RUN apt-get update && \
+    apt-get install -y \
+        build-essential \
+        curl \
+        git \
+        python \
+        util-linux \
+    && \
+    apt-get autoclean -y
 
 # Create non-root user account
-RUN useradd --create-home --shell /bin/bash demobot
-RUN chown -R demobot:demobot .
+RUN useradd --create-home --shell /bin/bash demobot && \
+    mkdir -p /scripts && \
+    chown -R demobot:demobot . /scripts
 USER demobot
 
-# Needed in case `git pull` needs to merge
-RUN git config --global user.email demobot@example.com
-RUN git config --global user.name demobot
+# Required in case `git pull` needs to merge
+RUN git config --global user.email demobot@example.com && \
+    git config --global user.name demobot
 
-# Clone MDC-Web Git repo
-RUN git clone "https://github.com/material-components/material-components-web.git" .
-
-# Install nvm (node/npm)
+# Install nvm and node/npm
 # https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#using-pipes
 RUN ["/bin/bash", "-c", "set -o pipefail && curl -o- 'https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh' | bash"]
+RUN ["/bin/bash", "-c", ". ~/.nvm/nvm.sh && nvm install node"]
 
-# Copy scripts needed to install node modules
-USER root
-COPY runtime/source.sh /scripts/
-COPY runtime/install-deps.sh /scripts/
-RUN chmod ugo+x /scripts/*.sh
-USER demobot
+# Clone MDC-Web Git repo
+RUN git clone 'https://github.com/material-components/material-components-web.git' .
 
 # Install node modules
-RUN /scripts/install-deps.sh
+RUN ["/bin/bash", "-c", ". ~/.nvm/nvm.sh && npm install"]
 
-# Copy scripts needed to run on startup
-USER root
-COPY runtime/startup.sh /scripts/
-COPY runtime/startup-args.sh /scripts/
+# Copy all remaining files
+COPY --chown=demobot:demobot \
+     runtime/ \
+     /scripts/
 RUN chmod ugo+x /scripts/*.sh
-USER demobot
 
 ENTRYPOINT ["/scripts/startup.sh"]
 #CMD [ \

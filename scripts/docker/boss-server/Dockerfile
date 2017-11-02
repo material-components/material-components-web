@@ -14,68 +14,67 @@
 #  limitations under the License.
 #
 
-# Set the base image to Debian.
 # https://hub.docker.com/_/debian/
 FROM debian:latest
 
-EXPOSE 80 443 3000
+EXPOSE 3000
 
 WORKDIR /mdc-web
 
-# Install OS utility packages
-RUN apt-get update && apt-get install -y build-essential curl git python util-linux && apt-get autoclean -y
+# Install OS packages
+RUN apt-get update && \
+    apt-get install -y \
+        build-essential \
+        curl \
+        git \
+        python \
+        util-linux \
+    && \
+    apt-get autoclean -y
 
 # Create non-root user account
-RUN useradd --create-home --shell /bin/bash demobot
-RUN mkdir -p /scripts
-RUN chown -R demobot:demobot . /scripts
+RUN useradd --create-home --shell /bin/bash demobot && \
+    mkdir -p /scripts && \
+    chown -R demobot:demobot . /scripts
 USER demobot
 
-# Needed in case `git pull` needs to merge
-RUN git config --global user.email demobot@example.com
-RUN git config --global user.name demobot
+# Required in case `git pull` needs to merge
+RUN git config --global user.email demobot@example.com && \
+    git config --global user.name demobot
 
-# Copy auth credentials for API access
-COPY runtime/auth /scripts/auth
-
-# Install nvm (node/npm) and gcloud/kubectl
+# Install nvm and node/npm
 # https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#using-pipes
 RUN ["/bin/bash", "-c", "set -o pipefail && curl -o- 'https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh' | bash"]
+RUN ["/bin/bash", "-c", ". ~/.nvm/nvm.sh && nvm install node"]
+
+# Install gcloud and kubectl
+# https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#using-pipes
 RUN ["/bin/bash", "-c", "set -o pipefail && curl -sSL 'https://sdk.cloud.google.com' | bash -s -- --disable-prompts"]
-RUN ~/google-cloud-sdk/bin/gcloud --quiet components install kubectl
+ENV PATH=$PATH:/home/demobot/google-cloud-sdk/bin
+RUN gcloud --quiet components install kubectl
+
+# Copy auth credentials for API access
+COPY --chown=demobot:demobot \
+     runtime/auth \
+     /scripts/auth
 
 # Configure environment
-RUN echo '. ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
-RUN echo '. /scripts/auth/cbt-account.bash.inc' >> ~/.bashrc
-RUN echo 'gcloud auth activate-service-account --key-file /scripts/auth/gcloud-service-account.json' >> ~/.bashrc
-RUN ~/google-cloud-sdk/bin/gcloud config set project material-components-web
+RUN echo '. /scripts/source.sh' >> ~/.bashrc
+RUN gcloud config set project material-components-web && \
+    gcloud auth activate-service-account --key-file /scripts/auth/gcloud-service-account.json
 
-# Copy scripts needed to install node modules
-COPY runtime/install-deps.sh /scripts/
-COPY runtime/package.json /scripts/
-COPY runtime/source.sh /scripts/
-USER root
-RUN chmod ugo+x /scripts/*.sh
-USER demobot
+# Copy files needed to install node modules
+COPY --chown=demobot:demobot \
+     runtime/package.json \
+     /scripts/
 
 # Install node modules
-RUN /scripts/install-deps.sh
+RUN ["/bin/bash", "-c", ". ~/.nvm/nvm.sh && cd /scripts && npm install"]
 
-# Copy scripts needed to run on startup
-COPY runtime/index.js /scripts/
-COPY runtime/startup.sh /scripts/
-COPY runtime/startup-args.sh /scripts/
-COPY runtime/run-screenshot-test.sh /scripts/
-COPY runtime/run-screenshot-test-args.sh /scripts/
-COPY runtime/cbt /scripts/cbt
-USER root
+# Copy all remaining files
+COPY --chown=demobot:demobot \
+     runtime/ \
+     /scripts/
 RUN chmod ugo+x /scripts/*.sh
-USER demobot
 
-ENTRYPOINT ["/scripts/startup.sh"]
-#CMD [ \
-#  "--author", "Spetnik", \
-#  "--pr", "1461", \
-#  "--remote-url", "https://github.com/Spetnik/material-components-web.git", \
-#  "--remote-branch", "fix/ripple-mouseup" \
-#]
+CMD ["/bin/bash", "-c", "/scripts/startup.sh"]

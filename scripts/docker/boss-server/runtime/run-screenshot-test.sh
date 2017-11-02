@@ -43,8 +43,6 @@ DEPLOYMENT="${ENV}-pr-${PR}-test-deployment"
 IP_ADDRESS=''
 
 function auth() {
-  true
-#  gcloud auth application-default login
   gcloud auth activate-service-account --key-file /scripts/auth/gcloud-service-account.json
   . /scripts/auth/cbt-account.bash.inc
 }

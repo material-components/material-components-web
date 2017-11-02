@@ -16,8 +16,6 @@
 #  limitations under the License.
 #
 
-. ~/.bashrc
 . ~/.nvm/nvm.sh
 . ~/google-cloud-sdk/path.bash.inc
 . /scripts/auth/cbt-account.bash.inc
-nvm install node
