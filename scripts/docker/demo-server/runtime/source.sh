@@ -18,5 +18,4 @@
 
 . ~/.bashrc
 . ~/.nvm/nvm.sh
-. ~/google-cloud-sdk/path.bash.inc
 nvm install node

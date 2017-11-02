@@ -34,11 +34,12 @@ USER demobot
 RUN git config --global user.email demobot@example.com
 RUN git config --global user.name demobot
 
-# Clone MDC-Web Git repo; install nvm and gcloud
+# Clone MDC-Web Git repo
 RUN git clone "https://github.com/material-components/material-components-web.git" .
-RUN curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh" | bash
-RUN curl -sSL https://sdk.cloud.google.com | bash -s -- --disable-prompts
-RUN echo '. ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
+
+# Install nvm (node/npm)
+# https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#using-pipes
+RUN ["/bin/bash", "-c", "set -o pipefail && curl -o- 'https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh' | bash"]
 
 # Copy scripts needed to install node modules
 USER root

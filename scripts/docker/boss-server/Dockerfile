@@ -38,10 +38,10 @@ RUN git config --global user.name demobot
 # Copy auth credentials for API access
 COPY runtime/auth /scripts/auth
 
-# Clone MDC-Web Git repo; install nvm and gcloud
-#RUN git clone "https://github.com/material-components/material-components-web.git" .
-RUN curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh" | bash
-RUN curl -sSL https://sdk.cloud.google.com | bash -s -- --disable-prompts
+# Install nvm (node/npm) and gcloud/kubectl
+# https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#using-pipes
+RUN ["/bin/bash", "-c", "set -o pipefail && curl -o- 'https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh' | bash"]
+RUN ["/bin/bash", "-c", "set -o pipefail && curl -sSL 'https://sdk.cloud.google.com' | bash -s -- --disable-prompts"]
 RUN ~/google-cloud-sdk/bin/gcloud --quiet components install kubectl
 
 # Configure environment
