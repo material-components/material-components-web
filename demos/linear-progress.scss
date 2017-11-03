@@ -20,9 +20,6 @@
 @import "../packages/mdc-theme/color-palette";
 
 .demo-linear-progress--custom {
-  $bar-color: $material-color-red-500;
-  $buffer-color: $material-color-red-100;
-
-  @include mdc-linear-progress-bar-color($bar-color);
-  @include mdc-linear-progress-buffer-color($buffer-color);
+  @include mdc-linear-progress-bar-color($material-color-red-500);
+  @include mdc-linear-progress-buffer-color($material-color-red-100);
 }
