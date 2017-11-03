@@ -204,7 +204,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     const time = this.adapter_.getAccurateTime();
     const {TRANSITION_DURATION_MS, TRANSITION_X1, TRANSITION_Y1, TRANSITION_X2, TRANSITION_Y2,
       TRANSITION_SCALE_ADJUSTMENT_X, TRANSITION_SCALE_ADJUSTMENT_Y} = MDCSimpleMenuFoundation.numbers;
-    const currentTime = clamp((time - this.startTime_) / TRANSITION_DURATION_MS);
+    const currentTime = clamp((time - this.startTime_) / (TRANSITION_DURATION_MS));
 
     // Animate X axis very slowly, so that only the Y axis animation is visible during fade-out.
     let currentTimeX = clamp(
@@ -409,8 +409,6 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
         - windowDimensions.height;
     const bottomOverflow = this.dimensions_.height - anchor.bottom;
     const extendsBeyondTopBounds = topOverflow > 0;
-    let horizontalOffset = this.offsetX_;
-    let verticalOffset = this.offsetY_;
     if (extendsBeyondTopBounds) {
       if (bottomOverflow < topOverflow) {
         vertical = 'bottom';
@@ -427,12 +425,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       horizontal = 'right';
       if (extendsBeyondRightBounds && leftOverflow < rightOverflow) {
         horizontal = 'left';
-      } else {
-        horizontalOffset = anchor.width - this.offsetX_;
       }
     } else if (extendsBeyondLeftBounds && rightOverflow < leftOverflow) {
       horizontal = 'right';
-      horizontalOffset = anchor.width - this.offsetX_;
     }
 
     const position = {
@@ -440,12 +435,21 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       [vertical]: '0',
     };
 
-    // Flip offsets for bottom and right positioning.
-    if (this.offsetX_ && vertical === 'bottom') {
-      position[vertical] = (anchor.height - this.offsetY_) + 'px';
+    // Apply offset and flip offsets for bottom and right positioning.
+    if (this.offsetX_) {
+      if (vertical === 'bottom') {
+        position[vertical] = (anchor.height - this.offsetY_) + 'px';
+      } else {
+        position[vertical] = this.offsetY_ + 'px';
+      }
     }
-    if (this.offsetY_ && horizontal === 'right') {
-      position[horizontal] = (anchor.width - this.offsetX_) + 'px';
+
+    if (this.offsetY_) {
+      if (horizontal === 'right') {
+        position[horizontal] = (anchor.width - this.offsetX_) + 'px';
+      } else {
+        position[horizontal] = this.offsetX_ + 'px';
+      }
     }
 
     this.adapter_.setTransformOrigin(`${vertical} ${horizontal}`);
