@@ -221,6 +221,8 @@
         $('.mdc-button').each((i, button) => mdc.ripple.MDCRipple.attachTo(button));
         $('.mdc-textfield').each((i, textField) => mdc.textfield.MDCTextfield.attachTo(textField));
 
+        const prNumberInputEl = $('#pr-number')[0];
+        const prNumberTextFieldEl = $(prNumberInputEl).closest('.mdc-textfield')[0];
         const submitButton = $('#submit')[0];
         const stdoutEl = $('#stdout')[0];
         const stderrEl = $('#stderr')[0];
@@ -324,6 +326,8 @@
 
         $('form').on('submit', (event) => {
           event.preventDefault();
+          prNumberInputEl.disabled = true;
+          prNumberTextFieldEl.classList.add('mdc-textfield--disabled');
           submitButton.disabled = true;
           resetProgressBars({isDeterminate: false});
           $progressArticle.show();
@@ -341,6 +345,8 @@
 
           const allDone = () => {
             clearInterval(interval);
+            prNumberInputEl.disabled = false;
+            prNumberTextFieldEl.classList.remove('mdc-textfield--disabled');
             submitButton.disabled = false;
             installNodeModuleProgress.determinate = true;
             demoServerBuildProgress.determinate = true;
