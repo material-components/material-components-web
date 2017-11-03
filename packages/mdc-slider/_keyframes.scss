@@ -14,11 +14,17 @@
 // limitations under the License.
 //
 
-$mdc-slider-default-assumed-bg-color: white !default;
-$mdc-slider-dark-theme-assumed-bg-color: #333 !default;
+@keyframes mdc-slider-emphasize {
+  0% {
+    animation-timing-function: ease-out;
+  }
 
-$mdc-slider-main-grey: #bdbdbd;
-$mdc-slider-dark-theme-grey: #5c5c5c;
-$mdc-slider-off-focus-thumb-color: #dedede;
-$mdc-slider-off-focus-thumb-color-dark: #82848c;
-$mdc-slider-off-focus-active-thumb-stroke-color: #8c8c8c;
+  50% {
+    animation-timing-function: ease-in;
+    transform: scale(.85);
+  }
+
+  100% {
+    transform: scale(.571);
+  }
+}

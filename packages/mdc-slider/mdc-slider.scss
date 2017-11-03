@@ -17,29 +17,61 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/rtl/mixins";
+@import "./keyframes";
+@import "./mixins";
 @import "./variables";
-
-$mdc-slider-main-grey: #bdbdbd;
-$mdc-slider-dark-theme-grey: #5c5c5c;
 
 // postcss-bem-linter: define slider
 
-@keyframes mdc-slider-emphasize {
-  0% {
-    animation-timing-function: ease-out;
-  }
-
-  50% {
-    animation-timing-function: ease-in;
-    transform: scale(.85);
-  }
-
-  100% {
-    transform: scale(.571);
-  }
-}
-
 .mdc-slider {
+  @include mdc-slider-track-container-color($mdc-slider-main-grey);
+  @include mdc-slider-track-marker-color($mdc-slider-dark-theme-grey);
+  @include mdc-slider-track-color(secondary);
+  @include mdc-slider-thumb-stroke-color(secondary);
+  @include mdc-slider-thumb-fill-color(secondary);
+  @include mdc-slider-focus-ring-color(secondary);
+  @include mdc-slider-pin-fill-color(secondary);
+  @include mdc-slider-pin-ink-color(text-primary-on-secondary);
+
+  @include mdc-theme-dark {
+    @include mdc-slider-track-container-color($mdc-slider-dark-theme-grey);
+    @include mdc-slider-track-marker-color($mdc-slider-main-grey);
+  }
+
+  &--disabled {
+    @include mdc-slider-track-color($mdc-slider-main-grey);
+
+    @include mdc-theme-dark(".mdc-slider", true) {
+      @include mdc-slider-track-color($mdc-slider-dark-theme-grey);
+    }
+  }
+
+  &--off {
+    @include mdc-slider-pin-fill-color($mdc-slider-main-grey);
+    @include mdc-slider-focus-ring-color($mdc-slider-main-grey);
+
+    @include mdc-theme-dark(".mdc-slider", true) {
+      @include mdc-slider-pin-fill-color($mdc-slider-dark-theme-grey);
+    }
+  }
+
+  &--off.mdc-slider--focus {
+    @include mdc-slider-thumb-fill-color($mdc-slider-off-focus-thumb-color);
+
+    @include mdc-theme-dark(".mdc-slider", true) {
+      @include mdc-slider-thumb-fill-color($mdc-slider-off-focus-thumb-color-dark);
+      @include mdc-slider-thumb-stroke-color($mdc-slider-off-focus-thumb-color-dark);
+    }
+  }
+
+  &--off.mdc-slider--focus.mdc-slider--active {
+    @include mdc-slider-thumb-stroke-color($mdc-slider-off-focus-active-thumb-stroke-color);
+
+    @include mdc-theme-dark(".mdc-slider", true) {
+      @include mdc-slider-thumb-stroke-color($mdc-slider-dark-theme-grey);
+    }
+  }
+
   position: relative;
   width: 100%;
   height: 48px;
@@ -56,17 +88,10 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     top: 50%;
     width: 100%;
     height: 2px;
-    background-color: $mdc-slider-main-grey;
     overflow: hidden;
-
-    @include mdc-theme-dark(".mdc-slider") {
-      background-color: $mdc-slider-dark-theme-grey;
-    }
   }
 
   &__track {
-    @include mdc-theme-prop(background-color, primary);
-
     position: absolute;
     width: 100%;
     height: 100%;
@@ -89,16 +114,12 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
       margin-left: 0;
     }
 
+    // Last marker at the very end of the slider (right-most in LTR, left-most in RTL)
     &::after {
       display: block;
       width: 2px;
       height: 2px;
-      background-color: $mdc-slider-dark-theme-grey;
       content: "";
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        background-color: $mdc-slider-main-grey;
-      }
     }
   }
 
@@ -109,12 +130,7 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
       display: block;
       width: 2px;
       height: 2px;
-      background-color: $mdc-slider-dark-theme-grey;
       content: "";
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        background-color: $mdc-slider-main-grey;
-      }
     }
 
     &:first-child::after {
@@ -135,9 +151,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   }
 
   &__thumb {
-    @include mdc-theme-prop(fill, primary);
-    @include mdc-theme-prop(stroke, primary);
-
     position: absolute;
     top: 0;
     left: 0;
@@ -147,8 +160,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   }
 
   &__focus-ring {
-    @include mdc-theme-prop(background-color, primary);
-
     width: 21px;
     height: 21px;
     transition: transform 266.67ms ease-out, opacity 266.67ms ease-out, background-color 266.67ms ease-out;
@@ -157,9 +168,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   }
 
   &__pin {
-    @include mdc-theme-prop(background-color, primary);
-    @include mdc-theme-prop(color, text-primary-on-primary);
-
     display: flex;
     position: absolute;
     top: 0;
@@ -208,14 +216,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
 .mdc-slider--disabled {
   cursor: auto;
 
-  .mdc-slider__track {
-    background-color: $mdc-slider-main-grey;
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      background-color: $mdc-slider-dark-theme-grey;
-    }
-  }
-
   // We use !important here to override all styles without having to use excessive
   // :not() selectors or intricate compound selectors.
   .mdc-slider__thumb {
@@ -248,41 +248,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
       stroke: $mdc-slider-dark-theme-grey;
     }
   }
-
-  .mdc-slider__pin {
-    background-color: $mdc-slider-main-grey;
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      background-color: $mdc-slider-dark-theme-grey;
-    }
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  &.mdc-slider--focus {
-    .mdc-slider__thumb {
-      fill: #dedede;
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        fill: #82848c;
-        stroke: #82848c;
-      }
-    }
-  }
-
-  &.mdc-slider--active.mdc-slider--focus {
-    .mdc-slider__thumb {
-      stroke: #8c8c8c;
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        stroke: $mdc-slider-dark-theme-grey;
-      }
-    }
-  }
-
-  .mdc-slider__focus-ring {
-    background-color: $mdc-slider-main-grey;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-slider--in-transit {
