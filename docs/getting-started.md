@@ -15,7 +15,7 @@ your framework that wraps MDC-Web, check out our [framework integration guide](.
 ## MDC-Web quick start: building a simple greeting app
 
 The best way to learn any new technology is to get your hands dirty and build something with it, so
-that is what we will do here!  You will be building a simple greeting page which lets you enter a name and greets you as such. Here is the [finished example](https://plnkr.co/edit/ahd84pIgOF7OTKgavvPP?p=preview).
+that is what we will do here!  You will be building a simple greeting page which lets you enter a name and greets you as such.
 
 As you go through this guide, we encourage you to code along with it. By the end, you will have
 learned the fundamentals incorporating MDC-Web into simple sites, as well as worked with some of the
@@ -115,6 +115,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
           <label for="firstname" class="mdc-textfield__label">
             First Name
           </label>
+          <div class="mdc-textfield__bottom-line"></div>
         </div>
       </div>
 
@@ -124,6 +125,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
           <label for="lastname" class="mdc-textfield__label">
             Last Name
           </label>
+          <div class="mdc-textfield__bottom-line"></div>
         </div>
       </div>
     </div>
@@ -280,10 +282,7 @@ how to easily add components to a page, and how to customize and theme MDC-Web t
 ## Next steps
 
 If you're looking to incorporate MDC-Web Components into a framework like Angular or React, check our
-[framework integration guide](./integrating-into-frameworks.md). You can also take a look at our
-[framework examples](../framework-examples) directory which contains examples integrating MDC-Web components into popular
-front-end frameworks. It also shows how you can use our source ES2015 and SCSS files directly within
-your own code, for maximum flexibility, modularity, and code size reduction.
+[framework integration guide](./integrating-into-frameworks.md). 
 
 If you'd like to contribute to
 MDC-Web and build your own components, or extend one of ours to fit your own purposes, check out our

@@ -89,6 +89,8 @@ easily position checkboxes and their labels.
 </div>
 ```
 
+> **Note**: If you are using IE, you need to include a closing `</path>` tag if you wish to avoid console warnings.
+
 #### Disabled Checkboxes
 
 Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class; a `disabled` attribute on the `<input>` element is sufficient.
@@ -266,9 +268,8 @@ Mixin | Description
 `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
 `mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
-`mdc-checkbox-ripple($ripple-config)` | Sets the ripple to the given [ripple configuration][ripple-readme]
 
-[ripple-readme]: https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md
+The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
 #### `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)`
 

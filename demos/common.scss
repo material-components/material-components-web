@@ -18,15 +18,16 @@
 
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");
 
-@import "../packages/mdc-theme/color_palette";
+@import "../packages/mdc-theme/color-palette";
 
 // Base style
 $mdc-theme-primary: $material-color-grey-900 !default;
 $mdc-theme-secondary: $material-color-light-green-a700 !default;
 
-// Import button mixins to apply overrides for dark theme
+// Import button and ripple mixins to apply overrides for dark theme
 // TODO(kfranqueiro): Pending further design discussion around how to manage dark theme
 @import "../packages/mdc-button/mixins";
+@import "../packages/mdc-ripple/mixins";
 // All demo pages have a top toolbar, and most of them use theme variables.
 // Import these *after* setting theme colors to override defaults in mdc-theme.
 @import "../packages/mdc-theme/mdc-theme";
@@ -53,7 +54,7 @@ $dark-button-color: $material-color-light-green-a200;
 .mdc-button {
   @include mdc-theme-dark {
     @include mdc-button-ink-color($dark-button-color);
-    @include mdc-button-ripple((base-color: $dark-button-color, opacity: $mdc-unfilled-button-ripple-opacity));
+    @include mdc-ripple-color($dark-button-color, $mdc-unfilled-button-ripple-opacity);
   }
 }
 

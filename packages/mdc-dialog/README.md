@@ -70,8 +70,13 @@ Dialogs inform users about a specific task and may contain critical information 
 In the example above, we've created a dialog box in an `aside` element. Note that you can place content inside
 the dialog. There are two types: dialog & dialogs with scrollable content. These are declared using CSS classes.
 
-Some dialogs will not be tall enough to accomodate everything you would like to display in them. For this there is a
-`mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
+In most cases, dialog content should be able to fit without scrolling. However, certain special cases call for the
+ability to scroll the dialog's contents (see "Scrollable content exception" under
+[Behavior](https://material.io/guidelines/components/dialogs.html#dialogs-behavior)). For these special cases, there is
+a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
+
+> **Note**: The body of a scrollable dialog is styled with a default max-height; this can be overridden as necessary via
+> the `.mdc-dialog__body--scrollable` selector.
 
 ```html
   <aside id="mdc-dialog-with-list"

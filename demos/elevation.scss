@@ -18,3 +18,7 @@
 
 @import "../packages/mdc-elevation/mdc-elevation";
 @import "../packages/mdc-typography/mdc-typography";
+
+.demo-elevation--custom-color {
+  @include mdc-elevation(16, secondary-dark, $opacity-boost: .1);
+}
