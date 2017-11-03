@@ -101,8 +101,13 @@ $mdc-ripple-common-styles-emitted_: false !default;
 
   &:not(.mdc-ripple-upgraded) {
     // Apply press additively by using the ::after pseudo-element
+    &::after {
+      transition: opacity $mdc-ripple-fade-out-duration linear;
+    }
+
     &:active::after {
       opacity: map-get($opacity-map, 'press');
+      transition-duration: $mdc-ripple-fade-in-duration;
     }
   }
 
@@ -131,11 +136,13 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 
   &.mdc-ripple-upgraded--foreground-activation::after {
-    animation: 225ms mdc-ripple-fg-radius-in forwards, 75ms mdc-ripple-fg-opacity-in forwards;
+    animation:
+      $mdc-ripple-translate-duration mdc-ripple-fg-radius-in forwards,
+      $mdc-ripple-fade-in-duration mdc-ripple-fg-opacity-in forwards;
   }
 
   &.mdc-ripple-upgraded--foreground-deactivation::after {
-    animation: 150ms mdc-ripple-fg-opacity-out;
+    animation: $mdc-ripple-fade-out-duration mdc-ripple-fg-opacity-out;
     // Retain transform from mdc-ripple-fg-radius-in activation
     transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
   }
