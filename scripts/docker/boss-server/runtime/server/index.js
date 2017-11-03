@@ -130,77 +130,103 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
 
     writeln({stdout: stdoutStr});
 
-    if (stdoutStr.indexOf('webpack: Compiled successfully.') > -1) {
-      writeln({demoServerBuildPercentage: 100});
-    } else if (stdoutStr.indexOf('Connecting to the CrossBrowserTesting remote server') > -1) {
-      // TODO: Figure out why this `if` condition (or something inside it) mysteriously fails to match at least one
-      // browser per request.
-      const browserMatch = /requesting browser \[([^\]]+)]/.exec(stdoutStr);
+    const lines = stdoutStr.split(/[\n\r\f]+/g);
+    for (const line of lines) {
+      if (line.indexOf('webpack: Compiled successfully.') > -1) {
+        writeln({demoServerBuildPercentage: 100});
+      } else if (line.indexOf('Connecting to the CrossBrowserTesting remote server') > -1) {
+        // TODO: Figure out why this `if` condition (or something inside it) mysteriously fails to match at least one
+        // browser per request.
+        const browserMatch = /requesting browser \[([^\]]+)]/.exec(line);
 
-      let browserDescription = 'UNKNOWN BROWSER';
-      if (browserMatch) {
-        browserDescription = browserMatch[1];
-      } else {
-        browserDescription = `UNKNOWN BROWSER #${unknownBrowserCount++}`;
-      }
+        let browserDescription;
+        if (browserMatch) {
+          browserDescription = browserMatch[1];
+        } else {
+          browserDescription = `UNKNOWN BROWSER #${unknownBrowserCount++}`;
+        }
 
-      const browser = {
-        description: browserDescription,
-        startTime: Date.now(),
-      };
-      browserMap[browserDescription] = browser;
-      browserList.push(browser);
-
-      writeln({
-        eventType: 'browserStart',
-        browser,
-        browserList,
-      });
-    } else if (stdoutStr.indexOf('Test PASSED') > -1 || stdoutStr.indexOf('Test FAILED') > -1) {
-      const browserMatch = /\[([^\]]+)] - Test (PASSED|FAILED)/i.exec(stdoutStr);
-      if (!browserMatch) {
-        const errorMessage = `ERROR: Unable to parse browser name from stdout: "${stdoutStr}"`;
-        console.error(errorMessage);
-        writeln({
-          eventType: 'error',
-          errorMessage,
-        });
-        return;
-      }
-
-      const browserDescription = browserMatch[1];
-      const testResult = browserMatch[2];
-
-      let browser = browserMap[browserDescription];
-      // TODO(acdvorak): This should never happen - figure out why it does
-      if (!browser) {
-        browser = browserMap[browserDescription] = {
+        const browser = {
           description: browserDescription,
-          startTime: -1,
+          startTime: Date.now(),
         };
+        browserMap[browserDescription] = browser;
         browserList.push(browser);
+
+        writeln({
+          eventType: 'browserStart',
+          browser,
+          browserList,
+        });
+      } else if (line.indexOf('Test PASSED') > -1 || line.indexOf('Test FAILED') > -1) {
+        const regex = /\[([^\]]+)] - Test (PASSED|FAILED)/gi;
+        const browserMatches = line.match(regex);
+        if (!browserMatches) {
+          throw new Error('ERROR(acdvorak): This should never happen (1)');
+        }
+
+        for (const browserMatchStr of browserMatches) {
+          const browserMatch = regex.exec(browserMatchStr);
+          const browserDescription = browserMatch[1];
+          const testResult = browserMatch[2];
+
+          const browser = browserMap[browserDescription];
+          if (!browser) {
+            throw new Error('ERROR(acdvorak): This should never happen (2)');
+          }
+
+          browser.endTime = Date.now();
+          browser.testResult = testResult;
+
+          writeln({
+            eventType: 'browserFinish',
+            browser,
+            browserList,
+          });
+        }
+      } else if (line.indexOf('Quitting driver') > -1) {
+        const regex = /\[([^\]]+)] - Quitting driver/gi;
+        const browserMatches = line.match(regex);
+        if (!browserMatches) {
+          throw new Error('ERROR(acdvorak): This should never happen (3)');
+        }
+
+        for (const browserMatchStr of browserMatches) {
+          const browserMatch = regex.exec(browserMatchStr);
+          const browserDescription = browserMatch[1];
+
+          const browser = browserMap[browserDescription];
+          if (!browser) {
+            throw new Error('ERROR(acdvorak): This should never happen (4)');
+          }
+
+          // We've already sent this to the user; ignore
+          if (browser.testResult) {
+            return;
+          }
+
+          browser.endTime = Date.now();
+          browser.testResult = 'ERRORED';
+
+          writeln({
+            eventType: 'browserFinish',
+            browser,
+            browserList,
+          });
+        }
+      } else if (line.indexOf('Installing node modules') > -1) {
+        writeln({
+          installNodeModulePercentage: 1,
+        });
+      } else if (/Successfully bootstrapped \d+ packages/.test(line)) {
+        writeln({
+          installNodeModulePercentage: 100,
+        });
+      } else if (line.indexOf('Shutting down demo server') > -1) {
+        writeln({
+          eventType: 'shuttingDownDemoServer',
+        });
       }
-
-      browser.endTime = Date.now();
-      browser.testResult = testResult;
-
-      writeln({
-        eventType: 'browserFinish',
-        browser,
-        browserList,
-      });
-    } else if (stdoutStr.indexOf('Installing node modules') > -1) {
-      writeln({
-        installNodeModulePercentage: 1,
-      });
-    } else if (/Successfully bootstrapped \d+ packages/.test(stdoutStr)) {
-      writeln({
-        installNodeModulePercentage: 100,
-      });
-    } else if (stdoutStr.indexOf('Shutting down demo server') > -1) {
-      writeln({
-        eventType: 'shuttingDownDemoServer',
-      });
     }
   });
 
