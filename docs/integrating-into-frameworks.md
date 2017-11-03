@@ -89,10 +89,6 @@ are working as hard as we can to make writing adapters as easy and predictable a
 - We plan on creating Type Definitions for our adapters in the future so that TypeScript users can
   validate that their interface conforms correctly to the adapter's specification.
 
-Our [framework-examples](../framework-examples) directory contains sample code for various frameworks showing how
-adapters can be implemented. We encourage you to take a look through those applications to get a
-sense of how you might build your own.
-
 > Please file an issue with us if there are certain snags you've ran into trying to implement an
   adapter, or if you feel that we can provide better guidance on a particular problem. This is
   definitely something we want to know about.
