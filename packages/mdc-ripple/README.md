@@ -31,7 +31,7 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
   - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
   - [Specifying known element dimensions](#specifying-known-element-dimensions)
 - [Caveat: Edge](#caveat-edge)
-- [Caveat: Safari](#caveat-safari)
+- [Caveat: Safari 9](#caveat-safari)
 - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
 - [The util API](#the-util-api)
 
@@ -41,7 +41,7 @@ In order to function correctly, MDC Ripple requires a _browser_ implementation o
 
 Because we rely on scoped, dynamic CSS variables, static pre-processors such as [postcss-custom-properties](https://github.com/postcss/postcss-custom-properties) will not work as an adequate polyfill ([...yet?](https://github.com/postcss/postcss-custom-properties/issues/32)).
 
-Edge and Safari, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari](#caveat-safari) for an explanation.
+Edge and Safari 9, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari 9](#caveat-safari) for an explanation.
 
 ## Installation
 
@@ -214,7 +214,7 @@ ripple to. The adapter API is as follows:
 
 | Method Signature | Description |
 | --- | --- |
-| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
+| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
 | `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
 | `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
@@ -342,15 +342,16 @@ We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not
 observed. Earlier versions of Edge (and IE) are not affected, as they do not report support for CSS variables at all,
 and as such ripples are never initialized.
 
-## Caveat: Safari
+<a name="caveat-safari"></a>
+## Caveat: Safari 9
 
-> TL;DR ripples are disabled in Safari < 10 because of a nasty CSS variables bug.
+> TL;DR ripples are disabled in Safari 9 because of a nasty CSS variables bug.
 
 The ripple works by updating CSS Variables which are used by pseudo-elements. This allows ripple
 effects to work on elements without the need to add a bunch of extra DOM to them. Unfortunately, in
 Safari 9.1, there is a nasty bug where updating a css variable on an element will _not_ trigger a
 style recalculation on that element's pseudo-elements which make use of the css variable (try out
-[this codepen](http://codepen.io/traviskaufman/pen/jARYOR) in Chrome, and then in Safari <= 9.1 to
+[this codepen](http://codepen.io/traviskaufman/pen/jARYOR) in Chrome, and then in Safari 9.1 to
 see the issue). We feature-detect around this using alternative heuristics regarding different
 webkit versions: Webkit builds which have this bug fixed (e.g. the builds used in Safari 10+)
 support [CSS 4 Hex Notation](https://drafts.csswg.org/css-color/#hex-notation) while those do not
