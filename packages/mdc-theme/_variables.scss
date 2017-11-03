@@ -68,7 +68,7 @@ $mdc-theme-text-colors: (
     disabled: rgba(white, .5),
     icon: rgba(white, .5)
   )
-);
+) !default;
 
 //
 // Primary text colors for each of the theme colors.
