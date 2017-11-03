@@ -129,7 +129,6 @@ class MDCTextfieldFoundation extends MDCFoundation {
   /**
    * Handles all user interactions with the Textfield.
    * @param {!Event} evt
-   * @private
    */
   handleTextFieldInteraction(evt) {
     if (this.adapter_.getNativeInput().disabled) {
