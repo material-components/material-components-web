@@ -26,8 +26,10 @@ app.use(require('body-parser').json());
 function writelnCommon(res, ...json) {
   const currentDate = new Date();
   res.write(JSON.stringify(Object.assign({}, ...json, {
-    nowMillis: currentDate.getTime(),
-    nowIso8601: currentDate.toJSON(),
+    timestamp: {
+      milliseconds: currentDate.getTime(),
+      iso8601: currentDate.toJSON(),
+    },
   })) + '\n');
 }
 
@@ -53,8 +55,10 @@ const enqueueStartScreenshotRequest = (pullRequest, res) => {
       return;
     }
     writelnCommon(res, json, {
-      queuePosition: getQueuePosition(id),
-      queueLength: requestQueue.length,
+      queue: {
+        index: getQueuePosition(id),
+        length: requestQueue.length,
+      },
     });
   };
 
