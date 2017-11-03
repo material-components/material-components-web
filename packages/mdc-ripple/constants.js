@@ -20,7 +20,6 @@ const cssClasses = {
   // given that it's an 'upgrade' to an existing component. That being said it is the root
   // CSS class that all other CSS classes derive from.
   ROOT: 'mdc-ripple-upgraded',
-  FOCUSING: 'mdc-ripple-upgraded--focusing',
   UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
   FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
   FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',

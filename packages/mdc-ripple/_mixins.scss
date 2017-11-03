@@ -86,13 +86,8 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 
   // Focus overrides hover by reusing the ::before pseudo-element.
-  // This is done for CSS-only surfaces as well as upgraded ripples after focus ripple has completed.
-  // TODO(kfranqueiro): Is it possible to avoid nuking hover background when focus ripple occurs?
-  &:not(.mdc-ripple-upgraded--focusing):focus::before {
+  &:focus::before {
     opacity: map-get($opacity-map, 'focus');
-  }
-
-  &:not(.mdc-ripple-upgraded):focus::before {
     // Note that this is only effective on focus, not blur
     transition-duration: 75ms;
   }
@@ -125,16 +120,6 @@ $mdc-ripple-common-styles-emitted_: false !default;
 
   // Foreground ripple styles, for upgraded stateful surfaces
 
-  // Focus ripple requires its own selector, since :focus also tends to be applied upon press
-  &.mdc-ripple-upgraded--focusing {
-    // Change opacity used for ripple when it is triggered on focus rather than press
-    --mdc-ripple-fg-opacity: map-get($opacity-map, 'focus');
-
-    &::before {
-      opacity: 0;
-    }
-  }
-
   &.mdc-ripple-upgraded--foreground-activation::after {
     animation:
       $mdc-ripple-translate-duration mdc-ripple-fg-radius-in forwards,
@@ -145,11 +130,6 @@ $mdc-ripple-common-styles-emitted_: false !default;
     animation: $mdc-ripple-fade-out-duration mdc-ripple-fg-opacity-out;
     // Retain transform from mdc-ripple-fg-radius-in activation
     transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
-  }
-
-  // FIXME: This is seemingly never applying
-  &.mdc-ripple-upgraded--focusing.mdc-ripple-upgraded--foreground-deactivation::after {
-    animation-duration: 30ms;
   }
 }
 
