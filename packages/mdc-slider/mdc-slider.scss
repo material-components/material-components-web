@@ -55,7 +55,7 @@
     }
   }
 
-  &--off.mdc-slider--focus {
+  &--off#{&}--focus {
     @include mdc-slider-thumb-fill-color($mdc-slider-off-focus-thumb-color);
 
     @include mdc-theme-dark(".mdc-slider", true) {
@@ -64,7 +64,7 @@
     }
   }
 
-  &--off.mdc-slider--focus.mdc-slider--active {
+  &--off#{&}--focus#{&}--active {
     @include mdc-slider-thumb-stroke-color($mdc-slider-off-focus-active-thumb-stroke-color);
 
     @include mdc-theme-dark(".mdc-slider", true) {
