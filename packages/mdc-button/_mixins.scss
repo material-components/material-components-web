@@ -64,6 +64,7 @@
   // Note: line height is adjusted for stroke button because borders are not
   // considered as space available to text on the Web
   line-height: $mdc-button-height - $stroke-width * 2;
+  // Note: Adjust padding to maintain consistent width with non-stroked buttons
   $padding-value: max($mdc-button-horizontal-padding - $stroke-width, 0);
   padding-left: $padding-value;
   padding-right: $padding-value;
