@@ -21,10 +21,10 @@ $mdc-ripple-dark-ink-opacities: (
   hover: .04,
   focus: .12,
   press: .16
-);
+) !default;
 
 $mdc-ripple-light-ink-opacities: (
   hover: .08,
   focus: .24,
   press: .32
-);
+) !default;
