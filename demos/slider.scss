@@ -25,9 +25,7 @@
   $text-color: if(mdc-theme-tone($main-color) == "light", text-primary-on-light, text-primary-on-dark);
 
   @include mdc-slider-rail-color($main-color);
-  @include mdc-slider-tick-mark-color($tick-color);
-  @include mdc-slider-thumb-stroke-color($main-color);
-  @include mdc-slider-thumb-fill-color($main-color);
+  @include mdc-slider-thumb-color($main-color);
   @include mdc-slider-focus-halo-color($main-color);
   @include mdc-slider-value-pin-fill-color($main-color);
   @include mdc-slider-value-pin-ink-color($text-color);

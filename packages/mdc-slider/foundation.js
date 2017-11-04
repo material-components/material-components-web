@@ -84,7 +84,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
     // We set this to NaN since we want it to be a number, but we can't use '0' or '-1'
     // because those could be valid tabindices set by the client code.
     this.savedTabIndex_ = NaN;
-    this.off_ = false;
     this.active_ = false;
     this.inTransit_ = false;
     this.isDiscrete_ = false;

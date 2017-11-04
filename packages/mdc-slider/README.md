@@ -24,10 +24,9 @@ Note that **vertical sliders and range (multi-thumb) sliders are not supported, 
 from the material design spec**.
 
 Also note that we have taken certain deviations from the UX within the spec, e.g. nuances as to the
-slider's motion across the track, as well as the style of the slider thumb when in the "off" state
-in dark mode. Thus, there may be some treatments which deviate from the mocks. These deviations
-arose out of design feedback from seeing sliders used on the web, and thus have been endorsed by
-the Material Design team.
+slider's motion across the track, as well as the color of the tick marks. Thus, there may be some
+treatments which deviate from the mocks. These deviations arose out of design feedback from seeing
+sliders used on the web, and thus have been endorsed by the Material Design team.
 
 ## Design and API Documentation
 
@@ -284,25 +283,22 @@ component is used within a dark mode context.
 Mixin | Description
 --- | ---
 `mdc-slider-rail-color($color)` | Sets the color of the rail (aka track)
-`mdc-slider-highlight-color($color)` | Sets the color of the highlighted portion of the rail (i.e., the selected value range)
-`mdc-slider-tick-mark-color($color)` | Sets the color of the tick marks on a discrete slider rail
-`mdc-slider-thumb-stroke-color($color)` | Sets the stroke color of the thumb (grab handle)
-`mdc-slider-thumb-fill-color($color)` | Sets the fill color of the thumb (grab handle)
+`mdc-slider-thumb-color($color)` | Sets the color of the thumb (grab handle)
 `mdc-slider-focus-halo-color($color)` | Sets the color of the focus halo
 `mdc-slider-value-pin-fill-color($color)` | Sets the fill color of the value indicator pin
 `mdc-slider-value-pin-ink-color($color)` | Sets the ink color of the value indicator pin
 
-#### Setting the correct background color for disabled/off slider thumbs
+#### Setting the correct background color for disabled slider thumbs
 
-One tricky issue with sliders is how the thumb is supposed to look when in the disabled or
-"off" states. In these cases, certain portions of the slider's thumb and track are supposed to
+One tricky issue with sliders is how the thumb is supposed to look when in the disabled state.
+In this case, certain portions of the slider's thumb and track are supposed to
 become "transparent" and reveal the background color behind it. However, this presents a problem as
 there is no elegant way to derive what the background color behind the slider should be. We could
 theoretically walk up the DOM until we found an ancestor with a set background, but that would break
 the component's encapsulation model.
 
 To solve this, you can supply a css custom property `--mdc-slider-bg-color-behind-component`. When
-used, this will override the default colors used for the disabled/off state slider thumb and use
+used, this will override the default color used for the disabled state slider thumb and use
 the color specified:
 
 ```css

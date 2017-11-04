@@ -25,46 +25,23 @@
 
 .mdc-slider {
   @include mdc-slider-rail-color(secondary);
-  @include mdc-slider-tick-mark-color(rgba(black, .54));
-  @include mdc-slider-thumb-stroke-color(secondary);
-  @include mdc-slider-thumb-fill-color(secondary);
+  @include mdc-slider-thumb-color(secondary);
   @include mdc-slider-focus-halo-color(secondary);
   @include mdc-slider-value-pin-fill-color(secondary);
   @include mdc-slider-value-pin-ink-color(text-primary-on-secondary);
 
-  @include mdc-theme-dark {
-    @include mdc-slider-tick-mark-color(rgba(white, .54));
-  }
-
-  &--focus {
-    @include mdc-slider-thumb-fill-color($mdc-slider-off-focus-thumb-color);
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-thumb-fill-color($mdc-slider-off-focus-thumb-color-dark);
-      @include mdc-slider-thumb-stroke-color($mdc-slider-off-focus-thumb-color-dark);
-    }
-  }
-
-  &--focus#{&}--active {
-    @include mdc-slider-thumb-stroke-color($mdc-slider-off-focus-active-thumb-stroke-color);
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-thumb-stroke-color($mdc-slider-dark-theme-grey);
-    }
-  }
-
   &--disabled {
     @include mdc-slider-rail-color-important_(#9a9a9a);
     @include mdc-slider-tick-mark-color-important_(#bcbcbc);
-    @include mdc-slider-thumb-fill-color-important_(#9a9a9a);
+    @include mdc-slider-thumb-color-important_(#9a9a9a);
 
     @include mdc-theme-dark(".mdc-slider", true) {
       @include mdc-slider-rail-color-important_(#787878);
       @include mdc-slider-tick-mark-color-important_(#787878);
-      @include mdc-slider-thumb-fill-color-important_(#787878);
+      @include mdc-slider-thumb-color-important_(#787878);
     }
 
-    @include mdc-slider-thumb-cutout-color-important_(stroke);
+    @include mdc-slider-thumb-stroke-cutout-important_(stroke);
   }
 
   position: relative;
