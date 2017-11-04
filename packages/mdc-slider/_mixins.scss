@@ -74,16 +74,46 @@
 // Private
 //
 
-@mixin mdc-slider-thumb-bg-color_($property-name) {
+@mixin mdc-slider-highlight-color-important_($color) {
+  .mdc-slider__track {
+    @include mdc-theme-prop(background-color, $color, $important: true);
+  }
+}
+
+@mixin mdc-slider-thumb-stroke-color-important_($color) {
+  .mdc-slider__thumb {
+    @include mdc-theme-prop(stroke, $color, $important: true);
+  }
+}
+
+@mixin mdc-slider-thumb-fill-color-important_($color) {
+  .mdc-slider__thumb {
+    @include mdc-theme-prop(fill, $color, $important: true);
+  }
+}
+
+@mixin mdc-slider-focus-halo-color-important_($color) {
+  .mdc-slider__focus-ring {
+    @include mdc-theme-prop(background-color, $color, $important: true);
+  }
+}
+
+@mixin mdc-slider-value-pin-fill-color-important_($color) {
+  .mdc-slider__pin {
+    @include mdc-theme-prop(background-color, $color, $important: true);
+  }
+}
+
+@mixin mdc-slider-thumb-cutout-color-important_($property-name) {
   .mdc-slider__thumb {
     /* @alternate */
-    #{$property-name}: $mdc-slider-default-assumed-bg-color;
-    #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color);
+    #{$property-name}: $mdc-slider-default-assumed-bg-color !important;
+    #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color) !important;
 
     @include mdc-theme-dark(".mdc-slider", true) {
       /* @alternate */
-      #{$property-name}: $mdc-slider-dark-theme-assumed-bg-color;
-      #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color);
+      #{$property-name}: $mdc-slider-dark-theme-assumed-bg-color !important;
+      #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color) !important;
     }
   }
 }
