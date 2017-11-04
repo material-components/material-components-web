@@ -182,12 +182,20 @@ Calculates the contrast ratio between two colors.
 @debug mdc-theme-contrast(#9c27b0, #000); // 3.33071
 ```
 
-#### `mdc-theme-light-or-dark($color)`
+#### `mdc-theme-tone($color)`
+
+Determines whether the given color is "light" or "dark".
+
+```scss
+@debug mdc-theme-tone(#9c27b0); // dark
+```
+
+#### `mdc-theme-contrast-tone($color)`
 
 Determines whether to use light or dark text on top of a given color.
 
 ```scss
-@debug mdc-theme-light-or-dark(#9c27b0); // light
+@debug mdc-theme-contrast-tone(#9c27b0); // light
 ```
 
 #### `mdc-theme-light-variant($color)` and `mdc-theme-dark-variant($color)`
