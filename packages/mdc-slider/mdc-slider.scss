@@ -24,9 +24,8 @@
 // postcss-bem-linter: define slider
 
 .mdc-slider {
-  @include mdc-slider-rail-color($mdc-slider-main-grey);
-  @include mdc-slider-tick-mark-color($mdc-slider-dark-theme-grey);
-  @include mdc-slider-highlight-color(secondary);
+  @include mdc-slider-rail-color(secondary);
+  @include mdc-slider-tick-mark-color(rgba(black, .54));
   @include mdc-slider-thumb-stroke-color(secondary);
   @include mdc-slider-thumb-fill-color(secondary);
   @include mdc-slider-focus-halo-color(secondary);
@@ -34,8 +33,7 @@
   @include mdc-slider-value-pin-ink-color(text-primary-on-secondary);
 
   @include mdc-theme-dark {
-    @include mdc-slider-rail-color($mdc-slider-dark-theme-grey);
-    @include mdc-slider-tick-mark-color($mdc-slider-main-grey);
+    @include mdc-slider-tick-mark-color(rgba(white, .54));
   }
 
   &--off {
@@ -69,12 +67,14 @@
   }
 
   &--disabled {
-    @include mdc-slider-highlight-color-important_($mdc-slider-main-grey);
-    @include mdc-slider-thumb-fill-color-important_($mdc-slider-main-grey);
+    @include mdc-slider-rail-color-important_(#9a9a9a);
+    @include mdc-slider-tick-mark-color-important_(#bcbcbc);
+    @include mdc-slider-thumb-fill-color-important_(#9a9a9a);
 
     @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-highlight-color-important_($mdc-slider-dark-theme-grey);
-      @include mdc-slider-thumb-fill-color-important_($mdc-slider-dark-theme-grey);
+      @include mdc-slider-rail-color-important_(#787878);
+      @include mdc-slider-tick-mark-color-important_(#787878);
+      @include mdc-slider-thumb-fill-color-important_(#787878);
     }
 
     @include mdc-slider-thumb-cutout-color-important_(stroke);

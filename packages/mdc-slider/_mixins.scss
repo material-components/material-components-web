@@ -22,14 +22,18 @@
 //
 
 @mixin mdc-slider-rail-color($color) {
-  .mdc-slider__track-container {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
+  $color-value: mdc-theme-prop-value($color);
+  $rail-color: rgba($color-value, .26);
+  $highlight-color: $color-value;
 
-@mixin mdc-slider-highlight-color($color) {
+  // Rail
+  .mdc-slider__track-container {
+    @include mdc-theme-prop(background-color, $rail-color);
+  }
+
+  // Highlight
   .mdc-slider__track {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, $highlight-color);
   }
 }
 
@@ -38,6 +42,9 @@
   .mdc-slider__track-marker-container::after {
     @include mdc-theme-prop(background-color, $color);
   }
+}
+
+@mixin mdc-slider-highlight-color($color) {
 }
 
 @mixin mdc-slider-thumb-stroke-color($color) {
@@ -74,6 +81,30 @@
 // Private
 //
 
+// TODO(acdvorak): Use these mixins above
+@mixin mdc-slider-rail-color-important_($color) {
+  $color-value: mdc-theme-prop-value($color);
+  $rail-color: rgba($color-value, .26);
+  $highlight-color: $color-value;
+
+  // Rail
+  .mdc-slider__track-container {
+    @include mdc-theme-prop(background-color, $rail-color, $important: true);
+  }
+
+  // Highlight
+  .mdc-slider__track {
+    @include mdc-theme-prop(background-color, $highlight-color, $important: true);
+  }
+}
+
+@mixin mdc-slider-tick-mark-color-important_($color) {
+  .mdc-slider__track-marker::after,
+  .mdc-slider__track-marker-container::after {
+    @include mdc-theme-prop(background-color, $color, $important: true);
+  }
+}
+
 @mixin mdc-slider-highlight-color-important_($color) {
   .mdc-slider__track {
     @include mdc-theme-prop(background-color, $color, $important: true);
@@ -92,18 +123,6 @@
   }
 }
 
-@mixin mdc-slider-focus-halo-color-important_($color) {
-  .mdc-slider__focus-ring {
-    @include mdc-theme-prop(background-color, $color, $important: true);
-  }
-}
-
-@mixin mdc-slider-value-pin-fill-color-important_($color) {
-  .mdc-slider__pin {
-    @include mdc-theme-prop(background-color, $color, $important: true);
-  }
-}
-
 @mixin mdc-slider-thumb-cutout-color-important_($property-name) {
   .mdc-slider__thumb {
     /* @alternate */
@@ -115,5 +134,17 @@
       #{$property-name}: $mdc-slider-dark-theme-assumed-bg-color !important;
       #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color) !important;
     }
+  }
+}
+
+@mixin mdc-slider-focus-halo-color-important_($color) {
+  .mdc-slider__focus-ring {
+    @include mdc-theme-prop(background-color, $color, $important: true);
+  }
+}
+
+@mixin mdc-slider-value-pin-fill-color-important_($color) {
+  .mdc-slider__pin {
+    @include mdc-theme-prop(background-color, $color, $important: true);
   }
 }
