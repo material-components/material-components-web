@@ -38,14 +38,6 @@
     @include mdc-slider-track-marker-color($mdc-slider-main-grey);
   }
 
-  &--disabled {
-    @include mdc-slider-track-color($mdc-slider-main-grey);
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-track-color($mdc-slider-dark-theme-grey);
-    }
-  }
-
   &--off {
     @include mdc-slider-pin-fill-color($mdc-slider-main-grey);
     @include mdc-slider-focus-ring-color($mdc-slider-main-grey);
@@ -86,9 +78,11 @@
   }
 
   &--disabled {
+    @include mdc-slider-track-color($mdc-slider-main-grey);
     @include mdc-slider-thumb-fill-color($mdc-slider-main-grey);
 
     @include mdc-theme-dark(".mdc-slider", true) {
+      @include mdc-slider-track-color($mdc-slider-dark-theme-grey);
       @include mdc-slider-thumb-fill-color($mdc-slider-dark-theme-grey);
     }
 
