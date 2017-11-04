@@ -36,20 +36,7 @@
     @include mdc-slider-tick-mark-color(rgba(white, .54));
   }
 
-  &--off {
-    @include mdc-slider-value-pin-fill-color-important_($mdc-slider-main-grey);
-    @include mdc-slider-focus-halo-color-important_($mdc-slider-main-grey);
-    @include mdc-slider-thumb-stroke-color-important_($mdc-slider-main-grey);
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-value-pin-fill-color-important_($mdc-slider-dark-theme-grey);
-      @include mdc-slider-thumb-stroke-color-important_($mdc-slider-dark-theme-grey);
-    }
-
-    @include mdc-slider-thumb-cutout-color-important_(fill);
-  }
-
-  &--off#{&}--focus {
+  &--focus {
     @include mdc-slider-thumb-fill-color($mdc-slider-off-focus-thumb-color);
 
     @include mdc-theme-dark(".mdc-slider", true) {
@@ -58,7 +45,7 @@
     }
   }
 
-  &--off#{&}--focus#{&}--active {
+  &--focus#{&}--active {
     @include mdc-slider-thumb-stroke-color($mdc-slider-off-focus-active-thumb-stroke-color);
 
     @include mdc-theme-dark(".mdc-slider", true) {
@@ -223,12 +210,6 @@
 
 .mdc-slider--disabled {
   cursor: auto;
-}
-
-.mdc-slider--off {
-  .mdc-slider__track {
-    opacity: 0;
-  }
 }
 
 .mdc-slider--in-transit {

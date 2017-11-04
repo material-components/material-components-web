@@ -439,7 +439,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
 
     this.updateUIFrame_ = requestAnimationFrame(() => {
-      this.setOff_(pctComplete === 0);
       // NOTE(traviskaufman): It would be nice to use calc() here,
       // but IE cannot handle calcs in transforms correctly.
       // See: https://goo.gl/NC2itk
@@ -447,11 +446,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.setThumbContainerStyleProperty(transformProp, `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackStyleProperty(transformProp, `scaleX(${pctComplete})`);
     });
-  }
-
-  setOff_(off) {
-    this.off_ = off;
-    this.toggleClass_(cssClasses.OFF, this.off_);
   }
 
   setActive_(active) {

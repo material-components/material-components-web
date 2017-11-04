@@ -326,23 +326,6 @@ $mdc-slider-default-assumed-bg-color: #fafafa;
 
 If you're using the `.mdc-theme--dark` classes, you'll want to override `$mdc-slider-dark-theme-assumed-bg-color` instead.
 
-Finally, if you'd prefer not to use Sass, you can use the following CSS snippet which should be
-included _after_ the `@material/slider` styles have been loaded onto the page:
-
-```css
-.mdc-slider--off .mdc-slider__thumb {
-  fill: YOUR_CUSTOM_COLOR;
-}
-
-.mdc-slider--disabled .mdc-slider__thumb {
-  stroke: YOUR_CUSTOM_COLOR !important;
-}
-```
-
-Note that the following snippet assumes you are not using `mdc-theme--dark`. If you are, you may
-need to add `.mdc-theme--dark` as an additional ancestor selector before the `.mdc-slider--*`
-classes.
-
 ### Tips/Tricks
 
 #### Preventing [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)
@@ -350,9 +333,6 @@ classes.
 Because `MDCSlider` updates its UI based on the values it reads in when it is instantiated, there is
 potential for an incorrect first render before the script containing the `MDCSlider` initialization
 logic executes. To avoid this, there are a few things you can attempt to do:
-
-If the slider's `aria-valuenow` is set to `"0"`, you can manually add the class `mdc-slider--off`
-to the root `mdc-slider` element.
 
 If you know how wide the slider will be at the time of instantiation, you can add an inline style
 to the `mdc-slider__thumb-container`/`mdc-slider__track` elements which will position it correctly
