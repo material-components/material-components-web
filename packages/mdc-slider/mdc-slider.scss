@@ -31,17 +31,15 @@
   @include mdc-slider-value-pin-ink-color(text-primary-on-secondary);
 
   &--disabled {
-    @include mdc-slider-rail-color-important_(#9a9a9a);
-    @include mdc-slider-tick-mark-color-important_(#bcbcbc);
-    @include mdc-slider-thumb-color-important_(#9a9a9a);
+    @include mdc-slider-rail-color-impl_(#9a9a9a, $important: true);
+    @include mdc-slider-thumb-color-impl_(#9a9a9a, $important: true);
 
     @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-rail-color-important_(#787878);
-      @include mdc-slider-tick-mark-color-important_(#787878);
-      @include mdc-slider-thumb-color-important_(#787878);
+      @include mdc-slider-rail-color-impl_(#787878, $important: true);
+      @include mdc-slider-thumb-color-impl_(#787878, $important: true);
     }
 
-    @include mdc-slider-thumb-stroke-cutout-important_(stroke);
+    @include mdc-slider-thumb-stroke-cutout_(stroke);
   }
 
   position: relative;

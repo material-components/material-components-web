@@ -22,29 +22,11 @@
 //
 
 @mixin mdc-slider-rail-color($color) {
-  $color-value: mdc-theme-prop-value($color);
-  $rail-color: rgba($color-value, .26);
-  $highlight-color: $color-value;
-  $tick-color: mdc-theme-dark-variant($color-value);
-
-  // Rail
-  .mdc-slider__track-container {
-    @include mdc-theme-prop(background-color, $rail-color);
-  }
-
-  // Highlight
-  .mdc-slider__track {
-    @include mdc-theme-prop(background-color, $highlight-color);
-  }
-
-  @include mdc-slider-tick-mark-color_($tick-color);
+  @include mdc-slider-rail-color-impl_($color);
 }
 
 @mixin mdc-slider-thumb-color($color) {
-  .mdc-slider__thumb {
-    @include mdc-theme-prop(fill, $color);
-    @include mdc-theme-prop(stroke, $color);
-  }
+  @include mdc-slider-thumb-color-impl_($color);
 }
 
 @mixin mdc-slider-focus-halo-color($color) {
@@ -69,45 +51,37 @@
 // Private
 //
 
-// TODO(acdvorak): Use these mixins above
-@mixin mdc-slider-rail-color-important_($color) {
+@mixin mdc-slider-rail-color-impl_($color, $important: false) {
   $color-value: mdc-theme-prop-value($color);
   $rail-color: rgba($color-value, .26);
   $highlight-color: $color-value;
+  $tick-color: mdc-theme-dark-variant($color-value);
 
   // Rail
   .mdc-slider__track-container {
-    @include mdc-theme-prop(background-color, $rail-color, $important: true);
+    @include mdc-theme-prop(background-color, $rail-color, $important);
   }
 
   // Highlight
   .mdc-slider__track {
-    @include mdc-theme-prop(background-color, $highlight-color, $important: true);
+    @include mdc-theme-prop(background-color, $highlight-color, $important);
   }
-}
 
-@mixin mdc-slider-tick-mark-color_($color) {
+  // Tick marks
   .mdc-slider__track-marker::after,
   .mdc-slider__track-marker-container::after {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, $color, $important);
   }
 }
 
-@mixin mdc-slider-tick-mark-color-important_($color) {
-  .mdc-slider__track-marker::after,
-  .mdc-slider__track-marker-container::after {
-    @include mdc-theme-prop(background-color, $color, $important: true);
-  }
-}
-
-@mixin mdc-slider-thumb-color-important_($color) {
+@mixin mdc-slider-thumb-color-impl_($color, $important: false) {
   .mdc-slider__thumb {
-    @include mdc-theme-prop(fill, $color, $important: true);
-    @include mdc-theme-prop(stroke, $color, $important: true);
+    @include mdc-theme-prop(fill, $color, $important: $important);
+    @include mdc-theme-prop(stroke, $color, $important: $important);
   }
 }
 
-@mixin mdc-slider-thumb-stroke-cutout-important_($property-name) {
+@mixin mdc-slider-thumb-stroke-cutout_($property-name) {
   .mdc-slider__thumb {
     /* @alternate */
     #{$property-name}: $mdc-slider-default-assumed-bg-color !important;
