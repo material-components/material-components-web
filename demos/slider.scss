@@ -17,3 +17,20 @@
 @import "./common";
 @import "../packages/mdc-slider/mdc-slider";
 @import "../packages/mdc-typography/mdc-typography";
+@import "../packages/mdc-theme/color-palette";
+
+.demo-slider--custom {
+  $main-color: $material-color-red-700;
+  $rail-color: $material-color-red-100;
+  $tick-color: $material-color-red-300;
+  $text-color: if(mdc-theme-tone($main-color) == "light", text-primary-on-light, text-primary-on-dark);
+
+  @include mdc-slider-rail-color($rail-color);
+  @include mdc-slider-tick-mark-color($tick-color);
+  @include mdc-slider-highlight-color($main-color);
+  @include mdc-slider-thumb-stroke-color($main-color);
+  @include mdc-slider-thumb-fill-color($main-color);
+  @include mdc-slider-focus-halo-color($main-color);
+  @include mdc-slider-value-pin-fill-color($main-color);
+  @include mdc-slider-value-pin-ink-color($text-color);
+}

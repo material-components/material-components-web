@@ -83,9 +83,6 @@
         </div>
       </section>
 
-      <section class="example"><em>Note that in browsers that support custom properties, we alter theme's primary
-             color when using the dark theme toggle so that the slider appears more visible</em></section>
-
       <section id="slider-example" class="example">
         <h2>Continuous Slider</h2>
         <div class="slider-example">
@@ -147,7 +144,7 @@
           </p>
         </div>
 
-        <h2>Discrete Slider with markers</h2>
+        <h2>Discrete Slider with Tick Marks</h2>
         <div class="slider-example">
           <p id="example-ds-marker-label">Select Value:</p>
 
@@ -177,6 +174,39 @@
           </p>
           <p>
             Value from <code>MDCSlider:change</code> event: <span id="discrete-slider-w-marker-committed-value">0</span>
+          </p>
+        </div>
+
+        <h2>Custom Colored Discrete Slider with Tick Marks</h2>
+        <div class="slider-example">
+          <p id="example-custom-ds-marker-label">Select Value:</p>
+
+          <div class="example-slider-wrapper">
+            <div id="custom-discrete-mdc-slider-w-marker" class="mdc-slider mdc-slider--discrete mdc-slider--display-markers demo-slider--custom" tabindex="0" role="slider"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="30"
+                 aria-labelledby="example-custom-ds-marker-label">
+              <div class="mdc-slider__track-container">
+                <div class="mdc-slider__track"></div>
+                <div class="mdc-slider__track-marker-container">
+                </div>
+              </div>
+              <div class="mdc-slider__thumb-container">
+                <div class="mdc-slider__pin">
+                  <span class="mdc-slider__pin-value-marker">30</span>
+                </div>
+                <svg class="mdc-slider__thumb" width="21" height="21">
+                  <circle cx="10.5" cy="10.5" r="7.875"></circle>
+                </svg>
+                <div class="mdc-slider__focus-ring"></div>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Value from <code>MDCSlider:input</code> event: <span id="custom-discrete-slider-w-marker-value">0</span>
+          </p>
+          <p>
+            Value from <code>MDCSlider:change</code> event: <span id="custom-discrete-slider-w-marker-committed-value">0</span>
           </p>
         </div>
 
@@ -267,22 +297,36 @@
             discreteWMarkerCommittedValue.textContent = discreteWMarkerSlider.value;
           });
 
+          var customDiscreteWMarkerValue = demoRoot.querySelector('#custom-discrete-slider-w-marker-value');
+          var customDiscreteWMarkerCommittedValue = demoRoot.querySelector('#custom-discrete-slider-w-marker-committed-value');
+          var customDiscreteWMarkerSliderEl = demoRoot.querySelector('#custom-discrete-mdc-slider-w-marker');
+          var customDiscreteWMarkerSlider = new mdc.slider.MDCSlider(customDiscreteWMarkerSliderEl);
+          customDiscreteWMarkerSlider.listen('MDCSlider:input', function() {
+            customDiscreteWMarkerValue.textContent = customDiscreteWMarkerSlider.value;
+          });
+          customDiscreteWMarkerSlider.listen('MDCSlider:change', function() {
+            customDiscreteWMarkerCommittedValue.textContent = customDiscreteWMarkerSlider.value;
+          });
+
           min.addEventListener('input', function() {
             continuousSlider.min = parseFloat(min.value);
             discreteSlider.min = parseFloat(min.value);
             discreteWMarkerSlider.min = parseFloat(min.value);
+            customDiscreteWMarkerSlider.min = parseFloat(min.value);
           });
 
           max.addEventListener('input', function() {
             continuousSlider.max = parseFloat(max.value);
             discreteSlider.max = parseFloat(max.value);
             discreteWMarkerSlider.max = parseFloat(max.value);
+            customDiscreteWMarkerSlider.max = parseFloat(max.value);
           });
 
           step.addEventListener('input', function() {
             continuousSlider.step = parseFloat(step.value);
             discreteSlider.step = parseFloat(step.value);
             discreteWMarkerSlider.step = parseFloat(step.value);
+            customDiscreteWMarkerSlider.step = parseFloat(step.value);
           });
 
           darkTheme.addEventListener('change', function() {
@@ -295,6 +339,7 @@
             continuousSlider.disabled = disabled.checked;
             discreteSlider.disabled = disabled.checked;
             discreteWMarkerSlider.disabled = disabled.checked;
+            customDiscreteWMarkerSlider.disabled = disabled.checked;
           });
 
           useCustomColor.addEventListener('change', function() {
@@ -314,6 +359,7 @@
             continuousSlider.layout();
             discreteSlider.layout();
             discreteWMarkerSlider.layout();
+            customDiscreteWMarkerSlider.layout();
           });
         }
       })();
