@@ -48,16 +48,7 @@
       @include mdc-slider-thumb-stroke-color($mdc-slider-dark-theme-grey);
     }
 
-    // stylelint-disable-next-line plugin/selector-bem-pattern
-    .mdc-slider__thumb {
-      fill: $mdc-slider-default-assumed-bg-color;
-      fill: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color);
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        fill: $mdc-slider-dark-theme-assumed-bg-color;
-        fill: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color);
-      }
-    }
+    @include mdc-slider-thumb-bg-color_(fill);
   }
 
   &--off#{&}--focus {
@@ -86,15 +77,7 @@
       @include mdc-slider-thumb-fill-color($mdc-slider-dark-theme-grey);
     }
 
-    .mdc-slider__thumb {
-      stroke: $mdc-slider-default-assumed-bg-color;
-      stroke: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color);
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        stroke: $mdc-slider-dark-theme-assumed-bg-color;
-        stroke: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color);
-      }
-    }
+    @include mdc-slider-thumb-bg-color_(stroke);
   }
 
   position: relative;

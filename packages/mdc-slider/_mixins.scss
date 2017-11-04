@@ -15,6 +15,11 @@
 //
 
 @import "@material/theme/mixins";
+@import "./variables";
+
+//
+// Public
+//
 
 @mixin mdc-slider-track-container-color($color) {
   .mdc-slider__track-container {
@@ -62,5 +67,23 @@
 @mixin mdc-slider-pin-ink-color($color) {
   .mdc-slider__pin {
     @include mdc-theme-prop(color, $color);
+  }
+}
+
+//
+// Private
+//
+
+@mixin mdc-slider-thumb-bg-color_($property-name) {
+  .mdc-slider__thumb {
+    /* @alternate */
+    #{$property-name}: $mdc-slider-default-assumed-bg-color;
+    #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color);
+
+    @include mdc-theme-dark(".mdc-slider", true) {
+      /* @alternate */
+      #{$property-name}: $mdc-slider-dark-theme-assumed-bg-color;
+      #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color);
+    }
   }
 }
