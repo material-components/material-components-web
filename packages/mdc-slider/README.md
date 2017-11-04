@@ -285,6 +285,7 @@ Mixin | Description
 `mdc-slider-rail-color($color)` | Sets the color of the rail (aka track)
 `mdc-slider-thumb-color($color)` | Sets the color of the thumb (grab handle)
 `mdc-slider-focus-halo-color($color)` | Sets the color of the focus halo
+`mdc-slider-value-pin-fill-color-accessible($color)` | Sets the fill color of the value indicator pin and automatically sets an accessible ink color with high contrast
 `mdc-slider-value-pin-fill-color($color)` | Sets the fill color of the value indicator pin
 `mdc-slider-value-pin-ink-color($color)` | Sets the ink color of the value indicator pin
 

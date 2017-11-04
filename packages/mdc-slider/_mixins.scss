@@ -47,6 +47,13 @@
   }
 }
 
+@mixin mdc-slider-value-pin-fill-color-accessible($color) {
+  $ink-color: if(mdc-theme-tone($color) == "light", text-primary-on-light, text-primary-on-dark);
+
+  @include mdc-slider-value-pin-fill-color($color);
+  @include mdc-slider-value-pin-ink-color($ink-color);
+}
+
 //
 // Private
 //
