@@ -21,12 +21,14 @@
 // Public
 //
 
+// TODO(acdvorak): Rename to "track-bg-color" or "track-selected-range-color"?
 @mixin mdc-slider-track-container-color($color) {
   .mdc-slider__track-container {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
+// TODO(acdvorak): Rename to "track-fg-color" or "track-unselected-range-color"?
 @mixin mdc-slider-track-color($color) {
   .mdc-slider__track {
     @include mdc-theme-prop(background-color, $color);
