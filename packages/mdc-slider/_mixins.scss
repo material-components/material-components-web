@@ -21,21 +21,19 @@
 // Public
 //
 
-// TODO(acdvorak): Rename to "track-bg-color" or "track-selected-range-color"?
-@mixin mdc-slider-track-container-color($color) {
+@mixin mdc-slider-rail-color($color) {
   .mdc-slider__track-container {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-// TODO(acdvorak): Rename to "track-fg-color" or "track-unselected-range-color"?
-@mixin mdc-slider-track-color($color) {
+@mixin mdc-slider-highlight-color($color) {
   .mdc-slider__track {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-slider-track-marker-color($color) {
+@mixin mdc-slider-tick-mark-color($color) {
   .mdc-slider__track-marker::after,
   .mdc-slider__track-marker-container::after {
     @include mdc-theme-prop(background-color, $color);
@@ -54,19 +52,19 @@
   }
 }
 
-@mixin mdc-slider-focus-ring-color($color) {
+@mixin mdc-slider-focus-halo-color($color) {
   .mdc-slider__focus-ring {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-slider-pin-fill-color($color) {
+@mixin mdc-slider-value-pin-fill-color($color) {
   .mdc-slider__pin {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-slider-pin-ink-color($color) {
+@mixin mdc-slider-value-pin-ink-color($color) {
   .mdc-slider__pin {
     @include mdc-theme-prop(color, $color);
   }

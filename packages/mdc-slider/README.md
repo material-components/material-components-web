@@ -170,8 +170,8 @@ track container.
 </div>
 ```
 
-> **NOTE**: When the provided step is indivisble to distance between max and min,
-> we place the secondary to last marker proportionally at where thumb could reach and
+> **NOTE**: When the provided step is indivisible to distance between max and min,
+> we place the second to last marker proportionally at where thumb could reach and
 > place the last marker at max value.
 
 ### Disabled sliders
@@ -276,8 +276,21 @@ use to build a custom MDCSlider component for their framework.
 
 ### Theming
 
-All thematic elements of sliders make use of the **primary theme color**, including when the
+By default, all thematic elements of sliders make use of the **secondary theme color**, including when the
 component is used within a dark mode context.
+
+#### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-slider-rail-color($color)` | Sets the color of the rail (aka track)
+`mdc-slider-highlight-color($color)` | Sets the color of the highlighted portion of the rail (i.e., the selected value range)
+`mdc-slider-tick-mark-color($color)` | Sets the color of the tick marks on a discrete slider rail
+`mdc-slider-thumb-stroke-color($color)` | Sets the stroke color of the thumb (grab handle)
+`mdc-slider-thumb-fill-color($color)` | Sets the fill color of the thumb (grab handle)
+`mdc-slider-focus-halo-color($color)` | Sets the color of the focus halo
+`mdc-slider-value-pin-fill-color($color)` | Sets the fill color of the value indicator pin
+`mdc-slider-value-pin-ink-color($color)` | Sets the ink color of the value indicator pin
 
 #### Setting the correct background color for disabled/off slider thumbs
 

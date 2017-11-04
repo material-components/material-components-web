@@ -24,27 +24,27 @@
 // postcss-bem-linter: define slider
 
 .mdc-slider {
-  @include mdc-slider-track-container-color($mdc-slider-main-grey);
-  @include mdc-slider-track-marker-color($mdc-slider-dark-theme-grey);
-  @include mdc-slider-track-color(secondary);
+  @include mdc-slider-rail-color($mdc-slider-main-grey);
+  @include mdc-slider-tick-mark-color($mdc-slider-dark-theme-grey);
+  @include mdc-slider-highlight-color(secondary);
   @include mdc-slider-thumb-stroke-color(secondary);
   @include mdc-slider-thumb-fill-color(secondary);
-  @include mdc-slider-focus-ring-color(secondary);
-  @include mdc-slider-pin-fill-color(secondary);
-  @include mdc-slider-pin-ink-color(text-primary-on-secondary);
+  @include mdc-slider-focus-halo-color(secondary);
+  @include mdc-slider-value-pin-fill-color(secondary);
+  @include mdc-slider-value-pin-ink-color(text-primary-on-secondary);
 
   @include mdc-theme-dark {
-    @include mdc-slider-track-container-color($mdc-slider-dark-theme-grey);
-    @include mdc-slider-track-marker-color($mdc-slider-main-grey);
+    @include mdc-slider-rail-color($mdc-slider-dark-theme-grey);
+    @include mdc-slider-tick-mark-color($mdc-slider-main-grey);
   }
 
   &--off {
-    @include mdc-slider-pin-fill-color($mdc-slider-main-grey);
-    @include mdc-slider-focus-ring-color($mdc-slider-main-grey);
+    @include mdc-slider-value-pin-fill-color($mdc-slider-main-grey);
+    @include mdc-slider-focus-halo-color($mdc-slider-main-grey);
     @include mdc-slider-thumb-stroke-color($mdc-slider-main-grey);
 
     @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-pin-fill-color($mdc-slider-dark-theme-grey);
+      @include mdc-slider-value-pin-fill-color($mdc-slider-dark-theme-grey);
       @include mdc-slider-thumb-stroke-color($mdc-slider-dark-theme-grey);
     }
 
@@ -69,11 +69,11 @@
   }
 
   &--disabled {
-    @include mdc-slider-track-color($mdc-slider-main-grey);
+    @include mdc-slider-highlight-color($mdc-slider-main-grey);
     @include mdc-slider-thumb-fill-color($mdc-slider-main-grey);
 
     @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-track-color($mdc-slider-dark-theme-grey);
+      @include mdc-slider-highlight-color($mdc-slider-dark-theme-grey);
       @include mdc-slider-thumb-fill-color($mdc-slider-dark-theme-grey);
     }
 
