@@ -86,15 +86,13 @@
       @include mdc-slider-thumb-fill-color($mdc-slider-dark-theme-grey);
     }
 
-    // We use !important here to override all styles without having to use excessive
-    // :not() selectors or intricate compound selectors.
     .mdc-slider__thumb {
-      stroke: $mdc-slider-default-assumed-bg-color !important;
-      stroke: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color) !important;
+      stroke: $mdc-slider-default-assumed-bg-color;
+      stroke: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color);
 
       @include mdc-theme-dark(".mdc-slider", true) {
-        stroke: $mdc-slider-dark-theme-assumed-bg-color !important;
-        stroke: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color) !important;
+        stroke: $mdc-slider-dark-theme-assumed-bg-color;
+        stroke: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color);
       }
     }
   }
