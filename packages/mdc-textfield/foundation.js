@@ -78,6 +78,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.receivedUserInput_ = false;
     /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
+    /** @private {boolean} */
+    this.labelFloatIsActive_ = false;
+    /** @private {boolean} */
+    this.setValueIsProcessing_ = false;
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -95,9 +99,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.getNativeInput_().value) {
-      this.adapter_.addClassToLabel(MDCTextFieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
-    }
+    this.updateLabelFloat_();
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.registerInputInteractionHandler('blur', this.inputBlurHandler_);
@@ -153,17 +155,17 @@ class MDCTextFieldFoundation extends MDCFoundation {
   /**
    * Activates the text field focus state.
    */
-  activateFocus() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+  activateFocus_() {
+    const {FOCUSED, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    this.isFocused_ = true;
+    this.updateLabelFloat_();
     this.adapter_.addClass(FOCUSED);
     const bottomLine = this.adapter_.getBottomLineFoundation();
     if (bottomLine) {
       bottomLine.activate();
     }
-    this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
     this.showHelperText_();
-    this.isFocused_ = true;
   }
 
   /**
@@ -193,22 +195,17 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @private
    */
   updateLabelFloat_() {
-    // Don't do anything if the input is focused.
-    if (!this.isFocused_) {
-      const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
-      const input = this.getNativeInput_();
+    const input = this.getNativeInput_();
+    const {LABEL_FLOAT_ABOVE} = MDCTextFieldFoundation.cssClasses;
 
-      if (input.value) {
+    if (this.isFocused_ || input.value) {
+      if (!this.labelFloatIsActive_) {
+        this.labelFloatIsActive_ = true;
         this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
-      } else {
-        this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
       }
-
-      if (!this.useCustomValidityChecking_) {
-        this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-        this.showHelptext_();
-        this.changeValidity_(input.checkValidity());
-      }
+    } else if (this.labelFloatIsActive_) {
+      this.labelFloatIsActive_ = false;
+      this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
     }
   }
 
@@ -238,8 +235,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
   /**
    * Deactives the Text Field's focus state.
    */
-  deactivateFocus() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+  deactivateFocus_() {
+    const {FOCUSED, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
     this.isFocused_ = false;
@@ -247,11 +244,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
 
     if (!input.value && !this.isBadInput_()) {
-      this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+      this.updateLabelFloat_();
       this.receivedUserInput_ = false;
     }
 
+    this.updateDefaultValidity_();
+  }
+
+  updateDefaultValidity_() {
     if (!this.useCustomValidityChecking_) {
+      const input = this.getNativeInput_();
       this.changeValidity_(input.checkValidity());
     }
   }
@@ -266,8 +268,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
-      this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
+
+      if (this.isFocused_) {
+        this.adapter_.addClassToLabel(LABEL_SHAKE);
+      }
     }
     this.updateHelperText_(isValid);
   }
@@ -338,6 +343,20 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * @param {string} value The value of the textfield.
+   */
+  setValue(value) {
+    this.setValueIsProcessing_ = true;
+
+    const input = this.getNativeInput_();
+    input.value = value;
+    this.updateLabelFloat_();
+    this.updateDefaultValidity_();
+
+    this.setValueIsProcessing_ = false;
+  }
+
+  /**
    * @return {!Element|!NativeInputType} The native text input from the
    * host environment, or a dummy if none exists.
    * @private
@@ -362,7 +381,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /** @private */
   installPropertyChangeHooks_() {
-    const {INPUT_PROTO_PROP} = MDCTextfieldFoundation.strings;
+    const {INPUT_PROTO_PROP} = MDCTextFieldFoundation.strings;
     const nativeInputElement = this.getNativeInput_();
     const inputElementProto = Object.getPrototypeOf(nativeInputElement);
     const desc = Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP);
@@ -373,8 +392,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
       const nativeInputElementDesc = /** @type {!ObjectPropertyDescriptor} */ ({
         get: desc.get,
         set: (value) => {
-          desc.set.call(nativeInputElement, value);
-          this.updateLabelFloat_();
+          if (!this.setValueIsProcessing_) {
+            desc.set.call(nativeInputElement, value);
+            this.setValue(value);
+          }
         },
         configurable: desc.configurable,
         enumerable: desc.enumerable,
@@ -385,7 +406,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /** @private */
   uninstallPropertyChangeHooks_() {
-    const {INPUT_PROTO_PROP} = MDCTextfieldFoundation.strings;
+    const {INPUT_PROTO_PROP} = MDCTextFieldFoundation.strings;
     const nativeInputElement = this.getNativeInput_();
     const inputElementProto = Object.getPrototypeOf(nativeInputElement);
     const desc = /** @type {!ObjectPropertyDescriptor} */ (

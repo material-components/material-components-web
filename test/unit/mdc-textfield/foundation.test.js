@@ -323,9 +323,17 @@ test('on focus removes aria-hidden from helperText', () => {
 const setupBlurTest = () => {
   const {foundation, mockAdapter} = setupTest();
   let blur;
-  td.when(mockAdapter.registerInputInteractionHandler('blur', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    blur = handler;
-  });
+  td.when(mockAdapter.registerInputInteractionHandler('blur', td.matchers.isA(Function))).thenDo(
+    (evtType, handler) => {
+      blur = handler;
+    }
+  );
+  let focus;
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function))).thenDo(
+    (evtType, handler) => {
+      focus = handler;
+    }
+  );
   const nativeInput = {
     value: '',
     checkValidity: () => true,
@@ -333,7 +341,7 @@ const setupBlurTest = () => {
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
 
-  return {foundation, mockAdapter, blur, nativeInput};
+  return {foundation, mockAdapter, focus, blur, nativeInput};
 };
 
 test('on blur removes mdc-text-field--focused class', () => {
@@ -343,7 +351,8 @@ test('on blur removes mdc-text-field--focused class', () => {
 });
 
 test('on blur removes mdc-text-field__label--float-above when no input value present', () => {
-  const {mockAdapter, blur} = setupBlurTest();
+  const {mockAdapter, focus, blur} = setupBlurTest();
+  focus();
   blur();
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
