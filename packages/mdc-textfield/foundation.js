@@ -251,6 +251,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * @private
+   */
   updateDefaultValidity_() {
     if (!this.useCustomValidityChecking_) {
       const input = this.getNativeInput_();
@@ -281,6 +284,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Updates the state of the Text Field's helper text based on validity and
    * the Text Field's options.
    * @param {boolean} isValid
+   * @private
    */
   updateHelperText_(isValid) {
     const {HELPER_TEXT_PERSISTENT, HELPER_TEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
