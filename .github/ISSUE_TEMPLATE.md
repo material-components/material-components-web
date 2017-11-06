@@ -42,8 +42,8 @@ Follow the template below to ensure the quickest and most accurate response to y
 > Please write the steps which need to be taken in order to reproduce the bug. These steps should be
 > as detailed as possible, e.g.
 >
-> 1. run the demo server
-> 2. go to localhost:8080/textfield.html
+> 1. Run the demo server
+> 2. Go to localhost:8080/textfield.html
 > 3. Tab-focus on the first text field
 > 4. Observe the component's behavior
 >
