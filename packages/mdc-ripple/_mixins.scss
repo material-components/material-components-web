@@ -64,7 +64,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 }
 
-@mixin mdc-ripple-color($color: black, $opacity-map: null) {
+@mixin mdc-states-color($color: black, $opacity-map: null) {
   @if not $opacity-map {
     $opacity-map: if(mdc-theme-luminance($color) > .5, $mdc-ripple-light-ink-opacities, $mdc-ripple-dark-ink-opacities);
   }
@@ -174,4 +174,80 @@ $mdc-ripple-common-styles-emitted_: false !default;
     top: var(--mdc-ripple-top, 0);
     left: var(--mdc-ripple-left, 0);
   }
+}
+
+//
+// Legacy
+//
+
+@mixin mdc-ripple-color($color: black, $opacity: .06) {
+  // Opacity styles are here (rather than in mdc-ripple-surface) to ensure that opacity is re-initialized for
+  // cases where this mixin is used to override another inherited use of itself,
+  // without needing to re-include mdc-ripple-surface.
+  &::before,
+  &::after {
+    @include mdc-ripple-color_($color, $opacity);
+
+    opacity: 0;
+  }
+
+  // Note: when :active is applied, :focus is already applied, which will effectively double the effect.
+  &:not(.mdc-ripple-upgraded) {
+    &:hover::before,
+    &:focus::before,
+    &:active::after {
+      transition-duration: 85ms;
+      opacity: .6;
+    }
+  }
+
+  &.mdc-ripple-upgraded--background-focused::before {
+    opacity: .99999;
+  }
+
+  &.mdc-ripple-upgraded--background-active-fill::before {
+    transition-duration: 120ms;
+    opacity: 1;
+  }
+
+  // Foreground ripple styles
+
+  &.mdc-ripple-upgraded::after {
+    opacity: 0;
+  }
+
+  &.mdc-ripple-upgraded--foreground-activation::after {
+    animation: 300ms mdc-ripple-fg-radius-in forwards, 83ms mdc-ripple-fg-opacity-in forwards;
+  }
+
+  &.mdc-ripple-upgraded--foreground-deactivation::after {
+    animation: 83ms mdc-ripple-fg-opacity-out;
+    // Retain transform from mdc-ripple-fg-radius-in activation
+    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+  }
+}
+
+//
+// Private
+//
+
+@mixin mdc-ripple-color_($color, $opacity) {
+  // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
+  @if type-of($color) == "color" {
+    background-color: rgba($color, $opacity);
+  } @else {
+    // Assume $color is a theme property name
+    $theme-value: map-get($mdc-theme-property-values, $color);
+    $css-var: var(--mdc-theme-#{$color}, $theme-value);
+
+    background-color: rgba($theme-value, $opacity);
+
+    // See: https://drafts.csswg.org/css-color/#modifying-colors
+    // While this is currently unsupported as of now, it will begin to work by default as browsers
+    // begin to implement the CSS 4 color spec.
+    @supports (background-color: color(green a(10%))) {
+      background-color: color(#{$css-var} a(#{percentage($opacity)}));
+    }
+  }
+  // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
 }

@@ -23,11 +23,11 @@
 .mdc-icon-toggle {
   @include mdc-theme-prop(color, text-secondary-on-light);
   @include mdc-ripple-surface;
-  @include mdc-ripple-color(black);
+  @include mdc-states-color(black);
   @include mdc-ripple-radius;
 
   @include mdc-theme-dark(".mdc-icon-toggle", true) {
-    @include mdc-ripple-color(white);
+    @include mdc-states-color(white);
   }
 
   display: flex;
@@ -60,12 +60,12 @@
 
 .mdc-icon-toggle--primary {
   @include mdc-theme-prop(color, primary);
-  @include mdc-ripple-color(primary);
+  @include mdc-states-color(primary);
 }
 
 .mdc-icon-toggle--accent {
   @include mdc-theme-prop(color, secondary);
-  @include mdc-ripple-color(secondary);
+  @include mdc-states-color(secondary);
 }
 
 .mdc-icon-toggle--disabled {

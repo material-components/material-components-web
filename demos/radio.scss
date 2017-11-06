@@ -28,5 +28,5 @@
   @include mdc-radio-checked-stroke-color($color);
   @include mdc-radio-ink-color($material-color-orange-500);
   @include mdc-radio-focus-indicator-color($color);
-  @include mdc-ripple-color($color);
+  @include mdc-states-color($color);
 }

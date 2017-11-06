@@ -139,7 +139,7 @@
 
 .mdc-text-field--box {
   @include mdc-ripple-surface;
-  @include mdc-ripple-color(text-primary-on-light);
+  @include mdc-states-color(text-primary-on-light);
   @include mdc-ripple-radius;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
 
@@ -154,7 +154,7 @@
   }
 
   @include mdc-theme-dark(".mdc-text-field", true) {
-    @include mdc-ripple-color(text-primary-on-dark);
+    @include mdc-states-color(text-primary-on-dark);
   }
 
   // NOTE: For some reason, stylelint complains that the patterns below don't follow BEM.

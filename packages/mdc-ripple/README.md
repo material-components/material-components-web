@@ -62,13 +62,17 @@ General notes:
 #### Sass API
 
 These APIs implicitly use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
-All three of the following mixins are mandatory in order to fully style the ripple effect; from that point, it is feasible to further override only the parts necessary (e.g. `mdc-ripple-color` specifically) for variants of a component.
+All three of the following mixins are mandatory in order to fully style the ripple effect; from that point, it is feasible to further override only the parts necessary (e.g. `mdc-states-color` specifically) for variants of a component.
 
 Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Adds base styles for a ripple surface
-`mdc-ripple-color($color, $opacity-map)` | Adds ripple and state styles for the indicated color, optionally using the specified set of opacities (if unspecified, uses opacities appropriate to the given color)
+`mdc-states-color($color, $opacity-map)` | Adds ripple and state styles for the indicated color, optionally using the specified set of opacities (if unspecified, uses opacities appropriate to the given color)
 `mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
+
+#### Legacy Sass API
+
+The `mdc-ripple-color($color, $opacity)` mixin is deprecated. Use the `mdc-states-color` mixin (documented above) instead, which provides finer control over a component's opacity for different states of user interaction.
 
 ### Adding Ripple JS
 
