@@ -86,11 +86,11 @@ class MDCTextfieldFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.inputInputHandler_ = () => this.autoCompleteFocus();
     /** @private {function(!Event): undefined} */
-    this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
+    this.setPointerXOffset_ = (evt) => this.animateBottomLine(evt);
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
     /** @private {function(!Event): undefined} */
-    this.transitionEndHandler_ = (evt) => this.transitionEnd(evt);
+    this.transitionEndHandler_ = (evt) => this.handleBottomLineAnimationEnd(evt);
   }
 
   init() {
@@ -161,11 +161,10 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the transform-origin of the bottom line, causing it to animate out
-   * from the user's click location.
+   * Animates the bottom line out from the user's click location.
    * @param {!Event} evt
    */
-  setBottomLineTransformOrigin(evt) {
+  animateBottomLine(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();
     const evtCoords = {x: evt.clientX, y: evt.clientY};
     const normalizedX = evtCoords.x - targetClientRect.left;
@@ -195,11 +194,11 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Fires when animation transition ends, performing actions that must wait
-   * for animations to finish.
+   * Executes when the bottom line's transition animation ends, performing
+   * actions that must wait for animations to finish.
    * @param {!Event} evt
    */
-  transitionEnd(evt) {
+  handleBottomLineAnimationEnd(evt) {
     const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
 
     // We need to wait for the bottom line to be entirely transparent
