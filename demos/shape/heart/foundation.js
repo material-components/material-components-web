@@ -17,45 +17,60 @@
 import MDCShapeFoundation from '../../../packages/mdc-shape/foundation';
 
 export default class DemoHeartFoundation extends MDCShapeFoundation {
+
   generatePath_(width, height, padding) {
     return 'm ' + (width / 2) + ' ' + (height - padding)
-    +this.generateLeftBase_(width, height, padding)
-    +this.generateTopLeftCurve_(width, height, padding)
-    +this.generateTopRightCurve_(width, height, padding)
-    +this.generateRightBase_(width, height, padding);
+    + this.generateLeftBase_(width, height, padding)
+    + this.generateTopLeftCurve_(width, height, padding)
+    + this.generateTopRightCurve_(width, height, padding)
+    + this.generateRightBase_(width, height, padding);
   }
+
   generateBaseWidth_(width, padding) {
-    return ((width - (padding * 2)) / 2);
+    return ((width - padding * 2) / 2);
   }
+
   generateBaseFlatWidth_(width, padding) {
     return this.generateBaseWidth_(width, padding) * 0.14;
   }
+
   generateBaseCurveWidth_(width, padding) {
     return this.generateBaseWidth_(width, padding) * 0.52;
   }
+
   generateBaseHeight_(height, padding) {
-    return (height - (padding * 2)) * 0.67;
+    return (height - padding * 2) * 0.67;
   }
+
   generateBaseFlatHeight_(height, padding) {
     return this.generateBaseHeight_(height, padding) * 0.11;
   }
+
   generateBaseCurveHeight_(height, padding) {
     return this.generateBaseHeight_(height, padding) * 0.4;
   }
+
   generateBaseCurveHeight2_(height, padding) {
     return this.generateBaseHeight_(height, padding) * 0.67;
   }
+
   generateLeftBase_(width, height, padding) {
     const flatWidth = this.generateBaseFlatWidth_(width, padding);
     const flatHeight = this.generateBaseFlatHeight_(height, padding);
     const realWidth = this.generateBaseWidth_(width, padding) - flatWidth;
-    return 'l ' + (-1 * flatWidth) + ',' + (-1 * flatHeight)
-      +'c ' + (-1 * this.generateBaseCurveWidth_(width, padding)) + ','
-      + (-1 * this.generateBaseCurveHeight_(height, padding))
-      + ' ' + (-1 * realWidth) + ',' + (-1 * this.generateBaseCurveHeight2_(height, padding))
-      + ' ' + (-1 * realWidth)
-      + ',' + (-1 * (this.generateBaseHeight_(height, padding) - flatHeight));
+    const negativeFlatWidth = -1 * flatWidth;
+    const negativeFlatHeight = -1 * flatHeight;
+    const baseCurveWidth = -1 * this.generateBaseCurveWidth_(width, padding);
+    const baseCurveHeight = -1 * this.generateBaseCurveHeight_(height, padding);
+    const negativeRealWidth = -1 * realWidth;
+    const baseCurveHeight2 = -1 * this.generateBaseCurveHeight2_(height, padding);
+    const baseHeight = -1 * (this.generateBaseHeight_(height, padding) - flatHeight);
+    return `l ${negativeFlatWidth},${negativeFlatHeight}`
+      + ` c ${baseCurveWidth},${baseCurveHeight}`
+      + ` ${negativeRealWidth},${baseCurveHeight2}`
+      + ` ${negativeRealWidth},${baseHeight}`;
   }
+
   generateRightBase_(width, height, padding) {
     const flatWidth = this.generateBaseFlatWidth_(width, padding);
     const flatHeight = this.generateBaseFlatHeight_(height, padding);
@@ -65,35 +80,45 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
       + (-1 * (realWidth - this.generateBaseCurveWidth_(width, padding)))
       + ',' + (curveHeight - this.generateBaseCurveHeight_(height, padding))
       + (-1 * realWidth) + ',' + curveHeight
-      +'l ' + (-1 * flatWidth) + ',' + flatHeight;
+      + 'l ' + (-1 * flatWidth) + ',' + flatHeight;
   }
+
   generateOutsideWidth_(width, padding) {
     return ((width - (padding * 2)) / 2) * 0.55;
   }
+
   generateOutsideCurveWidth_(width, padding) {
     return this.generateOutsideWidth_(width, padding) * 0.44;
   }
+
   generateInsideWidth_(width, padding) {
     return ((width - (padding * 2)) / 2) * 0.45;
   }
+
   generateInsideCurveWidth_(width, padding) {
     return this.generateInsideWidth_(width, padding) * 0.37;
   }
+
   generateInsideCurveWidth2_(width, padding) {
     return this.generateInsideWidth_(width, padding) * 0.76;
   }
+
   generateTopHeight_(height, padding) {
     return (height - (padding * 2)) * (1 - 0.67);
   }
+
   generateTopCurveHeight_(height, padding) {
     return this.generateTopHeight_(height, padding) * 0.56;
   }
+
   generateDipHeight_(height, padding) {
     return (height - (padding * 2)) * 0.15;
   }
+
   generateDipCurveHeight_(height, padding) {
     return this.generateDipHeight_(height, padding) * 0.38;
   }
+
   generateTopLeftCurve_(width, height, padding) {
     const topHeight = this.generateTopHeight_(height, padding);
     return 'c 0,' + (-1 * this.generateTopCurveHeight_(height, padding)) + ' '
@@ -104,6 +129,7 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
       + ',' + (this.generateDipCurveHeight_(height, padding)) + ', '
       + this.generateInsideWidth_(width, padding) + ',' + this.generateDipHeight_(height, padding);
   }
+
   generateTopRightCurve_(width, height, padding) {
     const outsideWidth = this.generateOutsideWidth_(width, padding);
     const insideWidth = this.generateInsideWidth_(width, padding);
