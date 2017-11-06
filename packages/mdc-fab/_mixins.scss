@@ -21,12 +21,11 @@
 @import "@material/theme/mixins";
 
 @mixin mdc-fab-accessible($container-color) {
+  $fill-tone: mdc-theme-tone($container-color);
+
   @include mdc-fab-container-color($container-color);
 
-  // Calculate whether to use dark or light text on top of given color.
-  $light-or-dark-text: mdc-theme-light-or-dark($container-color);
-
-  @if ($light-or-dark-text == "light") {
+  @if ($fill-tone == "dark") {
     @include mdc-fab-ink-color(text-primary-on-dark);
     @include mdc-ripple-color(text-primary-on-dark, $mdc-ripple-pressed-light-ink-opacity);
   } @else {

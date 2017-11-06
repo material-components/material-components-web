@@ -150,7 +150,6 @@ open http://localhost:8080
 - [Getting Started Guide](docs/getting-started.md)
 - [All Components](packages/)
 - [Demos](demos/)
-- [Framework Integration Examples](framework-examples/)
 - [Contributing](CONTRIBUTING.md)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
