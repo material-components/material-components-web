@@ -373,8 +373,9 @@ test('on blur removes mdc-text-field--invalid if custom validity is false and' +
 
 test('on blur adds mdc-textfied--invalid if custom validity is false and' +
      'input.checkValidity() returns false', () => {
-  const {mockAdapter, blur, nativeInput} = setupBlurTest();
+  const {mockAdapter, focus, blur, nativeInput} = setupBlurTest();
   nativeInput.checkValidity = () => false;
+  focus();
   blur();
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });

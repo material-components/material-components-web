@@ -239,16 +239,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const {FOCUSED, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
+    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
+    this.updateDefaultValidity_();
+
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
-    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
 
     if (!input.value && !this.isBadInput_()) {
       this.updateLabelFloat_();
       this.receivedUserInput_ = false;
     }
-
-    this.updateDefaultValidity_();
   }
 
   updateDefaultValidity_() {
