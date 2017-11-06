@@ -28,10 +28,10 @@
 let NativeInputType;
 
 /**
- * Adapter for MDC TextField.
+ * Adapter for MDC Text Field.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the TextField into your framework. See
+ * adapter to integrate the Text Field into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *

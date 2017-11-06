@@ -127,7 +127,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles all user interactions with the TextField.
+   * Handles all user interactions with the Text Field.
    * @param {!Event} evt
    * @private
    */
@@ -179,7 +179,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Activates the TextField's focus state in cases when the input value
+   * Activates the Text Field's focus state in cases when the input value
    * changes without user input (e.g. programatically).
    * @private
    */
@@ -216,7 +216,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Deactives the TextField's focus state.
+   * Deactives the Text Field's focus state.
    * @private
    */
   deactivateFocus_() {
@@ -238,7 +238,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the TextField's valid state based on the supplied validity.
+   * Updates the Text Field's valid state based on the supplied validity.
    * @param {boolean} isValid
    * @private
    */
@@ -254,8 +254,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the state of the TextField's help text based on validity and
-   * the TextField's options.
+   * Updates the state of the Text Field's help text based on validity and
+   * the Text Field's options.
    * @param {boolean} isValid
    */
   updateHelptext_(isValid) {
@@ -287,7 +287,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {boolean} True if the TextField input fails validity checks.
+   * @return {boolean} True if the Text Field input fails validity checks.
    * @private
    */
   isBadInput_() {
@@ -296,7 +296,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {boolean} True if the TextField is disabled.
+   * @return {boolean} True if the Text Field is disabled.
    */
   isDisabled() {
     return this.getNativeInput_().disabled;
@@ -333,7 +333,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {boolean} isValid Sets the validity state of the TextField.
+   * @param {boolean} isValid Sets the validity state of the Text Field.
    */
   setValid(isValid) {
     this.useCustomValidityChecking_ = true;

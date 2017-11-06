@@ -85,7 +85,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Initiliazes the TextField's internal state based on the environment's
+   * Initiliazes the Text Field's internal state based on the environment's
    * state.
    */
   initialSyncWithDom() {
@@ -93,21 +93,21 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {boolean} True if the TextField is disabled.
+   * @return {boolean} True if the Text Field is disabled.
    */
   get disabled() {
     return this.foundation_.isDisabled();
   }
 
   /**
-   * @param {boolean} disabled Sets the TextField disabled or enabled.
+   * @param {boolean} disabled Sets the Text Field disabled or enabled.
    */
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
 
   /**
-   * @param {boolean} valid Sets the TextField valid or invalid.
+   * @param {boolean} valid Sets the Text Field valid or invalid.
    */
   set valid(valid) {
     this.foundation_.setValid(valid);
