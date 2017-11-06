@@ -447,7 +447,7 @@ Deactivates the focus state of the Text Field. Normally called in response to th
 Animates the bottom line. The animation expands outward from the user's click or touch. Expects an
 event with clientX/clientY properties.
 
-##### MDCTextfieldFoundation.handleBottomLineAnimationEnd
+##### MDCTextfieldFoundation.handleBottomLineAnimationEnd(evt: !Event)
 
 Handles the end of the bottom line animation, performing actions that must wait for animations to
 finish. Expects a transition-end event.
