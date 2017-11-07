@@ -54,6 +54,15 @@
   @include mdc-slider-value-pin-ink-color($ink-color);
 }
 
+// NOTE: This mixin sets the color of ALL customizable elements in the slider. If new elements are added, this mixin
+// should be updated to cover those additional elements.
+@mixin mdc-slider-color-accessible($color) {
+  @include mdc-slider-rail-color($color);
+  @include mdc-slider-thumb-color($color);
+  @include mdc-slider-focus-halo-color($color);
+  @include mdc-slider-value-pin-fill-color-accessible($color);
+}
+
 //
 // Private
 //

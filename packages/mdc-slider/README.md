@@ -282,6 +282,7 @@ component is used within a dark mode context.
 
 Mixin | Description
 --- | ---
+`mdc-slider-color-accessible($color)` | Sets the color of all slider elements and automatically sets an accessible ink color with high contrast for the value indicator pin
 `mdc-slider-rail-color($color)` | Sets the color of the rail (aka track)
 `mdc-slider-thumb-color($color)` | Sets the color of the thumb (grab handle)
 `mdc-slider-focus-halo-color($color)` | Sets the color of the focus halo
