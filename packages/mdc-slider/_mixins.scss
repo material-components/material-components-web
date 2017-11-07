@@ -35,15 +35,15 @@
   }
 }
 
-@mixin mdc-slider-value-pin-fill-color($color) {
-  .mdc-slider__pin {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
 @mixin mdc-slider-value-pin-ink-color($color) {
   .mdc-slider__pin {
     @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-slider-value-pin-fill-color($color) {
+  .mdc-slider__pin {
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 
