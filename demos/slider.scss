@@ -20,10 +20,8 @@
 @import "../packages/mdc-theme/color-palette";
 
 .demo-slider--custom {
-  $color: $material-color-red-700;
-
-  @include mdc-slider-rail-color($color);
-  @include mdc-slider-thumb-color($color);
-  @include mdc-slider-focus-halo-color($color);
-  @include mdc-slider-value-pin-fill-color-accessible($color);
+  @include mdc-slider-rail-color($material-color-red-700);
+  @include mdc-slider-thumb-color($material-color-orange-500);
+  @include mdc-slider-focus-halo-color($material-color-yellow-900);
+  @include mdc-slider-value-pin-fill-color-accessible($material-color-orange-700);
 }
