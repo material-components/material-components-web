@@ -30,16 +30,18 @@
   @include mdc-slider-value-pin-fill-color(secondary);
   @include mdc-slider-value-pin-ink-color(text-primary-on-secondary);
 
+  // We use !important here to override all styles without having to use excessive
+  // :not() selectors or intricate compound selectors.
   &--disabled {
     @include mdc-slider-rail-color-impl_(#9a9a9a, $important: true);
     @include mdc-slider-thumb-color-impl_(#9a9a9a, $important: true);
+    @include mdc-slider-thumb-stroke-cutout_($mdc-slider-default-assumed-bg-color);
 
     @include mdc-theme-dark(".mdc-slider", true) {
       @include mdc-slider-rail-color-impl_(#787878, $important: true);
       @include mdc-slider-thumb-color-impl_(#787878, $important: true);
+      @include mdc-slider-thumb-stroke-cutout_($mdc-slider-dark-theme-assumed-bg-color);
     }
-
-    @include mdc-slider-thumb-stroke-cutout_(stroke);
   }
 
   position: relative;

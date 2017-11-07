@@ -94,16 +94,12 @@
   }
 }
 
-@mixin mdc-slider-thumb-stroke-cutout_($property-name) {
+@mixin mdc-slider-thumb-stroke-cutout_($color) {
+  // We use !important here to override all styles without having to use excessive
+  // :not() selectors or intricate compound selectors.
   .mdc-slider__thumb {
     /* @alternate */
-    #{$property-name}: $mdc-slider-default-assumed-bg-color !important;
-    #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color) !important;
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      /* @alternate */
-      #{$property-name}: $mdc-slider-dark-theme-assumed-bg-color !important;
-      #{$property-name}: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color) !important;
-    }
+    stroke: $color !important;
+    stroke: var(--mdc-slider-bg-color-behind-component, $color) !important;
   }
 }
