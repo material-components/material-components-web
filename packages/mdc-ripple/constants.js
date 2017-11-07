@@ -28,7 +28,6 @@ const cssClasses = {
 const strings = {
   VAR_LEFT: '--mdc-ripple-left',
   VAR_TOP: '--mdc-ripple-top',
-  VAR_FG_OPACITY: '--mdc-ripple-fg-opacity',
   VAR_FG_SIZE: '--mdc-ripple-fg-size',
   VAR_FG_SCALE: '--mdc-ripple-fg-scale',
   VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
