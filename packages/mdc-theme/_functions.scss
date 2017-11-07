@@ -40,19 +40,33 @@ $_mdc-theme-tonal-offset: 7%;
   @return max($backLum, $foreLum) / min($backLum, $foreLum);
 }
 
-// Determine whether to use dark or light text on top of given color.
-// Returns "dark" for dark text and "light" for light text.
-@function mdc-theme-light-or-dark($color) {
+// Determine whether the color is "light" or "dark".
+@function mdc-theme-tone($color) {
   $minimumContrast: 3.1;
 
   $lightContrast: mdc-theme-contrast($color, white);
   $darkContrast: mdc-theme-contrast($color, rgba(black, .87));
 
   @if ($lightContrast < $minimumContrast) and ($darkContrast > $lightContrast) {
-    @return "dark";
-  } @else {
     @return "light";
+  } @else {
+    @return "dark";
   }
+}
+
+// Determine whether to use dark or light text on top of given color to meet accessibility standards for contrast.
+// Returns "dark" if the given color is light and "light" if the given color is dark.
+@function mdc-theme-contrast-tone($color) {
+  @return if(mdc-theme-tone($color) == "dark", "light", "dark");
+}
+
+// DEPRECATED. Use mdc-theme-contrast-tone instead.
+@function mdc-theme-light-or-dark($color) {
+  // stylelint-disable indentation
+  @warn "The 'mdc-theme-light-or-dark' mixin is DEPRECATED and will be REMOVED in a future version. " +
+        "Please use 'mdc-theme-contrast-tone' or 'mdc-theme-tone' (as applicable) instead.";
+  @return mdc-theme-contrast-tone($color);
+  // stylelint-enable indentation
 }
 
 // lighten() and darken() require values to be between 0% and 100%.
