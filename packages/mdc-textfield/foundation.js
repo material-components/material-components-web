@@ -151,7 +151,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Activates the text field focus state.
    */
   activateFocus() {
-    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
@@ -199,7 +199,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleBottomLineAnimationEnd(evt) {
-    const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
+    const {BOTTOM_LINE_ACTIVE} = MDCTextFieldFoundation.cssClasses;
 
     // We need to wait for the bottom line to be entirely transparent
     // before removing the class. If we do not, we see the line start to
@@ -210,10 +210,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Deactives the Textfield's focus state.
+   * Deactives the Text Field's focus state.
    */
   deactivateFocus() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
     this.isFocused_ = false;
