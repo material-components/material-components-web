@@ -17,7 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 
-import {MDCTextfieldBottomLineAdapter} from './adapter';
+import MDCTextfieldBottomLineAdapter from './adapter';
 import MDCTextfieldBottomLineFoundation from './foundation';
 
 /**
@@ -27,7 +27,7 @@ import MDCTextfieldBottomLineFoundation from './foundation';
 class MDCTextfieldBottomLine extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextfieldBottomLine
+   * @return {!MDCTextfieldBottomLine}
    */
   static attachTo(root) {
     return new MDCTextfieldBottomLine(root);

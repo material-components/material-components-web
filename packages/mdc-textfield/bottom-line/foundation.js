@@ -36,7 +36,7 @@ class MDCTextfieldBottomLineFoundation extends MDCFoundation {
    * @return {!MDCTextfieldBottomLineAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTextfieldAdapter} */ ({
+    return /** @type {!MDCTextfieldBottomLineAdapter} */ ({
       addClassToBottomLine: () => {},
       removeClassFromBottomLine: () => {},
       setBottomLineAttr: () => {},
@@ -58,8 +58,7 @@ class MDCTextfieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the transform-origin of the bottom line, causing it to animate out
-   * from the user's click location.
+   * Sets the transform-origin, causing it to animate out from the user's click location.
    * @param {!Event} evt
    * @private
    */
