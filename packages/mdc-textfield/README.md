@@ -426,6 +426,32 @@ Returns a boolean specifying whether or not the input is disabled.
 
 Updates the input's disabled state.
 
+##### MDCTextfieldFoundation.setValid(isValid: boolean)
+
+Sets the validity state of the Text Field. Triggers custom validity checking.
+
+##### MDCTextfieldFoundation.handleTextFieldInteraction(evt: Event)
+
+Handles click and keydown events originating from inside the Text Field component.
+
+##### MDCTextfieldFoundation.activateFocus()
+
+Activates the focus state of the Text Field. Normally called in response to the input focus event.
+
+##### MDCTextfieldFoundation.deactivateFocus()
+
+Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
+
+##### MDCTextfieldFoundation.animateBottomLine(evt: Event)
+
+Animates the bottom line. The animation expands outward from the user's click or touch. Expects an
+event with clientX/clientY properties.
+
+##### MDCTextfieldFoundation.handleBottomLineAnimationEnd(evt: Event)
+
+Handles the end of the bottom line animation, performing actions that must wait for animations to
+finish. Expects a transition-end event.
+
 ### Theming
 
 MDC Textfield components use the configured theme's primary color for its underline and label text
