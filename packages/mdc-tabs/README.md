@@ -385,7 +385,7 @@ from the `mdc-tab-bar` Element inside of the `mdc-tab-bar-scroller` node during 
 of `MDCTabBarScroller`, e.g.:
 
 ```html
-<div id="my-tab-bar-scroller" class="mdc-tab-bar-scroller">
+<div id="my-mdc-tab-bar-scroller" class="mdc-tab-bar-scroller">
   <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--back">
     <a class="mdc-tab-bar-scroller__indicator__inner material-icons" href="#" aria-label="scroll back button">
       navigate_before
