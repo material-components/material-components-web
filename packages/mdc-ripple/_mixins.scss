@@ -64,7 +64,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 }
 
-@mixin mdc-states-color($color: black, $opacity-map: null) {
+@mixin mdc-states-color($color: black, $opacity-map: null, $include-focus-within: false) {
   @if not $opacity-map {
     $opacity-map: if(mdc-theme-luminance($color) > .5, $mdc-ripple-light-ink-opacities, $mdc-ripple-dark-ink-opacities);
   }
@@ -86,7 +86,11 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 
   // Focus overrides hover by reusing the ::before pseudo-element.
-  &:focus::before {
+  // :focus-within generally works on non-MS browsers and matches when a *child* of the element has focus
+  // Useful for cases where a component has a focusable element within the root node, e.g. checkbox, radio, text field;
+  // undesirable in general in case of nested stateful components.
+  $focusSelector: if($include-focus-within, '&:focus::before, &:focus-within::before', '&:focus::before');
+  #{$focusSelector} {
     opacity: map-get($opacity-map, 'focus');
     // Note that this is only effective on focus, not blur
     transition-duration: 75ms;

@@ -33,7 +33,7 @@
   @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
   @include mdc-ripple-surface;
-  @include mdc-states-color($mdc-radio-baseline-theme-color);
+  @include mdc-states-color($mdc-radio-baseline-theme-color, $include-focus-within: true);
   @include mdc-ripple-radius($mdc-radio-ripple-radius);
 
   display: inline-block;

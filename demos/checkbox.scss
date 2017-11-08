@@ -27,7 +27,7 @@
   $color: $material-color-red-500;
 
   @include mdc-checkbox-focus-indicator-color($color);
-  @include mdc-states-color($color);
+  @include mdc-states-color($color, $include-focus-within: true);
   @include mdc-checkbox-container-colors(
     $unmarked-stroke-color: $color,
     $unmarked-fill-color: rgba($color, .25),
