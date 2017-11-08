@@ -63,6 +63,8 @@ class MDCTextfieldFoundation extends MDCFoundation {
       setBottomLineAttr: () => {},
       setHelptextAttr: () => {},
       removeHelptextAttr: () => {},
+      setHelptextValue: () => {},
+      getHelptextValue: () => {},
       getNativeInput: () => {},
     });
   }
@@ -315,6 +317,20 @@ class MDCTextfieldFoundation extends MDCFoundation {
       this.adapter_.removeClass(DISABLED);
       this.adapter_.setIconAttr('tabindex', '0');
     }
+  }
+
+  /**
+   * @param {string} value Sets the content of the helper text field
+   */
+  setHelptextValue(value) {
+    this.adapter_.setHelptextValue(value);
+  }
+
+  /**
+   * @return {string|undefined} The value (if any) of the helper text field
+   */
+  getHelptextValue() {
+    return this.adapter_.getHelptextValue();
   }
 
   /**

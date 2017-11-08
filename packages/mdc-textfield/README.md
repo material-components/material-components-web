@@ -373,6 +373,11 @@ being used as the text field's "help text". It defaults to `null`. If the text f
 contains an `aria-controls` attribute on instantiation of the component, it will look for an element
 with the corresponding id within the document and automatically assign it to this property.
 
+##### MDCTextfield.helptextValue
+
+String. Proxies to the foundation's `getHelptextValue/setHelptextValue` methods when retrieved/set
+respectively.
+
 ##### MDCTextfield.disabled
 
 Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
@@ -414,6 +419,8 @@ complicated.
 | setBottomLineAttr(attr: string, value: string) => void | Sets an attribute with a given value on the bottom line element |
 | setHelptextAttr(name: string, value: string) => void | Sets an attribute with a given value on the help text element |
 | removeHelptextAttr(name: string) => void | Removes an attribute from the help text element |
+| setHelptextValue(value: string) => void | Sets the content of the help text element |
+| getHelptextValue() => string | Retrieves the content of the help text element |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 
 #### The full foundation API

@@ -131,6 +131,22 @@ test('set valid updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
 });
 
+test('set helptextValue updates the help text element content', () => {
+  const {component} = setupTest();
+  const helptext = getHelptext();
+  component.helptextElement = helptext;
+  component.helptextValue = 'foo';
+  assert.equal(helptext.textContent, 'foo');
+});
+
+test('get helptextValue retrieves the help text element content', () => {
+  const {component} = setupTest();
+  const helptext = getHelptext();
+  component.helptextElement = helptext;
+  helptext.textContent = 'foo';
+  assert.equal(component.helptextValue, 'foo');
+});
+
 test('#adapter.addClassToBottomLine adds a class to the bottom line', () => {
   const {bottomLine, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
@@ -328,6 +344,32 @@ test('#adapter.removeHelptextAttr removes an attribute on the help text element'
   component.helptextElement = helptext;
   component.getDefaultFoundation().adapter_.removeHelptextAttr('aria-label');
   assert.isNotOk(helptext.hasAttribute('aria-label'));
+});
+
+test('#adapter.setHelptextValue does nothing if no help text element present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.setHelptextValue('foo'));
+});
+
+test('#adapter.setHelptextValue updates the text content of the help text element', () => {
+  const {component} = setupTest();
+  const helptext = getHelptext();
+  component.helptextElement = helptext;
+  component.getDefaultFoundation().adapter_.setHelptextValue('foo');
+  assert.equal(helptext.textContent, 'foo');
+});
+
+test('#adapter.getHelptextValue does nothing if no help text element present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.getHelptextValue());
+});
+
+test('#adapter.getHelptextValue retrieves the text content of the help text element', () => {
+  const {component} = setupTest();
+  const helptext = getHelptext();
+  component.helptextElement = helptext;
+  component.getDefaultFoundation().adapter_.setHelptextValue('foo');
+  assert.equal(component.getDefaultFoundation().adapter_.getHelptextValue(), 'foo');
 });
 
 test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {

@@ -113,6 +113,14 @@ class MDCTextfield extends MDCComponent {
     this.foundation_.setValid(valid);
   }
 
+  get helptextValue() {
+    return this.foundation_.getHelptextValue();
+  }
+
+  set helptextValue(value) {
+    this.foundation_.setHelptextValue(value);
+  }
+
   /**
    * @return {!MDCTextfieldFoundation}
    */
@@ -249,6 +257,17 @@ class MDCTextfield extends MDCComponent {
           this.helptextElement.removeAttribute(name);
         }
       },
+      setHelptextValue: (value) => {
+        if (this.helptextElement) {
+          this.helptextElement.textContent = value;
+        }
+      },
+      getHelptextValue: () => {
+        if (!this.helptextElement) {
+          return;
+        }
+        return this.helptextElement.textContent.trim();
+      }
     };
   }
 }

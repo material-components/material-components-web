@@ -43,6 +43,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
     'setBottomLineAttr', 'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
+    'setHelptextValue', 'getHelptextValue',
   ]);
 });
 
@@ -171,6 +172,28 @@ test('#init does not add mdc-textfield__label--float-above class if the input do
   });
   foundation.init();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#setHelptextValue has no effect when no help text element is present', () => {
+  const {foundation} = setupTest();
+  foundation.setHelptextValue('foo');
+});
+
+test('#setHelptextValue sets the value of the help text element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setHelptextValue('foo');
+  td.verify(mockAdapter.setHelptextValue('foo'));
+});
+
+test('#getHelptextValue has no effect when no help text element is present', () => {
+  const {foundation} = setupTest();
+  foundation.getHelptextValue();
+});
+
+test('#getHelptextValue retrieves the value of the help text element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.getHelptextValue();
+  td.verify(mockAdapter.getHelptextValue());
 });
 
 test('on input focuses if input event occurs without any other events', () => {
