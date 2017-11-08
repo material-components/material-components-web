@@ -197,12 +197,13 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   deactivateFocus_() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE, BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
+    this.adapter_.removeClassFromBottomLine(BOTTOM_LINE_ACTIVE);
 
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
