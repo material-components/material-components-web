@@ -21,6 +21,7 @@ import {MDCRipple} from '@material/ripple';
 import {cssClasses, strings} from './constants';
 import {MDCTextfieldAdapter} from './adapter';
 import MDCTextfieldFoundation from './foundation';
+import {MDCTextfieldBottomLine} from './bottom-line';
 
 /**
  * @extends {MDCComponent<!MDCTextfieldFoundation>}
@@ -40,7 +41,7 @@ class MDCTextfield extends MDCComponent {
     this.helptextElement;
     /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {?Element} */
+    /** @private {?MDCTextfieldBottomLine} */
     this.bottomLine_;
     /** @private {?Element} */
     this.icon_;
@@ -70,7 +71,10 @@ class MDCTextfield extends MDCComponent {
       this.ripple = rippleFactory(this.root_);
     };
     if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
-      this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+      const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+      if (bottomLineElement) {
+        this.bottomLine_ = new MDCTextfieldBottomLine(bottomLineElement);
+      }
     };
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
       this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
@@ -80,6 +84,9 @@ class MDCTextfield extends MDCComponent {
   destroy() {
     if (this.ripple) {
       this.ripple.destroy();
+    }
+    if (this.bottomLine_) {
+      this.bottomLine_.destroy();
     }
     super.destroy();
   }
@@ -136,10 +143,15 @@ class MDCTextfield extends MDCComponent {
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT, {}),
+      getBottomLineFoundation: () => {
+        if (this.bottomLine_) {
+          return this.bottomLine_.foundation;
+        }
+        return undefined;
+      }
     },
     this.getInputAdapterMethods_(),
     this.getHelptextAdapterMethods_(),
-    this.getBottomLineAdapterMethods_(),
     this.getIconAdapterMethods_())));
   }
 
@@ -153,33 +165,6 @@ class MDCTextfield extends MDCComponent {
       setIconAttr: (name, value) => {
         if (this.icon_) {
           this.icon_.setAttribute(name, value);
-        }
-      },
-    };
-  }
-
-  /**
-   * @return {!{
-   *   addClassToBottomLine: function(string): undefined,
-   *   removeClassFromBottomLine: function(string): undefined,
-   *   setBottomLineAttr: function(string, string): undefined,
-   * }}
-   */
-  getBottomLineAdapterMethods_() {
-    return {
-      addClassToBottomLine: (className) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.classList.add(className);
-        }
-      },
-      removeClassFromBottomLine: (className) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.classList.remove(className);
-        }
-      },
-      setBottomLineAttr: (attr, value) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.setAttribute(attr, value);
         }
       },
     };

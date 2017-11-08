@@ -51,17 +51,15 @@ class MDCTextfieldFoundation extends MDCFoundation {
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       notifyIconAction: () => {},
-      addClassToBottomLine: () => {},
-      removeClassFromBottomLine: () => {},
       addClassToHelptext: () => {},
       removeClassFromHelptext: () => {},
       helptextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
-      setBottomLineAttr: () => {},
       setHelptextAttr: () => {},
       removeHelptextAttr: () => {},
       getNativeInput: () => {},
+      getBottomLineFoundation: () => {},
     });
   }
 
@@ -147,9 +145,12 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   activateFocus_() {
-    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
-    this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
+    const bottomLine = this.adapter_.getBottomLineFoundation();
+    if (bottomLine) {
+      bottomLine.activate();
+    }
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
     this.showHelptext_();
@@ -163,13 +164,10 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   setBottomLineTransformOrigin_(evt) {
-    const targetClientRect = evt.target.getBoundingClientRect();
-    const evtCoords = {x: evt.clientX, y: evt.clientY};
-    const normalizedX = evtCoords.x - targetClientRect.left;
-    const attributeString =
-      `transform-origin: ${normalizedX}px center`;
-
-    this.adapter_.setBottomLineAttr('style', attributeString);
+    const bottomLine = this.adapter_.getBottomLineFoundation();
+    if (bottomLine) {
+      bottomLine.setTransformOrigin(evt);
+    }
   }
 
   /**
@@ -197,13 +195,16 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @private
    */
   deactivateFocus_() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE, BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-    this.adapter_.removeClassFromBottomLine(BOTTOM_LINE_ACTIVE);
+    const bottomLine = this.adapter_.getBottomLineFoundation();
+    if (bottomLine) {
+      bottomLine.deactivate();
+    }
 
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);

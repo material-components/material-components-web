@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+import MDCTextfieldBottomLineFoundation from './bottom-line/foundation';
+
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -100,18 +102,6 @@ class MDCTextfieldAdapter {
   notifyIconAction() {}
 
   /**
-   * Adds a class to the bottom line element.
-   * @param {string} className
-   */
-  addClassToBottomLine(className) {}
-
-  /**
-   * Removes a class from the bottom line element.
-   * @param {string} className
-   */
-  removeClassFromBottomLine(className) {}
-
-  /**
    * Adds a class to the help text element. Note that in our code we check for
    * whether or not we have a help text element and if we don't, we simply
    * return.
@@ -147,13 +137,6 @@ class MDCTextfieldAdapter {
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
-   * Sets an attribute with a given value on the bottom line element.
-   * @param {string} attr
-   * @param {string} value
-   */
-  setBottomLineAttr(attr, value) {}
-
-  /**
    * Sets an attribute with a given value on the help text element.
    * @param {string} name
    * @param {string} value
@@ -177,6 +160,13 @@ class MDCTextfieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
+
+  /**
+   * Returns the foundation for the bottom line element. Returns undefined if
+   * there is no bottom line element. 
+   * @return {?MDCTextfieldBottomLineFoundation}
+   */
+  getBottomLineFoundation() {}
 }
 
 export {MDCTextfieldAdapter, NativeInputType};

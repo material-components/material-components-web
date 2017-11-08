@@ -40,7 +40,6 @@ const cssClasses = {
   BOX: 'mdc-textfield--box',
   TEXT_FIELD_ICON: 'mdc-textfield__icon',
   TEXTAREA: 'mdc-textfield--textarea',
-  BOTTOM_LINE_ACTIVE: 'mdc-textfield__bottom-line--active',
 };
 
 export {cssClasses, strings};
