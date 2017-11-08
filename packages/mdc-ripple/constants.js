@@ -37,8 +37,8 @@ const strings = {
 const numbers = {
   PADDING: 10,
   INITIAL_ORIGIN_SCALE: 0.6,
-  DEACTIVATION_TIMEOUT_MS: 150,
-  FG_DEACTIVATION_MS: 83,
+  DEACTIVATION_TIMEOUT_MS: 225, // Corresponds to $mdc-ripple-translate-duration (i.e. activation animation duration)
+  FG_DEACTIVATION_MS: 150, // Corresponds to $mdc-ripple-fade-out-duration (i.e. deactivation animation duration)
 };
 
 export {cssClasses, strings, numbers};
