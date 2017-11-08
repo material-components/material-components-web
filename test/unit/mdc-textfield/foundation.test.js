@@ -271,6 +271,12 @@ test('on blur removes mdc-textfield--focused class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED));
 });
 
+test('on blur removes mdc-textfield__bottom-line--active class', () => {
+  const {mockAdapter, blur} = setupBlurTest();
+  blur();
+  td.verify(mockAdapter.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
+});
+
 test('on blur removes mdc-textfield__label--float-above when no input value present', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
