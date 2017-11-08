@@ -87,6 +87,12 @@ test('#setDisabled adds mdc-textfield--disabled when set to true', () => {
   td.verify(mockAdapter.addClass(cssClasses.DISABLED));
 });
 
+test('#setDisabled removes mdc-textfield--invalid when set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(true);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+});
+
 test('#setDisabled removes mdc-textfield--disabled when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);

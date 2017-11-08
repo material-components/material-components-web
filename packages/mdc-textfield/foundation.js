@@ -306,10 +306,11 @@ class MDCTextfieldFoundation extends MDCFoundation {
    * @param {boolean} disabled Sets the textfield disabled or enabled.
    */
   setDisabled(disabled) {
-    const {DISABLED} = MDCTextfieldFoundation.cssClasses;
+    const {DISABLED, INVALID} = MDCTextfieldFoundation.cssClasses;
     this.getNativeInput_().disabled = disabled;
     if (disabled) {
       this.adapter_.addClass(DISABLED);
+      this.adapter_.removeClass(INVALID);
       this.adapter_.setIconAttr('tabindex', '-1');
     } else {
       this.adapter_.removeClass(DISABLED);
