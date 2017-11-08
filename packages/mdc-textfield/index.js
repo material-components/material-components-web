@@ -267,7 +267,7 @@ class MDCTextfield extends MDCComponent {
           return;
         }
         return this.helptextElement.textContent.trim();
-      }
+      },
     };
   }
 }
