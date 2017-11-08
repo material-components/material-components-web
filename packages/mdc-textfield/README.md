@@ -402,8 +402,6 @@ complicated.
 | registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event handler on the root element for a given event |
 | deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event handler on the root element for a given event |
 | notifyIconAction() => void | Emits a custom event "MDCTextfield:icon" denoting a user has clicked the icon |
-| addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
-| removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
 | addClassToHelptext(className: string) => void | Adds a class to the help text element. Note that in our code we check for whether or not we have a help text element and if we don't, we simply return. |
 | removeClassFromHelptext(className: string) => void | Removes a class from the help text element. |
 | helptextHasClass(className: string) => boolean | Returns whether or not the help text element contains the current class |
@@ -411,10 +409,10 @@ complicated.
 | deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
 | registerTransitionEndHandler(handler: EventListener) => void | Registers an event listener on the bottom line element for a "transitionend" event |
 | deregisterTransitionEndHandler(handler: EventListener) => void | Deregisters an event listener on the bottom line element for a "transitionend" event |
-| setBottomLineAttr(attr: string, value: string) => void | Sets an attribute with a given value on the bottom line element |
 | setHelptextAttr(name: string, value: string) => void | Sets an attribute with a given value on the help text element |
 | removeHelptextAttr(name: string) => void | Removes an attribute from the help text element |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
+| getBottomLineFoundation() => MDCTextfieldBottomLineFoundation | Returns the instance of the bottom line element's foundation |
 
 #### The full foundation API
 
