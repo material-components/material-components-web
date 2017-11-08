@@ -148,7 +148,7 @@ class MDCTextfield extends MDCComponent {
           return this.bottomLine_.foundation;
         }
         return undefined;
-      }
+      },
     },
     this.getInputAdapterMethods_(),
     this.getHelptextAdapterMethods_(),

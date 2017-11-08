@@ -94,10 +94,9 @@ test('#destroy accounts for ripple nullability', () => {
 
 function setupTest() {
   const root = getFixture();
-  const bottomLine = root.querySelector('.mdc-textfield__bottom-line');
   const icon = root.querySelector('.mdc-textfield__icon');
   const component = new MDCTextfield(root);
-  return {root, bottomLine, icon, component};
+  return {root, icon, component};
 }
 
 test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
@@ -131,31 +130,11 @@ test('set valid updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
 });
 
-test('#adapter.addClassToBottomLine adds a class to the bottom line', () => {
-  const {bottomLine, component} = setupTest();
-  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
-  assert.isTrue(bottomLine.classList.contains('foo'));
-});
-
-test('#adapter.removeClassFromBottomLine removes a class from the bottom line', () => {
-  const {bottomLine, component} = setupTest();
-
-  bottomLine.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
-  assert.isFalse(bottomLine.classList.contains('foo'));
-});
-
 test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
   const {icon, component} = setupTest();
 
   component.getDefaultFoundation().adapter_.setIconAttr('tabindex', '-1');
   assert.equal(icon.getAttribute('tabindex'), '-1');
-});
-
-test('#adapter.setBottomLineAttr adds a given attribute to the bottom line', () => {
-  const {bottomLine, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-label', 'foo');
-  assert.equal(bottomLine.getAttribute('aria-label'), 'foo');
 });
 
 test('#adapter.addClass adds a class to the root element', () => {

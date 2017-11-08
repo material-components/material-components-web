@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
 import MDCTextfieldBottomLineFoundation from './bottom-line/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
@@ -163,7 +164,7 @@ class MDCTextfieldAdapter {
 
   /**
    * Returns the foundation for the bottom line element. Returns undefined if
-   * there is no bottom line element. 
+   * there is no bottom line element.
    * @return {?MDCTextfieldBottomLineFoundation}
    */
   getBottomLineFoundation() {}

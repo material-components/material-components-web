@@ -38,10 +38,9 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
     'setIconAttr', 'eventTargetHasClass', 'registerTextFieldInteractionHandler',
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
-    'addClassToBottomLine', 'removeClassFromBottomLine',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
-    'setBottomLineAttr', 'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
+    'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput', 'getBottomLineFoundation',
   ]);
 });
 
@@ -268,10 +267,14 @@ test('on blur removes mdc-textfield--focused class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED));
 });
 
-test('on blur removes mdc-textfield__bottom-line--active class', () => {
+test('on blur removes deactivate bottom-line', () => {
   const {mockAdapter, blur} = setupBlurTest();
+  const bottomLine = td.object({
+    deactivate: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   blur();
-  td.verify(mockAdapter.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(bottomLine.deactivate());
 });
 
 test('on blur removes mdc-textfield__label--float-above when no input value present', () => {
@@ -393,6 +396,10 @@ test('on text field click notifies icon event if event target is an icon', () =>
 
 test('mousedown on the input sets the bottom line origin', () => {
   const {foundation, mockAdapter} = setupTest();
+  const bottomLine = td.object({
+    setTransformOrigin: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
     target: {
       getBoundingClientRect: () => {
@@ -413,11 +420,15 @@ test('mousedown on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+  td.verify(bottomLine.setTransformOrigin(mockEvt));
 });
 
 test('touchstart on the input sets the bottom line origin', () => {
   const {foundation, mockAdapter} = setupTest();
+  const bottomLine = td.object({
+    setTransformOrigin: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
     target: {
       getBoundingClientRect: () => {
@@ -438,7 +449,7 @@ test('touchstart on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+  td.verify(bottomLine.setTransformOrigin(mockEvt));
 });
 
 test('interacting with text field does not emit custom events if input is disabled', () => {
