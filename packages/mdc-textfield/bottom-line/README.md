@@ -1,4 +1,11 @@
-# Text Fields
+<!--docs:
+title: "Text Field Bottom Line"
+layout: detail
+section: components
+path: /catalog/input-controls/text-fields/bottom-line
+-->
+
+# Text Field Bottom Line
 
 The bottom line indicates where to enter text, displayed below the label. When a text field is active or contains an error, the line’s color and thickness vary.
 

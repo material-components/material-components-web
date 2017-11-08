@@ -4,6 +4,7 @@ layout: detail
 section: components
 iconId: text_field
 path: /catalog/input-controls/text-fields/
+api_doc_root: true
 -->
 
 # Text Fields
