@@ -163,8 +163,6 @@ class MDCTextfield extends MDCComponent {
    *   addClassToBottomLine: function(string): undefined,
    *   removeClassFromBottomLine: function(string): undefined,
    *   setBottomLineAttr: function(string, string): undefined,
-   *   registerTransitionEndHandler: function(function()): undefined,
-   *   deregisterTransitionEndHandler: function(function()): undefined,
    * }}
    */
   getBottomLineAdapterMethods_() {
@@ -182,16 +180,6 @@ class MDCTextfield extends MDCComponent {
       setBottomLineAttr: (attr, value) => {
         if (this.bottomLine_) {
           this.bottomLine_.setAttribute(attr, value);
-        }
-      },
-      registerTransitionEndHandler: (handler) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.addEventListener('transitionend', handler);
-        }
-      },
-      deregisterTransitionEndHandler: (handler) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.removeEventListener('transitionend', handler);
         }
       },
     };
