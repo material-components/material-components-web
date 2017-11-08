@@ -22,7 +22,6 @@ The bottom line indicates where to enter text, displayed below the label. When a
 
 #### MDCTextfieldBottomLine API
 
-
 ##### MDCTextfieldBottomLine.foundation
 
 MDCTextfieldBottomLineFoundation. This allows the parent MDCTextfield component to access the public methods on the MDCTextfieldBottomLineFoundation class.
