@@ -39,15 +39,15 @@ $mdc-theme-background: #fff !default; // White
 // Which set of text colors to use for each main theme color (light or dark).
 //
 
-$mdc-theme-primary-tone: mdc-theme-light-or-dark($mdc-theme-primary);
-$mdc-theme-primary-light-tone: mdc-theme-light-or-dark($mdc-theme-primary-light);
-$mdc-theme-primary-dark-tone: mdc-theme-light-or-dark($mdc-theme-primary-dark);
+$mdc-theme-primary-tone: mdc-theme-contrast-tone($mdc-theme-primary) !default;
+$mdc-theme-primary-light-tone: mdc-theme-contrast-tone($mdc-theme-primary-light) !default;
+$mdc-theme-primary-dark-tone: mdc-theme-contrast-tone($mdc-theme-primary-dark) !default;
 
-$mdc-theme-secondary-tone: mdc-theme-light-or-dark($mdc-theme-secondary);
-$mdc-theme-secondary-light-tone: mdc-theme-light-or-dark($mdc-theme-secondary-light);
-$mdc-theme-secondary-dark-tone: mdc-theme-light-or-dark($mdc-theme-secondary-dark);
+$mdc-theme-secondary-tone: mdc-theme-contrast-tone($mdc-theme-secondary) !default;
+$mdc-theme-secondary-light-tone: mdc-theme-contrast-tone($mdc-theme-secondary-light) !default;
+$mdc-theme-secondary-dark-tone: mdc-theme-contrast-tone($mdc-theme-secondary-dark) !default;
 
-$mdc-theme-background-tone: mdc-theme-light-or-dark($mdc-theme-background);
+$mdc-theme-background-tone: mdc-theme-contrast-tone($mdc-theme-background) !default;
 
 //
 // Text colors according to light vs dark and text type.
@@ -68,7 +68,7 @@ $mdc-theme-text-colors: (
     disabled: rgba(white, .5),
     icon: rgba(white, .5)
   )
-);
+) !default;
 
 //
 // Primary text colors for each of the theme colors.

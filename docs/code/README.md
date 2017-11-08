@@ -4,7 +4,7 @@
 
 MDC Web has split each dynamic component's JavaScript into two pieces:
 Foundation and Adapter. This lets us reuse Foundation code across multiple web
-platforms, e.g. Wiz and Angular, by re-implementing only the Adapter. For now
+platforms, e.g. React and Angular, by re-implementing only the Adapter. For now
 we've only implemented a vanilla JavaScript version of the Adapter
 
 ## Architecture
