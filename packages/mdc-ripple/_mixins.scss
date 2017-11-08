@@ -74,7 +74,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
   // without needing to re-include mdc-ripple-surface.
   &::before,
   &::after {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
 
     opacity: 0;
   }
