@@ -67,7 +67,7 @@
     "karma-tap": "^2.1.4",
     "karma-webpack": "^2.0.4",
     "lerna": "2.0.0-beta.36",
-    "lolex": "^2.0.0",
+    "lolex": "2.1.3",
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.0",
     "node-sass": "^4.0.0",

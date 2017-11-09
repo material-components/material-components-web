@@ -80,17 +80,17 @@ class MDCTextfieldFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
     /** @private {function(): undefined} */
-    this.inputFocusHandler_ = () => this.activateFocus_();
+    this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
-    this.inputBlurHandler_ = () => this.deactivateFocus_();
+    this.inputBlurHandler_ = () => this.deactivateFocus();
     /** @private {function(): undefined} */
-    this.inputInputHandler_ = () => this.autoCompleteFocus_();
+    this.inputInputHandler_ = () => this.autoCompleteFocus();
     /** @private {function(!Event): undefined} */
-    this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin_(evt);
+    this.setPointerXOffset_ = (evt) => this.animateBottomLine(evt);
     /** @private {function(!Event): undefined} */
-    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction_(evt);
+    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
     /** @private {function(!Event): undefined} */
-    this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
+    this.transitionEndHandler_ = (evt) => this.handleBottomLineAnimationEnd(evt);
   }
 
   init() {
@@ -129,9 +129,8 @@ class MDCTextfieldFoundation extends MDCFoundation {
   /**
    * Handles all user interactions with the Textfield.
    * @param {!Event} evt
-   * @private
    */
-  handleTextFieldInteraction_(evt) {
+  handleTextFieldInteraction(evt) {
     if (this.adapter_.getNativeInput().disabled) {
       return;
     }
@@ -150,9 +149,8 @@ class MDCTextfieldFoundation extends MDCFoundation {
 
   /**
    * Activates the text field focus state.
-   * @private
    */
-  activateFocus_() {
+  activateFocus() {
     const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
@@ -163,12 +161,10 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the transform-origin of the bottom line, causing it to animate out
-   * from the user's click location.
+   * Animates the bottom line out from the user's click location.
    * @param {!Event} evt
-   * @private
    */
-  setBottomLineTransformOrigin_(evt) {
+  animateBottomLine(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();
     const evtCoords = {x: evt.clientX, y: evt.clientY};
     const normalizedX = evtCoords.x - targetClientRect.left;
@@ -181,11 +177,10 @@ class MDCTextfieldFoundation extends MDCFoundation {
   /**
    * Activates the Textfield's focus state in cases when the input value
    * changes without user input (e.g. programatically).
-   * @private
    */
-  autoCompleteFocus_() {
+  autoCompleteFocus() {
     if (!this.receivedUserInput_) {
-      this.activateFocus_();
+      this.activateFocus();
     }
   }
 
@@ -199,12 +194,11 @@ class MDCTextfieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Fires when animation transition ends, performing actions that must wait
-   * for animations to finish.
+   * Executes when the bottom line's transition animation ends, performing
+   * actions that must wait for animations to finish.
    * @param {!Event} evt
-   * @private
    */
-  transitionEnd_(evt) {
+  handleBottomLineAnimationEnd(evt) {
     const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
 
     // We need to wait for the bottom line to be entirely transparent
@@ -217,9 +211,8 @@ class MDCTextfieldFoundation extends MDCFoundation {
 
   /**
    * Deactives the Textfield's focus state.
-   * @private
    */
-  deactivateFocus_() {
+  deactivateFocus() {
     const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextfieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
