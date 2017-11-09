@@ -17,8 +17,8 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {testFoundation} from './helpers';
-import {strings} from '../../../packages/mdc-ripple/constants';
+import {captureHandlers, testFoundation} from './helpers';
+import {cssClasses, strings} from '../../../packages/mdc-ripple/constants';
 
 suite('MDCRippleFoundation - General Events');
 
@@ -83,4 +83,24 @@ testFoundation('debounces layout within the same frame on resize', ({foundation,
       times: 2,
     }
   );
+});
+
+testFoundation('activates the background on focus', ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.focus();
+  mockRaf.flush();
+  td.verify(adapter.addClass(cssClasses.FOCUSED));
+});
+
+testFoundation('deactivates the background on blur', ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter);
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.blur();
+  mockRaf.flush();
+  td.verify(adapter.removeClass(cssClasses.FOCUSED));
 });

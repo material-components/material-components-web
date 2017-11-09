@@ -21,6 +21,7 @@ const cssClasses = {
   // CSS class that all other CSS classes derive from.
   ROOT: 'mdc-ripple-upgraded',
   UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
+  FOCUSED: 'mdc-ripple-upgraded--focused',
   FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
   FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
 };

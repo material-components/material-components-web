@@ -36,7 +36,9 @@ let ActivationStateType;
 /**
  * @typedef {!{
  *   activate: (string|undefined),
- *   deactivate: (string|undefined)
+ *   deactivate: (string|undefined),
+ *   focus: (string|undefined),
+ *   blur: (string|undefined)
  * }}
  */
 let ListenerInfoType;
@@ -44,7 +46,9 @@ let ListenerInfoType;
 /**
  * @typedef {!{
  *   activate: function(!Event),
- *   deactivate: function(!Event)
+ *   deactivate: function(!Event),
+ *   focus: function(),
+ *   blur: function()
  * }}
  */
 let ListenersType;
@@ -128,12 +132,19 @@ class MDCRippleFoundation extends MDCFoundation {
       {activate: 'pointerdown', deactivate: 'pointerup'},
       {activate: 'mousedown', deactivate: 'mouseup'},
       {activate: 'keydown', deactivate: 'keyup'},
+      {focus: 'focus', blur: 'blur'},
     ];
 
     /** @private {!ListenersType} */
     this.listeners_ = {
       activate: (e) => this.activate_(e),
       deactivate: (e) => this.deactivate_(e),
+      focus: () => requestAnimationFrame(
+        () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.FOCUSED)
+      ),
+      blur: () => requestAnimationFrame(
+        () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FOCUSED)
+      ),
     };
 
     /** @private {!Function} */
