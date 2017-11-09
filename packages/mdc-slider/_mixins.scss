@@ -22,11 +22,11 @@
 //
 
 @mixin mdc-slider-rail-color($color) {
-  @include mdc-slider-rail-color-impl_($color);
+  @include mdc-slider-rail-color_($color);
 }
 
 @mixin mdc-slider-thumb-color($color) {
-  @include mdc-slider-thumb-color-impl_($color);
+  @include mdc-slider-thumb-color_($color);
 }
 
 @mixin mdc-slider-focus-halo-color($color) {
@@ -67,7 +67,7 @@
 // Private
 //
 
-@mixin mdc-slider-rail-color-impl_($color, $important: false) {
+@mixin mdc-slider-rail-color_($color, $important: false) {
   $rail-color: rgba(mdc-theme-prop-value($color), .26);
 
   // Rail
@@ -87,7 +87,7 @@
   }
 }
 
-@mixin mdc-slider-thumb-color-impl_($color, $important: false) {
+@mixin mdc-slider-thumb-color_($color, $important: false) {
   .mdc-slider__thumb {
     @include mdc-theme-prop(fill, $color, $important: $important);
     @include mdc-theme-prop(stroke, $color, $important: $important);
