@@ -24,11 +24,7 @@
 // postcss-bem-linter: define slider
 
 .mdc-slider {
-  @include mdc-slider-rail-color(secondary);
-  @include mdc-slider-thumb-color(secondary);
-  @include mdc-slider-focus-halo-color(secondary);
-  @include mdc-slider-value-pin-fill-color(secondary);
-  @include mdc-slider-value-pin-ink-color(text-primary-on-secondary);
+  @include mdc-slider-color-accessible(secondary);
 
   &--disabled {
     @include mdc-slider-rail-color_(#9a9a9a);
