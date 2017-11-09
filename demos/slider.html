@@ -250,10 +250,15 @@
     <script src="/assets/material-components-web.js"></script>
     <script>
       (function() {
-        setTimeout(function() {
-          mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
-          initDemo(document.getElementById('slider-example'));
-        }, 80);
+        // Wait for Webpack to load CSS. Otherwise, size/position calculations will be incorrect.
+        var interval = setInterval(function() {
+          const element = document.getElementById('hero-slider');
+          if (getComputedStyle(element).position === 'relative') {
+            clearInterval(interval);
+            mdc.slider.MDCSlider.attachTo(element);
+            initDemo(document.getElementById('slider-example'));
+          }
+        }, 100);
 
         function initDemo(demoRoot) {
           var min = demoRoot.querySelector('[name="min"]');
