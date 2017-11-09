@@ -47,6 +47,23 @@
         --mdc-slider-bg-color-behind-component: #102027;
       }
 
+      .slider-example {
+        margin-bottom: 48px;
+      }
+
+      .demo-param-field-group + .demo-param-field-group {
+        margin-top: 16px;
+      }
+
+      .demo-param-field {
+        display: block;
+      }
+
+      .demo-param-input-label {
+        display: inline-block;
+        min-width: 2.5em;
+      }
+
       .example-slider-wrapper {
         padding: 0 16px;
       }
@@ -86,12 +103,10 @@
       <section id="slider-example" class="example">
         <h2>Continuous Slider</h2>
         <div class="slider-example">
-          <p id="example-cs-label">Select Value:</p>
-
           <div class="example-slider-wrapper">
             <div id="continuous-mdc-slider" class="mdc-slider" tabindex="0" role="slider"
                  aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
-                 aria-labelledby="example-cs-label">
+                 aria-label="Select Value">
               <div class="mdc-slider__track-container">
                 <div class="mdc-slider__track"></div>
               </div>
@@ -105,22 +120,19 @@
           </div>
 
           <p>
-            Value from <code>MDCSlider:input</code> event: <span id="continuous-slider-value">0</span>
-          </p>
-          <p>
-            Value from <code>MDCSlider:change</code> event: <span id="continuous-slider-committed-value">0</span>
+            Value from <code>MDCSlider:input</code> event: <span id="continuous-slider-value"></span>
+            <br>
+            Value from <code>MDCSlider:change</code> event: <span id="continuous-slider-committed-value"></span>
           </p>
         </div>
 
 
         <h2>Discrete Slider</h2>
         <div class="slider-example">
-          <p id="example-ds-label">Select Value:</p>
-
           <div class="example-slider-wrapper">
             <div id="discrete-mdc-slider" class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"
                  aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
-                 aria-labelledby="example-ds-label">
+                 aria-label="Select Value">
               <div class="mdc-slider__track-container">
                 <div class="mdc-slider__track"></div>
               </div>
@@ -137,21 +149,18 @@
           </div>
 
           <p>
-            Value from <code>MDCSlider:input</code> event: <span id="discrete-slider-value">0</span>
-          </p>
-          <p>
-            Value from <code>MDCSlider:change</code> event: <span id="discrete-slider-committed-value">0</span>
+            Value from <code>MDCSlider:input</code> event: <span id="discrete-slider-value"></span>
+            <br>
+            Value from <code>MDCSlider:change</code> event: <span id="discrete-slider-committed-value"></span>
           </p>
         </div>
 
         <h2>Discrete Slider with Tick Marks</h2>
         <div class="slider-example">
-          <p id="example-ds-marker-label">Select Value:</p>
-
           <div class="example-slider-wrapper">
             <div id="discrete-mdc-slider-w-marker" class="mdc-slider mdc-slider--discrete mdc-slider--display-markers" tabindex="0" role="slider"
                  aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
-                 aria-labelledby="example-ds-marker-label">
+                 aria-label="Select Value">
               <div class="mdc-slider__track-container">
                 <div class="mdc-slider__track"></div>
                 <div class="mdc-slider__track-marker-container">
@@ -170,21 +179,18 @@
           </div>
 
           <p>
-            Value from <code>MDCSlider:input</code> event: <span id="discrete-slider-w-marker-value">0</span>
-          </p>
-          <p>
-            Value from <code>MDCSlider:change</code> event: <span id="discrete-slider-w-marker-committed-value">0</span>
+            Value from <code>MDCSlider:input</code> event: <span id="discrete-slider-w-marker-value"></span>
+            <br>
+            Value from <code>MDCSlider:change</code> event: <span id="discrete-slider-w-marker-committed-value"></span>
           </p>
         </div>
 
         <h2>Custom Colored Discrete Slider with Tick Marks</h2>
         <div class="slider-example">
-          <p id="example-custom-ds-marker-label">Select Value:</p>
-
           <div class="example-slider-wrapper">
             <div id="custom-discrete-mdc-slider-w-marker" class="mdc-slider mdc-slider--discrete mdc-slider--display-markers demo-slider--custom" tabindex="0" role="slider"
                  aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
-                 aria-labelledby="example-custom-ds-marker-label">
+                 aria-label="Select Value">
               <div class="mdc-slider__track-container">
                 <div class="mdc-slider__track"></div>
                 <div class="mdc-slider__track-marker-container">
@@ -203,46 +209,42 @@
           </div>
 
           <p>
-            Value from <code>MDCSlider:input</code> event: <span id="custom-discrete-slider-w-marker-value">0</span>
-          </p>
-          <p>
-            Value from <code>MDCSlider:change</code> event: <span id="custom-discrete-slider-w-marker-committed-value">0</span>
+            Value from <code>MDCSlider:input</code> event: <span id="custom-discrete-slider-w-marker-value"></span>
+            <br>
+            Value from <code>MDCSlider:change</code> event: <span id="custom-discrete-slider-w-marker-committed-value"></span>
           </p>
         </div>
 
-        <div>
-          <label>
-            Min: <input name="min" type="number" min="0" max="50" value="0">
+        <div class="demo-param-field-group">
+          <label class="demo-param-field">
+            <span class="demo-param-input-label">Min:</span>
+            <input name="min" type="number" min="0" max="50" value="0">
+          </label>
+          <label class="demo-param-field">
+            <div class="demo-param-input-label">Max:</div>
+            <input name="max" type="number" min="0" max="50" value="50">
+          </label>
+          <label class="demo-param-field">
+            <span class="demo-param-input-label">Step:</span>
+            <input name="step" type="number" min="0" max="50" value="0">
           </label>
         </div>
-        <div>
-          <label>
-            Max: <input name="max" type="number" min="0" max="50" value="50">
+        <div class="demo-param-field-group">
+          <label class="demo-param-field">
+            <input type="checkbox" name="disabled">
+            Disabled
           </label>
-        </div>
-        <div>
-          <label>
-            Step: <input name="step" type="number" min="0" max="50" value="0">
+          <label class="demo-param-field">
+            <input type="checkbox" name="dark-theme">
+            Dark Theme
           </label>
-        </div>
-        <div>
-          <label>
-            Dark Theme: <input type="checkbox" name="dark-theme">
+          <label class="demo-param-field">
+            <input type="checkbox" name="use-custom-color">
+            Use Custom BG Color
           </label>
-        </div>
-        <div>
-          <label>
-            Disabled: <input type="checkbox" name="disabled">
-          </label>
-        </div>
-        <div>
-          <label>
-            Use Custom BG Color: <input type="checkbox" name="use-custom-color">
-          </label>
-        </div>
-        <div>
-          <label>
-            RTL: <input type="checkbox" name="rtl">
+          <label class="demo-param-field">
+            <input type="checkbox" name="rtl">
+            RTL
           </label>
         </div>
       </section>
