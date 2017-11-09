@@ -22,28 +22,38 @@
 //
 
 @mixin mdc-slider-rail-color($color) {
-  @include mdc-slider-rail-color_($color);
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-rail-color_($color);
+  }
 }
 
 @mixin mdc-slider-thumb-color($color) {
-  @include mdc-slider-thumb-color_($color);
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-thumb-color_($color);
+  }
 }
 
 @mixin mdc-slider-focus-halo-color($color) {
-  .mdc-slider__focus-ring {
-    @include mdc-theme-prop(background-color, $color);
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__focus-ring {
+      @include mdc-theme-prop(background-color, $color);
+    }
   }
 }
 
 @mixin mdc-slider-value-pin-ink-color($color) {
-  .mdc-slider__pin {
-    @include mdc-theme-prop(color, $color);
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__pin {
+      @include mdc-theme-prop(color, $color);
+    }
   }
 }
 
 @mixin mdc-slider-value-pin-fill-color($color) {
-  .mdc-slider__pin {
-    @include mdc-theme-prop(background-color, $color);
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__pin {
+      @include mdc-theme-prop(background-color, $color);
+    }
   }
 }
 
@@ -67,39 +77,37 @@
 // Private
 //
 
-@mixin mdc-slider-rail-color_($color, $important: false) {
+@mixin mdc-slider-rail-color_($color) {
   $rail-color: rgba(mdc-theme-prop-value($color), .26);
 
   // Rail
   .mdc-slider__track-container {
-    @include mdc-theme-prop(background-color, $rail-color, $important);
+    @include mdc-theme-prop(background-color, $rail-color);
   }
 
   // Highlight
   .mdc-slider__track {
-    @include mdc-theme-prop(background-color, $color, $important);
+    @include mdc-theme-prop(background-color, $color);
   }
 
   // Tick marks
   .mdc-slider__track-marker::after,
   .mdc-slider__track-marker-container::after {
-    @include mdc-theme-prop(background-color, $color, $important);
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-slider-thumb-color_($color, $important: false) {
+@mixin mdc-slider-thumb-color_($color) {
   .mdc-slider__thumb {
-    @include mdc-theme-prop(fill, $color, $important: $important);
-    @include mdc-theme-prop(stroke, $color, $important: $important);
+    @include mdc-theme-prop(fill, $color);
+    @include mdc-theme-prop(stroke, $color);
   }
 }
 
 @mixin mdc-slider-thumb-stroke-cutout_($color) {
-  // We use !important here to override all styles without having to use excessive
-  // :not() selectors or intricate compound selectors.
   .mdc-slider__thumb {
     /* @alternate */
-    stroke: $color !important;
-    stroke: var(--mdc-slider-bg-color-behind-component, $color) !important;
+    stroke: $color;
+    stroke: var(--mdc-slider-bg-color-behind-component, $color);
   }
 }
