@@ -62,6 +62,32 @@ $mdc-ripple-common-styles-emitted_: false !default;
   &::before {
     transition: opacity $mdc-states-wash-duration linear;
   }
+
+  // Common styles for upgraded surfaces (some of these depend on custom properties set via JS or other mixins)
+
+  &.mdc-ripple-upgraded::after {
+    top: 0;
+    left: 0;
+    transform: scale(0);
+    transform-origin: center center;
+  }
+
+  &.mdc-ripple-upgraded--unbounded::after {
+    top: var(--mdc-ripple-top, 0);
+    left: var(--mdc-ripple-left, 0);
+  }
+
+  &.mdc-ripple-upgraded--foreground-activation::after {
+    animation:
+      $mdc-ripple-translate-duration mdc-ripple-fg-radius-in forwards,
+      $mdc-ripple-fade-in-duration mdc-ripple-fg-opacity-in forwards;
+  }
+
+  &.mdc-ripple-upgraded--foreground-deactivation::after {
+    animation: $mdc-ripple-fade-out-duration mdc-ripple-fg-opacity-out;
+    // Retain transform from mdc-ripple-fg-radius-in activation
+    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+  }
 }
 
 @mixin mdc-states-color($color: black, $opacity-map: null, $include-focus-within: false) {
@@ -127,20 +153,6 @@ $mdc-ripple-common-styles-emitted_: false !default;
     --mdc-ripple-fg-translate-end: 0;
     --mdc-ripple-fg-translate-start: 0;
   }
-
-  // Foreground ripple styles, for upgraded stateful surfaces
-
-  &.mdc-ripple-upgraded--foreground-activation::after {
-    animation:
-      $mdc-ripple-translate-duration mdc-ripple-fg-radius-in forwards,
-      $mdc-ripple-fade-in-duration mdc-ripple-fg-opacity-in forwards;
-  }
-
-  &.mdc-ripple-upgraded--foreground-deactivation::after {
-    animation: $mdc-ripple-fade-out-duration mdc-ripple-fg-opacity-out;
-    // Retain transform from mdc-ripple-fg-radius-in activation
-    transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
-  }
 }
 
 @mixin mdc-ripple-radius($radius: 100%) {
@@ -172,17 +184,8 @@ $mdc-ripple-common-styles-emitted_: false !default;
 
   // Foreground ripple styles
   &.mdc-ripple-upgraded::after {
-    top: 0;
-    left: 0;
     width: var(--mdc-ripple-fg-size, $radius);
     height: var(--mdc-ripple-fg-size, $radius);
-    transform: scale(0);
-    transform-origin: center center;
-  }
-
-  &.mdc-ripple-upgraded--unbounded::after {
-    top: var(--mdc-ripple-top, 0);
-    left: var(--mdc-ripple-left, 0);
   }
 }
 
