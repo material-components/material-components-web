@@ -86,6 +86,10 @@
     }
   }
 
+  &__action-wrapper {
+    @include mdc-rtl-reflexive-property(padding, 24px, 0);
+  }
+
   &--action-on-bottom {
     flex-direction: column;
   }
@@ -116,6 +120,10 @@
 
     @include mdc-theme-dark(".mdc-snackbar") {
       @include mdc-theme-prop(color, text-primary-on-light);
+    }
+
+    @media (min-width: $mdc-snackbar-tablet-breakpoint) {
+      @include mdc-rtl-reflexive-property(padding, 0, 24px);
     }
   }
 
