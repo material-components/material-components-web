@@ -19,7 +19,22 @@
 const path = require('path');
 const glob = require('glob');
 const webpack = require('webpack');
+const fs = require('fs');
+const fsx = require('fs-extra');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+class PostCompilePlugin {
+  constructor(fn) {
+    this.fn = fn;
+  }
+
+  apply(compiler) {
+    compiler.plugin('done', (stats) => {
+      if (typeof this.fn === 'function') {
+        this.fn(stats);
+      }
+    });
+  }
+}
 
 const OUT_PATH = path.resolve('./build');
 // Used with webpack-dev-server
@@ -250,6 +265,19 @@ if (IS_DEV) {
     plugins: [
       createCssExtractTextPlugin(),
       createBannerPlugin(),
+      new PostCompilePlugin(() => {
+        if (!fs.existsSync(path.resolve('./build'))) {
+          return;
+        }
+        const opts = {
+          filter: (src, dest) => {
+            return !/\.scss$/.test(src);
+          },
+        };
+        fsx.copySync(path.resolve('./demos'), path.resolve('./firebase-out/pr/123'), opts);
+        fsx.copySync(path.resolve('./build'), path.resolve('./firebase-out/pr/123/assets'), opts);
+        fsx.moveSync(path.resolve('./firebase-out'), path.resolve('./build/firebase'));
+      }),
     ],
   });
 }
