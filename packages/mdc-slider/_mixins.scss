@@ -14,7 +14,9 @@
 // limitations under the License.
 //
 
+@import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/theme/variables"; // for mdc-theme-prop-value
 @import "./variables";
 
 //
