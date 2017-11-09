@@ -19,14 +19,14 @@ import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple';
 
 import {cssClasses, strings} from './constants';
-import {MDCTextfieldAdapter} from './adapter';
-import MDCTextfieldFoundation from './foundation';
+import {MDCTextFieldAdapter} from './adapter';
+import MDCTextFieldFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCTextfieldFoundation>}
+ * @extends {MDCComponent<!MDCTextFieldFoundation>}
  * @final
  */
-class MDCTextfield extends MDCComponent {
+class MDCTextField extends MDCComponent {
   /**
    * @param {...?} args
    */
@@ -48,10 +48,10 @@ class MDCTextfield extends MDCComponent {
 
   /**
    * @param {!Element} root
-   * @return {!MDCTextfield}
+   * @return {!MDCTextField}
    */
   static attachTo(root) {
-    return new MDCTextfield(root);
+    return new MDCTextField(root);
   }
 
   /**
@@ -85,7 +85,7 @@ class MDCTextfield extends MDCComponent {
   }
 
   /**
-   * Initiliazes the Textfield's internal state based on the environment's
+   * Initiliazes the Text Field's internal state based on the environment's
    * state.
    */
   initialSyncWithDom() {
@@ -93,31 +93,31 @@ class MDCTextfield extends MDCComponent {
   }
 
   /**
-   * @return {boolean} True if the Textfield is disabled.
+   * @return {boolean} True if the Text Field is disabled.
    */
   get disabled() {
     return this.foundation_.isDisabled();
   }
 
   /**
-   * @param {boolean} disabled Sets the Textfield disabled or enabled.
+   * @param {boolean} disabled Sets the Text Field disabled or enabled.
    */
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
 
   /**
-   * @param {boolean} valid Sets the Textfield valid or invalid.
+   * @param {boolean} valid Sets the Text Field valid or invalid.
    */
   set valid(valid) {
     this.foundation_.setValid(valid);
   }
 
   /**
-   * @return {!MDCTextfieldFoundation}
+   * @return {!MDCTextFieldFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextfieldFoundation(/** @type {!MDCTextfieldAdapter} */ (Object.assign({
+    return new MDCTextFieldFoundation(/** @type {!MDCTextFieldAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       addClassToLabel: (className) => {
@@ -135,7 +135,7 @@ class MDCTextfield extends MDCComponent {
       eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyIconAction: () => this.emit(MDCTextfieldFoundation.strings.ICON_EVENT, {}),
+      notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
     },
     this.getInputAdapterMethods_(),
     this.getHelptextAdapterMethods_(),
@@ -253,4 +253,4 @@ class MDCTextfield extends MDCComponent {
   }
 }
 
-export {MDCTextfield, MDCTextfieldFoundation};
+export {MDCTextField, MDCTextFieldFoundation};

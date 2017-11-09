@@ -20,33 +20,33 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCTextfield, MDCTextfieldFoundation} from '../../../packages/mdc-textfield';
+import {MDCTextField, MDCTextFieldFoundation} from '../../../packages/mdc-textfield';
 
-const {cssClasses, strings} = MDCTextfieldFoundation;
+const {cssClasses, strings} = MDCTextFieldFoundation;
 
 const getFixture = () => bel`
-  <div class="mdc-textfield">
-    <i class="material-icons mdc-textfield__icon" tabindex="0">event</i>
-    <input type="text" class="mdc-textfield__input" id="my-textfield">
-    <label class="mdc-textfield__label" for="my-textfield">My Label</label>
-    <div class="mdc-textfield__bottom-line"></div>
+  <div class="mdc-text-field">
+    <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+    <input type="text" class="mdc-text-field__input" id="my-text-field">
+    <label class="mdc-text-field__label" for="my-text-field">My Label</label>
+    <div class="mdc-text-field__bottom-line"></div>
   </div>
 `;
 
-suite('MDCTextfield');
+suite('MDCTextField');
 
-test('attachTo returns an MDCTextfield instance', () => {
-  assert.isOk(MDCTextfield.attachTo(getFixture()) instanceof MDCTextfield);
+test('attachTo returns an MDCTextField instance', () => {
+  assert.isOk(MDCTextField.attachTo(getFixture()) instanceof MDCTextField);
 });
 
 const getHelptext = () => bel`<p id="helptext">help text</p>`;
 
 test('#constructor assigns helptextElement to the id specified in the input aria-controls if present', () => {
   const root = getFixture();
-  root.querySelector('.mdc-textfield__input').setAttribute('aria-controls', 'helptext');
+  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helptext');
   const helptext = getHelptext();
   document.body.appendChild(helptext);
-  const component = new MDCTextfield(root);
+  const component = new MDCTextField(root);
   assert.equal(component.helptextElement, helptext);
   document.body.removeChild(helptext);
 });
@@ -59,44 +59,44 @@ class FakeRipple {
   }
 }
 
-test('#constructor when given a `mdc-textfield--box` element instantiates a ripple on the root element', () => {
+test('#constructor when given a `mdc-text-field--box` element instantiates a ripple on the root element', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
-  const component = new MDCTextfield(root, undefined, (el) => new FakeRipple(el));
+  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
   assert.equal(component.ripple.root, root);
 });
 
-test('#constructor sets the ripple property to `null` when given a non `mdc-textfield--box` element', () => {
-  const component = new MDCTextfield(getFixture());
+test('#constructor sets the ripple property to `null` when given a non `mdc-text-field--box` element', () => {
+  const component = new MDCTextField(getFixture());
   assert.isNull(component.ripple);
 });
 
-test('#constructor when given a `mdc-textfield--box` element, initializes a default ripple when no ' +
+test('#constructor when given a `mdc-text-field--box` element, initializes a default ripple when no ' +
      'ripple factory given', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
-  const component = new MDCTextfield(root);
+  const component = new MDCTextField(root);
   assert.instanceOf(component.ripple, MDCRipple);
 });
 
 test('#destroy cleans up the ripple if present', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
-  const component = new MDCTextfield(root, undefined, (el) => new FakeRipple(el));
+  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
   component.destroy();
   td.verify(component.ripple.destroy());
 });
 
 test('#destroy accounts for ripple nullability', () => {
-  const component = new MDCTextfield(getFixture());
+  const component = new MDCTextField(getFixture());
   assert.doesNotThrow(() => component.destroy());
 });
 
 function setupTest() {
   const root = getFixture();
-  const bottomLine = root.querySelector('.mdc-textfield__bottom-line');
-  const icon = root.querySelector('.mdc-textfield__icon');
-  const component = new MDCTextfield(root);
+  const bottomLine = root.querySelector('.mdc-text-field__bottom-line');
+  const icon = root.querySelector('.mdc-text-field__icon');
+  const component = new MDCTextField(root);
   return {root, bottomLine, icon, component};
 }
 
@@ -108,7 +108,7 @@ test('#initialSyncWithDom sets disabled if input element is not disabled', () =>
 
 test('get/set disabled updates the input element', () => {
   const {root, component} = setupTest();
-  const input = root.querySelector('.mdc-textfield__input');
+  const input = root.querySelector('.mdc-text-field__input');
   component.disabled = true;
   assert.isOk(input.disabled);
   component.disabled = false;
@@ -194,18 +194,18 @@ test('#adapter.removeClass removes a class from the root element', () => {
 test('#adapter.addClassToLabel adds a class to the label element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClassToLabel('foo');
-  assert.isOk(root.querySelector('.mdc-textfield__label').classList.contains('foo'));
+  assert.isOk(root.querySelector('.mdc-text-field__label').classList.contains('foo'));
 });
 
 test('#adapter.addClassToLabel does nothing if no label element present', () => {
   const {root, component} = setupTest();
-  root.removeChild(root.querySelector('.mdc-textfield__label'));
+  root.removeChild(root.querySelector('.mdc-text-field__label'));
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToLabel('foo'));
 });
 
 test('#adapter.removeClassFromLabel removes a class from the label element', () => {
   const {root, component} = setupTest();
-  const label = root.querySelector('.mdc-textfield__label');
+  const label = root.querySelector('.mdc-text-field__label');
   label.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClassFromLabel('foo');
   assert.isNotOk(label.classList.contains('foo'));
@@ -213,13 +213,13 @@ test('#adapter.removeClassFromLabel removes a class from the label element', () 
 
 test('#adapter.removeClassFromLabel does nothing if no label element present', () => {
   const {root, component} = setupTest();
-  root.removeChild(root.querySelector('.mdc-textfield__label'));
+  root.removeChild(root.querySelector('.mdc-text-field__label'));
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLabel('foo'));
 });
 
 test('#adapter.registerInputInteractionHandler adds a handler to the input element for a given event', () => {
   const {root, component} = setupTest();
-  const input = root.querySelector('.mdc-textfield__input');
+  const input = root.querySelector('.mdc-text-field__input');
   const handler = td.func('eventHandler');
   component.getDefaultFoundation().adapter_.registerInputInteractionHandler('click', handler);
   domEvents.emit(input, 'click');
@@ -228,7 +228,7 @@ test('#adapter.registerInputInteractionHandler adds a handler to the input eleme
 
 test('#adapter.deregisterInputInteractionHandler removes a handler from the input element for a given event', () => {
   const {root, component} = setupTest();
-  const input = root.querySelector('.mdc-textfield__input');
+  const input = root.querySelector('.mdc-text-field__input');
   const handler = td.func('eventHandler');
 
   input.addEventListener('click', handler);
@@ -258,7 +258,7 @@ test('#adapter.getNativeInput returns the component input element', () => {
   const {root, component} = setupTest();
   assert.equal(
     component.getDefaultFoundation().adapter_.getNativeInput(),
-    root.querySelector('.mdc-textfield__input')
+    root.querySelector('.mdc-text-field__input')
   );
 });
 
