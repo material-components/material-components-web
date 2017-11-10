@@ -1,6 +1,6 @@
 {
   "name": "@material/select",
-  "description": "The Material Components web select (textfield drop-down) component",
+  "description": "The Material Components web select (text field drop-down) component",
   "version": "0.24.0",
   "license": "Apache-2.0",
   "keywords": [

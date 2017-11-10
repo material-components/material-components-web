@@ -42,9 +42,9 @@ Then simply include the correct files, write some HTML, and call `mdc.autoInit()
   </head>
   <body>
     <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
-    <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-      <input type="text" class="mdc-textfield__input" id="demo-input">
-      <label for="demo-input" class="mdc-textfield__label">Tell us how you feel!</label>
+    <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+      <input type="text" class="mdc-text-field__input" id="demo-input">
+      <label for="demo-input" class="mdc-text-field__label">Tell us how you feel!</label>
     </div>
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
     <script>mdc.autoInit()</script>
@@ -150,7 +150,6 @@ open http://localhost:8080
 - [Getting Started Guide](docs/getting-started.md)
 - [All Components](packages/)
 - [Demos](demos/)
-- [Framework Integration Examples](framework-examples/)
 - [Contributing](CONTRIBUTING.md)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
