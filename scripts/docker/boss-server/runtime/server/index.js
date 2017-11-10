@@ -107,13 +107,14 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
   };
 
   const stdioToString = (buffer) => {
-    // eslint-disable no-multi-spaces
     const sanitized = buffer.toString()
-      .replace(/\n$/, '')            // strip trailing newline
-      .replace(/\u0008+\s*/gu, ' ')  // replace backspace characters with a space
-      .replace(/ {2,}/g, ' ')        // replace multiple spaces with one
+      // strip trailing newline
+      .replace(/\n$/, '')
+      // replace backspace characters with a space
+      .replace(/\u0008+\s*/gu, ' ')
+      // replace multiple spaces with one
+      .replace(/ {2,}/g, ' ')
     ;
-    // eslint-enable no-multi-spaces
     return /^\s*$/.test(sanitized) ? '' : sanitized;
   };
 
@@ -249,6 +250,7 @@ const handleStartScreenshotRequest = (pullRequest, res) => {
     }
   });
 
+  // eslint-disable-next-line no-unused-vars
   spawn.on('close', (code) => {
     requestQueue.shift().destroy();
     executeNextStartScreenshotRequest();

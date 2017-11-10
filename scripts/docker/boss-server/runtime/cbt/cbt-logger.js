@@ -174,14 +174,14 @@ class CbtLogger {
         ['deviceName'],
         ['deviceOrientation'],
       ]
-      .map((propertyNames) => {
-        return propertyNames
-          .map((prop) => browser[prop])
-          .filter((prop) => Boolean(prop))
-          .join(' ');
-      })
-      .filter((flatProps) => Boolean(flatProps))
-      .join(' • ')
+        .map((propertyNames) => {
+          return propertyNames
+            .map((prop) => browser[prop])
+            .filter((prop) => Boolean(prop))
+            .join(' ');
+        })
+        .filter((flatProps) => Boolean(flatProps))
+        .join(' • ')
     );
   }
 }
