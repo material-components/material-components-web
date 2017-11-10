@@ -60,6 +60,13 @@ The provided modifiers are:
 | `mdc-linear-progress--indeterminate`   | Puts the linear progress indicator in an indeterminate state. |
 | `mdc-linear-progress--reversed`  | Reverses the direction of the linear progress indicator.   |
 
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-linear-progress-bar-color($color)` | Sets the color of the progress bar
+`mdc-linear-progress-buffer-color($color)` | Sets the color of the buffer bar and dots
+
 ### Using the Foundation Class
 
 MDC Linear Progress ships with an `MDCLinearProgressFoundation` class that external frameworks and libraries can
@@ -100,10 +107,3 @@ MDC Linear Progress exposes the following methods:
 | `set reverse(value: boolean) => void` | Reverses the direction of the linear progress indicator. |
 | `open() => void` | Puts the component in the open state. |
 | `close() => void` | Puts the component in the closed state. |
-
-### Sass Mixins
-
-Mixin | Description
---- | ---
-`mdc-linear-progress-bar-color($color)` | Sets the color of the progress bar
-`mdc-linear-progress-buffer-color($color)` | Sets the color of the buffer bar and dots
