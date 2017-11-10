@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/theme/variables"; // for mdc-theme-prop-value
 
 @mixin mdc-linear-progress-bar-color($color) {
   .mdc-linear-progress__bar-inner {
