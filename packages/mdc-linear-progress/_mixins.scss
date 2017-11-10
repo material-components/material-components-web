@@ -22,6 +22,7 @@
 }
 
 @mixin mdc-linear-progress-buffer-color($color) {
+  // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
   $color-value-for-css: mdc-theme-prop-value($color);
   $color-value-for-svg: mdc-linear-progress-str-replace_(#{$color-value-for-css}, "#", "%23");
 
