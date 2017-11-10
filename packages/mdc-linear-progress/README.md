@@ -59,7 +59,6 @@ The provided modifiers are:
 | --------------------- | ------------------------------------------------------- |
 | `mdc-linear-progress--indeterminate`   | Puts the linear progress indicator in an indeterminate state. |
 | `mdc-linear-progress--reversed`  | Reverses the direction of the linear progress indicator.   |
-| `mdc-linear-progress--accent` | Colors the linear progress indicator with the secondary color. |
 
 ### Using the Foundation Class
 
