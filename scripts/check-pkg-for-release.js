@@ -134,7 +134,10 @@ function checkPkgDependencyAddedInMDCPackage() {
 
 function checkCSSDependencyAddedInMDCPackage() {
   const name = pkg.name.split('/')[1];
-  const nameMDC = pkg.name.replace('@material/', 'mdc-');
+  let nameMDC = pkg.name.replace('@material/', 'mdc-');
+  if (name === 'textfield') {
+    nameMDC = 'mdc-text-field';
+  }
   if (CSS_WHITELIST.indexOf(name) === -1) {
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_PATH), 'utf8');
     const cssRules = cssom.parse(src).cssRules;
@@ -190,7 +193,10 @@ function checkComponentImportedAddedInMDCPackage(ast) {
 }
 
 function checkAutoInitAddedInMDCPackage(ast) {
-  const nameCamel = camelCase(pkg.name.replace('@material/', ''));
+  let nameCamel = camelCase(pkg.name.replace('@material/', ''));
+  if (nameCamel === 'textfield') {
+    nameCamel = 'textField';
+  }
   let autoInitedCount = 0;
   traverse(ast, {
     'ExpressionStatement'({node}) {
@@ -210,7 +216,10 @@ function checkAutoInitAddedInMDCPackage(ast) {
 }
 
 function checkComponentExportedAddedInMDCPackage(ast) {
-  const nameCamel = camelCase(pkg.name.replace('@material/', ''));
+  let nameCamel = camelCase(pkg.name.replace('@material/', ''));
+  if (nameCamel === 'textfield') {
+    nameCamel = 'textField';
+  }
   let isExported = false;
   traverse(ast, {
     'ExportNamedDeclaration'({node}) {

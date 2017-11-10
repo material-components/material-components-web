@@ -28,16 +28,16 @@
 let NativeInputType;
 
 /**
- * Adapter for MDC Textfield.
+ * Adapter for MDC Text Field.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Textfield into your framework. See
+ * adapter to integrate the Text Field into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCTextfieldAdapter {
+class MDCTextFieldAdapter {
   /**
    * Adds a class to the root Element.
    * @param {string} className
@@ -95,7 +95,7 @@ class MDCTextfieldAdapter {
   deregisterTextFieldInteractionHandler(type, handler) {}
 
   /**
-   * Emits a custom event "MDCTextfield:icon" denoting a user has clicked the icon.
+   * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
    */
   notifyIconAction() {}
 
@@ -191,4 +191,4 @@ class MDCTextfieldAdapter {
   getNativeInput() {}
 }
 
-export {MDCTextfieldAdapter, NativeInputType};
+export {MDCTextFieldAdapter, NativeInputType};

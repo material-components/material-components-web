@@ -324,11 +324,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     .mdc-slider__thumb {
       animation: none;
     }
-
-    .mdc-slider__focus-ring {
-      transform: none;
-      opacity: 0;
-    }
   }
 
   &.mdc-slider--display-markers {
