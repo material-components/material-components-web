@@ -434,8 +434,7 @@
   }
 }
 
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-textfield__input:required + .mdc-textfield__label::after {
+.mdc-text-field__input:required + .mdc-text-field__label::after {
   margin-left: 1px;
   content: "*";
 
@@ -447,7 +446,6 @@
     }
   }
 }
-// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--textarea {
   @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
