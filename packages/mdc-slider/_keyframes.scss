@@ -14,7 +14,17 @@
 // limitations under the License.
 //
 
-$mdc-slider-default-assumed-bg-color: white !default;
-$mdc-slider-dark-theme-assumed-bg-color: #333 !default;
+@keyframes mdc-slider-emphasize {
+  0% {
+    animation-timing-function: ease-out;
+  }
 
-$mdc-slider-baseline-rail-opacity: .26;
+  50% {
+    animation-timing-function: ease-in;
+    transform: scale(.85);
+  }
+
+  100% {
+    transform: scale(.571);
+  }
+}
