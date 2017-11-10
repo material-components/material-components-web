@@ -65,10 +65,10 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
     const negativeRealWidth = -1 * realWidth;
     const baseCurveHeight2 = -1 * this.generateBaseCurveHeight2_(height, padding);
     const baseHeight = -1 * (this.generateBaseHeight_(height, padding) - flatHeight);
-    return `l ${negativeFlatWidth},${negativeFlatHeight}`
-      + ` c ${baseCurveWidth},${baseCurveHeight}`
-      + ` ${negativeRealWidth},${baseCurveHeight2}`
-      + ` ${negativeRealWidth},${baseHeight}`;
+    return `l ${negativeFlatWidth},${negativeFlatHeight}` +
+      ` c ${baseCurveWidth},${baseCurveHeight}` +
+      ` ${negativeRealWidth},${baseCurveHeight2}` +
+      ` ${negativeRealWidth},${baseHeight}`;
   }
 
   generateRightBase_(width, height, padding) {
@@ -76,15 +76,17 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
     const flatHeight = this.generateBaseFlatHeight_(height, padding);
     const curveHeight = this.generateBaseHeight_(height, padding) - flatHeight;
     const realWidth = this.generateBaseWidth_(width, padding) - flatWidth;
-    return 'c 0,' + (curveHeight - this.generateBaseCurveHeight2_(height, padding))
-      + (-1 * (realWidth - this.generateBaseCurveWidth_(width, padding)))
-      + ',' + (curveHeight - this.generateBaseCurveHeight_(height, padding))
-      + (-1 * realWidth) + ',' + curveHeight
-      + 'l ' + (-1 * flatWidth) + ',' + flatHeight;
+    const controlY = curveHeight - this.generateBaseCurveHeight2_(height, padding);
+    const controlX2 = -1 * (realWidth - this.generateBaseCurveWidth_(width, padding));
+    const controlY2 = curveHeight - this.generateBaseCurveHeight_(height, padding);
+    const negativeRealWidth = -1 * realWidth;
+    const negativeFlatWidth = -1 * flatWidth;
+    return `c 0,${controlY} ${controlX2},${controlY2} ${negativeRealWidth},${curveHeight}` +
+      ` l ${negativeFlatWidth},${flatHeight}`;
   }
 
   generateOutsideWidth_(width, padding) {
-    return ((width - (padding * 2)) / 2) * 0.55;
+    return ((width - padding * 2) / 2) * 0.55;
   }
 
   generateOutsideCurveWidth_(width, padding) {
@@ -92,7 +94,7 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
   }
 
   generateInsideWidth_(width, padding) {
-    return ((width - (padding * 2)) / 2) * 0.45;
+    return ((width - padding * 2) / 2) * 0.45;
   }
 
   generateInsideCurveWidth_(width, padding) {
@@ -104,7 +106,7 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
   }
 
   generateTopHeight_(height, padding) {
-    return (height - (padding * 2)) * (1 - 0.67);
+    return (height - padding * 2) * (1 - 0.67);
   }
 
   generateTopCurveHeight_(height, padding) {
@@ -112,7 +114,7 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
   }
 
   generateDipHeight_(height, padding) {
-    return (height - (padding * 2)) * 0.15;
+    return (height - padding * 2) * 0.15;
   }
 
   generateDipCurveHeight_(height, padding) {
@@ -121,13 +123,20 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
 
   generateTopLeftCurve_(width, height, padding) {
     const topHeight = this.generateTopHeight_(height, padding);
-    return 'c 0,' + (-1 * this.generateTopCurveHeight_(height, padding)) + ' '
-      + this.generateOutsideCurveWidth_(width, padding) + ',' + (-1 * topHeight) + ' '
-      + this.generateOutsideWidth_(width, padding) + ',' + (-1 * topHeight)
-      +'c ' + this.generateInsideCurveWidth_(width, padding) + ',0, '
-      + this.generateInsideCurveWidth2_(width, padding)
-      + ',' + (this.generateDipCurveHeight_(height, padding)) + ', '
-      + this.generateInsideWidth_(width, padding) + ',' + this.generateDipHeight_(height, padding);
+    const negativeTopCurveHeight = -1 * this.generateTopCurveHeight_(height, padding);
+    const outsideCurveWidth = this.generateOutsideCurveWidth_(width, padding);
+    const negativeTopHeight = -1 * topHeight;
+    const outsideWidth = this.generateOutsideWidth_(width, padding);
+    const insideCurveWidth = this.generateInsideCurveWidth_(width, padding);
+    const insideCurveWidth2 = this.generateInsideCurveWidth2_(width, padding);
+    const dipCurveHeight = this.generateDipCurveHeight_(height, padding);
+    const insideWidth = this.generateInsideWidth_(width, padding);
+    const dipHeight = this.generateDipHeight_(height, padding);
+
+    return `c 0,${negativeTopCurveHeight} ${outsideCurveWidth},${negativeTopHeight} ` +
+      ` ${outsideWidth},${negativeTopHeight}` +
+      ` c ${insideCurveWidth},0 ${insideCurveWidth2},${dipCurveHeight}` +
+      ` ${insideWidth},${dipHeight}`;
   }
 
   generateTopRightCurve_(width, height, padding) {
@@ -135,13 +144,16 @@ export default class DemoHeartFoundation extends MDCShapeFoundation {
     const insideWidth = this.generateInsideWidth_(width, padding);
     const topHeight = this.generateTopHeight_(height, padding);
     const dipHeight = this.generateDipHeight_(height, padding);
-    return 'c ' + (insideWidth - this.generateInsideCurveWidth2_(width, padding))
-    + ',' + (-1 * (dipHeight - this.generateDipCurveHeight_(height, padding))) + ' '
-      + (insideWidth - this.generateInsideCurveWidth_(width, padding))
-      + ',' + (-1 * dipHeight) + ' '
-      + insideWidth + ',' + (-1 * dipHeight)
-      +'c ' + (outsideWidth - this.generateOutsideCurveWidth_(width, padding)) + ',0 '
-      + outsideWidth + ',' + (topHeight - this.generateTopCurveHeight_(height, padding)) + ' '
-      + outsideWidth + ',' + topHeight;
+    const controlX = insideWidth - this.generateInsideCurveWidth2_(width, padding);
+    const controlY = -1 * (dipHeight - this.generateDipCurveHeight_(height, padding));
+    const controlX2 = insideWidth - this.generateInsideCurveWidth_(width, padding);
+    const negativeDipHeight = -1 * dipHeight;
+    const controlX3 = outsideWidth - this.generateOutsideCurveWidth_(width, padding);
+    const controlY4 = topHeight - this.generateTopCurveHeight_(height, padding);
+
+    return `c ${controlX},${controlY} ${controlX2},${negativeDipHeight}` +
+      ` ${insideWidth},${negativeDipHeight}` +
+      `c ${controlX3},0 ${outsideWidth},${controlY4}` +
+      ` ${outsideWidth},${topHeight}`;
   }
 }

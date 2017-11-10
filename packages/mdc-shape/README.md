@@ -49,7 +49,19 @@ The adapter for shape must provide the following functions, with correct signatu
 | `getCanvasWidth() => number` | Returns the width of the canvas element. |
 | `getCanvasHeight() => number` | Returns the height of the canvas element. |
 | `getDevicePixelRatio() => number` | Returns the device pixel ratio. |
-| `create2dRenderingContext() => {shadowColor: string, shadowBlur: number, shadowOffsetY: number, fillStyle: string, scale: (number, number), clearRect: (number, number, number, number), fill: (Path2D)}` | Returns an object which has the shape of a CanvasRenderingContext2d instance. An easy way to achieve this is simply `this.root_.querySelector(mdc.shape.MDCShapeFoundation.SHAPE_SELECTOR).getContext('2d');`. |
+
+#### MDCShapeAdapter.create2dRenderingContext
+
+Returns an object which has the shape of a CanvasRenderingContext2d instance. An easy way to achieve this is simply `this.root_.querySelector(mdc.shape.MDCShapeFoundation.SHAPE_SELECTOR).getContext('2d');`
+
+The full API must cover:
+* shadowColor: string
+* shadowBlur: number
+* shadowOffsetY: number
+* fillStyle: string
+* scale: (number, number)
+* clearRect: (number, number, number, number)
+* fill: (Path2D)
 
 ### Extending the Foundation Class
 
@@ -69,32 +81,17 @@ MDC Shape exposes the following methods:
 
 ### Shape Customization
 
-There are two ways to customize your shape's elevation and background color. The first way is to use the MDCShape's API.
+To customize your shape's elevation and background color, use the MDCShape's API.
 
-To modify the elevation of a shape, call the background setter
+To modify the elevation of a shape, set the background
 
 ```
 mdcShape.background = '#FOO';
 ```
 
-To modify the elevation of a shape, call the elevation setter
+To modify the elevation of a shape, set the elevation
 
 ```
 mdcShape.elevation = 4;
 ```
-
-The second way is to use custom CSS properties.
-
-### CSS custom properties
-
-To modify the elevation of a shape, set custom CSS properties on the mdc-shape element
-
-```
---mdc-shape-elevation: 4;
-```
-
-To modify the background of a shape, set custom CSS properties on the mdc-shape element
-
-```
---mdc-shape-background: #FF0000;
 ```

@@ -16,7 +16,6 @@
 
 import {MDCComponent} from '@material/base';
 import MDCShapeFoundation from './foundation';
-import {getElevationFromDOM, getBackgroundFromDOM} from './util';
 
 export default class MDCShape extends MDCComponent {
   set background(value) {
@@ -40,11 +39,6 @@ export default class MDCShape extends MDCComponent {
       create2dRenderingContext: () => this.canvas_.getContext('2d'),
       createPath2D: (path) => new Path2D(path),
       setClipPathData: (value) => this.path_.setAttribute('d', value)};
-  }
-
-  initialSyncWithDOM() {
-    this.foundation_.setBackground(getBackgroundFromDOM(this.root_), false);
-    this.foundation_.setElevation(getElevationFromDOM(this.root_), false);
   }
 
   get canvas_() {

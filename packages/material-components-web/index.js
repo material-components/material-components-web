@@ -19,6 +19,7 @@ import * as base from '@material/base';
 import * as checkbox from '@material/checkbox';
 import * as dialog from '@material/dialog';
 import * as drawer from '@material/drawer';
+import * as elevation from '@material/elevation';
 import * as formField from '@material/form-field';
 import * as gridList from '@material/grid-list';
 import * as iconToggle from '@material/icon-toggle';
@@ -61,6 +62,7 @@ export {
   checkbox,
   dialog,
   drawer,
+  elevation,
   formField,
   gridList,
   iconToggle,

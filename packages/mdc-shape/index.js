@@ -16,6 +16,5 @@
 
 import MDCShape from './component';
 import MDCShapeFoundation from './foundation';
-import {getElevationFromDOM, getBackgroundFromDOM} from './util';
 
-export {MDCShape, MDCShapeFoundation, getElevationFromDOM, getBackgroundFromDOM};
+export {MDCShape, MDCShapeFoundation};

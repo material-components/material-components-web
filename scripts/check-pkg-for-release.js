@@ -52,10 +52,11 @@ function main() {
   checkPublicConfigForNewComponent();
   if (pkg.name !== MASTER_PKG.name) {
     checkNameIsPresentInAllowedScope();
-  }
-  if (NOT_PUBLISHABLE.indexOf(pkg.name) !== -1) {
-    checkDependencyAddedInWebpackConfig();
-    checkDependencyAddedInMDCPackage();
+    const nameCamel = camelCase(pkg.name.replace('@material/', ''));
+    if (NOT_PUBLISHABLE.indexOf(nameCamel) === -1) {
+      checkDependencyAddedInWebpackConfig();
+      checkDependencyAddedInMDCPackage();
+    }
   }
 }
 

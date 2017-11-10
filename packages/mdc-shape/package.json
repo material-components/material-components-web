@@ -9,7 +9,8 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/base": "^0.2.6"
+    "@material/base": "^0.24.0",
+    "@material/elevation": "^0.1.13"
   },
   "private": "true",
   "publishConfig": {

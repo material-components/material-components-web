@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import {MDCFoundation} from '@material/base';
-
+import {constants} from '@material/elevation';
 import {cssClasses, strings, numbers} from './constants';
 
 export default class MDCShapeFoundation extends MDCFoundation {
@@ -70,11 +70,8 @@ export default class MDCShapeFoundation extends MDCFoundation {
   }
 
   init() {
-    const devicePixelRatio = this.adapter_.getDevicePixelRatio();
-    this.adapter_.setCanvasWidth(this.adapter_.getCanvasWidth() * devicePixelRatio);
-    this.adapter_.setCanvasHeight(this.adapter_.getCanvasHeight() * devicePixelRatio);
     this.ctx_ = this.adapter_.create2dRenderingContext();
-    this.ctx_.scale(devicePixelRatio, devicePixelRatio);
+    this.syncWithCanvas_();
   }
 
   destroy() {
@@ -91,15 +88,7 @@ export default class MDCShapeFoundation extends MDCFoundation {
     this.elevating_ = false;
     this.elevation_ = value;
 
-    if (!animate) {
-      this.ambientShadowBlur_ = this.finalAmbientShadowBlur_;
-      this.ambientShadowOffsetY_ = this.finalAmbientShadowOffsetY_;
-      this.penumbraShadowBlur_ = this.finalPenumbraShadowBlur_;
-      this.penumbraShadowOffsetY_ = this.finalPenumbraShadowOffsetY_;
-      this.umbraShadowBlur_ = this.finalUmbraShadowBlur_;
-      this.umbraShadowOffsetY_ = this.finalUmbraShadowOffsetY_;
-      this.umbraShadowSpread_ = this.finalUmbraShadowSpread_;
-    } else {
+    if (animate) {
       const factor = 1 / numbers.ELEVATION_ANIMATION_FRAME_COUNT;
       this.ambientShadowBlurIncrement_ =
               (this.finalAmbientShadowBlur_ - this.ambientShadowBlur_) * factor;
@@ -117,13 +106,28 @@ export default class MDCShapeFoundation extends MDCFoundation {
               (this.finalUmbraShadowSpread_ - this.umbraShadowSpread_) * factor;
       this.elevating_ = true;
       this.animationFrameId_ = requestAnimationFrame(() => this.elevate_());
+    } else {
+      this.ambientShadowBlur_ = this.finalAmbientShadowBlur_;
+      this.ambientShadowOffsetY_ = this.finalAmbientShadowOffsetY_;
+      this.penumbraShadowBlur_ = this.finalPenumbraShadowBlur_;
+      this.penumbraShadowOffsetY_ = this.finalPenumbraShadowOffsetY_;
+      this.umbraShadowBlur_ = this.finalUmbraShadowBlur_;
+      this.umbraShadowOffsetY_ = this.finalUmbraShadowOffsetY_;
+      this.umbraShadowSpread_ = this.finalUmbraShadowSpread_;
     }
   }
 
   redraw() {
+    this.syncWithCanvas_();
     this.clear_();
-    this.init();
     this.draw_();
+  }
+
+  syncWithCanvas_() {
+    const devicePixelRatio = this.adapter_.getDevicePixelRatio();
+    this.adapter_.setCanvasWidth(this.adapter_.getCanvasWidth() * devicePixelRatio);
+    this.adapter_.setCanvasHeight(this.adapter_.getCanvasHeight() * devicePixelRatio);
+    this.ctx_.scale(devicePixelRatio, devicePixelRatio);
   }
 
   generateClipPath_() {
@@ -222,11 +226,11 @@ export default class MDCShapeFoundation extends MDCFoundation {
   }
 
   get finalAmbientShadowOffsetY_() {
-    return AMBIENT_OFFSET_Y[this.elevation_];
+    return constants.AMBIENT_OFFSET_Y[this.elevation_];
   }
 
   get finalAmbientShadowBlur_() {
-    return AMBIENT_BLUR[this.elevation_];
+    return constants.AMBIENT_BLUR[this.elevation_];
   }
 
   get finalPenumbraShadowOffsetY_() {
@@ -234,186 +238,18 @@ export default class MDCShapeFoundation extends MDCFoundation {
   }
 
   get finalPenumbraShadowBlur_() {
-    return PENUMBRA_BLUR[this.elevation_];
+    return constants.PENUMBRA_BLUR[this.elevation_];
   }
 
   get finalUmbraShadowOffsetY_() {
-    return UMBRA_OFFSET_Y[this.elevation_];
+    return constants.UMBRA_OFFSET_Y[this.elevation_];
   }
 
   get finalUmbraShadowBlur_() {
-    return UMBRA_BLUR[this.elevation_];
+    return constants.UMBRA_BLUR[this.elevation_];
   }
 
   get finalUmbraShadowSpread_() {
-    return UMBRA_SPREAD[this.elevation_];
+    return constants.UMBRA_SPREAD[this.elevation_];
   }
 }
-
-const UMBRA_OFFSET_Y = [
-  0,
-  2,
-  3,
-  3,
-  2,
-  3,
-  3,
-  4,
-  5,
-  5,
-  6,
-  6,
-  7,
-  7,
-  7,
-  8,
-  8,
-  8,
-  9,
-  9,
-  10,
-  10,
-  10,
-  11,
-  11,
-];
-
-const UMBRA_BLUR = [
-  0,
-  1,
-  1,
-  3,
-  4,
-  5,
-  5,
-  5,
-  5,
-  6,
-  6,
-  7,
-  8,
-  8,
-  9,
-  9,
-  10,
-  11,
-  11,
-  12,
-  13,
-  13,
-  14,
-  14,
-  15,
-];
-
-const UMBRA_SPREAD = [
-  0,
-  -1,
-  -2,
-  -2,
-  -1,
-  -1,
-  -1,
-  -2,
-  -3,
-  -3,
-  -3,
-  -4,
-  -4,
-  -4,
-  -4,
-  -5,
-  -5,
-  -5,
-  -5,
-  -6,
-  -6,
-  -6,
-  -6,
-  -7,
-  -7,
-];
-
-const PENUMBRA_BLUR = [
-  0,
-  1,
-  2,
-  4,
-  5,
-  8,
-  10,
-  10,
-  10,
-  12,
-  14,
-  15,
-  17,
-  19,
-  21,
-  22,
-  24,
-  26,
-  28,
-  29,
-  31,
-  33,
-  35,
-  36,
-  38,
-];
-
-const AMBIENT_OFFSET_Y = [
-  0,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  2,
-  3,
-  3,
-  4,
-  4,
-  5,
-  5,
-  5,
-  6,
-  6,
-  6,
-  7,
-  7,
-  8,
-  8,
-  8,
-  9,
-  9,
-];
-
-const AMBIENT_BLUR = [
-  0,
-  3,
-  5,
-  8,
-  10,
-  14,
-  18,
-  16,
-  14,
-  16,
-  18,
-  20,
-  22,
-  24,
-  26,
-  28,
-  30,
-  32,
-  34,
-  36,
-  38,
-  40,
-  42,
-  44,
-  46,
-];

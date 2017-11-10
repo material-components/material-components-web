@@ -16,8 +16,6 @@
 
 @import "./variables";
 
-$mdc-shape-shadow-double-padding: 2 * $mdc-shape-shadow-padding;
-
 .mdc-shape {
   position: relative;
   min-width: $mdc-shape-shadow-padding;
@@ -25,10 +23,10 @@ $mdc-shape-shadow-double-padding: 2 * $mdc-shape-shadow-padding;
 
   &__canvas {
     position: absolute;
-    top: $mdc-shape-shadow-negative-padding;
-    left: $mdc-shape-shadow-negative-padding;
-    width: calc(100% + #{$mdc-shape-shadow-double-padding});
-    height: calc(100% + #{$mdc-shape-shadow-double-padding});
+    top: -1 * $mdc-shape-shadow-padding;
+    left: -1 * $mdc-shape-shadow-padding;
+    width: calc(100% + #{2 * $mdc-shape-shadow-padding});
+    height: calc(100% + #{2 * $mdc-shape-shadow-padding});
     pointer-events: none;
   }
 

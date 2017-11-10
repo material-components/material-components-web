@@ -89,13 +89,16 @@
           let elevatableHeart;
           for (var i=0; i<shapes.length; i++) {
             const demoHeart = DemoHeart.attachTo(shapes[i]);
+            demoHeart.elevation = 4;
+            demoHeart.background = '#ff00ff';
+            demoHeart.redraw();
             if (shapes[i].id === "elevatable-shape") {
               elevatableHeart = demoHeart;
             }
           }
           const elevationInput = document.querySelector("#elevation-input");
           elevationInput.addEventListener("change", () => {
-            elevatableHeart.elevation = elevationInput.value;
+            elevatableHeart.elevation = parseInt(elevationInput.value);
           });
         }
       })();
