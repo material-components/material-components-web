@@ -55,8 +55,8 @@ $mdc-ripple-common-styles-emitted_: false !default;
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    will-change: transform, opacity;
     content: "";
+    will-change: transform, opacity;
   }
 
   &::before {
@@ -108,7 +108,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
 
   &:hover::before {
-    opacity: map-get($opacity-map, 'hover');
+    opacity: map-get($opacity-map, "hover");
   }
 
   // Styles for non-upgraded (CSS-only) stateful surfaces
@@ -120,8 +120,8 @@ $mdc-ripple-common-styles-emitted_: false !default;
     }
 
     &:active::after {
-      opacity: map-get($opacity-map, 'press');
       transition-duration: $mdc-ripple-fade-in-duration;
+      opacity: map-get($opacity-map, "press");
     }
   }
 
@@ -130,17 +130,18 @@ $mdc-ripple-common-styles-emitted_: false !default;
   // It is useful for cases where a component has a focusable element within the root node, e.g. text field,
   // but undesirable in general in case of nested stateful components.
   // We use a modifier class for JS-enabled surfaces to support all use cases in all browsers.
-  $cssOnlyFocusSelector: if($include-focus-within,
-    '&:not(.mdc-ripple-upgraded):focus::before, &:not(.mdc-ripple-upgraded):focus-within::before',
-    '&:not(.mdc-ripple-upgraded):focus::before');
+  $cssOnlyFocusSelector: if(
+    $include-focus-within,
+    "&:not(.mdc-ripple-upgraded):focus::before, &:not(.mdc-ripple-upgraded):focus-within::before",
+    "&:not(.mdc-ripple-upgraded):focus::before"
+  );
 
   #{$cssOnlyFocusSelector},
   &.mdc-ripple-upgraded--focused::before {
-    opacity: map-get($opacity-map, 'focus');
-    // Note that this is only effective on focus, not blur
+    // Note that this duration is only effective on focus, not blur
     transition-duration: 75ms;
+    opacity: map-get($opacity-map, "focus");
   }
-
 
   // Styles for ripple-upgraded surfaces
 
@@ -148,7 +149,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
     --mdc-ripple-fg-size: 0;
     --mdc-ripple-left: 0;
     --mdc-ripple-top: 0;
-    --mdc-ripple-fg-opacity: map-get($opacity-map, 'press');
+    --mdc-ripple-fg-opacity: map-get($opacity-map, "press");
     --mdc-ripple-fg-scale: 1;
     --mdc-ripple-fg-translate-end: 0;
     --mdc-ripple-fg-translate-start: 0;
