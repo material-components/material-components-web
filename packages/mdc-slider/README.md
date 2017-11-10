@@ -280,10 +280,15 @@ component is used within a dark mode context.
 
 #### Sass Mixins
 
+The following mixins apply only to _enabled_ sliders.
+It is not currently possible to customize the color of a _disabled_ slider.
+
 Mixin | Description
 --- | ---
 `mdc-slider-color-accessible($color)` | Sets the color of all slider elements and automatically sets an accessible ink color with high contrast for the value indicator pin
+`mdc-slider-highlight-color($color)` | Sets the color of the highlighted (aka "on") portion of the slider
 `mdc-slider-rail-color($color)` | Sets the color of the rail (aka track)
+`mdc-slider-rail-tick-mark-color($color)` | Sets the color of the tick marks on the rail
 `mdc-slider-thumb-color($color)` | Sets the color of the thumb (grab handle)
 `mdc-slider-focus-halo-color($color)` | Sets the color of the focus halo
 `mdc-slider-value-pin-fill-color-accessible($color)` | Sets the fill color of the value indicator pin and automatically sets an accessible ink color with high contrast

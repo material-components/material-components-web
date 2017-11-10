@@ -23,9 +23,21 @@
 // Public
 //
 
-@mixin mdc-slider-rail-color($color) {
+@mixin mdc-slider-highlight-color($color) {
   &:not(.mdc-slider--disabled) {
-    @include mdc-slider-rail-color_($color);
+    @include mdc-slider-highlight-color_($color);
+  }
+}
+
+@mixin mdc-slider-rail-color($color, $opacity: $mdc-slider-baseline-rail-opacity) {
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-rail-color_($color, $opacity);
+  }
+}
+
+@mixin mdc-slider-rail-tick-mark-color($color) {
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-rail-tick-mark-color_($color);
   }
 }
 
@@ -70,7 +82,9 @@
 // NOTE: This mixin sets the color of ALL customizable elements in the slider. If new elements are added, this mixin
 // should be updated to cover those additional elements.
 @mixin mdc-slider-color-accessible($color) {
+  @include mdc-slider-highlight-color($color);
   @include mdc-slider-rail-color($color);
+  @include mdc-slider-rail-tick-mark-color($color);
   @include mdc-slider-thumb-color($color);
   @include mdc-slider-focus-halo-color($color);
   @include mdc-slider-value-pin-fill-color-accessible($color);
@@ -80,20 +94,19 @@
 // Private
 //
 
-@mixin mdc-slider-rail-color_($color) {
-  $rail-color: rgba(mdc-theme-prop-value($color), .26);
-
-  // Rail
-  .mdc-slider__track-container {
-    @include mdc-theme-prop(background-color, $rail-color);
-  }
-
-  // Highlight
+@mixin mdc-slider-highlight-color_($color) {
   .mdc-slider__track {
     @include mdc-theme-prop(background-color, $color);
   }
+}
 
-  // Tick marks
+@mixin mdc-slider-rail-color_($color, $opacity: $mdc-slider-baseline-rail-opacity) {
+  .mdc-slider__track-container {
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $opacity));
+  }
+}
+
+@mixin mdc-slider-rail-tick-mark-color_($color) {
   .mdc-slider__track-marker::after,
   .mdc-slider__track-marker-container::after {
     @include mdc-theme-prop(background-color, $color);
