@@ -16,25 +16,14 @@
 
 'use strict';
 
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
+
+const fsx = require('fs-extra');
 const glob = require('glob');
 const webpack = require('webpack');
-const fs = require('fs');
-const fsx = require('fs-extra');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-class PostCompilePlugin {
-  constructor(fn) {
-    this.fn = fn;
-  }
-
-  apply(compiler) {
-    compiler.plugin('done', (stats) => {
-      if (typeof this.fn === 'function') {
-        this.fn(stats);
-      }
-    });
-  }
-}
 
 const OUT_PATH = path.resolve('./build');
 // Used with webpack-dev-server
@@ -106,6 +95,20 @@ const createCssLoaderConfig = () =>
     });
 
 const createCssExtractTextPlugin = () => new ExtractTextPlugin(CSS_FILENAME_OUTPUT_PATTERN);
+
+class PostCompilePlugin {
+  constructor(fn) {
+    this.fn = fn;
+  }
+
+  apply(compiler) {
+    compiler.plugin('done', (stats) => {
+      if (typeof this.fn === 'function') {
+        this.fn(stats);
+      }
+    });
+  }
+}
 
 module.exports = [{
   name: 'js-all',
@@ -269,14 +272,24 @@ if (IS_DEV) {
         if (!fs.existsSync(path.resolve('./build'))) {
           return;
         }
-        const opts = {
+        const copyOpts = {
+          // eslint-disable-next-line no-unused-vars
           filter: (src, dest) => {
-            return !/\.scss$/.test(src);
+            return !/\.(scss|css.js)$/.test(src);
           },
         };
-        fsx.copySync(path.resolve('./demos'), path.resolve('./firebase-out/pr/123'), opts);
-        fsx.copySync(path.resolve('./build'), path.resolve('./firebase-out/pr/123/assets'), opts);
-        fsx.moveSync(path.resolve('./firebase-out'), path.resolve('./build/firebase'));
+        const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
+        fsx.copySync(path.resolve('./demos'), path.join(tmpDir, 'pr/123'), copyOpts);
+        fsx.copySync(path.resolve('./build'), path.join(tmpDir, 'pr/123/assets'), copyOpts);
+        fsx.moveSync(tmpDir, path.resolve('./build/demo'));
+        glob.sync('./build/demo/**/*.html').map((filename) => path.join(__dirname, filename)).forEach((absPath) => {
+          const oldHtml = fs.readFileSync(absPath, {encoding: 'utf8'});
+          const newHtml = oldHtml.replace(/<script src="([^"]+\.css\.js\b[^"]*)"><\/script>/ig, (match, oldPath) => {
+            const newPath = oldPath.replace(/\.css\.js/, '.css');
+            return `<link rel="stylesheet" href="${newPath}">`;
+          });
+          fs.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
+        });
       }),
     ],
   });
