@@ -158,6 +158,26 @@ test('#adapter.setBottomLineAttr adds a given attribute to the bottom line', () 
   assert.equal(bottomLine.getAttribute('aria-label'), 'foo');
 });
 
+test('#adapter.registerTransitionEndHandler adds event listener for "transitionend" to bottom line', () => {
+  const {bottomLine, component} = setupTest();
+  const handler = td.func('transitionend handler');
+  component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
+  domEvents.emit(bottomLine, 'transitionend');
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.deregisterTransitionEndHandler removes event listener for "transitionend" from bottom line', () => {
+  const {bottomLine, component} = setupTest();
+  const handler = td.func('transitionend handler');
+
+  bottomLine.addEventListener('transitionend', handler);
+  component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
+  domEvents.emit(bottomLine, 'transitionend');
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
