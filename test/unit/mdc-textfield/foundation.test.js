@@ -39,10 +39,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'setIconAttr', 'eventTargetHasClass', 'registerTextFieldInteractionHandler',
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'addClassToBottomLine', 'removeClassFromBottomLine',
-    'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
+    'addClassToHelperText', 'removeClassFromHelperText', 'helperTextHasClass',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
-    'setBottomLineAttr', 'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
+    'setBottomLineAttr', 'setHelperTextAttr', 'removeHelperTextAttr', 'getNativeInput',
   ]);
 });
 
@@ -237,7 +237,7 @@ test('on focus adds mdc-text-field__label--float-above class', () => {
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('on focus removes aria-hidden from helptext', () => {
+test('on focus removes aria-hidden from helperText', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
@@ -246,7 +246,7 @@ test('on focus removes aria-hidden from helptext', () => {
     });
   foundation.init();
   focus();
-  td.verify(mockAdapter.removeHelptextAttr('aria-hidden'));
+  td.verify(mockAdapter.removeHelperTextAttr('aria-hidden'));
 });
 
 const setupBlurTest = () => {
@@ -316,47 +316,47 @@ test('on blur does not add mdc-textfied--invalid if custom validity is true and'
   td.verify(mockAdapter.addClass(cssClasses.INVALID), {times: 0});
 });
 
-test('on blur adds role="alert" to helptext if input is invalid and helptext is being used ' +
+test('on blur adds role="alert" to helper text if input is invalid and helper text is being used ' +
      'as a validation message', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.checkValidity = () => false;
-  td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
+  td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
   blur();
-  td.verify(mockAdapter.setHelptextAttr('role', 'alert'));
+  td.verify(mockAdapter.setHelperTextAttr('role', 'alert'));
 });
 
 test('on blur remove role="alert" if input is valid', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
-  td.verify(mockAdapter.removeHelptextAttr('role'));
+  td.verify(mockAdapter.removeHelperTextAttr('role'));
 });
 
-test('on blur sets aria-hidden="true" on help text by default', () => {
+test('on blur sets aria-hidden="true" on helper text by default', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
-  td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true'));
+  td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'));
 });
 
-test('on blur does not set aria-hidden on help text when it is persistent', () => {
+test('on blur does not set aria-hidden on helper text when it is persistent', () => {
   const {mockAdapter, blur} = setupBlurTest();
-  td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_PERSISTENT)).thenReturn(true);
+  td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(true);
   blur();
-  td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true'), {times: 0});
+  td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'), {times: 0});
 });
 
-test('on blur does not set aria-hidden if input is invalid and help text is validation message', () => {
+test('on blur does not set aria-hidden if input is invalid and helper text is validation message', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
-  td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
+  td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
   nativeInput.checkValidity = () => false;
   blur();
-  td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true'), {times: 0});
+  td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'), {times: 0});
 });
 
-test('on blur sets aria-hidden=true if input is valid and help text is validation message', () => {
+test('on blur sets aria-hidden=true if input is valid and helper text is validation message', () => {
   const {mockAdapter, blur} = setupBlurTest();
-  td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
+  td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
   blur();
-  td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true'));
+  td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'));
 });
 
 test('on blur handles getNativeInput() not returning anything gracefully', () => {

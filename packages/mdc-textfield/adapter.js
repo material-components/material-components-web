@@ -112,25 +112,25 @@ class MDCTextFieldAdapter {
   removeClassFromBottomLine(className) {}
 
   /**
-   * Adds a class to the help text element. Note that in our code we check for
-   * whether or not we have a help text element and if we don't, we simply
+   * Adds a class to the helper text element. Note that in our code we check for
+   * whether or not we have a helper text element and if we don't, we simply
    * return.
    * @param {string} className
    */
-  addClassToHelptext(className) {}
+  addClassToHelperText(className) {}
 
   /**
-   * Removes a class from the help text element.
+   * Removes a class from the helper text element.
    * @param {string} className
    */
-  removeClassFromHelptext(className) {}
+  removeClassFromHelperText(className) {}
 
   /**
-   * Returns whether or not the help text element contains the given class.
+   * Returns whether or not the helper text element contains the given class.
    * @param {string} className
    * @return {boolean}
    */
-  helptextHasClass(className) {}
+  helperTextHasClass(className) {}
 
   /**
    * Registers an event listener on the native input element for a given event.
@@ -166,17 +166,17 @@ class MDCTextFieldAdapter {
   setBottomLineAttr(attr, value) {}
 
   /**
-   * Sets an attribute with a given value on the help text element.
+   * Sets an attribute with a given value on the helper text element.
    * @param {string} name
    * @param {string} value
    */
-  setHelptextAttr(name, value) {}
+  setHelperTextAttr(name, value) {}
 
   /**
-   * Removes an attribute from the help text element.
+   * Removes an attribute from the helper text element.
    * @param {string} name
    */
-  removeHelptextAttr(name) {}
+  removeHelperTextAttr(name) {}
 
   /**
    * Returns an object representing the native text input element, with a

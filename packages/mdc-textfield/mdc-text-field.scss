@@ -408,7 +408,7 @@
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input,
   .mdc-text-field__label,
-  + .mdc-text-field-helptext {
+  + .mdc-text-field-helper-text {
     @include mdc-theme-prop(color, text-disabled-on-light);
   }
   // stylelint-enable plugin/selector-bem-pattern
@@ -422,7 +422,7 @@
 
   @include mdc-theme-dark(".mdc-text-field", true) {
     // stylelint-disable plugin/selector-bem-pattern
-    + .mdc-text-field-helptext {
+    + .mdc-text-field-helper-text {
       @include mdc-theme-prop(color, text-disabled-on-dark);
     }
     // stylelint-enable plugin/selector-bem-pattern
@@ -649,9 +649,9 @@
 
 // postcss-bem-linter: end
 
-// postcss-bem-linter: define text-field-helptext
+// postcss-bem-linter: define text-field-helper-text
 
-.mdc-text-field-helptext {
+.mdc-text-field-helper-text {
   @include mdc-theme-prop(color, text-hint-on-light);
 
   margin: 0;
@@ -685,7 +685,7 @@
   // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-text-field-helptext--persistent {
+.mdc-text-field-helper-text--persistent {
   transition: none;
   opacity: 1;
   will-change: initial;
@@ -694,13 +694,13 @@
 // postcss-bem-linter: end
 
 .mdc-text-field--invalid {
-  + .mdc-text-field-helptext--validation-msg {
+  + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
     color: $mdc-text-field-error-on-light;
   }
 
   @include mdc-theme-dark(".mdc-text-field", true) {
-    + .mdc-text-field-helptext--validation-msg {
+    + .mdc-text-field-helper-text--validation-msg {
       color: $mdc-text-field-error-on-dark;
     }
   }

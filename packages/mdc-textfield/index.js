@@ -37,7 +37,7 @@ class MDCTextField extends MDCComponent {
     /** @private {?Element} */
     this.label_;
     /** @type {?Element} */
-    this.helptextElement;
+    this.helperTextElement;
     /** @type {?MDCRipple} */
     this.ripple;
     /** @private {?Element} */
@@ -61,10 +61,10 @@ class MDCTextField extends MDCComponent {
   initialize(rippleFactory = (el) => new MDCRipple(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
-    this.helptextElement = null;
+    this.helperTextElement = null;
     this.ripple = null;
     if (this.input_.hasAttribute('aria-controls')) {
-      this.helptextElement = document.getElementById(this.input_.getAttribute('aria-controls'));
+      this.helperTextElement = document.getElementById(this.input_.getAttribute('aria-controls'));
     }
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = rippleFactory(this.root_);
@@ -138,7 +138,7 @@ class MDCTextField extends MDCComponent {
       notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
     },
     this.getInputAdapterMethods_(),
-    this.getHelptextAdapterMethods_(),
+    this.getHelperTextAdapterMethods_(),
     this.getBottomLineAdapterMethods_(),
     this.getIconAdapterMethods_())));
   }
@@ -214,39 +214,39 @@ class MDCTextField extends MDCComponent {
 
   /**
    * @return {!{
-   *   addClassToHelptext: function(string): undefined,
-   *   removeClassFromHelptext: function(string): undefined,
-   *   helptextHasClass: function(string): boolean,
-   *   setHelptextAttr: function(string, string): undefined,
-   *   removeHelptextAttr: function(string): undefined,
+   *   addClassToHelperText: function(string): undefined,
+   *   removeClassFromHelperText: function(string): undefined,
+   *   helperTextHasClass: function(string): boolean,
+   *   setHelperTextAttr: function(string, string): undefined,
+   *   removeHelperTextAttr: function(string): undefined,
    * }}
    */
-  getHelptextAdapterMethods_() {
+  getHelperTextAdapterMethods_() {
     return {
-      addClassToHelptext: (className) => {
-        if (this.helptextElement) {
-          this.helptextElement.classList.add(className);
+      addClassToHelperText: (className) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.classList.add(className);
         }
       },
-      removeClassFromHelptext: (className) => {
-        if (this.helptextElement) {
-          this.helptextElement.classList.remove(className);
+      removeClassFromHelperText: (className) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.classList.remove(className);
         }
       },
-      helptextHasClass: (className) => {
-        if (!this.helptextElement) {
+      helperTextHasClass: (className) => {
+        if (!this.helperTextElement) {
           return false;
         }
-        return this.helptextElement.classList.contains(className);
+        return this.helperTextElement.classList.contains(className);
       },
-      setHelptextAttr: (name, value) => {
-        if (this.helptextElement) {
-          this.helptextElement.setAttribute(name, value);
+      setHelperTextAttr: (name, value) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.setAttribute(name, value);
         }
       },
-      removeHelptextAttr: (name) => {
-        if (this.helptextElement) {
-          this.helptextElement.removeAttribute(name);
+      removeHelperTextAttr: (name) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.removeAttribute(name);
         }
       },
     };
