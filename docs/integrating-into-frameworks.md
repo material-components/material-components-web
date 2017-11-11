@@ -44,7 +44,7 @@ The simple approach can be outlined as follows:
 
 This general approach will work for almost all basic use-cases. For an example of this approach,
 check out [this plunk](https://plnkr.co/edit/b4v160c186ErrPG5vNza?p=preview) which
-shows how to wrap our textfield within an angular v1 component, as well as our button (with a
+shows how to wrap our text field within an angular v1 component, as well as our button (with a
 ripple) within an attribute directive.
 
 Note that this approach will also work for [custom elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements). Use `connectedCallback` for initialization

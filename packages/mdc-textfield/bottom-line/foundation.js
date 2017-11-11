@@ -58,11 +58,11 @@ class MDCTextfieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the transform-origin, causing it to animate out from the user's click location.
+   * Animates out from the user's click location.
    * @param {!Event} evt
    * @private
    */
-  setTransformOrigin(evt) {
+  animate(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();
     const evtCoords = {x: evt.clientX, y: evt.clientY};
     const normalizedX = evtCoords.x - targetClientRect.left;

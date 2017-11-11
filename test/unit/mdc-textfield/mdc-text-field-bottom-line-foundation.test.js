@@ -51,7 +51,7 @@ test('deactivate removes mdc-textfield__bottom-line--active class', () => {
   td.verify(mockAdapter.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
 });
 
-test('setTransformOrigin sets the bottom line origin', () => {
+test('animate the bottom line', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     target: {
@@ -64,7 +64,7 @@ test('setTransformOrigin sets the bottom line origin', () => {
   };
 
   foundation.init();
-  foundation.setTransformOrigin(mockEvt);
+  foundation.animate(mockEvt);
 
   td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
 });
