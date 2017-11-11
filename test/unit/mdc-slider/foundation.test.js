@@ -501,44 +501,6 @@ test('#setValue flips the slider thumb position across the X-axis when in an RTL
   raf.restore();
 });
 
-test('#setValue adds the mdc-slider--off class when set to the minimum value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
-
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 200});
-  foundation.init();
-  raf.flush();
-
-  // Change the value so that setting the value back to zero won't be short-circuited
-  foundation.setValue(10);
-  raf.flush();
-
-  foundation.setValue(0);
-  raf.flush();
-
-  // Called once on init(), once when the value is set
-  td.verify(mockAdapter.addClass(cssClasses.OFF), {times: 2});
-
-  raf.restore();
-});
-
-test('#setValue removes the mdc-slider--off class when not set to the minimum value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
-
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 200});
-  foundation.init();
-  raf.flush();
-
-  // Change the value so that setting the value back to zero won't be short-circuited
-  foundation.setValue(10);
-  raf.flush();
-
-  td.verify(mockAdapter.removeClass(cssClasses.OFF));
-
-  raf.restore();
-});
-
 test('#setValue does not cause any events to be fired', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
