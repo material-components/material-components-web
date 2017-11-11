@@ -190,6 +190,9 @@ foundation is completely unaware of it. To that end, if your framework's Icon To
 icon elements, you must ensure that `addClass`, `removeClass`, and `setText` apply to the correct
 icon element.
 
+We provide a basic `MDCIconToggle.createAdapter` method which you can use as the base implementation
+for your own adapter.
+
 Also note that _ripples require their own foundation at the component level_. Check out our vanilla
 implementation in `index.js` as a starting point.
 

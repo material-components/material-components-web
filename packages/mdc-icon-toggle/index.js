@@ -27,6 +27,26 @@ class MDCIconToggle extends MDCComponent {
     return new MDCIconToggle(root);
   }
 
+  /**
+   * @param {!IconToggleCapableSurface} instance
+   * @return {!MDCIconToggleAdapter}
+   */
+  static createAdapter(instance) {
+    return {
+      addClass: (className) => instance.iconEl_.classList.add(className),
+      removeClass: (className) => instance.iconEl_.classList.remove(className),
+      registerInteractionHandler: (type, handler) => instance.root_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => instance.root_.removeEventListener(type, handler),
+      setText: (text) => instance.iconEl_.textContent = text,
+      getTabIndex: () => /* number */ instance.root_.tabIndex,
+      setTabIndex: (tabIndex) => instance.root_.tabIndex = tabIndex,
+      getAttr: (name, value) => instance.root_.getAttribute(name, value),
+      setAttr: (name, value) => instance.root_.setAttribute(name, value),
+      rmAttr: (name) => instance.root_.removeAttribute(name),
+      notifyChange: (evtData) => instance.emit(MDCIconToggleFoundation.strings.CHANGE_EVENT, evtData),
+    };
+  }
+
   constructor(...args) {
     super(...args);
 
@@ -73,19 +93,7 @@ class MDCIconToggle extends MDCComponent {
 
   /** @return {!MDCIconToggleFoundation} */
   getDefaultFoundation() {
-    return new MDCIconToggleFoundation({
-      addClass: (className) => this.iconEl_.classList.add(className),
-      removeClass: (className) => this.iconEl_.classList.remove(className),
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      setText: (text) => this.iconEl_.textContent = text,
-      getTabIndex: () => /* number */ this.root_.tabIndex,
-      setTabIndex: (tabIndex) => this.root_.tabIndex = tabIndex,
-      getAttr: (name, value) => this.root_.getAttribute(name, value),
-      setAttr: (name, value) => this.root_.setAttribute(name, value),
-      rmAttr: (name) => this.root_.removeAttribute(name),
-      notifyChange: (evtData) => this.emit(MDCIconToggleFoundation.strings.CHANGE_EVENT, evtData),
-    });
+    return new MDCIconToggleFoundation(MDCIconToggle.createAdapter(this));
   }
 
   initialSyncWithDOM() {
