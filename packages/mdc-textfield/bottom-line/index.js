@@ -17,34 +17,34 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCTextfieldBottomLineAdapter from './adapter';
-import MDCTextfieldBottomLineFoundation from './foundation';
+import MDCTextFieldBottomLineAdapter from './adapter';
+import MDCTextFieldBottomLineFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCTextfieldBottomLineFoundation>}
+ * @extends {MDCComponent<!MDCTextFieldBottomLineFoundation>}
  * @final
  */
-class MDCTextfieldBottomLine extends MDCComponent {
+class MDCTextFieldBottomLine extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextfieldBottomLine}
+   * @return {!MDCTextFieldBottomLine}
    */
   static attachTo(root) {
-    return new MDCTextfieldBottomLine(root);
+    return new MDCTextFieldBottomLine(root);
   }
 
   /**
-   * @return {MDCTextfieldBottomLineFoundation}
+   * @return {MDCTextFieldBottomLineFoundation}
    */
   get foundation() {
     return this.foundation_;
   }
 
   /**
-   * @return {!MDCTextfieldBottomLineFoundation}
+   * @return {!MDCTextFieldBottomLineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextfieldBottomLineFoundation(/** @type {!MDCTextfieldBottomLineAdapter} */ (Object.assign({
+    return new MDCTextFieldBottomLineFoundation(/** @type {!MDCTextFieldBottomLineAdapter} */ (Object.assign({
       addClassToBottomLine: (className) => this.root_.classList.add(className),
       removeClassFromBottomLine: (className) => this.root_.classList.remove(className),
       setBottomLineAttr: (attr, value) => this.root_.setAttribute(attr, value),
@@ -52,4 +52,4 @@ class MDCTextfieldBottomLine extends MDCComponent {
   }
 }
 
-export {MDCTextfieldBottomLine, MDCTextfieldBottomLineFoundation};
+export {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation};

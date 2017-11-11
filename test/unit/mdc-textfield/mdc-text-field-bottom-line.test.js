@@ -17,17 +17,17 @@
 import bel from 'bel';
 import {assert} from 'chai';
 
-import {MDCTextfieldBottomLine} from '../../../packages/mdc-textfield/bottom-line';
+import {MDCTextFieldBottomLine} from '../../../packages/mdc-textfield/bottom-line';
 
 const getFixture = () => bel`
   <div class="mdc-textfield__bottom-line"></div>
 `;
 
-suite('MDCTextfieldBottomLine');
+suite('MDCTextFieldBottomLine');
 
 function setupTest() {
   const root = getFixture();
-  const component = new MDCTextfieldBottomLine(root);
+  const component = new MDCTextFieldBottomLine(root);
   return {root, component};
 }
 

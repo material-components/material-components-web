@@ -19,32 +19,32 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextfieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
+import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
-const {cssClasses} = MDCTextfieldBottomLineFoundation;
+const {cssClasses} = MDCTextFieldBottomLineFoundation;
 
-suite('MDCTextfieldBottomLineFoundation');
+suite('MDCTextFieldBottomLineFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextfieldBottomLineFoundation);
+  assert.isOk('cssClasses' in MDCTextFieldBottomLineFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCTextfieldBottomLineFoundation, [
+  verifyDefaultAdapter(MDCTextFieldBottomLineFoundation, [
     'addClassToBottomLine', 'removeClassFromBottomLine', 'setBottomLineAttr',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTextfieldBottomLineFoundation);
+const setupTest = () => setupFoundationTest(MDCTextFieldBottomLineFoundation);
 
-test('activate adds mdc-textfield__bottom-line--active class', () => {
+test('activate adds mdc-text-field__bottom-line--active class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.activate();
   td.verify(mockAdapter.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
 });
 
-test('deactivate removes mdc-textfield__bottom-line--active class', () => {
+test('deactivate removes mdc-text-field__bottom-line--active class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.deactivate();

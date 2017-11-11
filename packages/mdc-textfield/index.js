@@ -21,7 +21,7 @@ import {MDCRipple} from '@material/ripple';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter} from './adapter';
 import MDCTextFieldFoundation from './foundation';
-import {MDCTextfieldBottomLine} from './bottom-line';
+import {MDCTextFieldBottomLine} from './bottom-line';
 
 /**
  * @extends {MDCComponent<!MDCTextFieldFoundation>}
@@ -41,7 +41,7 @@ class MDCTextField extends MDCComponent {
     this.helptextElement;
     /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {?MDCTextfieldBottomLine} */
+    /** @private {?MDCTextFieldBottomLine} */
     this.bottomLine_;
     /** @private {?Element} */
     this.icon_;
@@ -73,7 +73,7 @@ class MDCTextField extends MDCComponent {
     if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
       const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
       if (bottomLineElement) {
-        this.bottomLine_ = new MDCTextfieldBottomLine(bottomLineElement);
+        this.bottomLine_ = new MDCTextFieldBottomLine(bottomLineElement);
       }
     };
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {

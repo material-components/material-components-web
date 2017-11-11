@@ -18,16 +18,16 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Textfield Bottom Line.
+ * Adapter for MDC TextField Bottom Line.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Textfield bottom line into your framework. See
+ * adapter to integrate the TextField bottom line into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCTextfieldBottomLineAdapter {
+class MDCTextFieldBottomLineAdapter {
   /**
    * Adds a class to the bottom line element.
    * @param {string} className
@@ -48,4 +48,4 @@ class MDCTextfieldBottomLineAdapter {
   setBottomLineAttr(attr, value) {}
 }
 
-export default MDCTextfieldBottomLineAdapter;
+export default MDCTextFieldBottomLineAdapter;

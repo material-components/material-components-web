@@ -20,11 +20,11 @@ The bottom line indicates where to enter text, displayed below the label. When a
 
 ## Usage
 
-#### MDCTextfieldBottomLine API
+#### MDCTextFieldBottomLine API
 
-##### MDCTextfieldBottomLine.foundation
+##### MDCTextFieldBottomLine.foundation
 
-MDCTextfieldBottomLineFoundation. This allows the parent MDCTextfield component to access the public methods on the MDCTextfieldBottomLineFoundation class.
+MDCTextFieldBottomLineFoundation. This allows the parent MDCTextField component to access the public methods on the MDCTextFieldBottomLineFoundation class.
 
 ### Using the foundation class
 
@@ -37,14 +37,14 @@ MDCTextfieldBottomLineFoundation. This allows the parent MDCTextfield component 
 
 #### The full foundation API
 
-##### MDCTextfieldBottomLineFoundation.activate()
+##### MDCTextFieldBottomLineFoundation.activate()
 
 Activates the bottom line
 
-##### MDCTextfieldBottomLineFoundation.desctivate()
+##### MDCTextFieldBottomLineFoundation.desctivate()
 
 Deactivates the bottom line
 
-##### MDCTextfieldFoundation.setTransformOrigin(evt: Event)
+##### MDCTextFieldBottomLineFoundation.animate(evt: Event)
 
 Sets the transform-origin, causing it to animate outfrom the user's click location.

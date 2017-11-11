@@ -16,27 +16,27 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTextfieldBottomLineAdapter from './adapter';
+import MDCTextFieldBottomLineAdapter from './adapter';
 import {cssClasses} from './constants';
 
 
 /**
- * @extends {MDCFoundation<!MDCTextfieldBottomLineAdapter>}
+ * @extends {MDCFoundation<!MDCTextFieldBottomLineAdapter>}
  * @final
  */
-class MDCTextfieldBottomLineFoundation extends MDCFoundation {
+class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
   /**
-   * {@see MDCTextfieldBottomLineAdapter} for typing information on parameters and return
+   * {@see MDCTextFieldBottomLineAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCTextfieldBottomLineAdapter}
+   * @return {!MDCTextFieldBottomLineAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTextfieldBottomLineAdapter} */ ({
+    return /** @type {!MDCTextFieldBottomLineAdapter} */ ({
       addClassToBottomLine: () => {},
       removeClassFromBottomLine: () => {},
       setBottomLineAttr: () => {},
@@ -44,10 +44,10 @@ class MDCTextfieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextfieldBottomLineAdapter=} adapter
+   * @param {!MDCTextFieldBottomLineAdapter=} adapter
    */
-  constructor(adapter = /** @type {!MDCTextfieldBottomLineAdapter} */ ({})) {
-    super(Object.assign(MDCTextfieldBottomLineFoundation.defaultAdapter, adapter));
+  constructor(adapter = /** @type {!MDCTextFieldBottomLineAdapter} */ ({})) {
+    super(Object.assign(MDCTextFieldBottomLineFoundation.defaultAdapter, adapter));
   }
 
   /**
@@ -80,4 +80,4 @@ class MDCTextfieldBottomLineFoundation extends MDCFoundation {
   }
 }
 
-export default MDCTextfieldBottomLineFoundation;
+export default MDCTextFieldBottomLineFoundation;
