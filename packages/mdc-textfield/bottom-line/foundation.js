@@ -42,11 +42,11 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTextFieldBottomLineAdapter} */ ({
-      addClassToBottomLine: () => {},
-      removeClassFromBottomLine: () => {},
-      setBottomLineAttr: () => {},
-      registerTransitionEndHandler: () => {},
-      deregisterTransitionEndHandler: () => {},
+      addClass: () => {},
+      removeClass: () => {},
+      setAttr: () => {},
+      registerEventHandler: () => {},
+      deregisterEventHandler: () => {},
       notifyOpacityTransitionEnd: () => {},
     });
   }
@@ -62,18 +62,18 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   init() {
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
   }
 
   destroy() {
-    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
   }
 
   /**
    * Activates the bottom line
    */
   activate() {
-    this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.addClass(cssClasses.BOTTOM_LINE_ACTIVE);
   }
 
   /**
@@ -87,14 +87,14 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
     const attributeString =
       `transform-origin: ${normalizedX}px center`;
 
-    this.adapter_.setBottomLineAttr('style', attributeString);
+    this.adapter_.setAttr('style', attributeString);
   }
 
   /**
    * Deactives the bottom line
    */
   deactivate() {
-    this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.removeClass(cssClasses.BOTTOM_LINE_ACTIVE);
   }
 
   /**

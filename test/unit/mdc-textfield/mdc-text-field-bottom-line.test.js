@@ -27,47 +27,51 @@ const getFixture = () => bel`
 
 suite('MDCTextFieldBottomLine');
 
+test('attachTo returns an MDCTextFieldBottomLine instance', () => {
+  assert.isOk(MDCTextFieldBottomLine.attachTo(getFixture()) instanceof MDCTextFieldBottomLine);
+});
+
 function setupTest() {
   const root = getFixture();
   const component = new MDCTextFieldBottomLine(root);
   return {root, component};
 }
 
-test('#adapter.addClassToBottomLine adds a class to the bottom line', () => {
+test('#adapter.addClass adds a class to the element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
+  component.getDefaultFoundation().adapter_.addClass('foo');
   assert.isTrue(root.classList.contains('foo'));
 });
 
-test('#adapter.removeClassFromBottomLine removes a class from the bottom line', () => {
+test('#adapter.removeClass removes a class from the element', () => {
   const {root, component} = setupTest();
 
   root.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
+  component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
 });
 
-test('#adapter.setBottomLineAttr adds a given attribute to the bottom line', () => {
+test('#adapter.setAttr adds a given attribute to the element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-label', 'foo');
+  component.getDefaultFoundation().adapter_.setAttr('aria-label', 'foo');
   assert.equal(root.getAttribute('aria-label'), 'foo');
 });
 
-test('#adapter.registerTransitionEndHandler adds event listener for "transitionend" to bottom line', () => {
+test('#adapter.registerEventHandler adds event listener for a given event to the element', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
+  component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
   domEvents.emit(root, 'transitionend');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterTransitionEndHandler removes event listener for "transitionend" from bottom line', () => {
+test('#adapter.deregisterEventHandler removes event listener for a given event from the element', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionend handler');
 
   root.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
+  component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
   domEvents.emit(root, 'transitionend');
 
   td.verify(handler(td.matchers.anything()), {times: 0});

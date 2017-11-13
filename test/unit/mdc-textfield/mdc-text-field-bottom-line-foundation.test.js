@@ -31,8 +31,8 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldBottomLineFoundation, [
-    'addClassToBottomLine', 'removeClassFromBottomLine', 'setBottomLineAttr',
-    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
+    'addClass', 'removeClass', 'setAttr',
+    'registerEventHandler', 'deregisterEventHandler',
     'notifyOpacityTransitionEnd',
   ]);
 });
@@ -43,31 +43,31 @@ test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
-  td.verify(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
 
-  td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
 test('activate adds mdc-text-field__bottom-line--active class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.activate();
-  td.verify(mockAdapter.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(mockAdapter.addClass(cssClasses.BOTTOM_LINE_ACTIVE));
 });
 
 test('deactivate removes mdc-text-field__bottom-line--active class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.deactivate();
-  td.verify(mockAdapter.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(mockAdapter.removeClass(cssClasses.BOTTOM_LINE_ACTIVE));
 });
 
-test('animate the bottom line', () => {
+test('animate sets style attribute', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     target: {
@@ -82,7 +82,7 @@ test('animate the bottom line', () => {
   foundation.init();
   foundation.animate(mockEvt);
 
-  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+  td.verify(mockAdapter.setAttr('style', td.matchers.isA(String)));
 });
 
 test('on opacity transition end, emit custom event', () => {
@@ -92,7 +92,7 @@ test('on opacity transition end, emit custom event', () => {
   };
   let transitionEnd;
 
-  td.when(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function))).thenDo((evtType, handler) => {
     transitionEnd = handler;
   });
 

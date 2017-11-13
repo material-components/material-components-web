@@ -29,35 +29,37 @@
  */
 class MDCTextFieldBottomLineAdapter {
   /**
-   * Adds a class to the bottom line element.
+   * Adds a class to the root element.
    * @param {string} className
    */
-  addClassToBottomLine(className) {}
+  addClass(className) {}
 
   /**
-   * Removes a class from the bottom line element.
+   * Removes a class from the root element.
    * @param {string} className
    */
-  removeClassFromBottomLine(className) {}
+  removeClass(className) {}
 
   /**
-   * Sets an attribute with a given value on the bottom line element.
+   * Sets an attribute with a given value on the root element.
    * @param {string} attr
    * @param {string} value
    */
-  setBottomLineAttr(attr, value) {}
+  setAttr(attr, value) {}
 
   /**
-   * Registers an event listener on the bottom line element for a "transitionend" event.
+   * Registers an event listener on the root element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerTransitionEndHandler(handler) {}
+  registerEventHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the bottom line element for a "transitionend" event.
+   * Deregisters an event listener on the root element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterTransitionEndHandler(handler) {}
+  deregisterEventHandler(evtType, handler) {}
 
   /**
    * Emits a custom event "MDCTextFieldBottomLine:opacity-transition-end" denoting the
