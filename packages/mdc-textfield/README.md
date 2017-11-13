@@ -403,6 +403,8 @@ complicated.
 | registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event handler on the root element for a given event |
 | deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event handler on the root element for a given event |
 | notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon |
+| addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
+| removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
 | addClassToHelptext(className: string) => void | Adds a class to the help text element. Note that in our code we check for whether or not we have a help text element and if we don't, we simply return. |
 | removeClassFromHelptext(className: string) => void | Removes a class from the help text element. |
 | helptextHasClass(className: string) => boolean | Returns whether or not the help text element contains the current class |
