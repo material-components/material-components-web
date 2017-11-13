@@ -53,16 +53,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
       notifyIconAction: () => {},
       addClassToBottomLine: () => {},
       removeClassFromBottomLine: () => {},
-      addClassToHelptext: () => {},
-      removeClassFromHelptext: () => {},
-      helptextHasClass: () => false,
+      addClassToHelperText: () => {},
+      removeClassFromHelperText: () => {},
+      helperTextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
       registerTransitionEndHandler: () => {},
       deregisterTransitionEndHandler: () => {},
       setBottomLineAttr: () => {},
-      setHelptextAttr: () => {},
-      removeHelptextAttr: () => {},
+      setHelperTextAttr: () => {},
+      removeHelperTextAttr: () => {},
       getNativeInput: () => {},
     });
   }
@@ -156,7 +156,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-    this.showHelptext_();
+    this.showHelperText_();
     this.isFocused_ = true;
   }
 
@@ -185,12 +185,12 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Makes the help text visible to screen readers.
+   * Makes the helper text visible to screen readers.
    * @private
    */
-  showHelptext_() {
+  showHelperText_() {
     const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.removeHelptextAttr(ARIA_HIDDEN);
+    this.adapter_.removeHelperTextAttr(ARIA_HIDDEN);
   }
 
   /**
@@ -243,40 +243,40 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
     }
-    this.updateHelptext_(isValid);
+    this.updateHelperText_(isValid);
   }
 
   /**
-   * Updates the state of the Text Field's help text based on validity and
+   * Updates the state of the Text Field's helper text based on validity and
    * the Text Field's options.
    * @param {boolean} isValid
    */
-  updateHelptext_(isValid) {
-    const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
+  updateHelperText_(isValid) {
+    const {HELPER_TEXT_PERSISTENT, HELPER_TEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
     const {ROLE} = MDCTextFieldFoundation.strings;
-    const helptextIsPersistent = this.adapter_.helptextHasClass(HELPTEXT_PERSISTENT);
-    const helptextIsValidationMsg = this.adapter_.helptextHasClass(HELPTEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helptextIsValidationMsg && !isValid;
+    const helperTextIsPersistent = this.adapter_.helperTextHasClass(HELPER_TEXT_PERSISTENT);
+    const helperTextIsValidationMsg = this.adapter_.helperTextHasClass(HELPER_TEXT_VALIDATION_MSG);
+    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !isValid;
 
     if (validationMsgNeedsDisplay) {
-      this.adapter_.setHelptextAttr(ROLE, 'alert');
+      this.adapter_.setHelperTextAttr(ROLE, 'alert');
     } else {
-      this.adapter_.removeHelptextAttr(ROLE);
+      this.adapter_.removeHelperTextAttr(ROLE);
     }
 
-    if (helptextIsPersistent || validationMsgNeedsDisplay) {
+    if (helperTextIsPersistent || validationMsgNeedsDisplay) {
       return;
     }
-    this.hideHelptext_();
+    this.hideHelperText_();
   }
 
   /**
-   * Hides the help text from screen readers.
+   * Hides the helper text from screen readers.
    * @private
    */
-  hideHelptext_() {
+  hideHelperText_() {
     const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.setHelptextAttr(ARIA_HIDDEN, 'true');
+    this.adapter_.setHelperTextAttr(ARIA_HIDDEN, 'true');
   }
 
   /**
