@@ -254,7 +254,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   close_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
-
+    console.log('closing', this.getSelectedIndex());
     if (this.getSelectedIndex() === -1) {
       this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
     }

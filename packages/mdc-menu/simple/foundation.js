@@ -279,6 +279,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @private
    */
   handleDocumentClick_(evt) {
+    console.log('menu detected body click');
     let el = evt.target;
 
     while (el && el !== document.body) {
@@ -452,7 +453,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @param {{focusIndex: ?number}=} options
    */
   open({focusIndex = null} = {}) {
+    console.log('opening');
     this.adapter_.saveFocus();
+    this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
     this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.dimensions_ = this.adapter_.getInnerDimensions();
@@ -461,7 +464,6 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       this.animateMenu_();
       this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.OPEN);
       this.focusOnOpen_(focusIndex);
-      this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
     });
     this.isOpen_ = true;
   }
@@ -471,6 +473,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @param {Event=} evt
    */
   close(evt = null) {
+    console.log('closing')
     const targetIsDisabled = evt ?
       this.adapter_.getAttributeForEventTarget(evt.target, strings.ARIA_DISABLED_ATTR) === 'true' :
       false;
