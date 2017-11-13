@@ -61,20 +61,6 @@ log "Moving built assets to package directories..."
 node scripts/cp-pkgs.js
 echo ""
 
-# Don't immediately exit without end message if changelog commit goes wrong
-set +e
-
-log "Generating and committing changelog" \
-  "(if this says no changes added to commit, something is probably wrong)"
-npm run changelog
-git add CHANGELOG.md
-git commit -m "docs: Update CHANGELOG.md"
-echo ""
-
-log "Pre-release steps done! First, please confirm that the changelog looks" \
-    "correct (git show should show the changelog commit),"
-log "and amend if necessary (edit CHANGELOG.md, git add CHANGELOG.md, and" \
-    "git commit --amend, assuming there _was_ a changelog commit). "
-log "Next, you should run:" \
-    "\$(npm bin)/lerna publish -m \"chore: Publish\""
+log "Pre-release steps done! Next, you should run:" \
+    "\$(npm bin)/lerna publish --skip-git"
 echo ""

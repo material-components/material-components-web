@@ -1,4 +1,3 @@
-//
 // Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +11,5 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
-@import "./common";
-@import "../packages/mdc-linear-progress/mdc-linear-progress";
-@import "../packages/mdc-typography/mdc-typography";
-@import "../packages/mdc-theme/color-palette";
-
-.demo-linear-progress--custom {
-  @include mdc-linear-progress-bar-color($material-color-red-500);
-  @include mdc-linear-progress-buffer-color($material-color-red-100);
-}
+$mdc-linear-progress-baseline-buffer-color: #e6e6e6;

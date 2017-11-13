@@ -20,7 +20,6 @@ export const cssClasses = {
   DISCRETE: 'mdc-slider--discrete',
   FOCUS: 'mdc-slider--focus',
   IN_TRANSIT: 'mdc-slider--in-transit',
-  OFF: 'mdc-slider--off',
   IS_DISCRETE: 'mdc-slider--discrete',
   HAS_TRACK_MARKER: 'mdc-slider--display-markers',
 };
