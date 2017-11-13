@@ -92,7 +92,12 @@ $mdc-ripple-common-styles-emitted_: false !default;
 
 @mixin mdc-states-color($color: black, $opacity-map: null, $include-focus-within: false) {
   @if not $opacity-map {
-    $opacity-map: if(mdc-theme-luminance($color) > .5, $mdc-ripple-light-ink-opacities, $mdc-ripple-dark-ink-opacities);
+    $color-value: mdc-theme-prop-value($color);
+    $opacity-map: if(
+      mdc-theme-tone($color-value) == 'light',
+      $mdc-ripple-light-ink-opacities,
+      $mdc-ripple-dark-ink-opacities
+    );
   }
 
   // Opacity styles are here (rather than in mdc-ripple-surface) to ensure that opacity is re-initialized for
