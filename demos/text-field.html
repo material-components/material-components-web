@@ -74,7 +74,7 @@
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
         <div class="mdc-text-field">
-          <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helptext">
+          <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
           <label for="my-text-field" class="mdc-text-field__label">Text Field</label>
           <div class="mdc-text-field__bottom-line"></div>
         </div>
@@ -90,13 +90,13 @@
         <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
         <section id="demo-text-field-wrapper">
           <div class="mdc-text-field">
-            <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helptext">
+            <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
             <label for="my-text-field" class="mdc-text-field__label">Email Address</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
-          <p id="my-text-field-helptext" class="mdc-text-field-helptext"
+          <p id="my-text-field-helper-text" class="mdc-text-field-helper-text"
              aria-hidden="true" style="display:none;">
-            Help Text (possibly validation message)
+            Helper Text (possibly validation message)
           </p>
         </section>
         <div>
@@ -120,16 +120,16 @@
           <label for="required">Required</label>
         </div>
         <div>
-          <input id="use-helptext" type="checkbox">
-          <label for="use-helptext">Use Helper Text</label>
+          <input id="use-helper-text" type="checkbox">
+          <label for="use-helper-text">Use Helper Text</label>
         </div>
         <div>
-          <input id="persistent-help-text" type="checkbox" disabled>
-          <label for="persistent-help-text">Make helper text persistent</label>
+          <input id="persistent-helper-text" type="checkbox" disabled>
+          <label for="persistent-helper-text">Make helper text persistent</label>
         </div>
         <div>
-          <input id="helptext-as-validation" type="checkbox" disabled>
-          <label for="helptext-as-validation">
+          <input id="helper-text-as-validation" type="checkbox" disabled>
+          <label for="helper-text-as-validation">
             Use helper text as validation message
           </label>
         </div>
@@ -143,7 +143,7 @@
           <label for="pw" class="mdc-text-field__label">Choose password</label>
           <div class="mdc-text-field__bottom-line"></div>
         </div>
-        <p class="mdc-text-field-helptext mdc-text-field-helptext--persistent mdc-text-field-helptext--validation-msg"
+        <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg"
            id="pw-validation-msg">
           Must be at least 8 characters long
         </p>
@@ -157,7 +157,7 @@
             <label for="tf-box" class="mdc-text-field__label">Your Name</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
-          <p class="mdc-text-field-helptext mdc-text-field-helptext--validation-msg"
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
              id="name-validation-msg">
             Must be at least 8 characters
           </p>
@@ -425,7 +425,7 @@
       (function() {
         var section = document.getElementById('demo-text-field-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
-        var helptext = section.querySelector('.mdc-text-field-helptext');
+        var helperText = section.querySelector('.mdc-text-field-helper-text');
         var tf = new mdc.textField.MDCTextField(tfRoot);
 
         document.getElementById('disable').addEventListener('change', function(evt) {
@@ -452,23 +452,23 @@
           var target = evt.target;
           tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
         });
-        document.getElementById('use-helptext').addEventListener('change', function(evt) {
+        document.getElementById('use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
-          tf.helptextElement = target.checked ? helptext : null;
-          helptext.style.display = target.checked ? 'block' : 'none';
-          document.getElementById('persistent-help-text').disabled = !target.checked;
-          document.getElementById('helptext-as-validation').disabled = !target.checked;
+          tf.helperTextElement = target.checked ? helperText : null;
+          helperText.style.display = target.checked ? 'block' : 'none';
+          document.getElementById('persistent-helper-text').disabled = !target.checked;
+          document.getElementById('helper-text-as-validation').disabled = !target.checked;
         });
-        document.getElementById('persistent-help-text').addEventListener('change', function(evt) {
+        document.getElementById('persistent-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
-          helptext.classList[target.checked ? 'add' : 'remove'](
-            'mdc-text-field-helptext--persistent'
+          helperText.classList[target.checked ? 'add' : 'remove'](
+            'mdc-text-field-helper-text--persistent'
           );
         });
-        document.getElementById('helptext-as-validation').addEventListener('change', function(evt) {
+        document.getElementById('helper-text-as-validation').addEventListener('change', function(evt) {
           var target = evt.target;
-          helptext.classList[target.checked ? 'add' : 'remove'](
-            'mdc-text-field-helptext--validation-msg'
+          helperText.classList[target.checked ? 'add' : 'remove'](
+            'mdc-text-field-helper-text--validation-msg'
           );
         });
       })();
