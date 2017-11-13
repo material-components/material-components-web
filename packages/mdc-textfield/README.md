@@ -100,29 +100,29 @@ since it won't be added until that JS runs, adding it manually will prevent an i
 </div>
 ```
 
-### Using help text
+### Using helper text
 
-MDC Text Fields can include help text that is useful for providing supplemental
+MDC Text Fields can include helper text that is useful for providing supplemental
 information to users, as well for validation messages (covered below).
 
 ```html
 <div class="mdc-text-field">
-  <input type="text" id="username" class="mdc-text-field__input" aria-controls="username-helptext">
+  <input type="text" id="username" class="mdc-text-field__input" aria-controls="username-helper-text">
   <label for="username" class="mdc-text-field__label">Username</label>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
-<p id="username-helptext" class="mdc-text-field-helptext" aria-hidden="true">
+<p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
   This will be displayed on your public profile
 </p>
 ```
 
-Help text appears on input field focus and disappears on input field blur by default when using
+Helper text appears on input field focus and disappears on input field blur by default when using
 the text-field JS component.
 
-#### Persistent help text
+#### Persistent helper text
 
-If you'd like the help text to always be visible, add the
-`mdc-text-field-helptext--persistent` modifier class to the element.
+If you'd like the helper text to always be visible, add the
+`mdc-text-field-helper-text--persistent` modifier class to the element.
 
 ```html
 <div class="mdc-text-field">
@@ -130,17 +130,17 @@ If you'd like the help text to always be visible, add the
   <label for="email" class="mdc-text-field__label">Email address</label>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
-<p class="mdc-text-field-helptext mdc-text-field-helptext--persistent">
+<p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">
   We will <em>never</em> share your email address with third parties
 </p>
 ```
 
-#### Help text and accessibility
+#### Helper text and accessibility
 
-Note that in every example where the help text is dependent on the state of the input element, we
-assign an id to the `mdc-text-field-helptext` element and set that id to the value of the
+Note that in every example where the helper text is dependent on the state of the input element, we
+assign an id to the `mdc-text-field-helper-text` element and set that id to the value of the
 `aria-controls` attribute on the input element. We recommend doing this as well as it will help
-indicate to assistive devices that the display of the help text is dependent on the interaction with
+indicate to assistive devices that the display of the helper text is dependent on the interaction with
 the input element.
 
 When using our vanilla JS component, if it sees that the input element has an `aria-controls`
@@ -165,9 +165,9 @@ By default an input's validity is checked via `checkValidity()` on blur, and the
 accordingly. Set the MDCTextField.valid variable to set the input's validity explicitly. MDC TextField
 automatically appends an asterisk to the label text if the required attribute is set.
 
-Help text can be used to provide additional validation messages. Use
-`mdc-text-field-helptext--validation-msg` to provide styles for using the help text as a validation
-message. This can be easily combined with `mdc-text-field-helptext--persistent` to provide a robust
+Helper text can be used to provide additional validation messages. Use
+`mdc-text-field-helper-text--validation-msg` to provide styles for using the helper text as a validation
+message. This can be easily combined with `mdc-text-field-helper-text--persistent` to provide a robust
 UX for client-side form field validation.
 
 ```html
@@ -177,9 +177,9 @@ UX for client-side form field validation.
   <label for="pw" class="mdc-text-field__label">Choose password</label>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
-<p class="mdc-text-field-helptext
-          mdc-text-field-helptext--persistent
-          mdc-text-field-helptext--validation-msg"
+<p class="mdc-text-field-helper-text
+          mdc-text-field-helper-text--persistent
+          mdc-text-field-helper-text--validation-msg"
    id="pw-validation-msg">
   Must be at least 8 characters long
 </p>
@@ -366,10 +366,10 @@ By default the ripple factory simply calls `new MDCRipple(el)` and returns the r
 Similar to regular DOM elements, the `MDCTextField` functionality is exposed through accessor
 methods.
 
-##### MDCTextField.helptextElement
+##### MDCTextField.helperTextElement
 
 HTMLLabelElement. This is a normal property (non-accessor) that holds a reference to the element
-being used as the text field's "help text". It defaults to `null`. If the text field's input element
+being used as the text field's "helper text". It defaults to `null`. If the text field's input element
 contains an `aria-controls` attribute on instantiation of the component, it will look for an element
 with the corresponding id within the document and automatically assign it to this property.
 
@@ -404,16 +404,16 @@ complicated.
 | notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon |
 | addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
 | removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
-| addClassToHelptext(className: string) => void | Adds a class to the help text element. Note that in our code we check for whether or not we have a help text element and if we don't, we simply return. |
-| removeClassFromHelptext(className: string) => void | Removes a class from the help text element. |
-| helptextHasClass(className: string) => boolean | Returns whether or not the help text element contains the current class |
+| addClassToHelperText(className: string) => void | Adds a class to the helper text element. Note that in our code we check for whether or not we have a helper text element and if we don't, we simply return. |
+| removeClassFromHelperText(className: string) => void | Removes a class from the helper text element. |
+| helperTextHasClass(className: string) => boolean | Returns whether or not the helper text element contains the current class |
 | registerInputInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
 | deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
 | registerTransitionEndHandler(handler: EventListener) => void | Registers an event listener on the bottom line element for a "transitionend" event |
 | deregisterTransitionEndHandler(handler: EventListener) => void | Deregisters an event listener on the bottom line element for a "transitionend" event |
 | setBottomLineAttr(attr: string, value: string) => void | Sets an attribute with a given value on the bottom line element |
-| setHelptextAttr(name: string, value: string) => void | Sets an attribute with a given value on the help text element |
-| removeHelptextAttr(name: string) => void | Removes an attribute from the help text element |
+| setHelperTextAttr(name: string, value: string) => void | Sets an attribute with a given value on the helper text element |
+| removeHelperTextAttr(name: string) => void | Removes an attribute from the helper text element |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 
 #### The full foundation API
