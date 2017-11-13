@@ -147,18 +147,6 @@ class MDCTextFieldAdapter {
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
-   * Registers an event listener on the bottom line element for a "transitionend" event.
-   * @param {function(!Event): undefined} handler
-   */
-  registerTransitionEndHandler(handler) {}
-
-  /**
-   * Deregisters an event listener on the bottom line element for a "transitionend" event.
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterTransitionEndHandler(handler) {}
-
-  /**
    * Sets an attribute with a given value on the bottom line element.
    * @param {string} attr
    * @param {string} value
