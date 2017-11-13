@@ -39,7 +39,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
     'setIconAttr', 'eventTargetHasClass', 'registerTextFieldInteractionHandler',
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
-    'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
+    'addClassToHelperText', 'removeClassFromHelperText', 'helperTextHasClass',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
     'setHelperTextAttr', 'removeHelperTextAttr', 'getNativeInput', 'getBottomLineFoundation',

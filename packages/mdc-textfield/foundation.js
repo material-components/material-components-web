@@ -52,9 +52,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       notifyIconAction: () => {},
-      addClassToHelptext: () => {},
-      removeClassFromHelptext: () => {},
-      helptextHasClass: () => false,
+      addClassToHelperText: () => {},
+      removeClassFromHelperText: () => {},
+      helperTextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
       registerBottomLineEventHandler: () => {},
@@ -209,7 +209,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Deactives the Textfield's focus state.
+   * Deactives the Text Field's focus state.
    */
   deactivateFocus() {
     const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;

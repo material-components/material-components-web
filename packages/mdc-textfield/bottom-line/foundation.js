@@ -79,7 +79,6 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   /**
    * Animates out from the user's click location.
    * @param {!Event} evt
-   * @private
    */
   animate(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();

@@ -165,7 +165,7 @@ class MDCTextField extends MDCComponent {
       },
     },
     this.getInputAdapterMethods_(),
-    this.getHelptextAdapterMethods_(),
+    this.getHelperTextAdapterMethods_(),
     this.getIconAdapterMethods_())));
   }
 
