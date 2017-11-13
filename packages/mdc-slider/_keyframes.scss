@@ -14,7 +14,17 @@
 // limitations under the License.
 //
 
-@import "./common";
-@import "../packages/mdc-form-field/mdc-form-field";
-@import "../packages/mdc-textfield/mdc-textfield";
-@import "../packages/mdc-typography/mdc-typography";
+@keyframes mdc-slider-emphasize {
+  0% {
+    animation-timing-function: ease-out;
+  }
+
+  50% {
+    animation-timing-function: ease-in;
+    transform: scale(.85);
+  }
+
+  100% {
+    transform: scale(.571);
+  }
+}
