@@ -40,12 +40,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
-<<<<<<< HEAD
-    'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput', 'getBottomLineFoundation',
-=======
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
-    'setBottomLineAttr', 'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
->>>>>>> parent of 238fe4e4... chore(textfield): Stop listening to transition end of bottom line
+    'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
   ]);
 });
 
