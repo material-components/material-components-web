@@ -56,6 +56,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       helptextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
+      registerTransitionEndHandler: () => {},
+      deregisterTransitionEndHandler: () => {},
       setHelptextAttr: () => {},
       removeHelptextAttr: () => {},
       getNativeInput: () => {},
@@ -85,6 +87,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.setPointerXOffset_ = (evt) => this.animateBottomLine(evt);
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
+    /** @private {function(!Event): undefined} */
+    this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
   }
 
   init() {
@@ -103,6 +107,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
   }
 
   destroy() {
@@ -116,6 +121,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
   }
 
   /**
@@ -183,6 +189,23 @@ class MDCTextFieldFoundation extends MDCFoundation {
   showHelptext_() {
     const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
     this.adapter_.removeHelptextAttr(ARIA_HIDDEN);
+  }
+
+  /**
+   * Fires when animation transition ends, performing actions that must wait
+   * for animations to finish.
+   * @param {!Event} evt
+   * @private
+   */
+  transitionEnd_(evt) {
+    const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
+
+    // We need to wait for the bottom line to be entirely transparent
+    // before removing the class. If we do not, we see the line start to
+    // scale down before disappearing
+    if (evt.propertyName === 'opacity' && !this.isFocused_) {
+      this.adapter_.removeClassFromBottomLine(BOTTOM_LINE_ACTIVE);
+    }
   }
 
   /**

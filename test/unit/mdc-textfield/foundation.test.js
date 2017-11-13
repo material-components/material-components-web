@@ -40,7 +40,12 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
+<<<<<<< HEAD
     'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput', 'getBottomLineFoundation',
+=======
+    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
+    'setBottomLineAttr', 'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
+>>>>>>> parent of 238fe4e4... chore(textfield): Stop listening to transition end of bottom line
   ]);
 });
 
@@ -132,6 +137,7 @@ test('#init adds event listeners', () => {
   td.verify(mockAdapter.registerInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -145,6 +151,7 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)));
 });
 
 test('#init adds mdc-text-field__label--float-above class if the input contains a value', () => {
@@ -392,6 +399,24 @@ test('on text field click notifies icon event if event target is an icon', () =>
   foundation.init();
   iconEventHandler(evt);
   td.verify(mockAdapter.notifyIconAction());
+});
+
+test('on transition end removes the bottom line active class if this.isFocused_ is false ' +
+  'and transition type is opacity', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    propertyName: 'opacity',
+  };
+  let transitionEnd;
+
+  td.when(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    transitionEnd = handler;
+  });
+
+  foundation.init();
+  transitionEnd(mockEvt);
+
+  td.verify(mockAdapter.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
 });
 
 test('mousedown on the input sets the bottom line origin', () => {
