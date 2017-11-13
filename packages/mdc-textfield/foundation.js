@@ -17,6 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import {MDCTextFieldAdapter, NativeInputType} from './adapter';
+import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import {cssClasses, strings} from './constants';
 
 
@@ -56,8 +57,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       helptextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
-      registerTransitionEndHandler: () => {},
-      deregisterTransitionEndHandler: () => {},
+      registerBottomLineEventHandler: () => {},
+      deregisterBottomLineEventHandler: () => {},
       setHelptextAttr: () => {},
       removeHelptextAttr: () => {},
       getNativeInput: () => {},
@@ -88,7 +89,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
     /** @private {function(!Event): undefined} */
-    this.transitionEndHandler_ = (evt) => this.transitionEnd_(evt);
+    this.bottomLineAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
   }
 
   init() {
@@ -107,7 +108,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.registerBottomLineEventHandler(
+      MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   destroy() {
@@ -121,7 +123,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.deregisterBottomLineEventHandler(
+      MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   /**
@@ -192,19 +195,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Fires when animation transition ends, performing actions that must wait
+   * Handles when bottom line animation transition ends, performing actions that must wait
    * for animations to finish.
-   * @param {!Event} evt
-   * @private
    */
-  transitionEnd_(evt) {
-    const {BOTTOM_LINE_ACTIVE} = MDCTextfieldFoundation.cssClasses;
-
+  handleBottomLineAnimationEnd() {
+    const bottomLine = this.adapter_.getBottomLineFoundation();
     // We need to wait for the bottom line to be entirely transparent
     // before removing the class. If we do not, we see the line start to
     // scale down before disappearing
-    if (evt.propertyName === 'opacity' && !this.isFocused_) {
-      this.adapter_.removeClassFromBottomLine(BOTTOM_LINE_ACTIVE);
+    if (!this.isFocused_ && bottomLine) {
+      bottomLine.deactivate();
     }
   }
 
@@ -218,10 +218,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-    const bottomLine = this.adapter_.getBottomLineFoundation();
-    if (bottomLine) {
-      bottomLine.deactivate();
-    }
 
     if (!input.value && !this.isBadInput_()) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);

@@ -29,11 +29,14 @@ MDCTextFieldBottomLineFoundation. This allows the parent MDCTextField component 
 ### Using the foundation class
 
 
-| Method Signature | Description |
-| --- | --- |
-| addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
-| removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
-| setBottomLineAttr(attr: string, value: string) => void | Sets an attribute with a given value on the bottom line element |
+Method Signature | Description
+--- | ---
+addClassToBottomLine(className: string) => void | Adds a class to the bottom line element
+removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element
+setBottomLineAttr(attr: string, value: string) => void | Sets an attribute with a given value on the bottom line element
+registerTransitionEndHandler(handler: EventListener) => void | Registers an event listener on the bottom line element for a "transitionend" event
+deregisterTransitionEndHandler(handler: EventListener) => void | Deregisters an event listener on the bottom line element for a "transitionend" event
+notifyOpacityTransitionEnd() => void | Emits a custom event "MDCTextFieldBottomLine:opacity-transition-end" denoting the end of an opacity animation |
 
 #### The full foundation API
 
@@ -48,3 +51,7 @@ Deactivates the bottom line
 ##### MDCTextFieldBottomLineFoundation.animate(evt: Event)
 
 Sets the transform-origin, causing it to animate outfrom the user's click location.
+
+##### MDCTextFieldBottomLineFoundation.transitionEnd(evt: Event)
+
+Fires when opacity transition ends, performing actions that must wait for the opacity animation to finish.

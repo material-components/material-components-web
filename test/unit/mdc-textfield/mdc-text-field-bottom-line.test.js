@@ -16,8 +16,10 @@
 
 import bel from 'bel';
 import {assert} from 'chai';
+import td from 'testdouble';
+import domEvents from 'dom-events';
 
-import {MDCTextFieldBottomLine} from '../../../packages/mdc-textfield/bottom-line';
+import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from '../../../packages/mdc-textfield/bottom-line';
 
 const getFixture = () => bel`
   <div class="mdc-textfield__bottom-line"></div>
@@ -49,4 +51,36 @@ test('#adapter.setBottomLineAttr adds a given attribute to the bottom line', () 
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-label', 'foo');
   assert.equal(root.getAttribute('aria-label'), 'foo');
+});
+
+test('#adapter.registerTransitionEndHandler adds event listener for "transitionend" to bottom line', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('transitionend handler');
+  component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
+  domEvents.emit(root, 'transitionend');
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.deregisterTransitionEndHandler removes event listener for "transitionend" from bottom line', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('transitionend handler');
+
+  root.addEventListener('transitionend', handler);
+  component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
+  domEvents.emit(root, 'transitionend');
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('#adapter.notifyOpacityTransitionEnd emits ' +
+  `${MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT}`, () => {
+  const {component} = setupTest();
+  const handler = td.func('leadingHandler');
+
+  component.listen(
+    MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyOpacityTransitionEnd();
+
+  td.verify(handler(td.matchers.anything()));
 });

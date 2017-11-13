@@ -58,8 +58,12 @@ class MDCTextField extends MDCComponent {
   /**
    * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which
    * creates a new MDCRipple.
+   * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
+   * creates a new MDCTextFieldBottomLine.
    */
-  initialize(rippleFactory = (el) => new MDCRipple(el)) {
+  initialize(
+    rippleFactory = (el) => new MDCRipple(el),
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.helptextElement = null;
@@ -73,7 +77,7 @@ class MDCTextField extends MDCComponent {
     if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
       const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
       if (bottomLineElement) {
-        this.bottomLine_ = new MDCTextFieldBottomLine(bottomLineElement);
+        this.bottomLine_ = bottomLineFactory(bottomLineElement);
       }
     };
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
@@ -143,6 +147,16 @@ class MDCTextField extends MDCComponent {
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
+      registerBottomLineEventHandler: (evtType, handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.listen(evtType, handler);
+        }
+      },
+      deregisterBottomLineEventHandler: (evtType, handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.unlisten(evtType, handler);
+        }
+      },
       getBottomLineFoundation: () => {
         if (this.bottomLine_) {
           return this.bottomLine_.foundation;

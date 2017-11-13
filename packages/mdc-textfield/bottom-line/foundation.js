@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCTextFieldBottomLineAdapter from './adapter';
-import {cssClasses} from './constants';
+import {cssClasses, strings} from './constants';
 
 
 /**
@@ -30,6 +30,11 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
     return cssClasses;
   }
 
+  /** @return enum {string} */
+  static get strings() {
+    return strings;
+  }
+
   /**
    * {@see MDCTextFieldBottomLineAdapter} for typing information on parameters and return
    * types.
@@ -40,6 +45,9 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
       addClassToBottomLine: () => {},
       removeClassFromBottomLine: () => {},
       setBottomLineAttr: () => {},
+      registerTransitionEndHandler: () => {},
+      deregisterTransitionEndHandler: () => {},
+      notifyOpacityTransitionEnd: () => {},
     });
   }
 
@@ -48,6 +56,17 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
    */
   constructor(adapter = /** @type {!MDCTextFieldBottomLineAdapter} */ ({})) {
     super(Object.assign(MDCTextFieldBottomLineFoundation.defaultAdapter, adapter));
+
+    /** @private {function(!Event): undefined} */
+    this.transitionEndHandler_ = (evt) => this.transitionEnd(evt);
+  }
+
+  init() {
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+  }
+
+  destroy() {
+    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
   }
 
   /**
@@ -77,6 +96,17 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
    */
   deactivate() {
     this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+  }
+
+  /**
+   * Fires when opacity transition ends, performing actions that must wait
+   * for the opacity animation to finish
+   * @param {!Event} evt
+   */
+  transitionEnd(evt) {
+    if (evt.propertyName === 'opacity') {
+      this.adapter_.notifyOpacityTransitionEnd();
+    }
   }
 }
 

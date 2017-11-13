@@ -48,6 +48,11 @@ class MDCTextFieldBottomLine extends MDCComponent {
       addClassToBottomLine: (className) => this.root_.classList.add(className),
       removeClassFromBottomLine: (className) => this.root_.classList.remove(className),
       setBottomLineAttr: (attr, value) => this.root_.setAttribute(attr, value),
+      registerTransitionEndHandler: (handler) => this.root_.addEventListener('transitionend', handler),
+      deregisterTransitionEndHandler: (handler) => this.root_.removeEventListener('transitionend', handler),
+      notifyOpacityTransitionEnd: () => {
+        this.emit(MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, {});
+      },
     })));
   }
 }

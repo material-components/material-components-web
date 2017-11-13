@@ -16,8 +16,13 @@
  */
 
 /** @enum {string} */
+const strings = {
+  OPACITY_TRANSITION_END_EVENT: 'MDCTextFieldBottomLine:opacity-transition-end',
+};
+
+/** @enum {string} */
 const cssClasses = {
   BOTTOM_LINE_ACTIVE: 'mdc-text-field__bottom-line--active',
 };
 
-export {cssClasses};
+export {strings, cssClasses};

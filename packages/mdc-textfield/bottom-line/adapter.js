@@ -46,6 +46,24 @@ class MDCTextFieldBottomLineAdapter {
    * @param {string} value
    */
   setBottomLineAttr(attr, value) {}
+
+  /**
+   * Registers an event listener on the bottom line element for a "transitionend" event.
+   * @param {function(!Event): undefined} handler
+   */
+  registerTransitionEndHandler(handler) {}
+
+  /**
+   * Deregisters an event listener on the bottom line element for a "transitionend" event.
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterTransitionEndHandler(handler) {}
+
+  /**
+   * Emits a custom event "MDCTextFieldBottomLine:opacity-transition-end" denoting the
+   * bottom line has finished its opacity transition
+   */
+  notifyOpacityTransitionEnd() {}
 }
 
 export default MDCTextFieldBottomLineAdapter;
