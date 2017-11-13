@@ -90,16 +90,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 }
 
-@mixin mdc-states-color($color: black, $opacity-map: null, $include-focus-within: false) {
-  @if not $opacity-map {
-    $color-value: mdc-theme-prop-value($color);
-    $opacity-map: if(
-      mdc-theme-tone($color-value) == 'light',
-      $mdc-ripple-light-ink-opacities,
-      $mdc-ripple-dark-ink-opacities
-    );
-  }
-
+@mixin mdc-states-base-color($color) {
   // Opacity styles are here (rather than in mdc-ripple-surface) to ensure that opacity is re-initialized for
   // cases where this mixin is used to override another inherited use of itself,
   // without needing to re-include mdc-ripple-surface.
@@ -110,26 +101,24 @@ $mdc-ripple-common-styles-emitted_: false !default;
     opacity: 0;
   }
 
+  &.mdc-ripple-upgraded {
+    --mdc-ripple-fg-size: 0;
+    --mdc-ripple-left: 0;
+    --mdc-ripple-top: 0;
+    --mdc-ripple-fg-scale: 1;
+    --mdc-ripple-fg-translate-end: 0;
+    --mdc-ripple-fg-translate-start: 0;
+  }
+}
+
+@mixin mdc-states-hover-opacity($opacity) {
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
-
   &:hover::before {
-    opacity: map-get($opacity-map, "hover");
+    opacity: $opacity;
   }
+}
 
-  // Styles for non-upgraded (CSS-only) stateful surfaces
-
-  &:not(.mdc-ripple-upgraded) {
-    // Apply press additively by using the ::after pseudo-element
-    &::after {
-      transition: opacity $mdc-ripple-fade-out-duration linear;
-    }
-
-    &:active::after {
-      transition-duration: $mdc-ripple-fade-in-duration;
-      opacity: map-get($opacity-map, "press");
-    }
-  }
-
+@mixin mdc-states-focus-opacity($opacity, $include-focus-within: false) {
   // Focus overrides hover by reusing the ::before pseudo-element.
   // :focus-within generally works on non-MS browsers and matches when a *child* of the element has focus.
   // It is useful for cases where a component has a focusable element within the root node, e.g. text field,
@@ -145,19 +134,59 @@ $mdc-ripple-common-styles-emitted_: false !default;
   &.mdc-ripple-upgraded--focused::before {
     // Note that this duration is only effective on focus, not blur
     transition-duration: 75ms;
-    opacity: map-get($opacity-map, "focus");
+    opacity: $opacity;
+  }
+}
+
+@mixin mdc-states-press-opacity($opacity) {
+  // Styles for non-upgraded (CSS-only) stateful surfaces
+
+  &:not(.mdc-ripple-upgraded) {
+    // Apply press additively by using the ::after pseudo-element
+    &::after {
+      transition: opacity $mdc-ripple-fade-out-duration linear;
+    }
+
+    &:active::after {
+      transition-duration: $mdc-ripple-fade-in-duration;
+      opacity: $opacity;
+    }
   }
 
-  // Styles for ripple-upgraded surfaces
-
   &.mdc-ripple-upgraded {
-    --mdc-ripple-fg-size: 0;
-    --mdc-ripple-left: 0;
-    --mdc-ripple-top: 0;
-    --mdc-ripple-fg-opacity: map-get($opacity-map, "press");
-    --mdc-ripple-fg-scale: 1;
-    --mdc-ripple-fg-translate-end: 0;
-    --mdc-ripple-fg-translate-start: 0;
+    --mdc-ripple-fg-opacity: $opacity;
+  }
+}
+
+// Simple mixin which automatically selects opacity values based on whether the ink color is light or dark.
+@mixin mdc-states-color($color: black, $include-activated: false, $include-selected: false, $include-focus-within: false) {
+  $color-value: mdc-theme-prop-value($color);
+  $opacity-map: if(
+    mdc-theme-tone($color-value) == 'light',
+    $mdc-ripple-light-ink-opacities,
+    $mdc-ripple-dark-ink-opacities
+  );
+
+  @include mdc-states-base-color($color);
+
+  @include mdc-states-hover-opacity(map-get($opacity-map, "hover"));
+  @include mdc-states-focus-opacity(map-get($opacity-map, "focus"));
+  @include mdc-states-press-opacity(map-get($opacity-map, "press"));
+
+  @if $include-activated {
+    &--activated {
+      @include mdc-states-hover-opacity(map-get($opacity-map, "activated") + map-get($opacity-map, "hover"));
+      @include mdc-states-focus-opacity(map-get($opacity-map, "activated") + map-get($opacity-map, "focus"));
+      @include mdc-states-press-opacity(map-get($opacity-map, "activated") + map-get($opacity-map, "press"));
+    }
+  }
+
+  @if $include-selected {
+    &--selected {
+      @include mdc-states-hover-opacity(map-get($opacity-map, "selected") + map-get($opacity-map, "hover"));
+      @include mdc-states-focus-opacity(map-get($opacity-map, "selected") + map-get($opacity-map, "focus"));
+      @include mdc-states-press-opacity(map-get($opacity-map, "selected") + map-get($opacity-map, "press"));
+    }
   }
 }
 
