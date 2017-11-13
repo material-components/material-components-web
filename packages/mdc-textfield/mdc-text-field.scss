@@ -434,16 +434,6 @@
   }
 }
 
-.mdc-text-field--invalid.mdc-text-field--disabled {
-  .mdc-text-field__label {
-    @include mdc-theme-prop(color, text-disabled-on-light);
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
-  }
-}
-
 .mdc-text-field__input:required + .mdc-text-field__label::after {
   margin-left: 1px;
   content: "*";
