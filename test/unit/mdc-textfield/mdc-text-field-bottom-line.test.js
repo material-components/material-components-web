@@ -77,14 +77,14 @@ test('#adapter.deregisterEventHandler removes event listener for a given event f
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.notifyOpacityTransitionEnd emits ' +
+test('#adapter.notifyAnimationEnd emits ' +
   `${MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT}`, () => {
   const {component} = setupTest();
   const handler = td.func('leadingHandler');
 
   component.listen(
-    MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyOpacityTransitionEnd();
+    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyAnimationEnd();
 
   td.verify(handler(td.matchers.anything()));
 });

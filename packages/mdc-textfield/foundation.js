@@ -85,7 +85,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.inputInputHandler_ = () => this.autoCompleteFocus();
     /** @private {function(!Event): undefined} */
-    this.setPointerXOffset_ = (evt) => this.animateBottomLine(evt);
+    this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
     /** @private {function(!Event): undefined} */
@@ -109,7 +109,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.registerBottomLineEventHandler(
-      MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, this.bottomLineAnimationEndHandler_);
+      MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   destroy() {
@@ -124,7 +124,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.deregisterBottomLineEventHandler(
-      MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, this.bottomLineAnimationEndHandler_);
+      MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   /**
@@ -165,13 +165,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Animates the bottom line out from the user's click location.
+   * Sets the bottom line's transform origin, so that the bottom line activate
+   * animation will animate out from the user's click location.
    * @param {!Event} evt
    */
-  animateBottomLine(evt) {
+  setBottomLineTransformOrigin(evt) {
     const bottomLine = this.adapter_.getBottomLineFoundation();
     if (bottomLine) {
-      bottomLine.animate(evt);
+      bottomLine.setTransformOrigin(evt);
     }
   }
 
@@ -195,7 +196,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles when bottom line animation transition ends, performing actions that must wait
+   * Handles when bottom line animation ends, performing actions that must wait
    * for animations to finish.
    */
   handleBottomLineAnimationEnd() {

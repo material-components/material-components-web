@@ -17,7 +17,7 @@
 
 /** @enum {string} */
 const strings = {
-  OPACITY_TRANSITION_END_EVENT: 'MDCTextFieldBottomLine:opacity-transition-end',
+  ANIMATION_END_EVENT: 'MDCTextFieldBottomLine:animation-end',
 };
 
 /** @enum {string} */

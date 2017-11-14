@@ -2,7 +2,9 @@
 title: "Text Field Bottom Line"
 layout: detail
 section: components
-path: /catalog/input-controls/text-fields/bottom-line
+excerpt: "The bottom line indicates where to enter text, displayed below the label"
+iconId: text_field
+path: /catalog/input-controls/text-fields/bottom-line/
 -->
 
 # Text Field Bottom Line
@@ -35,8 +37,8 @@ addClass(className: string) => void | Adds a class to the root element
 removeClass(className: string) => void | Removes a class from the root element
 setAttr(attr: string, value: string) => void | Sets an attribute with a given value on the root element
 registerEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the root element for a given event
-deregisterTransitionEndHandler(handler: EventListener) => void | Deregisters an event listener on the root element for a given event
-notifyOpacityTransitionEnd() => void | Emits a custom event "MDCTextFieldBottomLine:opacity-transition-end" denoting the end of an opacity animation |
+deregisterEventHandler(handler: EventListener) => void | Deregisters an event listener on the root element for a given event
+notifyAnimationEnd() => void | Emits a custom event "MDCTextFieldBottomLine:animation-end" denoting the bottom line has finished its animation; either the activate or deactivate animation |
 
 #### The full foundation API
 
@@ -48,10 +50,10 @@ Activates the bottom line
 
 Deactivates the bottom line
 
-##### MDCTextFieldBottomLineFoundation.animate(evt: Event)
+##### MDCTextFieldBottomLineFoundation.setTransformOrigin(evt: Event)
 
-Sets the transform-origin, causing it to animate out from the user's click location.
+Set's the transform origin given a user's click location.
 
-##### MDCTextFieldBottomLineFoundation.transitionEnd(evt: Event)
+##### MDCTextFieldBottomLineFoundation.handleTransitionEnd(evt: Event)
 
-Fires when opacity transition ends, performing actions that must wait for the opacity animation to finish.
+Handles a transition end event

@@ -103,8 +103,8 @@ class MDCTextFieldAdapter {
   notifyIconAction() {}
 
   /**
-   * Adds a class to the help text element. Note that in our code we check for
-   * whether or not we have a help text element and if we don't, we simply
+   * Adds a class to the helper text element. Note that in our code we check for
+   * whether or not we have a helper text element and if we don't, we simply
    * return.
    * @param {string} className
    */

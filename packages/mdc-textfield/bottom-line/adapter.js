@@ -62,10 +62,11 @@ class MDCTextFieldBottomLineAdapter {
   deregisterEventHandler(evtType, handler) {}
 
   /**
-   * Emits a custom event "MDCTextFieldBottomLine:opacity-transition-end" denoting the
-   * bottom line has finished its opacity transition
+   * Emits a custom event "MDCTextFieldBottomLine:animation-end" denoting the
+   * bottom line has finished its animation; either the activate or
+   * deactivate animation
    */
-  notifyOpacityTransitionEnd() {}
+  notifyAnimationEnd() {}
 }
 
 export default MDCTextFieldBottomLineAdapter;

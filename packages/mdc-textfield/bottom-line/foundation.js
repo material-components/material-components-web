@@ -47,7 +47,7 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
       setAttr: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
-      notifyOpacityTransitionEnd: () => {},
+      notifyAnimationEnd: () => {},
     });
   }
 
@@ -58,7 +58,7 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
     super(Object.assign(MDCTextFieldBottomLineFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event): undefined} */
-    this.transitionEndHandler_ = (evt) => this.transitionEnd(evt);
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
   }
 
   init() {
@@ -77,10 +77,10 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Animates out from the user's click location.
+   * Set's the transform origin given a user's click location.
    * @param {!Event} evt
    */
-  animate(evt) {
+  setTransformOrigin(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();
     const evtCoords = {x: evt.clientX, y: evt.clientY};
     const normalizedX = evtCoords.x - targetClientRect.left;
@@ -98,13 +98,14 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Fires when opacity transition ends, performing actions that must wait
-   * for the opacity animation to finish
+   * Handles a transition end event
    * @param {!Event} evt
    */
-  transitionEnd(evt) {
+  handleTransitionEnd(evt) {
+    // Wait for the bottom line to be either transparent or opaque
+    // before emitting the animation end event
     if (evt.propertyName === 'opacity') {
-      this.adapter_.notifyOpacityTransitionEnd();
+      this.adapter_.notifyAnimationEnd();
     }
   }
 }

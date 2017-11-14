@@ -33,7 +33,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldBottomLineFoundation, [
     'addClass', 'removeClass', 'setAttr',
     'registerEventHandler', 'deregisterEventHandler',
-    'notifyOpacityTransitionEnd',
+    'notifyAnimationEnd',
   ]);
 });
 
@@ -67,7 +67,7 @@ test('deactivate removes mdc-text-field__bottom-line--active class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.BOTTOM_LINE_ACTIVE));
 });
 
-test('animate sets style attribute', () => {
+test('setTransformOrigin sets style attribute', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     target: {
@@ -80,7 +80,7 @@ test('animate sets style attribute', () => {
   };
 
   foundation.init();
-  foundation.animate(mockEvt);
+  foundation.setTransformOrigin(mockEvt);
 
   td.verify(mockAdapter.setAttr('style', td.matchers.isA(String)));
 });
@@ -99,5 +99,5 @@ test('on opacity transition end, emit custom event', () => {
   foundation.init();
   transitionEnd(mockEvt);
 
-  td.verify(mockAdapter.notifyOpacityTransitionEnd());
+  td.verify(mockAdapter.notifyAnimationEnd());
 });

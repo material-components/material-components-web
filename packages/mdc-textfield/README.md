@@ -4,7 +4,6 @@ layout: detail
 section: components
 iconId: text_field
 path: /catalog/input-controls/text-fields/
-api_doc_root: true
 -->
 
 # Text Fields
@@ -415,7 +414,7 @@ complicated.
 | setHelperTextAttr(name: string, value: string) => void | Sets an attribute with a given value on the helper text element |
 | removeHelperTextAttr(name: string) => void | Removes an attribute from the helper text element |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
-| getBottomLineFoundation() => MDCTextfieldBottomLineFoundation | Returns the instance of the bottom line element's foundation |
+| getBottomLineFoundation() => MDCTextFieldBottomLineFoundation | Returns the instance of the bottom line element's foundation |
 
 #### The full foundation API
 

@@ -50,8 +50,8 @@ class MDCTextFieldBottomLine extends MDCComponent {
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyOpacityTransitionEnd: () => {
-        this.emit(MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, {});
+      notifyAnimationEnd: () => {
+        this.emit(MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, {});
       },
     })));
   }

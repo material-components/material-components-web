@@ -141,7 +141,7 @@ test('#init adds event listeners', () => {
   td.verify(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerBottomLineEventHandler(
-    MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, td.matchers.isA(Function)));
+    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -156,7 +156,7 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterBottomLineEventHandler(
-    MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT, td.matchers.isA(Function)));
+    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#init adds mdc-text-field__label--float-above class if the input contains a value', () => {
@@ -421,7 +421,7 @@ test('on transition end deactivates the bottom line if this.isFocused_ is false'
 test('mousedown on the input sets the bottom line origin', () => {
   const {foundation, mockAdapter} = setupTest();
   const bottomLine = td.object({
-    animate: () => {},
+    setTransformOrigin: () => {},
   });
   td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
@@ -444,13 +444,13 @@ test('mousedown on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(bottomLine.animate(mockEvt));
+  td.verify(bottomLine.setTransformOrigin(mockEvt));
 });
 
 test('touchstart on the input sets the bottom line origin', () => {
   const {foundation, mockAdapter} = setupTest();
   const bottomLine = td.object({
-    animate: () => {},
+    setTransformOrigin: () => {},
   });
   td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
@@ -473,7 +473,7 @@ test('touchstart on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(bottomLine.animate(mockEvt));
+  td.verify(bottomLine.setTransformOrigin(mockEvt));
 });
 
 test('interacting with text field does not emit custom events if input is disabled', () => {

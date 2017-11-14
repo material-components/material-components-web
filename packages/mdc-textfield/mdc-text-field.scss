@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "./functions";
 @import "./mixins";
 @import "./variables";
 @import "@material/animation/variables";
@@ -24,11 +25,6 @@
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 @import "./bottom-line/mdc-text-field-bottom-line";
-
-@function mdc-text-field-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
-}
-
 @include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
 
