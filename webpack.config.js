@@ -37,6 +37,7 @@ const GENERATE_SOURCE_MAPS =
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 const GENERATE_DEMO_THEMES = process.env.MDC_GENERATE_DEMO_THEMES === 'true' && IS_DEV;
+const BUILD_STATIC_DEMO_ASSETS = process.env.MDC_BUILD_STATIC_DEMO_ASSETS === 'true';
 
 const banner = [
   '/*!',
@@ -269,27 +270,39 @@ if (IS_DEV) {
       createCssExtractTextPlugin(),
       createBannerPlugin(),
       new PostCompilePlugin(() => {
-        if (!fs.existsSync(path.resolve('./build'))) {
+        const demosDirAbs = path.resolve('./demos');
+        const buildDirAbs = path.resolve('./build');
+
+        if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(buildDirAbs)) {
           return;
         }
-        const copyOpts = {
+
+        const tmpDirAbs = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
+
+        const copyOptions = {
           // eslint-disable-next-line no-unused-vars
           filter: (src, dest) => {
             return !/\.(scss|css.js)$/.test(src);
           },
         };
-        const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
-        fsx.copySync(path.resolve('./demos'), path.join(tmpDir, 'pr/123'), copyOpts);
-        fsx.copySync(path.resolve('./build'), path.join(tmpDir, 'pr/123/assets'), copyOpts);
-        fsx.moveSync(tmpDir, path.resolve('./build/demo'));
-        glob.sync('./build/demo/**/*.html').map((filename) => path.join(__dirname, filename)).forEach((absPath) => {
-          const oldHtml = fs.readFileSync(absPath, {encoding: 'utf8'});
-          const newHtml = oldHtml.replace(/<script src="([^"]+\.css\.js\b[^"]*)"><\/script>/ig, (match, oldPath) => {
-            const newPath = oldPath.replace(/\.css\.js/, '.css');
-            return `<link rel="stylesheet" href="${newPath}">`;
-          });
-          fs.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
-        });
+
+        fsx.copySync(demosDirAbs, tmpDirAbs, copyOptions);
+        fsx.copySync(buildDirAbs, path.join(tmpDirAbs, 'assets'), copyOptions);
+
+        if (!WRAP_CSS_IN_JS) {
+          glob.sync(path.join(tmpDirAbs, '**/*.html'))
+            .forEach((absPath) => {
+              const oldHtml = fs.readFileSync(absPath, {encoding: 'utf8'});
+              const newHtml = oldHtml.replace(/<script src="([^"]+\.css\.js[^"]*)"><\/script>/ig, (match, oldPath) => {
+                const newPath = oldPath.replace('.css.js', '.css');
+                return `<link rel="stylesheet" href="${newPath}">`;
+              });
+              fs.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
+            });
+        }
+
+        fsx.removeSync(buildDirAbs);
+        fsx.moveSync(tmpDirAbs, buildDirAbs);
       }),
     ],
   });
