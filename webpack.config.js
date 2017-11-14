@@ -270,13 +270,11 @@ if (IS_DEV) {
       createCssExtractTextPlugin(),
       createBannerPlugin(),
       new PostCompilePlugin(() => {
-        const demosDirAbs = path.resolve('./demos');
-        const buildDirAbs = path.resolve('./build');
-
-        if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(buildDirAbs)) {
+        if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(OUT_PATH)) {
           return;
         }
 
+        const demosDirAbs = path.resolve('./demos');
         const tmpDirAbs = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
 
         const copyOptions = {
@@ -287,7 +285,7 @@ if (IS_DEV) {
         };
 
         fsx.copySync(demosDirAbs, tmpDirAbs, copyOptions);
-        fsx.copySync(buildDirAbs, path.join(tmpDirAbs, 'assets'), copyOptions);
+        fsx.copySync(OUT_PATH, path.join(tmpDirAbs, PUBLIC_PATH), copyOptions);
 
         if (!WRAP_CSS_IN_JS) {
           glob.sync(path.join(tmpDirAbs, '**/*.html'))
@@ -301,8 +299,8 @@ if (IS_DEV) {
             });
         }
 
-        fsx.removeSync(buildDirAbs);
-        fsx.moveSync(tmpDirAbs, buildDirAbs);
+        fsx.removeSync(OUT_PATH);
+        fsx.moveSync(tmpDirAbs, OUT_PATH);
       }),
     ],
   });
