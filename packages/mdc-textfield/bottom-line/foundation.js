@@ -77,7 +77,7 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Set's the transform origin given a user's click location.
+   * Sets the transform origin given a user's click location.
    * @param {!Event} evt
    */
   setTransformOrigin(evt) {
@@ -91,7 +91,7 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Deactives the bottom line
+   * Deactivates the bottom line
    */
   deactivate() {
     this.adapter_.removeClass(cssClasses.BOTTOM_LINE_ACTIVE);

@@ -29,33 +29,33 @@
  */
 class MDCTextFieldBottomLineAdapter {
   /**
-   * Adds a class to the root element.
+   * Adds a class to the bottom line element.
    * @param {string} className
    */
   addClass(className) {}
 
   /**
-   * Removes a class from the root element.
+   * Removes a class from the bottom line element.
    * @param {string} className
    */
   removeClass(className) {}
 
   /**
-   * Sets an attribute with a given value on the root element.
+   * Sets an attribute with a given value on the bottom line element.
    * @param {string} attr
    * @param {string} value
    */
   setAttr(attr, value) {}
 
   /**
-   * Registers an event listener on the root element for a given event.
+   * Registers an event listener on the bottom line element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
   registerEventHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the root element for a given event.
+   * Deregisters an event listener on the bottom line element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */

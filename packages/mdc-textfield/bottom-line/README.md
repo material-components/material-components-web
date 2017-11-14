@@ -52,7 +52,7 @@ Deactivates the bottom line
 
 ##### MDCTextFieldBottomLineFoundation.setTransformOrigin(evt: Event)
 
-Set's the transform origin given a user's click location.
+Sets the transform origin given a user's click location.
 
 ##### MDCTextFieldBottomLineFoundation.handleTransitionEnd(evt: Event)
 
