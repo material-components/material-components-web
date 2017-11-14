@@ -25,11 +25,12 @@ const glob = require('glob');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const OUT_PATH = path.resolve('./build');
-// Used with webpack-dev-server
-const PUBLIC_PATH = '/assets/';
+const OUT_DIR_ABS = path.resolve('./build');
+const DEMO_ASSET_DIR_REL = '/assets/'; // Used by webpack-dev-server and MDC_BUILD_STATIC_DEMO_ASSETS
+
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
+
 const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS !== 'false' && IS_DEV;
 // Source maps break extract-text-webpack-plugin, so they need to be disabled when WRAP_CSS_IN_JS is set to false.
 const GENERATE_SOURCE_MAPS =
@@ -109,7 +110,7 @@ class PostCompilePlugin {
 
 const createStaticBuildPlugin = () => {
   return new PostCompilePlugin(() => {
-    if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(OUT_PATH)) {
+    if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(OUT_DIR_ABS)) {
       return;
     }
 
@@ -124,7 +125,7 @@ const createStaticBuildPlugin = () => {
     };
 
     fsx.copySync(demosDirAbs, tmpDirAbs, copyOptions);
-    fsx.copySync(OUT_PATH, path.join(tmpDirAbs, PUBLIC_PATH), copyOptions);
+    fsx.copySync(OUT_DIR_ABS, path.join(tmpDirAbs, DEMO_ASSET_DIR_REL), copyOptions);
 
     if (!WRAP_CSS_IN_JS) {
       glob.sync(path.join(tmpDirAbs, '**/*.html'))
@@ -138,8 +139,8 @@ const createStaticBuildPlugin = () => {
         });
     }
 
-    fsx.removeSync(OUT_PATH);
-    fsx.moveSync(tmpDirAbs, OUT_PATH);
+    fsx.removeSync(OUT_DIR_ABS);
+    fsx.moveSync(tmpDirAbs, OUT_DIR_ABS);
   });
 };
 
@@ -147,8 +148,8 @@ module.exports = [{
   name: 'js-all',
   entry: path.resolve('./packages/material-components-web/index.js'),
   output: {
-    path: OUT_PATH,
-    publicPath: PUBLIC_PATH,
+    path: OUT_DIR_ABS,
+    publicPath: DEMO_ASSET_DIR_REL,
     filename: 'material-components-web.' + (IS_PROD ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
     library: 'mdc',
@@ -201,8 +202,8 @@ if (!IS_DEV) {
       toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
     },
     output: {
-      path: OUT_PATH,
-      publicPath: PUBLIC_PATH,
+      path: OUT_DIR_ABS,
+      publicPath: DEMO_ASSET_DIR_REL,
       filename: 'mdc.[name].' + (IS_PROD ? 'min.' : '') + 'js',
       libraryTarget: 'umd',
       library: ['mdc', '[name]'],
@@ -253,8 +254,8 @@ if (!IS_DEV) {
       'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
     },
     output: {
-      path: OUT_PATH,
-      publicPath: PUBLIC_PATH,
+      path: OUT_DIR_ABS,
+      publicPath: DEMO_ASSET_DIR_REL,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
     devtool: DEVTOOL,
@@ -287,8 +288,8 @@ if (IS_DEV) {
     name: 'demo-css',
     entry: demoStyleEntry,
     output: {
-      path: OUT_PATH,
-      publicPath: PUBLIC_PATH,
+      path: OUT_DIR_ABS,
+      publicPath: DEMO_ASSET_DIR_REL,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
     devtool: DEVTOOL,
