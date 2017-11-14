@@ -80,6 +80,12 @@ attached to the root element, or the element has an ancestor with class `mdc-the
 </html>
 ```
 
+#### Non-interactive list items
+
+By default, list items receive styles for hover, focus, and press states (including the ripple effect if
+`MDCRipple` is instantiated). For list items that are not intended to respond to interaction, it is possible to opt out
+of these styles by adding the `mdc-list-item--non-interactive` modifier.
+
 ### "Dense" Lists
 
 Lists can be made more compact by using the `mdc-list--dense` modifier class.

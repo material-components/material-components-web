@@ -153,10 +153,7 @@ a.mdc-list-item {
 }
 // stylelint-enable selector-max-type,selector-no-qualifying-type
 
-.mdc-list-item.mdc-ripple-upgraded {
-  @include mdc-ripple-surface;
-  @include mdc-states-color;
-  @include mdc-ripple-radius;
+.mdc-list-item {
   @include mdc-rtl-reflexive-position(left, $mdc-list-side-padding * -1);
 
   position: relative;
@@ -173,6 +170,14 @@ a.mdc-list-item {
   @include mdc-theme-dark(".mdc-list") {
     @include mdc-states-color(white);
   }
+}
+
+// List items should support states by default, but it should be possible to opt out.
+// .mdc-list-item is intentionally last on this selector to properly emit --activated and --selected selectors.
+:not(.mdc-list-item--non-interactive).mdc-list-item {
+  @include mdc-ripple-surface;
+  @include mdc-states-color($include-activated: true, $include-selected: true);
+  @include mdc-ripple-radius;
 }
 
 // postcss-bem-linter: define list-divider
