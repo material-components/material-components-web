@@ -103,13 +103,45 @@ class PostCompilePlugin {
   }
 
   apply(compiler) {
-    compiler.plugin('done', (stats) => {
-      if (typeof this.fn === 'function') {
-        this.fn(stats);
-      }
-    });
+    compiler.plugin('done', (stats) => this.fn(stats));
   }
 }
+
+const createStaticBuildPlugin = () => {
+  return new PostCompilePlugin(() => {
+    if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(OUT_PATH)) {
+      return;
+    }
+
+    const demosDirAbs = path.resolve('./demos');
+    const tmpDirAbs = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
+
+    const copyOptions = {
+      // eslint-disable-next-line no-unused-vars
+      filter: (src, dest) => {
+        return !/\.(scss|css.js)$/.test(src);
+      },
+    };
+
+    fsx.copySync(demosDirAbs, tmpDirAbs, copyOptions);
+    fsx.copySync(OUT_PATH, path.join(tmpDirAbs, PUBLIC_PATH), copyOptions);
+
+    if (!WRAP_CSS_IN_JS) {
+      glob.sync(path.join(tmpDirAbs, '**/*.html'))
+        .forEach((absPath) => {
+          const oldHtml = fs.readFileSync(absPath, {encoding: 'utf8'});
+          const newHtml = oldHtml.replace(/<script src="([^"]+\.css\.js[^"]*)"><\/script>/ig, (match, oldPath) => {
+            const newPath = oldPath.replace('.css.js', '.css');
+            return `<link rel="stylesheet" href="${newPath}">`;
+          });
+          fs.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
+        });
+    }
+
+    fsx.removeSync(OUT_PATH);
+    fsx.moveSync(tmpDirAbs, OUT_PATH);
+  });
+};
 
 module.exports = [{
   name: 'js-all',
@@ -269,39 +301,7 @@ if (IS_DEV) {
     plugins: [
       createCssExtractTextPlugin(),
       createBannerPlugin(),
-      new PostCompilePlugin(() => {
-        if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(OUT_PATH)) {
-          return;
-        }
-
-        const demosDirAbs = path.resolve('./demos');
-        const tmpDirAbs = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
-
-        const copyOptions = {
-          // eslint-disable-next-line no-unused-vars
-          filter: (src, dest) => {
-            return !/\.(scss|css.js)$/.test(src);
-          },
-        };
-
-        fsx.copySync(demosDirAbs, tmpDirAbs, copyOptions);
-        fsx.copySync(OUT_PATH, path.join(tmpDirAbs, PUBLIC_PATH), copyOptions);
-
-        if (!WRAP_CSS_IN_JS) {
-          glob.sync(path.join(tmpDirAbs, '**/*.html'))
-            .forEach((absPath) => {
-              const oldHtml = fs.readFileSync(absPath, {encoding: 'utf8'});
-              const newHtml = oldHtml.replace(/<script src="([^"]+\.css\.js[^"]*)"><\/script>/ig, (match, oldPath) => {
-                const newPath = oldPath.replace('.css.js', '.css');
-                return `<link rel="stylesheet" href="${newPath}">`;
-              });
-              fs.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
-            });
-        }
-
-        fsx.removeSync(OUT_PATH);
-        fsx.moveSync(tmpDirAbs, OUT_PATH);
-      }),
+      createStaticBuildPlugin(),
     ],
   });
 }
