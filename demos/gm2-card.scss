@@ -1,0 +1,163 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "../packages/mdc-theme/color-palette";
+
+$google-red-50: #FBE9E7;
+$google-red-100: #F4C7C3;
+$google-red-200: #EDA29B;
+$google-red-300: #E67C73;
+$google-red-400: #E06055;
+$google-red-500: #DB4437;
+$google-red-600: #D23F31;
+$google-red-700: #C53929;
+$google-red-800: #B93221;
+$google-red-900: #A52714;
+$google-red-accent-100: #FF8A80;
+$google-red-accent-200: #FF5252;
+$google-red-accent-400: #FF1744;
+$google-red-accent-700: #D50000;
+$google-red: $google-red-500;
+
+$google-blue-50: #E8F0FE;
+$google-blue-100: #C6DAFC;
+$google-blue-200: #A1C2FA;
+$google-blue-300: #7BAAF7;
+$google-blue-400: #5E97F6;
+$google-blue-500: #4285F4;
+$google-blue-600: #3B78E7;
+$google-blue-700: #3367D6;
+$google-blue-800: #2A56C6;
+$google-blue-900: #1C3AA9;
+$google-blue-accent-100: #82B1FF;
+$google-blue-accent-200: #448AFF;
+$google-blue-accent-400: #2979FF;
+$google-blue-accent-700: #2962FF;
+$google-blue: $google-blue-500;
+
+$google-green-50: #E2F3EB;
+$google-green-100: #B7E1CD;
+$google-green-200: #87CEAC;
+$google-green-300: #57BB8A;
+$google-green-400: #33AC71;
+$google-green-500: #0F9D58;
+$google-green-600: #0D904F;
+$google-green-700: #0B8043;
+$google-green-800: #097138;
+$google-green-900: #055524;
+$google-green-accent-100: #B9F6CA;
+$google-green-accent-200: #69F0AE;
+$google-green-accent-400: #00E676;
+$google-green-accent-700: #00C853;
+$google-green: $google-green-500;
+
+$google-yellow-50: #FEF6E0;
+$google-yellow-100: #FCE8B2;
+$google-yellow-200: #FADA80;
+$google-yellow-300: #F7CB4D;
+$google-yellow-400: #F6BF26;
+$google-yellow-500: #F4B400;
+$google-yellow-600: #F2A600;
+$google-yellow-700: #F09300;
+$google-yellow-800: #EE8100;
+$google-yellow-900: #EA6100;
+$google-yellow-accent-100: #FFDE80;
+$google-yellow-accent-200: #FFCD40;
+$google-yellow-accent-400: #FFBC00;
+$google-yellow-accent-700: #FF9E00;
+$google-yellow: $google-yellow-500;
+
+$mdc-theme-secondary: $google-blue-500;
+
+@import "./common";
+@import "../packages/mdc-elevation/mdc-elevation";
+@import "../packages/mdc-ripple/mdc-ripple";
+@import "../packages/mdc-theme/mdc-theme";
+@import "../packages/mdc-typography/mdc-typography";
+
+////
+
+$gm2-card-hairline-border-color-resting: #ddd;
+$gm2-card-baseline-background-color: #fff;
+
+////
+
+@mixin gm2-card-corner-radius($radius) {
+  border-radius: $radius;
+}
+
+////
+
+.gm2-card {
+  @include mdc-elevation(4);
+  @include gm2-card-corner-radius(4px);
+
+  @include mdc-ripple-color(black, .14);
+
+  background-color: $gm2-card-baseline-background-color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(black, .04);
+  }
+
+  &:focus {
+    background-color: rgba(black, .06);
+  }
+}
+
+.gm2-card--hairline {
+  @include mdc-elevation(1);
+
+  border: 1px solid $gm2-card-hairline-border-color-resting;
+}
+
+////
+
+.hero {
+  position: relative;
+  flex-direction: column;
+  height: unset;
+  padding: 48px;
+}
+
+.demo-card-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.demo-card {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 8px;
+}
+
+.demo-card--color {
+  $color-value: mdc-theme-prop-value(secondary);
+
+  @include mdc-ripple-color(white, .14);
+
+  background-color: $color-value;
+
+  &:hover {
+    background-color: mdc-theme-light-variant($color-value, 1);
+  }
+
+  &:focus {
+    background-color: mdc-theme-light-variant($color-value, 1.2);
+  }
+}

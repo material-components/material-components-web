@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>GM2 Card Prototype - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/gm2-card.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+
+  <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">GM2 Card Prototype</span>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div class="demo-card-row">
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0"></div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0"></div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0"></div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0"></div>
+        </div>
+        <div class="demo-card-row">
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0"></div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0"></div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0"></div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/assets/material-components-web.js"></script>
+    <script>
+      (() => {
+        var interval = setInterval(() => {
+          if (getComputedStyle(document.querySelector('.hero')).position === 'relative') {
+            init();
+            clearInterval(interval);
+          }
+        }, 200);
+
+        function init() {
+          var cards = document.querySelectorAll('.gm2-card');
+          for (var i = 0; i < cards.length; i++) {
+            mdc.ripple.MDCRipple.attachTo(cards[i]);
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
