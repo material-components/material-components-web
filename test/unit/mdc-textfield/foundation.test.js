@@ -33,7 +33,7 @@ const DESC_UNDEFINED = {
 };
 
 function setupHookTest() {
-  const {foundation, mockAdapter} = setupFoundationTest(MDCTextfieldFoundation);
+  const {foundation, mockAdapter} = setupFoundationTest(MDCTextFieldFoundation);
   const nativeInput = bel`<input type="text">`;
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   return {foundation, mockAdapter, nativeInput};

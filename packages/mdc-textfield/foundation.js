@@ -235,7 +235,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   /**
    * Deactives the Text Field's focus state.
    */
-  deactivateFocus_() {
+  deactivateFocus() {
     const {FOCUSED, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
 
