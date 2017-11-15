@@ -22,6 +22,7 @@ import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter} from './adapter';
 import MDCTextFieldFoundation from './foundation';
 import {MDCTextFieldBottomLine} from './bottom-line';
+import {MDCTextFieldHelperText} from './helper-text';
 
 /**
  * @extends {MDCComponent<!MDCTextFieldFoundation>}
@@ -37,12 +38,12 @@ class MDCTextField extends MDCComponent {
     this.input_;
     /** @private {?Element} */
     this.label_;
-    /** @type {?Element} */
-    this.helperTextElement;
     /** @type {?MDCRipple} */
     this.ripple;
     /** @private {?MDCTextFieldBottomLine} */
     this.bottomLine_;
+    /** @private {?MDCTextFieldHelperText} */
+    this.helperText_;
     /** @private {?Element} */
     this.icon_;
   }
@@ -63,13 +64,16 @@ class MDCTextField extends MDCComponent {
    */
   initialize(
     rippleFactory = (el) => new MDCRipple(el),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
+    helperTextFactory = (el) => new MDCTextFieldHelperText(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
-    this.helperTextElement = null;
     this.ripple = null;
     if (this.input_.hasAttribute('aria-controls')) {
-      this.helperTextElement = document.getElementById(this.input_.getAttribute('aria-controls'));
+      const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
+      if (helperTextElement) {
+        this.helperText_ = helperTextFactory(helperTextElement);
+      }
     }
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = rippleFactory(this.root_);
@@ -91,6 +95,9 @@ class MDCTextField extends MDCComponent {
     }
     if (this.bottomLine_) {
       this.bottomLine_.destroy();
+    }
+    if (this.helperText_) {
+      this.helperText_.destroy();
     }
     super.destroy();
   }
@@ -163,6 +170,12 @@ class MDCTextField extends MDCComponent {
         }
         return undefined;
       },
+      getHelperTextFoundation: () => {
+        if (this.helperText_) {
+          return this.helperText_.foundation;
+        }
+        return undefined;
+      }
     },
     this.getInputAdapterMethods_(),
     this.getHelperTextAdapterMethods_(),
