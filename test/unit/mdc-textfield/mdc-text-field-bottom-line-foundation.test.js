@@ -29,6 +29,10 @@ test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCTextFieldBottomLineFoundation);
 });
 
+test('exports strings', () => {
+  assert.isOk('strings' in MDCTextFieldBottomLineFoundation);
+});
+
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldBottomLineFoundation, [
     'addClass', 'removeClass', 'setAttr',
@@ -53,14 +57,14 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test('activate adds mdc-text-field__bottom-line--active class', () => {
+test(`activate adds ${MDCTextFieldBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.activate();
   td.verify(mockAdapter.addClass(cssClasses.BOTTOM_LINE_ACTIVE));
 });
 
-test('deactivate removes mdc-text-field__bottom-line--active class', () => {
+test(`deactivate removes ${MDCTextFieldBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.deactivate();

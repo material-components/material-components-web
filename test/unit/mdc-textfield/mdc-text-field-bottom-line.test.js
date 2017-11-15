@@ -78,7 +78,7 @@ test('#adapter.deregisterEventHandler removes event listener for a given event f
 });
 
 test('#adapter.notifyAnimationEnd emits ' +
-  `${MDCTextFieldBottomLineFoundation.strings.OPACITY_TRANSITION_END_EVENT}`, () => {
+  `${MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT}`, () => {
   const {component} = setupTest();
   const handler = td.func('leadingHandler');
 
