@@ -74,6 +74,17 @@
           constructor(element) {
             this.element = element;
             this.viewportRect = element.getBoundingClientRect();
+            this.offsetX_ = 0;
+          }
+
+          get offsetX() {
+            return this.offsetX_;
+          }
+
+          set offsetX(offsetX) {
+            this.offsetX_ = offsetX;
+            // TODO(acdvorak): Find a way to do this that won't prevent clients from being able to use `transform`.
+            this.element.style.transform = this.offsetX_ ? `translateX(${this.offsetX_}px)` : '';
           }
 
           isDragSource() {
@@ -204,9 +215,6 @@
         function getCards(e) {
           const cardGroupEl = e.originalSource.closest('.m2-card-group');
           const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.m2-card'));
-          cardEls.forEach((cardEl) => {
-            cardEl.style.transform = '';
-          });
           const cards = cardEls
             .map(Card.create)
             .filter(Card.isVisible)
@@ -219,7 +227,6 @@
               rowBuckets.set(top, []);
             }
             rowBuckets.get(top).push(card);
-            card.element.style.transform = '';
           });
 
           const rows = [];
@@ -227,7 +234,7 @@
             rows.push(row);
           });
 
-          return {cardGroupEl, cardEls, rows};
+          return {cardGroupEl, cards, cardEls, rows};
         }
 
         function getDropZone(e, {rowGapInPx, colGapInPx} = {}) {
@@ -304,6 +311,12 @@
           let dropZone;
           let sourceCardEl;
 
+          function resetCardOffsets(cards) {
+            cards.forEach((card) => card.offsetX = 0);
+            dropSpacerEl.remove();
+            dropZoneEl.remove();
+          }
+
           draggable.on('drag:start', (e) => {
             const {rows} = getCards(e);
 
@@ -314,11 +327,10 @@
           });
 
           draggable.on('drag:move', (e) => {
-            const {rows} = getCards(e);
+            const {cards, rows} = getCards(e);
             dropZone = getDropZone(e, {rowGapInPx, colGapInPx});
 
-            dropSpacerEl.remove();
-            dropZoneEl.remove();
+            resetCardOffsets(cards);
 
             e.originalEvent.preventDefault();
 
@@ -332,12 +344,8 @@
 
               const curRow = rows[dropZone.rowIndex];
               curRow.forEach((curCardInRow, curCardInRowColIndex) => {
-                let mult = +1;
-                if (curCardInRowColIndex < dropZone.colIndex) {
-                  mult = -1;
-                }
-                const offsetX = mult * (dropZone.colGapInPx / 2);
-                curCardInRow.element.style.transform = `translateX(${offsetX}px)`;
+                const multiplier = curCardInRowColIndex < dropZone.colIndex ? -1 : +1;
+                curCardInRow.offsetX = multiplier * (dropZone.colGapInPx / 2);
               });
             } else {
               dropSpacerEl.remove();
@@ -346,11 +354,9 @@
           });
 
           draggable.on('drag:stop', (e) => {
-            const {cardEls} = getCards(e);
+            const {cards} = getCards(e);
 
-            cardEls.forEach((cardEl) => {
-              cardEl.style.transform = '';
-            });
+            resetCardOffsets(cards);
 
             if (dropZone) {
               const adjacentCardEl = dropZone.adjacentCard.element;
@@ -359,9 +365,6 @@
                 adjacentCardEl.insertAdjacentElement('beforebegin', dragSourceEl);
               });
             }
-
-            dropSpacerEl.remove();
-            dropZoneEl.remove();
 
             if (sourceCardEl.ripple) {
               // TODO(acdvorak): Submit PR to "draggable" repo to pass through originalEvent to drag:stop
