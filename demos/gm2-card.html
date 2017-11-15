@@ -160,35 +160,6 @@
           return false;
         }
 
-        function getStuff(e) {
-          const cardGroupEl = e.originalSource.closest('.gm2-card-group');
-          const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.gm2-card'));
-          cardEls.forEach((cardEl) => {
-            cardEl.style.transform = '';
-          });
-          const cards = cardEls
-            .map(Card.create)
-            .filter(Card.isVisible)
-            .sort(Card.orderByCoordinate);
-
-          const rowBuckets = new Map();
-          cards.forEach((card) => {
-            const top = card.viewportRect.top;
-            if (!rowBuckets.has(top)) {
-              rowBuckets.set(top, []);
-            }
-            rowBuckets.get(top).push(card);
-            card.element.style.transform = '';
-          });
-
-          const rows = [];
-          rowBuckets.forEach((row) => {
-            rows.push(row);
-          });
-
-          return {cardGroupEl, cardEls, rows};
-        }
-
         function getColGapInPx(rows) {
           if (rows.length < 1 || rows[0].length < 2) {
             return 0;
@@ -220,6 +191,76 @@
           const prevRowLastCardRight = prevRowLastCard.viewportRect.right + prevRowLastCardMarginRight;
 
           return cardGroupRight - prevRowLastCardRight;
+        }
+
+        function getPointerPositionInViewport(e) {
+          const originalEvent = e.originalEvent;
+          const nativePointerEvent = originalEvent.touches ? originalEvent.touches[0] : originalEvent;
+          return {
+            x: nativePointerEvent.clientX,
+            y: nativePointerEvent.clientY,
+          };
+        }
+
+        function getCards(e) {
+          const cardGroupEl = e.originalSource.closest('.gm2-card-group');
+          const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.gm2-card'));
+          cardEls.forEach((cardEl) => {
+            cardEl.style.transform = '';
+          });
+          const cards = cardEls
+            .map(Card.create)
+            .filter(Card.isVisible)
+            .sort(Card.orderByCoordinate);
+
+          const rowBuckets = new Map();
+          cards.forEach((card) => {
+            const top = card.viewportRect.top;
+            if (!rowBuckets.has(top)) {
+              rowBuckets.set(top, []);
+            }
+            rowBuckets.get(top).push(card);
+            card.element.style.transform = '';
+          });
+
+          const rows = [];
+          rowBuckets.forEach((row) => {
+            rows.push(row);
+          });
+
+          return {cardGroupEl, cardEls, rows};
+        }
+
+        function getActiveDropZone(e, {rowGapInPx, colGapInPx} = {}) {
+          const pointerPositionInViewport = getPointerPositionInViewport(e);
+          const {cardGroupEl, rows} = getCards(e);
+
+          const dropZones = [];
+          rows.forEach((curRow, rowIndex) => {
+            curRow.forEach((curCardInRow, colIndex) => {
+              if (isAdjacentToDragSource(curRow, colIndex)) {
+                return;
+              }
+              dropZones.push(new DropZone(curCardInRow, {
+                toleranceInPx: curCardInRow.viewportRect.width / 2,
+                spacerWidth: getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex),
+                rowGapInPx,
+                colGapInPx,
+                rowIndex,
+                colIndex,
+              }));
+            });
+          });
+
+          let activeDropZone = false;
+          for (let curDropZone of dropZones) {
+            if (curDropZone.intersectsViewportPoint(pointerPositionInViewport)) {
+              activeDropZone = curDropZone;
+              break;
+            }
+          }
+
+          return activeDropZone;
         }
 
         var interval = setInterval(() => {
@@ -262,79 +303,48 @@
           let rowGapInPx;
 
           draggable.on('drag:start', (e) => {
-            const {rows} = getStuff(e);
+            const {rows} = getCards(e);
 
             colGapInPx = getColGapInPx(rows);
             rowGapInPx = getRowGapInPx(rows);
           });
 
           draggable.on('drag:move', (e) => {
-            const {cardGroupEl, rows} = getStuff(e);
+            const {rows} = getCards(e);
+            const activeDropZone = getActiveDropZone(e, {rowGapInPx, colGapInPx});
 
             dropSpacerEl.remove();
             dropZoneEl.remove();
 
-            const originalEvent = e.originalEvent;
-            const nativePointerEvent = originalEvent.touches ? originalEvent.touches[0] : originalEvent;
-            const pointerPositionInViewport = {
-              x: nativePointerEvent.clientX,
-              y: nativePointerEvent.clientY,
-            };
+            e.originalEvent.preventDefault();
 
-            originalEvent.preventDefault();
-
-            const dropZones = [];
-            rows.forEach((curRow, rowIndex) => {
-              curRow.forEach((curCardInRow, colIndex) => {
-                if (isAdjacentToDragSource(curRow, colIndex)) {
-                  return;
-                }
-                dropZones.push(new DropZone(curCardInRow, {
-                  toleranceInPx: curCardInRow.viewportRect.width / 2,
-                  spacerWidth: getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex),
-                  rowGapInPx,
-                  colGapInPx,
-                  rowIndex,
-                  colIndex,
-                }));
-              });
-            });
-
-            let isPointerOnDropZone = false;
-            for (let curDropZone of dropZones) {
-              if (curDropZone.intersectsViewportPoint(pointerPositionInViewport)) {
-                isPointerOnDropZone = true;
-                curDropZone.nextCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
-                if (curDropZone.spacerWidth) {
-                  dropZoneEl.insertAdjacentElement('beforebegin', dropSpacerEl);
-                  dropSpacerEl.style.width = curDropZone.spacerWidth + 'px';
-                } else {
-                  dropSpacerEl.remove();
-                  dropSpacerEl.style.width = '0';
-                }
-
-                const curRow = rows[curDropZone.rowIndex];
-                curRow.forEach((curCardInRow, curCardInRowColIndex) => {
-                  let mult = +1;
-                  if (curCardInRowColIndex < curDropZone.colIndex) {
-                    mult = -1;
-                  }
-                  const offsetX = mult * (curDropZone.colGapInPx / 2);
-                  curCardInRow.element.style.transform = `translateX(${offsetX}px)`;
-                });
-
-                break;
+            if (activeDropZone) {
+              activeDropZone.nextCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
+              if (activeDropZone.spacerWidth) {
+                dropZoneEl.insertAdjacentElement('beforebegin', dropSpacerEl);
+                dropSpacerEl.style.width = activeDropZone.spacerWidth + 'px';
+              } else {
+                dropSpacerEl.remove();
+                dropSpacerEl.style.width = '0';
               }
-            }
 
-            if (!isPointerOnDropZone) {
+              const curRow = rows[activeDropZone.rowIndex];
+              curRow.forEach((curCardInRow, curCardInRowColIndex) => {
+                let mult = +1;
+                if (curCardInRowColIndex < activeDropZone.colIndex) {
+                  mult = -1;
+                }
+                const offsetX = mult * (activeDropZone.colGapInPx / 2);
+                curCardInRow.element.style.transform = `translateX(${offsetX}px)`;
+              });
+            } else {
               dropSpacerEl.remove();
               dropZoneEl.remove();
             }
           });
 
           draggable.on('drag:stop', (e) => {
-            const {cardEls} = getStuff(e);
+            const {cardEls} = getCards(e);
 
             cardEls.forEach((cardEl) => {
               cardEl.style.transform = '';
