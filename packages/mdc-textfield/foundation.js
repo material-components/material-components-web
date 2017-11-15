@@ -79,6 +79,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.receivedUserInput_ = false;
     /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
+    /** @private {boolean} */
+    this.labelFloatIsActive_ = false;
+    /** @private {boolean} */
+    this.setValueIsProcessing_ = false;
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -96,9 +100,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.getNativeInput_().value) {
-      this.adapter_.addClassToLabel(MDCTextFieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
-    }
+    this.updateLabelFloat_();
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.registerInputInteractionHandler('blur', this.inputBlurHandler_);
@@ -110,6 +112,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.installPropertyChangeHooks_();
   }
 
   destroy() {
@@ -124,6 +127,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    this.uninstallPropertyChangeHooks_();
   }
 
   /**
@@ -151,13 +155,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Activates the text field focus state.
    */
   activateFocus() {
-    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    this.isFocused_ = true;
+    this.updateLabelFloat_();
     this.adapter_.addClass(FOCUSED);
     this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
-    this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
     this.showHelperText_();
-    this.isFocused_ = true;
   }
 
   /**
@@ -181,6 +185,25 @@ class MDCTextFieldFoundation extends MDCFoundation {
   autoCompleteFocus() {
     if (!this.receivedUserInput_) {
       this.activateFocus();
+    }
+  }
+
+  /**
+   * Changes the floating label's state
+   * @private
+   */
+  updateLabelFloat_() {
+    const input = this.getNativeInput_();
+    const {LABEL_FLOAT_ABOVE} = MDCTextFieldFoundation.cssClasses;
+
+    if (this.isFocused_ || input.value) {
+      if (!this.labelFloatIsActive_) {
+        this.labelFloatIsActive_ = true;
+        this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
+      }
+    } else if (this.labelFloatIsActive_) {
+      this.labelFloatIsActive_ = false;
+      this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
     }
   }
 
@@ -213,19 +236,27 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Deactives the Text Field's focus state.
    */
   deactivateFocus() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
+
+    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
+    this.updateDefaultValidity_();
 
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
-    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
 
     if (!input.value && !this.isBadInput_()) {
-      this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+      this.updateLabelFloat_();
       this.receivedUserInput_ = false;
     }
+  }
 
+  /**
+   * @private
+   */
+  updateDefaultValidity_() {
     if (!this.useCustomValidityChecking_) {
+      const input = this.getNativeInput_();
       this.changeValidity_(input.checkValidity());
     }
   }
@@ -240,8 +271,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
-      this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
+
+      if (this.isFocused_) {
+        this.adapter_.addClassToLabel(LABEL_SHAKE);
+      }
     }
     this.updateHelperText_(isValid);
   }
@@ -250,6 +284,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Updates the state of the Text Field's helper text based on validity and
    * the Text Field's options.
    * @param {boolean} isValid
+   * @private
    */
   updateHelperText_(isValid) {
     const {HELPER_TEXT_PERSISTENT, HELPER_TEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
@@ -312,6 +347,20 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * @param {string} value The value of the textfield.
+   */
+  setValue(value) {
+    this.setValueIsProcessing_ = true;
+
+    const input = this.getNativeInput_();
+    input.value = value;
+    this.updateLabelFloat_();
+    this.updateDefaultValidity_();
+
+    this.setValueIsProcessing_ = false;
+  }
+
+  /**
    * @return {!Element|!NativeInputType} The native text input from the
    * host environment, or a dummy if none exists.
    * @private
@@ -333,6 +382,51 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.useCustomValidityChecking_ = true;
     this.changeValidity_(isValid);
   }
+
+  /** @private */
+  installPropertyChangeHooks_() {
+    const {INPUT_PROTO_PROP} = MDCTextFieldFoundation.strings;
+    const nativeInputElement = this.getNativeInput_();
+    const inputElementProto = Object.getPrototypeOf(nativeInputElement);
+    const desc = Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP);
+
+    // We have to check for this descriptor, since some browsers (Safari) don't support its return.
+    // See: https://bugs.webkit.org/show_bug.cgi?id=49739
+    if (validDescriptor(desc)) {
+      const nativeInputElementDesc = /** @type {!ObjectPropertyDescriptor} */ ({
+        get: desc.get,
+        set: (value) => {
+          if (!this.setValueIsProcessing_) {
+            desc.set.call(nativeInputElement, value);
+            this.setValue(value);
+          }
+        },
+        configurable: desc.configurable,
+        enumerable: desc.enumerable,
+      });
+      Object.defineProperty(nativeInputElement, INPUT_PROTO_PROP, nativeInputElementDesc);
+    }
+  }
+
+  /** @private */
+  uninstallPropertyChangeHooks_() {
+    const {INPUT_PROTO_PROP} = MDCTextFieldFoundation.strings;
+    const nativeInputElement = this.getNativeInput_();
+    const inputElementProto = Object.getPrototypeOf(nativeInputElement);
+    const desc = /** @type {!ObjectPropertyDescriptor} */ (
+      Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP));
+    if (validDescriptor(desc)) {
+      Object.defineProperty(nativeInputElement, INPUT_PROTO_PROP, desc);
+    }
+  }
+}
+
+/**
+ * @param {ObjectPropertyDescriptor|undefined} inputPropDesc
+ * @return {boolean}
+ */
+function validDescriptor(inputPropDesc) {
+  return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
 
 export default MDCTextFieldFoundation;

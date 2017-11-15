@@ -15,6 +15,7 @@
  */
 
 import {assert} from 'chai';
+import bel from 'bel';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
@@ -22,6 +23,37 @@ import {setupFoundationTest} from '../helpers/setup';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 
 const {cssClasses} = MDCTextFieldFoundation;
+
+const DESC_UNDEFINED = {
+  get: undefined,
+  set: undefined,
+  enumerable: false,
+  configurable: true,
+};
+
+function setupHookTest() {
+  const {foundation, mockAdapter} = setupFoundationTest(MDCTextFieldFoundation);
+  const nativeInput = bel`<input type="text">`;
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  return {foundation, mockAdapter, nativeInput};
+}
+
+// Shims Object.getOwnPropertyDescriptor for the input's WebIDL attributes. Used to test
+// the behavior of overridding WebIDL properties in different browser environments. For example,
+// in Safari WebIDL attributes don't return get/set in descriptors.
+function withMockInputDescriptorReturning(descriptor, runTests) {
+  const originalDesc = Object.getOwnPropertyDescriptor(Object, 'getOwnPropertyDescriptor');
+  const mockGetOwnPropertyDescriptor = td.func('.getOwnPropertyDescriptor');
+
+  td.when(mockGetOwnPropertyDescriptor(HTMLInputElement.prototype, 'value'))
+    .thenReturn(descriptor);
+
+  Object.defineProperty(Object, 'getOwnPropertyDescriptor', Object.assign({}, originalDesc, {
+    value: mockGetOwnPropertyDescriptor,
+  }));
+  runTests(mockGetOwnPropertyDescriptor);
+  Object.defineProperty(Object, 'getOwnPropertyDescriptor', originalDesc);
+}
 
 suite('MDCTextFieldFoundation');
 
@@ -143,6 +175,12 @@ test('#init adds event listeners', () => {
   td.verify(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function)));
 });
 
+test('#destroy removes mdc-textfield--upgraded class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  td.verify(mockAdapter.removeClass(cssClasses.UPGRADED));
+});
+
 test('#destroy removes event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
@@ -177,6 +215,31 @@ test('#init does not add mdc-text-field__label--float-above class if the input d
   });
   foundation.init();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#init handles case when WebIDL attrs cannot be overridden (Safari)', () => {
+  const {foundation, nativeInput} = setupHookTest();
+  withMockInputDescriptorReturning(DESC_UNDEFINED, () => {
+    assert.doesNotThrow(() => {
+      foundation.init();
+      nativeInput.value = nativeInput.value + '_';
+    });
+  });
+});
+
+test('#init handles case when property descriptors are not returned at all (Android Browser)', () => {
+  const {foundation} = setupHookTest();
+  withMockInputDescriptorReturning(undefined, () => {
+    assert.doesNotThrow(() => foundation.init());
+  });
+});
+
+test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', () => {
+  const {foundation} = setupHookTest();
+  withMockInputDescriptorReturning(DESC_UNDEFINED, () => {
+    assert.doesNotThrow(() => foundation.init(), 'init sanity check');
+    assert.doesNotThrow(() => foundation.destroy());
+  });
 });
 
 test('on input focuses if input event occurs without any other events', () => {
@@ -258,9 +321,17 @@ test('on focus removes aria-hidden from helperText', () => {
 const setupBlurTest = () => {
   const {foundation, mockAdapter} = setupTest();
   let blur;
-  td.when(mockAdapter.registerInputInteractionHandler('blur', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    blur = handler;
-  });
+  td.when(mockAdapter.registerInputInteractionHandler('blur', td.matchers.isA(Function))).thenDo(
+    (evtType, handler) => {
+      blur = handler;
+    }
+  );
+  let focus;
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function))).thenDo(
+    (evtType, handler) => {
+      focus = handler;
+    }
+  );
   const nativeInput = {
     value: '',
     checkValidity: () => true,
@@ -268,7 +339,7 @@ const setupBlurTest = () => {
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
 
-  return {foundation, mockAdapter, blur, nativeInput};
+  return {foundation, mockAdapter, focus, blur, nativeInput};
 };
 
 test('on blur removes mdc-text-field--focused class', () => {
@@ -278,7 +349,8 @@ test('on blur removes mdc-text-field--focused class', () => {
 });
 
 test('on blur removes mdc-text-field__label--float-above when no input value present', () => {
-  const {mockAdapter, blur} = setupBlurTest();
+  const {mockAdapter, focus, blur} = setupBlurTest();
+  focus();
   blur();
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
@@ -299,8 +371,9 @@ test('on blur removes mdc-text-field--invalid if custom validity is false and' +
 
 test('on blur adds mdc-textfied--invalid if custom validity is false and' +
      'input.checkValidity() returns false', () => {
-  const {mockAdapter, blur, nativeInput} = setupBlurTest();
+  const {mockAdapter, focus, blur, nativeInput} = setupBlurTest();
   nativeInput.checkValidity = () => false;
+  focus();
   blur();
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
@@ -483,4 +556,50 @@ test('interacting with text field does not emit custom events if input is disabl
   textFieldInteraction(mockEvt);
 
   td.verify(mockAdapter.notifyIconAction(), {times: 0});
+});
+
+test('"value" property change hook works properly', () => {
+  const {foundation, mockAdapter, nativeInput} = setupHookTest();
+  let inputValue = '';
+
+  withMockInputDescriptorReturning({
+    get: () => inputValue,
+    set: (value) => inputValue = value,
+    enumerable: false,
+    configurable: true,
+  }, () => {
+    foundation.init();
+
+    nativeInput.value = '_';
+    td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
+
+    nativeInput.value = '';
+    td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
+  });
+});
+
+test('"value" property change hook does nothing if input is focused', () => {
+  const {foundation, mockAdapter, nativeInput} = setupHookTest();
+  let inputValue = '';
+
+  withMockInputDescriptorReturning({
+    get: () => inputValue,
+    set: (value) => inputValue = value,
+    enumerable: false,
+    configurable: true,
+  }, () => {
+    let focus;
+    td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function))).thenDo((type, handler) => {
+      focus = handler;
+    });
+    foundation.init();
+    focus();
+    td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+
+    nativeInput.value = '_';
+    td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+
+    nativeInput.value = '';
+    td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+  });
 });
