@@ -95,8 +95,9 @@ class MDCRipple extends MDCComponent {
     this.foundation_.activate();
   }
 
-  deactivate() {
-    this.foundation_.deactivate();
+  // TODO(acdvorak): Submit this as a separate PR
+  deactivate(e) {
+    this.foundation_.deactivate(e);
   }
 
   layout() {

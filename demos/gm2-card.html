@@ -67,7 +67,7 @@
     </main>
 
     <script src="/assets/material-components-web.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.3/lib/draggable.bundle.js"></script>
+    <script src="/lib/draggable/1.0.0-beta.3/draggable.bundle.patched.js"></script>
     <script>
       (() => {
         class Card {
@@ -277,8 +277,9 @@
         function init() {
           var cards = document.querySelectorAll('.gm2-card');
           for (var i = 0; i < cards.length; i++) {
-            // TODO(acdvorak): Uncomment this line
-//            mdc.ripple.MDCRipple.attachTo(cards[i]);
+            let card = cards[i];
+            // TODO(acdvorak): This is gross
+            card.ripple = mdc.ripple.MDCRipple.attachTo(card);
           }
 
           const draggable = new Draggable.Draggable(document.querySelectorAll('.demo-card-group'), {
@@ -302,6 +303,7 @@
           let colGapInPx;
           let rowGapInPx;
           let dropZone;
+          let sourceCardEl;
 
           draggable.on('drag:start', (e) => {
             const {rows} = getCards(e);
@@ -309,6 +311,7 @@
             colGapInPx = getColGapInPx(rows);
             rowGapInPx = getRowGapInPx(rows);
             dropZone = null;
+            sourceCardEl = e.originalSource;
           });
 
           draggable.on('drag:move', (e) => {
@@ -357,15 +360,25 @@
               const dragSourceEl = e.originalSource;
               setTimeout(() => {
                 nextCardEl.insertAdjacentElement('beforebegin', dragSourceEl);
-              }, 0);
+              });
             }
 
             dropSpacerEl.remove();
             dropZoneEl.remove();
 
+            if (sourceCardEl.ripple) {
+              // TODO(acdvorak): Submit PR to "draggable" repo to pass through originalEvent to drag:stop
+              // TODO(acdvorak): Submit PR to "draggable" repo to listen for ESC key
+//              sourceCardEl.ripple.deactivate(e.originalEvent);
+
+              // TODO(acdvorak): Submit PR to fix Ripple so that it doesn't require an event object
+              sourceCardEl.ripple.deactivate({type: 'pointerup'});
+            }
+
             colGapInPx = 0;
             rowGapInPx = 0;
             dropZone = null;
+            sourceCardEl = null;
           });
         }
       })();
