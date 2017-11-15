@@ -237,8 +237,7 @@
           return {cardGroupEl, cards, cardEls, rows};
         }
 
-        function getDropZone(e, {rowGapInPx, colGapInPx} = {}) {
-          const pointerPositionInViewport = getPointerPositionInViewport(e);
+        function getDropZones(e, {rowGapInPx, colGapInPx} = {}) {
           const {cardGroupEl, rows} = getCards(e);
 
           const dropZones = [];
@@ -258,15 +257,17 @@
             });
           });
 
-          let activeDropZone = false;
+          return dropZones;
+        }
+
+        function getDropZone(e, dropZones) {
+          const pointerPositionInViewport = getPointerPositionInViewport(e);
           for (let curDropZone of dropZones) {
             if (curDropZone.intersectsViewportPoint(pointerPositionInViewport)) {
-              activeDropZone = curDropZone;
-              break;
+              return curDropZone;
             }
           }
-
-          return activeDropZone;
+          return null;
         }
 
         var interval = setInterval(() => {
@@ -308,6 +309,7 @@
 
           let colGapInPx;
           let rowGapInPx;
+          let dropZones;
           let dropZone;
           let sourceCardEl;
 
@@ -322,13 +324,14 @@
 
             colGapInPx = getColGapInPx(rows);
             rowGapInPx = getRowGapInPx(rows);
+            dropZones = getDropZones(e, {rowGapInPx, colGapInPx});
             dropZone = null;
             sourceCardEl = e.originalSource;
           });
 
           draggable.on('drag:move', (e) => {
             const {cards, rows} = getCards(e);
-            dropZone = getDropZone(e, {rowGapInPx, colGapInPx});
+            dropZone = getDropZone(e, dropZones);
 
             resetCardOffsets(cards);
 
@@ -377,6 +380,7 @@
 
             colGapInPx = 0;
             rowGapInPx = 0;
+            dropZones = null;
             dropZone = null;
             sourceCardEl = null;
           });
