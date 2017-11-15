@@ -69,7 +69,7 @@ class MDCTextField extends MDCComponent {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.ripple = null;
-    if (this.input_.hasAttribute('aria-controls')) {
+    if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
       const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
       if (helperTextElement) {
         this.helperText_ = helperTextFactory(helperTextElement);
