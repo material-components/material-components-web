@@ -98,6 +98,14 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   visibility: hidden;
 }
 
+.m2-card-drop-spacer {
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  // TODO(acdvorak): Figure out why this hack is needed to force the element to consume width
+  border: 1px solid transparent;
+}
+
 .m2-card-drop-zone {
   background-color: #333;
   border-radius: 4px;

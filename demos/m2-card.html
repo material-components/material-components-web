@@ -97,10 +97,11 @@
 
         /** Represents an area where a card can be dropped. */
         class DropZone {
-          // TODO(acdvorak): Rename nextCard to something better?
+          // TODO(acdvorak): Rename adjacentCard to something better?
           constructor(
-            nextCard, {toleranceInPx = 50, rowIndex, colIndex, rowGapInPx = 0, colGapInPx = 0, spacerWidth = 0} = {}) {
-            this.nextCard = nextCard;
+            adjacentCard, {toleranceInPx = 50, rowIndex, colIndex, rowGapInPx = 0, colGapInPx = 0, spacerWidth = 0} = {}) {
+            this.adjacentCard = adjacentCard;
+            this.side = 'left'; // TODO(acdvorak): Implement
             this.rowIndex = rowIndex;
             this.colIndex = colIndex;
             this.toleranceInPx = toleranceInPx;
@@ -109,18 +110,16 @@
             this.spacerWidth = spacerWidth;
 
             this.viewportRect = {
-              top: nextCard.viewportRect.top - (this.rowGapInPx / 2),
-              bottom: nextCard.viewportRect.bottom + (this.rowGapInPx / 2),
-
-              // TODO(acdvorak): Compute this dynamically from the margins between cards
-              left: nextCard.viewportRect.left - this.colGapInPx,
-              right: nextCard.viewportRect.left,
+              top: adjacentCard.viewportRect.top - (this.rowGapInPx / 2),
+              bottom: adjacentCard.viewportRect.bottom + (this.rowGapInPx / 2),
+              left: adjacentCard.viewportRect.left - this.colGapInPx,
+              right: adjacentCard.viewportRect.left,
             };
 
             Object.assign(this.viewportRect, {
               height: this.viewportRect.bottom - this.viewportRect.top,
               width: this.viewportRect.right - this.viewportRect.left,
-            })
+            });
           }
 
           // TODO(acdvorak): Handle jank that occurs when mouse is right on the edge of drop zone.
@@ -324,13 +323,11 @@
             e.originalEvent.preventDefault();
 
             if (dropZone) {
-              dropZone.nextCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
+              dropZone.adjacentCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
               if (dropZone.spacerWidth) {
                 dropZoneEl.insertAdjacentElement('beforebegin', dropSpacerEl);
-                dropSpacerEl.style.width = dropZone.spacerWidth + 'px';
               } else {
                 dropSpacerEl.remove();
-                dropSpacerEl.style.width = '0';
               }
 
               const curRow = rows[dropZone.rowIndex];
@@ -356,10 +353,10 @@
             });
 
             if (dropZone) {
-              const nextCardEl = dropZone.nextCard.element;
+              const adjacentCardEl = dropZone.adjacentCard.element;
               const dragSourceEl = e.originalSource;
               setTimeout(() => {
-                nextCardEl.insertAdjacentElement('beforebegin', dragSourceEl);
+                adjacentCardEl.insertAdjacentElement('beforebegin', dragSourceEl);
               });
             }
 
