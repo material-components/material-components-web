@@ -77,6 +77,10 @@
           }
         }, 200);
 
+        // NOTE(acdvorak): This code assumes:
+        // 1. ALL CARDS ARE THE SAME SIZE
+        // 2. HORIZONTAL AND VERTICAL MARGINS BETWEEN CARDS ARE IDENTICAL
+        // TODO(acdvorak): RTL support
         function init() {
           var cards = document.querySelectorAll('.gm2-card');
           for (var i = 0; i < cards.length; i++) {
@@ -114,34 +118,24 @@
             }
           }
 
-          /** Represents the blank space between two adjacent cards. */
-          class Gap {
-            constructor(firstCard, secondCard, paddingInPx = 50) {
-              this.firstCard = firstCard;
-              this.secondCard = secondCard;
-              this.paddingInPx = paddingInPx;
+          /** Represents an area where a card can be dropped. */
+          class DropZone {
+            // TODO(acdvorak): Rename nextCard to something better?
+            constructor(nextCard, {toleranceInPx = 50, colGap = 0, rowGap = 0, spacerWidth = 0} = {}) {
+              this.nextCard = nextCard;
+              this.toleranceInPx = toleranceInPx;
+              this.colGap = colGap;
+              this.rowGap = rowGap;
+              this.spacerWidth = spacerWidth;
 
-              if (firstCard.viewportRect.top === secondCard.viewportRect.top) {
-                // Gap between adjacent columns in the same row.
-                this.isBetweenCols = true;
-                this.isBetweenRows = false;
-                this.viewportRect = {
-                  top: firstCard.viewportRect.top,
-                  bottom: firstCard.viewportRect.bottom,
-                  left: firstCard.viewportRect.right,
-                  right: secondCard.viewportRect.left,
-                }
-              } else {
-                // Gap between adjacent rows in the same column.
-                this.isBetweenCols = false;
-                this.isBetweenRows = true;
-                this.viewportRect = {
-                  top: firstCard.viewportRect.bottom,
-                  bottom: secondCard.viewportRect.top,
-                  left: firstCard.viewportRect.left,
-                  right: firstCard.viewportRect.right,
-                }
-              }
+              this.viewportRect = {
+                top: nextCard.viewportRect.top - (this.rowGap / 2),
+                bottom: nextCard.viewportRect.bottom + (this.rowGap / 2),
+
+                // TODO(acdvorak): Compute this dynamically from the margins between cards
+                left: nextCard.viewportRect.left - this.colGap,
+                right: nextCard.viewportRect.left,
+              };
 
               Object.assign(this.viewportRect, {
                 height: this.viewportRect.bottom - this.viewportRect.top,
@@ -149,27 +143,26 @@
               })
             }
 
+            // TODO(acdvorak): Handle jank that occurs when mouse is right on the edge of drop zone.
+            // Inserting the drop zone element changes the positioning.
             intersectsViewportPoint(viewportPoint) {
-              const paddingTopAndBottom = this.isBetweenRows ? this.paddingInPx : 0;
-              const paddingLeftAndRight = this.isBetweenCols ? this.paddingInPx : 0;
-
               // Point is above the gap.
-              if (viewportPoint.y < this.viewportRect.top - paddingTopAndBottom) {
+              if (viewportPoint.y < this.viewportRect.top) {
                 return false;
               }
 
               // Point is below the gap.
-              if (viewportPoint.y > this.viewportRect.bottom + paddingTopAndBottom) {
+              if (viewportPoint.y > this.viewportRect.bottom) {
                 return false;
               }
 
               // Point is left of the gap.
-              if (viewportPoint.x < this.viewportRect.left - paddingLeftAndRight) {
+              if (viewportPoint.x < this.viewportRect.left - this.toleranceInPx) {
                 return false;
               }
 
               // Point is right of the gap.
-              if (viewportPoint.x > this.viewportRect.right + paddingLeftAndRight) {
+              if (viewportPoint.x > this.viewportRect.right + this.toleranceInPx) {
                 return false;
               }
 
@@ -177,18 +170,16 @@
             }
           }
 
-          const dropBarDummyParent = document.createElement('div');
-          dropBarDummyParent.innerHTML = `
-<div class="gm2-card-drop-target">
-  <div class="gm2-card-drop-target__bar"></div>
-</div>
+          const dropZoneElDummyParent = document.createElement('div');
+          dropZoneElDummyParent.innerHTML = `
+<div class="gm2-card-drop-spacer"></div>
+<div class="gm2-card-drop-zone"></div>
           `.trim();
-          const dropBar = dropBarDummyParent.firstChild;
+          const dropSpacerEl = dropZoneElDummyParent.children[0];
+          const dropZoneEl = dropZoneElDummyParent.children[1];
 
 //          draggable.on('drag:start', (e) => {});
 
-          // NOTE(acdvorak): This code assumes that ALL CARDS ARE THE SAME SIZE!
-          // TODO(acdvorak): RTL support
           draggable.on('drag:move', (e) => {
             const nativeEvent = e.originalEvent;
             const pointerPositionInViewport = {
@@ -215,51 +206,43 @@
               rows.push(row);
             });
 
-            const gaps = [];
+            const dropZones = [];
             rows.forEach((curRow, rowIndex) => {
               curRow.forEach((curCardInRow, colIndex) => {
-                const nextCardInRow = curRow[colIndex + 1];
-                if (nextCardInRow) {
-                  gaps.push(new Gap(curCardInRow, nextCardInRow));
-                }
-
-                const nextRow = rows[rowIndex + 1];
-                if (nextRow && nextRow[colIndex]) {
-                  gaps.push(new Gap(curCardInRow, nextRow[colIndex]));
-                }
+                dropZones.push(new DropZone(curCardInRow, {
+                  // TODO(acdvorak): COMPUTE ROW/COL GAPS
+                  // TODO(acdvorak): COMPUTE SPACER WIDTH
+                  spacerWidth: rowIndex > 0 && colIndex === 0 ? 6 : 0,
+                }));
               });
             });
 
-            let isPointerOverGap = false;
-            for (let curGap of gaps) {
-              if (curGap.intersectsViewportPoint(pointerPositionInViewport)) {
-                isPointerOverGap = true;
-                dropBar.remove();
-                const cardGroupViewportRect = cardGroupEl.getBoundingClientRect();
-                dropBar.style.top = (curGap.viewportRect.top - cardGroupViewportRect.top) + 'px';
-                dropBar.style.left = (curGap.viewportRect.left - cardGroupViewportRect.left) + 'px';
-                dropBar.style.height = curGap.viewportRect.height + 'px';
-                dropBar.style.width = curGap.viewportRect.width + 'px';
-                if (curGap.isBetweenCols) {
-                  dropBar.classList.remove('gm2-card-drop-target--between-rows');
-                  dropBar.classList.add('gm2-card-drop-target--between-cols');
+            let isPointerOnDropZone = false;
+            for (let curDropZone of dropZones) {
+              if (curDropZone.intersectsViewportPoint(pointerPositionInViewport)) {
+                isPointerOnDropZone = true;
+                curDropZone.nextCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
+                if (curDropZone.spacerWidth) {
+                  dropZoneEl.insertAdjacentElement('beforebegin', dropSpacerEl);
+                  dropSpacerEl.style.width = curDropZone.spacerWidth + 'px';
                 } else {
-                  dropBar.classList.remove('gm2-card-drop-target--between-cols');
-                  dropBar.classList.add('gm2-card-drop-target--between-rows');
+                  dropSpacerEl.remove();
+                  dropSpacerEl.style.width = '0';
                 }
-                cardGroupEl.appendChild(dropBar);
                 break;
               }
             }
 
-            if (!isPointerOverGap) {
-              dropBar.remove();
+            if (!isPointerOnDropZone) {
+              dropSpacerEl.remove();
+              dropZoneEl.remove();
             }
           });
 
           draggable.on('drag:stop', (e) => {
             // TODO(acdvorak): Uncomment this line when debugging is complete.
-//            dropBar.remove();
+//            dropSpacerEl.remove();
+//            dropZoneEl.remove();
           });
         }
       })();

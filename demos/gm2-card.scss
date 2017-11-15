@@ -102,11 +102,9 @@ $gm2-card-baseline-background-color: #fff;
 ////
 
 .gm2-card-group {
-  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
 
   &--dragging {
     // TODO(acdvorak): Find a better way to ignore mouse events on elements underneath the mirror.
@@ -149,37 +147,14 @@ $gm2-card-baseline-background-color: #fff;
   visibility: hidden;
 }
 
-.gm2-card-drop-target {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-
-  &--between-rows {
-    flex-direction: column; // TODO(acdvorak): Is this needed?
-  }
-
-  &--between-cols {
-    flex-direction: row; // TODO(acdvorak): Is this needed?
-  }
-}
-
-.gm2-card-drop-target__bar {
+.gm2-card-drop-zone {
   $thickness: 6px;
 
   flex-grow: 0;
   flex-shrink: 0;
   background-color: #333;
   border-radius: 4px;
-
-  .gm2-card-drop-target--between-rows & {
-    width: 100%;
-    height: $thickness;
-  }
-
-  .gm2-card-drop-target--between-cols & {
-    width: $thickness;
-    height: 100%;
-  }
+  width: $thickness;
 }
 
 ////
@@ -193,7 +168,9 @@ $gm2-card-baseline-background-color: #fff;
 }
 
 .demo-card-group {
-  max-width: 500px;
+  // TODO(acdvorak): Document the need for extra width to accommodate the drop zone
+  max-width: 504px;
+  margin: 32px;
 }
 
 .demo-card {
