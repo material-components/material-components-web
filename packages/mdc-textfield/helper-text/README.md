@@ -9,7 +9,7 @@ path: /catalog/input-controls/text-fields/helper-text/
 
 # Text Field Helper Text
 
-The helper text provides supplemental information and/or validation messages to users. It appears and disappears on input field focus and blur respectively by default when using the TextField JS component. If you’d like the helper text to always be visible, add the `mdc-text-field-helptext--persistent` modifier class to the element.
+The helper text provides supplemental information and/or validation messages to users. It appears on input field focus and disappears on input field blur by default, or it can be persistent.
 
 ## Design & API Documentation
 

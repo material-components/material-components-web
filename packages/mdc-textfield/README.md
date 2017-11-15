@@ -182,7 +182,7 @@ behave normally.
 </div>
 ```
 
-Note that Text field boxes support all of the same features as normal text-fields, including help
+Note that Text field boxes support all of the same features as normal text-fields, including helper
 text, validation, and dense UI.
 
 #### CSS-only text field boxes
@@ -281,13 +281,6 @@ By default the ripple factory simply calls `new MDCRipple(el)` and returns the r
 Similar to regular DOM elements, the `MDCTextField` functionality is exposed through accessor
 methods.
 
-##### MDCTextField.helperTextElement
-
-HTMLLabelElement. This is a normal property (non-accessor) that holds a reference to the element
-being used as the text field's "helper text". It defaults to `null`. If the text field's input element
-contains an `aria-controls` attribute on instantiation of the component, it will look for an element
-with the corresponding id within the document and automatically assign it to this property.
-
 ##### MDCTextField.disabled
 
 Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
@@ -319,15 +312,10 @@ complicated.
 | notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon |
 | addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
 | removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
-| addClassToHelperText(className: string) => void | Adds a class to the helper text element. Note that in our code we check for whether or not we have a helper text element and if we don't, we simply return. |
-| removeClassFromHelperText(className: string) => void | Removes a class from the helper text element. |
-| helperTextHasClass(className: string) => boolean | Returns whether or not the helper text element contains the current class |
 | registerInputInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
 | deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
 | registerBottomLineEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the bottom line element for a given event |
 | deregisterBottomLineEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the bottom line element for a given event |
-| setHelperTextAttr(name: string, value: string) => void | Sets an attribute with a given value on the helper text element |
-| removeHelperTextAttr(name: string) => void | Removes an attribute from the helper text element |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 | getBottomLineFoundation() => MDCTextFieldBottomLineFoundation | Returns the instance of the bottom line element's foundation |
 | getHelperTextFoundation() => MDCTextFieldHelperTextFoundation | Returns the instance of the helper text element's foundation |
