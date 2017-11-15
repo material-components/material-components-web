@@ -171,15 +171,23 @@ $gm2-card-baseline-background-color: #fff;
 
 .demo-card-group {
   // TODO(acdvorak): Document the need for extra width to accommodate the drop zone
-  max-width: 504px;
+  // TODO(acdvorak): Fix edge case when card-group max-width is just barely wide enough
+  //max-width: 504px;
+  max-width: 550px;
   margin: 32px;
+}
+
+.demo-card {
+  margin: 8px;
+}
+.demo-card-group .gm2-card-drop-zone {
+  margin: 8px 0;
 }
 
 .demo-card {
   position: relative;
   width: 150px;
   height: 150px;
-  margin: 8px;
 }
 
 .demo-card--color {

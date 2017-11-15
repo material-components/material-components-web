@@ -206,6 +206,22 @@
           return secondRow[0].viewportRect.top - firstRow[0].viewportRect.bottom;
         }
 
+        function getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex) {
+          if (rowIndex === 0 || colIndex > 0) {
+            return 0;
+          }
+
+          const cardGroupRight = cardGroupEl.getBoundingClientRect().right;
+          const prevRow = rows[rowIndex - 1];
+          const prevRowLastCard = prevRow[prevRow.length - 1];
+
+          // TODO(acdvorak): Don't assume px units
+          const prevRowLastCardMarginRight = parseInt(getComputedStyle(prevRowLastCard.element).marginRight, 10);
+          const prevRowLastCardRight = prevRowLastCard.viewportRect.right + prevRowLastCardMarginRight;
+
+          return cardGroupRight - prevRowLastCardRight;
+        }
+
         var interval = setInterval(() => {
           if (getComputedStyle(document.querySelector('.hero')).position === 'relative') {
             clearInterval(interval);
@@ -272,12 +288,9 @@
                 if (isAdjacentToDragSource(curRow, colIndex)) {
                   return;
                 }
-                const groupRight = cardGroupEl.getBoundingClientRect().right;
-                const cardRight = curCardInRow.viewportRect.right;
-                const spacerWidth = groupRight - cardRight;
                 dropZones.push(new DropZone(curCardInRow, {
                   toleranceInPx: curCardInRow.viewportRect.width / 2,
-                  spacerWidth: rowIndex > 0 && colIndex === 0 ? spacerWidth : 0,
+                  spacerWidth: getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex),
                   rowGapInPx,
                   colGapInPx,
                   rowIndex,
