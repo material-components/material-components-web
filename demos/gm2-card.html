@@ -231,7 +231,7 @@
           return {cardGroupEl, cardEls, rows};
         }
 
-        function getActiveDropZone(e, {rowGapInPx, colGapInPx} = {}) {
+        function getDropZone(e, {rowGapInPx, colGapInPx} = {}) {
           const pointerPositionInViewport = getPointerPositionInViewport(e);
           const {cardGroupEl, rows} = getCards(e);
 
@@ -301,40 +301,42 @@
 
           let colGapInPx;
           let rowGapInPx;
+          let dropZone;
 
           draggable.on('drag:start', (e) => {
             const {rows} = getCards(e);
 
             colGapInPx = getColGapInPx(rows);
             rowGapInPx = getRowGapInPx(rows);
+            dropZone = null;
           });
 
           draggable.on('drag:move', (e) => {
             const {rows} = getCards(e);
-            const activeDropZone = getActiveDropZone(e, {rowGapInPx, colGapInPx});
+            dropZone = getDropZone(e, {rowGapInPx, colGapInPx});
 
             dropSpacerEl.remove();
             dropZoneEl.remove();
 
             e.originalEvent.preventDefault();
 
-            if (activeDropZone) {
-              activeDropZone.nextCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
-              if (activeDropZone.spacerWidth) {
+            if (dropZone) {
+              dropZone.nextCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
+              if (dropZone.spacerWidth) {
                 dropZoneEl.insertAdjacentElement('beforebegin', dropSpacerEl);
-                dropSpacerEl.style.width = activeDropZone.spacerWidth + 'px';
+                dropSpacerEl.style.width = dropZone.spacerWidth + 'px';
               } else {
                 dropSpacerEl.remove();
                 dropSpacerEl.style.width = '0';
               }
 
-              const curRow = rows[activeDropZone.rowIndex];
+              const curRow = rows[dropZone.rowIndex];
               curRow.forEach((curCardInRow, curCardInRowColIndex) => {
                 let mult = +1;
-                if (curCardInRowColIndex < activeDropZone.colIndex) {
+                if (curCardInRowColIndex < dropZone.colIndex) {
                   mult = -1;
                 }
-                const offsetX = mult * (activeDropZone.colGapInPx / 2);
+                const offsetX = mult * (dropZone.colGapInPx / 2);
                 curCardInRow.element.style.transform = `translateX(${offsetX}px)`;
               });
             } else {
@@ -350,11 +352,20 @@
               cardEl.style.transform = '';
             });
 
+            if (dropZone) {
+              const nextCardEl = dropZone.nextCard.element;
+              const dragSourceEl = e.originalSource;
+              setTimeout(() => {
+                nextCardEl.insertAdjacentElement('beforebegin', dragSourceEl);
+              }, 0);
+            }
+
             dropSpacerEl.remove();
             dropZoneEl.remove();
 
             colGapInPx = 0;
             rowGapInPx = 0;
+            dropZone = null;
           });
         }
       })();
