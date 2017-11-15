@@ -90,19 +90,19 @@ $mdc-theme-secondary: $google-blue-500;
 
 ////
 
-$gm2-card-hairline-border-color-resting: #ddd;
-$gm2-card-baseline-background-color: #fff;
-$gm2-card-baseline-drop-zone-thickness: 4px;
+$m2-card-hairline-border-color-resting: #ddd;
+$m2-card-baseline-background-color: #fff;
+$m2-card-baseline-drop-zone-thickness: 4px;
 
 ////
 
-@mixin gm2-card-corner-radius($radius) {
+@mixin m2-card-corner-radius($radius) {
   border-radius: $radius;
 }
 
 ////
 
-.gm2-card-group {
+.m2-card-group {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -113,17 +113,17 @@ $gm2-card-baseline-drop-zone-thickness: 4px;
   }
 }
 
-.gm2-card:not(.gm2-card--drag-mirror) {
+.m2-card:not(.m2-card--drag-mirror) {
   transition: transform .2s;
 }
 
-.gm2-card {
+.m2-card {
   @include mdc-elevation(4);
-  @include gm2-card-corner-radius(4px);
+  @include m2-card-corner-radius(4px);
   @include mdc-ripple-color(black, .14);
   @include mdc-typography(display2);
 
-  background-color: $gm2-card-baseline-background-color;
+  background-color: $m2-card-baseline-background-color;
 
   display: flex;
   align-content: center;
@@ -142,20 +142,20 @@ $gm2-card-baseline-drop-zone-thickness: 4px;
   }
 }
 
-.gm2-card--hairline {
+.m2-card--hairline {
   @include mdc-elevation(1);
 
-  border: 1px solid $gm2-card-hairline-border-color-resting;
+  border: 1px solid $m2-card-hairline-border-color-resting;
 }
 
-.gm2-card--drag-source {
+.m2-card--drag-source {
   visibility: hidden;
 }
 
-.gm2-card-drop-zone {
+.m2-card-drop-zone {
   background-color: #333;
   border-radius: 4px;
-  width: $gm2-card-baseline-drop-zone-thickness;
+  width: $m2-card-baseline-drop-zone-thickness;
 }
 
 ////
@@ -179,14 +179,14 @@ $demo-drop-zone-thickness: 6px;
   margin: 32px;
 }
 
-.demo-card-group .gm2-card-drop-zone {
+.demo-card-group .m2-card-drop-zone {
   width: $demo-drop-zone-thickness;
 }
 
 .demo-card {
   margin: $demo-card-margin;
 }
-.demo-card-group .gm2-card-drop-zone {
+.demo-card-group .m2-card-drop-zone {
   margin: $demo-card-margin 0;
 }
 

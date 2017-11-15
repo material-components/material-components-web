@@ -17,10 +17,10 @@
 <html class="mdc-typography">
   <head>
     <meta charset="utf-8">
-    <title>GM2 Card Prototype - Material Components Catalog</title>
+    <title>M2 Card Prototype - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <script src="/assets/gm2-card.css.js"></script>
+    <script src="/assets/m2-card.css.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -33,7 +33,7 @@
           <span class="catalog-back">
             <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
-          <span class="mdc-toolbar__title catalog-title">GM2 Card Prototype</span>
+          <span class="mdc-toolbar__title catalog-title">M2 Card Prototype</span>
         </section>
       </div>
     </header>
@@ -41,27 +41,27 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="gm2-card-group demo-card-group">
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">4</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">5</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">6</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">7</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">8</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">9</div>
+        <div class="m2-card-group demo-card-group">
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">4</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">5</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">6</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">7</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">8</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">9</div>
         </div>
-        <div class="gm2-card-group demo-card-group">
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">4</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">5</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">6</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">7</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">8</div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">9</div>
+        <div class="m2-card-group demo-card-group">
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">4</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">5</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">6</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">7</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">8</div>
+          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">9</div>
         </div>
       </section>
     </main>
@@ -203,8 +203,8 @@
         }
 
         function getCards(e) {
-          const cardGroupEl = e.originalSource.closest('.gm2-card-group');
-          const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.gm2-card'));
+          const cardGroupEl = e.originalSource.closest('.m2-card-group');
+          const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.m2-card'));
           cardEls.forEach((cardEl) => {
             cardEl.style.transform = '';
           });
@@ -275,7 +275,7 @@
         // 2. HORIZONTAL AND VERTICAL MARGINS BETWEEN CARDS ARE IDENTICAL
         // TODO(acdvorak): RTL support
         function init() {
-          var cards = document.querySelectorAll('.gm2-card');
+          var cards = document.querySelectorAll('.m2-card');
           for (var i = 0; i < cards.length; i++) {
             let card = cards[i];
             // TODO(acdvorak): This is gross
@@ -283,19 +283,19 @@
           }
 
           const draggable = new Draggable.Draggable(document.querySelectorAll('.demo-card-group'), {
-            draggable: '.gm2-card',
+            draggable: '.m2-card',
             delay: 200,
             classes: {
-              'container:dragging': 'gm2-card-group--dragging',
-              'source:dragging': 'gm2-card--drag-source',
-              'mirror': 'gm2-card--drag-mirror',
+              'container:dragging': 'm2-card-group--dragging',
+              'source:dragging': 'm2-card--drag-source',
+              'mirror': 'm2-card--drag-mirror',
             },
           });
 
           const dropZoneElDummyParent = document.createElement('div');
           dropZoneElDummyParent.innerHTML = `
-<div class="gm2-card-drop-spacer"></div>
-<div class="gm2-card-drop-zone"></div>
+<div class="m2-card-drop-spacer"></div>
+<div class="m2-card-drop-zone"></div>
           `.trim();
           const dropSpacerEl = dropZoneElDummyParent.children[0];
           const dropZoneEl = dropZoneElDummyParent.children[1];
