@@ -92,6 +92,7 @@ $mdc-theme-secondary: $google-blue-500;
 
 $gm2-card-hairline-border-color-resting: #ddd;
 $gm2-card-baseline-background-color: #fff;
+$gm2-card-baseline-drop-zone-thickness: 4px;
 
 ////
 
@@ -152,14 +153,17 @@ $gm2-card-baseline-background-color: #fff;
 }
 
 .gm2-card-drop-zone {
-  $thickness: 6px;
-
   background-color: #333;
   border-radius: 4px;
-  width: $thickness;
+  width: $gm2-card-baseline-drop-zone-thickness;
 }
 
 ////
+
+$demo-card-size: 150px;
+$demo-card-margin: 8px;
+$demo-card-cols: 3;
+$demo-drop-zone-thickness: 6px;
 
 .hero {
   position: relative;
@@ -171,23 +175,25 @@ $gm2-card-baseline-background-color: #fff;
 
 .demo-card-group {
   // TODO(acdvorak): Document the need for extra width to accommodate the drop zone
-  // TODO(acdvorak): Fix edge case when card-group max-width is just barely wide enough
-  //max-width: 504px;
-  max-width: 550px;
+  max-width: (($demo-card-size + ($demo-card-margin * 2)) * $demo-card-cols) + $demo-drop-zone-thickness;
   margin: 32px;
 }
 
+.demo-card-group .gm2-card-drop-zone {
+  width: $demo-drop-zone-thickness;
+}
+
 .demo-card {
-  margin: 8px;
+  margin: $demo-card-margin;
 }
 .demo-card-group .gm2-card-drop-zone {
-  margin: 8px 0;
+  margin: $demo-card-margin 0;
 }
 
 .demo-card {
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: $demo-card-size;
+  height: $demo-card-size;
 }
 
 .demo-card--color {
