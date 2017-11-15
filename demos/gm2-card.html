@@ -99,21 +99,21 @@
         class DropZone {
           // TODO(acdvorak): Rename nextCard to something better?
           constructor(
-            nextCard, {toleranceInPx = 50, rowIndex, colIndex, colGap = 0, rowGap = 0, spacerWidth = 0} = {}) {
+            nextCard, {toleranceInPx = 50, rowIndex, colIndex, rowGapInPx = 0, colGapInPx = 0, spacerWidth = 0} = {}) {
             this.nextCard = nextCard;
             this.rowIndex = rowIndex;
             this.colIndex = colIndex;
             this.toleranceInPx = toleranceInPx;
-            this.colGap = colGap;
-            this.rowGap = rowGap;
+            this.colGapInPx = colGapInPx;
+            this.rowGapInPx = rowGapInPx;
             this.spacerWidth = spacerWidth;
 
             this.viewportRect = {
-              top: nextCard.viewportRect.top - (this.rowGap / 2),
-              bottom: nextCard.viewportRect.bottom + (this.rowGap / 2),
+              top: nextCard.viewportRect.top - (this.rowGapInPx / 2),
+              bottom: nextCard.viewportRect.bottom + (this.rowGapInPx / 2),
 
               // TODO(acdvorak): Compute this dynamically from the margins between cards
-              left: nextCard.viewportRect.left - this.colGap,
+              left: nextCard.viewportRect.left - this.colGapInPx,
               right: nextCard.viewportRect.left,
             };
 
@@ -148,6 +148,62 @@
 
             return true;
           }
+        }
+
+        function isAdjacentToDragSource(curRow, colIndex) {
+          if (curRow[colIndex].isDragSource()) {
+            return true;
+          }
+          if (curRow[colIndex - 1] && curRow[colIndex - 1].isDragSource()) {
+            return true;
+          }
+          return false;
+        }
+
+        function getStuff(e) {
+          const cardGroupEl = e.originalSource.closest('.gm2-card-group');
+          const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.gm2-card'));
+          cardEls.forEach((cardEl) => {
+            cardEl.style.transform = '';
+          });
+          const cards = cardEls
+            .map(Card.create)
+            .filter(Card.isVisible)
+            .sort(Card.orderByCoordinate);
+
+          const rowBuckets = new Map();
+          cards.forEach((card) => {
+            const top = card.viewportRect.top;
+            if (!rowBuckets.has(top)) {
+              rowBuckets.set(top, []);
+            }
+            rowBuckets.get(top).push(card);
+            card.element.style.transform = '';
+          });
+
+          const rows = [];
+          rowBuckets.forEach((row) => {
+            rows.push(row);
+          });
+
+          return {cardGroupEl, cardEls, rows};
+        }
+
+        function getColGapInPx(rows) {
+          if (rows.length < 1 || rows[0].length < 2) {
+            return 0;
+          }
+          const firstRow = rows[0];
+          return firstRow[1].viewportRect.left - firstRow[0].viewportRect.right;
+        }
+
+        function getRowGapInPx(rows) {
+          if (rows.length < 2) {
+            return 0;
+          }
+          const firstRow = rows[0];
+          const secondRow = rows[1];
+          return secondRow[0].viewportRect.top - firstRow[0].viewportRect.bottom;
         }
 
         var interval = setInterval(() => {
@@ -186,14 +242,21 @@
           const dropSpacerEl = dropZoneElDummyParent.children[0];
           const dropZoneEl = dropZoneElDummyParent.children[1];
 
-//          draggable.on('drag:start', (e) => {});
+          let colGapInPx;
+          let rowGapInPx;
+
+          draggable.on('drag:start', (e) => {
+            const {rows} = getStuff(e);
+
+            colGapInPx = getColGapInPx(rows);
+            rowGapInPx = getRowGapInPx(rows);
+          });
 
           draggable.on('drag:move', (e) => {
-            const cardGroupEl = e.originalSource.closest('.gm2-card-group');
-            const cards = [].slice.call(cardGroupEl.querySelectorAll('.gm2-card'))
-                .map(Card.create)
-                .filter(Card.isVisible)
-                .sort(Card.orderByCoordinate);
+            const {cardGroupEl, rows} = getStuff(e);
+
+            dropSpacerEl.remove();
+            dropZoneEl.remove();
 
             const nativeEvent = e.originalEvent;
             const pointerPositionInViewport = {
@@ -202,31 +265,6 @@
             };
 
             nativeEvent.preventDefault();
-
-            const rowBuckets = new Map();
-            cards.forEach((card) => {
-              const top = card.viewportRect.top;
-              if (!rowBuckets.has(top)) {
-                rowBuckets.set(top, []);
-              }
-              rowBuckets.get(top).push(card);
-              card.element.style.transform = '';
-            });
-
-            const rows = [];
-            rowBuckets.forEach((row) => {
-              rows.push(row);
-            });
-
-            function isAdjacentToDragSource(curRow, colIndex) {
-              if (curRow[colIndex].isDragSource()) {
-                return true;
-              }
-              if (curRow[colIndex - 1] && curRow[colIndex - 1].isDragSource()) {
-                return true;
-              }
-              return false;
-            }
 
             const dropZones = [];
             rows.forEach((curRow, rowIndex) => {
@@ -237,12 +275,11 @@
                 const groupRight = cardGroupEl.getBoundingClientRect().right;
                 const cardRight = curCardInRow.viewportRect.right;
                 const spacerWidth = groupRight - cardRight;
-                const rowGap = rows.length > 1 ? rows[1][1].viewportRect.top - rows[0][1].viewportRect.bottom : 0;
-                const colGap = rows[0].length > 1 ? rows[0][1].viewportRect.left - rows[0][0].viewportRect.right : 0;
                 dropZones.push(new DropZone(curCardInRow, {
+                  toleranceInPx: curCardInRow.viewportRect.width / 2,
                   spacerWidth: rowIndex > 0 && colIndex === 0 ? spacerWidth : 0,
-                  rowGap,
-                  colGap,
+                  rowGapInPx,
+                  colGapInPx,
                   rowIndex,
                   colIndex,
                 }));
@@ -268,7 +305,8 @@
                   if (curCardInRowColIndex < curDropZone.colIndex) {
                     mult = -1;
                   }
-                  curCardInRow.element.style.transform = `translateX(${mult * (curDropZone.colGap / 2)}px)`;
+                  const offsetX = mult * (curDropZone.colGapInPx / 2);
+                  curCardInRow.element.style.transform = `translateX(${offsetX}px)`;
                 });
 
                 break;
@@ -282,15 +320,17 @@
           });
 
           draggable.on('drag:stop', (e) => {
-            dropSpacerEl.remove();
-            dropZoneEl.remove();
-
-            const cardGroupEl = e.originalSource.closest('.gm2-card-group');
-            const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.gm2-card'));
+            const {cardEls} = getStuff(e);
 
             cardEls.forEach((cardEl) => {
               cardEl.style.transform = '';
             });
+
+            dropSpacerEl.remove();
+            dropZoneEl.remove();
+
+            colGapInPx = 0;
+            rowGapInPx = 0;
           });
         }
       })();
