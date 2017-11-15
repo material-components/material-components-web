@@ -112,6 +112,11 @@ $gm2-card-baseline-background-color: #fff;
   }
 }
 
+.gm2-card:not(.gm2-card--drag-mirror),
+.gm2-card-drop-zone {
+  transition: transform .2s;
+}
+
 .gm2-card {
   @include mdc-elevation(4);
   @include gm2-card-corner-radius(4px);
