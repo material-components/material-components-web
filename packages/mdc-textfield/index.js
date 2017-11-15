@@ -21,6 +21,7 @@ import {MDCRipple} from '@material/ripple';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter} from './adapter';
 import MDCTextFieldFoundation from './foundation';
+import {MDCTextFieldBottomLine} from './bottom-line';
 
 /**
  * @extends {MDCComponent<!MDCTextFieldFoundation>}
@@ -40,7 +41,7 @@ class MDCTextField extends MDCComponent {
     this.helperTextElement;
     /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {?Element} */
+    /** @private {?MDCTextFieldBottomLine} */
     this.bottomLine_;
     /** @private {?Element} */
     this.icon_;
@@ -57,8 +58,12 @@ class MDCTextField extends MDCComponent {
   /**
    * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which
    * creates a new MDCRipple.
+   * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
+   * creates a new MDCTextFieldBottomLine.
    */
-  initialize(rippleFactory = (el) => new MDCRipple(el)) {
+  initialize(
+    rippleFactory = (el) => new MDCRipple(el),
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.helperTextElement = null;
@@ -70,7 +75,10 @@ class MDCTextField extends MDCComponent {
       this.ripple = rippleFactory(this.root_);
     };
     if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
-      this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+      const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+      if (bottomLineElement) {
+        this.bottomLine_ = bottomLineFactory(bottomLineElement);
+      }
     };
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
       this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
@@ -80,6 +88,9 @@ class MDCTextField extends MDCComponent {
   destroy() {
     if (this.ripple) {
       this.ripple.destroy();
+    }
+    if (this.bottomLine_) {
+      this.bottomLine_.destroy();
     }
     super.destroy();
   }
@@ -136,10 +147,25 @@ class MDCTextField extends MDCComponent {
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
+      registerBottomLineEventHandler: (evtType, handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.listen(evtType, handler);
+        }
+      },
+      deregisterBottomLineEventHandler: (evtType, handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.unlisten(evtType, handler);
+        }
+      },
+      getBottomLineFoundation: () => {
+        if (this.bottomLine_) {
+          return this.bottomLine_.foundation;
+        }
+        return undefined;
+      },
     },
     this.getInputAdapterMethods_(),
     this.getHelperTextAdapterMethods_(),
-    this.getBottomLineAdapterMethods_(),
     this.getIconAdapterMethods_())));
   }
 
@@ -153,45 +179,6 @@ class MDCTextField extends MDCComponent {
       setIconAttr: (name, value) => {
         if (this.icon_) {
           this.icon_.setAttribute(name, value);
-        }
-      },
-    };
-  }
-
-  /**
-   * @return {!{
-   *   addClassToBottomLine: function(string): undefined,
-   *   removeClassFromBottomLine: function(string): undefined,
-   *   setBottomLineAttr: function(string, string): undefined,
-   *   registerTransitionEndHandler: function(function()): undefined,
-   *   deregisterTransitionEndHandler: function(function()): undefined,
-   * }}
-   */
-  getBottomLineAdapterMethods_() {
-    return {
-      addClassToBottomLine: (className) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.classList.add(className);
-        }
-      },
-      removeClassFromBottomLine: (className) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.classList.remove(className);
-        }
-      },
-      setBottomLineAttr: (attr, value) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.setAttribute(attr, value);
-        }
-      },
-      registerTransitionEndHandler: (handler) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.addEventListener('transitionend', handler);
-        }
-      },
-      deregisterTransitionEndHandler: (handler) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.removeEventListener('transitionend', handler);
         }
       },
     };
