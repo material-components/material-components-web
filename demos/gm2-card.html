@@ -70,6 +70,83 @@
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.3/lib/draggable.bundle.js"></script>
     <script>
       (() => {
+        class Card {
+          constructor(element) {
+            this.element = element;
+            this.viewportRect = element.getBoundingClientRect();
+          }
+
+          isDragSource() {
+            return this.element.hasAttribute('aria-grabbed');
+          }
+
+          static create(element) {
+            return new Card(element);
+          }
+
+          static isVisible(card) {
+            return card.viewportRect.width > 0 && card.viewportRect.height > 0;
+          }
+
+          static orderByCoordinate(firstCard, secondCard) {
+            const topDelta = firstCard.viewportRect.top - secondCard.viewportRect.top;
+            const leftDelta = firstCard.viewportRect.left - secondCard.viewportRect.left;
+            return topDelta || leftDelta;
+          }
+        }
+
+        /** Represents an area where a card can be dropped. */
+        class DropZone {
+          // TODO(acdvorak): Rename nextCard to something better?
+          constructor(nextCard, {toleranceInPx = 50, colGap = 0, rowGap = 0, spacerWidth = 0} = {}) {
+            this.nextCard = nextCard;
+            this.toleranceInPx = toleranceInPx;
+            this.colGap = colGap;
+            this.rowGap = rowGap;
+            this.spacerWidth = spacerWidth;
+
+            this.viewportRect = {
+              top: nextCard.viewportRect.top - (this.rowGap / 2),
+              bottom: nextCard.viewportRect.bottom + (this.rowGap / 2),
+
+              // TODO(acdvorak): Compute this dynamically from the margins between cards
+              left: nextCard.viewportRect.left - this.colGap,
+              right: nextCard.viewportRect.left,
+            };
+
+            Object.assign(this.viewportRect, {
+              height: this.viewportRect.bottom - this.viewportRect.top,
+              width: this.viewportRect.right - this.viewportRect.left,
+            })
+          }
+
+          // TODO(acdvorak): Handle jank that occurs when mouse is right on the edge of drop zone.
+          // Inserting the drop zone element changes the positioning.
+          intersectsViewportPoint(viewportPoint) {
+            // Point is above the gap.
+            if (viewportPoint.y < this.viewportRect.top) {
+              return false;
+            }
+
+            // Point is below the gap.
+            if (viewportPoint.y > this.viewportRect.bottom) {
+              return false;
+            }
+
+            // Point is left of the gap.
+            if (viewportPoint.x < this.viewportRect.left - this.toleranceInPx) {
+              return false;
+            }
+
+            // Point is right of the gap.
+            if (viewportPoint.x > this.viewportRect.right + this.toleranceInPx) {
+              return false;
+            }
+
+            return true;
+          }
+        }
+
         var interval = setInterval(() => {
           if (getComputedStyle(document.querySelector('.hero')).position === 'relative') {
             clearInterval(interval);
@@ -84,6 +161,7 @@
         function init() {
           var cards = document.querySelectorAll('.gm2-card');
           for (var i = 0; i < cards.length; i++) {
+            // TODO(acdvorak): Uncomment this line
 //            mdc.ripple.MDCRipple.attachTo(cards[i]);
           }
 
@@ -96,79 +174,6 @@
               'mirror': 'gm2-card--drag-mirror',
             },
           });
-
-          class Card {
-            constructor(element) {
-              this.element = element;
-              this.viewportRect = element.getBoundingClientRect();
-            }
-
-            static create(element) {
-              return new Card(element);
-            }
-
-            static isVisible(card) {
-              return card.viewportRect.width > 0 && card.viewportRect.height > 0;
-            }
-
-            static orderByCoordinate(firstCard, secondCard) {
-              const topDelta = firstCard.viewportRect.top - secondCard.viewportRect.top;
-              const leftDelta = firstCard.viewportRect.left - secondCard.viewportRect.left;
-              return topDelta || leftDelta;
-            }
-          }
-
-          /** Represents an area where a card can be dropped. */
-          class DropZone {
-            // TODO(acdvorak): Rename nextCard to something better?
-            constructor(nextCard, {toleranceInPx = 50, colGap = 0, rowGap = 0, spacerWidth = 0} = {}) {
-              this.nextCard = nextCard;
-              this.toleranceInPx = toleranceInPx;
-              this.colGap = colGap;
-              this.rowGap = rowGap;
-              this.spacerWidth = spacerWidth;
-
-              this.viewportRect = {
-                top: nextCard.viewportRect.top - (this.rowGap / 2),
-                bottom: nextCard.viewportRect.bottom + (this.rowGap / 2),
-
-                // TODO(acdvorak): Compute this dynamically from the margins between cards
-                left: nextCard.viewportRect.left - this.colGap,
-                right: nextCard.viewportRect.left,
-              };
-
-              Object.assign(this.viewportRect, {
-                height: this.viewportRect.bottom - this.viewportRect.top,
-                width: this.viewportRect.right - this.viewportRect.left,
-              })
-            }
-
-            // TODO(acdvorak): Handle jank that occurs when mouse is right on the edge of drop zone.
-            // Inserting the drop zone element changes the positioning.
-            intersectsViewportPoint(viewportPoint) {
-              // Point is above the gap.
-              if (viewportPoint.y < this.viewportRect.top) {
-                return false;
-              }
-
-              // Point is below the gap.
-              if (viewportPoint.y > this.viewportRect.bottom) {
-                return false;
-              }
-
-              // Point is left of the gap.
-              if (viewportPoint.x < this.viewportRect.left - this.toleranceInPx) {
-                return false;
-              }
-
-              // Point is right of the gap.
-              if (viewportPoint.x > this.viewportRect.right + this.toleranceInPx) {
-                return false;
-              }
-
-              return true;
-            }
-          }
 
           const dropZoneElDummyParent = document.createElement('div');
           dropZoneElDummyParent.innerHTML = `
@@ -186,6 +191,9 @@
               x: nativeEvent.clientX,
               y: nativeEvent.clientY,
             };
+
+            nativeEvent.preventDefault();
+
             const cardGroupEl = e.originalSource.closest('.gm2-card-group');
             const cards = [].slice.call(cardGroupEl.querySelectorAll('.gm2-card'))
               .map(Card.create)
@@ -206,9 +214,22 @@
               rows.push(row);
             });
 
+            function adjacentToDragSource(curRow, colIndex) {
+              if (curRow[colIndex].isDragSource()) {
+                return true;
+              }
+              if (curRow[colIndex - 1] && curRow[colIndex - 1].isDragSource()) {
+                return true;
+              }
+              return false;
+            }
+
             const dropZones = [];
             rows.forEach((curRow, rowIndex) => {
               curRow.forEach((curCardInRow, colIndex) => {
+                if (adjacentToDragSource(curRow, colIndex)) {
+                  return;
+                }
                 dropZones.push(new DropZone(curCardInRow, {
                   // TODO(acdvorak): COMPUTE ROW/COL GAPS
                   // TODO(acdvorak): COMPUTE SPACER WIDTH
