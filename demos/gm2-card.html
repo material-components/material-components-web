@@ -274,13 +274,14 @@
             dropSpacerEl.remove();
             dropZoneEl.remove();
 
-            const nativeEvent = e.originalEvent;
+            const originalEvent = e.originalEvent;
+            const nativePointerEvent = originalEvent.touches ? originalEvent.touches[0] : originalEvent;
             const pointerPositionInViewport = {
-              x: nativeEvent.clientX,
-              y: nativeEvent.clientY,
+              x: nativePointerEvent.clientX,
+              y: nativePointerEvent.clientY,
             };
 
-            nativeEvent.preventDefault();
+            originalEvent.preventDefault();
 
             const dropZones = [];
             rows.forEach((curRow, rowIndex) => {
