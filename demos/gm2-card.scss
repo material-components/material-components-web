@@ -101,13 +101,33 @@ $gm2-card-baseline-background-color: #fff;
 
 ////
 
+.gm2-card-group {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  &--dragging {
+    // TODO(acdvorak): Find a better way to ignore mouse events on elements underneath the mirror.
+    pointer-events: none;
+  }
+}
+
 .gm2-card {
   @include mdc-elevation(4);
   @include gm2-card-corner-radius(4px);
-
   @include mdc-ripple-color(black, .14);
+  @include mdc-typography(display2);
 
   background-color: $gm2-card-baseline-background-color;
+
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+
   cursor: pointer;
 
   &:hover {
@@ -125,24 +145,61 @@ $gm2-card-baseline-background-color: #fff;
   border: 1px solid $gm2-card-hairline-border-color-resting;
 }
 
+.gm2-card--drag-source {
+  visibility: hidden;
+}
+
+.gm2-card-drop-target {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+
+  &--between-rows {
+    flex-direction: column; // TODO(acdvorak): Is this needed?
+  }
+
+  &--between-cols {
+    flex-direction: row; // TODO(acdvorak): Is this needed?
+  }
+}
+
+.gm2-card-drop-target__bar {
+  $thickness: 6px;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+  background-color: #333;
+  border-radius: 4px;
+
+  .gm2-card-drop-target--between-rows & {
+    width: 100%;
+    height: $thickness;
+  }
+
+  .gm2-card-drop-target--between-cols & {
+    width: $thickness;
+    height: 100%;
+  }
+}
+
 ////
 
 .hero {
   position: relative;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: unset;
   padding: 48px;
 }
 
-.demo-card-row {
-  display: flex;
-  flex-direction: row;
+.demo-card-group {
+  max-width: 500px;
 }
 
 .demo-card {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   margin: 8px;
 }
 
@@ -152,6 +209,7 @@ $gm2-card-baseline-background-color: #fff;
   @include mdc-ripple-color(white, .14);
 
   background-color: $color-value;
+  color: white;
 
   &:hover {
     background-color: mdc-theme-light-variant($color-value, 1);

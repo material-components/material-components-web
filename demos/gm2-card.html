@@ -41,36 +41,226 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="demo-card-row">
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0"></div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0"></div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0"></div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0"></div>
+        <div class="gm2-card-group demo-card-group">
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">4</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">5</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">6</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">7</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">8</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">9</div>
         </div>
-        <div class="demo-card-row">
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0"></div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0"></div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0"></div>
-          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0"></div>
+        <div class="gm2-card-group demo-card-group">
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">4</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">5</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">6</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">7</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">8</div>
+          <div class="gm2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">9</div>
         </div>
       </section>
     </main>
 
     <script src="/assets/material-components-web.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.3/lib/draggable.bundle.js"></script>
     <script>
       (() => {
         var interval = setInterval(() => {
           if (getComputedStyle(document.querySelector('.hero')).position === 'relative') {
-            init();
             clearInterval(interval);
+            init();
           }
         }, 200);
 
         function init() {
           var cards = document.querySelectorAll('.gm2-card');
           for (var i = 0; i < cards.length; i++) {
-            mdc.ripple.MDCRipple.attachTo(cards[i]);
+//            mdc.ripple.MDCRipple.attachTo(cards[i]);
           }
+
+          const draggable = new Draggable.Draggable(document.querySelectorAll('.demo-card-group'), {
+            draggable: '.gm2-card',
+            delay: 500,
+            classes: {
+              'container:dragging': 'gm2-card-group--dragging',
+              'source:dragging': 'gm2-card--drag-source',
+              'mirror': 'gm2-card--drag-mirror',
+            },
+          });
+
+          class Card {
+            constructor(element) {
+              this.element = element;
+              this.viewportRect = element.getBoundingClientRect();
+            }
+
+            static create(element) {
+              return new Card(element);
+            }
+
+            static isVisible(card) {
+              return card.viewportRect.width > 0 && card.viewportRect.height > 0;
+            }
+
+            static orderByCoordinate(firstCard, secondCard) {
+              const topDelta = firstCard.viewportRect.top - secondCard.viewportRect.top;
+              const leftDelta = firstCard.viewportRect.left - secondCard.viewportRect.left;
+              return topDelta || leftDelta;
+            }
+          }
+
+          /** Represents the blank space between two adjacent cards. */
+          class Gap {
+            constructor(firstCard, secondCard, paddingInPx = 50) {
+              this.firstCard = firstCard;
+              this.secondCard = secondCard;
+              this.paddingInPx = paddingInPx;
+
+              if (firstCard.viewportRect.top === secondCard.viewportRect.top) {
+                // Gap between adjacent columns in the same row.
+                this.isBetweenCols = true;
+                this.isBetweenRows = false;
+                this.viewportRect = {
+                  top: firstCard.viewportRect.top,
+                  bottom: firstCard.viewportRect.bottom,
+                  left: firstCard.viewportRect.right,
+                  right: secondCard.viewportRect.left,
+                }
+              } else {
+                // Gap between adjacent rows in the same column.
+                this.isBetweenCols = false;
+                this.isBetweenRows = true;
+                this.viewportRect = {
+                  top: firstCard.viewportRect.bottom,
+                  bottom: secondCard.viewportRect.top,
+                  left: firstCard.viewportRect.left,
+                  right: firstCard.viewportRect.right,
+                }
+              }
+
+              Object.assign(this.viewportRect, {
+                height: this.viewportRect.bottom - this.viewportRect.top,
+                width: this.viewportRect.right - this.viewportRect.left,
+              })
+            }
+
+            intersectsViewportPoint(viewportPoint) {
+              const paddingTopAndBottom = this.isBetweenRows ? this.paddingInPx : 0;
+              const paddingLeftAndRight = this.isBetweenCols ? this.paddingInPx : 0;
+
+              // Point is above the gap.
+              if (viewportPoint.y < this.viewportRect.top - paddingTopAndBottom) {
+                return false;
+              }
+
+              // Point is below the gap.
+              if (viewportPoint.y > this.viewportRect.bottom + paddingTopAndBottom) {
+                return false;
+              }
+
+              // Point is left of the gap.
+              if (viewportPoint.x < this.viewportRect.left - paddingLeftAndRight) {
+                return false;
+              }
+
+              // Point is right of the gap.
+              if (viewportPoint.x > this.viewportRect.right + paddingLeftAndRight) {
+                return false;
+              }
+
+              return true;
+            }
+          }
+
+          const dropBarDummyParent = document.createElement('div');
+          dropBarDummyParent.innerHTML = `
+<div class="gm2-card-drop-target">
+  <div class="gm2-card-drop-target__bar"></div>
+</div>
+          `.trim();
+          const dropBar = dropBarDummyParent.firstChild;
+
+//          draggable.on('drag:start', (e) => {});
+
+          // NOTE(acdvorak): This code assumes that ALL CARDS ARE THE SAME SIZE!
+          // TODO(acdvorak): RTL support
+          draggable.on('drag:move', (e) => {
+            const nativeEvent = e.originalEvent;
+            const pointerPositionInViewport = {
+              x: nativeEvent.clientX,
+              y: nativeEvent.clientY,
+            };
+            const cardGroupEl = e.originalSource.closest('.gm2-card-group');
+            const cards = [].slice.call(cardGroupEl.querySelectorAll('.gm2-card'))
+              .map(Card.create)
+              .filter(Card.isVisible)
+              .sort(Card.orderByCoordinate);
+
+            const rowBuckets = new Map();
+            cards.forEach((card) => {
+              const top = card.viewportRect.top;
+              if (!rowBuckets.has(top)) {
+                rowBuckets.set(top, []);
+              }
+              rowBuckets.get(top).push(card);
+            });
+
+            const rows = [];
+            rowBuckets.forEach((row) => {
+              rows.push(row);
+            });
+
+            const gaps = [];
+            rows.forEach((curRow, rowIndex) => {
+              curRow.forEach((curCardInRow, colIndex) => {
+                const nextCardInRow = curRow[colIndex + 1];
+                if (nextCardInRow) {
+                  gaps.push(new Gap(curCardInRow, nextCardInRow));
+                }
+
+                const nextRow = rows[rowIndex + 1];
+                if (nextRow && nextRow[colIndex]) {
+                  gaps.push(new Gap(curCardInRow, nextRow[colIndex]));
+                }
+              });
+            });
+
+            let isPointerOverGap = false;
+            for (let curGap of gaps) {
+              if (curGap.intersectsViewportPoint(pointerPositionInViewport)) {
+                isPointerOverGap = true;
+                dropBar.remove();
+                const cardGroupViewportRect = cardGroupEl.getBoundingClientRect();
+                dropBar.style.top = (curGap.viewportRect.top - cardGroupViewportRect.top) + 'px';
+                dropBar.style.left = (curGap.viewportRect.left - cardGroupViewportRect.left) + 'px';
+                dropBar.style.height = curGap.viewportRect.height + 'px';
+                dropBar.style.width = curGap.viewportRect.width + 'px';
+                if (curGap.isBetweenCols) {
+                  dropBar.classList.remove('gm2-card-drop-target--between-rows');
+                  dropBar.classList.add('gm2-card-drop-target--between-cols');
+                } else {
+                  dropBar.classList.remove('gm2-card-drop-target--between-cols');
+                  dropBar.classList.add('gm2-card-drop-target--between-rows');
+                }
+                cardGroupEl.appendChild(dropBar);
+                break;
+              }
+            }
+
+            if (!isPointerOverGap) {
+              dropBar.remove();
+            }
+          });
+
+          draggable.on('drag:stop', (e) => {
+            // TODO(acdvorak): Uncomment this line when debugging is complete.
+//            dropBar.remove();
+          });
         }
       })();
     </script>
