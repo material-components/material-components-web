@@ -59,7 +59,13 @@ The provided modifiers are:
 | --------------------- | ------------------------------------------------------- |
 | `mdc-linear-progress--indeterminate`   | Puts the linear progress indicator in an indeterminate state. |
 | `mdc-linear-progress--reversed`  | Reverses the direction of the linear progress indicator.   |
-| `mdc-linear-progress--accent` | Colors the linear progress indicator with the secondary color. |
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-linear-progress-bar-color($color)` | Sets the color of the progress bar
+`mdc-linear-progress-buffer-color($color)` | Sets the color of the buffer bar and dots
 
 ### Using the Foundation Class
 

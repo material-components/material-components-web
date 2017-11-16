@@ -110,22 +110,22 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
   <form action="#" id="greeting-form">
     <div>
       <div class="mdc-form-field">
-        <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-          <input id="firstname" type="text" class="mdc-textfield__input">
-          <label for="firstname" class="mdc-textfield__label">
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input id="firstname" type="text" class="mdc-text-field__input">
+          <label for="firstname" class="mdc-text-field__label">
             First Name
           </label>
-          <div class="mdc-textfield__bottom-line"></div>
+          <div class="mdc-text-field__bottom-line"></div>
         </div>
       </div>
 
       <div class="mdc-form-field">
-        <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-          <input id="lastname" type="text" class="mdc-textfield__input">
-          <label for="lastname" class="mdc-textfield__label">
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input id="lastname" type="text" class="mdc-text-field__input">
+          <label for="lastname" class="mdc-text-field__label">
             Last Name
           </label>
-          <div class="mdc-textfield__bottom-line"></div>
+          <div class="mdc-text-field__bottom-line"></div>
         </div>
       </div>
     </div>
@@ -159,8 +159,8 @@ Initialization is done through the `data-mdc-auto-init` attributes added
 to those elements that are initialized when mdc.autoInit() is called.
 
 When `mdc.autoInit()` is called, it looks for all elements with a `data-mdc-auto-init` attribute,
-and attaches the MDC-Web JS Component with the given class name to that element.. So when it sees `MDCTextfield`,
-it instantiates a [MDCTextfield](../packages/mdc-textfield) instance to the corresponding elements.
+and attaches the MDC-Web JS Component with the given class name to that element.. So when it sees `MDCTextField`,
+it instantiates a [MDCTextField](../packages/mdc-textfield) instance to the corresponding elements.
 It does the same thing for the button, attaching a [MDCRipple](../packages/mdc-ripple) instance to the element.
 
 It is worth noting that `mdc.autoInit` is provided _purely_ as a convenience function, and is not
@@ -171,7 +171,7 @@ quickly, and recommended for static sites that use the comprehensive `material-c
 #### All components are modular
 
 Although when you initially set up this project you installed the `material-components-web` package, that
-package is simply a thin wrapper around individual component packages, such as [mdc-typography](../packages/mdc-typography), [mdc-button](../packages/mdc-button), [mdc-textfield](../packages/mdc-textfield), and [mdc-ripple](../packages/mdc-ripple).
+package is simply a thin wrapper around individual component packages, such as [mdc-typography](../packages/mdc-typography), [mdc-button](../packages/mdc-button), [mdc-text-field](../packages/mdc-textfield), and [mdc-ripple](../packages/mdc-ripple).
 Even the `autoInit()` function [lives in its own package](../packages/mdc-auto-init), which the
 `material-components-web` package uses to register all of the individual components to their names used
 within `data-mdc-auto-init`. Each component can be used as a standalone package, and can be mixed

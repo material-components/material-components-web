@@ -196,7 +196,7 @@ if (!IS_DEV) {
       'mdc.snackbar': path.resolve('./packages/mdc-snackbar/mdc-snackbar.scss'),
       'mdc.switch': path.resolve('./packages/mdc-switch/mdc-switch.scss'),
       'mdc.tabs': path.resolve('./packages/mdc-tabs/mdc-tabs.scss'),
-      'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-textfield.scss'),
+      'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-text-field.scss'),
       'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
       'mdc.toolbar': path.resolve('./packages/mdc-toolbar/mdc-toolbar.scss'),
       'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),

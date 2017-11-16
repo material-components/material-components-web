@@ -17,3 +17,17 @@
 @import "./common";
 @import "../packages/mdc-slider/mdc-slider";
 @import "../packages/mdc-typography/mdc-typography";
+@import "../packages/mdc-theme/color-palette";
+
+.demo-slider--custom {
+  @include mdc-slider-highlight-color($material-color-red-700);
+  @include mdc-slider-rail-color($material-color-yellow-600, 1);
+  @include mdc-slider-rail-tick-mark-color(white);
+  @include mdc-slider-thumb-color($material-color-orange-500);
+  @include mdc-slider-focus-halo-color($material-color-yellow-900);
+  @include mdc-slider-value-pin-fill-color-accessible($material-color-pink-500);
+
+  @include mdc-theme-dark {
+    @include mdc-slider-rail-tick-mark-color(black);
+  }
+}
