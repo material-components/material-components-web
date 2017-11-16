@@ -18,7 +18,8 @@
 /**
  * @typedef {{
  *   noPrefix: string,
- *   webkitPrefix: string
+ *   webkitPrefix: string,
+ *   styleProperty: string
  * }}
  */
 let VendorPropertyMapType;

@@ -108,7 +108,7 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     margin-top: 20px;
     padding: 0 24px 24px;
 
-    @include mdc-theme-dark(".mdc-dialog", true) {
+    @include mdc-theme-dark(".mdc-dialog") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
 

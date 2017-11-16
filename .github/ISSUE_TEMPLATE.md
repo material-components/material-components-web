@@ -15,7 +15,7 @@ feature requests.
 If you'd like to work on a component, please ensure that you *submit an Engineering Outline before
 submitting a pull request*. You can read more about this in our [contributing docs](https://github.com/material-components/material-components-web/blob/master/CONTRIBUTING.md#building-components).
 
-MDC-Web is still under active development. You can see our current progress on [master](https://github.com/material-components/material-components-web/tree/master) as well as an overview of the direction we're headed in our [developer guide](https://github.com/material-components/material-components-web/blob/master/docs/DEVELOPER.md).
+MDC-Web is still under active development. You can see our current progress on [master](https://github.com/material-components/material-components-web/tree/master) as well as an overview of our [architecture and practices](https://github.com/material-components/material-components-web/blob/master/docs/code).
 
 If you're interested in information for a specific component, check out our [component issues](https://github.com/material-components/material-components-web/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20label%3Av2-component) to see which milestone it's associated with and subscribe to updates to it. If an issue has the `in-tracker` label, you can also take a look at our [public Pivotal Tracker](https://www.pivotaltracker.com/n/projects/1664011) for a rough estimate of when we'll get to it.
 
@@ -42,8 +42,8 @@ Follow the template below to ensure the quickest and most accurate response to y
 > Please write the steps which need to be taken in order to reproduce the bug. These steps should be
 > as detailed as possible, e.g.
 >
-> 1. run the demo server
-> 2. go to localhost:8080/textfield.html
+> 1. Run the demo server
+> 2. Go to localhost:8080/textfield.html
 > 3. Tab-focus on the first text field
 > 4. Observe the component's behavior
 >

@@ -44,7 +44,7 @@ The simple approach can be outlined as follows:
 
 This general approach will work for almost all basic use-cases. For an example of this approach,
 check out [this plunk](https://plnkr.co/edit/b4v160c186ErrPG5vNza?p=preview) which
-shows how to wrap our textfield within an angular v1 component, as well as our button (with a
+shows how to wrap our text field within an angular v1 component, as well as our button (with a
 ripple) within an attribute directive.
 
 Note that this approach will also work for [custom elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements). Use `connectedCallback` for initialization
@@ -88,10 +88,6 @@ are working as hard as we can to make writing adapters as easy and predictable a
   ambiguous
 - We plan on creating Type Definitions for our adapters in the future so that TypeScript users can
   validate that their interface conforms correctly to the adapter's specification.
-
-Our [framework-examples](../framework-examples) directory contains sample code for various frameworks showing how
-adapters can be implemented. We encourage you to take a look through those applications to get a
-sense of how you might build your own.
 
 > Please file an issue with us if there are certain snags you've ran into trying to implement an
   adapter, or if you feel that we can provide better guidance on a particular problem. This is

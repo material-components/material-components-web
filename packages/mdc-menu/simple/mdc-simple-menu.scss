@@ -61,6 +61,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
 
   &--animating {
     display: inline-block;
+    overflow-y: hidden;
     transition: opacity $mdc-simple-menu-fade-duration $mdc-animation-deceleration-curve-timing-function;
   }
 

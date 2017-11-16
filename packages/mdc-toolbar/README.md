@@ -338,12 +338,12 @@ The provided modifiers are:
 | Class                                | Description                             |
 | -------------------------------------| --------------------------------------- |
 | `mdc-toolbar--fixed`                 | Makes toolbar fixed on top and have persistent elevation |
-| `mdc-toolbar--waterfall`             | Removes fixed toolbar persistent elevation and makes it to gain elevation when a user begins to scroll down the page |
+| `mdc-toolbar--waterfall`             | Removes fixed toolbar persistent elevation and makes it gain elevation when a user begins to scroll down the page |
 | `mdc-toolbar--fixed-lastrow-only`    | Makes only last row of fixed toolbar anchored on top |
-| `mdc-toolbar--flexible`              | Makes toolbar first row has flexible space |
-| `mdc-toolbar__section--align-start`  | Makes section aligns to the start.      |
-| `mdc-toolbar__section--align-end`    | Makes section aligns to the end.        |
-| `mdc-toolbar__section--shrink-to-fit`| Makes section takes the width of its content.|
+| `mdc-toolbar--flexible`              | Makes first row of toolbar have flexible space |
+| `mdc-toolbar__section--align-start`  | Makes section align to the start |
+| `mdc-toolbar__section--align-end`    | Makes section align to the end |
+| `mdc-toolbar__section--shrink-to-fit`| Makes section take the width of its content |
 
 ## JS Usage
 
