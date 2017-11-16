@@ -131,6 +131,21 @@ test('set valid updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
 });
 
+test('set helptextValue updates the help text element content', () => {
+  const {component} = setupTest();
+  const helptext = getHelperText();
+  component.helperTextElement = helptext;
+  component.helperTextContent = 'foo';
+  assert.equal(helptext.textContent, 'foo');
+});
+
+test('get helptextValue retrieves the help text element content', () => {
+  const {component} = setupTest();
+  const helptext = getHelperText();
+  component.helperTextElement = helptext;
+  assert.equal(component.helperTextContent, 'helper text');
+});
+
 test('#adapter.addClassToBottomLine adds a class to the bottom line', () => {
   const {bottomLine, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
@@ -328,6 +343,32 @@ test('#adapter.removeHelperTextAttr removes an attribute on the helper text elem
   component.helperTextElement = helperText;
   component.getDefaultFoundation().adapter_.removeHelperTextAttr('aria-label');
   assert.isNotOk(helperText.hasAttribute('aria-label'));
+});
+
+test('#adapter.setHelperTextContent does nothing if no help text element present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.setHelperTextContent('foo'));
+});
+
+test('#adapter.setHelperTextContent updates the text content of the help text element', () => {
+  const {component} = setupTest();
+  const helptext = getHelperText();
+  component.helperTextElement = helptext;
+  component.getDefaultFoundation().adapter_.setHelperTextContent('foo');
+  assert.equal(helptext.textContent, 'foo');
+});
+
+test('#adapter.getHelperTextContent does nothing if no help text element present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.getHelperTextContent());
+});
+
+test('#adapter.getHelperTextContent retrieves the text content of the help text element', () => {
+  const {component} = setupTest();
+  const helptext = getHelperText();
+  component.helperTextElement = helptext;
+  component.getDefaultFoundation().adapter_.setHelperTextContent('foo');
+  assert.equal(component.getDefaultFoundation().adapter_.getHelperTextContent(), 'foo');
 });
 
 test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {

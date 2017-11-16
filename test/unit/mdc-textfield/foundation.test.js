@@ -43,6 +43,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
     'setBottomLineAttr', 'setHelperTextAttr', 'removeHelperTextAttr', 'getNativeInput',
+    'setHelperTextContent', 'getHelperTextContent',
   ]);
 });
 
@@ -177,6 +178,30 @@ test('#init does not add mdc-text-field__label--float-above class if the input d
   });
   foundation.init();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#setHelperTextContent has no effect on helperTextElement when no helper text element is present', () => {
+  const {foundation} = setupTest();
+  assert.isUndefined(foundation.helperTextElement);
+  foundation.setHelperTextContent('foo');
+  assert.isUndefined(foundation.helperTextElement);
+});
+
+test('#setHelperTextContent sets the content of the helper text element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setHelperTextContent('foo');
+  td.verify(mockAdapter.setHelperTextContent('foo'));
+});
+
+test('#getHelperTextContent returns undefined when no helper text element is present', () => {
+  const {foundation} = setupTest();
+  assert.isUndefined(foundation.getHelperTextContent());
+});
+
+test('#getHelperTextContent retrieves the content of the helper text element when it is present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.getHelperTextContent();
+  td.verify(mockAdapter.getHelperTextContent());
 });
 
 test('on input focuses if input event occurs without any other events', () => {
