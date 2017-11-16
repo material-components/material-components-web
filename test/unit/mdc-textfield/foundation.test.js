@@ -41,9 +41,9 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'addClassToHelperText', 'removeClassFromHelperText', 'helperTextHasClass',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
-    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
-    'setBottomLineAttr', 'setHelperTextAttr', 'removeHelperTextAttr', 'getNativeInput',
-    'setHelperTextContent', 'getHelperTextContent',
+    'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
+    'setHelperTextAttr', 'removeHelperTextAttr', 'getNativeInput', 'getBottomLineFoundation',
+    'setHelperTextContent', 'getHelperTextContent'
   ]);
 });
 
