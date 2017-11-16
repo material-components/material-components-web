@@ -261,17 +261,6 @@ class MDCTextField extends MDCComponent {
         }
         return this.helperTextElement.textContent;
       },
-      setHelptextValue: (value) => {
-        if (this.helptextElement) {
-          this.helptextElement.textContent = value;
-        }
-      },
-      getHelptextValue: () => {
-        if (!this.helptextElement) {
-          return;
-        }
-        return this.helptextElement.textContent.trim();
-      },
     };
   }
 }
