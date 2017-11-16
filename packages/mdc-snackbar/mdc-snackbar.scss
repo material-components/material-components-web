@@ -37,6 +37,12 @@
   pointer-events: none;
   will-change: transform;
 
+  // to match both <div aria-hidden="true"> and <div aria-hidden>
+  // if client manually add the attribute to the markup
+  &[aria-hidden] {
+    visibility: hidden;
+  }
+
   @include mdc-theme-dark(".mdc-snackbar") {
     background-color: $mdc-snackbar-background-color-on-dark;
   }
