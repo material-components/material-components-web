@@ -30,6 +30,9 @@ const KEY_IDS = {
   PAGE_DOWN: 'PageDown',
 };
 
+// Events that can constitute the user releasing drag on a slider
+const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
+
 export default class MDCSliderFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
@@ -81,7 +84,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
     // We set this to NaN since we want it to be a number, but we can't use '0' or '-1'
     // because those could be valid tabindices set by the client code.
     this.savedTabIndex_ = NaN;
-    this.off_ = false;
     this.active_ = false;
     this.inTransit_ = false;
     this.isDiscrete_ = false;
@@ -97,10 +99,10 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.thumbContainerPointerHandler_ = () => {
       this.handlingThumbTargetEvt_ = true;
     };
-    this.mousedownHandler_ = this.createDownHandler_('mousemove', 'mouseup');
-    this.pointerdownHandler_ = this.createDownHandler_('pointermove', 'pointerup');
+    this.mousedownHandler_ = this.createDownHandler_('mousemove');
+    this.pointerdownHandler_ = this.createDownHandler_('pointermove');
     this.touchstartHandler_ = this.createDownHandler_(
-      'touchmove', 'touchend', ({targetTouches}) => targetTouches[0].pageX);
+      'touchmove', ({targetTouches}) => targetTouches[0].pageX);
     this.keydownHandler_ = (evt) => this.handleKeydown_(evt);
     this.focusHandler_ = () => this.handleFocus_();
     this.blurHandler_ = () => this.handleBlur_();
@@ -242,16 +244,19 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
   }
 
-  createDownHandler_(moveEvt, upEvt, getPageX = ({pageX}) => pageX) {
+  createDownHandler_(moveEvt, getPageX = ({pageX}) => pageX) {
     const moveHandler = (evt) => {
       evt.preventDefault();
       this.setValueFromEvt_(evt, getPageX);
     };
 
+    // Note: upHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
+    // do not always fire these consistently in pairs.
+    // (See https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
       this.setActive_(false);
       this.adapter_.deregisterBodyInteractionHandler(moveEvt, moveHandler);
-      this.adapter_.deregisterBodyInteractionHandler(upEvt, upHandler);
+      UP_EVENTS.forEach((type) => this.adapter_.deregisterBodyInteractionHandler(type, upHandler));
       this.adapter_.notifyChange();
     };
 
@@ -267,7 +272,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
       this.setActive_(true);
 
       this.adapter_.registerBodyInteractionHandler(moveEvt, moveHandler);
-      this.adapter_.registerBodyInteractionHandler(upEvt, upHandler);
+      UP_EVENTS.forEach((type) => this.adapter_.registerBodyInteractionHandler(type, upHandler));
       this.setValueFromEvt_(evt, getPageX);
     };
 
@@ -433,7 +438,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
 
     this.updateUIFrame_ = requestAnimationFrame(() => {
-      this.setOff_(pctComplete === 0);
       // NOTE(traviskaufman): It would be nice to use calc() here,
       // but IE cannot handle calcs in transforms correctly.
       // See: https://goo.gl/NC2itk
@@ -441,11 +445,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.setThumbContainerStyleProperty(transformProp, `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackStyleProperty(transformProp, `scaleX(${pctComplete})`);
     });
-  }
-
-  setOff_(off) {
-    this.off_ = off;
-    this.toggleClass_(cssClasses.OFF, this.off_);
   }
 
   setActive_(active) {

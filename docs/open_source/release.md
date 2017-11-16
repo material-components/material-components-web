@@ -35,18 +35,29 @@ This will pull the latest of `master` onto your git clone.
 
 `./scripts/pre-release.sh`
 
-This will ensure you can publish/tag, build all release files, ensure all tests
-pass, and update our CHANGELOG prior to releasing (lerna will update the tag
-for us in the next step).
-
-> Make sure that a CHANGELOG commit actually appears in your `git log`!
+This will ensure you can publish/tag, build all release files, and ensure all tests
+pass prior to releasing (lerna will update versions for us in the next step).
 
 ### Release
 
-`$(npm bin)/lerna publish -m "chore: Publish"`
+```
+$(npm bin)/lerna publish --skip-git
+git commit -am "chore: Publish"
+```
 
-When prompted for version, you should pick Minor for typical releases,
+When lerna prompts for version, you should pick Minor for typical releases,
 or Patch for hotfix releases with no breaking changes.
+
+> **Do not forget** `--skip-git` - we want to generate the changelog before
+> generating and pushing the new tag.
+
+### Post-Release
+
+`./scripts/post-release.sh`
+
+This will update our CHANGELOG.md and generate a vX.Y.Z semver tag.
+
+> Make sure that a CHANGELOG commit actually appears in your `git log`!
 
 ### Push
 
