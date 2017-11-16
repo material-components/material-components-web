@@ -138,7 +138,7 @@ test('set valid updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
 });
 
-test('set helperTextContent updates the help text element content', () => {
+test('set helperTextContent updates the helper text element content', () => {
   const {component} = setupTest();
   const helptext = getHelperText();
   component.helperTextElement = helptext;
@@ -146,11 +146,22 @@ test('set helperTextContent updates the help text element content', () => {
   assert.equal(helptext.textContent, 'foo');
 });
 
-test('get helperTextContent retrieves the help text element content', () => {
+test('set helperTextContent has no effect when no helper text element is present', () => {
+  const {component} = setupTest();
+  component.helperTextContent = 'foo';
+  assert.equal(component.helperTextContent, '');
+});
+
+test('get helperTextContent retrieves the helper text element content', () => {
   const {component} = setupTest();
   const helptext = getHelperText();
   component.helperTextElement = helptext;
   assert.equal(component.helperTextContent, 'helper text');
+});
+
+test('get helperTextContent returns an empty string when no helper text element is present', () => {
+  const {component} = setupTest();
+  assert.equal(component.helperTextContent, '');
 });
 
 test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {

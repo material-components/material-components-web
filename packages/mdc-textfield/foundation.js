@@ -321,7 +321,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {string|undefined} The content (if any) of the helper text field
+   * @return {string} The content (if any) of the helper text field
    */
   getHelperTextContent() {
     return this.adapter_.getHelperTextContent();

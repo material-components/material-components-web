@@ -172,7 +172,7 @@ class MDCTextFieldAdapter {
 
   /**
    * Returns the text content of the help text element
-   * @return {string|undefined}
+   * @return {string}
    */
   getHelperTextContent() {}
 
