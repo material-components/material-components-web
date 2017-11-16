@@ -153,20 +153,6 @@ test('get helperTextContent retrieves the help text element content', () => {
   assert.equal(component.helperTextContent, 'helper text');
 });
 
-test('#adapter.addClassToBottomLine adds a class to the bottom line', () => {
-  const {bottomLine, component} = setupTest();
-  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
-  assert.isTrue(bottomLine.classList.contains('foo'));
-});
-
-test('#adapter.removeClassFromBottomLine removes a class from the bottom line', () => {
-  const {bottomLine, component} = setupTest();
-
-  bottomLine.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
-  assert.isFalse(bottomLine.classList.contains('foo'));
-});
-
 test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
   const {icon, component} = setupTest();
 
