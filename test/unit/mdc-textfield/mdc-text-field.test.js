@@ -371,6 +371,32 @@ test('#adapter.getHelperTextContent retrieves the text content of the help text 
   assert.equal(component.getDefaultFoundation().adapter_.getHelperTextContent(), 'foo');
 });
 
+test('#adapter.setHelptextValue does nothing if no help text element present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.setHelptextValue('foo'));
+});
+
+test('#adapter.setHelptextValue updates the text content of the help text element', () => {
+  const {component} = setupTest();
+  const helptext = getHelptext();
+  component.helptextElement = helptext;
+  component.getDefaultFoundation().adapter_.setHelptextValue('foo');
+  assert.equal(helptext.textContent, 'foo');
+});
+
+test('#adapter.getHelptextValue does nothing if no help text element present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.getHelptextValue());
+});
+
+test('#adapter.getHelptextValue retrieves the text content of the help text element', () => {
+  const {component} = setupTest();
+  const helptext = getHelptext();
+  component.helptextElement = helptext;
+  component.getDefaultFoundation().adapter_.setHelptextValue('foo');
+  assert.equal(component.getDefaultFoundation().adapter_.getHelptextValue(), 'foo');
+});
+
 test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {
   const {component} = setupTest();
   const handler = td.func('leadingHandler');
