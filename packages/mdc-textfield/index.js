@@ -124,14 +124,6 @@ class MDCTextField extends MDCComponent {
     this.foundation_.setValid(valid);
   }
 
-  get helptextValue() {
-    return this.foundation_.getHelptextValue();
-  }
-
-  set helptextValue(value) {
-    this.foundation_.setHelptextValue(value);
-  }
-
   /**
    * @return {string|undefined} The textContent of the Helper Text element.
    */
