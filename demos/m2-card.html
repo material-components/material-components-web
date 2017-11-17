@@ -70,10 +70,57 @@
     <script src="/lib/draggable/1.0.0-beta.3/draggable.bundle.patched.js"></script>
     <script>
       (() => {
+        function getOffsetParent(element) {
+          if (element.offsetParent) {
+            return element.offsetParent;
+          }
+
+          const displayNoneElements = [];
+          const inlineDisplayValues = [];
+
+          let curEl = element;
+          while (curEl) {
+            if (getComputedStyle(curEl).display === 'none') {
+              displayNoneElements.push(curEl);
+              inlineDisplayValues.push(curEl.style.display);
+            }
+            curEl = curEl.parentElement;
+          }
+
+          displayNoneElements.forEach((displayNoneEl) => {
+            displayNoneEl.style.display = 'block';
+          });
+
+          const offsetParent = element.offsetParent;
+
+          displayNoneElements.forEach((displayNoneEl, idx) => {
+            displayNoneEl.style.display = inlineDisplayValues[idx];
+          });
+
+          return offsetParent;
+        }
+
+        function getOffset(elementRect, parentRect) {
+          const offsetRect = {};
+          offsetRect.top = offsetRect.y = elementRect.top - parentRect.top;
+          offsetRect.left = offsetRect.x = elementRect.left - parentRect.left;
+          offsetRect.right = offsetRect.left + elementRect.width;
+          offsetRect.bottom = offsetRect.top + elementRect.height;
+          offsetRect.width = elementRect.width;
+          offsetRect.height = elementRect.height;
+          return offsetRect;
+        }
+
+        function getOffsetFromParent(element) {
+          const elementViewportRect = element.getBoundingClientRect();
+          const parentViewportRect = getOffsetParent(element).getBoundingClientRect();
+          return getOffset(elementViewportRect, parentViewportRect);
+        }
+
         class Card {
           constructor(element) {
             this.element = element;
-            this.viewportRect = element.getBoundingClientRect();
+            this.parentOffsetRect = getOffsetFromParent(element);
             this.offsetX_ = 0;
           }
 
@@ -96,12 +143,12 @@
           }
 
           static isVisible(card) {
-            return card.viewportRect.width > 0 && card.viewportRect.height > 0;
+            return card.parentOffsetRect.width > 0 && card.parentOffsetRect.height > 0;
           }
 
           static orderByCoordinate(firstCard, secondCard) {
-            const topDelta = firstCard.viewportRect.top - secondCard.viewportRect.top;
-            const leftDelta = firstCard.viewportRect.left - secondCard.viewportRect.left;
+            const topDelta = firstCard.parentOffsetRect.top - secondCard.parentOffsetRect.top;
+            const leftDelta = firstCard.parentOffsetRect.left - secondCard.parentOffsetRect.left;
             return topDelta || leftDelta;
           }
         }
@@ -120,39 +167,41 @@
             this.rowGapInPx = rowGapInPx;
             this.spacerWidth = spacerWidth;
 
-            this.viewportRect = {
-              top: adjacentCard.viewportRect.top - (this.rowGapInPx / 2),
-              bottom: adjacentCard.viewportRect.bottom + (this.rowGapInPx / 2),
-              left: adjacentCard.viewportRect.left - this.colGapInPx,
-              right: adjacentCard.viewportRect.left,
-            };
-
-            Object.assign(this.viewportRect, {
-              height: this.viewportRect.bottom - this.viewportRect.top,
-              width: this.viewportRect.right - this.viewportRect.left,
-            });
+            const adjacentCardParentOffsetRect = this.adjacentCard.parentOffsetRect;
+            const parentOffsetRect = {};
+            parentOffsetRect.top = parentOffsetRect.y = adjacentCardParentOffsetRect.top - (this.rowGapInPx / 2);
+            parentOffsetRect.left = parentOffsetRect.x = adjacentCardParentOffsetRect.left - this.colGapInPx;
+            parentOffsetRect.right = adjacentCardParentOffsetRect.left;
+            parentOffsetRect.bottom = adjacentCardParentOffsetRect.bottom + (this.rowGapInPx / 2);
+            parentOffsetRect.width = parentOffsetRect.right - parentOffsetRect.left;
+            parentOffsetRect.height = parentOffsetRect.bottom - parentOffsetRect.top;
+            this.parentOffsetRect = parentOffsetRect;
           }
 
-          // TODO(acdvorak): Handle jank that occurs when mouse is right on the edge of drop zone.
-          // Inserting the drop zone element changes the positioning.
           intersectsViewportPoint(viewportPoint) {
+            const adjacentCardParentViewportRect = getOffsetParent(this.adjacentCard.element).getBoundingClientRect();
+            const parentOffsetPoint = {
+              x: viewportPoint.x - adjacentCardParentViewportRect.left,
+              y: viewportPoint.y - adjacentCardParentViewportRect.top,
+            };
+
             // Point is above the gap.
-            if (viewportPoint.y < this.viewportRect.top) {
+            if (parentOffsetPoint.y < this.parentOffsetRect.top) {
               return false;
             }
 
             // Point is below the gap.
-            if (viewportPoint.y > this.viewportRect.bottom) {
+            if (parentOffsetPoint.y > this.parentOffsetRect.bottom) {
               return false;
             }
 
             // Point is left of the gap.
-            if (viewportPoint.x < this.viewportRect.left - this.toleranceInPx) {
+            if (parentOffsetPoint.x < this.parentOffsetRect.left - this.toleranceInPx) {
               return false;
             }
 
             // Point is right of the gap.
-            if (viewportPoint.x > this.viewportRect.right + this.toleranceInPx) {
+            if (parentOffsetPoint.x > this.parentOffsetRect.right + this.toleranceInPx) {
               return false;
             }
 
@@ -175,7 +224,7 @@
             return 0;
           }
           const firstRow = rows[0];
-          return firstRow[1].viewportRect.left - firstRow[0].viewportRect.right;
+          return firstRow[1].parentOffsetRect.left - firstRow[0].parentOffsetRect.right;
         }
 
         function getRowGapInPx(rows) {
@@ -184,7 +233,7 @@
           }
           const firstRow = rows[0];
           const secondRow = rows[1];
-          return secondRow[0].viewportRect.top - firstRow[0].viewportRect.bottom;
+          return secondRow[0].parentOffsetRect.top - firstRow[0].parentOffsetRect.bottom;
         }
 
         function getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex) {
@@ -198,7 +247,7 @@
 
           // TODO(acdvorak): Don't assume px units
           const prevRowLastCardMarginRight = parseInt(getComputedStyle(prevRowLastCard.element).marginRight, 10);
-          const prevRowLastCardRight = prevRowLastCard.viewportRect.right + prevRowLastCardMarginRight;
+          const prevRowLastCardRight = prevRowLastCard.parentOffsetRect.right + prevRowLastCardMarginRight;
 
           return cardGroupRight - prevRowLastCardRight;
         }
@@ -222,7 +271,7 @@
 
           const rowBuckets = new Map();
           cards.forEach((card) => {
-            const top = card.viewportRect.top;
+            const top = card.parentOffsetRect.top;
             if (!rowBuckets.has(top)) {
               rowBuckets.set(top, []);
             }
@@ -247,7 +296,7 @@
                 return;
               }
               dropZones.push(new DropZone(curCardInRow, {
-                toleranceInPx: curCardInRow.viewportRect.width / 2,
+                toleranceInPx: curCardInRow.parentOffsetRect.width / 2,
                 spacerWidth: getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex),
                 rowGapInPx,
                 colGapInPx,
