@@ -26,11 +26,11 @@
 @import "@material/typography/variables";
 @import "./bottom-line/mdc-text-field-bottom-line";
 @import "./helper-text/mdc-text-field-helper-text";
-
 @include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
 
 // postcss-bem-linter: define text-field
+
 .mdc-text-field {
   display: inline-block;
   position: relative;
@@ -619,6 +619,7 @@
 // postcss-bem-linter: define text-field-helper-text
 
 .mdc-text-field-helper-text {
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field--dense + & {
     margin-bottom: 4px;
   }

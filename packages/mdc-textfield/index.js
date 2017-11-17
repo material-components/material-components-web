@@ -175,10 +175,9 @@ class MDCTextField extends MDCComponent {
           return this.helperText_.foundation;
         }
         return undefined;
-      }
+      },
     },
     this.getInputAdapterMethods_(),
-    this.getHelperTextAdapterMethods_(),
     this.getIconAdapterMethods_())));
   }
 
@@ -209,46 +208,6 @@ class MDCTextField extends MDCComponent {
       registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
       deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
       getNativeInput: () => this.input_,
-    };
-  }
-
-  /**
-   * @return {!{
-   *   addClassToHelperText: function(string): undefined,
-   *   removeClassFromHelperText: function(string): undefined,
-   *   helperTextHasClass: function(string): boolean,
-   *   setHelperTextAttr: function(string, string): undefined,
-   *   removeHelperTextAttr: function(string): undefined,
-   * }}
-   */
-  getHelperTextAdapterMethods_() {
-    return {
-      addClassToHelperText: (className) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.classList.add(className);
-        }
-      },
-      removeClassFromHelperText: (className) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.classList.remove(className);
-        }
-      },
-      helperTextHasClass: (className) => {
-        if (!this.helperTextElement) {
-          return false;
-        }
-        return this.helperTextElement.classList.contains(className);
-      },
-      setHelperTextAttr: (name, value) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.setAttribute(name, value);
-        }
-      },
-      removeHelperTextAttr: (name) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.removeAttribute(name);
-        }
-      },
     };
   }
 }

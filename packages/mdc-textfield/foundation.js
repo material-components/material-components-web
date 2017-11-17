@@ -58,7 +58,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
       getBottomLineFoundation: () => {},
-      getHelperTextFoundation: () => {}
+      getHelperTextFoundation: () => {},
     });
   }
 
