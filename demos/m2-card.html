@@ -157,9 +157,10 @@
         class DropZone {
           // TODO(acdvorak): Rename adjacentCard to something better?
           constructor(
-            adjacentCard, {toleranceInPx = 50, rowIndex, colIndex, rowGapInPx = 0, colGapInPx = 0, spacerWidth = 0} = {}) {
+            adjacentCard, {toleranceInPx = 50, rows, rowIndex, colIndex, rowGapInPx, colGapInPx, spacerWidth} = {}) {
             this.adjacentCard = adjacentCard;
             this.side = 'left'; // TODO(acdvorak): Implement
+            this.rows = rows;
             this.rowIndex = rowIndex;
             this.colIndex = colIndex;
             this.toleranceInPx = toleranceInPx;
@@ -207,16 +208,14 @@
 
             return true;
           }
-        }
 
-        function isAdjacentToDragSource(curRow, colIndex) {
-          if (curRow[colIndex].isDragSource()) {
-            return true;
+          isAdjacentToDragSource() {
+            const curRow = this.rows[this.rowIndex];
+            const curCard = curRow[this.colIndex];
+            const prevCardInRow = curRow[this.colIndex - 1];
+
+            return curCard.isDragSource() || (prevCardInRow && prevCardInRow.isDragSource());
           }
-          if (curRow[colIndex - 1] && curRow[colIndex - 1].isDragSource()) {
-            return true;
-          }
-          return false;
         }
 
         function getColGapInPx(rows) {
@@ -292,14 +291,12 @@
           const dropZones = [];
           rows.forEach((curRow, rowIndex) => {
             curRow.forEach((curCardInRow, colIndex) => {
-              if (isAdjacentToDragSource(curRow, colIndex)) {
-                return;
-              }
               dropZones.push(new DropZone(curCardInRow, {
                 toleranceInPx: curCardInRow.parentOffsetRect.width / 2,
                 spacerWidth: getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex),
                 rowGapInPx,
                 colGapInPx,
+                rows,
                 rowIndex,
                 colIndex,
               }));
@@ -313,6 +310,9 @@
           const pointerPositionInViewport = getPointerPositionInViewport(e);
           for (let curDropZone of dropZones) {
             if (curDropZone.intersectsViewportPoint(pointerPositionInViewport)) {
+              if (curDropZone.isAdjacentToDragSource()) {
+                return null;
+              }
               return curDropZone;
             }
           }
