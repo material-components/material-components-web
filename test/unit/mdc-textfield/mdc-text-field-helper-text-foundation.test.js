@@ -1,54 +1,103 @@
-// test('on focus removes aria-hidden from helperText', () => {
-//   const {foundation, mockAdapter} = setupTest();
-//   let focus;
-//   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
-//     .thenDo((evtType, handler) => {
-//       focus = handler;
-//     });
-//   foundation.init();
-//   focus();
-//   td.verify(mockAdapter.removeHelperTextAttr('aria-hidden'));
-// });
+/**
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-// test('on blur adds role="alert" to helper text if input is invalid and helper text is being used ' +
-//      'as a validation message', () => {
-//   const {mockAdapter, blur, nativeInput} = setupBlurTest();
-//   nativeInput.checkValidity = () => false;
-//   td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('role', 'alert'));
-// });
+import {assert} from 'chai';
+import td from 'testdouble';
 
-// test('on blur remove role="alert" if input is valid', () => {
-//   const {mockAdapter, blur} = setupBlurTest();
-//   blur();
-//   td.verify(mockAdapter.removeHelperTextAttr('role'));
-// });
+import {verifyDefaultAdapter} from '../helpers/foundation';
+import {setupFoundationTest} from '../helpers/setup';
+import MDCTextFieldHelperTextFoundation from '../../../packages/mdc-textfield/helper-text/foundation';
 
-// test('on blur sets aria-hidden="true" on helper text by default', () => {
-//   const {mockAdapter, blur} = setupBlurTest();
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'));
-// });
+const {cssClasses} = MDCTextFieldHelperTextFoundation;
 
-// test('on blur does not set aria-hidden on helper text when it is persistent', () => {
-//   const {mockAdapter, blur} = setupBlurTest();
-//   td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(true);
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'), {times: 0});
-// });
+suite('MDCTextFieldHelperTextFoundation');
 
-// test('on blur does not set aria-hidden if input is invalid and helper text is validation message', () => {
-//   const {mockAdapter, blur, nativeInput} = setupBlurTest();
-//   td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-//   nativeInput.checkValidity = () => false;
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'), {times: 0});
-// });
+test('exports cssClasses', () => {
+  assert.isOk('cssClasses' in MDCTextFieldHelperTextFoundation);
+});
 
-// test('on blur sets aria-hidden=true if input is valid and helper text is validation message', () => {
-//   const {mockAdapter, blur} = setupBlurTest();
-//   td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'));
-// });
+test('exports strings', () => {
+  assert.isOk('strings' in MDCTextFieldHelperTextFoundation);
+});
+
+test('defaultAdapter returns a complete adapter implementation', () => {
+  verifyDefaultAdapter(MDCTextFieldHelperTextFoundation, [
+    'addClass', 'removeClass', 'hasClass', 'setAttr', 'removeAttr',
+  ]);
+});
+
+const setupTest = () => setupFoundationTest(MDCTextFieldHelperTextFoundation);
+
+test('#show removes aria-hidden from helperText', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.show();
+  td.verify(mockAdapter.removeAttr('aria-hidden'));
+});
+
+test('#update adds role="alert" to helper text if input is invalid and helper text is being used ' +
+     'as a validation message', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const inputIsValid = false;
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
+  foundation.update(inputIsValid);
+  td.verify(mockAdapter.setAttr('role', 'alert'));
+});
+
+test('#update removes role="alert" if input is valid', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const inputIsValid = true;
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
+  foundation.update(inputIsValid);
+  td.verify(mockAdapter.removeAttr('role'));
+});
+
+test('#update sets aria-hidden="true" on helper text by default', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const inputIsValid = true;
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(false);
+  foundation.update(inputIsValid);
+  td.verify(mockAdapter.setAttr('aria-hidden', 'true'));
+});
+
+test('#update does not set aria-hidden on helper text when it is persistent', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const inputIsValid = true;
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(false);
+  foundation.update(inputIsValid);
+  td.verify(mockAdapter.setAttr('aria-hidden', 'true'), {times: 0});
+});
+
+test('#update does not set aria-hidden if input is invalid and helper text is validation message', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const inputIsValid = false;
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
+  foundation.update(inputIsValid);
+  td.verify(mockAdapter.setAttr('aria-hidden', 'true'), {times: 0});
+});
+
+test('#update sets aria-hidden=true if input is valid and helper text is validation message', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const inputIsValid = true;
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
+  foundation.update(inputIsValid);
+  td.verify(mockAdapter.setAttr('aria-hidden', 'true'));
+});

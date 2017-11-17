@@ -63,13 +63,13 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the state of the helper text based on validity.
-   * @param {boolean} isValid
+   * Updates the state of the helper text based on the input validity.
+   * @param {boolean} inputIsValid
    */
-  update(isValid) {
+  update(inputIsValid) {
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !isValid;
+    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
 
     if (validationMsgNeedsDisplay) {
       this.adapter_.setAttr(strings.ROLE, 'alert');

@@ -128,6 +128,6 @@ removeAttr(attr: string) => void | Removes an attribute on the helper text eleme
 
 Makes the helper text visible to screen readers.
 
-##### MDCTextFieldHelperTextFoundation.update()
+##### MDCTextFieldHelperTextFoundation.update(inputIsValid)
 
-Updates the state of the helper text based on validity.
+Updates the state of the helper text based on input validity.
