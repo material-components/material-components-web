@@ -157,16 +157,16 @@
         class DropZone {
           // TODO(acdvorak): Rename adjacentCard to something better?
           constructor(
-            adjacentCard, {toleranceInPx = 50, rows, rowIndex, colIndex, rowGapInPx, colGapInPx, spacerWidth} = {}) {
+            adjacentCard, {toleranceInPx = 50, allRows, rowIndex, colIndex, rowGapInPx, colGapInPx, spacerWidthInPx} = {}) {
             this.adjacentCard = adjacentCard;
             this.side = 'left'; // TODO(acdvorak): Implement
-            this.rows = rows;
+            this.allRows = allRows;
             this.rowIndex = rowIndex;
             this.colIndex = colIndex;
             this.toleranceInPx = toleranceInPx;
             this.colGapInPx = colGapInPx;
             this.rowGapInPx = rowGapInPx;
-            this.spacerWidth = spacerWidth;
+            this.spacerWidthInPx = spacerWidthInPx;
 
             const adjacentCardParentOffsetRect = this.adjacentCard.parentOffsetRect;
             const parentOffsetRect = {};
@@ -210,10 +210,9 @@
           }
 
           isAdjacentToDragSource() {
-            const curRow = this.rows[this.rowIndex];
+            const curRow = this.allRows[this.rowIndex];
             const curCard = curRow[this.colIndex];
             const prevCardInRow = curRow[this.colIndex - 1];
-
             return curCard.isDragSource() || (prevCardInRow && prevCardInRow.isDragSource());
           }
         }
@@ -235,7 +234,7 @@
           return secondRow[0].parentOffsetRect.top - firstRow[0].parentOffsetRect.bottom;
         }
 
-        function getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex) {
+        function getSpacerWidthInPx(cardGroupEl, rows, rowIndex, colIndex) {
           if (rowIndex === 0 || colIndex > 0) {
             return 0;
           }
@@ -293,10 +292,10 @@
             curRow.forEach((curCardInRow, colIndex) => {
               dropZones.push(new DropZone(curCardInRow, {
                 toleranceInPx: curCardInRow.parentOffsetRect.width / 2,
-                spacerWidth: getSpacerWidth(cardGroupEl, rows, rowIndex, colIndex),
+                spacerWidthInPx: getSpacerWidthInPx(cardGroupEl, rows, rowIndex, colIndex),
                 rowGapInPx,
                 colGapInPx,
-                rows,
+                allRows: rows,
                 rowIndex,
                 colIndex,
               }));
@@ -388,7 +387,7 @@
 
             if (dropZone) {
               dropZone.adjacentCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
-              if (dropZone.spacerWidth) {
+              if (dropZone.spacerWidthInPx) {
                 dropZoneEl.insertAdjacentElement('beforebegin', dropSpacerEl);
               } else {
                 dropSpacerEl.remove();
