@@ -24,8 +24,7 @@ The helper text provides supplemental information and/or validation messages to 
 
 ### Using helper text
 
-MDC Text Fields can include helper text that is useful for providing supplemental
-information to users, as well for validation messages (covered below).
+MDC Text Fields can include helper text that is useful for providing supplemental information to users.
 
 ```html
 <div class="mdc-text-field">
@@ -64,32 +63,29 @@ assign an id to the `mdc-text-field-helper-text` element and set that id to the 
 indicate to assistive devices that the display of the helper text is dependent on the interaction with
 the input element.
 
-When using our vanilla JS component, if it sees that the input element has an `aria-controls`
-attribute, it will look for an element with the id specified and treat it as the text field's help
-text element, taking care of adding/removing `aria-hidden` and other a11y attributes. This can also
-be done programmatically, which is described below.
+```html
+<div class="mdc-text-field">
+  <input type="text" id="username" class="mdc-text-field__input" aria-controls="username-helper-text">
+  <label for="username" class="mdc-text-field__label">Username</label>
+  <div class="mdc-text-field__bottom-line"></div>
+</div>
+<p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
+  This will be displayed on your public profile
+</p>
+```
+
+When using our vanilla JS component, if the browser sees that the input element has an `aria-controls`
+attribute, it will look for an element with the id specified and treat it as the text field's helper
+text element, taking care of adding/removing `aria-hidden` and other accessibility attributes. Adding
+and removing classes and attributes to the helper text element can also be done using the
+MDCTextFieldHelperText API, which is described below.
 
 ### Validation
 
-MDC TextField provides validity styling by using the `:invalid` and `:required` attributes provided
-by HTML5's form validation API.
-
-```html
-<div class="mdc-text-field">
-  <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
-  <label for="pw" class="mdc-text-field__label">Password</label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-```
-
-By default an input's validity is checked via `checkValidity()` on blur, and the styles are updated
-accordingly. Set the MDCTextField.valid variable to set the input's validity explicitly. MDC TextField
-automatically appends an asterisk to the label text if the required attribute is set.
-
-Helper text can be used to provide additional validation messages. Use
-`mdc-text-field-helper-text--validation-msg` to provide styles for using the helper text as a validation
-message. This can be easily combined with `mdc-text-field-helper-text--persistent` to provide a robust
-UX for client-side form field validation.
+Helper text can be used to provide validation messages in addition to the validity styling provided by
+MDC TextField. Use `mdc-text-field-helper-text--validation-msg` to provide styles for using the helper
+text as a validation message. This can be combined with `mdc-text-field-helper-text--persistent` to
+provide a robust UX for client-side form field validation.
 
 ```html
 <div class="mdc-text-field">
@@ -124,10 +120,10 @@ removeAttr(attr: string) => void | Removes an attribute on the helper text eleme
 
 #### The full foundation API
 
-##### MDCTextFieldHelperTextFoundation.show()
+##### MDCTextFieldHelperTextFoundation.showToScreenReader()
 
-Makes the helper text visible to screen readers.
+Makes the helper text visible to the screen reader.
 
-##### MDCTextFieldHelperTextFoundation.update(inputIsValid)
+##### MDCTextFieldHelperTextFoundation.setValidity(inputIsValid)
 
-Updates the state of the helper text based on input validity.
+Sets the validity of the helper text based on the input validity.

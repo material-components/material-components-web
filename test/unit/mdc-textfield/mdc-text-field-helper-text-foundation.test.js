@@ -41,63 +41,63 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTextFieldHelperTextFoundation);
 
-test('#show removes aria-hidden from helperText', () => {
+test('#showToScreenReader removes aria-hidden from helperText', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.show();
+  foundation.showToScreenReader();
   td.verify(mockAdapter.removeAttr('aria-hidden'));
 });
 
-test('#update adds role="alert" to helper text if input is invalid and helper text is being used ' +
+test('#setValidity adds role="alert" to helper text if input is invalid and helper text is being used ' +
      'as a validation message', () => {
   const {foundation, mockAdapter} = setupTest();
   const inputIsValid = false;
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-  foundation.update(inputIsValid);
+  foundation.setValidity(inputIsValid);
   td.verify(mockAdapter.setAttr('role', 'alert'));
 });
 
-test('#update removes role="alert" if input is valid', () => {
+test('#setValidity removes role="alert" if input is valid', () => {
   const {foundation, mockAdapter} = setupTest();
   const inputIsValid = true;
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-  foundation.update(inputIsValid);
+  foundation.setValidity(inputIsValid);
   td.verify(mockAdapter.removeAttr('role'));
 });
 
-test('#update sets aria-hidden="true" on helper text by default', () => {
+test('#setValidity sets aria-hidden="true" on helper text by default', () => {
   const {foundation, mockAdapter} = setupTest();
   const inputIsValid = true;
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(false);
-  foundation.update(inputIsValid);
+  foundation.setValidity(inputIsValid);
   td.verify(mockAdapter.setAttr('aria-hidden', 'true'));
 });
 
-test('#update does not set aria-hidden on helper text when it is persistent', () => {
+test('#setValidity does not set aria-hidden on helper text when it is persistent', () => {
   const {foundation, mockAdapter} = setupTest();
   const inputIsValid = true;
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(false);
-  foundation.update(inputIsValid);
+  foundation.setValidity(inputIsValid);
   td.verify(mockAdapter.setAttr('aria-hidden', 'true'), {times: 0});
 });
 
-test('#update does not set aria-hidden if input is invalid and helper text is validation message', () => {
+test('#setValidity does not set aria-hidden if input is invalid and helper text is validation message', () => {
   const {foundation, mockAdapter} = setupTest();
   const inputIsValid = false;
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-  foundation.update(inputIsValid);
+  foundation.setValidity(inputIsValid);
   td.verify(mockAdapter.setAttr('aria-hidden', 'true'), {times: 0});
 });
 
-test('#update sets aria-hidden=true if input is valid and helper text is validation message', () => {
+test('#setValidity sets aria-hidden=true if input is valid and helper text is validation message', () => {
   const {foundation, mockAdapter} = setupTest();
   const inputIsValid = true;
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-  foundation.update(inputIsValid);
+  foundation.setValidity(inputIsValid);
   td.verify(mockAdapter.setAttr('aria-hidden', 'true'));
 });

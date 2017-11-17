@@ -158,7 +158,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
     const helperText = this.adapter_.getHelperTextFoundation();
     if (helperText) {
-      helperText.show();
+      helperText.showToScreenReader();
     }
     this.isFocused_ = true;
   }
@@ -235,7 +235,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
     const helperText = this.adapter_.getHelperTextFoundation();
     if (helperText) {
-      helperText.update(isValid);
+      helperText.setValidity(isValid);
     }
   }
 

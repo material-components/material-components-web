@@ -100,6 +100,23 @@ since it won't be added until that JS runs, adding it manually will prevent an i
 </div>
 ```
 
+### Validation
+
+MDC TextField provides validity styling by using the `:invalid` and `:required` attributes provided
+by HTML5's form validation API.
+
+```html
+<div class="mdc-text-field">
+  <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
+  <label for="pw" class="mdc-text-field__label">Password</label>
+  <div class="mdc-text-field__bottom-line"></div>
+</div>
+```
+
+By default an input's validity is checked via `checkValidity()` on blur, and the styles are updated
+accordingly. Set the MDCTextField.valid field to set the input's validity explicitly. MDC TextField
+automatically appends an asterisk to the label text if the required attribute is set.
+
 ### Leading and Trailing Icons
 Leading and trailing icons can be added to MDC Text Fields as visual indicators
 as well as interaction targets. To do so, add the relevant classes

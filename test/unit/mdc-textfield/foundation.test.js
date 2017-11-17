@@ -244,10 +244,10 @@ test('on focus adds mdc-text-field__label--float-above class', () => {
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('on focus shows helperText', () => {
+test('on focus makes helper text visible to the screen reader', () => {
   const {foundation, mockAdapter} = setupTest();
   const helperText = td.object({
-    show: () => {},
+    showToScreenReader: () => {},
   });
   td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
   let focus;
@@ -257,7 +257,7 @@ test('on focus shows helperText', () => {
     });
   foundation.init();
   focus();
-  td.verify(helperText.show());
+  td.verify(helperText.showToScreenReader());
 });
 
 const setupBlurTest = () => {
@@ -327,17 +327,17 @@ test('on blur does not add mdc-textfied--invalid if custom validity is true and'
   td.verify(mockAdapter.addClass(cssClasses.INVALID), {times: 0});
 });
 
-test('on blur updates helper text', () => {
+test('on blur set validity of helper text', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   const helperText = td.object({
-    update: () => {},
+    setValidity: () => {},
     hasClass: () => {},
   });
   td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
   nativeInput.checkValidity = () => false;
   td.when(helperText.hasClass('mdc-text-field-helper-text--validation-msg')).thenReturn(true);
   blur();
-  td.verify(helperText.update(false));
+  td.verify(helperText.setValidity(false));
 });
 
 test('on blur handles getNativeInput() not returning anything gracefully', () => {

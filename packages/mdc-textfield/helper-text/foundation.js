@@ -57,16 +57,16 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
     super(Object.assign(MDCTextFieldHelperTextFoundation.defaultAdapter, adapter));
   }
 
-  /** Makes the helper text visible to screen readers. */
-  show() {
+  /** Makes the helper text visible to the screen reader. */
+  showToScreenReader() {
     this.adapter_.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**
-   * Updates the state of the helper text based on the input validity.
+   * Sets the validity of the helper text based on the input validity.
    * @param {boolean} inputIsValid
    */
-  update(inputIsValid) {
+  setValidity(inputIsValid) {
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
@@ -77,10 +77,9 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
       this.adapter_.removeAttr(strings.ROLE);
     }
 
-    if (helperTextIsPersistent || validationMsgNeedsDisplay) {
-      return;
+    if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
+      this.hide_();
     }
-    this.hide_();
   }
 
   /**
