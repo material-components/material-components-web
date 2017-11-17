@@ -373,12 +373,12 @@ being used as the text field's "helper text". It defaults to `null`. If the text
 contains an `aria-controls` attribute on instantiation of the component, it will look for an element
 with the corresponding id within the document and automatically assign it to this property.
 
-##### MDCTextfield.helperTextContent
+##### MDCTextField.helperTextContent
 
 String. Proxies to the foundation's `getHelperTextContent`/`setHelperTextContent` methods when retrieved/set
 respectively.
 
-##### MDCTextfield.disabled
+##### MDCTextField.disabled
 
 Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
 respectively.
