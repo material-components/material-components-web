@@ -1,69 +1,70 @@
+/**
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+import bel from 'bel';
+import {assert} from 'chai';
 
-// test('#adapter.addClassToHelperText does nothing if no helper text element present', () => {
-//   const {component} = setupTest();
-//   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToHelperText('foo'));
-// });
+import {MDCTextFieldHelperText} from '../../../packages/mdc-textfield/helper-text';
 
-// test('#adapter.addClassToHelperText adds a class to the helper text element when present', () => {
-//   const {component} = setupTest();
-//   component.helperTextElement = getHelperText();
-//   component.getDefaultFoundation().adapter_.addClassToHelperText('foo');
-//   assert.isOk(component.helperTextElement.classList.contains('foo'));
-// });
+const getFixture = () => bel`
+  <div class="mdc-textfield__helper-text"></div>
+`;
 
-// test('#adapter.removeClassFromHelperText does nothing if no helper text element present', () => {
-//   const {component} = setupTest();
-//   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromHelperText('foo'));
-// });
+suite('MDCTextFieldHelperText');
 
-// test('#adapter.removeClassFromHelperText removes a class from the helper text element when present', () => {
-//   const {component} = setupTest();
-//   const helperText = getHelperText();
-//   component.helperTextElement = helperText;
-//   helperText.classList.add('foo');
-//   component.getDefaultFoundation().adapter_.removeClassFromHelperText('foo');
-//   assert.isNotOk(helperText.classList.contains('foo'));
-// });
+test('attachTo returns an MDCTextFieldHelperText instance', () => {
+  assert.isOk(MDCTextFieldHelperText.attachTo(getFixture()) instanceof MDCTextFieldHelperText);
+});
 
-// test('#adapter.helperTextHasClass does nothing if no helper text element present', () => {
-//   const {component} = setupTest();
-//   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.helperTextHasClass('foo'));
-// });
+function setupTest() {
+  const root = getFixture();
+  const component = new MDCTextFieldHelperText(root);
+  return {root, component};
+}
 
-// test('#adapter.helperTextHasClass returns whether or not the helper text contains a certain class', () => {
-//   const {component} = setupTest();
-//   const helperText = getHelperText();
-//   component.helperTextElement = helperText;
-//   helperText.classList.add('foo');
-//   assert.isOk(component.getDefaultFoundation().adapter_.helperTextHasClass('foo'));
-//   helperText.classList.remove('foo');
-//   assert.isNotOk(component.getDefaultFoundation().adapter_.helperTextHasClass('foo'));
-// });
+test('#adapter.addClass adds a class to the element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.addClass('foo');
+  assert.isTrue(root.classList.contains('foo'));
+});
 
-// test('#adapter.setHelperTextAttr does nothing if no helper text element present', () => {
-//   const {component} = setupTest();
-//   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.helperTextHasClass('foo'));
-// });
+test('#adapter.removeClass removes a class from the element', () => {
+  const {root, component} = setupTest();
+  root.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClass('foo');
+  assert.isFalse(root.classList.contains('foo'));
+});
 
-// test('#adapter.setHelperTextAttr sets an attribute to a certain value on the helper text element', () => {
-//   const {component} = setupTest();
-//   const helperText = getHelperText();
-//   component.helperTextElement = helperText;
-//   component.getDefaultFoundation().adapter_.setHelperTextAttr('aria-label', 'foo');
-//   assert.equal(helperText.getAttribute('aria-label'), 'foo');
-// });
+test('#adapter.hasClass returns whether or not the element contains a certain class', () => {
+  const {root, component} = setupTest();
+  root.classList.add('foo');
+  assert.isOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
+  root.classList.remove('foo');
+  assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
+});
 
-// test('#adapter.removeHelperTextAttr does nothing if no helper text element present', () => {
-//   const {component} = setupTest();
-//   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeHelperTextAttr('aria-label'));
-// });
+test('#adapter.setAttr adds a given attribute to the element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setAttr('aria-label', 'foo');
+  assert.equal(root.getAttribute('aria-label'), 'foo');
+});
 
-// test('#adapter.removeHelperTextAttr removes an attribute on the helper text element', () => {
-//   const {component} = setupTest();
-//   const helperText = getHelperText();
-//   helperText.setAttribute('aria-label', 'foo');
-//   component.helperTextElement = helperText;
-//   component.getDefaultFoundation().adapter_.removeHelperTextAttr('aria-label');
-//   assert.isNotOk(helperText.hasAttribute('aria-label'));
-// });
+test('#adapter.removeAttr removes a given attribute from the element', () => {
+  const {root, component} = setupTest();
+  root.setAttribute('aria-label', 'foo');
+  component.getDefaultFoundation().adapter_.removeAttr('aria-label', 'foo');
+  assert.isNotOk(root.hasAttribute('aria-label'));
+});

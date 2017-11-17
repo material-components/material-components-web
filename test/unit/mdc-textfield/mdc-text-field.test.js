@@ -21,6 +21,7 @@ import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCTextField, MDCTextFieldFoundation} from '../../../packages/mdc-textfield';
+import {MDCTextFieldHelperText} from '../../../packages/mdc-textfield/helper-text/index';
 
 const {cssClasses, strings} = MDCTextFieldFoundation;
 
@@ -55,9 +56,8 @@ class FakeBottomLine {
 }
 
 class FakeHelperText {
-  constructor() {
-    this.listen = td.func('helperText.listen');
-    this.unlisten = td.func('helperText.unlisten');
+  constructor(root) {
+    this.root = root;
   }
 }
 
@@ -81,17 +81,29 @@ test('#constructor when given a `mdc-text-field--box` element, initializes a def
   assert.instanceOf(component.ripple, MDCRipple);
 });
 
-// const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
+const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
 
-// test('#constructor assigns helperTextElement to the id specified in the input aria-controls if present', () => {
-//   const root = getFixture();
-//   root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-//   const helperText = getHelperTextElement();
-//   document.body.appendChild(helperText);
-//   const component = new MDCTextField(root);
-//   assert.equal(component.helperTextElement, helperText);
-//   document.body.removeChild(helperText);
-// });
+test('#constructor instantiates a helper text on the element with id specified in the input aria-controls' +
+     'if present', () => {
+  const root = getFixture();
+  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
+  const helperText = getHelperTextElement();
+  document.body.appendChild(helperText);
+  const component = new MDCTextField(root, undefined, undefined, undefined, (el) => new FakeHelperText(el));
+  assert.equal(component.helperText_.root, helperText);
+  document.body.removeChild(helperText);
+});
+
+test('#constructor input aria-controls specified initializes a default helper text when no helper text' +
+     'factory given', () => {
+  const root = getFixture();
+  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
+  const helperText = getHelperTextElement();
+  document.body.appendChild(helperText);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.helperText_, MDCTextFieldHelperText);
+  document.body.removeChild(helperText);
+});
 
 test('#destroy cleans up the ripple if present', () => {
   const root = getFixture();

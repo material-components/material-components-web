@@ -61,6 +61,8 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCRipple.
    * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
    * creates a new MDCTextFieldBottomLine.
+   * @param {(function(!Element): !MDCTextFieldHelperText)=} helperTextFactory A function which
+   * creates a new MDCTextFieldHelperText.
    */
   initialize(
     rippleFactory = (el) => new MDCRipple(el),
@@ -69,12 +71,6 @@ class MDCTextField extends MDCComponent {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.ripple = null;
-    if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
-      const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
-      if (helperTextElement) {
-        this.helperText_ = helperTextFactory(helperTextElement);
-      }
-    }
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = rippleFactory(this.root_);
     };
@@ -84,6 +80,12 @@ class MDCTextField extends MDCComponent {
         this.bottomLine_ = bottomLineFactory(bottomLineElement);
       }
     };
+    if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
+      const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
+      if (helperTextElement) {
+        this.helperText_ = helperTextFactory(helperTextElement);
+      }
+    }
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
       this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
     };
