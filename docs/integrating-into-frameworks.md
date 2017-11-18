@@ -14,7 +14,7 @@ frameworks.
 
 ## Examples
 
-We maintain a list of component libraries, which wrap MDC Web for other frameworks, on our main [README](../README.md). Each library must:
+We maintain a list of component libraries, which wrap MDC Web for other frameworks, in our main [README](../README.md). Each library must:
 - Serve components in an à-la-carte delivery model
 - Have existed for longer than 6 weeks and show continued maintenance over time
 - Provide usage documentation per component
