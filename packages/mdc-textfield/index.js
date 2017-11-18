@@ -143,6 +143,13 @@ class MDCTextField extends MDCComponent {
           label.classList.remove(className);
         }
       },
+      labelHasClass: (className) => {
+        const label = this.label_;
+        if (label) {
+          return label.classList.contains(className);
+        }
+        return false;
+      },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),

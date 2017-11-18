@@ -69,6 +69,13 @@ class MDCTextFieldAdapter {
   removeClassFromLabel(className) {}
 
   /**
+   * Returns whether or not the label element contains the given class.
+   * @param {string} className
+   * @return {boolean}
+   */
+  labelHasClass(className) {}
+
+  /**
    * Sets an attribute on the icon Element.
    * @param {string} name
    * @param {string} value

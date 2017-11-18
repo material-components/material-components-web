@@ -198,6 +198,18 @@ test('#adapter.removeClassFromLabel does nothing if no label element present', (
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLabel('foo'));
 });
 
+test('#adapter.labelHasClass returns true if the label element has the class', () => {
+  const {root, component} = setupTest();
+  const label = root.querySelector('.mdc-text-field__label');
+  label.classList.add('foo');
+  assert.isOk(component.getDefaultFoundation().adapter_.labelHasClass('foo'));
+});
+
+test('#adapter.labelHasClass returns false if the label element does not have the class', () => {
+  const {root, component} = setupTest();
+  assert.isNotOk(component.getDefaultFoundation().adapter_.labelHasClass('foo'));
+});
+
 test('#adapter.registerInputInteractionHandler adds a handler to the input element for a given event', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-text-field__input');
