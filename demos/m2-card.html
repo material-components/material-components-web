@@ -52,7 +52,7 @@
           <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">8</div>
           <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">9</div>
         </div>
-        <div class="m2-card-group demo-card-group">
+        <div class="m2-card-group demo-card-group" dir="rtl">
           <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
           <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
           <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
@@ -75,6 +75,26 @@
           LEFT: 'left',
           RIGHT: 'right',
         };
+
+        const Directionality = {
+          LTR: 'ltr',
+          RTL: 'rtl',
+        };
+
+        function getDirectionality(element) {
+          const ancestor = element.closest('[dir]');
+          return ancestor && ancestor.getAttribute('dir') === Directionality.RTL
+              ? Directionality.RTL
+              : Directionality.LTR;
+        }
+
+        function isLTR(element) {
+          return getDirectionality(element) === Directionality.LTR;
+        }
+
+        function isRTL(element) {
+          return getDirectionality(element) === Directionality.RTL;
+        }
 
         function getOffsetParent(element) {
           if (element.offsetParent) {
@@ -163,16 +183,15 @@
         class DropZone {
           // TODO(acdvorak): Rename adjacentCard to something better?
           constructor({adjacentCard, cardSide, allRows, rowIndex, colIndex, rowGapInPx, colGapInPx,
-                       spacerWidthInPx, toleranceInPx = 50} = {}) {
+                       toleranceInPx = 50} = {}) {
             this.adjacentCard = adjacentCard;
-            this.cardSide = cardSide; // TODO(acdvorak): Implement
+            this.cardSide = cardSide;
             this.allRows = allRows;
             this.rowIndex = rowIndex;
             this.colIndex = colIndex;
             this.toleranceInPx = toleranceInPx;
             this.colGapInPx = colGapInPx;
             this.rowGapInPx = rowGapInPx;
-            this.spacerWidthInPx = spacerWidthInPx;
 
             const adjacentCardParentOffsetRect = this.adjacentCard.parentOffsetRect;
             const parentOffsetRect = {};
@@ -244,20 +263,27 @@
           return secondRow[0].parentOffsetRect.top - firstRow[0].parentOffsetRect.bottom;
         }
 
-        function getSpacerWidthInPx(cardGroupEl, rows, rowIndex, colIndex) {
-          if (rowIndex === 0 || colIndex > 0) {
+        function getSpacerWidthInPx(cardGroupEl, rows) {
+          if (rows.length === 0 || rows[0].length === 0) {
             return 0;
           }
 
-          const cardGroupRight = cardGroupEl.getBoundingClientRect().right;
-          const prevRow = rows[rowIndex - 1];
-          const prevRowLastCard = prevRow[prevRow.length - 1];
+          const firstRow = rows[0];
+          const lastCard = firstRow[firstRow.length - 1];
 
-          // TODO(acdvorak): Don't assume px units
-          const prevRowLastCardMarginRight = parseInt(getComputedStyle(prevRowLastCard.element).marginRight, 10);
-          const prevRowLastCardRight = prevRowLastCard.parentOffsetRect.right + prevRowLastCardMarginRight;
-
-          return cardGroupRight - prevRowLastCardRight;
+          if (isLTR(cardGroupEl)) {
+            // TODO(acdvorak): Don't assume px units
+            const lastCardMarginRight = parseInt(getComputedStyle(lastCard.element).marginRight, 10);
+            const lastCardRight = lastCard.parentOffsetRect.right + lastCardMarginRight;
+            const cardGroupRight = cardGroupEl.getBoundingClientRect().right;
+            return cardGroupRight - lastCardRight;
+          } else {
+            // TODO(acdvorak): Don't assume px units
+            const lastCardMarginLeft = parseInt(getComputedStyle(lastCard.element).marginLeft, 10);
+            const lastCardLeft = lastCard.parentOffsetRect.left + lastCardMarginLeft;
+            const cardGroupLeft = cardGroupEl.getBoundingClientRect().left;
+            return lastCardLeft - cardGroupLeft;
+          }
         }
 
         function getPointerPositionInViewport(e) {
@@ -295,7 +321,7 @@
         }
 
         function getDropZones(e, {rowGapInPx, colGapInPx} = {}) {
-          const {cardGroupEl, rows} = getCards(e);
+          const {rows} = getCards(e);
 
           const dropZones = [];
           rows.forEach((curRow, rowIndex) => {
@@ -305,7 +331,6 @@
                   adjacentCard: curCardInRow,
                   cardSide,
                   toleranceInPx: curCardInRow.parentOffsetRect.width / 2,
-                  spacerWidthInPx: getSpacerWidthInPx(cardGroupEl, rows, rowIndex, colIndex),
                   rowGapInPx,
                   colGapInPx,
                   allRows: rows,
@@ -344,13 +369,18 @@
         }, 200);
 
         function insertAdjacentElement(refEl, newEl, cardSide) {
-          refEl.insertAdjacentElement(cardSide === CardSide.LEFT ? 'beforebegin' : 'afterend', newEl);
+          let relPos;
+          if (isLTR(refEl.parentNode)) {
+            relPos = cardSide === CardSide.LEFT ? 'beforebegin' : 'afterend';
+          } else {
+            relPos = cardSide === CardSide.LEFT ? 'afterend' : 'beforebegin';
+          }
+          refEl.insertAdjacentElement(relPos, newEl);
         }
 
         // NOTE(acdvorak): This code assumes:
         // 1. ALL CARDS ARE THE SAME SIZE
         // 2. HORIZONTAL AND VERTICAL MARGINS BETWEEN CARDS ARE IDENTICAL
-        // TODO(acdvorak): RTL support
         function init() {
           var cards = document.querySelectorAll('.m2-card');
           for (var i = 0; i < cards.length; i++) {
@@ -382,6 +412,7 @@
           let dropZones;
           let dropZone;
           let sourceCardEl;
+          let spacerWidthInPx;
 
           function resetCardOffsets(cards) {
             cards.forEach((card) => card.offsetX = 0);
@@ -390,17 +421,18 @@
           }
 
           draggable.on('drag:start', (e) => {
-            const {rows} = getCards(e);
+            const {cardGroupEl, rows} = getCards(e);
 
             colGapInPx = getColGapInPx(rows);
             rowGapInPx = getRowGapInPx(rows);
             dropZones = getDropZones(e, {rowGapInPx, colGapInPx});
             dropZone = null;
             sourceCardEl = e.originalSource;
+            spacerWidthInPx = getSpacerWidthInPx(cardGroupEl, rows);
           });
 
           draggable.on('drag:move', (e) => {
-            const {cards, rows} = getCards(e);
+            const {cardGroupEl, cards, rows} = getCards(e);
             dropZone = getDropZone(e, dropZones);
 
             resetCardOffsets(cards);
@@ -409,7 +441,11 @@
 
             if (dropZone) {
               insertAdjacentElement(dropZone.adjacentCard.element, dropZoneEl, dropZone.cardSide);
-              if (dropZone.spacerWidthInPx) {
+              const isFirstRow = dropZone.rowIndex === 0;
+              const needsSpacer = isLTR(cardGroupEl)
+                ? dropZone.colIndex === 0
+                : dropZone.colIndex === rows[dropZone.rowIndex].length - 1 && dropZone.cardSide === CardSide.RIGHT;
+              if (!isFirstRow && needsSpacer) {
                 insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
               } else {
                 dropSpacerEl.remove();
@@ -450,11 +486,12 @@
               sourceCardEl.ripple.deactivate({type: 'pointerup'});
             }
 
-            colGapInPx = 0;
-            rowGapInPx = 0;
+            colGapInPx = null;
+            rowGapInPx = null;
             dropZones = null;
             dropZone = null;
             sourceCardEl = null;
+            spacerWidthInPx = null;
           });
         }
       })();
