@@ -67,7 +67,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldFoundation, [
-    'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
+    'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel', 'labelHasClass',
     'setIconAttr', 'eventTargetHasClass', 'registerTextFieldInteractionHandler',
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'addClassToBottomLine', 'removeClassFromBottomLine',

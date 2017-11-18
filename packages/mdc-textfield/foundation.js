@@ -46,6 +46,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       removeClass: () => {},
       addClassToLabel: () => {},
       removeClassFromLabel: () => {},
+      labelHasClass: () => false,
       setIconAttr: () => {},
       eventTargetHasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
@@ -98,8 +99,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   init() {
-    this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
+    const {UPGRADED, LABEL_FLOAT_ABOVE} = MDCTextFieldFoundation.cssClasses;
+    this.adapter_.addClass(UPGRADED);
+
     // Ensure label does not collide with any pre-filled value.
+    if (this.adapter_.labelHasClass(LABEL_FLOAT_ABOVE)) {
+      this.labelFloatIsActive_ = true;
+    }
     this.updateLabelFloat_();
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
