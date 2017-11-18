@@ -239,13 +239,15 @@
 
           // TODO(acdvorak): Refactor this function to be easier to understand.
           isAdjacentToDragSource() {
+            const isLeftOfCard = this.cardSide === CardSide.LEFT;
+            const isRightOfCard = this.cardSide === CardSide.RIGHT;
             const curRow = this.allRows[this.rowIndex];
             const prevRow = this.allRows[this.rowIndex - 1];
             const nextRow = this.allRows[this.rowIndex + 1];
 
             const curCard = curRow[this.colIndex];
             const prevCardInSameRow = curRow[this.colIndex - 1];
-            const checkPrevCardInSameRow = this.cardSide === CardSide.LEFT && Boolean(prevCardInSameRow);
+            const checkPrevCardInSameRow = isLeftOfCard && Boolean(prevCardInSameRow);
 
             // Drop zone and drag source are adjacent in the same row
             if (curCard.isDragSource() || (checkPrevCardInSameRow && prevCardInSameRow.isDragSource())) {
@@ -257,7 +259,7 @@
             // LTR: User dragged first card in row (N) to after last card in row (N - 1).
             if (nextRow && this.colIndex === (ltr ? curRow.length - 1 : 0)) {
               const nextCardInNextRow = nextRow[ltr ? 0 : nextRow.length - 1];
-              if (nextCardInNextRow.isDragSource()) {
+              if (nextCardInNextRow.isDragSource() && ltr ? isRightOfCard : isLeftOfCard) {
                 return true;
               }
             }
