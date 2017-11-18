@@ -148,7 +148,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
 ```
 
 Once the changes are made, return to your browser and you will see two very nicely styled form
-fields along with a Material Design styled button. The button shows an ink ripple effect when pressed. For now, the ripple is a fairly subtle that will be addressed shortly.
+fields along with a Material Design styled button. The button shows an ink ripple effect when pressed. For now, the ripple is a fairly subtle effect that will be addressed shortly.
 
 Two important points that are demonstrated in the code that was added:
 
