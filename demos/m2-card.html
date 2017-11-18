@@ -70,6 +70,12 @@
     <script src="/lib/draggable/1.0.0-beta.3/draggable.bundle.patched.js"></script>
     <script>
       (() => {
+        /** @enum {string} */
+        const CardSide = {
+          LEFT: 'left',
+          RIGHT: 'right',
+        };
+
         function getOffsetParent(element) {
           if (element.offsetParent) {
             return element.offsetParent;
@@ -156,10 +162,10 @@
         /** Represents an area where a card can be dropped. */
         class DropZone {
           // TODO(acdvorak): Rename adjacentCard to something better?
-          constructor(
-            adjacentCard, {toleranceInPx = 50, allRows, rowIndex, colIndex, rowGapInPx, colGapInPx, spacerWidthInPx} = {}) {
+          constructor({adjacentCard, cardSide, allRows, rowIndex, colIndex, rowGapInPx, colGapInPx,
+                       spacerWidthInPx, toleranceInPx = 50} = {}) {
             this.adjacentCard = adjacentCard;
-            this.side = 'left'; // TODO(acdvorak): Implement
+            this.cardSide = cardSide; // TODO(acdvorak): Implement
             this.allRows = allRows;
             this.rowIndex = rowIndex;
             this.colIndex = colIndex;
@@ -171,8 +177,11 @@
             const adjacentCardParentOffsetRect = this.adjacentCard.parentOffsetRect;
             const parentOffsetRect = {};
             parentOffsetRect.top = parentOffsetRect.y = adjacentCardParentOffsetRect.top - (this.rowGapInPx / 2);
-            parentOffsetRect.left = parentOffsetRect.x = adjacentCardParentOffsetRect.left - this.colGapInPx;
-            parentOffsetRect.right = adjacentCardParentOffsetRect.left;
+            parentOffsetRect.left = parentOffsetRect.x =
+                this.cardSide === CardSide.RIGHT
+                    ? adjacentCardParentOffsetRect.right
+                    : adjacentCardParentOffsetRect.left - this.colGapInPx;
+            parentOffsetRect.right = parentOffsetRect.left + this.colGapInPx;
             parentOffsetRect.bottom = adjacentCardParentOffsetRect.bottom + (this.rowGapInPx / 2);
             parentOffsetRect.width = parentOffsetRect.right - parentOffsetRect.left;
             parentOffsetRect.height = parentOffsetRect.bottom - parentOffsetRect.top;
@@ -213,7 +222,8 @@
             const curRow = this.allRows[this.rowIndex];
             const curCard = curRow[this.colIndex];
             const prevCardInRow = curRow[this.colIndex - 1];
-            return curCard.isDragSource() || (prevCardInRow && prevCardInRow.isDragSource());
+            const checkPrevCard = this.cardSide === CardSide.LEFT && Boolean(prevCardInRow);
+            return curCard.isDragSource() || (checkPrevCard && prevCardInRow.isDragSource());
           }
         }
 
@@ -290,15 +300,23 @@
           const dropZones = [];
           rows.forEach((curRow, rowIndex) => {
             curRow.forEach((curCardInRow, colIndex) => {
-              dropZones.push(new DropZone(curCardInRow, {
-                toleranceInPx: curCardInRow.parentOffsetRect.width / 2,
-                spacerWidthInPx: getSpacerWidthInPx(cardGroupEl, rows, rowIndex, colIndex),
-                rowGapInPx,
-                colGapInPx,
-                allRows: rows,
-                rowIndex,
-                colIndex,
-              }));
+              function createDropZone(cardSide) {
+                return new DropZone({
+                  adjacentCard: curCardInRow,
+                  cardSide,
+                  toleranceInPx: curCardInRow.parentOffsetRect.width / 2,
+                  spacerWidthInPx: getSpacerWidthInPx(cardGroupEl, rows, rowIndex, colIndex),
+                  rowGapInPx,
+                  colGapInPx,
+                  allRows: rows,
+                  rowIndex,
+                  colIndex,
+                });
+              }
+              dropZones.push(createDropZone(CardSide.LEFT));
+              if (colIndex === curRow.length - 1) {
+                dropZones.push(createDropZone(CardSide.RIGHT));
+              }
             });
           });
 
@@ -324,6 +342,10 @@
             init();
           }
         }, 200);
+
+        function insertAdjacentElement(refEl, newEl, cardSide) {
+          refEl.insertAdjacentElement(cardSide === CardSide.LEFT ? 'beforebegin' : 'afterend', newEl);
+        }
 
         // NOTE(acdvorak): This code assumes:
         // 1. ALL CARDS ARE THE SAME SIZE
@@ -386,16 +408,16 @@
             e.originalEvent.preventDefault();
 
             if (dropZone) {
-              dropZone.adjacentCard.element.insertAdjacentElement('beforebegin', dropZoneEl);
+              insertAdjacentElement(dropZone.adjacentCard.element, dropZoneEl, dropZone.cardSide);
               if (dropZone.spacerWidthInPx) {
-                dropZoneEl.insertAdjacentElement('beforebegin', dropSpacerEl);
+                insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
               } else {
                 dropSpacerEl.remove();
               }
 
               const curRow = rows[dropZone.rowIndex];
               curRow.forEach((curCardInRow, curCardInRowColIndex) => {
-                const multiplier = curCardInRowColIndex < dropZone.colIndex ? -1 : +1;
+                const multiplier = dropZone.cardSide === CardSide.RIGHT || curCardInRowColIndex < dropZone.colIndex ? -1 : +1;
                 curCardInRow.offsetX = multiplier * (dropZone.colGapInPx / 2);
               });
             } else {
@@ -412,8 +434,9 @@
             if (dropZone) {
               const adjacentCardEl = dropZone.adjacentCard.element;
               const dragSourceEl = e.originalSource;
+              const cardSide = dropZone.cardSide;
               setTimeout(() => {
-                adjacentCardEl.insertAdjacentElement('beforebegin', dragSourceEl);
+                insertAdjacentElement(adjacentCardEl, dragSourceEl, cardSide);
               });
             }
 
