@@ -237,12 +237,40 @@
             return true;
           }
 
+          // TODO(acdvorak): Refactor this function to be easier to understand.
           isAdjacentToDragSource() {
             const curRow = this.allRows[this.rowIndex];
+            const prevRow = this.allRows[this.rowIndex - 1];
+            const nextRow = this.allRows[this.rowIndex + 1];
+
             const curCard = curRow[this.colIndex];
-            const prevCardInRow = curRow[this.colIndex - 1];
-            const checkPrevCard = this.cardSide === CardSide.LEFT && Boolean(prevCardInRow);
-            return curCard.isDragSource() || (checkPrevCard && prevCardInRow.isDragSource());
+            const prevCardInSameRow = curRow[this.colIndex - 1];
+            const checkPrevCardInSameRow = this.cardSide === CardSide.LEFT && Boolean(prevCardInSameRow);
+
+            // Drop zone and drag source are adjacent in the same row
+            if (curCard.isDragSource() || (checkPrevCardInSameRow && prevCardInSameRow.isDragSource())) {
+              return true;
+            }
+
+            const ltr = isLTR(curCard.element.parentNode);
+
+            // LTR: User dragged first card in row (N) to after last card in row (N - 1).
+            if (nextRow && this.colIndex === (ltr ? curRow.length - 1 : 0)) {
+              const nextCardInNextRow = nextRow[ltr ? 0 : nextRow.length - 1];
+              if (nextCardInNextRow.isDragSource()) {
+                return true;
+              }
+            }
+
+            // LTR: User dragged last card in row (N) to before first card in row (N + 1).
+            if (prevRow && this.colIndex === (ltr ? 0 : curRow.length - 1)) {
+              const prevCardInPrevRow = prevRow[ltr ? prevRow.length - 1 : 0];
+              if (prevCardInPrevRow.isDragSource()) {
+                return true;
+              }
+            }
+
+            return false;
           }
         }
 
