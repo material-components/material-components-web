@@ -15,7 +15,6 @@
  */
 
 import {assert} from 'chai';
-import bel from 'bel';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';

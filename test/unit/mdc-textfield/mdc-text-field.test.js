@@ -206,7 +206,7 @@ test('#adapter.labelHasClass returns true if the label element has the class', (
 });
 
 test('#adapter.labelHasClass returns false if the label element does not have the class', () => {
-  const {root, component} = setupTest();
+  const {component} = setupTest();
   assert.isNotOk(component.getDefaultFoundation().adapter_.labelHasClass('foo'));
 });
 
