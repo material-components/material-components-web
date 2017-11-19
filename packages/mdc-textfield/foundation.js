@@ -161,7 +161,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   /**
    * Activates the text field focus state.
    */
-  activateFocus_() {
+  activateFocus() {
     const {FOCUSED, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     this.isFocused_ = true;
     this.updateLabelFloat_();
