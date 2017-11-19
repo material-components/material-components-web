@@ -127,7 +127,7 @@ test('#seValue updates the value property of the input', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
     value: '',
-    checkValidity: () => true
+    checkValidity: () => true,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.setValue('new value');
@@ -139,7 +139,7 @@ test('#seValue adds mdc-text-field__label--float-above when changing value ' +
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
     value: '',
-    checkValidity: () => true
+    checkValidity: () => true,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
@@ -153,7 +153,7 @@ test('#seValue does not add mdc-text-field__label--float-above when changing val
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
     value: 'old value',
-    checkValidity: () => true
+    checkValidity: () => true,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
@@ -167,7 +167,7 @@ test('#seValue removes mdc-text-field__label--float-above when changing value ' 
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
     value: 'old value',
-    checkValidity: () => true
+    checkValidity: () => true,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
@@ -180,7 +180,7 @@ test('#seValue does not remove mdc-text-field__label--float-above when changing 
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
     value: '',
-    checkValidity: () => true
+    checkValidity: () => true,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
@@ -193,7 +193,7 @@ test('#seValue adds mdc-text-field--invalid if custom validity is false and ' +
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
     value: null,
-    checkValidity: () => false
+    checkValidity: () => false,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.setValue('value');
@@ -204,8 +204,8 @@ test('#seValue removes mdc-text-field--invalid if custom validity is false and '
      'input.checkValidity() returns true', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
-   value: null,
-   checkValidity: () => true
+    value: null,
+    checkValidity: () => true,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.setValue('value');
@@ -216,8 +216,8 @@ test('#setValue adds mdc-text-field__label--shake if input is focused and ' +
      'input.checkValidity() returns false', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
-   value: null,
-   checkValidity: () => false
+    value: null,
+    checkValidity: () => false,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.activateFocus();
@@ -229,8 +229,8 @@ test('#setValue does not add mdc-text-field__label--shake if input is not focuse
      'input.checkValidity() returns false', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
-   value: null,
-   checkValidity: () => false
+    value: null,
+    checkValidity: () => false,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.setValue('value');
@@ -240,8 +240,8 @@ test('#setValue does not add mdc-text-field__label--shake if input is not focuse
 test('#setValue does not add mdc-text-field__label--shake when input.checkValidity() returns true', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {
-   value: null,
-   checkValidity: () => true
+    value: null,
+    checkValidity: () => true,
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.setValue('value');
