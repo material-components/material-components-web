@@ -210,6 +210,12 @@ test('#adapter.labelHasClass returns false if the label element does not have th
   assert.isNotOk(component.getDefaultFoundation().adapter_.labelHasClass('foo'));
 });
 
+test('#adapter.labelHasClass returns false if the label element does not exist', () => {
+  const {root, component} = setupTest();
+  root.removeChild(root.querySelector('.mdc-text-field__label'));
+  assert.isNotOk(component.getDefaultFoundation().adapter_.labelHasClass('foo'));
+});
+
 test('#adapter.registerInputInteractionHandler adds a handler to the input element for a given event', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-text-field__input');

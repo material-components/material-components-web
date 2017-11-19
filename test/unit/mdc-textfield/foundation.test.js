@@ -123,6 +123,131 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
+test('#seValue updates the value property of the input', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+    value: '',
+    checkValidity: () => true
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.setValue('new value');
+  assert.equal(nativeInput.value, 'new value');
+});
+
+test('#seValue adds mdc-text-field__label--float-above when changing value ' +
+     'from empty to non-empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+    value: '',
+    checkValidity: () => true
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+  foundation.setValue('new value');
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+});
+
+test('#seValue does not add mdc-text-field__label--float-above when changing value ' +
+     'from non-empty to non-empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+    value: 'old value',
+    checkValidity: () => true
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+  foundation.setValue('new value');
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+});
+
+test('#seValue removes mdc-text-field__label--float-above when changing value ' +
+     'from non-empty to empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+    value: 'old value',
+    checkValidity: () => true
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  foundation.setValue('');
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+});
+
+test('#seValue does not remove mdc-text-field__label--float-above when changing value ' +
+     'from empty to empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+    value: '',
+    checkValidity: () => true
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  foundation.setValue('');
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#seValue adds mdc-text-field--invalid if custom validity is false and ' +
+     'input.checkValidity() returns false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+    value: null,
+    checkValidity: () => false
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.setValue('value');
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+});
+
+test('#seValue removes mdc-text-field--invalid if custom validity is false and ' +
+     'input.checkValidity() returns true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+   value: null,
+   checkValidity: () => true
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.setValue('value');
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+});
+
+test('#setValue adds mdc-text-field__label--shake if input is focused and ' +
+     'input.checkValidity() returns false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+   value: null,
+   checkValidity: () => false
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.activateFocus();
+  foundation.setValue('value');
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_SHAKE));
+});
+
+test('#setValue does not add mdc-text-field__label--shake if input is not focused and ' +
+     'input.checkValidity() returns false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+   value: null,
+   checkValidity: () => false
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.setValue('value');
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_SHAKE), {times: 0});
+});
+
+test('#setValue does not add mdc-text-field__label--shake when input.checkValidity() returns true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+   value: null,
+   checkValidity: () => true
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.setValue('value');
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_SHAKE), {times: 0});
+});
+
 test('#init adds mdc-text-field--upgraded class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
@@ -178,6 +303,18 @@ test('#init adds mdc-text-field__label--float-above class if the input contains 
 
 test('#init does not add mdc-text-field__label--float-above class if the input does not contain a value', () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    value: '',
+    disabled: false,
+    checkValidity: () => true,
+  });
+  foundation.init();
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#init does not add mdc-text-field__label--float-above class if it already exists', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.labelHasClass(cssClasses.LABEL_FLOAT_ABOVE)).thenReturn(true);
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: '',
     disabled: false,
