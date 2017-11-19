@@ -99,8 +99,11 @@ test('#destroy accounts for ripple nullability', () => {
   assert.doesNotThrow(() => component.destroy());
 });
 
-function setupTest() {
+function setupTest({noLabel = false} = {}) {
   const root = getFixture();
+  if (noLabel) {
+    root.removeChild(root.querySelector('.mdc-text-field__label'));
+  }
   const icon = root.querySelector('.mdc-text-field__icon');
   const bottomLine = new FakeBottomLine();
   const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el), () => bottomLine);
@@ -179,8 +182,7 @@ test('#adapter.addClassToLabel adds a class to the label element', () => {
 });
 
 test('#adapter.addClassToLabel does nothing if no label element present', () => {
-  const {root, component} = setupTest();
-  root.removeChild(root.querySelector('.mdc-text-field__label'));
+  const {component} = setupTest({noLabel: true});
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToLabel('foo'));
 });
 
@@ -193,8 +195,7 @@ test('#adapter.removeClassFromLabel removes a class from the label element', () 
 });
 
 test('#adapter.removeClassFromLabel does nothing if no label element present', () => {
-  const {root, component} = setupTest();
-  root.removeChild(root.querySelector('.mdc-text-field__label'));
+  const {component} = setupTest({noLabel: true});
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLabel('foo'));
 });
 
@@ -210,9 +211,8 @@ test('#adapter.labelHasClass returns false if the label element does not have th
   assert.isNotOk(component.getDefaultFoundation().adapter_.labelHasClass('foo'));
 });
 
-test('#adapter.labelHasClass returns false if the label element does not exist', () => {
-  const {root, component} = setupTest();
-  root.removeChild(root.querySelector('.mdc-text-field__label'));
+test('#adapter.labelHasClass returns false if no label element present', () => {
+  const {component} = setupTest({noLabel: true});
   assert.isNotOk(component.getDefaultFoundation().adapter_.labelHasClass('foo'));
 });
 
