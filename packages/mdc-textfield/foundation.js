@@ -81,8 +81,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.useCustomValidityChecking_ = false;
     /** @private {boolean} */
     this.labelFloatIsActive_ = false;
-    /** @private {boolean} */
-    this.setValueIsProcessing_ = false;
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -118,7 +116,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     });
     this.adapter_.registerBottomLineEventHandler(
       MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
-    this.installPropertyChangeHooks_();
   }
 
   destroy() {
@@ -134,7 +131,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     });
     this.adapter_.deregisterBottomLineEventHandler(
       MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
-    this.uninstallPropertyChangeHooks_();
   }
 
   /**
@@ -356,14 +352,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {string} value The value of the textfield.
    */
   setValue(value) {
-    this.setValueIsProcessing_ = true;
-
     const input = this.getNativeInput_();
     input.value = value;
     this.updateLabelFloat_();
     this.updateDefaultValidity_();
-
-    this.setValueIsProcessing_ = false;
   }
 
   /**
@@ -388,51 +380,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.useCustomValidityChecking_ = true;
     this.changeValidity_(isValid);
   }
-
-  /** @private */
-  installPropertyChangeHooks_() {
-    const {INPUT_PROTO_PROP} = MDCTextFieldFoundation.strings;
-    const nativeInputElement = this.getNativeInput_();
-    const inputElementProto = Object.getPrototypeOf(nativeInputElement);
-    const desc = Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP);
-
-    // We have to check for this descriptor, since some browsers (Safari) don't support its return.
-    // See: https://bugs.webkit.org/show_bug.cgi?id=49739
-    if (validDescriptor(desc)) {
-      const nativeInputElementDesc = /** @type {!ObjectPropertyDescriptor} */ ({
-        get: desc.get,
-        set: (value) => {
-          if (!this.setValueIsProcessing_) {
-            desc.set.call(nativeInputElement, value);
-            this.setValue(value);
-          }
-        },
-        configurable: desc.configurable,
-        enumerable: desc.enumerable,
-      });
-      Object.defineProperty(nativeInputElement, INPUT_PROTO_PROP, nativeInputElementDesc);
-    }
-  }
-
-  /** @private */
-  uninstallPropertyChangeHooks_() {
-    const {INPUT_PROTO_PROP} = MDCTextFieldFoundation.strings;
-    const nativeInputElement = this.getNativeInput_();
-    const inputElementProto = Object.getPrototypeOf(nativeInputElement);
-    const desc = /** @type {!ObjectPropertyDescriptor} */ (
-      Object.getOwnPropertyDescriptor(inputElementProto, INPUT_PROTO_PROP));
-    if (validDescriptor(desc)) {
-      Object.defineProperty(nativeInputElement, INPUT_PROTO_PROP, desc);
-    }
-  }
-}
-
-/**
- * @param {ObjectPropertyDescriptor|undefined} inputPropDesc
- * @return {boolean}
- */
-function validDescriptor(inputPropDesc) {
-  return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
 
 export default MDCTextFieldFoundation;
