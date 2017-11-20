@@ -375,8 +375,7 @@ with the corresponding id within the document and automatically assign it to thi
 
 ##### MDCTextField.helperTextContent
 
-String. Proxies to the foundation's `getHelperTextContent`/`setHelperTextContent` methods when retrieved/set
-respectively.
+String setter. Proxies to the foundation's `setHelperTextContent` method when set.
 
 ##### MDCTextField.disabled
 
@@ -419,7 +418,6 @@ complicated.
 | setHelperTextAttr(name: string, value: string) => void | Sets an attribute with a given value on the helper text element |
 | removeHelperTextAttr(name: string) => void | Removes an attribute from the helper text element |
 | setHelperTextContent(content: string) => void | Sets the content of the helper text element |
-| getHelperTextContent() => string | Retrieves the content of the helper text element |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
 | getBottomLineFoundation() => MDCTextFieldBottomLineFoundation | Returns the instance of the bottom line element's foundation |
 

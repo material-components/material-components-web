@@ -148,20 +148,9 @@ test('set helperTextContent updates the helper text element content', () => {
 
 test('set helperTextContent has no effect when no helper text element is present', () => {
   const {component} = setupTest();
+  assert.isNull(component.helperTextElement);
   component.helperTextContent = 'foo';
-  assert.equal(component.helperTextContent, '');
-});
-
-test('get helperTextContent retrieves the helper text element content', () => {
-  const {component} = setupTest();
-  const helptext = getHelperText();
-  component.helperTextElement = helptext;
-  assert.equal(component.helperTextContent, 'helper text');
-});
-
-test('get helperTextContent returns an empty string when no helper text element is present', () => {
-  const {component} = setupTest();
-  assert.equal(component.helperTextContent, '');
+  assert.isNull(component.helperTextElement);
 });
 
 test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
@@ -348,19 +337,6 @@ test('#adapter.setHelperTextContent updates the text content of the help text el
   component.helperTextElement = helptext;
   component.getDefaultFoundation().adapter_.setHelperTextContent('foo');
   assert.equal(helptext.textContent, 'foo');
-});
-
-test('#adapter.getHelperTextContent does nothing if no help text element present', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.getHelperTextContent());
-});
-
-test('#adapter.getHelperTextContent retrieves the text content of the help text element', () => {
-  const {component} = setupTest();
-  const helptext = getHelperText();
-  component.helperTextElement = helptext;
-  component.getDefaultFoundation().adapter_.setHelperTextContent('foo');
-  assert.equal(component.getDefaultFoundation().adapter_.getHelperTextContent(), 'foo');
 });
 
 test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {

@@ -62,7 +62,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       setHelperTextAttr: () => {},
       removeHelperTextAttr: () => {},
       setHelperTextContent: () => {},
-      getHelperTextContent: () => {},
       getNativeInput: () => {},
       getBottomLineFoundation: () => {},
     });
@@ -318,13 +317,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
    */
   setHelperTextContent(content) {
     this.adapter_.setHelperTextContent(content);
-  }
-
-  /**
-   * @return {string} The content (if any) of the helper text field
-   */
-  getHelperTextContent() {
-    return this.adapter_.getHelperTextContent();
   }
 
   /**

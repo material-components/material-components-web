@@ -125,13 +125,6 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {string} The textContent of the Helper Text element.
-   */
-  get helperTextContent() {
-    return this.foundation_.getHelperTextContent();
-  }
-
-  /**
    * @param {string} content Sets the Helper Text element textContent.
    */
   set helperTextContent(content) {
@@ -254,12 +247,6 @@ class MDCTextField extends MDCComponent {
         if (this.helperTextElement) {
           this.helperTextElement.textContent = content;
         }
-      },
-      getHelperTextContent: () => {
-        if (!this.helperTextElement) {
-          return '';
-        }
-        return this.helperTextElement.textContent;
       },
     };
   }
