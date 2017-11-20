@@ -55,7 +55,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-elevation($z-value)` | Sets the elevation to the z-space for that given elevation
+`mdc-elevation($z-value, $color, $opacity-boost)` | Sets the elevation to the z-space for that given elevation, and optionally sets the color and/or boosts the opacity of the shadow
 `mdc-elevation-transition($duration, $easing)` | Applies the correct css rules to transition an element between elevations
 
 Variable | Description

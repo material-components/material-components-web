@@ -350,6 +350,8 @@ within `componentDidUpdate`.
 | `addClassToBottomLine(className: string) => void` | Adds a class to the bottom line |
 | `removeClassFromBottomLine(className: string) => void` | Removes a class from the bottom line |
 | `setBottomLineAttr(attr: string, value: string) => void` | Adds an attribute to the bottom line |
+| `addBodyClass(className: string) => void` | Adds a class to the body. |
+| `removeBodyClass(className: string) => void` | Removes a class from the body. |
 | `setAttr(attr: string, value: string) => void` | Sets attribute `attr` to value `value` on the root element. |
 | `rmAttr(attr: string) => void` | Removes attribute `attr` from the root element. |
 | `computeBoundingRect() => {left: number, top: number}` | Returns an object with a shape similar to a `ClientRect` object, with a `left` and `top` property specifying the element's position on the page relative to the viewport. The easiest way to achieve this is by calling `getBoundingClientRect()` on the surface element. |

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <title>Text Field - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/text-field.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      .mdc-theme--dark {
+        --mdc-theme-primary: var(--mdc-theme-secondary, #64dd17);
+        background-color: #303030;
+      }
+
+      input[type="checkbox"]:disabled + label {
+        opacity: .4;
+      }
+
+      .example {
+        margin: 24px;
+        padding: 24px;
+      }
+
+      .hero .mdc-text-field {
+        min-width: 240px;
+      }
+
+      .demo-note {
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #f2f2f2;
+      }
+
+      .custom-text-field-input {
+        width: 300px;
+      }
+
+      .full-width-textarea-example {
+        margin-top: 16px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Text Field</span>
+        </section>
+      </div>
+    </header>
+    <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div class="mdc-text-field">
+          <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
+          <label for="my-text-field" class="mdc-text-field__label">Text Field</label>
+          <div class="mdc-text-field__bottom-line"></div>
+        </div>
+      </section>
+
+      <section class="example"><em>
+        Note that in browsers that support custom properties, we alter theme's primary
+        color when using the dark theme toggles so that the text fields appears more
+        visible.
+      </em></section>
+
+      <section class="example">
+        <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
+        <section id="demo-text-field-wrapper">
+          <div class="mdc-text-field">
+            <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
+            <label for="my-text-field" class="mdc-text-field__label">Email Address</label>
+            <div class="mdc-text-field__bottom-line"></div>
+          </div>
+          <p id="my-text-field-helper-text" class="mdc-text-field-helper-text"
+             aria-hidden="true" style="display:none;">
+            Helper Text (possibly validation message)
+          </p>
+        </section>
+        <div>
+          <input id="disable" type="checkbox">
+          <label for="disable">Disabled</label>
+        </div>
+        <div>
+          <input id="rtl" type="checkbox">
+          <label for="rtl">RTL</label>
+        </div>
+        <div>
+          <input id="dark-theme" type="checkbox">
+          <label for="dark-theme">Dark Theme</label>
+        </div>
+        <div>
+          <input id="dense" type="checkbox">
+          <label for="dense">Dense</label>
+        </div>
+        <div>
+          <input id="required" type="checkbox">
+          <label for="required">Required</label>
+        </div>
+        <div>
+          <input id="use-helper-text" type="checkbox">
+          <label for="use-helper-text">Use Helper Text</label>
+        </div>
+        <div>
+          <input id="persistent-helper-text" type="checkbox" disabled>
+          <label for="persistent-helper-text">Make helper text persistent</label>
+        </div>
+        <div>
+          <input id="helper-text-as-validation" type="checkbox" disabled>
+          <label for="helper-text-as-validation">
+            Use helper text as validation message
+          </label>
+        </div>
+      </section>
+      <section class="example">
+        <h2>Password field with validation</h2>
+        <div class="mdc-text-field">
+          <input required pattern=".{8,}" type="password" class="mdc-text-field__input" id="pw"
+                 aria-controls="pw-validation-msg"
+                 autocomplete="current-password">
+          <label for="pw" class="mdc-text-field__label">Choose password</label>
+          <div class="mdc-text-field__bottom-line"></div>
+        </div>
+        <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg"
+           id="pw-validation-msg">
+          Must be at least 8 characters long
+        </p>
+      </section>
+      <section class="example">
+        <h2>Text Field box</h2>
+        <div id="demo-tf-box-wrapper">
+          <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
+            <input required pattern=".{8,}" type="text" id="tf-box" class="mdc-text-field__input"
+                   aria-controls="name-validation-message">
+            <label for="tf-box" class="mdc-text-field__label">Your Name</label>
+            <div class="mdc-text-field__bottom-line"></div>
+          </div>
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+             id="name-validation-msg">
+            Must be at least 8 characters
+          </p>
+        </div>
+        <div>
+          <input id="box-disable" type="checkbox">
+          <label for="box-disable">Disabled</label>
+        </div>
+        <div>
+          <input id="box-rtl" type="checkbox">
+          <label for="box-rtl">RTL</label>
+        </div>
+        <div>
+          <input id="box-dark-theme" type="checkbox">
+          <label for="box-dark-theme">Dark Theme</label>
+        </div>
+        <div>
+          <input id="box-dense" type="checkbox">
+          <label for="box-dense">Dense</label>
+        </div>
+        <script>
+          setTimeout(function() {
+            var tfEl = document.getElementById('tf-box-example');
+            var tf = new mdc.textField.MDCTextField(tfEl);
+            var wrapper = document.getElementById('demo-tf-box-wrapper');
+
+            document.getElementById('box-disable').addEventListener('change', function(evt) {
+              tf.disabled = evt.target.checked;
+            });
+
+            document.getElementById('box-rtl').addEventListener('change', function(evt) {
+              if (evt.target.checked) {
+                wrapper.setAttribute('dir', 'rtl');
+              } else {
+                wrapper.removeAttribute('dir');
+              }
+              tf.ripple.layout();
+            });
+
+            document.getElementById('box-dark-theme').addEventListener('change', function(evt) {
+              wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+            });
+
+            document.getElementById('box-dense').addEventListener('change', function(evt) {
+              tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+              tf.ripple.layout();
+            });
+          }, 0);
+        </script>
+      </section>
+
+      <section class="example">
+        <h2>Text Field - Leading/Trailing icons</h2>
+        <div class="demo-note">
+          <em>
+            Note: Some implementations utilizing leading and trailing icons may wish to set a width on the
+            <code>input</code> element to achieve uniform widths on text fields.
+            This demo achieves that by adding a custom class name: <code>custom-text-field-input</code> and setting
+            some style:
+          </em>
+          <br />
+          <!--
+            The following text formatting achieves the visual output we are aiming for
+            since the <pre> tag honors whitespace and line breaks.
+          -->
+          <pre>
+<code>.custom-text-field-input {
+  width: 300px;
+}</code></pre>
+        </div>
+        <div id="demo-tf-box-leading-wrapper">
+          <div id="tf-box-leading-example"
+            class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon" data-demo-no-auto-js>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+            <input type="text" id="tf-box-leading" class="mdc-text-field__input custom-text-field-input">
+            <label for="tf-box-leading" class="mdc-text-field__label">Your name</label>
+            <div class="mdc-text-field__bottom-line"></div>
+          </div>
+        </div>
+        <div id="demo-tf-box-trailing-wrapper">
+          <div id="tf-box-trailing-example"
+            class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon" data-demo-no-auto-js>
+            <input type="text" id="tf-box-trailing" class="mdc-text-field__input custom-text-field-input">
+            <label for="tf-box-trailing" class="mdc-text-field__label">Your other name</label>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
+            <div class="mdc-text-field__bottom-line"></div>
+          </div>
+        </div>
+        <div>
+          <input id="box-disable-leading-trailing" type="checkbox">
+          <label for="box-disable-leading-trailing">Disabled</label>
+        </div>
+        <div>
+          <input id="box-rtl-leading-trailing" type="checkbox">
+          <label for="box-rtl-leading-trailing">RTL</label>
+        </div>
+        <div>
+          <input id="box-dark-theme-leading-trailing" type="checkbox">
+          <label for="box-dark-theme-leading-trailing">Dark Theme</label>
+        </div>
+        <div>
+          <input id="box-dense-leading-trailing" type="checkbox">
+          <label for="box-dense-leading-trailing">Dense</label>
+        </div>
+        <div>
+          <input id="box-unclickable-leading-trailing" type="checkbox">
+          <label for="box-unclickable-leading-trailing">Unclickable icons</label>
+        </div>
+      </section>
+
+      <section class="example">
+        <h2>CSS Only Text Field</h2>
+        <div class="mdc-form-field mdc-form-field--align-end">
+          <div class="mdc-text-field" data-demo-no-auto-js>
+            <input type="text" class="mdc-text-field__input" id="css-only-text-field"
+                   placeholder="Name">
+            <div class="mdc-text-field__bottom-line"></div>
+          </div>
+          <label for="css-only-text-field">Your name:</label>
+        </div>
+      </section>
+      <section class="example">
+        <h2>CSS Only Text Field box</h2>
+        <div>
+          <label for="css-only-text-field-box">Your name:</label>
+          <div class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
+            <input type="text" class="mdc-text-field__input" id="css-only-text-field-box"
+                   placeholder="Name">
+          </div>
+        </div>
+      </section>
+      <section class="example">
+        <h2>Preventing FOUC</h2>
+        <div class="mdc-text-field mdc-text-field--upgraded">
+          <input id="fouc" type="text" class="mdc-text-field__input" value="Pre-filled value">
+          <label for="fouc" class="mdc-text-field__label mdc-text-field__label--float-above">
+            Label floating above
+          </label>
+          <div class="mdc-text-field__bottom-line"></div>
+        </div>
+      </section>
+
+      <section class="example">
+        <h2>Textarea</h2>
+        <section id="demo-text-field-textarea-wrapper">
+          <div class="mdc-text-field mdc-text-field--textarea">
+            <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
+            <label for="textarea" class="mdc-text-field__label">Textarea Label</label>
+          </div>
+        </section>
+        <div>
+          <input id="textarea-disable" type="checkbox">
+          <label for="textarea-disable">Disabled</label>
+        </div>
+        <div>
+          <input id="textarea-rtl" type="checkbox">
+          <label for="textarea-rtl">RTL</label>
+        </div>
+        <div>
+          <input id="textarea-dark-theme" type="checkbox">
+          <label for="textarea-dark-theme">Dark Theme</label>
+        </div>
+        <div>
+          <input id="textarea-required" type="checkbox">
+          <label for="textarea-required">Required</label>
+        </div>
+      </section>
+
+      <section class="example">
+        <h2>CSS Only Textarea</h2>
+        <section>
+          <div class="mdc-text-field mdc-text-field--textarea" data-demo-no-auto-js>
+            <textarea id="textarea-css-only" class="mdc-text-field__input" rows="8" cols="40" placeholder="Enter something about yourself"></textarea>
+          </div>
+        </section>
+      </section>
+
+      <section class="example">
+        <h2>Full-Width Text Field and Textarea</h2>
+        <div id="demo-fullwidth-wrapper">
+          <div class="mdc-text-field mdc-text-field--fullwidth">
+            <input class="mdc-text-field__input" type="text" placeholder="Subject" aria-label="Subject">
+            <div class="mdc-text-field__bottom-line"></div>
+          </div>
+          <div class="mdc-text-field mdc-text-field--textarea mdc-text-field--fullwidth full-width-textarea-example">
+            <textarea id="full-width-textarea" class="mdc-text-field__input" rows="8"></textarea>
+            <label for="full-width-textarea" class="mdc-text-field__label">Textarea Label</label>
+          </div>
+        </div>
+        <div>
+          <input type="checkbox" id="fullwidth-disable">
+          <label for="fullwidth-disable">Disabled</label>
+        </div>
+        <div>
+          <input type="checkbox" id="fullwidth-dense">
+          <label for="fullwidth-dense">Dense</label>
+        </div>
+        <div>
+          <input type="checkbox" id="fullwidth-dark-theme">
+          <label for="fullwidth-dark-theme">Dark Theme</label>
+        </div>
+      </section>
+    </main>
+    <script src="/assets/material-components-web.js"></script>
+    <script>
+      (function() {
+        var tfs = document.querySelectorAll(
+          '.mdc-text-field:not([data-demo-no-auto-js])'
+        );
+        for (var i = 0, tf; tf = tfs[i]; i++) {
+          mdc.textField.MDCTextField.attachTo(tf);
+        }
+      })();
+    </script>
+    <script>
+      setTimeout(function() {
+        var tfLeadingEl = document.getElementById('tf-box-leading-example');
+        var tfLeading = new mdc.textField.MDCTextField(tfLeadingEl);
+        var wrapperLeading = document.getElementById('demo-tf-box-leading-wrapper');
+
+        var tfTrailingEl = document.getElementById('tf-box-trailing-example');
+        var tfTrailing = new mdc.textField.MDCTextField(tfTrailingEl);
+        var wrapperTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+
+        var tfIcons = document.querySelectorAll('.mdc-text-field__icon');
+
+        document.getElementById('box-disable-leading-trailing').addEventListener('change', function(evt) {
+          tfLeading.disabled = evt.target.checked;
+          tfTrailing.disabled = evt.target.checked;
+        });
+
+        document.getElementById('box-rtl-leading-trailing').addEventListener('change', function(evt) {
+          if (evt.target.checked) {
+            wrapperLeading.setAttribute('dir', 'rtl');
+            wrapperTrailing.setAttribute('dir', 'rtl');
+          } else {
+            wrapperLeading.removeAttribute('dir');
+            wrapperTrailing.removeAttribute('dir');
+          }
+          tfLeading.ripple.layout();
+          tfTrailing.ripple.layout();
+        });
+
+        document.getElementById('box-dark-theme-leading-trailing').addEventListener('change', function(evt) {
+          wrapperLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
+
+        document.getElementById('box-dense-leading-trailing').addEventListener('change', function(evt) {
+          tfLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfLeading.ripple.layout();
+          tfTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfTrailing.ripple.layout();
+        });
+
+        document.getElementById('box-unclickable-leading-trailing').addEventListener('change', function(evt) {
+          [].slice.call(tfIcons).forEach(function (icon) {
+            icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
+          });
+        });
+
+      }, 0);
+    </script>
+    <script>
+      (function() {
+        var section = document.getElementById('demo-text-field-wrapper');
+        var tfRoot = section.querySelector('.mdc-text-field');
+        var helperText = section.querySelector('.mdc-text-field-helper-text');
+        var tf = new mdc.textField.MDCTextField(tfRoot);
+
+        document.getElementById('disable').addEventListener('change', function(evt) {
+          var target = evt.target;
+          tf.disabled = target.checked;
+        });
+        document.getElementById('rtl').addEventListener('change', function(evt) {
+          var target = evt.target;
+          if (target.checked) {
+            section.setAttribute('dir', 'rtl');
+          } else {
+            section.removeAttribute('dir');
+          }
+        });
+        document.getElementById('dark-theme').addEventListener('change', function(evt) {
+          var target = evt.target;
+          section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
+        document.getElementById('dense').addEventListener('change', function(evt) {
+          var target = evt.target;
+          tfRoot.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+        });
+        document.getElementById('required').addEventListener('change', function(evt) {
+          var target = evt.target;
+          tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
+        });
+        document.getElementById('use-helper-text').addEventListener('change', function(evt) {
+          var target = evt.target;
+          tf.helperTextElement = target.checked ? helperText : null;
+          helperText.style.display = target.checked ? 'block' : 'none';
+          document.getElementById('persistent-helper-text').disabled = !target.checked;
+          document.getElementById('helper-text-as-validation').disabled = !target.checked;
+        });
+        document.getElementById('persistent-helper-text').addEventListener('change', function(evt) {
+          var target = evt.target;
+          helperText.classList[target.checked ? 'add' : 'remove'](
+            'mdc-text-field-helper-text--persistent'
+          );
+        });
+        document.getElementById('helper-text-as-validation').addEventListener('change', function(evt) {
+          var target = evt.target;
+          helperText.classList[target.checked ? 'add' : 'remove'](
+            'mdc-text-field-helper-text--validation-msg'
+          );
+        });
+      })();
+    </script>
+    <script>
+      (function() {
+        var section = document.getElementById('demo-text-field-textarea-wrapper');
+        var tfRoot = section.querySelector('.mdc-text-field');
+        var tf = new mdc.textField.MDCTextField(tfRoot);
+        document.getElementById('textarea-disable').addEventListener('change', function(evt) {
+          var target = evt.target;
+          tf.disabled = target.checked;
+        });
+        document.getElementById('textarea-rtl').addEventListener('change', function(evt) {
+          var target = evt.target;
+          if (target.checked) {
+            section.setAttribute('dir', 'rtl');
+          } else {
+            section.removeAttribute('dir');
+          }
+        });
+        document.getElementById('textarea-dark-theme').addEventListener('change', function(evt) {
+          var target = evt.target;
+          section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
+        document.getElementById('textarea-required').addEventListener('change', function(evt) {
+          var target = evt.target;
+          tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
+        });
+      })();
+    </script>
+    <script charset="utf-8">
+      (function() {
+        var section = document.getElementById('demo-fullwidth-wrapper');
+        var tfRoot = section.querySelector('.mdc-text-field');
+        var tfMultiRoot = section.querySelector('.mdc-text-field--textarea');
+        var tf = new mdc.textField.MDCTextField(tfRoot);
+        var tfMulti = new mdc.textField.MDCTextField(tfMultiRoot);
+
+        document.getElementById('fullwidth-disable').addEventListener('change', function(evt) {
+          var target = evt.target;
+          [tf, tfMulti].forEach(function(component) {
+            component.disabled = target.checked;
+          });
+        });
+
+        document.getElementById('fullwidth-dense').addEventListener('change', function(evt) {
+          var target = evt.target;
+          [tfRoot, tfMultiRoot].forEach(function(el) {
+            el.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          });
+        });
+
+        document.getElementById('fullwidth-dark-theme').addEventListener('change', function(evt) {
+          var target = evt.target;
+          section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
+      })();
+    </script>
+  </body>
+</html>

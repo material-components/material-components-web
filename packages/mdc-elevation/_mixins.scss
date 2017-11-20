@@ -14,25 +14,44 @@
 // limitations under the License.
 //
 
+@import "@material/theme/variables";
 @import "./variables";
 
 /**
- * Applies the correct css rules to an element to give it the elevation specified by $z-value.
+ * Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
  * The $z-value must be between 0 and 24.
+ * If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
+ * $opacity-boost.
  */
-@mixin mdc-elevation($z-value) {
+@mixin mdc-elevation($z-value, $color: $mdc-elevation-baseline-color, $opacity-boost: 0) {
   @if type-of($z-value) != number or not unitless($z-value) {
-    @error "$z-value must be a unitless number";
+    @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }
 
   @if $z-value < 0 or $z-value > 24 {
-    @error "$z-value must be between 0 and 24";
+    @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
   }
 
-  #{$mdc-elevation-property}:
-    #{"#{map-get($mdc-elevation-umbra-map, $z-value)} #{$mdc-elevation-umbra-color}"},
-    #{"#{map-get($mdc-elevation-penumbra-map, $z-value)} #{$mdc-elevation-penumbra-color}"},
-    #{map-get($mdc-elevation-ambient-map, $z-value)} $mdc-elevation-ambient-color;
+  @if map-has-key($mdc-theme-property-values, $color) {
+    $color: map-get($mdc-theme-property-values, $color);
+  }
+
+  @if type-of($color) != color {
+    @error "$color must be a valid color, but '#{$color}' is of type #{type-of($color)}";
+  }
+
+  $umbra-z-value: map-get($mdc-elevation-umbra-map, $z-value);
+  $penumbra-z-value: map-get($mdc-elevation-penumbra-map, $z-value);
+  $ambient-z-value: map-get($mdc-elevation-ambient-map, $z-value);
+
+  $umbra-color: rgba($color, $mdc-elevation-umbra-opacity + $opacity-boost);
+  $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity + $opacity-boost);
+  $ambient-color: rgba($color, $mdc-elevation-ambient-opacity + $opacity-boost);
+
+  box-shadow:
+    #{"#{$umbra-z-value} #{$umbra-color}"},
+    #{"#{$penumbra-z-value} #{$penumbra-color}"},
+    #{$ambient-z-value} $ambient-color;
 }
 
 /**

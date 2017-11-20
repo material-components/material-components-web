@@ -44,6 +44,9 @@ test('default adapter returns a complete adapter implementation', () => {
     'getValueForOptionAtIndex', 'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex',
     'getOffsetTopForOptionAtIndex', 'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler',
     'notifyChange', 'getWindowInnerHeight',
+    'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex', 'getOffsetTopForOptionAtIndex',
+    'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler', 'notifyChange',
+    'getWindowInnerHeight', 'getValueForOptionAtIndex', 'addBodyClass', 'removeBodyClass',
   ]);
 
   const renderingContext = MDCSelectFoundation.defaultAdapter.create2dRenderingContext();

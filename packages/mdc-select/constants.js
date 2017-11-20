@@ -23,6 +23,7 @@ export const cssClasses = {
   OPEN: 'mdc-select--open',
   ROOT: 'mdc-select',
   SURFACE: 'mdc-select__surface',
+  SCROLL_LOCK: 'mdc-select-scroll-lock',
 };
 
 export const strings = {

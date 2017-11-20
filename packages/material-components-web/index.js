@@ -31,7 +31,7 @@ import * as selectionControl from '@material/selection-control';
 import * as slider from '@material/slider';
 import * as snackbar from '@material/snackbar';
 import * as tabs from '@material/tabs';
-import * as textfield from '@material/textfield';
+import * as textField from '@material/textfield';
 import * as toolbar from '@material/toolbar';
 
 // Register all components
@@ -48,7 +48,7 @@ autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab', tabs.MDCTab);
 autoInit.register('MDCTabBar', tabs.MDCTabBar);
-autoInit.register('MDCTextfield', textfield.MDCTextfield);
+autoInit.register('MDCTextField', textField.MDCTextField);
 autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
@@ -73,6 +73,6 @@ export {
   slider,
   snackbar,
   tabs,
-  textfield,
+  textField,
   toolbar,
 };

@@ -375,3 +375,7 @@ $mdc-select-label-padding: 16px;
 // with CSS. Use the font-size rule instead.
 
 // postcss-bem-linter: end
+
+.mdc-select-scroll-lock {
+  overflow: hidden;
+}

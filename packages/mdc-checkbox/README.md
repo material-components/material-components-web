@@ -89,6 +89,8 @@ easily position checkboxes and their labels.
 </div>
 ```
 
+> **Note**: If you are using IE, you need to include a closing `</path>` tag if you wish to avoid console warnings.
+
 #### Disabled Checkboxes
 
 Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class; a `disabled` attribute on the `<input>` element is sufficient.
