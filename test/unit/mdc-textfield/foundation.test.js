@@ -20,6 +20,7 @@ import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
+import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -38,11 +39,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
     'setIconAttr', 'eventTargetHasClass', 'registerTextFieldInteractionHandler',
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
-    'addClassToBottomLine', 'removeClassFromBottomLine',
     'addClassToHelperText', 'removeClassFromHelperText', 'helperTextHasClass',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
-    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
-    'setBottomLineAttr', 'setHelperTextAttr', 'removeHelperTextAttr', 'getNativeInput',
+    'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
+    'setHelperTextAttr', 'removeHelperTextAttr', 'getNativeInput', 'getBottomLineFoundation',
   ]);
 });
 
@@ -140,7 +140,8 @@ test('#init adds event listeners', () => {
   td.verify(mockAdapter.registerInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerBottomLineEventHandler(
+    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -154,7 +155,8 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterBottomLineEventHandler(
+    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#init adds mdc-text-field__label--float-above class if the input contains a value', () => {
@@ -394,26 +396,34 @@ test('on text field click notifies icon event if event target is an icon', () =>
   td.verify(mockAdapter.notifyIconAction());
 });
 
-test('on transition end removes the bottom line active class if this.isFocused_ is false ' +
-  'and transition type is opacity', () => {
+test('on transition end deactivates the bottom line if this.isFocused_ is false', () => {
   const {foundation, mockAdapter} = setupTest();
+  const bottomLine = td.object({
+    deactivate: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
     propertyName: 'opacity',
   };
   let transitionEnd;
 
-  td.when(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    transitionEnd = handler;
-  });
+  td.when(mockAdapter.registerBottomLineEventHandler(td.matchers.isA(String), td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      transitionEnd = handler;
+    });
 
   foundation.init();
   transitionEnd(mockEvt);
 
-  td.verify(mockAdapter.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(bottomLine.deactivate());
 });
 
 test('mousedown on the input sets the bottom line origin', () => {
   const {foundation, mockAdapter} = setupTest();
+  const bottomLine = td.object({
+    setTransformOrigin: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
     target: {
       getBoundingClientRect: () => {
@@ -434,11 +444,15 @@ test('mousedown on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+  td.verify(bottomLine.setTransformOrigin(mockEvt));
 });
 
 test('touchstart on the input sets the bottom line origin', () => {
   const {foundation, mockAdapter} = setupTest();
+  const bottomLine = td.object({
+    setTransformOrigin: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
     target: {
       getBoundingClientRect: () => {
@@ -459,7 +473,7 @@ test('touchstart on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+  td.verify(bottomLine.setTransformOrigin(mockEvt));
 });
 
 test('interacting with text field does not emit custom events if input is disabled', () => {
