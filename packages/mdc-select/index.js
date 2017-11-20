@@ -59,7 +59,7 @@ export class MDCSelect extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    this.ripple_ = MDCRipple.attachTo(this.surface_);
+    this.ripple;
   }
 
   item(index) {
@@ -83,6 +83,7 @@ export class MDCSelect extends MDCComponent {
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
     this.menuEl_ = this.root_.querySelector(strings.MENU_SELECTOR);
     this.menu_ = menuFactory(this.menuEl_);
+
     this.ripple = new MDCRipple(this.surface_);
   }
 

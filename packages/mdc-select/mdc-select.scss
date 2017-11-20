@@ -74,7 +74,7 @@ $mdc-select-label-padding: 16px;
   }
 
   @include mdc-theme-dark(".mdc-select") {
-    @include mdc-select-dd-arrow-svg-bg_("ffffff", .54);
+    @include mdc-select-dd-arrow-svg-bg_("fff", .54);
 
     background-color: rgba(white, .1);
   }
@@ -92,14 +92,18 @@ $mdc-select-label-padding: 16px;
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-primary-on-light);
     @include mdc-rtl-reflexive-box(padding, right, $mdc-select-arrow-padding);
-    @include mdc-ripple-base;
-    @include mdc-ripple-fg((pseudo: "::after"));
-    @include mdc-ripple-bg((pseudo: "::before"));
+    @include mdc-ripple-surface;
+    @include mdc-ripple-color;
+    @include mdc-ripple-radius;
 
-    @include mdc-theme-dark(".mdc-icon-toggle", true) {
-      @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
-      @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
-    }
+    // @include mdc-ripple-base;
+    // @include mdc-ripple-fg((pseudo: "::after"));
+    // @include mdc-ripple-bg((pseudo: "::before"));
+
+    // @include mdc-theme-dark(".mdc-icon-toggle", true) {
+      // @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
+      // @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
+    // }
 
     &::-ms-expand {
       display: none;
@@ -119,20 +123,6 @@ $mdc-select-label-padding: 16px;
     appearance: none;
     overflow: hidden;
 
-    &::before,
-    &::after {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background-color: inherit;
-      opacity: 0;
-      pointer-events: none;
-      content: "";
-    }
-
     &:hover {
       .mdc-select__bottom-line {
         transform: scaleY(2);
@@ -150,8 +140,6 @@ $mdc-select-label-padding: 16px;
     transition: mdc-select-transition(transform);
     color: rgba(black, .6);
     pointer-events: none;
-    // Force the label into its own layer to prevent visible layer promotion adjustments
-    // when the ripple is activated behind it.
     will-change: transform;
 
     @include mdc-theme-dark(".mdc-select") {

@@ -279,7 +279,6 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @private
    */
   handleDocumentClick_(evt) {
-    console.log('menu detected body click');
     let el = evt.target;
 
     while (el && el !== document.body) {
@@ -289,8 +288,10 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       el = el.parentNode;
     }
 
-    this.adapter_.notifyCancel();
-    this.close(evt);
+    if (this.adapter_.hasClass(MDCSimpleMenuFoundation.cssClasses.OPEN)) {
+      this.adapter_.notifyCancel();
+      this.close(evt);
+    }
   };
 
   /**
@@ -473,7 +474,6 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @param {Event=} evt
    */
   close(evt = null) {
-    console.log('closing')
     const targetIsDisabled = evt ?
       this.adapter_.getAttributeForEventTarget(evt.target, strings.ARIA_DISABLED_ATTR) === 'true' :
       false;

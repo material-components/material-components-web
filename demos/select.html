@@ -174,18 +174,20 @@
     </main>
     <script src="/assets/material-components-web.js"></script>
     <script>
-      (function() {
+      setTimeout(function() {
         var MDCSelect = mdc.select.MDCSelect;
         var heroSelect = document.getElementById('hero-js-select');
-        mdc.select.MDCSelect.attachTo(heroSelect);
-      })();
+        var heroSelectComponent = new mdc.select.MDCSelect(heroSelect);
+        heroSelectComponent.ripple.layout();
+      }, 300);
     </script>
     <script>
-      (function() {
+      setTimeout(function() {
         var MDCSelect = mdc.select.MDCSelect;
         var root = document.getElementById('js-select-box');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
-        var select = MDCSelect.attachTo(root);
+        var select = new MDCSelect(root);
+        select.ripple.layout();
 
         root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];
@@ -212,7 +214,7 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-      })();
+      }, 300);
     </script>
   </body>
 </html>

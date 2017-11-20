@@ -92,15 +92,18 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
     this.selectionHandler_ = ({detail}) => {
       const {index} = detail;
+      const shouldRemoveFloatingLabelClass = false;
 
       if (index !== this.selectedIndex_) {
         this.setSelectedIndex(index);
         this.adapter_.notifyChange();
       }
-      this.close_();
+      this.close_(shouldRemoveFloatingLabelClass);
     };
     this.cancelHandler_ = () => {
-      this.close_();
+      const shouldRemoveFloatingLabelClass = true;
+
+      this.close_(true);
     };
   }
 
@@ -251,11 +254,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.setMenuElStyle('transform-origin', `center ${itemOffsetTop}px`);
   }
 
-  close_() {
+  close_(shouldRemoveFloatingLabelClass) {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
-    console.log('closing', this.getSelectedIndex());
-    if (this.getSelectedIndex() === -1) {
+    if (shouldRemoveFloatingLabelClass && this.getSelectedIndex() === -1) {
       this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
     }
     this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
