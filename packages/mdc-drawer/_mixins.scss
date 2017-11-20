@@ -102,44 +102,11 @@
   }
 
   // stylelint-disable selector-no-qualifying-type
-  &--selected.mdc-list-item,
-  &--selected.mdc-list-item .mdc-list-item__start-detail {
+  .mdc-list-item--activated,
+  .mdc-list-item--activated .mdc-list-item__start-detail {
     @include mdc-theme-prop(color, primary);
   }
   // stylelint-enable selector-no-qualifying-type
-
-  /* TODO(sgomes): Revisit when we have interactive lists. */
-  .mdc-list-item::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: mdc-animation-exit-temporary(opacity, 120ms);
-    border-radius: inherit;
-    background: currentColor;
-    opacity: 0;
-    content: "";
-  }
-
-  .mdc-list-item:focus::before {
-    transition: mdc-animation-enter(opacity, 180ms);
-    opacity: .12;
-  }
-
-  .mdc-list-item:active::before {
-    /*
-      Slightly darker value for visual distinction.
-      This allows a full base that has distinct modes.
-      Progressive enhancement with ripples will provide complete button spec alignment.
-    */
-    transition: mdc-animation-enter(opacity, 180ms);
-    opacity: .18;
-  }
-
-  .mdc-list-item:active:focus::before {
-    transition-timing-function: $mdc-animation-standard-curve-timing-function;
-  }
 }
 
 @mixin mdc-drawer-base_() {
