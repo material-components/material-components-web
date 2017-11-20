@@ -37,6 +37,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      addBodyClass: (/* className: string */) => {},
+      removeBodyClass: (/* className: string */) => {},
       setAttr: (/* attr: string, value: string */) => {},
       rmAttr: (/* attr: string */) => {},
       computeBoundingRect: () => /* {left: number, top: number} */ ({left: 0, top: 0}),
@@ -183,6 +185,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   }
 
   open_() {
+    this.disableScroll_();
     const {OPEN} = MDCSelectFoundation.cssClasses;
     const focusIndex = this.selectedIndex_ < 0 ? 0 : this.selectedIndex_;
 
@@ -220,6 +223,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
     this.adapter_.focus();
+    this.enableScroll_();
   }
 
   handleDisplayViaKeyboard_(evt) {
@@ -242,6 +246,14 @@ export default class MDCSelectFoundation extends MDCFoundation {
     if (isOpenerKey) {
       this.displayHandler_(evt);
     }
+  }
+
+  disableScroll_() {
+    this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
+  }
+
+  enableScroll_() {
+    this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
   }
 }
 
