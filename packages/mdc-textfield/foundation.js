@@ -79,8 +79,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.receivedUserInput_ = false;
     /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
-    /** @private {boolean} */
-    this.labelFloatIsActive_ = false;
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -100,9 +98,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.adapter_.addClass(UPGRADED);
 
     // Ensure label does not collide with any pre-filled value.
-    if (this.adapter_.labelHasClass(LABEL_FLOAT_ABOVE)) {
-      this.labelFloatIsActive_ = true;
-    }
     this.updateLabelFloat_();
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -199,14 +194,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   updateLabelFloat_() {
     const input = this.getNativeInput_();
     const {LABEL_FLOAT_ABOVE} = MDCTextFieldFoundation.cssClasses;
+    const labelFloatIsActive = this.adapter_.labelHasClass(LABEL_FLOAT_ABOVE);
 
     if (this.isFocused_ || input.value) {
-      if (!this.labelFloatIsActive_) {
-        this.labelFloatIsActive_ = true;
+      if (!labelFloatIsActive) {
         this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
       }
-    } else if (this.labelFloatIsActive_) {
-      this.labelFloatIsActive_ = false;
+    } else if (labelFloatIsActive) {
       this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
     }
   }
