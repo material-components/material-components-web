@@ -175,6 +175,10 @@ $mdc-ripple-common-styles-emitted_: false !default;
 
   @if $include-activated {
     &--activated {
+      &::before {
+        opacity: map-get($opacity-map, "activated");
+      }
+
       @include mdc-states-hover-opacity(map-get($opacity-map, "activated") + map-get($opacity-map, "hover"));
       @include mdc-states-focus-opacity(map-get($opacity-map, "activated") + map-get($opacity-map, "focus"));
       @include mdc-states-press-opacity(map-get($opacity-map, "activated") + map-get($opacity-map, "press"));
@@ -183,6 +187,10 @@ $mdc-ripple-common-styles-emitted_: false !default;
 
   @if $include-selected {
     &--selected {
+      &::before {
+        opacity: map-get($opacity-map, "selected");
+      }
+
       @include mdc-states-hover-opacity(map-get($opacity-map, "selected") + map-get($opacity-map, "hover"));
       @include mdc-states-focus-opacity(map-get($opacity-map, "selected") + map-get($opacity-map, "focus"));
       @include mdc-states-press-opacity(map-get($opacity-map, "selected") + map-get($opacity-map, "press"));
