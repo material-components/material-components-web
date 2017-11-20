@@ -36,7 +36,8 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel', 'addClassToBottomLine',
-    'removeClassFromBottomLine', 'setBottomLineAttr', 'setAttr', 'rmAttr', 'computeBoundingRect',
+    'removeClassFromBottomLine', 'setBottomLineAttr', 'addBodyClass', 'removeBodyClass',
+    'setAttr', 'rmAttr', 'computeBoundingRect',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'focus', 'makeTabbable',
     'makeUntabbable', 'getComputedStyleValue', 'setStyle', 'create2dRenderingContext',
     'setMenuElStyle', 'setMenuElAttr', 'rmMenuElAttr', 'getMenuElOffsetHeight', 'openMenu',
@@ -44,9 +45,6 @@ test('default adapter returns a complete adapter implementation', () => {
     'getValueForOptionAtIndex', 'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex',
     'getOffsetTopForOptionAtIndex', 'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler',
     'notifyChange', 'getWindowInnerHeight',
-    'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex', 'getOffsetTopForOptionAtIndex',
-    'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler', 'notifyChange',
-    'getWindowInnerHeight', 'getValueForOptionAtIndex', 'addBodyClass', 'removeBodyClass',
   ]);
 
   const renderingContext = MDCSelectFoundation.defaultAdapter.create2dRenderingContext();

@@ -105,7 +105,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.cancelHandler_ = () => {
       const shouldRemoveFloatingLabelClass = true;
 
-      this.close_(true);
+      this.close_(shouldRemoveFloatingLabelClass);
     };
   }
 

@@ -96,15 +96,6 @@ $mdc-select-label-padding: 16px;
     @include mdc-ripple-color;
     @include mdc-ripple-radius;
 
-    // @include mdc-ripple-base;
-    // @include mdc-ripple-fg((pseudo: "::after"));
-    // @include mdc-ripple-bg((pseudo: "::before"));
-
-    // @include mdc-theme-dark(".mdc-icon-toggle", true) {
-      // @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
-      // @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
-    // }
-
     &::-ms-expand {
       display: none;
     }

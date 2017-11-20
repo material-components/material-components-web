@@ -853,11 +853,14 @@ test('on document click cancels and closes the menu', () => {
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
     .thenReturn(false);
 
+  td.when(mockAdapter.hasClass(MDCSimpleMenuFoundation.cssClasses.OPEN)).thenReturn(true);
+
   foundation.init();
   foundation.open();
   mockRaf.flush();
 
   documentClickHandler(mockEvt);
+  mockRaf.flush();
   mockRaf.flush();
 
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));

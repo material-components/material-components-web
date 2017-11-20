@@ -454,7 +454,6 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @param {{focusIndex: ?number}=} options
    */
   open({focusIndex = null} = {}) {
-    console.log('opening');
     this.adapter_.saveFocus();
     this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
     this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
