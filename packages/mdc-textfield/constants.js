@@ -24,7 +24,6 @@ const strings = {
   ICON_SELECTOR: '.mdc-text-field__icon',
   ICON_EVENT: 'MDCTextField:icon',
   BOTTOM_LINE_SELECTOR: '.mdc-text-field__bottom-line',
-  INPUT_PROTO_PROP: 'value',
 };
 
 /** @enum {string} */
