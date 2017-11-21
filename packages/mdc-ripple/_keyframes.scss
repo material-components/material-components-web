@@ -41,14 +41,14 @@
     }
 
     to {
-      opacity: 1;
+      opacity: var(--mdc-ripple-fg-opacity);
     }
   }
 
   @keyframes mdc-ripple-fg-opacity-out {
     from {
       animation-timing-function: linear;
-      opacity: 1;
+      opacity: var(--mdc-ripple-fg-opacity);
     }
 
     to {
