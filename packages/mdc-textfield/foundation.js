@@ -94,7 +94,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   init() {
-    const {UPGRADED, LABEL_FLOAT_ABOVE} = MDCTextFieldFoundation.cssClasses;
+    const {UPGRADED} = MDCTextFieldFoundation.cssClasses;
     this.adapter_.addClass(UPGRADED);
 
     // Ensure label does not collide with any pre-filled value.
