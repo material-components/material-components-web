@@ -557,8 +557,6 @@
                 : dropZone.colIndex === dropZone.lastIndexInCurRow() && dropZone.isRightOfCard();
               if (!isFirstRow && isFirstCardInRow) {
                 insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
-              } else {
-                dropSpacerEl.remove();
               }
 
               const curRow = rows[dropZone.rowIndex];
@@ -567,9 +565,6 @@
                 const multiplier = (isRightSide || curCardInRowColIndex < dropZone.colIndex) ? -1 : +1;
                 curCardInRow.offsetX = multiplier * (dropZone.colGapInPx / 2);
               });
-            } else {
-              dropSpacerEl.remove();
-              dropZoneEl.remove();
             }
           });
 
