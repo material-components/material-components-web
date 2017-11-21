@@ -83,17 +83,13 @@
 
         function getDirectionality(element) {
           const ancestor = element.closest('[dir]');
-          return ancestor && ancestor.getAttribute('dir') === Directionality.RTL
+          return (ancestor && ancestor.getAttribute('dir') === Directionality.RTL)
               ? Directionality.RTL
               : Directionality.LTR;
         }
 
-        function isRTL(element) {
-          return getDirectionality(element) === Directionality.RTL;
-        }
-
         function isLTR(element) {
-          return !isRTL(element);
+          return getDirectionality(element) === Directionality.LTR;
         }
 
         function getClosestCardGroupElement(element) {
