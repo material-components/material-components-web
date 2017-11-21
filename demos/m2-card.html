@@ -238,41 +238,97 @@
           }
 
           // TODO(acdvorak): Refactor this function to be easier to understand.
+          // TODO(acdvorak): Abstract away LTR logic as much as possible. E.g., foo.getNext
           isAdjacentToDragSource() {
-            const isLeftOfCard = this.cardSide === CardSide.LEFT;
-            const isRightOfCard = this.cardSide === CardSide.RIGHT;
-            const curRow = this.allRows[this.rowIndex];
-            const prevRow = this.allRows[this.rowIndex - 1];
-            const nextRow = this.allRows[this.rowIndex + 1];
+            return this.userDraggedAdjacentCardInCurRow() ||
+                   this.userDraggedFirstCardInRowToAfterLastCardInPrevRow() ||
+                   this.userDraggedLastCardInRowToBeforeFirstCardInNextRow();
+          }
 
-            const curCard = curRow[this.colIndex];
-            const prevCardInSameRow = curRow[this.colIndex - 1];
-            const checkPrevCardInSameRow = isLeftOfCard && Boolean(prevCardInSameRow);
-
-            // Drop zone and drag source are adjacent in the same row
-            if (curCard.isDragSource() || (checkPrevCardInSameRow && prevCardInSameRow.isDragSource())) {
+          userDraggedAdjacentCardInCurRow() {
+            if (this.adjacentCard.isDragSource()) {
               return true;
             }
 
-            const ltr = isLTR(curCard.element.parentNode);
-
-            // LTR: User dragged first card in row (N) to after last card in row (N - 1).
-            if (nextRow && this.colIndex === (ltr ? curRow.length - 1 : 0)) {
-              const nextCardInNextRow = nextRow[ltr ? 0 : nextRow.length - 1];
-              if (nextCardInNextRow.isDragSource() && ltr ? isRightOfCard : isLeftOfCard) {
-                return true;
-              }
+            // Handled separately - TODO(acdvorak): Where?
+            if (this.isRightOfCard()) {
+              return false;
             }
 
-            // LTR: User dragged last card in row (N) to before first card in row (N + 1).
-            if (prevRow && this.colIndex === (ltr ? 0 : curRow.length - 1)) {
-              const prevCardInPrevRow = prevRow[ltr ? prevRow.length - 1 : 0];
-              if (prevCardInPrevRow.isDragSource()) {
-                return true;
-              }
-            }
+            const prevCardInSameRow = this.prevCardInSameRow();
+            return Boolean(prevCardInSameRow) && prevCardInSameRow.isDragSource();
+          }
 
-            return false;
+          // LTR: User dragged first card in row (N) to after last card in row (N - 1).
+          userDraggedFirstCardInRowToAfterLastCardInPrevRow() {
+            return this.isAdjacentToLastCardInCurRow() && this.nextCardInNextRowIsDragSource();
+          }
+
+          // LTR: User dragged last card in row (N) to before first card in row (N + 1).
+          userDraggedLastCardInRowToBeforeFirstCardInNextRow() {
+            return this.isAdjacentToFirstCardInNextRow() && this.prevCardInPrevRowIsDragSource();
+          }
+
+          isAdjacentToLastCardInCurRow() {
+            return Boolean(this.nextRow()) && this.colIndex === (this.isLTR() ? this.lastIndexInCurRow() : 0);
+          }
+
+          isAdjacentToFirstCardInNextRow() {
+            return Boolean(this.prevRow()) && this.colIndex === (this.isLTR() ? 0 : this.lastIndexInCurRow());
+          }
+
+          nextCardInNextRowIsDragSource() {
+            const nextCardInNextRow = this.nextCardInNextRow();
+            const nextCardIsDragSource = Boolean(nextCardInNextRow) && nextCardInNextRow.isDragSource();
+            return nextCardIsDragSource && (this.isLTR() ? this.isRightOfCard() : this.isLeftOfCard());
+          }
+
+          prevCardInPrevRowIsDragSource() {
+            const prevCardInPrevRow = this.prevCardInPrevRow();
+            const prevCardIsDragSource = Boolean(prevCardInPrevRow) && prevCardInPrevRow.isDragSource();
+            return prevCardIsDragSource && (this.isLTR() ? this.isLeftOfCard() : this.isRightOfCard());
+          }
+
+          nextCardInNextRow() {
+            const nextRow = this.nextRow();
+            return nextRow ? nextRow[this.isLTR() ? 0 : nextRow.length - 1] : null;
+          }
+
+          prevCardInPrevRow() {
+            const prevRow = this.prevRow();
+            return prevRow ? prevRow[this.isLTR() ? prevRow.length - 1 : 0] : null;
+          }
+
+          prevCardInSameRow() {
+            return this.curRow()[this.colIndex - 1];
+          }
+
+          isRightOfCard() {
+            return this.cardSide === CardSide.RIGHT;
+          }
+
+          isLeftOfCard() {
+            return this.cardSide === CardSide.LEFT;
+          }
+
+          lastIndexInCurRow() {
+            return this.curRow().length - 1;
+          }
+
+          curRow() {
+            return this.allRows[this.rowIndex];
+          }
+
+          nextRow() {
+            return this.allRows[this.rowIndex + 1];
+          }
+
+          prevRow() {
+            return this.allRows[this.rowIndex - 1];
+          }
+
+          isLTR() {
+            return isLTR(this.adjacentCard.element.parentNode);
           }
         }
 
