@@ -112,6 +112,11 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   background-color: #333;
   border-radius: 4px;
   width: $m2-card-baseline-drop-zone-thickness;
+
+  .m2-card-group--column & {
+    width: unset;
+    height: $m2-card-baseline-drop-zone-thickness;
+  }
 }
 
 //
@@ -140,6 +145,13 @@ $demo-drop-zone-thickness: 6px;
 
 .demo-card-group .m2-card-drop-zone {
   width: $demo-drop-zone-thickness;
+  margin: $demo-card-margin 0;
+}
+
+.m2-card-group--column .m2-card-drop-zone {
+  width: unset;
+  height: $demo-drop-zone-thickness;
+  margin: 0 $demo-card-margin;
 }
 
 .demo-card {
