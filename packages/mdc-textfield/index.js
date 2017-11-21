@@ -21,6 +21,7 @@ import {MDCRipple} from '@material/ripple';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter} from './adapter';
 import MDCTextFieldFoundation from './foundation';
+import {MDCTextFieldBottomLine} from './bottom-line';
 
 /**
  * @extends {MDCComponent<!MDCTextFieldFoundation>}
@@ -37,10 +38,10 @@ class MDCTextField extends MDCComponent {
     /** @private {?Element} */
     this.label_;
     /** @type {?Element} */
-    this.helptextElement;
+    this.helperTextElement;
     /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {?Element} */
+    /** @private {?MDCTextFieldBottomLine} */
     this.bottomLine_;
     /** @private {?Element} */
     this.icon_;
@@ -57,20 +58,27 @@ class MDCTextField extends MDCComponent {
   /**
    * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which
    * creates a new MDCRipple.
+   * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
+   * creates a new MDCTextFieldBottomLine.
    */
-  initialize(rippleFactory = (el) => new MDCRipple(el)) {
+  initialize(
+    rippleFactory = (el) => new MDCRipple(el),
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
-    this.helptextElement = null;
+    this.helperTextElement = null;
     this.ripple = null;
     if (this.input_.hasAttribute('aria-controls')) {
-      this.helptextElement = document.getElementById(this.input_.getAttribute('aria-controls'));
+      this.helperTextElement = document.getElementById(this.input_.getAttribute('aria-controls'));
     }
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = rippleFactory(this.root_);
     };
     if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
-      this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+      const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+      if (bottomLineElement) {
+        this.bottomLine_ = bottomLineFactory(bottomLineElement);
+      }
     };
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
       this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
@@ -80,6 +88,9 @@ class MDCTextField extends MDCComponent {
   destroy() {
     if (this.ripple) {
       this.ripple.destroy();
+    }
+    if (this.bottomLine_) {
+      this.bottomLine_.destroy();
     }
     super.destroy();
   }
@@ -136,10 +147,25 @@ class MDCTextField extends MDCComponent {
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
+      registerBottomLineEventHandler: (evtType, handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.listen(evtType, handler);
+        }
+      },
+      deregisterBottomLineEventHandler: (evtType, handler) => {
+        if (this.bottomLine_) {
+          this.bottomLine_.unlisten(evtType, handler);
+        }
+      },
+      getBottomLineFoundation: () => {
+        if (this.bottomLine_) {
+          return this.bottomLine_.foundation;
+        }
+        return undefined;
+      },
     },
     this.getInputAdapterMethods_(),
-    this.getHelptextAdapterMethods_(),
-    this.getBottomLineAdapterMethods_(),
+    this.getHelperTextAdapterMethods_(),
     this.getIconAdapterMethods_())));
   }
 
@@ -153,45 +179,6 @@ class MDCTextField extends MDCComponent {
       setIconAttr: (name, value) => {
         if (this.icon_) {
           this.icon_.setAttribute(name, value);
-        }
-      },
-    };
-  }
-
-  /**
-   * @return {!{
-   *   addClassToBottomLine: function(string): undefined,
-   *   removeClassFromBottomLine: function(string): undefined,
-   *   setBottomLineAttr: function(string, string): undefined,
-   *   registerTransitionEndHandler: function(function()): undefined,
-   *   deregisterTransitionEndHandler: function(function()): undefined,
-   * }}
-   */
-  getBottomLineAdapterMethods_() {
-    return {
-      addClassToBottomLine: (className) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.classList.add(className);
-        }
-      },
-      removeClassFromBottomLine: (className) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.classList.remove(className);
-        }
-      },
-      setBottomLineAttr: (attr, value) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.setAttribute(attr, value);
-        }
-      },
-      registerTransitionEndHandler: (handler) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.addEventListener('transitionend', handler);
-        }
-      },
-      deregisterTransitionEndHandler: (handler) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.removeEventListener('transitionend', handler);
         }
       },
     };
@@ -214,39 +201,39 @@ class MDCTextField extends MDCComponent {
 
   /**
    * @return {!{
-   *   addClassToHelptext: function(string): undefined,
-   *   removeClassFromHelptext: function(string): undefined,
-   *   helptextHasClass: function(string): boolean,
-   *   setHelptextAttr: function(string, string): undefined,
-   *   removeHelptextAttr: function(string): undefined,
+   *   addClassToHelperText: function(string): undefined,
+   *   removeClassFromHelperText: function(string): undefined,
+   *   helperTextHasClass: function(string): boolean,
+   *   setHelperTextAttr: function(string, string): undefined,
+   *   removeHelperTextAttr: function(string): undefined,
    * }}
    */
-  getHelptextAdapterMethods_() {
+  getHelperTextAdapterMethods_() {
     return {
-      addClassToHelptext: (className) => {
-        if (this.helptextElement) {
-          this.helptextElement.classList.add(className);
+      addClassToHelperText: (className) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.classList.add(className);
         }
       },
-      removeClassFromHelptext: (className) => {
-        if (this.helptextElement) {
-          this.helptextElement.classList.remove(className);
+      removeClassFromHelperText: (className) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.classList.remove(className);
         }
       },
-      helptextHasClass: (className) => {
-        if (!this.helptextElement) {
+      helperTextHasClass: (className) => {
+        if (!this.helperTextElement) {
           return false;
         }
-        return this.helptextElement.classList.contains(className);
+        return this.helperTextElement.classList.contains(className);
       },
-      setHelptextAttr: (name, value) => {
-        if (this.helptextElement) {
-          this.helptextElement.setAttribute(name, value);
+      setHelperTextAttr: (name, value) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.setAttribute(name, value);
         }
       },
-      removeHelptextAttr: (name) => {
-        if (this.helptextElement) {
-          this.helptextElement.removeAttribute(name);
+      removeHelperTextAttr: (name) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.removeAttribute(name);
         }
       },
     };

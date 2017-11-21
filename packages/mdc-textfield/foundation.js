@@ -17,6 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import {MDCTextFieldAdapter, NativeInputType} from './adapter';
+import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import {cssClasses, strings} from './constants';
 
 
@@ -51,19 +52,17 @@ class MDCTextFieldFoundation extends MDCFoundation {
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       notifyIconAction: () => {},
-      addClassToBottomLine: () => {},
-      removeClassFromBottomLine: () => {},
-      addClassToHelptext: () => {},
-      removeClassFromHelptext: () => {},
-      helptextHasClass: () => false,
+      addClassToHelperText: () => {},
+      removeClassFromHelperText: () => {},
+      helperTextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
-      registerTransitionEndHandler: () => {},
-      deregisterTransitionEndHandler: () => {},
-      setBottomLineAttr: () => {},
-      setHelptextAttr: () => {},
-      removeHelptextAttr: () => {},
+      registerBottomLineEventHandler: () => {},
+      deregisterBottomLineEventHandler: () => {},
+      setHelperTextAttr: () => {},
+      removeHelperTextAttr: () => {},
       getNativeInput: () => {},
+      getBottomLineFoundation: () => {},
     });
   }
 
@@ -86,11 +85,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.inputInputHandler_ = () => this.autoCompleteFocus();
     /** @private {function(!Event): undefined} */
-    this.setPointerXOffset_ = (evt) => this.animateBottomLine(evt);
+    this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
     /** @private {function(!Event): undefined} */
-    this.transitionEndHandler_ = (evt) => this.handleBottomLineAnimationEnd(evt);
+    this.bottomLineAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
   }
 
   init() {
@@ -109,7 +108,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.registerBottomLineEventHandler(
+      MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   destroy() {
@@ -123,7 +123,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    this.adapter_.deregisterBottomLineEventHandler(
+      MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   /**
@@ -151,27 +152,28 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Activates the text field focus state.
    */
   activateFocus() {
-    const {BOTTOM_LINE_ACTIVE, FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
-    this.adapter_.addClassToBottomLine(BOTTOM_LINE_ACTIVE);
+    const bottomLine = this.adapter_.getBottomLineFoundation();
+    if (bottomLine) {
+      bottomLine.activate();
+    }
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-    this.showHelptext_();
+    this.showHelperText_();
     this.isFocused_ = true;
   }
 
   /**
-   * Animates the bottom line out from the user's click location.
+   * Sets the bottom line's transform origin, so that the bottom line activate
+   * animation will animate out from the user's click location.
    * @param {!Event} evt
    */
-  animateBottomLine(evt) {
-    const targetClientRect = evt.target.getBoundingClientRect();
-    const evtCoords = {x: evt.clientX, y: evt.clientY};
-    const normalizedX = evtCoords.x - targetClientRect.left;
-    const attributeString =
-      `transform-origin: ${normalizedX}px center`;
-
-    this.adapter_.setBottomLineAttr('style', attributeString);
+  setBottomLineTransformOrigin(evt) {
+    const bottomLine = this.adapter_.getBottomLineFoundation();
+    if (bottomLine) {
+      bottomLine.setTransformOrigin(evt);
+    }
   }
 
   /**
@@ -185,27 +187,25 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Makes the help text visible to screen readers.
+   * Makes the helper text visible to screen readers.
    * @private
    */
-  showHelptext_() {
+  showHelperText_() {
     const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.removeHelptextAttr(ARIA_HIDDEN);
+    this.adapter_.removeHelperTextAttr(ARIA_HIDDEN);
   }
 
   /**
-   * Executes when the bottom line's transition animation ends, performing
-   * actions that must wait for animations to finish.
-   * @param {!Event} evt
+   * Handles when bottom line animation ends, performing actions that must wait
+   * for animations to finish.
    */
-  handleBottomLineAnimationEnd(evt) {
-    const {BOTTOM_LINE_ACTIVE} = MDCTextFieldFoundation.cssClasses;
-
+  handleBottomLineAnimationEnd() {
+    const bottomLine = this.adapter_.getBottomLineFoundation();
     // We need to wait for the bottom line to be entirely transparent
     // before removing the class. If we do not, we see the line start to
     // scale down before disappearing
-    if (evt.propertyName === 'opacity' && !this.isFocused_) {
-      this.adapter_.removeClassFromBottomLine(BOTTOM_LINE_ACTIVE);
+    if (!this.isFocused_ && bottomLine) {
+      bottomLine.deactivate();
     }
   }
 
@@ -243,40 +243,40 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
     }
-    this.updateHelptext_(isValid);
+    this.updateHelperText_(isValid);
   }
 
   /**
-   * Updates the state of the Text Field's help text based on validity and
+   * Updates the state of the Text Field's helper text based on validity and
    * the Text Field's options.
    * @param {boolean} isValid
    */
-  updateHelptext_(isValid) {
-    const {HELPTEXT_PERSISTENT, HELPTEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
+  updateHelperText_(isValid) {
+    const {HELPER_TEXT_PERSISTENT, HELPER_TEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
     const {ROLE} = MDCTextFieldFoundation.strings;
-    const helptextIsPersistent = this.adapter_.helptextHasClass(HELPTEXT_PERSISTENT);
-    const helptextIsValidationMsg = this.adapter_.helptextHasClass(HELPTEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helptextIsValidationMsg && !isValid;
+    const helperTextIsPersistent = this.adapter_.helperTextHasClass(HELPER_TEXT_PERSISTENT);
+    const helperTextIsValidationMsg = this.adapter_.helperTextHasClass(HELPER_TEXT_VALIDATION_MSG);
+    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !isValid;
 
     if (validationMsgNeedsDisplay) {
-      this.adapter_.setHelptextAttr(ROLE, 'alert');
+      this.adapter_.setHelperTextAttr(ROLE, 'alert');
     } else {
-      this.adapter_.removeHelptextAttr(ROLE);
+      this.adapter_.removeHelperTextAttr(ROLE);
     }
 
-    if (helptextIsPersistent || validationMsgNeedsDisplay) {
+    if (helperTextIsPersistent || validationMsgNeedsDisplay) {
       return;
     }
-    this.hideHelptext_();
+    this.hideHelperText_();
   }
 
   /**
-   * Hides the help text from screen readers.
+   * Hides the helper text from screen readers.
    * @private
    */
-  hideHelptext_() {
+  hideHelperText_() {
     const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.setHelptextAttr(ARIA_HIDDEN, 'true');
+    this.adapter_.setHelperTextAttr(ARIA_HIDDEN, 'true');
   }
 
   /**
@@ -299,10 +299,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {boolean} disabled Sets the text-field disabled or enabled.
    */
   setDisabled(disabled) {
-    const {DISABLED} = MDCTextFieldFoundation.cssClasses;
+    const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
     this.getNativeInput_().disabled = disabled;
     if (disabled) {
       this.adapter_.addClass(DISABLED);
+      this.adapter_.removeClass(INVALID);
       this.adapter_.setIconAttr('tabindex', '-1');
     } else {
       this.adapter_.removeClass(DISABLED);

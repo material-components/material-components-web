@@ -33,14 +33,13 @@ const cssClasses = {
   DISABLED: 'mdc-text-field--disabled',
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
-  HELPTEXT_PERSISTENT: 'mdc-text-field-helptext--persistent',
-  HELPTEXT_VALIDATION_MSG: 'mdc-text-field-helptext--validation-msg',
+  HELPER_TEXT_PERSISTENT: 'mdc-text-field-helper-text--persistent',
+  HELPER_TEXT_VALIDATION_MSG: 'mdc-text-field-helper-text--validation-msg',
   LABEL_FLOAT_ABOVE: 'mdc-text-field__label--float-above',
   LABEL_SHAKE: 'mdc-text-field__label--shake',
   BOX: 'mdc-text-field--box',
   TEXT_FIELD_ICON: 'mdc-text-field__icon',
   TEXTAREA: 'mdc-text-field--textarea',
-  BOTTOM_LINE_ACTIVE: 'mdc-text-field__bottom-line--active',
 };
 
 export {cssClasses, strings};
