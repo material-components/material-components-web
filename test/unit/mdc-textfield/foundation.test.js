@@ -46,7 +46,11 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTextFieldFoundation);
+const setupTest = () => {
+  const result = setupFoundationTest(MDCTextFieldFoundation);
+  td.when(result.mockAdapter.labelHasClass(cssClasses.LABEL_FLOAT_ABOVE)).thenReturn(false);
+  return result;
+}
 
 test('#constructor sets disabled to false', () => {
   const {foundation} = setupTest();
@@ -158,6 +162,7 @@ test('#seValue does not add mdc-text-field__label--float-above when changing val
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
+  td.when(mockAdapter.labelHasClass(cssClasses.LABEL_FLOAT_ABOVE)).thenReturn(true);
   foundation.setValue('new value');
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
 });
@@ -171,6 +176,7 @@ test('#seValue removes mdc-text-field__label--float-above when changing value ' 
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
+  td.when(mockAdapter.labelHasClass(cssClasses.LABEL_FLOAT_ABOVE)).thenReturn(true);
   foundation.setValue('');
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 1});
 });
@@ -431,8 +437,8 @@ test('on blur removes mdc-text-field--focused class', () => {
 });
 
 test('on blur removes mdc-text-field__label--float-above when no input value present', () => {
-  const {mockAdapter, focus, blur} = setupBlurTest();
-  focus();
+  const {mockAdapter, blur} = setupBlurTest();
+  td.when(mockAdapter.labelHasClass(cssClasses.LABEL_FLOAT_ABOVE)).thenReturn(true);
   blur();
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
