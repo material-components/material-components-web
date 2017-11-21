@@ -28,11 +28,11 @@ MDC Text Fields can include helper text that is useful for providing supplementa
 
 ```html
 <div class="mdc-text-field">
-  <input type="text" id="username" class="mdc-text-field__input" aria-controls="username-helper-text">
+  <input type="text" id="username" class="mdc-text-field__input">
   <label for="username" class="mdc-text-field__label">Username</label>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
-<p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
+<p class="mdc-text-field-helper-text" aria-hidden="true">
   This will be displayed on your public profile
 </p>
 ```
