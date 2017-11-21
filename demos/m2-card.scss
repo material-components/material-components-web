@@ -49,7 +49,6 @@ $m2-card-baseline-drop-zone-thickness: 4px;
 //
 
 .m2-card-group {
-  position: relative; // Needed to calculate spacer width in JS.
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

@@ -96,39 +96,8 @@
           return !isRTL(element);
         }
 
-        // TODO(acdvorak): Don't assume that offsetParent and card-group are the same. Always reference card-group
-        // instead.
-        function getOffsetParent(element) {
-          if (element.offsetParent) {
-            return element.offsetParent;
-          }
-
-          const displayNoneElements = [];
-          const inlineDisplayValues = [];
-
-          // Find all hidden ancestor elements.
-          let curEl = element;
-          while (curEl) {
-            if (getComputedStyle(curEl).display === 'none') {
-              displayNoneElements.push(curEl);
-              inlineDisplayValues.push(curEl.style.display);
-            }
-            curEl = curEl.parentElement;
-          }
-
-          // Temporarily show all hidden ancestor elements.
-          displayNoneElements.forEach((displayNoneEl) => {
-            displayNoneEl.style.display = 'block';
-          });
-
-          const offsetParent = element.offsetParent;
-
-          // Restore `display` to its original value.
-          displayNoneElements.forEach((displayNoneEl, idx) => {
-            displayNoneEl.style.display = inlineDisplayValues[idx];
-          });
-
-          return offsetParent;
+        function getCardGroupEl(element) {
+          return element.closest('.m2-card-group');
         }
 
         function getOffset(elementRect, parentRect) {
@@ -143,10 +112,10 @@
         }
 
         // TODO(acdvorak): Standardize on either element parent or card group for parent offset
-        function getOffsetFromParent(element) {
-          const elementViewportRect = element.getBoundingClientRect();
-          const parentViewportRect = getOffsetParent(element).getBoundingClientRect();
-          return getOffset(elementViewportRect, parentViewportRect);
+        function getOffsetFromParentCardGroup(cardEl) {
+          const cardViewportRect = cardEl.getBoundingClientRect();
+          const cardGroupViewportRect = getCardGroupEl(cardEl).getBoundingClientRect();
+          return getOffset(cardViewportRect, cardGroupViewportRect);
         }
 
         function getPointerPositionInViewport(e) {
@@ -194,7 +163,8 @@
         class Card {
           constructor(element) {
             this.element = element;
-            this.parentOffsetRect = getOffsetFromParent(element);
+            this.parentGroupElement = getCardGroupEl(this.element);
+            this.parentOffsetRect = getOffsetFromParentCardGroup(this.element);
             this.offsetX_ = 0;
           }
 
@@ -269,10 +239,10 @@
           intersectsViewportPoint(viewportPoint) {
             // The properties below need to be recalculated every time the pointer moves to ensure that scrolling while
             // dragging works and uses the correct coordinates.
-            const adjacentCardParentViewportRect = getOffsetParent(this.adjacentCard.element).getBoundingClientRect();
+            const adjacentCardParentGroupViewportRect = this.adjacentCard.parentGroupElement.getBoundingClientRect();
             const parentOffsetPoint = {
-              x: viewportPoint.x - adjacentCardParentViewportRect.left,
-              y: viewportPoint.y - adjacentCardParentViewportRect.top,
+              x: viewportPoint.x - adjacentCardParentGroupViewportRect.left,
+              y: viewportPoint.y - adjacentCardParentGroupViewportRect.top,
             };
             return HitTest.pointIntersectsRect(parentOffsetPoint, this.parentOffsetRect);
           }
@@ -471,7 +441,7 @@
             // TODO(acdvorak): Don't assume px units
             const lastCardMarginRight = parseInt(getComputedStyle(lastCard.element).marginRight, 10);
             const lastCardOffsetRight = lastCard.parentOffsetRect.right + lastCardMarginRight;
-            const offsetParentWidth = getOffsetParent(lastCard.element).getBoundingClientRect().width;
+            const offsetParentWidth = getCardGroupEl(lastCard.element).getBoundingClientRect().width;
             return offsetParentWidth - lastCardOffsetRight;
           } else {
             const lastCard = firstRow[0];
