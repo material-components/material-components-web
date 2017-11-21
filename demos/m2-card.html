@@ -96,6 +96,8 @@
           return !isRTL(element);
         }
 
+        // TODO(acdvorak): Don't assume that offsetParent and card-group are the same. Always reference card-group
+        // instead.
         function getOffsetParent(element) {
           if (element.offsetParent) {
             return element.offsetParent;
@@ -475,8 +477,7 @@
             const lastCard = firstRow[0];
             // TODO(acdvorak): Don't assume px units
             const lastCardMarginLeft = parseInt(getComputedStyle(lastCard.element).marginLeft, 10);
-            const lastCardLeft = lastCard.parentOffsetRect.left - lastCardMarginLeft;
-            return lastCardLeft;
+            return lastCard.parentOffsetRect.left - lastCardMarginLeft;
           }
         }
 

@@ -49,7 +49,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
 //
 
 .m2-card-group {
-  position: relative; // TODO(acdvorak): Figure out how to get rid of this. JS screws up without it.
+  position: relative; // Needed to calculate spacer width in JS.
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
