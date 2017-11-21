@@ -468,109 +468,150 @@
             card.ripple = mdc.ripple.MDCRipple.attachTo(card);
           }
 
-          const draggable = new Draggable.Draggable(document.querySelectorAll('.demo-card-group'), {
-            draggable: '.m2-card',
-            delay: 200,
-            classes: {
-              'container:dragging': 'm2-card-group--dragging',
-              'source:dragging': 'm2-card--drag-source',
-              'mirror': 'm2-card--drag-mirror',
-            },
-          });
+          class CardGroup {
+            constructor(rootEl) {
+              this.rootEl = rootEl;
+              this.draggable = new Draggable.Draggable(this.rootEl, {
+                draggable: '.m2-card',
+                delay: 200,
+                classes: {
+                  'container:dragging': 'm2-card-group--dragging',
+                  'source:dragging': 'm2-card--drag-source',
+                  'mirror': 'm2-card--drag-mirror',
+                },
+              });
+              this.draggable.on('drag:start', (e) => this.handleDragStart_(e));
+              this.draggable.on('drag:move', (e) => this.handleDragMove_(e));
+              this.draggable.on('drag:stop', (e) => this.handleDragStop_(e));
 
-          const dropZoneElDummyParent = document.createElement('div');
-          dropZoneElDummyParent.innerHTML = `
+              const {dropSpacerEl, activeDropZoneEl} = CardGroup.createDropEls();
+              this.dropSpacerEl = dropSpacerEl;
+              this.activeDropZoneEl = activeDropZoneEl;
+
+              this.resetState();
+            }
+
+            static createDropEls() {
+              const dropZoneElDummyParent = document.createElement('div');
+              dropZoneElDummyParent.innerHTML = `
 <div class="m2-card-drop-spacer"></div>
 <div class="m2-card-drop-zone"></div>
           `.trim();
-          const dropSpacerEl = dropZoneElDummyParent.children[0];
-          const dropZoneEl = dropZoneElDummyParent.children[1];
-
-          let colGapInPx;
-          let rowGapInPx;
-          let dropZones;
-          let dropZone;
-          let sourceCardEl;
-          let spacerWidthInPx;
-
-          function resetCardOffsets(cards) {
-            cards.forEach((card) => card.offsetX = 0);
-            dropSpacerEl.remove();
-            dropZoneEl.remove();
-          }
-
-          draggable.on('drag:start', (e) => {
-            const {cardGroupEl, rows} = getCards(e);
-
-            colGapInPx = getColGapInPx(rows);
-            rowGapInPx = getRowGapInPx(rows);
-            dropZones = getDropZones(e, {rowGapInPx, colGapInPx});
-            dropZone = null;
-            sourceCardEl = e.originalSource;
-            spacerWidthInPx = getSpacerWidthInPx(cardGroupEl, rows);
-          });
-
-          draggable.on('drag:move', (e) => {
-            e.originalEvent.preventDefault();
-
-            const {cardGroupEl, cards, rows} = getCards(e);
-            dropZone = getDropZone(e, dropZones);
-
-            resetCardOffsets(cards);
-
-            if (!dropZone) {
-              return;
+              const dropSpacerEl = dropZoneElDummyParent.children[0];
+              const activeDropZoneEl = dropZoneElDummyParent.children[1];
+              return {dropSpacerEl, activeDropZoneEl};
             }
 
-            insertAdjacentElement(dropZone.adjacentCard.element, dropZoneEl, dropZone.cardSide);
-            const isFirstRow = dropZone.rowIndex === 0;
-            const isFirstCardInRow = isLTR(cardGroupEl)
-              ? dropZone.isLeftOfCard() && dropZone.colIndex === 0
-              : dropZone.isRightOfCard() && dropZone.colIndex === dropZone.lastIndexInCurRow();
-            const needsSpacer = !isFirstRow && isFirstCardInRow;
-            if (needsSpacer) {
-              dropSpacerEl.style.width = `${spacerWidthInPx}px`;
-              insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
+            resetState() {
+              this.colGapInPx = null;
+              this.rowGapInPx = null;
+              this.dropZones = null;
+              this.activeDropZone = null;
+              this.sourceCardEl = null;
+              this.spacerWidthInPx = null;
             }
 
-            const curRow = rows[dropZone.rowIndex];
-            curRow.forEach((curCardInRow, curCardInRowColIndex) => {
-              const isRightSide = dropZone.isRightOfCard();
-              const multiplier = (isRightSide || curCardInRowColIndex < dropZone.colIndex) ? -1 : +1;
-              curCardInRow.offsetX = multiplier * (dropZone.colGapInPx / 2);
-            });
-          });
+            isLTR() {
+              return isLTR(this.rootEl);
+            }
 
-          draggable.on('drag:stop', (e) => {
-            const {cards} = getCards(e);
+            handleDragStart_(e) {
+              const {cardGroupEl, rows} = getCards(e);
 
-            resetCardOffsets(cards);
+              const rowGapInPx = this.colGapInPx = getColGapInPx(rows);
+              const colGapInPx = this.rowGapInPx = getRowGapInPx(rows);
+              this.dropZones = getDropZones(e, {rowGapInPx, colGapInPx});
+              this.activeDropZone = null;
+              this.sourceCardEl = e.originalSource;
+              this.spacerWidthInPx = getSpacerWidthInPx(cardGroupEl, rows);
+            }
 
-            if (dropZone) {
-              const adjacentCardEl = dropZone.adjacentCard.element;
-              const dragSourceEl = e.originalSource;
-              const cardSide = dropZone.cardSide;
-              setTimeout(() => {
-                insertAdjacentElement(adjacentCardEl, dragSourceEl, cardSide);
+            handleDragMove_(e) {
+              e.originalEvent.preventDefault();
+
+              const {cardGroupEl, cards, rows} = getCards(e);
+              const dropZone = this.activeDropZone = getDropZone(e, this.dropZones);
+
+              // TODO(acdvorak): Avoid thrashing the DOM, especially on low-end devices.
+              this.resetCardOffsets(cards);
+
+              if (!dropZone) {
+                return;
+              }
+
+              this.insertDropZoneElement(dropZone);
+
+              if (this.needsSpacer(dropZone, cardGroupEl)) {
+                this.insertDropSpacerElement(dropZone);
+              }
+
+              const curRow = rows[dropZone.rowIndex];
+              curRow.forEach((curCardInRow, curCardInRowColIndex) => {
+                this.setCardOffset(curCardInRowColIndex, curCardInRow);
               });
             }
 
-            if (sourceCardEl.ripple) {
-              // TODO(acdvorak): Submit PR to "draggable" repo to pass through originalEvent to drag:stop
-              // TODO(acdvorak): Submit PR to "draggable" repo to listen for ESC key
-//              sourceCardEl.ripple.deactivate(e.originalEvent);
+            handleDragStop_(e) {
+              const {cards} = getCards(e);
 
-              // TODO(acdvorak): Submit PR to fix Ripple so that it doesn't require an event object
-              sourceCardEl.ripple.deactivate({type: 'pointerup'});
+              this.resetCardOffsets(cards);
+
+              if (this.activeDropZone) {
+                const adjacentCardEl = this.activeDropZone.adjacentCard.element;
+                const dragSourceEl = e.originalSource;
+                const cardSide = this.activeDropZone.cardSide;
+                setTimeout(() => {
+                  insertAdjacentElement(adjacentCardEl, dragSourceEl, cardSide);
+                });
+              }
+
+              if (this.sourceCardEl.ripple) {
+                // TODO(acdvorak): Submit PR to "draggable" repo to pass through originalEvent to drag:stop
+                // TODO(acdvorak): Submit PR to "draggable" repo to listen for ESC key
+//              this.sourceCardEl.ripple.deactivate(e.originalEvent);
+
+                // TODO(acdvorak): Submit PR to fix Ripple so that it doesn't require an event object
+                this.sourceCardEl.ripple.deactivate({type: 'pointerup'});
+              }
+
+              this.resetState();
             }
 
-            colGapInPx = null;
-            rowGapInPx = null;
-            dropZones = null;
-            dropZone = null;
-            sourceCardEl = null;
-            spacerWidthInPx = null;
-          });
+            insertDropZoneElement(dropZone) {
+              insertAdjacentElement(dropZone.adjacentCard.element, this.activeDropZoneEl, dropZone.cardSide);
+            }
+
+            insertDropSpacerElement(dropZone) {
+              this.dropSpacerEl.style.width = `${this.spacerWidthInPx}px`;
+              insertAdjacentElement(this.activeDropZoneEl, this.dropSpacerEl, dropZone.cardSide);
+            }
+
+            needsSpacer(dropZone) {
+              // TODO(acdvorak): Create a method for this in DropZone class
+              const isFirstRow = dropZone.rowIndex === 0;
+              // TODO(acdvorak): Create a method for this in DropZone class
+              const isFirstCardInRow = this.isLTR()
+                  ? dropZone.isLeftOfCard() && dropZone.colIndex === 0
+                  : dropZone.isRightOfCard() && dropZone.colIndex === dropZone.lastIndexInCurRow();
+              return !isFirstRow && isFirstCardInRow;
+            }
+
+            setCardOffset(curCardInRowColIndex, curCardInRow) {
+              const isRightSide = this.activeDropZone.isRightOfCard();
+              const multiplier = (isRightSide || curCardInRowColIndex < this.activeDropZone.colIndex) ? -1 : +1;
+              curCardInRow.offsetX = multiplier * (this.activeDropZone.colGapInPx / 2);
+            }
+
+            resetCardOffsets(cards) {
+              cards.forEach((card) => card.offsetX = 0);
+              this.dropSpacerEl.remove();
+              this.activeDropZoneEl.remove();
+            }
+          }
+
+          for (let cardGroupEl of document.querySelectorAll('.demo-card-group')) {
+            new CardGroup(cardGroupEl);
+          }
         }
       })();
     </script>
