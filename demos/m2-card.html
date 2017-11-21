@@ -74,8 +74,8 @@
       (() => {
         /** @enum {string} */
         const CardSide = {
-          LEFT: 'left',
-          RIGHT: 'right',
+          BEFORE: 'before',
+          AFTER: 'after',
         };
 
         const Directionality = {
@@ -127,9 +127,9 @@
         function insertAdjacentElement(refEl, newEl, cardSide) {
           let relPos;
           if (isLTR(refEl.parentNode)) {
-            relPos = cardSide === CardSide.LEFT ? 'beforebegin' : 'afterend';
+            relPos = cardSide === CardSide.BEFORE ? 'beforebegin' : 'afterend';
           } else {
-            relPos = cardSide === CardSide.LEFT ? 'afterend' : 'beforebegin';
+            relPos = cardSide === CardSide.BEFORE ? 'afterend' : 'beforebegin';
           }
           refEl.insertAdjacentElement(relPos, newEl);
         }
@@ -285,7 +285,7 @@
             if (this.isColumn()) {
               parentOffsetRect.left = parentOffsetRect.x = adjacentCardParentOffsetRect.left;
               parentOffsetRect.top = parentOffsetRect.y =
-                (this.isLeftOfCard()
+                (this.isBeforeCard()
                   ? adjacentCardParentOffsetRect.top - this.rowGapInPx
                   : adjacentCardParentOffsetRect.bottom);
               parentOffsetRect.bottom = parentOffsetRect.top + this.rowGapInPx;
@@ -293,7 +293,7 @@
             } else {
               parentOffsetRect.top = parentOffsetRect.y = adjacentCardParentOffsetRect.top;
               parentOffsetRect.left = parentOffsetRect.x =
-                (this.isLeftOfCard()
+                (this.isBeforeCard()
                   ? adjacentCardParentOffsetRect.left - this.colGapInPx
                   : adjacentCardParentOffsetRect.right);
               parentOffsetRect.right = parentOffsetRect.left + this.colGapInPx;
@@ -352,7 +352,7 @@
             // sister drop zone on the *left* side of the same card. As a result, if the user drags the second-to-last
             // card to after the last card in a row, omitting this check would lead to the drag being blocked, which is
             // incorrect behavior.
-            if (this.isRightOfCard()) {
+            if (this.isAfterCard()) {
               return false;
             }
 
@@ -371,13 +371,13 @@
           nextCardInNextRowIsDragSource() {
             const nextCardInNextRow = this.nextCardInNextRow();
             const nextCardIsDragSource = Boolean(nextCardInNextRow) && nextCardInNextRow.isDragSource();
-            return nextCardIsDragSource && (this.isLTR() ? this.isRightOfCard() : this.isLeftOfCard());
+            return nextCardIsDragSource && (this.isLTR() ? this.isAfterCard() : this.isBeforeCard());
           }
 
           prevCardInPrevRowIsDragSource() {
             const prevCardInPrevRow = this.prevCardInPrevRow();
             const prevCardIsDragSource = Boolean(prevCardInPrevRow) && prevCardInPrevRow.isDragSource();
-            return prevCardIsDragSource && (this.isLTR() ? this.isLeftOfCard() : this.isRightOfCard());
+            return prevCardIsDragSource && (this.isLTR() ? this.isBeforeCard() : this.isAfterCard());
           }
 
           nextCardInNextRow() {
@@ -394,12 +394,12 @@
             return this.curRow()[this.colIndex - 1];
           }
 
-          isRightOfCard() {
-            return this.cardSide === CardSide.RIGHT;
+          isBeforeCard() {
+            return this.cardSide === CardSide.BEFORE;
           }
 
-          isLeftOfCard() {
-            return this.cardSide === CardSide.LEFT;
+          isAfterCard() {
+            return this.cardSide === CardSide.AFTER;
           }
 
           lastIndexInCurRow() {
@@ -597,13 +597,13 @@
             const isFirstRow = dropZone.rowIndex === 0;
             // TODO(acdvorak): Create a method for this in DropZone class
             const isFirstCardInRow = this.isLTR()
-                ? dropZone.isLeftOfCard() && dropZone.colIndex === 0
-                : dropZone.isRightOfCard() && dropZone.colIndex === dropZone.lastIndexInCurRow();
+                ? dropZone.isBeforeCard() && dropZone.colIndex === 0
+                : dropZone.isAfterCard() && dropZone.colIndex === dropZone.lastIndexInCurRow();
             return !isFirstRow && isFirstCardInRow;
           }
 
           setCardOffsetY(curRowIndex, card) {
-            const isRightSide = this.activeDropZone.isRightOfCard();
+            const isRightSide = this.activeDropZone.isAfterCard();
             const multiplier = (isRightSide || (curRowIndex < this.activeDropZone.rowIndex)) ? -1 : +1;
             card.offsetX = 0;
             card.offsetY = multiplier * (this.activeDropZone.rowGapInPx / 2);
@@ -618,7 +618,7 @@
           }
 
           setCardOffsetX(curColIndex, card) {
-            const isRightSide = this.activeDropZone.isRightOfCard();
+            const isRightSide = this.activeDropZone.isAfterCard();
             const multiplier = (isRightSide || (curColIndex < this.activeDropZone.colIndex)) ? -1 : +1;
             card.offsetY = 0;
             card.offsetX = multiplier * (this.activeDropZone.colGapInPx / 2);
@@ -688,11 +688,11 @@
                     colIndex,
                   });
                 }
-                dropZones.push(createDropZone(CardSide.LEFT));
+                dropZones.push(createDropZone(CardSide.BEFORE));
                 const addAfterRow = this.isRow() && colIndex === curRow.length - 1;
                 const addAfterCol = this.isColumn() && rowIndex === rows.length - 1;
                 if (addAfterRow || addAfterCol) {
-                  dropZones.push(createDropZone(CardSide.RIGHT));
+                  dropZones.push(createDropZone(CardSide.AFTER));
                 }
               });
             });
