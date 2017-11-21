@@ -131,6 +131,13 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * @param {string} content Sets the Helper Text element textContent.
+   */
+  set helperTextContent(content) {
+    this.foundation_.setHelperTextContent(content);
+  }
+
+  /**
    * @return {!MDCTextFieldFoundation}
    */
   getDefaultFoundation() {

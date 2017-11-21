@@ -272,6 +272,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * @param {string} content Sets the content of the helper text field
+   */
+  setHelperTextContent(content) {
+    this.adapter_.setHelperTextContent(content);
+  }
+
+  /**
    * @return {!Element|!NativeInputType} The native text input from the
    * host environment, or a dummy if none exists.
    * @private
