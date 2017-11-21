@@ -552,10 +552,10 @@
             if (dropZone) {
               insertAdjacentElement(dropZone.adjacentCard.element, dropZoneEl, dropZone.cardSide);
               const isFirstRow = dropZone.rowIndex === 0;
-              const needsSpacer = isLTR(cardGroupEl)
+              const isFirstCardInRow = isLTR(cardGroupEl)
                 ? dropZone.colIndex === 0
                 : dropZone.colIndex === dropZone.lastIndexInCurRow() && dropZone.isRightOfCard();
-              if (!isFirstRow && needsSpacer) {
+              if (!isFirstRow && isFirstCardInRow) {
                 insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
               } else {
                 dropSpacerEl.remove();
