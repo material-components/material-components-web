@@ -264,3 +264,7 @@
 // with CSS. Use the font-size rule instead.
 
 // postcss-bem-linter: end
+
+.mdc-select-scroll-lock {
+  overflow: hidden;
+}
