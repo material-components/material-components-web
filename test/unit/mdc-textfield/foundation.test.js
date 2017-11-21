@@ -50,7 +50,7 @@ const setupTest = () => {
   const result = setupFoundationTest(MDCTextFieldFoundation);
   td.when(result.mockAdapter.labelHasClass(cssClasses.LABEL_FLOAT_ABOVE)).thenReturn(false);
   return result;
-}
+};
 
 test('#constructor sets disabled to false', () => {
   const {foundation} = setupTest();
