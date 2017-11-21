@@ -198,10 +198,10 @@
 
         /** Represents an area of the screen where a draggable card can be dropped. */
         class DropZone {
-          constructor({adjacentCard, cardSide, allRows, rowIndex, colIndex, rowGapInPx, colGapInPx} = {}) {
+          constructor({adjacentCard, cardSide, rows, rowIndex, colIndex, rowGapInPx, colGapInPx} = {}) {
             this.adjacentCard = adjacentCard;
             this.cardSide = cardSide;
-            this.allRows = allRows;
+            this.rows = rows;
             this.rowIndex = rowIndex;
             this.colIndex = colIndex;
             this.colGapInPx = colGapInPx;
@@ -330,15 +330,15 @@
           }
 
           curRow() {
-            return this.allRows[this.rowIndex];
+            return this.rows[this.rowIndex];
           }
 
           nextRow() {
-            return this.allRows[this.rowIndex + 1];
+            return this.rows[this.rowIndex + 1];
           }
 
           prevRow() {
-            return this.allRows[this.rowIndex - 1];
+            return this.rows[this.rowIndex - 1];
           }
 
           isLTR() {
@@ -368,7 +368,7 @@
             rows.push(row);
           });
 
-          return {cardGroupEl, cards, cardEls, rows};
+          return {cardGroupEl, cards, cardEls, rows: rows};
         }
 
         function getDropZones(e, {rowGapInPx, colGapInPx} = {}) {
@@ -383,7 +383,7 @@
                   cardSide,
                   rowGapInPx,
                   colGapInPx,
-                  allRows: rows,
+                  rows,
                   rowIndex,
                   colIndex,
                 });
