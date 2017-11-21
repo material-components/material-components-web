@@ -55,12 +55,6 @@ class FakeBottomLine {
   }
 }
 
-class FakeHelperText {
-  constructor(root) {
-    this.root = root;
-  }
-}
-
 test('#constructor when given a `mdc-text-field--box` element instantiates a ripple on the root element', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
@@ -89,17 +83,6 @@ test('#constructor instantiates a helper text on the element with id specified i
   root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
   const helperText = getHelperTextElement();
   document.body.appendChild(helperText);
-  const component = new MDCTextField(root, undefined, undefined, undefined, (el) => new FakeHelperText(el));
-  assert.equal(component.helperText_.root, helperText);
-  document.body.removeChild(helperText);
-});
-
-test('#constructor input aria-controls specified initializes a default helper text when no helper text' +
-     'factory given', () => {
-  const root = getFixture();
-  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperText = getHelperTextElement();
-  document.body.appendChild(helperText);
   const component = new MDCTextField(root);
   assert.instanceOf(component.helperText_, MDCTextFieldHelperText);
   document.body.removeChild(helperText);
@@ -122,9 +105,8 @@ function setupTest() {
   const root = getFixture();
   const icon = root.querySelector('.mdc-text-field__icon');
   const bottomLine = new FakeBottomLine();
-  const helperText = new FakeHelperText();
-  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el), () => bottomLine, () => helperText);
-  return {root, bottomLine, helperText, icon, component};
+  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el), () => bottomLine);
+  return {root, bottomLine, icon, component};
 }
 
 test('#initialSyncWithDom sets disabled if input element is not disabled', () => {

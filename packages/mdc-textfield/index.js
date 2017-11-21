@@ -61,13 +61,10 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCRipple.
    * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
    * creates a new MDCTextFieldBottomLine.
-   * @param {(function(!Element): !MDCTextFieldHelperText)=} helperTextFactory A function which
-   * creates a new MDCTextFieldHelperText.
    */
   initialize(
     rippleFactory = (el) => new MDCRipple(el),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
-    helperTextFactory = (el) => new MDCTextFieldHelperText(el)) {
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.ripple = null;
@@ -83,7 +80,7 @@ class MDCTextField extends MDCComponent {
     if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
       const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
       if (helperTextElement) {
-        this.helperText_ = helperTextFactory(helperTextElement);
+        this.helperText_ = new MDCTextFieldHelperText(helperTextElement);
       }
     }
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
