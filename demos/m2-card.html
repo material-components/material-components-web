@@ -249,17 +249,8 @@
           }
 
           userDraggedAdjacentCardInCurRow() {
-            if (this.adjacentCard.isDragSource()) {
-              return true;
-            }
-
-            // Handled separately - TODO(acdvorak): Where?
-            if (this.isRightOfCard()) {
-              return false;
-            }
-
-            const prevCardInSameRow = this.prevCardInSameRow();
-            return Boolean(prevCardInSameRow) && prevCardInSameRow.isDragSource();
+            // prevent drag to adjacent left || prevent drag to adjacent right
+            return this.adjacentCard.isDragSource() || this.prevAdjacentCardInSameRowIsDragSource();
           }
 
           // LTR: User dragged first card in row (N) to after last card in row (N - 1).
@@ -272,6 +263,19 @@
           // TODO(acdvorak): It feels like this function (and everything it calls) should belong to a different class.
           userDraggedLastCardInRowToBeforeFirstCardInNextRow() {
             return this.isAdjacentToFirstCardInNextRow() && this.prevCardInPrevRowIsDragSource();
+          }
+
+          prevAdjacentCardInSameRowIsDragSource() {
+            // A drop zone attached to the *right* side of a card will always have the same adjacentCard value as its
+            // sister drop zone on the *left* side of the same card. As a result, if the user drags the second-to-last
+            // card to after the last card in a row, omitting this check would lead to the drag being blocked, which is
+            // incorrect behavior.
+            if (this.isRightOfCard()) {
+              return false;
+            }
+
+            const prevCardInSameRow = this.prevCardInSameRow();
+            return Boolean(prevCardInSameRow) && prevCardInSameRow.isDragSource();
           }
 
           isAdjacentToLastCardInCurRow() {
