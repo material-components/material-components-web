@@ -146,6 +146,48 @@
           return getOffset(elementViewportRect, parentViewportRect);
         }
 
+        function getPointerPositionInViewport(e) {
+          const originalEvent = e.originalEvent;
+          const nativePointerEvent = originalEvent.touches ? originalEvent.touches[0] : originalEvent;
+          return {
+            x: nativePointerEvent.clientX,
+            y: nativePointerEvent.clientY,
+          };
+        }
+
+        function insertAdjacentElement(refEl, newEl, cardSide) {
+          let relPos;
+          if (isLTR(refEl.parentNode)) {
+            relPos = cardSide === CardSide.LEFT ? 'beforebegin' : 'afterend';
+          } else {
+            relPos = cardSide === CardSide.LEFT ? 'afterend' : 'beforebegin';
+          }
+          refEl.insertAdjacentElement(relPos, newEl);
+        }
+
+        class HitTest {
+          static pointIsAboveRect(point, rect) {
+            return point.y < rect.top;
+          }
+          static pointIsBelowRect(point, rect) {
+            return point.y > rect.bottom;
+          }
+          static pointIsLeftOfRect(point, rect) {
+            return point.x < rect.left;
+          }
+          static pointIsRightOfRect(point, rect) {
+            return point.x > rect.right;
+          }
+          static pointIntersectsRect(point, rect) {
+            return !(
+                HitTest.pointIsAboveRect(point, rect) ||
+                HitTest.pointIsBelowRect(point, rect) ||
+                HitTest.pointIsLeftOfRect(point, rect) ||
+                HitTest.pointIsRightOfRect(point, rect)
+            );
+          }
+        }
+
         class Card {
           constructor(element) {
             this.element = element;
@@ -182,69 +224,57 @@
           }
         }
 
-        /** Represents an area where a card can be dropped. */
+        /** Represents an area of the screen where a draggable card can be dropped. */
         class DropZone {
-          // TODO(acdvorak): Rename adjacentCard to something better?
-          constructor({adjacentCard, cardSide, allRows, rowIndex, colIndex, rowGapInPx, colGapInPx,
-                       toleranceInPx = 50} = {}) {
+          constructor({adjacentCard, cardSide, allRows, rowIndex, colIndex, rowGapInPx, colGapInPx} = {}) {
             this.adjacentCard = adjacentCard;
             this.cardSide = cardSide;
             this.allRows = allRows;
             this.rowIndex = rowIndex;
             this.colIndex = colIndex;
-            this.toleranceInPx = toleranceInPx;
             this.colGapInPx = colGapInPx;
             this.rowGapInPx = rowGapInPx;
+            this.horizontalToleranceInPx = this.adjacentCard.parentOffsetRect.width / 2;
+            this.verticalToleranceInPx = this.rowGapInPx / 2;
             this.parentOffsetRect = this.calculateParentOffsetRect();
           }
 
           calculateParentOffsetRect() {
             const adjacentCardParentOffsetRect = this.adjacentCard.parentOffsetRect;
             const parentOffsetRect = {};
-            parentOffsetRect.top = parentOffsetRect.y = adjacentCardParentOffsetRect.top - (this.rowGapInPx / 2);
+
+            parentOffsetRect.top = parentOffsetRect.y = adjacentCardParentOffsetRect.top;
             parentOffsetRect.left = parentOffsetRect.x =
-                this.cardSide === CardSide.RIGHT
-                    ? adjacentCardParentOffsetRect.right
-                    : adjacentCardParentOffsetRect.left - this.colGapInPx;
+              (this.isLeftOfCard()
+                ? adjacentCardParentOffsetRect.left - this.colGapInPx
+                : adjacentCardParentOffsetRect.right);
             parentOffsetRect.right = parentOffsetRect.left + this.colGapInPx;
-            parentOffsetRect.bottom = adjacentCardParentOffsetRect.bottom + (this.rowGapInPx / 2);
+            parentOffsetRect.bottom = adjacentCardParentOffsetRect.bottom;
+
+            // Include tolerances
+            parentOffsetRect.top -= this.verticalToleranceInPx;
+            parentOffsetRect.bottom += this.verticalToleranceInPx;
+            parentOffsetRect.left -= this.horizontalToleranceInPx;
+            parentOffsetRect.right += this.horizontalToleranceInPx;
+
             parentOffsetRect.width = parentOffsetRect.right - parentOffsetRect.left;
             parentOffsetRect.height = parentOffsetRect.bottom - parentOffsetRect.top;
+
             return parentOffsetRect;
           }
 
           intersectsViewportPoint(viewportPoint) {
+            // The properties below need to be recalculated every time the pointer moves to ensure that scrolling while
+            // dragging works and uses the correct coordinates.
             const adjacentCardParentViewportRect = getOffsetParent(this.adjacentCard.element).getBoundingClientRect();
             const parentOffsetPoint = {
               x: viewportPoint.x - adjacentCardParentViewportRect.left,
               y: viewportPoint.y - adjacentCardParentViewportRect.top,
             };
-
-            // Point is above the gap.
-            if (parentOffsetPoint.y < this.parentOffsetRect.top) {
-              return false;
-            }
-
-            // Point is below the gap.
-            if (parentOffsetPoint.y > this.parentOffsetRect.bottom) {
-              return false;
-            }
-
-            // Point is left of the gap.
-            if (parentOffsetPoint.x < this.parentOffsetRect.left - this.toleranceInPx) {
-              return false;
-            }
-
-            // Point is right of the gap.
-            if (parentOffsetPoint.x > this.parentOffsetRect.right + this.toleranceInPx) {
-              return false;
-            }
-
-            return true;
+            return HitTest.pointIntersectsRect(parentOffsetPoint, this.parentOffsetRect);
           }
 
-          // TODO(acdvorak): Refactor this function to be easier to understand.
-          // TODO(acdvorak): Abstract away LTR logic as much as possible. E.g., foo.getNext
+          // TODO(acdvorak): Abstract away LTR logic?
           isAdjacentToDragSource() {
             return this.userDraggedAdjacentCardInCurRow() ||
                    this.userDraggedFirstCardInCurRowToAfterLastCardInPrevRow() ||
@@ -344,6 +374,73 @@
           }
         }
 
+        function getCards(e) {
+          const cardGroupEl = e.originalSource.closest('.m2-card-group');
+          const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.m2-card'));
+          const cards = cardEls
+            .map(Card.create)
+            .filter(Card.isVisible)
+            .sort(Card.orderByCoordinate);
+
+          const rowBuckets = new Map();
+          cards.forEach((card) => {
+            const top = card.parentOffsetRect.top;
+            if (!rowBuckets.has(top)) {
+              rowBuckets.set(top, []);
+            }
+            rowBuckets.get(top).push(card);
+          });
+
+          const rows = [];
+          rowBuckets.forEach((row) => {
+            rows.push(row);
+          });
+
+          return {cardGroupEl, cards, cardEls, rows};
+        }
+
+        function getDropZones(e, {rowGapInPx, colGapInPx} = {}) {
+          const {rows} = getCards(e);
+
+          const dropZones = [];
+          rows.forEach((curRow, rowIndex) => {
+            curRow.forEach((curCardInRow, colIndex) => {
+              function createDropZone(cardSide) {
+                return new DropZone({
+                  adjacentCard: curCardInRow,
+                  cardSide,
+//                  horizontalToleranceInPx: curCardInRow.parentOffsetRect.width / 2,
+//                  verticalToleranceInPx: rowGapInPx / 2,
+                  rowGapInPx,
+                  colGapInPx,
+                  allRows: rows,
+                  rowIndex,
+                  colIndex,
+                });
+              }
+              dropZones.push(createDropZone(CardSide.LEFT));
+              if (colIndex === curRow.length - 1) {
+                dropZones.push(createDropZone(CardSide.RIGHT));
+              }
+            });
+          });
+
+          return dropZones;
+        }
+
+        function getDropZone(e, dropZones) {
+          const pointerPositionInViewport = getPointerPositionInViewport(e);
+          for (let curDropZone of dropZones) {
+            if (curDropZone.intersectsViewportPoint(pointerPositionInViewport)) {
+              if (curDropZone.isAdjacentToDragSource()) {
+                return null;
+              }
+              return curDropZone;
+            }
+          }
+          return null;
+        }
+
         function getColGapInPx(rows) {
           if (rows.length < 1 || rows[0].length < 2) {
             return 0;
@@ -384,97 +481,12 @@
           }
         }
 
-        function getPointerPositionInViewport(e) {
-          const originalEvent = e.originalEvent;
-          const nativePointerEvent = originalEvent.touches ? originalEvent.touches[0] : originalEvent;
-          return {
-            x: nativePointerEvent.clientX,
-            y: nativePointerEvent.clientY,
-          };
-        }
-
-        function getCards(e) {
-          const cardGroupEl = e.originalSource.closest('.m2-card-group');
-          const cardEls = [].slice.call(cardGroupEl.querySelectorAll('.m2-card'));
-          const cards = cardEls
-            .map(Card.create)
-            .filter(Card.isVisible)
-            .sort(Card.orderByCoordinate);
-
-          const rowBuckets = new Map();
-          cards.forEach((card) => {
-            const top = card.parentOffsetRect.top;
-            if (!rowBuckets.has(top)) {
-              rowBuckets.set(top, []);
-            }
-            rowBuckets.get(top).push(card);
-          });
-
-          const rows = [];
-          rowBuckets.forEach((row) => {
-            rows.push(row);
-          });
-
-          return {cardGroupEl, cards, cardEls, rows};
-        }
-
-        function getDropZones(e, {rowGapInPx, colGapInPx} = {}) {
-          const {rows} = getCards(e);
-
-          const dropZones = [];
-          rows.forEach((curRow, rowIndex) => {
-            curRow.forEach((curCardInRow, colIndex) => {
-              function createDropZone(cardSide) {
-                return new DropZone({
-                  adjacentCard: curCardInRow,
-                  cardSide,
-                  toleranceInPx: curCardInRow.parentOffsetRect.width / 2,
-                  rowGapInPx,
-                  colGapInPx,
-                  allRows: rows,
-                  rowIndex,
-                  colIndex,
-                });
-              }
-              dropZones.push(createDropZone(CardSide.LEFT));
-              if (colIndex === curRow.length - 1) {
-                dropZones.push(createDropZone(CardSide.RIGHT));
-              }
-            });
-          });
-
-          return dropZones;
-        }
-
-        function getDropZone(e, dropZones) {
-          const pointerPositionInViewport = getPointerPositionInViewport(e);
-          for (let curDropZone of dropZones) {
-            if (curDropZone.intersectsViewportPoint(pointerPositionInViewport)) {
-              if (curDropZone.isAdjacentToDragSource()) {
-                return null;
-              }
-              return curDropZone;
-            }
-          }
-          return null;
-        }
-
         var interval = setInterval(() => {
           if (getComputedStyle(document.querySelector('.hero')).position === 'relative') {
             clearInterval(interval);
             init();
           }
         }, 200);
-
-        function insertAdjacentElement(refEl, newEl, cardSide) {
-          let relPos;
-          if (isLTR(refEl.parentNode)) {
-            relPos = cardSide === CardSide.LEFT ? 'beforebegin' : 'afterend';
-          } else {
-            relPos = cardSide === CardSide.LEFT ? 'afterend' : 'beforebegin';
-          }
-          refEl.insertAdjacentElement(relPos, newEl);
-        }
 
         // NOTE(acdvorak): This code assumes:
         // 1. ALL CARDS ARE THE SAME SIZE
@@ -542,7 +554,7 @@
               const isFirstRow = dropZone.rowIndex === 0;
               const needsSpacer = isLTR(cardGroupEl)
                 ? dropZone.colIndex === 0
-                : dropZone.colIndex === rows[dropZone.rowIndex].length - 1 && dropZone.cardSide === CardSide.RIGHT;
+                : dropZone.colIndex === rows[dropZone.rowIndex].length - 1 && dropZone.isRightOfCard();
               if (!isFirstRow && needsSpacer) {
                 insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
               } else {
@@ -551,7 +563,7 @@
 
               const curRow = rows[dropZone.rowIndex];
               curRow.forEach((curCardInRow, curCardInRowColIndex) => {
-                const isRightSide = dropZone.cardSide === CardSide.RIGHT;
+                const isRightSide = dropZone.isRightOfCard();
                 const multiplier = isRightSide || curCardInRowColIndex < dropZone.colIndex ? -1 : +1;
                 curCardInRow.offsetX = multiplier * (dropZone.colGapInPx / 2);
               });
