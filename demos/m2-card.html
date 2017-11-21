@@ -96,7 +96,7 @@
           return !isRTL(element);
         }
 
-        function getCardGroupEl(element) {
+        function getClosestCardGroupElement(element) {
           return element.closest('.m2-card-group');
         }
 
@@ -111,11 +111,10 @@
           return offsetRect;
         }
 
-        // TODO(acdvorak): Standardize on either element parent or card group for parent offset
-        function getOffsetFromParentCardGroup(cardEl) {
-          const cardViewportRect = cardEl.getBoundingClientRect();
-          const cardGroupViewportRect = getCardGroupEl(cardEl).getBoundingClientRect();
-          return getOffset(cardViewportRect, cardGroupViewportRect);
+        function getRelativeOffset(el, parent) {
+          const elRect = el.getBoundingClientRect();
+          const parentRect = parent.getBoundingClientRect();
+          return getOffset(elRect, parentRect);
         }
 
         function getPointerPositionInViewport(e) {
@@ -163,8 +162,8 @@
         class Card {
           constructor(element) {
             this.element = element;
-            this.parentGroupElement = getCardGroupEl(this.element);
-            this.parentOffsetRect = getOffsetFromParentCardGroup(this.element);
+            this.parentGroupElement = getClosestCardGroupElement(this.element);
+            this.parentOffsetRect = getRelativeOffset(this.element, this.parentGroupElement);
             this.offsetX_ = 0;
           }
 
@@ -441,7 +440,7 @@
             // TODO(acdvorak): Don't assume px units
             const lastCardMarginRight = parseInt(getComputedStyle(lastCard.element).marginRight, 10);
             const lastCardOffsetRight = lastCard.parentOffsetRect.right + lastCardMarginRight;
-            const offsetParentWidth = getCardGroupEl(lastCard.element).getBoundingClientRect().width;
+            const offsetParentWidth = lastCard.parentGroupElement.getBoundingClientRect().width;
             return offsetParentWidth - lastCardOffsetRight;
           } else {
             const lastCard = firstRow[0];

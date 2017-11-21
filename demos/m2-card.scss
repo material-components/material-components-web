@@ -133,6 +133,7 @@ $demo-drop-zone-thickness: 6px;
 
 .demo-card-group {
   // TODO(acdvorak): Document the need for extra width to accommodate the drop zone
+  // TODO(acdvorak): Add test cases for all width variations
   max-width: (($demo-card-size + ($demo-card-margin * 2)) * $demo-card-cols) + $demo-drop-zone-thickness;
   margin: 32px;
 }
