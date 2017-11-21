@@ -88,12 +88,12 @@
               : Directionality.LTR;
         }
 
-        function isLTR(element) {
-          return getDirectionality(element) === Directionality.LTR;
-        }
-
         function isRTL(element) {
           return getDirectionality(element) === Directionality.RTL;
+        }
+
+        function isLTR(element) {
+          return !isRTL(element);
         }
 
         function getOffsetParent(element) {
@@ -104,6 +104,7 @@
           const displayNoneElements = [];
           const inlineDisplayValues = [];
 
+          // Find all hidden ancestor elements.
           let curEl = element;
           while (curEl) {
             if (getComputedStyle(curEl).display === 'none') {
@@ -113,12 +114,14 @@
             curEl = curEl.parentElement;
           }
 
+          // Temporarily show all hidden ancestor elements.
           displayNoneElements.forEach((displayNoneEl) => {
             displayNoneEl.style.display = 'block';
           });
 
           const offsetParent = element.offsetParent;
 
+          // Restore `display` to its original value.
           displayNoneElements.forEach((displayNoneEl, idx) => {
             displayNoneEl.style.display = inlineDisplayValues[idx];
           });
@@ -260,11 +263,13 @@
           }
 
           // LTR: User dragged first card in row (N) to after last card in row (N - 1).
+          // TODO(acdvorak): It feels like this function (and everything it calls) should belong to a different class.
           userDraggedFirstCardInRowToAfterLastCardInPrevRow() {
             return this.isAdjacentToLastCardInCurRow() && this.nextCardInNextRowIsDragSource();
           }
 
           // LTR: User dragged last card in row (N) to before first card in row (N + 1).
+          // TODO(acdvorak): It feels like this function (and everything it calls) should belong to a different class.
           userDraggedLastCardInRowToBeforeFirstCardInNextRow() {
             return this.isAdjacentToFirstCardInNextRow() && this.prevCardInPrevRowIsDragSource();
           }
