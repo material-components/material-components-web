@@ -210,8 +210,8 @@ details can be configured.
 ### Using ink ripples for interactive lists
 
 MDC List supports adding ripples to `mdc-list-item` elements, for example in the case of a nav menu.
-To add ripples to lists, simply attach a ripple to all list items. Note that this can be easily done
-via `mdc-auto-init` when using the [material-components-web](../material-components-web).
+To add ripples to lists, simply attach a ripple to each list item. Note that this can be easily done
+via `mdc-auto-init` when using [material-components-web](../material-components-web).
 
 ```html
 <nav class="mdc-list">
@@ -241,8 +241,8 @@ via `mdc-auto-init` when using the [material-components-web](../material-compone
 
 ### List Dividers
 
-MDC List contains an `mdc-list-divider` classes which can be used as full-width or inset
-subdivisions either within lists themselves, or event standalone between related groups of content.
+MDC List contains an `mdc-list-divider` class which can be used as full-width or inset
+subdivisions either within lists themselves, or standalone between related groups of content.
 
 To use within lists, simply add the `mdc-list-divider` class to a list item.
 
@@ -262,20 +262,11 @@ To use within lists, simply add the `mdc-list-divider` class to a list item.
 > be included as an item in a list. Note that `separator` is indeed [a valid role](https://w3c.github.io/html/grouping-content.html#the-li-element)
 > for `li` elements.
 
-In order to make separators inset, add a `mdc-list-divider--inset` modifier class to it.
-
-```html
-<ul class="mdc-list">
-  <li class="mdc-list-item">Item 1 - Division 1</li>
-  <li class="mdc-list-item">Item 2 - Division 1</li>
-  <li class="mdc-list-item">Item 3 - Division 1</li>
-  <li role="separator" class="mdc-list-divider mdc-list-divider--inset"></li>
-  <li class="mdc-list-item">Item 1 - Division 2</li>
-  <li class="mdc-list-item">Item 1 - Division 2</li>
-</ul>
-```
+Dividers are designed to span the full width of the list by default (especially useful in the context of drawers and menus).
+To make a divider match the padding of list items, add the `mdc-list-divider--padded` modifier class.
 
 Inset dividers are useful when working with lists which have start details.
+To add an inset divider, also add the `mdc-list-divider--inset` modifier class to the divider element.
 
 ### List Groups
 
