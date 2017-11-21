@@ -42,6 +42,7 @@ $mdc-select-label-padding: 16px;
   position: relative;
   align-items: center;
   justify-content: flex-start;
+  box-sizing: border-box;
   height: 56px;
   border: none;
   border-radius: 4px 4px 0 0;
@@ -51,7 +52,7 @@ $mdc-select-label-padding: 16px;
   cursor: pointer;
   overflow: visible;
 
-  @include mdc-rtl(".mdc-select") {
+  @include mdc-rtl {
     background-position: left 10px center;
   }
 
@@ -92,6 +93,7 @@ $mdc-select-label-padding: 16px;
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-primary-on-light);
     @include mdc-rtl-reflexive-box(padding, right, $mdc-select-arrow-padding);
+    @include mdc-rtl-reflexive-box(padding, left, $mdc-select-label-padding);
     @include mdc-ripple-surface;
     @include mdc-ripple-color;
     @include mdc-ripple-radius;
@@ -105,7 +107,6 @@ $mdc-select-label-padding: 16px;
     flex: 1;
     width: 100%;
     height: 56px;
-    padding-left: $mdc-select-label-padding;
     border: none;
     border-radius: 4px 4px 0 0;
     outline: none;
@@ -135,6 +136,10 @@ $mdc-select-label-padding: 16px;
 
     @include mdc-theme-dark(".mdc-select") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
+
+    @include mdc-rtl(".mdc-select") {
+      transform-origin: right top;
     }
 
     &--float-above {
