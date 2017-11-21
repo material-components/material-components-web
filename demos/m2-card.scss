@@ -49,6 +49,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
 //
 
 .m2-card-group {
+  position: relative; // TODO(acdvorak): Figure out how to get rid of this. JS screws up without it.
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -99,11 +100,13 @@ $m2-card-baseline-drop-zone-thickness: 4px;
 }
 
 .m2-card-drop-spacer {
-  flex-grow: 1;
+  flex-grow: 0;
   flex-shrink: 1;
 
   // TODO(acdvorak): Figure out why this hack is needed to force the element to consume width
-  border: 1px solid transparent;
+  //border: 1px solid transparent;
+
+  // TODO(acdvorak): Document that `width` is set dynamically in JS
 }
 
 .m2-card-drop-zone {

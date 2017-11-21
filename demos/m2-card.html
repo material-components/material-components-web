@@ -140,6 +140,7 @@
           return offsetRect;
         }
 
+        // TODO(acdvorak): Standardize on either element parent or card group for parent offset
         function getOffsetFromParent(element) {
           const elementViewportRect = element.getBoundingClientRect();
           const parentViewportRect = getOffsetParent(element).getBoundingClientRect();
@@ -409,8 +410,6 @@
                 return new DropZone({
                   adjacentCard: curCardInRow,
                   cardSide,
-//                  horizontalToleranceInPx: curCardInRow.parentOffsetRect.width / 2,
-//                  verticalToleranceInPx: rowGapInPx / 2,
                   rowGapInPx,
                   colGapInPx,
                   allRows: rows,
@@ -464,20 +463,20 @@
           }
 
           const firstRow = rows[0];
-          const lastCard = firstRow[firstRow.length - 1];
 
           if (isLTR(cardGroupEl)) {
+            const lastCard = firstRow[firstRow.length - 1];
             // TODO(acdvorak): Don't assume px units
             const lastCardMarginRight = parseInt(getComputedStyle(lastCard.element).marginRight, 10);
-            const lastCardRight = lastCard.parentOffsetRect.right + lastCardMarginRight;
-            const cardGroupRight = cardGroupEl.getBoundingClientRect().right;
-            return cardGroupRight - lastCardRight;
+            const lastCardOffsetRight = lastCard.parentOffsetRect.right + lastCardMarginRight;
+            const offsetParentWidth = getOffsetParent(lastCard.element).getBoundingClientRect().width;
+            return offsetParentWidth - lastCardOffsetRight;
           } else {
+            const lastCard = firstRow[0];
             // TODO(acdvorak): Don't assume px units
             const lastCardMarginLeft = parseInt(getComputedStyle(lastCard.element).marginLeft, 10);
-            const lastCardLeft = lastCard.parentOffsetRect.left + lastCardMarginLeft;
-            const cardGroupLeft = cardGroupEl.getBoundingClientRect().left;
-            return lastCardLeft - cardGroupLeft;
+            const lastCardLeft = lastCard.parentOffsetRect.left - lastCardMarginLeft;
+            return lastCardLeft;
           }
         }
 
@@ -556,6 +555,7 @@
                 ? dropZone.colIndex === 0
                 : dropZone.colIndex === dropZone.lastIndexInCurRow() && dropZone.isRightOfCard();
               if (!isFirstRow && isFirstCardInRow) {
+                dropSpacerEl.style.width = `${spacerWidthInPx}px`;
                 insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
               }
 
