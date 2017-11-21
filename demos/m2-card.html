@@ -511,31 +511,34 @@
           });
 
           draggable.on('drag:move', (e) => {
+            e.originalEvent.preventDefault();
+
             const {cardGroupEl, cards, rows} = getCards(e);
             dropZone = getDropZone(e, dropZones);
 
             resetCardOffsets(cards);
 
-            e.originalEvent.preventDefault();
-
-            if (dropZone) {
-              insertAdjacentElement(dropZone.adjacentCard.element, dropZoneEl, dropZone.cardSide);
-              const isFirstRow = dropZone.rowIndex === 0;
-              const isFirstCardInRow = isLTR(cardGroupEl)
-                ? dropZone.colIndex === 0
-                : dropZone.colIndex === dropZone.lastIndexInCurRow() && dropZone.isRightOfCard();
-              if (!isFirstRow && isFirstCardInRow) {
-                dropSpacerEl.style.width = `${spacerWidthInPx}px`;
-                insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
-              }
-
-              const curRow = rows[dropZone.rowIndex];
-              curRow.forEach((curCardInRow, curCardInRowColIndex) => {
-                const isRightSide = dropZone.isRightOfCard();
-                const multiplier = (isRightSide || curCardInRowColIndex < dropZone.colIndex) ? -1 : +1;
-                curCardInRow.offsetX = multiplier * (dropZone.colGapInPx / 2);
-              });
+            if (!dropZone) {
+              return;
             }
+
+            insertAdjacentElement(dropZone.adjacentCard.element, dropZoneEl, dropZone.cardSide);
+            const isFirstRow = dropZone.rowIndex === 0;
+            const isFirstCardInRow = isLTR(cardGroupEl)
+              ? dropZone.isLeftOfCard() && dropZone.colIndex === 0
+              : dropZone.isRightOfCard() && dropZone.colIndex === dropZone.lastIndexInCurRow();
+            const needsSpacer = !isFirstRow && isFirstCardInRow;
+            if (needsSpacer) {
+              dropSpacerEl.style.width = `${spacerWidthInPx}px`;
+              insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
+            }
+
+            const curRow = rows[dropZone.rowIndex];
+            curRow.forEach((curCardInRow, curCardInRowColIndex) => {
+              const isRightSide = dropZone.isRightOfCard();
+              const multiplier = (isRightSide || curCardInRowColIndex < dropZone.colIndex) ? -1 : +1;
+              curCardInRow.offsetX = multiplier * (dropZone.colGapInPx / 2);
+            });
           });
 
           draggable.on('drag:stop', (e) => {
