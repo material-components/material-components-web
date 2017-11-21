@@ -195,7 +195,10 @@
             this.toleranceInPx = toleranceInPx;
             this.colGapInPx = colGapInPx;
             this.rowGapInPx = rowGapInPx;
+            this.parentOffsetRect = this.calculateParentOffsetRect();
+          }
 
+          calculateParentOffsetRect() {
             const adjacentCardParentOffsetRect = this.adjacentCard.parentOffsetRect;
             const parentOffsetRect = {};
             parentOffsetRect.top = parentOffsetRect.y = adjacentCardParentOffsetRect.top - (this.rowGapInPx / 2);
@@ -207,7 +210,7 @@
             parentOffsetRect.bottom = adjacentCardParentOffsetRect.bottom + (this.rowGapInPx / 2);
             parentOffsetRect.width = parentOffsetRect.right - parentOffsetRect.left;
             parentOffsetRect.height = parentOffsetRect.bottom - parentOffsetRect.top;
-            this.parentOffsetRect = parentOffsetRect;
+            return parentOffsetRect;
           }
 
           intersectsViewportPoint(viewportPoint) {
@@ -244,8 +247,8 @@
           // TODO(acdvorak): Abstract away LTR logic as much as possible. E.g., foo.getNext
           isAdjacentToDragSource() {
             return this.userDraggedAdjacentCardInCurRow() ||
-                   this.userDraggedFirstCardInRowToAfterLastCardInPrevRow() ||
-                   this.userDraggedLastCardInRowToBeforeFirstCardInNextRow();
+                   this.userDraggedFirstCardInCurRowToAfterLastCardInPrevRow() ||
+                   this.userDraggedLastCardInCurRowToBeforeFirstCardInNextRow();
           }
 
           userDraggedAdjacentCardInCurRow() {
@@ -255,13 +258,13 @@
 
           // LTR: User dragged first card in row (N) to after last card in row (N - 1).
           // TODO(acdvorak): It feels like this function (and everything it calls) should belong to a different class.
-          userDraggedFirstCardInRowToAfterLastCardInPrevRow() {
+          userDraggedFirstCardInCurRowToAfterLastCardInPrevRow() {
             return this.isAdjacentToLastCardInCurRow() && this.nextCardInNextRowIsDragSource();
           }
 
           // LTR: User dragged last card in row (N) to before first card in row (N + 1).
           // TODO(acdvorak): It feels like this function (and everything it calls) should belong to a different class.
-          userDraggedLastCardInRowToBeforeFirstCardInNextRow() {
+          userDraggedLastCardInCurRowToBeforeFirstCardInNextRow() {
             return this.isAdjacentToFirstCardInNextRow() && this.prevCardInPrevRowIsDragSource();
           }
 
@@ -279,11 +282,11 @@
           }
 
           isAdjacentToLastCardInCurRow() {
-            return Boolean(this.nextRow()) && this.colIndex === (this.isLTR() ? this.lastIndexInCurRow() : 0);
+            return this.colIndex === (this.isLTR() ? this.lastIndexInCurRow() : 0);
           }
 
           isAdjacentToFirstCardInNextRow() {
-            return Boolean(this.prevRow()) && this.colIndex === (this.isLTR() ? 0 : this.lastIndexInCurRow());
+            return this.colIndex === (this.isLTR() ? 0 : this.lastIndexInCurRow());
           }
 
           nextCardInNextRowIsDragSource() {
