@@ -554,7 +554,7 @@
               const isFirstRow = dropZone.rowIndex === 0;
               const needsSpacer = isLTR(cardGroupEl)
                 ? dropZone.colIndex === 0
-                : dropZone.colIndex === rows[dropZone.rowIndex].length - 1 && dropZone.isRightOfCard();
+                : dropZone.colIndex === dropZone.lastIndexInCurRow() && dropZone.isRightOfCard();
               if (!isFirstRow && needsSpacer) {
                 insertAdjacentElement(dropZoneEl, dropSpacerEl, dropZone.cardSide);
               } else {
