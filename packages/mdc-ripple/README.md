@@ -61,18 +61,37 @@ General notes:
 
 #### Sass API
 
+In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic `mdc-states-color` mixin or all of the advanced `mdc-states` mixins documented below.
+
+Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states-color` specifically) for specific variants (e.g. for flat vs. raised buttons).
+
 These APIs implicitly use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
-All three of the following mixins are mandatory in order to fully style the ripple effect; from that point, it is feasible to further override only the parts necessary (e.g. `mdc-states-color` specifically) for variants of a component.
+
+##### Ripple Mixins
 
 Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Adds base styles for a ripple surface
-`mdc-states-color($color, $opacity-map)` | Adds ripple and state styles for the indicated color, optionally using the specified set of opacities (if unspecified, uses opacities appropriate to the given color)
 `mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
+
+##### Basic States Mixin
+
+Mixin | Description
+--- | ---
+`mdc-states-color($color, $include-focus-within)` | Adds state and ripple styles for the indicated color, deciding opacities based on whether the passed color is light or dark. Optionally includes `::focus-within` selector for focused state of CSS-only components.
+
+##### Advanced States Mixins
+
+Mixin | Description
+--- | ---
+`mdc-states-base-color($color)` | Sets up base state styles using the provided color
+`mdc-states-hover-opacity($opacity)` | Adds styles for hover state using the provided opacity
+`mdc-states-focus-opacity($opacity, $include-focus-within)` | Adds styles for focus state using the provided opacity, optionally including `::focus-within` selector for focused state of CSS-only components (useful when an element under the root node receives focus)
+`mdc-states-press-opacity($opacity)` | Adds styles for press state using the provided opacity
 
 #### Legacy Sass API
 
-The `mdc-ripple-color($color, $opacity)` mixin is deprecated. Use the `mdc-states-color` mixin (documented above) instead, which provides finer control over a component's opacity for different states of user interaction.
+The `mdc-ripple-color($color, $opacity)` mixin is deprecated. Use the basic or advanced states mixins (documented above) instead, which provide finer control over a component's opacity for different states of user interaction.
 
 ### Adding Ripple JS
 
