@@ -241,6 +241,7 @@ rules:
       - if
       - mixin
       - return
+      - warn
   # Disallow "@extend" in scss.
   # http://csswizardry.com/2016/02/mixins-better-for-performance/
   # http://vanseodesign.com/css/sass-mixin-or-extend/
@@ -259,7 +260,7 @@ rules:
   selector-no-qualifying-type: true
   # In general, we should not be modifying elements within our components, since we can't
   # predict the use cases in which users would add a certain type of element into a component.
-  selector-max-type: 
+  selector-max-type:
     - 0
     - ignoreTypes:
         - /fieldset/

@@ -22,11 +22,11 @@
 @import "./variables";
 
 @mixin mdc-button-filled-accessible($container-fill-color) {
-  $light-or-dark: mdc-theme-light-or-dark($container-fill-color);
+  $fill-tone: mdc-theme-tone($container-fill-color);
 
   @include mdc-button-container-fill-color($container-fill-color);
 
-  @if ($light-or-dark == "light") {
+  @if ($fill-tone == "dark") {
     @include mdc-button-ink-color(text-primary-on-dark);
     @include mdc-ripple-color(text-primary-on-dark, $mdc-filled-button-ripple-opacity);
   } @else {

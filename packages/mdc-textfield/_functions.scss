@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-@import "./common";
-@import "../packages/mdc-form-field/mdc-form-field";
-@import "../packages/mdc-textfield/mdc-textfield";
-@import "../packages/mdc-typography/mdc-typography";
+@function mdc-text-field-transition($property) {
+  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
+}
