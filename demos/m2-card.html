@@ -64,6 +64,8 @@
           <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">9</div>
         </div>
       </section>
+
+      <p>Fully supports RTL. Automatically switches to "column mode" for narrow screens (e.g., smartphones), with horizontal drop zones instead of vertical.</p>
     </main>
 
     <script src="/assets/material-components-web.js"></script>
@@ -132,6 +134,52 @@
           refEl.insertAdjacentElement(relPos, newEl);
         }
 
+        // From https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
+        const optimizedResize = (function() {
+          const callbacks = [];
+          let running = false;
+          let timer = null;
+
+          // fired on resize event
+          function handleResize(e) {
+            if (!running) {
+              running = true;
+              const fps = 2;
+              const delayInMs = Math.ceil(1000/fps);
+              clearTimeout(timer);
+              timer = setTimeout(() => window.requestAnimationFrame(() => runCallbacks(e)), delayInMs);
+            }
+          }
+
+          // run the actual callbacks
+          function runCallbacks(e) {
+            callbacks.forEach((callback) => {
+              callback(e);
+            });
+            running = false;
+          }
+
+          // adds callback to loop
+          function addCallback(callback) {
+            if (callback) {
+              callbacks.push(callback);
+            }
+          }
+
+          return {
+            // public method to add additional callback
+            add: function(callback) {
+              if (!callbacks.length) {
+                window.addEventListener('resize', handleResize, {
+                  capture: true,
+                  passive: true
+                });
+              }
+              addCallback(callback);
+            }
+          }
+        }());
+
         class HitTest {
           static pointIsAboveRect(point, rect) {
             return point.y < rect.top;
@@ -163,6 +211,12 @@
             this.parentOffsetRect = getRelativeOffset(this.element, this.parentGroupElement);
             this.offsetX_ = 0;
             this.offsetY_ = 0;
+          }
+
+          clearOffsets() {
+            this.offsetX_ = 0;
+            this.offsetY_ = 0;
+            this.element.style.transform = '';
           }
 
           get offsetX() {
@@ -388,6 +442,9 @@
             this.draggable.on('drag:move', (e) => this.handleDragMove_(e));
             this.draggable.on('drag:stop', (e) => this.handleDragStop_(e));
 
+            // TODO(acdvorak): Remove handler in destruct method
+            optimizedResize.add((e) => this.handleResize_(e));
+
             const {dropSpacerEl, activeDropZoneEl} = CardGroup.createDropEls();
             this.dropSpacerEl = dropSpacerEl;
             this.activeDropZoneEl = activeDropZoneEl;
@@ -407,33 +464,31 @@
           }
 
           resetState() {
-            this.cards = null;
-            this.rows = null;
-            this.colGapInPx = null;
-            this.rowGapInPx = null;
-            this.dropZones = null;
-            this.activeDropZone = null;
-            this.sourceCardEl = null;
-            this.spacerThicknessInPx = null;
-          }
-
-          isLTR() {
-            return isLTR(this.rootEl);
-          }
-
-          handleDragStart_(e) {
             // TODO(acdvorak): Destroy or reuse old objects; optimize performance on low-end devices.
             const {cards, rows} = this.getCards();
-            const rowGapInPx = this.colGapInPx = CardGroup.getColGapInPx(rows);
-            const colGapInPx = this.rowGapInPx = CardGroup.getRowGapInPx(rows);
 
+            const rowGapInPx = this.rowGapInPx = CardGroup.getRowGapInPx(rows);
+            const colGapInPx = this.colGapInPx = CardGroup.getColGapInPx(rows);
             this.cards = cards;
             this.rows = rows;
             this.dropZones = this.getDropZones(rows, rowGapInPx, colGapInPx);
             this.activeDropZone = null;
-            this.sourceCardEl = e.originalSource;
+            this.sourceCardEl = null;
             this.spacerThicknessInPx = CardGroup.getspacerThicknessInPx(this.rootEl, rows);
 
+            this.autoSetColumnClass();
+          }
+
+          isLTR() {
+            return isLTR(this.rootEl)/* || this.isColumn()*/;
+          }
+
+          handleDragStart_(e) {
+            this.resetState();
+            this.sourceCardEl = e.originalSource;
+          }
+
+          autoSetColumnClass() {
             if (this.isColumn()) {
               this.addColumnClass();
             } else {
@@ -466,8 +521,8 @@
               });
             } else {
               const curRow = this.rows[dropZone.rowIndex];
-              curRow.forEach((curCardInRow, curRowIndex) => {
-                this.setCardOffsetX(curRowIndex, curCardInRow);
+              curRow.forEach((curCardInRow, curColIndex) => {
+                this.setCardOffsetX(curColIndex, curCardInRow);
               });
             }
           }
@@ -489,7 +544,10 @@
             }
 
             this.resetState();
-            this.removeColumnClass();
+          }
+
+          handleResize_(e) {
+            this.resetState();
           }
 
           insertDropZoneElement(dropZone) {
@@ -519,7 +577,7 @@
           }
 
           isRow() {
-            return this.rows.length > 1 && this.rows[0].length > 1;
+            return Boolean(this.rows) && this.rows.length > 1 && this.rows[0].length > 1;
           }
 
           addColumnClass() {
@@ -531,6 +589,10 @@
           }
 
           needsSpacer(dropZone) {
+            if (!this.isRow()) {
+              return false;
+            }
+
             // TODO(acdvorak): Create a method for this in DropZone class
             const isFirstRow = dropZone.rowIndex === 0;
             // TODO(acdvorak): Create a method for this in DropZone class
@@ -540,24 +602,39 @@
             return !isFirstRow && isFirstCardInRow;
           }
 
-          setCardOffsetY(curColIndex, curCardInRow) {
+          setCardOffsetY(curRowIndex, card) {
             const isRightSide = this.activeDropZone.isRightOfCard();
-            const multiplier = (isRightSide || curColIndex < this.activeDropZone.rowIndex) ? -1 : +1;
-            curCardInRow.offsetX = 0;
-            curCardInRow.offsetY = multiplier * (this.activeDropZone.rowGapInPx / 2);
+            const multiplier = (isRightSide || (curRowIndex < this.activeDropZone.rowIndex)) ? -1 : +1;
+            card.offsetX = 0;
+            card.offsetY = multiplier * (this.activeDropZone.rowGapInPx / 2);
+//            console.log(
+//              'setCardOffsetY(', card, ')\n' +
+//              'curRowIndex:', curRowIndex, '\n' +
+//              'isRightSide:', isRightSide, '\n' +
+//              'curRowIndex < this.activeDropZone.rowIndex:', curRowIndex < this.activeDropZone.rowIndex, '\n' +
+//              'this.activeDropZone.rowIndex:', this.activeDropZone.rowIndex, '\n' +
+//              'this.activeDropZone.rowGapInPx:', this.activeDropZone.rowGapInPx, '\n' +
+//              'multiplier:', multiplier);
           }
 
-          setCardOffsetX(curCardInRowColIndex, curCardInRow) {
+          setCardOffsetX(curColIndex, card) {
             const isRightSide = this.activeDropZone.isRightOfCard();
-            const multiplier = (isRightSide || curCardInRowColIndex < this.activeDropZone.colIndex) ? -1 : +1;
-            curCardInRow.offsetY = 0;
-            curCardInRow.offsetX = multiplier * (this.activeDropZone.colGapInPx / 2);
+            const multiplier = (isRightSide || (curColIndex < this.activeDropZone.colIndex)) ? -1 : +1;
+            card.offsetY = 0;
+            card.offsetX = multiplier * (this.activeDropZone.colGapInPx / 2);
+//            console.log(
+//              'setCardOffsetX(', card, ')\n' +
+//              'curColIndex:', curColIndex, '\n' +
+//              'isRightSide:', isRightSide, '\n' +
+//              'curColIndex < this.activeDropZone.colIndex:', curColIndex < this.activeDropZone.colIndex, '\n' +
+//              'this.activeDropZone.rowIndex:', this.activeDropZone.rowIndex, '\n' +
+//              'this.activeDropZone.colGapInPx:', this.activeDropZone.colGapInPx, '\n' +
+//              'multiplier:', multiplier);
           }
 
           resetCardOffsets(cards) {
             cards.forEach((card) => {
-              card.offsetY = 0;
-              card.offsetX = 0;
+              card.clearOffsets();
             });
             this.dropSpacerEl.remove();
             this.activeDropZoneEl.remove();
@@ -612,7 +689,9 @@
                   });
                 }
                 dropZones.push(createDropZone(CardSide.LEFT));
-                if (colIndex === curRow.length - 1) {
+                const addAfterRow = this.isRow() && colIndex === curRow.length - 1;
+                const addAfterCol = this.isColumn() && rowIndex === rows.length - 1;
+                if (addAfterRow || addAfterCol) {
                   dropZones.push(createDropZone(CardSide.RIGHT));
                 }
               });

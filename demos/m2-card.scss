@@ -57,6 +57,10 @@ $m2-card-baseline-drop-zone-thickness: 4px;
     // TODO(acdvorak): Find a better way to ignore mouse events on elements underneath the mirror.
     pointer-events: none;
   }
+
+  &--column {
+    //flex-direction: column;
+  }
 }
 
 .m2-card:not(.m2-card--drag-mirror) {
@@ -156,9 +160,6 @@ $demo-drop-zone-thickness: 6px;
 
 .demo-card {
   margin: $demo-card-margin;
-}
-.demo-card-group .m2-card-drop-zone {
-  margin: $demo-card-margin 0;
 }
 
 .demo-card {
