@@ -312,35 +312,32 @@ export default class MDCSliderFoundation extends MDCFoundation {
   }
 
   getKeyId_(kbdEvt) {
-    switch (kbdEvt.key || kbdEvt.keyCode) {
-    case KEY_IDS.ARROW_LEFT:
-    case 37:
+    if (kbdEvt.key === KEY_IDS.ARROW_LEFT || kbdEvt.keyCode === 37) {
       return KEY_IDS.ARROW_LEFT;
-    case KEY_IDS.ARROW_RIGHT:
-    case 39:
-      return KEY_IDS.ARROW_RIGHT;
-    case KEY_IDS.ARROW_UP:
-    case 38:
-      return KEY_IDS.ARROW_UP;
-    case KEY_IDS.ARROW_DOWN:
-    case 40:
-      return KEY_IDS.ARROW_DOWN;
-    case KEY_IDS.HOME:
-    case 36:
-      return KEY_IDS.HOME;
-    case KEY_IDS.END:
-    case 35:
-      return KEY_IDS.END;
-    case KEY_IDS.PAGE_UP:
-    case 33:
-      return KEY_IDS.PAGE_UP;
-    case KEY_IDS.PAGE_DOWN:
-    case 34:
-      return KEY_IDS.PAGE_DOWN;
-    default:
-      // Doesn't matter
-      return '';
     }
+    if (kbdEvt.key === KEY_IDS.ARROW_RIGHT || kbdEvt.keyCode === 39) {
+      return KEY_IDS.ARROW_RIGHT;
+    }
+    if (kbdEvt.key === KEY_IDS.ARROW_UP || kbdEvt.keyCode === 38) {
+      return KEY_IDS.ARROW_UP;
+    }
+    if (kbdEvt.key === KEY_IDS.ARROW_DOWN || kbdEvt.keyCode === 40) {
+      return KEY_IDS.ARROW_DOWN;
+    }
+    if (kbdEvt.key === KEY_IDS.HOME || kbdEvt.keyCode === 36) {
+      return KEY_IDS.HOME;
+    }
+    if (kbdEvt.key === KEY_IDS.END || kbdEvt.keyCode === 35) {
+      return KEY_IDS.END;
+    }
+    if (kbdEvt.key === KEY_IDS.PAGE_UP || kbdEvt.keyCode === 33) {
+      return KEY_IDS.PAGE_UP;
+    }
+    if (kbdEvt.key === KEY_IDS.PAGE_DOWN || kbdEvt.keyCode === 34) {
+      return KEY_IDS.PAGE_DOWN;
+    }
+
+    return '';
   }
 
   getValueForKeyId_(keyId) {

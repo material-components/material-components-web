@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
+import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -100,18 +103,6 @@ class MDCTextFieldAdapter {
   notifyIconAction() {}
 
   /**
-   * Adds a class to the bottom line element.
-   * @param {string} className
-   */
-  addClassToBottomLine(className) {}
-
-  /**
-   * Removes a class from the bottom line element.
-   * @param {string} className
-   */
-  removeClassFromBottomLine(className) {}
-
-  /**
    * Adds a class to the helper text element. Note that in our code we check for
    * whether or not we have a helper text element and if we don't, we simply
    * return.
@@ -147,23 +138,18 @@ class MDCTextFieldAdapter {
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
-   * Registers an event listener on the bottom line element for a "transitionend" event.
+   * Registers an event listener on the bottom line element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerTransitionEndHandler(handler) {}
+  registerBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the bottom line element for a "transitionend" event.
+   * Deregisters an event listener on the bottom line element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterTransitionEndHandler(handler) {}
-
-  /**
-   * Sets an attribute with a given value on the bottom line element.
-   * @param {string} attr
-   * @param {string} value
-   */
-  setBottomLineAttr(attr, value) {}
+  deregisterBottomLineEventHandler(evtType, handler) {}
 
   /**
    * Sets an attribute with a given value on the helper text element.
@@ -189,6 +175,13 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
+
+  /**
+   * Returns the foundation for the bottom line element. Returns undefined if
+   * there is no bottom line element.
+   * @return {?MDCTextFieldBottomLineFoundation}
+   */
+  getBottomLineFoundation() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType};
