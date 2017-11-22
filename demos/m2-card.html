@@ -124,16 +124,6 @@
           };
         }
 
-        function insertAdjacentElement(refEl, newEl, cardSide) {
-          let relPos;
-          if (isLTR(refEl.parentNode)) {
-            relPos = cardSide === CardSide.BEFORE ? 'beforebegin' : 'afterend';
-          } else {
-            relPos = cardSide === CardSide.BEFORE ? 'afterend' : 'beforebegin';
-          }
-          refEl.insertAdjacentElement(relPos, newEl);
-        }
-
         // From https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
         const optimizedResize = (function() {
           const callbacks = [];
@@ -395,10 +385,16 @@
           }
 
           isBeforeCard() {
+            // In row mode (i.e., more than 1 column in the whole group) LTR, 'before' means 'to the left of'.
+            // In row mode (i.e., more than 1 column in the whole group) RTL, 'before' means 'to the right of'.
+            // In column mode (i.e., only 1 column in the whole group), 'before' means 'above'.
             return this.cardSide === CardSide.BEFORE;
           }
 
           isAfterCard() {
+            // In row mode (i.e., more than 1 column in the whole group) LTR, 'after' means 'to the right of'.
+            // In row mode (i.e., more than 1 column in the whole group) RTL, 'after' means 'to the left of'.
+            // In column mode (i.e., only 1 column in the whole group), 'after' means 'below'.
             return this.cardSide === CardSide.AFTER;
           }
 
@@ -480,7 +476,7 @@
           }
 
           isLTR() {
-            return isLTR(this.rootEl)/* || this.isColumn()*/;
+            return isLTR(this.rootEl);
           }
 
           handleDragStart_(e) {
@@ -558,7 +554,7 @@
               this.activeDropZoneEl.style.height = `${dropZone.adjacentCard.parentOffsetRect.height}px`;
               this.activeDropZoneEl.style.width = '';
             }
-            insertAdjacentElement(dropZone.adjacentCard.element, this.activeDropZoneEl, dropZone.cardSide);
+            this.insertAdjacentElement(dropZone.adjacentCard.element, this.activeDropZoneEl, dropZone.cardSide);
           }
 
           insertDropSpacerElement(dropZone) {
@@ -569,7 +565,7 @@
               this.dropSpacerEl.style.width = `${this.spacerThicknessInPx}px`;
               this.dropSpacerEl.style.height = `unset`;
             }
-            insertAdjacentElement(this.activeDropZoneEl, this.dropSpacerEl, dropZone.cardSide);
+            this.insertAdjacentElement(this.activeDropZoneEl, this.dropSpacerEl, dropZone.cardSide);
           }
 
           isColumn() {
@@ -602,31 +598,31 @@
             return !isFirstRow && isFirstCardInRow;
           }
 
-          setCardOffsetY(curRowIndex, card) {
-            const isRightSide = this.activeDropZone.isAfterCard();
-            const multiplier = (isRightSide || (curRowIndex < this.activeDropZone.rowIndex)) ? -1 : +1;
+          setCardOffsetY(cardRowIndex, card) {
+            const dzIsAfterCard = this.activeDropZone.isAfterCard();
+            const multiplier = (dzIsAfterCard || (cardRowIndex < this.activeDropZone.rowIndex)) ? -1 : +1;
             card.offsetX = 0;
             card.offsetY = multiplier * (this.activeDropZone.rowGapInPx / 2);
 //            console.log(
 //              'setCardOffsetY(', card, ')\n' +
-//              'curRowIndex:', curRowIndex, '\n' +
-//              'isRightSide:', isRightSide, '\n' +
-//              'curRowIndex < this.activeDropZone.rowIndex:', curRowIndex < this.activeDropZone.rowIndex, '\n' +
+//              'cardRowIndex:', cardRowIndex, '\n' +
+//              'dzIsAfterCard:', dzIsAfterCard, '\n' +
+//              'cardRowIndex < this.activeDropZone.rowIndex + (this.isLTR() ? 0 : 1):', cardRowIndex < this.activeDropZone.rowIndex + (this.isLTR() ? 0 : 1), '\n' +
 //              'this.activeDropZone.rowIndex:', this.activeDropZone.rowIndex, '\n' +
 //              'this.activeDropZone.rowGapInPx:', this.activeDropZone.rowGapInPx, '\n' +
 //              'multiplier:', multiplier);
           }
 
-          setCardOffsetX(curColIndex, card) {
-            const isRightSide = this.activeDropZone.isAfterCard();
-            const multiplier = (isRightSide || (curColIndex < this.activeDropZone.colIndex)) ? -1 : +1;
+          setCardOffsetX(cardColIndex, card) {
+            const dzIsAfterCard = this.activeDropZone.isAfterCard();
+            const multiplier = (dzIsAfterCard || (cardColIndex < this.activeDropZone.colIndex)) ? -1 : +1;
             card.offsetY = 0;
             card.offsetX = multiplier * (this.activeDropZone.colGapInPx / 2);
 //            console.log(
 //              'setCardOffsetX(', card, ')\n' +
-//              'curColIndex:', curColIndex, '\n' +
-//              'isRightSide:', isRightSide, '\n' +
-//              'curColIndex < this.activeDropZone.colIndex:', curColIndex < this.activeDropZone.colIndex, '\n' +
+//              'cardColIndex:', cardColIndex, '\n' +
+//              'dzIsAfterCard:', dzIsAfterCard, '\n' +
+//              'cardColIndex < this.activeDropZone.colIndex:', cardColIndex < this.activeDropZone.colIndex, '\n' +
 //              'this.activeDropZone.rowIndex:', this.activeDropZone.rowIndex, '\n' +
 //              'this.activeDropZone.colGapInPx:', this.activeDropZone.colGapInPx, '\n' +
 //              'multiplier:', multiplier);
@@ -645,8 +641,19 @@
             const dragSourceEl = e.originalSource;
             const cardSide = this.activeDropZone.cardSide;
             setTimeout(() => {
-              insertAdjacentElement(adjacentCardEl, dragSourceEl, cardSide);
+              this.insertAdjacentElement(adjacentCardEl, dragSourceEl, cardSide);
             });
+          }
+
+          insertAdjacentElement(refEl, newEl, cardSide) {
+            const beforeCard = cardSide === CardSide.BEFORE;
+            let relPos;
+            if (this.isColumn() || isLTR(refEl.parentNode)) {
+              relPos = beforeCard ? 'beforebegin' : 'afterend';
+            } else {
+              relPos = beforeCard ? 'afterend' : 'beforebegin';
+            }
+            refEl.insertAdjacentElement(relPos, newEl);
           }
 
           getCards() {
