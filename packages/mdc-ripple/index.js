@@ -71,7 +71,9 @@ class MDCRipple extends MDCComponent {
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       updateCssVariable: (varName, value) => instance.root_.style.setProperty(varName, value),
       computeBoundingRect: () => instance.root_.getBoundingClientRect(),
-      computeUnboundedBoundingRect: () => ({width: parseFloat(window.getComputedStyle(instance.root_, null).getPropertyValue("width")), height: parseFloat(window.getComputedStyle(instance.root_, null).getPropertyValue("height"))}),
+      computeUnboundedBoundingRect: () =>
+        ({width: parseFloat(window.getComputedStyle(instance.root_, null).getPropertyValue('width')),
+          height: parseFloat(window.getComputedStyle(instance.root_, null).getPropertyValue('height'))}),
       getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
     };
   }
