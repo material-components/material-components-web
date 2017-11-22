@@ -48,7 +48,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
 // Classes
 //
 
-.m2-card-group {
+.m2-card-grid {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -117,7 +117,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   border-radius: 4px;
   width: $m2-card-baseline-drop-zone-thickness;
 
-  .m2-card-group--column & {
+  .m2-card-grid--column & {
     width: unset;
     height: $m2-card-baseline-drop-zone-thickness;
   }
@@ -140,19 +140,19 @@ $demo-drop-zone-thickness: 6px;
   padding: 48px;
 }
 
-.demo-card-group {
+.demo-card-grid {
   // TODO(acdvorak): Document the need for extra width to accommodate the drop zone
   // TODO(acdvorak): Add test cases for all width variations
   max-width: (($demo-card-size + ($demo-card-margin * 2)) * $demo-card-cols) + $demo-drop-zone-thickness;
   margin: 32px;
 }
 
-.demo-card-group .m2-card-drop-zone {
+.demo-card-grid .m2-card-drop-zone {
   width: $demo-drop-zone-thickness;
   margin: $demo-card-margin 0;
 }
 
-.m2-card-group--column .m2-card-drop-zone {
+.m2-card-grid--column .m2-card-drop-zone {
   width: unset;
   height: $demo-drop-zone-thickness;
   margin: 0 $demo-card-margin;

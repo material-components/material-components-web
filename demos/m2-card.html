@@ -41,7 +41,7 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="m2-card-group demo-card-group">
+        <div class="m2-card-grid demo-card-grid">
           <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
           <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
           <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
@@ -52,7 +52,7 @@
           <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">8</div>
           <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">9</div>
         </div>
-        <div class="m2-card-group demo-card-group" dir="rtl">
+        <div class="m2-card-grid demo-card-grid" dir="rtl">
           <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
           <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
           <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
@@ -94,8 +94,8 @@
           return getDirectionality(element) === Directionality.LTR;
         }
 
-        function getClosestCardGroupElement(element) {
-          return element.closest('.m2-card-group');
+        function getClosestCardGridElement(element) {
+          return element.closest('.m2-card-grid');
         }
 
         function getOffset(elementRect, parentRect) {
@@ -194,10 +194,10 @@
         }
 
         class Card {
-          constructor(element, cardGroup) {
+          constructor(element, cardGrid) {
             this.element = element;
-            this.cardGroup = cardGroup;
-            this.parentGroupElement = getClosestCardGroupElement(this.element);
+            this.cardGrid = cardGrid;
+            this.parentGroupElement = getClosestCardGridElement(this.element);
             this.parentOffsetRect = getRelativeOffset(this.element, this.parentGroupElement);
             this.offsetX_ = 0;
             this.offsetY_ = 0;
@@ -265,7 +265,7 @@
           }
 
           isColumn() {
-            return this.adjacentCard.cardGroup.isColumn();
+            return this.adjacentCard.cardGrid.isColumn();
           }
 
           calculateParentOffsetRect() {
@@ -422,14 +422,14 @@
         // NOTE(acdvorak): This code assumes:
         // 1. ALL CARDS ARE THE SAME SIZE
         // 2. HORIZONTAL AND VERTICAL MARGINS BETWEEN CARDS ARE IDENTICAL
-        class CardGroup {
+        class CardGrid {
           constructor(rootEl) {
             this.rootEl = rootEl;
             this.draggable = new Draggable.Draggable(this.rootEl, {
               draggable: '.m2-card',
               delay: 200,
               classes: {
-                'container:dragging': 'm2-card-group--dragging',
+                'container:dragging': 'm2-card-grid--dragging',
                 'source:dragging': 'm2-card--drag-source',
                 'mirror': 'm2-card--drag-mirror',
               },
@@ -441,7 +441,7 @@
             // TODO(acdvorak): Remove handler in destruct method
             optimizedResize.add((e) => this.handleResize_(e));
 
-            const {dropSpacerEl, activeDropZoneEl} = CardGroup.createDropEls();
+            const {dropSpacerEl, activeDropZoneEl} = CardGrid.createDropEls();
             this.dropSpacerEl = dropSpacerEl;
             this.activeDropZoneEl = activeDropZoneEl;
 
@@ -463,14 +463,14 @@
             // TODO(acdvorak): Destroy or reuse old objects; optimize performance on low-end devices.
             const {cards, rows} = this.getCards();
 
-            const rowGapInPx = this.rowGapInPx = CardGroup.getRowGapInPx(rows);
-            const colGapInPx = this.colGapInPx = CardGroup.getColGapInPx(rows);
+            const rowGapInPx = this.rowGapInPx = CardGrid.getRowGapInPx(rows);
+            const colGapInPx = this.colGapInPx = CardGrid.getColGapInPx(rows);
             this.cards = cards;
             this.rows = rows;
             this.dropZones = this.getDropZones(rows, rowGapInPx, colGapInPx);
             this.activeDropZone = null;
             this.sourceCardEl = null;
-            this.spacerThicknessInPx = CardGroup.getspacerThicknessInPx(this.rootEl, rows);
+            this.spacerThicknessInPx = CardGrid.getspacerThicknessInPx(this.rootEl, rows);
 
             this.autoSetColumnClass();
           }
@@ -495,7 +495,7 @@
           handleDragMove_(e) {
             e.originalEvent.preventDefault();
 
-            const dropZone = this.activeDropZone = CardGroup.getDropZone(e, this.dropZones);
+            const dropZone = this.activeDropZone = CardGrid.getDropZone(e, this.dropZones);
 
             // TODO(acdvorak): Avoid thrashing the DOM, especially on low-end devices.
             this.resetCardOffsets(this.cards);
@@ -577,11 +577,11 @@
           }
 
           addColumnClass() {
-            this.rootEl.classList.add('m2-card-group--column');
+            this.rootEl.classList.add('m2-card-grid--column');
           }
 
           removeColumnClass() {
-            this.rootEl.classList.remove('m2-card-group--column');
+            this.rootEl.classList.remove('m2-card-grid--column');
           }
 
           needsSpacer(dropZone) {
@@ -737,14 +737,14 @@
             return secondRow[0].parentOffsetRect.top - firstRow[0].parentOffsetRect.bottom;
           }
 
-          static getspacerThicknessInPx(cardGroupEl, rows) {
+          static getspacerThicknessInPx(cardGridEl, rows) {
             if (rows.length === 0 || rows[0].length === 0) {
               return 0;
             }
 
             const firstRow = rows[0];
 
-            if (isLTR(cardGroupEl)) {
+            if (isLTR(cardGridEl)) {
               const lastCard = firstRow[firstRow.length - 1];
               // TODO(acdvorak): Don't assume px units
               const lastCardMarginRight = parseInt(getComputedStyle(lastCard.element).marginRight, 10);
@@ -776,8 +776,8 @@
             card.ripple = mdc.ripple.MDCRipple.attachTo(card);
           }
 
-          for (let cardGroupEl of document.querySelectorAll('.demo-card-group')) {
-            new CardGroup(cardGroupEl);
+          for (let cardGridEl of document.querySelectorAll('.demo-card-grid')) {
+            new CardGrid(cardGridEl);
           }
         }
       })();
