@@ -116,9 +116,14 @@ addClass(className: string) => void | Adds a class to the helper text element
 removeClass(className: string) => void | Removes a class from the helper text element
 hasClass(className: string) => boolean | Returns true if classname exists for the helper text element
 setAttr(attr: string, value: string) => void | Sets an attribute with a given value on the helper text element
-removeAttr(attr: string) => void | Removes an attribute on the helper text element |
+removeAttr(attr: string) => void | Removes an attribute on the helper text element
+setContent(attr: string) => void | Sets the text content for the helper text element
 
 #### The full foundation API
+
+##### MDCTextFieldHelperTextFoundation.setContent()
+
+Sets the content of the helper text.
 
 ##### MDCTextFieldHelperTextFoundation.showToScreenReader()
 

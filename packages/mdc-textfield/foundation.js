@@ -272,10 +272,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {string} content Sets the content of the helper text field
+   * @param {string} content Sets the content of the helper text.
    */
   setHelperTextContent(content) {
-    this.adapter_.setHelperTextContent(content);
+    const helperText = this.adapter_.getHelperTextFoundation();
+    if (helperText) {
+      helperText.setContent(content);
+    }
   }
 
   /**

@@ -59,6 +59,12 @@ class MDCTextFieldHelperTextAdapter {
    * @param {string} attr
    */
   removeAttr(attr) {}
+
+  /**
+   * Sets the text content for the helper text element.
+   * @param {string} content
+   */
+  setContent(content) {}
 }
 
 export default MDCTextFieldHelperTextAdapter;

@@ -50,6 +50,9 @@ class MDCTextFieldHelperText extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
+      setContent: (content) => {
+        this.root_.textContent = content;
+      },
     })));
   }
 }

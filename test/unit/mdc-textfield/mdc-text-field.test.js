@@ -141,18 +141,21 @@ test('set valid updates the component styles', () => {
 });
 
 test('set helperTextContent updates the helper text element content', () => {
-  const {component} = setupTest();
-  const helptext = getHelperText();
-  component.helperTextElement = helptext;
+  const root = getFixture();
+  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
+  const helperText = getHelperTextElement();
+  document.body.appendChild(helperText);
+  const component = new MDCTextField(root);
   component.helperTextContent = 'foo';
-  assert.equal(helptext.textContent, 'foo');
+  assert.equal(helperText.textContent, 'foo');
+  document.body.removeChild(helperText);
 });
 
 test('set helperTextContent has no effect when no helper text element is present', () => {
   const {component} = setupTest();
-  assert.isNull(component.helperTextElement);
-  component.helperTextContent = 'foo';
-  assert.isNull(component.helperTextElement);
+  assert.doesNotThrow(() => {
+    component.helperTextContent = 'foo';
+  });
 });
 
 test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {

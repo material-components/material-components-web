@@ -47,6 +47,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
       hasClass: () => {},
       setAttr: () => {},
       removeAttr: () => {},
+      setContent: () => {},
     });
   }
 
@@ -55,6 +56,14 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
    */
   constructor(adapter = /** @type {!MDCTextFieldHelperTextAdapter} */ ({})) {
     super(Object.assign(MDCTextFieldHelperTextFoundation.defaultAdapter, adapter));
+  }
+
+  /**
+   * Sets the content of the helper text field.
+   * @param {string} content
+   */
+  setContent(content) {
+    this.adapter_.setContent(content);
   }
 
   /** Makes the helper text visible to the screen reader. */

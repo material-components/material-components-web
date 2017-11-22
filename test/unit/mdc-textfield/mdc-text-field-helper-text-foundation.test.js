@@ -35,11 +35,17 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldHelperTextFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'setAttr', 'removeAttr',
+    'addClass', 'removeClass', 'hasClass', 'setAttr', 'removeAttr', 'setContent',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCTextFieldHelperTextFoundation);
+
+test('#setContent sets the content of the helper text element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setContent('foo');
+  td.verify(mockAdapter.setContent('foo'));
+});
 
 test('#showToScreenReader removes aria-hidden from helperText', () => {
   const {foundation, mockAdapter} = setupTest();

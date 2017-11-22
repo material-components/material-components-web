@@ -68,3 +68,9 @@ test('#adapter.removeAttr removes a given attribute from the element', () => {
   component.getDefaultFoundation().adapter_.removeAttr('aria-label', 'foo');
   assert.isNotOk(root.hasAttribute('aria-label'));
 });
+
+test('#adapter.setContent sets the text content of the element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setContent('foo');
+  assert.equal(root.textContent, 'foo');
+});

@@ -373,6 +373,10 @@ event with clientX/clientY properties.
 Handles the end of the bottom line animation, performing actions that must wait for animations to
 finish. Expects a transition-end event.
 
+##### MDCTextField.helperTextContent
+
+Sets the content of the helper text, if it exists.
+
 ### Theming
 
 MDC TextField components use the configured theme's primary color for its underline and label text
