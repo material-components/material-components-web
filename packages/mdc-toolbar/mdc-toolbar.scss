@@ -95,7 +95,7 @@
   }
 
   &__icon:last-of-type {
-    @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-desktop / 2, $mdc-toolbar-element-horizontal-padding-desktop);
+    @include mdc-rtl-reflexive-property(margin, 0, $mdc-toolbar-element-horizontal-padding-desktop / 2);
   }
 
   &__menu-icon {
@@ -123,7 +123,7 @@
   }
 
   .mdc-toolbar__icon:last-of-type {
-    @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-mobile / 2, $mdc-toolbar-element-horizontal-padding-mobile);
+    @include mdc-rtl-reflexive-property(padding, 0, $mdc-toolbar-element-horizontal-padding-mobile / 2);
   }
 
   .mdc-toolbar__menu-icon {
