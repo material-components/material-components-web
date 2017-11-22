@@ -4,7 +4,7 @@
 
 # Material Components for the web
 
-Material Components for the web (MDC-Web) help developers execute [Material Design](https://www.material.io).
+Material Components for the web (MDC-Web) helps developers execute [Material Design](https://www.material.io).
 Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
 
 Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
@@ -13,6 +13,10 @@ Material Components for the web is the successor to [Material Design Lite](https
 - Best-in-class performance and adherence to the [Material Design guidelines](https://material.io/guidelines)
 - Seamless integration with other JS frameworks and libraries
   - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
+  - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
+  - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
+  - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC-Web Integration for Vue.js (using [foundation/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
+  - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC-Web Integration for Vue.js (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
   - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](docs/integrating-into-frameworks.md).
 
 MDC-Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
@@ -40,9 +44,9 @@ Then simply include the correct files, write some HTML, and call `mdc.autoInit()
   </head>
   <body>
     <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
-    <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-      <input type="text" class="mdc-textfield__input" id="demo-input">
-      <label for="demo-input" class="mdc-textfield__label">Tell us how you feel!</label>
+    <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+      <input type="text" class="mdc-text-field__input" id="demo-input">
+      <label for="demo-input" class="mdc-text-field__label">Tell us how you feel!</label>
     </div>
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
     <script>mdc.autoInit()</script>
@@ -148,7 +152,6 @@ open http://localhost:8080
 - [Getting Started Guide](docs/getting-started.md)
 - [All Components](packages/)
 - [Demos](demos/)
-- [Framework Integration Examples](framework-examples/)
 - [Contributing](CONTRIBUTING.md)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)

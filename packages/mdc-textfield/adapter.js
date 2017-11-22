@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
+import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -28,16 +31,16 @@
 let NativeInputType;
 
 /**
- * Adapter for MDC Textfield.
+ * Adapter for MDC Text Field.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Textfield into your framework. See
+ * adapter to integrate the Text Field into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCTextfieldAdapter {
+class MDCTextFieldAdapter {
   /**
    * Adds a class to the root Element.
    * @param {string} className
@@ -95,42 +98,30 @@ class MDCTextfieldAdapter {
   deregisterTextFieldInteractionHandler(type, handler) {}
 
   /**
-   * Emits a custom event "MDCTextfield:icon" denoting a user has clicked the icon.
+   * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
    */
   notifyIconAction() {}
 
   /**
-   * Adds a class to the bottom line element.
-   * @param {string} className
-   */
-  addClassToBottomLine(className) {}
-
-  /**
-   * Removes a class from the bottom line element.
-   * @param {string} className
-   */
-  removeClassFromBottomLine(className) {}
-
-  /**
-   * Adds a class to the help text element. Note that in our code we check for
-   * whether or not we have a help text element and if we don't, we simply
+   * Adds a class to the helper text element. Note that in our code we check for
+   * whether or not we have a helper text element and if we don't, we simply
    * return.
    * @param {string} className
    */
-  addClassToHelptext(className) {}
+  addClassToHelperText(className) {}
 
   /**
-   * Removes a class from the help text element.
+   * Removes a class from the helper text element.
    * @param {string} className
    */
-  removeClassFromHelptext(className) {}
+  removeClassFromHelperText(className) {}
 
   /**
-   * Returns whether or not the help text element contains the given class.
+   * Returns whether or not the helper text element contains the given class.
    * @param {string} className
    * @return {boolean}
    */
-  helptextHasClass(className) {}
+  helperTextHasClass(className) {}
 
   /**
    * Registers an event listener on the native input element for a given event.
@@ -147,36 +138,37 @@ class MDCTextfieldAdapter {
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
-   * Registers an event listener on the bottom line element for a "transitionend" event.
+   * Registers an event listener on the bottom line element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerTransitionEndHandler(handler) {}
+  registerBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the bottom line element for a "transitionend" event.
+   * Deregisters an event listener on the bottom line element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterTransitionEndHandler(handler) {}
+  deregisterBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Sets an attribute with a given value on the bottom line element.
-   * @param {string} attr
-   * @param {string} value
-   */
-  setBottomLineAttr(attr, value) {}
-
-  /**
-   * Sets an attribute with a given value on the help text element.
+   * Sets an attribute with a given value on the helper text element.
    * @param {string} name
    * @param {string} value
    */
-  setHelptextAttr(name, value) {}
+  setHelperTextAttr(name, value) {}
 
   /**
-   * Removes an attribute from the help text element.
+   * Removes an attribute from the helper text element.
    * @param {string} name
    */
-  removeHelptextAttr(name) {}
+  removeHelperTextAttr(name) {}
+
+  /**
+   * Sets the text content for the help text element
+   * @param {string} content
+   */
+  setHelperTextContent(content) {}
 
   /**
    * Returns an object representing the native text input element, with a
@@ -189,6 +181,13 @@ class MDCTextfieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
+
+  /**
+   * Returns the foundation for the bottom line element. Returns undefined if
+   * there is no bottom line element.
+   * @return {?MDCTextFieldBottomLineFoundation}
+   */
+  getBottomLineFoundation() {}
 }
 
-export {MDCTextfieldAdapter, NativeInputType};
+export {MDCTextFieldAdapter, NativeInputType};
