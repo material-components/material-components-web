@@ -138,6 +138,21 @@ test('set valid updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
 });
 
+test('set helperTextContent updates the helper text element content', () => {
+  const {component} = setupTest();
+  const helptext = getHelperText();
+  component.helperTextElement = helptext;
+  component.helperTextContent = 'foo';
+  assert.equal(helptext.textContent, 'foo');
+});
+
+test('set helperTextContent has no effect when no helper text element is present', () => {
+  const {component} = setupTest();
+  assert.isNull(component.helperTextElement);
+  component.helperTextContent = 'foo';
+  assert.isNull(component.helperTextElement);
+});
+
 test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
   const {icon, component} = setupTest();
 
@@ -309,6 +324,19 @@ test('#adapter.removeHelperTextAttr removes an attribute on the helper text elem
   component.helperTextElement = helperText;
   component.getDefaultFoundation().adapter_.removeHelperTextAttr('aria-label');
   assert.isNotOk(helperText.hasAttribute('aria-label'));
+});
+
+test('#adapter.setHelperTextContent does nothing if no help text element present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.setHelperTextContent('foo'));
+});
+
+test('#adapter.setHelperTextContent updates the text content of the help text element', () => {
+  const {component} = setupTest();
+  const helptext = getHelperText();
+  component.helperTextElement = helptext;
+  component.getDefaultFoundation().adapter_.setHelperTextContent('foo');
+  assert.equal(helptext.textContent, 'foo');
 });
 
 test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {
