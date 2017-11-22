@@ -481,7 +481,8 @@ class MDCRippleFoundation extends MDCFoundation {
     this.unboundedFrame_ = this.adapter_.computeUnboundedBoundingRect();
 
     const maxDim = Math.max(this.frame_.height, this.frame_.width);
-    if(this.adapter_.isUnbounded()) { // Diameter of the unbounded surface is the biggest one between the width and the height
+    if (this.adapter_.isUnbounded()) {
+      // Diameter of the unbounded surface is the biggest one between the width and the height
       const surfaceDiameter = Math.max(this.unboundedFrame_.width, this.unboundedFrame_.height);
     } else {
       const surfaceDiameter = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
@@ -490,7 +491,7 @@ class MDCRippleFoundation extends MDCFoundation {
     // 60% of the largest dimension of the surface
     this.initialSize_ = maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE;
 
-    if(this.adapter_.isUnbounded()) { // Diameter of the surface + 16px
+    if (this.adapter_.isUnbounded()) { // Diameter of the surface + 16px
       this.maxRadius_ = surfaceDiameter + MDCRippleFoundation.numbers.UNBOUNDED_PADDING;
     } else { // Diameter of the surface + 10px
       this.maxRadius_ = surfaceDiameter + MDCRippleFoundation.numbers.PADDING;
