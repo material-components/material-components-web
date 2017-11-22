@@ -89,11 +89,11 @@
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
+    width: 24px;
+    height: 24px;
     padding-right: $mdc-toolbar-element-horizontal-padding-desktop / 2;
     padding-left: $mdc-toolbar-element-horizontal-padding-desktop / 2;
     cursor: pointer;
-    width: 24px;
-    height: 24px;
   }
 
   &__icon:last-of-type {
@@ -104,11 +104,11 @@
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
+    width: 24px;
+    height: 24px;
     padding-right: $mdc-toolbar-element-horizontal-padding-desktop;
     padding-left: $mdc-toolbar-element-horizontal-padding-desktop;
     cursor: pointer;
-    width: 24px;
-    height: 24px;
   }
 }
 
@@ -122,10 +122,10 @@
   }
 
   .mdc-toolbar__icon {
-    padding-right: $mdc-toolbar-element-horizontal-padding-mobile / 2;
-    padding-left: $mdc-toolbar-element-horizontal-padding-mobile / 2;
     width: 24px;
     height: 24px;
+    padding-right: $mdc-toolbar-element-horizontal-padding-mobile / 2;
+    padding-left: $mdc-toolbar-element-horizontal-padding-mobile / 2;
   }
 
   .mdc-toolbar__icon:last-of-type {
@@ -133,10 +133,10 @@
   }
 
   .mdc-toolbar__menu-icon {
-    padding-right: $mdc-toolbar-element-horizontal-padding-mobile;
-    padding-left: $mdc-toolbar-element-horizontal-padding-mobile;
     width: 24px;
     height: 24px;
+    padding-right: $mdc-toolbar-element-horizontal-padding-mobile;
+    padding-left: $mdc-toolbar-element-horizontal-padding-mobile;
   }
 
   .mdc-toolbar__menu-icon + .mdc-toolbar__title {
