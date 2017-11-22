@@ -50,12 +50,6 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-test('#init is super.init', () => {
-  const {foundation} = setupTest();
-
-  foundation.init();
-});
-
 test('#isRootTransitioningEventTarget_ returns true if the element is the drawer element', () => {
   const {foundation, mockAdapter} = setupTest();
 
