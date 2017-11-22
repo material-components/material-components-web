@@ -71,6 +71,7 @@
     <script src="/assets/material-components-web.js"></script>
     <script src="/lib/draggable/1.0.0-beta.3/draggable.bundle.patched.js"></script>
     <script>
+      // TODO(acdvorak): Fix boundary/edge cases (drag to/from the first/last cards) in RTL Column Mode.
       (() => {
         /** @enum {string} */
         const CardSide = {
@@ -86,8 +87,8 @@
         function getDirectionality(element) {
           const ancestor = element.closest('[dir]');
           return (ancestor && ancestor.getAttribute('dir') === Directionality.RTL)
-              ? Directionality.RTL
-              : Directionality.LTR;
+            ? Directionality.RTL
+            : Directionality.LTR;
         }
 
         function isLTR(element) {
@@ -603,14 +604,6 @@
             const multiplier = (dzIsAfterCard || (cardRowIndex < this.activeDropZone.rowIndex)) ? -1 : +1;
             card.offsetX = 0;
             card.offsetY = multiplier * (this.activeDropZone.rowGapInPx / 2);
-//            console.log(
-//              'setCardOffsetY(', card, ')\n' +
-//              'cardRowIndex:', cardRowIndex, '\n' +
-//              'dzIsAfterCard:', dzIsAfterCard, '\n' +
-//              'cardRowIndex < this.activeDropZone.rowIndex + (this.isLTR() ? 0 : 1):', cardRowIndex < this.activeDropZone.rowIndex + (this.isLTR() ? 0 : 1), '\n' +
-//              'this.activeDropZone.rowIndex:', this.activeDropZone.rowIndex, '\n' +
-//              'this.activeDropZone.rowGapInPx:', this.activeDropZone.rowGapInPx, '\n' +
-//              'multiplier:', multiplier);
           }
 
           setCardOffsetX(cardColIndex, card) {
@@ -618,14 +611,6 @@
             const multiplier = (dzIsAfterCard || (cardColIndex < this.activeDropZone.colIndex)) ? -1 : +1;
             card.offsetY = 0;
             card.offsetX = multiplier * (this.activeDropZone.colGapInPx / 2);
-//            console.log(
-//              'setCardOffsetX(', card, ')\n' +
-//              'cardColIndex:', cardColIndex, '\n' +
-//              'dzIsAfterCard:', dzIsAfterCard, '\n' +
-//              'cardColIndex < this.activeDropZone.colIndex:', cardColIndex < this.activeDropZone.colIndex, '\n' +
-//              'this.activeDropZone.rowIndex:', this.activeDropZone.rowIndex, '\n' +
-//              'this.activeDropZone.colGapInPx:', this.activeDropZone.colGapInPx, '\n' +
-//              'multiplier:', multiplier);
           }
 
           resetCardOffsets(cards) {
