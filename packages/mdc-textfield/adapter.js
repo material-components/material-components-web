@@ -165,6 +165,12 @@ class MDCTextFieldAdapter {
   removeHelperTextAttr(name) {}
 
   /**
+   * Sets the text content for the help text element
+   * @param {string} content
+   */
+  setHelperTextContent(content) {}
+
+  /**
    * Returns an object representing the native text input element, with a
    * similar API shape. The object returned should include the value, disabled
    * and badInput properties, as well as the checkValidity() function. We never

@@ -125,6 +125,13 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * @param {string} content Sets the Helper Text element textContent.
+   */
+  set helperTextContent(content) {
+    this.foundation_.setHelperTextContent(content);
+  }
+
+  /**
    * @return {!MDCTextFieldFoundation}
    */
   getDefaultFoundation() {
@@ -234,6 +241,11 @@ class MDCTextField extends MDCComponent {
       removeHelperTextAttr: (name) => {
         if (this.helperTextElement) {
           this.helperTextElement.removeAttribute(name);
+        }
+      },
+      setHelperTextContent: (content) => {
+        if (this.helperTextElement) {
+          this.helperTextElement.textContent = content;
         }
       },
     };

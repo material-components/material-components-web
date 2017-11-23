@@ -43,6 +43,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
     'setHelperTextAttr', 'removeHelperTextAttr', 'getNativeInput', 'getBottomLineFoundation',
+    'setHelperTextContent',
   ]);
 });
 
@@ -179,6 +180,12 @@ test('#init does not add mdc-text-field__label--float-above class if the input d
   });
   foundation.init();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#setHelperTextContent sets the content of the helper text element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setHelperTextContent('foo');
+  td.verify(mockAdapter.setHelperTextContent('foo'));
 });
 
 test('on input focuses if input event occurs without any other events', () => {
