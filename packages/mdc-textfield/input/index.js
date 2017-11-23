@@ -41,7 +41,7 @@ class MDCTextFieldInput extends MDCComponent {
   }
 
   /**
-   * @return {!MDCTextFieldFoundation}
+   * @return {!MDCTextFieldInputFoundation}
    */
   getDefaultFoundation() {
     return new MDCTextFieldInputFoundation(/** @type {!MDCTextFieldInputAdapter} */ (Object.assign({
