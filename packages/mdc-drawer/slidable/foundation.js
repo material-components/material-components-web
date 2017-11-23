@@ -54,6 +54,14 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
 
     this.inert_ = false;
 
+    this.drawerClickHandler_ = (evt) => {
+      var path = evt.composedPath ? evt.composedPath() : evt.deepPath || evt.path;
+		  var el = path[1]
+  		var drawerWasClicked = el.tagName == 'NAV' && el.classList.contains('mdc-temporary-drawer__drawer');
+  		if (drawerWasClicked) {
+    		evt.stopPropagation();
+  		}
+    };
     this.componentTouchStartHandler_ = (evt) => this.handleTouchStart_(evt);
     this.componentTouchMoveHandler_ = (evt) => this.handleTouchMove_(evt);
     this.componentTouchEndHandler_ = (evt) => this.handleTouchEnd_(evt);
@@ -83,14 +91,14 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
       this.isOpen_ = false;
     }
 
-    this.adapter_.registerDrawerInteractionHandler('click', this.componentClickHandler_);
+    this.adapter_.registerDrawerInteractionHandler('click', this.drawerClickHandler_);
     this.adapter_.registerDrawerInteractionHandler('touchstart', this.componentTouchStartHandler_);
     this.adapter_.registerInteractionHandler('touchmove', this.componentTouchMoveHandler_);
     this.adapter_.registerInteractionHandler('touchend', this.componentTouchEndHandler_);
   }
 
   destroy() {
-    this.adapter_.deregisterDrawerInteractionHandler('click', this.componentClickHandler_);
+    this.adapter_.deregisterDrawerInteractionHandler('click', this.drawerClickHandler_);
     this.adapter_.deregisterDrawerInteractionHandler('touchstart', this.componentTouchStartHandler_);
     this.adapter_.deregisterInteractionHandler('touchmove', this.componentTouchMoveHandler_);
     this.adapter_.deregisterInteractionHandler('touchend', this.componentTouchEndHandler_);
