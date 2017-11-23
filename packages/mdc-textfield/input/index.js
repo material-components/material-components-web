@@ -51,6 +51,7 @@ class MDCTextFieldInput extends MDCComponent {
       notifyFocusAction: () => this.emit(MDCTextFieldInputFoundation.strings.FOCUS_EVENT, {}),
       notifyBlurAction: () => this.emit(MDCTextFieldInputFoundation.strings.BLUR_EVENT, {}),
       notifyPressedAction: () => this.emit(MDCTextFieldInputFoundation.strings.PRESSED_EVENT, {}),
+      isFocused: () => document.activeElement === this.root_,
     })));
   }
 }

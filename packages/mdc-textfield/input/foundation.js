@@ -43,6 +43,7 @@ class MDCTextFieldInputFoundation extends MDCFoundation {
       notifyFocusAction: () => {},
       notifyBlurAction: () => {},
       notifyPressedAction: () => {},
+      isFocused: () => false,
     });
   }
 
@@ -71,6 +72,10 @@ class MDCTextFieldInputFoundation extends MDCFoundation {
     ['mousedown', 'touchstart'].forEach((evtType) => {
       this.adapter_.registerEventHandler(evtType, this.inputPressedHandler_);
     });
+
+    if (this.adapter_.isFocused()) {
+      this.autoCompleteFocus_();
+    }
   }
 
   destroy() {

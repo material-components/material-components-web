@@ -78,6 +78,12 @@ class MDCTextFieldInputAdapter {
    * Emits a custom event "MDCTextFieldInput:pressed" denoting a user has pressed the input.
    */
   notifyPressedAction() {}
+
+  /**
+   * Returns whether the input is focused.
+   * @return {boolean}
+   */
+  isFocused() {}
 }
 
 export {MDCTextFieldInputAdapter, NativeInputType};

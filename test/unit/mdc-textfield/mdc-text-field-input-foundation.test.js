@@ -31,6 +31,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldInputFoundation, [
     'registerEventHandler', 'deregisterEventHandler', 'getNativeInput',
     'notifyFocusAction', 'notifyBlurAction', 'notifyPressedAction',
+    'isFocused',
   ]);
 });
 
