@@ -55,12 +55,12 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.inert_ = false;
 
     this.drawerClickHandler_ = (evt) => {
-      var path = evt.composedPath ? evt.composedPath() : evt.deepPath || evt.path;
-		  var el = path[1]
-  		var drawerWasClicked = el.tagName == 'NAV' && el.classList.contains('mdc-temporary-drawer__drawer');
-  		if (drawerWasClicked) {
-    		evt.stopPropagation();
-  		}
+      let path = evt.composedPath ? evt.composedPath() : evt.deepPath || evt.path;
+      let el = path[1]
+      let drawerWasClicked = el.tagName == 'NAV' && el.classList.contains('mdc-temporary-drawer__drawer');
+      if (drawerWasClicked) {
+        evt.stopPropagation();
+      }
     };
     this.componentTouchStartHandler_ = (evt) => this.handleTouchStart_(evt);
     this.componentTouchMoveHandler_ = (evt) => this.handleTouchMove_(evt);
