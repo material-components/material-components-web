@@ -126,6 +126,11 @@ import {MDCSnackbar} from '@material/snackbar';
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 ```
 
+#### Handling events
+
+When snackbar is shown or dismissed, the component will emit a `MDCSnackbar:show` or 
+`MDCSnackbar:hide` custom event with no data attached.
+
 ### Showing a message and action
 
 Once you have obtained an MDCSnackbar instance attached to the DOM, you can use

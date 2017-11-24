@@ -204,7 +204,8 @@
       (function(global) {
         'use strict';
         var MDCSnackbar = global.mdc.snackbar.MDCSnackbar;
-        var snackbar = new MDCSnackbar(document.getElementById('mdc-js-snackbar'));
+        var snackbarEl = document.getElementById('mdc-js-snackbar');
+        var snackbar = new MDCSnackbar(snackbarEl);
         var rtlSnackbar = new MDCSnackbar(document.getElementById('mdc-rtl-js-snackbar'));
         var alignStartSnackbar = new MDCSnackbar(document.getElementById('mdc-align-start-js-snackbar'));
         var alignStartRTLSnackbar = new MDCSnackbar(document.getElementById('mdc-align-start-rtl-js-snackbar'));
@@ -249,6 +250,15 @@
             actionOnBottomCheckbox.classList.remove('mdc-checkbox--disabled');
             actionOnBottomInput.disabled = false;
           }
+        });
+
+        // Show and hide events demo
+        snackbarEl.addEventListener('MDCSnackbar:show', function () {
+          console.log('Received MDCSnackbar:show');
+        });
+
+        snackbarEl.addEventListener('MDCSnackbar:hide', function () {
+          console.log('Received MDCSnackbar:hide');
         });
 
         document.getElementById('show-snackbar').addEventListener('click', function() {
