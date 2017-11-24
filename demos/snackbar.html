@@ -253,12 +253,12 @@
         });
 
         // Show and hide events demo
-        snackbarEl.addEventListener('MDCSnackbar:show', function () {
-          console.log('Received MDCSnackbar:show event');
+        snackbar.listen('MDCSnackbar:show', function () {
+          console.log('Received MDCSnackbar:show');
         });
 
-        snackbarEl.addEventListener('MDCSnackbar:hide', function () {
-          console.log('Received MDCSnackbar:hide event');
+        snackbar.listen('MDCSnackbar:hide', function () {
+          console.log('Received MDCSnackbar:hide');
         });
 
         document.getElementById('show-snackbar').addEventListener('click', function() {
