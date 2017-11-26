@@ -16,7 +16,7 @@
 
 @import "@material/animation/variables";
 
-$mdc-elevation-baseline-color: black;
+$mdc-elevation-baseline-color: black !default;
 $mdc-elevation-umbra-opacity: .2;
 $mdc-elevation-penumbra-opacity: .14;
 $mdc-elevation-ambient-opacity: .12;

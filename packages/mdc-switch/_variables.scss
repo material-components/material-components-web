@@ -14,21 +14,21 @@
 // limitations under the License.
 //
 
-$mdc-switch-track-width: 34px;
-$mdc-switch-track-height: 14px;
-$mdc-switch-knob-diameter: 20px;
-$mdc-switch-focus-ring-diameter: 48px;
-$mdc-switch-knob-active-margin: $mdc-switch-track-width - $mdc-switch-knob-diameter;
+$mdc-switch-track-width: 34px !default;
+$mdc-switch-track-height: 14px !default;
+$mdc-switch-knob-diameter: 20px !default;
+$mdc-switch-focus-ring-diameter: 48px !default;
+$mdc-switch-knob-active-margin: $mdc-switch-track-width - $mdc-switch-knob-diameter !default;
 
-$mdc-switch-unchecked-track-color: #000;
-$mdc-switch-unchecked-knob-color: #fafafa;
-$mdc-switch-unchecked-focus-ring-color: #9e9e9e;
-$mdc-switch-unchecked-knob-color-dark: #bdbdbd;
-$mdc-switch-unchecked-track-color-dark: #fff;
-$mdc-switch-unchecked-focus-ring-color-dark: #f1f1f1;
-$mdc-switch-disabled-knob-color: #bdbdbd;
-$mdc-switch-disabled-knob-color-dark: #424242;
+$mdc-switch-unchecked-track-color: #000 !default;
+$mdc-switch-unchecked-knob-color: #fafafa !default;
+$mdc-switch-unchecked-focus-ring-color: #9e9e9e !default;
+$mdc-switch-unchecked-knob-color-dark: #bdbdbd !default;
+$mdc-switch-unchecked-track-color-dark: #fff !default;
+$mdc-switch-unchecked-focus-ring-color-dark: #f1f1f1 !default;
+$mdc-switch-disabled-knob-color: #bdbdbd !default;
+$mdc-switch-disabled-knob-color-dark: #424242 !default;
 
-$mdc-switch-baseline-theme-color: secondary;
+$mdc-switch-baseline-theme-color: secondary !default;
 
-$mdc-switch-knob-vertical-offset_: -3px;
+$mdc-switch-knob-vertical-offset_: -3px !default;
