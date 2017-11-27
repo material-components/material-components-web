@@ -67,8 +67,7 @@
       padding-bottom: 24px;
     }
 
-    // Divider line similar to MDL
-    &--border {
+    &--full-bleed-divider {
       border-top: 1px solid rgba(0, 0, 0, .1);
       padding-top: 8px;
     }
@@ -111,8 +110,7 @@
       }
     }
 
-    // Divider line above the action elements similar to MDL
-    &--border {
+    &--full-bleed-divider:not(&--vertical) {
       border-top: 1px solid rgba(0, 0, 0, .1);
     }
   }

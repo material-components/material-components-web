@@ -159,7 +159,7 @@ Be sure to include the `mdc-card__action` class on every action for correct posi
 `mdc-button--compact` class on buttons for correct alignment.
 
 You can use the `mdc-card__actions--border` option to place a divider line to separate the `mdc-card__actions` from 
-the previous element (ex.: a `mdc-card__supporting-text`).  This should not be used with `mdc-card__actions--vertical`.
+the previous element (ex.: a `mdc-card__supporting-text`).
 
 #### Primary title / text
 
