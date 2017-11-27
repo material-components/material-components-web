@@ -66,11 +66,6 @@
     &:last-child {
       padding-bottom: 24px;
     }
-
-    &--full-bleed-divider {
-      border-top: 1px solid rgba(0, 0, 0, .1);
-      padding-top: 8px;
-    }
   }
 
   &__actions {
@@ -109,9 +104,16 @@
         margin-bottom: 0;
       }
     }
+  }
 
-    &--full-bleed-divider:not(&--vertical) {
-      border-top: 1px solid rgba(0, 0, 0, .1);
+  &__divider {
+    margin: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: none;
+
+    &--inset {
+      margin-left: 16px;
+      margin-right: 16px;
     }
   }
 
