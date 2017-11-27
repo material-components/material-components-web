@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "./functions";
 @import "./mixins";
 @import "./variables";
 @import "@material/animation/variables";
@@ -23,11 +24,7 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
-
-@function mdc-text-field-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
-}
-
+@import "./bottom-line/mdc-text-field-bottom-line";
 @include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
 
@@ -100,28 +97,6 @@
         @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
       }
     }
-  }
-
-  &__bottom-line {
-    @include mdc-theme-prop(background-color, primary);
-
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    transform: scaleX(0);
-    transition: mdc-text-field-transition(transform), mdc-text-field-transition(opacity);
-    opacity: 0;
-    z-index: 2;
-  }
-
-  &__bottom-line--active {
-    transform: scaleX(1);
-  }
-
-  .mdc-text-field__input:focus ~ .mdc-text-field__bottom-line {
-    opacity: 1;
   }
 
   &__label {

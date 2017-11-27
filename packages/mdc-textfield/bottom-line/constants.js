@@ -1,5 +1,6 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const cssClasses = {
-  ROOT: 'mdc-select',
-  OPEN: 'mdc-select--open',
-  DISABLED: 'mdc-select--disabled',
-  SCROLL_LOCK: 'mdc-select-scroll-lock',
+
+/** @enum {string} */
+const strings = {
+  ANIMATION_END_EVENT: 'MDCTextFieldBottomLine:animation-end',
 };
 
-export const strings = {
-  CHANGE_EVENT: 'MDCSelect:change',
+/** @enum {string} */
+const cssClasses = {
+  BOTTOM_LINE_ACTIVE: 'mdc-text-field__bottom-line--active',
 };
+
+export {strings, cssClasses};

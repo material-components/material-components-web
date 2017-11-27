@@ -125,6 +125,27 @@ test('on arrow left keydown works with keyCode', () => {
   raf.restore();
 });
 
+test('on arrow left keydown works with non-standard IE key propery backed with proper keyCode', () => {
+  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  foundation.init();
+  raf.flush();
+
+  foundation.setValue(50);
+  raf.flush();
+
+  rootHandlers.keydown(createFakeEvent({key: 'Left', keyCode: 37}));
+  raf.flush();
+
+  assert.equal(foundation.getValue(), 49);
+  td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(49px) translateX(-50%)'));
+  td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.49)'));
+
+  raf.restore();
+});
+
+
 test('on arrow up keydown prevents the default behavior', () => {
   const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
   const evt = createFakeEvent({key: 'ArrowUp'});
@@ -201,6 +222,27 @@ test('on arrow up keydown works with keyCode', () => {
 
   raf.restore();
 });
+
+test('on arrow up keydown works with non-standard IE key propery backed with proper keyCode', () => {
+  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  foundation.init();
+  raf.flush();
+
+  foundation.setValue(50);
+  raf.flush();
+
+  rootHandlers.keydown(createFakeEvent({key: 'Up', keyCode: 38}));
+  raf.flush();
+
+  assert.equal(foundation.getValue(), 51);
+  td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(51px) translateX(-50%)'));
+  td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.51)'));
+
+  raf.restore();
+});
+
 
 test('on arrow right keydown prevents the default behavior', () => {
   const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
@@ -300,6 +342,27 @@ test('on arrow right keydown works with keyCode', () => {
   raf.restore();
 });
 
+test('on arrow right keydown works with non-standard IE key propery backed with proper keyCode', () => {
+  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  foundation.init();
+  raf.flush();
+
+  foundation.setValue(50);
+  raf.flush();
+
+  rootHandlers.keydown(createFakeEvent({key: 'Right', keyCode: 39}));
+  raf.flush();
+
+  assert.equal(foundation.getValue(), 51);
+  td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(51px) translateX(-50%)'));
+  td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.51)'));
+
+  raf.restore();
+});
+
+
 test('on arrow down keydown prevents the default behavior', () => {
   const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
   const evt = createFakeEvent({key: 'ArrowDown'});
@@ -367,7 +430,7 @@ test('on arrow down keydown works with keyCode', () => {
   foundation.setValue(50);
   raf.flush();
 
-  rootHandlers.keydown(createFakeEvent({keyCode: 37}));
+  rootHandlers.keydown(createFakeEvent({keyCode: 40}));
   raf.flush();
 
   assert.equal(foundation.getValue(), 49);
@@ -376,6 +439,27 @@ test('on arrow down keydown works with keyCode', () => {
 
   raf.restore();
 });
+
+test('on arrow down keydown works with non-standard IE key propery backed with proper keyCode', () => {
+  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  foundation.init();
+  raf.flush();
+
+  foundation.setValue(50);
+  raf.flush();
+
+  rootHandlers.keydown(createFakeEvent({key: 'Down', keyCode: 40}));
+  raf.flush();
+
+  assert.equal(foundation.getValue(), 49);
+  td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(49px) translateX(-50%)'));
+  td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.49)'));
+
+  raf.restore();
+});
+
 
 test('on home keydown prevents default', () => {
   const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
@@ -546,7 +630,7 @@ test('on page up keydown increases the slider by 4 * the step value when a step 
   raf.restore();
 });
 
-test('on page up keydown works with keycode', () => {
+test('on page up keydown works with keyCode', () => {
   const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
@@ -623,7 +707,7 @@ test('on page down keydown increases the slider by 4 * the step value when a ste
   raf.restore();
 });
 
-test('on page down keydown works with keycode', () => {
+test('on page down keydown works with keyCode', () => {
   const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
