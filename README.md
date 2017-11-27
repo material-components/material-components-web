@@ -14,6 +14,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 - Seamless integration with other JS frameworks and libraries
   - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
   - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
+  - [Angular MDC](https://github.com/trimox/angular-mdc-web)
   - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
   - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC-Web Integration for Vue.js (using [foundation/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
   - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC-Web Integration for Vue.js (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
