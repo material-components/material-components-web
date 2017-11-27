@@ -158,6 +158,8 @@ You can use the `mdc-card__actions--vertical` option to lay actions out vertical
 Be sure to include the `mdc-card__action` class on every action for correct positioning. Also, be sure to include the
 `mdc-button--compact` class on buttons for correct alignment.
 
+You can use the `mdc-card__actions--border` option to place a divider line to separate the `mdc-card__actions` from 
+the previous element (ex.: a `mdc-card__supporting-text`).  This should not be used with `mdc-card__actions--vertical`.
 
 #### Primary title / text
 
@@ -194,6 +196,8 @@ Note that the title and subtitle classes can also be used outside of the primary
 This area is used for displaying the bulk of the textual content of the card. Use the `mdc-card__supporting-text` CSS
 class.
 
+You can use the `mdc-card__supporting-text--border` option to place a divider line to separate this `mdc-card__supporting-text` 
+element from a previous element.  This should not be used on the first contect block inside a `mdc-card`.
 
 ### Horizontal blocks
 

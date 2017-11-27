@@ -66,6 +66,12 @@
     &:last-child {
       padding-bottom: 24px;
     }
+
+    // Divider line similar to MDL
+    &--border {
+      border-top: 1px solid rgba(0, 0, 0, .1);
+      padding-top: 8px;
+    }
   }
 
   &__actions {
@@ -103,6 +109,11 @@
       .mdc-card__action:last-child {
         margin-bottom: 0;
       }
+    }
+
+    // Divider line above the action elements similar to MDL
+    &--border {
+      border-top: 1px solid rgba(0, 0, 0, .1);
     }
   }
 
