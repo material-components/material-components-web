@@ -52,18 +52,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       notifyIconAction: () => {},
-      addClassToHelperText: () => {},
-      removeClassFromHelperText: () => {},
-      helperTextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
       registerBottomLineEventHandler: () => {},
       deregisterBottomLineEventHandler: () => {},
-      setHelperTextAttr: () => {},
-      removeHelperTextAttr: () => {},
-      setHelperTextContent: () => {},
       getNativeInput: () => {},
       getBottomLineFoundation: () => {},
+      getHelperTextFoundation: () => {},
     });
   }
 
@@ -161,7 +156,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-    this.showHelperText_();
+    const helperText = this.adapter_.getHelperTextFoundation();
+    if (helperText) {
+      helperText.showToScreenReader();
+    }
     this.isFocused_ = true;
   }
 
@@ -185,15 +183,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (!this.receivedUserInput_) {
       this.activateFocus();
     }
-  }
-
-  /**
-   * Makes the helper text visible to screen readers.
-   * @private
-   */
-  showHelperText_() {
-    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.removeHelperTextAttr(ARIA_HIDDEN);
   }
 
   /**
@@ -244,40 +233,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
     }
-    this.updateHelperText_(isValid);
-  }
-
-  /**
-   * Updates the state of the Text Field's helper text based on validity and
-   * the Text Field's options.
-   * @param {boolean} isValid
-   */
-  updateHelperText_(isValid) {
-    const {HELPER_TEXT_PERSISTENT, HELPER_TEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
-    const {ROLE} = MDCTextFieldFoundation.strings;
-    const helperTextIsPersistent = this.adapter_.helperTextHasClass(HELPER_TEXT_PERSISTENT);
-    const helperTextIsValidationMsg = this.adapter_.helperTextHasClass(HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !isValid;
-
-    if (validationMsgNeedsDisplay) {
-      this.adapter_.setHelperTextAttr(ROLE, 'alert');
-    } else {
-      this.adapter_.removeHelperTextAttr(ROLE);
+    const helperText = this.adapter_.getHelperTextFoundation();
+    if (helperText) {
+      helperText.setValidity(isValid);
     }
-
-    if (helperTextIsPersistent || validationMsgNeedsDisplay) {
-      return;
-    }
-    this.hideHelperText_();
-  }
-
-  /**
-   * Hides the helper text from screen readers.
-   * @private
-   */
-  hideHelperText_() {
-    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.setHelperTextAttr(ARIA_HIDDEN, 'true');
   }
 
   /**
@@ -313,10 +272,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {string} content Sets the content of the helper text field
+   * @param {string} content Sets the content of the helper text.
    */
   setHelperTextContent(content) {
-    this.adapter_.setHelperTextContent(content);
+    const helperText = this.adapter_.getHelperTextFoundation();
+    if (helperText) {
+      helperText.setContent(content);
+    }
   }
 
   /**
