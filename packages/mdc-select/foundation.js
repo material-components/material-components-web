@@ -227,7 +227,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const evtCoords = {x: evt.clientX, y: evt.clientY};
     const normalizedX = evtCoords.x - targetClientRect.left;
     const attributeString =
-      `transform-origin: ${normalizedX}px center`;
+      `transform-origin: ${normalizedX}px bottom`;
 
     this.adapter_.setBottomLineAttr('style', attributeString);
   }

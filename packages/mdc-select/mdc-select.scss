@@ -58,19 +58,13 @@ $mdc-select-label-padding: 16px;
 
   &:focus {
     .mdc-select__bottom-line {
+      @include mdc-theme-prop(background-color, primary);
+
       transform: scaleY(2);
-      background-color: rgba(black, .8);
 
       &::after {
         opacity: 1;
       }
-    }
-  }
-
-  &:hover {
-    .mdc-select__bottom-line {
-      transform: scaleY(2);
-      background-color: rgba(black, .8);
     }
   }
 
@@ -118,13 +112,6 @@ $mdc-select-label-padding: 16px;
     // Resets for <select> element
     appearance: none;
     overflow: hidden;
-
-    &:hover {
-      .mdc-select__bottom-line {
-        transform: scaleY(2);
-        background-color: rgba(black, .8);
-      }
-    }
   }
 
   &__label {
@@ -210,6 +197,16 @@ $mdc-select-label-padding: 16px;
       mdc-animation-enter(opacity, 125ms, 125ms),
       mdc-animation-enter(transform, 125ms, 125ms);
     opacity: 0;
+  }
+
+  .mdc-select__bottom-line {
+    @include mdc-theme-prop(background-color, primary);
+
+    transform: scaleY(2);
+
+    &::after {
+      opacity: 1;
+    }
   }
 }
 
