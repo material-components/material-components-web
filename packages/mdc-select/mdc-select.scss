@@ -98,6 +98,10 @@ $mdc-select-label-padding: 16px;
     @include mdc-ripple-color;
     @include mdc-ripple-radius;
 
+    @include mdc-theme-dark(".mdc-select") {
+      @include mdc-ripple-color(white, .16);
+    }
+
     &::-ms-expand {
       display: none;
     }
