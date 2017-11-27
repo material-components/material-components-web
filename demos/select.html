@@ -139,7 +139,7 @@
         <h2 class="mdc-typography--title">CSS Only</h2>
         <div class="mdc-select">
           <select class="mdc-select__surface">
-            <option value="" default selected>Pick a food group</option>
+            <option value="" selected>Pick a food group</option>
             <option value="grains">Bread, Cereal, Rice, and Pasta</option>
             <option value="vegetables" disabled>Vegetables</option>
             <option value="fruit">Fruit</option>
@@ -193,7 +193,7 @@
           var item = select.selectedOptions[0];
           var index = select.selectedIndex;
           boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
-           ' with value "' + select.value + '"';
+            ' with value "' + select.value + '"';
         });
 
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');

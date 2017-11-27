@@ -205,8 +205,11 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
 The `mdc-select` CSS classes also work with the browser's native `<select>` element, allowing for a
 seamless, un-invasive experience in browsers where a native select may be more appropriate, such as
 on a mobile device. It does not require any javascript, nor any CSS for `mdc-menu` or `mdc-list`.
-Simply wrap the `<select>` element in one with class `mdc-select`, add `mdc-select__surface` to `<select>`,
-and `<div class="mdc-select__bottom-line"></div>` immediately after `<select>`.
+E.g.:
+
+1. Wrap the `<select>` with a block element that has an `mdc-select` class
+2. Add the `mdc-select__surface` class to the `<select>`
+3. Append `<div class="mdc-select__bottom-line"></div>` immediately after the `<select>`
 
 ```html
 <div class="mdc-select">
