@@ -175,7 +175,7 @@ class MDCTextFieldAdapter {
    * @return {?MDCTextFieldHelperTextFoundation}
    */
   getHelperTextFoundation() {}
-  
+
   /**
    * Returns the foundation for the input element.
    * @return {?MDCTextFieldInputFoundation}

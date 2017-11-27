@@ -42,8 +42,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'registerInputEventHandler', 'deregisterInputEventHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput', 'getBottomLineFoundation', 'getHelperTextFoundation',
-    'getInputFoundation',
+    'getBottomLineFoundation', 'getHelperTextFoundation', 'getInputFoundation',
   ]);
 });
 
