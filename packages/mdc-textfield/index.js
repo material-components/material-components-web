@@ -22,7 +22,9 @@ import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter} from './adapter';
 import MDCTextFieldFoundation from './foundation';
 import {MDCTextFieldBottomLine} from './bottom-line';
+import {MDCTextFieldHelperText} from './helper-text';
 import {MDCTextFieldInput} from './input';
+
 
 /**
  * @extends {MDCComponent<!MDCTextFieldFoundation>}
@@ -38,12 +40,12 @@ class MDCTextField extends MDCComponent {
     this.input_;
     /** @private {?Element} */
     this.label_;
-    /** @type {?Element} */
-    this.helperTextElement;
     /** @type {?MDCRipple} */
     this.ripple;
     /** @private {?MDCTextFieldBottomLine} */
     this.bottomLine_;
+    /** @private {?MDCTextFieldHelperText} */
+    this.helperText_;
     /** @private {?Element} */
     this.icon_;
   }
@@ -73,11 +75,7 @@ class MDCTextField extends MDCComponent {
       this.input_ = inputFactory(inputElement);
     }
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
-    this.helperTextElement = null;
     this.ripple = null;
-    if (inputElement.hasAttribute('aria-controls')) {
-      this.helperTextElement = document.getElementById(inputElement.getAttribute('aria-controls'));
-    }
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = rippleFactory(this.root_);
     };
@@ -87,6 +85,12 @@ class MDCTextField extends MDCComponent {
         this.bottomLine_ = bottomLineFactory(bottomLineElement);
       }
     };
+    if (inputElement.hasAttribute(strings.ARIA_CONTROLS)) {
+      const helperTextElement = document.getElementById(inputElement.getAttribute(strings.ARIA_CONTROLS));
+      if (helperTextElement) {
+        this.helperText_ = new MDCTextFieldHelperText(helperTextElement);
+      }
+    }
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
       this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
     };
@@ -98,6 +102,9 @@ class MDCTextField extends MDCComponent {
     }
     if (this.bottomLine_) {
       this.bottomLine_.destroy();
+    }
+    if (this.helperText_) {
+      this.helperText_.destroy();
     }
     if (this.input_) {
       this.input_.destroy();
@@ -127,7 +134,8 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @param {string} content Sets the Helper Text element textContent.
+   * Sets the helper text element content.
+   * @param {string} content
    */
   set helperTextContent(content) {
     this.foundation_.setHelperTextContent(content);
@@ -182,6 +190,12 @@ class MDCTextField extends MDCComponent {
         }
         return undefined;
       },
+      getHelperTextFoundation: () => {
+        if (this.helperText_) {
+          return this.helperText_.foundation;
+        }
+        return undefined;
+      },
       getInputFoundation: () => {
         if (this.input_) {
           return this.input_.foundation;
@@ -189,7 +203,6 @@ class MDCTextField extends MDCComponent {
         return undefined;
       },
     },
-    this.getHelperTextAdapterMethods_(),
     this.getIconAdapterMethods_())));
   }
 
@@ -203,51 +216,6 @@ class MDCTextField extends MDCComponent {
       setIconAttr: (name, value) => {
         if (this.icon_) {
           this.icon_.setAttribute(name, value);
-        }
-      },
-    };
-  }
-
-  /**
-   * @return {!{
-   *   addClassToHelperText: function(string): undefined,
-   *   removeClassFromHelperText: function(string): undefined,
-   *   helperTextHasClass: function(string): boolean,
-   *   setHelperTextAttr: function(string, string): undefined,
-   *   removeHelperTextAttr: function(string): undefined,
-   * }}
-   */
-  getHelperTextAdapterMethods_() {
-    return {
-      addClassToHelperText: (className) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.classList.add(className);
-        }
-      },
-      removeClassFromHelperText: (className) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.classList.remove(className);
-        }
-      },
-      helperTextHasClass: (className) => {
-        if (!this.helperTextElement) {
-          return false;
-        }
-        return this.helperTextElement.classList.contains(className);
-      },
-      setHelperTextAttr: (name, value) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.setAttribute(name, value);
-        }
-      },
-      removeHelperTextAttr: (name) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.removeAttribute(name);
-        }
-      },
-      setHelperTextContent: (content) => {
-        if (this.helperTextElement) {
-          this.helperTextElement.textContent = content;
         }
       },
     };

@@ -40,11 +40,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
     'setIconAttr', 'eventTargetHasClass', 'registerTextFieldInteractionHandler',
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
-    'addClassToHelperText', 'removeClassFromHelperText', 'helperTextHasClass',
     'registerInputEventHandler', 'deregisterInputEventHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'setHelperTextAttr', 'removeHelperTextAttr', 'setHelperTextContent',
-    'getBottomLineFoundation', 'getInputFoundation',
+    'getNativeInput', 'getBottomLineFoundation', 'getHelperTextFoundation',
+    'getInputFoundation',
   ]);
 });
 
@@ -165,8 +164,12 @@ test('#init does not add mdc-text-field__label--float-above class if the input d
 
 test('#setHelperTextContent sets the content of the helper text element', () => {
   const {foundation, mockAdapter} = setupTest();
+  const helperText = td.object({
+    setContent: () => {},
+  });
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
   foundation.setHelperTextContent('foo');
-  td.verify(mockAdapter.setHelperTextContent('foo'));
+  td.verify(mockAdapter.getHelperTextFoundation().setContent('foo'));
 });
 
 test('on MDCTextFieldInput:focus event, adds mdc-text-field--focused class', () => {
@@ -193,6 +196,23 @@ test('on MDCTextFieldInput:focus event, adds mdc-text-field__label--float-above 
   foundation.init();
   focus();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
+});
+
+test('on MDCTextFieldInput:focus event, makes helper text visible to the screen reader', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const helperText = td.object({
+    showToScreenReader: () => {},
+  });
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+  let focus;
+  td.when(mockAdapter.registerInputEventHandler(
+    MDCTextFieldInputFoundation.strings.FOCUS_EVENT, td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focus = handler;
+    });
+  foundation.init();
+  focus();
+  td.verify(helperText.showToScreenReader());
 });
 
 const setupBlurTest = () => {
@@ -265,60 +285,18 @@ test('on MDCTextFieldInput:blur event, does not add mdc-textfied--invalid if cus
   td.verify(mockAdapter.addClass(cssClasses.INVALID), {times: 0});
 });
 
-// test('on focus removes aria-hidden from helperText', () => {
-//   const {foundation, mockAdapter} = setupTest();
-//   let focus;
-//   td.when(mockAdapter.registerInputEventHandler('focus', td.matchers.isA(Function)))
-//     .thenDo((evtType, handler) => {
-//       focus = handler;
-//     });
-//   foundation.init();
-//   focus();
-//   td.verify(mockAdapter.removeHelperTextAttr('aria-hidden'));
-// });
-
-// test('on blur adds role="alert" to helper text if input is invalid and helper text is being used ' +
-//      'as a validation message', () => {
-//   const {mockAdapter, blur, nativeInput} = setupBlurTest();
-//   nativeInput.checkValidity = () => false;
-//   td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('role', 'alert'));
-// });
-
-// test('on blur remove role="alert" if input is valid', () => {
-//   const {mockAdapter, blur} = setupBlurTest();
-//   blur();
-//   td.verify(mockAdapter.removeHelperTextAttr('role'));
-// });
-
-// test('on blur sets aria-hidden="true" on helper text by default', () => {
-//   const {mockAdapter, blur} = setupBlurTest();
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'));
-// });
-
-// test('on blur does not set aria-hidden on helper text when it is persistent', () => {
-//   const {mockAdapter, blur} = setupBlurTest();
-//   td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_PERSISTENT)).thenReturn(true);
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'), {times: 0});
-// });
-
-// test('on blur does not set aria-hidden if input is invalid and helper text is validation message', () => {
-//   const {mockAdapter, blur, nativeInput} = setupBlurTest();
-//   td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-//   nativeInput.checkValidity = () => false;
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'), {times: 0});
-// });
-
-// test('on blur sets aria-hidden=true if input is valid and helper text is validation message', () => {
-//   const {mockAdapter, blur} = setupBlurTest();
-//   td.when(mockAdapter.helperTextHasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG)).thenReturn(true);
-//   blur();
-//   td.verify(mockAdapter.setHelperTextAttr('aria-hidden', 'true'));
-// });
+test('on MDCTextFieldInput:blur event, set validity of helper text', () => {
+  const {mockAdapter, blur, input} = setupBlurTest();
+  const helperText = td.object({
+    setValidity: () => {},
+    hasClass: () => {},
+  });
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+  input.checkValidity = () => false;
+  td.when(helperText.hasClass('mdc-text-field-helper-text--validation-msg')).thenReturn(true);
+  blur();
+  td.verify(helperText.setValidity(false));
+});
 
 test('on text field click notifies icon event if event target is an icon', () => {
   const {foundation, mockAdapter} = setupTest();

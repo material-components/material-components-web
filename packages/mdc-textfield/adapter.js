@@ -17,6 +17,7 @@
 
 /* eslint-disable no-unused-vars */
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldInputFoundation from './input/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
@@ -168,6 +169,13 @@ class MDCTextFieldAdapter {
    */
   getBottomLineFoundation() {}
 
+  /**
+   * Returns the foundation for the helper text element. Returns undefined if
+   * there is no helper text element.
+   * @return {?MDCTextFieldHelperTextFoundation}
+   */
+  getHelperTextFoundation() {}
+  
   /**
    * Returns the foundation for the input element.
    * @return {?MDCTextFieldInputFoundation}
