@@ -437,6 +437,23 @@ test('on click does not trigger selected if selection is already queued up', () 
   clock.uninstall();
 });
 
+test('on menu item click does not cancel the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0, 1);
+
+  foundation.init();
+  handlers.click({target});
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
+  td.verify(mockAdapter.notifyCancel(), {times: 0});
+
+  clock.uninstall();
+});
+
 test('on ctrl+spacebar keyup does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
