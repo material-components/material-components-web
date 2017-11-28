@@ -32,6 +32,7 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
   - [Specifying known element dimensions](#specifying-known-element-dimensions)
 - [Caveat: Edge](#caveat-edge)
 - [Caveat: Safari 9](#caveat-safari)
+- [Caveat: Mobile Safari](#caveat-mobile-safari)
 - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
 - [The util API](#the-util-api)
 
@@ -357,6 +358,16 @@ webkit versions: Webkit builds which have this bug fixed (e.g. the builds used i
 support [CSS 4 Hex Notation](https://drafts.csswg.org/css-color/#hex-notation) while those do not
 have the fix don't. We use this to reliably feature-detect whether we are working with a WebKit
 build that can handle our usage of CSS variables.
+
+## Caveat: Mobile Safari
+
+> TL;DR for CSS-only ripple styles to work as intended, register a `touchstart` event handler on the affected element or its ancestor.
+
+Mobile Safari does not trigger `:active` styles noticeably by default, as
+[documented](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/AdjustingtheTextSize/AdjustingtheTextSize.html#//apple_ref/doc/uid/TP40006510-SW5)
+in the Safari Web Content Guide. This effectively suppresses the intended pressed state styles for CSS-only ripple surfaces. This behavior can be remedied by registering a `touchstart` event handler on the element, or on any common ancestor of the desired elements.
+
+See [this StackOverflow answer](https://stackoverflow.com/a/33681490) for additional information on mobile Safari's behavior.
 
 ## Caveat: Theme Custom Variables
 

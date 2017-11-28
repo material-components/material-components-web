@@ -842,9 +842,7 @@ test('on document click cancels and closes the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   const mockEvt = {
-    target: {
-      classList: {contains: () => false},
-    },
+    target: {},
   };
   let documentClickHandler;
   td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
@@ -861,10 +859,34 @@ test('on document click cancels and closes the menu', () => {
 
   documentClickHandler(mockEvt);
   mockRaf.flush();
-  mockRaf.flush();
 
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
   td.verify(mockAdapter.notifyCancel());
+
+  mockRaf.restore();
+});
+
+test('on menu item click does not emit cancel', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const mockEvt = {
+    target: {},
+  };
+  let documentClickHandler;
+  td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    documentClickHandler = handler;
+  });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
+    .thenReturn(true);
+
+  foundation.init();
+  foundation.open();
+  mockRaf.flush();
+
+  documentClickHandler(mockEvt);
+  mockRaf.flush();
+
+  td.verify(mockAdapter.notifyCancel(), {times: 0});
 
   mockRaf.restore();
 });
