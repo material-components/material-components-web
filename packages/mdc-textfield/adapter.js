@@ -104,27 +104,6 @@ class MDCTextFieldAdapter {
   notifyIconAction() {}
 
   /**
-   * Adds a class to the helper text element. Note that in our code we check for
-   * whether or not we have a helper text element and if we don't, we simply
-   * return.
-   * @param {string} className
-   */
-  addClassToHelperText(className) {}
-
-  /**
-   * Removes a class from the helper text element.
-   * @param {string} className
-   */
-  removeClassFromHelperText(className) {}
-
-  /**
-   * Returns whether or not the helper text element contains the given class.
-   * @param {string} className
-   * @return {boolean}
-   */
-  helperTextHasClass(className) {}
-
-  /**
    * Registers an event listener on the native input element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
@@ -151,25 +130,6 @@ class MDCTextFieldAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterBottomLineEventHandler(evtType, handler) {}
-
-  /**
-   * Sets an attribute with a given value on the helper text element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setHelperTextAttr(name, value) {}
-
-  /**
-   * Removes an attribute from the helper text element.
-   * @param {string} name
-   */
-  removeHelperTextAttr(name) {}
-
-  /**
-   * Sets the text content for the help text element
-   * @param {string} content
-   */
-  setHelperTextContent(content) {}
 
   /**
    * Returns an object representing the native text input element, with a
