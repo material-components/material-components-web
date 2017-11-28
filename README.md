@@ -12,6 +12,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 - Production-ready components consumable in an a-la-carte fashion
 - Best-in-class performance and adherence to the [Material Design guidelines](https://material.io/guidelines)
 - Seamless integration with other JS frameworks and libraries
+  - [React Material Design](https://github.com/react-material-design/react-material-design): React component library for Material Components. [Documentation](https://reactmaterial.com).
   - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
   - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
   - [Angular MDC](https://github.com/trimox/angular-mdc-web)
