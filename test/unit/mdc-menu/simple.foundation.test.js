@@ -442,10 +442,10 @@ test('on menu item click does not cancel the menu', () => {
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
   const target = {};
+
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0, 1);
 
   foundation.init();
-  handlers.click({target});
   handlers.click({target});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
