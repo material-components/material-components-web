@@ -36,7 +36,7 @@ class MDCTextField extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?MDCTextFieldInput} */
+    /** @private {!MDCTextFieldInput} */
     this.input_;
     /** @private {?Element} */
     this.label_;
@@ -71,9 +71,7 @@ class MDCTextField extends MDCComponent {
     bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
     inputFactory = (el) => new MDCTextFieldInput(el)) {
     const inputElement = this.root_.querySelector(strings.INPUT_SELECTOR);
-    if (inputElement) {
-      this.input_ = inputFactory(inputElement);
-    }
+    this.input_ = inputFactory(inputElement);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.ripple = null;
     if (this.root_.classList.contains(cssClasses.BOX)) {
@@ -106,9 +104,7 @@ class MDCTextField extends MDCComponent {
     if (this.helperText_) {
       this.helperText_.destroy();
     }
-    if (this.input_) {
-      this.input_.destroy();
-    }
+    this.input_.destroy();
     super.destroy();
   }
 
@@ -164,16 +160,8 @@ class MDCTextField extends MDCComponent {
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
-      registerInputEventHandler: (evtType, handler) => {
-        if (this.input_) {
-          this.input_.listen(evtType, handler);
-        }
-      },
-      deregisterInputEventHandler: (evtType, handler) => {
-        if (this.input_) {
-          this.input_.unlisten(evtType, handler);
-        }
-      },
+      registerInputEventHandler: (evtType, handler) => this.input_.listen(evtType, handler),
+      deregisterInputEventHandler: (evtType, handler) => this.input_.unlisten(evtType, handler),
       registerBottomLineEventHandler: (evtType, handler) => {
         if (this.bottomLine_) {
           this.bottomLine_.listen(evtType, handler);
@@ -197,10 +185,7 @@ class MDCTextField extends MDCComponent {
         return undefined;
       },
       getInputFoundation: () => {
-        if (this.input_) {
-          return this.input_.foundation;
-        }
-        return undefined;
+        return this.input_.foundation;
       },
     },
     this.getIconAdapterMethods_())));

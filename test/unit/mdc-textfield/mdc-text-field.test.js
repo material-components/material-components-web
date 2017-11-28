@@ -57,6 +57,12 @@ class FakeBottomLine {
 
 class FakeInput {
   constructor() {
+    this.foundation = td.object({
+      getValue: () => {},
+      isDisabled: () => {},
+      setDisabled: () => {},
+      setReceivedUserInput: () => {},
+    });
     this.listen = td.func('input.listen');
     this.unlisten = td.func('input.unlisten');
   }
@@ -80,6 +86,18 @@ test('#constructor when given a `mdc-text-field--box` element, initializes a def
   root.classList.add(cssClasses.BOX);
   const component = new MDCTextField(root);
   assert.instanceOf(component.ripple, MDCRipple);
+});
+
+test('#constructor throws error when there is no `mdc-text-field__input` element', () => {
+  const root = bel`
+    <div class="mdc-text-field">
+      <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+      <input type="text" id="my-text-field">
+      <label class="mdc-text-field__label" for="my-text-field">My Label</label>
+      <div class="mdc-text-field__bottom-line"></div>
+    </div>
+  `;
+  assert.throws(() => new MDCTextField(root));
 });
 
 const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;

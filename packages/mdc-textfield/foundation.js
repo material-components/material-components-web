@@ -91,7 +91,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
     const input = this.adapter_.getInputFoundation();
-    if (input && input.getValue()) {
+    if (input.getValue()) {
       this.adapter_.addClassToLabel(MDCTextFieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
     }
 
@@ -132,9 +132,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       return;
     }
     const input = this.adapter_.getInputFoundation();
-    if (input) {
-      input.setReceivedUserInput(true);
-    }
+    input.setReceivedUserInput(true);
 
     const {target, type} = evt;
     const {TEXT_FIELD_ICON} = MDCTextFieldFoundation.cssClasses;
@@ -236,7 +234,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    */
   isBadInput_() {
     const input = this.adapter_.getInputFoundation();
-    return input ? input.isBadInput() : false;
+    return input.isBadInput();
   }
 
   /**
@@ -244,7 +242,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    */
   isDisabled() {
     const input = this.adapter_.getInputFoundation();
-    return input ? input.isDisabled() : false;
+    return input.isDisabled();
   }
 
   /**
@@ -253,9 +251,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setDisabled(disabled) {
     const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
     const input = this.adapter_.getInputFoundation();
-    if (input) {
-      input.setDisabled(disabled);
-    }
+    input.setDisabled(disabled);
     if (disabled) {
       this.adapter_.addClass(DISABLED);
       this.adapter_.removeClass(INVALID);

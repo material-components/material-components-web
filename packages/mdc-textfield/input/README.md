@@ -15,7 +15,7 @@ The input element is where the user enters text.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html#text-fields-states">Material Design guidelines: Text Fields States</a>
+    <a href="https://material.io/guidelines/components/text-fields.html#text-fields-field-types">Material Design guidelines: Text Field Types</a>
   </li>
 </ul>
 
