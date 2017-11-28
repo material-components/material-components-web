@@ -106,6 +106,17 @@
     }
   }
 
+  &__divider {
+    margin: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: none;
+
+    &--inset {
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+  }
+
   &__media {
     display: flex;
     flex-direction: column;

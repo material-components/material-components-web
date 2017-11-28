@@ -158,7 +158,6 @@ You can use the `mdc-card__actions--vertical` option to lay actions out vertical
 Be sure to include the `mdc-card__action` class on every action for correct positioning. Also, be sure to include the
 `mdc-button--compact` class on buttons for correct alignment.
 
-
 #### Primary title / text
 
 ```html
@@ -193,6 +192,37 @@ Note that the title and subtitle classes can also be used outside of the primary
 
 This area is used for displaying the bulk of the textual content of the card. Use the `mdc-card__supporting-text` CSS
 class.
+
+#### Dividers
+```html
+<div class="mdc-card">
+  <section class="mdc-card__primary">
+    <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
+    <h2 class="mdc-card__subtitle">Subtitle here</h2>
+  </section>
+  <hr class="mdc-card__divider">
+  <section class="mdc-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat.
+  </section>
+  <hr class="mdc-card__divider mdc-card__divider--inset">
+  <section class="mdc-card__actions">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat.
+  </section>
+   <hr class="mdc-card__divider">
+  <section class="mdc-card__actions">
+    <button class="mdc-button mdc-button--compact mdc-card__action">Action</button>
+  </section>
+</div>
+```
+
+Dividers are used to separate contextual areas.  Use `mdc-card__divider` to separate totally different content while
+adding `mdc-card__divider--inset` can be used to separate related content.
 
 
 ### Horizontal blocks
