@@ -362,7 +362,7 @@ within `componentDidUpdate`.
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the root element. |
 | `focus() => void` | Focuses the root element |
 | `makeTabbable() => void` | Allows the menu elements to be tab-focused via keyboard. We achieve this by setting the menu element's `tabIndex` property to `0`. |
-| `makeUntabbable() => void` | Disallows the root element to be tab-focused via keyboard. We achieve this by setting the root element's `tabIndex` property to `-1`. |
+| `makeUntabbable() => void` | Disallows the menu elements to be tab-focused via keyboard. We achieve this by setting the menu element's `tabIndex` property to `-1`. |
 | `getComputedStyleValue(propertyName: string) => string` | Get the surface element's computed style value of the given dasherized css property `propertyName`. We achieve this via `getComputedStyle(...).getPropertyValue(propertyName). `|
 | `setStyle(propertyName: string, value: string) => void` | Sets a dasherized css property `propertyName` to the value `value` on the surface element. We achieve this via `root.style.setProperty(propertyName, value)`. |
 | `create2dRenderingContext() => {font: string, measureText: (string) => {width: number}}` | Returns an object which has the shape of a CanvasRenderingContext2d instance. Namely, it has a string property `font` which is writable, and a method `measureText` which given a string of text returns an object containing a `width` property specifying how wide that text should be rendered in the `font` specified by the font property. An easy way to achieve this is simply `document.createElement('canvas').getContext('2d');`. |
