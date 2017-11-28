@@ -309,7 +309,7 @@ Boolean setter. Proxies to the foundation's `setValid` method when set.
 
 ##### MDCTextField.helperTextContent
 
-Boolean setter. Proxies to the foundation's `setHelperTextContent` method when set.
+String setter. Proxies to the foundation's `setHelperTextContent` method when set.
 
 ##### MDCTextField.ripple
 
