@@ -327,8 +327,6 @@ complicated.
 | registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event handler on the root element for a given event |
 | deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event handler on the root element for a given event |
 | notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon |
-| addClassToBottomLine(className: string) => void | Adds a class to the bottom line element |
-| removeClassFromBottomLine(className: string) => void | Removes a class from the bottom line element |
 | registerInputInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
 | deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
 | registerBottomLineEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the bottom line element for a given event |
@@ -363,17 +361,12 @@ Activates the focus state of the Text Field. Normally called in response to the 
 
 Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 
-##### MDCTextFieldFoundation.animateBottomLine(evt: Event)
-
-Animates the bottom line. The animation expands outward from the user's click or touch. Expects an
-event with clientX/clientY properties.
-
 ##### MDCTextFieldFoundation.handleBottomLineAnimationEnd(evt: Event)
 
 Handles the end of the bottom line animation, performing actions that must wait for animations to
 finish. Expects a transition-end event.
 
-##### MDCTextField.helperTextContent
+##### MDCTextField.setHelperTextContent(content)
 
 Sets the content of the helper text, if it exists.
 
