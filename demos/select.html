@@ -178,7 +178,6 @@
         var MDCSelect = mdc.select.MDCSelect;
         var heroSelect = document.getElementById('hero-js-select');
         var heroSelectComponent = new mdc.select.MDCSelect(heroSelect);
-        heroSelectComponent.ripple.layout();
       }, 300);
     </script>
     <script>
@@ -187,7 +186,6 @@
         var root = document.getElementById('js-select-box');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
         var select = new MDCSelect(root);
-        select.ripple.layout();
 
         root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];

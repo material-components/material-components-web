@@ -25,12 +25,9 @@
   background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E);
 }
 
-@function mdc-select-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
-}
-
 $mdc-select-arrow-padding: 26px;
 $mdc-select-label-padding: 16px;
+$mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timing-function;
 
 // postcss-bem-linter: define select
 .mdc-select {
@@ -86,8 +83,7 @@ $mdc-select-label-padding: 16px;
   &__surface {
     @include mdc-typography(subheading2);
     @include mdc-theme-prop(color, text-primary-on-light);
-    @include mdc-rtl-reflexive-box(padding, right, $mdc-select-arrow-padding);
-    @include mdc-rtl-reflexive-box(padding, left, $mdc-select-label-padding);
+    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding, ".mdc-select");
     @include mdc-ripple-surface;
     @include mdc-ripple-color;
     @include mdc-ripple-radius;
@@ -120,7 +116,7 @@ $mdc-select-label-padding: 16px;
     position: absolute;
     bottom: 12px;
     transform-origin: left top;
-    transition: mdc-select-transition(transform);
+    transition: $mdc-select-menu-transition;
     color: rgba(black, .6);
     pointer-events: none;
     will-change: transform;
@@ -142,8 +138,6 @@ $mdc-select-label-padding: 16px;
     display: flex;
     align-items: flex-end;
     margin-bottom: 6px;
-    padding-right: 0;
-    padding-left: 0;
     transition:
       mdc-animation-exit-temporary(opacity, 125ms),
       mdc-animation-exit-temporary(transform, 125ms);
@@ -163,8 +157,8 @@ $mdc-select-label-padding: 16px;
     height: 1px;
     transform: scaleY(1);
     transform-origin: bottom;
-    transition: mdc-select-transition(transform);
-    background-color: rgba(black, .4);
+    transition: $mdc-select-menu-transition;
+    background-color: rgba(black, .5);
 
     &::after {
       @include mdc-theme-prop(background-color, primary);
@@ -175,7 +169,7 @@ $mdc-select-label-padding: 16px;
       width: 100%;
       height: 2px;
       transform: scaleX(0);
-      transition: mdc-select-transition(transform);
+      transition: $mdc-select-menu-transition;
       opacity: 0;
       content: "";
       z-index: 2;

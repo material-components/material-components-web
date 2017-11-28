@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base';
-import {cssClasses, numbers, strings} from './constants';
+import {cssClasses, strings} from './constants';
 import {MDCSimpleMenuFoundation} from '@material/menu';
 
 const OPENER_KEYS = [
@@ -94,18 +94,19 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
     this.selectionHandler_ = ({detail}) => {
       const {index} = detail;
-      const shouldRemoveFloatingLabelClass = false;
 
       if (index !== this.selectedIndex_) {
         this.setSelectedIndex(index);
         this.adapter_.notifyChange();
       }
-      this.close_(shouldRemoveFloatingLabelClass);
+      this.close_();
     };
     this.cancelHandler_ = () => {
-      const shouldRemoveFloatingLabelClass = true;
+      this.close_();
 
-      this.close_(shouldRemoveFloatingLabelClass);
+      if (this.selectedIndex_ === -1) {
+        this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
+      }
     };
   }
 
@@ -122,10 +123,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       this.adapter_.registerInteractionHandler(evtType, this.setPointerXOffset_);
     });
     this.resize();
-
-    if (this.selectedIndex_ === -1) {
-      this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
-    }
   }
 
   destroy() {
@@ -187,6 +184,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   resize() {
     const font = this.adapter_.getComputedStyleValue('font');
     const letterSpacing = parseFloat(this.adapter_.getComputedStyleValue('letter-spacing'));
+
     if (font) {
       this.ctx_.font = font;
     } else {
@@ -196,16 +194,19 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
 
     let maxTextLength = 0;
+
     for (let i = 0, l = this.adapter_.getNumberOfOptions(); i < l; i++) {
-      // SURFACE_RIGHT_PADDING and SURFACE_LEFT_PADDING correspond to variables set in ./mdc-select.scss
-      // If the UI of MDC Select changes, also change it in the style
-      const selectBoxAddedPadding = numbers.SURFACE_RIGHT_PADDING + numbers.SURFACE_LEFT_PADDING;
+      const surfacePaddingRight = parseInt(this.adapter_.getComputedStyleValue('padding-right'), 10);
+      const surfacePaddingLeft = parseInt(this.adapter_.getComputedStyleValue('padding-left'), 10);
+      const selectBoxAddedPadding = surfacePaddingRight + surfacePaddingLeft;
       const txt = this.adapter_.getTextForOptionAtIndex(i).trim();
       const {width} = this.ctx_.measureText(txt);
       const addedSpace = letterSpacing * txt.length;
+
       maxTextLength =
         Math.max(maxTextLength, Math.ceil(width + addedSpace + selectBoxAddedPadding));
     }
+
     this.adapter_.setStyle('width', `${maxTextLength}px`);
   }
 
@@ -257,12 +258,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.setMenuElStyle('transform-origin', `center ${itemOffsetTop}px`);
   }
 
-  close_(shouldRemoveFloatingLabelClass) {
+  close_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
-    if (shouldRemoveFloatingLabelClass && this.getSelectedIndex() === -1) {
-      this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
-    }
     this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.focus();
     this.enableScroll_();

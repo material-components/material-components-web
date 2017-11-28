@@ -18,11 +18,9 @@ export const cssClasses = {
   BOTTOM_LINE_ACTIVE: 'mdc-select__bottom-line--active',
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
-  LABEL: 'mdc-select__label',
   LABEL_FLOAT_ABOVE: 'mdc-select__label--float-above',
   OPEN: 'mdc-select--open',
   ROOT: 'mdc-select',
-  SURFACE: 'mdc-select__surface',
   SCROLL_LOCK: 'mdc-select-scroll-lock',
 };
 
@@ -33,9 +31,4 @@ export const strings = {
   MENU_SELECTOR: '.mdc-select__menu',
   SURFACE_SELECTOR: '.mdc-select__surface',
   SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
-};
-
-export const numbers = {
-  SURFACE_RIGHT_PADDING: 26,
-  SURFACE_LEFT_PADDING: 16,
 };
