@@ -281,7 +281,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   handleDocumentClick_(evt) {
     let el = evt.target;
 
+<<<<<<< HEAD
+    while (el && el !== document.body) {
+=======
     while (el && el !== document.documentElement) {
+>>>>>>> master
       if (this.adapter_.eventTargetHasClass(el, cssClasses.LIST_ITEM)) {
         return;
       }
@@ -479,12 +483,12 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       return;
     }
 
+    this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
     this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
     requestAnimationFrame(() => {
       this.removeTransitionDelays_();
       this.animateMenu_();
       this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.OPEN);
-      this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
     });
     this.isOpen_ = false;
     this.adapter_.restoreFocus();
