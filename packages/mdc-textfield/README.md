@@ -366,7 +366,7 @@ Deactivates the focus state of the Text Field. Normally called in response to th
 Handles the end of the bottom line animation, performing actions that must wait for animations to
 finish. Expects a transition-end event.
 
-##### MDCTextField.setHelperTextContent(content)
+##### MDCTextFieldFoundation.setHelperTextContent(content)
 
 Sets the content of the helper text, if it exists.
 
