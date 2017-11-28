@@ -869,6 +869,32 @@ test('on document click cancels and closes the menu', () => {
   mockRaf.restore();
 });
 
+test('on menu item click does not emit cancel', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const mockEvt = {
+    target: {},
+  };
+  let documentClickHandler;
+  td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    documentClickHandler = handler;
+  });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
+    .thenReturn(true);
+
+  foundation.init();
+  foundation.open();
+  mockRaf.flush();
+
+  documentClickHandler(mockEvt);
+  mockRaf.flush();
+  mockRaf.flush();
+
+  td.verify(mockAdapter.notifyCancel(), {times: 0});
+
+  mockRaf.restore();
+});
+
 testFoundation('should cancel animation after destroy', ({foundation, mockAdapter, mockRaf}) => {
   foundation.init();
   mockRaf.flush();
