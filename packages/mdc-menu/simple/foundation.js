@@ -281,11 +281,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   handleDocumentClick_(evt) {
     let el = evt.target;
 
-<<<<<<< HEAD
-    while (el && el !== document.body) {
-=======
     while (el && el !== document.documentElement) {
->>>>>>> master
       if (this.adapter_.eventTargetHasClass(el, cssClasses.LIST_ITEM)) {
         return;
       }
