@@ -35,7 +35,7 @@
   }
 
   &--primary {
-    @include mdc-states(primary, true);
+    @include mdc-states(primary);
   }
 
   &--accent {
