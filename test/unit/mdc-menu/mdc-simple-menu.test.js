@@ -338,8 +338,8 @@ test('adapter#getAnchorDimensions returns the dimensions of the anchor container
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
   document.body.appendChild(anchor);
-  assert.equal(component.getDefaultFoundation().adapter_.getAnchorDimensions().height, 21);
-  assert.equal(component.getDefaultFoundation().adapter_.getAnchorDimensions().width, 42);
+  assert.closeTo(component.getDefaultFoundation().adapter_.getAnchorDimensions().height, 21, 0.1);
+  assert.closeTo(component.getDefaultFoundation().adapter_.getAnchorDimensions().width, 42, 0.1);
   document.body.removeChild(anchor);
 });
 
