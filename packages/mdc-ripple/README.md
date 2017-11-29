@@ -78,7 +78,7 @@ Mixin | Description
 
 Mixin | Description
 --- | ---
-`mdc-states-color($color, $include-focus-within)` | Adds state and ripple styles for the indicated color, deciding opacities based on whether the passed color is light or dark. Optionally includes `::focus-within` selector for focused state of CSS-only components.
+`mdc-states($color, $has-nested-focusable-element)` | Adds state and ripple styles for the indicated color, deciding opacities based on whether the passed color is light or dark. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 
 ##### Advanced States Mixins
 
@@ -86,7 +86,7 @@ Mixin | Description
 --- | ---
 `mdc-states-base-color($color)` | Sets up base state styles using the provided color
 `mdc-states-hover-opacity($opacity)` | Adds styles for hover state using the provided opacity
-`mdc-states-focus-opacity($opacity, $include-focus-within)` | Adds styles for focus state using the provided opacity, optionally including `::focus-within` selector for focused state of CSS-only components (useful when an element under the root node receives focus)
+`mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Adds styles for focus state using the provided opacity. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 `mdc-states-press-opacity($opacity)` | Adds styles for press state using the provided opacity
 
 #### Legacy Sass API
