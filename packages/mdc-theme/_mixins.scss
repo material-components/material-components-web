@@ -22,7 +22,7 @@
 // $edgeOptOut controls whether to feature-detect around Edge to avoid emitting CSS variables for it,
 // intended for use in cases where interactions with pseudo-element styles cause problems due to Edge bugs.
 @mixin mdc-theme-prop($property, $style, $important: false, $edgeOptOut: false) {
-  @if type-of($style) == "color" {
+  @if type-of($style) == "color" or $style == "currentColor" {
     @if $important {
       #{$property}: $style !important;
     } @else {
