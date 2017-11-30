@@ -20,12 +20,6 @@
 @import "../packages/mdc-list/mdc-list";
 @import "../packages/mdc-typography/mdc-typography";
 
-$demo-list-icon-color-light: rgba(0, 0, 0, .54);
-$demo-list-icon-color-dark: rgba(255, 255, 255, .7);
-
-$demo-list-meta-color-light: rgba(0, 0, 0, .26);
-$demo-list-meta-color-dark: rgba(255, 255, 255, .5);
-
 a.material-icons {
   text-decoration: none;
 }
@@ -43,25 +37,14 @@ a.material-icons {
   color: white;
 }
 
-// TODO(acdvorak): Move color customization to a single color-specific example
-.demo-list {
-  @include mdc-list-item-icon-ink-color($demo-list-icon-color-light);
-  @include mdc-list-item-meta-ink-color($demo-list-meta-color-light);
-
-  @include mdc-theme-dark {
-    @include mdc-list-item-icon-ink-color($demo-list-icon-color-dark);
-    @include mdc-list-item-meta-ink-color($demo-list-meta-color-dark);
-  }
-}
-
 .demo-list--icon-placeholders,
 .demo-list.mdc-list--avatar-list {
   @include mdc-list-item-icon-ink-color(white);
-  @include mdc-list-item-icon-fill-color($demo-list-meta-color-light);
+  @include mdc-list-item-icon-fill-color(text-icon-on-background);
 
   @include mdc-theme-dark {
     @include mdc-list-item-icon-ink-color(#303030);
-    @include mdc-list-item-icon-fill-color($demo-list-meta-color-dark);
+    @include mdc-list-item-icon-fill-color(text-icon-on-dark);
   }
 }
 
