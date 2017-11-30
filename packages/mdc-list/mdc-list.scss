@@ -76,7 +76,10 @@
   justify-content: flex-start;
   height: 48px;
 
-  &--selected {
+  // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
+  // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
+  &--selected,
+  &--activated {
     @include mdc-list-item-primary-text-ink-color(primary);
     @include mdc-list-item-icon-ink-color(primary);
   }
