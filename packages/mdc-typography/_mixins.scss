@@ -30,7 +30,7 @@
   }
 
   @include mdc-typography-base;
-  
+
   @if not $adjust-margin {
     $style-props: map_remove($style-props, margin);
   }
