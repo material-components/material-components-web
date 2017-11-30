@@ -21,6 +21,7 @@ import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCTextField, MDCTextFieldFoundation} from '../../../packages/mdc-textfield';
+import {MDCTextFieldHelperText} from '../../../packages/mdc-textfield/helper-text/index';
 
 const {cssClasses, strings} = MDCTextFieldFoundation;
 
@@ -39,23 +40,18 @@ test('attachTo returns an MDCTextField instance', () => {
   assert.isOk(MDCTextField.attachTo(getFixture()) instanceof MDCTextField);
 });
 
-const getHelperText = () => bel`<p id="helper-text">helper text</p>`;
-
-test('#constructor assigns helperTextElement to the id specified in the input aria-controls if present', () => {
-  const root = getFixture();
-  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperText = getHelperText();
-  document.body.appendChild(helperText);
-  const component = new MDCTextField(root);
-  assert.equal(component.helperTextElement, helperText);
-  document.body.removeChild(helperText);
-});
-
 class FakeRipple {
   constructor(root) {
     this.root = root;
     this.layout = td.func('.layout');
     this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeBottomLine {
+  constructor() {
+    this.listen = td.func('bottomLine.listen');
+    this.unlisten = td.func('bottomLine.unlisten');
   }
 }
 
@@ -79,6 +75,19 @@ test('#constructor when given a `mdc-text-field--box` element, initializes a def
   assert.instanceOf(component.ripple, MDCRipple);
 });
 
+const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
+
+test('#constructor instantiates a helper text on the element with id specified in the input aria-controls' +
+     'if present', () => {
+  const root = getFixture();
+  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
+  const helperText = getHelperTextElement();
+  document.body.appendChild(helperText);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.helperText_, MDCTextFieldHelperText);
+  document.body.removeChild(helperText);
+});
+
 test('#destroy cleans up the ripple if present', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
@@ -94,9 +103,9 @@ test('#destroy accounts for ripple nullability', () => {
 
 function setupTest() {
   const root = getFixture();
-  const bottomLine = root.querySelector('.mdc-text-field__bottom-line');
   const icon = root.querySelector('.mdc-text-field__icon');
-  const component = new MDCTextField(root);
+  const bottomLine = new FakeBottomLine();
+  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el), () => bottomLine);
   return {root, bottomLine, icon, component};
 }
 
@@ -131,18 +140,22 @@ test('set valid updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
 });
 
-test('#adapter.addClassToBottomLine adds a class to the bottom line', () => {
-  const {bottomLine, component} = setupTest();
-  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
-  assert.isTrue(bottomLine.classList.contains('foo'));
+test('set helperTextContent updates the helper text element content', () => {
+  const root = getFixture();
+  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
+  const helperText = getHelperTextElement();
+  document.body.appendChild(helperText);
+  const component = new MDCTextField(root);
+  component.helperTextContent = 'foo';
+  assert.equal(helperText.textContent, 'foo');
+  document.body.removeChild(helperText);
 });
 
-test('#adapter.removeClassFromBottomLine removes a class from the bottom line', () => {
-  const {bottomLine, component} = setupTest();
-
-  bottomLine.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
-  assert.isFalse(bottomLine.classList.contains('foo'));
+test('set helperTextContent has no effect when no helper text element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => {
+    component.helperTextContent = 'foo';
+  });
 });
 
 test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
@@ -152,30 +165,18 @@ test('#adapter.setIconAttr sets a given attribute to a given value to the icon e
   assert.equal(icon.getAttribute('tabindex'), '-1');
 });
 
-test('#adapter.setBottomLineAttr adds a given attribute to the bottom line', () => {
-  const {bottomLine, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-label', 'foo');
-  assert.equal(bottomLine.getAttribute('aria-label'), 'foo');
+test('#adapter.registerBottomLineEventHandler adds event listener to bottom line', () => {
+  const {component, bottomLine} = setupTest();
+  const handler = () => {};
+  component.getDefaultFoundation().adapter_.registerBottomLineEventHandler('evt', handler);
+  td.verify(bottomLine.listen('evt', handler));
 });
 
-test('#adapter.registerTransitionEndHandler adds event listener for "transitionend" to bottom line', () => {
-  const {bottomLine, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
-  domEvents.emit(bottomLine, 'transitionend');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterTransitionEndHandler removes event listener for "transitionend" from bottom line', () => {
-  const {bottomLine, component} = setupTest();
-  const handler = td.func('transitionend handler');
-
-  bottomLine.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
-  domEvents.emit(bottomLine, 'transitionend');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
+test('#adapter.deregisterBottomLineEventHandler removes event listener for "transitionend" from bottom line', () => {
+  const {component, bottomLine} = setupTest();
+  const handler = () => {};
+  component.getDefaultFoundation().adapter_.deregisterBottomLineEventHandler('evt', handler);
+  td.verify(bottomLine.unlisten('evt', handler));
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
@@ -260,74 +261,6 @@ test('#adapter.getNativeInput returns the component input element', () => {
     component.getDefaultFoundation().adapter_.getNativeInput(),
     root.querySelector('.mdc-text-field__input')
   );
-});
-
-test('#adapter.addClassToHelperText does nothing if no helper text element present', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToHelperText('foo'));
-});
-
-test('#adapter.addClassToHelperText adds a class to the helper text element when present', () => {
-  const {component} = setupTest();
-  component.helperTextElement = getHelperText();
-  component.getDefaultFoundation().adapter_.addClassToHelperText('foo');
-  assert.isOk(component.helperTextElement.classList.contains('foo'));
-});
-
-test('#adapter.removeClassFromHelperText does nothing if no helper text element present', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromHelperText('foo'));
-});
-
-test('#adapter.removeClassFromHelperText removes a class from the helper text element when present', () => {
-  const {component} = setupTest();
-  const helperText = getHelperText();
-  component.helperTextElement = helperText;
-  helperText.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromHelperText('foo');
-  assert.isNotOk(helperText.classList.contains('foo'));
-});
-
-test('#adapter.helperTextHasClass does nothing if no helper text element present', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.helperTextHasClass('foo'));
-});
-
-test('#adapter.helperTextHasClass returns whether or not the helper text contains a certain class', () => {
-  const {component} = setupTest();
-  const helperText = getHelperText();
-  component.helperTextElement = helperText;
-  helperText.classList.add('foo');
-  assert.isOk(component.getDefaultFoundation().adapter_.helperTextHasClass('foo'));
-  helperText.classList.remove('foo');
-  assert.isNotOk(component.getDefaultFoundation().adapter_.helperTextHasClass('foo'));
-});
-
-test('#adapter.setHelperTextAttr does nothing if no helper text element present', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.helperTextHasClass('foo'));
-});
-
-test('#adapter.setHelperTextAttr sets an attribute to a certain value on the helper text element', () => {
-  const {component} = setupTest();
-  const helperText = getHelperText();
-  component.helperTextElement = helperText;
-  component.getDefaultFoundation().adapter_.setHelperTextAttr('aria-label', 'foo');
-  assert.equal(helperText.getAttribute('aria-label'), 'foo');
-});
-
-test('#adapter.removeHelperTextAttr does nothing if no helper text element present', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeHelperTextAttr('aria-label'));
-});
-
-test('#adapter.removeHelperTextAttr removes an attribute on the helper text element', () => {
-  const {component} = setupTest();
-  const helperText = getHelperText();
-  helperText.setAttribute('aria-label', 'foo');
-  component.helperTextElement = helperText;
-  component.getDefaultFoundation().adapter_.removeHelperTextAttr('aria-label');
-  assert.isNotOk(helperText.hasAttribute('aria-label'));
 });
 
 test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {

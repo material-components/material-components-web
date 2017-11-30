@@ -49,7 +49,7 @@ $mdc-list-side-padding: 16px;
   }
 
   margin: 0;
-  padding: 8px $mdc-list-side-padding 0;
+  padding: 8px $mdc-list-side-padding;
 
   // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
   // same as for subheading1.
@@ -59,6 +59,7 @@ $mdc-list-side-padding: 16px;
 
 .mdc-list--dense {
   padding-top: 4px;
+  padding-bottom: 4px;
   font-size: .812rem;
 }
 

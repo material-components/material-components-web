@@ -62,12 +62,13 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'getInnerDimensions',
-    'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale', 'getNumberOfItems',
-    'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
-    'deregisterBodyClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
-    'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
-    'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition', 'getAccurateTime',
+    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget',
+    'eventTargetHasClass', 'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions',
+    'setScale', 'setInnerScale', 'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'registerBodyClickHandler', 'deregisterBodyClickHandler', 'getYParamsForItemAtIndex',
+    'setTransitionDelayForItemAtIndex', 'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus',
+    'restoreFocus', 'isFocused', 'focus', 'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin',
+    'setPosition', 'getAccurateTime',
   ]);
 });
 
@@ -837,21 +838,55 @@ test('on spacebar keydown prevents default on the event', () => {
   clock.uninstall();
 });
 
-testFoundation('on document click cancels and closes the menu', ({foundation, mockAdapter, mockRaf}) => {
+test('on document click cancels and closes the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const mockEvt = {
+    target: {},
+  };
   let documentClickHandler;
   td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
     documentClickHandler = handler;
   });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
+    .thenReturn(false);
+
+  td.when(mockAdapter.hasClass(MDCSimpleMenuFoundation.cssClasses.OPEN)).thenReturn(true);
 
   foundation.init();
   foundation.open();
   mockRaf.flush();
 
-  documentClickHandler();
+  documentClickHandler(mockEvt);
   mockRaf.flush();
 
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
   td.verify(mockAdapter.notifyCancel());
+
+  mockRaf.restore();
+});
+
+test('on menu item click does not emit cancel', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const mockEvt = {
+    target: {},
+  };
+  let documentClickHandler;
+  td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    documentClickHandler = handler;
+  });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
+    .thenReturn(true);
+
+  foundation.init();
+  foundation.open();
+  mockRaf.flush();
+
+  documentClickHandler(mockEvt);
+  mockRaf.flush();
+
+  td.verify(mockAdapter.notifyCancel(), {times: 0});
 
   mockRaf.restore();
 });

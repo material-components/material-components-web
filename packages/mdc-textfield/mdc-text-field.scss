@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "./functions";
 @import "./mixins";
 @import "./variables";
 @import "@material/animation/variables";
@@ -23,15 +24,13 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
-
-@function mdc-text-field-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
-}
-
+@import "./bottom-line/mdc-text-field-bottom-line";
+@import "./helper-text/mdc-text-field-helper-text";
 @include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
 
 // postcss-bem-linter: define text-field
+
 .mdc-text-field {
   display: inline-block;
   position: relative;
@@ -100,28 +99,6 @@
         @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
       }
     }
-  }
-
-  &__bottom-line {
-    @include mdc-theme-prop(background-color, primary);
-
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    transform: scaleX(0);
-    transition: mdc-text-field-transition(transform), mdc-text-field-transition(opacity);
-    opacity: 0;
-    z-index: 2;
-  }
-
-  &__bottom-line--active {
-    transform: scaleX(1);
-  }
-
-  .mdc-text-field__input:focus ~ .mdc-text-field__bottom-line {
-    opacity: 1;
   }
 
   &__label {
@@ -642,23 +619,7 @@
 // postcss-bem-linter: define text-field-helper-text
 
 .mdc-text-field-helper-text {
-  @include mdc-theme-prop(color, text-hint-on-light);
-
-  margin: 0;
-  transition: mdc-text-field-transition(opacity);
-  opacity: 0;
-  font-size: .75rem;
-  will-change: opacity;
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-hint-on-dark);
-  }
-
   // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field + & {
-    margin-bottom: 8px;
-  }
-
   .mdc-text-field--dense + & {
     margin-bottom: 4px;
   }
@@ -673,12 +634,6 @@
   }
 
   // stylelint-enable plugin/selector-bem-pattern
-}
-
-.mdc-text-field-helper-text--persistent {
-  transition: none;
-  opacity: 1;
-  will-change: initial;
 }
 
 // postcss-bem-linter: end
