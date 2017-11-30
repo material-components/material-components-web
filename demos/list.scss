@@ -64,15 +64,15 @@ a.material-icons {
 
 .demo-list-group--custom,
 .demo-list--custom {
-  @include mdc-list-divider-ink-color($material-color-blue-100);
+  @include mdc-list-divider-ink-color($material-color-pink-50);
 }
 
 .demo-list--custom {
-  @include mdc-list-item-primary-text-ink-color($material-color-blue-600);
-  @include mdc-list-item-secondary-text-ink-color($material-color-blue-300);
-  @include mdc-list-item-icon-fill-color($material-color-blue-400);
-  @include mdc-list-item-icon-ink-color(white);
-  @include mdc-list-item-meta-ink-color($material-color-blue-300);
+  @include mdc-list-item-primary-text-ink-color($material-color-red-600);
+  @include mdc-list-item-secondary-text-ink-color($material-color-orange-500);
+  @include mdc-list-item-icon-fill-color($material-color-yellow-600);
+  @include mdc-list-item-icon-ink-color($material-color-yellow-50);
+  @include mdc-list-item-meta-ink-color($material-color-pink-300);
 }
 
 .demo-list--two-line-avatar-meta-icon .mdc-list-item__start-detail {
