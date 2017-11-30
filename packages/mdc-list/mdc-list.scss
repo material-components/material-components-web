@@ -88,7 +88,7 @@ $mdc-list-side-padding: 16px;
     display: inline-flex;
     flex-direction: column;
 
-    &__secondary {
+    &-secondary {
       @include mdc-typography(body1);
       @include mdc-theme-prop(color, text-secondary-on-background);
 
