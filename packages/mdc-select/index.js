@@ -97,10 +97,10 @@ export class MDCSelect extends MDCComponent {
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       focus: () => this.root_.focus(),
       makeTabbable: () => {
-        this.menuEl_.tabIndex = 0;
+        this.root_.tabIndex = 0;
       },
       makeUntabbable: () => {
-        this.menuEl_.tabIndex = -1;
+        this.root_.tabIndex = -1;
       },
       getComputedStyleValue: (prop) => window.getComputedStyle(this.surface_).getPropertyValue(prop),
       setStyle: (propertyName, value) => this.surface_.style.setProperty(propertyName, value),

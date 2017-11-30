@@ -40,20 +40,20 @@ class FakeMenu {
 
 function getFixture() {
   return bel`
-  <div class="mdc-select" role="listbox" tabindex="0">
-    <div class="mdc-select__surface">
-      <div class="mdc-select__label">Pick a Food Group</div>
-      <div class="mdc-select__selected-text"></div>
-      <div class="mdc-select__bottom-line"></div>
+    <div class="mdc-select" role="listbox" tabindex="0">
+      <div class="mdc-select__surface">
+        <div class="mdc-select__label">Pick a Food Group</div>
+        <div class="mdc-select__selected-text"></div>
+        <div class="mdc-select__bottom-line"></div>
+      </div>
+      <div class="mdc-simple-menu mdc-select__menu">
+        <ul class="mdc-list mdc-simple-menu__items">
+          <li class="mdc-list-item" role="option" aria-disabled="true">
+            Pick a food group
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="mdc-simple-menu mdc-select__menu">
-      <ul class="mdc-list mdc-simple-menu__items">
-        <li class="mdc-list-item" role="option" aria-disabled="true">
-          Pick a food group
-        </li>
-      </ul>
-    </div>
-  </div>
   `;
 }
 
@@ -260,18 +260,18 @@ test('adapter#focus focuses on the root element', () => {
   document.body.removeChild(fixture);
 });
 
-test('adapter#makeTabbable sets the menu element\'s tabindex to 0', () => {
-  const {component, menuEl} = setupTest();
-  menuEl.tabIndex = -1;
+test('adapter#makeTabbable sets the root element\'s tabindex to 0', () => {
+  const {component, fixture} = setupTest();
+  fixture.tabIndex = -1;
   component.getDefaultFoundation().adapter_.makeTabbable();
-  assert.equal(menuEl.tabIndex, 0);
+  assert.equal(fixture.tabIndex, 0);
 });
 
-test('adapter#makeUntabbable sets the menu element\'s tabindex to -1', () => {
-  const {component, menuEl} = setupTest();
-  menuEl.tabIndex = 0;
+test('adapter#makeUntabbable sets the root element\'s tabindex to -1', () => {
+  const {component, fixture} = setupTest();
+  fixture.tabIndex = 0;
   component.getDefaultFoundation().adapter_.makeUntabbable();
-  assert.equal(menuEl.tabIndex, -1);
+  assert.equal(fixture.tabIndex, -1);
 });
 
 test('adapter#getComputedStyleValue gets the computed style value of the prop from the surface element', () => {

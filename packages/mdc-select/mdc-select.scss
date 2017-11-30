@@ -182,6 +182,13 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
       opacity: 1;
     }
   }
+
+  // Since the CSS only version's .mdc-select__surface element
+  // is an actual <select> element (and as such gets focus), this
+  // will only apply to CSS only selects
+  &__surface:focus ~ .mdc-select__bottom-line {
+    transform: scaleY(2);
+  }
 }
 
 .mdc-select--open {
