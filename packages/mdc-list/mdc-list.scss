@@ -23,10 +23,10 @@
 // TODO(acdvorak): Find a way to remove parent .mdc-list and .mdc-list-group selectors; they violate BEM.
 .mdc-list,
 .mdc-list-group {
-  @include mdc-list-divider-ink-color($mdc-list-divider-color-light);
+  @include mdc-list-divider-color($mdc-list-divider-color-light);
 
   @include mdc-theme-dark {
-    @include mdc-list-divider-ink-color($mdc-list-divider-color-dark);
+    @include mdc-list-divider-color($mdc-list-divider-color-dark);
   }
 }
 

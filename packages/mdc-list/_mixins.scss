@@ -49,7 +49,7 @@
   }
 }
 
-@mixin mdc-list-divider-ink-color($color) {
+@mixin mdc-list-divider-color($color) {
   .mdc-list-divider {
     @include mdc-theme-prop(border-bottom-color, $color);
   }

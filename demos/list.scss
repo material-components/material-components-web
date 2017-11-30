@@ -64,7 +64,7 @@ a.material-icons {
 
 .demo-list-group--custom,
 .demo-list--custom {
-  @include mdc-list-divider-ink-color($material-color-pink-50);
+  @include mdc-list-divider-color($material-color-pink-50);
 }
 
 .demo-list--custom {

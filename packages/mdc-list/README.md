@@ -433,5 +433,5 @@ Mixin | Description
 `mdc-list-item-icon-fill-color($color)` | Sets the fill color of the icon (start detail)
 `mdc-list-item-icon-ink-color($color)` | Sets the ink color of the icon (start detail)
 `mdc-list-item-meta-ink-color($color)` | Sets the ink color of the metadata (end detail)
-`mdc-list-divider-ink-color($color)` | Sets the ink color of the divider
+`mdc-list-divider-color($color)` | Sets the color of the divider
 `mdc-list-group-subheader-ink-color($color)` | Sets the ink color of the list group subheader
