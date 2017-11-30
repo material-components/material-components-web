@@ -98,7 +98,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
     display: flex;
     position: relative;
-    flex: 1;
+    flex-grow: 1;
     width: 100%;
     height: 56px;
     border: none;
