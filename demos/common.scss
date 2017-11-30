@@ -32,6 +32,7 @@ $mdc-theme-secondary: $material-color-light-green-a700 !default;
 // Import these *after* setting theme colors to override defaults in mdc-theme.
 @import "../packages/mdc-theme/mdc-theme";
 @import "../packages/mdc-toolbar/mdc-toolbar";
+@import "../packages/mdc-typography/mdc-typography";
 
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
