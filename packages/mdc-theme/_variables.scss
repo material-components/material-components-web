@@ -154,7 +154,7 @@ $mdc-theme-property-values: (
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
 @function mdc-theme-prop-value($property) {
-  @if type-of($property) == color {
+  @if type-of($property) == "color" or $property == "currentColor" {
     @return $property;
   }
 
