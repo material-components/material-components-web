@@ -23,7 +23,7 @@
 
 .mdc-ripple-surface {
   @include mdc-ripple-surface;
-  @include mdc-ripple-color;
+  @include mdc-states;
   @include mdc-ripple-radius;
 
   position: relative;
@@ -35,11 +35,11 @@
   }
 
   &--primary {
-    @include mdc-ripple-color(primary, $mdc-ripple-pressed-dark-ink-opacity);
+    @include mdc-states(primary);
   }
 
   &--accent {
-    @include mdc-ripple-color(secondary, $mdc-ripple-pressed-dark-ink-opacity);
+    @include mdc-states(secondary);
   }
 }
 
