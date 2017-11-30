@@ -34,7 +34,7 @@ class MDCTextFieldInput extends MDCComponent {
   }
 
   /**
-   * @return {MDCTextFieldInputFoundation}.
+   * @return {!MDCTextFieldInputFoundation}
    */
   get foundation() {
     return this.foundation_;

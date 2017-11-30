@@ -30,15 +30,14 @@ MDCTextFieldInputFoundation. This allows the parent MDCTextField component to ac
 
 ### Using the foundation class
 
-
 Method Signature | Description
 --- | ---
-registerEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the input element for a given event
-deregisterEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the input element for a given event
-getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully.
-notifyFocusAction() => void | Emits a custom event "MDCTextFieldInput:focus" denoting the input is focused
-notifyBlurAction() => void | Emits a custom event "MDCTextFieldInput:blur" denoting the input is blurred
-notifyPressedAction() => void | Emits a custom event "MDCTextFieldInput:pressed" denoting the input is pressed
+`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the input element for a given event
+`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the input element for a given event
+`getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully.
+`notifyFocusAction() => void` | Emits a custom event "MDCTextFieldInput:focus" denoting the input is focused
+`notifyBlurAction() => void` | Emits a custom event "MDCTextFieldInput:blur" denoting the input is blurred
+`notifyPressedAction() => void` | Emits a custom event "MDCTextFieldInput:pressed" denoting the input is pressed
 
 #### The full foundation API
 
