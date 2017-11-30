@@ -39,14 +39,14 @@
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background);
   @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background);
   @include mdc-list-item-icon-fill-color(transparent);
-  @include mdc-list-item-icon-ink-color(text-secondary-on-background);
-  @include mdc-list-item-meta-ink-color(text-secondary-on-background);
+  @include mdc-list-item-icon-ink-color(text-icon-on-background);
+  @include mdc-list-item-meta-ink-color(text-hint-on-background);
 
   @include mdc-theme-dark {
     @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
     @include mdc-list-item-secondary-text-ink-color(text-secondary-on-dark);
-    @include mdc-list-item-icon-ink-color(text-secondary-on-dark);
-    @include mdc-list-item-meta-ink-color(text-secondary-on-dark);
+    @include mdc-list-item-icon-ink-color(text-icon-on-dark);
+    @include mdc-list-item-meta-ink-color(text-hint-on-dark);
   }
 
   margin: 0;
