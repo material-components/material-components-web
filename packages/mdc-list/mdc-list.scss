@@ -93,17 +93,17 @@
   &__text {
     display: inline-flex;
     flex-direction: column;
+  }
 
-    &__secondary {
-      @include mdc-typography(body1);
+  &__secondary-text {
+    @include mdc-typography(body1);
 
-      // Match the font size to the primary text when dense
-      // stylelint-disable plugin/selector-bem-pattern
-      .mdc-list--dense & {
-        font-size: inherit;
-      }
-      // stylelint-enable plugin/selector-bem-pattern
+    // Match the font size to the primary text when dense
+    // stylelint-disable plugin/selector-bem-pattern
+    .mdc-list--dense & {
+      font-size: inherit;
     }
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
   // stylelint-disable plugin/selector-bem-pattern

@@ -26,7 +26,7 @@
 }
 
 @mixin mdc-list-item-secondary-text-ink-color($color) {
-  .mdc-list-item__text-secondary {
+  .mdc-list-item__secondary-text {
     @include mdc-theme-prop(color, $color);
   }
 }
