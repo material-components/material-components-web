@@ -34,10 +34,6 @@ $mdc-theme-secondary: $material-color-light-green-a700 !default;
 @import "../packages/mdc-toolbar/mdc-toolbar";
 @import "../packages/mdc-typography/mdc-typography";
 
-body {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-}
-
 fieldset {
   margin: 0;
   padding: 0;
