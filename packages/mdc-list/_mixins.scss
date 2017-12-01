@@ -64,7 +64,7 @@
 // Private
 //
 
-// Sets the width and height of a detail element to the specified dimension.
+// Sets the width and height of a detail element to the specified value.
 @mixin mdc-list-detail-size_($size) {
   width: $size;
   height: $size;
