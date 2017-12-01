@@ -20,7 +20,6 @@
 // Public
 //
 
-// TODO(acdvorak): Talk to Design about renaming "primary" and "secondary" to something not related to color theming
 @mixin mdc-list-item-primary-text-ink-color($color) {
   @include mdc-theme-prop(color, $color);
 }
