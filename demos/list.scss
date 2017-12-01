@@ -16,6 +16,7 @@
 
 @import "./common";
 @import "../packages/mdc-checkbox/mdc-checkbox";
+@import "../packages/mdc-elevation/mixins";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-list/mdc-list";
 @import "../packages/mdc-typography/mdc-typography";
@@ -110,10 +111,8 @@ a.material-icons {
 }
 
 .hero .mdc-list {
+  @include mdc-elevation(4);
+
   background-color: white;
   min-width: 320px;
-  box-shadow:
-    0 2px 4px -1px rgba(0, 0, 0, 0.2),
-    0 4px 5px 0 rgba(0, 0, 0, 0.14),
-    0 1px 10px 0 rgba(0, 0, 0, 0.12);
 }
