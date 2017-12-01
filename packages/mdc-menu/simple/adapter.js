@@ -163,6 +163,9 @@ class MDCSimpleMenuAdapter {
   * }} position */
   setPosition(position) {}
 
+  /** @param {string} height */
+  setMaxHeight(height) {}
+
   /** @return {number} */
   getAccurateTime() {}
 }
