@@ -99,7 +99,7 @@ test('on input, does nothing if this.receivedUserInput_ is true', () => {
       input = handler;
     });
   foundation.init();
-  foundation.setReceivedUserInput(true);
+  foundation.handleTextFieldInteraction();
   input();
   td.verify(mockAdapter.notifyFocusAction(), {times: 0});
 });

@@ -61,7 +61,7 @@ class FakeInput {
       getValue: () => {},
       isDisabled: () => {},
       setDisabled: () => {},
-      setReceivedUserInput: () => {},
+      handleTextFieldInteraction: () => {},
     });
     this.listen = td.func('input.listen');
     this.unlisten = td.func('input.unlisten');

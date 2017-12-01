@@ -53,7 +53,7 @@ const setupTest = () => {
     setDisabled: () => {},
     isBadInput: () => {},
     checkValidity: () => {},
-    setReceivedUserInput: () => {},
+    handleTextFieldInteraction: () => {},
   });
   td.when(mockAdapter.getInputFoundation()).thenReturn(input);
   const foundation = new MDCTextFieldFoundation(mockAdapter);

@@ -72,8 +72,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.isFocused_ = false;
     /** @private {boolean} */
-    this.receivedUserInput_ = false;
-    /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
