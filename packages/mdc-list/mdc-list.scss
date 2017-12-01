@@ -86,6 +86,10 @@
 
   &__start-detail {
     @include mdc-list-start-detail-size_(24px);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__end-detail {

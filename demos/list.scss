@@ -75,12 +75,6 @@ a.material-icons {
   @include mdc-list-item-meta-ink-color($material-color-pink-300);
 }
 
-.demo-list--two-line-avatar-meta-icon .mdc-list-item__start-detail {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .preamble {
   max-width: 600px;
   margin-top: 48px;
