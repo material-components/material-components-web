@@ -99,7 +99,7 @@ While in theory you can add any number of "lines" to a list item, you can use th
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
       Two-line item
-      <span class="mdc-list-item__text__secondary">Secondary text</span>
+      <span class="mdc-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
 </ul>
@@ -361,7 +361,7 @@ The html for this can be easily added
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
       Ali Connors
-      <span class="mdc-list-item__text__secondary">Lunch this afternoon? I was...</span>
+      <span class="mdc-list-item__secondary-text">Lunch this afternoon? I was...</span>
     </span>
 
     <span class="mdc-list-item__end-detail">

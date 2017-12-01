@@ -89,6 +89,7 @@ class MDCIconToggleFoundation extends MDCFoundation {
 
   init() {
     this.refreshToggleData();
+    this.savedTabIndex_ = this.adapter_.getTabIndex();
     this.adapter_.registerInteractionHandler('click', this.clickHandler_);
     this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.registerInteractionHandler('keyup', this.keyupHandler_);
