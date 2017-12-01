@@ -14,6 +14,29 @@
 // limitations under the License.
 //
 
+@mixin mdc-text-field-box-corner-radius($radius) {
+  border-radius: $radius $radius 0 0;
+}
+
+@mixin mdc-text-field-textarea-corner-radius($radius) {
+  border-radius: $radius;
+
+  .mdc-text-field__label {
+    // Bottom corners are square to prevent weird edge cases
+    // where text would be visible outside of the curve.
+    border-radius: $radius $radius 0 0;
+  }
+
+  .mdc-text-field__input {
+    // The input element is required to have 2 pixels shaved off
+    // of the radius of its parent. This prevents an ugly space of
+    // background between the two borders in each corner when the
+    // textarea is focused. This also means we need to guard against
+    // invalid output.
+    border-radius: max($radius - 2, 0);
+  }
+}
+
 @mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY) {
   @keyframes invalid-shake-float-above-#{$modifier} {
     0% {

@@ -18,7 +18,7 @@
 
 /**
  * Applies styles to the different types of icons that can exist in toolbars.
- * Both .mdc-toolbar__icon and .mdc-toolbar__icon--menu share all styles except for
+ * Both .mdc-toolbar__icon and .mdc-toolbar__menu-icon share all styles except for
  * horizontal padding.
  */
 @mixin mdc-shared-icon-style() {

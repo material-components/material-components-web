@@ -15,7 +15,7 @@ your framework that wraps MDC-Web, check out our [framework integration guide](.
 ## MDC-Web quick start: building a simple greeting app
 
 The best way to learn any new technology is to get your hands dirty and build something with it, so
-that is what we will do here!  You will be building a simple greeting page which lets you enter a name and greets you as such. Here is the [finished example](https://plnkr.co/edit/ahd84pIgOF7OTKgavvPP?p=preview).
+that is what we will do here!  You will be building a simple greeting page which lets you enter a name and greets you as such.
 
 As you go through this guide, we encourage you to code along with it. By the end, you will have
 learned the fundamentals incorporating MDC-Web into simple sites, as well as worked with some of the
@@ -52,7 +52,7 @@ the assets needed for MDC-Web. Put the following within `index.html` in the `gre
 
 ```html
 <!DOCTYPE html>
-<html class="mdc-typography">
+<html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -61,7 +61,7 @@ the assets needed for MDC-Web. Put the following within `index.html` in the `gre
       rel="stylesheet"
       href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   </head>
-  <body>
+  <body class="mdc-typography">
     <h1 class="mdc-typography--display1">Hello, World!</h1>
     <button type="button" class="mdc-button mdc-button--raised">
       Press Me
@@ -110,20 +110,22 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
   <form action="#" id="greeting-form">
     <div>
       <div class="mdc-form-field">
-        <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-          <input id="firstname" type="text" class="mdc-textfield__input">
-          <label for="firstname" class="mdc-textfield__label">
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input id="firstname" type="text" class="mdc-text-field__input">
+          <label for="firstname" class="mdc-text-field__label">
             First Name
           </label>
+          <div class="mdc-text-field__bottom-line"></div>
         </div>
       </div>
 
       <div class="mdc-form-field">
-        <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-          <input id="lastname" type="text" class="mdc-textfield__input">
-          <label for="lastname" class="mdc-textfield__label">
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input id="lastname" type="text" class="mdc-text-field__input">
+          <label for="lastname" class="mdc-text-field__label">
             Last Name
           </label>
+          <div class="mdc-text-field__bottom-line"></div>
         </div>
       </div>
     </div>
@@ -146,7 +148,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
 ```
 
 Once the changes are made, return to your browser and you will see two very nicely styled form
-fields along with a Material Design styled button. The button shows an ink ripple effect when pressed. For now, the ripple is a fairly subtle that will be addressed shortly.
+fields along with a Material Design styled button. The button shows an ink ripple effect when pressed. For now, the ripple is a fairly subtle effect that will be addressed shortly.
 
 Two important points that are demonstrated in the code that was added:
 
@@ -157,8 +159,8 @@ Initialization is done through the `data-mdc-auto-init` attributes added
 to those elements that are initialized when mdc.autoInit() is called.
 
 When `mdc.autoInit()` is called, it looks for all elements with a `data-mdc-auto-init` attribute,
-and attaches the MDC-Web JS Component with the given class name to that element.. So when it sees `MDCTextfield`,
-it instantiates a [MDCTextfield](../packages/mdc-textfield) instance to the corresponding elements.
+and attaches the MDC-Web JS Component with the given class name to that element.. So when it sees `MDCTextField`,
+it instantiates a [MDCTextField](../packages/mdc-textfield) instance to the corresponding elements.
 It does the same thing for the button, attaching a [MDCRipple](../packages/mdc-ripple) instance to the element.
 
 It is worth noting that `mdc.autoInit` is provided _purely_ as a convenience function, and is not
@@ -169,7 +171,7 @@ quickly, and recommended for static sites that use the comprehensive `material-c
 #### All components are modular
 
 Although when you initially set up this project you installed the `material-components-web` package, that
-package is simply a thin wrapper around individual component packages, such as [mdc-typography](../packages/mdc-typography), [mdc-button](../packages/mdc-button), [mdc-textfield](../packages/mdc-textfield), and [mdc-ripple](../packages/mdc-ripple).
+package is simply a thin wrapper around individual component packages, such as [mdc-typography](../packages/mdc-typography), [mdc-button](../packages/mdc-button), [mdc-text-field](../packages/mdc-textfield), and [mdc-ripple](../packages/mdc-ripple).
 Even the `autoInit()` function [lives in its own package](../packages/mdc-auto-init), which the
 `material-components-web` package uses to register all of the individual components to their names used
 within `data-mdc-auto-init`. Each component can be used as a standalone package, and can be mixed
@@ -280,10 +282,7 @@ how to easily add components to a page, and how to customize and theme MDC-Web t
 ## Next steps
 
 If you're looking to incorporate MDC-Web Components into a framework like Angular or React, check our
-[framework integration guide](./integrating-into-frameworks.md). You can also take a look at our
-[framework examples](../framework-examples) directory which contains examples integrating MDC-Web components into popular
-front-end frameworks. It also shows how you can use our source ES2015 and SCSS files directly within
-your own code, for maximum flexibility, modularity, and code size reduction.
+[framework integration guide](./integrating-into-frameworks.md). 
 
 If you'd like to contribute to
 MDC-Web and build your own components, or extend one of ours to fit your own purposes, check out our

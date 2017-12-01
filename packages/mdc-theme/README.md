@@ -166,7 +166,7 @@ Property Name | Description
 `text-<TEXT_STYLE>-on-light` | TEXT_STYLE on top of a light background
 `text-<TEXT_STYLE>-on-dark` | TEXT_STYLE on top of a dark background
 
-#### `mdc-theme-luminance`
+#### `mdc-theme-luminance($color)`
 
 Calculates the luminance value (0 - 1) of a given color.
 
@@ -174,7 +174,7 @@ Calculates the luminance value (0 - 1) of a given color.
 @debug mdc-theme-luminance(#9c27b0); // 0.11654
 ```
 
-#### `mdc-theme-contrast`
+#### `mdc-theme-contrast($back, $front)`
 
 Calculates the contrast ratio between two colors.
 
@@ -182,15 +182,23 @@ Calculates the contrast ratio between two colors.
 @debug mdc-theme-contrast(#9c27b0, #000); // 3.33071
 ```
 
-#### `mdc-theme-light-or-dark`
+#### `mdc-theme-tone($color)`
+
+Determines whether the given color is "light" or "dark".
+
+```scss
+@debug mdc-theme-tone(#9c27b0); // dark
+```
+
+#### `mdc-theme-contrast-tone($color)`
 
 Determines whether to use light or dark text on top of a given color.
 
 ```scss
-@debug mdc-theme-light-or-dark(#9c27b0); // light
+@debug mdc-theme-contrast-tone(#9c27b0); // light
 ```
 
-#### `mdc-theme-light-variant` and `mdc-theme-dark-variant`
+#### `mdc-theme-light-variant($color)` and `mdc-theme-dark-variant($color)`
 
 Function | Description
 --- | ---
@@ -210,3 +218,21 @@ To avoid having both functions return the same color in cases of extremely high 
 `mdc-theme-dark-variant()` will return a color that is _twice_ (×2) as dark as requested when the input is already very
 light. Likewise, `mdc-theme-light-variant()` will return a color that is _twice_ (×2) as light as requested when the
 input is already very dark. This ensures that the _light_ variant will always be lighter than the _dark_ variant.
+
+#### `mdc-theme-prop-value($property)`
+
+If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
+corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
+such theme property exists, an error is thrown.
+
+This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
+
+Unlike the `mdc-theme-prop` mixin, this function does _not_ support CSS custom properties.
+It only returns the raw color value of the specified theme property.
+
+> NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
+
+```scss
+@debug mdc-theme-prop-value(primary); // #3f51b5
+@debug mdc-theme-prop-value(blue);    // blue
+```

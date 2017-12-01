@@ -22,15 +22,19 @@ import {assert} from 'chai';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
 import {MDCIconToggle, MDCIconToggleFoundation} from '../../../packages/mdc-icon-toggle';
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
-function setupTest({useInnerIconElement = false} = {}) {
+function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
   const root = document.createElement(useInnerIconElement ? 'span' : 'i');
   if (useInnerIconElement) {
     const icon = document.createElement('i');
     icon.id = 'icon';
     root.dataset.iconInnerSelector = `#${icon.id}`;
     root.appendChild(icon);
+  }
+  if (tabIndex !== undefined) {
+    root.tabIndex = tabIndex;
   }
   const component = new MDCIconToggle(root);
   return {root, component};
@@ -73,17 +77,40 @@ test('set/get on', () => {
   assert.equal(root.getAttribute('aria-pressed'), 'false');
 });
 
-test('set/get disabled', () => {
-  const {root, component} = setupTest();
+test('set/get disabled to true', () => {
+  const {root, component} = setupTest({tabIndex: 0});
+
   component.disabled = true;
   assert.isOk(component.disabled);
   assert.equal(root.getAttribute('aria-disabled'), 'true');
   assert.isOk(root.classList.contains(MDCIconToggleFoundation.cssClasses.DISABLED));
+  assert.equal(root.tabIndex, -1);
+});
+
+test('set/get disabled to false', () => {
+  const {root, component} = setupTest({tabIndex: 0});
 
   component.disabled = false;
   assert.isNotOk(component.disabled);
   assert.isNotOk(root.hasAttribute('aria-disabled'));
   assert.isNotOk(root.classList.contains(MDCIconToggleFoundation.cssClasses.DISABLED));
+  assert.equal(root.tabIndex, 0, 'element\'s tabIndex should be the same value it already had');
+});
+
+test('set/get disabled to true, then false', () => {
+  const {root, component} = setupTest({tabIndex: 0});
+
+  component.disabled = true;
+  assert.isOk(component.disabled);
+  assert.equal(root.getAttribute('aria-disabled'), 'true');
+  assert.isOk(root.classList.contains(MDCIconToggleFoundation.cssClasses.DISABLED));
+  assert.equal(root.tabIndex, -1);
+
+  component.disabled = false;
+  assert.isNotOk(component.disabled);
+  assert.isNotOk(root.hasAttribute('aria-disabled'));
+  assert.isNotOk(root.classList.contains(MDCIconToggleFoundation.cssClasses.DISABLED));
+  assert.equal(root.tabIndex, 0, 'element\'s tabIndex should be the same value it originally had');
 });
 
 test('#refreshToggleData proxies to foundation.refreshToggleData()', () => {
@@ -105,6 +132,11 @@ test('intially set to disabled if root has aria-disabled=true', () => {
   const root = bel`<i class="mdc-icon-toggle" aria-disabled="true"></i>`;
   const component = new MDCIconToggle(root);
   assert.isOk(component.disabled);
+});
+
+test('get ripple returns a MDCRipple instance', () => {
+  const {component} = setupTest();
+  assert.isOk(component.ripple instanceof MDCRipple);
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
@@ -168,14 +200,12 @@ test('#adapter.setText sets the text content of the inner icon element when used
 });
 
 test('#adapter.getTabIndex returns the tabIndex of the element', () => {
-  const {root, component} = setupTest();
-  root.tabIndex = 4;
+  const {component} = setupTest({tabIndex: 4});
   assert.equal(component.getDefaultFoundation().adapter_.getTabIndex(), 4);
 });
 
 test('#adapter.setTabIndex sets the tabIndex of the element', () => {
-  const {root, component} = setupTest();
-  root.tabIndex = 4;
+  const {root, component} = setupTest({tabIndex: 4});
   component.getDefaultFoundation().adapter_.setTabIndex(2);
   assert.equal(root.tabIndex, 2);
 });

@@ -1,3 +1,145 @@
+<a name="0.26.0"></a>
+# [0.26.0](https://github.com/material-components/material-components-web/compare/v0.25.0...v0.26.0) (2017-11-27)
+
+
+### Bug Fixes
+
+* **list:** Add 8px bottom padding ([cd03a0e](https://github.com/material-components/material-components-web/commit/cd03a0e)), closes [#1488](https://github.com/material-components/material-components-web/issues/1488)
+* **list:** Make bottom padding match top for dense lists ([#1622](https://github.com/material-components/material-components-web/issues/1622)) ([67354d0](https://github.com/material-components/material-components-web/commit/67354d0))
+* **select:** Don't scroll page when select's menu is open ([#1500](https://github.com/material-components/material-components-web/issues/1500)) ([bddd747](https://github.com/material-components/material-components-web/commit/bddd747)), closes [#879](https://github.com/material-components/material-components-web/issues/879)
+* **select:** Make CSS-only background transparent ([#1499](https://github.com/material-components/material-components-web/issues/1499)) ([964a419](https://github.com/material-components/material-components-web/commit/964a419))
+* **slider:** Properly handle arrow key events in IE ([#1613](https://github.com/material-components/material-components-web/issues/1613)) ([476c81f](https://github.com/material-components/material-components-web/commit/476c81f))
+* **textfield:** Should not be in both disabled and invalid state ([#1568](https://github.com/material-components/material-components-web/issues/1568)) ([874a17e](https://github.com/material-components/material-components-web/commit/874a17e))
+
+
+### Chores
+
+* **text-field:** Split out helper text as a subelement ([#1611](https://github.com/material-components/material-components-web/issues/1611)) ([8107b08](https://github.com/material-components/material-components-web/commit/8107b08))
+* **text-field:** Splitting out bottom line as a sub element ([#1585](https://github.com/material-components/material-components-web/issues/1585)) ([b12c576](https://github.com/material-components/material-components-web/commit/b12c576))
+
+
+### Features
+
+* **text-field:** rename helptext to helper text ([#1576](https://github.com/material-components/material-components-web/issues/1576)) ([1a5acee](https://github.com/material-components/material-components-web/commit/1a5acee))
+* **textfield:** helperTextContent setter ([#1569](https://github.com/material-components/material-components-web/issues/1569)) ([875e393](https://github.com/material-components/material-components-web/commit/875e393))
+
+
+### BREAKING CHANGES
+
+* **text-field:** Please update implementations of MDCTextFieldAdapter to implement the method getHelperTextFoundation. MDCTextFieldAdapter no longer implements addClassToHelperText, removeClassFromHelperText, helperTextHasClass,  setHelperTextAttr, removeHelperTextAttr, and setHelperTextContent. See the README for mdc-textfield/helper-text for more information.
+* **textfield:** Adds adapter method to set helper text content.
+* **text-field:** Please update implementations of MDCTextFieldAdapter to implement the methods registerBottomLineEventHandler, deregisterBottomLineEventHandler, and getBottomLineFoundation. See the README for mdc-textfield/bottom-line for more information.
+* **text-field:** Instances of "helptext" in mdc-textfield/adapter.js has changed to "helperText", and users should update their implementations of the adapter.
+
+
+
+<a name="0.25.0"></a>
+# [0.25.0](https://github.com/material-components/material-components-web/compare/v0.24.0...v0.25.0) (2017-11-13)
+
+
+### Bug Fixes
+
+* **button:** Stroked buttons should change the padding of the button ([#1538](https://github.com/material-components/material-components-web/issues/1538)) ([97e5aa8](https://github.com/material-components/material-components-web/commit/97e5aa8))
+* **checkbox:** Close path tag to remove IE console error warnings ([1a82689](https://github.com/material-components/material-components-web/commit/1a82689)), closes [#1504](https://github.com/material-components/material-components-web/issues/1504)
+* **dialog:** fixed dark-theme dialog copy color ([#1524](https://github.com/material-components/material-components-web/issues/1524)) ([1aa3760](https://github.com/material-components/material-components-web/commit/1aa3760)), closes [#1032](https://github.com/material-components/material-components-web/issues/1032)
+* **menu:** Menu opening animation shows scrollbar ([#1513](https://github.com/material-components/material-components-web/issues/1513)) ([94b712a](https://github.com/material-components/material-components-web/commit/94b712a)), closes [#1387](https://github.com/material-components/material-components-web/issues/1387)
+* **slider:** Don't hide focus ring on discrete sliders ([#1545](https://github.com/material-components/material-components-web/issues/1545)) ([5a777af](https://github.com/material-components/material-components-web/commit/5a777af)), closes [#1427](https://github.com/material-components/material-components-web/issues/1427)
+* **slider:** Fix mobile Chrome by handling all "up" event types ([#1484](https://github.com/material-components/material-components-web/issues/1484)) ([bcc5ec5](https://github.com/material-components/material-components-web/commit/bcc5ec5))
+* **snackbar:** Add padding between text and button ([#1572](https://github.com/material-components/material-components-web/issues/1572)) ([93f2d5c](https://github.com/material-components/material-components-web/commit/93f2d5c))
+
+
+### Features
+
+* **elevation:** Update mixin to accept custom theme color ([#1449](https://github.com/material-components/material-components-web/issues/1449)) ([e02b4c9](https://github.com/material-components/material-components-web/commit/e02b4c9)), closes [#1534](https://github.com/material-components/material-components-web/issues/1534)
+* **linear-progress:** Add color theme mixins and remove `--accent` ([#1541](https://github.com/material-components/material-components-web/issues/1541)) ([31d9d7b](https://github.com/material-components/material-components-web/commit/31d9d7b)), closes [#1148](https://github.com/material-components/material-components-web/issues/1148)
+* **slider:** Add color theme mixins; default to secondary; remove `--off` ([#1544](https://github.com/material-components/material-components-web/issues/1544)) ([28024e9](https://github.com/material-components/material-components-web/commit/28024e9)), closes [#1151](https://github.com/material-components/material-components-web/issues/1151)
+* **text-field:** rename textfield to text-field ([#1485](https://github.com/material-components/material-components-web/issues/1485)) ([8093ad1](https://github.com/material-components/material-components-web/commit/8093ad1))
+* **textfield:** Convert some foundation methods from private to public ([#1543](https://github.com/material-components/material-components-web/issues/1543)) ([a8dcc59](https://github.com/material-components/material-components-web/commit/a8dcc59)), closes [#1550](https://github.com/material-components/material-components-web/issues/1550)
+* **theme:** Add new tone mixins and deprecate old one ([#1546](https://github.com/material-components/material-components-web/issues/1546)) ([57581ed](https://github.com/material-components/material-components-web/commit/57581ed))
+* **theme:** Allow overriding of text themes ([#1481](https://github.com/material-components/material-components-web/issues/1481)) ([f579e0a](https://github.com/material-components/material-components-web/commit/f579e0a))
+
+
+### Performance Improvements
+
+* **button:** Remove extra CSS, now that ripple handles tap highlight color ([#1520](https://github.com/material-components/material-components-web/issues/1520)) ([0a5fec5](https://github.com/material-components/material-components-web/commit/0a5fec5))
+
+
+### BREAKING CHANGES
+
+* **linear-progress:** The `mdc-linear-progres--accent` modifier class has been removed. Use Sass color mixins instead.
+* **slider:** The `mdc-slider--off` modifier class has been removed as it is being removed from the spec.
+* **text-field:** CSS class name "mdc-textfield" is changed to "mdc-text-field", JS objects name "MDCTextfield" is changed to "MDCTextField", .scss file names "mdc-textfield.scss" is changed to "mdc-text-field.scss", global namespace "mdc.textfield" is changed to "mdc.textField". Note that the package name is unchanged.
+
+
+
+<a name="0.24.0"></a>
+# [0.24.0](https://github.com/material-components/material-components-web/compare/v0.23.0...v0.24.0) (2017-10-30)
+
+
+### Bug Fixes
+
+* **button:** Revise button minimum width ([#1487](https://github.com/material-components/material-components-web/issues/1487)) ([cb73283](https://github.com/material-components/material-components-web/commit/cb73283))
+* **layout-grid:** Import the variables in the mixin ([#1232](https://github.com/material-components/material-components-web/issues/1232)) ([924144b](https://github.com/material-components/material-components-web/commit/924144b))
+* **ripple:** Avoid duplicating common styles ([#1463](https://github.com/material-components/material-components-web/issues/1463)) ([756d8a6](https://github.com/material-components/material-components-web/commit/756d8a6))
+* **snackbar:** Explicitly use border-box ([#1453](https://github.com/material-components/material-components-web/issues/1453)) ([7455978](https://github.com/material-components/material-components-web/commit/7455978))
+
+
+### Features
+
+* **button:** Use new ripple mixins, and remove unnecessary mixin ([#1471](https://github.com/material-components/material-components-web/issues/1471)) ([510f356](https://github.com/material-components/material-components-web/commit/510f356))
+* **checkbox:** Use new ripple mixins, and remove unnecessary mixin ([#1472](https://github.com/material-components/material-components-web/issues/1472)) ([92b22eb](https://github.com/material-components/material-components-web/commit/92b22eb))
+* **fab:** Use new ripple mixins; remove unnecessary mixin/variable ([#1473](https://github.com/material-components/material-components-web/issues/1473)) ([fb798db](https://github.com/material-components/material-components-web/commit/fb798db))
+* **icon-toggle:** Add public API for MDCRipple in icon-toggle ([#1396](https://github.com/material-components/material-components-web/issues/1396)) ([f496581](https://github.com/material-components/material-components-web/commit/f496581))
+* **icon-toggle:** Use new ripple mixins ([#1474](https://github.com/material-components/material-components-web/issues/1474)) ([cbc3e1c](https://github.com/material-components/material-components-web/commit/cbc3e1c))
+* **list:** Use new ripple mixins ([#1475](https://github.com/material-components/material-components-web/issues/1475)) ([0647576](https://github.com/material-components/material-components-web/commit/0647576))
+* **radio:** Add theme color mixins and update default color to secondary ([#1410](https://github.com/material-components/material-components-web/issues/1410)) ([da9d48f](https://github.com/material-components/material-components-web/commit/da9d48f)), closes [#1149](https://github.com/material-components/material-components-web/issues/1149)
+* **radio:** Use new ripple mixins, and remove unnecessary mixin ([#1476](https://github.com/material-components/material-components-web/issues/1476)) ([94a826d](https://github.com/material-components/material-components-web/commit/94a826d))
+* **ripple:** Add new simpler mixins and remove unused CSS vars ([#1452](https://github.com/material-components/material-components-web/issues/1452)) ([a983c01](https://github.com/material-components/material-components-web/commit/a983c01))
+* **ripple:** Remove old complex mixins ([#1496](https://github.com/material-components/material-components-web/issues/1496)) ([47c6859](https://github.com/material-components/material-components-web/commit/47c6859))
+* **switch:** Add color theme mixins and update default color to secondary ([#1411](https://github.com/material-components/material-components-web/issues/1411)) ([e4b4fa7](https://github.com/material-components/material-components-web/commit/e4b4fa7)), closes [#1144](https://github.com/material-components/material-components-web/issues/1144)
+* **tabs:** Use new ripple mixins ([#1492](https://github.com/material-components/material-components-web/issues/1492)) ([253fba0](https://github.com/material-components/material-components-web/commit/253fba0))
+* **textfield:** Add mixin allowing customization of border radii ([#1446](https://github.com/material-components/material-components-web/issues/1446)) ([483e3d5](https://github.com/material-components/material-components-web/commit/483e3d5))
+* **textfield:** Use new ripple mixins and remove hover ripple styles ([#1477](https://github.com/material-components/material-components-web/issues/1477)) ([2a71ef7](https://github.com/material-components/material-components-web/commit/2a71ef7))
+* **theme:** rename all color_palette instances ([#1479](https://github.com/material-components/material-components-web/issues/1479)) ([375661d](https://github.com/material-components/material-components-web/commit/375661d))
+
+
+### BREAKING CHANGES
+
+* **ripple:** The existing MDC Ripple Sass mixins mdc-ripple-base, mdc-ripple-fg, and mdc-ripple-bg have been removed, replaced by the new easier-to-use mixins mdc-ripple-surface, mdc-ripple-color, and mdc-ripple-radius.
+* **radio:** The mdc-radio-ripple mixin has been removed; use mdc-ripple-color directly.
+* **fab:** The mdc-fab-ripple mixin and $mdc-fab-light-ripple-config variable have been removed; use MDC Ripple's mdc-ripple-color mixin and opacity variables directly.
+* **checkbox:** The mdc-checkbox-ripple mixin has been removed; use mdc-ripple-color directly.
+* **button:** The mdc-button-ripple mixin has been removed; use mdc-ripple-color directly.
+* **theme:** _color_palette.scss has been renamed to _color-palette.scss in mdc-theme
+
+
+
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/material-components/material-components-web/compare/v0.22.0...v0.23.0) (2017-10-16)
+
+
+### Bug Fixes
+
+* **list item:** Add overflow hidden (#1290) ([05b1201](https://github.com/material-components/material-components-web/commit/05b1201)), closes [#1261](https://github.com/material-components/material-components-web/issues/1261)
+* **menu:** Add pointer-events: none to avoid blocking click events (#1421) ([b77895b](https://github.com/material-components/material-components-web/commit/b77895b))
+* **slider:** Deregister correct handlers on destroy (#1431) ([928d6b4](https://github.com/material-components/material-components-web/commit/928d6b4))
+* **toolbar:** Update menu-icon className (#992) (#1373) ([36577ab](https://github.com/material-components/material-components-web/commit/36577ab))
+
+
+### Features
+
+* **checkbox:** Add color theme mixins and update default color to secondary (#1365) ([cc7538f](https://github.com/material-components/material-components-web/commit/cc7538f)), closes [#1146](https://github.com/material-components/material-components-web/issues/1146)
+* **ripple:** Add optional event parameters to activate/deactivate methods ([891e962](https://github.com/material-components/material-components-web/commit/891e962))
+* **textfield:** Add textfield to the Closure whitelist. (#1394) ([8b05e88](https://github.com/material-components/material-components-web/commit/8b05e88))
+* **textfield:** Annotate textfield for Closure Compiler. (#1386) ([1152b8d](https://github.com/material-components/material-components-web/commit/1152b8d))
+
+
+### BREAKING CHANGES
+
+* Please update `mdc-toolbar__icon--menu` to `mdc-toolbar__menu-icon`
+
+
+
 <a name="0.22.0"></a>
 # [0.22.0](https://github.com/material-components/material-components-web/compare/v0.21.1...v0.22.0) (2017-10-02)
 

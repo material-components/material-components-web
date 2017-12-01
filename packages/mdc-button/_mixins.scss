@@ -22,16 +22,16 @@
 @import "./variables";
 
 @mixin mdc-button-filled-accessible($container-fill-color) {
-  $light-or-dark: mdc-theme-light-or-dark($container-fill-color);
+  $fill-tone: mdc-theme-tone($container-fill-color);
 
   @include mdc-button-container-fill-color($container-fill-color);
 
-  @if ($light-or-dark == "light") {
+  @if ($fill-tone == "dark") {
     @include mdc-button-ink-color(text-primary-on-dark);
-    @include mdc-button-ripple((theme-style: text-primary-on-dark, opacity: $mdc-filled-button-ripple-opacity));
+    @include mdc-ripple-color(text-primary-on-dark, $mdc-filled-button-ripple-opacity);
   } @else {
     @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-button-ripple((theme-style: text-primary-on-light, opacity: $mdc-filled-button-ripple-opacity));
+    @include mdc-ripple-color(text-primary-on-light, $mdc-filled-button-ripple-opacity);
   }
 }
 
@@ -55,19 +55,16 @@
   }
 }
 
-@mixin mdc-button-ripple($ripple-config) {
-  &:not(:disabled) {
-    @include mdc-ripple-base;
-    @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-    @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-  }
-}
-
 @mixin mdc-button-corner-radius($corner-radius) {
   border-radius: $corner-radius;
 }
 
 @mixin mdc-button-stroke-width($stroke-width) {
+  // Note: Adjust padding to maintain consistent width with non-stroked buttons
+  $padding-value: max($mdc-button-horizontal-padding - $stroke-width, 0);
+
+  padding-right: $padding-value;
+  padding-left: $padding-value;
   border-width: $stroke-width;
   // Note: line height is adjusted for stroke button because borders are not
   // considered as space available to text on the Web
@@ -78,23 +75,31 @@
     // Minus extra 1 to accommodate odd font size of dense button
     line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
   }
+
+  &.mdc-button--compact {
+    $padding-compact-value: max($mdc-compact-button-horizontal-padding - $stroke-width, 0);
+
+    padding-right: $padding-compact-value;
+    padding-left: $padding-compact-value;
+  }
 }
 
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
 
   display: inline-block;
   position: relative;
   box-sizing: border-box;
-  min-width: 88px;
+  min-width: 64px;
   height: $mdc-button-height;
-  padding: 0 16px;
+  padding: 0 $mdc-button-horizontal-padding;
   border: none;
   outline: none;
   text-align: center;
   user-select: none;
   -webkit-appearance: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   overflow: hidden;
   vertical-align: middle;
 
@@ -178,7 +183,7 @@
 }
 
 @mixin mdc-button--compact_() {
-  padding: 0 8px;
+  padding: 0 $mdc-compact-button-horizontal-padding;
 }
 
 @mixin mdc-button--dense_() {

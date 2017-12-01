@@ -14,31 +14,40 @@
 // limitations under the License.
 //
 
-$mdc-textfield-error-on-light: #d50000;
-$mdc-textfield-error-on-dark: #ff6e6e;
-$mdc-textfield-divider-on-light: rgba(black, .12);
-$mdc-textfield-divider-on-dark: rgba(white, .12);
-$mdc-textfield-disabled-border-on-light: rgba(#231f20, .26);
-$mdc-textfield-disabled-border-on-dark: rgba(white, .3);
-$mdc-textfield-disabled-icon-on-light: rgba(black, .3);
-$mdc-textfield-disabled-icon-on-dark: rgba(white, .3);
-$mdc-textfield-icon-position: 15px;
-$mdc-textfield-icon-padding: 48px;
-$mdc-textfield-dense-icon-position: 12px;
-$mdc-textfield-dense-icon-padding: 38px;
-$mdc-textfield-underline-on-light: rgba(black, 1);
-$mdc-textfield-underline-on-light-idle: rgba(black, .5);
-$mdc-textfield-underline-on-dark: rgba(white, 1);
-$mdc-textfield-underline-on-dark-idle: rgba(white, .5);
-$mdc-textfield-dark-background: rgba(48, 48, 48, 1);
-$mdc-textfield-dark-label: rgba(white, .6);
-$mdc-textfield-dark-placeholder: rgba(black, .38);
-$mdc-textfield-light-background: rgba(white, 1);
-$mdc-textfield-light-label: rgba(white, .7);
-$mdc-textfield-light-placeholder: rgba(white, .3);
+$mdc-text-field-error-on-light: #d50000;
+$mdc-text-field-error-on-dark: #ff6e6e;
+$mdc-text-field-divider-on-light: rgba(black, .12);
+$mdc-text-field-divider-on-dark: rgba(white, .12);
+$mdc-text-field-disabled-border-on-light: rgba(#231f20, .26);
+$mdc-text-field-disabled-border-on-dark: rgba(white, .3);
+$mdc-text-field-disabled-icon-on-light: rgba(black, .3);
+$mdc-text-field-disabled-icon-on-dark: rgba(white, .3);
+$mdc-text-field-icon-position: 15px;
+$mdc-text-field-icon-padding: 48px;
+$mdc-text-field-dense-icon-position: 12px;
+$mdc-text-field-dense-icon-padding: 38px;
+$mdc-text-field-underline-on-light: rgba(black, 1);
+$mdc-text-field-underline-on-light-idle: rgba(black, .5);
+$mdc-text-field-underline-on-dark: rgba(white, 1);
+$mdc-text-field-underline-on-dark-idle: rgba(white, .5);
+$mdc-text-field-dark-background: rgba(48, 48, 48, 1);
+$mdc-text-field-dark-label: rgba(white, .6);
+$mdc-text-field-dark-placeholder: rgba(black, .38);
+$mdc-text-field-light-background: rgba(white, 1);
+$mdc-text-field-light-label: rgba(white, .7);
+$mdc-text-field-light-placeholder: rgba(white, .3);
+
+$mdc-text-field-box-background: rgba(black, .04);
+$mdc-text-field-box-background-dark: rgba(white, .1);
+$mdc-text-field-box-disabled-background: rgba(black, .02);
+$mdc-text-field-box-disabled-background-dark: rgba(white, .05);
+$mdc-text-field-box-secondary-text: rgba(black, .6);
+
 $mdc-textarea-border-on-light: rgba(black, .73);
 $mdc-textarea-border-on-dark: rgba(white, 1);
 $mdc-textarea-light-background: rgba(white, 1);
 $mdc-textarea-dark-background: rgba(48, 48, 48, 1);
 $mdc-textarea-disabled-background-on-light: rgba(249, 249, 249, 1);
 $mdc-textarea-disabled-background-on-dark: rgba(47, 47, 47, 1);
+
+$mdc-text-field-border-radius: 4px !default;

@@ -17,29 +17,34 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/rtl/mixins";
+@import "./keyframes";
+@import "./mixins";
 @import "./variables";
-
-$mdc-slider-main-grey: #bdbdbd;
-$mdc-slider-dark-theme-grey: #5c5c5c;
 
 // postcss-bem-linter: define slider
 
-@keyframes mdc-slider-emphasize {
-  0% {
-    animation-timing-function: ease-out;
-  }
-
-  50% {
-    animation-timing-function: ease-in;
-    transform: scale(.85);
-  }
-
-  100% {
-    transform: scale(.571);
-  }
-}
-
 .mdc-slider {
+  @include mdc-slider-color-accessible(secondary);
+
+  &--disabled {
+    $light-color: #9a9a9a;
+    $dark-color: #787878;
+
+    @include mdc-slider-highlight-color_($light-color);
+    @include mdc-slider-rail-color_($light-color);
+    @include mdc-slider-rail-tick-mark-color_($light-color);
+    @include mdc-slider-thumb-color_($light-color);
+    @include mdc-slider-thumb-stroke-cutout_($mdc-slider-default-assumed-bg-color);
+
+    @include mdc-theme-dark(".mdc-slider", true) {
+      @include mdc-slider-highlight-color_($dark-color);
+      @include mdc-slider-rail-color_($dark-color);
+      @include mdc-slider-rail-tick-mark-color_($dark-color);
+      @include mdc-slider-thumb-color_($dark-color);
+      @include mdc-slider-thumb-stroke-cutout_($mdc-slider-dark-theme-assumed-bg-color);
+    }
+  }
+
   position: relative;
   width: 100%;
   height: 48px;
@@ -56,17 +61,10 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
     top: 50%;
     width: 100%;
     height: 2px;
-    background-color: $mdc-slider-main-grey;
     overflow: hidden;
-
-    @include mdc-theme-dark(".mdc-slider") {
-      background-color: $mdc-slider-dark-theme-grey;
-    }
   }
 
   &__track {
-    @include mdc-theme-prop(background-color, primary);
-
     position: absolute;
     width: 100%;
     height: 100%;
@@ -89,16 +87,12 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
       margin-left: 0;
     }
 
+    // Last marker at the very end of the slider (right-most in LTR, left-most in RTL)
     &::after {
       display: block;
       width: 2px;
       height: 2px;
-      background-color: $mdc-slider-dark-theme-grey;
       content: "";
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        background-color: $mdc-slider-main-grey;
-      }
     }
   }
 
@@ -109,12 +103,7 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
       display: block;
       width: 2px;
       height: 2px;
-      background-color: $mdc-slider-dark-theme-grey;
       content: "";
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        background-color: $mdc-slider-main-grey;
-      }
     }
 
     &:first-child::after {
@@ -135,9 +124,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   }
 
   &__thumb {
-    @include mdc-theme-prop(fill, primary);
-    @include mdc-theme-prop(stroke, primary);
-
     position: absolute;
     top: 0;
     left: 0;
@@ -147,8 +133,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   }
 
   &__focus-ring {
-    @include mdc-theme-prop(background-color, primary);
-
     width: 21px;
     height: 21px;
     transition: transform 266.67ms ease-out, opacity 266.67ms ease-out, background-color 266.67ms ease-out;
@@ -157,9 +141,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   }
 
   &__pin {
-    @include mdc-theme-prop(background-color, primary);
-    @include mdc-theme-prop(color, text-primary-on-primary);
-
     display: flex;
     position: absolute;
     top: 0;
@@ -207,82 +188,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
 
 .mdc-slider--disabled {
   cursor: auto;
-
-  .mdc-slider__track {
-    background-color: $mdc-slider-main-grey;
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      background-color: $mdc-slider-dark-theme-grey;
-    }
-  }
-
-  // We use !important here to override all styles without having to use excessive
-  // :not() selectors or intricate compound selectors.
-  .mdc-slider__thumb {
-    fill: $mdc-slider-main-grey !important;
-    stroke: $mdc-slider-default-assumed-bg-color !important;
-    stroke: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color) !important;
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      fill: $mdc-slider-dark-theme-grey !important;
-      stroke: $mdc-slider-dark-theme-assumed-bg-color !important;
-      stroke: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color) !important;
-    }
-  }
-}
-
-.mdc-slider--off {
-  .mdc-slider__track {
-    opacity: 0;
-  }
-
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-slider__thumb {
-    fill: $mdc-slider-default-assumed-bg-color;
-    fill: var(--mdc-slider-bg-color-behind-component, $mdc-slider-default-assumed-bg-color);
-    stroke: $mdc-slider-main-grey;
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      fill: $mdc-slider-dark-theme-assumed-bg-color;
-      fill: var(--mdc-slider-bg-color-behind-component, $mdc-slider-dark-theme-assumed-bg-color);
-      stroke: $mdc-slider-dark-theme-grey;
-    }
-  }
-
-  .mdc-slider__pin {
-    background-color: $mdc-slider-main-grey;
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      background-color: $mdc-slider-dark-theme-grey;
-    }
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  &.mdc-slider--focus {
-    .mdc-slider__thumb {
-      fill: #dedede;
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        fill: #82848c;
-        stroke: #82848c;
-      }
-    }
-  }
-
-  &.mdc-slider--active.mdc-slider--focus {
-    .mdc-slider__thumb {
-      stroke: #8c8c8c;
-
-      @include mdc-theme-dark(".mdc-slider", true) {
-        stroke: $mdc-slider-dark-theme-grey;
-      }
-    }
-  }
-
-  .mdc-slider__focus-ring {
-    background-color: $mdc-slider-main-grey;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-slider--in-transit {
@@ -323,11 +228,6 @@ $mdc-slider-dark-theme-grey: #5c5c5c;
   &.mdc-slider--focus {
     .mdc-slider__thumb {
       animation: none;
-    }
-
-    .mdc-slider__focus-ring {
-      transform: none;
-      opacity: 0;
     }
   }
 

@@ -28,8 +28,6 @@ const cssClasses = {
 };
 
 const strings = {
-  VAR_SURFACE_WIDTH: '--mdc-ripple-surface-width',
-  VAR_SURFACE_HEIGHT: '--mdc-ripple-surface-height',
   VAR_FG_SIZE: '--mdc-ripple-fg-size',
   VAR_LEFT: '--mdc-ripple-left',
   VAR_TOP: '--mdc-ripple-top',
@@ -41,8 +39,8 @@ const strings = {
 const numbers = {
   PADDING: 10,
   INITIAL_ORIGIN_SCALE: 0.6,
-  DEACTIVATION_TIMEOUT_MS: 300,
-  FG_DEACTIVATION_MS: 83,
+  DEACTIVATION_TIMEOUT_MS: 225, // Corresponds to $mdc-ripple-translate-duration (i.e. activation animation duration)
+  FG_DEACTIVATION_MS: 150, // Corresponds to $mdc-ripple-fade-out-duration (i.e. deactivation animation duration)
 };
 
 export {cssClasses, strings, numbers};

@@ -16,21 +16,21 @@
 @import "@material/elevation/mixins";
 @import "@material/elevation/variables";
 @import "@material/ripple/mixins";
+@import "@material/ripple/variables";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
-@import "./variables";
 
 @mixin mdc-fab-accessible($container-color) {
-  @include mdc-fab-container-color($container-color);
-  // Calculate whether to use dark or light text on top of given color.
-  $light-or-dark-text: mdc-theme-light-or-dark($container-color);
+  $fill-tone: mdc-theme-tone($container-color);
 
-  @if ($light-or-dark-text == "light") {
+  @include mdc-fab-container-color($container-color);
+
+  @if ($fill-tone == "dark") {
     @include mdc-fab-ink-color(text-primary-on-dark);
-    @include mdc-fab-ripple($mdc-fab-light-ripple-config);
+    @include mdc-ripple-color(text-primary-on-dark, $mdc-ripple-pressed-light-ink-opacity);
   } @else {
     @include mdc-fab-ink-color(text-primary-on-light);
-    @include mdc-fab-ripple(()); //default dark ripple
+    @include mdc-ripple-color(text-primary-on-light, $mdc-ripple-pressed-dark-ink-opacity);
   }
 }
 
@@ -42,16 +42,12 @@
   @include mdc-theme-prop(color, $color);
 }
 
-@mixin mdc-fab-ripple($ripple-config) {
-  @include mdc-ripple-bg(map-merge((pseudo: "::before"), $ripple-config));
-  @include mdc-ripple-fg(map-merge((pseudo: "::after"), $ripple-config));
-}
-
 $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab-base_ {
-  @include mdc-ripple-base;
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
   @include mdc-elevation(6);
 
   display: inline-flex;

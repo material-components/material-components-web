@@ -52,7 +52,7 @@ const MDCFoundation = mdc.base.MDCFoundation;
 
 ## Usage
 
-mdc-base exposes two classes: `MDCComponent` (the default export) which all components extend from, and `MDCFoundation`, which all foundation classes extend from. To learn more about foundation classes vs. components, check out our [developer guide](https://github.com/material-components/material-components-web/blob/master/docs/DEVELOPER.md) (_WIP_).
+mdc-base exposes two classes: `MDCComponent` (the default export) which all components extend from, and `MDCFoundation`, which all foundation classes extend from. To learn more about foundation classes vs. components, check out our overview on [architecture and best practices](../../docs/code).
 
 ### MDCFoundation
 

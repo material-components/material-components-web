@@ -379,3 +379,18 @@ test('adapter#getValueForOptionAtIndex returns the textContent of the option at 
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getValueForOptionAtIndex(3), 'Item 4 no id');
 });
+
+test('adapter#addBodyClass adds a class to the body', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.addBodyClass('mdc-select-scroll-lock');
+  assert.isOk(document.querySelector('body').classList.contains('mdc-select-scroll-lock'));
+});
+
+test('adapter#removeBodyClass remove a class from the body', () => {
+  const {component} = setupTest();
+  const body = document.querySelector('body');
+
+  body.classList.add('mdc-select-scroll-lock');
+  component.getDefaultFoundation().adapter_.removeBodyClass('mdc-select-scroll-lock');
+  assert.isNotOk(body.classList.contains('mdc-select-scroll-lock'));
+});

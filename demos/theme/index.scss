@@ -33,12 +33,11 @@
 @import "../../packages/mdc-slider/mdc-slider";
 @import "../../packages/mdc-switch/mdc-switch";
 @import "../../packages/mdc-tabs/mdc-tabs";
-@import "../../packages/mdc-textfield/mdc-textfield";
-@import "../../packages/mdc-theme/color_palette";
+@import "../../packages/mdc-textfield/mdc-text-field";
+@import "../../packages/mdc-theme/color-palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
-@import "../../packages/mdc-typography/mdc-typography";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
@@ -136,11 +135,11 @@ figure {
 
 .mdc-button.secondary-text-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
 
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+    @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
   }
 }
 
@@ -155,12 +154,12 @@ figure {
 .mdc-button.secondary-stroked-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-button-stroke-color($mdc-theme-secondary);
-  @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+  @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
 
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-button-ink-color($mdc-theme-secondary);
     @include mdc-button-stroke-color($mdc-theme-secondary);
-    @include mdc-button-ripple((base-color: $mdc-theme-secondary, opacity: .16));
+    @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
   }
 }
 
@@ -401,33 +400,15 @@ figure {
 }
 
 .demo-ripple-surface--primary {
-  &::before,
-  &::after {
-    @include mdc-theme-prop(background-color, primary);
-  }
-
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16));
+  @include mdc-ripple-color(primary, $mdc-ripple-pressed-dark-ink-opacity);
 }
 
 .demo-ripple-surface--secondary {
-  &::before,
-  &::after {
-    @include mdc-theme-prop(background-color, secondary);
-  }
-
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .16));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .16));
+  @include mdc-ripple-color(secondary, $mdc-ripple-pressed-dark-ink-opacity);
 }
 
 .demo-ripple-surface--custom {
-  &::before,
-  &::after {
-    @include mdc-theme-prop(background-color, $demo-custom-color);
-  }
-
-  @include mdc-ripple-bg((pseudo: "::before", base-color: $demo-custom-color, opacity: .16));
-  @include mdc-ripple-fg((pseudo: "::after", base-color: $demo-custom-color, opacity: .16));
+  @include mdc-ripple-color($demo-custom-color, $mdc-ripple-pressed-dark-ink-opacity);
 }
 
 .mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
@@ -458,7 +439,7 @@ figure {
 // Text Field demo
 //
 
-.demo-textfield-wrapper {
+.demo-text-field-wrapper {
   display: inline-block;
   margin: 16px 16px 0 0;
 }

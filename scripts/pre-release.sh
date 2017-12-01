@@ -61,12 +61,6 @@ log "Moving built assets to package directories..."
 node scripts/cp-pkgs.js
 echo ""
 
-log "Determining package versions..."
-node scripts/determine-pkg-versions.js
-echo ""
-
-log "Pre-release steps done! You should now run " \
-    "\$(npm bin)/lerna publish -m \"chore: Publish\", followed by ./scripts/post-release.sh"
-log "Please use the package versions specified above to increment the different package versions " \
-    "When prompted by lerna. Or, override those versions if need be."
+log "Pre-release steps done! Next, you should run:" \
+    "\$(npm bin)/lerna publish --skip-git"
 echo ""
