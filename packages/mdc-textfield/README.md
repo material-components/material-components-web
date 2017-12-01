@@ -285,13 +285,13 @@ can be controlled by passing a ripple factory argument to the constructor.
 
 ```js
 const textFieldBoxEl = document.querySelector('.mdc-text-field--box');
-const textField = new MDCTextField(textFieldBoxEl, /* foundation */ undefined, (el) => {
-  // do something with el...
-  return new MDCRipple(el);
+const textField = new MDCTextField(textFieldBoxEl, /* foundation */ undefined, (el, foundation) => {
+  // Optionally do something with el or foundation...
+  return new MDCRipple(el, foundation);
 });
 ```
 
-By default the ripple factory simply calls `new MDCRipple(el)` and returns the result.
+By default the ripple factory simply calls `new MDCRipple(el, foundation)` and returns the result.
 
 #### MDCTextField API
 
