@@ -95,7 +95,7 @@
           return getDirectionality(element) === Directionality.LTR;
         }
 
-        function getClosestCardGridElement(element) {
+        function getClosestCardListElement(element) {
           return element.closest('.m2-card-list');
         }
 
@@ -195,10 +195,10 @@
         }
 
         class Card {
-          constructor(element, cardGrid) {
+          constructor(element, cardList) {
             this.element = element;
-            this.cardGrid = cardGrid;
-            this.parentGroupElement = getClosestCardGridElement(this.element);
+            this.cardList = cardList;
+            this.parentGroupElement = getClosestCardListElement(this.element);
             this.parentOffsetRect = getRelativeOffset(this.element, this.parentGroupElement);
             this.offsetX_ = 0;
             this.offsetY_ = 0;
@@ -266,7 +266,7 @@
           }
 
           isColumn() {
-            return this.adjacentCard.cardGrid.isColumn();
+            return this.adjacentCard.cardList.isColumn();
           }
 
           calculateParentOffsetRect() {
@@ -423,7 +423,7 @@
         // NOTE(acdvorak): This code assumes:
         // 1. ALL CARDS ARE THE SAME SIZE
         // 2. HORIZONTAL AND VERTICAL MARGINS BETWEEN CARDS ARE IDENTICAL
-        class CardGrid {
+        class CardList {
           constructor(rootEl) {
             this.rootEl = rootEl;
             this.draggable = new Draggable.Draggable(this.rootEl, {
@@ -442,7 +442,7 @@
             // TODO(acdvorak): Remove handler in destruct method
             optimizedResize.add((e) => this.handleResize_(e));
 
-            const {dropSpacerEl, activeDropZoneEl} = CardGrid.createDropEls();
+            const {dropSpacerEl, activeDropZoneEl} = CardList.createDropEls();
             this.dropSpacerEl = dropSpacerEl;
             this.activeDropZoneEl = activeDropZoneEl;
 
@@ -464,14 +464,14 @@
             // TODO(acdvorak): Destroy or reuse old objects; optimize performance on low-end devices.
             const {cards, rows} = this.getCards();
 
-            const rowGapInPx = this.rowGapInPx = CardGrid.getRowGapInPx(rows);
-            const colGapInPx = this.colGapInPx = CardGrid.getColGapInPx(rows);
+            const rowGapInPx = this.rowGapInPx = CardList.getRowGapInPx(rows);
+            const colGapInPx = this.colGapInPx = CardList.getColGapInPx(rows);
             this.cards = cards;
             this.rows = rows;
             this.dropZones = this.getDropZones(rows, rowGapInPx, colGapInPx);
             this.activeDropZone = null;
             this.sourceCardEl = null;
-            this.spacerThicknessInPx = CardGrid.getspacerThicknessInPx(this.rootEl, rows);
+            this.spacerThicknessInPx = CardList.getspacerThicknessInPx(this.rootEl, rows);
 
             this.autoSetColumnClass();
           }
@@ -496,7 +496,7 @@
           handleDragMove_(e) {
             e.originalEvent.preventDefault();
 
-            const dropZone = this.activeDropZone = CardGrid.getDropZone(e, this.dropZones);
+            const dropZone = this.activeDropZone = CardList.getDropZone(e, this.dropZones);
 
             // TODO(acdvorak): Avoid thrashing the DOM, especially on low-end devices.
             this.resetCardOffsets(this.cards);
@@ -722,14 +722,14 @@
             return secondRow[0].parentOffsetRect.top - firstRow[0].parentOffsetRect.bottom;
           }
 
-          static getspacerThicknessInPx(cardGridEl, rows) {
+          static getspacerThicknessInPx(cardListEl, rows) {
             if (rows.length === 0 || rows[0].length === 0) {
               return 0;
             }
 
             const firstRow = rows[0];
 
-            if (isLTR(cardGridEl)) {
+            if (isLTR(cardListEl)) {
               const lastCard = firstRow[firstRow.length - 1];
               // TODO(acdvorak): Don't assume px units
               const lastCardMarginRight = parseInt(getComputedStyle(lastCard.element).marginRight, 10);
@@ -761,8 +761,8 @@
             card.ripple = mdc.ripple.MDCRipple.attachTo(card);
           }
 
-          for (let cardGridEl of document.querySelectorAll('.demo-card-list')) {
-            new CardGrid(cardGridEl);
+          for (let cardListEl of document.querySelectorAll('.demo-card-list')) {
+            new CardList(cardListEl);
           }
         }
       })();
