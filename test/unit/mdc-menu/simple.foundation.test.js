@@ -20,7 +20,7 @@ import td from 'testdouble';
 import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {createMockRaf} from '../helpers/raf';
-import MDCSimpleMenuFoundation from '../../../packages/mdc-menu/simple/foundation';
+import {MDCSimpleMenuFoundation} from '../../../packages/mdc-menu/simple/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-menu/simple/constants';
 
 function setupTest() {

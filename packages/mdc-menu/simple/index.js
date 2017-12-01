@@ -16,8 +16,10 @@
  */
 
 import MDCComponent from '@material/base/component';
-import MDCSimpleMenuFoundation from './foundation';
+// import MDCSimpleMenuFoundation from './foundation';
 import {getTransformPropertyName} from '../util';
+import {MDCSimpleMenuFoundation, AnchorMargin} from './foundation';
+import {Corner, CornerBit} from './constants';
 
 /**
  * @extends MDCComponent<!MDCSimpleMenuFoundation>
@@ -174,4 +176,4 @@ class MDCSimpleMenu extends MDCComponent {
   }
 }
 
-export {MDCSimpleMenuFoundation, MDCSimpleMenu};
+export {MDCSimpleMenuFoundation, MDCSimpleMenu, AnchorMargin, Corner, CornerBit};

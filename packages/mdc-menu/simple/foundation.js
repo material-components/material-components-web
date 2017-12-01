@@ -15,6 +15,16 @@
  * limitations under the License.
  */
 
+/**
+ * @typedef {{
+ *   top: number,
+ *   right: number,
+ *   bottom: number,
+ *   left: number
+ * }}
+ */
+let AnchorMargin;
+
 import MDCFoundation from '@material/base/foundation';
 import {MDCSimpleMenuAdapter} from './adapter';
 import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
@@ -466,7 +476,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     const rightOverflow = this.dimensions_.width - anchor.right;
     const extendsBeyondLeftBounds = leftOverflow > 0;
     const extendsBeyondRightBounds = rightOverflow > 0;
-    const flipRtl = (this.anchorCorner_ & CornerBit.FLIP_RTL & CornerBit.right);
+    const flipRtl = (this.anchorCorner_ & CornerBit.FLIP_RTL & CornerBit.RIGHT);
     if (this.adapter_.isRtl()) {
       // In RTL, we prefer to open from the right.
       horizontal = flipRtl ? 'left' : 'right';
@@ -571,4 +581,5 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 }
 
-export default MDCSimpleMenuFoundation;
+export {MDCSimpleMenuFoundation, AnchorMargin};
+// export {AnchorMargin};

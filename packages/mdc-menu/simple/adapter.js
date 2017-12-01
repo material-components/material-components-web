@@ -18,16 +18,6 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * @typedef {{
- *   top: number,
- *   right: number,
- *   bottom: number,
- *   left: number
- * }}
- */
-let AnchorMargin;
-
-/**
  * Adapter for MDC Simple Menu. Provides an interface for managing
  * - classes
  * - dom
@@ -180,4 +170,4 @@ class MDCSimpleMenuAdapter {
   getAccurateTime() {}
 }
 
-export {MDCSimpleMenuAdapter, AnchorMargin};
+export {MDCSimpleMenuAdapter};
