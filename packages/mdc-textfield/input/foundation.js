@@ -156,10 +156,10 @@ class MDCTextFieldInputFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {boolean} receivedUserInput Sets whether user input was received.
+   * Handles text field interaction.
    */
-  setReceivedUserInput(receivedUserInput) {
-    this.receivedUserInput_ = receivedUserInput;
+  handleTextFieldInteraction() {
+    this.receivedUserInput_ = true;
   }
 
   /**

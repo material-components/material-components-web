@@ -132,7 +132,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       return;
     }
     const input = this.adapter_.getInputFoundation();
-    input.setReceivedUserInput(true);
+    input.handleTextFieldInteraction();
 
     const {target, type} = evt;
     const {TEXT_FIELD_ICON} = MDCTextFieldFoundation.cssClasses;

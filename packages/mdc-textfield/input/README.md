@@ -51,7 +51,7 @@ Returns the value in the input.
 
 ##### MDCTextFieldInputFoundation.checkValidity() => boolean
 
-Returns the result of the checkValidity() call in the native input.
+Returns the result of the checkValidity() call in the native input. This can be the result of customized validity checking.
 
 ##### MDCTextFieldInputFoundation.isDisabled() => boolean
 
@@ -61,6 +61,6 @@ True if the input is disabled.
 
 Sets the input disabled or enabled.
 
-##### MDCTextFieldInputFoundation.setReceivedUserInput(receivedUserInput)
+##### MDCTextFieldInputFoundation.handleTextFieldInteraction()
 
-Sets whether user input was received.
+Handles text field interaction.
