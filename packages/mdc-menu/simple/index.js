@@ -16,7 +16,9 @@
  */
 
 import MDCComponent from '@material/base/component';
+import {Corner, CornerBit} from './constants';
 import MDCSimpleMenuFoundation from './foundation';
+import AnchorMargin from './foundation';
 import {getTransformPropertyName} from '../util';
 
 /**
@@ -68,6 +70,21 @@ class MDCSimpleMenu extends MDCComponent {
   setOffset(x, y) {
     this.foundation_.setOffset(x, y);
   }
+
+  /**
+   * @param {Corner} corner Default anchor corner alignment of top-left
+   *     menu corner.
+   */
+   setAnchorCorner(corner) {
+     this.foundation_.setAnchorCorner(corner);
+   }
+
+  /**
+   * @param {AnchorMargin} margin
+   */
+   setAnchorMargin(margin) {
+     this.foundation_.setAnchorMargin(margin);
+   }
 
   /**
    * Return the item container element inside the component.
@@ -149,6 +166,9 @@ class MDCSimpleMenu extends MDCComponent {
         this.root_.style.right = 'right' in position ? position.right : null;
         this.root_.style.top = 'top' in position ? position.top : null;
         this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
+      },
+      setMaxHeight: (height) => {
+        this.root_.style.maxHeight = height;
       },
       getAccurateTime: () => window.performance.now(),
     });

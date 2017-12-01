@@ -65,6 +65,13 @@
       .mdc-menu-anchor {
         position: absolute;
       }
+
+      .margin-inputs input {
+        width: 2em;
+      }
+      .extraItems {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -95,53 +102,99 @@
       </section>
 
       <div class="demo-content">
-        <div class="mdc-menu-anchor">
-          <button class="mdc-button mdc-button--raised toggle">
-            Reveal Menu
-          </button>
+        <div id="demo-wrapper">
+          <div class="mdc-menu-anchor">
+            <button class="mdc-button mdc-button--raised toggle">
+              Reveal Menu
+            </button>
 
-          <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
-            <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
-              <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
-              <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
-              <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
-              <li class="mdc-list-divider" role="separator"></li>
+            <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
+              <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+                <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
+                <li class="mdc-list-divider" role="separator"></li>
 
-              <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
-            </ul>
+                <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>
+                <span class="extraItems">
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
+                </span>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div class="demo-controls-container">
           <div class="demo-controls">
+            <div style="display:inline-block;">
+              Button Position:
+              <div class="">
+                <label><input type="radio" name="position" value="top left" checked> Top left</label>
+              </div>
+
+              <div class="">
+                <label><input type="radio" name="position" value="top right"> Top right</label>
+              </div>
+
+              <div class="">
+                <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
+              </div>
+
+              <div class="">
+                <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
+              </div>
+            </div>
+            <div style="display:inline-block;margin-left: 2em;">
+              Default Menu Position:
+              <div class="">
+                <label><input type="radio" name="menuposition" value="top_start" checked> Top start</label>
+              </div>
+
+              <div class="">
+                <label><input type="radio" name="menuposition" value="top_end"> Top end</label>
+              </div>
+
+              <div class="">
+                <label><input type="radio" name="menuposition" value="bottom_start"> Bottom start</label>
+              </div>
+
+              <div class="">
+                <label><input type="radio" name="menuposition" value="bottom_end"> Bottom end</label>
+              </div>
+            </div>
             <p>
-              Button position:
-              <div class="">
-                <label><input type="radio" name="position" value="top left" checked>Top left</label>
+              Anchor Margins:
+              <div class="margin-inputs">
+                <label>T: <input type="text" name="topMargin" value="0" size="3" max-length="3"></label>
+                <label>B: <input type="text" name="bottomMargin" value="0" size="3"></label>
+                <label>L: <input type="text" name="leftMargin" value="0" size="3"></label>
+                <label>R: <input type="text" name="rightMargin" value="0" size="3"></label>
               </div>
-
+            </p>
+            <p>
               <div class="">
-                <label><input type="radio" name="position" value="top right">Top right</label>
+                <label><input type="checkbox" name="useanchorwidth"> Use anchor width</label>
               </div>
-
-              <div class="">
-              <label>
-                <input type="radio" name="position" value="bottom left">
-                Bottom left
-              </label>
-            </div>
-
-            <div class="">
-              <label>
-                <input type="radio" name="position" value="bottom right">
-                Bottom right
-              </label>
-            </div>
+            </p>
+            <p>
+              <label><input type="checkbox" name="isrtl"> RTL</label>
             </p>
             <p>
               <label>
                 <input type="checkbox" name="dark">
                 Dark mode
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" name="longMenu">
+                Long menu
               </label>
             </p>
             <div>
@@ -192,6 +245,59 @@
           }
         });
       }
+
+      var radios = document.querySelectorAll('input[name="menuposition"]');
+      for (var i = 0; i < radios.length; i++) {
+        radios[i].addEventListener('change', function(evt) {
+          if (evt.target.checked) {
+            switch (evt.target.value) {
+              case "top_start":
+                menu.setAnchorCorner(mdc.menu.constants.Corner.TOP_START);
+                break;
+              case "bottom_start":
+                menu.setAnchorCorner(mdc.menu.constants.Corner.BOTTOM_START);
+                break;
+              case "top_end":
+                menu.setAnchorCorner(mdc.menu.constants.Corner.TOP_END);
+                break;
+              case "bottom_end":
+                menu.setAnchorCorner(mdc.menu.constants.Corner.BOTTOM_END);
+                break;
+            }
+          }
+        });
+      }
+
+      var inputs = document.querySelectorAll('input[type="text"]');
+      for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('change', () => {
+          const topMarginInput = document.querySelector('input[name="topMargin"]');
+          const bottomMarginInput = document.querySelector('input[name="bottomMargin"]');
+          const rightMarginInput = document.querySelector('input[name="rightMargin"]');
+          const leftMarginInput = document.querySelector('input[name="leftMargin"]');
+          const margin = {top: parseInt(topMarginInput.value, 10),
+                          right: parseInt(rightMarginInput.value, 10),
+                          bottom: parseInt(bottomMarginInput.value, 10),
+                          left: parseInt(leftMarginInput.value, 10)};
+          menu.setAnchorMargin(margin);
+        });
+      }
+
+      var long = document.querySelector('input[name="longMenu"]');
+      long.addEventListener('change', (e) => {
+        const extraItems = document.querySelector('.extraItems');
+        extraItems.style.display = long.checked ? 'block' : 'none';
+      })
+
+      const rtl = document.querySelector('input[name="isrtl"]');
+      rtl.addEventListener('change', () => {
+        const demoWrapper = document.getElementById('demo-wrapper');
+        if (rtl.checked) {
+          demoWrapper.setAttribute('dir', 'rtl');
+        } else {
+          demoWrapper.removeAttribute('dir');
+        }
+      });
 
       var lastSelected = document.getElementById('last-selected');
       menuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
