@@ -16,9 +16,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {Corner, CornerBit} from './constants';
 import MDCSimpleMenuFoundation from './foundation';
-import AnchorMargin from './foundation';
 import {getTransformPropertyName} from '../util';
 
 /**
@@ -75,16 +73,16 @@ class MDCSimpleMenu extends MDCComponent {
    * @param {Corner} corner Default anchor corner alignment of top-left
    *     menu corner.
    */
-   setAnchorCorner(corner) {
-     this.foundation_.setAnchorCorner(corner);
-   }
+  setAnchorCorner(corner) {
+    this.foundation_.setAnchorCorner(corner);
+  }
 
   /**
    * @param {AnchorMargin} margin
    */
-   setAnchorMargin(margin) {
-     this.foundation_.setAnchorMargin(margin);
-   }
+  setAnchorMargin(margin) {
+    this.foundation_.setAnchorMargin(margin);
+  }
 
   /**
    * Return the item container element inside the component.

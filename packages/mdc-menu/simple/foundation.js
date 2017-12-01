@@ -16,19 +16,9 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCSimpleMenuAdapter from './adapter';
+import {MDCSimpleMenuAdapter} from './adapter';
 import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
 import {clamp, bezierProgress} from '../util';
-
-/**
- * @typedef {{
- *   top: number,
- *   right: number,
- *   bottom: number,
- *   left: number
- * }}
- */
-let AnchorMargin;
 
 /**
  * @extends {MDCFoundation<!MDCSimpleMenuAdapter>}
@@ -179,19 +169,18 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Default anchor corner alignment of top-left
-   *     menu corner.
+   * @param {Corner} corner Default anchor corner alignment of top-left menu corner.
    */
-   setAnchorCorner(corner) {
-     this.anchorCorner_ = corner;
-   }
+  setAnchorCorner(corner) {
+    this.anchorCorner_ = corner;
+  }
 
   /**
-   * @param {AnchorMargin} margin
+   * @param {AnchorMargin} margin 4-plet of margins from anchor.
    */
-   setAnchorMargin(margin) {
-     this.anchorMargin_ = margin;
-   }
+  setAnchorMargin(margin) {
+    this.anchorMargin_ = margin;
+  }
 
   /**
    * Calculates transition delays for individual menu items, so that they fade in one at a time.
@@ -456,15 +445,13 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     const anchor = this.adapter_.getAnchorDimensions();
     const windowDimensions = this.adapter_.getWindowDimensions();
     const topShift = (this.anchorCorner_ & CornerBit.BOTTOM) ?
-        (anchor.height + this.anchorMargin_.bottom) : this.anchorMargin_.top;
+      (anchor.height + this.anchorMargin_.bottom) : this.anchorMargin_.top;
     const topOverflow = anchor.top + topShift + this.offsetY_ + this.dimensions_.height
-        - windowDimensions.height;
+      - windowDimensions.height;
     const bottomShift = (this.anchorCorner_ & CornerBit.BOTTOM) ?
-        this.anchorMargin_.bottom : (anchor.height - this.anchorMargin_.bottom);
+      this.anchorMargin_.bottom : (anchor.height - this.anchorMargin_.bottom);
     const bottomOverflow = this.dimensions_.height - anchor.bottom - bottomShift;
-
     let menuMaxHeight = this.dimensions_.height;
-
     const extendsBeyondTopBounds = topOverflow > 0;
     if (extendsBeyondTopBounds) {
       if (bottomOverflow < topOverflow) {
@@ -475,15 +462,14 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       }
     }
 
-    const leftOverflow = anchor.left + this.offsetX_ + this.dimensions_.width
-        - windowDimensions.width;
+    const leftOverflow = anchor.left + this.offsetX_ + this.dimensions_.width - windowDimensions.width;
     const rightOverflow = this.dimensions_.width - anchor.right;
     const extendsBeyondLeftBounds = leftOverflow > 0;
     const extendsBeyondRightBounds = rightOverflow > 0;
     const flipRtl = (this.anchorCorner_ & CornerBit.FLIP_RTL & CornerBit.right);
     if (this.adapter_.isRtl()) {
       // In RTL, we prefer to open from the right.
-      horizontal =  flipRtl ? 'left' : 'right';
+      horizontal = flipRtl ? 'left' : 'right';
       if (extendsBeyondRightBounds && leftOverflow < rightOverflow) {
         horizontal = flipRtl ? 'right' : 'left';
       }
@@ -499,21 +485,29 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     // Apply offset and flip offsets for bottom and right positioning.
     if (vertical === 'bottom') {
       const bottomOffset = (this.anchorCorner_ & CornerBit.BOTTOM) ?
-          anchor.height - this.anchorMargin_.top : this.anchorMargin_.bottom;
-      position[vertical] = (bottomOffset - this.offsetY_) + 'px';
+        anchor.height - this.anchorMargin_.top : this.anchorMargin_.bottom;
+      position[vertical] = (bottomOffset - this.offsetY_) + '';
       menuMaxHeight = anchor.bottom - bottomOffset;
     } else {
-      position[vertical] = (topShift + this.offsetY_) + 'px';
+      position[vertical] = (topShift + this.offsetY_) + '';
     }
 
     if (horizontal === 'right') {
       const rightOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
-          anchor.width - this.anchorMargin_.left : this.anchorMargin_.right;
-      position[horizontal] = (rightOffset - this.offsetX_) + 'px';
+        anchor.width - this.anchorMargin_.left : this.anchorMargin_.right;
+      position[horizontal] = (rightOffset - this.offsetX_) + '';
     } else {
       const leftOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
-          anchor.width - this.anchorMargin_.right : this.anchorMargin_.left;
-      position[horizontal] = (leftOffset + this.offsetX_) + 'px';
+        anchor.width - this.anchorMargin_.right : this.anchorMargin_.left;
+      position[horizontal] = (leftOffset + this.offsetX_) + '';
+    }
+
+    if (position[horizontal] != '0') {
+      position[horizontal] += 'px';
+    }
+
+    if (position[vertical] != '0') {
+      position[vertical] += 'px';
     }
 
     // Set max height.
@@ -578,4 +572,3 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
 }
 
 export default MDCSimpleMenuFoundation;
-export {AnchorMargin};

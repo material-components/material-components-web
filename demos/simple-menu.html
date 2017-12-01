@@ -69,6 +69,16 @@
       .margin-inputs input {
         width: 2em;
       }
+
+      .anchor-position-controlls {
+         display: inline-block;
+      }
+
+      .menu-position-controlls {
+        display: inline-block;
+        margin-left: 2em;
+      }
+
       .extraItems {
         display: none;
       }
@@ -132,39 +142,36 @@
 
         <div class="demo-controls-container">
           <div class="demo-controls">
-            <div style="display:inline-block;">
+            <div class="anchor-position-controls">
               Button Position:
-              <div class="">
+              <div>
                 <label><input type="radio" name="position" value="top left" checked> Top left</label>
               </div>
-
-              <div class="">
+              <div>
                 <label><input type="radio" name="position" value="top right"> Top right</label>
               </div>
-
-              <div class="">
+              <div>
                 <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
               </div>
-
-              <div class="">
+              <div>
                 <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
               </div>
             </div>
-            <div style="display:inline-block;margin-left: 2em;">
+            <div class="menu-position-controlls">
               Default Menu Position:
-              <div class="">
+              <div>
                 <label><input type="radio" name="menuposition" value="top_start" checked> Top start</label>
               </div>
 
-              <div class="">
+              <div>
                 <label><input type="radio" name="menuposition" value="top_end"> Top end</label>
               </div>
 
-              <div class="">
+              <div>
                 <label><input type="radio" name="menuposition" value="bottom_start"> Bottom start</label>
               </div>
 
-              <div class="">
+              <div>
                 <label><input type="radio" name="menuposition" value="bottom_end"> Bottom end</label>
               </div>
             </div>
@@ -186,16 +193,10 @@
               <label><input type="checkbox" name="isrtl"> RTL</label>
             </p>
             <p>
-              <label>
-                <input type="checkbox" name="dark">
-                Dark mode
-              </label>
+              <label><input type="checkbox" name="dark"> Dark mode</label>
             </p>
             <p>
-              <label>
-                <input type="checkbox" name="longMenu">
-                Long menu
-              </label>
+              <label><input type="checkbox" name="longMenu"> Long menu</label>
             </p>
             <div>
               <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
