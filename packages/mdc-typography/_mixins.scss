@@ -32,11 +32,11 @@
   @include mdc-typography-base;
 
   @if not $adjust-margin {
-    $style-props: map_remove($style-props, margin);
+    $style-props: map-remove($style-props, margin);
   }
 
-  @each $style, $value in $style-props {
-    #{$style}: $value;
+  @each $key, $value in $style-props {
+    #{$key}: $value;
   }
 }
 
