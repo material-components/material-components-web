@@ -84,6 +84,7 @@
     @include mdc-list-item-icon-ink-color(primary);
   }
 
+  // stylelint-disable-next-line plugin/selector-bem-pattern
   &__start-detail {
     @include mdc-list-start-detail-size_(24px);
 
