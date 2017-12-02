@@ -135,6 +135,13 @@ class MDCTextFieldInputFoundation extends MDCFoundation {
   }
 
   /**
+   * @param {string} value Sets the value.
+   */
+  setValue(value) {
+    this.getNativeInput_().value = value;
+  }
+
+  /**
    * @return {boolean} Returns the result of the checkValidity() call in the native input.
    */
   checkValidity() {

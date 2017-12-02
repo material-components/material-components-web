@@ -220,7 +220,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
     if (!input.getValue() && !this.isBadInput_()) {
       this.updateLabelFloat_();
-      this.receivedUserInput_ = false;
     }
   }
 
@@ -229,7 +228,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    */
   updateDefaultValidity_() {
     if (!this.useCustomValidityChecking_) {
-      const input = this.getNativeInput_();
+      const input = this.adapter_.getInputFoundation();
       this.changeValidity_(input.checkValidity());
     }
   }
@@ -301,7 +300,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!Element|!NativeInputType} The native text input from the
    * host environment, or a dummy if none exists.
    * @private
    * @param {string} content Sets the content of the helper text.

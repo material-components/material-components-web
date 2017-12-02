@@ -63,6 +63,14 @@ test('#constructor sets disabled to false', () => {
   assert.isNotOk(foundation.isDisabled());
 });
 
+test('#setValue sets the value of the native input when there is one', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {value: ''};
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.setValue('value');
+  assert.equal(nativeInput.value, 'value');
+});
+
 test('#setDisabled set the disabled property on the native input when there is one', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {disabled: false};

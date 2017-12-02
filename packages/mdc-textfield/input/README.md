@@ -49,6 +49,10 @@ True if the input fails validity checks.
 
 Returns the value in the input.
 
+##### MDCTextFieldInputFoundation.setValue(value)
+
+Sets the input value.
+
 ##### MDCTextFieldInputFoundation.checkValidity() => boolean
 
 Returns the result of the checkValidity() call in the native input.
