@@ -309,20 +309,6 @@ test('#init does not add mdc-text-field__label--float-above class if it already 
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
 });
 
-//TODO move to mdc-text-field-input-foundation.test.js
-test('on input focuses if input event occurs without any other events', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let input;
-
-  td.when(mockAdapter.registerInputInteractionHandler('input', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      input = handler;
-    });
-  foundation.init();
-  input();
-  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
-});
-
 test('#setHelperTextContent sets the content of the helper text element', () => {
   const {foundation, mockAdapter} = setupTest();
   const helperText = td.object({
@@ -379,6 +365,7 @@ test('on MDCTextFieldInput:focus event, makes helper text visible to the screen 
 const setupBlurTest = () => {
   const {foundation, mockAdapter, input} = setupTest();
   let blur;
+  td.when(mockAdapter.registerInputEventHandler(
     MDCTextFieldInputFoundation.strings.BLUR_EVENT, td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       blur = handler;
@@ -389,11 +376,6 @@ const setupBlurTest = () => {
     .thenDo((evtType, handler) => {
       focux = handler;
     });
-  const nativeInput = {
-    value: '',
-    checkValidity: () => true,
-  };
-  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
 
   return {foundation, mockAdapter, focus, blur, input};

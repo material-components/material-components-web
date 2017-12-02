@@ -77,7 +77,7 @@ test('#setDisabled handles no native input being returned gracefully', () => {
   assert.doesNotThrow(() => foundation.setDisabled(true));
 });
 
-test('on input, notifies focus action if this.receivedUserInput_ is false', () => {
+test('on input, notifies focus action if event occurs without any other events', () => {
   const {foundation, mockAdapter} = setupTest();
   let input;
 
@@ -90,7 +90,7 @@ test('on input, notifies focus action if this.receivedUserInput_ is false', () =
   td.verify(mockAdapter.notifyFocusAction());
 });
 
-test('on input, does nothing if this.receivedUserInput_ is true', () => {
+test('on input, does nothing if event occurs with another event', () => {
   const {foundation, mockAdapter} = setupTest();
   let input;
 

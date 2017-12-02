@@ -295,7 +295,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
    */
   setValue(value) {
     const input = this.adapter_.getInputFoundation();
-    const input = this.getNativeInput_();
     input.setValue(value);
     this.updateLabelFloat_();
     this.updateDefaultValidity_();
