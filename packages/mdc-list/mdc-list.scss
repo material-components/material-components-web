@@ -87,22 +87,22 @@ $mdc-list-side-padding: 16px;
   &__text {
     display: inline-flex;
     flex-direction: column;
+  }
 
-    &__secondary {
-      @include mdc-typography(body1);
-      @include mdc-theme-prop(color, text-secondary-on-background);
+  &__secondary-text {
+    @include mdc-typography(body1);
+    @include mdc-theme-prop(color, text-secondary-on-background);
 
-      @include mdc-theme-dark {
-        @include mdc-theme-prop(color, text-secondary-on-dark);
-      }
-
-      // Match the font size to the primary text when dense
-      // stylelint-disable plugin/selector-bem-pattern
-      .mdc-list--dense & {
-        font-size: inherit;
-      }
-      // stylelint-enable plugin/selector-bem-pattern
+    @include mdc-theme-dark {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
     }
+
+    // Match the font size to the primary text when dense
+    // stylelint-disable plugin/selector-bem-pattern
+    .mdc-list--dense & {
+      font-size: inherit;
+    }
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
   // stylelint-disable plugin/selector-bem-pattern
