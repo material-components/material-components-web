@@ -21,7 +21,7 @@ import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {createMockRaf} from '../helpers/raf';
 import {MDCSimpleMenuFoundation} from '../../../packages/mdc-menu/simple/foundation';
-import {cssClasses, strings, numbers} from '../../../packages/mdc-menu/simple/constants';
+import {cssClasses, strings, numbers, Corner} from '../../../packages/mdc-menu/simple/constants';
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSimpleMenuFoundation);
@@ -270,6 +270,72 @@ testFoundation('#open anchors the menu on the top left in LTR when not close to 
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('top left'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+  });
+
+testFoundation('#open anchors the menu to the bottom left in LTR when not close to the bottom edge with margin',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(false);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 100, bottom: 880, left: 10, right: 50,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.setAnchorMargin({top: 0, left: 0, bottom: 10, right: 0});
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '30px'}));
+  });
+
+testFoundation('#open anchors the menu to the bottom left in LTR when close to the bottom edge with margin',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(false);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 900, bottom: 80, left: 10, right: 50,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 0});
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('bottom left'));
+    td.verify(mockAdapter.setPosition({left: '0', bottom: '15px'}));
+  });
+
+testFoundation('#open anchors the menu to the bottom left in RTL when close to the bottom and right edge with margin',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(true);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 900, bottom: 80, left: 20, right: 940,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 7});
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('bottom right'));
+    td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
   });
 
 testFoundation('#close does nothing if event target has aria-disabled set to true',
