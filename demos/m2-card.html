@@ -41,31 +41,56 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="m2-card-list demo-card-list">
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">4</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">5</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">6</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">7</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">8</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">9</div>
+        <div class="demo-card-list-container">
+          <h2 class="mdc-typography--display1 demo-card-list-heading">LTR / Row</h2>
+          <div class="m2-card-list demo-card-list">
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">4</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">5</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">6</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">7</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">8</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">9</div>
+          </div>
         </div>
-        <div class="m2-card-list demo-card-list" dir="rtl">
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">4</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">5</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">6</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">7</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">8</div>
-          <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">9</div>
+        <div class="demo-card-list-container">
+          <h2 class="mdc-typography--display1 demo-card-list-heading">RTL / Row</h2>
+          <div class="m2-card-list demo-card-list" dir="rtl">
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">4</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">5</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">6</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">7</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">8</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">9</div>
+          </div>
+        </div>
+        <div class="demo-card-list-container">
+          <h2 class="mdc-typography--display1 demo-card-list-heading">LTR / Col</h2>
+          <div class="m2-card-list demo-card-list demo-card-list--col">
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
+          </div>
+        </div>
+        <div class="demo-card-list-container">
+          <h2 class="mdc-typography--display1 demo-card-list-heading">RTL / Col</h2>
+          <div class="m2-card-list demo-card-list demo-card-list--col" dir="rtl">
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
+            <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
+          </div>
         </div>
       </section>
 
-      <p>Fully supports RTL. Automatically switches to "column mode" for narrow screens (e.g., smartphones), with horizontal drop zones instead of vertical.</p>
+      <p style="text-align: center">
+        Fully supports RTL. Automatically switches to "column mode" for narrow screens (e.g., smartphones), with
+        horizontal drop zones instead of vertical.
+      </p>
     </main>
 
     <script src="/assets/material-components-web.js"></script>
@@ -75,13 +100,14 @@
       (() => {
         /** @enum {string} */
         const CardSide = {
-          BEFORE: 'before',
-          AFTER: 'after',
+          BEFORE: Symbol('before'),
+          AFTER: Symbol('after'),
         };
 
+        /** @enum {string} */
         const Directionality = {
-          LTR: 'ltr',
-          RTL: 'rtl',
+          LTR: Symbol('ltr'),
+          RTL: Symbol('rtl'),
         };
 
         function getDirectionality(element) {
@@ -97,6 +123,10 @@
 
         function getClosestCardListElement(element) {
           return element.closest('.m2-card-list');
+        }
+
+        function areSiblings(elem1, elem2) {
+          return Boolean(elem1.parentNode) && elem1.parentNode === elem2.parentNode;
         }
 
         function getOffset(elementRect, parentRect) {
@@ -255,7 +285,7 @@
             this.colIndex = colIndex;
             this.colGapInPx = colGapInPx;
             this.rowGapInPx = rowGapInPx;
-            if (this.isColumn()) {
+            if (this.isColumnMode()) {
               this.horizontalToleranceInPx = this.colGapInPx / 2;
               this.verticalToleranceInPx = this.adjacentCard.parentOffsetRect.height / 2;
             } else {
@@ -265,15 +295,15 @@
             this.parentOffsetRect = this.calculateParentOffsetRect();
           }
 
-          isColumn() {
-            return this.adjacentCard.cardList.isColumn();
+          isColumnMode() {
+            return this.adjacentCard.cardList.isColumnMode();
           }
 
           calculateParentOffsetRect() {
             const adjacentCardParentOffsetRect = this.adjacentCard.parentOffsetRect;
             const parentOffsetRect = {};
 
-            if (this.isColumn()) {
+            if (this.isColumnMode()) {
               parentOffsetRect.left = parentOffsetRect.x = adjacentCardParentOffsetRect.left;
               parentOffsetRect.top = parentOffsetRect.y =
                 (this.isBeforeCard()
@@ -442,9 +472,9 @@
             // TODO(acdvorak): Remove handler in destruct method
             optimizedResize.add((e) => this.handleResize_(e));
 
-            const {dropSpacerEl, activeDropZoneEl} = CardList.createDropEls();
+            const {dropSpacerEl, dropTargetEl} = CardList.createDropEls();
             this.dropSpacerEl = dropSpacerEl;
-            this.activeDropZoneEl = activeDropZoneEl;
+            this.dropTargetEl = dropTargetEl;
 
             this.resetState();
           }
@@ -453,11 +483,11 @@
             const dropZoneElDummyParent = document.createElement('div');
             dropZoneElDummyParent.innerHTML = `
 <div class="m2-card-drop-spacer"></div>
-<div class="m2-card-drop-zone"></div>
+<div class="m2-card-drop-target"></div>
           `.trim();
             const dropSpacerEl = dropZoneElDummyParent.children[0];
-            const activeDropZoneEl = dropZoneElDummyParent.children[1];
-            return {dropSpacerEl, activeDropZoneEl};
+            const dropTargetEl = dropZoneElDummyParent.children[1];
+            return {dropSpacerEl, dropTargetEl};
           }
 
           resetState() {
@@ -486,7 +516,7 @@
           }
 
           autoSetColumnClass() {
-            if (this.isColumn()) {
+            if (this.isColumnMode()) {
               this.addColumnClass();
             } else {
               this.removeColumnClass();
@@ -511,7 +541,7 @@
               this.insertDropSpacerElement(dropZone);
             }
 
-            if (this.isColumn()) {
+            if (this.isColumnMode()) {
               const curCol = this.rows.map((row) => row[0]);
               curCol.forEach((curCardInCol, curRowIndex) => {
                 this.setCardOffsetY(curRowIndex, curCardInCol);
@@ -526,6 +556,9 @@
 
           handleDragStop_(e) {
             this.resetCardOffsets(this.cards);
+
+            this.dropSpacerEl.remove();
+            this.dropTargetEl.remove();
 
             if (this.activeDropZone) {
               this.dropItLikeItsHot(e);
@@ -548,32 +581,34 @@
           }
 
           insertDropZoneElement(dropZone) {
-            if (this.isColumn()) {
-              this.activeDropZoneEl.style.height = '';
-              this.activeDropZoneEl.style.width = `${dropZone.adjacentCard.parentOffsetRect.width}px`;
+            if (this.isColumnMode()) {
+              this.dropTargetEl.style.height = '';
+              this.dropTargetEl.style.width = `${dropZone.adjacentCard.parentOffsetRect.width}px`;
             } else {
-              this.activeDropZoneEl.style.height = `${dropZone.adjacentCard.parentOffsetRect.height}px`;
-              this.activeDropZoneEl.style.width = '';
+              this.dropTargetEl.style.height = `${dropZone.adjacentCard.parentOffsetRect.height}px`;
+              this.dropTargetEl.style.width = '';
             }
-            this.insertAdjacentElement(dropZone.adjacentCard.element, this.activeDropZoneEl, dropZone.cardSide);
+
+            this.insertAdjacentElement(dropZone.adjacentCard.element, this.dropTargetEl, dropZone.cardSide);
           }
 
           insertDropSpacerElement(dropZone) {
-            if (this.isColumn()) {
+            if (this.isColumnMode()) {
               this.dropSpacerEl.style.height = '';
               this.dropSpacerEl.style.width = '';
             } else {
               this.dropSpacerEl.style.width = `${this.spacerThicknessInPx}px`;
               this.dropSpacerEl.style.height = `unset`;
             }
-            this.insertAdjacentElement(this.activeDropZoneEl, this.dropSpacerEl, dropZone.cardSide);
+
+            this.insertAdjacentElement(this.dropTargetEl, this.dropSpacerEl, dropZone.cardSide);
           }
 
-          isColumn() {
-            return !this.isRow();
+          isColumnMode() {
+            return !this.isGridMode();
           }
 
-          isRow() {
+          isGridMode() {
             return Boolean(this.rows) && this.rows.length > 0 && this.rows[0].length > 1;
           }
 
@@ -586,7 +621,7 @@
           }
 
           needsSpacer(dropZone) {
-            if (!this.isRow()) {
+            if (!this.isGridMode()) {
               return false;
             }
 
@@ -617,8 +652,6 @@
             cards.forEach((card) => {
               card.clearOffsets();
             });
-            this.dropSpacerEl.remove();
-            this.activeDropZoneEl.remove();
           }
 
           dropItLikeItsHot(e) {
@@ -632,13 +665,19 @@
 
           insertAdjacentElement(refEl, newEl, cardSide) {
             const beforeCard = cardSide === CardSide.BEFORE;
+
             let relPos;
-            if (this.isColumn() || isLTR(refEl.parentNode)) {
+            if (this.isColumnMode() || isLTR(refEl.parentNode)) {
               relPos = beforeCard ? 'beforebegin' : 'afterend';
             } else {
               relPos = beforeCard ? 'afterend' : 'beforebegin';
             }
-            refEl.insertAdjacentElement(relPos, newEl);
+
+            // Avoid needless DOM thrashing from reinserting an element in the exact same position it already is.
+            if ((relPos === 'beforebegin' && refEl.previousElementSibling !== newEl) ||
+                (relPos === 'afterend' && refEl.nextElementSibling !== newEl)) {
+              refEl.insertAdjacentElement(relPos, newEl);
+            }
           }
 
           getCards() {
@@ -681,8 +720,8 @@
                   });
                 }
                 dropZones.push(createDropZone(CardSide.BEFORE));
-                const addAfterRow = this.isRow() && colIndex === curRow.length - 1;
-                const addAfterCol = this.isColumn() && rowIndex === rows.length - 1;
+                const addAfterRow = this.isGridMode() && colIndex === curRow.length - 1;
+                const addAfterCol = this.isColumnMode() && rowIndex === rows.length - 1;
                 if (addAfterRow || addAfterCol) {
                   dropZones.push(createDropZone(CardSide.AFTER));
                 }

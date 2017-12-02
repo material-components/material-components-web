@@ -59,7 +59,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   }
 
   &--column {
-    //flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -112,7 +112,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   // TODO(acdvorak): Document that `width` is set dynamically in JS
 }
 
-.m2-card-drop-zone {
+.m2-card-drop-target {
   background-color: #333;
   border-radius: 4px;
   width: $m2-card-baseline-drop-zone-thickness;
@@ -132,6 +132,13 @@ $demo-card-margin: 8px;
 $demo-card-cols: 3;
 $demo-drop-zone-thickness: 6px;
 
+// TODO(acdvorak): How should clients calculate this, and how do we make it dynamic so cards can be added/removed?
+@function demo-card-list-primary-axis-size($num-cols) {
+  $card-total-margin: $demo-card-margin * 2;
+  $card-total-width: $demo-card-size + $card-total-margin;
+  @return ($card-total-width * $num-cols) + $demo-drop-zone-thickness;
+}
+
 .hero {
   position: relative;
   flex-direction: row;
@@ -140,19 +147,38 @@ $demo-drop-zone-thickness: 6px;
   padding: 48px;
 }
 
-.demo-card-list {
-  // TODO(acdvorak): Document the need for extra width to accommodate the drop zone
-  // TODO(acdvorak): Add test cases for all width variations
-  max-width: (($demo-card-size + ($demo-card-margin * 2)) * $demo-card-cols) + $demo-drop-zone-thickness;
-  margin: 32px;
+.demo-card-list-container {
+  margin: 0 100px 100px 100px;
 }
 
-.demo-card-list .m2-card-drop-zone {
+.demo-card-list-heading {
+  margin-top: 0;
+  margin-left: $demo-card-margin;
+  margin-right: $demo-card-margin;
+  text-align: center;
+}
+
+.demo-card-list {
+  // TODO(acdvorak): Can we dynamically add the extra width needed to accommodate the drop target?
+  // Or should drop target be absolutely positioned in <body> instead of in the list?
+  // TODO(acdvorak): Document the need for extra width to accommodate the drop zone
+  // TODO(acdvorak): Add test cases for all width variations
+  max-width: demo-card-list-primary-axis-size($demo-card-cols);
+}
+
+.demo-card-list--col {
+  // TODO(acdvorak): Can we dynamically add the extra height needed to accommodate the drop target?
+  // Or should drop target be absolutely positioned in <body> instead of in the list?
+  max-width: demo-card-list-primary-axis-size(1);
+  height: demo-card-list-primary-axis-size(3);
+}
+
+.demo-card-list .m2-card-drop-target {
   width: $demo-drop-zone-thickness;
   margin: $demo-card-margin 0;
 }
 
-.m2-card-list--column .m2-card-drop-zone {
+.m2-card-list--column .m2-card-drop-target {
   width: unset;
   height: $demo-drop-zone-thickness;
   margin: 0 $demo-card-margin;
