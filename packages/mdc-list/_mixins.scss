@@ -30,13 +30,13 @@
   }
 }
 
-@mixin mdc-list-item-icon-fill-color($color) {
+@mixin mdc-list-item-graphic-fill-color($color) {
   .mdc-list-item__start-detail {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-list-item-icon-ink-color($color) {
+@mixin mdc-list-item-graphic-ink-color($color) {
   .mdc-list-item__start-detail {
     @include mdc-theme-prop(color, $color);
   }

@@ -38,14 +38,14 @@
   // TODO(acdvorak): Find a way to remove parent .mdc-list selector; it violates BEM.
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background);
   @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background);
-  @include mdc-list-item-icon-fill-color(transparent);
-  @include mdc-list-item-icon-ink-color(text-icon-on-background);
+  @include mdc-list-item-graphic-fill-color(transparent);
+  @include mdc-list-item-graphic-ink-color(text-icon-on-background);
   @include mdc-list-item-meta-ink-color(text-hint-on-background);
 
   @include mdc-theme-dark {
     @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
     @include mdc-list-item-secondary-text-ink-color(text-secondary-on-dark);
-    @include mdc-list-item-icon-ink-color(text-icon-on-dark);
+    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
     @include mdc-list-item-meta-ink-color(text-hint-on-dark);
   }
 
@@ -81,7 +81,7 @@
   &--selected,
   &--activated {
     @include mdc-list-item-primary-text-ink-color(primary);
-    @include mdc-list-item-icon-ink-color(primary);
+    @include mdc-list-item-graphic-ink-color(primary);
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern

@@ -430,8 +430,8 @@ Mixin | Description
 --- | ---
 `mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text
 `mdc-list-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text
-`mdc-list-item-icon-fill-color($color)` | Sets the fill color of the icon (start detail)
-`mdc-list-item-icon-ink-color($color)` | Sets the ink color of the icon (start detail)
-`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the metadata (end detail)
+`mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the graphic (`__start-detail`)
+`mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the graphic (`__start-detail`)
+`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the meta data (`__end-detail`)
 `mdc-list-divider-color($color)` | Sets the color of the divider
 `mdc-list-group-subheader-ink-color($color)` | Sets the ink color of the list group subheader

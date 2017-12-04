@@ -39,12 +39,12 @@ a.material-icons {
 
 .demo-list--icon-placeholders,
 .mdc-list--avatar-list {
-  @include mdc-list-item-icon-ink-color(white);
-  @include mdc-list-item-icon-fill-color(text-icon-on-background);
+  @include mdc-list-item-graphic-ink-color(white);
+  @include mdc-list-item-graphic-fill-color(text-icon-on-background);
 
   @include mdc-theme-dark {
-    @include mdc-list-item-icon-ink-color(#303030);
-    @include mdc-list-item-icon-fill-color(text-icon-on-dark);
+    @include mdc-list-item-graphic-ink-color(#303030);
+    @include mdc-list-item-graphic-fill-color(text-icon-on-dark);
   }
 }
 
@@ -70,8 +70,8 @@ a.material-icons {
 .demo-list--custom {
   @include mdc-list-item-primary-text-ink-color($material-color-red-600);
   @include mdc-list-item-secondary-text-ink-color($material-color-orange-500);
-  @include mdc-list-item-icon-fill-color($material-color-yellow-600);
-  @include mdc-list-item-icon-ink-color($material-color-yellow-50);
+  @include mdc-list-item-graphic-fill-color($material-color-yellow-600);
+  @include mdc-list-item-graphic-ink-color($material-color-yellow-50);
   @include mdc-list-item-meta-ink-color($material-color-pink-300);
 }
 
