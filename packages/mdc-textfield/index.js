@@ -173,18 +173,6 @@ class MDCTextField extends MDCComponent {
             this.bottomLine_.unlisten(evtType, handler);
           }
         },
-        getBottomLineFoundation: () => {
-          if (this.bottomLine_) {
-            return this.bottomLine_.foundation;
-          }
-          return undefined;
-        },
-        getHelperTextFoundation: () => {
-          if (this.helperText_) {
-            return this.helperText_.foundation;
-          }
-          return undefined;
-        },
       },
       this.getInputAdapterMethods_(),
       this.getIconAdapterMethods_())),
