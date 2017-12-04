@@ -16,8 +16,10 @@
  */
 
 import MDCComponent from '@material/base/component';
-import MDCSimpleMenuFoundation from './foundation';
+// import MDCSimpleMenuFoundation from './foundation';
 import {getTransformPropertyName} from '../util';
+import {MDCSimpleMenuFoundation, AnchorMargin} from './foundation';
+import {Corner, CornerBit} from './constants';
 
 /**
  * @extends MDCComponent<!MDCSimpleMenuFoundation>
@@ -59,6 +61,29 @@ class MDCSimpleMenu extends MDCComponent {
 
   hide() {
     this.foundation_.close();
+  }
+
+  /**
+   * @param {number} x Horizontal offset in pixels.
+   * @param {number} y Vertical offset in pixels.
+   */
+  setOffset(x, y) {
+    this.foundation_.setOffset(x, y);
+  }
+
+  /**
+   * @param {Corner} corner Default anchor corner alignment of top-left
+   *     menu corner.
+   */
+  setAnchorCorner(corner) {
+    this.foundation_.setAnchorCorner(corner);
+  }
+
+  /**
+   * @param {AnchorMargin} margin
+   */
+  setAnchorMargin(margin) {
+    this.foundation_.setAnchorMargin(margin);
   }
 
   /**
@@ -143,9 +168,12 @@ class MDCSimpleMenu extends MDCComponent {
         this.root_.style.top = 'top' in position ? position.top : null;
         this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
       },
+      setMaxHeight: (height) => {
+        this.root_.style.maxHeight = height;
+      },
       getAccurateTime: () => window.performance.now(),
     });
   }
 }
 
-export {MDCSimpleMenuFoundation, MDCSimpleMenu};
+export {MDCSimpleMenuFoundation, MDCSimpleMenu, AnchorMargin, Corner, CornerBit};
