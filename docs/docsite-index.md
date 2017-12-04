@@ -39,7 +39,7 @@ Get up and running with Material Components for web
     Include the MDC-Web stylesheet in the head of your file
     
     ```html
-    <html class="mdc-typography">
+    <html>
       <head>
         <title>Material Components for the web</title>
         <link rel="stylesheet"
@@ -52,7 +52,7 @@ Get up and running with Material Components for web
     Add components to the body of your HTML
 
     ```html
-      <body>
+      <body class="mdc-typography">
         <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
         <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
           <input type="text" class="mdc-text-field__input" id="demo-input">
@@ -74,13 +74,13 @@ Get up and running with Material Components for web
     
     ```html
     <!DOCTYPE html>
-    <html class="mdc-typography">
+    <html>
       <head>
         <title>Material Components for the web</title>
         <link rel="stylesheet"
               href="node_modules/material-components-web/dist/material-components-web.css">
       </head>
-      <body>
+      <body class="mdc-typography">
         <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
         <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
           <input type="text" class="mdc-text-field__input" id="demo-input">
