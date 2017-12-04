@@ -323,21 +323,21 @@ complicated.
 
 | Method Signature | Description |
 | --- | --- |
-| addClass(className: string) => void | Adds a class to the root element |
-| removeClass(className: string) => void | Removes a class from the root element |
-| addClassToLabel(className: string) => void | Adds a class to the label element. We recommend you add a conditional check here, and in `removeClassFromLabel` for whether or not the label is present so that the JS component could be used with text fields that don't require a label, such as the full-width text field. |
-| removeClassFromLabel(className: string) => void | Removes a class from the label element |
-| eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
-| registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event handler on the root element for a given event |
-| deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event handler on the root element for a given event |
-| notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon |
-| registerInputInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
-| deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
-| registerBottomLineEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the bottom line element for a given event |
-| deregisterBottomLineEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the bottom line element for a given event |
-| getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
-| getBottomLineFoundation() => MDCTextFieldBottomLineFoundation | Returns the instance of the bottom line element's foundation |
-| getHelperTextFoundation() => MDCTextFieldHelperTextFoundation | Returns the instance of the helper text element's foundation |
+| `addClass(className: string) => void` | Adds a class to the root element |
+| `removeClass(className: string) => void` | Removes a class from the root element |
+| `addClassToLabel(className: string) => void` | Adds a class to the label element. We recommend you add a conditional check here, and in `removeClassFromLabel` for whether or not the label is present so that the JS component could be used with text fields that don't require a label, such as the full-width text field. |
+| `removeClassFromLabel(className: string) => void` | Removes a class from the label element |
+| `eventTargetHasClass(target: HTMLElement, className: string) => boolean` | Returns true if classname exists for a given target element |
+| `registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event |
+| `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event |
+| `notifyIconAction() => void` | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon |
+| `registerInputEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the input element for a given event |
+| `deregisterInputEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the input element for a given event |
+| `registerBottomLineEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the bottom line element for a given event |
+| `deregisterBottomLineEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the bottom line element for a given event |
+| `getBottomLineFoundation() => MDCTextFieldBottomLineFoundation` | Returns the instance of the bottom line element's foundation |
+| `getHelperTextFoundation() => MDCTextFieldHelperTextFoundation` | Returns the instance of the helper text element's foundation |
+| `getInputFoundation() => MDCTextFieldInputFoundation` | Returns the instance of the input element's foundation |
 
 #### The full foundation API
 
