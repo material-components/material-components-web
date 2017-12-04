@@ -456,6 +456,7 @@
         class CardList {
           constructor(rootEl) {
             this.rootEl = rootEl;
+            // TODO(acdvorak): If the container is RTL, make sure the cloned "mirror" element has `dir="rtl"`.
             this.draggable = new Draggable.Draggable(this.rootEl, {
               draggable: '.m2-card',
               delay: 200,
