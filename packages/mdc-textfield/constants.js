@@ -17,8 +17,7 @@
 
 /** @enum {string} */
 const strings = {
-  ARIA_HIDDEN: 'aria-hidden',
-  ROLE: 'role',
+  ARIA_CONTROLS: 'aria-controls',
   INPUT_SELECTOR: '.mdc-text-field__input',
   LABEL_SELECTOR: '.mdc-text-field__label',
   ICON_SELECTOR: '.mdc-text-field__icon',
@@ -33,8 +32,6 @@ const cssClasses = {
   DISABLED: 'mdc-text-field--disabled',
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
-  HELPER_TEXT_PERSISTENT: 'mdc-text-field-helper-text--persistent',
-  HELPER_TEXT_VALIDATION_MSG: 'mdc-text-field-helper-text--validation-msg',
   LABEL_FLOAT_ABOVE: 'mdc-text-field__label--float-above',
   LABEL_SHAKE: 'mdc-text-field__label--shake',
   BOX: 'mdc-text-field--box',

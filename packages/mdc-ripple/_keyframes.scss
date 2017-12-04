@@ -17,6 +17,7 @@
 // MDC Ripple keyframes are split into their own file so that _mixins.scss can rely on them.
 
 @import "@material/animation/variables";
+@import "./variables";
 
 @mixin mdc-ripple-keyframes_ {
   @keyframes mdc-ripple-fg-radius-in {
@@ -41,14 +42,14 @@
     }
 
     to {
-      opacity: 1;
+      opacity: var(--mdc-ripple-fg-opacity, map-get($mdc-ripple-dark-ink-opacities, "press"));
     }
   }
 
   @keyframes mdc-ripple-fg-opacity-out {
     from {
       animation-timing-function: linear;
-      opacity: 1;
+      opacity: var(--mdc-ripple-fg-opacity, map-get($mdc-ripple-dark-ink-opacities, "press"));
     }
 
     to {
