@@ -15,10 +15,6 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-unused-vars */
-import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
-import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
-
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -142,20 +138,6 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
-
-  /**
-   * Returns the foundation for the bottom line element. Returns undefined if
-   * there is no bottom line element.
-   * @return {?MDCTextFieldBottomLineFoundation}
-   */
-  getBottomLineFoundation() {}
-
-  /**
-   * Returns the foundation for the helper text element. Returns undefined if
-   * there is no helper text element.
-   * @return {?MDCTextFieldHelperTextFoundation}
-   */
-  getHelperTextFoundation() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType};

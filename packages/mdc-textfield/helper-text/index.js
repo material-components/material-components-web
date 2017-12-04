@@ -34,7 +34,7 @@ class MDCTextFieldHelperText extends MDCComponent {
   }
 
   /**
-   * @return {MDCTextFieldHelperTextFoundation}
+   * @return {!MDCTextFieldHelperTextFoundation}
    */
   get foundation() {
     return this.foundation_;
