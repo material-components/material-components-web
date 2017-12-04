@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
 import MDCFoundation from '@material/base/foundation';
 import {MDCTextFieldAdapter, NativeInputType} from './adapter';
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
@@ -197,7 +198,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // We need to wait for the bottom line to be entirely transparent
     // before removing the class. If we do not, we see the line start to
     // scale down before disappearing
-    if (!this.isFocused_ && bottomLine) {
+    if (!this.isFocused_ && this.bottomLine_) {
       this.bottomLine_.deactivate();
     }
   }
