@@ -32,6 +32,7 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
   - [Specifying known element dimensions](#specifying-known-element-dimensions)
 - [Caveat: Edge](#caveat-edge)
 - [Caveat: Safari 9](#caveat-safari)
+- [Caveat: Mobile Safari](#caveat-mobile-safari)
 - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
 - [The util API](#the-util-api)
 
@@ -61,14 +62,37 @@ General notes:
 
 #### Sass API
 
+In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic `mdc-states-color` mixin or all of the advanced `mdc-states` mixins documented below.
+
+Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states-color` specifically) for specific variants (e.g. for flat vs. raised buttons).
+
 These APIs implicitly use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
-All three of the following mixins are mandatory in order to fully style the ripple effect; from that point, it is feasible to further override only the parts necessary (e.g. `mdc-ripple-color` specifically) for variants of a component.
+
+##### Ripple Mixins
 
 Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Adds base styles for a ripple surface
-`mdc-ripple-color($color, $opacity)` | Adds styles for the color and opacity of the ripple effect
 `mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
+
+##### Basic States Mixin
+
+Mixin | Description
+--- | ---
+`mdc-states($color, $has-nested-focusable-element)` | Adds state and ripple styles for the indicated color, deciding opacities based on whether the passed color is light or dark. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+
+##### Advanced States Mixins
+
+Mixin | Description
+--- | ---
+`mdc-states-base-color($color)` | Sets up base state styles using the provided color
+`mdc-states-hover-opacity($opacity)` | Adds styles for hover state using the provided opacity
+`mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Adds styles for focus state using the provided opacity. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states-press-opacity($opacity)` | Adds styles for press state using the provided opacity
+
+#### Legacy Sass API
+
+The `mdc-ripple-color($color, $opacity)` mixin is deprecated. Use the basic or advanced states mixins (documented above) instead, which provide finer control over a component's opacity for different states of user interaction.
 
 ### Adding Ripple JS
 
@@ -357,6 +381,16 @@ webkit versions: Webkit builds which have this bug fixed (e.g. the builds used i
 support [CSS 4 Hex Notation](https://drafts.csswg.org/css-color/#hex-notation) while those do not
 have the fix don't. We use this to reliably feature-detect whether we are working with a WebKit
 build that can handle our usage of CSS variables.
+
+## Caveat: Mobile Safari
+
+> TL;DR for CSS-only ripple styles to work as intended, register a `touchstart` event handler on the affected element or its ancestor.
+
+Mobile Safari does not trigger `:active` styles noticeably by default, as
+[documented](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/AdjustingtheTextSize/AdjustingtheTextSize.html#//apple_ref/doc/uid/TP40006510-SW5)
+in the Safari Web Content Guide. This effectively suppresses the intended pressed state styles for CSS-only ripple surfaces. This behavior can be remedied by registering a `touchstart` event handler on the element, or on any common ancestor of the desired elements.
+
+See [this StackOverflow answer](https://stackoverflow.com/a/33681490) for additional information on mobile Safari's behavior.
 
 ## Caveat: Theme Custom Variables
 

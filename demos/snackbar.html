@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html class="mdc-typography">
+<html>
   <head>
     <meta charset="utf-8">
     <title>Snackbar - Material Components Catalog</title>
@@ -56,7 +56,7 @@
 
     </style>
   </head>
-  <body class="loading">
+  <body class="mdc-typography loading">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
@@ -204,10 +204,13 @@
       (function(global) {
         'use strict';
         var MDCSnackbar = global.mdc.snackbar.MDCSnackbar;
+        var MDCTextField = global.mdc.textField.MDCTextField;
+
         var snackbar = new MDCSnackbar(document.getElementById('mdc-js-snackbar'));
         var rtlSnackbar = new MDCSnackbar(document.getElementById('mdc-rtl-js-snackbar'));
         var alignStartSnackbar = new MDCSnackbar(document.getElementById('mdc-align-start-js-snackbar'));
         var alignStartRTLSnackbar = new MDCSnackbar(document.getElementById('mdc-align-start-rtl-js-snackbar'));
+
         var messageInput = document.getElementById('message');
         var actionInput = document.getElementById('action');
         var multilineInput = document.getElementById('multiline');
@@ -267,16 +270,16 @@
           show(alignStartRTLSnackbar);
         });
 
-        document.getElementById('toggle-dark-theme').addEventListener('click', function(evt) {
+        document.getElementById('toggle-dark-theme').addEventListener('click', function() {
           document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
         });
 
         [].slice.call(document.querySelectorAll('.mdc-text-field')).forEach(function(tf) {
-          mdc.textField.MDCTextField.attachTo(tf);
-        })
+          MDCTextField.attachTo(tf);
+        });
 
         // Remove any element hiding after loading.
-        window.onload = function() { document.body.className = ''; };
+        window.addEventListener('load', function() { document.body.classList.remove('loading'); });
       })(this);
     </script>
   </body>
