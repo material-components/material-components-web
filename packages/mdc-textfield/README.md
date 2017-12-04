@@ -336,8 +336,8 @@ complicated.
 | registerBottomLineEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the bottom line element for a given event |
 | deregisterBottomLineEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the bottom line element for a given event |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
-| getBottomLineFoundation() => MDCTextFieldBottomLineFoundation | Returns the instance of the bottom line element's foundation |
-| getHelperTextFoundation() => MDCTextFieldHelperTextFoundation | Returns the instance of the helper text element's foundation |
+
+MDC TextField has multiple optional sub-elements: bottom line and helper text. The foundations of these sub-elements must be passed in as constructor arguments for the MDC TextField foundation. Since the MDCTextField component takes care of creating its foundation, we need to pass sub-element foundations through the MDCTextField component. This is typically done in the component's implementation of `getDefaultFoundation()`.
 
 #### The full foundation API
 
