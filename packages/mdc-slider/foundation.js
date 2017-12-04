@@ -84,7 +84,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
     // We set this to NaN since we want it to be a number, but we can't use '0' or '-1'
     // because those could be valid tabindices set by the client code.
     this.savedTabIndex_ = NaN;
-    this.off_ = false;
     this.active_ = false;
     this.inTransit_ = false;
     this.isDiscrete_ = false;
@@ -313,35 +312,32 @@ export default class MDCSliderFoundation extends MDCFoundation {
   }
 
   getKeyId_(kbdEvt) {
-    switch (kbdEvt.key || kbdEvt.keyCode) {
-    case KEY_IDS.ARROW_LEFT:
-    case 37:
+    if (kbdEvt.key === KEY_IDS.ARROW_LEFT || kbdEvt.keyCode === 37) {
       return KEY_IDS.ARROW_LEFT;
-    case KEY_IDS.ARROW_RIGHT:
-    case 39:
-      return KEY_IDS.ARROW_RIGHT;
-    case KEY_IDS.ARROW_UP:
-    case 38:
-      return KEY_IDS.ARROW_UP;
-    case KEY_IDS.ARROW_DOWN:
-    case 40:
-      return KEY_IDS.ARROW_DOWN;
-    case KEY_IDS.HOME:
-    case 36:
-      return KEY_IDS.HOME;
-    case KEY_IDS.END:
-    case 35:
-      return KEY_IDS.END;
-    case KEY_IDS.PAGE_UP:
-    case 33:
-      return KEY_IDS.PAGE_UP;
-    case KEY_IDS.PAGE_DOWN:
-    case 34:
-      return KEY_IDS.PAGE_DOWN;
-    default:
-      // Doesn't matter
-      return '';
     }
+    if (kbdEvt.key === KEY_IDS.ARROW_RIGHT || kbdEvt.keyCode === 39) {
+      return KEY_IDS.ARROW_RIGHT;
+    }
+    if (kbdEvt.key === KEY_IDS.ARROW_UP || kbdEvt.keyCode === 38) {
+      return KEY_IDS.ARROW_UP;
+    }
+    if (kbdEvt.key === KEY_IDS.ARROW_DOWN || kbdEvt.keyCode === 40) {
+      return KEY_IDS.ARROW_DOWN;
+    }
+    if (kbdEvt.key === KEY_IDS.HOME || kbdEvt.keyCode === 36) {
+      return KEY_IDS.HOME;
+    }
+    if (kbdEvt.key === KEY_IDS.END || kbdEvt.keyCode === 35) {
+      return KEY_IDS.END;
+    }
+    if (kbdEvt.key === KEY_IDS.PAGE_UP || kbdEvt.keyCode === 33) {
+      return KEY_IDS.PAGE_UP;
+    }
+    if (kbdEvt.key === KEY_IDS.PAGE_DOWN || kbdEvt.keyCode === 34) {
+      return KEY_IDS.PAGE_DOWN;
+    }
+
+    return '';
   }
 
   getValueForKeyId_(keyId) {
@@ -439,7 +435,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
 
     this.updateUIFrame_ = requestAnimationFrame(() => {
-      this.setOff_(pctComplete === 0);
       // NOTE(traviskaufman): It would be nice to use calc() here,
       // but IE cannot handle calcs in transforms correctly.
       // See: https://goo.gl/NC2itk
@@ -447,11 +442,6 @@ export default class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.setThumbContainerStyleProperty(transformProp, `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackStyleProperty(transformProp, `scaleX(${pctComplete})`);
     });
-  }
-
-  setOff_(off) {
-    this.off_ = off;
-    this.toggleClass_(cssClasses.OFF, this.off_);
   }
 
   setActive_(active) {

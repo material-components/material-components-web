@@ -33,12 +33,11 @@
 @import "../../packages/mdc-slider/mdc-slider";
 @import "../../packages/mdc-switch/mdc-switch";
 @import "../../packages/mdc-tabs/mdc-tabs";
-@import "../../packages/mdc-textfield/mdc-textfield";
+@import "../../packages/mdc-textfield/mdc-text-field";
 @import "../../packages/mdc-theme/color-palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
-@import "../../packages/mdc-typography/mdc-typography";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
@@ -440,7 +439,7 @@ figure {
 // Text Field demo
 //
 
-.demo-textfield-wrapper {
+.demo-text-field-wrapper {
   display: inline-block;
   margin: 16px 16px 0 0;
 }

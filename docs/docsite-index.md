@@ -39,7 +39,7 @@ Get up and running with Material Components for web
     Include the MDC-Web stylesheet in the head of your file
     
     ```html
-    <html class="mdc-typography">
+    <html>
       <head>
         <title>Material Components for the web</title>
         <link rel="stylesheet"
@@ -52,11 +52,11 @@ Get up and running with Material Components for web
     Add components to the body of your HTML
 
     ```html
-      <body>
+      <body class="mdc-typography">
         <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
-        <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-          <input type="text" class="mdc-textfield__input" id="demo-input">
-          <label for="demo-input" class="mdc-textfield__label">Tell us how you feel!</label>
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input type="text" class="mdc-text-field__input" id="demo-input">
+          <label for="demo-input" class="mdc-text-field__label">Tell us how you feel!</label>
         </div>
       </body>
     ```
@@ -74,17 +74,17 @@ Get up and running with Material Components for web
     
     ```html
     <!DOCTYPE html>
-    <html class="mdc-typography">
+    <html>
       <head>
         <title>Material Components for the web</title>
         <link rel="stylesheet"
               href="node_modules/material-components-web/dist/material-components-web.css">
       </head>
-      <body>
+      <body class="mdc-typography">
         <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
-        <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-          <input type="text" class="mdc-textfield__input" id="demo-input">
-          <label for="demo-input" class="mdc-textfield__label">Tell us how you feel!</label>
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input type="text" class="mdc-text-field__input" id="demo-input">
+          <label for="demo-input" class="mdc-text-field__label">Tell us how you feel!</label>
         </div>
         <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
         <script>mdc.autoInit()</script>
@@ -100,9 +100,6 @@ Get up and running with Material Components for web
       </li>
       <li class="icon-list-item icon-list-item--components">
         <a href="../packages">View the Component Documentation</a>
-      </li>
-      <li class="icon-list-item icon-list-item--code">
-        <a href="../framework-examples">Explore Framework Integration Examples</a>
       </li>
       <li class="icon-list-item icon-list-item--github">
         <a href="https://github.com/material-components/material-components-web/">View the project on GitHub</a>

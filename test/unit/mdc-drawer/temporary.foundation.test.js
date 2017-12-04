@@ -42,7 +42,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTemporaryDrawerFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'addBodyClass', 'removeBodyClass',
+    'addClass', 'removeClass', 'hasClass', 'addBodyClass', 'removeBodyClass', 'eventTargetHasClass',
     'hasNecessaryDom', 'registerInteractionHandler',
     'deregisterInteractionHandler', 'registerDrawerInteractionHandler', 'deregisterDrawerInteractionHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler', 'registerDocumentKeydownHandler',

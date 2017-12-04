@@ -19,34 +19,33 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextfieldFoundation from '../../../packages/mdc-textfield/foundation';
+import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
+import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
-const {cssClasses} = MDCTextfieldFoundation;
+const {cssClasses} = MDCTextFieldFoundation;
 
-suite('MDCTextfieldFoundation');
+suite('MDCTextFieldFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextfieldFoundation);
+  assert.isOk('strings' in MDCTextFieldFoundation);
 });
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextfieldFoundation);
+  assert.isOk('cssClasses' in MDCTextFieldFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCTextfieldFoundation, [
+  verifyDefaultAdapter(MDCTextFieldFoundation, [
     'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel',
     'setIconAttr', 'eventTargetHasClass', 'registerTextFieldInteractionHandler',
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
-    'addClassToBottomLine', 'removeClassFromBottomLine',
-    'addClassToHelptext', 'removeClassFromHelptext', 'helptextHasClass',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
-    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
-    'setBottomLineAttr', 'setHelptextAttr', 'removeHelptextAttr', 'getNativeInput',
+    'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
+    'getNativeInput', 'getBottomLineFoundation', 'getHelperTextFoundation',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTextfieldFoundation);
+const setupTest = () => setupFoundationTest(MDCTextFieldFoundation);
 
 test('#constructor sets disabled to false', () => {
   const {foundation} = setupTest();
@@ -81,13 +80,19 @@ test('#setDisabled handles no native input being returned gracefully', () => {
   assert.doesNotThrow(() => foundation.setDisabled(true));
 });
 
-test('#setDisabled adds mdc-textfield--disabled when set to true', () => {
+test('#setDisabled adds mdc-text-field--disabled when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   td.verify(mockAdapter.addClass(cssClasses.DISABLED));
 });
 
-test('#setDisabled removes mdc-textfield--disabled when set to false', () => {
+test('#setDisabled removes mdc-text-field--invalid when set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(true);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+});
+
+test('#setDisabled removes mdc-text-field--disabled when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
@@ -117,7 +122,7 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
-test('#init adds mdc-textfield--upgraded class', () => {
+test('#init adds mdc-text-field--upgraded class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
@@ -134,7 +139,8 @@ test('#init adds event listeners', () => {
   td.verify(mockAdapter.registerInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerBottomLineEventHandler(
+    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -148,10 +154,11 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterBottomLineEventHandler(
+    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
-test('#init adds mdc-textfield__label--float-above class if the input contains a value', () => {
+test('#init adds mdc-text-field__label--float-above class if the input contains a value', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: 'Pre-filled value',
@@ -162,7 +169,7 @@ test('#init adds mdc-textfield__label--float-above class if the input contains a
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('#init does not add mdc-textfield__label--float-above class if the input does not contain a value', () => {
+test('#init does not add mdc-text-field__label--float-above class if the input does not contain a value', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: '',
@@ -171,6 +178,16 @@ test('#init does not add mdc-textfield__label--float-above class if the input do
   });
   foundation.init();
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#setHelperTextContent sets the content of the helper text element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const helperText = td.object({
+    setContent: () => {},
+  });
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+  foundation.setHelperTextContent('foo');
+  td.verify(mockAdapter.getHelperTextFoundation().setContent('foo'));
 });
 
 test('on input focuses if input event occurs without any other events', () => {
@@ -213,7 +230,7 @@ test('on input does nothing if input event preceded by keydown event', () => {
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
 });
 
-test('on focus adds mdc-textfield--focused class', () => {
+test('on focus adds mdc-text-field--focused class', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
@@ -225,7 +242,7 @@ test('on focus adds mdc-textfield--focused class', () => {
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED));
 });
 
-test('on focus adds mdc-textfield__label--float-above class', () => {
+test('on focus adds mdc-text-field__label--float-above class', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
@@ -237,8 +254,12 @@ test('on focus adds mdc-textfield__label--float-above class', () => {
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('on focus removes aria-hidden from helptext', () => {
+test('on focus makes helper text visible to the screen reader', () => {
   const {foundation, mockAdapter} = setupTest();
+  const helperText = td.object({
+    showToScreenReader: () => {},
+  });
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
   let focus;
   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
@@ -246,7 +267,7 @@ test('on focus removes aria-hidden from helptext', () => {
     });
   foundation.init();
   focus();
-  td.verify(mockAdapter.removeHelptextAttr('aria-hidden'));
+  td.verify(helperText.showToScreenReader());
 });
 
 const setupBlurTest = () => {
@@ -265,26 +286,26 @@ const setupBlurTest = () => {
   return {foundation, mockAdapter, blur, nativeInput};
 };
 
-test('on blur removes mdc-textfield--focused class', () => {
+test('on blur removes mdc-text-field--focused class', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED));
 });
 
-test('on blur removes mdc-textfield__label--float-above when no input value present', () => {
+test('on blur removes mdc-text-field__label--float-above when no input value present', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('on blur does not remove mdc-textfield__label--float-above if input has a value', () => {
+test('on blur does not remove mdc-text-field__label--float-above if input has a value', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.value = 'non-empty value';
   blur();
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
 });
 
-test('on blur removes mdc-textfield--invalid if custom validity is false and' +
+test('on blur removes mdc-text-field--invalid if custom validity is false and' +
      'input.checkValidity() returns true', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
@@ -299,7 +320,7 @@ test('on blur adds mdc-textfied--invalid if custom validity is false and' +
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
 
-test('on blur does not remove mdc-textfield--invalid if custom validity is true and' +
+test('on blur does not remove mdc-text-field--invalid if custom validity is true and' +
      'input.checkValidity() returns true', () => {
   const {foundation, mockAdapter, blur} = setupBlurTest();
   foundation.setValid(false);
@@ -316,47 +337,17 @@ test('on blur does not add mdc-textfied--invalid if custom validity is true and'
   td.verify(mockAdapter.addClass(cssClasses.INVALID), {times: 0});
 });
 
-test('on blur adds role="alert" to helptext if input is invalid and helptext is being used ' +
-     'as a validation message', () => {
+test('on blur set validity of helper text', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
+  const helperText = td.object({
+    setValidity: () => {},
+    hasClass: () => {},
+  });
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
   nativeInput.checkValidity = () => false;
-  td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
+  td.when(helperText.hasClass('mdc-text-field-helper-text--validation-msg')).thenReturn(true);
   blur();
-  td.verify(mockAdapter.setHelptextAttr('role', 'alert'));
-});
-
-test('on blur remove role="alert" if input is valid', () => {
-  const {mockAdapter, blur} = setupBlurTest();
-  blur();
-  td.verify(mockAdapter.removeHelptextAttr('role'));
-});
-
-test('on blur sets aria-hidden="true" on help text by default', () => {
-  const {mockAdapter, blur} = setupBlurTest();
-  blur();
-  td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true'));
-});
-
-test('on blur does not set aria-hidden on help text when it is persistent', () => {
-  const {mockAdapter, blur} = setupBlurTest();
-  td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_PERSISTENT)).thenReturn(true);
-  blur();
-  td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true'), {times: 0});
-});
-
-test('on blur does not set aria-hidden if input is invalid and help text is validation message', () => {
-  const {mockAdapter, blur, nativeInput} = setupBlurTest();
-  td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
-  nativeInput.checkValidity = () => false;
-  blur();
-  td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true'), {times: 0});
-});
-
-test('on blur sets aria-hidden=true if input is valid and help text is validation message', () => {
-  const {mockAdapter, blur} = setupBlurTest();
-  td.when(mockAdapter.helptextHasClass(cssClasses.HELPTEXT_VALIDATION_MSG)).thenReturn(true);
-  blur();
-  td.verify(mockAdapter.setHelptextAttr('aria-hidden', 'true'));
+  td.verify(helperText.setValidity(false));
 });
 
 test('on blur handles getNativeInput() not returning anything gracefully', () => {
@@ -388,26 +379,34 @@ test('on text field click notifies icon event if event target is an icon', () =>
   td.verify(mockAdapter.notifyIconAction());
 });
 
-test('on transition end removes the bottom line active class if this.isFocused_ is false ' +
-  'and transition type is opacity', () => {
+test('on transition end deactivates the bottom line if this.isFocused_ is false', () => {
   const {foundation, mockAdapter} = setupTest();
+  const bottomLine = td.object({
+    deactivate: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
     propertyName: 'opacity',
   };
   let transitionEnd;
 
-  td.when(mockAdapter.registerTransitionEndHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    transitionEnd = handler;
-  });
+  td.when(mockAdapter.registerBottomLineEventHandler(td.matchers.isA(String), td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      transitionEnd = handler;
+    });
 
   foundation.init();
   transitionEnd(mockEvt);
 
-  td.verify(mockAdapter.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(bottomLine.deactivate());
 });
 
 test('mousedown on the input sets the bottom line origin', () => {
   const {foundation, mockAdapter} = setupTest();
+  const bottomLine = td.object({
+    setTransformOrigin: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
     target: {
       getBoundingClientRect: () => {
@@ -428,11 +427,15 @@ test('mousedown on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+  td.verify(bottomLine.setTransformOrigin(mockEvt));
 });
 
 test('touchstart on the input sets the bottom line origin', () => {
   const {foundation, mockAdapter} = setupTest();
+  const bottomLine = td.object({
+    setTransformOrigin: () => {},
+  });
+  td.when(mockAdapter.getBottomLineFoundation()).thenReturn(bottomLine);
   const mockEvt = {
     target: {
       getBoundingClientRect: () => {
@@ -453,7 +456,7 @@ test('touchstart on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(mockAdapter.setBottomLineAttr('style', td.matchers.isA(String)));
+  td.verify(bottomLine.setTransformOrigin(mockEvt));
 });
 
 test('interacting with text field does not emit custom events if input is disabled', () => {

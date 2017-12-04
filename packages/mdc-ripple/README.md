@@ -31,7 +31,8 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
   - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
   - [Specifying known element dimensions](#specifying-known-element-dimensions)
 - [Caveat: Edge](#caveat-edge)
-- [Caveat: Safari](#caveat-safari)
+- [Caveat: Safari 9](#caveat-safari)
+- [Caveat: Mobile Safari](#caveat-mobile-safari)
 - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
 - [The util API](#the-util-api)
 
@@ -41,7 +42,7 @@ In order to function correctly, MDC Ripple requires a _browser_ implementation o
 
 Because we rely on scoped, dynamic CSS variables, static pre-processors such as [postcss-custom-properties](https://github.com/postcss/postcss-custom-properties) will not work as an adequate polyfill ([...yet?](https://github.com/postcss/postcss-custom-properties/issues/32)).
 
-Edge and Safari, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari](#caveat-safari) for an explanation.
+Edge and Safari 9, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari 9](#caveat-safari) for an explanation.
 
 ## Installation
 
@@ -61,14 +62,37 @@ General notes:
 
 #### Sass API
 
+In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic `mdc-states-color` mixin or all of the advanced `mdc-states` mixins documented below.
+
+Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states-color` specifically) for specific variants (e.g. for flat vs. raised buttons).
+
 These APIs implicitly use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
-All three of the following mixins are mandatory in order to fully style the ripple effect; from that point, it is feasible to further override only the parts necessary (e.g. `mdc-ripple-color` specifically) for variants of a component.
+
+##### Ripple Mixins
 
 Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Adds base styles for a ripple surface
-`mdc-ripple-color($color, $opacity)` | Adds styles for the color and opacity of the ripple effect
 `mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
+
+##### Basic States Mixin
+
+Mixin | Description
+--- | ---
+`mdc-states($color, $has-nested-focusable-element)` | Adds state and ripple styles for the indicated color, deciding opacities based on whether the passed color is light or dark. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+
+##### Advanced States Mixins
+
+Mixin | Description
+--- | ---
+`mdc-states-base-color($color)` | Sets up base state styles using the provided color
+`mdc-states-hover-opacity($opacity)` | Adds styles for hover state using the provided opacity
+`mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Adds styles for focus state using the provided opacity. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states-press-opacity($opacity)` | Adds styles for press state using the provided opacity
+
+#### Legacy Sass API
+
+The `mdc-ripple-color($color, $opacity)` mixin is deprecated. Use the basic or advanced states mixins (documented above) instead, which provide finer control over a component's opacity for different states of user interaction.
 
 ### Adding Ripple JS
 
@@ -214,7 +238,7 @@ ripple to. The adapter API is as follows:
 
 | Method Signature | Description |
 | --- | --- |
-| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
+| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
 | `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
 | `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
@@ -342,20 +366,31 @@ We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not
 observed. Earlier versions of Edge (and IE) are not affected, as they do not report support for CSS variables at all,
 and as such ripples are never initialized.
 
-## Caveat: Safari
+<a name="caveat-safari"></a>
+## Caveat: Safari 9
 
-> TL;DR ripples are disabled in Safari < 10 because of a nasty CSS variables bug.
+> TL;DR ripples are disabled in Safari 9 because of a nasty CSS variables bug.
 
 The ripple works by updating CSS Variables which are used by pseudo-elements. This allows ripple
 effects to work on elements without the need to add a bunch of extra DOM to them. Unfortunately, in
 Safari 9.1, there is a nasty bug where updating a css variable on an element will _not_ trigger a
 style recalculation on that element's pseudo-elements which make use of the css variable (try out
-[this codepen](http://codepen.io/traviskaufman/pen/jARYOR) in Chrome, and then in Safari <= 9.1 to
+[this codepen](http://codepen.io/traviskaufman/pen/jARYOR) in Chrome, and then in Safari 9.1 to
 see the issue). We feature-detect around this using alternative heuristics regarding different
 webkit versions: Webkit builds which have this bug fixed (e.g. the builds used in Safari 10+)
 support [CSS 4 Hex Notation](https://drafts.csswg.org/css-color/#hex-notation) while those do not
 have the fix don't. We use this to reliably feature-detect whether we are working with a WebKit
 build that can handle our usage of CSS variables.
+
+## Caveat: Mobile Safari
+
+> TL;DR for CSS-only ripple styles to work as intended, register a `touchstart` event handler on the affected element or its ancestor.
+
+Mobile Safari does not trigger `:active` styles noticeably by default, as
+[documented](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/AdjustingtheTextSize/AdjustingtheTextSize.html#//apple_ref/doc/uid/TP40006510-SW5)
+in the Safari Web Content Guide. This effectively suppresses the intended pressed state styles for CSS-only ripple surfaces. This behavior can be remedied by registering a `touchstart` event handler on the element, or on any common ancestor of the desired elements.
+
+See [this StackOverflow answer](https://stackoverflow.com/a/33681490) for additional information on mobile Safari's behavior.
 
 ## Caveat: Theme Custom Variables
 

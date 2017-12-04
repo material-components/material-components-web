@@ -1,0 +1,129 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/theme/functions";
+@import "@material/theme/mixins";
+@import "@material/theme/variables"; // for mdc-theme-prop-value
+@import "./variables";
+
+//
+// Public
+//
+
+@mixin mdc-slider-highlight-color($color) {
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-highlight-color_($color);
+  }
+}
+
+@mixin mdc-slider-rail-color($color, $opacity: $mdc-slider-baseline-rail-opacity) {
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-rail-color_($color, $opacity);
+  }
+}
+
+@mixin mdc-slider-rail-tick-mark-color($color) {
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-rail-tick-mark-color_($color);
+  }
+}
+
+@mixin mdc-slider-thumb-color($color) {
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-thumb-color_($color);
+  }
+}
+
+@mixin mdc-slider-focus-halo-color($color) {
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__focus-ring {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+@mixin mdc-slider-value-pin-ink-color($color) {
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__pin {
+      @include mdc-theme-prop(color, $color);
+    }
+  }
+}
+
+@mixin mdc-slider-value-pin-fill-color($color) {
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__pin {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+@mixin mdc-slider-value-pin-fill-color-accessible($color) {
+  $color-value: mdc-theme-prop-value($color);
+  $ink-color: if(mdc-theme-tone($color-value) == "light", text-primary-on-light, text-primary-on-dark);
+
+  @include mdc-slider-value-pin-fill-color($color);
+  @include mdc-slider-value-pin-ink-color($ink-color);
+}
+
+// NOTE: This mixin sets the color of ALL customizable elements in the slider. If new elements are added, this mixin
+// should be updated to cover those additional elements.
+@mixin mdc-slider-color-accessible($color) {
+  @include mdc-slider-highlight-color($color);
+  @include mdc-slider-rail-color($color);
+  @include mdc-slider-rail-tick-mark-color($color);
+  @include mdc-slider-thumb-color($color);
+  @include mdc-slider-focus-halo-color($color);
+  @include mdc-slider-value-pin-fill-color-accessible($color);
+}
+
+//
+// Private
+//
+
+@mixin mdc-slider-highlight-color_($color) {
+  .mdc-slider__track {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-slider-rail-color_($color, $opacity: $mdc-slider-baseline-rail-opacity) {
+  .mdc-slider__track-container {
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $opacity));
+  }
+}
+
+@mixin mdc-slider-rail-tick-mark-color_($color) {
+  .mdc-slider__track-marker::after,
+  .mdc-slider__track-marker-container::after {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-slider-thumb-color_($color) {
+  .mdc-slider__thumb {
+    @include mdc-theme-prop(fill, $color);
+    @include mdc-theme-prop(stroke, $color);
+  }
+}
+
+@mixin mdc-slider-thumb-stroke-cutout_($color) {
+  .mdc-slider__thumb {
+    /* @alternate */
+    stroke: $color;
+    stroke: var(--mdc-slider-bg-color-behind-component, $color);
+  }
+}

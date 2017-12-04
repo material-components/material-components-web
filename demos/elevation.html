@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html class="mdc-typography">
+<html>
   <head>
     <meta charset="utf-8">
     <title>Elevation - Material Components Catalog</title>
@@ -47,6 +47,14 @@
         background: white;
       }
 
+      .hero .demo-surface {
+        width: 120px;
+        height: 48px;
+        margin: 24px 24px;
+        background-color: #212121;
+        color: #f0f0f0;
+      }
+
       #hover-el {
         display: flex;
         align-items: center;
@@ -54,17 +62,9 @@
         padding: 2rem;
         border-radius: 4px;
       }
-
-      .hero .demo-surface {
-        width: 96px;
-        height: 48px;
-        margin: 24px 24px;
-        background-color: #212121;
-        color: #f0f0f0;
-      }
     </style>
   </head>
-  <body>
+  <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
@@ -81,8 +81,11 @@
         <figure class="demo-surface mdc-elevation--z0">
           <figcaption>FLAT 0dp</figcaption>
         </figure>
-        <figure class="demo-surface mdc-elevation--z4">
-          <figcaption>RAISED 4dp</figcaption>
+        <figure class="demo-surface mdc-elevation--z8">
+          <figcaption>RAISED 8dp</figcaption>
+        </figure>
+        <figure class="demo-surface demo-elevation--custom-color">
+          <figcaption>CUSTOM 16dp</figcaption>
         </figure>
       </section>
 
