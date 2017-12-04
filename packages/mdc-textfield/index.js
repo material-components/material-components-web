@@ -18,12 +18,13 @@
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple';
 
-/* eslint-disable no-unused-vars */
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter, FoundationMapType} from './adapter';
 import MDCTextFieldFoundation from './foundation';
+/* eslint-disable no-unused-vars */
 import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
+/* eslint-enable no-unused-vars */
 
 /**
  * @extends {MDCComponent<!MDCTextFieldFoundation>}
