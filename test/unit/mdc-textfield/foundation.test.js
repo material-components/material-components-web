@@ -57,7 +57,11 @@ const setupTest = () => {
     showToScreenReader: () => {},
     setValidity: () => {},
   });
-  const foundation = new MDCTextFieldFoundation(mockAdapter, bottomLine, helperText);
+  const foundationMap = {
+    bottomLine: bottomLine,
+    helperText: helperText,
+  };
+  const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
   return {foundation, mockAdapter, bottomLine, helperText};
 };
 

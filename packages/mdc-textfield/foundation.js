@@ -17,7 +17,7 @@
 
 /* eslint-disable no-unused-vars */
 import MDCFoundation from '@material/base/foundation';
-import {MDCTextFieldAdapter, NativeInputType} from './adapter';
+import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import {cssClasses, strings} from './constants';
@@ -64,17 +64,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * @param {!MDCTextFieldAdapter=} adapter
-   * @param {!MDCTextFieldBottomLineFoundation=} bottomLineFoundation
-   * @param {!MDCTextFieldHelperTextFoundation=} helperTextFoundation
+   * @param {!FoundationMapType=} foundationMap Map of all subcomponents to subfoundations.
    */
   constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({}),
-    bottomLineFoundation, helperTextFoundation) {
+    foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
 
     /** @type {!MDCTextFieldBottomLineFoundation|undefined} */
-    this.bottomLine_ = bottomLineFoundation;
+    this.bottomLine_ = foundationMap.bottomLine;
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
-    this.helperText_ = helperTextFoundation;
+    this.helperText_ = foundationMap.helperText;
 
     /** @private {boolean} */
     this.isFocused_ = false;

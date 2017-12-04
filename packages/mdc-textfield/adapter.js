@@ -15,6 +15,10 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
+import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -26,6 +30,14 @@
  * }}
  */
 let NativeInputType;
+
+/**
+ * @typedef {{
+ *   bottomLine: (!MDCTextFieldBottomLineFoundation | undefined),
+ *   helperText: (!MDCTextFieldHelperTextFoundation | undefined)
+ * }}
+ */
+let FoundationMapType;
 
 /**
  * Adapter for MDC Text Field.
@@ -140,4 +152,4 @@ class MDCTextFieldAdapter {
   getNativeInput() {}
 }
 
-export {MDCTextFieldAdapter, NativeInputType};
+export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

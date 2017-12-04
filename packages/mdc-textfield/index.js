@@ -20,7 +20,7 @@ import {MDCRipple} from '@material/ripple';
 
 /* eslint-disable no-unused-vars */
 import {cssClasses, strings} from './constants';
-import {MDCTextFieldAdapter} from './adapter';
+import {MDCTextFieldAdapter, FoundationMapType} from './adapter';
 import MDCTextFieldFoundation from './foundation';
 import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
@@ -176,8 +176,7 @@ class MDCTextField extends MDCComponent {
       },
       this.getInputAdapterMethods_(),
       this.getIconAdapterMethods_())),
-      this.getBottomLineFoundation_(),
-      this.getHelperTextFoundation_());
+      this.getFoundationMap_());
   }
 
   /**
@@ -211,27 +210,14 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Returns the foundation for the bottom line element. Returns undefined if
-   * there is no bottom line element.
-   * @return {!MDCTextFieldBottomLineFoundation|undefined}
+   * Returns a map of all subcomponents to subfoundations.
+   * @return {!FoundationMapType}
    */
-  getBottomLineFoundation_() {
-    if (this.bottomLine_) {
-      return this.bottomLine_.foundation;
-    }
-    return undefined;
-  }
-
-  /**
-   * Returns the foundation for the helper text element. Returns undefined if
-   * there is no helper text element.
-   * @return {!MDCTextFieldHelperTextFoundation|undefined}
-   */
-  getHelperTextFoundation_() {
-    if (this.helperText_) {
-      return this.helperText_.foundation;
-    }
-    return undefined;
+  getFoundationMap_() {
+    return {
+      bottomLine: this.bottomLine_ ? this.bottomLine_.foundation : undefined,
+      helperText: this.helperText_ ? this.helperText_.foundation : undefined,
+    };
   }
 }
 
