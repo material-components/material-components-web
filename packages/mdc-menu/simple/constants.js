@@ -53,4 +53,36 @@ const numbers = {
   TRANSITION_Y2: 1,
 };
 
-export {cssClasses, strings, numbers};
+/**
+ * Enum for bits in the {@see Corner) bitmap.
+ * @enum {number}
+ */
+const CornerBit = {
+  BOTTOM: 1,
+  CENTER: 2,
+  RIGHT: 4,
+  FLIP_RTL: 8,
+};
+
+/**
+ * Enum for representing an element corner for positioning the menu.
+ *
+ * The START constants map to LEFT if element directionality is left
+ * to right and RIGHT if the directionality is right to left.
+ * Likewise END maps to RIGHT or LEFT depending on the directionality.
+ *
+ * @enum {number}
+ */
+const Corner = {
+  TOP_LEFT: 0,
+  TOP_RIGHT: CornerBit.RIGHT,
+  BOTTOM_LEFT: CornerBit.BOTTOM,
+  BOTTOM_RIGHT: CornerBit.BOTTOM | CornerBit.RIGHT,
+  TOP_START: CornerBit.FLIP_RTL,
+  TOP_END: CornerBit.FLIP_RTL | CornerBit.RIGHT,
+  BOTTOM_START: CornerBit.BOTTOM | CornerBit.FLIP_RTL,
+  BOTTOM_END: CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL,
+};
+
+
+export {cssClasses, strings, numbers, CornerBit, Corner};
