@@ -59,6 +59,13 @@ class MDCSimpleMenuAdapter {
    */
   getAttributeForEventTarget(target, attributeName) {}
 
+  /**
+   * @param {EventTarget} target
+   * @param {string} className
+   * @return {boolean}
+   */
+  eventTargetHasClass(target, className) {}
+
   /** @return {{ width: number, height: number }} */
   getInnerDimensions() {}
 
@@ -156,8 +163,11 @@ class MDCSimpleMenuAdapter {
   * }} position */
   setPosition(position) {}
 
+  /** @param {string} height */
+  setMaxHeight(height) {}
+
   /** @return {number} */
   getAccurateTime() {}
 }
 
-export default MDCSimpleMenuAdapter;
+export {MDCSimpleMenuAdapter};

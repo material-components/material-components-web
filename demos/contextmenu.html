@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Experimental Menues</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/assets/simple-menu.css.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      html,
+      body,
+      main {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .demo-header-toolbar {
+        z-index: 10;
+      }
+
+      .demo-content {
+        position: relative;
+        flex: 1;
+        margin-top: 16px;
+      }
+
+      .mdc-menu-anchor {
+        position: absolute;
+      }
+
+      /** Custom style changes */
+      .mdc-simple-menu {
+        min-width: 168px;
+        border-radius: 4px;
+        z-index: 11;
+      }
+
+      .context-menu-area {
+        top: 64px;
+        width: 100%;
+        height: calc(100% - 64px);
+        margin: 0;
+        padding-top: 20px;
+        text-align: center;
+      }
+
+    </style>
+  </head>
+  <body>
+    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/" class="mdc-toolbar__icon--menu"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+          <span class="mdc-toolbar__title catalog-title">Experimental Menues</span>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+
+      <div class="demo-content mdc-menu-anchor context-menu-area">
+        Click anywhere to show a context menu.
+        <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
+          <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+            <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
+            <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
+            <li class="mdc-list-divider" role="separator"></li>
+            <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
+            <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
+            <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script src="/assets/material-components-web.js"></script>
+    <script>
+      var menuEl = document.querySelector('#demo-menu');
+      var contextMenu = new mdc.menu.MDCSimpleMenu(menuEl);
+      var toggle = document.querySelector('.context-menu-area');
+      toggle.addEventListener('click', function(e) {
+        contextMenu.setAnchorMargin({top: e.offsetY, right: toggle.clientWidth - e.offsetX,
+                              bottom: toggle.clientHeight - e.offsetY, left: e.offsetX});
+        contextMenu.open = !contextMenu.open;
+      });
+    </script>
+  </body>
+</html>

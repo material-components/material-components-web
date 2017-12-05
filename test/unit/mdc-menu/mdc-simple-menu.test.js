@@ -15,379 +15,958 @@
  */
 
 import {assert} from 'chai';
-import bel from 'bel';
-import domEvents from 'dom-events';
+import lolex from 'lolex';
 import td from 'testdouble';
+import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
+import {setupFoundationTest} from '../helpers/setup';
+import {createMockRaf} from '../helpers/raf';
+import {MDCSimpleMenuFoundation} from '../../../packages/mdc-menu/simple/foundation';
+import {cssClasses, strings, numbers, Corner} from '../../../packages/mdc-menu/simple/constants';
 
-import {MDCSimpleMenu} from '../../../packages/mdc-menu/simple';
-import {strings} from '../../../packages/mdc-menu/simple/constants';
-import {getTransformPropertyName} from '../../../packages/mdc-menu/util';
+function setupTest() {
+  const {foundation, mockAdapter} = setupFoundationTest(MDCSimpleMenuFoundation);
+  const size = {width: 500, height: 200};
+  const itemYParams = {top: 100, height: 20};
+  td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(false);
+  td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(1);
+  td.when(mockAdapter.getInnerDimensions()).thenReturn(size);
+  td.when(mockAdapter.getYParamsForItemAtIndex(0)).thenReturn(itemYParams);
 
-function getFixture(open) {
-  return bel`
-    <div class="mdc-simple-menu ${open ? 'mdc-simple-menu--open' : ''}" tabindex="-1">
-      <ul class="mdc-simple-menu__items mdc-list" role="menu">
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item</a>
-        <li role="separator"></li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Another Item</a>
-      </nav>
-    </div>
-  `;
+  return {foundation, mockAdapter};
 }
 
-function setupTest(open = false) {
-  const root = getFixture(open);
-  const component = new MDCSimpleMenu(root);
-  return {root, component};
-}
-
-suite('MDCSimpleMenu');
-
-test('attachTo initializes and returns a MDCSimpleMenu instance', () => {
-  assert.isOk(MDCSimpleMenu.attachTo(getFixture()) instanceof MDCSimpleMenu);
-});
-
-test('get/set open', () => {
-  const {component} = setupTest();
-  component.open = true;
-  assert.isOk(component.open);
-
-  component.open = false;
-  assert.isNotOk(component.open);
-});
-
-test('show opens the menu', () => {
-  const {component} = setupTest();
-  component.show();
-  assert.isOk(component.open);
-});
-
-test('show with a focus index opens the menu', () => {
-  const {component} = setupTest();
-  component.show({focusIndex: 1});
-  assert.isOk(component.open);
-});
-
-test('hide closes the menu', () => {
-  const {component} = setupTest();
-  component.open = true;
-  component.hide();
-  assert.isNotOk(component.open);
-});
-
-test('items returns all menu items', () => {
-  const {root, component} = setupTest();
-  const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  assert.deepEqual(component.items, items);
-});
-
-test('foundationAdapter#addClass adds a class to the root element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
-});
-
-test('adapter#removeClass removes a class from the root element', () => {
-  const {root, component} = setupTest();
-  root.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
-});
-
-test('adapter#hasClass returns true if the root element has specified class', () => {
-  const {root, component} = setupTest();
-  root.classList.add('foo');
-  assert.isOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
-});
-
-test('adapter#hasClass returns false if the root element does not have specified class', () => {
-  const {component} = setupTest();
-  assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
-});
-
-test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', () => {
-  const {component} = setupTest();
-  assert.isOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());
-});
-
-test('adapter#getAttributeForEventTarget returns the value of an attribute for a given event target', () => {
-  const {root, component} = setupTest();
-  const attrName = 'aria-disabled';
-  const attrVal = 'true';
-  const target = root.querySelectorAll('[role="menuitem"]')[1];
-
-  target.setAttribute(attrName, attrVal);
-
-  assert.equal(component.getDefaultFoundation().adapter_.getAttributeForEventTarget(target, attrName), attrVal);
-});
-
-test('adapter#hasNecessaryDom returns false if the DOM does not include the items container', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelector(strings.ITEMS_SELECTOR);
-  root.removeChild(items);
-  assert.isNotOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());
-});
-
-test('adapter#getInnerDimensions returns the dimensions of the items container', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelector(strings.ITEMS_SELECTOR);
-  assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().width, items.offsetWidth);
-  assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().height, items.offsetHeight);
-});
-
-test('adapter#setScale sets the correct transform on the menu element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setScale(0.42, 0.84);
-  assert.equal(root.style.getPropertyValue(getTransformPropertyName(window)), 'scale(0.42, 0.84)');
-});
-
-test('adapter#setInnerScale sets the correct transform on the items container', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelector(strings.ITEMS_SELECTOR);
-  component.getDefaultFoundation().adapter_.setInnerScale(0.42, 0.84);
-  assert.equal(items.style.getPropertyValue(getTransformPropertyName(window)), 'scale(0.42, 0.84)');
-});
-
-test('adapter#getNumberOfItems returns the number of item elements within the items container', () => {
-  const {root, component} = setupTest();
-  const numberOfItems = root.querySelectorAll('[role="menuitem"]').length;
-  assert.equal(component.getDefaultFoundation().adapter_.getNumberOfItems(), numberOfItems);
-});
-
-test('adapter#registerInteractionHandler proxies to addEventListener', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('interactionHandler');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
-  domEvents.emit(root, 'foo');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterInteractionHandler proxies to removeEventListener', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('interactionHandler');
-  root.addEventListener('foo', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('foo', handler);
-  domEvents.emit(root, 'foo');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerBodyClickHandler proxies to addEventListener', () => {
-  const {component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  component.getDefaultFoundation().adapter_.registerBodyClickHandler(handler);
-  domEvents.emit(document.body, 'click');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => {
-  const {component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  document.body.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterBodyClickHandler(handler);
-  domEvents.emit(document.body, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#getYParamsForItemAtIndex returns the height and top of the item at the provided index', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelector(strings.ITEMS_SELECTOR);
-  Object.assign(items.children[0].style, {
-    position: 'absolute',
-    top: '50px',
-    height: '100px',
+function testFoundation(desc, runTests) {
+  test(desc, () => {
+    const {mockAdapter, foundation} = setupTest();
+    const mockRaf = createMockRaf();
+    runTests({mockAdapter, foundation, mockRaf});
+    mockRaf.restore();
   });
-  document.body.appendChild(root);
-  assert.deepEqual(
-    component.getDefaultFoundation().adapter_.getYParamsForItemAtIndex(0),
-    {top: 50, height: 100}
+}
+
+suite('MDCSimpleMenuFoundation');
+
+test('exports strings', () => {
+  assert.deepEqual(MDCSimpleMenuFoundation.strings, strings);
+});
+
+test('exports cssClasses', () => {
+  assert.deepEqual(MDCSimpleMenuFoundation.cssClasses, cssClasses);
+});
+
+test('exports numbers', () => {
+  assert.deepEqual(MDCSimpleMenuFoundation.numbers, numbers);
+});
+
+test('defaultAdapter returns a complete adapter implementation', () => {
+  verifyDefaultAdapter(MDCSimpleMenuFoundation, [
+    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'eventTargetHasClass',
+    'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale',
+    'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
+    'deregisterBodyClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
+    'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
+    'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition', 'setMaxHeight',
+    'getAccurateTime',
+  ]);
+});
+
+test('#init throws error when the root class is not present', () => {
+  const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
+  td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(false);
+
+  const foundation = new MDCSimpleMenuFoundation(mockAdapter);
+  assert.throws(() => foundation.init());
+});
+
+test('#init throws error when the necessary DOM is not present', () => {
+  const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
+  td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(true);
+  td.when(mockAdapter.hasNecessaryDom()).thenReturn(false);
+
+  const foundation = new MDCSimpleMenuFoundation(mockAdapter);
+  assert.throws(() => foundation.init());
+});
+
+testFoundation('#open adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
+});
+
+testFoundation('#open adds the open class to the menu', ({foundation, mockAdapter, mockRaf}) => {
+  td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
+
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.addClass('mdc-simple-menu--open'));
+});
+
+testFoundation('#open removes the animation class at the end of the animation',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-top-right')).thenReturn(true);
+
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+    td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    mockRaf.flush();
+    td.verify(mockAdapter.removeClass('mdc-simple-menu--animating'));
+  });
+
+testFoundation('#open focuses the menu at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+  mockRaf.flush();
+  td.verify(mockAdapter.focus());
+});
+
+testFoundation('#open on a not focused menu does not focust at index 0', ({foundation, mockAdapter, mockRaf}) => {
+  td.when(mockAdapter.isFocused()).thenReturn(true);
+  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+
+  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+  mockRaf.flush();
+  td.verify(mockAdapter.focusItemAtIndex(0), {times: 0});
+});
+
+testFoundation('#open anchors the menu on the top left in LTR, given enough room',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(false);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 20, bottom: 40, left: 20, right: 60,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+  });
+
+testFoundation('#open anchors the menu on the top right in LTR when close to the right edge',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(false);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 20, bottom: 40, left: 950, right: 990,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('top right'));
+    td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
+  });
+
+testFoundation('#open anchors the menu on the top right in RTL, given enough room',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(true);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 20, bottom: 40, left: 500, right: 540,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('top right'));
+    td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
+  });
+
+testFoundation('#open anchors the menu on the top left in RTL when close to the left edge',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(true);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 20, bottom: 40, left: 10, right: 50,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+  });
+
+testFoundation('#open anchors the menu on the bottom left in LTR when close to the bottom edge',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(false);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 900, bottom: 920, left: 10, right: 50,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('bottom left'));
+    td.verify(mockAdapter.setPosition({left: '0', bottom: '0'}));
+  });
+
+testFoundation('#open anchors the menu on the top left in LTR when not close to the bottom edge',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(false);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 900, bottom: 20, left: 10, right: 50,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+  });
+
+testFoundation('#open anchors the menu to the bottom left in LTR when not close to the bottom edge with margin',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(false);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 100, bottom: 880, left: 10, right: 50,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.setAnchorMargin({top: 0, left: 0, bottom: 10, right: 0});
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '30px'}));
+  });
+
+testFoundation('#open anchors the menu to the bottom left in LTR when close to the bottom edge with margin',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(false);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 900, bottom: 80, left: 10, right: 50,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 0});
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('bottom left'));
+    td.verify(mockAdapter.setPosition({left: '0', bottom: '15px'}));
+  });
+
+testFoundation('#open anchors the menu to the bottom left in RTL when close to the bottom and right edge with margin',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(true);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 900, bottom: 80, left: 20, right: 940,
+    });
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 7});
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('bottom right'));
+    td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
+  });
+
+testFoundation('#close does nothing if event target has aria-disabled set to true',
+  ({foundation, mockAdapter}) => {
+    const mockEvt = {
+      target: {},
+      stopPropagation: td.func('stopPropagation'),
+    };
+
+    td.when(mockAdapter.getAttributeForEventTarget(td.matchers.anything(), strings.ARIA_DISABLED_ATTR))
+      .thenReturn('true');
+
+    foundation.close(mockEvt);
+
+    td.verify(mockAdapter.deregisterBodyClickHandler(td.matchers.anything()), {times: 0});
+  });
+
+testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
+  foundation.close();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
+});
+
+testFoundation('#close removes the open class from the menu', ({foundation, mockAdapter, mockRaf}) => {
+  td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-left')).thenReturn(true);
+
+  foundation.close();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.removeClass('mdc-simple-menu--open'));
+});
+
+testFoundation('#close removes the animation class at the end of the animation',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
+    td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
+
+    foundation.close();
+    mockRaf.flush();
+    mockRaf.flush();
+    td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
+
+    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    mockRaf.flush();
+    td.verify(mockAdapter.removeClass('mdc-simple-menu--animating'));
+  });
+
+test('#isOpen returns true when the menu is open', () => {
+  const {foundation} = setupTest();
+
+  foundation.open();
+  assert.isOk(foundation.isOpen());
+});
+
+test('#isOpen returns false when the menu is closed', () => {
+  const {foundation} = setupTest();
+
+  foundation.close();
+  assert.isNotOk(foundation.isOpen());
+});
+
+test('#isOpen returns true when the menu is initiated with the open class present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
+
+  foundation.init();
+  assert.isOk(foundation.isOpen());
+});
+
+test('#isOpen returns false when the menu is initiated without the open class present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(false);
+
+  foundation.init();
+  assert.isNotOk(foundation.isOpen());
+});
+
+test('on click notifies user of selection after allowing time for selection UX to run', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+
+  foundation.init();
+  handlers.click({target});
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: expectedIndex}));
+
+  clock.uninstall();
+});
+
+test('on click closes the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
+
+  foundation.init();
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on click does not trigger event target has aria-disabled set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+
+  td.when(mockAdapter.getAttributeForEventTarget(td.matchers.anything(), strings.ARIA_DISABLED_ATTR))
+    .thenReturn('true');
+  const clock = lolex.install();
+  const mockEvt = {
+    target: {},
+    stopPropagation: td.func('stopPropagation'),
+  };
+
+  foundation.init();
+  handlers.click(mockEvt);
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+
+  clock.uninstall();
+});
+
+test('on click does not trigger selected if non menu item clicked', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(-1);
+
+  foundation.init();
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+
+  clock.uninstall();
+});
+
+test('on click does not trigger selected if selection is already queued up', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0, 1);
+
+  foundation.init();
+  handlers.click({target});
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
+
+  clock.uninstall();
+});
+
+test('on ctrl+spacebar keyup does nothing', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Space', ctrlKey: true});
+  td.verify(mockAdapter.notifySelected({index: expectedIndex}), {times: 0});
+});
+
+test('on spacebar keyup notifies user of selection after allowing time for selection UX to run', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Space'});
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: expectedIndex}));
+
+  clock.uninstall();
+});
+
+test('on spacebar keyup closes the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Space'});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on spacebar keyup does not trigger selected if non menu item clicked', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(-1);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Space'});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+
+  clock.uninstall();
+});
+
+test('on spacebar keyup does not trigger selected if selection is already queued up', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0, 1);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Space'});
+  handlers.keyup({target, key: 'Space'});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
+
+  clock.uninstall();
+});
+
+test('on spacebar keyup does works if DOM3 keyboard events are not supported', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
+
+  foundation.init();
+  handlers.keyup({target, keyCode: 32});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: 0}));
+
+  clock.uninstall();
+});
+
+test('on enter keyup notifies user of selection after allowing time for selection UX to run', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Enter'});
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: expectedIndex}));
+
+  clock.uninstall();
+});
+
+test('on enter keyup closes the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Enter'});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on enter keyup does not trigger selected if non menu item clicked', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(-1);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Enter'});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+
+  clock.uninstall();
+});
+
+test('on enter keyup does not trigger selected if selection is already queued up', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0, 1);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Enter'});
+  handlers.keyup({target, key: 'Enter'});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
+
+  clock.uninstall();
+});
+
+test('on enter keyup does works if DOM3 keyboard events are not supported', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
+
+  foundation.init();
+  handlers.keyup({target, keyCode: 13});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  td.verify(mockAdapter.notifySelected({index: 0}));
+
+  clock.uninstall();
+});
+
+test('on escape keyup closes the menu and sends cancel event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
+
+  foundation.init();
+  handlers.keyup({target, key: 'Escape'});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+  td.verify(mockAdapter.notifyCancel());
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on Ctrl+Tab keydown does nothing', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const target = {};
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+
+  foundation.init();
+  handlers.keydown({target, key: 'Tab', ctrlKey: true, preventDefault: () => {}});
+  td.verify(mockAdapter.getIndexForEventTarget(target), {times: 0});
+});
+
+test('on Tab keydown on the last element, it moves to the first', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+
+  foundation.init();
+  handlers.keydown({target, key: 'Tab', preventDefault: () => {}});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.focusItemAtIndex(0));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on Shift+Tab keydown on the first element, it moves to the last', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(0);
+
+  foundation.init();
+  handlers.keydown({target, key: 'Tab', shiftKey: true, preventDefault: () => {}});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.focusItemAtIndex(2));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on ArrowDown keydown on the last element, it moves to the first', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+
+  foundation.init();
+  handlers.keydown({target, key: 'ArrowDown', preventDefault: () => {}});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.focusItemAtIndex(0));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on ArrowDown keydown on the first element, it moves to the second', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(0);
+
+  foundation.init();
+  handlers.keydown({target, key: 'ArrowDown', preventDefault: () => {}});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.focusItemAtIndex(1));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on ArrowDown keydown prevents default on the event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  const preventDefault = td.func('event.preventDefault');
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(0);
+
+  foundation.init();
+  handlers.keydown({target, key: 'ArrowDown', preventDefault});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(preventDefault());
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on ArrowUp keydown on the first element, it moves to the last', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(0);
+
+  foundation.init();
+  handlers.keydown({target, key: 'ArrowUp', preventDefault: () => {}});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.focusItemAtIndex(2));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on ArrowUp keydown on the last element, it moves to the previous', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+
+  foundation.init();
+  handlers.keydown({target, key: 'ArrowUp', preventDefault: () => {}});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(mockAdapter.focusItemAtIndex(1));
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on ArrowUp keydown prevents default on the event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  const preventDefault = td.func('event.preventDefault');
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+
+  foundation.init();
+  handlers.keydown({target, key: 'ArrowUp', preventDefault});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(preventDefault());
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on any other keydown event, do not prevent default on the event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  const preventDefault = td.func('event.preventDefault');
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+
+  foundation.init();
+  handlers.keydown({target, key: 'Foo', preventDefault});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(preventDefault(), {times: 0});
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on spacebar keydown prevents default on the event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const raf = createMockRaf();
+  const target = {};
+  const preventDefault = td.func('event.preventDefault');
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+
+  foundation.init();
+  handlers.keydown({target, key: 'Space', preventDefault});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  raf.flush();
+  td.verify(preventDefault());
+
+  raf.restore();
+  clock.uninstall();
+});
+
+test('on document click cancels and closes the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const mockEvt = {
+    target: {},
+  };
+  let documentClickHandler;
+  td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    documentClickHandler = handler;
+  });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
+    .thenReturn(false);
+
+  td.when(mockAdapter.hasClass(MDCSimpleMenuFoundation.cssClasses.OPEN)).thenReturn(true);
+
+  foundation.init();
+  foundation.open();
+  mockRaf.flush();
+
+  documentClickHandler(mockEvt);
+  mockRaf.flush();
+
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+  td.verify(mockAdapter.notifyCancel());
+
+  mockRaf.restore();
+});
+
+test('on menu item click does not emit cancel', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const mockEvt = {
+    target: {},
+  };
+  let documentClickHandler;
+  td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
+    documentClickHandler = handler;
+  });
+  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
+    .thenReturn(true);
+
+  foundation.init();
+  foundation.open();
+  mockRaf.flush();
+
+  documentClickHandler(mockEvt);
+  mockRaf.flush();
+
+  td.verify(mockAdapter.notifyCancel(), {times: 0});
+
+  mockRaf.restore();
+});
+
+testFoundation('should cancel animation after destroy', ({foundation, mockAdapter, mockRaf}) => {
+  foundation.init();
+  mockRaf.flush();
+  foundation.open();
+  foundation.destroy();
+  mockRaf.flush();
+  mockRaf.flush();
+
+  td.verify(
+    mockAdapter.setScale(td.matchers.anything(), td.matchers.anything()),
+    {times: 0}
   );
-  document.body.removeChild(root);
-});
-
-test('adapter#setTransitionDelayForItemAtIndex sets the correct transition-delay for the element ' +
-     'at the provided index', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setTransitionDelayForItemAtIndex(0, '0.42s');
-  assert.equal(root.querySelector(strings.ITEMS_SELECTOR).children[0].style.transitionDelay, '0.42s');
-});
-
-test('adapter#getIndexForEventTarget returns the item index of the event target', () => {
-  const {root, component} = setupTest();
-  const target = root.querySelectorAll('[role="menuitem"]')[1];
-  assert.equal(component.getDefaultFoundation().adapter_.getIndexForEventTarget(target), 1);
-  assert.equal(component.getDefaultFoundation().adapter_.getIndexForEventTarget({}), -1, 'missing index = -1');
-});
-
-test(`adapter#notifySelected fires an ${strings.SELECTED_EVENT} custom event with the item and index`, () => {
-  const {root, component} = setupTest();
-  const item = root.querySelectorAll('[role="menuitem"]')[0];
-  const handler = td.func('notifySelected handler');
-  let evtData = null;
-  td.when(handler(td.matchers.isA(Object))).thenDo((evt) => {
-    evtData = evt.detail;
-  });
-  root.addEventListener(strings.SELECTED_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifySelected({index: 0});
-  assert.isOk(evtData !== null);
-  assert.deepEqual(evtData, {
-    item,
-    index: 0,
-  });
-});
-
-test(`adapter#notifyCancel fires an ${strings.CANCEL_EVENT} custom event`, () => {
-  const {root, component} = setupTest();
-  const handler = td.func('notifyCancel handler');
-  root.addEventListener(strings.CANCEL_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyCancel();
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#restoreFocus restores the focus saved by adapter#saveFocus', () => {
-  const {root, component} = setupTest(true);
-  const button = bel`<button>Foo</button>`;
-  document.body.appendChild(button);
-  document.body.appendChild(root);
-  button.focus();
-  component.getDefaultFoundation().adapter_.saveFocus();
-  root.focus();
-  component.getDefaultFoundation().adapter_.restoreFocus();
-  assert.equal(document.activeElement, button);
-  document.body.removeChild(button);
-  document.body.removeChild(root);
-});
-
-test('adapter#restoreFocus does not restores the focus if never called adapter#saveFocus', () => {
-  const {root, component} = setupTest(true);
-  const button = bel`<button>Foo</button>`;
-  document.body.appendChild(button);
-  document.body.appendChild(root);
-  button.focus();
-  root.focus();
-  component.getDefaultFoundation().adapter_.restoreFocus();
-  assert.equal(document.activeElement, root);
-  document.body.removeChild(button);
-  document.body.removeChild(root);
-});
-
-test('adapter#isFocused returns whether the menu is focused', () => {
-  const {root, component} = setupTest(true);
-  document.body.appendChild(root);
-  root.focus();
-  assert.isOk(component.getDefaultFoundation().adapter_.isFocused());
-  document.body.removeChild(root);
-});
-
-test('adapter#focus focuses the menu', () => {
-  const {root, component} = setupTest(true);
-  document.body.appendChild(root);
-  component.getDefaultFoundation().adapter_.focus();
-  assert.equal(document.activeElement, root);
-  document.body.removeChild(root);
-});
-
-test('adapter#getFocusedItemIndex returns the item index of the focused menu element', () => {
-  const {root, component} = setupTest(true);
-  const item = root.querySelectorAll('[role="menuitem"]')[1];
-  document.body.appendChild(root);
-  item.focus();
-  assert.equal(component.getDefaultFoundation().adapter_.getFocusedItemIndex(), 1);
-  root.focus();
-  assert.equal(component.getDefaultFoundation().adapter_.getFocusedItemIndex(), -1, 'missing index = -1');
-  document.body.removeChild(root);
-});
-
-test('adapter#focusItemAtIndex focuses the right menu element', () => {
-  const {root, component} = setupTest(true);
-  const item1 = root.querySelectorAll('[role="menuitem"]')[1];
-  const item2 = root.querySelectorAll('[role="menuitem"]')[0];
-  document.body.appendChild(root);
-  component.getDefaultFoundation().adapter_.focusItemAtIndex(1);
-  assert.equal(document.activeElement, item1);
-  component.getDefaultFoundation().adapter_.focusItemAtIndex(0);
-  assert.equal(document.activeElement, item2);
-  document.body.removeChild(root);
-});
-
-test('adapter#hasAnchor returns true if it has an anchor', () => {
-  const anchor = bel`<div class="mdc-menu-anchor"></div>`;
-  const {root, component} = setupTest(true);
-  anchor.appendChild(root);
-  assert.isOk(component.getDefaultFoundation().adapter_.hasAnchor());
-});
-
-test('adapter#hasAnchor returns false if it does not have an anchor', () => {
-  const notAnAnchor = bel`<div></div>`;
-  const {root, component} = setupTest(true);
-  notAnAnchor.appendChild(root);
-  assert.isNotOk(component.getDefaultFoundation().adapter_.hasAnchor());
-});
-
-test('adapter#getAnchorDimensions returns the dimensions of the anchor container', () => {
-  const anchor = bel`<div class="mdc-menu-anchor" style="height: 21px; width: 42px;"></div>`;
-  const {root, component} = setupTest(true);
-  anchor.appendChild(root);
-  document.body.appendChild(anchor);
-  assert.equal(component.getDefaultFoundation().adapter_.getAnchorDimensions().height, 21);
-  assert.equal(component.getDefaultFoundation().adapter_.getAnchorDimensions().width, 42);
-  document.body.removeChild(anchor);
-});
-
-test('adapter#getWindowDimensions returns the dimensions of the window', () => {
-  const {root, component} = setupTest(true);
-  document.body.appendChild(root);
-  assert.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().height, window.innerHeight);
-  assert.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().width, window.innerWidth);
-  document.body.removeChild(root);
-});
-
-test('adapter#isRtl returns true for RTL documents', () => {
-  const anchor = bel`<div dir="rtl" class="mdc-menu-anchor"></div>`;
-  const {root, component} = setupTest(true);
-  anchor.appendChild(root);
-  document.body.appendChild(anchor);
-  assert.isOk(component.getDefaultFoundation().adapter_.isRtl());
-  document.body.removeChild(anchor);
-});
-
-test('adapter#isRtl returns false for explicit LTR documents', () => {
-  const anchor = bel`<div dir="ltr" class="mdc-menu-anchor"></div>`;
-  const {root, component} = setupTest(true);
-  anchor.appendChild(root);
-  document.body.appendChild(anchor);
-  assert.isNotOk(component.getDefaultFoundation().adapter_.isRtl());
-  document.body.removeChild(anchor);
-});
-
-test('adapter#isRtl returns false for implicit LTR documents', () => {
-  const anchor = bel`<div class="mdc-menu-anchor"></div>`;
-  const {root, component} = setupTest(true);
-  anchor.appendChild(root);
-  document.body.appendChild(anchor);
-  assert.isNotOk(component.getDefaultFoundation().adapter_.isRtl());
-  document.body.removeChild(anchor);
-});
-
-test('adapter#setTransformOrigin sets the correct transform origin on the menu element', () => {
-  const {root, component} = setupTest();
-  // Write expected value and read canonical value from browser.
-  root.style.webkitTransformOrigin = root.style.transformOrigin = 'left top 10px';
-  const expected = root.style.getPropertyValue(`${getTransformPropertyName(window)}-origin`);
-  // Reset value.
-  root.style.webkitTransformOrigin = root.style.transformOrigin = '';
-
-  component.getDefaultFoundation().adapter_.setTransformOrigin('left top 10px');
-  assert.equal(root.style.getPropertyValue(`${getTransformPropertyName(window)}-origin`), expected);
-});
-
-test('adapter#setPosition sets the correct position on the menu element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setPosition({top: '10px', left: '11px'});
-  assert.equal(root.style.top, '10px');
-  assert.equal(root.style.left, '11px');
-  component.getDefaultFoundation().adapter_.setPosition({bottom: '10px', right: '11px'});
-  assert.equal(root.style.bottom, '10px');
-  assert.equal(root.style.right, '11px');
 });
