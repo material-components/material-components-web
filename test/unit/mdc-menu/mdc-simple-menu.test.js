@@ -20,7 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCSimpleMenu} from '../../../packages/mdc-menu/simple';
-import {strings} from '../../../packages/mdc-menu/simple/constants';
+import {strings, Corner} from '../../../packages/mdc-menu/simple/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu/util';
 
 function getFixture(open) {
@@ -79,13 +79,13 @@ test('hide closes the menu', () => {
 test('setAnchorCorner', () => {
   const {component} = setupTest();
   component.setAnchorCorner(Corner.TOP_START);
-  // Method only sets the private variable, nothing to verify.
+  // The method sets private variable on the foundation, nothing to verify.
 });
 
-test('setAnchorCorner', () => {
+test('setAnchorMargin', () => {
   const {component} = setupTest();
   component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
-  // Method only sets the private variable, nothing to verify.
+  // The method sets private variable on the foundation, nothing to verify.
 });
 
 test('items returns all menu items', () => {
