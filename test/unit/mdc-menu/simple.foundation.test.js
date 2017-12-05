@@ -63,6 +63,7 @@ test('exports numbers', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
 <<<<<<< HEAD
+<<<<<<< HEAD
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget',
     'eventTargetHasClass', 'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions',
     'setScale', 'setInnerScale', 'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler',
@@ -71,6 +72,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'restoreFocus', 'isFocused', 'focus', 'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin',
     'setPosition', 'getAccurateTime',
 =======
+=======
+>>>>>>> 97467c4b89a841c70c74f70896b6cf38494f9f17
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'eventTargetHasClass',
     'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale',
     'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
@@ -78,7 +81,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
     'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition', 'setMaxHeight',
     'getAccurateTime',
+<<<<<<< HEAD
 >>>>>>> WIP (changed correct test file).
+=======
+>>>>>>> 97467c4b89a841c70c74f70896b6cf38494f9f17
   ]);
 });
 
