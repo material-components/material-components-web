@@ -76,6 +76,18 @@ test('hide closes the menu', () => {
   assert.isNotOk(component.open);
 });
 
+test('setAnchorCorner', () => {
+  const {component} = setupTest();
+  component.setAnchorCorner(Corner.TOP_START);
+  // Method only sets the private variable, nothing to verify.
+});
+
+test('setAnchorCorner', () => {
+  const {component} = setupTest();
+  component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
+  // Method only sets the private variable, nothing to verify.
+});
+
 test('items returns all menu items', () => {
   const {root, component} = setupTest();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
@@ -398,4 +410,10 @@ test('adapter#setPosition sets the correct position on the menu element', () => 
   component.getDefaultFoundation().adapter_.setPosition({bottom: '10px', right: '11px'});
   assert.equal(root.style.bottom, '10px');
   assert.equal(root.style.right, '11px');
+});
+
+test('adapter#setMaxHeight sets the maxHeight style on the menu element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setMaxHeight('100px');
+  assert.equal(root.style.maxHeight, '100px');
 });
