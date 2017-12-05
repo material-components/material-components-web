@@ -79,7 +79,7 @@ Mixin | Description
 
 Mixin | Description
 --- | ---
-`mdc-states($color, $has-nested-focusable-element)` | Adds state and ripple styles for the indicated color, deciding opacities based on whether the passed color is light or dark. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states($color, $activated-color, $selected-color, $has-nested-focusable-element)` | Adds state and ripple styles for the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$activated-color` and `$selected-color` are optional, since not all components support these states; if present, they will emit styles for `--activated` or `--selected` modifiers, respectively.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 
 ##### Advanced States Mixins
 
