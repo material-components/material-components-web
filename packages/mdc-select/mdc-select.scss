@@ -95,6 +95,12 @@
     white-space: nowrap;
     overflow: hidden;
   }
+
+  option.mdc-list-item {
+    @include mdc-theme-dark {
+      background-color: #424242;
+    }
+  }
 }
 
 .mdc-select--open {
