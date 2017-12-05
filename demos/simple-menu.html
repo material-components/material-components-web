@@ -60,6 +60,7 @@
 
       .mdc-theme--dark {
         background-color: #333;
+        color: #ddd;
       }
 
       .mdc-menu-anchor {
@@ -114,36 +115,24 @@
 
         <div class="demo-controls-container">
           <div class="demo-controls">
-            <p>
-              Button position:
-              <div class="">
-                <label><input type="radio" name="position" value="top left" checked>Top left</label>
-              </div>
-
-              <div class="">
-                <label><input type="radio" name="position" value="top right">Top right</label>
-              </div>
-
-              <div class="">
-              <label>
-                <input type="radio" name="position" value="bottom left">
-                Bottom left
-              </label>
+            <p>Button position:</p>
+            <div>
+              <label><input type="radio" name="position" value="top left" checked> Top left</label>
+            </div>
+            <div>
+              <label><input type="radio" name="position" value="top right"> Top right</label>
+            </div>
+            <div>
+              <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
+            </div>
+            <div>
+              <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
             </div>
 
-            <div class="">
-              <label>
-                <input type="radio" name="position" value="bottom right">
-                Bottom right
-              </label>
-            </div>
-            </p>
             <p>
-              <label>
-                <input type="checkbox" name="dark">
-                Dark mode
-              </label>
+              <label><input type="checkbox" name="dark"> Dark mode</label>
             </p>
+
             <div>
               <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
             </div>
