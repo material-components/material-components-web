@@ -23,6 +23,8 @@ import {MDCTextFieldAdapter} from './adapter';
 import MDCTextFieldFoundation from './foundation';
 import {MDCTextFieldBottomLine} from './bottom-line';
 import {MDCTextFieldHelperText} from './helper-text';
+import {MDCTextFieldInput} from './input';
+
 
 /**
  * @extends {MDCComponent<!MDCTextFieldFoundation>}
@@ -34,7 +36,7 @@ class MDCTextField extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?Element} */
+    /** @private {!MDCTextFieldInput} */
     this.input_;
     /** @private {?Element} */
     this.label_;
@@ -61,11 +63,15 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCRipple.
    * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
    * creates a new MDCTextFieldBottomLine.
+   * @param {(function(!Element): !MDCTextFieldInput)=} inputFactory A function which
+   * creates a new MDCTextFieldInput.
    */
   initialize(
     rippleFactory = (el) => new MDCRipple(el),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
-    this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
+    inputFactory = (el) => new MDCTextFieldInput(el)) {
+    const inputElement = this.root_.querySelector(strings.INPUT_SELECTOR);
+    this.input_ = inputFactory(inputElement);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.ripple = null;
     if (this.root_.classList.contains(cssClasses.BOX)) {
@@ -77,8 +83,8 @@ class MDCTextField extends MDCComponent {
         this.bottomLine_ = bottomLineFactory(bottomLineElement);
       }
     };
-    if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
-      const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
+    if (inputElement.hasAttribute(strings.ARIA_CONTROLS)) {
+      const helperTextElement = document.getElementById(inputElement.getAttribute(strings.ARIA_CONTROLS));
       if (helperTextElement) {
         this.helperText_ = new MDCTextFieldHelperText(helperTextElement);
       }
@@ -98,15 +104,8 @@ class MDCTextField extends MDCComponent {
     if (this.helperText_) {
       this.helperText_.destroy();
     }
+    this.input_.destroy();
     super.destroy();
-  }
-
-  /**
-   * Initiliazes the Text Field's internal state based on the environment's
-   * state.
-   */
-  initialSyncWithDom() {
-    this.disabled = this.input_.disabled;
   }
 
   /**
@@ -157,10 +156,19 @@ class MDCTextField extends MDCComponent {
           label.classList.remove(className);
         }
       },
+      labelHasClass: (className) => {
+        const label = this.label_;
+        if (label) {
+          return label.classList.contains(className);
+        }
+        return false;
+      },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
+      registerInputEventHandler: (evtType, handler) => this.input_.listen(evtType, handler),
+      deregisterInputEventHandler: (evtType, handler) => this.input_.unlisten(evtType, handler),
       registerBottomLineEventHandler: (evtType, handler) => {
         if (this.bottomLine_) {
           this.bottomLine_.listen(evtType, handler);
@@ -183,8 +191,10 @@ class MDCTextField extends MDCComponent {
         }
         return undefined;
       },
+      getInputFoundation: () => {
+        return this.input_.foundation;
+      },
     },
-    this.getInputAdapterMethods_(),
     this.getIconAdapterMethods_())));
   }
 
@@ -200,21 +210,6 @@ class MDCTextField extends MDCComponent {
           this.icon_.setAttribute(name, value);
         }
       },
-    };
-  }
-
-  /**
-   * @return {!{
-   *   registerInputInteractionHandler: function(string, function()): undefined,
-   *   deregisterInputInteractionHandler: function(string, function()): undefined,
-   *   getNativeInput: function(): ?Element,
-   * }}
-   */
-  getInputAdapterMethods_() {
-    return {
-      registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
-      deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
-      getNativeInput: () => this.input_,
     };
   }
 }
