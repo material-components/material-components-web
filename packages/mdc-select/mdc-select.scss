@@ -187,6 +187,8 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   // is an actual <select> element (and as such gets focus), this
   // will only apply to CSS only selects
   &__surface:focus ~ .mdc-select__bottom-line {
+    @include mdc-theme-prop(background-color, primary);
+
     transform: scaleY(2);
   }
 }
