@@ -285,8 +285,8 @@ can be controlled by passing a ripple factory argument to the constructor.
 
 ```js
 const textFieldBoxEl = document.querySelector('.mdc-text-field--box');
-const textField = new MDCTextField(textFieldBoxEl, /* foundation */ undefined, (el, foundation) => {
-  // Optionally do something with el or foundation...
+const textField = new MDCTextField(textFieldBoxEl, /* MDCTextFieldFoundation */ undefined, (el, foundation) => {
+  // Optionally do something with the element or the Ripple foundation...
   return new MDCRipple(el, foundation);
 });
 ```
