@@ -135,11 +135,11 @@ figure {
 
 .mdc-button.secondary-text-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
+  @include mdc-states($mdc-theme-secondary);
 
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
+    @include mdc-states($mdc-theme-secondary);
   }
 }
 
@@ -154,12 +154,12 @@ figure {
 .mdc-button.secondary-stroked-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-button-stroke-color($mdc-theme-secondary);
-  @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
+  @include mdc-states($mdc-theme-secondary);
 
   @include mdc-theme-dark(".mdc-button") {
     @include mdc-button-ink-color($mdc-theme-secondary);
     @include mdc-button-stroke-color($mdc-theme-secondary);
-    @include mdc-ripple-color($mdc-theme-secondary, $mdc-unfilled-button-ripple-opacity);
+    @include mdc-states($mdc-theme-secondary);
   }
 }
 
@@ -400,15 +400,15 @@ figure {
 }
 
 .demo-ripple-surface--primary {
-  @include mdc-ripple-color(primary, $mdc-ripple-pressed-dark-ink-opacity);
+  @include mdc-states(primary);
 }
 
 .demo-ripple-surface--secondary {
-  @include mdc-ripple-color(secondary, $mdc-ripple-pressed-dark-ink-opacity);
+  @include mdc-states(secondary);
 }
 
 .demo-ripple-surface--custom {
-  @include mdc-ripple-color($demo-custom-color, $mdc-ripple-pressed-dark-ink-opacity);
+  @include mdc-states($demo-custom-color);
 }
 
 .mdc-ripple-surface[data-mdc-ripple-is-unbounded] {

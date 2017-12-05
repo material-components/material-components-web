@@ -25,7 +25,7 @@
   @include mdc-button-corner-radius(2px);
   @include mdc-button-container-fill-color(transparent);
   @include mdc-button-ink-color(primary);
-  @include mdc-ripple-color(primary, $mdc-unfilled-button-ripple-opacity);
+  @include mdc-states(primary);
 }
 
 .mdc-button--raised,
@@ -33,7 +33,7 @@
   @include mdc-button--filled_;
   @include mdc-button-container-fill-color(primary);
   @include mdc-button-ink-color(text-primary-on-primary);
-  @include mdc-ripple-color(text-primary-on-primary, $mdc-filled-button-ripple-opacity);
+  @include mdc-states(text-primary-on-primary);
 }
 
 .mdc-button--raised {
