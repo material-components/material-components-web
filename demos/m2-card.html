@@ -507,6 +507,11 @@
             this.autoSetColumnClass();
           }
 
+          removeDraggingStateElements_() {
+            this.dropSpacerEl.remove();
+            this.dropTargetEl.remove();
+          }
+
           isLTR() {
             return isLTR(this.rootEl);
           }
@@ -533,6 +538,7 @@
             this.resetCardOffsets(this.cards);
 
             if (!dropZone) {
+              this.removeDraggingStateElements_();
               return;
             }
 
@@ -557,9 +563,7 @@
 
           handleDragStop_(e) {
             this.resetCardOffsets(this.cards);
-
-            this.dropSpacerEl.remove();
-            this.dropTargetEl.remove();
+            this.removeDraggingStateElements_();
 
             if (this.activeDropZone) {
               this.dropItLikeItsHot(e);
