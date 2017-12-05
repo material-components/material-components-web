@@ -402,6 +402,7 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
+| `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. |
 | `addBodyClass(className: string) => void` | Adds a class to the body. |
 | `removeBodyClass(className: string) => void` | Removes a class from the body. |
 | `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-temporary-drawer__drawer` drawer container). |
