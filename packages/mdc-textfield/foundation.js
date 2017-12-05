@@ -64,7 +64,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * @param {!MDCTextFieldAdapter=} adapter
-   * @param {!FoundationMapType=} foundationMap Map of all subcomponents to subfoundations.
+   * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
   constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({}),
     foundationMap = /** @type {!FoundationMapType} */ ({})) {

@@ -33,8 +33,8 @@ let NativeInputType;
 
 /**
  * @typedef {{
- *   bottomLine: (!MDCTextFieldBottomLineFoundation | undefined),
- *   helperText: (!MDCTextFieldHelperTextFoundation | undefined)
+ *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined)
  * }}
  */
 let FoundationMapType;
