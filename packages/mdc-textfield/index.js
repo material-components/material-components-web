@@ -26,6 +26,7 @@ import MDCTextFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
 import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
+import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon';
 /* eslint-enable no-unused-vars */
 
 /**
@@ -48,7 +49,7 @@ class MDCTextField extends MDCComponent {
     this.bottomLine_;
     /** @private {?MDCTextFieldHelperText} */
     this.helperText_;
-    /** @private {?Element} */
+    /** @private {?MDCTextFieldIcon} */
     this.icon_;
   }
 
@@ -95,7 +96,10 @@ class MDCTextField extends MDCComponent {
       }
     }
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
-      this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
+      const iconElement = this.root_.querySelector(strings.ICON_SELECTOR);
+      if (iconElement) {
+        this.icon_ = new MDCTextFieldIcon(iconElement);
+      }
     };
   }
 
@@ -169,10 +173,8 @@ class MDCTextField extends MDCComponent {
             label.classList.remove(className);
           }
         },
-        eventTargetHasClass: (target, className) => target.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-        notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
         registerBottomLineEventHandler: (evtType, handler) => {
           if (this.bottomLine_) {
             this.bottomLine_.listen(evtType, handler);
@@ -184,24 +186,8 @@ class MDCTextField extends MDCComponent {
           }
         },
       },
-      this.getInputAdapterMethods_(),
-      this.getIconAdapterMethods_())),
+      this.getInputAdapterMethods_())),
       this.getFoundationMap_());
-  }
-
-  /**
-   * @return {!{
-   *   setIconAttr: function(string, string): undefined,
-   * }}
-   */
-  getIconAdapterMethods_() {
-    return {
-      setIconAttr: (name, value) => {
-        if (this.icon_) {
-          this.icon_.setAttribute(name, value);
-        }
-      },
-    };
   }
 
   /**
@@ -227,6 +213,7 @@ class MDCTextField extends MDCComponent {
     return {
       bottomLine: this.bottomLine_ ? this.bottomLine_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
+      icon: this.icon_ ? this.icon_.foundation : undefined,
     };
   }
 }

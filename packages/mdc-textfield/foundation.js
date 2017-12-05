@@ -49,11 +49,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       removeClass: () => {},
       addClassToLabel: () => {},
       removeClassFromLabel: () => {},
-      setIconAttr: () => {},
-      eventTargetHasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
-      notifyIconAction: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
       registerBottomLineEventHandler: () => {},
@@ -74,6 +71,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.bottomLine_ = foundationMap.bottomLine;
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
+    /** @type {!MDCTextFieldIconFoundation|undefined} */
+    this.icon_ = foundationMap.icon;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -141,13 +140,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
     this.receivedUserInput_ = true;
 
-    const {target, type} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextFieldFoundation.cssClasses;
-    const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
-    const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
-
-    if (targetIsIcon && eventTriggersNotification) {
-      this.adapter_.notifyIconAction();
+    if (this.icon_) {
+      this.icon_.handleTextFieldInteraction(evt);
     }
   }
 
@@ -266,10 +260,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (disabled) {
       this.adapter_.addClass(DISABLED);
       this.adapter_.removeClass(INVALID);
-      this.adapter_.setIconAttr('tabindex', '-1');
     } else {
       this.adapter_.removeClass(DISABLED);
-      this.adapter_.setIconAttr('tabindex', '0');
+    }
+    if (this.icon_) {
+      this.icon_.setDisabled(disabled);
     }
   }
 
