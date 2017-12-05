@@ -23,7 +23,7 @@ import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCTextField, MDCTextFieldFoundation} from '../../../packages/mdc-textfield';
 import {MDCTextFieldHelperText} from '../../../packages/mdc-textfield/helper-text/index';
 
-const {cssClasses, strings} = MDCTextFieldFoundation;
+const {cssClasses} = MDCTextFieldFoundation;
 
 const getFixture = () => bel`
   <div class="mdc-text-field">
@@ -103,10 +103,9 @@ test('#destroy accounts for ripple nullability', () => {
 
 function setupTest() {
   const root = getFixture();
-  const icon = root.querySelector('.mdc-text-field__icon');
   const bottomLine = new FakeBottomLine();
   const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el), () => bottomLine);
-  return {root, bottomLine, icon, component};
+  return {root, bottomLine, component};
 }
 
 test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
@@ -156,13 +155,6 @@ test('set helperTextContent has no effect when no helper text element is present
   assert.doesNotThrow(() => {
     component.helperTextContent = 'foo';
   });
-});
-
-test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
-  const {icon, component} = setupTest();
-
-  component.getDefaultFoundation().adapter_.setIconAttr('tabindex', '-1');
-  assert.equal(icon.getAttribute('tabindex'), '-1');
 });
 
 test('#adapter.registerBottomLineEventHandler adds event listener to bottom line', () => {
@@ -261,14 +253,4 @@ test('#adapter.getNativeInput returns the component input element', () => {
     component.getDefaultFoundation().adapter_.getNativeInput(),
     root.querySelector('.mdc-text-field__input')
   );
-});
-
-test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {
-  const {component} = setupTest();
-  const handler = td.func('leadingHandler');
-
-  component.listen(strings.ICON_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyIconAction();
-
-  td.verify(handler(td.matchers.anything()));
 });

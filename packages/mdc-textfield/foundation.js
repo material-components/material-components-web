@@ -18,8 +18,10 @@
 import MDCFoundation from '@material/base/foundation';
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 
 

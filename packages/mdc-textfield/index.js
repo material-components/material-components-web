@@ -95,12 +95,10 @@ class MDCTextField extends MDCComponent {
         this.helperText_ = new MDCTextFieldHelperText(helperTextElement);
       }
     }
-    if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
-      const iconElement = this.root_.querySelector(strings.ICON_SELECTOR);
-      if (iconElement) {
-        this.icon_ = new MDCTextFieldIcon(iconElement);
-      }
-    };
+    const iconElement = this.root_.querySelector(strings.ICON_SELECTOR);
+    if (iconElement) {
+      this.icon_ = new MDCTextFieldIcon(iconElement);
+    }
   }
 
   destroy() {

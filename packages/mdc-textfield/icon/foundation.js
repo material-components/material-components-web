@@ -57,7 +57,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
 
   /**
    * Sets the content of the helper text field.
-   * @param {string} content
+   * @param {boolean} disabled
    */
   setDisabled(disabled) {
     if (disabled) {
