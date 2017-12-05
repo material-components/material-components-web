@@ -16,3 +16,69 @@
 
 @import "./common";
 @import "../packages/mdc-icon-toggle/mdc-icon-toggle";
+@import "../packages/mdc-ripple/mixins";
+
+.mdc-theme--dark {
+  background: #303030;
+}
+
+.demo-wrapper {
+  margin-left: 1rem;
+}
+
+.example {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: left;
+  justify-content: left;
+}
+
+.toggle-example {
+  min-width: 240px;
+  padding: 24px;
+  margin: 24px;
+}
+
+#demo-color-combos {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.demo-color-combo {
+  width: 250px;
+  padding: 1rem;
+  border-radius: 4px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+#light-on-bg {
+  background-color: #3e82f7;
+}
+#light-on-bg .mdc-icon-toggle {
+  color: white;
+  @include mdc-states-base-color(white);
+  @include mdc-states-hover-opacity(.1);
+  @include mdc-states-focus-opacity(.3);
+  @include mdc-states-press-opacity(.4);
+}
+
+#dark-on-bg {
+  background-color: #00bcd6;
+}
+#dark-on-bg .mdc-icon-toggle {
+  color: black;
+  @include mdc-states(black);
+}
+
+#custom-on-dark .mdc-icon-toggle {
+  color: #de442c;
+  @include mdc-states-base-color(#de442c);
+  @include mdc-states-hover-opacity(.09);
+  @include mdc-states-focus-opacity(.26);
+  @include mdc-states-press-opacity(.35);
+}
