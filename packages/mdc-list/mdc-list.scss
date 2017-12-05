@@ -48,6 +48,7 @@ $mdc-list-side-padding: 16px;
     @include mdc-theme-prop(color, text-primary-on-dark);
   }
 
+  box-sizing: border-box;
   margin: 0;
   padding: 8px $mdc-list-side-padding;
 
@@ -73,6 +74,7 @@ $mdc-list-side-padding: 16px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  box-sizing: border-box;
   height: 48px;
 
   &__start-detail {
@@ -163,7 +165,7 @@ a.mdc-list-item {
   position: relative;
   // Cause the upgraded list item to cover the entirety of the list, causing ripples to emanate
   // across the entire list element.
-  width: 100%;
+  width: calc(100% + #{$mdc-list-side-padding * 2});
   padding: 0 $mdc-list-side-padding;
   overflow: hidden;
 
