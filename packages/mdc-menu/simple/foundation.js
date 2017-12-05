@@ -15,9 +15,19 @@
  * limitations under the License.
  */
 
+/**
+ * @typedef {{
+ *   top: number,
+ *   right: number,
+ *   bottom: number,
+ *   left: number
+ * }}
+ */
+let AnchorMargin;
+
 import MDCFoundation from '@material/base/foundation';
-import MDCSimpleMenuAdapter from './adapter';
-import {cssClasses, strings, numbers} from './constants';
+import {MDCSimpleMenuAdapter} from './adapter';
+import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
 import {clamp, bezierProgress} from '../util';
 
 /**
@@ -77,6 +87,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       isRtl: () => false,
       setTransformOrigin: () => {},
       setPosition: () => {},
+      setMaxHeight: () => {},
       getAccurateTime: () => 0,
     });
   }
@@ -117,6 +128,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     this.startTime_;
     /** @private {number} */
     this.itemHeight_;
+
+    /** @private {Corner} */
+    this.anchorCorner_ = Corner.TOP_START;
+    /** @private {AnchorMargin} */
+    this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
   }
 
   init() {
@@ -147,6 +163,20 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('keyup', this.keyupHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
+  }
+
+  /**
+   * @param {Corner} corner Default anchor corner alignment of top-left menu corner.
+   */
+  setAnchorCorner(corner) {
+    this.anchorCorner_ = corner;
+  }
+
+  /**
+   * @param {AnchorMargin} margin 4-plet of margins from anchor.
+   */
+  setAnchorMargin(margin) {
+    this.anchorMargin_ = margin;
   }
 
   /**
@@ -192,7 +222,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     const time = this.adapter_.getAccurateTime();
     const {TRANSITION_DURATION_MS, TRANSITION_X1, TRANSITION_Y1, TRANSITION_X2, TRANSITION_Y2,
       TRANSITION_SCALE_ADJUSTMENT_X, TRANSITION_SCALE_ADJUSTMENT_Y} = MDCSimpleMenuFoundation.numbers;
-    const currentTime = clamp((time - this.startTime_) / TRANSITION_DURATION_MS);
+    const currentTime = clamp((time - this.startTime_) / (TRANSITION_DURATION_MS));
 
     // Animate X axis very slowly, so that only the Y axis animation is visible during fade-out.
     let currentTimeX = clamp(
@@ -411,36 +441,78 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
 
     const anchor = this.adapter_.getAnchorDimensions();
     const windowDimensions = this.adapter_.getWindowDimensions();
-
-    const topOverflow = anchor.top + this.dimensions_.height - windowDimensions.height;
-    const bottomOverflow = this.dimensions_.height - anchor.bottom;
+    const topShift = (this.anchorCorner_ & CornerBit.BOTTOM) ?
+      (anchor.height + this.anchorMargin_.bottom) : this.anchorMargin_.top;
+    const topOverflow = anchor.top + topShift + this.dimensions_.height
+      - windowDimensions.height;
+    const bottomShift = (this.anchorCorner_ & CornerBit.BOTTOM) ?
+      this.anchorMargin_.bottom : (anchor.height - this.anchorMargin_.bottom);
+    const bottomOverflow = this.dimensions_.height - anchor.bottom - bottomShift;
+    let menuMaxHeight = this.dimensions_.height;
     const extendsBeyondTopBounds = topOverflow > 0;
-
     if (extendsBeyondTopBounds) {
       if (bottomOverflow < topOverflow) {
         vertical = 'bottom';
+        menuMaxHeight -= (bottomOverflow > 0) ? bottomOverflow : 0;
+      } else {
+        menuMaxHeight -= (topOverflow > 0) ? topOverflow : 0;
       }
     }
 
-    const leftOverflow = anchor.left + this.dimensions_.width - windowDimensions.width;
-    const rightOverflow = this.dimensions_.width - anchor.right;
+    const leftOverflow = anchor.left + this.anchorMargin_.left + this.dimensions_.width - windowDimensions.width;
+    const rightOverflow = this.dimensions_.width - anchor.right - this.anchorMargin_.right;
     const extendsBeyondLeftBounds = leftOverflow > 0;
     const extendsBeyondRightBounds = rightOverflow > 0;
-
+    const flipRtl = (this.anchorCorner_ & CornerBit.FLIP_RTL & CornerBit.RIGHT);
     if (this.adapter_.isRtl()) {
       // In RTL, we prefer to open from the right.
-      horizontal = 'right';
+      horizontal = flipRtl ? 'left' : 'right';
       if (extendsBeyondRightBounds && leftOverflow < rightOverflow) {
-        horizontal = 'left';
+        horizontal = flipRtl ? 'right' : 'left';
       }
     } else if (extendsBeyondLeftBounds && rightOverflow < leftOverflow) {
-      horizontal = 'right';
+      horizontal = flipRtl ? 'left' : 'right';
     }
 
     const position = {
       [horizontal]: '0',
       [vertical]: '0',
     };
+
+    // Apply offset and flip offsets for bottom and right positioning.
+    if (vertical === 'bottom') {
+      const bottomOffset = (this.anchorCorner_ & CornerBit.BOTTOM) ?
+        anchor.height - this.anchorMargin_.top : this.anchorMargin_.bottom;
+      position[vertical] = bottomOffset + '';
+      menuMaxHeight = anchor.bottom - bottomOffset;
+    } else {
+      position[vertical] = topShift + '';
+    }
+
+    if (horizontal === 'right') {
+      const rightOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
+        anchor.width - this.anchorMargin_.left : this.anchorMargin_.right;
+      position[horizontal] = rightOffset + '';
+    } else {
+      const leftOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
+        anchor.width - this.anchorMargin_.right : this.anchorMargin_.left;
+      position[horizontal] = leftOffset + '';
+    }
+
+    if (position[horizontal] != '0') {
+      position[horizontal] += 'px';
+    }
+
+    if (position[vertical] != '0') {
+      position[vertical] += 'px';
+    }
+
+    // Set max height.
+    if (menuMaxHeight != this.dimensions_.height) {
+      this.adapter_.setMaxHeight(`${menuMaxHeight}px`);
+    } else {
+      this.adapter_.setMaxHeight('');
+    }
 
     this.adapter_.setTransformOrigin(`${vertical} ${horizontal}`);
     this.adapter_.setPosition(position);
@@ -496,4 +568,4 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 }
 
-export default MDCSimpleMenuFoundation;
+export {MDCSimpleMenuFoundation, AnchorMargin};
