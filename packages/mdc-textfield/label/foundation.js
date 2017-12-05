@@ -50,7 +50,7 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   }
 
   /** Makes the label float above the text field. */
-  floatLabel() {
+  floatAbove() {
     this.adapter_.addClass(cssClasses.LABEL_FLOAT_ABOVE);
     this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
   }
@@ -58,12 +58,12 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   /**
    * Deactivates the label's focus state based on whether the text
    * field input is empty.
-   * @param {boolean} hasEmptyInput
+   * @param {boolean} inputIsEmpty
    */
-  deactivateFocus(hasEmptyInput) {
+  deactivateFocus(inputIsEmpty) {
     this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
 
-    if (hasEmptyInput) {
+    if (inputIsEmpty) {
       this.adapter_.removeClass(cssClasses.LABEL_FLOAT_ABOVE);
     }
   }

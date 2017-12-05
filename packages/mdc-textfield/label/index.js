@@ -34,7 +34,7 @@ class MDCTextFieldLabel extends MDCComponent {
   }
 
   /**
-   * @return {MDCTextFieldLabelFoundation}.
+   * @return {!MDCTextFieldLabelFoundation}.
    */
   get foundation() {
     return this.foundation_;
