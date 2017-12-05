@@ -20,7 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCSimpleMenu} from '../../../packages/mdc-menu/simple';
-import {strings} from '../../../packages/mdc-menu/simple/constants';
+import {strings, Corner} from '../../../packages/mdc-menu/simple/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu/util';
 
 function getFixture(open) {
@@ -74,6 +74,18 @@ test('hide closes the menu', () => {
   component.open = true;
   component.hide();
   assert.isNotOk(component.open);
+});
+
+test('setAnchorCorner', () => {
+  const {component} = setupTest();
+  component.setAnchorCorner(Corner.TOP_START);
+  // The method sets private variable on the foundation, nothing to verify.
+});
+
+test('setAnchorMargin', () => {
+  const {component} = setupTest();
+  component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
+  // The method sets private variable on the foundation, nothing to verify.
 });
 
 test('items returns all menu items', () => {
@@ -398,4 +410,10 @@ test('adapter#setPosition sets the correct position on the menu element', () => 
   component.getDefaultFoundation().adapter_.setPosition({bottom: '10px', right: '11px'});
   assert.equal(root.style.bottom, '10px');
   assert.equal(root.style.right, '11px');
+});
+
+test('adapter#setMaxHeight sets the correct height on the menu element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setMaxHeight('100px');
+  assert.equal(root.style.maxHeight, '100px');
 });
