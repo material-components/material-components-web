@@ -61,9 +61,9 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
    */
   setDisabled(disabled) {
     if (disabled) {
-      this.adapter_.setIconAttr('tabindex', '-1');
+      this.adapter_.setAttr('tabindex', '-1');
     } else {
-      this.adapter_.setIconAttr('tabindex', '0');
+      this.adapter_.setAttr('tabindex', '0');
     }
   }
 
@@ -73,7 +73,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
    */
   handleTextFieldInteraction(evt) {
     const {target, type} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextFieldInputFoundation.cssClasses;
+    const {TEXT_FIELD_ICON} = MDCTextFieldIconFoundation.cssClasses;
     const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
     const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
     if (targetIsIcon && eventTriggersNotification) {

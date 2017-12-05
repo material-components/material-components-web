@@ -47,7 +47,7 @@ class MDCTextFieldIcon extends MDCComponent {
     return new MDCTextFieldIconFoundation(/** @type {!MDCTextFieldIconAdapter} */ (Object.assign({
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      notifyIconAction: () => this.emit(MDCTextFieldInputFoundation.strings.ICON_EVENT, {}),      
+      notifyIconAction: () => this.emit(MDCTextFieldIconFoundation.strings.ICON_EVENT, {}),
     })));
   }
 }
