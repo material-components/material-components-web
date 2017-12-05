@@ -159,15 +159,15 @@ $mdc-tab-with-icon-and-text-height: 72px;
 
 .mdc-tab.mdc-ripple-upgraded {
   @include mdc-ripple-surface;
-  @include mdc-ripple-color;
+  @include mdc-states;
   @include mdc-ripple-radius;
 
   @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-ripple-color(text-primary-on-dark, .16);
+    @include mdc-states(text-primary-on-dark);
   }
 
   .mdc-toolbar & {
-    @include mdc-ripple-color(text-primary-on-primary, .16);
+    @include mdc-states(text-primary-on-primary);
   }
 
   // stylelint-disable plugin/selector-bem-pattern
