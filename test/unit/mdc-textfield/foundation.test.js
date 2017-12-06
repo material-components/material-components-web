@@ -58,7 +58,9 @@ const setupTest = () => {
   });
   const icon = td.object({
     setDisabled: () => {},
-    handleTextFieldInteraction: () => {},
+    registerInteractionHandler: () => {},
+    deregisterInteractionHandler: () => {},
+    handleInteraction: () => {},
   });
   const foundationMap = {
     bottomLine: bottomLine,
@@ -358,28 +360,6 @@ test('on blur handles getNativeInput() not returning anything gracefully', () =>
   assert.doesNotThrow(blur);
 });
 
-test('on text field click proxies to icon event handler if event target is an icon', () => {
-  const {foundation, mockAdapter, icon} = setupTest();
-  const evt = {
-    target: {},
-    type: 'click',
-  };
-  const mockInput = {
-    disabled: false,
-  };
-  let iconEventHandler;
-
-  td.when(mockAdapter.getNativeInput()).thenReturn(mockInput);
-  td.when(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      iconEventHandler = handler;
-    });
-
-  foundation.init();
-  iconEventHandler(evt);
-  td.verify(icon.handleTextFieldInteraction(evt));
-});
-
 test('on transition end deactivates the bottom line if this.isFocused_ is false', () => {
   const {foundation, mockAdapter, bottomLine} = setupTest();
   const mockEvt = {
@@ -446,27 +426,4 @@ test('touchstart on the input sets the bottom line origin', () => {
   clickHandler(mockEvt);
 
   td.verify(bottomLine.setTransformOrigin(mockEvt));
-});
-
-test('interacting with text field does not emit custom events if input is disabled', () => {
-  const {foundation, mockAdapter, icon} = setupTest();
-  const mockEvt = {
-    target: {},
-    key: 'Enter',
-  };
-  const mockInput = {
-    disabled: true,
-  };
-  let textFieldInteraction;
-
-  td.when(mockAdapter.getNativeInput()).thenReturn(mockInput);
-  td.when(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)))
-    .thenDo((evt, handler) => {
-      textFieldInteraction = handler;
-    });
-
-  foundation.init();
-  textFieldInteraction(mockEvt);
-
-  td.verify(icon.handleTextFieldInteraction(mockEvt), {times: 0});
 });

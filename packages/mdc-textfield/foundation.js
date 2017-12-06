@@ -91,7 +91,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
-    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
+    this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Event): undefined} */
     this.bottomLineAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
   }
@@ -132,10 +132,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles all user interactions with the Text Field.
-   * @param {!Event} evt
+   * Handles user interactions with the Text Field.
    */
-  handleTextFieldInteraction(evt) {
+  handleTextFieldInteraction() {
     if (this.adapter_.getNativeInput().disabled) {
       return;
     }

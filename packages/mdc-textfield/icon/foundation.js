@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCTextFieldIconAdapter from './adapter';
-import {cssClasses, strings} from './constants';
+import {strings} from './constants';
 
 
 /**

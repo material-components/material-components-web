@@ -17,6 +17,7 @@
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
+import domEvents from 'dom-events';
 
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from '../../../packages/mdc-textfield/icon';
 
@@ -42,15 +43,24 @@ test('#adapter.setAttr adds a given attribute to the element', () => {
   assert.equal(root.getAttribute('aria-label'), 'foo');
 });
 
-test('#adapter.eventTargetHasClass returns true if classname exists for a given target element', () => {
+test('#adapter.registerInteractionHandler adds event listener for a given event to the element', () => {
   const {root, component} = setupTest();
-  root.classList.add('foo');
-  assert.equal(component.getDefaultFoundation().adapter_.eventTargetHasClass(root, 'foo'), true);
+  const handler = td.func('handler');
+  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
+  domEvents.emit(root, 'click');
+
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.eventTargetHasClass returns false if classname does not exist for a given target element', () => {
+test('#adapter.deregisterInteractionHandler removes event listener for a given event from the element', () => {
   const {root, component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.eventTargetHasClass(root, 'foo'), false);
+  const handler = td.func('handler');
+
+  root.addEventListener('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
+  domEvents.emit(root, 'click');
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('#adapter.notifyIconAction emits ' + `${MDCTextFieldIconFoundation.strings.ICON_EVENT}`, () => {

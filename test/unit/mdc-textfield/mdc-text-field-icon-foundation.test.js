@@ -21,13 +21,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTextFieldIconFoundation from '../../../packages/mdc-textfield/icon/foundation';
 
-const {cssClasses} = MDCTextFieldIconFoundation;
-
 suite('MDCTextFieldIconFoundation');
-
-test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextFieldIconFoundation);
-});
 
 test('exports strings', () => {
   assert.isOk('strings' in MDCTextFieldIconFoundation);
@@ -35,11 +29,28 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldIconFoundation, [
-    'setAttr', 'eventTargetHasClass', 'notifyIconAction',
+    'setAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'notifyIconAction',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCTextFieldIconFoundation);
+
+test('#init adds event listeners', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+
+  td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInteractionHandler('keydown', td.matchers.isA(Function)));
+});
+
+test('#destroy removes event listeners', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+
+  td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
+});
 
 test('#setDisabled sets icon tabindex to -1 when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -53,14 +64,19 @@ test('#setDisabled sets icon tabindex to 0 when set to false', () => {
   td.verify(mockAdapter.setAttr('tabindex', '0'));
 });
 
-test('#handleTextFieldInteraction notifies icon event if event target is an icon for click event', () => {
+test('on click notifies custom icon event', () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {
     target: {},
     type: 'click',
   };
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.TEXT_FIELD_ICON)).thenReturn(true);
+  let click;
 
-  foundation.handleTextFieldInteraction(evt);
+  td.when(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function))).thenDo((evtType, handler) => {
+    click = handler;
+  });
+
+  foundation.init();
+  click(evt);
   td.verify(mockAdapter.notifyIconAction());
 });
