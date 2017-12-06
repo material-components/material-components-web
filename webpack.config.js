@@ -148,6 +148,7 @@ if (!IS_DEV) {
       tabs: [path.resolve('./packages/mdc-tabs/index.js')],
       textfield: [path.resolve('./packages/mdc-textfield/index.js')],
       toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
+      tooltip: [path.resolve('./packages/mdc-tooltip/index.js')],
     },
     output: {
       path: OUT_PATH,
@@ -200,6 +201,7 @@ if (!IS_DEV) {
       'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
       'mdc.toolbar': path.resolve('./packages/mdc-toolbar/mdc-toolbar.scss'),
       'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
+      'mdc.tooltip': path.resolve('./packages/mdc-tooltip/mdc-tooltip.scss'),
     },
     output: {
       path: OUT_PATH,

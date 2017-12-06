@@ -42,6 +42,7 @@
     "@material/textfield": "^0.26.0",
     "@material/theme": "^0.25.0",
     "@material/toolbar": "^0.25.0",
-    "@material/typography": "^0.3.0"
+    "@material/typography": "^0.3.0",
+    "@material/tooltip": "^0.26.0"
   }
 }

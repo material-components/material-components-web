@@ -149,7 +149,8 @@
           "typography",
           "demos",
           "infrastructure",
-          "package"
+          "package",
+          "tooltip"
         ],
         "validate": true
       }

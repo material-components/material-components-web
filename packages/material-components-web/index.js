@@ -33,6 +33,7 @@ import * as snackbar from '@material/snackbar';
 import * as tabs from '@material/tabs';
 import * as textField from '@material/textfield';
 import * as toolbar from '@material/toolbar';
+import * as tooltip from '@material/tooltip';
 
 // Register all components
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
@@ -53,6 +54,7 @@ autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCToolbar', toolbar.MDCToolbar);
+autoInit.register('MDCTooltip', tooltip.MDCTooltip);
 
 // Export all components.
 export {
@@ -75,4 +77,5 @@ export {
   tabs,
   textField,
   toolbar,
+  tooltip,
 };
