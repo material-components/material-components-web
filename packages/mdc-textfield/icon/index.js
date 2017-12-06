@@ -48,7 +48,8 @@ class MDCTextFieldIcon extends MDCComponent {
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyIconAction: () => this.emit(MDCTextFieldIconFoundation.strings.ICON_EVENT, {}),
+      notifyIconAction: () => this.emit(
+        MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
     })));
   }
 }

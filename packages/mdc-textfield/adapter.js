@@ -122,20 +122,6 @@ class MDCTextFieldAdapter {
   deregisterBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Registers an event listener on the icon element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerIconInteractionHandler(evtType, handler) {}
-
-  /**
-   * Deregisters an event listener on the icon element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterIconInteractionHandler(evtType, handler) {}
-
-  /**
    * Returns an object representing the native text input element, with a
    * similar API shape. The object returned should include the value, disabled
    * and badInput properties, as well as the checkValidity() function. We never

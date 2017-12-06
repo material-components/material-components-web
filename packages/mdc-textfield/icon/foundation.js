@@ -26,11 +26,6 @@ import {cssClasses, strings} from './constants';
  */
 class MDCTextFieldIconFoundation extends MDCFoundation {
   /** @return enum {string} */
-  static get cssClasses() {
-    return cssClasses;
-  }
-
-  /** @return enum {string} */
   static get strings() {
     return strings;
   }

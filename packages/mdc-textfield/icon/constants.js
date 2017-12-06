@@ -20,9 +20,4 @@ const strings = {
   ICON_EVENT: 'MDCTextField:icon',
 };
 
-/** @enum {string} */
-const cssClasses = {
-  TEXT_FIELD_ICON: 'mdc-text-field__icon',
-};
-
-export {strings, cssClasses};
+export {strings};
