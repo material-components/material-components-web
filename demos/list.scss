@@ -16,5 +16,102 @@
 
 @import "./common";
 @import "../packages/mdc-checkbox/mdc-checkbox";
+@import "../packages/mdc-elevation/mixins";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-list/mdc-list";
+
+a.material-icons {
+  text-decoration: none;
+}
+
+.mdc-list,
+.mdc-list-group {
+  max-width: 600px;
+}
+
+.mdc-theme--dark {
+  background: #303030;
+}
+
+.mdc-theme--dark > h3 {
+  color: white;
+}
+
+.demo-list--icon-placeholders,
+.demo-list--with-avatars {
+  @include mdc-list-item-graphic-ink-color(white);
+  @include mdc-list-item-graphic-fill-color(text-icon-on-background);
+
+  @include mdc-theme-dark {
+    @include mdc-list-item-graphic-ink-color(#303030);
+    @include mdc-list-item-graphic-fill-color(text-icon-on-dark);
+  }
+}
+
+.demo-list--meta-placeholders {
+  .mdc-list-item__end-detail {
+    background-color: currentColor;
+  }
+}
+
+.demo-list--avatar-and-meta-icon {
+  @include mdc-list-item-meta-ink-color($material-color-pink-a200);
+
+  @include mdc-theme-dark {
+    @include mdc-list-item-meta-ink-color($material-color-pink-a200);
+  }
+}
+
+.demo-list-group--custom,
+.demo-list--custom {
+  @include mdc-list-divider-color($material-color-pink-50);
+}
+
+.demo-list--custom {
+  @include mdc-list-item-primary-text-ink-color($material-color-blue-600);
+  @include mdc-list-item-secondary-text-ink-color($material-color-purple-600);
+  @include mdc-list-item-graphic-fill-color($material-color-pink-400);
+  @include mdc-list-item-graphic-ink-color($material-color-pink-50);
+  @include mdc-list-item-meta-ink-color($material-color-orange-500);
+}
+
+.preamble {
+  max-width: 600px;
+  margin-top: 48px;
+  margin-left: 72px;
+}
+
+#demo-wrapper {
+  margin: 24px;
+}
+
+#demo-wrapper section {
+  padding: 24px;
+}
+
+#demo-wrapper .mdc-list, #demo-wrapper .mdc-list-group {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#demo-wrapper .mdc-list-group .mdc-list,
+#demo-wrapper .mdc-theme--dark .mdc-list,
+#demo-wrapper .mdc-theme--dark .mdc-list-group {
+  border: none;
+}
+
+#demo-wrapper h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.8em;
+  margin-left: 24px;
+}
+
+#demo-wrapper h3 {
+  margin-bottom: 0.8em;
+}
+
+.hero .mdc-list {
+  @include mdc-elevation(4);
+
+  background-color: white;
+  min-width: 320px;
+}
