@@ -34,14 +34,16 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
-    'addClass', 'removeClass', 'setAttr', 'rmAttr', 'computeBoundingRect',
+    'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel', 'addClassToBottomLine',
+    'removeClassFromBottomLine', 'setBottomLineAttr', 'addBodyClass', 'removeBodyClass',
+    'setAttr', 'rmAttr', 'computeBoundingRect',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'focus', 'makeTabbable',
     'makeUntabbable', 'getComputedStyleValue', 'setStyle', 'create2dRenderingContext',
     'setMenuElStyle', 'setMenuElAttr', 'rmMenuElAttr', 'getMenuElOffsetHeight', 'openMenu',
     'isMenuOpen', 'setSelectedTextContent', 'getNumberOfOptions', 'getTextForOptionAtIndex',
-    'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex', 'getOffsetTopForOptionAtIndex',
-    'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler', 'notifyChange',
-    'getWindowInnerHeight', 'getValueForOptionAtIndex', 'addBodyClass', 'removeBodyClass',
+    'getValueForOptionAtIndex', 'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex',
+    'getOffsetTopForOptionAtIndex', 'registerMenuInteractionHandler', 'deregisterMenuInteractionHandler',
+    'notifyChange', 'getWindowInnerHeight',
   ]);
 
   const renderingContext = MDCSelectFoundation.defaultAdapter.create2dRenderingContext();
@@ -169,9 +171,14 @@ test('#resize resizes the element to the longest-length option', () => {
     font: 'default font',
     measureText: () => {},
   });
+  const paddingRight = 16;
+  const paddingLeft = 20;
+
   td.when(mockAdapter.create2dRenderingContext()).thenReturn(ctx);
   td.when(mockAdapter.getComputedStyleValue('font')).thenReturn('16px Roboto');
   td.when(mockAdapter.getComputedStyleValue('letter-spacing')).thenReturn('2.5px');
+  td.when(mockAdapter.getComputedStyleValue('padding-right')).thenReturn(`${paddingRight}px`);
+  td.when(mockAdapter.getComputedStyleValue('padding-left')).thenReturn(`${paddingLeft}px`);
 
   // Add space on last option to test trimming
   const opts = ['longer', 'longest', '     short     '];
@@ -185,8 +192,10 @@ test('#resize resizes the element to the longest-length option', () => {
   foundation.init();
   foundation.resize();
   assert.equal(ctx.font, '16px Roboto');
-  // ceil(letter-spacing * 'longest'.length + longest measured width)
-  const expectedWidth = Math.ceil((2.5 * 7) + Math.max(...widths));
+  // ceil(letter-spacing * 'longest'.length + longest measured width + extra padding)
+  const expectedWidth = Math.ceil((2.5 * 7) + Math.max(...widths) +
+    paddingRight + paddingLeft);
+
   td.verify(mockAdapter.setStyle('width', `${expectedWidth}px`));
 });
 
@@ -196,11 +205,16 @@ test('#resize falls back to font-{family,size} if shorthand is not supported', (
     font: 'default font',
     measureText: () => {},
   });
+  const paddingRight = 16;
+  const paddingLeft = 20;
+
   td.when(mockAdapter.create2dRenderingContext()).thenReturn(ctx);
   td.when(mockAdapter.getComputedStyleValue('font')).thenReturn(null);
   td.when(mockAdapter.getComputedStyleValue('font-size')).thenReturn('16px');
   td.when(mockAdapter.getComputedStyleValue('font-family')).thenReturn('Roboto,sans-serif');
   td.when(mockAdapter.getComputedStyleValue('letter-spacing')).thenReturn('2.5px');
+  td.when(mockAdapter.getComputedStyleValue('padding-right')).thenReturn(`${paddingRight}px`);
+  td.when(mockAdapter.getComputedStyleValue('padding-left')).thenReturn(`${paddingLeft}px`);
 
   // Add space on last option to test trimming
   const opts = ['longer', 'longest', '     short     '];
@@ -214,8 +228,11 @@ test('#resize falls back to font-{family,size} if shorthand is not supported', (
   foundation.init();
   foundation.resize();
   assert.equal(ctx.font, '16px Roboto');
+
   // ceil(letter-spacing * 'longest'.length + longest measured width)
-  const expectedWidth = Math.ceil((2.5 * 7) + Math.max(...widths));
+  const expectedWidth = Math.ceil((2.5 * 7) + Math.max(...widths) +
+    paddingRight + paddingLeft);
+
   td.verify(mockAdapter.setStyle('width', `${expectedWidth}px`));
 });
 
@@ -252,4 +269,78 @@ test('#getValue() returns the value of the option at the selected index', () => 
 test('#getValue() returns an empty string if selected index < 0', () => {
   const {foundation} = setupTest();
   assert.equal(foundation.getValue(), '');
+});
+
+test('mousedown event sets bottom line origin', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clickLeftOffset = 50;
+  const mockPointerEvt = td.object({
+    clientX: 100,
+    clientY: 5,
+    target: {
+      getBoundingClientRect: () => {},
+    },
+  });
+  const ctx = td.object({
+    font: 'default font',
+    measureText: () => {},
+  });
+  const paddingRight = 16;
+  const paddingLeft = 20;
+  let pointerDownEventHandler;
+
+  td.when(mockPointerEvt.target.getBoundingClientRect()).thenReturn({left: clickLeftOffset});
+  td.when(mockAdapter.create2dRenderingContext()).thenReturn(ctx);
+  td.when(mockAdapter.getComputedStyleValue('font')).thenReturn(null);
+  td.when(mockAdapter.getComputedStyleValue('font-size')).thenReturn('16px');
+  td.when(mockAdapter.getComputedStyleValue('font-family')).thenReturn('Roboto,sans-serif');
+  td.when(mockAdapter.getComputedStyleValue('letter-spacing')).thenReturn('2.5px');
+  td.when(mockAdapter.getComputedStyleValue('padding-right')).thenReturn(`${paddingRight}px`);
+  td.when(mockAdapter.getComputedStyleValue('padding-left')).thenReturn(`${paddingLeft}px`);
+
+  td.when(mockAdapter.registerInteractionHandler('mousedown', td.matchers.isA(Function))).thenDo((type, handler) => {
+    pointerDownEventHandler = handler;
+  });
+
+  foundation.init();
+  pointerDownEventHandler(mockPointerEvt);
+
+  td.verify(mockAdapter.setBottomLineAttr('style', `transform-origin: ${clickLeftOffset}px bottom`));
+});
+
+test('touchstart event sets bottom line origin', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clickLeftOffset = 50;
+  const mockPointerEvt = td.object({
+    clientX: 100,
+    clientY: 5,
+    target: {
+      getBoundingClientRect: () => {},
+    },
+  });
+  const ctx = td.object({
+    font: 'default font',
+    measureText: () => {},
+  });
+  const paddingRight = 16;
+  const paddingLeft = 20;
+  let pointerDownEventHandler;
+
+  td.when(mockPointerEvt.target.getBoundingClientRect()).thenReturn({left: clickLeftOffset});
+  td.when(mockAdapter.create2dRenderingContext()).thenReturn(ctx);
+  td.when(mockAdapter.getComputedStyleValue('font')).thenReturn(null);
+  td.when(mockAdapter.getComputedStyleValue('font-size')).thenReturn('16px');
+  td.when(mockAdapter.getComputedStyleValue('font-family')).thenReturn('Roboto,sans-serif');
+  td.when(mockAdapter.getComputedStyleValue('letter-spacing')).thenReturn('2.5px');
+  td.when(mockAdapter.getComputedStyleValue('padding-right')).thenReturn(`${paddingRight}px`);
+  td.when(mockAdapter.getComputedStyleValue('padding-left')).thenReturn(`${paddingLeft}px`);
+
+  td.when(mockAdapter.registerInteractionHandler('touchstart', td.matchers.isA(Function))).thenDo((type, handler) => {
+    pointerDownEventHandler = handler;
+  });
+
+  foundation.init();
+  pointerDownEventHandler(mockPointerEvt);
+
+  td.verify(mockAdapter.setBottomLineAttr('style', `transform-origin: ${clickLeftOffset}px bottom`));
 });
