@@ -183,6 +183,16 @@ class MDCTextField extends MDCComponent {
             this.bottomLine_.unlisten(evtType, handler);
           }
         },
+        registerIconInteractionHandler: (evtType, handler) => {
+          if (this.icon_) {
+            this.icon_.listen(evtType, handler);
+          }
+        },
+        deregisterIconInteractionHandler: (evtType, handler) => {
+          if (this.icon_) {
+            this.icon_.unlisten(evtType, handler);
+          }
+        },
       },
       this.getInputAdapterMethods_())),
       this.getFoundationMap_());

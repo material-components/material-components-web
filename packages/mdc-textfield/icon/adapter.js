@@ -36,12 +36,18 @@ class MDCTextFieldIconAdapter {
   setAttr(attr, value) {}
 
   /**
-   * Returns true if classname exists for a given target element.
-   * @param {EventTarget} target
-   * @param {string} className
-   * @return {boolean}
+   * Registers an event listener on the icon element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
    */
-  eventTargetHasClass(target, className) {}
+  registerInteractionHandler(evtType, handler) {}
+
+  /**
+   * Deregisters an event listener on the icon element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterInteractionHandler(evtType, handler) {}
 
   /**
    * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.

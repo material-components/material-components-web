@@ -139,12 +139,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.getNativeInput().disabled) {
       return;
     }
-
     this.receivedUserInput_ = true;
-
-    if (this.icon_) {
-      this.icon_.handleTextFieldInteraction(evt);
-    }
   }
 
   /**

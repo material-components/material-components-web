@@ -43,7 +43,8 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCTextFieldIconAdapter} */ ({
       setAttr: () => {},
-      eventTargetHasClass: () => {},
+      registerInteractionHandler: () => {},
+      deregisterInteractionHandler: () => {},
       notifyIconAction: () => {},
     });
   }
@@ -53,6 +54,21 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
    */
   constructor(adapter = /** @type {!MDCTextFieldIconAdapter} */ ({})) {
     super(Object.assign(MDCTextFieldIconFoundation.defaultAdapter, adapter));
+
+    /** @private {function(!Event): undefined} */
+    this.interactionHandler_ = (evt) => this.handleInteraction(evt);
+  }
+
+  init() {
+    ['click', 'keydown'].forEach((evtType) => {
+      this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
+    });
+  }
+
+  destroy() {
+    ['click', 'keydown'].forEach((evtType) => {
+      this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
+    });
   }
 
   /**
@@ -68,15 +84,11 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles a text field interaction event
+   * Handles an interaction event
    * @param {!Event} evt
    */
-  handleTextFieldInteraction(evt) {
-    const {target, type} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextFieldIconFoundation.cssClasses;
-    const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
-    const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
-    if (targetIsIcon && eventTriggersNotification) {
+  handleInteraction(evt) {
+    if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyIconAction();
     }
   }
