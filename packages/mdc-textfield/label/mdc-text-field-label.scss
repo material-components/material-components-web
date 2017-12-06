@@ -23,32 +23,30 @@
 @include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
 
 // postcss-bem-linter: define text-field-label
-.mdc-text-field {
-  &__label {
-    position: absolute;
-    bottom: 8px;
-    left: 0;
-    transform-origin: left top;
-    transition: mdc-text-field-transition(transform), mdc-text-field-transition(color);
-    color: $mdc-text-field-underline-on-light-idle;
-    cursor: text;
+.mdc-text-field__label {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  transform-origin: left top;
+  transition: mdc-text-field-transition(transform), mdc-text-field-transition(color);
+  color: $mdc-text-field-underline-on-light-idle;
+  cursor: text;
 
-    // stylelint-disable plugin/selector-bem-pattern
-    @include mdc-rtl(".mdc-text-field") {
-      right: 0;
-      left: auto;
-      transform-origin: right top;
-    }
-    // stylelint-enable plugin/selector-bem-pattern
+  // stylelint-disable plugin/selector-bem-pattern
+  @include mdc-rtl(".mdc-text-field") {
+    right: 0;
+    left: auto;
+    transform-origin: right top;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, $mdc-text-field-dark-label);
-    }
+  @include mdc-theme-dark(".mdc-text-field") {
+    @include mdc-theme-prop(color, $mdc-text-field-dark-label);
+  }
 
-    &--float-above {
-      transform: translateY(-100%) scale(.75, .75);
-      cursor: auto;
-    }
+  &--float-above {
+    transform: translateY(-100%) scale(.75, .75);
+    cursor: auto;
   }
 }
 
