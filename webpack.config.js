@@ -136,6 +136,10 @@ const createStaticBuildPlugin = () => {
         });
     }
 
+    // The `npm run build` command emits JS/CSS files directly to the $REPO/build/ directory (for distribution via npm).
+    // The `npm run build:demo` command, however, outputs _all_ static demo files (including HTML and images).
+    // Because the demo site expects JS/CSS files to be in /assets/, we need to reorganize the output folders to combine
+    // $REPO/demos/ and $REPO/build/ such that the demo site's import paths don't need to change.
     fsx.removeSync(OUT_DIR_ABS);
     fsx.moveSync(tmpDirAbs, OUT_DIR_ABS);
   });
