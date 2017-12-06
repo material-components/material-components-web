@@ -129,12 +129,11 @@ const createStaticBuildPlugin = () => {
     if (!WRAP_CSS_IN_JS) {
       glob.sync(path.join(tmpDirAbs, '**/*.html'))
         .forEach((absPath) => {
-          const oldHtml = fs.readFileSync(absPath, {encoding: 'utf8'});
-          const newHtml = oldHtml.replace(/<script src="([^"]+\.css\.js[^"]*)"><\/script>/ig, (match, oldPath) => {
-            const newPath = oldPath.replace('.css.js', '.css');
-            return `<link rel="stylesheet" href="${newPath}">`;
-          });
-          fs.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
+          const oldHtml = fsx.readFileSync(absPath, {encoding: 'utf8'});
+          const newHtml = oldHtml.replace(
+            /<script src="([^"]+\.css)\.js"><\/script>/ig,
+            '<link rel="stylesheet" href="$1">');
+          fsx.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
         });
     }
 
