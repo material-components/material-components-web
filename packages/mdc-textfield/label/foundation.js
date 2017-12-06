@@ -72,7 +72,7 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
    * Updates the label's valid state based on the supplied validity.
    * @param {boolean} isValid
    */
-  changeValidity(isValid) {
+  setValidity(isValid) {
     if (!isValid) {
       this.adapter_.addClass(cssClasses.LABEL_SHAKE);
     }

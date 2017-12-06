@@ -60,7 +60,7 @@ const setupTest = () => {
   const label = td.object({
     floatAbove: () => {},
     deactivateFocus: () => {},
-    changeValidity: () => {},
+    setValidity: () => {},
   });
   const foundationMap = {
     bottomLine: bottomLine,

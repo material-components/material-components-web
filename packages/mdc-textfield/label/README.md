@@ -45,6 +45,6 @@ Makes the label float above the text field.
 
 Deactivates the label's focus state based on whether the text field input is empty and passes validity checks.
 
-##### MDCTextFieldLabelFoundation.changeValidity(isValid: boolean)
+##### MDCTextFieldLabelFoundation.setValidity(isValid: boolean)
 
 Updates the label's valid state based on the supplied validity.

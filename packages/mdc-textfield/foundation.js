@@ -243,7 +243,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.helperText_.setValidity(isValid);
     }
     if (this.label_) {
-      this.label_.changeValidity(isValid);
+      this.label_.setValidity(isValid);
     }
   }
 
