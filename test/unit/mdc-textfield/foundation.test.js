@@ -308,17 +308,18 @@ test('on blur removes mdc-text-field--focused class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED));
 });
 
-test('on blur removes mdc-text-field__label--float-above when no input value present', () => {
+test('on blur deactivates label focus with inputIsEmptyAndValid=true when no input value present and '
+    + 'validity checks pass', () => {
   const {blur, label} = setupBlurTest();
   blur();
-  td.verify(label.deactivateFocus(true /* inputIsEmpty */));
+  td.verify(label.deactivateFocus(true /* inputIsEmptyAndValid */));
 });
 
-test('on blur does not remove mdc-text-field__label--float-above if input has a value', () => {
+test('on blur deactivates label focus with inputIsEmptyAndValid=false if input has a value', () => {
   const {blur, nativeInput, label} = setupBlurTest();
   nativeInput.value = 'non-empty value';
   blur();
-  td.verify(label.deactivateFocus(false /* inputIsEmpty */));
+  td.verify(label.deactivateFocus(false /* inputIsEmptyAndValid */));
 });
 
 test('on blur removes mdc-text-field--invalid if custom validity is false and' +
