@@ -22,11 +22,7 @@
   @include mdc-fab-base_;
   @include mdc-fab-container-color(secondary);
   @include mdc-fab-ink-color(text-primary-on-secondary);
-  @include mdc-ripple-color(text-primary-on-secondary, $mdc-ripple-pressed-dark-ink-opacity);
-
-  &:not(.mdc-ripple-upgraded) {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, .18);
-  }
+  @include mdc-states(text-primary-on-secondary);
 }
 
 .mdc-fab--mini {
