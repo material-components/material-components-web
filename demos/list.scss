@@ -68,11 +68,11 @@ a.material-icons {
 }
 
 .demo-list--custom {
-  @include mdc-list-item-primary-text-ink-color($material-color-red-600);
-  @include mdc-list-item-secondary-text-ink-color($material-color-orange-500);
-  @include mdc-list-item-graphic-fill-color($material-color-yellow-600);
-  @include mdc-list-item-graphic-ink-color($material-color-yellow-50);
-  @include mdc-list-item-meta-ink-color($material-color-pink-300);
+  @include mdc-list-item-primary-text-ink-color($material-color-blue-600);
+  @include mdc-list-item-secondary-text-ink-color($material-color-purple-600);
+  @include mdc-list-item-graphic-fill-color($material-color-pink-400);
+  @include mdc-list-item-graphic-ink-color($material-color-pink-50);
+  @include mdc-list-item-meta-ink-color($material-color-orange-500);
 }
 
 .preamble {
