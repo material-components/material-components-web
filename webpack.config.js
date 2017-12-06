@@ -118,8 +118,7 @@ const createStaticBuildPlugin = () => {
     const tmpDirAbs = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
 
     const copyOptions = {
-      // eslint-disable-next-line no-unused-vars
-      filter: (src, dest) => {
+      filter: (src) => {
         return !/\.(scss|css.js)$/.test(src);
       },
     };
