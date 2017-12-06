@@ -27,10 +27,10 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-fab-ink-color(text-primary-on-dark);
-    @include mdc-ripple-color(text-primary-on-dark, $mdc-ripple-pressed-light-ink-opacity);
+    @include mdc-states(text-primary-on-dark);
   } @else {
     @include mdc-fab-ink-color(text-primary-on-light);
-    @include mdc-ripple-color(text-primary-on-light, $mdc-ripple-pressed-dark-ink-opacity);
+    @include mdc-states(text-primary-on-light);
   }
 }
 
