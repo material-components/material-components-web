@@ -37,6 +37,11 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      addClassToLabel: (/* className: string */) => {},
+      removeClassFromLabel: (/* className: string */) => {},
+      addClassToBottomLine: (/* className: string */) => {},
+      removeClassFromBottomLine: (/* className: string */) => {},
+      setBottomLineAttr: (/* attr: string, value: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       setAttr: (/* attr: string, value: string */) => {},
@@ -78,6 +83,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.ctx_ = null;
     this.selectedIndex_ = -1;
     this.disabled_ = false;
+    this.isFocused_ = false;
+    this.setPointerXOffset_ = (evt) => this.setBottomLineOrigin_(evt);
     this.displayHandler_ = (evt) => {
       evt.preventDefault();
       if (!this.adapter_.isMenuOpen()) {
@@ -87,14 +94,19 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.displayViaKeyboardHandler_ = (evt) => this.handleDisplayViaKeyboard_(evt);
     this.selectionHandler_ = ({detail}) => {
       const {index} = detail;
-      this.close_();
+
       if (index !== this.selectedIndex_) {
         this.setSelectedIndex(index);
         this.adapter_.notifyChange();
       }
+      this.close_();
     };
     this.cancelHandler_ = () => {
       this.close_();
+
+      if (this.selectedIndex_ === -1) {
+        this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
+      }
     };
   }
 
@@ -107,6 +119,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.registerMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.adapter_.registerInteractionHandler(evtType, this.setPointerXOffset_);
+    });
     this.resize();
   }
 
@@ -120,6 +135,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.deregisterMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.adapter_.deregisterInteractionHandler(evtType, this.setPointerXOffset_);
+    });
   }
 
   getValue() {
@@ -166,6 +184,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   resize() {
     const font = this.adapter_.getComputedStyleValue('font');
     const letterSpacing = parseFloat(this.adapter_.getComputedStyleValue('letter-spacing'));
+
     if (font) {
       this.ctx_.font = font;
     } else {
@@ -175,12 +194,19 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
 
     let maxTextLength = 0;
+
     for (let i = 0, l = this.adapter_.getNumberOfOptions(); i < l; i++) {
+      const surfacePaddingRight = parseInt(this.adapter_.getComputedStyleValue('padding-right'), 10);
+      const surfacePaddingLeft = parseInt(this.adapter_.getComputedStyleValue('padding-left'), 10);
+      const selectBoxAddedPadding = surfacePaddingRight + surfacePaddingLeft;
       const txt = this.adapter_.getTextForOptionAtIndex(i).trim();
       const {width} = this.ctx_.measureText(txt);
       const addedSpace = letterSpacing * txt.length;
-      maxTextLength = Math.max(maxTextLength, Math.ceil(width + addedSpace));
+
+      maxTextLength =
+        Math.max(maxTextLength, Math.ceil(width + addedSpace + selectBoxAddedPadding));
     }
+
     this.adapter_.setStyle('width', `${maxTextLength}px`);
   }
 
@@ -190,8 +216,21 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const focusIndex = this.selectedIndex_ < 0 ? 0 : this.selectedIndex_;
 
     this.setMenuStylesForOpenAtIndex_(focusIndex);
+    this.adapter_.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE);
+    this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.addClass(OPEN);
     this.adapter_.openMenu(focusIndex);
+    this.isFocused_ = true;
+  }
+
+  setBottomLineOrigin_(evt) {
+    const targetClientRect = evt.target.getBoundingClientRect();
+    const evtCoords = {x: evt.clientX, y: evt.clientY};
+    const normalizedX = evtCoords.x - targetClientRect.left;
+    const attributeString =
+      `transform-origin: ${normalizedX}px bottom`;
+
+    this.adapter_.setBottomLineAttr('style', attributeString);
   }
 
   setMenuStylesForOpenAtIndex_(index) {
@@ -222,6 +261,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   close_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
+    this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.focus();
     this.enableScroll_();
   }
@@ -243,6 +283,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const isOpenerKey = OPENER_KEYS.some(({key, keyCode, forType}) => {
       return evt.type === forType && (evt.key === key || evt.keyCode === keyCode);
     });
+
     if (isOpenerKey) {
       this.displayHandler_(evt);
     }
@@ -256,4 +297,3 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
   }
 }
-
