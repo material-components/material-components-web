@@ -62,9 +62,9 @@ General notes:
 
 #### Sass API
 
-In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic `mdc-states-color` mixin or all of the advanced `mdc-states` mixins documented below.
+In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic `mdc-states` mixin or all of the advanced `mdc-states-...` mixins documented below.
 
-Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states-color` specifically) for specific variants (e.g. for flat vs. raised buttons).
+Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states` specifically) for specific variants (e.g. for flat vs. raised buttons).
 
 These APIs implicitly use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
 
