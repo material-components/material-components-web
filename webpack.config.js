@@ -16,7 +16,6 @@
 
 'use strict';
 
-const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
@@ -110,12 +109,12 @@ class PostCompilePlugin {
 
 const createStaticBuildPlugin = () => {
   return new PostCompilePlugin(() => {
-    if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(OUT_DIR_ABS)) {
+    if (!BUILD_STATIC_DEMO_ASSETS || !fsx.existsSync(OUT_DIR_ABS)) {
       return;
     }
 
     const demosDirAbs = path.resolve('./demos');
-    const tmpDirAbs = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
+    const tmpDirAbs = fsx.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
 
     const copyOptions = {
       filter: (src) => {
