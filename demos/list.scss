@@ -38,7 +38,7 @@ a.material-icons {
 }
 
 .demo-list--icon-placeholders,
-.demo-list.mdc-list--avatar-list {
+.demo-list--with-avatars {
   @include mdc-list-item-graphic-ink-color(white);
   @include mdc-list-item-graphic-fill-color(text-icon-on-background);
 
