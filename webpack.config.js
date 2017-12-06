@@ -107,7 +107,7 @@ class PostCompilePlugin {
   }
 }
 
-const createStaticBuildPlugin = () => {
+const createStaticDemoPlugin = () => {
   return new PostCompilePlugin(() => {
     if (!BUILD_STATIC_DEMO_ASSETS || !fsx.existsSync(OUT_DIR_ABS)) {
       return;
@@ -303,7 +303,7 @@ if (IS_DEV) {
     plugins: [
       createCssExtractTextPlugin(),
       createBannerPlugin(),
-      createStaticBuildPlugin(),
+      createStaticDemoPlugin(),
     ],
   });
 }
