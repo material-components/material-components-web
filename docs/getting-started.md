@@ -52,7 +52,7 @@ the assets needed for MDC-Web. Put the following within `index.html` in the `gre
 
 ```html
 <!DOCTYPE html>
-<html class="mdc-typography">
+<html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -61,7 +61,7 @@ the assets needed for MDC-Web. Put the following within `index.html` in the `gre
       rel="stylesheet"
       href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   </head>
-  <body>
+  <body class="mdc-typography">
     <h1 class="mdc-typography--display1">Hello, World!</h1>
     <button type="button" class="mdc-button mdc-button--raised">
       Press Me
