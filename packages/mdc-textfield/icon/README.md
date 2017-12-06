@@ -62,7 +62,7 @@ MDCTextFieldIconFoundation. This allows the parent MDCTextField component to acc
 Method Signature | Description
 --- | ---
 setAttr(attr: string, value: string) => void | Sets an attribute with a given value on the icon element
-eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element
+eventTargetHasClass(target: EventTarget, className: string) => boolean | Returns true if classname exists for a given target element
 notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon
 
 #### The full foundation API
@@ -73,4 +73,4 @@ Updates the icon's disabled state.
 
 ##### MDCTextFieldIconFoundation.handleTextFieldInteraction(evt: Event)
 
-Handles a text field interaction event
+Handles a text field interaction event.

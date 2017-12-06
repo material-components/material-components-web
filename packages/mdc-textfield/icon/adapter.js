@@ -30,14 +30,14 @@
 class MDCTextFieldIconAdapter {
   /**
    * Sets an attribute on the icon element.
-   * @param {string} name
+   * @param {string} attr
    * @param {string} value
    */
-  setAttr(name, value) {}
+  setAttr(attr, value) {}
 
   /**
    * Returns true if classname exists for a given target element.
-   * @param {?EventTarget} target
+   * @param {EventTarget} target
    * @param {string} className
    * @return {boolean}
    */
