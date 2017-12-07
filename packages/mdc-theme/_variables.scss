@@ -39,15 +39,15 @@ $mdc-theme-background: #fff !default; // White
 // Which set of text colors to use for each main theme color (light or dark).
 //
 
-$mdc-theme-primary-tone: mdc-theme-contrast-tone($mdc-theme-primary) !default;
-$mdc-theme-primary-light-tone: mdc-theme-contrast-tone($mdc-theme-primary-light) !default;
-$mdc-theme-primary-dark-tone: mdc-theme-contrast-tone($mdc-theme-primary-dark) !default;
+$mdc-theme-primary-contrast-tone: mdc-theme-contrast-tone($mdc-theme-primary) !default;
+$mdc-theme-primary-light-contrast-tone: mdc-theme-contrast-tone($mdc-theme-primary-light) !default;
+$mdc-theme-primary-dark-contrast-tone: mdc-theme-contrast-tone($mdc-theme-primary-dark) !default;
 
-$mdc-theme-secondary-tone: mdc-theme-contrast-tone($mdc-theme-secondary) !default;
-$mdc-theme-secondary-light-tone: mdc-theme-contrast-tone($mdc-theme-secondary-light) !default;
-$mdc-theme-secondary-dark-tone: mdc-theme-contrast-tone($mdc-theme-secondary-dark) !default;
+$mdc-theme-secondary-contrast-tone: mdc-theme-contrast-tone($mdc-theme-secondary) !default;
+$mdc-theme-secondary-light-contrast-tone: mdc-theme-contrast-tone($mdc-theme-secondary-light) !default;
+$mdc-theme-secondary-dark-contrast-tone: mdc-theme-contrast-tone($mdc-theme-secondary-dark) !default;
 
-$mdc-theme-background-tone: mdc-theme-contrast-tone($mdc-theme-background) !default;
+$mdc-theme-background-contrast-tone: mdc-theme-contrast-tone($mdc-theme-background) !default;
 
 //
 // Text colors according to light vs dark and text type.
@@ -86,47 +86,47 @@ $mdc-theme-property-values: (
   // Background
   background: $mdc-theme-background,
   // Text-primary on "primary" background
-  text-primary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), primary),
-  text-secondary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), secondary),
-  text-hint-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), hint),
-  text-disabled-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), disabled),
-  text-icon-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), icon),
+  text-primary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-contrast-tone), primary),
+  text-secondary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-contrast-tone), secondary),
+  text-hint-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-contrast-tone), hint),
+  text-disabled-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-contrast-tone), disabled),
+  text-icon-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-contrast-tone), icon),
   // Text-primary on "primary-light" background
-  text-primary-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), primary),
-  text-secondary-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), secondary),
-  text-hint-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), hint),
-  text-disabled-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), disabled),
-  text-icon-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), icon),
+  text-primary-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-contrast-tone), primary),
+  text-secondary-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-contrast-tone), secondary),
+  text-hint-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-contrast-tone), hint),
+  text-disabled-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-contrast-tone), disabled),
+  text-icon-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-contrast-tone), icon),
   // Text-primary on "primary-dark" background
-  text-primary-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), primary),
-  text-secondary-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), secondary),
-  text-hint-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), hint),
-  text-disabled-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), disabled),
-  text-icon-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), icon),
+  text-primary-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-contrast-tone), primary),
+  text-secondary-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-contrast-tone), secondary),
+  text-hint-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-contrast-tone), hint),
+  text-disabled-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-contrast-tone), disabled),
+  text-icon-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-contrast-tone), icon),
   // Text-primary on "secondary" background
-  text-primary-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), primary),
-  text-secondary-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), secondary),
-  text-hint-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), hint),
-  text-disabled-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), disabled),
-  text-icon-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), icon),
+  text-primary-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-contrast-tone), primary),
+  text-secondary-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-contrast-tone), secondary),
+  text-hint-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-contrast-tone), hint),
+  text-disabled-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-contrast-tone), disabled),
+  text-icon-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-contrast-tone), icon),
   // Text-primary on "secondary-light" background
-  text-primary-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), primary),
-  text-secondary-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), secondary),
-  text-hint-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), hint),
-  text-disabled-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), disabled),
-  text-icon-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), icon),
+  text-primary-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-contrast-tone), primary),
+  text-secondary-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-contrast-tone), secondary),
+  text-hint-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-contrast-tone), hint),
+  text-disabled-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-contrast-tone), disabled),
+  text-icon-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-contrast-tone), icon),
   // Text-primary on "secondary-dark" background
-  text-primary-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), primary),
-  text-secondary-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), secondary),
-  text-hint-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), hint),
-  text-disabled-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), disabled),
-  text-icon-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), icon),
+  text-primary-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-contrast-tone), primary),
+  text-secondary-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-contrast-tone), secondary),
+  text-hint-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-contrast-tone), hint),
+  text-disabled-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-contrast-tone), disabled),
+  text-icon-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-contrast-tone), icon),
   // Text-primary on "background" background
-  text-primary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), primary),
-  text-secondary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), secondary),
-  text-hint-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), hint),
-  text-disabled-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), disabled),
-  text-icon-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), icon),
+  text-primary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-contrast-tone), primary),
+  text-secondary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-contrast-tone), secondary),
+  text-hint-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-contrast-tone), hint),
+  text-disabled-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-contrast-tone), disabled),
+  text-icon-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-contrast-tone), icon),
   // Text-primary on "light" background
   text-primary-on-light: map-get(map-get($mdc-theme-text-colors, dark), primary),
   text-secondary-on-light: map-get(map-get($mdc-theme-text-colors, dark), secondary),
