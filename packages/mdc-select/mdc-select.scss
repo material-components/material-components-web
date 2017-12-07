@@ -85,11 +85,11 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     @include mdc-theme-prop(color, text-primary-on-light);
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding, ".mdc-select");
     @include mdc-ripple-surface;
-    @include mdc-ripple-color;
     @include mdc-ripple-radius;
+    @include mdc-states;
 
     @include mdc-theme-dark(".mdc-select") {
-      @include mdc-ripple-color(white, .16);
+      @include mdc-states(white);
     }
 
     &::-ms-expand {
