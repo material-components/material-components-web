@@ -106,12 +106,6 @@ as JSON and can contain the following properties:
    data-toggle-on='{"content": "favorite"}' data-toggle-off='{"content": "favorite_border"}'></i>
 ```
 
-### Theming
-
-`mdc-icon-toggle` ships with two css classes, `mdc-icon-toggle--primary` and
-`mdc-icon-toggle--accent` that allow you to color mdc-icon-toggle based on your primary and secondary
-colors, respectively.
-
 ### Listening for change events
 
 `MDCIconToggle` emits an `MDCIconToggle:change` custom event when the value of the icon toggle
@@ -224,3 +218,9 @@ Enables / disables the foundation's state, updating the component via the adapte
 
 Returns true if the foundation is currently activated by a keyboard event, false otherwise.
 Useful for MDCRippleFoundation's `isSurfaceActive()` adapter method.
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-icon-toggle-ink-color($color)` | Sets the ink color of the icon toggle
