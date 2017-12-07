@@ -236,3 +236,16 @@ It only returns the raw color value of the specified theme property.
 @debug mdc-theme-prop-value(primary); // #3f51b5
 @debug mdc-theme-prop-value(blue);    // blue
 ```
+
+#### `mdc-theme-accessible-ink-color($fill-color)`
+
+Returns an accessible ink color that has sufficient contrast against the given fill color.
+
+Supports the same values as `mdc-theme-prop-value`.
+
+> NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
+
+```scss
+@debug mdc-theme-accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-primary-on-light)
+@debug mdc-theme-accessible-ink-color(blue);      // white              (text-primary-on-dark)
+```
