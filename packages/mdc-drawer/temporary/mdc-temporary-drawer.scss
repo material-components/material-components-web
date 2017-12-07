@@ -19,6 +19,7 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "../mixins";
+@import "../variables";
 @import "../slidable/mixins";
 @import "../slidable/variables";
 
@@ -45,7 +46,7 @@
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, .6);
+    @include mdc-drawer-scrim-color($mdc-temporary-drawer-scrim-color, $mdc-temporary-drawer-scrim-opacity);
     opacity: 0;
     opacity: var(--mdc-temporary-drawer-opacity, 0);
     content: "";
@@ -53,7 +54,8 @@
   }
 
   &__drawer {
-    @include mdc-theme-prop(background, background);
+    @include mdc-drawer-ink-color($mdc-temporary-drawer-ink-color);
+    @include mdc-drawer-fill-color($mdc-temporary-drawer-background);
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
 
