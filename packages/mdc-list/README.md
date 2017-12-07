@@ -109,15 +109,15 @@ While in theory you can add any number of "lines" to a list item, you can use th
 
 As mentioned in the spec, lists can contain primary and secondary actions. It can also contain
 things such as avatars, icons, interactive controls, etc. We call these items *detail* items. Lists
-can contain 1 **start detail** item and/or 1 **end detail** item that are positioned at the start
+can contain 1 **graphic** item and/or 1 **end detail** item that are positioned at the start
 and end of the list, respectively. These items are correctly flipped in RTL contexts.
 
 > _N.B._ Please keep accessibility in mind when using things such as icons / icon fonts for detail
 > elements. Font Awesome has [excellent guidelines](http://fontawesome.io/accessibility/) for this.
 
-#### Adding a start detail
+#### Adding a graphic
 
-You can add a start detail using an element with class `mdc-list-item__graphic` class.
+You can add a graphic using an element with class `mdc-list-item__graphic` class.
 
 ```html
 <ul class="mdc-list">
@@ -136,9 +136,9 @@ You can add a start detail using an element with class `mdc-list-item__graphic` 
 </ul>
 ```
 
-#### Making a start detail an avatar
+#### Making a graphic an avatar
 
-You can use the `mdc-list--avatar-list` modifier class to style the start detail elements as what
+You can use the `mdc-list--avatar-list` modifier class to style the graphic elements as what
 the spec calls "avatars" - large, circular details that lend themselves well to contact images,
 profile pictures, etc.
 
@@ -165,7 +165,7 @@ profile pictures, etc.
 
 #### Adding an end detail
 
-End details can be added in a similar way to start details. Place an element after the text
+End details can be added in a similar way to graphics. Place an element after the text
 with a `mdc-list-item__end-detail` class.
 
 ```html
@@ -269,7 +269,7 @@ In order to make separators inset, add a `mdc-list-divider--inset` modifier clas
 </ul>
 ```
 
-Inset dividers are useful when working with lists which have start details.
+Inset dividers are useful when working with lists which have graphics.
 
 ### List Groups
 

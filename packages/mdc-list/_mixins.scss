@@ -64,8 +64,8 @@
 // Private
 //
 
-// Sets the width and height of the start detail element, as well as calculates the margins for
-// the start detail element such that the text is always offset by 72px, which is defined within
+// Sets the width and height of the graphic element, as well as calculates the margins for
+// the graphic element such that the text is always offset by 72px, which is defined within
 // the spec.
 @mixin mdc-list-graphic-size_($size) {
   $text-offset: 72px;
