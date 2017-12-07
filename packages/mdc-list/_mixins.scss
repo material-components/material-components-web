@@ -43,7 +43,7 @@
 }
 
 @mixin mdc-list-item-meta-ink-color($color) {
-  .mdc-list-item__end-detail {
+  .mdc-list-item__meta {
     @include mdc-theme-prop(color, $color);
   }
 }

@@ -93,7 +93,7 @@
     justify-content: center;
   }
 
-  &__end-detail {
+  &__meta {
     @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
   }
 

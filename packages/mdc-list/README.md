@@ -166,28 +166,28 @@ profile pictures, etc.
 #### Adding an end detail
 
 End details can be added in a similar way to graphics. Place an element after the text
-with a `mdc-list-item__end-detail` class.
+with a `mdc-list-item__meta` class.
 
 ```html
 <h2>Contacts</h2>
 <ul class="mdc-list">
   <li class="mdc-list-item">
     Janet Perkins
-    <a href="#" class="mdc-list-item__end-detail material-icons"
+    <a href="#" class="mdc-list-item__meta material-icons"
        aria-label="Remove from favorites" title="Remove from favorites">
       favorite
     </a>
   </li>
   <li class="mdc-list-item">
     Mary Johnson
-    <a href="#" class="mdc-list-item__end-detail material-icons"
+    <a href="#" class="mdc-list-item__meta material-icons"
        aria-label="Add to favorites" title="Add to favorites">
       favorite_border
     </a>
   </li>
   <li class="mdc-list-item">
     Janet Perkins
-    <a href="#" class="mdc-list-item__end-detail material-icons"
+    <a href="#" class="mdc-list-item__meta material-icons"
        aria-label="Add to favorites" title="Add to favorites">
       favorite_border
     </a>
@@ -340,7 +340,7 @@ or a list item. You can easily do this by adding an `align-self` rule to the det
 styled this way. For example, given a `timestamp` class for an end detail:
 
 ```css
-.mdc-list-item__end-detail.timestamp {
+.mdc-list-item__meta.timestamp {
   /* Lock to top of container. */
   align-self: flex-start;
 }
@@ -364,7 +364,7 @@ The html for this can be easily added
       <span class="mdc-list-item__secondary-text">Lunch this afternoon? I was...</span>
     </span>
 
-    <span class="mdc-list-item__end-detail">
+    <span class="mdc-list-item__meta">
       <time datetime="2014-01-28T04:36:00.000Z">4:36pm</time>
       <i class="material-icons" arial-label="Unread message">chat_bubble</i>
     </span>
@@ -376,7 +376,7 @@ The html for this can be easily added
 And the basic CSS is relatively trivial
 
 ```css
-.msgs-list .mdc-list-item__end-detail {
+.msgs-list .mdc-list-item__meta {
   width: auto;
   height: auto;
   display: inline-flex;
@@ -418,8 +418,8 @@ CSS Class | Description
 
 CSS Class | Description
 --- | ---
-`mdc-list-item__graphic` | The leading tile in the row (in LTR languages, the left-most)
-`mdc-list-item__end-detail` | The trailing tile in the row (in LTR languages, the right-most)
+`mdc-list-item__graphic` | The first tile in the row (in LTR languages, the left-most)
+`mdc-list-item__meta` | The last tile in the row (in LTR languages, the right-most)
 `mdc-list-item__text` | Primary text for the row (displayed as the middle tile)
 `mdc-list-item__secondary-text` | Secondary text for the row (displayed in the middle tile)
 `mdc-list-group__subheader` | Heading text displayed above each list in a group
@@ -430,8 +430,8 @@ Mixin | Description
 --- | ---
 `mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text
 `mdc-list-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text
-`mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the graphic
-`mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the graphic
-`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the meta data (`__end-detail`)
+`mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the supporting graphic
+`mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the supporting graphic
+`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the meta data element
 `mdc-list-divider-color($color)` | Sets the color of the divider
 `mdc-list-group-subheader-ink-color($color)` | Sets the ink color of the list group subheader
