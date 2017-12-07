@@ -52,6 +52,160 @@ test('#constructor sets disabled to false', () => {
   assert.isNotOk(foundation.isDisabled());
 });
 
+const setupValueTest = (value, optIsValid, optIsBadInput) => {
+  const {foundation, mockAdapter} = setupTest();
+  const nativeInput = {
+    value: value,
+    validity: {
+      valid: optIsValid === undefined ? true : !!optIsValid,
+      badInput: optIsBadInput === undefined ? false : !!optIsBadInput,
+    },
+  }
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+
+  return {foundation, mockAdapter, nativeInput};
+};
+
+test('#getValue returns the field\'s value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    value: 'initValue',
+  });
+  assert.equal('initValue', foundation.getValue(),
+    'getValue does not match input value.');
+});
+
+test('#setValue with non-empty value floats the label', () => {
+  const value = 'new value';
+  const {foundation, mockAdapter, nativeInput} = setupValueTest('');
+  // Initial empty value should not float label.
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+  nativeInput.value = value;
+  foundation.setValue(value);
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
+});
+
+test('#setValue with empty value de-floats the label', () => {
+  const {foundation, mockAdapter, nativeInput} = setupValueTest('old value');
+  // Initial value should float the label.
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE));
+  nativeInput.value = '';
+  foundation.setValue('');
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE));
+});
+
+test('#setValue valid and invalid input', () => {
+  const {foundation, mockAdapter, nativeInput} = setupValueTest('', /* isValid */ false);
+  const helperText = td.object(['setValidity']);
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+
+  foundation.setValue('invalid');
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_SHAKE));
+  td.verify(helperText.setValidity(false));
+
+  nativeInput.validity.valid = true;
+  foundation.setValue('valid');
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_SHAKE));
+  td.verify(helperText.setValidity(true));
+
+});
+
+test('#setValue does not affect focused state', () => {
+  const {foundation, mockAdapter} = setupValueTest('');
+  foundation.setValue('');
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+});
+
+test('#setValue does not affect disabled state', () => {
+  const {foundation, mockAdapter} = setupValueTest('');
+  foundation.setValue('');
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+  // Called once initially because the field is valid, should not be called twice.
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 1});
+  td.verify(mockAdapter.setIconAttr(), {times: 0});
+});
+
+test('#setValue with empty string and badInput does not touch floating label', () => {
+  const {foundation, mockAdapter, nativeInput} =
+    setupValueTest('', /* isValid */ false, /* isBadInput */ true);
+  foundation.setValue('');
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#isValid for native validation', () => {
+  const {foundation, mockAdapter, nativeInput} = setupValueTest('', /* isValid */ true);
+  assert.isOk(foundation.isValid());
+
+  nativeInput.validity.valid = false;
+  assert.isNotOk(foundation.isValid());
+});
+
+test('#setValid overrides native validation', () => {
+  const {foundation, mockAdapter, nativeInput} = setupValueTest('', /* isValid */ false);
+  foundation.setValid(true);
+  assert.isOk(foundation.isValid());
+
+  nativeInput.validity.valid = true;
+  foundation.setValid(false);
+  assert.isNotOk(foundation.isValid());
+});
+
+test('#setValid updates classes', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const helperText = td.object(['setValidity']);
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+
+  foundation.setValid(false);
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_SHAKE));
+
+  foundation.setValid(true);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_SHAKE));
+
+  // None of these is affected by setValid.
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#setRequired updates CSS classes', () => {
+  // Native validity checking does not apply in unittests, so manually mark as valid or invalid.
+  const {foundation, mockAdapter, nativeInput} = setupValueTest('', /* isValid */ false);
+  const helperText = td.object(['setValidity']);
+  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+
+  foundation.setRequired(true);
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+
+  nativeInput.validity.valid = true;
+  foundation.setRequired(false);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
+
+  // None of these is affected by setRequired.
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_SHAKE), {times: 0});
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_SHAKE), {times: 0});
+  td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+  td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
 test('#setDisabled flips disabled when a native input is given', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {disabled: false};
@@ -278,7 +432,9 @@ const setupBlurTest = () => {
   });
   const nativeInput = {
     value: '',
-    checkValidity: () => true,
+    validity: {
+      valid: true,
+    },
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
@@ -315,7 +471,7 @@ test('on blur removes mdc-text-field--invalid if custom validity is false and' +
 test('on blur adds mdc-textfied--invalid if custom validity is false and' +
      'input.checkValidity() returns false', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
-  nativeInput.checkValidity = () => false;
+  nativeInput.validity.valid = false;
   blur();
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
@@ -344,7 +500,7 @@ test('on blur set validity of helper text', () => {
     hasClass: () => {},
   });
   td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
-  nativeInput.checkValidity = () => false;
+  nativeInput.validity.valid = false;
   td.when(helperText.hasClass('mdc-text-field-helper-text--validation-msg')).thenReturn(true);
   blur();
   td.verify(helperText.setValidity(false));
