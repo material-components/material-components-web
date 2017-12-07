@@ -16,15 +16,17 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+import {getMatchesProperty} from '@material/ripple/util';
+
 
 import {cssClasses, strings} from './constants';
-import {MDCTextFieldAdapter} from './adapter';
+import {MDCTextFieldAdapter, FoundationMapType} from './adapter';
 import MDCTextFieldFoundation from './foundation';
-import {MDCTextFieldBottomLine} from './bottom-line';
-import {MDCTextFieldHelperText} from './helper-text';
-import {MDCTextFieldInput} from './input';
-
+/* eslint-disable no-unused-vars */
+import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
+import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
+/* eslint-enable no-unused-vars */
 
 /**
  * @extends {MDCComponent<!MDCTextFieldFoundation>}
@@ -67,15 +69,20 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCTextFieldInput.
    */
   initialize(
-    rippleFactory = (el) => new MDCRipple(el),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
-    inputFactory = (el) => new MDCTextFieldInput(el)) {
-    const inputElement = this.root_.querySelector(strings.INPUT_SELECTOR);
-    this.input_ = inputFactory(inputElement);
+    rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
+    this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.ripple = null;
     if (this.root_.classList.contains(cssClasses.BOX)) {
-      this.ripple = rippleFactory(this.root_);
+      const MATCHES = getMatchesProperty(HTMLElement.prototype);
+      const adapter = Object.assign(MDCRipple.createAdapter(this), {
+        isSurfaceActive: () => this.input_[MATCHES](':active'),
+        registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
+        deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
+      });
+      const foundation = new MDCRippleFoundation(adapter);
+      this.ripple = rippleFactory(this.root_, foundation);
     };
     if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
       const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
@@ -141,54 +148,40 @@ class MDCTextField extends MDCComponent {
    * @return {!MDCTextFieldFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextFieldFoundation(/** @type {!MDCTextFieldAdapter} */ (Object.assign({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      addClassToLabel: (className) => {
-        const label = this.label_;
-        if (label) {
-          label.classList.add(className);
-        }
+    return new MDCTextFieldFoundation(
+      /** @type {!MDCTextFieldAdapter} */ (Object.assign({
+        addClass: (className) => this.root_.classList.add(className),
+        removeClass: (className) => this.root_.classList.remove(className),
+        addClassToLabel: (className) => {
+          const label = this.label_;
+          if (label) {
+            label.classList.add(className);
+          }
+        },
+        removeClassFromLabel: (className) => {
+          const label = this.label_;
+          if (label) {
+            label.classList.remove(className);
+          }
+        },
+        eventTargetHasClass: (target, className) => target.classList.contains(className),
+        registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+        deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+        notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
+        registerBottomLineEventHandler: (evtType, handler) => {
+          if (this.bottomLine_) {
+            this.bottomLine_.listen(evtType, handler);
+          }
+        },
+        deregisterBottomLineEventHandler: (evtType, handler) => {
+          if (this.bottomLine_) {
+            this.bottomLine_.unlisten(evtType, handler);
+          }
+        },
       },
-      removeClassFromLabel: (className) => {
-        const label = this.label_;
-        if (label) {
-          label.classList.remove(className);
-        }
-      },
-      eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
-      registerInputEventHandler: (evtType, handler) => this.input_.listen(evtType, handler),
-      deregisterInputEventHandler: (evtType, handler) => this.input_.unlisten(evtType, handler),
-      registerBottomLineEventHandler: (evtType, handler) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.listen(evtType, handler);
-        }
-      },
-      deregisterBottomLineEventHandler: (evtType, handler) => {
-        if (this.bottomLine_) {
-          this.bottomLine_.unlisten(evtType, handler);
-        }
-      },
-      getBottomLineFoundation: () => {
-        if (this.bottomLine_) {
-          return this.bottomLine_.foundation;
-        }
-        return undefined;
-      },
-      getHelperTextFoundation: () => {
-        if (this.helperText_) {
-          return this.helperText_.foundation;
-        }
-        return undefined;
-      },
-      getInputFoundation: () => {
-        return this.input_.foundation;
-      },
-    },
-    this.getIconAdapterMethods_())));
+      this.getInputAdapterMethods_(),
+      this.getIconAdapterMethods_())),
+      this.getFoundationMap_());
   }
 
   /**
@@ -203,6 +196,32 @@ class MDCTextField extends MDCComponent {
           this.icon_.setAttribute(name, value);
         }
       },
+    };
+  }
+
+  /**
+   * @return {!{
+   *   registerInputInteractionHandler: function(string, function()): undefined,
+   *   deregisterInputInteractionHandler: function(string, function()): undefined,
+   *   getNativeInput: function(): ?Element,
+   * }}
+   */
+  getInputAdapterMethods_() {
+    return {
+      registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
+      deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+      getNativeInput: () => this.input_,
+    };
+  }
+
+  /**
+   * Returns a map of all subcomponents to subfoundations.
+   * @return {!FoundationMapType}
+   */
+  getFoundationMap_() {
+    return {
+      bottomLine: this.bottomLine_ ? this.bottomLine_.foundation : undefined,
+      helperText: this.helperText_ ? this.helperText_.foundation : undefined,
     };
   }
 }
