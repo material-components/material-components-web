@@ -105,19 +105,19 @@ While in theory you can add any number of "lines" to a list item, you can use th
 </ul>
 ```
 
-### List "Detail" Elements
+### List "Tile" Elements
 
-As mentioned in the spec, lists can contain primary and secondary actions. It can also contain
-things such as avatars, icons, interactive controls, etc. We call these items *detail* items. Lists
-can contain 1 **graphic** item and/or 1 **end detail** item that are positioned at the start
-and end of the list, respectively. These items are correctly flipped in RTL contexts.
+As mentioned in the spec, lists can contain primary and secondary actions. They can also contain
+things such as avatars, icons, interactive controls, etc. We call all of these items *tiles*. Lists
+can contain 1 **supporting graphic** tile and/or 1 **meta data** tile that are positioned at the start
+and end of the list, respectively. These tiles are correctly flipped in RTL contexts.
 
-> _N.B._ Please keep accessibility in mind when using things such as icons / icon fonts for detail
+> _N.B._ Please keep accessibility in mind when using things such as icons / icon fonts for tile
 > elements. Font Awesome has [excellent guidelines](http://fontawesome.io/accessibility/) for this.
 
 #### Adding a Supporting Graphic
 
-You can add a graphic using an element with class `mdc-list-item__graphic` class.
+You can add a supporting graphic using an element with class `mdc-list-item__graphic` class.
 
 ```html
 <ul class="mdc-list">
@@ -139,7 +139,7 @@ You can add a graphic using an element with class `mdc-list-item__graphic` class
 #### Making a Graphic an Avatar
 
 You can use the `mdc-list--avatar-list` modifier class to style the graphic elements as what
-the spec calls "avatars" - large, circular details that lend themselves well to contact images,
+the spec calls "avatars" - large, circular tiles that lend themselves well to contact images,
 profile pictures, etc.
 
 ```html
@@ -163,9 +163,9 @@ profile pictures, etc.
 </ul>
 ```
 
-#### Adding an end detail
+#### Adding Meta Data
 
-End details can be added in a similar way to graphics. Place an element after the text
+Meta data tiles can be added in a similar way to graphics. Place an element after the text
 with a `mdc-list-item__meta` class.
 
 ```html
@@ -195,11 +195,11 @@ with a `mdc-list-item__meta` class.
 </ul>
 ```
 
-Start and end details can be combined easily. Check out the list demo for many examples of how
-details can be configured.
+Supporting graphics and meta data can be combined easily. Check out the list demo for many examples of how
+tiles can be configured.
 
-> NOTE: If using controls such as a switch (_TK!_) within a list detail, you may need to override
-> the width and height styles set on the detail element.
+> NOTE: If using controls such as a switch within a list tile, you may need to override
+> the width and height styles set on the tile element.
 
 ### Using Ink Ripples for Interactive Lists
 
@@ -332,12 +332,12 @@ to add borders to lists.
 </ul>
 ```
 
-#### Control detail item positions
+#### Control Tile Positions
 
-In some cases, you may want start/end details to be positioned differently than the center. An
-example of this is in [this mock](https://material-design.storage.googleapis.com/publish/material_v_9/0Bx4BSt6jniD7ckJuUHNnUVlVYTQ/components_lists_content1.png) showing a timestamp being positioned in the top-right corner
-or a list item. You can easily do this by adding an `align-self` rule to the details you'd like
-styled this way. For example, given a `timestamp` class for an end detail:
+In some cases, you may want the supporting graphic or meta data to be positioned differently than the center.
+An example of this is in [this mock][pos-mock] showing a timestamp being positioned in the top-right corner
+or a list item. You can easily do this by adding an `align-self` rule to the tiles you'd like
+styled this way. For example, given a `timestamp` class for meta data:
 
 ```css
 .mdc-list-item__meta.timestamp {
@@ -346,12 +346,13 @@ styled this way. For example, given a `timestamp` class for an end detail:
 }
 ```
 
-Alternatively, if you have _multiple_ items you'd like to put into a detail, you can give it flex
-positioning and set its flex direction to column. This will allow you to stack items within an end
-detail one on top of another.
+[pos-mock]: https://material-design.storage.googleapis.com/publish/material_v_9/0Bx4BSt6jniD7ckJuUHNnUVlVYTQ/components_lists_content1.png
+
+Alternatively, if you have _multiple_ items you'd like to put into a tile, you can give it `display: flex` and
+`flex-direction: column`. This will allow you to stack items within a tile, one on top of another.
 
 For example, let's say you're building a messaging app and, naturally, you want a list of messages
-as part of your UI. You're designer wants a timestamp in the top-right corner and an "unread"
+as part of your UI. Your designer wants a timestamp in the top-right corner and an "unread"
 indicator below it corner.
 
 The HTML for this can be easily added:
