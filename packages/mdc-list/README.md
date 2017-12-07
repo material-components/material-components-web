@@ -91,7 +91,7 @@ Lists can be made more compact by using the `mdc-list--dense` modifier class.
 </ul>
 ```
 
-### Two-Line Lists
+### Two-Line List Items
 
 While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with
 some extra markup around the text to style a list in the two-line list style as defined by
@@ -108,12 +108,12 @@ some extra markup around the text to style a list in the two-line list style as 
 </ul>
 ```
 
-### List "Tile" Elements
+### List Item Tile Elements
 
-As mentioned in the spec, lists can contain primary and secondary actions. They can also contain
-things such as avatars, icons, interactive controls, etc. We call all of these items *tiles*. Lists
-can contain 1 **supporting graphic** tile and/or 1 **meta data** tile that are positioned at the start
-and end of the list, respectively. These tiles are correctly flipped in RTL contexts.
+As mentioned in the spec, list items (rows) can contain primary and secondary actions. They can also contain
+things such as avatars, icons, interactive controls, etc. We call all of these items *tiles*. Lists items
+can contain 1 **supporting graphic** tile and/or 1 **metadata** tile that are positioned at the start
+and end of the list item, respectively. These tiles are correctly flipped in RTL contexts.
 
 > _N.B._ Please keep accessibility in mind when using things such as icons / icon fonts for tile
 > elements. Font Awesome has [excellent guidelines](http://fontawesome.io/accessibility/) for this.
@@ -166,9 +166,9 @@ profile pictures, etc.
 </ul>
 ```
 
-#### Adding Meta Data
+#### Adding Metadata
 
-Meta data tiles can be added in a similar way to graphics. Place an element after the text
+Metadata tiles can be added in a similar way to graphics. Place an element after the text
 with a `mdc-list-item__meta` class.
 
 ```html
@@ -198,7 +198,7 @@ with a `mdc-list-item__meta` class.
 </ul>
 ```
 
-Supporting graphics and meta data can be combined easily. Check out the list demo for many examples of how
+Supporting graphics and metadata can be combined easily. Check out the list demo for many examples of how
 tiles can be configured.
 
 > NOTE: If using controls such as a switch within a list tile, you may need to override
@@ -337,10 +337,10 @@ to add borders to lists.
 
 #### Control Tile Positions
 
-In some cases, you may want the supporting graphic or meta data to be positioned differently than the center.
+In some cases, you may want the supporting graphic or metadata to be positioned differently than the center.
 An example of this is in [this mock][pos-mock] showing a timestamp being positioned in the top-right corner
 or a list item. You can easily do this by adding an `align-self` rule to the tiles you'd like
-styled this way. For example, given a `timestamp` class for meta data:
+styled this way. For example, given a `timestamp` class for metadata:
 
 ```css
 .mdc-list-item__meta.timestamp {
@@ -436,6 +436,6 @@ Mixin | Description
 `mdc-list-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text
 `mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the supporting graphic
 `mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the supporting graphic
-`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the meta data element
+`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the metadata element
 `mdc-list-divider-color($color)` | Sets the color of the divider
 `mdc-list-group-subheader-ink-color($color)` | Sets the ink color of the list group subheader
