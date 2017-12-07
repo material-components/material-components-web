@@ -17,8 +17,6 @@
 @import "@material/theme/variables";
 
 $mdc-temporary-drawer-background: $mdc-theme-background !default;
-
-// TODO: get ink color to work
 $mdc-temporary-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-primary) !default;
 
 $mdc-temporary-drawer-scrim-color: #000 !default;
@@ -26,7 +24,7 @@ $mdc-temporary-drawer-scrim-opacity: 0.6 !default;
 
 
 $mdc-persistent-drawer-background: $mdc-theme-background !default;
-$mdc-persistent-drawer-ink-color: blue !default;
+$mdc-persistent-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-primary) !default;
 
 $mdc-permanent-drawer-background: $mdc-theme-background !default;
-$mdc-permanent-drawer-ink-color: blue !default;
+$mdc-permanent-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-primary) !default;
