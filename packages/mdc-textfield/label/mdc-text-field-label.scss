@@ -51,39 +51,9 @@
 }
 
 // stylelint-disable plugin/selector-bem-pattern
-
 .mdc-text-field__label--float-above {
   &.mdc-text-field__label--shake {
     animation: invalid-shake-float-above-standard 250ms 1;
   }
 }
-
-// Move label when text-field gets autofilled in Chrome
-.mdc-text-field__input {
-  &:-webkit-autofill + .mdc-text-field__label {
-    transform: translateY(-100%) scale(.75, .75);
-    cursor: auto;
-  }
-}
-
 // stylelint-enable plugin/selector-bem-pattern
-
-.mdc-text-field__input:required + .mdc-text-field__label::after {
-  margin-left: 1px;
-  content: "*";
-
-  .mdc-text-field--focused & {
-    color: $mdc-text-field-error-on-light;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      color: $mdc-text-field-error-on-dark;
-    }
-  }
-}
-
-// mdc-form-field tweaks to align text field label correctly
-// stylelint-disable selector-max-type
-.mdc-form-field > .mdc-text-field + label {
-  align-self: flex-start;
-}
-// stylelint-enable selector-max-type
