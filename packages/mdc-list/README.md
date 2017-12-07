@@ -66,7 +66,7 @@ attribute with value `"rtl"`_. This applies to all lists regardless of type.
 </html>
 ```
 
-#### Dark Mode support
+#### Dark Mode Support
 
 Like other MDC-Web components, lists support dark mode either when an `mdc-list--theme-dark` class is
 attached to the root element, or the element has an ancestor with class `mdc-theme--dark`.
@@ -90,7 +90,7 @@ Lists can be made more compact by using the `mdc-list--dense` modifier class.
 </ul>
 ```
 
-### Two-line lists
+### Two-Line Lists
 
 While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with some extra markup around the text to style a list in the two-line list style as defined by [the spec](https://material.io/guidelines/components/lists.html#lists-specs) (see "Two-line lists").
 
@@ -115,7 +115,7 @@ and end of the list, respectively. These items are correctly flipped in RTL cont
 > _N.B._ Please keep accessibility in mind when using things such as icons / icon fonts for detail
 > elements. Font Awesome has [excellent guidelines](http://fontawesome.io/accessibility/) for this.
 
-#### Adding a graphic
+#### Adding a Supporting Graphic
 
 You can add a graphic using an element with class `mdc-list-item__graphic` class.
 
@@ -136,7 +136,7 @@ You can add a graphic using an element with class `mdc-list-item__graphic` class
 </ul>
 ```
 
-#### Making a graphic an avatar
+#### Making a Graphic an Avatar
 
 You can use the `mdc-list--avatar-list` modifier class to style the graphic elements as what
 the spec calls "avatars" - large, circular details that lend themselves well to contact images,
@@ -201,7 +201,7 @@ details can be configured.
 > NOTE: If using controls such as a switch (_TK!_) within a list detail, you may need to override
 > the width and height styles set on the detail element.
 
-### Using ink ripples for interactive lists
+### Using Ink Ripples for Interactive Lists
 
 MDC List supports adding ripples to `mdc-list-item` elements, for example in the case of a nav menu.
 To add ripples to lists, simply attach a ripple to all list items. Note that this can be easily done
