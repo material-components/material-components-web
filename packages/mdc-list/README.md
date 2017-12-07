@@ -384,3 +384,54 @@ And the basic CSS is relatively trivial
   align-items: flex-end;
 }
 ```
+
+### CSS Classes
+
+#### Blocks
+
+CSS Class | Description
+--- | ---
+`mdc-list` | A container for rows (`mdc-list-item`s)
+`mdc-list-group` | Wraps one or more `mdc-list` and/or `mdc-list-divider` elements
+`mdc-list-item` | An individual row in an `mdc-list`
+`mdc-list-divider` | Separates two rows or two lists using a horizontal bar
+
+#### Modifiers
+
+CSS Class | Description
+--- | ---
+`mdc-list--dense` | Increases the density of the list, making it appear more compact
+`mdc-list--avatar-list` | Configures the leading tiles of each row to display images instead of icons
+`mdc-list--two-line` | Increases the height of the row to give it greater visual separation from adjacent rows
+`mdc-list-item--selected` | Styles the row in a selected\* state
+`mdc-list-item--activated` | Styles the row in an activated\* state
+`mdc-list-divider--inset` | Increases the leading margin of the divider so that it does not intersect the avatar column
+
+\* **Note**: the difference between _selected_ and _activated_ states:
+
+- _Selected_ is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
+  Multiple items in a list can be _selected_ at the same time.
+- _Activated_ is more permanent within the page's lifetime. E.g., the currently highlighted destination in a nav drawer.
+  Only one item in a list can be _activated_ at a time.
+
+#### Elements
+
+CSS Class | Description
+--- | ---
+`mdc-list-item__start-detail` | The leading tile in the row (in LTR languages, the left-most)
+`mdc-list-item__end-detail` | The trailing tile in the row (in LTR languages, the right-most)
+`mdc-list-item__text` | Primary text for the row (displayed as the middle tile)
+`mdc-list-item__secondary-text` | Secondary text for the row (displayed in the middle tile)
+`mdc-list-group__subheader` | Heading text displayed above each list in a group
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text
+`mdc-list-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text
+`mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the graphic (`__start-detail`)
+`mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the graphic (`__start-detail`)
+`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the meta data (`__end-detail`)
+`mdc-list-divider-color($color)` | Sets the color of the divider
+`mdc-list-group-subheader-ink-color($color)` | Sets the ink color of the list group subheader
