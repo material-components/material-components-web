@@ -62,8 +62,8 @@ MDCTextFieldIconFoundation. This allows the parent MDCTextField component to acc
 Method Signature | Description
 --- | ---
 setAttr(attr: string, value: string) => void | Sets an attribute with a given value on the icon element
-registerInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the input element for a given event
-deregisterInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the input element for a given event
+registerInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event listener for a given event
+deregisterInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener for a given event
 notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon, which bubbles to the top-level text field element
 
 #### The full foundation API

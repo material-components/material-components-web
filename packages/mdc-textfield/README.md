@@ -121,12 +121,12 @@ automatically appends an asterisk to the label text if the required attribute is
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
 and disappears on input field blur by default, or it can be persistent. 
-See <a href="/catalog/input-controls/text-fields/helper-text/">here</a> for more information on using helper text.
+See [here](helper-text/) for more information on using helper text.
 
 ### Leading and Trailing Icons
 
 Leading and trailing icons can be added to MDC Text Fields as visual indicators as well as interaction targets.
-See <a href="/catalog/input-controls/text-fields/icon/">here</a> for more information on using icons.
+See [here](icon/) for more information on using icons.
 
 ### Textarea
 
