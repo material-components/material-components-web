@@ -354,7 +354,7 @@ For example, let's say you're building a messaging app and, naturally, you want 
 as part of your UI. You're designer wants a timestamp in the top-right corner and an "unread"
 indicator below it corner.
 
-The html for this can be easily added
+The HTML for this can be easily added:
 
 ```html
 <ul class="mdc-list mdc-list--two-line msgs-list">
@@ -373,7 +373,7 @@ The html for this can be easily added
 </ul>
 ```
 
-And the basic CSS is relatively trivial
+And the basic CSS is relatively trivial:
 
 ```css
 .msgs-list .mdc-list-item__meta {
