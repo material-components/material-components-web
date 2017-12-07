@@ -26,7 +26,7 @@
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
   @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
   @include mdc-ripple-surface;
-  @include mdc-ripple-color($mdc-checkbox-baseline-theme-color, $mdc-checkbox-ripple-opacity);
+  @include mdc-states($mdc-checkbox-baseline-theme-color);
   @include mdc-ripple-radius($mdc-checkbox-ripple-radius);
   @include mdc-checkbox-container-colors();
 

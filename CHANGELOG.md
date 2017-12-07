@@ -1,3 +1,38 @@
+<a name="0.26.0"></a>
+# [0.26.0](https://github.com/material-components/material-components-web/compare/v0.25.0...v0.26.0) (2017-11-27)
+
+
+### Bug Fixes
+
+* **list:** Add 8px bottom padding ([cd03a0e](https://github.com/material-components/material-components-web/commit/cd03a0e)), closes [#1488](https://github.com/material-components/material-components-web/issues/1488)
+* **list:** Make bottom padding match top for dense lists ([#1622](https://github.com/material-components/material-components-web/issues/1622)) ([67354d0](https://github.com/material-components/material-components-web/commit/67354d0))
+* **select:** Don't scroll page when select's menu is open ([#1500](https://github.com/material-components/material-components-web/issues/1500)) ([bddd747](https://github.com/material-components/material-components-web/commit/bddd747)), closes [#879](https://github.com/material-components/material-components-web/issues/879)
+* **select:** Make CSS-only background transparent ([#1499](https://github.com/material-components/material-components-web/issues/1499)) ([964a419](https://github.com/material-components/material-components-web/commit/964a419))
+* **slider:** Properly handle arrow key events in IE ([#1613](https://github.com/material-components/material-components-web/issues/1613)) ([476c81f](https://github.com/material-components/material-components-web/commit/476c81f))
+* **textfield:** Should not be in both disabled and invalid state ([#1568](https://github.com/material-components/material-components-web/issues/1568)) ([874a17e](https://github.com/material-components/material-components-web/commit/874a17e))
+
+
+### Chores
+
+* **text-field:** Split out helper text as a subelement ([#1611](https://github.com/material-components/material-components-web/issues/1611)) ([8107b08](https://github.com/material-components/material-components-web/commit/8107b08))
+* **text-field:** Splitting out bottom line as a sub element ([#1585](https://github.com/material-components/material-components-web/issues/1585)) ([b12c576](https://github.com/material-components/material-components-web/commit/b12c576))
+
+
+### Features
+
+* **text-field:** rename helptext to helper text ([#1576](https://github.com/material-components/material-components-web/issues/1576)) ([1a5acee](https://github.com/material-components/material-components-web/commit/1a5acee))
+* **textfield:** helperTextContent setter ([#1569](https://github.com/material-components/material-components-web/issues/1569)) ([875e393](https://github.com/material-components/material-components-web/commit/875e393))
+
+
+### BREAKING CHANGES
+
+* **text-field:** Please update implementations of MDCTextFieldAdapter to implement the method getHelperTextFoundation. MDCTextFieldAdapter no longer implements addClassToHelperText, removeClassFromHelperText, helperTextHasClass,  setHelperTextAttr, removeHelperTextAttr, and setHelperTextContent. See the README for mdc-textfield/helper-text for more information.
+* **textfield:** Adds adapter method to set helper text content.
+* **text-field:** Please update implementations of MDCTextFieldAdapter to implement the methods registerBottomLineEventHandler, deregisterBottomLineEventHandler, and getBottomLineFoundation. See the README for mdc-textfield/bottom-line for more information.
+* **text-field:** Instances of "helptext" in mdc-textfield/adapter.js has changed to "helperText", and users should update their implementations of the adapter.
+
+
+
 <a name="0.25.0"></a>
 # [0.25.0](https://github.com/material-components/material-components-web/compare/v0.24.0...v0.25.0) (2017-11-13)
 

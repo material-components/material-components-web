@@ -14,7 +14,10 @@ Material Components for the web is the successor to [Material Design Lite](https
 - Seamless integration with other JS frameworks and libraries
   - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
   - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
+  - [Angular MDC](https://github.com/trimox/angular-mdc-web)
   - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
+  - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC-Web Integration for Vue.js (using [foundation/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
+  - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC-Web Integration for Vue.js (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
   - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](docs/integrating-into-frameworks.md).
 
 MDC-Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
@@ -34,13 +37,13 @@ Then simply include the correct files, write some HTML, and call `mdc.autoInit()
 
 ```html
 <!DOCTYPE html>
-<html class="mdc-typography">
+<html>
   <head>
     <title>Material Components for the web</title>
     <link rel="stylesheet"
           href="node_modules/material-components-web/dist/material-components-web.css">
   </head>
-  <body>
+  <body class="mdc-typography">
     <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
     <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
       <input type="text" class="mdc-text-field__input" id="demo-input">

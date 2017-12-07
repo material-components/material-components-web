@@ -16,8 +16,10 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCTextFieldAdapter, NativeInputType} from './adapter';
+import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+// eslint-disable-next-line no-unused-vars
+import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import {cssClasses, strings} from './constants';
 
 
@@ -52,25 +54,26 @@ class MDCTextFieldFoundation extends MDCFoundation {
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       notifyIconAction: () => {},
-      addClassToHelperText: () => {},
-      removeClassFromHelperText: () => {},
-      helperTextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
       registerBottomLineEventHandler: () => {},
       deregisterBottomLineEventHandler: () => {},
-      setHelperTextAttr: () => {},
-      removeHelperTextAttr: () => {},
       getNativeInput: () => {},
-      getBottomLineFoundation: () => {},
     });
   }
 
   /**
    * @param {!MDCTextFieldAdapter=} adapter
+   * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({})) {
+  constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({}),
+    foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
+
+    /** @type {!MDCTextFieldBottomLineFoundation|undefined} */
+    this.bottomLine_ = foundationMap.bottomLine;
+    /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
+    this.helperText_ = foundationMap.helperText;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -154,13 +157,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
   activateFocus() {
     const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
-    const bottomLine = this.adapter_.getBottomLineFoundation();
-    if (bottomLine) {
-      bottomLine.activate();
+    if (this.bottomLine_) {
+      this.bottomLine_.activate();
     }
     this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
     this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-    this.showHelperText_();
+    if (this.helperText_) {
+      this.helperText_.showToScreenReader();
+    }
     this.isFocused_ = true;
   }
 
@@ -170,9 +174,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   setBottomLineTransformOrigin(evt) {
-    const bottomLine = this.adapter_.getBottomLineFoundation();
-    if (bottomLine) {
-      bottomLine.setTransformOrigin(evt);
+    if (this.bottomLine_) {
+      this.bottomLine_.setTransformOrigin(evt);
     }
   }
 
@@ -187,25 +190,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Makes the helper text visible to screen readers.
-   * @private
-   */
-  showHelperText_() {
-    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.removeHelperTextAttr(ARIA_HIDDEN);
-  }
-
-  /**
    * Handles when bottom line animation ends, performing actions that must wait
    * for animations to finish.
    */
   handleBottomLineAnimationEnd() {
-    const bottomLine = this.adapter_.getBottomLineFoundation();
     // We need to wait for the bottom line to be entirely transparent
     // before removing the class. If we do not, we see the line start to
     // scale down before disappearing
-    if (!this.isFocused_ && bottomLine) {
-      bottomLine.deactivate();
+    if (!this.isFocused_ && this.bottomLine_) {
+      this.bottomLine_.deactivate();
     }
   }
 
@@ -243,40 +236,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
     }
-    this.updateHelperText_(isValid);
-  }
-
-  /**
-   * Updates the state of the Text Field's helper text based on validity and
-   * the Text Field's options.
-   * @param {boolean} isValid
-   */
-  updateHelperText_(isValid) {
-    const {HELPER_TEXT_PERSISTENT, HELPER_TEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
-    const {ROLE} = MDCTextFieldFoundation.strings;
-    const helperTextIsPersistent = this.adapter_.helperTextHasClass(HELPER_TEXT_PERSISTENT);
-    const helperTextIsValidationMsg = this.adapter_.helperTextHasClass(HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !isValid;
-
-    if (validationMsgNeedsDisplay) {
-      this.adapter_.setHelperTextAttr(ROLE, 'alert');
-    } else {
-      this.adapter_.removeHelperTextAttr(ROLE);
+    if (this.helperText_) {
+      this.helperText_.setValidity(isValid);
     }
-
-    if (helperTextIsPersistent || validationMsgNeedsDisplay) {
-      return;
-    }
-    this.hideHelperText_();
-  }
-
-  /**
-   * Hides the helper text from screen readers.
-   * @private
-   */
-  hideHelperText_() {
-    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.setHelperTextAttr(ARIA_HIDDEN, 'true');
   }
 
   /**
@@ -308,6 +270,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClass(DISABLED);
       this.adapter_.setIconAttr('tabindex', '0');
+    }
+  }
+
+  /**
+   * @param {string} content Sets the content of the helper text.
+   */
+  setHelperTextContent(content) {
+    if (this.helperText_) {
+      this.helperText_.setContent(content);
     }
   }
 
