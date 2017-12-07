@@ -48,19 +48,6 @@ a.material-icons {
   }
 }
 
-.demo-list--meta-placeholders {
-  .mdc-list-item__meta {
-    background-color: currentColor;
-    width: 24px;
-    height: 24px;
-  }
-
-  &.mdc-list--dense .mdc-list-item__meta {
-    width: 20px;
-    height: 20px;
-  }
-}
-
 .demo-list--avatar-and-meta-icon {
   @include mdc-list-item-meta-ink-color($material-color-pink-a200);
 
