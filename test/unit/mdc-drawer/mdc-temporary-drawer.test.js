@@ -87,6 +87,15 @@ test('adapter#hasClass returns false if the root element does not have specified
   assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
+test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
+  const {component} = setupTest();
+  const target = bel`<div class="existent-class"></div>`;
+  const {adapter_: adapter} = component.getDefaultFoundation();
+
+  assert.isTrue(adapter.eventTargetHasClass(target, 'existent-class'));
+  assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
+});
+
 test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', () => {
   const {component} = setupTest();
   assert.isOk(component.getDefaultFoundation().adapter_.hasNecessaryDom());

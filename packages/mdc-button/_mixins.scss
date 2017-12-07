@@ -28,10 +28,10 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-button-ink-color(text-primary-on-dark);
-    @include mdc-ripple-color(text-primary-on-dark, $mdc-filled-button-ripple-opacity);
+    @include mdc-states(text-primary-on-dark);
   } @else {
     @include mdc-button-ink-color(text-primary-on-light);
-    @include mdc-ripple-color(text-primary-on-light, $mdc-filled-button-ripple-opacity);
+    @include mdc-states(text-primary-on-light);
   }
 }
 

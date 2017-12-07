@@ -23,6 +23,24 @@ import MDCTextFieldInputFoundation from './input/foundation';
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
+ * @typedef {{
+ *   value: string,
+ *   disabled: boolean,
+ *   badInput: boolean,
+ *   checkValidity: (function(): boolean)
+ * }}
+ */
+let NativeInputType;
+
+/**
+ * @typedef {{
+ *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined)
+ * }}
+ */
+let FoundationMapType;
+
+/**
  * Adapter for MDC Text Field.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
@@ -125,24 +143,16 @@ class MDCTextFieldAdapter {
   deregisterBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Returns the foundation for the bottom line element. Returns undefined if
-   * there is no bottom line element.
-   * @return {?MDCTextFieldBottomLineFoundation}
+   * Returns an object representing the native text input element, with a
+   * similar API shape. The object returned should include the value, disabled
+   * and badInput properties, as well as the checkValidity() function. We never
+   * alter the value within our code, however we do update the disabled
+   * property, so if you choose to duck-type the return value for this method
+   * in your implementation it's important to keep this in mind. Also note that
+   * this method can return null, which the foundation will handle gracefully.
+   * @return {?Element|?NativeInputType}
    */
-  getBottomLineFoundation() {}
-
-  /**
-   * Returns the foundation for the helper text element. Returns undefined if
-   * there is no helper text element.
-   * @return {?MDCTextFieldHelperTextFoundation}
-   */
-  getHelperTextFoundation() {}
-
-  /**
-   * Returns the foundation for the input element.
-   * @return {!MDCTextFieldInputFoundation}
-   */
-  getInputFoundation() {}
+  getNativeInput() {}
 }
 
-export {MDCTextFieldAdapter};
+export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};
