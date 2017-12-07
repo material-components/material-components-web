@@ -16,9 +16,10 @@ path: /catalog/lists/
   </a>
 </div>-->
 
-MDC List provides styles which implement [Material Design Lists](https://material.io/guidelines/components/lists.html) - "A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are supported (with
-three-line lists [coming soon](https://github.com/material-components/material-components-web/issues/31)). MDC
-Lists are designed to be accessible and RTL aware.
+MDC List provides styles which implement [Material Design Lists](https://material.io/guidelines/components/lists.html) -
+"A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are
+supported (with three-line lists [planned](https://github.com/material-components/material-components-web/issues/31)).
+MDC Lists are designed to be accessible and RTL aware.
 
 ## Design & API Documentation
 
@@ -92,7 +93,9 @@ Lists can be made more compact by using the `mdc-list--dense` modifier class.
 
 ### Two-Line Lists
 
-While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with some extra markup around the text to style a list in the two-line list style as defined by [the spec](https://material.io/guidelines/components/lists.html#lists-specs) (see "Two-line lists").
+While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with
+some extra markup around the text to style a list in the two-line list style as defined by
+[the spec](https://material.io/guidelines/components/lists.html#lists-specs) (see "Two-line lists").
 
 ```html
 <ul class="mdc-list mdc-list--two-line">
@@ -253,8 +256,8 @@ To use within lists, simply add the `mdc-list-divider` class to a list item.
 
 > Note the `role="separator"` attribute on the list divider. It is important to include this so that
 > assistive technology can be made aware that this is a presentational element and is not meant to
-> be included as an item in a list. Note that `separator` is indeed [a valid role](https://w3c.github.io/html/grouping-content.html#the-li-element)
-> for `li` elements.
+> be included as an item in a list. Note that `separator` is indeed a
+> [valid role](https://w3c.github.io/html/grouping-content.html#the-li-element) for `li` elements.
 
 In order to make separators inset, add a `mdc-list-divider--inset` modifier class to it.
 
