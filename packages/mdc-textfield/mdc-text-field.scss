@@ -445,7 +445,6 @@
   .mdc-text-field__input {
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
-    border: 1px solid transparent;
 
     &:focus {
       @include mdc-theme-prop(border-color, primary);
@@ -477,6 +476,7 @@
     bottom: auto;
     padding: 8px 16px;
     background-color: $mdc-textarea-light-background;
+    line-height: 1.15;
 
     @include mdc-theme-dark(".mdc-text-field") {
       background-color: $mdc-textarea-dark-background;
