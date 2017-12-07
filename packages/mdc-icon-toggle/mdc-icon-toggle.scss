@@ -25,7 +25,7 @@
   @include mdc-ripple-surface;
   @include mdc-ripple-radius;
   @include mdc-states(black);
-  @include mdc-icon-toggle-ink-color(text-secondary-on-light);
+  @include mdc-icon-toggle-ink-color(text-primary-on-light);
 
   @include mdc-theme-dark(".mdc-icon-toggle", true) {
     @include mdc-states(white);
