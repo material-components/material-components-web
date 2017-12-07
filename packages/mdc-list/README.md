@@ -117,20 +117,20 @@ and end of the list, respectively. These items are correctly flipped in RTL cont
 
 #### Adding a start detail
 
-You can add a start detail using an element with class `mdc-list-item__start-detail` class.
+You can add a start detail using an element with class `mdc-list-item__graphic` class.
 
 ```html
 <ul class="mdc-list">
   <li class="mdc-list-item">
-    <i class="mdc-list-item__start-detail material-icons" aria-hidden="true">network_wifi</i>
+    <i class="mdc-list-item__graphic material-icons" aria-hidden="true">network_wifi</i>
     Wi-Fi
   </li>
   <li class="mdc-list-item">
-    <i class="mdc-list-item__start-detail material-icons" aria-hidden="true">bluetooth</i>
+    <i class="mdc-list-item__graphic material-icons" aria-hidden="true">bluetooth</i>
     Bluetooth
   </li>
   <li class="mdc-list-item">
-    <i class="mdc-list-item__start-detail material-icons" aria-hidden="true">data_usage</i>
+    <i class="mdc-list-item__graphic material-icons" aria-hidden="true">data_usage</i>
     Data Usage
   </li>
 </ul>
@@ -146,17 +146,17 @@ profile pictures, etc.
 <h2>Contacts</h2>
 <ul class="mdc-list mdc-list--avatar-list">
   <li class="mdc-list-item">
-    <img class="mdc-list-item__start-detail" src="/users/1/profile_pic.png"
+    <img class="mdc-list-item__graphic" src="/users/1/profile_pic.png"
          width="56" height="56" alt="Picture of Janet Perkins">
     Janet Perkins
   </li>
   <li class="mdc-list-item">
-    <img class="mdc-list-item__start-detail" src="/users/2/profile_pic.png"
+    <img class="mdc-list-item__graphic" src="/users/2/profile_pic.png"
          width="56" height="56" alt="Picture of Mary Johnson">
     Mary Johnson
   </li>
   <li class="mdc-list-item">
-    <img class="mdc-list-item__start-detail" src="/users/3/profile_pic.png"
+    <img class="mdc-list-item__graphic" src="/users/3/profile_pic.png"
          width="56" height="56" alt="Picture of Peter Carlsson">
     Peter Carlsson
   </li>
@@ -210,19 +210,19 @@ via `mdc-auto-init` when using the [material-components-web](../material-compone
 ```html
 <nav class="mdc-list">
   <a href="/wifi" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
-    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
       network_wifi
     </i>
     Wi-Fi
   </a>
   <a href="/bluetooth" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
-    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
       bluetooth
     </i>
     Bluetooth
   </a>
   <a href="/data-usage" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
-    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
       data_usage
     </i>
     Data Usage
@@ -418,7 +418,7 @@ CSS Class | Description
 
 CSS Class | Description
 --- | ---
-`mdc-list-item__start-detail` | The leading tile in the row (in LTR languages, the left-most)
+`mdc-list-item__graphic` | The leading tile in the row (in LTR languages, the left-most)
 `mdc-list-item__end-detail` | The trailing tile in the row (in LTR languages, the right-most)
 `mdc-list-item__text` | Primary text for the row (displayed as the middle tile)
 `mdc-list-item__secondary-text` | Secondary text for the row (displayed in the middle tile)
@@ -430,8 +430,8 @@ Mixin | Description
 --- | ---
 `mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text
 `mdc-list-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text
-`mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the graphic (`__start-detail`)
-`mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the graphic (`__start-detail`)
+`mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the graphic
+`mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the graphic
 `mdc-list-item-meta-ink-color($color)` | Sets the ink color of the meta data (`__end-detail`)
 `mdc-list-divider-color($color)` | Sets the color of the divider
 `mdc-list-group-subheader-ink-color($color)` | Sets the ink color of the list group subheader

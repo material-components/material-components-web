@@ -31,13 +31,13 @@
 }
 
 @mixin mdc-list-item-graphic-fill-color($color) {
-  .mdc-list-item__start-detail {
+  .mdc-list-item__graphic {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
 @mixin mdc-list-item-graphic-ink-color($color) {
-  .mdc-list-item__start-detail {
+  .mdc-list-item__graphic {
     @include mdc-theme-prop(color, $color);
   }
 }
@@ -67,7 +67,7 @@
 // Sets the width and height of the start detail element, as well as calculates the margins for
 // the start detail element such that the text is always offset by 72px, which is defined within
 // the spec.
-@mixin mdc-list-start-detail-size_($size) {
+@mixin mdc-list-graphic-size_($size) {
   $text-offset: 72px;
   $side-padding: $mdc-list-side-padding;
   $margin-value: $text-offset - $side-padding - $size;
