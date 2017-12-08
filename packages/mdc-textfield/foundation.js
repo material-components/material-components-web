@@ -325,9 +325,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       } else {
         this.adapter_.addClass(INVALID);
       }
-      const helperText = this.adapter_.getHelperTextFoundation();
-      if (helperText) {
-        helperText.setValidity(isValid);
+      if (this.helperText_) {
+        this.helperText_.setValidity(isValid);
       }
     }
 

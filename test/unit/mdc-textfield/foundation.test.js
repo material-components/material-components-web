@@ -71,18 +71,18 @@ test('#constructor sets disabled to false', () => {
 });
 
 const setupValueTest = (value, optIsValid, optIsBadInput) => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation, mockAdapter, bottomLine, helperText} = setupTest();
   const nativeInput = {
     value: value,
     validity: {
       valid: optIsValid === undefined ? true : !!optIsValid,
       badInput: optIsBadInput === undefined ? false : !!optIsBadInput,
     },
-  }
+  };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
 
-  return {foundation, mockAdapter, nativeInput};
+  return {foundation, mockAdapter, bottomLine, helperText, nativeInput};
 };
 
 test('#getValue returns the field\'s value', () => {
@@ -114,9 +114,8 @@ test('#setValue with empty value de-floats the label', () => {
 });
 
 test('#setValue valid and invalid input', () => {
-  const {foundation, mockAdapter, nativeInput} = setupValueTest('', /* isValid */ false);
-  const helperText = td.object(['setValidity']);
-  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+  const {foundation, mockAdapter, nativeInput, helperText} =
+    setupValueTest('', /* isValid */ false);
 
   foundation.setValue('invalid');
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
@@ -128,7 +127,6 @@ test('#setValue valid and invalid input', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
   td.verify(mockAdapter.removeClassFromLabel(cssClasses.LABEL_SHAKE));
   td.verify(helperText.setValidity(true));
-
 });
 
 test('#setValue does not affect focused state', () => {
@@ -149,7 +147,7 @@ test('#setValue does not affect disabled state', () => {
 });
 
 test('#setValue with empty string and badInput does not touch floating label', () => {
-  const {foundation, mockAdapter, nativeInput} =
+  const {foundation, mockAdapter} =
     setupValueTest('', /* isValid */ false, /* isBadInput */ true);
   foundation.setValue('');
   td.verify(mockAdapter.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
@@ -157,7 +155,7 @@ test('#setValue with empty string and badInput does not touch floating label', (
 });
 
 test('#isValid for native validation', () => {
-  const {foundation, mockAdapter, nativeInput} = setupValueTest('', /* isValid */ true);
+  const {foundation, nativeInput} = setupValueTest('', /* isValid */ true);
   assert.isOk(foundation.isValid());
 
   nativeInput.validity.valid = false;
@@ -165,7 +163,7 @@ test('#isValid for native validation', () => {
 });
 
 test('#setValid overrides native validation', () => {
-  const {foundation, mockAdapter, nativeInput} = setupValueTest('', /* isValid */ false);
+  const {foundation, nativeInput} = setupValueTest('', /* isValid */ false);
   foundation.setValid(true);
   assert.isOk(foundation.isValid());
 
@@ -175,9 +173,7 @@ test('#setValid overrides native validation', () => {
 });
 
 test('#setValid updates classes', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const helperText = td.object(['setValidity']);
-  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+  const {foundation, mockAdapter, helperText} = setupTest();
 
   foundation.setValid(false);
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
@@ -200,9 +196,8 @@ test('#setValid updates classes', () => {
 
 test('#setRequired updates CSS classes', () => {
   // Native validity checking does not apply in unittests, so manually mark as valid or invalid.
-  const {foundation, mockAdapter, nativeInput} = setupValueTest('', /* isValid */ false);
-  const helperText = td.object(['setValidity']);
-  td.when(mockAdapter.getHelperTextFoundation()).thenReturn(helperText);
+  const {foundation, mockAdapter, nativeInput, helperText} =
+    setupValueTest('', /* isValid */ false);
 
   foundation.setRequired(true);
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
