@@ -227,4 +227,6 @@ class MDCTextField extends MDCComponent {
   }
 }
 
-export {MDCTextField, MDCTextFieldFoundation};
+export {MDCTextField, MDCTextFieldFoundation,
+  MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation,
+  MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation};
