@@ -148,14 +148,42 @@
   @include mdc-drawer-list_;
 }
 
-@mixin mdc-drawer-fill-color($color) {
+@mixin mdc-permanent-drawer-fill-color($color) {
   background-color: $color;
 }
 
-@mixin mdc-drawer-ink-color($color) {
+@mixin mdc-persistent-drawer-fill-color($color) {
+  & .mdc-persistent-drawer__drawer {
+    background-color: $color;
+  }
+}
+
+@mixin mdc-temporary-drawer-fill-color($color) {
+  & .mdc-temporary-drawer__drawer {
+    background-color: $color;
+  }
+}
+
+@mixin mdc-permanent-drawer-ink-color($color) {
   color: $color;
 }
 
+@mixin mdc-persistent-drawer-ink-color($color) {
+  &,
+  & .mdc-persistent-drawer__drawer {
+    color: $color;
+  }
+}
+
+@mixin mdc-temporary-drawer-ink-color($color) {
+  &,
+  & .mdc-temporary-drawer__drawer {
+    color: $color;
+  }
+}
+
 @mixin mdc-drawer-scrim-color($color, $opacity) {
-  background-color: rgba($color, $opacity);
+  &::before {
+    background-color: rgba($color, $opacity);
+  }
 }

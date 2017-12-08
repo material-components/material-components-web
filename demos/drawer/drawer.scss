@@ -16,5 +16,21 @@
 
 @import "../common";
 @import "../../packages/mdc-drawer/mdc-drawer";
+@import "../../packages/mdc-drawer/mixins";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-list/mdc-list";
+
+.demo-temporary-drawer {
+  @include mdc-temporary-drawer-fill-color(#fff);
+  @include mdc-temporary-drawer-ink-color(#fff);
+}
+
+.demo-persistent-drawer {
+  @include mdc-persistent-drawer-fill-color(#fff);
+  @include mdc-persistent-drawer-ink-color(#fff);
+}
+
+.demo-content__permanent-drawer {
+  @include mdc-permanent-drawer-fill-color(#fff);
+  @include mdc-permanent-drawer-ink-color(#fff);
+}

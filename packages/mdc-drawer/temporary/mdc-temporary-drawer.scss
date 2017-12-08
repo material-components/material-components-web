@@ -25,6 +25,9 @@
 
 .mdc-temporary-drawer {
   @include mdc-drawer-base_;
+  @include mdc-temporary-drawer-ink-color($mdc-temporary-drawer-ink-color);
+  @include mdc-temporary-drawer-fill-color($mdc-temporary-drawer-background);
+  @include mdc-drawer-scrim-color($mdc-temporary-drawer-scrim-color, $mdc-temporary-drawer-scrim-opacity);
 
   position: fixed;
   top: 0;
@@ -46,7 +49,6 @@
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    @include mdc-drawer-scrim-color($mdc-temporary-drawer-scrim-color, $mdc-temporary-drawer-scrim-opacity);
     opacity: 0;
     opacity: var(--mdc-temporary-drawer-opacity, 0);
     content: "";
@@ -54,8 +56,6 @@
   }
 
   &__drawer {
-    @include mdc-drawer-ink-color($mdc-temporary-drawer-ink-color);
-    @include mdc-drawer-fill-color($mdc-temporary-drawer-background);
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
 
