@@ -166,8 +166,8 @@ $mdc-theme-property-values: (
 }
 
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
-@function mdc-theme-accessible-ink-color($fill-color) {
+@function mdc-theme-accessible-ink-color($fill-color, $text-style: primary) {
   $fill-color-value: mdc-theme-prop-value($fill-color);
 
-  @return map-get(map-get($mdc-theme-text-colors, mdc-theme-contrast-tone($fill-color-value)), primary);
+  @return map-get(map-get($mdc-theme-text-colors, mdc-theme-contrast-tone($fill-color-value)), $text-style);
 }
