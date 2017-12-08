@@ -35,6 +35,14 @@ import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 let NativeInputType;
 
 /**
+ * @typedef {{
+ *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined)
+ * }}
+ */
+let FoundationMapType;
+
+/**
  * Adapter for MDC Text Field.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
@@ -145,20 +153,6 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
-
-  /**
-   * Returns the foundation for the bottom line element. Returns undefined if
-   * there is no bottom line element.
-   * @return {?MDCTextFieldBottomLineFoundation}
-   */
-  getBottomLineFoundation() {}
-
-  /**
-   * Returns the foundation for the helper text element. Returns undefined if
-   * there is no helper text element.
-   * @return {?MDCTextFieldHelperTextFoundation}
-   */
-  getHelperTextFoundation() {}
 }
 
-export {MDCTextFieldAdapter, NativeInputType};
+export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

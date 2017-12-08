@@ -154,7 +154,7 @@ $mdc-theme-property-values: (
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
 @function mdc-theme-prop-value($property) {
-  @if type-of($property) == color {
+  @if type-of($property) == "color" or $property == "currentColor" {
     @return $property;
   }
 
@@ -163,4 +163,16 @@ $mdc-theme-property-values: (
   }
 
   @return map-get($mdc-theme-property-values, $property);
+}
+
+// NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
+@function mdc-theme-accessible-ink-color($fill-color, $text-style: primary) {
+  $fill-color-value: mdc-theme-prop-value($fill-color);
+  $color-map-for-tone: map-get($mdc-theme-text-colors, mdc-theme-contrast-tone($fill-color-value));
+
+  @if not map-has-key($color-map-for-tone, $text-style) {
+    @error "Invalid $text-style: '#{$text-style}'. Choose one of: #{map-keys($color-map-for-tone)}";
+  }
+
+  @return map-get($color-map-for-tone, $text-style);
 }

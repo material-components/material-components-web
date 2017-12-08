@@ -41,10 +41,16 @@ class FakeMenu {
 function getFixture() {
   return bel`
     <div class="mdc-select" role="listbox" tabindex="0">
-      <span class="mdc-select__selected-text">Pick a food group</span>
-      <div class="mdc-select__menu mdc-simple-menu">
-        <ul class="mdc-simple-menu__items">
-          <li class="mdc-list-item" role="option" tabindex="0">An option</li>
+      <div class="mdc-select__surface">
+        <div class="mdc-select__label">Pick a Food Group</div>
+        <div class="mdc-select__selected-text"></div>
+        <div class="mdc-select__bottom-line"></div>
+      </div>
+      <div class="mdc-simple-menu mdc-select__menu">
+        <ul class="mdc-list mdc-simple-menu__items">
+          <li class="mdc-list-item" role="option" aria-disabled="true">
+            Pick a food group
+          </li>
         </ul>
       </div>
     </div>
@@ -60,9 +66,13 @@ test('attachTo returns a component instance', () => {
 function setupTest() {
   const menu = new FakeMenu();
   const fixture = getFixture();
+  const surface = fixture.querySelector('.mdc-select__surface');
+  const label = fixture.querySelector('.mdc-select__label');
+  const bottomLine = fixture.querySelector('.mdc-select__bottom-line');
   const menuEl = fixture.querySelector('.mdc-select__menu');
   const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu);
-  return {menu, menuEl, fixture, component};
+
+  return {menu, menuEl, fixture, surface, label, bottomLine, component};
 }
 
 test('options returns the menu items', () => {
@@ -163,6 +173,43 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isNotOk(fixture.classList.contains('foo'));
 });
 
+test('adapter#addClassToLabel adds a class to the label', () => {
+  const {component, label} = setupTest();
+
+  component.getDefaultFoundation().adapter_.addClassToLabel('foo');
+  assert.isTrue(label.classList.contains('foo'));
+});
+
+test('adapter#removeClassFromLabel removes a class from the label', () => {
+  const {component, label} = setupTest();
+
+  label.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClassFromLabel('foo');
+  assert.isFalse(label.classList.contains('foo'));
+});
+
+test('adapter#addClassToBottomLine adds a class to the bottom line', () => {
+  const {component, bottomLine} = setupTest();
+
+  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
+  assert.isTrue(bottomLine.classList.contains('foo'));
+});
+
+test('adapter#removeClassFromBottomLine removes a class from the bottom line', () => {
+  const {component, bottomLine} = setupTest();
+
+  bottomLine.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
+  assert.isFalse(bottomLine.classList.contains('foo'));
+});
+
+test('adapter#setBottomLineAttr adds attribute to bottom line', () => {
+  const {component, bottomLine} = setupTest();
+
+  component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-disabled', 'true');
+  assert.equal(bottomLine.getAttribute('aria-disabled'), 'true');
+});
+
 test('adapter#setAttr sets an attribute with a given value on the root element', () => {
   const {component, fixture} = setupTest();
   component.getDefaultFoundation().adapter_.setAttr('aria-disabled', 'true');
@@ -227,21 +274,21 @@ test('adapter#makeUntabbable sets the root element\'s tabindex to -1', () => {
   assert.equal(fixture.tabIndex, -1);
 });
 
-test('adapter#getComputedStyleValue gets the computed style value of the prop from the root element', () => {
-  const {component, fixture} = setupTest();
+test('adapter#getComputedStyleValue gets the computed style value of the prop from the surface element', () => {
+  const {component, fixture, surface} = setupTest();
   document.body.appendChild(fixture);
-  fixture.style.width = '500px';
+  surface.style.width = '500px';
   assert.equal(
     component.getDefaultFoundation().adapter_.getComputedStyleValue('width'),
-    getComputedStyle(fixture).getPropertyValue('width')
+    getComputedStyle(surface).getPropertyValue('width')
   );
   document.body.removeChild(fixture);
 });
 
 test('adapter#setStyle sets the given style propertyName to the given value', () => {
-  const {component, fixture} = setupTest();
+  const {component, surface} = setupTest();
   component.getDefaultFoundation().adapter_.setStyle('font-size', '13px');
-  assert.equal(fixture.style.getPropertyValue('font-size'), '13px');
+  assert.equal(surface.style.getPropertyValue('font-size'), '13px');
 });
 
 test('adapter#create2dRenderingContext returns a CanvasRenderingContext2d instance', () => {

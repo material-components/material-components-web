@@ -17,35 +17,36 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
+@import "./mixins";
+@import "./variables";
 
-$mdc-list-side-padding: 16px;
+// TODO(acdvorak): Find a way to remove parent .mdc-list and .mdc-list-group selectors; they violate BEM.
+.mdc-list,
+.mdc-list-group {
+  @include mdc-list-divider-color($mdc-list-divider-color-light);
 
-// Sets the width and height of a detail element to the specified dimension.
-@mixin mdc-list-detail-size_($size) {
-  width: $size;
-  height: $size;
-}
-
-// Sets the width and height of the start detail element, as well as calculates the margins for
-// the start detail element such that the text is always offset by 72px, which is defined within
-// the spec.
-@mixin mdc-list-start-detail-size_($size) {
-  $text-offset: 72px;
-  $side-padding: $mdc-list-side-padding;
-  $margin-value: $text-offset - $side-padding - $size;
-
-  @include mdc-list-detail-size_($size);
-  @include mdc-rtl-reflexive-box(margin, right, $margin-value, ".mdc-list-item");
+  @include mdc-theme-dark {
+    @include mdc-list-divider-color($mdc-list-divider-color-dark);
+  }
 }
 
 // postcss-bem-linter: define list
 
 .mdc-list {
   @include mdc-typography(subheading2);
-  @include mdc-theme-prop(color, text-primary-on-background);
+
+  // TODO(acdvorak): Find a way to remove parent .mdc-list selector; it violates BEM.
+  @include mdc-list-item-primary-text-ink-color(text-primary-on-background);
+  @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background);
+  @include mdc-list-item-graphic-fill-color(transparent);
+  @include mdc-list-item-graphic-ink-color(text-icon-on-background);
+  @include mdc-list-item-meta-ink-color(text-hint-on-background);
 
   @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
+    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
+    @include mdc-list-item-secondary-text-ink-color(text-secondary-on-dark);
+    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
+    @include mdc-list-item-meta-ink-color(text-hint-on-dark);
   }
 
   margin: 0;
@@ -75,8 +76,21 @@ $mdc-list-side-padding: 16px;
   justify-content: flex-start;
   height: 48px;
 
+  // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
+  // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
+  &--selected,
+  &--activated {
+    @include mdc-list-item-primary-text-ink-color(primary);
+    @include mdc-list-item-graphic-ink-color(primary);
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
   &__start-detail {
     @include mdc-list-start-detail-size_(24px);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__end-detail {
@@ -87,22 +101,17 @@ $mdc-list-side-padding: 16px;
   &__text {
     display: inline-flex;
     flex-direction: column;
+  }
 
-    &__secondary {
-      @include mdc-typography(body1);
-      @include mdc-theme-prop(color, text-secondary-on-background);
+  &__secondary-text {
+    @include mdc-typography(body1);
 
-      @include mdc-theme-dark {
-        @include mdc-theme-prop(color, text-secondary-on-dark);
-      }
-
-      // Match the font size to the primary text when dense
-      // stylelint-disable plugin/selector-bem-pattern
-      .mdc-list--dense & {
-        font-size: inherit;
-      }
-      // stylelint-enable plugin/selector-bem-pattern
+    // Match the font size to the primary text when dense
+    // stylelint-disable plugin/selector-bem-pattern
+    .mdc-list--dense & {
+      font-size: inherit;
     }
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
   // stylelint-disable plugin/selector-bem-pattern
@@ -144,7 +153,7 @@ $mdc-list-side-padding: 16px;
     height: 60px;
   }
 }
-// postcss-bem-linter: end //
+// postcss-bem-linter: end
 
 // Override anchor tag styles for the use-case of a list being used for navigation
 // stylelint-disable selector-max-type,selector-no-qualifying-type
@@ -182,11 +191,8 @@ a.mdc-list-item {
   height: 0;
   margin: 0;
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, .12);
-
-  @include mdc-theme-dark(".mdc-list") {
-    border-bottom-color: rgba(255, 255, 255, .2);
-  }
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
 }
 
 .mdc-list-divider--inset {
@@ -202,6 +208,12 @@ a.mdc-list-item {
 // postcss-bem-linter: define list-group
 
 .mdc-list-group {
+  @include mdc-list-group-subheader-ink-color(text-primary-on-background);
+
+  @include mdc-theme-dark {
+    @include mdc-list-group-subheader-ink-color(text-primary-on-dark);
+  }
+
   padding: 0 $mdc-list-side-padding;
 
   &__subheader {
@@ -211,11 +223,6 @@ a.mdc-list-item {
       ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
 
     @include mdc-typography(body2);
-    @include mdc-theme-prop(color, text-primary-on-background);
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
 
     margin: $mdc-list-subheader-margin 0;
   }
