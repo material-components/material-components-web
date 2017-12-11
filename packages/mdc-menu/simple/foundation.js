@@ -429,11 +429,70 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }, numbers.SELECTED_TRIGGER_DELAY);
   }
 
+
+  /**
+   * @return {bool} Indicates whether menu can cover the whole anchor (ignoring margins).
+   * @private
+   */
+  canOverlapAnchor_() {
+    return this.adapter_.hasAnchor() && !(this.anchorCorner_ & CornerBit.BOTTOM);
+  }
+
+  /**
+   * Computes the corner of the anchor from which to animate and position the menu.
+   * @return {Corner}
+   * @private
+   */
+  getOriginCorner_() {
+    // Defaults: open from the top left.
+    let corner = Corner.TOP_LEFT;
+
+    const anchorRect = this.adapter_.getAnchorDimensions();
+    const windowDimensions = this.adapter_.getWindowDimensions();
+
+    const screenMargin = {top: anchorRect.top, right: windowDimensions.width - anchorRect.right,
+      left: anchorRect.left, bottom: windowDimensions.height - anchorRect.bottom};
+    const anchorHeight = anchorRect.height;
+    const anchorWidth = anchorRect.width;
+    const menuHeight = this.dimensions_.height;
+    const menuWidth = this.dimensions_.width;
+
+    const bottomAligned = this.anchorCorner_ & CornerBit.BOTTOM;
+    const availableTop = bottomAligned ? screenMargin.top + this.anchorMargin_.top
+      : anchorRect.top + anchorHeight + this.anchorMargin_.bottom;
+    const availableBottom = bottomAligned ? screenMargin.bottom - this.anchorMargin_.bottom
+      : screenMargin.bottom + anchorHeight - this.anchorMargin_.bottom;
+
+    const topOverflow = menuHeight - availableTop;
+    const bottomOverflow = menuHeight - availableBottom;
+    if (bottomOverflow > 0 && topOverflow < bottomOverflow) {
+      corner |= CornerBit.BOTTOM;
+    }
+
+    const leftAligned = this.adapter_.isRtl() ? (this.anchorCorner_ & CornerBit.FLIP_RTL & CornerBit.RIGHT) :
+      (this.anchorCorner_ & ~CornerBit.RIGHT);
+    const availableLeft = leftAligned ? screenMargin.left + this.anchorMargin_.left :
+      screenMargin.left + anchorWidth + this.anchorMargin_.right;
+    const availableRight = leftAligned ? anchorWidth - this.anchorMargin_.left + screenMargin.right :
+      screenMargin.right - this.anchorMargin_.right;
+
+    const leftOverflow = menuWidth - availableLeft;
+    const rightOverflow = menuWidth - availableRight;
+    if (rightOverflow > 0 && leftOverflow < rightOverflow) {
+      corner |= CornerBit.RIGHT;
+    }
+
+    return corner;
+  }
+
   /** @private */
   autoPosition_() {
     if (!this.adapter_.hasAnchor()) {
       return;
     }
+
+    debugger;
+    const  corner = this.getOriginCorner_();
 
     // Defaults: open from the top left.
     let vertical = 'top';
