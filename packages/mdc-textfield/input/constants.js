@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,24 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const cssClasses = {
-  ROOT: 'mdc-snackbar',
-  TEXT: 'mdc-snackbar__text',
-  ACTION_WRAPPER: 'mdc-snackbar__action-wrapper',
-  ACTION_BUTTON: 'mdc-snackbar__action-button',
-  ACTIVE: 'mdc-snackbar--active',
-  MULTILINE: 'mdc-snackbar--multiline',
-  ACTION_ON_BOTTOM: 'mdc-snackbar--action-on-bottom',
+
+/** @enum {string} */
+const strings = {
+  FOCUS_EVENT: 'MDCTextFieldInput:focus',
+  BLUR_EVENT: 'MDCTextFieldInput:blur',
+  PRESSED_EVENT: 'MDCTextFieldInput:pressed',
 };
 
-export const strings = {
-  TEXT_SELECTOR: '.mdc-snackbar__text',
-  ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__action-wrapper',
-  ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
-  SHOW_EVENT: 'MDCSnackbar:show',
-  HIDE_EVENT: 'MDCSnackbar:hide',
-};
-
-export const numbers = {
-  MESSAGE_TIMEOUT: 2750,
-};
+export {strings};
