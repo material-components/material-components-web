@@ -15,10 +15,12 @@
  */
 
 import {cssClasses, strings, numbers} from './constants';
+import MDCSliderAdapter from './adapter';
 
 import {getCorrectEventName, getCorrectPropertyName} from '@material/animation';
 import MDCFoundation from '@material/base/foundation';
 
+/** @enum {string} */
 const KEY_IDS = {
   ARROW_LEFT: 'ArrowLeft',
   ARROW_RIGHT: 'ArrowRight',
@@ -33,21 +35,28 @@ const KEY_IDS = {
 // Events that can constitute the user releasing drag on a slider
 const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
 
+/**
+ * @extends {MDCFoundation<!MDCSliderAdapter>}
+ */
 export default class MDCSliderFoundation extends MDCFoundation {
+  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
 
+  /** @return enum {numbers} */
   static get numbers() {
     return numbers;
   }
 
+  /** @return {!MDCSliderAdapter} */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCSliderAdapter} */ ({
       hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
@@ -75,9 +84,13 @@ export default class MDCSliderFoundation extends MDCFoundation {
       removeTrackMarkers: () => {},
       setLastTrackMarkersStyleProperty: (/* propertyName: string, value: string */) => {},
       isRTL: () => /* boolean */ false,
-    };
+    });
   }
 
+  /**
+   * Creates a new instance of MDCSliderFoundation
+   * @param {MDCSliderAdapter=} adapter
+   */
   constructor(adapter = {}) {
     super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
     this.rect_ = null;
@@ -173,18 +186,22 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.updateUIForCurrentValue_();
   }
 
+  /** @return {number} */
   getValue() {
     return this.value_;
   }
 
+  /** @param {number} value */
   setValue(value) {
     this.setValue_(value, false);
   }
 
+  /** @return {number} */
   getMax() {
     return this.max_;
   }
 
+  /** @param {number} max */
   setMax(max) {
     if (max < this.min_) {
       throw new Error('Cannot set max to be less than the slider\'s minimum value');
@@ -195,10 +212,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.setupTrackMarker();
   }
 
+  /** @return {number} */
   getMin() {
     return this.min_;
   }
 
+  /** @param {number} min */
   setMin(min) {
     if (min > this.max_) {
       throw new Error('Cannot set min to be greater than the slider\'s maximum value');
@@ -209,10 +228,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.setupTrackMarker();
   }
 
+  /** @return {number} */
   getStep() {
     return this.step_;
   }
 
+  /** @param {number} step */
   setStep(step) {
     if (step < 0) {
       throw new Error('Step cannot be set to a negative number');
@@ -225,10 +246,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.setupTrackMarker();
   }
 
+  /** @return {boolean} */
   isDisabled() {
     return this.disabled_;
   }
 
+  /** @param {boolean} disabled */
   setDisabled(disabled) {
     this.disabled_ = disabled;
     this.toggleClass_(cssClasses.DISABLED, this.disabled_);
@@ -244,6 +267,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Creates a handler for mouse/touch/pointer down events
+   * @param {string} moveEvt
+   * @param {function=(!Event): undefined} getPageX
+   * @return {function(!Event): undefined}
+   */
   createDownHandler_(moveEvt, getPageX = ({pageX}) => pageX) {
     const moveHandler = (evt) => {
       evt.preventDefault();
@@ -279,12 +308,22 @@ export default class MDCSliderFoundation extends MDCFoundation {
     return downHandler;
   }
 
+  /**
+   * Sets the slider value from an event
+   * @param {Event} evt
+   * @param {function(!Event): number} getPageX
+   */
   setValueFromEvt_(evt, getPageX) {
     const pageX = getPageX(evt);
     const value = this.computeValueFromPageX_(pageX);
     this.setValue_(value, true);
   }
 
+  /**
+   * Computes the new value from the pageX position
+   * @param {number} pageX
+   * @return {number}
+   */
   computeValueFromPageX_(pageX) {
     const {max_: max, min_: min} = this;
     const xPos = pageX - this.rect_.left;
@@ -297,6 +336,10 @@ export default class MDCSliderFoundation extends MDCFoundation {
     return min + pctComplete * (max - min);
   }
 
+  /**
+   * Handles keydown events
+   * @param {Event} evt
+   */
   handleKeydown_(evt) {
     const keyId = this.getKeyId_(evt);
     const value = this.getValueForKeyId_(keyId);
@@ -311,6 +354,11 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.notifyChange();
   }
 
+  /**
+   * Returns the computed name of the event
+   * @param {Event} kbdEvt
+   * @return {string}
+   */
   getKeyId_(kbdEvt) {
     if (kbdEvt.key === KEY_IDS.ARROW_LEFT || kbdEvt.keyCode === 37) {
       return KEY_IDS.ARROW_LEFT;
@@ -340,6 +388,11 @@ export default class MDCSliderFoundation extends MDCFoundation {
     return '';
   }
 
+  /**
+   * Computes the value given a keyboard key ID
+   * @param {string} keyId
+   * @return {number}
+   */
   getValueForKeyId_(keyId) {
     const {max_: max, min_: min, step_: step} = this;
     let delta = step || (max - min) / 100;
@@ -382,6 +435,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.FOCUS);
   }
 
+  /**
+   * Sets the value of the slider
+   * @param {number} value
+   * @param {boolean} shouldFireInput
+   * @param {boolean=} force
+   */
   setValue_(value, shouldFireInput, force = false) {
     if (value === this.value_ && !force) {
       return;
@@ -409,6 +468,11 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Calculates the quantized value
+   * @param {number} value
+   * @return {number}
+   */
   quantize_(value) {
     const numSteps = Math.round(value / this.step_);
     const quantizedVal = numSteps * this.step_;
@@ -444,16 +508,29 @@ export default class MDCSliderFoundation extends MDCFoundation {
     });
   }
 
+  /**
+   * Toggles the active state of the slider
+   * @param {boolean} active
+   */
   setActive_(active) {
     this.active_ = active;
     this.toggleClass_(cssClasses.ACTIVE, this.active_);
   }
 
+  /**
+   * Toggles the inTransit state of the slider
+   * @param {boolean} inTransit
+   */
   setInTransit_(inTransit) {
     this.inTransit_ = inTransit;
     this.toggleClass_(cssClasses.IN_TRANSIT, this.inTransit_);
   }
 
+  /**
+   * Conditionally adds or removes a class based on shouldBePresent
+   * @param {string} className
+   * @param {boolean} shouldBePresent
+   */
   toggleClass_(className, shouldBePresent) {
     if (shouldBePresent) {
       this.adapter_.addClass(className);

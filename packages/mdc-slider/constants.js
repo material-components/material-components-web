@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+/** @enum {string} */
 export const cssClasses = {
   ACTIVE: 'mdc-slider--active',
   DISABLED: 'mdc-slider--disabled',
@@ -24,6 +25,7 @@ export const cssClasses = {
   HAS_TRACK_MARKER: 'mdc-slider--display-markers',
 };
 
+/** @enum {string} */
 export const strings = {
   TRACK_SELECTOR: '.mdc-slider__track',
   TRACK_MARKER_CONTAINER_SELECTOR: '.mdc-slider__track-marker-container',
@@ -39,6 +41,7 @@ export const strings = {
   INPUT_EVENT: 'MDCSlider:input',
 };
 
+/** @enum {number} */
 export const numbers = {
   PAGE_FACTOR: 4,
 };
