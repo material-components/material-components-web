@@ -38,7 +38,7 @@ class MDCTextField extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?Element} */
+    /** @private {!MDCTextFieldInput} */
     this.input_;
     /** @private {?Element} */
     this.label_;
@@ -65,6 +65,8 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCRipple.
    * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
    * creates a new MDCTextFieldBottomLine.
+   * @param {(function(!Element): !MDCTextFieldInput)=} inputFactory A function which
+   * creates a new MDCTextFieldInput.
    */
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
@@ -88,8 +90,8 @@ class MDCTextField extends MDCComponent {
         this.bottomLine_ = bottomLineFactory(bottomLineElement);
       }
     };
-    if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
-      const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
+    if (inputElement.hasAttribute(strings.ARIA_CONTROLS)) {
+      const helperTextElement = document.getElementById(inputElement.getAttribute(strings.ARIA_CONTROLS));
       if (helperTextElement) {
         this.helperText_ = new MDCTextFieldHelperText(helperTextElement);
       }
@@ -109,15 +111,8 @@ class MDCTextField extends MDCComponent {
     if (this.helperText_) {
       this.helperText_.destroy();
     }
+    this.input_.destroy();
     super.destroy();
-  }
-
-  /**
-   * Initiliazes the Text Field's internal state based on the environment's
-   * state.
-   */
-  initialSyncWithDom() {
-    this.disabled = this.input_.disabled;
   }
 
   /**

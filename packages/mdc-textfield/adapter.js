@@ -18,6 +18,7 @@
 /* eslint-disable no-unused-vars */
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldInputFoundation from './input/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -112,18 +113,20 @@ class MDCTextFieldAdapter {
   notifyIconAction() {}
 
   /**
-   * Registers an event listener on the native input element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerInputInteractionHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the native input element for a given event.
+   * Registers an event listener on the input element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterInputInteractionHandler(evtType, handler) {}
+  registerInputEventHandler(evtType, handler) {}
+
+  /**
+   * Deregisters an event listener on the input element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterInputEventHandler(evtType, handler) {}
 
   /**
    * Registers an event listener on the bottom line element for a given event.
