@@ -49,7 +49,6 @@ height added to their first rows.
 npm install --save @material/toolbar
 ```
 
-
 ## Usage
 
 Wrap the items with `mdc-toolbar` class in the following way:
@@ -121,7 +120,6 @@ by adding `mdc-toolbar__section--shrink-to-fit` to other sections.
 </div>
 ```
 
-
 #### Toolbar title
 
 You can use the `mdc-toolbar__title` element to style toolbar text representing
@@ -181,13 +179,11 @@ correspondingly.
 </script>
 ```
 
-
 #### Waterfall toolbars (Requires JavaScript)
 
 By adding `mdc-toolbar--waterfall` to `mdc-toolbar--fixed`, fixed toolbars become
 waterfall toolbars. Waterfall toolbar is _initially_ static and has no elevation,
 and then when the user starts scrolling _becomes_ fixed and _gains_ elevation.
-
 
 ```html
 <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall">
@@ -312,12 +308,10 @@ test the performance to make sure that it is adequate.
 }
 ```
 
-
 ### RTL Support
 
 `mdc-toolbar` is automatically RTL-aware, and will re-position elements whenever
 it, or its ancestors, has a `dir="rtl"` attribute.
-
 
 ## Classes
 
@@ -335,15 +329,15 @@ further details.
 
 The provided modifiers are:
 
-| Class                                | Description                             |
-| -------------------------------------| --------------------------------------- |
-| `mdc-toolbar--fixed`                 | Makes toolbar fixed on top and have persistent elevation |
-| `mdc-toolbar--waterfall`             | Removes fixed toolbar persistent elevation and makes it gain elevation when a user begins to scroll down the page |
-| `mdc-toolbar--fixed-lastrow-only`    | Makes only last row of fixed toolbar anchored on top |
-| `mdc-toolbar--flexible`              | Makes first row of toolbar have flexible space |
-| `mdc-toolbar__section--align-start`  | Makes section align to the start |
-| `mdc-toolbar__section--align-end`    | Makes section align to the end |
-| `mdc-toolbar__section--shrink-to-fit`| Makes section take the width of its content |
+Class | Description                            
+--- | ---
+`mdc-toolbar--fixed` | Makes toolbar fixed on top and have persistent elevation
+`mdc-toolbar--waterfall` | Removes fixed toolbar persistent elevation and makes it gain elevation when a user begins to scroll down the page
+`mdc-toolbar--fixed-lastrow-only` | Makes only last row of fixed toolbar anchored on top
+`mdc-toolbar--flexible` | Makes first row of toolbar have flexible space
+`mdc-toolbar__section--align-start` | Makes section align to the start
+`mdc-toolbar__section--align-end` | Makes section align to the end
+`mdc-toolbar__section--shrink-to-fit`| Makes section take the width of its content
 
 ## JS Usage
 
@@ -400,35 +394,33 @@ const toolbar = new MDCToolbar(document.querySelector('.mdc-toolbar'));
 
 #### API
 
-| Method Signature | Description |
-| --- | --- |
-| `updateAdjustElementStyles() => void` | sets `AdjustElement` proper `margin-top`. |
-
+Method Signature | Description
+--- | ---
+`updateAdjustElementStyles() => void` | sets `AdjustElement` proper `margin-top`.
 
 #### Event
 
-| Event Name | Event Data Structure | Description |
-| --- | --- | --- |
-| `change` | `{flexibleExpansionRatio: number}` | Emits the ratio of current flexible space to total flexible space height. So when it is minimized, ratio equals to 0 and when it is maximized, ratio equals to 1. |
-
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`change` | `{flexibleExpansionRatio: number}` | Emits the ratio of current flexible space to total flexible space height. So when it is minimized, ratio equals to 0 and when it is maximized, ratio equals to 1.
 
 #### Adapter
 
-| Method Signature | Description |
-| --- | --- |
-| `hasClass(className: string) => boolean` | Checks if the root element of the component has the given className. |
-| `addClass(className: string) => void` | Adds a class to the root element of the component. |
-| `removeClass(className: string) => void` | Removes a class from the root element of the component. |
-| `registerScrollHandler(handler: Function) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event. |
-| `deregisterScrollHandler(handler: Function) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event. |
-| `registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize` event. |
-| `deregisterResizeHandler(handler: Function) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize` event. |
-| `getViewportWidth() => number` | Gets viewport (window) width. |
-| `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled upward.|
-| `getOffsetHeight() => number` | Gets root element `mdc-toolbar` offsetHeight. |
-| `getFirstRowElementOffsetHeight() => number` | Gets first row element offsetHeight. |
-| `notifyChange(evtData: {flexibleExpansionRatio: number}) => void` | Broadcasts an event with the remaining ratio of flexible space. |
-| `setStyle(property: string, value: number) => void` | Sets `mdc-toolbar` style property to provided value. |
-| `setStyleForTitleElement(property: string, value: number) => void` | Sets `mdc-toolbar__title` style property to provided value. |
-| `setStyleForFlexibleRowElement(property: string, value: number) => void` | Sets flexible row element style property to provided value. |
-| `setStyleForFixedAdjustElement(property: string, value: number) => void` | Sets `mdc-toolbar-fixed-adjust` style property to provided value. |
+Method Signature | Description
+--- | ---
+`hasClass(className: string) => boolean` | Checks if the root element of the component has the given className.
+`addClass(className: string) => void` | Adds a class to the root element of the component.
+`removeClass(className: string) => void` | Removes a class from the root element of the component.
+`registerScrollHandler(handler: Function) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
+`deregisterScrollHandler(handler: Function) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
+`registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize` event.
+`deregisterResizeHandler(handler: Function) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize` event.
+`getViewportWidth() => number` | Gets viewport (window) width.
+`getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled upward
+`getOffsetHeight() => number` | Gets root element `mdc-toolbar` offsetHeight.
+`getFirstRowElementOffsetHeight() => number` | Gets first row element offsetHeight.
+`notifyChange(evtData: {flexibleExpansionRatio: number}) => void` | Broadcasts an event with the remaining ratio of flexible space.
+`setStyle(property: string, value: number) => void` | Sets `mdc-toolbar` style property to provided value.
+`setStyleForTitleElement(property: string, value: number) => void` | Sets `mdc-toolbar__title` style property to provided value.
+`setStyleForFlexibleRowElement(property: string, value: number) => void` | Sets flexible row element style property to provided value.
+`setStyleForFixedAdjustElement(property: string, value: number) => void` | Sets `mdc-toolbar-fixed-adjust` style property to provided value.
