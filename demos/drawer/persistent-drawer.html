@@ -56,12 +56,12 @@
     </style>
   </head>
   <body class="mdc-typography demo-body">
-    <aside class="mdc-persistent-drawer demo-persistent-drawer">
-      <nav class="mdc-persistent-drawer__drawer">
-        <div class="mdc-persistent-drawer__toolbar-spacer"></div>
+    <aside class="mdc-drawer mdc-drawer--persistent demo-drawer">
+      <nav class="mdc-drawer__drawer">
+        <div class="mdc-drawer__toolbar-spacer"></div>
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-persistent-drawer--selected" href="#">
+            <a class="mdc-list-item mdc-drawer--selected" href="#">
               <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
             </a>
             <a class="mdc-list-item" href="#">
@@ -111,7 +111,7 @@
 
       <script src="/assets/material-components-web.js"></script>
       <script>
-        var drawerEl = document.querySelector('.mdc-persistent-drawer');
+        var drawerEl = document.querySelector('.mdc-drawer');
         var MDCPersistentDrawer = mdc.drawer.MDCPersistentDrawer;
         var drawer = new MDCPersistentDrawer(drawerEl);
         document.querySelector('.demo-menu').addEventListener('click', function() {
