@@ -20,12 +20,10 @@ import {strings} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
-export {MDCSliderFoundation};
-
 /**
  * @extends MDCComponent<!MDCSlider>
  */
-export class MDCSlider extends MDCComponent {
+class MDCSlider extends MDCComponent {
   static attachTo(root) {
     return new MDCSlider(root);
   }
@@ -88,7 +86,7 @@ export class MDCSlider extends MDCComponent {
   }
 
   /**
-   * @return {!MDCSliderAdapter}
+   * @return {!MDCSliderFoundation}
    */
   getDefaultFoundation() {
     return new MDCSliderFoundation(
@@ -191,3 +189,5 @@ export class MDCSlider extends MDCComponent {
     this.value -= amount;
   }
 }
+
+export default MDCSlider;

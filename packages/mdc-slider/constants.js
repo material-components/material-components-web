@@ -15,7 +15,7 @@
  */
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   ACTIVE: 'mdc-slider--active',
   DISABLED: 'mdc-slider--disabled',
   DISCRETE: 'mdc-slider--discrete',
@@ -26,7 +26,7 @@ export const cssClasses = {
 };
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   TRACK_SELECTOR: '.mdc-slider__track',
   TRACK_MARKER_CONTAINER_SELECTOR: '.mdc-slider__track-marker-container',
   LAST_TRACK_MARKER_SELECTOR: '.mdc-slider__track-marker:last-child',
@@ -42,6 +42,8 @@ export const strings = {
 };
 
 /** @enum {number} */
-export const numbers = {
+const numbers = {
   PAGE_FACTOR: 4,
 };
+
+export {cssClasses, strings, numbers};

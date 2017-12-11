@@ -27,7 +27,7 @@
  *
  * @record
  */
-export default class MDCSliderAdapter {
+class MDCSliderAdapter {
   /**
    * Returns true if className exists for the slider Element
    * @param {string} className
@@ -39,13 +39,13 @@ export default class MDCSliderAdapter {
    * Adds a class to the slider Element
    * @param {string} className
    */
-  addClass() {}
+  addClass(className) {}
 
   /**
    * Removes a class from the slider Element
    * @param {string} className
    */
-  removeClass() {}
+  removeClass(className) {}
 
   /**
    * Returns a string if attribute name exists on the slider Element,
@@ -178,7 +178,7 @@ export default class MDCSliderAdapter {
   /**
    * Sets a style property of the last track marker to the passed value
    * @param {string} propertyName
-   * @param {string} value
+   * @param {string|number} value
    */
   setLastTrackMarkersStyleProperty(propertyName, value) {}
 
@@ -188,3 +188,5 @@ export default class MDCSliderAdapter {
    */
   isRTL() {}
 }
+
+export default MDCSliderAdapter;
