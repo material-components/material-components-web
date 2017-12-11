@@ -21,16 +21,16 @@
 @import "../../packages/mdc-list/mdc-list";
 
 .demo-temporary-drawer {
-  @include mdc-temporary-drawer-fill-color(#fff);
-  @include mdc-temporary-drawer-ink-color(#fff);
+  @include mdc-drawer-fill-color(#6002ee);
+  @include mdc-drawer-ink-color(#6002ee);
 }
 
 .demo-persistent-drawer {
-  @include mdc-persistent-drawer-fill-color(#fff);
-  @include mdc-persistent-drawer-ink-color(#fff);
+  @include mdc-drawer-fill-color(#6002ee);
+  @include mdc-drawer-ink-color(#6002ee);
 }
 
 .demo-content__permanent-drawer {
-  @include mdc-permanent-drawer-fill-color(#fff);
-  @include mdc-permanent-drawer-ink-color(#fff);
+  @include mdc-drawer-fill-color(#6002ee);
+  @include mdc-drawer-ink-color(#6002ee);
 }

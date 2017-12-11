@@ -50,16 +50,16 @@
       </div>
     </div>
 
-    <aside class="mdc-temporary-drawer demo-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-        <header class="mdc-temporary-drawer__header">
-          <div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg">
+    <aside class="mdc-drawer mdc-drawer--temporary demo-temporary-drawer">
+      <nav class="mdc-drawer__drawer">
+        <header class="mdc-drawer__header">
+          <div class="mdc-drawer__header-content mdc-theme--primary-bg">
             Header here
           </div>
         </header>
-        <nav class="mdc-temporary-drawer__content mdc-list-group">
+        <nav class="mdc-drawer__content mdc-list-group">
           <div id="icon-with-text-demo" class="mdc-list">
-            <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
+            <a class="mdc-list-item mdc-drawer--selected" href="#">
               <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
             </a>
             <a class="mdc-list-item" href="#">
@@ -96,7 +96,7 @@
 
     <script src="/assets/material-components-web.js"></script>
     <script>
-      var drawerEl = document.querySelector('.mdc-temporary-drawer');
+      var drawerEl = document.querySelector('.mdc-drawer');
       var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
       var drawer = new MDCTemporaryDrawer(drawerEl);
       document.querySelector('.demo-menu').addEventListener('click', function() {
