@@ -293,12 +293,13 @@ testFoundation('does not redundantly add classes on touchstart followed by point
 testFoundation('removes deactivation classes on activate to ensure ripples can be retriggered',
   ({foundation, adapter, mockRaf}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
     foundation.init();
     mockRaf.flush();
 
     handlers.mousedown();
     mockRaf.flush();
-    handlers.mouseup();
+    documentHandlers.mouseup();
     mockRaf.flush();
     handlers.mousedown();
     mockRaf.flush();
