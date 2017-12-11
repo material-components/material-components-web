@@ -43,7 +43,7 @@ Makes the label float above the text field.
 
 ##### MDCTextFieldLabelFoundation.deactivateFocus(shouldRemoveLabelFloat: boolean)
 
-Deactivates the label's focus state.
+Deactivates the label's focus state. `shouldRemoveLabelFloat` indicates whether to also reset the label's position and size.
 
 ##### MDCTextFieldLabelFoundation.setValidity(isValid: boolean)
 
