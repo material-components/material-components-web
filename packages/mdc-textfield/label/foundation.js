@@ -58,12 +58,12 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   /**
    * Deactivates the label's focus state based on whether the text
    * field input is empty and passes validity checks.
-   * @param {boolean} inputIsEmptyAndValid
+   * @param {boolean} shouldRemoveLabelFloat
    */
-  deactivateFocus(inputIsEmptyAndValid) {
+  deactivateFocus(shouldRemoveLabelFloat) {
     this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
 
-    if (inputIsEmptyAndValid) {
+    if (shouldRemoveLabelFloat) {
       this.adapter_.removeClass(cssClasses.LABEL_FLOAT_ABOVE);
     }
   }

@@ -211,14 +211,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
   deactivateFocus() {
     const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
-    const inputIsEmptyAndValid = !input.value && !this.isBadInput_();
+    const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
 
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
     if (this.label_) {
-      this.label_.deactivateFocus(inputIsEmptyAndValid);
+      this.label_.deactivateFocus(shouldRemoveLabelFloat);
     }
-    if (inputIsEmptyAndValid) {
+    if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
     }
 

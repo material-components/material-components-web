@@ -41,9 +41,9 @@ removeClass(className: string) => void | Removes a class from the label element
 
 Makes the label float above the text field.
 
-##### MDCTextFieldLabelFoundation.deactivateFocus(inputIsEmptyAndValid: boolean)
+##### MDCTextFieldLabelFoundation.deactivateFocus(shouldRemoveLabelFloat: boolean)
 
-Deactivates the label's focus state based on whether the text field input is empty and passes validity checks.
+Deactivates the label's focus state.
 
 ##### MDCTextFieldLabelFoundation.setValidity(isValid: boolean)
 
