@@ -45,7 +45,7 @@ test('#adapter.setAttr adds a given attribute to the element', () => {
 
 test('#adapter.registerInteractionHandler adds event listener for a given event to the element', () => {
   const {root, component} = setupTest();
-  const handler = td.func('handler');
+  const handler = td.func('click handler');
   component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
   domEvents.emit(root, 'click');
 
@@ -54,7 +54,7 @@ test('#adapter.registerInteractionHandler adds event listener for a given event 
 
 test('#adapter.deregisterInteractionHandler removes event listener for a given event from the element', () => {
   const {root, component} = setupTest();
-  const handler = td.func('handler');
+  const handler = td.func('click handler');
 
   root.addEventListener('click', handler);
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
