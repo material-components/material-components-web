@@ -25,10 +25,12 @@
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 @import "./bottom-line/mdc-text-field-bottom-line";
+@import "./helper-text/mdc-text-field-helper-text";
 @include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
 
 // postcss-bem-linter: define text-field
+
 .mdc-text-field {
   display: inline-block;
   position: relative;
@@ -139,7 +141,7 @@
 
 .mdc-text-field--box {
   @include mdc-ripple-surface;
-  @include mdc-ripple-color(black, .04);
+  @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
   @include mdc-ripple-radius;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
 
@@ -154,7 +156,7 @@
   }
 
   @include mdc-theme-dark(".mdc-text-field", true) {
-    @include mdc-ripple-color(white, .05);
+    @include mdc-states(text-primary-on-dark, $has-nested-focusable-element: true);
   }
 
   // NOTE: For some reason, stylelint complains that the patterns below don't follow BEM.
@@ -617,23 +619,7 @@
 // postcss-bem-linter: define text-field-helper-text
 
 .mdc-text-field-helper-text {
-  @include mdc-theme-prop(color, text-hint-on-light);
-
-  margin: 0;
-  transition: mdc-text-field-transition(opacity);
-  opacity: 0;
-  font-size: .75rem;
-  will-change: opacity;
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-hint-on-dark);
-  }
-
   // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field + & {
-    margin-bottom: 8px;
-  }
-
   .mdc-text-field--dense + & {
     margin-bottom: 4px;
   }
@@ -648,12 +634,6 @@
   }
 
   // stylelint-enable plugin/selector-bem-pattern
-}
-
-.mdc-text-field-helper-text--persistent {
-  transition: none;
-  opacity: 1;
-  will-change: initial;
 }
 
 // postcss-bem-linter: end

@@ -17,6 +17,7 @@
 
 /* eslint-disable no-unused-vars */
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -29,6 +30,14 @@ import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
  * }}
  */
 let NativeInputType;
+
+/**
+ * @typedef {{
+ *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined)
+ * }}
+ */
+let FoundationMapType;
 
 /**
  * Adapter for MDC Text Field.
@@ -103,27 +112,6 @@ class MDCTextFieldAdapter {
   notifyIconAction() {}
 
   /**
-   * Adds a class to the helper text element. Note that in our code we check for
-   * whether or not we have a helper text element and if we don't, we simply
-   * return.
-   * @param {string} className
-   */
-  addClassToHelperText(className) {}
-
-  /**
-   * Removes a class from the helper text element.
-   * @param {string} className
-   */
-  removeClassFromHelperText(className) {}
-
-  /**
-   * Returns whether or not the helper text element contains the given class.
-   * @param {string} className
-   * @return {boolean}
-   */
-  helperTextHasClass(className) {}
-
-  /**
    * Registers an event listener on the native input element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
@@ -152,25 +140,6 @@ class MDCTextFieldAdapter {
   deregisterBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Sets an attribute with a given value on the helper text element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setHelperTextAttr(name, value) {}
-
-  /**
-   * Removes an attribute from the helper text element.
-   * @param {string} name
-   */
-  removeHelperTextAttr(name) {}
-
-  /**
-   * Sets the text content for the help text element
-   * @param {string} content
-   */
-  setHelperTextContent(content) {}
-
-  /**
    * Returns an object representing the native text input element, with a
    * similar API shape. The object returned should include the value, disabled
    * and badInput properties, as well as the checkValidity() function. We never
@@ -181,13 +150,6 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
-
-  /**
-   * Returns the foundation for the bottom line element. Returns undefined if
-   * there is no bottom line element.
-   * @return {?MDCTextFieldBottomLineFoundation}
-   */
-  getBottomLineFoundation() {}
 }
 
-export {MDCTextFieldAdapter, NativeInputType};
+export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};
