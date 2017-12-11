@@ -17,7 +17,8 @@
 import lolex from 'lolex';
 import td from 'testdouble';
 
-import {testFoundation, captureHandlers} from './helpers';
+import {captureHandlers} from '../helpers/foundation';
+import {testFoundation} from './helpers';
 import {cssClasses, numbers} from '../../../packages/mdc-ripple/constants';
 
 const {DEACTIVATION_TIMEOUT_MS} = numbers;
@@ -25,7 +26,7 @@ const {DEACTIVATION_TIMEOUT_MS} = numbers;
 suite('MDCRippleFoundation - Deactivation logic');
 
 testFoundation('runs deactivation UX on touchend after touchstart', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   const clock = lolex.install();
   foundation.init();
   mockRaf.flush();
@@ -52,7 +53,7 @@ testFoundation('runs deactivation UX on touchend after touchstart', ({foundation
 });
 
 testFoundation('runs deactivation UX on pointerup after pointerdown', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   const clock = lolex.install();
   foundation.init();
   mockRaf.flush();
@@ -76,7 +77,7 @@ testFoundation('runs deactivation UX on pointerup after pointerdown', ({foundati
 });
 
 testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   const clock = lolex.install();
   foundation.init();
   mockRaf.flush();
@@ -101,7 +102,7 @@ testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, 
 
 testFoundation('runs deactivation on keyup after keydown when keydown makes surface active',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
     td.when(adapter.isSurfaceActive()).thenReturn(true);
 
@@ -128,7 +129,7 @@ testFoundation('runs deactivation on keyup after keydown when keydown makes surf
 
 testFoundation('does not run deactivation on keyup after keydown if keydown did not make surface active',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
     td.when(adapter.isSurfaceActive()).thenReturn(false);
 
@@ -177,7 +178,7 @@ testFoundation('runs deactivation UX on public deactivate() call', ({foundation,
 
 testFoundation('runs deactivation UX when activation UX timer finishes first (activation held for a long time)',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
     foundation.init();
     mockRaf.flush();
@@ -201,7 +202,7 @@ testFoundation('runs deactivation UX when activation UX timer finishes first (ac
   });
 
 testFoundation('clears any pending deactivation UX timers when re-triggered', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   const clock = lolex.install();
   foundation.init();
   mockRaf.flush();
@@ -237,7 +238,7 @@ testFoundation('clears any pending deactivation UX timers when re-triggered', ({
 
 testFoundation('clears any pending foreground deactivation class removal timers when re-triggered',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
     foundation.init();
     mockRaf.flush();
@@ -270,7 +271,7 @@ testFoundation('clears any pending foreground deactivation class removal timers 
 
 testFoundation('waits until activation UX timer runs before removing active fill classes',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
 
     foundation.init();
@@ -291,7 +292,7 @@ testFoundation('waits until activation UX timer runs before removing active fill
 
 testFoundation('waits until actual deactivation UX is needed if animation finishes before deactivating',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
 
     foundation.init();
@@ -309,7 +310,7 @@ testFoundation('waits until actual deactivation UX is needed if animation finish
 
 testFoundation('removes BG_FOCUSED class immediately without waiting for animationend event',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
 
     foundation.init();
@@ -327,7 +328,7 @@ testFoundation('removes BG_FOCUSED class immediately without waiting for animati
 
 testFoundation('only re-activates when there are no additional pointer events to be processed',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
     foundation.init();
     mockRaf.flush();
@@ -378,7 +379,7 @@ testFoundation('only re-activates when there are no additional pointer events to
 
 testFoundation('ensures pointer event deactivation occurs even if activation rAF not run',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
     foundation.init();
     mockRaf.flush();
@@ -395,7 +396,7 @@ testFoundation('ensures pointer event deactivation occurs even if activation rAF
 
 testFoundation('ensures non-pointer event deactivation does not occurs even if activation rAF not run',
   ({foundation, adapter, mockRaf}) => {
-    const handlers = captureHandlers(adapter);
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const clock = lolex.install();
     foundation.init();
     mockRaf.flush();
