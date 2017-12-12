@@ -41,7 +41,7 @@ function setupTest() {
 
 test('#adapter.setOutlinePathAttr sets the SVG path of the element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setOutlinePathAttr('foo');
+  component.getDefaultFoundation().adapter_.setOutlinePathAttr('M0,1');
   const path = root.querySelector('.mdc-text-field__outline-path');
-  assert.equal(path.getAttribute('d'), 'foo');
+  assert.equal(path.getAttribute('d'), 'M0,1');
 });
