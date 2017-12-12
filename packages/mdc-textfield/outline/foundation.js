@@ -48,7 +48,9 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the SVG path of the focus outline element.
+   * Updates the SVG path of the focus outline element based on the given width and height
+   * of the text field element, the width of the label element, the corner radius, and
+   * the RTL context.
    * @param {number} width
    * @param {number} height
    * @param {number} labelWidth

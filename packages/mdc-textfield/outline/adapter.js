@@ -29,7 +29,7 @@
  */
 class MDCTextFieldOutlineAdapter {
   /**
-   * Set the SVG path of the outline element.
+   * Sets the SVG path of the outline element.
    * @param {string} value
    */
   setOutlinePathAttr(value) {}
