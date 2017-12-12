@@ -9,7 +9,7 @@ path: /catalog/input-controls/text-fields/outline/
 
 # Text Field Outline
 
-The outline is a border around all sides of the text field.
+The outline is a border around all sides of the text field. This is used for the Outlined variation of Text Fields.
 
 ## Design & API Documentation
 
@@ -18,7 +18,6 @@ The outline is a border around all sides of the text field.
     <a href="https://material.io/guidelines/components/text-fields.html#text-fields-field-variations">Material Design guidelines: Text Field Variations</a>
   </li>
 </ul>
-
 
 ## Usage
 
