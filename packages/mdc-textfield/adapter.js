@@ -37,7 +37,7 @@ let NativeInputType;
  * @typedef {{
  *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
- *   icon: (!MDCTextFieldIconFoundation|undefined)
+ *   icon: (!MDCTextFieldIconFoundation|undefined),
  *   label: (!MDCTextFieldLabelFoundation|undefined)
  * }}
  */
