@@ -87,7 +87,7 @@ By default, list items receive styles for hover, focus, and press states (includ
 modifier to the parent list.
 
 > **Note**: In order to receive focus state, list items must either use a focusable element such as `<a>`, or have an
-> explicit tabindex attribute value.
+> explicit `tabindex` attribute value.
 
 ### "Dense" Lists
 
