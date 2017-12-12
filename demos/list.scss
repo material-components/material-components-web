@@ -48,12 +48,6 @@ a.material-icons {
   }
 }
 
-.demo-list--meta-placeholders {
-  .mdc-list-item__end-detail {
-    background-color: currentColor;
-  }
-}
-
 .demo-list--avatar-and-meta-icon {
   @include mdc-list-item-meta-ink-color($material-color-pink-a200);
 

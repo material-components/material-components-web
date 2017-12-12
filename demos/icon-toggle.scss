@@ -60,7 +60,7 @@
   background-color: #3e82f7;
 }
 #light-on-bg .mdc-icon-toggle {
-  color: white;
+  @include mdc-icon-toggle-ink-color(white);
   @include mdc-states-base-color(white);
   @include mdc-states-hover-opacity(.1);
   @include mdc-states-focus-opacity(.3);
@@ -71,12 +71,12 @@
   background-color: #00bcd6;
 }
 #dark-on-bg .mdc-icon-toggle {
-  color: black;
+  @include mdc-icon-toggle-ink-color(black);
   @include mdc-states(black);
 }
 
 #custom-on-dark .mdc-icon-toggle {
-  color: #de442c;
+  @include mdc-icon-toggle-ink-color(#de442c);
   @include mdc-states-base-color(#de442c);
   @include mdc-states-hover-opacity(.09);
   @include mdc-states-focus-opacity(.26);

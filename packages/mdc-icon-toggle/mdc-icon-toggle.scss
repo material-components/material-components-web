@@ -19,15 +19,17 @@
 @import "@material/animation/functions";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
+@import "./mixins";
 
 .mdc-icon-toggle {
-  @include mdc-theme-prop(color, text-secondary-on-light);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius;
   @include mdc-states(black);
+  @include mdc-icon-toggle-ink-color(text-primary-on-light);
 
   @include mdc-theme-dark(".mdc-icon-toggle", true) {
     @include mdc-states(white);
+    @include mdc-icon-toggle-ink-color(text-primary-on-dark);
   }
 
   display: flex;
@@ -52,20 +54,6 @@
     pointer-events: none;
     content: "";
   }
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-  }
-}
-
-.mdc-icon-toggle--primary {
-  @include mdc-theme-prop(color, primary);
-  @include mdc-states(primary);
-}
-
-.mdc-icon-toggle--accent {
-  @include mdc-theme-prop(color, secondary);
-  @include mdc-states(secondary);
 }
 
 .mdc-icon-toggle--disabled {
