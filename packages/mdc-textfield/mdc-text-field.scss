@@ -116,6 +116,9 @@
 }
 
 .mdc-text-field--outlined {
+  height: 56px;
+  border: none;
+
   .mdc-text-field__outline {
     @include mdc-ripple-surface;
     @include mdc-states(text-primary-on-light);
@@ -124,9 +127,6 @@
 
     overflow: hidden;
   }
-
-  height: 56px;
-  border: none;
 
   // stylelint-disable plugin/selector-bem-pattern
 
