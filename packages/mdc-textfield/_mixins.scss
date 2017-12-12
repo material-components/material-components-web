@@ -1,0 +1,60 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@mixin mdc-text-field-box-corner-radius($radius) {
+  border-radius: $radius $radius 0 0;
+}
+
+@mixin mdc-text-field-textarea-corner-radius($radius) {
+  border-radius: $radius;
+
+  .mdc-text-field__label {
+    // Bottom corners are square to prevent weird edge cases
+    // where text would be visible outside of the curve.
+    border-radius: $radius $radius 0 0;
+  }
+
+  .mdc-text-field__input {
+    // The input element is required to have 2 pixels shaved off
+    // of the radius of its parent. This prevents an ugly space of
+    // background between the two borders in each corner when the
+    // textarea is focused. This also means we need to guard against
+    // invalid output.
+    border-radius: max($radius - 2, 0);
+  }
+}
+
+@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY) {
+  @keyframes invalid-shake-float-above-#{$modifier} {
+    0% {
+      transform: translateX(0) translateY(-#{$positionY}) scale(.75, .75);
+    }
+
+    33% {
+      animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
+      transform: translateX(10px) translateY(-#{$positionY}) scale(.75, .75);
+    }
+
+    66% {
+      animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
+      transform: translateX(-5px) translateY(-#{$positionY}) scale(.75, .75);
+    }
+
+    100% {
+      transform: translateX(0) translateY(-#{$positionY}) scale(.75, .75);
+    }
+  }
+}

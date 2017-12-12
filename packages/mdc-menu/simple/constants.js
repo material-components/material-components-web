@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +16,18 @@
  */
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   ROOT: 'mdc-simple-menu',
   OPEN: 'mdc-simple-menu--open',
   ANIMATING: 'mdc-simple-menu--animating',
   TOP_RIGHT: 'mdc-simple-menu--open-from-top-right',
   BOTTOM_LEFT: 'mdc-simple-menu--open-from-bottom-left',
   BOTTOM_RIGHT: 'mdc-simple-menu--open-from-bottom-right',
+  LIST_ITEM: 'mdc-list-item',
 };
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   ITEMS_SELECTOR: '.mdc-simple-menu__items',
   SELECTED_EVENT: 'MDCSimpleMenu:selected',
   CANCEL_EVENT: 'MDCSimpleMenu:cancel',
@@ -33,7 +35,7 @@ export const strings = {
 };
 
 /** @enum {number} */
-export const numbers = {
+const numbers = {
   // Amount of time to wait before triggering a selected event on the menu. Note that this time
   // will most likely be bumped up once interactive lists are supported to allow for the ripple to
   // animate before closing the menu
@@ -50,3 +52,5 @@ export const numbers = {
   TRANSITION_X2: 0.2,
   TRANSITION_Y2: 1,
 };
+
+export {cssClasses, strings, numbers};

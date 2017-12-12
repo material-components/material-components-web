@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,12 +19,10 @@ import MDCComponent from '@material/base/component';
 import MDCSimpleMenuFoundation from './foundation';
 import {getTransformPropertyName} from '../util';
 
-export {MDCSimpleMenuFoundation};
-
 /**
  * @extends MDCComponent<!MDCSimpleMenuFoundation>
  */
-export class MDCSimpleMenu extends MDCComponent {
+class MDCSimpleMenu extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
@@ -89,6 +88,7 @@ export class MDCSimpleMenu extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.itemsContainer_),
       getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
       getInnerDimensions: () => {
         const {itemsContainer_: itemsContainer} = this;
         return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};
@@ -147,3 +147,5 @@ export class MDCSimpleMenu extends MDCComponent {
     });
   }
 }
+
+export {MDCSimpleMenuFoundation, MDCSimpleMenu};

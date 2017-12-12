@@ -19,22 +19,30 @@
 @import "../../packages/mdc-card/mdc-card";
 @import "../../packages/mdc-checkbox/mdc-checkbox";
 @import "../../packages/mdc-dialog/mdc-dialog";
+@import "../../packages/mdc-drawer/temporary/mdc-temporary-drawer";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-fab/mdc-fab";
 @import "../../packages/mdc-form-field/mdc-form-field";
 @import "../../packages/mdc-icon-toggle/mdc-icon-toggle";
 @import "../../packages/mdc-linear-progress/mdc-linear-progress";
 @import "../../packages/mdc-list/mdc-list";
-@import "../../packages/mdc-drawer/temporary/mdc-temporary-drawer";
-@import "../../packages/mdc-theme/color_palette";
+@import "../../packages/mdc-menu/mdc-menu";
+@import "../../packages/mdc-radio/mdc-radio";
+@import "../../packages/mdc-ripple/mdc-ripple";
+@import "../../packages/mdc-select/mdc-select";
+@import "../../packages/mdc-slider/mdc-slider";
+@import "../../packages/mdc-switch/mdc-switch";
+@import "../../packages/mdc-tabs/mdc-tabs";
+@import "../../packages/mdc-textfield/mdc-text-field";
+@import "../../packages/mdc-theme/color-palette";
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
-@import "../../packages/mdc-typography/mdc-typography";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
 $demo-section-margin: 48px;
+$demo-custom-color: $material-color-red-500;
 
 //
 // Global styles
@@ -46,13 +54,14 @@ $demo-section-margin: 48px;
   background-color: $material-color-grey-800;
 }
 
+figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 //
 // Page toolbar
 //
-
-.demo-icon--inline {
-  vertical-align: middle;
-}
 
 .demo-anchor-with-toolbar-offset {
   $margin: $demo-section-margin / 2;
@@ -81,8 +90,31 @@ $demo-section-margin: 48px;
   padding: 24px;
 }
 
+.demo-component-section {
+  position: relative;
+}
+
 .demo-component-section + .demo-component-section {
   margin-top: $demo-section-margin;
+}
+
+.demo-component-section::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  right: -16px;
+  bottom: -16px;
+  z-index: -1;
+  background: $material-color-yellow-700;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.demo-component-section--flash::before {
+  opacity: 0.5;
+  transition: none;
 }
 
 .demo-component-section__heading .demo-component-section__permalink {
@@ -101,6 +133,36 @@ $demo-section-margin: 48px;
 // Button demo
 //
 
+.mdc-button.secondary-text-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-states($mdc-theme-secondary);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-states($mdc-theme-secondary);
+  }
+}
+
+.mdc-button.secondary-filled-button {
+  @include mdc-button-filled-accessible($mdc-theme-secondary);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-filled-accessible($mdc-theme-secondary);
+  }
+}
+
+.mdc-button.secondary-stroked-button {
+  @include mdc-button-ink-color($mdc-theme-secondary);
+  @include mdc-button-stroke-color($mdc-theme-secondary);
+  @include mdc-states($mdc-theme-secondary);
+
+  @include mdc-theme-dark(".mdc-button") {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+    @include mdc-button-stroke-color($mdc-theme-secondary);
+    @include mdc-states($mdc-theme-secondary);
+  }
+}
+
 .demo-fieldset--button + .demo-fieldset--button {
   margin-top: 16px;
 }
@@ -118,7 +180,7 @@ $demo-section-margin: 48px;
 // Card demo
 //
 
-.demo-card-wrap {
+.demo-card-wrapper {
   display: inline-block;
   width: 350px;
   margin: 0 24px 24px 0;
@@ -165,12 +227,12 @@ $demo-section-margin: 48px;
   align-items: center;
 }
 
-.demo-checkbox-wrap,
+.demo-checkbox-wrapper,
 .demo-checkbox-toggle {
   margin-right: 10px;
 }
 
-.demo-checkbox-wrap + .demo-checkbox-toggle {
+.demo-checkbox-wrapper + .demo-checkbox-toggle {
   margin-left: 20px;
 }
 
@@ -185,15 +247,41 @@ $demo-section-margin: 48px;
 }
 
 //
+// Drawer demo
+//
+
+.demo-drawer-toggle {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+//
 // Floating Action Button (FAB) demo
 //
 
-.demo-fieldset--fab {
-  margin-bottom: .5rem;
+.demo-fab-row {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.demo-fieldset--fab .mdc-fab {
-  margin: 16px;
+.demo-fab {
+  margin: 16px 0 0 0;
+}
+
+.demo-fab--custom {
+  @include mdc-fab-accessible($demo-custom-color);
+}
+
+.demo-fab-tile {
+  margin: 0 48px 1em 0;
+}
+
+.demo-fab-tile__title {
+  font-weight: 500;
+}
+
+.demo-fab-tile__snippet {
+  height: 2em;
 }
 
 //
@@ -229,4 +317,129 @@ $demo-section-margin: 48px;
 
 .demo-linear-progress__row + .demo-linear-progress__row {
   margin-top: 64px;
+}
+
+//
+// Radio Button demo
+//
+
+.demo-radio-group {
+  display: inline-block;
+  margin: 0 24px 24px 0;
+}
+
+.demo-radio-form-field {
+  margin-right: 8px;
+}
+
+@mixin demo-radio-color($color) {
+  .mdc-radio__native-control:checked + .mdc-radio__background {
+    &::before {
+      @include mdc-theme-prop(background-color, $color);
+    }
+
+    .mdc-radio__outer-circle {
+      @include mdc-theme-prop(border-color, $color);
+    }
+
+    .mdc-radio__inner-circle {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+.demo-radio--secondary {
+  @include demo-radio-color($mdc-theme-secondary);
+}
+
+.demo-radio--custom {
+  @include demo-radio-color($demo-custom-color);
+}
+
+//
+// Ripple demo
+//
+
+.demo-ripple__row {
+  margin: 32px 0;
+}
+
+.demo-ripple-box,
+.demo-ripple-surface {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-ripple-box {
+  vertical-align: top;
+  width: 200px;
+  height: 100px;
+  padding: 1rem;
+  margin: 16px 16px 0 0;
+  font-weight: 500;
+}
+
+.demo-ripple-box--primary {
+  @include mdc-theme-prop(color, primary);
+}
+
+.demo-ripple-box--secondary {
+  @include mdc-theme-prop(color, secondary);
+}
+
+.demo-ripple-box--custom {
+  @include mdc-theme-prop(color, $demo-custom-color);
+}
+
+.demo-ripple-surface {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.demo-ripple-surface--primary {
+  @include mdc-states(primary);
+}
+
+.demo-ripple-surface--secondary {
+  @include mdc-states(secondary);
+}
+
+.demo-ripple-surface--custom {
+  @include mdc-states($demo-custom-color);
+}
+
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
+.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+//
+// Switch demo
+//
+
+.demo-switch-wrapper {
+  display: inline-block;
+  margin: 16px 16px 0 0;
+}
+
+//
+// Text Field demo
+//
+
+.demo-text-field-wrapper {
+  display: inline-block;
+  margin: 16px 16px 0 0;
 }

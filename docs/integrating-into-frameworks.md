@@ -14,11 +14,10 @@ frameworks.
 
 ## Examples
 
-Our [framework-examples](../framework-examples) directory contains sample applications built in various frameworks,
-such as [react](../framework-examples/react) and [angular2](../framework-examples/angular2) that show how to wrap our
-components. If there's an example framework you'd like to see, or if you're a framework author who
-wants to provide an example, please consider letting us know and we'll work with you to have it
-contributed!
+We maintain a list of component libraries, which wrap MDC Web for other frameworks, in our main [README](../README.md). Each library must:
+- Serve components in an à-la-carte delivery model
+- Have existed for longer than 6 weeks and show continued maintenance over time
+- Provide usage documentation per component
 
 ## Approaches
 
@@ -45,7 +44,7 @@ The simple approach can be outlined as follows:
 
 This general approach will work for almost all basic use-cases. For an example of this approach,
 check out [this plunk](https://plnkr.co/edit/b4v160c186ErrPG5vNza?p=preview) which
-shows how to wrap our textfield within an angular v1 component, as well as our button (with a
+shows how to wrap our text field within an angular v1 component, as well as our button (with a
 ripple) within an attribute directive.
 
 Note that this approach will also work for [custom elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements). Use `connectedCallback` for initialization
@@ -59,7 +58,7 @@ a more robust approach is required. We provide foundations and adapters to accom
 case.
 
 > If you are interested in wrapping our components using foundations/adapters, you should first read
-> through our [architecture overview](./architecture.md) in order to familiarize yourself with the
+> through our [architecture overview](code/architecture.md) in order to familiarize yourself with the
 > general concepts behind them.
 
 Every component comes with a complementary foundation class, which is usually called
@@ -89,10 +88,6 @@ are working as hard as we can to make writing adapters as easy and predictable a
   ambiguous
 - We plan on creating Type Definitions for our adapters in the future so that TypeScript users can
   validate that their interface conforms correctly to the adapter's specification.
-
-Our [framework-examples](../framework-examples) directory contains sample code for various frameworks showing how
-adapters can be implemented. We encourage you to take a look through those applications to get a
-sense of how you might build your own.
 
 > Please file an issue with us if there are certain snags you've ran into trying to implement an
   adapter, or if you feel that we can provide better guidance on a particular problem. This is

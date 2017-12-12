@@ -182,7 +182,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
-  test(`on ${downEvt} attaches event handlers for ${moveEvt} and ${upEvt} events to the document body`, () => {
+  test(`on ${downEvt} attaches event handlers for ${moveEvt} and all *up/end events to the document body`, () => {
     const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
     const {isA} = td.matchers;
 
@@ -194,8 +194,9 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.flush();
 
     td.verify(mockAdapter.registerBodyInteractionHandler(moveEvt, isA(Function)));
-    td.verify(mockAdapter.registerBodyInteractionHandler(upEvt, isA(Function)));
-
+    td.verify(mockAdapter.registerBodyInteractionHandler('mouseup', isA(Function)));
+    td.verify(mockAdapter.registerBodyInteractionHandler('pointerup', isA(Function)));
+    td.verify(mockAdapter.registerBodyInteractionHandler('touchend', isA(Function)));
     raf.restore();
   });
 
@@ -317,7 +318,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
-  test(`on body ${upEvt} removes the ${moveEvt} and ${upEvt} event handlers from the document body`, () => {
+  test(`on body ${upEvt} removes the ${moveEvt} and all *up/end event handlers from the document body`, () => {
     const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
     const {isA} = td.matchers;
 
@@ -330,7 +331,9 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     bodyHandlers[upEvt]();
 
     td.verify(mockAdapter.deregisterBodyInteractionHandler(moveEvt, isA(Function)));
-    td.verify(mockAdapter.deregisterBodyInteractionHandler(upEvt, isA(Function)));
+    td.verify(mockAdapter.deregisterBodyInteractionHandler('mouseup', isA(Function)));
+    td.verify(mockAdapter.deregisterBodyInteractionHandler('pointerup', isA(Function)));
+    td.verify(mockAdapter.deregisterBodyInteractionHandler('touchend', isA(Function)));
 
     raf.restore();
   });

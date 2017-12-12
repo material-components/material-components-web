@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +23,7 @@ import {clamp, bezierProgress} from '../util';
 /**
  * @extends {MDCFoundation<!MDCSimpleMenuAdapter>}
  */
-export default class MDCSimpleMenuFoundation extends MDCFoundation {
+class MDCSimpleMenuFoundation extends MDCFoundation {
   /** @return enum{cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -50,6 +51,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
       hasClass: () => false,
       hasNecessaryDom: () => false,
       getAttributeForEventTarget: () => {},
+      eventTargetHasClass: () => {},
       getInnerDimensions: () => ({}),
       hasAnchor: () => false,
       getAnchorDimensions: () => ({}),
@@ -90,10 +92,7 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     /** @private {function(!Event)} */
     this.keyupHandler_ = (evt) => this.handleKeyboardUp_(evt);
     /** @private {function(!Event)} */
-    this.documentClickHandler_ = (evt) => {
-      this.adapter_.notifyCancel();
-      this.close(evt);
-    };
+    this.documentClickHandler_ = (evt) => this.handleDocumentClick_(evt);
     /** @private {boolean} */
     this.isOpen_ = false;
     /** @private {number} */
@@ -273,6 +272,25 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
       this.adapter_.focusItemAtIndex(focusIndex);
     }
   }
+
+  /**
+   * Handle clicks and cancel the menu if not a list item
+   * @param {!Event} evt
+   * @private
+   */
+  handleDocumentClick_(evt) {
+    let el = evt.target;
+
+    while (el && el !== document.documentElement) {
+      if (this.adapter_.eventTargetHasClass(el, cssClasses.LIST_ITEM)) {
+        return;
+      }
+      el = el.parentNode;
+    }
+
+    this.adapter_.notifyCancel();
+    this.close(evt);
+  };
 
   /**
    * Handle keys that we want to repeat on hold (tab and arrows).
@@ -477,3 +495,5 @@ export default class MDCSimpleMenuFoundation extends MDCFoundation {
     return this.isOpen_;
   }
 }
+
+export default MDCSimpleMenuFoundation;

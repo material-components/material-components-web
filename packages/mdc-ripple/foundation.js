@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,7 +75,7 @@ const DEACTIVATION_ACTIVATION_PAIRS = {
 /**
  * @extends {MDCFoundation<!MDCRippleAdapter>}
  */
-export default class MDCRippleFoundation extends MDCFoundation {
+class MDCRippleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -103,17 +104,6 @@ export default class MDCRippleFoundation extends MDCFoundation {
       computeBoundingRect: () => /* ClientRect */ {},
       getWindowPageOffset: () => /* {x: number, y: number} */ {},
     };
-  }
-
-  /**
-   * We compute this property so that we are not querying information about the client
-   * until the point in time where the foundation requests it. This prevents scenarios where
-   * client-side feature-detection may happen too early, such as when components are rendered on the server
-   * and then initialized at mount time on the client.
-   * @return {boolean}
-   */
-  get isSupported_() {
-    return this.adapter_.browserSupportsCssVars();
   }
 
   constructor(adapter) {
@@ -187,6 +177,18 @@ export default class MDCRippleFoundation extends MDCFoundation {
   }
 
   /**
+   * We compute this property so that we are not querying information about the client
+   * until the point in time where the foundation requests it. This prevents scenarios where
+   * client-side feature-detection may happen too early, such as when components are rendered on the server
+   * and then initialized at mount time on the client.
+   * @return {boolean}
+   * @private
+   */
+  isSupported_() {
+    return this.adapter_.browserSupportsCssVars();
+  }
+
+  /**
    * @return {!ActivationStateType}
    */
   defaultActivationState_() {
@@ -202,7 +204,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
   }
 
   init() {
-    if (!this.isSupported_) {
+    if (!this.isSupported_()) {
       return;
     }
     this.addEventListeners_();
@@ -265,8 +267,11 @@ export default class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
-  activate() {
-    this.activate_(null);
+  /**
+   * @param {?Event=} event Optional event containing position information.
+   */
+  activate(event = null) {
+    this.activate_(event);
   }
 
   /** @private */
@@ -404,8 +409,11 @@ export default class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
-  deactivate() {
-    this.deactivate_(null);
+  /**
+   * @param {?Event=} event Optional event containing position information.
+   */
+  deactivate(event = null) {
+    this.deactivate_(event);
   }
 
   /**
@@ -423,7 +431,7 @@ export default class MDCRippleFoundation extends MDCFoundation {
   }
 
   destroy() {
-    if (!this.isSupported_) {
+    if (!this.isSupported_()) {
       return;
     }
     this.removeEventListeners_();
@@ -486,12 +494,9 @@ export default class MDCRippleFoundation extends MDCFoundation {
   /** @private */
   updateLayoutCssVars_() {
     const {
-      VAR_SURFACE_WIDTH, VAR_SURFACE_HEIGHT, VAR_FG_SIZE,
-      VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
+      VAR_FG_SIZE, VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
     } = MDCRippleFoundation.strings;
 
-    this.adapter_.updateCssVariable(VAR_SURFACE_WIDTH, `${this.frame_.width}px`);
-    this.adapter_.updateCssVariable(VAR_SURFACE_HEIGHT, `${this.frame_.height}px`);
     this.adapter_.updateCssVariable(VAR_FG_SIZE, `${this.initialSize_}px`);
     this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
 
@@ -506,3 +511,5 @@ export default class MDCRippleFoundation extends MDCFoundation {
     }
   }
 }
+
+export default MDCRippleFoundation;

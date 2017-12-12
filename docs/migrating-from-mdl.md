@@ -80,9 +80,9 @@ some cases, specific HTML elements.
 MDL:
 
 ```html
-<div class="mdl-textfield mdl-js-textfield">
-  <input class="mdl-textfield__input" type="text" id="input">
-  <label class="mdl-textfield__label" for="input">Input Label</label>
+<div class="mdl-text-field mdl-js-text-field">
+  <input class="mdl-text-field__input" type="text" id="input">
+  <label class="mdl-text-field__label" for="input">Input Label</label>
 </div>
 ```
 
@@ -90,9 +90,10 @@ MDL:
 MDC-Web:
 
 ```html
-<div class="mdc-textfield">
-  <input class="mdc-textfield__input" type="text" id="input">
-  <label for="input" class="mdc-textfield__label">Input Label</label>
+<div class="mdc-text-field">
+  <input class="mdc-text-field__input" type="text" id="input">
+  <label for="input" class="mdc-text-field__label">Input Label</label>
+  <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
 
@@ -115,9 +116,10 @@ For every component that you want to automatically initialize, set the `data-mdc
 element, with the component’s class name as the value. For example:
 
 ```html
-<div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-  <input class="mdc-textfield__input" type="text" id="input">
-  <label for="input" class="mdc-textfield__label">Input Label</label>
+<div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+  <input class="mdc-text-field__input" type="text" id="input">
+  <label for="input" class="mdc-text-field__label">Input Label</label>
+  <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
 
@@ -134,7 +136,7 @@ You can access a component’s JavaScript instance via the DOM, by looking in a 
 you passed to `data-mdc-auto-init`. So, for the example above:
 
 ```js
-document.querySelector('.mdc-textfield').MDCTextfield.disabled = true;
+document.querySelector('.mdc-text-field').MDCTextField.disabled = true;
 ```
 
 Be sure to read the [`@material/auto-init` README](../packages/mdc-auto-init/README.md) for more details.
@@ -152,13 +154,13 @@ your build pipeline.
 Start by importing the component:
 
 ```js
-import {MDCTextfield} from '@material/textfield';
+import {MDCTextField} from '@material/textfield';
 ```
 
 And instantiate a component by calling the constructor on the root node:
 
 ```js
-const textfield = new MDCTextfield(document.querySelector('.mdc-textfield'));
+const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 ```
 
 Be sure to store the returned instance somewhere so that you can access the instance when you need to; unlike
@@ -169,13 +171,13 @@ auto-initialization, there is no way to retrieve it later via the DOM.
 Each MDC-Web component ships with an ES5 transpiled [UMD](https://github.com/umdjs/umd) bundle, with component classes placed into a package-specific property inside of the `mdc` namespace. In order to easily access it in your code, you can do:
 
 ```js
-const MDCTextfield = mdc.textfield.MDCTextfield;
+const MDCTextField = mdc.textField.MDCTextField;
 ```
 
 After that, you can instantiate a component by calling the constructor on the root node:
 
 ```js
-const textfield = new MDCTextfield(document.querySelector('.mdc-textfield'));
+const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 ```
 
 Be sure to store the returned instance somewhere so that you can access the instance when you need to; unlike
@@ -195,9 +197,10 @@ foundational components, such as `@material/elevation` or `@material/theme`.
 Like in MDL, styling components with CSS classes is simply a matter of applied them to the DOM:
 
 ```html
-<div class="mdc-textfield">
-  <input type="text" id="my-textfield" class="mdc-textfield__input">
-  <label class="mdc-textfield__label" for="my-textfield">Hint text</label>
+<div class="mdc-text-field">
+  <input type="text" id="my-text-field" class="mdc-text-field__input">
+  <label class="mdc-text-field__label" for="my-text-field">Hint text</label>
+  <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
 
@@ -329,7 +332,7 @@ The following table summarizes the current situation (TBI = to be implemented):
 | `mdl-menu` | [`@material/menu`](../packages/mdc-menu/README.md) | Very different DOM. |
 | `mdl-palette` | TBI | [#27](https://github.com/material-components/material-components-web/issues/27) |
 | `mdl-progress` | TBI | [#29](https://github.com/material-components/material-components-web/issues/29) |
-| `mdl-radio` | [`@material/radi`](../opackages/mdc-radio/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
+| `mdl-radio` | [`@material/radio`](../packages/mdc-radio/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
 | `mdl-resets` | None. | There are plans for an [optional resets/defaults library](https://github.com/material-components/material-components-web/issues/42). |
 | `mdl-ripple` | [`@material/ripple`](../packages/mdc-ripple/README.md) | Very different usage; much improved in MDC-Web. |
 | `mdl-shadow` | [`@material/elevation`](../packages/mdc-elevation/README.md) | Similar usage. |
@@ -338,7 +341,7 @@ The following table summarizes the current situation (TBI = to be implemented):
 | `mdl-spinner` | TBI | [#30](https://github.com/material-components/material-components-web/issues/30) |
 | `mdl-switch` | [`@material/switch`](../packages/mdc-switch/README.md) | Very different DOM. |
 | `mdl-tabs` | [`@material/tabs`](../packages/mdc-tabs/README.md) | Very different DOM. |
-| `mdl-textfield` | [`@material/textfield`](../packages/mdc-textfield/README.md) | Very different DOM. |
+| `mdl-text-field` | [`@material/textfield`](../packages/mdc-textfield/README.md) | Very different DOM. |
 | `mdl-tooltip` | TBI | [#24](https://github.com/material-components/material-components-web/issues/24) |
 | `mdl-typography` | [`@material/typography`](../packages/mdc-typography/README.md) | Somewhat different usage. |
 

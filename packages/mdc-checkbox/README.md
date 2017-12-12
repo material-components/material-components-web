@@ -89,7 +89,11 @@ easily position checkboxes and their labels.
 </div>
 ```
 
+> **Note**: If you are using IE, you need to include a closing `</path>` tag if you wish to avoid console warnings.
+
 #### Disabled Checkboxes
+
+Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class; a `disabled` attribute on the `<input>` element is sufficient.
 
 ```html
 <div class="mdc-checkbox mdc-checkbox--disabled">
@@ -110,8 +114,6 @@ easily position checkboxes and their labels.
 </div>
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
-
-Note that `mdc-checkbox--disabled` is necessary on the root element to prevent hover states from activating.
 
 ### Using the JS Component
 
@@ -255,4 +257,32 @@ not return an object.
 
 ## Theming
 
-> TK once mdc-theming lands.
+MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate), and are completely dark theme aware.
+
+### Sass Mixins
+
+The following mixins apply only to _enabled_ checkboxes. It is not currently possible to customize the color of a _disabled_ checkbox.
+
+Mixin | Description
+--- | ---
+`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
+`mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
+`mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
+
+The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
+
+#### `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)`
+
+Generates CSS classes to set the container stroke color and/or fill color of a checkbox in its marked and unmarked states.
+In the unmarked state, stroke and fill color may be customized independently; in the marked state, only the fill color
+may be customized, and the stroke will automatically match the fill color.
+
+All parameters are optional, and if left unspecified will use their default values.
+
+If you plan to use CSS-only checkboxes, set `$generate-keyframes` to `false` to prevent the mixin from generating `@keyframes` and CSS classes used by the JavaScript component.
+
+### Caveat: Edge and CSS Variables
+
+In browsers that fully support CSS variables, MDC Checkbox references CSS variables wherever theme properties are used.
+However, due to Edge's buggy CSS variable support, the `background-color` for `.mdc-checkbox__background::before` will not honor CSS variables in Edge.
+This means you will need to override this style manually for Edge if you alter the CSS variable for the primary color.

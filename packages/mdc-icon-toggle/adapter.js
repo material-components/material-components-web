@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +35,8 @@
  *
  * @record
  */
-export default class MDCIconToggleAdapter {
+
+class MDCIconToggleAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -86,4 +88,6 @@ export default class MDCIconToggleAdapter {
  *   isOn: boolean,
  * }}
  */
-export let IconToggleEvent;
+let IconToggleEvent;
+
+export {MDCIconToggleAdapter, IconToggleEvent};

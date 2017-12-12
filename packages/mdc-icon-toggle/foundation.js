@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +23,7 @@ import {cssClasses, strings} from './constants';
 /**
  * @extends {MDCFoundation<!MDCIconToggleAdapter>}
  */
-export default class MDCIconToggleFoundation extends MDCFoundation {
+class MDCIconToggleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -88,6 +89,7 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
 
   init() {
     this.refreshToggleData();
+    this.savedTabIndex_ = this.adapter_.getTabIndex();
     this.adapter_.registerInteractionHandler('click', this.clickHandler_);
     this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.registerInteractionHandler('keyup', this.keyupHandler_);
@@ -197,7 +199,7 @@ export default class MDCIconToggleFoundation extends MDCFoundation {
  *   keyCode: number
  * }}
  */
-export let KeyboardKey;
+let KeyboardKey;
 
 /**
  * @param {!KeyboardKey} keyboardKey
@@ -228,3 +230,5 @@ IconToggleState.prototype.content;
  * @export {string|undefined}
  */
 IconToggleState.prototype.cssClass;
+
+export default MDCIconToggleFoundation;

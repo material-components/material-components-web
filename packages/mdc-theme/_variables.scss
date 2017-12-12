@@ -39,15 +39,15 @@ $mdc-theme-background: #fff !default; // White
 // Which set of text colors to use for each main theme color (light or dark).
 //
 
-$mdc-theme-primary-tone: mdc-theme-light-or-dark($mdc-theme-primary);
-$mdc-theme-primary-light-tone: mdc-theme-light-or-dark($mdc-theme-primary-light);
-$mdc-theme-primary-dark-tone: mdc-theme-light-or-dark($mdc-theme-primary-dark);
+$mdc-theme-primary-tone: mdc-theme-contrast-tone($mdc-theme-primary) !default;
+$mdc-theme-primary-light-tone: mdc-theme-contrast-tone($mdc-theme-primary-light) !default;
+$mdc-theme-primary-dark-tone: mdc-theme-contrast-tone($mdc-theme-primary-dark) !default;
 
-$mdc-theme-secondary-tone: mdc-theme-light-or-dark($mdc-theme-secondary);
-$mdc-theme-secondary-light-tone: mdc-theme-light-or-dark($mdc-theme-secondary-light);
-$mdc-theme-secondary-dark-tone: mdc-theme-light-or-dark($mdc-theme-secondary-dark);
+$mdc-theme-secondary-tone: mdc-theme-contrast-tone($mdc-theme-secondary) !default;
+$mdc-theme-secondary-light-tone: mdc-theme-contrast-tone($mdc-theme-secondary-light) !default;
+$mdc-theme-secondary-dark-tone: mdc-theme-contrast-tone($mdc-theme-secondary-dark) !default;
 
-$mdc-theme-background-tone: mdc-theme-light-or-dark($mdc-theme-background);
+$mdc-theme-background-tone: mdc-theme-contrast-tone($mdc-theme-background) !default;
 
 //
 // Text colors according to light vs dark and text type.
@@ -68,7 +68,7 @@ $mdc-theme-text-colors: (
     disabled: rgba(white, .5),
     icon: rgba(white, .5)
   )
-);
+) !default;
 
 //
 // Primary text colors for each of the theme colors.
@@ -140,3 +140,39 @@ $mdc-theme-property-values: (
   text-disabled-on-dark: map-get(map-get($mdc-theme-text-colors, light), disabled),
   text-icon-on-dark: map-get(map-get($mdc-theme-text-colors, light), icon)
 );
+
+// If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
+// corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
+// such theme property exists, an error is thrown.
+//
+// This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
+//
+// Examples:
+//
+// 1. mdc-theme-prop-value(primary) => "#3f51b5"
+// 2. mdc-theme-prop-value(blue)    => "blue"
+//
+// NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
+@function mdc-theme-prop-value($property) {
+  @if type-of($property) == "color" or $property == "currentColor" {
+    @return $property;
+  }
+
+  @if not map-has-key($mdc-theme-property-values, $property) {
+    @error "Invalid theme property: '#{$property}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
+  }
+
+  @return map-get($mdc-theme-property-values, $property);
+}
+
+// NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
+@function mdc-theme-accessible-ink-color($fill-color, $text-style: primary) {
+  $fill-color-value: mdc-theme-prop-value($fill-color);
+  $color-map-for-tone: map-get($mdc-theme-text-colors, mdc-theme-contrast-tone($fill-color-value));
+
+  @if not map-has-key($color-map-for-tone, $text-style) {
+    @error "Invalid $text-style: '#{$text-style}'. Choose one of: #{map-keys($color-map-for-tone)}";
+  }
+
+  @return map-get($color-map-for-tone, $text-style);
+}

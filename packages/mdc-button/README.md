@@ -20,7 +20,7 @@ The MDC Button component is a spec-aligned button component adhering to the
 [Material Design button requirements](https://material.io/guidelines/components/buttons.html).
 It works without JavaScript with basic functionality for all states.
 You can enhance the button to have ripple effects by instantiating `MDCRipple` on
-the `button` element. See [MDC Ripple](https://github.com/material-components/material-components-web/tree/master/packages/mdc-ripple) and [Demo](https://material-components-web.appspot.com/button.html) for details.
+the `button` element. See [MDC Ripple](../mdc-ripple) and [Demo](https://material-components-web.appspot.com/button.html) for details.
 
 ## Design & API Documentation
 
@@ -57,7 +57,7 @@ semantically correct.
 Users can nest `mdc-button__icon` inside the button element to add an icon. The icon in button
 is set to 18px to meet legibility requirements.
 
-We recommend you load [Material Icons]((https://design.google.com/icons/)) from Google Fonts
+We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts
 
 ```html
 <head>
@@ -133,6 +133,14 @@ Mixin | Description
 `mdc-button-container-fill-color` | Sets the container color to the given color
 `mdc-button-ink-color` | Sets the ink color to the given color
 `mdc-button-stroke-color` | Sets the stroke color to the given color
-`mdc-button-ripple` | Sets the ripple to the given [ripple configuration](https://github.com/material-components/material-components-web/blob/master/packages/mdc-ripple/README.md)
 `mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px)
 `mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px)
+
+The ripple effect for the Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
+
+#### Caveat: Edge and CSS Variables
+
+In browsers that fully support CSS variables, the above mixins will hook up styles using CSS variables if a theme property is passed.
+However, due to Edge's buggy CSS variable support, `mdc-button-container-fill-color` will not honor CSS variables in Edge.
+This means you will need to override button container styles manually for Edge if you are altering the affected CSS variables for theme properties
+(raised and unelevated buttons use primary by default for the container fill color).

@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +36,7 @@
  *
  * @record
  */
-export default class MDCSimpleMenuAdapter {
+class MDCSimpleMenuAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -57,6 +58,13 @@ export default class MDCSimpleMenuAdapter {
    * @return {string}
    */
   getAttributeForEventTarget(target, attributeName) {}
+
+  /**
+   * @param {EventTarget} target
+   * @param {string} className
+   * @return {boolean}
+   */
+  eventTargetHasClass(target, className) {}
 
   /** @return {{ width: number, height: number }} */
   getInnerDimensions() {}
@@ -158,3 +166,5 @@ export default class MDCSimpleMenuAdapter {
   /** @return {number} */
   getAccurateTime() {}
 }
+
+export default MDCSimpleMenuAdapter;

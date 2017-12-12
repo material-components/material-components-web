@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +16,13 @@
  */
 
 /** @enum {string} */
-export const cssClasses = {
+const cssClasses = {
   ROOT: 'mdc-icon-toggle',
   DISABLED: 'mdc-icon-toggle--disabled',
 };
 
 /** @enum {string} */
-export const strings = {
+const strings = {
   DATA_TOGGLE_ON: 'data-toggle-on',
   DATA_TOGGLE_OFF: 'data-toggle-off',
   ARIA_PRESSED: 'aria-pressed',
@@ -29,3 +30,5 @@ export const strings = {
   ARIA_LABEL: 'aria-label',
   CHANGE_EVENT: 'MDCIconToggle:change',
 };
+
+export {cssClasses, strings};
