@@ -34,10 +34,13 @@
   transform: translate(-50%, 100%);
   transition: mdc-animation-exit-permanent(transform, .25s);
   background-color: $mdc-snackbar-background-color;
+  color: $mdc-snackbar-foreground-color;
   pointer-events: none;
   will-change: transform;
 
   @include mdc-theme-dark(".mdc-snackbar") {
+    @include mdc-theme-prop(color, text-primary-on-light);
+
     background-color: $mdc-snackbar-background-color-on-dark;
   }
 
@@ -116,11 +119,6 @@
     height: 48px;
     transition: mdc-animation-exit-permanent(opacity, .3s);
     opacity: 0;
-    color: $mdc-snackbar-foreground-color;
-
-    @include mdc-theme-dark(".mdc-snackbar") {
-      @include mdc-theme-prop(color, text-primary-on-light);
-    }
 
     @media (min-width: $mdc-snackbar-tablet-breakpoint) {
       @include mdc-rtl-reflexive-property(padding, 0, 24px);
@@ -139,12 +137,13 @@
 
   &__action-button {
     @include mdc-typography(button);
-    @include mdc-theme-prop(color, secondary);
+    @include mdc-theme-prop(color, primary-light);
 
     @include mdc-theme-dark(".mdc-snackbar") {
       @include mdc-theme-prop(color, primary);
     }
 
+    // TODO(acdvorak): Add padding to increase tap target size
     padding: 0;
     transition: mdc-animation-exit-permanent(opacity, .3s);
     border: none;
