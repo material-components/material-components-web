@@ -16,14 +16,14 @@
 
 @import "@material/theme/variables";
 
-$mdc-temporary-drawer-background: $mdc-theme-background !default;
-$mdc-temporary-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-primary) !default;
+$mdc-temporary-drawer-fill-color: $mdc-theme-background !default;
+$mdc-temporary-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-background) !default;
 
 $mdc-temporary-drawer-scrim-color: #000 !default;
 $mdc-temporary-drawer-scrim-opacity: .6 !default;
 
-$mdc-persistent-drawer-background: $mdc-theme-background !default;
-$mdc-persistent-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-primary) !default;
+$mdc-persistent-drawer-fill-color: $mdc-theme-background !default;
+$mdc-persistent-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-background) !default;
 
-$mdc-permanent-drawer-background: $mdc-theme-background !default;
-$mdc-permanent-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-primary) !default;
+$mdc-permanent-drawer-fill-color: $mdc-theme-background !default;
+$mdc-permanent-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-background) !default;

@@ -26,7 +26,7 @@
 .mdc-drawer--temporary {
   @include mdc-drawer-base_;
   @include mdc-drawer-ink-color($mdc-temporary-drawer-ink-color);
-  @include mdc-drawer-fill-color($mdc-temporary-drawer-background);
+  @include mdc-drawer-fill-color($mdc-temporary-drawer-fill-color);
   @include mdc-drawer-scrim-color($mdc-temporary-drawer-scrim-color, $mdc-temporary-drawer-scrim-opacity);
 
   position: fixed;

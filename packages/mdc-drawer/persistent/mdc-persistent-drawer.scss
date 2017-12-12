@@ -31,7 +31,7 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
 .mdc-drawer--persistent {
   @include mdc-drawer-base_;
   @include mdc-drawer-ink-color($mdc-persistent-drawer-ink-color);
-  @include mdc-drawer-fill-color($mdc-persistent-drawer-background);
+  @include mdc-drawer-fill-color($mdc-persistent-drawer-fill-color);
   width: 0;
 
   .mdc-drawer__drawer {

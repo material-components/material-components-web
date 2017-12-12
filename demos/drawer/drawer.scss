@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/list/mixins";
 @import "../common";
 @import "../../packages/mdc-drawer/mdc-drawer";
 @import "../../packages/mdc-drawer/mixins";
@@ -21,16 +22,19 @@
 @import "../../packages/mdc-list/mdc-list";
 
 .demo-temporary-drawer {
-  @include mdc-drawer-fill-color(#6002ee);
-  @include mdc-drawer-ink-color(#000);
+  @include mdc-drawer-fill-color(#3f51b5);
+  @include mdc-drawer-ink-color(#fff);
+  @include mdc-list-item-graphic-ink-color(#fff);
 }
 
 .demo-persistent-drawer {
-  @include mdc-drawer-fill-color(#6002ee);
-  @include mdc-drawer-ink-color(#000);
+  @include mdc-drawer-fill-color(#3f51b5);
+  @include mdc-drawer-ink-color(#fff);
+  @include mdc-list-item-graphic-ink-color(#fff);
 }
 
-.demo-content__permanent-drawer {
-  @include mdc-drawer-fill-color(#6002ee);
-  @include mdc-drawer-ink-color(#000);
+.demo-permanent-drawer {
+  @include mdc-drawer-fill-color(#3f51b5);
+  @include mdc-drawer-ink-color(#fff);
+  @include mdc-list-item-graphic-ink-color(#fff);
 }
