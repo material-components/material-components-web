@@ -158,6 +158,14 @@ test('set helperTextContent has no effect when no helper text element is present
   });
 });
 
+test('#layout recomputes all dimensions and positions for the ripple element', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.BOX);
+  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
+  component.layout();
+  td.verify(component.ripple.layout());
+});
+
 test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
   const {icon, component} = setupTest();
 
@@ -271,9 +279,12 @@ test('#adapter.getIdleOutlineStyleValue returns the value of the given property 
   root.appendChild(bel`<div class="mdc-text-field__idle-outline"></div>`);
   const idleOutline = root.querySelector('.mdc-text-field__idle-outline');
   idleOutline.style.width = '500px';
-  console.log(root);
+
   const component = new MDCTextField(root);
-  assert.equal(component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'), '500px');
+  assert.equal(
+    component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'),
+    getComputedStyle(idleOutline).getPropertyValue('width')
+  );
 });
 
 test('#adapter.isRtl returns true when the root element is in an RTL context' +
