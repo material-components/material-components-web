@@ -458,8 +458,8 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     const menuWidth = this.dimensions_.width;
 
     const bottomAligned = this.anchorCorner_ & CornerBit.BOTTOM;
-    const availableTop = bottomAligned ? screenMargin.top + this.anchorMargin_.top
-      : anchorRect.top + anchorHeight + this.anchorMargin_.bottom;
+    const availableTop = bottomAligned ? anchorRect.top + anchorHeight + this.anchorMargin_.bottom
+      : screenMargin.top + this.anchorMargin_.top;
     const availableBottom = bottomAligned ? screenMargin.bottom - this.anchorMargin_.bottom
       : screenMargin.bottom + anchorHeight - this.anchorMargin_.bottom;
 
@@ -483,6 +483,67 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }
 
     return corner;
+  }
+
+  /**
+   * @pararm {Corner} corner Origin corner of the menu.
+   * @return {{x: number, y: number}} Offset from one of the anchor corners to
+   *   origin corner of the menu.
+   * @private
+   */
+  getOffsetOfOriginCorner_(corner) {
+    let x, y;
+    const canOverlap = this.canOverlapAnchor_();
+    const anchorRect = this.adapter_.getAnchorDimensions();
+    const windowDimensions = this.adapter_.getWindowDimensions();
+    const screenMargin = {top: anchorRect.top, right: windowDimensions.width - anchorRect.right,
+      left: anchorRect.left, bottom: windowDimensions.height - anchorRect.bottom};
+
+    const anchorHeight = anchorRect.height;
+    const anchorWidth = anchorRect.width;
+    const menuHeight = this.dimensions_.height;
+    const menuWidth = this.dimensions_.width;
+
+    const verticalAlignment = (corner & CornerBit.BOTTOM) ? 'bottom' : 'top';
+    const {MARGIN_TO_EDGE} = MDCSimpleMenuFoundation.numbers;
+    if (verticalAlignment == 'top') {
+      if (this.canOverlapAnchor_()) {
+        if (menuHeight < screenMargin.bottom + (anchorHeight - this.anchorMargin_.top) {
+          y = this.anchorMargin.top;
+        } else if (menuHeight < windowDimensions.height - MARGIN_TO_EDGE) {
+          y = - (menuHeight - (screenMargin.bottom + anchorHeight)); // top margin is ignored
+        } else {
+          y = - (screenMargin.top - MARGIN_TO_EDGE);
+        }
+      } else {
+        y = anchorHeight + this.anchorMargin_.bottom;
+      }
+    } else {
+      if (this.canOverlapAnchor_()) {
+        if (menuHeight < screenMargin.top + this.anchorMargin_.bottom + anchorHeight) {
+          y = -this.anchorMargin_.bottom;
+        } else (menuHeight < windowDimensions.height - MARGIN_TO_EDGE) {
+          y = menuHeight - (screenMargin.top + anchorHeight);
+        } else {
+          y = screenMargin.bottom - MARGIN_TO_EDGE;
+        }
+      }
+    }
+
+    if (horizontalAlignment == 'left') {
+      if (menuWidth < anchorWidth - this.anchorMargin_.left + screenMargin.right) {
+        x = this.anchorMargin_.left;
+      } else {
+        x = - (menuWidth - (anchorWidth + screenMargin.right))
+      }
+    } else {
+      if (menuWidth < screenMargin.left + anchorWidth - this.anchorMargin_.right) {
+        x = this.anchorMargin_.right;
+      } else {
+        x = menuHeight - (anchorWidth + screenMargin.left);
+      }
+    }
+    return {'x': x, 'y': y};
   }
 
   /** @private */

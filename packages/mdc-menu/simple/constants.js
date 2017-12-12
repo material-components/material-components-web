@@ -51,6 +51,8 @@ const numbers = {
   TRANSITION_Y1: 0,
   TRANSITION_X2: 0.2,
   TRANSITION_Y2: 1,
+  // Margin left to the edge of the viewport when menu is at maximum possible height.
+  MARGIN_TO_EDGE: 32,
 };
 
 /**
