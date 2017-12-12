@@ -23,16 +23,19 @@
 
 .mdc-checkbox {
   @include mdc-checkbox-base_;
-  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
-  @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
   @include mdc-ripple-surface;
   @include mdc-states($mdc-checkbox-baseline-theme-color);
   @include mdc-ripple-radius($mdc-checkbox-ripple-radius);
-  @include mdc-checkbox-container-colors();
 
   @include mdc-theme-dark {
     @include mdc-checkbox-container-colors($unmarked-stroke-color: $mdc-checkbox-border-color-dark);
   }
+}
+
+@at-root {
+  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
+  @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
+  @include mdc-checkbox-container-colors;
 }
 
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes
