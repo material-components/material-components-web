@@ -19,6 +19,7 @@
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -37,6 +38,7 @@ let NativeInputType;
  *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined)
+ *   label: (!MDCTextFieldLabelFoundation|undefined)
  * }}
  */
 let FoundationMapType;
@@ -63,21 +65,6 @@ class MDCTextFieldAdapter {
    * @param {string} className
    */
   removeClass(className) {}
-
-  /**
-   * Adds a class to the label Element. We recommend you add a conditional
-   * check here, and in removeClassFromLabel for whether or not the label is
-   * present so that the JS component could be used with text fields that don't
-   * require a label, such as the full-width text field.
-   * @param {string} className
-   */
-  addClassToLabel(className) {}
-
-  /**
-   * Removes a class from the label Element.
-   * @param {string} className
-   */
-  removeClassFromLabel(className) {}
 
   /**
    * Registers an event handler on the root element for a given event.
