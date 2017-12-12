@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "./color-palette";
 @import "./functions";
 
 //
@@ -22,13 +23,13 @@
 // If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
 //
 
-$mdc-theme-primary: #6200ee !default;
+$mdc-theme-primary: $material-color-baseline-primary-500 !default;
 $mdc-theme-primary-light: mdc-theme-light-variant($mdc-theme-primary) !default;
 $mdc-theme-primary-dark: mdc-theme-dark-variant($mdc-theme-primary) !default;
 
 // The $mdc-theme-accent variable is DEPRECATED - it exists purely for backward compatibility.
 // The $mdc-theme-secondary* variables should be used for all new projects.
-$mdc-theme-accent: #03dac6 !default; // TODO(acdvorak): Not accessible! Contrast ratio = 1.8:1 (against white bg).
+$mdc-theme-accent: $material-color-baseline-secondary-600 !default;
 $mdc-theme-secondary: $mdc-theme-accent !default;
 $mdc-theme-secondary-light: mdc-theme-light-variant($mdc-theme-secondary) !default;
 $mdc-theme-secondary-dark: mdc-theme-dark-variant($mdc-theme-secondary) !default;
