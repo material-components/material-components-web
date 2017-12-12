@@ -402,8 +402,8 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
-  height: initial;
   width: fit-content;
+  height: initial;
   transition: none;
   border: 1px solid $mdc-textarea-border-on-light;
   overflow: hidden;
@@ -414,8 +414,10 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input {
+    margin: 0;
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
+    border: 1px solid transparent;
 
     &:focus {
       @include mdc-theme-prop(border-color, primary);
