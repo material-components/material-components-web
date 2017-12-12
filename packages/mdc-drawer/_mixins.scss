@@ -17,6 +17,7 @@
 @import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/theme/mixins";
+@import "@material/theme/variables";
 @import "@material/typography/mixins";
 
 @mixin mdc-drawer-toolbar-spacer_() {
@@ -163,4 +164,9 @@
   &::before {
     background-color: rgba(mdc-theme-prop-value($color), $opacity);
   }
+}
+
+@mixin mdc-drawer-fill-color-accessible($color) {
+  @include mdc-drawer-ink-color(mdc-theme-accessible-ink-color($color));
+  @include mdc-drawer-fill-color($color);
 }

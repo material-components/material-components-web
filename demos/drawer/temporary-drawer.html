@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <script src="/assets/drawer/drawer.css.js"></script>
-    <script src="/assets/switch.css.js"></script>
+    <script src="/assets/radio.css.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -94,14 +94,37 @@
     <main class="demo-main mdc-toolbar-fixed-adjust">
       <h1 class="mdc-typography--display1">Temporary Drawer</h1>
       <p class="mdc-typography--body1">Click the menu icon above to open.</p>
-      <div class="mdc-form-field">
-        <div class="mdc-switch demo-switch">
-          <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
-          <div class="mdc-switch__background">
-            <div class="mdc-switch__knob"></div>
+      <div id="demo-radio-buttons">
+        <div class="mdc-form-field">
+          <div class="mdc-radio">
+            <input class="mdc-radio__native-control" type="radio" id="default" name="theme" checked>
+            <div class="mdc-radio__background">
+              <div class="mdc-radio__outer-circle"></div>
+              <div class="mdc-radio__inner-circle"></div>
+            </div>
           </div>
+          <label for="default">Default</label>
         </div>
-        <label for="basic-switch" class="mdc-switch-label">Theme off/on</label>
+        <div class="mdc-form-field">
+          <div class="mdc-radio">
+            <input class="mdc-radio__native-control" type="radio" id="custom" name="theme">
+            <div class="mdc-radio__background">
+              <div class="mdc-radio__outer-circle"></div>
+              <div class="mdc-radio__inner-circle"></div>
+            </div>
+          </div>
+          <label for="custom">Custom Theme</label>
+        </div>
+        <div class="mdc-form-field">
+          <div class="mdc-radio">
+            <input class="mdc-radio__native-control" type="radio" id="accessible" name="theme">
+            <div class="mdc-radio__background">
+              <div class="mdc-radio__outer-circle"></div>
+              <div class="mdc-radio__inner-circle"></div>
+            </div>
+          </div>
+          <label for="accessible">Accessible Theme</label>
+        </div>
       </div>
     </main>
 
@@ -120,12 +143,15 @@
         console.log('Received MDCTemporaryDrawer:close');
       });
 
-      var switchEl = document.querySelector('.mdc-switch');
-      switchEl.addEventListener('change', function(e) {
-        if(e.target.checked) {
+      var radioEl = document.querySelector('#demo-radio-buttons');
+      radioEl.addEventListener('change', function(e) {
+        drawerEl.classList.remove('demo-drawer');
+        drawerEl.classList.remove('demo-drawer--accessible');
+
+        if(e.target.id === 'accessible') {
+          drawerEl.classList.add('demo-drawer--accessible');
+        } else if(e.target.id === 'custom') {
           drawerEl.classList.add('demo-drawer');
-        } else {
-          drawerEl.classList.remove('demo-drawer');
         }
       });
     </script>

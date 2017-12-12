@@ -28,6 +28,10 @@
   @include mdc-list-item-graphic-ink-color(#fff);
 }
 
+.demo-drawer--accessible {
+  @include mdc-drawer-fill-color-accessible(#3f51b5);
+}
+
 .demo-form-field {
   margin: 16px 0;
 }
