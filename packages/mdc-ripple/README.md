@@ -62,7 +62,7 @@ General notes:
 
 #### Sass API
 
-In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic `mdc-states` mixin or all of the advanced `mdc-states-...` mixins documented below.
+In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic or advanced `mdc-states` mixins documented below.
 
 Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states` specifically) for specific variants (e.g. for flat vs. raised buttons).
 
@@ -75,13 +75,25 @@ Mixin | Description
 `mdc-ripple-surface` | Adds base styles for a ripple surface
 `mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
 
-##### Basic States Mixin
+##### Basic States Mixins
+
+When using the basic states mixins, inclusion of the `mdc-states` mixin is mandatory.
+Inclusion of `mdc-states-activated` or `mdc-states-selected` is optional, depending on whether activated or selected
+states are applicable to the component in question.
 
 Mixin | Description
 --- | ---
-`mdc-states($color, $has-nested-focusable-element)` | Adds state and ripple styles for the indicated color, deciding opacities based on whether the passed color is light or dark. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states($color, $has-nested-focusable-element)` | Adds state and ripple styles using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states-activated($color, $has-nested-focusable-element)` | Adds state and ripple styles for activated states using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states-selected($color, $has-nested-focusable-element)` | Adds state and ripple styles for selected states using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 
 ##### Advanced States Mixins
+
+When using the advanced states mixins, every one of the mixins below should be included at least once to establish base
+styles for states.
+
+These mixins can also be used to emit activated or selected styles if applicable, by applying them within a selector for
+`&--activated` or `&--selected` modifier classes.
 
 Mixin | Description
 --- | ---
