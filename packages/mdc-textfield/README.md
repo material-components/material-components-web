@@ -189,6 +189,23 @@ Note that **full-width text fields do not support floating labels**. Labels shou
 included as part of the DOM structure for full-width text fields. Full-width textareas
 behave normally.
 
+### Outlined Text Fields
+
+```html
+<div class="mdc-text-field mdc-text-field--outlined">
+  <input type="text" id="tf-outlined" class="mdc-text-field__input">
+  <label for="tf-outlined" class="mdc-text-field__label">Your Name</label>
+  <div class="mdc-text-field__outline">
+    <svg>
+      <path class="mdc-text-field__outline-path"/>
+    </svg>
+  </div>
+  <div class="mdc-text-field__idle-outline"></div>
+</div>
+```
+
+See [here](outline/) for more information on using the outline sub-component.
+
 ### Text Field Boxes
 
 ```html
@@ -199,8 +216,7 @@ behave normally.
 </div>
 ```
 
-Note that Text field boxes support all of the same features as normal text-fields, including helper
-text, validation, and dense UI.
+Note that both Text Field Boxes and Outlined Text Fields support all of the same features as normal text-fields, including helper text, validation, and dense UI.
 
 #### CSS-only text field boxes
 
