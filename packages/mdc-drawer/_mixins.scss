@@ -150,16 +150,16 @@
 
 @mixin mdc-drawer-fill-color($color) {
   .mdc-drawer__drawer {
-    background-color: $color;
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 
 @mixin mdc-drawer-ink-color($color) {
-  color: $color;
+  @include mdc-theme-prop(color, $color);
 }
 
 @mixin mdc-drawer-scrim-color($color, $opacity) {
   &::before {
-    background-color: rgba($color, $opacity);
+    background-color: rgba(mdc-theme-prop-value($color), $opacity);
   }
 }

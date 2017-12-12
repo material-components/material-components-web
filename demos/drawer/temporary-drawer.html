@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <script src="/assets/drawer/drawer.css.js"></script>
+    <script src="/assets/switch.css.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -33,7 +34,12 @@
 
       .demo-main {
         padding-left: 16px;
+        padding-bottom: 16px;
         overflow: auto;
+      }
+
+      .demo-main__control {
+        margin-top: 16px;
       }
     </style>
   </head>
@@ -50,7 +56,7 @@
       </div>
     </div>
 
-    <aside class="mdc-drawer mdc-drawer--temporary demo-temporary-drawer">
+    <aside class="mdc-drawer mdc-drawer--temporary">
       <nav class="mdc-drawer__drawer">
         <header class="mdc-drawer__header">
           <div class="mdc-drawer__header-content mdc-theme--primary-bg">
@@ -92,6 +98,13 @@
     <main class="demo-main mdc-toolbar-fixed-adjust">
       <h1 class="mdc-typography--display1">Temporary Drawer</h1>
       <p class="mdc-typography--body1">Click the menu icon above to open.</p>
+      <div class="mdc-switch demo-main__control">
+        <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
+        <div class="mdc-switch__background">
+          <div class="mdc-switch__knob"></div>
+        </div>
+      </div>
+      <label for="basic-switch" class="mdc-switch-label">Theme off/on</label>
     </main>
 
     <script src="/assets/material-components-web.js"></script>
@@ -107,6 +120,15 @@
       });
       drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
         console.log('Received MDCTemporaryDrawer:close');
+      });
+
+      var switchEl = document.querySelector('.mdc-switch');
+      switchEl.addEventListener('change', function(e) {
+        if(e.target.checked) {
+          drawerEl.classList.add('demo-temporary-drawer');
+        } else {
+          drawerEl.classList.remove('demo-temporary-drawer');
+        }
       });
     </script>
   </body>

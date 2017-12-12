@@ -22,15 +22,15 @@
 
 .demo-temporary-drawer {
   @include mdc-drawer-fill-color(#6002ee);
-  @include mdc-drawer-ink-color(#6002ee);
+  @include mdc-drawer-ink-color(#000);
 }
 
 .demo-persistent-drawer {
   @include mdc-drawer-fill-color(#6002ee);
-  @include mdc-drawer-ink-color(#6002ee);
+  @include mdc-drawer-ink-color(#000);
 }
 
 .demo-content__permanent-drawer {
   @include mdc-drawer-fill-color(#6002ee);
-  @include mdc-drawer-ink-color(#6002ee);
+  @include mdc-drawer-ink-color(#000);
 }
