@@ -39,6 +39,7 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldLabelAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
+      hasClass: () => {},
     });
   }
 
@@ -53,6 +54,14 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   floatAbove() {
     this.adapter_.addClass(cssClasses.LABEL_FLOAT_ABOVE);
     this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
+  }
+
+  /**
+   * Returns whether the label is floating above the input.
+   * @return {boolean}
+   */
+  isFloating() {
+    return this.adapter_.hasClass(cssClasses.LABEL_FLOAT_ABOVE);
   }
 
   /**

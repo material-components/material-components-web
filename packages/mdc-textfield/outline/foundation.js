@@ -36,6 +36,7 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTextFieldOutlineAdapter} */ ({
+      setOutlinePathAttr: () => {},
     });
   }
 
@@ -48,31 +49,36 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
 
   /**
    * Updates the SVG path of the focus outline element.
+   * @param {number} width
+   * @param {number} height
+   * @param {number} labelWidth
+   * @param {number} radius
+   * @param {boolean=} isRtl
    */
   updateSvgPath(width, height, labelWidth, radius, isRtl = false) {
     let path;
     if (!isRtl) {
-      path = 'M' + labelWidth + ',' + 1
-        + 'h' + (width - radius - labelWidth - 2)
+      path = 'M' + (radius + 1.5 + Math.abs(10 - radius) + labelWidth + 8) + ',' + 1
+        + 'h' + (width - (2 * (radius + 1.5)) - labelWidth - 8.5 - Math.abs(10 - radius))
         + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-        + 'v' + (height - 2.7 * radius)
+        + 'v' + (height - 2 * (radius + 1.5))
         + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-        + 'h' + (-width + 2.7 * radius)
+        + 'h' + (-width + 2 * (radius + 1.5))
         + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-        + 'v' + (-height + 2.7 * radius)
+        + 'v' + (-height + 2 * (radius + 1.5))
         + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
-        + 'h' + 6;
+        + 'h' + Math.abs(10 - radius);
     } else {
-      path = 'M' + (width - radius - 6) + ',' + 1
-        + 'h' + 4
+      path = 'M' + (width - radius - 1.5 - Math.abs(10 - radius)) + ',' + 1
+        + 'h' + Math.abs(10 - radius)
         + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-        + 'v' + (height - 2.7 * radius)
+        + 'v' + (height - 2 * (radius + 1.5))
         + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-        + 'h' + (-width + 2.7 * radius)
+        + 'h' + (-width + 2 * (radius + 1.5))
         + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-        + 'v' + (-height + 2.7 * radius)
+        + 'v' + (-height + 2 * (radius + 1.5))
         + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
-        + 'h' + (width - radius - labelWidth);
+        + 'h' + (width - (2 * (radius + 1.5)) - labelWidth - 8.5 - Math.abs(10 - radius));
     }
 
     this.adapter_.setOutlinePathAttr(path);

@@ -59,12 +59,12 @@ test('#constructor when given a `mdc-text-field--box` element instantiates a rip
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
   const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
-  assert.equal(component.ripple.root, root);
+  assert.equal(component.ripple_.root, root);
 });
 
 test('#constructor sets the ripple property to `null` when given a non `mdc-text-field--box` element', () => {
   const component = new MDCTextField(getFixture());
-  assert.isNull(component.ripple);
+  assert.isNull(component.ripple_);
 });
 
 test('#constructor when given a `mdc-text-field--box` element, initializes a default ripple when no ' +
@@ -72,7 +72,7 @@ test('#constructor when given a `mdc-text-field--box` element, initializes a def
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
   const component = new MDCTextField(root);
-  assert.instanceOf(component.ripple, MDCRipple);
+  assert.instanceOf(component.ripple_, MDCRipple);
 });
 
 const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
@@ -93,7 +93,7 @@ test('#destroy cleans up the ripple if present', () => {
   root.classList.add(cssClasses.BOX);
   const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
   component.destroy();
-  td.verify(component.ripple.destroy());
+  td.verify(component.ripple_.destroy());
 });
 
 test('#destroy accounts for ripple nullability', () => {

@@ -165,7 +165,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
     const width = this.adapter_.getWidth();
     const height = this.adapter_.getHeight();
-    const labelWidth = this.adapter_.getLabelWidth();
+    let labelWidth = this.adapter_.getLabelWidth();
+    if (!this.label_.isFloating()) {
+      labelWidth = labelWidth * 0.75;
+    }
     const radius = parseFloat(this.adapter_.getIdleOutlineStyleValue('border-radius'));
     const isRtl = this.adapter_.isRtl();
     this.outline_.updateSvgPath(width, height, labelWidth, radius, isRtl);
@@ -180,14 +183,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.bottomLine_) {
       this.bottomLine_.activate();
     }
+    if (this.outline_) {
+      this.updateOutline();
+    }
     if (this.label_) {
       this.label_.floatAbove();
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
-    }
-    if (this.outline_) {
-      this.updateOutline();
     }
     this.isFocused_ = true;
   }

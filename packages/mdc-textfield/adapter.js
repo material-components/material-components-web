@@ -163,6 +163,12 @@ class MDCTextFieldAdapter {
    * @return {string}
    */
   getIdleOutlineStyleValue(propertyName) {}
+
+  /**
+   * Returns true if the direction of the root element is set to RTL.
+   * @return {boolean}
+   */
+  isRtl() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

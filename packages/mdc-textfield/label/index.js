@@ -47,6 +47,7 @@ class MDCTextFieldLabel extends MDCComponent {
     return new MDCTextFieldLabelFoundation(/** @type {!MDCTextFieldLabelAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
     })));
   }
 }

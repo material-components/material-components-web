@@ -39,6 +39,13 @@ class MDCTextFieldLabelAdapter {
    * @param {string} className
    */
   removeClass(className) {}
+
+  /**
+   * Returns whether or not the helper text element contains the given class.
+   * @param {string} className
+   * @return {boolean}
+   */
+  hasClass(className) {}
 }
 
 export default MDCTextFieldLabelAdapter;
