@@ -15,8 +15,6 @@
 //
 
 @import "./keyframes";
-@import "./mixins";
-@import "./variables";
 
 // Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
 // (Every component using MDC Ripple imports these mixins, but doesn't necessarily import mdc-ripple.scss.)
