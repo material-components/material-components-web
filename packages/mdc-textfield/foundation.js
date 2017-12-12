@@ -60,6 +60,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
       registerBottomLineEventHandler: () => {},
       deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
+      getWidth: () => {},
+      getHeight: () => {},
+      getLabelWidth: () => {},
+      getIdleOutlineStyleValue: () => {},
+      isRtl: () => {},
     });
   }
 
@@ -165,10 +170,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
     const width = this.adapter_.getWidth();
     const height = this.adapter_.getHeight();
-    let labelWidth = this.adapter_.getLabelWidth();
-    if (!this.label_.isFloating()) {
-      labelWidth = labelWidth * 0.75;
-    }
+    const labelWidth = this.adapter_.getLabelWidth() * 0.75;
     const radius = parseFloat(this.adapter_.getIdleOutlineStyleValue('border-radius'));
     const isRtl = this.adapter_.isRtl();
     this.outline_.updateSvgPath(width, height, labelWidth, radius, isRtl);

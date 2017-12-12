@@ -47,11 +47,3 @@ test('#adapter.removeClass removes a class from the element', () => {
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
 });
-
-test('#adapter.hasClass returns whether or not the element contains a certain class', () => {
-  const {root, component} = setupTest();
-  root.classList.add('foo');
-  assert.isOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
-  root.classList.remove('foo');
-  assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
-});

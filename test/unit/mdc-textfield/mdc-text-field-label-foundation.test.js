@@ -31,7 +31,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldLabelFoundation, [
-    'addClass', 'removeClass', 'hasClass',
+    'addClass', 'removeClass',
   ]);
 });
 
@@ -41,12 +41,6 @@ test('#floatAbove adds mdc-text-field__label--float-above class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.floatAbove();
   td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOAT_ABOVE));
-});
-
-test('#isFloating returns whether mdc-text-field__label--float-above class is present', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.isFloating();
-  td.verify(mockAdapter.hasClass(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
 test('#deactivateFocus does not remove mdc-text-field__label--float-above class' +

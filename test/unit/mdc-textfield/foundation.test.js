@@ -40,7 +40,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterTextFieldInteractionHandler', 'notifyIconAction',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput',
+    'getNativeInput', 'getWidth', 'getHeight', 'getLabelWidth',
+    'getIdleOutlineStyleValue', 'isRtl',
   ]);
 });
 
@@ -62,13 +63,17 @@ const setupTest = () => {
     deactivateFocus: () => {},
     setValidity: () => {},
   });
+  const outline = td.object({
+    updateSvgPath: () => {},
+  });
   const foundationMap = {
     bottomLine: bottomLine,
     helperText: helperText,
     label: label,
+    outline: outline,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, bottomLine, helperText, label};
+  return {foundation, mockAdapter, bottomLine, helperText, label, outline};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -208,6 +213,18 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   const {foundation, helperText} = setupTest();
   foundation.setHelperTextContent('foo');
   td.verify(helperText.setContent('foo'));
+});
+
+test('#updateOutline updates the SVG path of the outline element', () => {
+  const {foundation, mockAdapter, outline} = setupTest();
+  td.when(mockAdapter.getWidth()).thenReturn(100);
+  td.when(mockAdapter.getHeight()).thenReturn(100);
+  td.when(mockAdapter.getLabelWidth()).thenReturn(30);
+  td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
+  td.when(mockAdapter.isRtl()).thenReturn(false);
+
+  foundation.updateOutline();
+  td.verify(outline.updateSvgPath(100, 100, 30 * 0.75, 8, false));
 });
 
 test('on input floats label if input event occurs without any other events', () => {

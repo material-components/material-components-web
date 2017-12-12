@@ -237,7 +237,7 @@ test('#adapter.getNativeInput returns the component input element', () => {
   );
 });
 
-test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {
+test('#adapter.notifyIconAction emits ${strings.ICON_EVENT}', () => {
   const {component} = setupTest();
   const handler = td.func('leadingHandler');
 
@@ -245,4 +245,46 @@ test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {
   component.getDefaultFoundation().adapter_.notifyIconAction();
 
   td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.getWidth returns the width of the root element', () => {
+  const {root, component} = setupTest();
+  const width = component.getDefaultFoundation().adapter_.getWidth();
+  assert.equal(width, root.offsetWidth);
+});
+
+test('#adapter.getHeight returns the height of the root element', () => {
+  const {root, component} = setupTest();
+  const height = component.getDefaultFoundation().adapter_.getWidth();
+  assert.equal(height, root.offsetHeight);
+});
+
+test('#adapter.getLabelWidth returns the width of the label element', () => {
+  const {root, component} = setupTest();
+  const labelElement = root.querySelector('.mdc-text-field__label');
+  const labelWidth = component.getDefaultFoundation().adapter_.getLabelWidth();
+  assert.equal(labelWidth, labelElement.offsetWidth);
+});
+
+test('#adapter.getIdleOutlineStyleValue returns the value of the given property on the idle outline element', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__idle-outline"></div>`);
+  const idleOutline = root.querySelector('.mdc-text-field__idle-outline');
+  idleOutline.style.width = '500px';
+  console.log(root);
+  const component = new MDCTextField(root);
+  assert.equal(component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'), '500px');
+});
+
+test('#adapter.isRtl returns true when the root element is in an RTL context' +
+  'and false otherwise', () => {
+  const wrapper = bel`<div dir="rtl"></div>`;
+  const {root, component} = setupTest();
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
+
+  wrapper.appendChild(root);
+  document.body.appendChild(wrapper);
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
+
+  document.body.removeChild(wrapper);
 });
