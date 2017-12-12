@@ -20,8 +20,8 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCTextField, MDCTextFieldFoundation} from '../../../packages/mdc-textfield';
-import {MDCTextFieldHelperText} from '../../../packages/mdc-textfield/helper-text/index';
+import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldBottomLine,
+  MDCTextFieldHelperText, MDCTextFieldIcon, MDCTextFieldLabel} from '../../../packages/mdc-textfield';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -75,10 +75,16 @@ test('#constructor when given a `mdc-text-field--box` element, initializes a def
   assert.instanceOf(component.ripple, MDCRipple);
 });
 
+test('#constructor instantiates a bottom line on the `.mdc-text-field__bottom-line` element if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.bottomLine_, MDCTextFieldBottomLine);
+});
+
 const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
 
 test('#constructor instantiates a helper text on the element with id specified in the input aria-controls' +
-     'if present', () => {
+  'if present', () => {
   const root = getFixture();
   root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
   const helperText = getHelperTextElement();
@@ -86,6 +92,18 @@ test('#constructor instantiates a helper text on the element with id specified i
   const component = new MDCTextField(root);
   assert.instanceOf(component.helperText_, MDCTextFieldHelperText);
   document.body.removeChild(helperText);
+});
+
+test('#constructor instantiates an icon on the `.mdc-text-field__icon` element if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.icon_, MDCTextFieldIcon);
+});
+
+test('#constructor instantiates a label on the `.mdc-text-field__label` element if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.label_, MDCTextFieldLabel);
 });
 
 test('#destroy cleans up the ripple if present', () => {
