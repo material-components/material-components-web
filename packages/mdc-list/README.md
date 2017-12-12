@@ -16,9 +16,10 @@ path: /catalog/lists/
   </a>
 </div>-->
 
-MDC List provides styles which implement [Material Design Lists](https://material.io/guidelines/components/lists.html) - "A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are supported (with
-three-line lists [coming soon](https://github.com/material-components/material-components-web/issues/31)). MDC
-Lists are designed to be accessible and RTL aware.
+MDC List provides styles which implement [Material Design Lists](https://material.io/guidelines/components/lists.html) -
+"A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are
+supported (with three-line lists [planned](https://github.com/material-components/material-components-web/issues/31)).
+MDC Lists are designed to be accessible and RTL aware.
 
 ## Design & API Documentation
 
@@ -66,7 +67,7 @@ attribute with value `"rtl"`_. This applies to all lists regardless of type.
 </html>
 ```
 
-#### Dark Mode support
+#### Dark Mode Support
 
 Like other MDC-Web components, lists support dark mode either when an `mdc-list--theme-dark` class is
 attached to the root element, or the element has an ancestor with class `mdc-theme--dark`.
@@ -90,9 +91,11 @@ Lists can be made more compact by using the `mdc-list--dense` modifier class.
 </ul>
 ```
 
-### Two-line lists
+### Two-Line List Items
 
-While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with some extra markup around the text to style a list in the two-line list style as defined by [the spec](https://material.io/guidelines/components/lists.html#lists-specs) (see "Two-line lists").
+While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with
+some extra markup around the text to style a list in the two-line list style as defined by
+[the spec](https://material.io/guidelines/components/lists.html#lists-specs) (see "Two-line lists").
 
 ```html
 <ul class="mdc-list mdc-list--two-line">
@@ -105,89 +108,89 @@ While in theory you can add any number of "lines" to a list item, you can use th
 </ul>
 ```
 
-### List "Detail" Elements
+### List Item Tile Elements
 
-As mentioned in the spec, lists can contain primary and secondary actions. It can also contain
-things such as avatars, icons, interactive controls, etc. We call these items *detail* items. Lists
-can contain 1 **start detail** item and/or 1 **end detail** item that are positioned at the start
-and end of the list, respectively. These items are correctly flipped in RTL contexts.
+As mentioned in the spec, list items (rows) can contain primary and secondary actions. They can also contain
+things such as avatars, icons, interactive controls, etc. We call all of these items *tiles*. Lists items
+can contain 1 **supporting graphic** tile and/or 1 **metadata** tile that are positioned at the start
+and end of the list item, respectively. These tiles are correctly flipped in RTL contexts.
 
-> _N.B._ Please keep accessibility in mind when using things such as icons / icon fonts for detail
+> _N.B._ Please keep accessibility in mind when using things such as icons / icon fonts for tile
 > elements. Font Awesome has [excellent guidelines](http://fontawesome.io/accessibility/) for this.
 
-#### Adding a start detail
+#### Adding a Supporting Graphic
 
-You can add a start detail using an element with class `mdc-list-item__start-detail` class.
+You can add a supporting graphic using an element with class `mdc-list-item__graphic` class.
 
 ```html
 <ul class="mdc-list">
   <li class="mdc-list-item">
-    <i class="mdc-list-item__start-detail material-icons" aria-hidden="true">network_wifi</i>
+    <i class="mdc-list-item__graphic material-icons" aria-hidden="true">network_wifi</i>
     Wi-Fi
   </li>
   <li class="mdc-list-item">
-    <i class="mdc-list-item__start-detail material-icons" aria-hidden="true">bluetooth</i>
+    <i class="mdc-list-item__graphic material-icons" aria-hidden="true">bluetooth</i>
     Bluetooth
   </li>
   <li class="mdc-list-item">
-    <i class="mdc-list-item__start-detail material-icons" aria-hidden="true">data_usage</i>
+    <i class="mdc-list-item__graphic material-icons" aria-hidden="true">data_usage</i>
     Data Usage
   </li>
 </ul>
 ```
 
-#### Making a start detail an avatar
+#### Making a Graphic an Avatar
 
-You can use the `mdc-list--avatar-list` modifier class to style the start detail elements as what
-the spec calls "avatars" - large, circular details that lend themselves well to contact images,
+You can use the `mdc-list--avatar-list` modifier class to style the graphic elements as what
+the spec calls "avatars" - large, circular tiles that lend themselves well to contact images,
 profile pictures, etc.
 
 ```html
 <h2>Contacts</h2>
 <ul class="mdc-list mdc-list--avatar-list">
   <li class="mdc-list-item">
-    <img class="mdc-list-item__start-detail" src="/users/1/profile_pic.png"
+    <img class="mdc-list-item__graphic" src="/users/1/profile_pic.png"
          width="56" height="56" alt="Picture of Janet Perkins">
     Janet Perkins
   </li>
   <li class="mdc-list-item">
-    <img class="mdc-list-item__start-detail" src="/users/2/profile_pic.png"
+    <img class="mdc-list-item__graphic" src="/users/2/profile_pic.png"
          width="56" height="56" alt="Picture of Mary Johnson">
     Mary Johnson
   </li>
   <li class="mdc-list-item">
-    <img class="mdc-list-item__start-detail" src="/users/3/profile_pic.png"
+    <img class="mdc-list-item__graphic" src="/users/3/profile_pic.png"
          width="56" height="56" alt="Picture of Peter Carlsson">
     Peter Carlsson
   </li>
 </ul>
 ```
 
-#### Adding an end detail
+#### Adding Metadata
 
-End details can be added in a similar way to start details. Place an element after the text
-with a `mdc-list-item__end-detail` class.
+Metadata tiles can be added in a similar way to graphics. Place an element after the text
+with a `mdc-list-item__meta` class.
 
 ```html
 <h2>Contacts</h2>
 <ul class="mdc-list">
   <li class="mdc-list-item">
     Janet Perkins
-    <a href="#" class="mdc-list-item__end-detail material-icons"
+    <a href="#" class="mdc-list-item__meta material-icons"
        aria-label="Remove from favorites" title="Remove from favorites">
       favorite
     </a>
   </li>
   <li class="mdc-list-item">
     Mary Johnson
-    <a href="#" class="mdc-list-item__end-detail material-icons"
+    <a href="#" class="mdc-list-item__meta material-icons"
        aria-label="Add to favorites" title="Add to favorites">
       favorite_border
     </a>
   </li>
   <li class="mdc-list-item">
     Janet Perkins
-    <a href="#" class="mdc-list-item__end-detail material-icons"
+    <a href="#" class="mdc-list-item__meta material-icons"
        aria-label="Add to favorites" title="Add to favorites">
       favorite_border
     </a>
@@ -195,13 +198,13 @@ with a `mdc-list-item__end-detail` class.
 </ul>
 ```
 
-Start and end details can be combined easily. Check out the list demo for many examples of how
-details can be configured.
+Supporting graphics and metadata can be combined easily. Check out the list demo for many examples of how
+tiles can be configured.
 
-> NOTE: If using controls such as a switch (_TK!_) within a list detail, you may need to override
-> the width and height styles set on the detail element.
+> NOTE: If using controls such as a switch within a list tile, you may need to override
+> the width and height styles set on the tile element.
 
-### Using ink ripples for interactive lists
+### Using Ink Ripples for Interactive Lists
 
 MDC List supports adding ripples to `mdc-list-item` elements, for example in the case of a nav menu.
 To add ripples to lists, simply attach a ripple to all list items. Note that this can be easily done
@@ -210,19 +213,19 @@ via `mdc-auto-init` when using the [material-components-web](../material-compone
 ```html
 <nav class="mdc-list">
   <a href="/wifi" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
-    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
       network_wifi
     </i>
     Wi-Fi
   </a>
   <a href="/bluetooth" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
-    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
       bluetooth
     </i>
     Bluetooth
   </a>
   <a href="/data-usage" class="mdc-list-item" data-mdc-auto-init="MDCRipple">
-    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
+    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
       data_usage
     </i>
     Data Usage
@@ -253,8 +256,8 @@ To use within lists, simply add the `mdc-list-divider` class to a list item.
 
 > Note the `role="separator"` attribute on the list divider. It is important to include this so that
 > assistive technology can be made aware that this is a presentational element and is not meant to
-> be included as an item in a list. Note that `separator` is indeed [a valid role](https://w3c.github.io/html/grouping-content.html#the-li-element)
-> for `li` elements.
+> be included as an item in a list. Note that `separator` is indeed a
+> [valid role](https://w3c.github.io/html/grouping-content.html#the-li-element) for `li` elements.
 
 In order to make separators inset, add a `mdc-list-divider--inset` modifier class to it.
 
@@ -269,7 +272,7 @@ In order to make separators inset, add a `mdc-list-divider--inset` modifier clas
 </ul>
 ```
 
-Inset dividers are useful when working with lists which have start details.
+Inset dividers are useful when working with lists which have graphics.
 
 ### List Groups
 
@@ -332,29 +335,30 @@ to add borders to lists.
 </ul>
 ```
 
-#### Control detail item positions
+#### Control Tile Positions
 
-In some cases, you may want start/end details to be positioned differently than the center. An
-example of this is in [this mock](https://material-design.storage.googleapis.com/publish/material_v_9/0Bx4BSt6jniD7ckJuUHNnUVlVYTQ/components_lists_content1.png) showing a timestamp being positioned in the top-right corner
-or a list item. You can easily do this by adding an `align-self` rule to the details you'd like
-styled this way. For example, given a `timestamp` class for an end detail:
+In some cases, you may want the supporting graphic or metadata to be positioned differently than the center.
+An example of this is in [this mock][pos-mock] showing a timestamp being positioned in the top-right corner
+or a list item. You can easily do this by adding an `align-self` rule to the tiles you'd like
+styled this way. For example, given a `timestamp` class for metadata:
 
 ```css
-.mdc-list-item__end-detail.timestamp {
+.mdc-list-item__meta.timestamp {
   /* Lock to top of container. */
   align-self: flex-start;
 }
 ```
 
-Alternatively, if you have _multiple_ items you'd like to put into a detail, you can give it flex
-positioning and set its flex direction to column. This will allow you to stack items within an end
-detail one on top of another.
+[pos-mock]: https://material-design.storage.googleapis.com/publish/material_v_9/0Bx4BSt6jniD7ckJuUHNnUVlVYTQ/components_lists_content1.png
+
+Alternatively, if you have _multiple_ items you'd like to put into a tile, you can give it `display: flex` and
+`flex-direction: column`. This will allow you to stack items within a tile, one on top of another.
 
 For example, let's say you're building a messaging app and, naturally, you want a list of messages
-as part of your UI. You're designer wants a timestamp in the top-right corner and an "unread"
+as part of your UI. Your designer wants a timestamp in the top-right corner and an "unread"
 indicator below it corner.
 
-The html for this can be easily added
+The HTML for this can be easily added:
 
 ```html
 <ul class="mdc-list mdc-list--two-line msgs-list">
@@ -364,7 +368,7 @@ The html for this can be easily added
       <span class="mdc-list-item__secondary-text">Lunch this afternoon? I was...</span>
     </span>
 
-    <span class="mdc-list-item__end-detail">
+    <span class="mdc-list-item__meta">
       <time datetime="2014-01-28T04:36:00.000Z">4:36pm</time>
       <i class="material-icons" arial-label="Unread message">chat_bubble</i>
     </span>
@@ -373,10 +377,10 @@ The html for this can be easily added
 </ul>
 ```
 
-And the basic CSS is relatively trivial
+And the basic CSS is relatively trivial:
 
 ```css
-.msgs-list .mdc-list-item__end-detail {
+.msgs-list .mdc-list-item__meta {
   width: auto;
   height: auto;
   display: inline-flex;
@@ -418,8 +422,8 @@ CSS Class | Description
 
 CSS Class | Description
 --- | ---
-`mdc-list-item__start-detail` | The leading tile in the row (in LTR languages, the left-most)
-`mdc-list-item__end-detail` | The trailing tile in the row (in LTR languages, the right-most)
+`mdc-list-item__graphic` | The first tile in the row (in LTR languages, the left-most)
+`mdc-list-item__meta` | The last tile in the row (in LTR languages, the right-most)
 `mdc-list-item__text` | Primary text for the row (displayed as the middle tile)
 `mdc-list-item__secondary-text` | Secondary text for the row (displayed in the middle tile)
 `mdc-list-group__subheader` | Heading text displayed above each list in a group
@@ -430,8 +434,8 @@ Mixin | Description
 --- | ---
 `mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text
 `mdc-list-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text
-`mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the graphic (`__start-detail`)
-`mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the graphic (`__start-detail`)
-`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the meta data (`__end-detail`)
+`mdc-list-item-graphic-fill-color($color)` | Sets the fill color of the supporting graphic
+`mdc-list-item-graphic-ink-color($color)` | Sets the ink color of the supporting graphic
+`mdc-list-item-meta-ink-color($color)` | Sets the ink color of the metadata element
 `mdc-list-divider-color($color)` | Sets the color of the divider
 `mdc-list-group-subheader-ink-color($color)` | Sets the ink color of the list group subheader

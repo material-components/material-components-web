@@ -50,10 +50,10 @@ than mobile.
   <div class="mdc-drawer__content">
     <nav id="icon-with-text-demo" class="mdc-list">
       <a class="mdc-list-item mdc-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </div>
@@ -76,10 +76,10 @@ Permanent drawers can also be set below the toolbar:
   <nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
     <nav id="icon-with-text-demo" class="mdc-list">
       <a class="mdc-list-item mdc-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -113,10 +113,10 @@ Persistent drawers are acceptable for all sizes larger than mobile.
     </header>
     <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
       <a class="mdc-list-item mdc-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -248,10 +248,10 @@ for any display size.
     </header>
     <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
       <a class="mdc-list-item mdc-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -278,10 +278,10 @@ very useful for visual alignment and consistency. Note that you can place conten
 
     <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
       <a class="mdc-list-item mdc-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -305,10 +305,10 @@ for placing the actual content, which will be bottom-aligned.
 
     <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
       <a class="mdc-list-item mdc-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
