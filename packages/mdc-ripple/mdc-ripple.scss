@@ -16,58 +16,31 @@
 
 @import "@material/animation/functions";
 @import "@material/theme/mixins";
-@import "./keyframes";
+@import "./common";
 @import "./mixins";
 @import "./variables";
 
-// Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
-// (Every component using MDC Ripple imports these mixins, but doesn't necessarily import mdc-ripple.scss.)
+// postcss-bem-linter: define ripple-surface
 
-// This variable is not intended to be overridden externally; it uses !default to avoid being reset
-// every time this file is imported.
-$mdc-ripple-common-styles-emitted_: false !default;
+.mdc-ripple-surface {
+  @include mdc-ripple-surface;
+  @include mdc-states;
+  @include mdc-ripple-radius;
 
-@if not $mdc-ripple-common-styles-emitted_ {
-  $mdc-ripple-common-styles-emitted_: true;
+  position: relative;
+  outline: none;
+  overflow: hidden;
 
-  @include mdc-ripple-keyframes_;
-
-  // Styles used to detect buggy behavior of CSS custom properties in Edge.
-  // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-  // This is included in _mixins.scss rather than mdc-ripple.scss so that it will be
-  // present for other components which rely on ripple as well as mdc-ripple itself.
-  .mdc-ripple-surface--test-edge-var-bug {
-    --mdc-ripple-surface-test-edge-var: 1px solid #000;
-
-    visibility: hidden;
-
-    &::before {
-      border: var(--mdc-ripple-surface-test-edge-var);
-    }
+  &[data-mdc-ripple-is-unbounded] {
+    overflow: visible;
   }
 
-  // postcss-bem-linter: define ripple-surface
+  &--primary {
+    @include mdc-states(primary);
+  }
 
-  .mdc-ripple-surface {
-    @include mdc-ripple-surface;
-    @include mdc-states;
-    @include mdc-ripple-radius;
-
-    position: relative;
-    outline: none;
-    overflow: hidden;
-
-    &[data-mdc-ripple-is-unbounded] {
-      overflow: visible;
-    }
-
-    &--primary {
-      @include mdc-states(primary);
-    }
-
-    &--accent {
-      @include mdc-states(secondary);
-    }
+  &--accent {
+    @include mdc-states(secondary);
   }
 }
 
