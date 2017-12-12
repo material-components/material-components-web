@@ -192,32 +192,6 @@ test('#adapter.removeClass removes a class from the root element', () => {
   assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('#adapter.addClassToLabel adds a class to the label element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.addClassToLabel('foo');
-  assert.isOk(root.querySelector('.mdc-text-field__label').classList.contains('foo'));
-});
-
-test('#adapter.addClassToLabel does nothing if no label element present', () => {
-  const {root, component} = setupTest();
-  root.removeChild(root.querySelector('.mdc-text-field__label'));
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToLabel('foo'));
-});
-
-test('#adapter.removeClassFromLabel removes a class from the label element', () => {
-  const {root, component} = setupTest();
-  const label = root.querySelector('.mdc-text-field__label');
-  label.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromLabel('foo');
-  assert.isNotOk(label.classList.contains('foo'));
-});
-
-test('#adapter.removeClassFromLabel does nothing if no label element present', () => {
-  const {root, component} = setupTest();
-  root.removeChild(root.querySelector('.mdc-text-field__label'));
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLabel('foo'));
-});
-
 test('#adapter.registerInputInteractionHandler adds a handler to the input element for a given event', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-text-field__input');
