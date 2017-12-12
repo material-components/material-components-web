@@ -45,20 +45,20 @@ test('#adapter.setAttr adds a given attribute to the element', () => {
 
 test('#adapter.registerInteractionHandler adds event listener for a given event to the element', () => {
   const {root, component} = setupTest();
-  const handler = td.func('click handler');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
+  const handler = td.func('keydown handler');
+  component.getDefaultFoundation().adapter_.registerInteractionHandler('keydown', handler);
+  domEvents.emit(root, 'keydown');
 
   td.verify(handler(td.matchers.anything()));
 });
 
 test('#adapter.deregisterInteractionHandler removes event listener for a given event from the element', () => {
   const {root, component} = setupTest();
-  const handler = td.func('click handler');
+  const handler = td.func('keydown handler');
 
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
+  root.addEventListener('keydown', handler);
+  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('keydown', handler);
+  domEvents.emit(root, 'keydown');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
