@@ -18,8 +18,10 @@
 import MDCFoundation from '@material/base/foundation';
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 
 
@@ -47,8 +49,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
-      addClassToLabel: () => {},
-      removeClassFromLabel: () => {},
       setIconAttr: () => {},
       eventTargetHasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
@@ -74,6 +74,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.bottomLine_ = foundationMap.bottomLine;
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
+    /** @type {!MDCTextFieldLabelFoundation|undefined} */
+    this.label_ = foundationMap.label;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -98,8 +100,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.getNativeInput_().value) {
-      this.adapter_.addClassToLabel(MDCTextFieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
+    if (this.getNativeInput_().value && this.label_) {
+      this.label_.floatAbove();
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -155,13 +157,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Activates the text field focus state.
    */
   activateFocus() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
     if (this.bottomLine_) {
       this.bottomLine_.activate();
     }
-    this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
-    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
+    if (this.label_) {
+      this.label_.floatAbove();
+    }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
     }
@@ -206,15 +209,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Deactives the Text Field's focus state.
    */
   deactivateFocus() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
+    const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
 
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
-    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-
-    if (!input.value && !this.isBadInput_()) {
-      this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+    if (this.label_) {
+      this.label_.deactivateFocus(shouldRemoveLabelFloat);
+    }
+    if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
     }
 
@@ -229,15 +233,17 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @private
    */
   changeValidity_(isValid) {
-    const {INVALID, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
-      this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
     }
     if (this.helperText_) {
       this.helperText_.setValidity(isValid);
+    }
+    if (this.label_) {
+      this.label_.setValidity(isValid);
     }
   }
 

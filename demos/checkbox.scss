@@ -22,7 +22,7 @@
 @import "../packages/mdc-theme/color-palette";
 @import "../packages/mdc-theme/mixins";
 
-.mdc-checkbox.demo-checkbox--custom-all {
+.demo-checkbox--custom-all {
   $color: $material-color-red-500;
 
   @include mdc-checkbox-focus-indicator-color($color);
@@ -41,7 +41,7 @@
   }
 }
 
-.mdc-checkbox.demo-checkbox--custom-stroke-and-fill {
+.demo-checkbox--custom-stroke-and-fill {
   @include mdc-checkbox-container-colors(
     $unmarked-stroke-color: $material-color-blue-500,
     $marked-fill-color: $material-color-purple-500);
