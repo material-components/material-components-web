@@ -59,6 +59,7 @@ The provided modifiers are:
 | --------------------- | ------------------------------------------------------- |
 | `mdc-linear-progress--indeterminate`   | Puts the linear progress indicator in an indeterminate state. |
 | `mdc-linear-progress--reversed`  | Reverses the direction of the linear progress indicator.   |
+| `mdc-linear-progress--closed`  | Hides the linear progress indicator. |
 
 ### Sass Mixins
 
