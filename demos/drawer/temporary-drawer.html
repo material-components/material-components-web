@@ -37,10 +37,6 @@
         padding-bottom: 16px;
         overflow: auto;
       }
-
-      .demo-main__control {
-        margin-top: 16px;
-      }
     </style>
   </head>
   <body class="mdc-typography demo-body">
@@ -98,13 +94,15 @@
     <main class="demo-main mdc-toolbar-fixed-adjust">
       <h1 class="mdc-typography--display1">Temporary Drawer</h1>
       <p class="mdc-typography--body1">Click the menu icon above to open.</p>
-      <div class="mdc-switch demo-main__control">
-        <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
-        <div class="mdc-switch__background">
-          <div class="mdc-switch__knob"></div>
+      <div class="mdc-form-field">
+        <div class="mdc-switch demo-switch">
+          <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
+          <div class="mdc-switch__background">
+            <div class="mdc-switch__knob"></div>
+          </div>
         </div>
+        <label for="basic-switch" class="mdc-switch-label">Theme off/on</label>
       </div>
-      <label for="basic-switch" class="mdc-switch-label">Theme off/on</label>
     </main>
 
     <script src="/assets/material-components-web.js"></script>

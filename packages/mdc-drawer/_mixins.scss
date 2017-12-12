@@ -157,10 +157,6 @@
 
 @mixin mdc-drawer-ink-color($color) {
   @include mdc-theme-prop(color, $color);
-
-  .mdc-list-item {
-    @include mdc-theme-prop(color, $color);
-  }
 }
 
 @mixin mdc-drawer-scrim-color($color, $opacity) {

@@ -55,10 +55,6 @@
         padding-left: 16px;
         padding-bottom: 16px;
       }
-
-      .demo-main__control {
-        margin-top: 16px;
-      }
     </style>
   </head>
   <body class="mdc-typography demo-body">
@@ -84,17 +80,17 @@
           <hr class="mdc-list-divider">
 
           <nav class="mdc-list">
-              <a class="mdc-list-item" href="#">
-                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
-              </a>
-              <a class="mdc-list-item" href="#">
-                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
-              </a>
-              <a class="mdc-list-item" href="#">
-                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
-              </a>
-            </nav>
-          </div>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
+            </a>
+          </nav>
+        </div>
       </nav>
     </aside>
     <div class="demo-content">
@@ -113,13 +109,15 @@
       <main class="demo-main">
         <h1 class="mdc-typography--display1">Persistent Drawer</h1>
         <p class="mdc-typography--body1">Click the menu icon above to open and close the drawer.</p>
-        <div class="mdc-switch demo-main__control">
-          <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
-          <div class="mdc-switch__background">
-            <div class="mdc-switch__knob"></div>
+        <div class="mdc-form-field">
+          <div class="mdc-switch demo-switch">
+            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
+            <div class="mdc-switch__background">
+              <div class="mdc-switch__knob"></div>
+            </div>
           </div>
+          <label for="basic-switch" class="mdc-switch-label">Theme off/on</label>
         </div>
-        <label for="basic-switch" class="mdc-switch-label">Theme off/on</label>
       </main>
 
       <script src="/assets/material-components-web.js"></script>

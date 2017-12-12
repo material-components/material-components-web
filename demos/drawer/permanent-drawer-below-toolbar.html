@@ -53,10 +53,6 @@
         padding-left: 16px;
       }
 
-      .mdc-demo__control {
-        margin: 16px 0;
-      }
-
       .extra-content-wrapper {
         padding: 10px;
       }
@@ -83,7 +79,7 @@
     </header>
 
     <div class="demo-content mdc-toolbar-fixed-adjust">
-      <nav class="mdc-drawer mdc-drawer--permanent">
+      <nav id="demo-theme-switch" class="mdc-drawer mdc-drawer--permanent">
         <div class="mdc-list-group">
           <nav class="mdc-list">
             <a class="mdc-list-item mdc-drawer--selected" href="#">
@@ -119,8 +115,8 @@
         <h1 class="mdc-typography--display1">Permanent Drawer</h1>
         <p class="mdc-typography--body1">It sits to the left of this content.</p>
 
-        <div class="mdc-demo__control">
-          <div class="mdc-switch demo-main__control">
+        <div class="mdc-form-field demo-form-field">
+          <div class="mdc-switch demo-switch">
             <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
             <div class="mdc-switch__background">
               <div class="mdc-switch__knob"></div>
@@ -153,7 +149,7 @@
         extraTall.style.display = extraTall.style.display ? '' : 'none';
       });
 
-      var drawerEl = document.querySelector('.mdc-drawer');
+      var drawerEl = document.querySelector('#demo-theme-switch');
       var switchEl = document.querySelector('.mdc-switch');
       switchEl.addEventListener('change', function(e) {
         if(e.target.checked) {
