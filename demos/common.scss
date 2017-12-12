@@ -41,24 +41,27 @@ fieldset {
   }
 }
 
-$dark-button-color: $material-color-light-green-a200;
+
+
+$demo-button-color-dark: $material-color-baseline-primary-200;
 .mdc-button {
+  // TODO(acdvorak): Doesn't work for e.g. ".mdc-dialog--theme-dark .mdc-button"
   @include mdc-theme-dark {
-    @include mdc-button-ink-color($dark-button-color);
-    @include mdc-states($dark-button-color);
+    @include mdc-button-ink-color($demo-button-color-dark);
+    @include mdc-states($demo-button-color-dark);
   }
 }
 
 .mdc-button--raised,
 .mdc-button--unelevated {
   @include mdc-theme-dark(".mdc-button", true) {
-    @include mdc-button-filled-accessible($dark-button-color);
+    @include mdc-button-filled-accessible($demo-button-color-dark);
   }
 }
 
 .mdc-button--stroked {
   @include mdc-theme-dark(".mdc-button", true) {
-    @include mdc-button-stroke-color($dark-button-color);
+    @include mdc-button-stroke-color($demo-button-color-dark);
   }
 }
 
