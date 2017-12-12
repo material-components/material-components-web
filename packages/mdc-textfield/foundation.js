@@ -21,6 +21,7 @@ import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCTextFieldOutlineFoundation from './outline/foundation';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 
@@ -76,6 +77,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.helperText_ = foundationMap.helperText;
     /** @type {!MDCTextFieldLabelFoundation|undefined} */
     this.label_ = foundationMap.label;
+    /** @type {!MDCTextFieldOutlineFoundation|undefined} */
+    this.outline_ = foundationMap.outline;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -154,6 +157,21 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * Updates the focus outline for outlined text fields.
+   */
+  updateOutline() {
+    if (!this.outline_) {
+      return;
+    }
+    const width = this.adapter_.getWidth();
+    const height = this.adapter_.getHeight();
+    const labelWidth = this.adapter_.getLabelWidth();
+    const radius = parseFloat(this.adapter_.getIdleOutlineStyleValue('border-radius'));
+    const isRtl = this.adapter_.isRtl();
+    this.outline_.updateSvgPath(width, height, labelWidth, radius, isRtl);
+  }
+
+  /**
    * Activates the text field focus state.
    */
   activateFocus() {
@@ -167,6 +185,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
+    }
+    if (this.outline_) {
+      this.updateOutline();
     }
     this.isFocused_ = true;
   }

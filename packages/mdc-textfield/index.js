@@ -27,6 +27,7 @@ import MDCTextFieldFoundation from './foundation';
 import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldLabel, MDCTextFieldLabelFoundation} from './label';
+import {MDCTextFieldOutline, MDCTextFieldOutlineFoundation} from './outline';
 /* eslint-enable no-unused-vars */
 
 /**
@@ -43,8 +44,10 @@ class MDCTextField extends MDCComponent {
     this.input_;
     /** @private {?MDCTextFieldLabel} */
     this.label_;
-    /** @type {?MDCRipple} */
-    this.ripple;
+    /** @private {?MDCRipple} */
+    this.ripple_;
+    /** @private {?MDCTextFieldOutline} */
+    this.outline_;
     /** @private {?MDCTextFieldBottomLine} */
     this.bottomLine_;
     /** @private {?MDCTextFieldHelperText} */
@@ -75,7 +78,7 @@ class MDCTextField extends MDCComponent {
     if (labelElement) {
       this.label_ = new MDCTextFieldLabel(labelElement);
     }
-    this.ripple = null;
+    this.ripple_ = null;
     if (this.root_.classList.contains(cssClasses.BOX)) {
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter = Object.assign(MDCRipple.createAdapter(this), {
@@ -84,14 +87,16 @@ class MDCTextField extends MDCComponent {
         deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
       });
       const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = rippleFactory(this.root_, foundation);
-    };
-    if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
-      const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
-      if (bottomLineElement) {
-        this.bottomLine_ = bottomLineFactory(bottomLineElement);
-      }
-    };
+      this.ripple_ = rippleFactory(this.root_, foundation);
+    }
+    const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    if (bottomLineElement) {
+      this.bottomLine_ = bottomLineFactory(bottomLineElement);
+    }
+    const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
+    if (outlineElement) {
+      this.outline_ = new MDCTextFieldOutline(outlineElement);
+    }
     if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
       const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
       if (helperTextElement) {
@@ -100,12 +105,12 @@ class MDCTextField extends MDCComponent {
     }
     if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
       this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
-    };
+    }
   }
 
   destroy() {
-    if (this.ripple) {
-      this.ripple.destroy();
+    if (this.ripple_) {
+      this.ripple_.destroy();
     }
     if (this.bottomLine_) {
       this.bottomLine_.destroy();
@@ -115,6 +120,9 @@ class MDCTextField extends MDCComponent {
     }
     if (this.label_) {
       this.label_.destroy();
+    }
+    if (this.outline_) {
+      this.outline_.destroy();
     }
     super.destroy();
   }
@@ -157,6 +165,19 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Recomputes the outline SVG path for the outline element, and recomputes
+   * all dimensions and positions for the ripple element.
+   */
+  layout() {
+    if (this.outline_) {
+      this.foundation_.updateOutline();
+    }
+    if (this.ripple_) {
+      this.ripple_.layout();
+    }
+  }
+
+  /**
    * @return {!MDCTextFieldFoundation}
    */
   getDefaultFoundation() {
@@ -178,6 +199,19 @@ class MDCTextField extends MDCComponent {
             this.bottomLine_.unlisten(evtType, handler);
           }
         },
+        getWidth: () => this.root_.offsetWidth,
+        getHeight: () => this.root_.offsetHeight,
+        getLabelWidth: () => {
+          const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
+          return labelElement.offsetWidth;
+        },
+        getIdleOutlineStyleValue: (propertyName) => {
+          const idleOutlineElement = this.root_.querySelector(strings.IDLE_OUTLINE_SELECTOR);
+          if (idleOutlineElement) {
+            return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
+          }
+        },
+        isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       },
       this.getInputAdapterMethods_(),
       this.getIconAdapterMethods_())),
@@ -223,10 +257,12 @@ class MDCTextField extends MDCComponent {
       bottomLine: this.bottomLine_ ? this.bottomLine_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       label: this.label_ ? this.label_.foundation : undefined,
+      outline: this.outline_ ? this.outline_.foundation : undefined,
     };
   }
 }
 
 export {MDCTextField, MDCTextFieldFoundation,
   MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation,
-  MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation};
+  MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation,
+  MDCTextFieldOutline, MDCTextFieldOutlineFoundation};
