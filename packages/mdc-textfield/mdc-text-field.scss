@@ -403,6 +403,7 @@
 
   display: flex;
   height: initial;
+  width: fit-content;
   transition: none;
   border: 1px solid $mdc-textarea-border-on-light;
   overflow: hidden;
@@ -514,6 +515,10 @@
       // Use !important here to override all other border treatments
       border: none !important;
     }
+  }
+
+  .mdc-text-field__input {
+    resize: vertical;
   }
 
   @include mdc-theme-dark {
