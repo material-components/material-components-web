@@ -86,6 +86,9 @@ By default, list items receive styles for hover, focus, and press states (includ
 `MDCRipple` is instantiated). It is possible to opt out of these styles by adding the `mdc-list--non-interactive`
 modifier to the parent list.
 
+> **Note**: In order to receive focus state, list items must either use a focusable element such as `<a>`, or have an
+> explicit tabindex attribute value.
+
 ### "Dense" Lists
 
 Lists can be made more compact by using the `mdc-list--dense` modifier class.

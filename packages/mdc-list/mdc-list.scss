@@ -174,6 +174,7 @@ a.mdc-list-item {
 }
 
 // List items should support states by default, but it should be possible to opt out.
+// Direct child combinator is necessary for non-interactive modifier on parent to not match this selector.
 :not(.mdc-list--non-interactive) > .mdc-list-item {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius;
