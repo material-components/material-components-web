@@ -46,18 +46,16 @@ than mobile.
 
 ```html
 <nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
-  <div class="mdc-drawer__drawer">
-    <div class="mdc-drawer__toolbar-spacer"></div>
-    <div class="mdc-drawer__content">
-      <nav id="icon-with-text-demo" class="mdc-list">
-        <a class="mdc-list-item mdc-drawer--selected" href="#">
-          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
-        </a>
-      </nav>
-    </div>
+  <div class="mdc-drawer__toolbar-spacer"></div>
+  <div class="mdc-drawer__content">
+    <nav id="icon-with-text-demo" class="mdc-list">
+      <a class="mdc-list-item mdc-drawer--selected" href="#">
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+      </a>
+    </nav>
   </div>
 </nav>
 <div>
@@ -76,16 +74,14 @@ Permanent drawers can also be set below the toolbar:
 
 <div class="content">
   <nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
-    <div class="mdc-drawer__drawer">
-      <nav id="icon-with-text-demo" class="mdc-list">
-        <a class="mdc-list-item mdc-drawer--selected" href="#">
-          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
-        </a>
-      </nav>
-    </div>
+    <nav id="icon-with-text-demo" class="mdc-list">
+      <a class="mdc-list-item mdc-drawer--selected" href="#">
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+      </a>
+    </nav>
   </nav>
   <main>
     Page content goes here.
@@ -99,7 +95,6 @@ CSS classes:
 | -------------------------------------- | -------------------------------------------------------------------------- |
 | `mdc-drawer`                           | Mandatory. Needs to be set on the root element of the component.           |
 | `mdc-drawer--permanent`                | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-drawer__drawer`                   | Mandatory. Needs to be set on the container node for the drawer content.   |
 | `mdc-drawer__toolbar-spacer`           | Optional. Add to node to provide the matching amount of space for toolbar. |
 
 ## Persistent drawer usage

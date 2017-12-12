@@ -48,10 +48,6 @@ $mdc-permanent-drawer-dark-theme-bg-color: #212121 !default;
   width: $mdc-permanent-drawer-width;
   overflow: hidden;
 
-  .mdc-drawer__drawer {
-    height: 100%;
-  }
-
   &--floating {
     @include mdc-rtl-reflexive-box(border, right, none);
 

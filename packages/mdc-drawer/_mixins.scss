@@ -149,6 +149,7 @@
 }
 
 @mixin mdc-drawer-fill-color($color) {
+  &.mdc-drawer--permanent,
   .mdc-drawer__drawer {
     @include mdc-theme-prop(background-color, $color);
   }
@@ -156,6 +157,7 @@
 
 @mixin mdc-drawer-ink-color($color) {
   @include mdc-theme-prop(color, $color);
+
   .mdc-list-item {
     @include mdc-theme-prop(color, $color);
   }
