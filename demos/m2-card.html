@@ -100,6 +100,10 @@
     <script src="/assets/material-components-web.js"></script>
     <script src="/lib/draggable/1.0.0-beta.3/draggable.bundle.patched.js"></script>
     <script>
+      // TODO(acdvorak): Fix bug where Drop Spacer is placed incorrectly:
+      // 1. Resize window so that 2 columns are visible
+      // 2. Drag Card #7 _before_ #3, but DON'T LET GO
+      // 3. Drag #7 _before_ #1
       (() => {
         /** @enum {string} */
         const DropSide = {
