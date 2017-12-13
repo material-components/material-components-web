@@ -67,15 +67,15 @@ $mdc-theme-text-colors: (
 //
 
 $mdc-theme-property-values: (
-  // Primary
+  /* Primary */
   primary: $mdc-theme-primary,
   primary-light: $mdc-theme-primary-light,
   primary-dark: $mdc-theme-primary-dark,
-  // Secondary
+  /* Secondary */
   secondary: $mdc-theme-secondary,
   secondary-light: $mdc-theme-secondary-light,
   secondary-dark: $mdc-theme-secondary-dark,
-  // Background
+  /* Background */
   background: $mdc-theme-background,
   // Text-primary on "primary" background
   text-primary-on-primary: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-primary),
