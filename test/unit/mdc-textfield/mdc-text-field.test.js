@@ -125,6 +125,24 @@ test('#constructor instantiates a label on the `.mdc-text-field__label` element 
   assert.instanceOf(component.label_, MDCTextFieldLabel);
 });
 
+function setupTest() {
+  const root = getFixture();
+  const bottomLine = new FakeBottomLine();
+  const helperText = new FakeHelperText();
+  const icon = new FakeIcon();
+  const label = new FakeLabel();
+  const component = new MDCTextField(
+    root,
+    undefined,
+    (el) => new FakeRipple(el),
+    () => bottomLine,
+    () => helperText,
+    () => icon,
+    () => label
+  );
+  return {root, component, bottomLine, helperText, icon, label};
+}
+
 test('#destroy cleans up the ripple if present', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
@@ -134,10 +152,9 @@ test('#destroy cleans up the ripple if present', () => {
 });
 
 test('#destroy cleans up the bottom line if present', () => {
-  const root = getFixture();
-  const component = new MDCTextField(root, undefined, undefined, (el) => new FakeBottomLine(el));
+  const {component, bottomLine} = setupTest();
   component.destroy();
-  td.verify(component.bottomLine_.destroy());
+  td.verify(bottomLine.destroy());
 });
 
 test('#destroy cleans up the helper text if present', () => {
@@ -153,31 +170,21 @@ test('#destroy cleans up the helper text if present', () => {
 });
 
 test('#destroy cleans up the icon if present', () => {
-  const root = getFixture();
-  const component = new MDCTextField(root, undefined, undefined, undefined, undefined, (el) => new FakeIcon(el));
+  const {component, icon} = setupTest();
   component.destroy();
-  td.verify(component.icon_.destroy());
+  td.verify(icon.destroy());
 });
 
 test('#destroy cleans up the label if present', () => {
-  const root = getFixture();
-  const component = new MDCTextField(root, undefined, undefined, undefined, undefined, undefined,
-    (el) => new FakeLabel(el));
+  const {component, label} = setupTest();
   component.destroy();
-  td.verify(component.label_.destroy());
+  td.verify(label.destroy());
 });
 
 test('#destroy accounts for ripple nullability', () => {
   const component = new MDCTextField(getFixture());
   assert.doesNotThrow(() => component.destroy());
 });
-
-function setupTest() {
-  const root = getFixture();
-  const bottomLine = new FakeBottomLine();
-  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el), () => bottomLine);
-  return {root, bottomLine, component};
-}
 
 test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
   const {component} = setupTest();
@@ -218,19 +225,17 @@ test('set helperTextContent has no effect when no helper text element is present
 });
 
 test('#adapter.registerBottomLineEventHandler adds event listener to bottom line', () => {
-  const root = getFixture();
-  const component = new MDCTextField(root, undefined, undefined, (el) => new FakeBottomLine(el));
+  const {component, bottomLine} = setupTest();
   const handler = () => {};
   component.getDefaultFoundation().adapter_.registerBottomLineEventHandler('evt', handler);
-  td.verify(component.bottomLine_.listen('evt', handler));
+  td.verify(bottomLine.listen('evt', handler));
 });
 
 test('#adapter.deregisterBottomLineEventHandler removes event listener for "transitionend" from bottom line', () => {
-  const root = getFixture();
-  const component = new MDCTextField(root, undefined, undefined, (el) => new FakeBottomLine(el));
+  const {component, bottomLine} = setupTest();
   const handler = () => {};
   component.getDefaultFoundation().adapter_.deregisterBottomLineEventHandler('evt', handler);
-  td.verify(component.bottomLine_.unlisten('evt', handler));
+  td.verify(bottomLine.unlisten('evt', handler));
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
