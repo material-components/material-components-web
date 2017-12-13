@@ -34,7 +34,7 @@ class MDCTextFieldBottomLine extends MDCComponent {
   }
 
   /**
-   * @return {MDCTextFieldBottomLineFoundation}
+   * @return {!MDCTextFieldBottomLineFoundation}
    */
   get foundation() {
     return this.foundation_;

@@ -102,7 +102,7 @@ since it won't be added until that JS runs, adding it manually will prevent an i
 
 ### Validation
 
-MDC TextField provides validity styling by using the `:invalid` and `:required` attributes provided
+MDC Text Field provides validity styling by using the `:invalid` and `:required` attributes provided
 by HTML5's form validation API.
 
 ```html
@@ -114,7 +114,7 @@ by HTML5's form validation API.
 ```
 
 By default an input's validity is checked via `checkValidity()` on blur, and the styles are updated
-accordingly. Set the MDCTextField.valid field to set the input's validity explicitly. MDC TextField
+accordingly. Set the MDCTextField.valid field to set the input's validity explicitly. MDC Text Field
 automatically appends an asterisk to the label text if the required attribute is set.
 
 ### Leading and Trailing Icons
@@ -175,8 +175,8 @@ do anything unexpected.
 <div class="mdc-text-field mdc-text-field--fullwidth">
   <input class="mdc-text-field__input"
          type="text"
-         placeholder="Full-Width TextField"
-         aria-label="Full-Width TextField">
+         placeholder="Full-Width Text Field"
+         aria-label="Full-Width Text Field">
 </div>
 
 <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--textarea">
@@ -227,7 +227,7 @@ This mixin customizes the border radius for a Text Field `textarea`.
 
 ### Using the JS component
 
-MDC TextField ships with Component / Foundation classes which are used to provide a full-fidelity
+MDC Text Field ships with Component / Foundation classes which are used to provide a full-fidelity
 Material Design text field component.
 
 #### Including in code
@@ -318,15 +318,13 @@ initializes when given an `mdc-text-field--box` root element. Otherwise, the fie
 
 ### Using the foundation class
 
-Because MDC TextField is a feature-rich and relatively complex component, its adapter is a bit more
+Because MDC Text Field is a feature-rich and relatively complex component, its adapter is a bit more
 complicated.
 
 | Method Signature | Description |
 | --- | --- |
 | addClass(className: string) => void | Adds a class to the root element |
 | removeClass(className: string) => void | Removes a class from the root element |
-| addClassToLabel(className: string) => void | Adds a class to the label element. We recommend you add a conditional check here, and in `removeClassFromLabel` for whether or not the label is present so that the JS component could be used with text fields that don't require a label, such as the full-width text field. |
-| removeClassFromLabel(className: string) => void | Removes a class from the label element |
 | eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
 | registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event handler on the root element for a given event |
 | deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event handler on the root element for a given event |
@@ -336,8 +334,8 @@ complicated.
 | registerBottomLineEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the bottom line element for a given event |
 | deregisterBottomLineEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the bottom line element for a given event |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
-| getBottomLineFoundation() => MDCTextFieldBottomLineFoundation | Returns the instance of the bottom line element's foundation |
-| getHelperTextFoundation() => MDCTextFieldHelperTextFoundation | Returns the instance of the helper text element's foundation |
+
+MDC Text Field has multiple optional sub-elements: bottom line and helper text. The foundations of these sub-elements must be passed in as constructor arguments for the `MDCTextField` foundation. Since the `MDCTextField` component takes care of creating its foundation, we need to pass sub-element foundations through the `MDCTextField` component. This is typically done in the component's implementation of `getDefaultFoundation()`.
 
 #### The full foundation API
 
@@ -376,7 +374,7 @@ Sets the content of the helper text, if it exists.
 
 ### Theming
 
-MDC TextField components use the configured theme's primary color for its underline and label text
+MDC Text Field components use the configured theme's primary color for its underline and label text
 when the input is focused.
 
-MDC TextField components support dark themes.
+MDC Text Field components support dark themes.

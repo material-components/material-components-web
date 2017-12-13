@@ -46,12 +46,14 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
   init() {
     this.determinate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.reverse_ = this.adapter_.hasClass(cssClasses.REVERSED_CLASS);
+    this.progress_ = 0;
   }
 
   setDeterminate(isDeterminate) {
     this.determinate_ = isDeterminate;
     if (this.determinate_) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
+      this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
     } else {
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), 1);
@@ -60,6 +62,7 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
   }
 
   setProgress(value) {
+    this.progress_ = value;
     if (this.determinate_) {
       this.setScale_(this.adapter_.getPrimaryBar(), value);
     }

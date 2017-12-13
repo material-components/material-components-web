@@ -16,7 +16,6 @@
 
 'use strict';
 
-const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
@@ -108,18 +107,17 @@ class PostCompilePlugin {
   }
 }
 
-const createStaticBuildPlugin = () => {
+const createStaticDemoPlugin = () => {
   return new PostCompilePlugin(() => {
-    if (!BUILD_STATIC_DEMO_ASSETS || !fs.existsSync(OUT_DIR_ABS)) {
+    if (!BUILD_STATIC_DEMO_ASSETS || !fsx.existsSync(OUT_DIR_ABS)) {
       return;
     }
 
     const demosDirAbs = path.resolve('./demos');
-    const tmpDirAbs = fs.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
+    const tmpDirAbs = fsx.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
 
     const copyOptions = {
-      // eslint-disable-next-line no-unused-vars
-      filter: (src, dest) => {
+      filter: (src) => {
         return !/\.(scss|css.js)$/.test(src);
       },
     };
@@ -130,15 +128,18 @@ const createStaticBuildPlugin = () => {
     if (!WRAP_CSS_IN_JS) {
       glob.sync(path.join(tmpDirAbs, '**/*.html'))
         .forEach((absPath) => {
-          const oldHtml = fs.readFileSync(absPath, {encoding: 'utf8'});
-          const newHtml = oldHtml.replace(/<script src="([^"]+\.css\.js[^"]*)"><\/script>/ig, (match, oldPath) => {
-            const newPath = oldPath.replace('.css.js', '.css');
-            return `<link rel="stylesheet" href="${newPath}">`;
-          });
-          fs.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
+          const oldHtml = fsx.readFileSync(absPath, {encoding: 'utf8'});
+          const newHtml = oldHtml.replace(
+            /<script src="([^"]+\.css)\.js"><\/script>/ig,
+            '<link rel="stylesheet" href="$1">');
+          fsx.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
         });
     }
 
+    // The `npm run build` command emits JS/CSS files directly to the $REPO/build/ directory (for distribution via npm).
+    // The `npm run build:demo` command, however, outputs _all_ static demo files (including HTML and images).
+    // Because the demo site expects JS/CSS files to be in /assets/, we need to reorganize the output folders to combine
+    // $REPO/demos/ and $REPO/build/ such that the demo site's import paths don't need to change.
     fsx.removeSync(OUT_DIR_ABS);
     fsx.moveSync(tmpDirAbs, OUT_DIR_ABS);
   });
@@ -302,7 +303,7 @@ if (IS_DEV) {
     plugins: [
       createCssExtractTextPlugin(),
       createBannerPlugin(),
-      createStaticBuildPlugin(),
+      createStaticDemoPlugin(),
     ],
   });
 }

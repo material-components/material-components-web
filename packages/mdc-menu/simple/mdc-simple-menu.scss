@@ -151,7 +151,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
     }
   }
 
-  .mdc-list-item__start-detail {
+  .mdc-list-item__graphic {
     color: rgba(black, .54);
 
     @include mdc-theme-dark(".mdc-simple-menu", true) {
@@ -161,7 +161,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
 
   // stylelint-disable selector-no-qualifying-type
   &--selected.mdc-list-item,
-  &--selected.mdc-list-item .mdc-list-item__start-detail {
+  &--selected.mdc-list-item .mdc-list-item__graphic {
     @include mdc-theme-prop(color, primary);
   }
   // stylelint-enable selector-no-qualifying-type
