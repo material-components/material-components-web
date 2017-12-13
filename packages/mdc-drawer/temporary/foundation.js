@@ -32,6 +32,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       removeBodyClass: (/* className: string */) => {},
       isDrawer: () => false,
       updateCssVariable: (/* value: string */) => {},
+      eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false,
     });
   }
 
@@ -42,7 +43,11 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       MDCTemporaryDrawerFoundation.cssClasses.ANIMATING,
       MDCTemporaryDrawerFoundation.cssClasses.OPEN);
 
-    this.componentClickHandler_ = () => this.close();
+    this.componentClickHandler_ = (evt) => {
+      if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.ROOT)) {
+        this.close(true);
+      }
+    };
   }
 
   init() {

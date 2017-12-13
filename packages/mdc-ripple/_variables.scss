@@ -14,5 +14,28 @@
 // limitations under the License.
 //
 
+$mdc-ripple-fade-in-duration: 75ms;
+$mdc-ripple-fade-out-duration: 150ms;
+$mdc-ripple-translate-duration: 225ms;
+$mdc-states-wash-duration: 15ms;
+
+$mdc-ripple-dark-ink-opacities: (
+  hover: .04,
+  focus: .12,
+  press: .16,
+  selected: .04,
+  activated: .12
+) !default;
+
+$mdc-ripple-light-ink-opacities: (
+  hover: .08,
+  focus: .24,
+  press: .32,
+  selected: .08,
+  activated: .24
+) !default;
+
+// Legacy
+
 $mdc-ripple-pressed-dark-ink-opacity: .16;
 $mdc-ripple-pressed-light-ink-opacity: .32;

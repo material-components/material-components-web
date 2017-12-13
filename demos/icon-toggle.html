@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html class="mdc-typography">
+<html>
   <head>
     <meta charset="utf-8">
     <title>Icon Toggle - Material Components Demo</title>
@@ -25,85 +25,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
-    <style>
-      .mdc-theme--dark {
-        background: #303030;
-      }
-
-      .mdc-theme--dark:not(.demo-color-combo) {
-        padding-bottom: 1rem;
-      }
-
-      #demo-color-combos {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-      }
-
-      .demo-wrapper {
-        margin-left: 1rem;
-      }
-
-      .example {
-        display: flex;
-        flex-flow: row wrap;
-        align-content: left;
-        justify-content: left;
-      }
-
-      .toggle-example {
-        min-width: 240px;
-        padding: 24px;
-        margin: 24px;
-      }
-
-      .example h2 {
-        font-size: 1.3em;
-        margin-bottom: 0.8em;
-        margin-top: 0.8em;
-      }
-
-      .demo-color-combo {
-        width: 250px;
-        padding: 1rem;
-        border-radius: 4px;
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-right: 8px;
-      }
-
-      .demo-color-combo > p {
-        margin: 0;
-      }
-
-      #light-on-bg {
-        background-color: #3e82f7;
-      }
-      #light-on-bg .mdc-icon-toggle {
-        color: white;
-      }
-      #light-on-bg .mdc-icon-toggle.mdc-ripple-upgraded::before,
-      #light-on-bg .mdc-icon-toggle.mdc-ripple-upgraded::after {
-        background-color: rgba(255, 255, 255, .3);
-      }
-
-      #dark-on-bg {
-        background-color: #00bcd6;
-      }
-
-      #custom-on-dark .mdc-icon-toggle {
-        color: #de442c;
-      }
-      #custom-on-dark .mdc-icon-toggle.mdc-ripple-upgraded::before,
-      #custom-on-dark .mdc-icon-toggle.mdc-ripple-upgraded::after {
-        /* #de442c - opacity .16 */
-        background-color: rgba(222, 68, 44, .26);
-      }
-    </style>
   </head>
-  <body>
+  <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
@@ -183,36 +106,6 @@
         </div>
 
         <div class="toggle-example">
-          <h2>Primary Colored Icons</h2>
-          <div class="demo-wrapper">
-            <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
-               role="button"
-               aria-label="Add to favorites"
-               aria-pressed="false"
-               tabindex="0"
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-              favorite_border
-            </i>
-          </div>
-        </div>
-
-        <div class="toggle-example">
-          <h2>Secondary Colored Icons</h2>
-          <div class="demo-wrapper">
-            <i class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
-               role="button"
-               aria-label="Add to favorites"
-               aria-pressed="false"
-               tabindex="0"
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-              favorite_border
-            </i>
-          </div>
-        </div>
-
-        <div class="toggle-example">
           <h2>Disabled Icons</h2>
           <div class="demo-wrapper">
             <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
@@ -242,7 +135,6 @@
           </div>
         </div>
 
-
         <div class="toggle-example">
           <h2>Additional Color Combinations</h2>
           <div id="demo-color-combos">
@@ -258,7 +150,7 @@
                   favorite_border
                 </i>
               </div>
-              <p class="mdc-theme--text-primary-on-primary">Light icon on background</p>
+              <div class="mdc-theme--text-primary-on-primary">Light icon on background</div>
             </div>
             <div id="dark-on-bg" class="demo-color-combo">
               <div class="mdc-theme--primary">
@@ -272,7 +164,7 @@
                   favorite_border
                 </i>
               </div>
-              <p>Dark icon on background</p>
+              <div>Dark icon on background</div>
             </div>
             <div id="custom-on-dark" class="demo-color-combo mdc-theme--dark">
               <div>
@@ -286,7 +178,7 @@
                   favorite_border
                 </i>
               </div>
-              <p class="mdc-theme--text-primary-on-dark">Custom color on dark background</p>
+              <div class="mdc-theme--text-primary-on-dark">Custom color on dark background</div>
             </div>
           </div>
         </div>

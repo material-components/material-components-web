@@ -32,8 +32,6 @@ const cssClasses = {
   DISABLED: 'mdc-text-field--disabled',
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
-  LABEL_FLOAT_ABOVE: 'mdc-text-field__label--float-above',
-  LABEL_SHAKE: 'mdc-text-field__label--shake',
   BOX: 'mdc-text-field--box',
   TEXT_FIELD_ICON: 'mdc-text-field__icon',
   TEXTAREA: 'mdc-text-field--textarea',

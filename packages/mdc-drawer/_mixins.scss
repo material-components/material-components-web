@@ -93,7 +93,7 @@
     }
   }
 
-  .mdc-list-item__start-detail {
+  .mdc-list-item__graphic {
     color: rgba(0, 0, 0, .54);
 
     @include mdc-theme-dark(#{&}) {
@@ -103,7 +103,7 @@
 
   // stylelint-disable selector-no-qualifying-type
   &--selected.mdc-list-item,
-  &--selected.mdc-list-item .mdc-list-item__start-detail {
+  &--selected.mdc-list-item .mdc-list-item__graphic {
     @include mdc-theme-prop(color, primary);
   }
   // stylelint-enable selector-no-qualifying-type
