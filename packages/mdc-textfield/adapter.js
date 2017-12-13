@@ -18,6 +18,7 @@
 /* eslint-disable no-unused-vars */
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -30,6 +31,15 @@ import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
  * }}
  */
 let NativeInputType;
+
+/**
+ * @typedef {{
+ *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
+ *   label: (!MDCTextFieldLabelFoundation|undefined)
+ * }}
+ */
+let FoundationMapType;
 
 /**
  * Adapter for MDC Text Field.
@@ -53,21 +63,6 @@ class MDCTextFieldAdapter {
    * @param {string} className
    */
   removeClass(className) {}
-
-  /**
-   * Adds a class to the label Element. We recommend you add a conditional
-   * check here, and in removeClassFromLabel for whether or not the label is
-   * present so that the JS component could be used with text fields that don't
-   * require a label, such as the full-width text field.
-   * @param {string} className
-   */
-  addClassToLabel(className) {}
-
-  /**
-   * Removes a class from the label Element.
-   * @param {string} className
-   */
-  removeClassFromLabel(className) {}
 
   /**
    * Sets an attribute on the icon Element.
@@ -142,20 +137,6 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
-
-  /**
-   * Returns the foundation for the bottom line element. Returns undefined if
-   * there is no bottom line element.
-   * @return {?MDCTextFieldBottomLineFoundation}
-   */
-  getBottomLineFoundation() {}
-
-  /**
-   * Returns the foundation for the helper text element. Returns undefined if
-   * there is no helper text element.
-   * @return {?MDCTextFieldHelperTextFoundation}
-   */
-  getHelperTextFoundation() {}
 }
 
-export {MDCTextFieldAdapter, NativeInputType};
+export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

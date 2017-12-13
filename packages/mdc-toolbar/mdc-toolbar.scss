@@ -226,7 +226,7 @@
   margin-top: $mdc-toolbar-row-height;
 
   @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
-    and (orientation: landscape) {
+    and (max-height: $mdc-toolbar-mobile-breakpoint) {
     margin-top: $mdc-toolbar-mobile-landscape-row-height;
   }
 

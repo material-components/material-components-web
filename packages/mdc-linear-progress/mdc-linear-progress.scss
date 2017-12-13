@@ -62,6 +62,10 @@
     transition: mdc-animation-exit-temporary(transform, 250ms);
   }
 
+  &__primary-bar {
+    transform: scaleX(0);
+  }
+
   &__secondary-bar {
     visibility: hidden;
   }
