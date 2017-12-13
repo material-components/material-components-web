@@ -339,6 +339,15 @@ Class | Description
 `mdc-toolbar__section--align-end` | Makes section align to the end
 `mdc-toolbar__section--shrink-to-fit`| Makes section take the width of its content
 
+## Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-toolbar-ink-color($color)` | Sets the ink color of the toolbar
+`mdc-toolbar-fill-color($color)` | Sets the fill color of the toolbar
+`mdc-toolbar-fill-color-accessible($color)` | Sets the fill color of the toolbar and automatically sets a high-contrast ink color
+`mdc-toolbar-icon-ink-color($color)` | Sets the ink color of a toolbar icon
+
 ## JS Usage
 
 ### Including in code

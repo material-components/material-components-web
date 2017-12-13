@@ -15,5 +15,74 @@
 //
 
 @import "../common";
+@import "../../packages/mdc-button/mdc-button";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-menu/mdc-menu";
+@import "../../packages/mdc-theme/color-palette";
+@import "../../packages/mdc-toolbar/mdc-toolbar";
+@import "../../packages/mdc-typography/mdc-typography";
+
+.demo-toolbar-example-heading {
+  @include mdc-typography(display2);
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.demo-toolbar-example-heading__text {
+  flex-grow: 1;
+  margin-right: 16px;
+}
+
+.demo-toolbar-example-heading__rtl-toggle-button {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.demo-toolbar {
+  margin: 0;
+}
+
+.demo-toolbar__row--with-image {
+  &:first-child::after {
+    background-image: url("/images/4-3.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+.demo-toolbar--custom {
+  @include mdc-toolbar-fill-color-accessible($material-color-red-900);
+}
+
+.demo-toolbar__menu-icon--custom,
+.demo-toolbar__icon--custom {
+  @include mdc-toolbar-icon-ink-color($material-color-red-100);
+
+  &:hover {
+    @include mdc-toolbar-icon-ink-color(white);
+  }
+}
+
+.demo-paragraph {
+  margin: 0;
+  padding: 20px 28px;
+}
+
+@media (max-width: 599px) {
+  .demo-paragraph {
+    padding: 16px;
+  }
+}
+
+.demo-toolbar-floating-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+}
