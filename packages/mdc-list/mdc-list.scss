@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
@@ -86,16 +87,15 @@
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
-  &__start-detail {
-    @include mdc-list-start-detail-size_(24px);
+  &__graphic {
+    @include mdc-list-graphic-size_(24px);
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
-  &__end-detail {
-    @include mdc-list-detail-size_(24px);
+  &__meta {
     @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
   }
 
@@ -119,20 +119,16 @@
   .mdc-list--dense & {
     height: 40px;
 
-    &__start-detail {
-      @include mdc-list-start-detail-size_(20px);
-    }
-
-    &__end-detail {
-      @include mdc-list-detail-size_(20px);
+    &__graphic {
+      @include mdc-list-graphic-size_(20px);
     }
   }
 
   .mdc-list--avatar-list & {
     height: 56px;
 
-    &__start-detail {
-      @include mdc-list-start-detail-size_(40px);
+    &__graphic {
+      @include mdc-list-graphic-size_(40px);
 
       border-radius: 50%;
     }
@@ -141,8 +137,8 @@
   .mdc-list--avatar-list.mdc-list--dense .mdc-list__item {
     height: 48px;
 
-    &__start-detail {
-      @include mdc-list-start-detail-size_(36px);
+    &__graphic {
+      @include mdc-list-graphic-size_(36px);
     }
   }
 
