@@ -180,6 +180,10 @@
     opacity: 1;
   }
 
+  &:not(.mdc-text-field--focused) .mdc-text-field__outline-path {
+    stroke-width: 1px;
+  }
+
   &.mdc-text-field--disabled {
     @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
 
