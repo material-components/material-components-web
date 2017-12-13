@@ -172,7 +172,6 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns a boolean indicating whether the root element has a given class.
 `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-menu__items` container).
 `getAttributeForEventTarget(target: EventTarget, attributeName: string) => string` | Returns the value of a given attribute on an event target.
-`eventTargetHasClass: (target: EventTarget, className: string) => boolean` | Returns true if the event target has a given class.
 `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height.
 `hasAnchor: () => boolean` | Returns whether the menu has an anchor for positioning.
 `getAnchorDimensions() => {width: number, height: number, top: number, right: number, bottom: number, left: number}` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`).
