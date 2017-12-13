@@ -63,6 +63,28 @@ test('#setDeterminate removes class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INDETERMINATE_CLASS));
 });
 
+test('#setDeterminate restores previous progress value after toggled from false to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const primaryBar = {};
+  td.when(mockAdapter.getPrimaryBar()).thenReturn(primaryBar);
+  foundation.init();
+  foundation.setProgress(0.123);
+  foundation.setDeterminate(false);
+  foundation.setDeterminate(true);
+  td.verify(mockAdapter.setStyle(primaryBar, 'transform', 'scaleX(0.123)'), {times: 2});
+});
+
+test('#setDeterminate updates progress value set while determinate is false after determinate is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const primaryBar = {};
+  td.when(mockAdapter.getPrimaryBar()).thenReturn(primaryBar);
+  foundation.init();
+  foundation.setDeterminate(false);
+  foundation.setProgress(0.123);
+  foundation.setDeterminate(true);
+  td.verify(mockAdapter.setStyle(primaryBar, 'transform', 'scaleX(0.123)'));
+});
+
 test('#setProgress sets transform', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(false);
