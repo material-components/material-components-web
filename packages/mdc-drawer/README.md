@@ -136,6 +136,26 @@ CSS classes:
 | `mdc-drawer--persistent`                | Mandatory. Needs to be set on the root element of the component.           |
 | `mdc-drawer__drawer`                    | Mandatory. Needs to be set on the container node for the drawer content.   |
 
+### Sass Mixins
+
+To customize the fill color, the ink color, or scrim color (transparent mask found in the temporary drawer), you can use the following mixins.
+
+#### `mdc-drawer-fill-color($color)`
+
+This mixin customizes the fill (background) color of the drawer.
+
+#### `mdc-drawer-ink-color($color)`
+
+This mixin customizes the ink color (font / copy color) of the drawer.
+
+#### `mdc-drawer-fill-color-accessible($color)`
+
+This mixin customizes the fill color of the drawer. It also sets the ink color to an accessible complement of the fill.
+
+#### `mdc-drawer-scrim-color($color, $opacity)`
+
+This mixin customizes the color and opacity of the scrim. (temporary drawer only)
+
 ### Using the JS Component
 
 MDC Persistent Drawer ships with a Component / Foundation combo which allows for frameworks to richly integrate the
