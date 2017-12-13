@@ -55,6 +55,12 @@ class FakeBottomLine {
   }
 }
 
+class FakeOutline {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
 test('#constructor when given a `mdc-text-field--box` element instantiates a ripple on the root element', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
@@ -94,6 +100,14 @@ test('#destroy cleans up the ripple if present', () => {
   const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
   component.destroy();
   td.verify(component.ripple.destroy());
+});
+
+test('#destroy cleans up the outline if present', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
+  const component = new MDCTextField(root, undefined, undefined, undefined, (el) => new FakeOutline(el));
+  component.destroy();
+  td.verify(component.outline_.destroy());
 });
 
 test('#destroy accounts for ripple nullability', () => {
