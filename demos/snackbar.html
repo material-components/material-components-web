@@ -254,6 +254,15 @@
           }
         });
 
+        // Show and hide events demo
+        snackbar.listen('MDCSnackbar:show', function () {
+          console.log('Received MDCSnackbar:show');
+        });
+
+        snackbar.listen('MDCSnackbar:hide', function () {
+          console.log('Received MDCSnackbar:hide');
+        });
+
         document.getElementById('show-snackbar').addEventListener('click', function() {
           show(snackbar);
         });
