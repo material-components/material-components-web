@@ -269,6 +269,8 @@
           }
 
           resetState_() {
+            this.removeSingleColumnClass_();
+
             // TODO(acdvorak): Destroy or reuse old objects; optimize performance on low-end devices.
             const {items, rows} = this.getDraggableItems_();
 
@@ -297,8 +299,6 @@
           autoSetSingleColumnClass_() {
             if (this.isSingleColumnMode()) {
               this.addSingleColumnClass_();
-            } else {
-              this.removeSingleColumnClass_();
             }
           }
 
