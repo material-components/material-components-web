@@ -172,7 +172,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const height = this.adapter_.getHeight();
     // The label is scaled 75% when it floats above the text field.
     const labelWidth = this.adapter_.getLabelWidth() * 0.75;
-    const radius = parseFloat(this.adapter_.getIdleOutlineStyleValue('border-radius'));
+    const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
+      this.adapter_.getIdleOutlineStyleValue('border-top-left-radius') /* Firefox requires specifying the corner. */;
+    const radius = parseFloat(radiusStyleValue);
     const isRtl = this.adapter_.isRtl();
     this.outline_.updateSvgPath(width, height, labelWidth, radius, isRtl);
   }
