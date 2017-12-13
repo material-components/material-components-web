@@ -43,7 +43,7 @@
       <section class="hero">
         <div class="demo-card-list-container">
           <h2 class="mdc-typography--display1 demo-card-list-heading">LTR / Row</h2>
-          <div class="m2-card-list demo-card-list">
+          <div class="mdc-drag-collection demo-card-list">
             <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
             <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
             <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
@@ -57,7 +57,7 @@
         </div>
         <div class="demo-card-list-container">
           <h2 class="mdc-typography--display1 demo-card-list-heading">RTL / Row</h2>
-          <div class="m2-card-list demo-card-list" dir="rtl">
+          <div class="mdc-drag-collection demo-card-list" dir="rtl">
             <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
             <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
             <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
@@ -71,7 +71,7 @@
         </div>
         <div class="demo-card-list-container">
           <h2 class="mdc-typography--display1 demo-card-list-heading">LTR / Col</h2>
-          <div class="m2-card-list demo-card-list demo-card-list--col">
+          <div class="mdc-drag-collection demo-card-list demo-card-list--col">
             <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">1</div>
             <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">2</div>
             <div class="m2-card mdc-ripple-surface demo-card demo-card--grey" tabindex="0">3</div>
@@ -79,7 +79,7 @@
         </div>
         <div class="demo-card-list-container">
           <h2 class="mdc-typography--display1 demo-card-list-heading">RTL / Col</h2>
-          <div class="m2-card-list demo-card-list demo-card-list--col" dir="rtl">
+          <div class="mdc-drag-collection demo-card-list demo-card-list--col" dir="rtl">
             <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">1</div>
             <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">2</div>
             <div class="m2-card mdc-ripple-surface demo-card demo-card--color" tabindex="0">3</div>
@@ -121,7 +121,7 @@
         }
 
         function getClosestDragCollectionElement(element) {
-          return element.closest('.m2-card-list');
+          return element.closest('.mdc-drag-collection');
         }
 
         function getOffset(elementRect, parentRect) {
@@ -230,9 +230,9 @@
               draggable: '.m2-card',
               delay: 200,
               classes: {
-                'container:dragging': 'm2-card-list--dragging',
-                'source:dragging': 'm2-card--drag-source',
-                'mirror': 'm2-card--drag-mirror',
+                'container:dragging': 'mdc-drag-collection--dragging',
+                'source:dragging': 'mdc-draggable-item--source',
+                'mirror': 'mdc-draggable-item--mirror',
               },
             });
             this.dragManager_.on('drag:start', (e) => this.handleDragStart_(e));
@@ -256,8 +256,8 @@
           static createDropEls_() {
             const dropZoneElDummyParent = document.createElement('div');
             dropZoneElDummyParent.innerHTML = `
-<div class="m2-card-drop-spacer"></div>
-<div class="m2-card-drop-indicator"></div>
+<div class="mdc-drop-spacer"></div>
+<div class="mdc-drop-indicator"></div>
           `.trim();
             const dropSpacerEl = dropZoneElDummyParent.children[0];
             const dropIndicatorEl = dropZoneElDummyParent.children[1];
@@ -387,11 +387,11 @@
           }
 
           addSingleColumnClass_() {
-            this.rootEl_.classList.add('m2-card-list--single-column');
+            this.rootEl_.classList.add('mdc-drag-collection--single-column');
           }
 
           removeSingleColumnClass_() {
-            this.rootEl_.classList.remove('m2-card-list--single-column');
+            this.rootEl_.classList.remove('mdc-drag-collection--single-column');
           }
 
           needsSpacer_(dropZone) {

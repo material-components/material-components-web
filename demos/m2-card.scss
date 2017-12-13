@@ -48,7 +48,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
 // Classes
 //
 
-.m2-card-list {
+.mdc-drag-collection {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -63,7 +63,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   }
 }
 
-.m2-card:not(.m2-card--drag-mirror) {
+.m2-card:not(.mdc-draggable-item--mirror) {
   transition: transform .2s;
 }
 
@@ -92,17 +92,17 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   }
 }
 
-.m2-card--hairline {
+.mdc-draggable-item--hairline {
   @include mdc-elevation(1);
 
   border: 1px solid $m2-card-hairline-border-color-resting;
 }
 
-.m2-card--drag-source {
+.mdc-draggable-item--source {
   visibility: hidden;
 }
 
-.m2-card-drop-spacer {
+.mdc-drop-spacer {
   flex-grow: 0;
   flex-shrink: 1;
 
@@ -112,12 +112,12 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   // TODO(acdvorak): Document that `width` is set dynamically in JS
 }
 
-.m2-card-drop-indicator {
+.mdc-drop-indicator {
   background-color: #333;
   border-radius: 4px;
   width: $m2-card-baseline-drop-zone-thickness;
 
-  .m2-card-list--single-column & {
+  .mdc-drag-collection--single-column & {
     width: unset;
     height: $m2-card-baseline-drop-zone-thickness;
   }
@@ -173,12 +173,12 @@ $demo-drop-zone-thickness: 6px;
   height: demo-card-list-primary-axis-size(3);
 }
 
-.demo-card-list .m2-card-drop-indicator {
+.demo-card-list .mdc-drop-indicator {
   width: $demo-drop-zone-thickness;
   margin: $demo-card-margin 0;
 }
 
-.m2-card-list--single-column .m2-card-drop-indicator {
+.mdc-drag-collection--single-column .mdc-drop-indicator {
   width: unset;
   height: $demo-drop-zone-thickness;
   margin: 0 $demo-card-margin;
