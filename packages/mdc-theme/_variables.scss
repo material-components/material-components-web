@@ -120,17 +120,17 @@ $mdc-theme-property-values: (
   text-disabled-on-background: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-background),
   text-icon-on-background: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-background),
   // Text-primary on "light" background
-  text-primary-on-light: mdc-theme-ink-color-for-fill_(primary, dark),
-  text-secondary-on-light: mdc-theme-ink-color-for-fill_(secondary, dark),
-  text-hint-on-light: mdc-theme-ink-color-for-fill_(hint, dark),
-  text-disabled-on-light: mdc-theme-ink-color-for-fill_(disabled, dark),
-  text-icon-on-light: mdc-theme-ink-color-for-fill_(icon, dark),
+  text-primary-on-light: mdc-theme-ink-color-for-fill_(primary, light),
+  text-secondary-on-light: mdc-theme-ink-color-for-fill_(secondary, light),
+  text-hint-on-light: mdc-theme-ink-color-for-fill_(hint, light),
+  text-disabled-on-light: mdc-theme-ink-color-for-fill_(disabled, light),
+  text-icon-on-light: mdc-theme-ink-color-for-fill_(icon, light),
   // Text-primary on "dark" background
-  text-primary-on-dark: mdc-theme-ink-color-for-fill_(primary, light),
-  text-secondary-on-dark: mdc-theme-ink-color-for-fill_(secondary, light),
-  text-hint-on-dark: mdc-theme-ink-color-for-fill_(hint, light),
-  text-disabled-on-dark: mdc-theme-ink-color-for-fill_(disabled, light),
-  text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, light)
+  text-primary-on-dark: mdc-theme-ink-color-for-fill_(primary, dark),
+  text-secondary-on-dark: mdc-theme-ink-color-for-fill_(secondary, dark),
+  text-hint-on-dark: mdc-theme-ink-color-for-fill_(hint, dark),
+  text-disabled-on-dark: mdc-theme-ink-color-for-fill_(disabled, dark),
+  text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, dark)
 );
 
 // If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
