@@ -24,16 +24,16 @@ a.material-icons {
   text-decoration: none;
 }
 
-.mdc-list,
-.mdc-list-group {
+.demo-list,
+.demo-list-group {
   max-width: 600px;
 }
 
-.mdc-theme--dark {
+.demo-theme-dark {
   background: #303030;
 }
 
-.mdc-theme--dark > h3 {
+.demo-theme-dark > h3 {
   color: white;
 }
 
@@ -103,7 +103,7 @@ a.material-icons {
   margin-bottom: 0.8em;
 }
 
-.hero .mdc-list {
+.hero .demo-list {
   @include mdc-elevation(4);
 
   background-color: white;
