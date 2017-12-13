@@ -99,7 +99,7 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-typography-base` | Sets the font to Roboto
-`mdc-typography($style, $adjust-margin: false)` | Applies one of the typography styles, including setting the font to Roboto and optionally adjusts the margin if the second argument is true
+`mdc-typography($style)` | Applies one of the typography styles, including setting the font to Roboto
 `mdc-typography-adjust-margin($style)` | Positions text
 `mdc-typography-overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
 

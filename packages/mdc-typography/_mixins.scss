@@ -22,7 +22,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-@mixin mdc-typography($style, $adjust-margin: false) {
+@mixin mdc-typography($style) {
   $style-props: map-get($mdc-typography-styles, $style);
 
   @if not map-has-key($mdc-typography-styles, $style) {
@@ -31,9 +31,7 @@
 
   @include mdc-typography-base;
 
-  @if not $adjust-margin {
-    $style-props: map-remove($style-props, margin);
-  }
+  $style-props: map-remove($style-props, margin);
 
   @each $key, $value in $style-props {
     #{$key}: $value;
