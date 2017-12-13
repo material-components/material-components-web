@@ -96,7 +96,6 @@
     <script src="/assets/material-components-web.js"></script>
     <script src="/lib/draggable/1.0.0-beta.3/draggable.bundle.patched.js"></script>
     <script>
-      // TODO(acdvorak): Fix boundary/edge cases (drag to/from the first/last items) in RTL Single-Column Mode.
       (() => {
         /** @enum {string} */
         const DropSide = {
@@ -697,6 +696,9 @@
 
           // TODO(acdvorak): Abstract away LTR logic?
           isAdjacentToDragSource() {
+            if (this.isSingleColumnMode()) {
+              return this.associatedItem.isDragSource() || this.prevItemInPrevRowIsDragSource_();
+            }
             return this.userDraggedAssociatedItemInCurRow_() ||
                    this.userDraggedFirstItemInCurRowToAfterLastItemInPrevRow_() ||
                    this.userDraggedLastItemInCurRowToBeforeFirstItemInNextRow_();
@@ -743,13 +745,15 @@
           nextItemInNextRowIsDragSource_() {
             const nextItemInNextRow = this.nextItemInNextRow_();
             const nextItemIsDragSource = Boolean(nextItemInNextRow) && nextItemInNextRow.isDragSource();
-            return nextItemIsDragSource && (this.isLTR() ? this.isAfterItem() : this.isBeforeItem());
+            const isLTRish = this.isSingleColumnMode() || this.isLTR();
+            return nextItemIsDragSource && (isLTRish ? this.isAfterItem() : this.isBeforeItem());
           }
 
           prevItemInPrevRowIsDragSource_() {
             const prevItemInPrevRow = this.prevItemInPrevRow_();
             const prevItemIsDragSource = Boolean(prevItemInPrevRow) && prevItemInPrevRow.isDragSource();
-            return prevItemIsDragSource && (this.isLTR() ? this.isBeforeItem() : this.isAfterItem());
+            const isLTRish = this.isSingleColumnMode() || this.isLTR();
+            return prevItemIsDragSource && (isLTRish ? this.isBeforeItem() : this.isAfterItem());
           }
 
           nextItemInNextRow_() {
