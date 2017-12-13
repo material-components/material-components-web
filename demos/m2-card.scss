@@ -141,6 +141,8 @@ $demo-drop-zone-thickness: 6px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+  justify-items: center;
 }
 
 .demo-card-collection-wrapper {
