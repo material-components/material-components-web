@@ -24,49 +24,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      html,
-      body,
-      main {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-
-      .demo-header-toolbar {
-        z-index: 10;
-      }
-
-      .demo-content {
-        position: relative;
-        flex: 1;
-        padding: 16px;
-      }
-
-      .demo-controls-container {
-        height: 100%;
-        width: 100%;
-      }
-
-      .demo-controls {
-        margin-left: auto;
-        margin-right: auto;
-        width: 320px;
-      }
-
-      .mdc-menu-anchor {
-        margin: 16px;
-      }
-
-      .mdc-theme--dark {
-        background-color: #333;
-        color: #ddd;
-      }
-
-      .mdc-menu-anchor {
-        position: absolute;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
@@ -96,7 +53,7 @@
       </section>
 
       <div class="demo-content">
-        <div class="mdc-menu-anchor">
+        <div class="mdc-menu-anchor demo-menu-anchor">
           <button class="mdc-button mdc-button--raised toggle">
             Reveal Menu
           </button>
@@ -155,9 +112,11 @@
         var contentEl = document.querySelector('.demo-content');
         if (evt.target.checked) {
           contentEl.classList.add('mdc-theme--dark');
+          contentEl.classList.add('demo-theme-dark');
           menuEl.classList.add('mdc-simple-menu--theme-dark');
         } else {
           contentEl.classList.remove('mdc-theme--dark');
+          contentEl.classList.remove('demo-theme-dark');
           menuEl.classList.remove('mdc-simple-menu--theme-dark');
         }
       });
