@@ -89,19 +89,23 @@
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
+    width: 24px;
+    height: 24px;
     padding-right: $mdc-toolbar-element-horizontal-padding-desktop / 2;
     padding-left: $mdc-toolbar-element-horizontal-padding-desktop / 2;
     cursor: pointer;
   }
 
   &__icon:last-of-type {
-    @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-desktop / 2, $mdc-toolbar-element-horizontal-padding-desktop);
+    @include mdc-rtl-reflexive-property(margin, 0, $mdc-toolbar-element-horizontal-padding-desktop / 2);
   }
 
   &__menu-icon {
     @include mdc-shared-icon-style;
     @include mdc-theme-prop(color, text-primary-on-primary);
 
+    width: 24px;
+    height: 24px;
     padding-right: $mdc-toolbar-element-horizontal-padding-desktop;
     padding-left: $mdc-toolbar-element-horizontal-padding-desktop;
     cursor: pointer;
@@ -118,15 +122,19 @@
   }
 
   .mdc-toolbar__icon {
+    width: 24px;
+    height: 24px;
     padding-right: $mdc-toolbar-element-horizontal-padding-mobile / 2;
     padding-left: $mdc-toolbar-element-horizontal-padding-mobile / 2;
   }
 
   .mdc-toolbar__icon:last-of-type {
-    @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-mobile / 2, $mdc-toolbar-element-horizontal-padding-mobile);
+    @include mdc-rtl-reflexive-property(padding, 0, $mdc-toolbar-element-horizontal-padding-mobile / 2);
   }
 
   .mdc-toolbar__menu-icon {
+    width: 24px;
+    height: 24px;
     padding-right: $mdc-toolbar-element-horizontal-padding-mobile;
     padding-left: $mdc-toolbar-element-horizontal-padding-mobile;
   }

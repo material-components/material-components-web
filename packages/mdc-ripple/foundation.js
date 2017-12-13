@@ -102,6 +102,7 @@ class MDCRippleFoundation extends MDCFoundation {
       deregisterResizeHandler: (/* handler: EventListener */) => {},
       updateCssVariable: (/* varName: string, value: string */) => {},
       computeBoundingRect: () => /* ClientRect */ {},
+      computeUnboundedBoundingRect: () => /* {width: number, height: number} */ {},
       getWindowPageOffset: () => /* {x: number, y: number} */ {},
     };
   }
@@ -477,15 +478,24 @@ class MDCRippleFoundation extends MDCFoundation {
   /** @private */
   layoutInternal_() {
     this.frame_ = this.adapter_.computeBoundingRect();
+    this.unboundedFrame_ = this.adapter_.computeUnboundedBoundingRect();
 
     const maxDim = Math.max(this.frame_.height, this.frame_.width);
-    const surfaceDiameter = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
+    if (this.adapter_.isUnbounded()) {
+      // Diameter of the unbounded surface is the biggest one between the width and the height
+      const surfaceDiameter = Math.max(this.unboundedFrame_.width, this.unboundedFrame_.height);
+    } else {
+      const surfaceDiameter = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
+    }
 
     // 60% of the largest dimension of the surface
     this.initialSize_ = maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE;
 
-    // Diameter of the surface + 10px
-    this.maxRadius_ = surfaceDiameter + MDCRippleFoundation.numbers.PADDING;
+    if (this.adapter_.isUnbounded()) { // Diameter of the surface + 16px
+      this.maxRadius_ = surfaceDiameter + MDCRippleFoundation.numbers.UNBOUNDED_PADDING;
+    } else { // Diameter of the surface + 10px
+      this.maxRadius_ = surfaceDiameter + MDCRippleFoundation.numbers.PADDING;
+    }
     this.fgScale_ = this.maxRadius_ / this.initialSize_;
     this.xfDuration_ = 1000 * Math.sqrt(this.maxRadius_ / 1024);
     this.updateLayoutCssVars_();

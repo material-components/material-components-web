@@ -88,6 +88,9 @@ class MDCRippleAdapter {
   /** @return {!ClientRect} */
   computeBoundingRect() {}
 
+  /** @return {{width: number, height: number}} */
+  computeUnboundedBoundingRect() {}
+
   /** @return {{x: number, y: number}} */
   getWindowPageOffset() {}
 }
