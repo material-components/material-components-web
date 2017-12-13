@@ -20,7 +20,7 @@
 @import "../packages/mdc-ripple/mixins";
 @import "../packages/mdc-theme/color-palette";
 
-.mdc-radio.demo-radio--custom {
+.demo-radio--custom {
   $color: $material-color-red-500;
 
   @include mdc-radio-unchecked-stroke-color($color);
@@ -28,4 +28,8 @@
   @include mdc-radio-ink-color($material-color-orange-500);
   @include mdc-radio-focus-indicator-color($color);
   @include mdc-states($color);
+}
+
+.demo-theme-dark {
+  background-color: #303030;
 }
