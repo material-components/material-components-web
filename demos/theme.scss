@@ -44,3 +44,71 @@ $high-luminance-color: #fff8e1;
 .demo-theme-bg--high-luminance-dark {
   background-color: mdc-theme-dark-variant($high-luminance-color);
 }
+
+.demo-theme__color {
+  display: inline-flex;
+  flex-direction: column;
+  margin-right: 24px;
+}
+.demo-theme__color__label {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 130px;
+  margin-bottom: 1em;
+}
+.demo-theme__color__block {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 1px;
+}
+.demo-theme__text-styles {
+  display: inline-flex;
+  box-sizing: border-box;
+  padding: 16px;
+  border: 1px solid #f0f0f0;
+  align-items: center;
+  flex-direction: column;
+}
+
+@media(min-width: 768px) {
+  .demo-theme__text-styles {
+    flex-direction: row;
+  }
+}
+
+.demo-theme__text-styles > span {
+  padding: 0 16px;
+}
+
+.demo-theme--custom-light-bg {
+  background-color: #dddddd;
+}
+
+.demo-theme--custom-dark-bg {
+  background-color: #1d1d1d;
+}
+
+.example {
+  margin: 24px;
+  padding: 24px;
+}
+
+h2 {
+  margin-left: 48px;
+  margin-bottom: 0.8em;
+  margin-top: 0.8em;
+}
+
+h3 {
+  margin-bottom: 0.8em;
+  margin-top: 0.8em;
+}
+
+.hero button {
+  margin: 24px;
+}
