@@ -100,14 +100,14 @@
       (() => {
         /** @enum {string} */
         const CardSide = {
-          BEFORE: Symbol('before'),
-          AFTER: Symbol('after'),
+          BEFORE: 'before',
+          AFTER: 'after',
         };
 
         /** @enum {string} */
         const Directionality = {
-          LTR: Symbol('ltr'),
-          RTL: Symbol('rtl'),
+          LTR: 'ltr',
+          RTL: 'rtl',
         };
 
         function getDirectionality(element) {
