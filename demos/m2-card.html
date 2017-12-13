@@ -88,7 +88,7 @@
       </section>
 
       <p style="text-align: center">
-        Fully supports RTL. Automatically switches to "column mode" for narrow screens (e.g., smartphones), with
+        Fully supports RTL. Automatically switches to "single-column mode" for narrow screens (e.g., smartphones), with
         horizontal drop zones instead of vertical.
       </p>
     </main>
@@ -771,16 +771,16 @@
           }
 
           isBeforeItem() {
-            // In row mode (i.e., more than 1 column in the whole group) LTR, 'before' means 'to the left of'.
-            // In row mode (i.e., more than 1 column in the whole group) RTL, 'before' means 'to the right of'.
-            // In column mode (i.e., only 1 column in the whole group), 'before' means 'above'.
+            // In multi-column mode LTR, 'before' means 'to the left of'.
+            // In multi-column mode RTL, 'before' means 'to the right of'.
+            // In single-column mode, 'before' means 'above'.
             return this.dropSide === DropSide.BEFORE;
           }
 
           isAfterItem() {
-            // In row mode (i.e., more than 1 column in the whole group) LTR, 'after' means 'to the right of'.
-            // In row mode (i.e., more than 1 column in the whole group) RTL, 'after' means 'to the left of'.
-            // In column mode (i.e., only 1 column in the whole group), 'after' means 'below'.
+            // In multi-column mode LTR, 'after' means 'to the right of'.
+            // In multi-column mode RTL, 'after' means 'to the left of'.
+            // In single-column mode, 'after' means 'below'.
             return this.dropSide === DropSide.AFTER;
           }
 
