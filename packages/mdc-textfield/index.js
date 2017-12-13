@@ -70,11 +70,14 @@ class MDCTextField extends MDCComponent {
    */
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
+    helperTextFactory = (el) => new MDCTextFieldHelperText(el),
+    iconFactory = (el) => new MDCTextFieldIcon(el),
+    labelFactory = (el) => new MDCTextFieldLabel(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
-      this.label_ = new MDCTextFieldLabel(labelElement);
+      this.label_ = labelFactory(labelElement);
     }
     this.ripple = null;
     if (this.root_.classList.contains(cssClasses.BOX)) {
@@ -87,21 +90,19 @@ class MDCTextField extends MDCComponent {
       const foundation = new MDCRippleFoundation(adapter);
       this.ripple = rippleFactory(this.root_, foundation);
     };
-    if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
-      const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
-      if (bottomLineElement) {
-        this.bottomLine_ = bottomLineFactory(bottomLineElement);
-      }
-    };
+    const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    if (bottomLineElement) {
+      this.bottomLine_ = bottomLineFactory(bottomLineElement);
+    }
     if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
       const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
       if (helperTextElement) {
-        this.helperText_ = new MDCTextFieldHelperText(helperTextElement);
+        this.helperText_ = helperTextFactory(helperTextElement);
       }
     }
     const iconElement = this.root_.querySelector(strings.ICON_SELECTOR);
     if (iconElement) {
-      this.icon_ = new MDCTextFieldIcon(iconElement);
+      this.icon_ = iconFactory(iconElement);
     }
   }
 
@@ -117,6 +118,9 @@ class MDCTextField extends MDCComponent {
     }
     if (this.label_) {
       this.label_.destroy();
+    }
+    if (this.icon_) {
+      this.icon_.destroy();
     }
     super.destroy();
   }

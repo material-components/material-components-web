@@ -52,6 +52,25 @@ class FakeBottomLine {
   constructor() {
     this.listen = td.func('bottomLine.listen');
     this.unlisten = td.func('bottomLine.unlisten');
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeHelperText {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeIcon {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeLabel {
+  constructor() {
+    this.destroy = td.func('.destroy');
   }
 }
 
@@ -114,6 +133,40 @@ test('#destroy cleans up the ripple if present', () => {
   td.verify(component.ripple.destroy());
 });
 
+test('#destroy cleans up the bottom line if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root, undefined, undefined, (el) => new FakeBottomLine(el));
+  component.destroy();
+  td.verify(component.bottomLine_.destroy());
+});
+
+test('#destroy cleans up the helper text if present', () => {
+  const root = getFixture();
+  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
+  const helperText = getHelperTextElement();
+  document.body.appendChild(helperText);
+  const component =
+    new MDCTextField(root, undefined, undefined, undefined, (el) => new FakeHelperText(el));
+  component.destroy();
+  td.verify(component.helperText_.destroy());
+  document.body.removeChild(helperText);
+});
+
+test('#destroy cleans up the icon if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root, undefined, undefined, undefined, undefined, (el) => new FakeIcon(el));
+  component.destroy();
+  td.verify(component.icon_.destroy());
+});
+
+test('#destroy cleans up the label if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root, undefined, undefined, undefined, undefined, undefined,
+    (el) => new FakeLabel(el));
+  component.destroy();
+  td.verify(component.label_.destroy());
+});
+
 test('#destroy accounts for ripple nullability', () => {
   const component = new MDCTextField(getFixture());
   assert.doesNotThrow(() => component.destroy());
@@ -157,17 +210,6 @@ test('set valid updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
 });
 
-test('set helperTextContent updates the helper text element content', () => {
-  const root = getFixture();
-  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperText = getHelperTextElement();
-  document.body.appendChild(helperText);
-  const component = new MDCTextField(root);
-  component.helperTextContent = 'foo';
-  assert.equal(helperText.textContent, 'foo');
-  document.body.removeChild(helperText);
-});
-
 test('set helperTextContent has no effect when no helper text element is present', () => {
   const {component} = setupTest();
   assert.doesNotThrow(() => {
@@ -176,17 +218,18 @@ test('set helperTextContent has no effect when no helper text element is present
 });
 
 test('#adapter.registerBottomLineEventHandler adds event listener to bottom line', () => {
-  const {component, bottomLine} = setupTest();
+  const root = getFixture();
+  const component = new MDCTextField(root, undefined, undefined, (el) => new FakeBottomLine(el));
   const handler = () => {};
   component.getDefaultFoundation().adapter_.registerBottomLineEventHandler('evt', handler);
-  td.verify(bottomLine.listen('evt', handler));
+  td.verify(component.bottomLine_.listen('evt', handler));
 });
 
 test('#adapter.deregisterBottomLineEventHandler removes event listener for "transitionend" from bottom line', () => {
-  const {component, bottomLine} = setupTest();
-  const handler = () => {};
+  const root = getFixture();
+  const component = new MDCTextField(root, undefined, undefined, (el) => new FakeBottomLine(el));  const handler = () => {};
   component.getDefaultFoundation().adapter_.deregisterBottomLineEventHandler('evt', handler);
-  td.verify(bottomLine.unlisten('evt', handler));
+  td.verify(component.bottomLine_.unlisten('evt', handler));
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
