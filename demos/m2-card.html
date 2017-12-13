@@ -437,6 +437,12 @@
             });
           }
 
+          /**
+           * @param {!HTMLElement} refEl
+           * @param {!HTMLElement} newEl
+           * @param {!DropSide} dropSide
+           * @private
+           */
           insertAdjacentElement_(refEl, newEl, dropSide) {
             const beforeItem = dropSide === DropSide.BEFORE;
 
