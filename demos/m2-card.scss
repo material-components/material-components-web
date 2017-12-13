@@ -32,21 +32,42 @@ $mdc-theme-secondary: #4285F4; // Google Blue 500
 // Variables
 //
 
-$m2-card-hairline-border-color-resting: #ddd;
-$m2-card-baseline-background-color: #fff;
-$m2-card-baseline-drop-zone-thickness: 4px;
+$mdc-card-hairline-border-color-resting: #ddd;
+$mdc-card-baseline-background-color: #fff;
+$mdc-card-baseline-drop-zone-thickness: 4px;
 
 //
 // Mixins
 //
 
-@mixin m2-card-corner-radius($radius) {
+@mixin mdc-card-corner-radius($radius) {
   border-radius: $radius;
 }
 
 //
 // Classes
 //
+
+// TODO(acdvorak): Only apply these styles if the element is focusable
+.mdc-card {
+  @include mdc-ripple-color(black, .14);
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(black, .04);
+  }
+
+  &:focus {
+    background-color: rgba(black, .06);
+  }
+}
+
+.mdc-card--stroked {
+  @include mdc-elevation(1);
+
+  border: 1px solid $mdc-card-hairline-border-color-resting;
+}
 
 .mdc-drag-collection {
   display: flex;
@@ -63,39 +84,8 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   }
 }
 
-.m2-card:not(.mdc-draggable-item--mirror) {
+.mdc-draggable-item:not(.mdc-draggable-item--mirror) {
   transition: transform .2s;
-}
-
-.m2-card {
-  @include mdc-elevation(4);
-  @include m2-card-corner-radius(4px);
-  @include mdc-ripple-color(black, .14);
-  @include mdc-typography(display2);
-
-  background-color: $m2-card-baseline-background-color;
-
-  display: flex;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  justify-items: center;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgba(black, .04);
-  }
-
-  &:focus {
-    background-color: rgba(black, .06);
-  }
-}
-
-.mdc-draggable-item--hairline {
-  @include mdc-elevation(1);
-
-  border: 1px solid $m2-card-hairline-border-color-resting;
 }
 
 .mdc-draggable-item--source {
@@ -115,11 +105,11 @@ $m2-card-baseline-drop-zone-thickness: 4px;
 .mdc-drop-indicator {
   background-color: #333;
   border-radius: 4px;
-  width: $m2-card-baseline-drop-zone-thickness;
+  width: $mdc-card-baseline-drop-zone-thickness;
 
   .mdc-drag-collection--single-column & {
     width: unset;
-    height: $m2-card-baseline-drop-zone-thickness;
+    height: $mdc-card-baseline-drop-zone-thickness;
   }
 }
 
@@ -133,7 +123,7 @@ $demo-card-cols: 3;
 $demo-drop-zone-thickness: 6px;
 
 // TODO(acdvorak): How should clients calculate this, and how do we make it dynamic so cards can be added/removed?
-@function demo-card-list-primary-axis-size($num-cols) {
+@function demo-card-collection-primary-axis-size($num-cols) {
   $card-total-margin: $demo-card-margin * 2;
   $card-total-width: $demo-card-size + $card-total-margin;
   @return ($card-total-width * $num-cols) + $demo-drop-zone-thickness;
@@ -147,33 +137,43 @@ $demo-drop-zone-thickness: 6px;
   padding: 48px;
 }
 
-.demo-card-list-container {
-  margin: 0 100px 100px 100px;
+.demo-card-collection-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.demo-card-list-heading {
+.demo-card-collection-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  margin: 0 48px 48px 48px;
+}
+
+.demo-card-collection-heading {
   margin-top: 0;
   margin-left: $demo-card-margin;
   margin-right: $demo-card-margin;
   text-align: center;
 }
 
-.demo-card-list {
+.demo-card-collection {
   // TODO(acdvorak): Can we dynamically add the extra width needed to accommodate the drop target?
   // Or should drop target be absolutely positioned in <body> instead of in the list?
   // TODO(acdvorak): Document the need for extra width to accommodate the drop zone
   // TODO(acdvorak): Add test cases for all width variations
-  max-width: demo-card-list-primary-axis-size($demo-card-cols);
+  max-width: demo-card-collection-primary-axis-size($demo-card-cols);
 }
 
-.demo-card-list--col {
+.demo-card-collection--single-column {
   // TODO(acdvorak): Can we dynamically add the extra height needed to accommodate the drop target?
   // Or should drop target be absolutely positioned in <body> instead of in the list?
-  max-width: demo-card-list-primary-axis-size(1);
-  height: demo-card-list-primary-axis-size(3);
+  max-width: demo-card-collection-primary-axis-size(1);
+  height: demo-card-collection-primary-axis-size(3);
 }
 
-.demo-card-list .mdc-drop-indicator {
+.demo-card-collection .mdc-drop-indicator {
   width: $demo-drop-zone-thickness;
   margin: $demo-card-margin 0;
 }
@@ -185,10 +185,20 @@ $demo-drop-zone-thickness: 6px;
 }
 
 .demo-card {
-  margin: $demo-card-margin;
-}
+  @include mdc-elevation(4);
+  @include mdc-card-corner-radius(4px);
+  @include mdc-typography(display2);
 
-.demo-card {
+  background-color: $mdc-card-baseline-background-color;
+
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+
+  margin: $demo-card-margin;
+
   position: relative;
   width: $demo-card-size;
   height: $demo-card-size;
