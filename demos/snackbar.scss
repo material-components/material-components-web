@@ -20,3 +20,27 @@
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-snackbar/mdc-snackbar";
 @import "../packages/mdc-textfield/mdc-text-field";
+
+/* initialize it off screen. */
+.loading .example .demo-snackbar { transform: translateY(200%); }
+
+.demo-theme-dark {
+  background-color: #333;
+}
+
+.demo-theme-dark .hero {
+  background-color: #2d2d2d;
+}
+
+/* Override style for hero example. */
+.hero .demo-snackbar {
+  position: relative;
+  left: auto;
+}
+.hero .demo-snackbar--active {
+  transform: none;
+}
+
+.demo-activate-button {
+  margin-top: 14px;
+}
