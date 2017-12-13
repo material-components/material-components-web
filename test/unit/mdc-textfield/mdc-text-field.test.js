@@ -125,8 +125,8 @@ test('#constructor instantiates a label on the `.mdc-text-field__label` element 
   assert.instanceOf(component.label_, MDCTextFieldLabel);
 });
 
-function setupTest() {
-  const root = getFixture();
+function setupTest(fixture) {
+  const root = fixture || getFixture();
   const bottomLine = new FakeBottomLine();
   const helperText = new FakeHelperText();
   const icon = new FakeIcon();
@@ -160,13 +160,12 @@ test('#destroy cleans up the bottom line if present', () => {
 test('#destroy cleans up the helper text if present', () => {
   const root = getFixture();
   root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperText = getHelperTextElement();
-  document.body.appendChild(helperText);
-  const component =
-    new MDCTextField(root, undefined, undefined, undefined, (el) => new FakeHelperText(el));
+  const helperTextElement = getHelperTextElement();
+  document.body.appendChild(helperTextElement);
+  const {component, helperText} = setupTest(root);
   component.destroy();
-  td.verify(component.helperText_.destroy());
-  document.body.removeChild(helperText);
+  td.verify(helperText.destroy());
+  document.body.removeChild(helperTextElement);
 });
 
 test('#destroy cleans up the icon if present', () => {
