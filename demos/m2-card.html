@@ -198,24 +198,24 @@
         }());
 
         class HitTest {
-          static pointIsAboveRect(point, rect) {
+          static isPointAboveRect(point, rect) {
             return point.y < rect.top;
           }
-          static pointIsBelowRect(point, rect) {
+          static isPointBelowRect(point, rect) {
             return point.y > rect.bottom;
           }
-          static pointIsLeftOfRect(point, rect) {
+          static isPointLeftOfRect(point, rect) {
             return point.x < rect.left;
           }
-          static pointIsRightOfRect(point, rect) {
+          static isPointRightOfRect(point, rect) {
             return point.x > rect.right;
           }
           static pointIntersectsRect(point, rect) {
             return !(
-              HitTest.pointIsAboveRect(point, rect) ||
-              HitTest.pointIsBelowRect(point, rect) ||
-              HitTest.pointIsLeftOfRect(point, rect) ||
-              HitTest.pointIsRightOfRect(point, rect)
+              HitTest.isPointAboveRect(point, rect) ||
+              HitTest.isPointBelowRect(point, rect) ||
+              HitTest.isPointLeftOfRect(point, rect) ||
+              HitTest.isPointRightOfRect(point, rect)
             );
           }
         }
