@@ -67,6 +67,12 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCRipple.
    * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
    * creates a new MDCTextFieldBottomLine.
+   * @param {(function(!Element): !MDCTextFieldHelperText)=} helperTextFactory A function which
+   * creates a new MDCTextFieldHelperText.
+   * @param {(function(!Element): !MDCTextFieldIcon)=} iconFactory A function which
+   * creates a new MDCTextFieldIcon.
+   * @param {(function(!Element): !MDCTextFieldLabel)=} labelFactory A function which
+   * creates a new MDCTextFieldLabel.
    */
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
