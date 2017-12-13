@@ -19,7 +19,8 @@
 const cssClasses = {
   ROOT: 'mdc-simple-menu',
   OPEN: 'mdc-simple-menu--open',
-  ANIMATING: 'mdc-simple-menu--animating',
+  ANIMATING_OPEN: 'mdc-simple-menu--animating-open',
+  ANIMATING_CLOSE: 'mdc-simple-menu--animating-close',
   TOP_RIGHT: 'mdc-simple-menu--open-from-top-right',
   BOTTOM_LEFT: 'mdc-simple-menu--open-from-bottom-left',
   BOTTOM_RIGHT: 'mdc-simple-menu--open-from-bottom-right',
@@ -40,17 +41,10 @@ const numbers = {
   // will most likely be bumped up once interactive lists are supported to allow for the ripple to
   // animate before closing the menu
   SELECTED_TRIGGER_DELAY: 50,
-  // Total duration of the menu animation.
-  TRANSITION_DURATION_MS: 300,
-  // The menu starts its open animation with the X axis at this time value (0 - 1).
-  TRANSITION_SCALE_ADJUSTMENT_X: 0.5,
-  // The time value the menu waits until the animation starts on the Y axis (0 - 1).
-  TRANSITION_SCALE_ADJUSTMENT_Y: 0.2,
-  // The cubic bezier control points for the animation (cubic-bezier(0, 0, 0.2, 1)).
-  TRANSITION_X1: 0,
-  TRANSITION_Y1: 0,
-  TRANSITION_X2: 0.2,
-  TRANSITION_Y2: 1,
+  // Total duration of menu open animation.
+  TRANSITION_OPEN_DURATION: 120,
+  // Total duration of menu close animation.
+  TRANSITION_CLOSE_DURATION: 75,
   // Margin left to the edge of the viewport when menu is at maximum possible height.
   MARGIN_TO_EDGE: 32,
 };

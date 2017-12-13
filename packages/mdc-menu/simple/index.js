@@ -114,23 +114,11 @@ class MDCSimpleMenu extends MDCComponent {
       getWindowDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
       },
-      setScale: (x, y) => {
-        this.root_.style[getTransformPropertyName(window)] = `scale(${x}, ${y})`;
-      },
-      setInnerScale: (x, y) => {
-        this.itemsContainer_.style[getTransformPropertyName(window)] = `scale(${x}, ${y})`;
-      },
       getNumberOfItems: () => this.items.length,
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
       deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
-      getYParamsForItemAtIndex: (index) => {
-        const {offsetTop: top, offsetHeight: height} = this.items[index];
-        return {top, height};
-      },
-      setTransitionDelayForItemAtIndex: (index, value) =>
-        this.items[index].style.setProperty('transition-delay', value),
       getIndexForEventTarget: (target) => this.items.indexOf(target),
       notifySelected: (evtData) => this.emit(MDCSimpleMenuFoundation.strings.SELECTED_EVENT, {
         index: evtData.index,

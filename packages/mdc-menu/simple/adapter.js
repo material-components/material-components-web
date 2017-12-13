@@ -78,18 +78,6 @@ class MDCSimpleMenuAdapter {
   /** @return {{ width: number, height: number }} */
   getWindowDimensions() {}
 
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  setScale(x, y) {}
-
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  setInnerScale(x, y) {}
-
   /** @return {number} */
   getNumberOfItems() {}
 
@@ -110,18 +98,6 @@ class MDCSimpleMenuAdapter {
 
   /** @param {function(!Event)} handler */
   deregisterBodyClickHandler(handler) {}
-
-  /**
-   * @param {number} index
-   * @return {{top: number, height: number}}
-   */
-  getYParamsForItemAtIndex(index) {}
-
-  /**
-   * @param {number} index
-   * @param {string|null} value
-   */
-  setTransitionDelayForItemAtIndex(index, value) {}
 
   /**
    * @param {EventTarget} target
