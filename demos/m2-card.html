@@ -686,10 +686,10 @@
           intersectsViewportPoint(viewportPoint) {
             // The properties below need to be recalculated every time the pointer moves to ensure that scrolling while
             // dragging works and uses the correct coordinates.
-            const associatedItemParentGroupViewportRect = this.associatedItem.parentDragCollection.getBoundingClientRect();
+            const collectionViewportRect = this.associatedItem.parentDragCollection.getBoundingClientRect();
             const parentOffsetPoint = {
-              x: viewportPoint.x - associatedItemParentGroupViewportRect.left,
-              y: viewportPoint.y - associatedItemParentGroupViewportRect.top,
+              x: viewportPoint.x - collectionViewportRect.left,
+              y: viewportPoint.y - collectionViewportRect.top,
             };
             return HitTest.pointIntersectsRect(parentOffsetPoint, this.parentOffsetRect);
           }
