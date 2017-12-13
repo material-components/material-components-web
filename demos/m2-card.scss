@@ -80,6 +80,7 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
   }
 
   &--single-column {
+    // TODO(acdvorak): Is this needed? It causes jank on page load
     flex-direction: column;
   }
 }
