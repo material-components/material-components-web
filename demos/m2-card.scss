@@ -117,7 +117,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   border-radius: 4px;
   width: $m2-card-baseline-drop-zone-thickness;
 
-  .m2-card-list--column & {
+  .m2-card-list--single-column & {
     width: unset;
     height: $m2-card-baseline-drop-zone-thickness;
   }
@@ -178,7 +178,7 @@ $demo-drop-zone-thickness: 6px;
   margin: $demo-card-margin 0;
 }
 
-.m2-card-list--column .m2-card-drop-target {
+.m2-card-list--single-column .m2-card-drop-target {
   width: unset;
   height: $demo-drop-zone-thickness;
   margin: 0 $demo-card-margin;
