@@ -125,8 +125,7 @@ test('#constructor instantiates a label on the `.mdc-text-field__label` element 
   assert.instanceOf(component.label_, MDCTextFieldLabel);
 });
 
-function setupTest(fixture) {
-  const root = fixture || getFixture();
+function setupTest(root = getFixture()) {
   const bottomLine = new FakeBottomLine();
   const helperText = new FakeHelperText();
   const icon = new FakeIcon();
