@@ -19,6 +19,6 @@
 @import "../packages/mdc-fab/mdc-fab";
 @import "../packages/mdc-fab/mixins";
 
-.mdc-fab.lightGreen800Fab {
-  @include mdc-fab-accessible($material-color-light-green-800);
+.demo-fab--custom {
+  @include mdc-fab-accessible($material-color-red-500);
 }
