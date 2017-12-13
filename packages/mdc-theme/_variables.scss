@@ -36,20 +36,6 @@ $mdc-theme-secondary-dark: mdc-theme-dark-variant($mdc-theme-secondary) !default
 $mdc-theme-background: #fff !default; // White
 
 //
-// Which set of text colors to use for each main theme color (light or dark).
-//
-
-$mdc-theme-primary-tone: mdc-theme-contrast-tone($mdc-theme-primary) !default;
-$mdc-theme-primary-light-tone: mdc-theme-contrast-tone($mdc-theme-primary-light) !default;
-$mdc-theme-primary-dark-tone: mdc-theme-contrast-tone($mdc-theme-primary-dark) !default;
-
-$mdc-theme-secondary-tone: mdc-theme-contrast-tone($mdc-theme-secondary) !default;
-$mdc-theme-secondary-light-tone: mdc-theme-contrast-tone($mdc-theme-secondary-light) !default;
-$mdc-theme-secondary-dark-tone: mdc-theme-contrast-tone($mdc-theme-secondary-dark) !default;
-
-$mdc-theme-background-tone: mdc-theme-contrast-tone($mdc-theme-background) !default;
-
-//
 // Text colors according to light vs dark and text type.
 //
 
@@ -70,6 +56,12 @@ $mdc-theme-text-colors: (
   )
 ) !default;
 
+@function mdc-theme-ink-color-for-fill_($text-style, $fill-color) {
+  $contrast-tone: mdc-theme-contrast-tone($fill-color);
+
+  @return map-get(map-get($mdc-theme-text-colors, $contrast-tone), $text-style);
+}
+
 //
 // Primary text colors for each of the theme colors.
 //
@@ -85,60 +77,60 @@ $mdc-theme-property-values: (
   secondary-dark: $mdc-theme-secondary-dark,
   /* Background */
   background: $mdc-theme-background,
-  /* Text-primary on "primary" background */
-  text-primary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), primary),
-  text-secondary-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), secondary),
-  text-hint-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), hint),
-  text-disabled-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), disabled),
-  text-icon-on-primary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-tone), icon),
-  /* Text-primary on "primary-light" background */
-  text-primary-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), primary),
-  text-secondary-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), secondary),
-  text-hint-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), hint),
-  text-disabled-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), disabled),
-  text-icon-on-primary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-light-tone), icon),
-  /* Text-primary on "primary-dark" background */
-  text-primary-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), primary),
-  text-secondary-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), secondary),
-  text-hint-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), hint),
-  text-disabled-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), disabled),
-  text-icon-on-primary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-primary-dark-tone), icon),
-  /* Text-primary on "secondary" background */
-  text-primary-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), primary),
-  text-secondary-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), secondary),
-  text-hint-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), hint),
-  text-disabled-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), disabled),
-  text-icon-on-secondary: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-tone), icon),
-  /* Text-primary on "secondary-light" background */
-  text-primary-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), primary),
-  text-secondary-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), secondary),
-  text-hint-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), hint),
-  text-disabled-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), disabled),
-  text-icon-on-secondary-light: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-light-tone), icon),
-  /* Text-primary on "secondary-dark" background */
-  text-primary-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), primary),
-  text-secondary-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), secondary),
-  text-hint-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), hint),
-  text-disabled-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), disabled),
-  text-icon-on-secondary-dark: map-get(map-get($mdc-theme-text-colors, $mdc-theme-secondary-dark-tone), icon),
-  /* Text-primary on "background" background */
-  text-primary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), primary),
-  text-secondary-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), secondary),
-  text-hint-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), hint),
-  text-disabled-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), disabled),
-  text-icon-on-background: map-get(map-get($mdc-theme-text-colors, $mdc-theme-background-tone), icon),
-  /* Text-primary on "light" background */
-  text-primary-on-light: map-get(map-get($mdc-theme-text-colors, dark), primary),
-  text-secondary-on-light: map-get(map-get($mdc-theme-text-colors, dark), secondary),
-  text-hint-on-light: map-get(map-get($mdc-theme-text-colors, dark), hint),
-  text-disabled-on-light: map-get(map-get($mdc-theme-text-colors, dark), disabled),
-  text-icon-on-light: map-get(map-get($mdc-theme-text-colors, dark), icon),
-  /* Text-primary on "dark" background */
-  text-primary-on-dark: map-get(map-get($mdc-theme-text-colors, light), primary),
-  text-secondary-on-dark: map-get(map-get($mdc-theme-text-colors, light), secondary),
-  text-hint-on-dark: map-get(map-get($mdc-theme-text-colors, light), hint),
-  text-disabled-on-dark: map-get(map-get($mdc-theme-text-colors, light), disabled),
-  text-icon-on-dark: map-get(map-get($mdc-theme-text-colors, light), icon)
+  // Text-primary on "primary" background
+  text-primary-on-primary: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-primary),
+  text-secondary-on-primary: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-primary),
+  text-hint-on-primary: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-primary),
+  text-disabled-on-primary: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-primary),
+  text-icon-on-primary: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-primary),
+  // Text-primary on "primary-light" background
+  text-primary-on-primary-light: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-primary-light),
+  text-secondary-on-primary-light: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-primary-light),
+  text-hint-on-primary-light: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-primary-light),
+  text-disabled-on-primary-light: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-primary-light),
+  text-icon-on-primary-light: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-primary-light),
+  // Text-primary on "primary-dark" background
+  text-primary-on-primary-dark: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-primary-dark),
+  text-secondary-on-primary-dark: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-primary-dark),
+  text-hint-on-primary-dark: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-primary-dark),
+  text-disabled-on-primary-dark: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-primary-dark),
+  text-icon-on-primary-dark: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-primary-dark),
+  // Text-primary on "secondary" background
+  text-primary-on-secondary: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-secondary),
+  text-secondary-on-secondary: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-secondary),
+  text-hint-on-secondary: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-secondary),
+  text-disabled-on-secondary: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-secondary),
+  text-icon-on-secondary: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-secondary),
+  // Text-primary on "secondary-light" background
+  text-primary-on-secondary-light: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-secondary-light),
+  text-secondary-on-secondary-light: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-secondary-light),
+  text-hint-on-secondary-light: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-secondary-light),
+  text-disabled-on-secondary-light: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-secondary-light),
+  text-icon-on-secondary-light: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-secondary-light),
+  // Text-primary on "secondary-dark" background
+  text-primary-on-secondary-dark: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-secondary-dark),
+  text-secondary-on-secondary-dark: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-secondary-dark),
+  text-hint-on-secondary-dark: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-secondary-dark),
+  text-disabled-on-secondary-dark: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-secondary-dark),
+  text-icon-on-secondary-dark: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-secondary-dark),
+  // Text-primary on "background" background
+  text-primary-on-background: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-background),
+  text-secondary-on-background: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-background),
+  text-hint-on-background: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-background),
+  text-disabled-on-background: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-background),
+  text-icon-on-background: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-background),
+  // Text-primary on "light" background
+  text-primary-on-light: mdc-theme-ink-color-for-fill_(primary, light),
+  text-secondary-on-light: mdc-theme-ink-color-for-fill_(secondary, light),
+  text-hint-on-light: mdc-theme-ink-color-for-fill_(hint, light),
+  text-disabled-on-light: mdc-theme-ink-color-for-fill_(disabled, light),
+  text-icon-on-light: mdc-theme-ink-color-for-fill_(icon, light),
+  // Text-primary on "dark" background
+  text-primary-on-dark: mdc-theme-ink-color-for-fill_(primary, dark),
+  text-secondary-on-dark: mdc-theme-ink-color-for-fill_(secondary, dark),
+  text-hint-on-dark: mdc-theme-ink-color-for-fill_(hint, dark),
+  text-disabled-on-dark: mdc-theme-ink-color-for-fill_(disabled, dark),
+  text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, dark)
 );
 
 // If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
