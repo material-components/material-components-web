@@ -227,7 +227,8 @@ test('#adapter.registerBottomLineEventHandler adds event listener to bottom line
 
 test('#adapter.deregisterBottomLineEventHandler removes event listener for "transitionend" from bottom line', () => {
   const root = getFixture();
-  const component = new MDCTextField(root, undefined, undefined, (el) => new FakeBottomLine(el));  const handler = () => {};
+  const component = new MDCTextField(root, undefined, undefined, (el) => new FakeBottomLine(el));
+  const handler = () => {};
   component.getDefaultFoundation().adapter_.deregisterBottomLineEventHandler('evt', handler);
   td.verify(component.bottomLine_.unlisten('evt', handler));
 });
