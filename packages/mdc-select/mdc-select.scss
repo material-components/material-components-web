@@ -261,6 +261,15 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
         @include mdc-theme-prop(color, text-primary-on-dark);
       }
     }
+
+    // Styles to override mdc-ripple-radius from mdc-list, which causes display glitches in Chrome
+    // (See https://github.com/material-components/material-components-web/pull/1737#issuecomment-351105800)
+    @include mdc-ripple-radius(50%);
+
+    &::before,
+    &::after {
+      border-radius: 0;
+    }
   }
 
   .mdc-list-group,
