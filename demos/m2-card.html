@@ -243,9 +243,9 @@
             // TODO(acdvorak): Remove handler in destruct method
             optimizedResize.add((e) => this.handleResize_(e));
 
-            const {dropSpacerEl, dropTargetEl} = DragCollection.createDropEls_();
+            const {dropSpacerEl, dropIndicatorEl} = DragCollection.createDropEls_();
             this.dropSpacerEl_ = dropSpacerEl;
-            this.dropTargetEl_ = dropTargetEl;
+            this.dropIndicatorEl_ = dropIndicatorEl;
 
             this.resetState_();
           }
@@ -258,11 +258,11 @@
             const dropZoneElDummyParent = document.createElement('div');
             dropZoneElDummyParent.innerHTML = `
 <div class="m2-card-drop-spacer"></div>
-<div class="m2-card-drop-target"></div>
+<div class="m2-card-drop-indicator"></div>
           `.trim();
             const dropSpacerEl = dropZoneElDummyParent.children[0];
-            const dropTargetEl = dropZoneElDummyParent.children[1];
-            return {dropSpacerEl, dropTargetEl};
+            const dropIndicatorEl = dropZoneElDummyParent.children[1];
+            return {dropSpacerEl, dropIndicatorEl};
           }
 
           resetState_() {
@@ -283,7 +283,7 @@
 
           removeDraggingStateElements_() {
             this.dropSpacerEl_.remove();
-            this.dropTargetEl_.remove();
+            this.dropIndicatorEl_.remove();
           }
 
           handleDragStart_(e) {
@@ -357,14 +357,14 @@
 
           insertDropZoneElement_(dropZone) {
             if (this.isSingleColumnMode()) {
-              this.dropTargetEl_.style.height = '';
-              this.dropTargetEl_.style.width = `${dropZone.associatedItem.parentOffsetRect.width}px`;
+              this.dropIndicatorEl_.style.height = '';
+              this.dropIndicatorEl_.style.width = `${dropZone.associatedItem.parentOffsetRect.width}px`;
             } else {
-              this.dropTargetEl_.style.height = `${dropZone.associatedItem.parentOffsetRect.height}px`;
-              this.dropTargetEl_.style.width = '';
+              this.dropIndicatorEl_.style.height = `${dropZone.associatedItem.parentOffsetRect.height}px`;
+              this.dropIndicatorEl_.style.width = '';
             }
 
-            this.insertAdjacentElement_(dropZone.associatedItem.rootEl, this.dropTargetEl_, dropZone.dropSide);
+            this.insertAdjacentElement_(dropZone.associatedItem.rootEl, this.dropIndicatorEl_, dropZone.dropSide);
           }
 
           insertDropSpacerElement_(dropZone) {
@@ -376,7 +376,7 @@
               this.dropSpacerEl_.style.height = `unset`;
             }
 
-            this.insertAdjacentElement_(this.dropTargetEl_, this.dropSpacerEl_, dropZone.dropSide);
+            this.insertAdjacentElement_(this.dropIndicatorEl_, this.dropSpacerEl_, dropZone.dropSide);
           }
 
           isSingleColumnMode() {

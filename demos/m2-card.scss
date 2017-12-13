@@ -112,7 +112,7 @@ $m2-card-baseline-drop-zone-thickness: 4px;
   // TODO(acdvorak): Document that `width` is set dynamically in JS
 }
 
-.m2-card-drop-target {
+.m2-card-drop-indicator {
   background-color: #333;
   border-radius: 4px;
   width: $m2-card-baseline-drop-zone-thickness;
@@ -173,12 +173,12 @@ $demo-drop-zone-thickness: 6px;
   height: demo-card-list-primary-axis-size(3);
 }
 
-.demo-card-list .m2-card-drop-target {
+.demo-card-list .m2-card-drop-indicator {
   width: $demo-drop-zone-thickness;
   margin: $demo-card-margin 0;
 }
 
-.m2-card-list--single-column .m2-card-drop-target {
+.m2-card-list--single-column .m2-card-drop-indicator {
   width: unset;
   height: $demo-drop-zone-thickness;
   margin: 0 $demo-card-margin;
