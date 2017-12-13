@@ -20,3 +20,36 @@
 @import "../packages/mdc-dialog/mdc-dialog";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-list/mdc-list";
+
+.demo-body {
+  padding: 24px;
+  margin: 0;
+  box-sizing: border-box;
+}
+.demo-content > button {
+  margin-bottom: 6px;
+}
+.demo-theme-dark {
+  background-color: #303030;
+}
+
+section.demo-content {
+  padding: 24px;
+}
+
+.catalog-dialog-demo {
+  position: relative;
+  width: 320px;
+  z-index: auto;
+}
+
+.dialog-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-theme-dark {
+  background: #262626;
+  color: white;
+}
