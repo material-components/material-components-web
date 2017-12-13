@@ -19,3 +19,91 @@
 @import "../packages/mdc-card/mdc-card";
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
+
+.hero .demo-card {
+  width: 320px;
+  background-color: white;
+}
+
+.hero {
+  min-height: 480px;
+}
+
+.demo-card {
+  max-width: 21.875rem;
+  /* 350sp */
+  margin-bottom: 48px;
+}
+
+@media(min-width: 768px) {
+  .demo-card {
+    margin-bottom: 24px;
+  }
+}
+
+.demo-card--with-avatar .demo-card__primary {
+  position: relative;
+}
+
+.demo-card--with-avatar .demo-card__avatar {
+  position: absolute;
+  background: #bdbdbd;
+  height: 2.5rem;
+  /* 40sp */
+  width: 2.5rem;
+  /* 40sp */
+  border-radius: 50%;
+}
+
+.demo-card--with-avatar .demo-card__title,
+.demo-card--with-avatar .demo-card__subtitle {
+  margin-left: 56px;
+}
+
+[dir="rtl"] .demo-card--with-avatar .demo-card__title,
+[dir="rtl"] .demo-card--with-avatar .demo-card__subtitle {
+  margin-right: 56px;
+  margin-left: initial;
+}
+
+.demo-card__16-9-media {
+  background-image: url("images/16-9.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 12.313rem;
+  /* 197sp, for 16:9 ratio with 350sp demo card width */
+}
+
+.demo-card--small .demo-card__media {
+  background-image: url("images/1-1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 10.938rem;
+  /* 175sp, for 1:1 ratio with 175sp demo card width */
+}
+
+.demo-card--bg-demo {
+  height: 21.875rem;
+  /* 350sp */
+  background-image: url("images/1-1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.demo-card--bg-demo .demo-card__primary,
+.demo-card--bg-demo .demo-card__actions {
+  background: rgba(0, 0, 0, .4);
+}
+
+#demo-wrapper {
+  margin: 24px;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: left;
+  justify-content: left;
+}
+
+#demo-wrapper .demo-card {
+  margin: 24px;
+  min-width: 320px;
+}
