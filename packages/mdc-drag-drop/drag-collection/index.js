@@ -506,8 +506,8 @@ class DropZone {
   }
 
   intersectsViewportPoint(viewportPoint) {
-    // The properties below need to be recalculated every time the pointer moves to ensure that scrolling while
-    // dragging works and uses the correct coordinates.
+    // The properties below need to be recalculated every time the pointer moves to ensure that scrolling while dragging
+    // works (and uses the correct coordinates).
     const collectionViewportRect = this.associatedItem.dragCollectionEl.getBoundingClientRect();
     const parentOffsetPoint = {
       x: viewportPoint.x - collectionViewportRect.left,

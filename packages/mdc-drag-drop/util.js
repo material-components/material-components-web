@@ -26,58 +26,6 @@ const Directionality = {
   RTL: 'rtl',
 };
 
-export function getDirectionality(element) {
-  const ancestor = element.closest('[dir]');
-  return (ancestor && ancestor.getAttribute('dir') === Directionality.RTL)
-    ? Directionality.RTL
-    : Directionality.LTR;
-}
-
-export function isLTR(element) {
-  return getDirectionality(element) === Directionality.LTR;
-}
-
-export function getOffset(elementRect, parentRect) {
-  const offsetRect = {};
-  offsetRect.top = offsetRect.y = elementRect.top - parentRect.top;
-  offsetRect.left = offsetRect.x = elementRect.left - parentRect.left;
-  offsetRect.right = offsetRect.left + elementRect.width;
-  offsetRect.bottom = offsetRect.top + elementRect.height;
-  offsetRect.width = elementRect.width;
-  offsetRect.height = elementRect.height;
-  return offsetRect;
-}
-
-export function getRelativeOffset(el, parent) {
-  const elRect = el.getBoundingClientRect();
-  const parentRect = parent.getBoundingClientRect();
-  return getOffset(elRect, parentRect);
-}
-
-export function getPointerPositionInViewport(e) {
-  const originalEvent = e.originalEvent;
-  const nativePointerEvent = originalEvent.touches ? originalEvent.touches[0] : originalEvent;
-  return {
-    x: nativePointerEvent.clientX,
-    y: nativePointerEvent.clientY,
-  };
-}
-
-export function closest(el, selector) {
-  if (!document.documentElement.contains(el)) {
-    return null;
-  }
-
-  do {
-    if (el.matches(selector)) {
-      return el;
-    }
-    el = el.parentElement;
-  } while (el !== null);
-
-  return null;
-}
-
 function isPointAboveRect(point, rect) {
   return point.y < rect.top;
 }
@@ -94,13 +42,22 @@ function isPointRightOfRect(point, rect) {
   return point.x > rect.right;
 }
 
-export function pointIntersectsRect(point, rect) {
-  return !(
-    isPointAboveRect(point, rect) ||
-    isPointBelowRect(point, rect) ||
-    isPointLeftOfRect(point, rect) ||
-    isPointRightOfRect(point, rect)
-  );
+function getDirectionality(element) {
+  const ancestor = element.closest('[dir]');
+  return (ancestor && ancestor.getAttribute('dir') === Directionality.RTL)
+    ? Directionality.RTL
+    : Directionality.LTR;
+}
+
+function computeRectOffset(targetRect, originRect) {
+  const offsetRect = {};
+  offsetRect.top = offsetRect.y = targetRect.top - originRect.top;
+  offsetRect.left = offsetRect.x = targetRect.left - originRect.left;
+  offsetRect.right = offsetRect.left + targetRect.width;
+  offsetRect.bottom = offsetRect.top + targetRect.height;
+  offsetRect.width = targetRect.width;
+  offsetRect.height = targetRect.height;
+  return offsetRect;
 }
 
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
@@ -159,6 +116,49 @@ class ResizeListener {
     });
     this.isRunning_ = false;
   }
+}
+
+export function isLTR(element) {
+  return getDirectionality(element) === Directionality.LTR;
+}
+
+export function getRelativeOffset(targetEl, originEl) {
+  const targetRect = targetEl.getBoundingClientRect();
+  const originRect = originEl.getBoundingClientRect();
+  return computeRectOffset(targetRect, originRect);
+}
+
+export function getPointerPositionInViewport(e) {
+  const originalEvent = e.originalEvent;
+  const nativePointerEvent = originalEvent.touches ? originalEvent.touches[0] : originalEvent;
+  return {
+    x: nativePointerEvent.clientX,
+    y: nativePointerEvent.clientY,
+  };
+}
+
+export function closest(el, selector) {
+  if (!document.documentElement.contains(el)) {
+    return null;
+  }
+
+  while (el !== null) {
+    if (el.matches(selector)) {
+      return el;
+    }
+    el = el.parentElement;
+  }
+
+  return null;
+}
+
+export function pointIntersectsRect(point, rect) {
+  return !(
+    isPointAboveRect(point, rect) ||
+    isPointBelowRect(point, rect) ||
+    isPointLeftOfRect(point, rect) ||
+    isPointRightOfRect(point, rect)
+  );
 }
 
 export const resizeListener = new ResizeListener();
