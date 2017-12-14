@@ -330,6 +330,7 @@ class MDCDragManager extends MDCComponent {
     this.itemCloneEl_.remove();
     this.itemCloneEl_.classList.remove(this.classes_['mirror']);
     this.itemSourceEl_.classList.remove(this.classes_['source:dragging']);
+    this.itemSourceEl_.removeAttribute('aria-grabbed');
     this.root_.classList.remove(this.classes_['container:dragging']);
 
     this.emit('drag:stop', {originalEvent: e, originalSource: this.itemSourceEl_});
