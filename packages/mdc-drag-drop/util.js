@@ -140,7 +140,7 @@ class ResizeListener {
 
   registerResizeHandler(callback) {
     if (!this.callbacks_.length) {
-      window.addEventListener('resize', this.handleResize_, {
+      window.addEventListener('resize', (e) => this.handleResize_(e), {
         capture: true,
         passive: true,
       });
