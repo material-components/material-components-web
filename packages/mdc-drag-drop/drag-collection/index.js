@@ -218,6 +218,8 @@ class MDCDragManager extends MDCComponent {
     this.setGlobalEventListeners_(eventMap.move, (e) => this.handlePointerMove_(e));
     this.setGlobalEventListeners_(eventMap.up, (e) => this.handlePointerUp_(e));
     this.setGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
+    document.documentElement.classList.add('mdc-drag-touch-disabled');
+    document.documentElement.classList.add('mdc-drag-select-disabled');
 
     // Prevent the Chrome Dev Tools mobile emulator from displaying a context menu on long press.
     if (e.pointerType === 'touch') {
@@ -333,6 +335,8 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     this.itemSourceEl_.classList.remove(this.classes_['source:dragging']);
     this.itemSourceEl_.removeAttribute('aria-grabbed');
     this.root_.classList.remove(this.classes_['container:dragging']);
+    document.documentElement.classList.remove('mdc-drag-touch-disabled');
+    document.documentElement.classList.remove('mdc-drag-select-disabled');
 
     this.emit('drag:stop', {originalEvent: e, originalSource: this.itemSourceEl_});
   }

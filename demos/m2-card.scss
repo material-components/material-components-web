@@ -89,6 +89,18 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
   }
 }
 
+.mdc-drag-select-disabled {
+  user-select: none;
+}
+
+.mdc-drag-touch-disabled {
+  touch-action: none;
+}
+
+.mdc-draggable-item {
+  user-select: none;
+}
+
 .mdc-draggable-item:not(.mdc-draggable-item--clone) {
   transition: transform .2s;
 }
