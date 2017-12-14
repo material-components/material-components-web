@@ -210,6 +210,7 @@ class MDCDragManager extends MDCComponent {
     this.currentPointerPositionInViewport_ = util.getPointerPositionInViewport(e);
     this.currentPointerPositionRelativeToCollection_ = util.getPointerOffsetFromElement(e, this.root_);
     this.initialPointerPositionRelativeToCollection_ = util.getPointerOffsetFromElement(e, this.root_);
+    this.initialPointerPositionRelativeToItem_ = util.getPointerOffsetFromElement(e, this.itemSourceEl_);
 
     const eventPrefix = util.getEventPrefix(e);
     const eventMap = EventMap[eventPrefix];
@@ -337,8 +338,10 @@ handlePointerMoveWhileWaitingForLongPress_(e):
   }
 
   setClonePosition_() {
-    const pos = this.currentPointerPositionInViewport_;
-    this.itemCloneEl_.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+    const pos = util.computePointOffset(
+      this.currentPointerPositionInViewport_,
+      this.initialPointerPositionRelativeToItem_);
+    this.itemCloneEl_.style.transform = `translate3d(${pos.x + 16}px, ${pos.y + 16}px, 0)`;
     this.itemCloneEl_.style.margin = '0';
   }
 }
