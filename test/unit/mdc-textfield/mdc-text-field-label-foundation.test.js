@@ -61,3 +61,9 @@ test('#setValidity adds mdc-text-field__label--shake class if isValid is false',
   foundation.setValidity(false);
   td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE));
 });
+
+test('#setValidity does nothing if isValid is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setValidity(true);
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE), {times: 0});
+});

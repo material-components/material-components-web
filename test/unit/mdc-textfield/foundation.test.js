@@ -279,6 +279,18 @@ test('on focus adds mdc-text-field--focused class', () => {
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED));
 });
 
+test('on focus activates bottom line', () => {
+  const {foundation, mockAdapter, bottomLine} = setupTest();
+  let focus;
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focus = handler;
+    });
+  foundation.init();
+  focus();
+  td.verify(bottomLine.activate());
+});
+
 test('on focus floats label', () => {
   const {foundation, mockAdapter, label} = setupTest();
   let focus;
@@ -382,6 +394,22 @@ test('on blur handles getNativeInput() not returning anything gracefully', () =>
   const {mockAdapter, blur} = setupBlurTest();
   td.when(mockAdapter.getNativeInput()).thenReturn(null);
   assert.doesNotThrow(blur);
+});
+
+test('on keydown sets receivedUserInput to true when input is enabled', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+  td.when(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      keydown = handler;
+    });
+    td.when(mockAdapter.getNativeInput()).thenReturn({
+      disabled: false,
+    });
+  foundation.init();
+  assert.equal(foundation.receivedUserInput_, false);
+  keydown();
+  assert.equal(foundation.receivedUserInput_, true);
 });
 
 test('on transition end deactivates the bottom line if this.isFocused_ is false', () => {

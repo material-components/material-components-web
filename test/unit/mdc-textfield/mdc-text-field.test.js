@@ -131,6 +131,22 @@ test('#constructor instantiates a label on the `.mdc-text-field__label` element 
   assert.instanceOf(component.label_, MDCTextFieldLabel);
 });
 
+test('#constructor instantiates an outline on the `.mdc-text-field__outline` element if present', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.outline_, MDCTextFieldOutline);
+});
+
+test('#constructor handles undefined optional sub-elements gracefully', () => {
+  const root = bel`
+    <div class="mdc-text-field">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+    </div>
+  `;
+  assert.doesNotThrow(() => new MDCTextField(root));
+});
+
 function setupTest(root = getFixture()) {
   const bottomLine = new FakeBottomLine();
   const helperText = new FakeHelperText();
@@ -191,12 +207,16 @@ test('#destroy cleans up the outline if present', () => {
   const root = getFixture();
   root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
   const {component, outline} = setupTest(root);
-  console.log(outline);
   component.destroy();
   td.verify(outline.destroy());
 });
 
-test('#destroy accounts for ripple nullability', () => {
+test('#destroy handles undefined optional sub-elements gracefully', () => {
+  const root = bel`
+    <div class="mdc-text-field">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+    </div>
+  `;
   const component = new MDCTextField(getFixture());
   assert.doesNotThrow(() => component.destroy());
 });
