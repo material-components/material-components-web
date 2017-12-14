@@ -218,6 +218,11 @@ class MDCDragManager extends MDCComponent {
     this.setGlobalEventListeners_(eventMap.up, (e) => this.handlePointerUp_(e));
     this.setGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
 
+    // Prevent the Chrome Dev Tools mobile emulator from displaying a context menu on long press.
+    if (e.pointerType === 'touch') {
+      this.setGlobalEventListeners_('contextmenu', (e) => e.preventDefault());
+    }
+
     this.setDragState_(DragState.LONG_PRESS_WAITING);
     this.delayTimer_ = setTimeout(() => this.handleDragStart_(), this.delay_);
   }
