@@ -59,7 +59,7 @@
         </header>
         <nav class="mdc-temporary-drawer__content mdc-list-group">
           <div id="icon-with-text-demo" class="mdc-list">
-            <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
+            <a class="mdc-list-item mdc-list-item--activated" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
             </a>
             <a class="mdc-list-item" href="#">
@@ -107,6 +107,22 @@
       });
       drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
         console.log('Received MDCTemporaryDrawer:close');
+      });
+
+      // Demonstrate application of --activated modifier to drawer menu items
+      var activatedClass = 'mdc-list-item--activated';
+      document.querySelector('.mdc-temporary-drawer__drawer').addEventListener('click', function(event) {
+        var el = event.target;
+        while (!el.classList.contains('mdc-list-item') && el) {
+          el = el.parentNode;
+        }
+        if (el) {
+          var activatedItem = document.querySelector('.' + activatedClass);
+          if (activatedItem) {
+            activatedItem.classList.remove(activatedClass);
+          }
+          event.target.classList.add(activatedClass);
+        }
       });
     </script>
   </body>
