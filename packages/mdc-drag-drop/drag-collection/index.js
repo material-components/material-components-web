@@ -358,7 +358,7 @@ export class MDCDragCollection extends MDCComponent {
     const DragManager = MDCDragManager;
     this.dragManager_ = new DragManager(this.root_, {
       draggable: '.mdc-draggable-item',
-      delay: 500,
+      delay: 300,
       longPressToleranceInPx: 25,
       classes: {
         'container:dragging': 'mdc-drag-collection--dragging',
