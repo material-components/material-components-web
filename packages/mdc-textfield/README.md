@@ -1,12 +1,12 @@
 <!--docs:
-title: "Text Fields"
+title: "Text Field"
 layout: detail
 section: components
 iconId: text_field
-path: /catalog/input-controls/text-fields/
+path: /catalog/input-controls/text-field/
 -->
 
-# Text Fields
+# Text Field
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
@@ -15,9 +15,7 @@ path: /catalog/input-controls/text-fields/
   </a>
 </div>-->
 
-The MDC Text Field component provides a textual input field adhering to the [Material Design Specification](https://material.io/guidelines/components/text-fields.html).
-It is fully accessible, ships with RTL support, and includes a gracefully-degraded version that does
-not require any javascript.
+Text fields allow users to input, edit, and select text.
 
 ## Design & API Documentation
 
@@ -38,7 +36,7 @@ npm install --save @material/textfield
 
 ## Usage
 
-### Single-line - with Javascript
+### HTML Structure
 
 ```html
 <div class="mdc-text-field">
@@ -48,61 +46,9 @@ npm install --save @material/textfield
 </div>
 ```
 
-It's also possible to wrap an input within a `<label>` to avoid dynamic id generation:
+#### HTML5 Validation
 
-```html
-<label class="mdc-text-field">
-  <input type="text" class="mdc-text-field__input">
-  <span class="mdc-text-field__label">Hint Text</span>
-  <div class="mdc-text-field__bottom-line"></div>
-</label>
-```
-
-> _NOTE_: Only place an `mdc-text-field__label` inside of a text field _if you plan on using
-> Javascript_. Otherwise, the label must go outside of the text-field, as shown below.
-
-### Single-line - Gracefully degraded
-
-```html
-<label for="text-field-no-js">TextField with no JS: </label>
-<div class="mdc-text-field">
-  <input type="text" id="text-field-no-js" class="mdc-text-field__input" placeholder="Hint text">
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-```
-
-### Disabled Text Fields
-
-```html
-<div class="mdc-text-field mdc-text-field--disabled">
-  <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
-  <label class="mdc-text-field__label" for="disabled-text-field">Disabled text field</label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-```
-
-### Pre-filled text fields
-
-When dealing with JS-driven text fields that already have values, you'll want to ensure that you
-render the text field label with the `mdc-text-field__label--float-above` modifier class. This will
-ensure that the label moves out of the way of the text field's value and prevents a Flash Of
-Un-styled Content (**FOUC**). You'll also want to add the `mdc-text-field--upgraded` modifier class
-on the text-field root element. The JS component does for you automatically on initialization, but
-since it won't be added until that JS runs, adding it manually will prevent an initial FOUC.
-
-```html
-<div class="mdc-text-field mdc-text-field--upgraded">
-  <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
-  <label class="mdc-text-field__label mdc-text-field__label--float-above" for="pre-filled">
-    Label in correct place
-  </label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-```
-
-### Validation
-
-MDC Text Field provides validity styling by using the `:invalid` and `:required` attributes provided
+`MDCTextFieldFoundation` provides validity styling by using the `:invalid` and `:required` attributes provided
 by HTML5's form validation API.
 
 ```html
@@ -113,9 +59,38 @@ by HTML5's form validation API.
 </div>
 ```
 
-By default an input's validity is checked via `checkValidity()` on blur, and the styles are updated
-accordingly. Set the MDCTextField.valid field to set the input's validity explicitly. MDC Text Field
-automatically appends an asterisk to the label text if the required attribute is set.
+`MDCTextFieldFoundation` automatically appends an asterisk to the label text if the required attribute is set.
+
+#### Pre-filled
+
+When dealing with JS-driven text fields that already have values, you'll want to ensure that you
+render `mdc-text-field__label` with the `mdc-text-field__label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
+ensure that the label moves out of the way of the text field's value and prevents a Flash Of
+Un-styled Content (**FOUC**).
+
+```html
+<div class="mdc-text-field mdc-text-field--upgraded">
+  <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
+  <label class="mdc-text-field__label mdc-text-field__label--float-above" for="pre-filled">
+    Label in correct place
+  </label>
+  <div class="mdc-text-field__bottom-line"></div>
+</div>
+```
+> _NOTE_: Only place an `mdc-text-field__label` inside of `mdc-text-field` _if you plan on using
+> JavaScript_. Otherwise, the label must go outside of `mdc-text-field`, as shown below.
+
+#### CSS Only
+
+```html
+<label for="text-field-no-js">TextField with no JS: </label>
+<div class="mdc-text-field">
+  <input type="text" id="text-field-no-js" class="mdc-text-field__input" placeholder="Hint text">
+  <div class="mdc-text-field__bottom-line"></div>
+</div>
+```
+
+##### Box Variant
 
 ### Using Helper Text
 
@@ -137,7 +112,10 @@ See [here](icon/) for more information on using icons.
 </div>
 ```
 
-### Textarea - CSS Only
+> _NOTE_: Only use `mdc-text-field__label` within `mdc-text-field--textarea` _if you plan on using
+> Javascript_. Otherwise, use the `placeholder` attribute, as shown below.
+
+##### CSS Only
 
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">
@@ -149,145 +127,62 @@ See [here](icon/) for more information on using icons.
 </div>
 ```
 
-### Full-width
+#### Disabled
 
 ```html
-<div class="mdc-text-field mdc-text-field--fullwidth">
-  <input class="mdc-text-field__input"
-         type="text"
-         placeholder="Full-Width Text Field"
-         aria-label="Full-Width Text Field">
-</div>
-
-<div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--textarea">
-  <textarea id="full-width-textarea" class="mdc-text-field__input" rows="8"></textarea>
-  <label for="full-width-textarea" class="mdc-text-field__label">Textarea Label</label>
-</div>
-```
-
-Note that **full-width text fields do not support floating labels**. Labels should not be
-included as part of the DOM structure for full-width text fields. Full-width textareas
-behave normally.
-
-### Text Field Boxes
-
-```html
-<div class="mdc-text-field mdc-text-field--box">
-  <input type="text" id="tf-box" class="mdc-text-field__input">
-  <label for="tf-box" class="mdc-text-field__label">Your Name</label>
+<div class="mdc-text-field mdc-text-field--disabled">
+  <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
+  <label class="mdc-text-field__label" for="disabled-text-field">Disabled text field</label>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
 
-Note that Text field boxes support all of the same features as normal text-fields, including helper
-text, validation, and dense UI.
+#### Helper Text
 
-#### CSS-only text field boxes
+The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
+and disappears on input field blur by default, or it can be persistent. 
+See [here](helper-text/) for more information on using helper text.
 
-```html
-<label for="css-only-text-field-box">Your name:</label>
-<div class="mdc-text-field mdc-text-field--box">
-  <input type="text" class="mdc-text-field__input" id="css-only-text-field-box" placeholder="Name">
-</div>
-```
+#### Leading and Trailing Icons
+
+Leading and trailing icons can be added to MDC Text Fields as visual indicators as well as interaction targets.
+See [here](icon/) for more information on using icons.
+
+### CSS Classes
+
+CSS Class | Description
+--- | ---
+`mdc-text-field` | Mandatory
+`mdc-text-field__input` | Mandatory
+`mdc-text-field--upgraded` | Indicates the text field is upgraded, normally by JavaScript
+`mdc-text-field--box` | Styles the text field as a box text field
+`mdc-text-field--fullwidth` | Styles the text field as a full width text field
+`mdc-text-field--textarea` | Indicates the text field is a `<textarea>`
+`mdc-text-field--disabled` | Styles the text field as a disabled text field
+`mdc-text-field--dense` | Styles the text field as a dense text field
+`mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon
+`mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon
+`mdc-text-field--focused` | Styles the text field as a text field in focus
 
 ### Sass Mixins
 
-To customize a Filled Text Field or a Text Field `textarea`'s border radius, you can use the following mixins.
-Alternatively, if you would like to change the border radius for every instance of MDC Text Field uniformly, regardless
-of the variant, you can override $mdc-text-field-border-radius in Sass.
+Mixin | Description
+--- | ---
+`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
+`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
 
-#### `mdc-text-field-box-corner-radius($radius)`
+### `MDCTextField`
 
-This mixin customizes the border radius for a Text Field Box.
-
-#### `mdc-text-field-textarea-corner-radius($radius)`
-
-This mixin customizes the border radius for a Text Field `textarea`.
-
-### Using the JS component
-
-MDC Text Field ships with Component / Foundation classes which are used to provide a full-fidelity
-Material Design text field component.
-
-#### Including in code
-
-##### ES2015
-
-```javascript
-import {MDCTextField, MDCTextFieldFoundation} from '@material/textfield';
-```
-
-##### CommonJS
-
-```javascript
-const mdcTextField = require('mdc-text-field');
-const MDCTextField = mdcTextField.MDCTextField;
-const MDCTextFieldFoundation = mdcTextField.MDCTextFieldFoundation;
-```
-
-##### AMD
-
-```javascript
-require(['path/to/mdc-textfield'], mdcTextField => {
-  const MDCTextField = mdcTextField.MDCTextField;
-  const MDCTextFieldFoundation = mdcTextField.MDCTextFieldFoundation;
-});
-```
-
-##### Global
-
-```javascript
-const MDCTextField = mdc.textField.MDCTextField;
-const MDCTextFieldFoundation = mdc.textField.MDCTextFieldFoundation;
-```
-
-#### Automatic Instantiation
-
-```javascript
-mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field'));
-```
-
-#### Manual Instantiation
-
-```javascript
-import {MDCTextField} from '@material/textfield';
-
-const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
-```
-
-#### Controlling ripple instantiation
-
-When `MDCTextField` is instantiated with a root element containing the `mdc-text-field--box` class,
-it instantiates an `MDCRipple` instance on the element in order to facilitate the correct
-interaction UX for text field boxes as outlined in the spec. The way this ripple is instantiated
-can be controlled by passing a ripple factory argument to the constructor.
-
-```js
-const textFieldBoxEl = document.querySelector('.mdc-text-field--box');
-const textField = new MDCTextField(textFieldBoxEl, /* MDCTextFieldFoundation */ undefined, (el, foundation) => {
-  // Optionally do something with the element or the Ripple foundation...
-  return new MDCRipple(el, foundation);
-});
-```
-
-By default the ripple factory simply calls `new MDCRipple(el, foundation)` and returns the result.
-
-#### MDCTextField API
-
-Similar to regular DOM elements, the `MDCTextField` functionality is exposed through accessor
-methods.
-
-##### MDCTextField.disabled
+#### MDCTextField.disabled
 
 Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
 respectively.
 
-##### MDCTextField.valid
+#### MDCTextField.valid
 
 Boolean setter. Proxies to the foundation's `setValid` method when set.
 
-##### MDCTextField.helperTextContent
+#### MDCTextField.helperTextContent
 
 String setter. Proxies to the foundation's `setHelperTextContent` method when set.
 
