@@ -274,20 +274,20 @@ if (!IS_DEV) {
 }
 
 if (IS_DEV) {
-  const demoStyleEntry = {};
-  const exceptions = {};
+  const demoCssEntry = {};
+  const demoCssExcludes = {};
   if (!GENERATE_DEMO_THEMES) {
-    exceptions['demos/theme/index.scss'] = true;
+    demoCssExcludes['demos/theme/index.scss'] = true;
   }
   glob.sync('demos/**/*.scss').forEach((filename) => {
-    if (!exceptions[filename]) {
-      demoStyleEntry[filename.slice(6, -5)] = path.resolve(filename);
+    if (!demoCssExcludes[filename]) {
+      demoCssEntry[filename.slice(6, -5)] = path.resolve(filename);
     }
   });
 
   module.exports.push({
     name: 'demo-css',
-    entry: demoStyleEntry,
+    entry: demoCssEntry,
     output: {
       path: OUT_DIR_ABS,
       publicPath: DEMO_ASSET_DIR_REL,
@@ -304,6 +304,53 @@ if (IS_DEV) {
       createCssExtractTextPlugin(),
       createBannerPlugin(),
       createStaticDemoPlugin(),
+    ],
+  });
+
+  const demoJsEntry = {};
+  glob.sync('demos/**/*.js').forEach((filename) => {
+    const demosPrefix = new RegExp('^demos/');
+    const fileExtension = /\.js$/;
+    const directorySeparator = /[/]/g;
+    const kebabCase = /-([a-z])/g;
+    const toCamelCase = (match, char) => char.toUpperCase();
+
+    const name = filename
+      // e.g., "demos/foo-bar/foo-bar.js" -> "foo-bar/foo-bar.js"
+      .replace(demosPrefix, '')
+      // e.g., "foo-bar/foo-bar.js" -> "foo-bar/foo-bar"
+      .replace(fileExtension, '')
+      // e.g., "foo-bar/foo-bar" -> "foo-bar.foo-bar"
+      .replace(directorySeparator, '.')
+      // e.g., "foo-bar.foo-bar" -> "fooBar.fooBar"
+      .replace(kebabCase, toCamelCase);
+
+    demoJsEntry[name] = path.resolve(filename);
+  });
+
+  module.exports.push({
+    name: 'demo-js',
+    entry: demoJsEntry,
+    output: {
+      path: OUT_DIR_ABS,
+      publicPath: DEMO_ASSET_DIR_REL,
+      filename: 'demo.[name].js',
+      libraryTarget: 'umd',
+      library: ['demo', '[name]'],
+    },
+    devtool: DEVTOOL,
+    module: {
+      rules: [{
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        },
+      }],
+    },
+    plugins: [
+      createBannerPlugin(),
     ],
   });
 }
