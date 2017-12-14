@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,34 +14,22 @@
 // limitations under the License.
 //
 
-@import "@material/animation/functions";
+@import "@material/theme/variables";
 @import "@material/theme/mixins";
-@import "./common";
-@import "./mixins";
-@import "./variables";
 
-// postcss-bem-linter: define ripple-surface
+.mdc-text-field--with-leading-icon .mdc-text-field__icon,
+.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+  position: absolute;
+  bottom: 16px;
+  cursor: pointer;
 
-.mdc-ripple-surface {
-  @include mdc-ripple-surface;
-  @include mdc-states;
-  @include mdc-ripple-radius;
-
-  position: relative;
-  outline: none;
-  overflow: hidden;
-
-  &[data-mdc-ripple-is-unbounded] {
-    overflow: visible;
-  }
-
-  &--primary {
-    @include mdc-states(primary);
-  }
-
-  &--accent {
-    @include mdc-states(secondary);
+  @include mdc-theme-dark(".mdc-text-field") {
+    @include mdc-theme-prop(color, text-secondary-on-dark);
   }
 }
 
-// postcss-bem-linter: end
+.mdc-text-field__icon:not([tabindex]),
+.mdc-text-field__icon[tabindex="-1"] {
+  cursor: default;
+  pointer-events: none;
+}

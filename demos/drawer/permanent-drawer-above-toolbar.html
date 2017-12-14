@@ -78,7 +78,7 @@
       <div class="mdc-drawer__toolbar-spacer"></div>
       <div class="mdc-list-group">
         <nav class="mdc-list">
-          <a class="mdc-list-item mdc-drawer--selected" href="#">
+          <a class="mdc-list-item mdc-list-item--activated" href="#">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
           </a>
           <a class="mdc-list-item" href="#">
@@ -180,16 +180,19 @@
         extraTall.style.display = extraTall.style.display ? '' : 'none';
       });
 
-      var drawerEl = document.querySelector('#demo-theme-switch');
-      var radioEl = document.querySelector('#demo-radio-buttons');
-      radioEl.addEventListener('change', function(e) {
-        drawerEl.classList.remove('demo-drawer');
-        drawerEl.classList.remove('demo-drawer--accessible');
-
-        if(e.target.id === 'accessible') {
-          drawerEl.classList.add('demo-drawer--accessible');
-        } else if(e.target.id === 'custom') {
-          drawerEl.classList.add('demo-drawer');
+      // Demonstrate application of --activated modifier to drawer menu items
+      var activatedClass = 'mdc-list-item--activated';
+      document.querySelector('.mdc-permanent-drawer').addEventListener('click', function(event) {
+        var el = event.target;
+        while (!el.classList.contains('mdc-list-item') && el) {
+          el = el.parentNode;
+        }
+        if (el) {
+          var activatedItem = document.querySelector('.' + activatedClass);
+          if (activatedItem) {
+            activatedItem.classList.remove(activatedClass);
+          }
+          event.target.classList.add(activatedClass);
         }
       });
     </script>
