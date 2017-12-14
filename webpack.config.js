@@ -63,7 +63,7 @@ const CSS_LOADER_CONFIG = [
     loader: 'css-loader',
     options: {
       sourceMap: GENERATE_SOURCE_MAPS,
-      url: false
+      url: false,
     },
   },
   {
