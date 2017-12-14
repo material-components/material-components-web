@@ -247,21 +247,23 @@ class MDCDragManager extends MDCComponent {
       this.currentPointerPositionRelativeToCollection_,
       this.initialPointerPositionRelativeToCollection_);
 
-    console.log('');
-    console.log('handlePointerMoveWhileWaitingForLongPress_(e):');
-    console.log('x:', Math.abs(pointerOffsetFromStartPosition.x), this.longPressToleranceInPx_);
-    console.log('y:', Math.abs(pointerOffsetFromStartPosition.y), this.longPressToleranceInPx_);
-    console.log('');
+    const xToleranceExceeded = Math.abs(pointerOffsetFromStartPosition.x) > this.longPressToleranceInPx_;
+    const yToleranceExceeded = Math.abs(pointerOffsetFromStartPosition.y) > this.longPressToleranceInPx_;
 
-    if (Math.abs(pointerOffsetFromStartPosition.x) > this.longPressToleranceInPx_ ||
-        Math.abs(pointerOffsetFromStartPosition.y) > this.longPressToleranceInPx_) {
-      this.handleDragEnd_();
+    console.log(`
+handlePointerMoveWhileWaitingForLongPress_(e):
+  x: ${Math.abs(pointerOffsetFromStartPosition.x)} > ${this.longPressToleranceInPx_} = ${xToleranceExceeded}
+  y: ${Math.abs(pointerOffsetFromStartPosition.y)} > ${this.longPressToleranceInPx_} = ${yToleranceExceeded}
+`.trim());
 
+    if (xToleranceExceeded || yToleranceExceeded) {
       console.warn(
         'handlePointerMoveWhileWaitingForLongPress_(e): long press delay did NOT elapse. \n' +
         '(user moved pointer outside of tolerance zone):',
         pointerOffsetFromStartPosition, this.longPressToleranceInPx_);
       // TODO(acdvorak): Emit 'fakeout' event
+
+      this.handleDragEnd_();
     }
   }
 
@@ -280,7 +282,7 @@ class MDCDragManager extends MDCComponent {
   }
 
   handlePointerCancel_(e) {
-    console.log('handlePointerCancel_(' + e.type + ')');
+    console.error('handlePointerCancel_(' + e.type + '):', e);
 
     this.emit('drag:cancel', {originalEvent: e, originalSource: this.itemSourceEl_});
     this.handleDragEnd_(e);
