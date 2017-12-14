@@ -26,13 +26,11 @@ import {cssClasses, strings, numbers, Corner} from '../../../packages/mdc-menu/s
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSimpleMenuFoundation);
   const size = {width: 500, height: 200};
-  const itemYParams = {top: 100, height: 20};
   td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(true);
   td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(false);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
   td.when(mockAdapter.getNumberOfItems()).thenReturn(1);
   td.when(mockAdapter.getInnerDimensions()).thenReturn(size);
-  td.when(mockAdapter.getYParamsForItemAtIndex(0)).thenReturn(itemYParams);
 
   return {foundation, mockAdapter};
 }
@@ -63,12 +61,11 @@ test('exports numbers', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSimpleMenuFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'eventTargetHasClass',
-    'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions', 'setScale', 'setInnerScale',
+    'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions',
     'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
-    'deregisterBodyClickHandler', 'getYParamsForItemAtIndex', 'setTransitionDelayForItemAtIndex',
-    'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus', 'restoreFocus', 'isFocused', 'focus',
-    'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin', 'setPosition', 'setMaxHeight',
-    'getAccurateTime',
+    'deregisterBodyClickHandler', 'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus',
+    'restoreFocus', 'isFocused', 'focus', 'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin',
+    'setPosition', 'setMaxHeight', 'getAccurateTime',
   ]);
 });
 
@@ -89,12 +86,11 @@ test('#init throws error when the necessary DOM is not present', () => {
   assert.throws(() => foundation.init());
 });
 
-testFoundation('#open adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
-  foundation.open();
-  mockRaf.flush();
-  mockRaf.flush();
-  td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
-});
+testFoundation('#open adds the animation class to start an animation',
+  ({foundation, mockAdapter}) => {
+    foundation.open();
+    td.verify(mockAdapter.addClass('mdc-simple-menu--animating-open'));
+  });
 
 testFoundation('#open adds the open class to the menu', ({foundation, mockAdapter, mockRaf}) => {
   td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
@@ -107,41 +103,28 @@ testFoundation('#open adds the open class to the menu', ({foundation, mockAdapte
 
 testFoundation('#open removes the animation class at the end of the animation',
   ({foundation, mockAdapter, mockRaf}) => {
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    const clock = lolex.install();
     td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-top-right')).thenReturn(true);
 
     foundation.open();
+    td.verify(mockAdapter.addClass('mdc-simple-menu--animating-open'));
     mockRaf.flush();
+    td.verify(mockAdapter.addClass('mdc-simple-menu--open'));
+    clock.tick(numbers.TRANSITION_OPEN_DURATION);
     mockRaf.flush();
-    td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    mockRaf.flush();
-    td.verify(mockAdapter.removeClass('mdc-simple-menu--animating'));
+    td.verify(mockAdapter.removeClass('mdc-simple-menu--animating-open'));
   });
 
 testFoundation('#open focuses the menu at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
-  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
-
   foundation.open();
-  mockRaf.flush();
-  mockRaf.flush();
-
-  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.focus());
 });
 
 testFoundation('#open on a not focused menu does not focust at index 0', ({foundation, mockAdapter, mockRaf}) => {
   td.when(mockAdapter.isFocused()).thenReturn(true);
-  td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
   foundation.open();
-  mockRaf.flush();
-  mockRaf.flush();
-
-  td.when(mockAdapter.getAccurateTime()).thenReturn(500);
   mockRaf.flush();
   td.verify(mockAdapter.focusItemAtIndex(0), {times: 0});
 });
@@ -155,15 +138,10 @@ testFoundation('#open anchors the menu on the top left in LTR, given enough room
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 20, bottom: 40, left: 20, right: 60,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
@@ -176,15 +154,10 @@ testFoundation('#open anchors the menu on the top right in LTR when close to the
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 20, bottom: 40, left: 950, right: 990,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('top right'));
+    td.verify(mockAdapter.setTransformOrigin('right top'));
     td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
   });
 
@@ -197,15 +170,9 @@ testFoundation('#open anchors the menu on the top right in RTL, given enough roo
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 20, bottom: 40, left: 500, right: 540,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
-
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('top right'));
+    td.verify(mockAdapter.setTransformOrigin('right top'));
     td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
   });
 
@@ -218,15 +185,10 @@ testFoundation('#open anchors the menu on the top left in RTL when close to the 
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 20, bottom: 40, left: 10, right: 50,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
@@ -239,15 +201,10 @@ testFoundation('#open anchors the menu on the bottom left in LTR when close to t
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 900, bottom: 920, left: 10, right: 50,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
 
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('bottom left'));
+    td.verify(mockAdapter.setTransformOrigin('left bottom'));
     td.verify(mockAdapter.setPosition({left: '0', bottom: '0'}));
   });
 
@@ -260,15 +217,9 @@ testFoundation('#open anchors the menu on the top left in LTR when not close to 
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 900, bottom: 20, left: 10, right: 50,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
-
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
@@ -281,16 +232,11 @@ testFoundation('#open anchors the menu to the bottom left in LTR when not close 
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 100, bottom: 880, left: 10, right: 50,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
     foundation.setAnchorMargin({top: 0, left: 0, bottom: 10, right: 0});
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('top left'));
+    td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '30px'}));
   });
 
@@ -303,16 +249,11 @@ testFoundation('#open anchors the menu to the bottom left in LTR when close to t
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 900, bottom: 80, left: 10, right: 50,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
     foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 0});
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('bottom left'));
+    td.verify(mockAdapter.setTransformOrigin('left bottom'));
     td.verify(mockAdapter.setPosition({left: '0', bottom: '15px'}));
   });
 
@@ -325,16 +266,11 @@ testFoundation('#open anchors the menu to the bottom left in RTL when close to t
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
       height: 20, width: 40, top: 900, bottom: 80, left: 20, right: 940,
     });
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
     foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 7});
     foundation.open();
     mockRaf.flush();
-    mockRaf.flush();
-
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('bottom right'));
+    td.verify(mockAdapter.setTransformOrigin('right bottom'));
     td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
   });
 
@@ -353,11 +289,9 @@ testFoundation('#close does nothing if event target has aria-disabled set to tru
     td.verify(mockAdapter.deregisterBodyClickHandler(td.matchers.anything()), {times: 0});
   });
 
-testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter, mockRaf}) => {
+testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter}) => {
   foundation.close();
-  mockRaf.flush();
-  mockRaf.flush();
-  td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
+  td.verify(mockAdapter.addClass('mdc-simple-menu--animating-close'));
 });
 
 testFoundation('#close removes the open class from the menu', ({foundation, mockAdapter, mockRaf}) => {
@@ -372,18 +306,19 @@ testFoundation('#close removes the open class from the menu', ({foundation, mock
 
 testFoundation('#close removes the animation class at the end of the animation',
   ({foundation, mockAdapter, mockRaf}) => {
-    td.when(mockAdapter.getAccurateTime()).thenReturn(0);
+    const clock = lolex.install();
     td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
     td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
 
     foundation.close();
     mockRaf.flush();
     mockRaf.flush();
-    td.verify(mockAdapter.addClass('mdc-simple-menu--animating'));
+    td.verify(mockAdapter.addClass('mdc-simple-menu--animating-close'));
 
-    td.when(mockAdapter.getAccurateTime()).thenReturn(500);
+    clock.tick(numbers.TRANSITION_OPEN_DURATION);
+
     mockRaf.flush();
-    td.verify(mockAdapter.removeClass('mdc-simple-menu--animating'));
+    td.verify(mockAdapter.removeClass('mdc-simple-menu--animating-close'));
   });
 
 test('#isOpen returns true when the menu is open', () => {

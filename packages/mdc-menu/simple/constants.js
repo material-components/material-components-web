@@ -47,6 +47,10 @@ const numbers = {
   TRANSITION_CLOSE_DURATION: 75,
   // Margin left to the edge of the viewport when menu is at maximum possible height.
   MARGIN_TO_EDGE: 32,
+  // Ratio of anchor width to menu width for switching from corner positioning to center positioning.
+  ANCHOR_TO_MENU_WIDTH_RATIO: 0.75,
+  // Ratio of vertical offset to menu height for switching from corner to mid-way origin positioning.
+  OFFSET_TO_MENU_HEIGHT_RATIO: 0.1,
 };
 
 /**

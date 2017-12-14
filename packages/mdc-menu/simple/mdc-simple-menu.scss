@@ -55,22 +55,25 @@ $mdc-simple-menu-scale-duration: 0.12s;
     outline: none;
   }
 
-  // &--animating {
-  //   display: inline-block;
-  //   overflow-y: hidden;
-  //   opacity: 0.2;
-  //   transform: scale(0.8);
-  //   transition: opacity $mdc-simple-menu-fade-duration linear,
-  //               transform $mdc-simple-menu-scale-duration $mdc-animation-deceleration-curve-timing-function;
-  // }
-
   &--animating-open {
     display: inline-block;
     overflow-y: hidden;
-    opacity: 0.2;
+    opacity: 0;
     transform: scale(0.8);
     transition: opacity $mdc-simple-menu-fade-duration linear,
                 transform $mdc-simple-menu-scale-duration $mdc-animation-deceleration-curve-timing-function;
+    > .mdc-simple-menu__items {
+      transform: scale(1.25);
+    }
+  }
+
+  &--open {
+    display: inline-block;
+    transform: scale(1);
+    opacity: 1;
+    > .mdc-simple-menu__items {
+      transform: scale(1);
+    }
   }
 
   &--animating-close {
@@ -80,20 +83,6 @@ $mdc-simple-menu-scale-duration: 0.12s;
     transition: opacity $mdc-simple-menu-fade-out-duration linear;
   }
 
-  &--animating-open .mdc-simple-menu__items {
-    transform: scale(1.25);
-  }
-
-  &--open {
-    display: inline-block;
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  &--open .mdc-simple-menu__items {
-    transform: scale(1);
-  }
-
   &__items {
     box-sizing: border-box;
     overflow-x: hidden;
@@ -101,32 +90,13 @@ $mdc-simple-menu-scale-duration: 0.12s;
     will-change: transform;
     transform: scale(1);
 
-    // stylelint-disable plugin/selector-bem-pattern, selector-no-universal, selector-max-universal
-/*    > * {
-      opacity: 0;
-    }*/
-
     > .mdc-list-item {
       cursor: pointer;
     }
 
     .mdc-simple-menu--animating & {
       overflow-y: hidden;
-
-/*      > * {
-        transition-duration: $mdc-simple-menu-item-fade-duration;
-        transition-property: opacity;
-        transition-timing-function: $mdc-animation-deceleration-curve-timing-function;
-      }*/
     }
-
-    // .mdc-simple-menu--open & {
-    //   > * {
-    //     opacity: 1;
-    //     will-change: opacity;
-    //   }
-    // }
-    // stylelint-enable plugin/selector-bem-pattern, selector-no-universal, selector-max-universal
   }
 
   // stylelint-disable plugin/selector-bem-pattern
