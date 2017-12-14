@@ -61,7 +61,7 @@
         <div class="mdc-persistent-drawer__toolbar-spacer"></div>
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-persistent-drawer--selected" href="#">
+            <a class="mdc-list-item mdc-list-item--activated" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
             </a>
             <a class="mdc-list-item" href="#">
@@ -123,6 +123,22 @@
         drawerEl.addEventListener('MDCPersistentDrawer:close', function() {
           console.log('Received MDCPersistentDrawer:close');
         });
+
+      // Demonstrate application of --activated modifier to drawer menu items
+      var activatedClass = 'mdc-list-item--activated';
+      document.querySelector('.mdc-persistent-drawer__drawer').addEventListener('click', function(event) {
+        var el = event.target;
+        while (!el.classList.contains('mdc-list-item') && el) {
+          el = el.parentNode;
+        }
+        if (el) {
+          var activatedItem = document.querySelector('.' + activatedClass);
+          if (activatedItem) {
+            activatedItem.classList.remove(activatedClass);
+          }
+          event.target.classList.add(activatedClass);
+        }
+      });
       </script>
     </div>
   </body>
