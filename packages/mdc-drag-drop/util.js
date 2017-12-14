@@ -65,24 +65,6 @@ function getDirectionality(element) {
     : Directionality.LTR;
 }
 
-function computeRectOffset(targetRect, originRect) {
-  const offsetRect = {};
-  offsetRect.top = offsetRect.y = targetRect.top - originRect.top;
-  offsetRect.left = offsetRect.x = targetRect.left - originRect.left;
-  offsetRect.right = offsetRect.left + targetRect.width;
-  offsetRect.bottom = offsetRect.top + targetRect.height;
-  offsetRect.width = targetRect.width;
-  offsetRect.height = targetRect.height;
-  return offsetRect;
-}
-
-function computePointOffset(targetPoint, originPoint) {
-  return {
-    y: targetPoint.y - originPoint.y,
-    x: targetPoint.x - originPoint.x,
-  };
-}
-
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
 class ResizeListener {
   constructor() {
@@ -143,6 +125,24 @@ class ResizeListener {
 
 export function isLTR(element) {
   return getDirectionality(element) === Directionality.LTR;
+}
+
+export function computeRectOffset(targetRect, originRect) {
+  const offsetRect = {};
+  offsetRect.top = offsetRect.y = targetRect.top - originRect.top;
+  offsetRect.left = offsetRect.x = targetRect.left - originRect.left;
+  offsetRect.right = offsetRect.left + targetRect.width;
+  offsetRect.bottom = offsetRect.top + targetRect.height;
+  offsetRect.width = targetRect.width;
+  offsetRect.height = targetRect.height;
+  return offsetRect;
+}
+
+export function computePointOffset(targetPoint, originPoint) {
+  return {
+    y: targetPoint.y - originPoint.y,
+    x: targetPoint.x - originPoint.x,
+  };
 }
 
 export function getPointerPositionInViewport(e) {

@@ -237,8 +237,9 @@ class MDCDragManager extends MDCComponent {
   }
 
   handlePointerMoveWhileWaitingForLongPress_(e) {
-    const pointerOffsetFromStartPosition =
-      util.getPointerOffsetFromViewportRect(e, this.initialPointerPositionRelativeToCollection_);
+    const pointerOffsetFromStartPosition = util.computePointOffset(
+      this.currentPointerPositionRelativeToCollection_,
+      this.initialPointerPositionRelativeToCollection_);
 
     console.log('');
     console.log('handlePointerMoveWhileWaitingForLongPress_(e):');
