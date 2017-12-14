@@ -21,9 +21,25 @@
 const RESIZE_EVENT_DELAY_MS = 500;
 
 /** @enum {string} */
-const Directionality = {
+export const Directionality = {
   LTR: 'ltr',
   RTL: 'rtl',
+};
+
+/** @enum {string} */
+export const InputModality = {
+  UNKNOWN: 'UNKNOWN',
+  POINTER: 'POINTER',
+  KEYBOARD: 'KEYBOARD',
+};
+
+/** @enum {string} */
+export const EventPrefix = {
+  UNKNOWN: 'unknown',
+  POINTER: 'pointer',
+  MOUSE: 'mouse',
+  TOUCH: 'touch',
+  KEY: 'key',
 };
 
 function isPointAboveRect(point, rect) {
@@ -58,6 +74,13 @@ function computeRectOffset(targetRect, originRect) {
   offsetRect.width = targetRect.width;
   offsetRect.height = targetRect.height;
   return offsetRect;
+}
+
+function computePointOffset(targetPoint, originPoint) {
+  return {
+    y: targetPoint.y - originPoint.y,
+    x: targetPoint.x - originPoint.x,
+  };
 }
 
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
@@ -122,19 +145,28 @@ export function isLTR(element) {
   return getDirectionality(element) === Directionality.LTR;
 }
 
-export function getRelativeOffset(targetEl, originEl) {
-  const targetRect = targetEl.getBoundingClientRect();
-  const originRect = originEl.getBoundingClientRect();
-  return computeRectOffset(targetRect, originRect);
-}
-
 export function getPointerPositionInViewport(e) {
-  const originalEvent = e.originalEvent;
+  const originalEvent = e.originalEvent || e.detail.originalEvent || e;
   const nativePointerEvent = originalEvent.touches ? originalEvent.touches[0] : originalEvent;
   return {
     x: nativePointerEvent.clientX,
     y: nativePointerEvent.clientY,
   };
+}
+
+export function getPointerOffsetFromViewportRect(e, originViewportRect) {
+  const pointerPositionInViewport = getPointerPositionInViewport(e);
+  return computePointOffset(pointerPositionInViewport, originViewportRect);
+}
+
+export function getPointerOffsetFromElement(e, originEl) {
+  return getPointerOffsetFromViewportRect(e, originEl.getBoundingClientRect());
+}
+
+export function getElementOffset(targetEl, originEl) {
+  const targetRect = targetEl.getBoundingClientRect();
+  const originRect = originEl.getBoundingClientRect();
+  return computeRectOffset(targetRect, originRect);
 }
 
 /**
@@ -169,6 +201,26 @@ export function pointIntersectsRect(point, rect) {
     isPointLeftOfRect(point, rect) ||
     isPointRightOfRect(point, rect)
   );
+}
+
+export function getEventPrefix(e) {
+  for (const eventPrefix of Object.values(EventPrefix)) {
+    if (e.type.indexOf(eventPrefix) === 0) {
+      return eventPrefix;
+    }
+  }
+  return EventPrefix.UNKNOWN;
+}
+
+export function getInputModality(e) {
+  const eventPrefix = getEventPrefix(e);
+  if (eventPrefix === EventPrefix.UNKNOWN) {
+    return InputModality.UNKNOWN;
+  }
+  if (eventPrefix === EventPrefix.KEY) {
+    return InputModality.KEYBOARD;
+  }
+  return InputModality.POINTER;
 }
 
 export const resizeListener = new ResizeListener();

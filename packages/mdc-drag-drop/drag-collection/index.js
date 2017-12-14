@@ -23,15 +23,321 @@ import * as util from '../util';
 
 /** @enum {string} */
 const ColumnMode = {
-  MULTI_COLUMN: 'multi',
-  SINGLE_COLUMN: 'single',
+  MULTI_COLUMN: 'MULTI_COLUMN',
+  SINGLE_COLUMN: 'SINGLE_COLUMN',
 };
 
 /** @enum {string} */
 const DropSide = {
-  BEFORE: 'before',
-  AFTER: 'after',
+  BEFORE: 'BEFORE',
+  AFTER: 'AFTER',
 };
+
+/** @enum {string} */
+const DragState = {
+  IDLE: 'IDLE',
+  LONG_PRESS_WAITING: 'LONG_PRESS_WAITING',
+  DRAGGING: 'DRAGGING',
+};
+
+const EventMap = {
+  pointer: {
+    down: 'pointerdown',
+    up: 'pointerup',
+    move: 'pointermove',
+    cancel: 'pointercancel',
+  },
+  touch: {
+    down: 'touchstart',
+    up: 'touchend',
+    move: 'touchmove',
+    cancel: 'touchcancel',
+  },
+  mouse: {
+    down: 'mousedown',
+    up: 'mouseup',
+    move: 'mousemove',
+    cancel: null,
+  },
+  key: {
+    down: 'keydown',
+    up: 'keyup',
+    move: null,
+    cancel: null,
+  },
+};
+
+class MDCDragManager extends MDCComponent {
+  constructor(root, {draggable, delay, longPressToleranceInPx, classes} = {}) {
+    super(root);
+    this.delay_ = delay;
+    this.longPressToleranceInPx_ = longPressToleranceInPx;
+    this.itemSelector_ = draggable;
+    this.classes_ = classes;
+  }
+
+  initialize() {
+    this.rootEventListeners_ = new Map();
+    this.globalEventListeners_ = new Map();
+    this.setDragState_(DragState.IDLE);
+
+    const keyboardEventNames = [
+      EventMap.key.down,
+    ];
+    const pointerEventNames = [
+      EventMap.pointer.down,
+      EventMap.touch.down,
+      EventMap.mouse.down,
+    ];
+
+    this.setRootEventListeners_(keyboardEventNames, (e) => this.handleKeyDown_(e));
+    this.setRootEventListeners_(pointerEventNames, (e) => this.handlePointerDown_(e));
+  }
+
+  destroy() {
+    this.removeAllRootEventListeners_();
+    this.removeAllGlobalEventListeners_();
+  }
+
+  getDefaultFoundation() {
+    return {
+      init: () => {},
+    };
+  }
+
+  on(...args) {
+    return this.listen(...args);
+  }
+
+  off(...args) {
+    return this.unlisten(...args);
+  }
+
+  setDragState_(newDragState) {
+    console.warn(`setDragState_(${this.dragState_} -> ${newDragState})`);
+    this.dragState_ = newDragState;
+  }
+
+  /*
+   * Root element event listeners
+   */
+
+  setRootEventListeners_(eventNames, handlerFn) {
+    if (!eventNames) {
+      return;
+    }
+    if (typeof eventNames === 'string') {
+      eventNames = [eventNames];
+    }
+    for (const eventName of eventNames.filter((eventName) => !!eventName)) {
+      this.rootEventListeners_.set(eventName, handlerFn);
+      this.root_.addEventListener(eventName, handlerFn);
+    }
+  }
+
+  removeRootEventListeners_(...eventNames) {
+    for (const eventName of eventNames) {
+      this.root_.removeEventListener(eventName, this.rootEventListeners_.get(eventName));
+      this.rootEventListeners_.delete(eventName);
+    }
+  }
+
+  removeAllRootEventListeners_() {
+    this.removeRootEventListeners_(...this.rootEventListeners_);
+    this.rootEventListeners_.clear();
+  }
+
+  /*
+   * Global event listeners
+   */
+
+  setGlobalEventListeners_(eventNames, handlerFn) {
+    if (!eventNames) {
+      return;
+    }
+    if (typeof eventNames === 'string') {
+      eventNames = [eventNames];
+    }
+    for (const eventName of eventNames.filter((eventName) => !!eventName)) {
+      this.globalEventListeners_.set(eventName, handlerFn);
+      document.addEventListener(eventName, handlerFn);
+    }
+  }
+
+  removeGlobalEventListeners_(...eventNames) {
+    for (const eventName of eventNames) {
+      document.removeEventListener(eventName, this.globalEventListeners_.get(eventName));
+      this.globalEventListeners_.delete(eventName);
+    }
+  }
+
+  removeAllGlobalEventListeners_() {
+    this.removeGlobalEventListeners_(...Array.from(this.globalEventListeners_.keys()));
+    this.globalEventListeners_.clear();
+  }
+
+  /*
+   * Keyboard event handlers
+   */
+
+  handleKeyDown_(e) {
+
+  }
+
+  /*
+   * Pointer event handlers
+   */
+
+  handlePointerDown_(e) {
+    // TODO(acdvorak): Figure out how to allow both scrolling AND long press on mobile
+    // e.preventDefault();
+
+    if (this.dragState_ !== DragState.IDLE) {
+      return;
+    }
+
+    this.itemSourceEl_ = util.closest(e.target, this.itemSelector_);
+    if (!this.itemSourceEl_) {
+      return;
+    }
+
+    console.log('handlePointerDown_(' + e.type + ')');
+
+    this.currentPointerPositionInViewport_ = util.getPointerPositionInViewport(e);
+    this.currentPointerPositionRelativeToCollection_ = util.getPointerOffsetFromElement(e, this.root_);
+    this.initialPointerPositionRelativeToCollection_ = util.getPointerOffsetFromElement(e, this.root_);
+
+    const eventPrefix = util.getEventPrefix(e);
+    const eventMap = EventMap[eventPrefix];
+
+    this.setGlobalEventListeners_(eventMap.move, (e) => this.handlePointerMove_(e));
+    this.setGlobalEventListeners_(eventMap.up, (e) => this.handlePointerUp_(e));
+    this.setGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
+
+    this.setDragState_(DragState.LONG_PRESS_WAITING);
+    this.delayTimer_ = setTimeout(() => this.handleDragStart_(), this.delay_);
+
+    // set timeout for delay
+    // after delay, remove `pointerout` listener
+  }
+
+  handlePointerMove_(e) {
+    e.preventDefault();
+
+    console.log('handlePointerMove_(' + e.type + ')');
+
+    this.currentPointerPositionInViewport_ = util.getPointerPositionInViewport(e);
+    this.currentPointerPositionRelativeToCollection_ = util.getPointerOffsetFromElement(e, this.root_);
+
+    if (this.dragState_ === DragState.LONG_PRESS_WAITING) {
+      this.handlePointerMoveWhileWaitingForLongPress_(e);
+    } else {
+      this.handlePointerMoveWhileDragging_(e);
+    }
+  }
+
+  handlePointerMoveWhileWaitingForLongPress_(e) {
+    const pointerOffsetFromStartPosition =
+      util.getPointerOffsetFromViewportRect(e, this.initialPointerPositionRelativeToCollection_);
+
+    console.log('');
+    console.log('handlePointerMoveWhileWaitingForLongPress_(e):');
+    console.log('x:', Math.abs(pointerOffsetFromStartPosition.x), this.longPressToleranceInPx_);
+    console.log('y:', Math.abs(pointerOffsetFromStartPosition.y), this.longPressToleranceInPx_);
+    console.log('');
+
+    if (Math.abs(pointerOffsetFromStartPosition.x) > this.longPressToleranceInPx_ ||
+        Math.abs(pointerOffsetFromStartPosition.y) > this.longPressToleranceInPx_) {
+      this.handleDragEnd_();
+
+      console.warn(
+        'handlePointerMoveWhileWaitingForLongPress_(e): long press delay did NOT elapse. \n' +
+        '(user moved pointer outside of tolerance zone)');
+      // TODO(acdvorak): Emit 'fakeout' event
+    }
+  }
+
+  handlePointerMoveWhileDragging_(e) {
+    console.log('handlePointerMoveWhileDragging_(' + e.type + ')');
+
+    this.emit('drag:move', {originalEvent: e, originalSource: this.itemSourceEl_});
+    this.setClonePosition_();
+  }
+
+  handlePointerUp_(e) {
+    if (this.dragState_ !== DragState.DRAGGING) {
+      // return;
+    }
+
+    console.log('handlePointerUp_(' + e.type + ')');
+
+    this.emit('drag:release', {originalEvent: e, originalSource: this.itemSourceEl_});
+    this.handleDragEnd_(e);
+  }
+
+  handlePointerCancel_(e) {
+    if (this.dragState_ !== DragState.DRAGGING) {
+      // return;
+    }
+
+    console.log('handlePointerCancel_(' + e.type + ')');
+
+    this.emit('drag:cancel', {originalEvent: e, originalSource: this.itemSourceEl_});
+    this.handleDragEnd_(e);
+  }
+
+  /*
+   * Drag event handlers
+   */
+
+  handleDragStart_() {
+    if (this.dragState_ !== DragState.LONG_PRESS_WAITING) {
+      return;
+    }
+
+    console.log('handleDragStart_()');
+
+    this.setDragState_(DragState.DRAGGING);
+
+    const includeAncestors = true;
+    this.itemCloneEl_ = this.itemSourceEl_.cloneNode(includeAncestors);
+    this.itemCloneEl_.classList.add(this.classes_['mirror']);
+    this.itemSourceEl_.classList.add(this.classes_['source:dragging']);
+    this.itemSourceEl_.setAttribute('aria-grabbed', 'true');
+    this.root_.classList.add(this.classes_['container:dragging']);
+
+    this.setClonePosition_();
+    document.body.appendChild(this.itemCloneEl_);
+
+    this.emit('drag:start', {originalEvent: null, originalSource: this.itemSourceEl_});
+  }
+
+  handleDragEnd_(e) {
+    const prevDragState = this.dragState_;
+    this.setDragState_(DragState.IDLE);
+
+    clearTimeout(this.delayTimer_);
+    this.removeAllGlobalEventListeners_();
+
+    if (prevDragState !== DragState.DRAGGING) {
+      return;
+    }
+
+    console.log('handleDragEnd_(' + e.type + ')');
+
+    this.itemCloneEl_.remove();
+    this.itemCloneEl_.classList.remove(this.classes_['mirror']);
+    this.itemSourceEl_.classList.remove(this.classes_['source:dragging']);
+    this.root_.classList.remove(this.classes_['container:dragging']);
+
+    this.emit('drag:stop', {originalEvent: e, originalSource: this.itemSourceEl_});
+  }
+
+  setClonePosition_() {
+    const pos = this.currentPointerPositionInViewport_;
+    this.itemCloneEl_.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+  }
+}
 
 // NOTE(acdvorak): This code assumes:
 // 1. ALL ITEMS ARE THE SAME SIZE
@@ -48,13 +354,16 @@ export class MDCDragCollection extends MDCComponent {
 
   initialize() {
     // TODO(acdvorak): If the container is RTL, make sure the cloned "mirror" element has `dir="rtl"`.
-    this.dragManager_ = new Draggable.Draggable(this.root_, {
+    // const DragManager = Draggable.Draggable;
+    const DragManager = MDCDragManager;
+    this.dragManager_ = new DragManager(this.root_, {
       draggable: '.mdc-draggable-item',
-      delay: 200,
+      delay: 500,
+      longPressToleranceInPx: 25,
       classes: {
         'container:dragging': 'mdc-drag-collection--dragging',
         'source:dragging': 'mdc-draggable-item--source',
-        'mirror': 'mdc-draggable-item--mirror',
+        'mirror': 'mdc-draggable-item--clone',
       },
     });
     this.dragManager_.on('drag:start', (e) => this.handleDragStart_(e));
@@ -151,7 +460,7 @@ export class MDCDragCollection extends MDCComponent {
 
   handleDragStart_(e) {
     this.resetState_();
-    this.sourceItemEl_ = e.originalSource;
+    this.sourceItemEl_ = e.originalSource || e.detail.originalSource;
   }
 
   autoSetSingleColumnClass_() {
@@ -161,7 +470,7 @@ export class MDCDragCollection extends MDCComponent {
   }
 
   handleDragMove_(e) {
-    e.originalEvent.preventDefault();
+    // (e.originalEvent || e.detail.originalEvent).preventDefault();
 
     const dropZone = this.activeDropZone_ = MDCDragCollection.getDropZone_(e, this.dropZones_);
 
@@ -291,7 +600,7 @@ export class MDCDragCollection extends MDCComponent {
 
   dropItLikeItsHot_(e) {
     const associatedItemEl = this.activeDropZone_.associatedItem.root_;
-    const dragSourceEl = e.originalSource;
+    const dragSourceEl = e.originalSource || e.detail.originalSource;
     const dropSide = this.activeDropZone_.dropSide;
     setTimeout(() => {
       this.insertAdjacentElement_(associatedItemEl, dragSourceEl, dropSide);

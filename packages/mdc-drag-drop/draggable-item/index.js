@@ -27,7 +27,7 @@ export class MDCDraggableItem extends MDCComponent {
 
   initialize() {
     this.dragCollectionEl = util.closest(this.root_, '.mdc-drag-collection');
-    this.dragCollectionOffsetRect = util.getRelativeOffset(this.root_, this.dragCollectionEl);
+    this.dragCollectionOffsetRect = util.getElementOffset(this.root_, this.dragCollectionEl);
     this.offsetX_ = 0;
     this.offsetY_ = 0;
 

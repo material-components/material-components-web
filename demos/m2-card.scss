@@ -74,6 +74,8 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
   flex-direction: row;
   flex-wrap: wrap;
 
+  user-select: none;
+
   &--dragging {
     // TODO(acdvorak): Find a better way to ignore mouse events on elements underneath the mirror.
     pointer-events: none;
@@ -85,12 +87,19 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
   }
 }
 
-.mdc-draggable-item:not(.mdc-draggable-item--mirror) {
+.mdc-draggable-item:not(.mdc-draggable-item--clone) {
   transition: transform .2s;
 }
 
 .mdc-draggable-item--source {
   visibility: hidden;
+}
+
+.mdc-draggable-item--clone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: none;
 }
 
 .mdc-drop-spacer {
@@ -202,7 +211,6 @@ $demo-drop-zone-thickness: 6px;
 
   margin: $demo-card-margin;
 
-  position: relative;
   width: $demo-card-size;
   height: $demo-card-size;
 }
