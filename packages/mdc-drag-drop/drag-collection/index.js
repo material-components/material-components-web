@@ -252,7 +252,8 @@ class MDCDragManager extends MDCComponent {
 
       console.warn(
         'handlePointerMoveWhileWaitingForLongPress_(e): long press delay did NOT elapse. \n' +
-        '(user moved pointer outside of tolerance zone)');
+        '(user moved pointer outside of tolerance zone):',
+        pointerOffsetFromStartPosition, this.longPressToleranceInPx_);
       // TODO(acdvorak): Emit 'fakeout' event
     }
   }
