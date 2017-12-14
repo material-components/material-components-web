@@ -196,6 +196,10 @@ class MDCDragManager extends MDCComponent {
       return;
     }
 
+    if ('button' in e && e.button !== util.MouseButton.LEFT) {
+      return;
+    }
+
     this.itemSourceEl_ = util.closest(e.target, this.itemSelector_);
     if (!this.itemSourceEl_) {
       return;

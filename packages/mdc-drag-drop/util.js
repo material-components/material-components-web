@@ -42,6 +42,24 @@ export const EventPrefix = {
   KEY: 'key',
 };
 
+/** @enum {string} */
+export const MouseButton = {
+  /** Main button pressed, usually the left button or the un-initialized state. */
+  LEFT: 0,
+
+  /** Auxiliary button pressed, usually the wheel button or the middle button (if present). */
+  MIDDLE: 1,
+
+  /** Secondary button pressed, usually the right button. */
+  RIGHT: 2,
+
+  /** Fourth button, typically the Browser Back button. */
+  BACK: 3,
+
+  /** Fifth button, typically the Browser Forward button. */
+  FORWARD: 4,
+};
+
 function isPointAboveRect(point, rect) {
   return point.y < rect.top;
 }
