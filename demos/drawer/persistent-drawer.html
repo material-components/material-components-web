@@ -24,38 +24,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      /* Ensure layout covers the entire screen. */
-      html {
-        height: 100%;
-      }
-
-      /* Place drawer and content side by side. */
-      .demo-body {
-        display: flex;
-        flex-direction: row;
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        height: 100%;
-        width: 100%;
-      }
-
-      /* Stack toolbar and main on top of each other. */
-      .demo-content {
-        display: inline-flex;
-        flex-direction: column;
-        flex-grow: 1;
-        height: 100%;
-        box-sizing: border-box;
-      }
-
-      .demo-main {
-        padding-left: 16px;
-      }
-    </style>
   </head>
-  <body class="mdc-typography demo-body">
+  <body class="mdc-typography demo-body demo-body--drawer-persistent">
     <aside class="mdc-persistent-drawer">
       <nav class="mdc-persistent-drawer__drawer">
         <div class="mdc-persistent-drawer__toolbar-spacer"></div>
@@ -91,7 +61,7 @@
           </div>
       </nav>
     </aside>
-    <div class="demo-content">
+    <div class="demo-content demo-content--drawer-persistent">
       <header class="mdc-toolbar mdc-elevation--z4">
         <div class="mdc-toolbar__row">
           <section class="mdc-toolbar__section mdc-toolbar__section--align-start">

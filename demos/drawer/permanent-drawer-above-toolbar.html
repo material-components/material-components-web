@@ -24,56 +24,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      /* Ensure layout covers the entire screen. */
-      html {
-        height: 100%;
-      }
-
-      /* Place drawer and content side by side. */
-      .demo-body {
-        display: flex;
-        flex-direction: row;
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        min-height: 100%;
-        width: 100%;
-      }
-
-      /* Stack toolbar and main on top of each other. */
-      .demo-content {
-        display: inline-flex;
-        flex-direction: column;
-        flex-grow: 1;
-        height: 100%;
-        box-sizing: border-box;
-      }
-
-      /* Place drawer above toolbar shadow. */
-      .mdc-permanent-drawer {
-        z-index: 2;
-      }
-
-      .demo-main {
-        padding-left: 16px;
-      }
-
-      .extra-content-wrapper {
-        padding: 10px;
-      }
-
-      #extra-wide-content {
-        width: 200vw;
-      }
-
-      #extra-tall-content {
-        height: 200vh;
-      }
-    </style>
   </head>
   <body class="mdc-typography demo-body">
-    <nav class="mdc-permanent-drawer">
+    <nav class="mdc-permanent-drawer demo-drawer-above-permanent">
       <div class="mdc-permanent-drawer__toolbar-spacer"></div>
       <div class="mdc-list-group">
         <nav class="mdc-list">
@@ -106,7 +59,7 @@
           </nav>
         </div>
     </nav>
-    <div class="demo-content">
+    <div class="demo-content demo-content--drawer-above">
       <!-- TODO: #324 - Should switch to .mdc-toolbar--fixed -->
       <header class="mdc-toolbar mdc-elevation--z4">
         <div class="mdc-toolbar__row">
