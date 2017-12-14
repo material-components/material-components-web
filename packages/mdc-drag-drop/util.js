@@ -137,7 +137,17 @@ export function getPointerPositionInViewport(e) {
   };
 }
 
+/**
+ * Emulates Element.closest() for browsers that don't support it natively (namely IE 11).
+ * @param {?Element} el
+ * @param {string} selector
+ * @returns {?Element}
+ */
 export function closest(el, selector) {
+  if (el.closest) {
+    return el.closest(selector);
+  }
+
   if (!document.documentElement.contains(el)) {
     return null;
   }
