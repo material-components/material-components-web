@@ -216,9 +216,6 @@ class MDCDragManager extends MDCComponent {
 
     this.setDragState_(DragState.LONG_PRESS_WAITING);
     this.delayTimer_ = setTimeout(() => this.handleDragStart_(), this.delay_);
-
-    // set timeout for delay
-    // after delay, remove `pointerout` listener
   }
 
   handlePointerMove_(e) {
@@ -267,10 +264,6 @@ class MDCDragManager extends MDCComponent {
   }
 
   handlePointerUp_(e) {
-    if (this.dragState_ !== DragState.DRAGGING) {
-      // return;
-    }
-
     console.log('handlePointerUp_(' + e.type + ')');
 
     this.emit('drag:release', {originalEvent: e, originalSource: this.itemSourceEl_});
@@ -278,10 +271,6 @@ class MDCDragManager extends MDCComponent {
   }
 
   handlePointerCancel_(e) {
-    if (this.dragState_ !== DragState.DRAGGING) {
-      // return;
-    }
-
     console.log('handlePointerCancel_(' + e.type + ')');
 
     this.emit('drag:cancel', {originalEvent: e, originalSource: this.itemSourceEl_});
