@@ -190,7 +190,7 @@ class MDCDragManager extends MDCComponent {
 
   handlePointerDown_(e) {
     // TODO(acdvorak): Figure out how to allow both scrolling AND long press on mobile
-    // e.preventDefault();
+    e.preventDefault();
 
     if (this.dragState_ !== DragState.IDLE) {
       return;
