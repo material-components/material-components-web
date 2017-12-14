@@ -1,0 +1,44 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "./keyframes";
+
+// Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
+// (Every component using MDC Ripple imports these mixins, but doesn't necessarily import mdc-ripple.scss.)
+
+// This variable is not intended to be overridden externally; it uses !default to avoid being reset
+// every time this file is imported.
+$mdc-ripple-common-styles-emitted_: false !default;
+
+@if not $mdc-ripple-common-styles-emitted_ {
+  $mdc-ripple-common-styles-emitted_: true;
+
+  @include mdc-ripple-keyframes_;
+
+  // Styles used to detect buggy behavior of CSS custom properties in Edge.
+  // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
+  // This is included in _mixins.scss rather than mdc-ripple.scss so that it will be
+  // present for other components which rely on ripple as well as mdc-ripple itself.
+  .mdc-ripple-surface--test-edge-var-bug {
+    --mdc-ripple-surface-test-edge-var: 1px solid #000;
+
+    visibility: hidden;
+
+    &::before {
+      border: var(--mdc-ripple-surface-test-edge-var);
+    }
+  }
+}
