@@ -125,8 +125,6 @@ included as part of the DOM structure of a full width text field.
 > _NOTE_: Only use `mdc-text-field__label` within `mdc-text-field--textarea` _if you plan on using
 > Javascript_. Otherwise, use the `placeholder` attribute, as shown below.
 
-##### CSS Only
-
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">
   <textarea id="textarea-css-only"
