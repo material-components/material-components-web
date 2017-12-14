@@ -27,6 +27,7 @@
 @import "@material/typography/variables";
 @import "./bottom-line/mdc-text-field-bottom-line";
 @import "./helper-text/mdc-text-field-helper-text";
+@import "./icon/mdc-text-field-icon";
 @import "./label/mdc-text-field-label";
 @include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
@@ -220,17 +221,6 @@
   // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-text-field--with-leading-icon .mdc-text-field__icon,
-.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
-  position: absolute;
-  bottom: 16px;
-  cursor: pointer;
-
-  @include mdc-theme-dark(".mdc-text-field") {
-    @include mdc-theme-prop(color, text-secondary-on-dark);
-  }
-}
-
 .mdc-text-field--with-leading-icon {
   .mdc-text-field__input {
     @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-padding, $mdc-text-field-icon-position);
@@ -253,12 +243,6 @@
   .mdc-text-field__icon {
     @include mdc-rtl-reflexive-position(right, $mdc-text-field-icon-position);
   }
-}
-
-.mdc-text-field__icon:not([tabindex]),
-.mdc-text-field__icon[tabindex="-1"] {
-  cursor: default;
-  pointer-events: none;
 }
 
 // stylelint-disable plugin/selector-bem-pattern
