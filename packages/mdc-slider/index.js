@@ -21,59 +21,71 @@ import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
 /**
- * @extends MDCComponent<!MDCSlider>
+ * @extends MDCComponent<!MDCSliderFoundation>
  */
 class MDCSlider extends MDCComponent {
   static attachTo(root) {
     return new MDCSlider(root);
   }
 
-  /** @return {?number} */
+  constructor(...args) {
+    super(...args);
+    /** @type {Element} */
+    this.thumbContainer_;
+    /** @type {Element} */
+    this.track_;
+    /** @type {Element} */
+    this.pinValueMarker_;
+    /** @type {Element} */
+    this.trackMarkerContainer_;
+  }
+
+  /** @return {number} */
   get value() {
     return this.foundation_.getValue();
   }
 
-  /** @param {?number} value */
+  /** @param {number} value */
   set value(value) {
     this.foundation_.setValue(value);
   }
 
-  /** @return {?number} */
+  /** @return {number} */
   get min() {
     return this.foundation_.getMin();
   }
 
-  /** @param {?number} min */
+  /** @param {number} min */
   set min(min) {
     this.foundation_.setMin(min);
   }
 
-  /** @return {?number} */
+  /** @return {number} */
   get max() {
     return this.foundation_.getMax();
   }
 
-  /** @param {?number} max */
+  /** @param {number} max */
   set max(max) {
     this.foundation_.setMax(max);
   }
 
-  /** @return {?number} */
+  /** @return {number} */
   get step() {
     return this.foundation_.getStep();
   }
 
-  /** @param {?number} step */
+  /** @param {number} step */
   set step(step) {
     this.foundation_.setStep(step);
   }
 
-  /** @return {?boolean} */
+  /** @return {boolean} */
   get disabled() {
     return this.foundation_.isDisabled();
   }
 
-  /** @param {?boolean} disabled */
+  /** @param {boolean} disabled */
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
@@ -190,4 +202,4 @@ class MDCSlider extends MDCComponent {
   }
 }
 
-export default MDCSlider;
+export {MDCSlider};
