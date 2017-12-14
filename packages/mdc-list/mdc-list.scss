@@ -51,7 +51,7 @@
   }
 
   margin: 0;
-  padding: 8px $mdc-list-side-padding;
+  padding: 8px 0;
 
   // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
   // same as for subheading1.
@@ -76,6 +76,7 @@
   align-items: center;
   justify-content: flex-start;
   height: 48px;
+  padding: 0 $mdc-list-side-padding;
 
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
@@ -159,25 +160,28 @@ a.mdc-list-item {
 }
 // stylelint-enable selector-max-type,selector-no-qualifying-type
 
-.mdc-list-item.mdc-ripple-upgraded {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-color;
-  @include mdc-ripple-radius;
-  @include mdc-rtl-reflexive-position(left, $mdc-list-side-padding * -1);
-
+.mdc-list-item {
   position: relative;
-  // Cause the upgraded list item to cover the entirety of the list, causing ripples to emanate
-  // across the entire list element.
-  width: 100%;
-  padding: 0 $mdc-list-side-padding;
   overflow: hidden;
 
   &:focus {
     outline: none;
   }
+}
+
+// List items should support states by default, but it should be possible to opt out.
+// Direct child combinator is necessary for non-interactive modifier on parent to not match this selector.
+:not(.mdc-list--non-interactive) > .mdc-list-item {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states;
+  @include mdc-states-activated(primary);
+  @include mdc-states-selected(primary);
 
   @include mdc-theme-dark(".mdc-list") {
-    @include mdc-ripple-color(white, .12);
+    @include mdc-states(white);
+    @include mdc-states-activated(primary);
+    @include mdc-states-selected(primary);
   }
 }
 
@@ -191,12 +195,19 @@ a.mdc-list-item {
   border-bottom-style: solid;
 }
 
+.mdc-list-divider--padded {
+  // Leave gaps on each side to match the padding on list items
+  margin: 0 $mdc-list-side-padding;
+}
+
 .mdc-list-divider--inset {
-  $mdc-list-divider-inset-amt: /* text offset */ 72px - /* padding offset */ $mdc-list-side-padding;
+  @include mdc-rtl-reflexive-box(margin, left, $mdc-list-text-offset, ".mdc-list-group");
 
-  @include mdc-rtl-reflexive-box(margin, left, $mdc-list-divider-inset-amt, ".mdc-list-group");
+  width: calc(100% - #{$mdc-list-text-offset});
+}
 
-  width: calc(100% - #{$mdc-list-divider-inset-amt});
+.mdc-list-divider--inset.mdc-list-divider--padded {
+  width: calc(100% - #{$mdc-list-text-offset} - #{$mdc-list-side-padding});
 }
 
 // postcss-bem-linter: end
@@ -210,8 +221,6 @@ a.mdc-list-item {
     @include mdc-list-group-subheader-ink-color(text-primary-on-dark);
   }
 
-  padding: 0 $mdc-list-side-padding;
-
   &__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
     $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body2), line-height);
@@ -220,10 +229,10 @@ a.mdc-list-item {
 
     @include mdc-typography(body2);
 
-    margin: $mdc-list-subheader-margin 0;
+    margin: $mdc-list-subheader-margin $mdc-list-side-padding;
   }
 
-  // Reset padding on mdc-list since it's already accounted for by the list group.
+  // Cancel top/bottom padding on individual lists within group
   .mdc-list {
     padding: 0;
   }

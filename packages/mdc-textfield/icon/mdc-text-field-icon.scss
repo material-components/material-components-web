@@ -14,13 +14,22 @@
 // limitations under the License.
 //
 
-@import "./common";
-@import "../packages/mdc-list/mdc-list";
+@import "@material/theme/variables";
+@import "@material/theme/mixins";
 
-.demo-catalog-list a {
-  color: $material-color-grey-900;
+.mdc-text-field--with-leading-icon .mdc-text-field__icon,
+.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+  position: absolute;
+  bottom: 16px;
+  cursor: pointer;
+
+  @include mdc-theme-dark(".mdc-text-field") {
+    @include mdc-theme-prop(color, text-secondary-on-dark);
+  }
 }
 
-.demo-catalog-list-icon {
-  margin: 0 24px 0 12px;
+.mdc-text-field__icon:not([tabindex]),
+.mdc-text-field__icon[tabindex="-1"] {
+  cursor: default;
+  pointer-events: none;
 }
