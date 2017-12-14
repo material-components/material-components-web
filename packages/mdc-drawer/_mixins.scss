@@ -80,7 +80,7 @@
     text-decoration: none;
   }
 
-  .mdc-list-item__start-detail {
+  .mdc-list-item__graphic {
     color: rgba(0, 0, 0, .54);
 
     @include mdc-theme-dark(#{&}) {

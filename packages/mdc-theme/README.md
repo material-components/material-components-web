@@ -186,8 +186,11 @@ Calculates the contrast ratio between two colors.
 
 Determines whether the given color is "light" or "dark".
 
+If the input color is a string literal equal to `"light"` or `"dark"`, it will be returned verbatim.
+
 ```scss
 @debug mdc-theme-tone(#9c27b0); // dark
+@debug mdc-theme-tone(light);   // light
 ```
 
 #### `mdc-theme-contrast-tone($color)`
