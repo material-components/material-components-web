@@ -106,7 +106,7 @@ export function pointIntersectsRect(point, rect) {
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
 class ResizeListener {
   constructor() {
-    this.callbacks_ = [];
+    this.handlers_ = [];
     this.isRunning_ = false;
     this.timer_ = null;
   }
@@ -123,7 +123,7 @@ class ResizeListener {
 
     this.isRunning_ = true;
     clearTimeout(this.timer_);
-    this.timer_ = setTimeout(() => window.requestAnimationFrame(() => this.runCallbacks_(e)), RESIZE_EVENT_DELAY_MS);
+    this.timer_ = setTimeout(() => window.requestAnimationFrame(() => this.invokeHandlers_(e)), RESIZE_EVENT_DELAY_MS);
   }
 
   /**
@@ -131,29 +131,29 @@ class ResizeListener {
    * @param {!Event} e
    * @private
    */
-  runCallbacks_(e) {
-    this.callbacks_.forEach((callback) => {
+  invokeHandlers_(e) {
+    this.handlers_.forEach((callback) => {
       callback(e);
     });
     this.isRunning_ = false;
   }
 
   registerResizeHandler(callback) {
-    if (!this.callbacks_.length) {
+    if (!this.handlers_.length) {
       window.addEventListener('resize', (e) => this.handleResize_(e), {
         capture: true,
         passive: true,
       });
     }
-    this.callbacks_.push(callback);
+    this.handlers_.push(callback);
   }
 
   deregisterResizeHandler(callback) {
-    const index = this.callbacks_.indexOf(callback);
+    const index = this.handlers_.indexOf(callback);
     if (index === -1) {
       return;
     }
-    this.callbacks_.splice(index, 1);
+    this.handlers_.splice(index, 1);
   }
 }
 
