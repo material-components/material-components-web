@@ -339,6 +339,7 @@ class MDCDragManager extends MDCComponent {
   setClonePosition_() {
     const pos = this.currentPointerPositionInViewport_;
     this.itemCloneEl_.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+    this.itemCloneEl_.style.margin = '0';
   }
 }
 
