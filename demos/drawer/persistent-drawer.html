@@ -63,16 +63,16 @@
         <div class="mdc-drawer__toolbar-spacer"></div>
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated" href="#">
+            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
             </a>
           </nav>
@@ -80,13 +80,13 @@
           <hr class="mdc-list-divider">
 
           <nav class="mdc-list">
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
             </a>
           </nav>
@@ -160,30 +160,30 @@
         });
 
         // Demonstrate application of --activated modifier to drawer menu items
-        var activatedClass = 'mdc-list-item--activated';
-        document.querySelector('.mdc-persistent-drawer__drawer').addEventListener('click', function(event) {
-            var el = event.target;
-            while (!el.classList.contains('mdc-list-item') && el) {
-              el = el.parentNode;
+        var activatedClass = 'mdc-list-item--selected';
+        document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
+          var el = event.target;
+          while (!el.classList.contains('mdc-list-item') && el) {
+            el = el.parentNode;
+          }
+          if (el) {
+            var activatedItem = document.querySelector('.' + activatedClass);
+            if (activatedItem) {
+              activatedItem.classList.remove(activatedClass);
             }
-            if (el) {
-              var activatedItem = document.querySelector('.' + activatedClass);
-              if (activatedItem) {
-                activatedItem.classList.remove(activatedClass);
-              }
-              event.target.classList.add(activatedClass);
-            }
+            event.target.classList.add(activatedClass);
+          }
         });
         var radioEl = document.querySelector('#demo-radio-buttons');
         radioEl.addEventListener('change', function(e) {
-            drawerEl.classList.remove('demo-drawer');
-            drawerEl.classList.remove('demo-drawer--accessible');
+          drawerEl.classList.remove('demo-drawer--custom');
+          drawerEl.classList.remove('demo-drawer--accessible');
 
-            if(e.target.id === 'accessible') {
-              drawerEl.classList.add('demo-drawer--accessible');
-            } else if(e.target.id === 'custom') {
-              drawerEl.classList.add('demo-drawer');
-            }
+          if(e.target.id === 'accessible') {
+            drawerEl.classList.add('demo-drawer--accessible');
+          } else if(e.target.id === 'custom') {
+            drawerEl.classList.add('demo-drawer--custom');
+          }
         });
       </script>
     </div>
