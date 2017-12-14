@@ -92,18 +92,30 @@ Un-styled Content (**FOUC**).
 
 ##### Box Variant
 
-### Using Helper Text
+> _NOTE_: Do not use `mdc-text-field__bottom-line` inside of `mdc-text-field` _if you plan on using `mdc-text-field--box`, and do not plan on using JavaScript_. Bottom line should not be included as part of the DOM structure of a box text field.
 
-The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
-and disappears on input field blur by default, or it can be persistent. 
-See [here](helper-text/) for more information on using helper text.
+```html
+<label for="css-only-text-field-box">Your name:</label>
+<div class="mdc-text-field mdc-text-field--box">
+  <input type="text" class="mdc-text-field__input" id="css-only-text-field-box" placeholder="Name">
+</div>
+```
 
-### Leading and Trailing Icons
+#### Full Width
 
-Leading and trailing icons can be added to MDC Text Fields as visual indicators as well as interaction targets.
-See [here](icon/) for more information on using icons.
+```html
+<div class="mdc-text-field mdc-text-field--fullwidth">
+  <input class="mdc-text-field__input"
+         type="text"
+         placeholder="Full-Width Text Field"
+         aria-label="Full-Width Text Field">
+</div>
+```
 
-### Textarea
+> _NOTE_: Do not use `mdc-text-field__label` within `mdc-text-field--fullwidth`. Labels should not be
+included as part of the DOM structure of a full width text field.
+
+#### Textarea
 
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">

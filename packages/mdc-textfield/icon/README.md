@@ -60,27 +60,24 @@ an `i` element with your preferred icon, and give it a class of `mdc-text-field_
 and the css will ensure the cursor is set to default, and that actioning on an icon doesn't
 do anything unexpected.
 
-#### MDCTextFieldIcon API
+### `MDCTextFieldIcon`
 
-##### MDCTextFieldIcon.foundation
+##### `MDCTextFieldIcon.foundation`
 
-MDCTextFieldIconFoundation. This allows the parent MDCTextField component to access the public methods on the MDCTextFieldIconFoundation class.
+This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldIconFoundation` class.
 
-### Using the foundation class
+### `MDCTextFieldIconAdapter`
 
 Method Signature | Description
 --- | ---
-setAttr(attr: string, value: string) => void | Sets an attribute with a given value on the icon element
-registerInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event listener for a given event
-deregisterInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener for a given event
-notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon, which bubbles to the top-level text field element
+`setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the icon element
+`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event
+`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener for a given event
+`notifyIconAction() => void` | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon, which bubbles to the top-level text field element
 
-#### The full foundation API
+### `MDCTextFieldIconFoundation`
 
-##### MDCTextFieldIconFoundation.setDisabled(disabled: boolean)
-
-Updates the icon's disabled state.
-
-##### MDCTextFieldIconFoundation.handleInteraction(evt: Event)
-
-Handles a text field interaction event.
+Method Signature | Description
+--- | ---
+`setDisabled(disabled: boolean) => void` | Updates the icon's disabled state
+`handleInteraction(evt: Event) => void` | Handles a text field interaction event
