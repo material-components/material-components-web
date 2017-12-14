@@ -81,7 +81,7 @@ class MDCTextField extends MDCComponent {
    */
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
     helperTextFactory = (el) => new MDCTextFieldHelperText(el),
     iconFactory = (el) => new MDCTextFieldIcon(el),
     labelFactory = (el) => new MDCTextFieldLabel(el),

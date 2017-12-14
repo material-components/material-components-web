@@ -147,7 +147,7 @@ function setupTest(root = getFixture()) {
     () => label,
     () => outline
   );
-  return {root, component, bottomLine, helperText, icon, label};
+  return {root, component, bottomLine, helperText, icon, label, outline};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -190,10 +190,11 @@ test('#destroy cleans up the label if present', () => {
 test('#destroy cleans up the outline if present', () => {
   const root = getFixture();
   root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
-  const component = new MDCTextField(root, undefined, undefined, undefined, (el) => new FakeOutline(el));
+  const {component, outline} = setupTest(root);
+  console.log(outline);
   component.destroy();
-  td.verify(component.outline_.destroy());
-}
+  td.verify(outline.destroy());
+});
 
 test('#destroy accounts for ripple nullability', () => {
   const component = new MDCTextField(getFixture());

@@ -41,14 +41,14 @@ test('#updateSvgPath sets the path of the outline element when isRtl=false by de
   const height = 100;
   const labelWidth = 30;
   const radius = 8;
-  const path = 'M' + (radius + 1.5 + Math.abs(10 - radius) + labelWidth + 8) + ',' + 1
-    + 'h' + (width - (2 * (radius + 1.5)) - labelWidth - 8.5 - Math.abs(10 - radius))
+  const path = 'M' + (radius + 2.1 + Math.abs(10 - radius) + labelWidth + 8) + ',' + 1
+    + 'h' + (width - (2 * (radius + 2.1)) - labelWidth - 8.5 - Math.abs(10 - radius))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-    + 'v' + (height - 2 * (radius + 1.5))
+    + 'v' + (height - 2 * (radius + 2.1))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-    + 'h' + (-width + 2 * (radius + 1.5))
+    + 'h' + (-width + 2 * (radius + 1.7))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-    + 'v' + (-height + 2 * (radius + 1.5))
+    + 'v' + (-height + 2 * (radius + 2.1))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
     + 'h' + Math.abs(10 - radius);
   foundation.updateSvgPath(width, height, labelWidth, radius);
@@ -62,16 +62,16 @@ test('#updateSvgPath sets the path of the outline element when isRtl=true', () =
   const height = 100;
   const labelWidth = 30;
   const radius = 8;
-  const path = 'M' + (width - radius - 1.5 - Math.abs(10 - radius)) + ',' + 1
+  const path = 'M' + (width - radius - 2.1 - Math.abs(10 - radius)) + ',' + 1
     + 'h' + Math.abs(10 - radius)
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-    + 'v' + (height - 2 * (radius + 1.5))
+    + 'v' + (height - 2 * (radius + 2.1))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-    + 'h' + (-width + 2 * (radius + 1.5))
+    + 'h' + (-width + 2 * (radius + 1.7))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-    + 'v' + (-height + 2 * (radius + 1.5))
+    + 'v' + (-height + 2 * (radius + 2.1))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
-    + 'h' + (width - (2 * (radius + 1.5)) - labelWidth - 8.5 - Math.abs(10 - radius));
+    + 'h' + (width - (2 * (radius + 2.1)) - labelWidth - 8.5 - Math.abs(10 - radius));
   foundation.updateSvgPath(width, height, labelWidth, radius, true /* isRtl */);
   td.verify(mockAdapter.setOutlinePathAttr(path));
 });
