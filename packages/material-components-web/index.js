@@ -18,6 +18,7 @@ import autoInit from '@material/auto-init';
 import * as base from '@material/base';
 import * as checkbox from '@material/checkbox';
 import * as dialog from '@material/dialog';
+import * as dragDrop from '@material/drag-drop';
 import * as drawer from '@material/drawer';
 import * as formField from '@material/form-field';
 import * as gridList from '@material/grid-list';
@@ -37,6 +38,7 @@ import * as toolbar from '@material/toolbar';
 // Register all components
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCDialog', dialog.MDCDialog);
+autoInit.register('MDCDragCollection', dragDrop.MDCDragCollection);
 autoInit.register('MDCPersistentDrawer', drawer.MDCPersistentDrawer);
 autoInit.register('MDCTemporaryDrawer', drawer.MDCTemporaryDrawer);
 autoInit.register('MDCFormField', formField.MDCFormField);
@@ -60,6 +62,7 @@ export {
   base,
   checkbox,
   dialog,
+  dragDrop,
   drawer,
   formField,
   gridList,

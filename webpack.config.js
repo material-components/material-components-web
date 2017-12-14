@@ -187,6 +187,7 @@ if (!IS_DEV) {
       checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
       dialog: [path.resolve('./packages/mdc-dialog/index.js')],
       drawer: [path.resolve('./packages/mdc-drawer/index.js')],
+      dragDrop: [path.resolve('./packages/mdc-drag-drop/index.js')],
       formField: [path.resolve('./packages/mdc-form-field/index.js')],
       gridList: [path.resolve('./packages/mdc-grid-list/index.js')],
       iconToggle: [path.resolve('./packages/mdc-icon-toggle/index.js')],

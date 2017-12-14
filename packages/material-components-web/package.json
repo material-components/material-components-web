@@ -21,6 +21,7 @@
     "@material/checkbox": "^0.27.0",
     "@material/dialog": "^0.27.0",
     "@material/drawer": "^0.27.0",
+    "@material/drag-drop": "^0.27.0",
     "@material/elevation": "^0.25.0",
     "@material/fab": "^0.27.0",
     "@material/form-field": "^0.27.0",

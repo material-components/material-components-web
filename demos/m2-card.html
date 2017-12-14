@@ -99,7 +99,6 @@
 
     <script src="/lib/draggable/1.0.0-beta.3/draggable.bundle.patched.js"></script>
     <script src="/assets/material-components-web.js"></script>
-    <script src="/assets/demo.m2Card.js"></script>
     <script>
       (function() {
         var cssLoadedInterval = setInterval(() => {
@@ -119,7 +118,7 @@
           }
 
           for (var dragCollectionEl of document.querySelectorAll('.demo-card-collection')) {
-            new demo.m2Card.DragCollection(dragCollectionEl);
+            new mdc.dragDrop.MDCDragCollection(dragCollectionEl);
           }
         }
       })();
