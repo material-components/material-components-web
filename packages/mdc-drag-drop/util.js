@@ -111,33 +111,6 @@ class ResizeListener {
     this.timer_ = null;
   }
 
-  /**
-   * Responds to window `resize` events.
-   * @param {!Event} e
-   * @private
-   */
-  handleResize_(e) {
-    if (this.isRunning_) {
-      return;
-    }
-
-    this.isRunning_ = true;
-    clearTimeout(this.timer_);
-    this.timer_ = setTimeout(() => window.requestAnimationFrame(() => this.invokeHandlers_(e)), RESIZE_EVENT_DELAY_MS);
-  }
-
-  /**
-   * Invokes all registered event handlers.
-   * @param {!Event} e
-   * @private
-   */
-  invokeHandlers_(e) {
-    this.handlers_.forEach((callback) => {
-      callback(e);
-    });
-    this.isRunning_ = false;
-  }
-
   registerResizeHandler(callback) {
     if (!this.handlers_.length) {
       window.addEventListener('resize', (e) => this.handleResize_(e), {
@@ -154,6 +127,37 @@ class ResizeListener {
       return;
     }
     this.handlers_.splice(index, 1);
+  }
+
+  /**
+   * Handles all window `resize` events.
+   * @param {!Event} e
+   * @private
+   */
+  handleResize_(e) {
+    if (this.isRunning_) {
+      return;
+    }
+
+    this.isRunning_ = true;
+    clearTimeout(this.timer_);
+    this.timer_ = this.createTimeout_(() => this.invokeHandlers_(e));
+  }
+
+  createTimeout_(fn) {
+    return setTimeout(() => window.requestAnimationFrame(fn), RESIZE_EVENT_DELAY_MS);
+  }
+
+  /**
+   * Invokes all registered event handlers.
+   * @param {!Event} e
+   * @private
+   */
+  invokeHandlers_(e) {
+    this.handlers_.forEach((callback) => {
+      callback(e);
+    });
+    this.isRunning_ = false;
   }
 }
 
