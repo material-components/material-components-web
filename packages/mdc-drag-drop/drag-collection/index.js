@@ -40,33 +40,6 @@ const DragState = {
   DRAGGING: 'DRAGGING',
 };
 
-const EventMap = {
-  pointer: {
-    down: 'pointerdown',
-    up: 'pointerup',
-    move: 'pointermove',
-    cancel: 'pointercancel',
-  },
-  touch: {
-    down: 'touchstart',
-    up: 'touchend',
-    move: 'touchmove',
-    cancel: 'touchcancel',
-  },
-  mouse: {
-    down: 'mousedown',
-    up: 'mouseup',
-    move: 'mousemove',
-    cancel: null,
-  },
-  key: {
-    down: 'keydown',
-    up: 'keyup',
-    move: null,
-    cancel: null,
-  },
-};
-
 class MDCDragManager extends MDCComponent {
   constructor(root, {draggable, delay, longPressToleranceInPx, classes} = {}) {
     super(root);
@@ -82,12 +55,12 @@ class MDCDragManager extends MDCComponent {
     this.setDragState_(DragState.IDLE);
 
     const keyboardEventNames = [
-      EventMap.key.down,
+      util.EventMap.key.down,
     ];
     const pointerEventNames = [
-      EventMap.pointer.down,
-      EventMap.touch.down,
-      EventMap.mouse.down,
+      util.EventMap.pointer.down,
+      util.EventMap.touch.down,
+      util.EventMap.mouse.down,
     ];
 
     this.setRootEventListeners_(keyboardEventNames, (e) => this.handleKeyDown_(e));
@@ -198,7 +171,7 @@ class MDCDragManager extends MDCComponent {
     // e.preventDefault();
 
     const eventPrefix = util.getEventPrefix(e);
-    const eventMap = EventMap[eventPrefix];
+    const eventMap = util.EventMap[eventPrefix];
     const isTouch = e.pointerType === 'touch' || eventPrefix === util.EventPrefix.TOUCH;
 
     if (this.dragState_ !== DragState.IDLE) {
@@ -572,12 +545,12 @@ export class MDCDragCollection extends MDCComponent {
       // TODO(acdvorak): Submit PR to "draggable" repo to listen for ESC key
       // TODO(acdvorak): Submit PR to fix Ripple so that it doesn't require an event object
       const eventPrefix = util.getEventPrefix(e.originalEvent || e.detail.originalEvent);
-      this.sourceItemEl_.ripple.deactivate({type: EventMap[eventPrefix].up});
+      this.sourceItemEl_.ripple.deactivate({type: util.EventMap[eventPrefix].up});
 
       // A second synthetic `deactivate` call (hard-coded with 'mouseup') is needed because of this check in mdc-ripple:
       // https://github.com/material-components/material-components-web/blob/a983c01676e7b2a9b4aa743f722588ecb2019e4f/packages/mdc-ripple/foundation.js#L396
       // TODO(acdvorak): Update ripple so that we don't need to call `deactivate` twice with different event types.
-      this.sourceItemEl_.ripple.deactivate({type: EventMap['mouse'].up});
+      this.sourceItemEl_.ripple.deactivate({type: util.EventMap['mouse'].up});
     }
 
     this.resetState_();

@@ -42,6 +42,33 @@ export const EventPrefix = {
   KEY: 'key',
 };
 
+export const EventMap = {
+  pointer: {
+    down: 'pointerdown',
+    up: 'pointerup',
+    move: 'pointermove',
+    cancel: 'pointercancel',
+  },
+  touch: {
+    down: 'touchstart',
+    up: 'touchend',
+    move: 'touchmove',
+    cancel: 'touchcancel',
+  },
+  mouse: {
+    down: 'mousedown',
+    up: 'mouseup',
+    move: 'mousemove',
+    cancel: null,
+  },
+  key: {
+    down: 'keydown',
+    up: 'keyup',
+    move: null,
+    cancel: null,
+  },
+};
+
 /** @enum {string} */
 export const MouseButton = {
   /** Main button pressed, usually the left button or the un-initialized state. */
