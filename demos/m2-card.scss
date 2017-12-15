@@ -48,19 +48,10 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
 // Classes
 //
 
-// TODO(acdvorak): Only apply these styles if the element is focusable
 .mdc-card {
   @include mdc-ripple-color(black, .14);
 
   cursor: pointer;
-
-  &:hover {
-    background-color: rgba(black, .04);
-  }
-
-  &:focus {
-    background-color: rgba(black, .06);
-  }
 }
 
 .mdc-card--stroked {
@@ -93,8 +84,12 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
   pointer-events: none;
 }
 
+.mdc-draggable-item.mdc-draggable-item--clone {
+  transition: box-shadow .2s, opacity 0s, transform 0s;
+}
+
 .mdc-draggable-item:not(.mdc-draggable-item--clone) {
-  transition: transform .2s;
+  transition: box-shadow .2s, opacity 0s, transform .2s;
 }
 
 .mdc-draggable-item--source {
@@ -105,7 +100,7 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
   position: fixed;
   top: 0;
   left: 0;
-  transition: none;
+  //transition: none;
   pointer-events: none;
 }
 
@@ -222,8 +217,9 @@ $demo-drop-zone-thickness: 6px;
   height: $demo-card-size;
 }
 
+.demo-card.mdc-draggable-item--source,
 .demo-card.mdc-draggable-item--clone {
-  @include mdc-elevation(8);
+  @include mdc-elevation(10);
 }
 
 .demo-card--color {
@@ -233,12 +229,4 @@ $demo-drop-zone-thickness: 6px;
 
   background-color: $color-value;
   color: white;
-
-  &:hover {
-    background-color: mdc-theme-light-variant($color-value, 1);
-  }
-
-  &:focus {
-    background-color: mdc-theme-light-variant($color-value, 1.2);
-  }
 }

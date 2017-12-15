@@ -281,6 +281,9 @@ handlePointerMoveWhileWaitingForLongPress_(e):
   handlePointerMoveWhileDragging_(e) {
     console.log('handlePointerMoveWhileDragging_(' + e.type + ')');
 
+    this.itemCloneEl_.style.opacity = '1';
+    this.itemSourceEl_.style.opacity = '0';
+
     document.documentElement.classList.add('mdc-drag-touch-disabled');
     document.documentElement.classList.add('mdc-drag-select-disabled');
 
@@ -323,6 +326,9 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     this.itemSourceEl_.setAttribute('aria-grabbed', 'true');
     this.root_.classList.add(this.classes_['container:dragging']);
 
+    this.itemCloneEl_.style.opacity = '0';
+    this.itemSourceEl_.style.opacity = '1';
+
     this.setClonePosition_();
     document.body.appendChild(this.itemCloneEl_);
 
@@ -345,11 +351,13 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     if (this.itemCloneEl_) {
       this.itemCloneEl_.remove();
       this.itemCloneEl_.classList.remove(this.classes_['mirror']);
+      this.itemCloneEl_.style.opacity = '0';
     }
 
     if (this.itemSourceEl_) {
       this.itemSourceEl_.classList.remove(this.classes_['source:dragging']);
       this.itemSourceEl_.removeAttribute('aria-grabbed');
+      this.itemSourceEl_.style.opacity = '1';
     }
 
     this.root_.classList.remove(this.classes_['container:dragging']);
@@ -375,8 +383,8 @@ handlePointerMoveWhileWaitingForLongPress_(e):
 
     if (this.currentEventIsTouch_) {
       // TODO(acdvorak): Parameterize
-      pos.x += 16;
-      pos.y += 16;
+      // pos.x += 16;
+      // pos.y += 16;
     }
 
     this.itemCloneEl_.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
