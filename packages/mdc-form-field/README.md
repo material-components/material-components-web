@@ -19,7 +19,8 @@ npm install --save @material/form-field
 
 ## CSS Usage
 
-The `mdc-form-field` class can be used as a wrapper element with any combination of adjacent `input` and `label`:
+The `mdc-form-field` class can be used as a parent element, with any combination of adjacent `input` and `label` as
+immediate children:
 
 ```html
 <div class="mdc-form-field">
@@ -42,7 +43,7 @@ Now the label will be positioned before the checkbox.
 
 ### Usage with MDC-Web Components
 
-`mdc-form-field` will work not just with `input` elements, but with _any_ element as long as its
+`mdc-form-field` works not just with `input` elements, but with _any_ child element as long as its
 successive sibling is a `label` element. This means it will work for MDC-Web form controls such as Checkbox and Radio:
 
 ```html
