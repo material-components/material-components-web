@@ -23,7 +23,7 @@
 @import "../../packages/mdc-list/mdc-list";
 
 .demo-drawer--custom {
-  @include mdc-drawer-fill-color(#3f51b5);
+  @include mdc-drawer-fill-color($material-color-teal-900);
   @include mdc-drawer-ink-color(#fff);
   @include mdc-list-item-graphic-ink-color(#fff);
 
@@ -39,7 +39,17 @@
 }
 
 .demo-drawer--accessible {
-  @include mdc-drawer-fill-color-accessible(#3f51b5);
+  @include mdc-drawer-fill-color-accessible($material-color-indigo-500);
+
+  .demo-drawer-list-item {
+    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
+    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
+  }
+
+  .demo-drawer-list-item.mdc-list-item--selected {
+    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
+    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
+  }
 }
 
 .demo-form-field {
