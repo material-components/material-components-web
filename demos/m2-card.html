@@ -101,7 +101,7 @@
     <script src="/assets/material-components-web.js"></script>
     <script>
       (function() {
-        var cssLoadedInterval = setInterval(() => {
+        var cssLoadedInterval = setInterval(function() {
           if (getComputedStyle(document.querySelector('.hero')).position === 'relative') {
             clearInterval(cssLoadedInterval);
             init();
@@ -109,17 +109,16 @@
         }, 200);
 
         function init() {
-          var cards = document.querySelectorAll('.mdc-draggable-item');
-
-          for (var i = 0; i < cards.length; i++) {
-            var card = cards[i];
+          var cards = [].slice.call(document.querySelectorAll('.mdc-draggable-item'));
+          cards.forEach(function(card) {
             // TODO(acdvorak): This is gross
             card.ripple = mdc.ripple.MDCRipple.attachTo(card);
-          }
+          });
 
-          for (var dragCollectionEl of document.querySelectorAll('.demo-card-collection')) {
+          var collections = [].slice.call(document.querySelectorAll('.demo-card-collection'));
+          collections.forEach(function(dragCollectionEl) {
             new mdc.dragDrop.MDCDragCollection(dragCollectionEl);
-          }
+          });
         }
       })();
     </script>
