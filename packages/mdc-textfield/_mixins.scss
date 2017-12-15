@@ -15,7 +15,7 @@
 //
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
-  border-radius: $radius $radius $radius $radius;
+  border-radius: $radius;
 }
 
 @mixin mdc-text-field-box-corner-radius($radius) {

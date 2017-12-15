@@ -196,7 +196,7 @@ See [here](outline/) for more information on using the outline sub-component.
 </div>
 ```
 
-Note that both Text Field Boxes and Outlined Text Fields support all of the same features as normal text-fields, including helper text, validation, and dense UI.
+Note that both Text Field Boxes and Outlined Text Fields support all of the same features as normal Text Fields, including helper text, validation, and dense UI.
 
 #### CSS-only text field boxes
 
@@ -338,7 +338,7 @@ complicated.
 | getIdleOutlineStyleValue(propertyName: string) => string | Returns the idle outline element's computed style value of the given css property `propertyName`. We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.|
 | isRtl() => boolean | Returns whether the direction of the root element is set to RTL. |
 
-MDC Text Field has multiple optional sub-elements: bottom line, helper text and outline. The foundations of these sub-elements must be passed in as constructor arguments for the `MDCTextField` foundation. Since the `MDCTextField` component takes care of creating its foundation, we need to pass sub-element foundations through the `MDCTextField` component. This is typically done in the component's implementation of `getDefaultFoundation()`.
+MDC Text Field has multiple optional sub-elements: bottom line, helper text, and outline. The foundations of these sub-elements must be passed in as constructor arguments for the `MDCTextField` foundation. Since the `MDCTextField` component takes care of creating its foundation, we need to pass sub-element foundations through the `MDCTextField` component. This is typically done in the component's implementation of `getDefaultFoundation()`.
 
 #### The full foundation API
 
