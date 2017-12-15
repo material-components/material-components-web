@@ -98,7 +98,7 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
 }
 
 .mdc-draggable-item--source {
-  visibility: hidden;
+  opacity: 0;
 }
 
 .mdc-draggable-item--clone {
