@@ -554,7 +554,7 @@ export class MDCDragCollection extends MDCComponent {
       this.dropItLikeItsHot_(e);
     }
 
-    if (this.sourceItemEl_.ripple) {
+    if (this.sourceItemEl_ && this.sourceItemEl_.ripple) {
       // TODO(acdvorak): Submit PR to "draggable" repo to pass through originalEvent to drag:stop
       // TODO(acdvorak): Submit PR to "draggable" repo to listen for ESC key
       // TODO(acdvorak): Submit PR to fix Ripple so that it doesn't require an event object
