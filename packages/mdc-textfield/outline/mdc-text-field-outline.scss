@@ -41,7 +41,7 @@
   left: 0;
   width: calc(100% - 1px);
   height: calc(100% - 2px);
-  transition: opacity 250ms ease;
+  transition: mdc-text-field-transition(opacity);
   opacity: 0;
   z-index: 2;
 
@@ -54,7 +54,7 @@
       @include mdc-theme-prop(stroke, primary);
     
       stroke-width: 2px;
-      transition: opacity 250ms ease;
+      transition: mdc-text-field-transition(stroke-width), mdc-text-field-transition(opacity);
       fill: transparent;
     }
   }
