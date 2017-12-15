@@ -104,10 +104,7 @@ function isPointRightOfRect(point, rect) {
 }
 
 function getDirectionality(element) {
-  const ancestor = element.closest('[dir]');
-  return (ancestor && ancestor.getAttribute('dir') === Directionality.RTL)
-    ? Directionality.RTL
-    : Directionality.LTR;
+  return getComputedStyle(element).direction;
 }
 
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
