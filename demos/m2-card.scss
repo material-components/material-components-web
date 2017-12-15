@@ -222,6 +222,10 @@ $demo-drop-zone-thickness: 6px;
   height: $demo-card-size;
 }
 
+.demo-card.mdc-draggable-item--clone {
+  @include mdc-elevation(8);
+}
+
 .demo-card--color {
   $color-value: mdc-theme-prop-value(secondary);
 
