@@ -39,6 +39,12 @@ class MDCTextFieldLabelAdapter {
    * @param {string} className
    */
   removeClass(className) {}
+
+  /**
+   * Returns the width of the label element.
+   * @return {number}
+   */
+  getWidth() {}
 }
 
 export default MDCTextFieldLabelAdapter;

@@ -121,12 +121,6 @@ class MDCTextFieldAdapter {
   getNativeInput() {}
 
   /**
-   * Returns the width of the label element.
-   * @return {number}
-   */
-  getLabelWidth() {}
-
-  /**
    * Returns the idle outline element's computed style value of the given css property `propertyName`.
    * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
    * @param {string} propertyName
