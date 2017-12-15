@@ -214,8 +214,6 @@ class MDCTextField extends MDCComponent {
             this.bottomLine_.unlisten(evtType, handler);
           }
         },
-        getWidth: () => this.root_.offsetWidth,
-        getHeight: () => this.root_.offsetHeight,
         getLabelWidth: () => {
           const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
           return labelElement.offsetWidth;

@@ -29,6 +29,17 @@
  */
 class MDCTextFieldOutlineAdapter {
   /**
+   * Returns the width of the root element.
+   * @return {number}
+   */
+  getWidth() {}
+
+  /**
+   * Returns the height of the root element.
+   * @return {number}
+   */
+  getHeight() {}
+  /**
    * Sets the SVG path of the outline element.
    * @param {string} value
    */

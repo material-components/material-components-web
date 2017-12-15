@@ -121,18 +121,6 @@ class MDCTextFieldAdapter {
   getNativeInput() {}
 
   /**
-   * Returns the width of the root element.
-   * @return {number}
-   */
-  getWidth() {}
-
-  /**
-   * Returns the height of the root element.
-   * @return {number}
-   */
-  getHeight() {}
-
-  /**
    * Returns the width of the label element.
    * @return {number}
    */

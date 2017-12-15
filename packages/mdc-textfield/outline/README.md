@@ -31,6 +31,8 @@ MDCTextFieldOutlineFoundation. This allows the parent MDCTextField component to 
 
 Method Signature | Description
 --- | ---
+getWidth() => number | Returns the width of the outline element
+getHeight() => number | Returns the height of the outline element
 setOutlinePathAttr(value: string) => void | Sets the SVG path of the outline element
 
 #### The full foundation API

@@ -46,6 +46,8 @@ class MDCTextFieldOutline extends MDCComponent {
    */
   getDefaultFoundation() {
     return new MDCTextFieldOutlineFoundation(/** @type {!MDCTextFieldOutlineAdapter} */ (Object.assign({
+      getWidth: () => this.root_.offsetWidth,
+      getHeight: () => this.root_.offsetHeight,
       setOutlinePathAttr: (value) => {
         const path = this.root_.querySelector(strings.PATH_SELECTOR);
         path.setAttribute('d', value);

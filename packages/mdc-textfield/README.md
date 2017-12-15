@@ -332,8 +332,6 @@ complicated.
 | registerBottomLineEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the bottom line element for a given event |
 | deregisterBottomLineEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the bottom line element for a given event |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
-| getWidth() => number | Returns the width of the root element. |
-| getHeight() => number | Returns the height of the root element. |
 | getLabelWidth() => number | Returns the width of the label element. |
 | getIdleOutlineStyleValue(propertyName: string) => string | Returns the idle outline element's computed style value of the given css property `propertyName`. We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.|
 | isRtl() => boolean | Returns whether the direction of the root element is set to RTL. |

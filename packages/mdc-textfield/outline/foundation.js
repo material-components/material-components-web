@@ -48,16 +48,15 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the SVG path of the focus outline element based on the given width and height
-   * of the text field element, the width of the label element, the corner radius, and
-   * the RTL context.
-   * @param {number} width
-   * @param {number} height
+   * Updates the SVG path of the focus outline element based on the given width of the
+   * label element, the corner radius, and the RTL context.
    * @param {number} labelWidth
    * @param {number} radius
    * @param {boolean=} isRtl
    */
-  updateSvgPath(width, height, labelWidth, radius, isRtl = false) {
+  updateSvgPath(labelWidth, radius, isRtl = false) {
+    const width = this.adapter_.getWidth() + 2;
+    const height = this.adapter_.getHeight() + 2;
     let path;
     if (!isRtl) {
       path = 'M' + (radius + 2.1 + Math.abs(10 - radius) + labelWidth + 8) + ',' + 1
