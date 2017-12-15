@@ -219,7 +219,7 @@ class MDCDragManager extends MDCComponent {
   }
 
   handlePointerMove_(e) {
-    console.log('handlePointerMove_(' + e.type + ')');
+    // console.log('handlePointerMove_(' + e.type + ')');
 
     this.currentPointerPositionInViewport_ = util.getPointerPositionInViewport(e);
     this.currentPointerPositionRelativeToCollection_ = util.getPointerOffsetFromElement(e, this.root_);
@@ -257,7 +257,7 @@ handlePointerMoveWhileWaitingForLongPress_(e):
   }
 
   handlePointerMoveWhileDragging_(e) {
-    console.log('handlePointerMoveWhileDragging_(' + e.type + ')');
+    // console.log('handlePointerMoveWhileDragging_(' + e.type + ')');
 
     this.itemCloneEl_.style.opacity = '1';
     this.itemSourceEl_.style.opacity = '0';
