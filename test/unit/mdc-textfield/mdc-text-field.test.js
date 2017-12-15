@@ -20,8 +20,8 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldBottomLine,
-  MDCTextFieldHelperText, MDCTextFieldIcon, MDCTextFieldLabel} from '../../../packages/mdc-textfield';
+import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldBottomLine, MDCTextFieldHelperText,
+  MDCTextFieldIcon, MDCTextFieldLabel, MDCTextFieldOutline} from '../../../packages/mdc-textfield';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -217,7 +217,7 @@ test('#destroy handles undefined optional sub-elements gracefully', () => {
       <input type="text" class="mdc-text-field__input" id="my-text-field">
     </div>
   `;
-  const component = new MDCTextField(getFixture());
+  const component = new MDCTextField(root);
   assert.doesNotThrow(() => component.destroy());
 });
 

@@ -403,9 +403,9 @@ test('on keydown sets receivedUserInput to true when input is enabled', () => {
     .thenDo((evtType, handler) => {
       keydown = handler;
     });
-    td.when(mockAdapter.getNativeInput()).thenReturn({
-      disabled: false,
-    });
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    disabled: false,
+  });
   foundation.init();
   assert.equal(foundation.receivedUserInput_, false);
   keydown();
