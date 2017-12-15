@@ -76,12 +76,7 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
 
   user-select: none;
 
-  &--dragging {
-    // TODO(acdvorak): Find a better way to ignore mouse events on elements underneath the mirror.
-    pointer-events: none;
-    // TODO(acdvorak): Is this needed?
-    touch-action: none;
-  }
+  &--dragging {}
 
   &--single-column {
     // TODO(acdvorak): Is this needed? It causes jank on page load
@@ -95,10 +90,7 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
 
 .mdc-drag-touch-disabled {
   touch-action: none;
-}
-
-.mdc-draggable-item {
-  user-select: none;
+  pointer-events: none;
 }
 
 .mdc-draggable-item:not(.mdc-draggable-item--clone) {
@@ -107,8 +99,6 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
 
 .mdc-draggable-item--source {
   visibility: hidden;
-  // TODO(acdvorak): Is this needed?
-  touch-action: none;
 }
 
 .mdc-draggable-item--clone {
@@ -117,8 +107,6 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
   left: 0;
   transition: none;
   pointer-events: none;
-  // TODO(acdvorak): Is this needed?
-  touch-action: none;
 }
 
 .mdc-drop-spacer {

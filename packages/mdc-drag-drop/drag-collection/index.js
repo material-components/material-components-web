@@ -151,7 +151,7 @@ class MDCDragManager extends MDCComponent {
    * Global event listeners
    */
 
-  setGlobalEventListeners_(eventNames, handlerFn) {
+  addGlobalEventListeners_(eventNames, handlerFn, listenerOpts) {
     if (!eventNames) {
       return;
     }
@@ -159,14 +159,19 @@ class MDCDragManager extends MDCComponent {
       eventNames = [eventNames];
     }
     for (const eventName of eventNames.filter((eventName) => !!eventName)) {
-      this.globalEventListeners_.set(eventName, handlerFn);
-      document.addEventListener(eventName, handlerFn);
+      if (!this.globalEventListeners_.has(eventName)) {
+        this.globalEventListeners_.set(eventName, []);
+      }
+      this.globalEventListeners_.get(eventName).push(handlerFn);
+      document.addEventListener(eventName, handlerFn, listenerOpts || {});
     }
   }
 
   removeGlobalEventListeners_(...eventNames) {
     for (const eventName of eventNames) {
-      document.removeEventListener(eventName, this.globalEventListeners_.get(eventName));
+      for (const handlerFn of this.globalEventListeners_.get(eventName)) {
+        document.removeEventListener(eventName, handlerFn);
+      }
       this.globalEventListeners_.delete(eventName);
     }
   }
@@ -219,28 +224,28 @@ class MDCDragManager extends MDCComponent {
     this.currentEventPrefix_ = eventPrefix;
     this.currentEventIsTouch_ = isTouch;
 
-    document.documentElement.classList.add('mdc-drag-touch-disabled');
-    document.documentElement.classList.add('mdc-drag-select-disabled');
+    setTimeout(() => {
+      // document.documentElement.classList.add('mdc-drag-touch-disabled');
+      // document.documentElement.classList.add('mdc-drag-select-disabled');
+    });
 
-    this.setGlobalEventListeners_(eventMap.move, (e) => this.handlePointerMove_(e));
-    this.setGlobalEventListeners_(eventMap.up, (e) => this.handlePointerUp_(e));
-    this.setGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
+    this.addGlobalEventListeners_(eventMap.move, (e) => this.handlePointerMove_(e));
+    this.addGlobalEventListeners_(eventMap.up, (e) => this.handlePointerUp_(e));
+    this.addGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
+
+    // Prevent the Chrome Dev Tools mobile emulator from displaying a context menu on long press.
+    this.addGlobalEventListeners_('contextmenu', (e) => e.preventDefault());
 
     this.setDragState_(DragState.LONG_PRESS_WAITING);
 
     if (isTouch) {
       this.delayTimer_ = setTimeout(() => this.handleDragStart_(), this.delay_);
-
-      // Prevent the Chrome Dev Tools mobile emulator from displaying a context menu on long press.
-      this.setGlobalEventListeners_('contextmenu', (e) => e.preventDefault());
     } else {
       this.handleDragStart_(e);
     }
   }
 
   handlePointerMove_(e) {
-    e.preventDefault();
-
     console.log('handlePointerMove_(' + e.type + ')');
 
     this.currentPointerPositionInViewport_ = util.getPointerPositionInViewport(e);
@@ -274,7 +279,7 @@ handlePointerMoveWhileWaitingForLongPress_(e):
         pointerOffsetFromStartPosition, this.longPressToleranceInPx_);
       // TODO(acdvorak): Emit 'fakeout' event
 
-      this.handleDragEnd_();
+      this.handleDragEnd_(e);
     }
   }
 
@@ -323,6 +328,10 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     this.setClonePosition_();
     document.body.appendChild(this.itemCloneEl_);
 
+    // Prevent native scroll/pan/zoom gestures
+    this.addGlobalEventListeners_('dragstart', (e) => e.preventDefault());
+    this.addGlobalEventListeners_('touchmove', (e) => e.preventDefault(), {passive: false});
+
     this.emit('drag:start', {originalEvent: null, originalSource: this.itemSourceEl_});
   }
 
@@ -333,21 +342,25 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     clearTimeout(this.delayTimer_);
     this.removeAllGlobalEventListeners_();
 
-    if (prevDragState !== DragState.DRAGGING) {
-      return;
-    }
-
     console.log('handleDragEnd_(' + e.type + ')');
 
-    this.itemCloneEl_.remove();
-    this.itemCloneEl_.classList.remove(this.classes_['mirror']);
-    this.itemSourceEl_.classList.remove(this.classes_['source:dragging']);
-    this.itemSourceEl_.removeAttribute('aria-grabbed');
+    if (this.itemCloneEl_) {
+      this.itemCloneEl_.remove();
+      this.itemCloneEl_.classList.remove(this.classes_['mirror']);
+    }
+
+    if (this.itemSourceEl_) {
+      this.itemSourceEl_.classList.remove(this.classes_['source:dragging']);
+      this.itemSourceEl_.removeAttribute('aria-grabbed');
+    }
+
     this.root_.classList.remove(this.classes_['container:dragging']);
     document.documentElement.classList.remove('mdc-drag-touch-disabled');
     document.documentElement.classList.remove('mdc-drag-select-disabled');
 
-    this.emit('drag:stop', {originalEvent: e, originalSource: this.itemSourceEl_});
+    if (prevDragState === DragState.DRAGGING) {
+      this.emit('drag:stop', {originalEvent: e, originalSource: this.itemSourceEl_});
+    }
   }
 
   // eslint-disable-next-line camelcase
