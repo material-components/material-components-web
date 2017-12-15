@@ -141,9 +141,6 @@ class MDCSimpleMenuAdapter {
 
   /** @param {string} height */
   setMaxHeight(height) {}
-
-  /** @return {number} */
-  getAccurateTime() {}
 }
 
 export {MDCSimpleMenuAdapter};

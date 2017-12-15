@@ -65,7 +65,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
     'deregisterBodyClickHandler', 'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus',
     'restoreFocus', 'isFocused', 'focus', 'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin',
-    'setPosition', 'setMaxHeight', 'getAccurateTime',
+    'setPosition', 'setMaxHeight',
   ]);
 });
 
@@ -230,7 +230,7 @@ testFoundation('#open anchors the menu to the bottom left in LTR when not close 
     td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
     td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 100, bottom: 880, left: 10, right: 50,
+      height: 20, width: 40, top: 100, bottom: 120, left: 10, right: 50,
     });
     foundation.setAnchorCorner(Corner.BOTTOM_START);
     foundation.setAnchorMargin({top: 0, left: 0, bottom: 10, right: 0});
@@ -247,7 +247,7 @@ testFoundation('#open anchors the menu to the bottom left in LTR when close to t
     td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
     td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 900, bottom: 80, left: 10, right: 50,
+      height: 20, width: 40, top: 900, bottom: 920, left: 10, right: 50,
     });
     foundation.setAnchorCorner(Corner.BOTTOM_START);
     foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 0});
@@ -264,7 +264,7 @@ testFoundation('#open anchors the menu to the bottom left in RTL when close to t
     td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
     td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
     td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 900, bottom: 80, left: 20, right: 940,
+      height: 20, width: 40, top: 900, bottom: 920, left: 910, right: 950,
     });
     foundation.setAnchorCorner(Corner.BOTTOM_START);
     foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 7});
@@ -901,7 +901,7 @@ testFoundation('should cancel animation after destroy', ({foundation, mockAdapte
   mockRaf.flush();
 
   td.verify(
-    mockAdapter.setScale(td.matchers.anything(), td.matchers.anything()),
+    mockAdapter.setPosition(td.matchers.anything()),
     {times: 0}
   );
 });

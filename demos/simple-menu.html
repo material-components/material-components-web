@@ -51,7 +51,7 @@
       .demo-controls {
         margin-left: auto;
         margin-right: auto;
-        width: 320px;
+        width: 360px;
       }
 
       .mdc-menu-anchor {
@@ -71,16 +71,18 @@
         width: 2em;
       }
 
-      .anchor-position-controls {
+      .left-column-controls {
          display: inline-block;
       }
 
-      .menu-position-controls {
+      .right-column-controls {
         display: inline-block;
         margin-left: 2em;
       }
 
-      .extraItems {
+      .longAnchorWidth,
+      .longMenuItems,
+      .extraLongMenuItems {
         display: none;
       }
     </style>
@@ -99,7 +101,7 @@
 
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
-      <section class="hero">
+      <!-- <section class="hero">
         <div class="mdc-simple-menu mdc-simple-menu--open">
           <ul class="mdc-simple-menu__items mdc-list">
             <li class="mdc-list-item" role="menuitem">Back</li>
@@ -110,13 +112,13 @@
             <li class="mdc-list-item" role="menuitem">Settings</li>
           </ul>
         </div>
-      </section>
+      </section> -->
 
       <div class="demo-content">
         <div id="demo-wrapper">
           <div class="mdc-menu-anchor">
             <button class="mdc-button mdc-button--raised toggle">
-              Rev
+              Show<span class="normalAnchorWidth"> Menu</span><span class="longAnchorWidth"> From Here Now!</span>
             </button>
 
             <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
@@ -128,19 +130,21 @@
 
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>
-                <span class="extraItems">
+                <span class="longMenuItems">
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
+                </span>
+                <span class="extraLongMenuItems">
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 6</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 7</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 8</li>
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 9</li>
                 </span>
               </ul>
             </div>
@@ -149,7 +153,7 @@
 
         <div class="demo-controls-container">
           <div class="demo-controls">
-            <div class="anchor-position-controls">
+            <div class="left-column-controls">
               Button Position:
               <div>
                 <label><input type="radio" name="position" value="top left" checked> Top left</label>
@@ -164,7 +168,7 @@
                 <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
               </div>
             </div>
-            <div class="menu-position-controls">
+            <div class="right-column-controls">
               Default Menu Position:
               <div>
                 <label><input type="radio" name="menuposition" value="top_start" checked> Top start</label>
@@ -191,15 +195,39 @@
                 <label>R: <input type="text" name="rightMargin" value="0" size="3"></label>
               </div>
             </p>
-            <p>
+            <div class="left-column-controls">
               <label><input type="checkbox" name="isrtl"> RTL</label>
-            </p>
-            <p>
+            </div>
+            <div class="right-column-controls">
               <label><input type="checkbox" name="dark"> Dark mode</label>
-            </p>
+            </div>
             <p>
-              <label><input type="checkbox" name="longMenu"> Long menu</label>
+              <div class="left-column-controls">
+                Menu Sizes:
+                <div>
+                  <label><input type="radio" name="menulength" value="small" checked> Regular menu</label>
+                </div>
+                <div>
+                  <label><input type="radio" name="menulength" value="large"> Large menu</label>
+                </div>
+                <div>
+                  <label><input type="radio" name="menulength" value="tall"> Extra tall menu</label>
+                </div>
+              </div>
+              <div class="right-column-controls">
+                Anchor Widths
+                <div>
+                  <label><input type="radio" name="anchorwidth" value="tiny"> Small button</label>
+                </div>
+                <div>
+                  <label><input type="radio" name="anchorwidth" value="regular" checked> Comparable to menu</label>
+                </div>
+                <div>
+                  <label><input type="radio" name="anchorwidth" value="wide"> Wider than menu</label>
+                </div>
+              </div>
             </p>
+            <hr>
             <div>
               <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
             </div>
@@ -286,12 +314,6 @@
         });
       }
 
-      var long = document.querySelector('input[name="longMenu"]');
-      long.addEventListener('change', (e) => {
-        const extraItems = document.querySelector('.extraItems');
-        extraItems.style.display = long.checked ? 'block' : 'none';
-      })
-
       const rtl = document.querySelector('input[name="isrtl"]');
       rtl.addEventListener('change', () => {
         const demoWrapper = document.getElementById('demo-wrapper');
@@ -301,6 +323,50 @@
           demoWrapper.removeAttribute('dir');
         }
       });
+
+      var radios = document.querySelectorAll('input[name="menulength"]');
+      for (var i = 0; i < radios.length; i++) {
+        radios[i].addEventListener('change', function(evt) {
+          if (evt.target.checked) {
+            switch (evt.target.value) {
+              case "small":
+                document.querySelector('.longMenuItems').style.display = 'none';
+                document.querySelector('.extraLongMenuItems').style.display = 'none';
+                break;
+              case "large":
+                document.querySelector('.longMenuItems').style.display = 'block';
+                document.querySelector('.extraLongMenuItems').style.display = 'none';
+                break;
+              case "tall":
+                document.querySelector('.longMenuItems').style.display = 'block';
+                document.querySelector('.extraLongMenuItems').style.display = 'block';
+                break;
+            }
+          }
+        });
+      }
+
+      var radios = document.querySelectorAll('input[name="anchorwidth"]');
+      for (var i = 0; i < radios.length; i++) {
+        radios[i].addEventListener('change', function(evt) {
+          if (evt.target.checked) {
+            switch (evt.target.value) {
+              case "tiny":
+                document.querySelector('.normalAnchorWidth').style.display = 'none';
+                document.querySelector('.longAnchorWidth').style.display = 'none';
+                break;
+              case "regular":
+                document.querySelector('.normalAnchorWidth').style.display = 'inline';
+                document.querySelector('.longAnchorWidth').style.display = 'none';
+                break;
+              case "wide":
+                document.querySelector('.normalAnchorWidth').style.display = 'inline';
+                document.querySelector('.longAnchorWidth').style.display = 'inline';
+                break;
+            }
+          }
+        });
+      }
 
       var lastSelected = document.getElementById('last-selected');
       menuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {

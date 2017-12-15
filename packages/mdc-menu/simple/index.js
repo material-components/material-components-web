@@ -150,7 +150,6 @@ class MDCSimpleMenu extends MDCComponent {
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;
       },
-      getAccurateTime: () => window.performance.now(),
     });
   }
 }

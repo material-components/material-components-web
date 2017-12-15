@@ -98,7 +98,6 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       setTransformOrigin: () => {},
       setPosition: () => {},
       setMaxHeight: () => {},
-      getAccurateTime: () => 0,
     });
   }
 
@@ -326,15 +325,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {bool} Indicates whether menu can cover the whole anchor (ignoring margins).
-   * @private
-   */
-  canOverlapAnchor_() {
-    return this.adapter_.hasAnchor() && !(this.anchorCorner_ & CornerBit.BOTTOM);
-  }
-
-  /**
-   * @return {AutoLayoutMeasures} //TODO make a typedef.
+   * @return {AutoLayoutMeasures} Measurements used to position menu popup.
    */
   getAutoLayoutMeasures_() {
     const anchorRect = this.adapter_.getAnchorDimensions();
@@ -379,7 +370,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }
 
     const leftAligned = this.adapter_.isRtl() ? (this.anchorCorner_ & CornerBit.FLIP_RTL & CornerBit.RIGHT) :
-      (this.anchorCorner_ & ~CornerBit.RIGHT);
+      !(this.anchorCorner_ & CornerBit.RIGHT);
     const availableLeft = leftAligned ? viewportMargin.left + this.anchorMargin_.left :
       viewportMargin.left + anchorWidth + this.anchorMargin_.right;
     const availableRight = leftAligned ? anchorWidth - this.anchorMargin_.left + viewportMargin.right :
@@ -387,24 +378,13 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
 
     const leftOverflow = menuWidth - availableLeft;
     const rightOverflow = menuWidth - availableRight;
-    if (rightOverflow > 0 && leftOverflow < rightOverflow) {
+    if (this.adapter_.isRtl()) {
+      if (leftOverflow < 0 && this.anchorCorner_ & CornerBit.FLIP_RTL & ~CornerBit.RIGHT) {
+        corner |= CornerBit.RIGHT;
+      }
+    } else if (rightOverflow > 0 && leftOverflow < rightOverflow) {
       corner |= CornerBit.RIGHT;
     }
-
-
-    // const extendsBeyondLeftBounds = leftOverflow > 0;
-    // const extendsBeyondRightBounds = rightOverflow > 0;
-    // const flipRtl = (this.anchorCorner_ & CornerBit.FLIP_RTL & CornerBit.RIGHT);
-    // if (this.adapter_.isRtl()) {
-    //   // In RTL, we prefer to open from the right.
-    //   horizontal = flipRtl ? 'left' : 'right';
-    //   if (extendsBeyondRightBounds && leftOverflow < rightOverflow) {
-    //    horizontal = flipRtl ? 'right' : 'left';
-    //   }
-    // } else if (extendsBeyondLeftBounds && rightOverflow < leftOverflow) {
-    //   horizontal = flipRtl ? 'left' : 'right';
-    // }
-
 
     return corner;
   }
@@ -506,8 +486,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     if (anchorWidth / menuWidth > numbers.ANCHOR_TO_MENU_WIDTH_RATIO) {
       horizontalAlignment = 'center';
     }
-    // adjust vertical origin when menu significantly overlaps anchor.
-    if (Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
+    // adjust vertical origin when menu can and significantly overlaps anchor.
+    if (!(this.anchorCorner_ & CornerBit.BOTTOM) &&
+        Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
       const verticalOffsetPercent = Math.abs(verticalOffset / menuHeight) * 100;
       const originPercent = (corner & CornerBit.BOTTOM) ? 100 - verticalOffsetPercent : verticalOffsetPercent;
       verticalAlignment = originPercent + '%';
