@@ -566,7 +566,13 @@ export class MDCDragCollection extends MDCComponent {
       // TODO(acdvorak): Submit PR to "draggable" repo to pass through originalEvent to drag:stop
       // TODO(acdvorak): Submit PR to "draggable" repo to listen for ESC key
       // TODO(acdvorak): Submit PR to fix Ripple so that it doesn't require an event object
-      this.sourceItemEl_.ripple.deactivate({type: 'pointerup'});
+      const eventPrefix = util.getEventPrefix(e.originalEvent || e.detail.originalEvent);
+      this.sourceItemEl_.ripple.deactivate({type: EventMap[eventPrefix].up});
+
+      // A second synthetic `deactivate` call (hard-coded with 'mouseup') is needed because of this check in mdc-ripple:
+      // https://github.com/material-components/material-components-web/blob/a983c01676e7b2a9b4aa743f722588ecb2019e4f/packages/mdc-ripple/foundation.js#L396
+      // TODO(acdvorak): Update ripple so that we don't need to call `deactivate` twice with different event types.
+      this.sourceItemEl_.ripple.deactivate({type: EventMap['mouse'].up});
     }
 
     this.resetState_();
