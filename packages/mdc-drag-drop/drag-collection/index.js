@@ -224,11 +224,6 @@ class MDCDragManager extends MDCComponent {
     this.currentEventPrefix_ = eventPrefix;
     this.currentEventIsTouch_ = isTouch;
 
-    setTimeout(() => {
-      // document.documentElement.classList.add('mdc-drag-touch-disabled');
-      // document.documentElement.classList.add('mdc-drag-select-disabled');
-    });
-
     this.addGlobalEventListeners_(eventMap.move, (e) => this.handlePointerMove_(e));
     this.addGlobalEventListeners_(eventMap.up, (e) => this.handlePointerUp_(e));
     this.addGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
@@ -285,6 +280,9 @@ handlePointerMoveWhileWaitingForLongPress_(e):
 
   handlePointerMoveWhileDragging_(e) {
     console.log('handlePointerMoveWhileDragging_(' + e.type + ')');
+
+    document.documentElement.classList.add('mdc-drag-touch-disabled');
+    document.documentElement.classList.add('mdc-drag-select-disabled');
 
     this.emit('drag:move', {originalEvent: e, originalSource: this.itemSourceEl_});
     this.setClonePosition_();
