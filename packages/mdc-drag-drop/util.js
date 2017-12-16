@@ -211,6 +211,17 @@ export function getElementOffset(targetEl, originEl) {
   return computeRectOffset(targetRect, originRect);
 }
 
+export function matches(el, selector) {
+  const matches =
+    el.matches ||
+    el.matchesSelector ||
+    el.mozMatchesSelector ||
+    el.msMatchesSelector ||
+    el.oMatchesSelector ||
+    el.webkitMatchesSelector;
+  return matches.call(el, selector);
+}
+
 /**
  * Emulates Element.closest() for browsers that don't support it natively (namely IE 11).
  * @param {?Element} el
@@ -227,7 +238,7 @@ export function closest(el, selector) {
   }
 
   while (el !== null) {
-    if (el.matches(selector)) {
+    if (matches(el, selector)) {
       return el;
     }
     el = el.parentElement;
