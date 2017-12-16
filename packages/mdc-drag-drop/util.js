@@ -103,10 +103,6 @@ function isPointRightOfRect(point, rect) {
   return point.x > rect.right;
 }
 
-function getDirectionality(element) {
-  return getComputedStyle(element).direction;
-}
-
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
 class ResizeListener {
   constructor() {
@@ -163,6 +159,10 @@ class ResizeListener {
     });
     this.isRunning_ = false;
   }
+}
+
+export function getDirectionality(element) {
+  return getComputedStyle(element).direction;
 }
 
 export function isLTR(element) {

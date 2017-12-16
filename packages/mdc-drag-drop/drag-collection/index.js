@@ -306,6 +306,7 @@ handlePointerMoveWhileWaitingForLongPress_(e):
 
     const includeAncestors = true;
     this.itemCloneEl_ = this.itemSourceEl_.cloneNode(includeAncestors);
+    this.itemCloneEl_.setAttribute('dir', util.getDirectionality(this.itemSourceEl_));
     this.itemCloneEl_.classList.add(this.classes_['mirror']);
     this.itemSourceEl_.classList.add(this.classes_['source:dragging']);
     this.itemSourceEl_.setAttribute('aria-grabbed', 'true');
@@ -391,7 +392,6 @@ export class MDCDragCollection extends MDCComponent {
   }
 
   initialize() {
-    // TODO(acdvorak): If the container is RTL, make sure the cloned "mirror" element has `dir="rtl"`.
     const opts = {
       draggable: '.mdc-draggable-item',
       delay: 300,
