@@ -35,47 +35,11 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTextFieldOutlineFoundation);
 
-test('#updateSvgPath sets the path of the outline element when isRtl=false by default', () => {
+test('#updateSvgPath sets the path of the outline element', () => {
   const {foundation, mockAdapter} = setupTest();
-  const width = 100;
-  const height = 100;
   const labelWidth = 30;
   const radius = 8;
-  const path = 'M' + (radius + 2.1 + Math.abs(10 - radius) + labelWidth + 8) + ',' + 1
-    + 'h' + (width - (2 * (radius + 2.1)) - labelWidth - 8.5 - Math.abs(10 - radius))
-    + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-    + 'v' + (height - 2 * (radius + 2.1))
-    + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-    + 'h' + (-width + 2 * (radius + 1.7))
-    + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-    + 'v' + (-height + 2 * (radius + 2.1))
-    + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
-    + 'h' + Math.abs(10 - radius);
-  td.when(mockAdapter.getWidth()).thenReturn(width - 2);
-  td.when(mockAdapter.getHeight()).thenReturn(height - 2);
-  foundation.updateSvgPath(labelWidth, radius);
-  td.verify(mockAdapter.setOutlinePathAttr(path));
-});
-
-
-test('#updateSvgPath sets the path of the outline element when isRtl=true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const width = 100;
-  const height = 100;
-  const labelWidth = 30;
-  const radius = 8;
-  const path = 'M' + (width - radius - 2.1 - Math.abs(10 - radius)) + ',' + 1
-    + 'h' + Math.abs(10 - radius)
-    + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-    + 'v' + (height - 2 * (radius + 2.1))
-    + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-    + 'h' + (-width + 2 * (radius + 1.7))
-    + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-    + 'v' + (-height + 2 * (radius + 2.1))
-    + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
-    + 'h' + (width - (2 * (radius + 2.1)) - labelWidth - 8.5 - Math.abs(10 - radius));
-  td.when(mockAdapter.getWidth()).thenReturn(width - 2);
-  td.when(mockAdapter.getHeight()).thenReturn(height - 2);
-  foundation.updateSvgPath(labelWidth, radius, true /* isRtl */);
-  td.verify(mockAdapter.setOutlinePathAttr(path));
+  const isRtl = true;
+  foundation.updateSvgPath(labelWidth, radius, isRtl);
+  td.verify(mockAdapter.setOutlinePathAttr(td.matchers.anything()));
 });

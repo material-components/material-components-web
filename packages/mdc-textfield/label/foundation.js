@@ -52,7 +52,7 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
 
   /**
    * Returns the width of the label element when it floats above the text field.
-   * @return {number} 
+   * @return {number}
    */
   getFloatingWidth() {
     // The label is scaled 75% when it floats above the text field.

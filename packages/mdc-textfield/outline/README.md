@@ -33,7 +33,7 @@ Method Signature | Description
 --- | ---
 getWidth() => number | Returns the width of the outline element
 getHeight() => number | Returns the height of the outline element
-setOutlinePathAttr(value: string) => void | Sets the SVG path of the outline element
+setOutlinePathAttr(value: string) => void | Sets the "d" attribute of the outline element's SVG path
 
 #### The full foundation API
 

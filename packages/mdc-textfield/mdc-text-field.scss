@@ -121,15 +121,6 @@
   height: 56px;
   border: none;
 
-  .mdc-text-field__outline {
-    @include mdc-ripple-surface;
-    @include mdc-states(text-primary-on-light);
-    @include mdc-ripple-radius;
-    @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
-
-    overflow: hidden;
-  }
-
   // stylelint-disable plugin/selector-bem-pattern
 
   .mdc-text-field__input {
@@ -165,20 +156,24 @@
     }
   }
 
-  &.mdc-text-field--focused .mdc-text-field__idle-outline {
-    opacity: 0;
+  &.mdc-text-field--focused {
+    .mdc-text-field__idle-outline {
+      opacity: 0;
+    }
+
+    .mdc-text-field__outline {
+      opacity: 1;
+    }
   }
 
-  &.mdc-text-field--focused .mdc-text-field__outline {
-    opacity: 1;
-  }
+  .mdc-text-field__label--float-above {
+    ~ .mdc-text-field__idle-outline {
+      opacity: 0;
+    }
 
-  .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
-    opacity: 0;
-  }
-
-  .mdc-text-field__label--float-above ~ .mdc-text-field__outline {
-    opacity: 1;
+    ~ .mdc-text-field__outline {
+      opacity: 1;
+    }
   }
 
   &:not(.mdc-text-field--focused) .mdc-text-field__outline-path {
