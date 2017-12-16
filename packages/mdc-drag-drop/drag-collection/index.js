@@ -46,8 +46,8 @@ class MDCDragManager extends MDCComponent {
     this.longPressToleranceInPx_ = longPressToleranceInPx;
     this.itemSelector_ = draggable;
     this.classes_ = classes;
-    this.rootEventListeners_ = new Map();
-    this.globalEventListeners_ = new Map();
+    this.rootEventListeners_ = util.createMap();
+    this.globalEventListeners_ = util.createMap();
     this.setDragState_(DragState.IDLE);
 
     const keyboardEventNames = [
@@ -123,7 +123,7 @@ class MDCDragManager extends MDCComponent {
   }
 
   removeAllRootEventListeners_() {
-    this.removeRootEventListeners_(...this.rootEventListeners_);
+    this.removeRootEventListeners_(...this.rootEventListeners_.keys());
     this.rootEventListeners_.clear();
   }
 
@@ -142,22 +142,22 @@ class MDCDragManager extends MDCComponent {
       if (!this.globalEventListeners_.has(eventName)) {
         this.globalEventListeners_.set(eventName, []);
       }
-      this.globalEventListeners_.get(eventName).push(handlerFn);
+      this.globalEventListeners_.get(eventName).push({handlerFn, listenerOpts});
       document.addEventListener(eventName, handlerFn, listenerOpts || {});
     });
   }
 
   removeGlobalEventListeners_(...eventNames) {
     eventNames.forEach((eventName) => {
-      this.globalEventListeners_.get(eventName).forEach((handlerFn) => {
-        document.removeEventListener(eventName, handlerFn);
+      this.globalEventListeners_.get(eventName).forEach(({handlerFn, listenerOpts}) => {
+        document.removeEventListener(eventName, handlerFn, listenerOpts);
       });
       this.globalEventListeners_.delete(eventName);
     });
   }
 
   removeAllGlobalEventListeners_() {
-    this.removeGlobalEventListeners_(...Array.from(this.globalEventListeners_.keys()));
+    this.removeGlobalEventListeners_(...this.globalEventListeners_.keys());
     this.globalEventListeners_.clear();
   }
 
@@ -686,7 +686,7 @@ export class MDCDragCollection extends MDCComponent {
       .filter(MDCDraggableItem.isVisible)
       .sort(MDCDraggableItem.orderByCoordinate);
 
-    const rowBuckets = new Map();
+    const rowBuckets = util.createMap();
     items.forEach((item) => {
       const top = item.dragCollectionOffsetRect.top;
       if (!rowBuckets.has(top)) {

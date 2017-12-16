@@ -111,6 +111,50 @@ function normalizePoint(point) {
   };
 }
 
+// IE 11 doesn't support Map.keys, because of course it doesn't.
+class MapPonyfill {
+  constructor() {
+    this.map_ = {};
+  }
+
+  has(key) {
+    return key in this.map_;
+  }
+
+  get(key) {
+    return this.map_[key];
+  }
+
+  set(key, value) {
+    this.map_[key] = value;
+  }
+
+  delete(key) {
+    if (this.has(key)) {
+      delete this.map_[key];
+      return true;
+    }
+    return false;
+  }
+
+  keys() {
+    const keys = [];
+    // eslint-disable-next-line guard-for-in
+    for (const key in this.map_) {
+      keys.push(key);
+    }
+    return keys;
+  }
+
+  forEach(visitor) {
+    this.keys().forEach((key) => visitor(this.get(key), key));
+  }
+
+  clear() {
+    this.map_ = {};
+  }
+}
+
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
 class ResizeListener {
   constructor() {
@@ -296,6 +340,10 @@ export function getInputModality(e) {
     return InputModality.KEYBOARD;
   }
   return InputModality.POINTER;
+}
+
+export function createMap() {
+  return new MapPonyfill();
 }
 
 export const resizeListener = new ResizeListener();
