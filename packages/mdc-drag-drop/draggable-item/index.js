@@ -99,7 +99,7 @@ export class MDCDraggableItem extends MDCComponent {
   }
 
   isDragSource() {
-    return this.root_.hasAttribute('aria-grabbed');
+    return this.root_.getAttribute('aria-grabbed') === 'true';
   }
 
   static isVisible(item) {
