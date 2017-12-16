@@ -29,7 +29,7 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldOutlineFoundation, [
-    'setOutlinePathAttr',
+    'getWidth', 'getHeight', 'setOutlinePathAttr',
   ]);
 });
 
@@ -51,7 +51,9 @@ test('#updateSvgPath sets the path of the outline element when isRtl=false by de
     + 'v' + (-height + 2 * (radius + 2.1))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
     + 'h' + Math.abs(10 - radius);
-  foundation.updateSvgPath(width, height, labelWidth, radius);
+  td.when(mockAdapter.getWidth()).thenReturn(width - 2);
+  td.when(mockAdapter.getHeight()).thenReturn(height - 2);
+  foundation.updateSvgPath(labelWidth, radius);
   td.verify(mockAdapter.setOutlinePathAttr(path));
 });
 
@@ -72,6 +74,8 @@ test('#updateSvgPath sets the path of the outline element when isRtl=true', () =
     + 'v' + (-height + 2 * (radius + 2.1))
     + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius
     + 'h' + (width - (2 * (radius + 2.1)) - labelWidth - 8.5 - Math.abs(10 - radius));
-  foundation.updateSvgPath(width, height, labelWidth, radius, true /* isRtl */);
+  td.when(mockAdapter.getWidth()).thenReturn(width - 2);
+  td.when(mockAdapter.getHeight()).thenReturn(height - 2);
+  foundation.updateSvgPath(labelWidth, radius, true /* isRtl */);
   td.verify(mockAdapter.setOutlinePathAttr(path));
 });

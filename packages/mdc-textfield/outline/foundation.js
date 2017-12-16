@@ -36,6 +36,8 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTextFieldOutlineAdapter} */ ({
+      getWidth: () => {},
+      getHeight: () => {},
       setOutlinePathAttr: () => {},
     });
   }

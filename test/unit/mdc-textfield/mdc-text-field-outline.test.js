@@ -39,6 +39,18 @@ function setupTest() {
   return {root, component};
 }
 
+test('#adapter.getWidth returns the width of the element', () => {
+  const {root, component} = setupTest();
+  const width = component.getDefaultFoundation().adapter_.getWidth();
+  assert.equal(width, root.offsetWidth);
+});
+
+test('#adapter.getHeight returns the height of the element', () => {
+  const {root, component} = setupTest();
+  const height = component.getDefaultFoundation().adapter_.getWidth();
+  assert.equal(height, root.offsetHeight);
+});
+
 test('#adapter.setOutlinePathAttr sets the SVG path of the element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setOutlinePathAttr('M 0 1');

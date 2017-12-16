@@ -339,25 +339,6 @@ test('#adapter.getNativeInput returns the component input element', () => {
   );
 });
 
-test('#adapter.getWidth returns the width of the root element', () => {
-  const {root, component} = setupTest();
-  const width = component.getDefaultFoundation().adapter_.getWidth();
-  assert.equal(width, root.offsetWidth);
-});
-
-test('#adapter.getHeight returns the height of the root element', () => {
-  const {root, component} = setupTest();
-  const height = component.getDefaultFoundation().adapter_.getWidth();
-  assert.equal(height, root.offsetHeight);
-});
-
-test('#adapter.getLabelWidth returns the width of the label element', () => {
-  const {root, component} = setupTest();
-  const labelElement = root.querySelector('.mdc-text-field__label');
-  const labelWidth = component.getDefaultFoundation().adapter_.getLabelWidth();
-  assert.equal(labelWidth, labelElement.offsetWidth);
-});
-
 test('#adapter.getIdleOutlineStyleValue returns the value of the given property on the idle outline element', () => {
   const root = getFixture();
   root.appendChild(bel`<div class="mdc-text-field__idle-outline"></div>`);

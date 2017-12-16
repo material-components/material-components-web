@@ -39,6 +39,7 @@ class MDCTextFieldOutlineAdapter {
    * @return {number}
    */
   getHeight() {}
+  
   /**
    * Sets the SVG path of the outline element.
    * @param {string} value
