@@ -266,8 +266,12 @@ export function pointIntersectsRect(point, rect) {
   );
 }
 
+export function objectValues(obj) {
+  return Object.values ? Object.values(obj) : Object.keys(obj).map((key) => obj[key]);
+}
+
 export function getEventPrefix(e) {
-  for (const eventPrefix of Object.values(EventPrefix)) {
+  for (const eventPrefix of objectValues(EventPrefix)) {
     if (e.type.indexOf(eventPrefix) === 0) {
       return eventPrefix;
     }
