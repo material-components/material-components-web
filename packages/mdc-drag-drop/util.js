@@ -103,6 +103,14 @@ function isPointRightOfRect(point, rect) {
   return point.x > rect.right;
 }
 
+// IE/Edge only set the `left` and `top` properties on `getBoundingClientRect()`, but not `x` and `y`.
+function normalizePoint(point) {
+  return {
+    x: 'x' in point ? point.x : point.left,
+    y: 'y' in point ? point.y : point.top,
+  };
+}
+
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/Events/resize#requestAnimationFrame
 class ResizeListener {
   constructor() {
@@ -181,9 +189,11 @@ export function computeRectOffset(targetRect, originRect) {
 }
 
 export function computePointOffset(targetPoint, originPoint) {
+  const targetPointNormalized = normalizePoint(targetPoint);
+  const originPointNormalized = normalizePoint(originPoint);
   return {
-    y: targetPoint.y - originPoint.y,
-    x: targetPoint.x - originPoint.x,
+    y: targetPointNormalized.y - originPointNormalized.y,
+    x: targetPointNormalized.x - originPointNormalized.x,
   };
 }
 
