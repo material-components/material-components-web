@@ -329,29 +329,31 @@ if (IS_DEV) {
     demoJsEntry[name] = path.resolve(filename);
   });
 
-  module.exports.push({
-    name: 'demo-js',
-    entry: demoJsEntry,
-    output: {
-      path: OUT_DIR_ABS,
-      publicPath: DEMO_ASSET_DIR_REL,
-      filename: 'demo.[name].js',
-      libraryTarget: 'umd',
-      library: ['demo', '[name]'],
-    },
-    devtool: DEVTOOL,
-    module: {
-      rules: [{
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-        },
-      }],
-    },
-    plugins: [
-      createBannerPlugin(),
-    ],
-  });
+  if (Object.keys(demoJsEntry).length) {
+    module.exports.push({
+      name: 'demo-js',
+      entry: demoJsEntry,
+      output: {
+        path: OUT_DIR_ABS,
+        publicPath: DEMO_ASSET_DIR_REL,
+        filename: 'demo.[name].js',
+        libraryTarget: 'umd',
+        library: ['demo', '[name]'],
+      },
+      devtool: DEVTOOL,
+      module: {
+        rules: [{
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+          },
+        }],
+      },
+      plugins: [
+        createBannerPlugin(),
+      ],
+    });
+  }
 }

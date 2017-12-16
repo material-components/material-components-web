@@ -403,7 +403,6 @@ export class MDCDragCollection extends MDCComponent {
       },
     };
 
-    // this.dragManager_ = new Draggable.Draggable(this.root_, opts);
     this.dragManager_ = new MDCDragManager(this.root_, undefined, opts);
     this.dragManager_.on('drag:start', (e) => this.handleDragStart_(e));
     this.dragManager_.on('drag:move', (e) => this.handleDragMove_(e));
