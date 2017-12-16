@@ -335,7 +335,7 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     console.log('handleDragEnd_(' + e.type + ')');
 
     if (this.itemCloneEl_) {
-      this.itemCloneEl_.remove();
+      util.detach(this.itemCloneEl_);
       this.itemCloneEl_.classList.remove(this.classes_['mirror']);
       this.itemCloneEl_.style.opacity = '0';
     }
@@ -497,8 +497,8 @@ export class MDCDragCollection extends MDCComponent {
   }
 
   removeDraggingStateElements_() {
-    this.dropSpacerEl_.remove();
-    this.dropIndicatorEl_.remove();
+    util.detach(this.dropSpacerEl_);
+    util.detach(this.dropIndicatorEl_);
   }
 
   handleDragStart_(e) {

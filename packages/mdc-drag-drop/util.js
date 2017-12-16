@@ -266,6 +266,12 @@ export function pointIntersectsRect(point, rect) {
   );
 }
 
+export function detach(element) {
+  if (element.parentNode) {
+    element.parentNode.removeChild(element);
+  }
+}
+
 export function objectValues(obj) {
   return Object.values ? Object.values(obj) : Object.keys(obj).map((key) => obj[key]);
 }
