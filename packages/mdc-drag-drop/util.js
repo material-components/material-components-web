@@ -271,7 +271,9 @@ export function objectValues(obj) {
 }
 
 export function getEventPrefix(e) {
-  for (const eventPrefix of objectValues(EventPrefix)) {
+  const values = objectValues(EventPrefix);
+  for (let i = 0; i < values.length; i++) {
+    const eventPrefix = values[i];
     if (e.type.indexOf(eventPrefix) === 0) {
       return eventPrefix;
     }

@@ -109,17 +109,17 @@ class MDCDragManager extends MDCComponent {
     if (typeof eventNames === 'string') {
       eventNames = [eventNames];
     }
-    for (const eventName of eventNames.filter((eventName) => !!eventName)) {
+    eventNames.filter((eventName) => !!eventName).forEach((eventName) => {
       this.rootEventListeners_.set(eventName, handlerFn);
       this.root_.addEventListener(eventName, handlerFn);
-    }
+    });
   }
 
   removeRootEventListeners_(...eventNames) {
-    for (const eventName of eventNames) {
+    eventNames.forEach((eventName) => {
       this.root_.removeEventListener(eventName, this.rootEventListeners_.get(eventName));
       this.rootEventListeners_.delete(eventName);
-    }
+    });
   }
 
   removeAllRootEventListeners_() {
@@ -138,22 +138,22 @@ class MDCDragManager extends MDCComponent {
     if (typeof eventNames === 'string') {
       eventNames = [eventNames];
     }
-    for (const eventName of eventNames.filter((eventName) => !!eventName)) {
+    eventNames.filter((eventName) => !!eventName).forEach((eventName) => {
       if (!this.globalEventListeners_.has(eventName)) {
         this.globalEventListeners_.set(eventName, []);
       }
       this.globalEventListeners_.get(eventName).push(handlerFn);
       document.addEventListener(eventName, handlerFn, listenerOpts || {});
-    }
+    });
   }
 
   removeGlobalEventListeners_(...eventNames) {
-    for (const eventName of eventNames) {
-      for (const handlerFn of this.globalEventListeners_.get(eventName)) {
+    eventNames.forEach((eventName) => {
+      this.globalEventListeners_.get(eventName).forEach((handlerFn) => {
         document.removeEventListener(eventName, handlerFn);
-      }
+      });
       this.globalEventListeners_.delete(eventName);
-    }
+    });
   }
 
   removeAllGlobalEventListeners_() {
@@ -735,7 +735,8 @@ export class MDCDragCollection extends MDCComponent {
 
   static getDropZone_(e, dropZones) {
     const pointerPositionInViewport = util.getPointerPositionInViewport(e);
-    for (const curDropZone of dropZones) {
+    for (let i = 0; i < dropZones.length; i++) {
+      const curDropZone = dropZones[i];
       if (curDropZone.intersectsViewportPoint(pointerPositionInViewport)) {
         if (curDropZone.isAdjacentToDragSource()) {
           return null;
