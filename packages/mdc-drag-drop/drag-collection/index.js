@@ -41,15 +41,11 @@ const DragState = {
 };
 
 class MDCDragManager extends MDCComponent {
-  constructor(root, {draggable, delay, longPressToleranceInPx, classes} = {}) {
-    super(root);
+  initialize({draggable, delay, longPressToleranceInPx, classes} = {}) {
     this.delay_ = delay;
     this.longPressToleranceInPx_ = longPressToleranceInPx;
     this.itemSelector_ = draggable;
     this.classes_ = classes;
-  }
-
-  initialize() {
     this.rootEventListeners_ = new Map();
     this.globalEventListeners_ = new Map();
     this.setDragState_(DragState.IDLE);
@@ -65,6 +61,17 @@ class MDCDragManager extends MDCComponent {
 
     this.setRootEventListeners_(keyboardEventNames, (e) => this.handleKeyDown_(e));
     this.setRootEventListeners_(pointerEventNames, (e) => this.handlePointerDown_(e));
+
+    // Mark all items as draggable and ensure that they are focusable.
+    const itemEls = [].slice.call(this.root_.querySelectorAll(this.itemSelector_));
+    itemEls.forEach((itemEl) => {
+      if (!itemEl.hasAttribute('aria-grabbed')) {
+        itemEl.setAttribute('aria-grabbed', 'false');
+      }
+      if (!util.matches(itemEl, '[tabindex], a[href], button')) {
+        itemEl.setAttribute('tabindex', '0');
+      }
+    });
   }
 
   destroy() {
@@ -334,7 +341,7 @@ handlePointerMoveWhileWaitingForLongPress_(e):
 
     if (this.itemSourceEl_) {
       this.itemSourceEl_.classList.remove(this.classes_['source:dragging']);
-      this.itemSourceEl_.removeAttribute('aria-grabbed');
+      this.itemSourceEl_.setAttribute('aria-grabbed', 'false');
       this.itemSourceEl_.style.opacity = '1';
     }
 
@@ -385,9 +392,7 @@ export class MDCDragCollection extends MDCComponent {
 
   initialize() {
     // TODO(acdvorak): If the container is RTL, make sure the cloned "mirror" element has `dir="rtl"`.
-    // const DragManager = Draggable.Draggable;
-    const DragManager = MDCDragManager;
-    this.dragManager_ = new DragManager(this.root_, {
+    const opts = {
       draggable: '.mdc-draggable-item',
       delay: 300,
       longPressToleranceInPx: 25,
@@ -396,7 +401,10 @@ export class MDCDragCollection extends MDCComponent {
         'source:dragging': 'mdc-draggable-item--source',
         'mirror': 'mdc-draggable-item--clone',
       },
-    });
+    };
+
+    // this.dragManager_ = new Draggable.Draggable(this.root_, opts);
+    this.dragManager_ = new MDCDragManager(this.root_, undefined, opts);
     this.dragManager_.on('drag:start', (e) => this.handleDragStart_(e));
     this.dragManager_.on('drag:move', (e) => this.handleDragMove_(e));
     this.dragManager_.on('drag:stop', (e) => this.handleDragStop_(e));
@@ -407,6 +415,11 @@ export class MDCDragCollection extends MDCComponent {
     const {dropSpacerEl, dropIndicatorEl} = MDCDragCollection.createDropEls_();
     this.dropSpacerEl_ = dropSpacerEl;
     this.dropIndicatorEl_ = dropIndicatorEl;
+
+    // This element only appears in the DOM when the user is able to drop an item, so we can just hard-code the
+    // `aria-dropeffect` property to `move`. There's no need to reset it back to `none` when dragging ends, because the
+    // element is simply detached from the DOM.
+    this.dropIndicatorEl_.setAttribute('aria-dropeffect', 'move');
 
     this.resetState_();
 
@@ -460,7 +473,7 @@ export class MDCDragCollection extends MDCComponent {
     dropZoneElDummyParent.innerHTML = `
 <div class="mdc-drop-spacer"></div>
 <div class="mdc-drop-indicator"></div>
-  `.trim();
+      `.trim();
     const dropSpacerEl = dropZoneElDummyParent.children[0];
     const dropIndicatorEl = dropZoneElDummyParent.children[1];
     return {dropSpacerEl, dropIndicatorEl};
