@@ -1,0 +1,39 @@
+@import "@material/theme/mixins";
+
+@mixin mdc-tab-label-ink-color($color) {
+  .mdc-tab {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-tab-icon-ink-color($color) {
+  
+}
+
+@mixin mdc-tab-underline-ink-color($color) {
+
+}
+
+@mixin mdc-tab-label-activated-ink-color($color) {
+  .mdc-tab--active {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-tab-underline-activated-ink-color($color) {
+  .mdc-tab-bar__indicator {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-tab-icon-activated-ink-color($color) {
+
+}
+
+@mixin mdc-tab-underline-height($color) {
+
+}
+
+@mixin mdc-tab-width($color) {
+
+}

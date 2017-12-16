@@ -17,9 +17,14 @@
 @import "@material/animation/functions";
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
+@import "../mixins";
 
 // postcss-bem-linter: define tab-bar
 .mdc-tab-bar {
+  @include mdc-tab-label-ink-color(text-secondary-on-light);
+  @include mdc-tab-label-activated-ink-color(text-primary-on-light);
+  @include mdc-tab-underline-activated-ink-color(text-primary-on-light);
+
   display: table;
   position: relative;
   height: 48px;
@@ -33,7 +38,7 @@
     width: 100%;
     height: 2px;
 
-    @include mdc-theme-prop(background-color, text-primary-on-light);
+    // @include mdc-theme-prop(background-color, text-primary-on-light);
 
     @include mdc-theme-dark(".mdc-tab-bar") {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
@@ -57,7 +62,7 @@
 
     .mdc-tab--active,
     .mdc-tab:hover {
-      @include mdc-theme-prop(color, text-primary-on-primary);
+      // @include mdc-theme-prop(color, text-primary-on-primary);
 
       @include mdc-theme-dark(".mdc-tab-bar") {
         @include mdc-theme-prop(color, text-primary-on-dark);

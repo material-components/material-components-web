@@ -20,6 +20,7 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
+@import "../mixins";
 
 $mdc-tab-with-text-height: 48px;
 $mdc-tab-with-icon-and-text-height: 72px;
@@ -45,8 +46,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
   cursor: pointer;
   overflow: hidden;
   vertical-align: middle;
-
-  @include mdc-theme-prop(color, text-secondary-on-light);
 
   &:hover {
     @include mdc-theme-prop(color, text-primary-on-light);
@@ -97,8 +96,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
 }
 
 .mdc-tab--active {
-  @include mdc-theme-prop(color, text-primary-on-light);
-
   @include mdc-theme-dark(".mdc-tab-bar") {
     @include mdc-theme-prop(color, text-primary-on-dark);
   }
