@@ -178,6 +178,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @param {AnchorMargin} margin 4-plet of margins from anchor.
    */
   setAnchorMargin(margin) {
+    // assert that either all margins are set, or set to 0 ones that are not.
     this.anchorMargin_ = margin;
   }
 
@@ -491,7 +492,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
         Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
       const verticalOffsetPercent = Math.abs(verticalOffset / menuHeight) * 100;
       const originPercent = (corner & CornerBit.BOTTOM) ? 100 - verticalOffsetPercent : verticalOffsetPercent;
-      verticalAlignment = originPercent + '%';
+      verticalAlignment = Math.round(originPercent * 100) / 100 + '%';
     }
 
     this.adapter_.setTransformOrigin(`${horizontalAlignment} ${verticalAlignment}`);

@@ -1,14 +1,14 @@
 /**
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -33,6 +33,39 @@ function setupTest() {
   td.when(mockAdapter.getInnerDimensions()).thenReturn(size);
 
   return {foundation, mockAdapter};
+}
+
+// Various anchor dimensions.
+const smallTopLeft = {height: 20, width: 40, top: 20, bottom: 40, left: 20, right: 60};
+const smallBottomLeft = {height: 20, width: 40, top: 920, bottom: 940, left: 20, right: 60};
+const smallBottomRight = {height: 20, width: 40, top: 920, bottom: 940, left: 920, right: 960};
+const smallCenter = {height: 20, width: 40, top: 490, bottom: 510, left: 480, right: 520};
+const smallAboveMiddleLeft = {height: 20, width: 40, top: 400, bottom: 420, left: 20, right: 60};
+const smallBelowMiddleLeft = {height: 20, width: 40, top: 600, bottom: 620, left: 20, right: 60};
+const wideCenter = {height: 20, width: 100, top: 490, bottom: 510, left: 450, right: 550};
+
+/**
+ * Initializes viewport, anchor and menu dimensions. Viewport is 1000x1000. Default menu size is 100x200.
+ * @param {Object} mockAdapter Mock double for the adapter.
+ * @param {{height:number, width: number, top: number, bottom: number, left: number, right: number}} anchorDimensions
+ *   Approximate viewport corner where anchor is located.
+ * @param {boolean=} isRtl Indicates whether layout is RTL.
+ * @param {number=} menuHeight Optional height of the menu.
+ */
+function initAnchorLayout(mockAdapter, anchorDimensions, isRtl, menuHeight) {
+  td.when(mockAdapter.hasAnchor()).thenReturn(true);
+  td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+  td.when(mockAdapter.getAnchorDimensions()).thenReturn(anchorDimensions);
+
+  if (isRtl) {
+    td.when(mockAdapter.isRtl()).thenReturn(!!isRtl);
+  }
+
+  if (menuHeight) {
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: menuHeight, width: 100});
+  } else {
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+  }
 }
 
 function testFoundation(desc, runTests) {
@@ -129,97 +162,212 @@ testFoundation('#open on a not focused menu does not focust at index 0', ({found
   td.verify(mockAdapter.focusItemAtIndex(0), {times: 0});
 });
 
-testFoundation('#open anchors the menu on the top left in LTR, given enough room',
+/** Testing various layout cases for autopositoining */
+testFoundation('#open from small anchor in center of viewport, default (TOP_START) anchor corner, RTL',
   ({foundation, mockAdapter, mockRaf}) => {
-    td.when(mockAdapter.hasAnchor()).thenReturn(true);
-    td.when(mockAdapter.isRtl()).thenReturn(false);
-    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
-    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 20, bottom: 40, left: 20, right: 60,
-    });
-
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
-  });
-
-testFoundation('#open anchors the menu on the top right in LTR when close to the right edge',
-  ({foundation, mockAdapter, mockRaf}) => {
-    td.when(mockAdapter.hasAnchor()).thenReturn(true);
-    td.when(mockAdapter.isRtl()).thenReturn(false);
-    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
-    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 20, bottom: 40, left: 950, right: 990,
-    });
-
+    initAnchorLayout(mockAdapter, smallCenter, true);
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('right top'));
     td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
   });
 
-testFoundation('#open anchors the menu on the top right in RTL, given enough room',
+testFoundation('#open from small anchor in center of viewport, TOP_END anchor corner, RTL',
   ({foundation, mockAdapter, mockRaf}) => {
-    td.when(mockAdapter.hasAnchor()).thenReturn(true);
-    td.when(mockAdapter.isRtl()).thenReturn(true);
-    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
-    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 20, bottom: 40, left: 500, right: 540,
-    });
+    initAnchorLayout(mockAdapter, smallCenter, true);
+    foundation.setAnchorCorner(Corner.TOP_END);
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('right top'));
-    td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
+    td.verify(mockAdapter.setPosition({right: '40px', top: '0'}));
   });
 
-testFoundation('#open anchors the menu on the top left in RTL when close to the left edge',
+testFoundation('#open from small anchor in center of viewport, BOTTOM_START anchor corner, RTL',
   ({foundation, mockAdapter, mockRaf}) => {
-    td.when(mockAdapter.hasAnchor()).thenReturn(true);
-    td.when(mockAdapter.isRtl()).thenReturn(true);
-    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
-    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 20, bottom: 40, left: 10, right: 50,
-    });
+    initAnchorLayout(mockAdapter, smallCenter, true);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('right top'));
+    td.verify(mockAdapter.setPosition({right: '0', top: '20px'}));
+  });
 
+testFoundation('#open from small anchor in center of viewport, BOTTOM_END anchor corner, RTL',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallCenter, true);
+    foundation.setAnchorCorner(Corner.BOTTOM_END);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('right top'));
+    td.verify(mockAdapter.setPosition({right: '40px', top: '20px'}));
+  });
+
+testFoundation('#open from small anchor in top left of viewport, default (TOP_START) anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft);
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
-testFoundation('#open anchors the menu on the bottom left in LTR when close to the bottom edge',
+testFoundation('#open from small anchor in top left of viewport, TOP_END anchor corner, LTR',
   ({foundation, mockAdapter, mockRaf}) => {
-    td.when(mockAdapter.hasAnchor()).thenReturn(true);
-    td.when(mockAdapter.isRtl()).thenReturn(false);
-    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
-    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 900, bottom: 920, left: 10, right: 50,
-    });
+    initAnchorLayout(mockAdapter, smallTopLeft);
+    foundation.setAnchorCorner(Corner.TOP_END);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '40px', top: '0'}));
+  });
 
+testFoundation('#open from small anchor in top left of viewport, BOTTOM_START anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '20px'}));
+  });
+
+testFoundation('#open from small anchor in top left of viewport, BOTTOM_END anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft);
+    foundation.setAnchorCorner(Corner.BOTTOM_END);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '40px', top: '20px'}));
+  });
+
+testFoundation('#open from small anchor in right bottom of viewport, default (TOP_START) anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBottomRight);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('right bottom'));
+    td.verify(mockAdapter.setPosition({right: '0', bottom: '0'}));
+  });
+
+testFoundation('#open from small anchor in right bottom of viewport, TOP_END anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBottomRight);
+    foundation.setAnchorCorner(Corner.TOP_END);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('right bottom'));
+    td.verify(mockAdapter.setPosition({right: '40px', bottom: '0'}));
+  });
+
+testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_START) anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBottomRight);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('right bottom'));
+    td.verify(mockAdapter.setPosition({right: '0', bottom: '20px'}));
+  });
+
+testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_END anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBottomRight);
+    foundation.setAnchorCorner(Corner.BOTTOM_END);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('right bottom'));
+    td.verify(mockAdapter.setPosition({right: '40px', bottom: '20px'}));
+  });
+
+testFoundation('#open from small anchor in left bottom of viewport, default (TOP_START) anchor corner, RTL',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBottomLeft, true);
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
     td.verify(mockAdapter.setPosition({left: '0', bottom: '0'}));
   });
 
-testFoundation('#open anchors the menu on the top left in LTR when not close to the bottom edge',
+testFoundation('#open from small anchor in left bottom of viewport, TOP_END anchor corner, RTL',
   ({foundation, mockAdapter, mockRaf}) => {
-    td.when(mockAdapter.hasAnchor()).thenReturn(true);
-    td.when(mockAdapter.isRtl()).thenReturn(false);
-    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
-    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
-      height: 20, width: 40, top: 900, bottom: 20, left: 10, right: 50,
-    });
+    initAnchorLayout(mockAdapter, smallBottomLeft, true);
+    foundation.setAnchorCorner(Corner.TOP_END);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left bottom'));
+    td.verify(mockAdapter.setPosition({left: '40px', bottom: '0'}));
+  });
+
+testFoundation('#open from small anchor in left bottom of viewport, BOTTOM_START) anchor corner, RTL',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBottomLeft, true);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left bottom'));
+    td.verify(mockAdapter.setPosition({left: '0', bottom: '20px'}));
+  });
+
+testFoundation('#open from small anchor in left bottom of viewport, BOTTOM_END anchor corner, RTL',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBottomLeft, true);
+    foundation.setAnchorCorner(Corner.BOTTOM_END);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left bottom'));
+    td.verify(mockAdapter.setPosition({left: '40px', bottom: '20px'}));
+  });
+
+testFoundation('#open tall menu from small anchor in left above middle of viewport, BOTTOM_START anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallAboveMiddleLeft, false, 700);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '20px'}));
+    td.verify(mockAdapter.setMaxHeight('580px'));
+  });
+
+testFoundation('#open tall menu from small anchor in left above middle of viewport, TOP_START anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallAboveMiddleLeft, false, 700);
+    foundation.setAnchorCorner(Corner.TOP_START);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left 14.29%'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '-100px'}));
+  });
+
+testFoundation('#open tall menu from small anchor in left below middle of viewport, BOTTOM_START anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBelowMiddleLeft, false, 700);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left bottom'));
+    td.verify(mockAdapter.setPosition({left: '0', bottom: '20px'}));
+    td.verify(mockAdapter.setMaxHeight('600px'));
+  });
+
+testFoundation('#open tall menu from small anchor in left above middle of viewport, TOP_START anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallBelowMiddleLeft, false, 700);
+    foundation.setAnchorCorner(Corner.TOP_START);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left 88.57%'));
+    td.verify(mockAdapter.setPosition({left: '0', bottom: '-80px'}));
+  });
+
+testFoundation('#open from wide anchor center of viewport, TOP_START anchor corner, LTR',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, wideCenter);
+    foundation.setAnchorCorner(Corner.TOP_START);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('center top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
@@ -233,11 +381,11 @@ testFoundation('#open anchors the menu to the bottom left in LTR when not close 
       height: 20, width: 40, top: 100, bottom: 120, left: 10, right: 50,
     });
     foundation.setAnchorCorner(Corner.BOTTOM_START);
-    foundation.setAnchorMargin({top: 0, left: 0, bottom: 10, right: 0});
+    foundation.setAnchorMargin({top: 0, left: 7, bottom: 10, right: 0});
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '30px'}));
+    td.verify(mockAdapter.setPosition({left: '7px', top: '30px'}));
   });
 
 testFoundation('#open anchors the menu to the bottom left in LTR when close to the bottom edge with margin',
@@ -250,11 +398,11 @@ testFoundation('#open anchors the menu to the bottom left in LTR when close to t
       height: 20, width: 40, top: 900, bottom: 920, left: 10, right: 50,
     });
     foundation.setAnchorCorner(Corner.BOTTOM_START);
-    foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 0});
+    foundation.setAnchorMargin({top: 5, left: 7, bottom: 10, right: 0});
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
-    td.verify(mockAdapter.setPosition({left: '0', bottom: '15px'}));
+    td.verify(mockAdapter.setPosition({left: '7px', bottom: '15px'}));
   });
 
 testFoundation('#open anchors the menu to the bottom left in RTL when close to the bottom and right edge with margin',
