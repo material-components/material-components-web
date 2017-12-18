@@ -48,11 +48,6 @@ $demo-custom-color: $material-color-red-500;
 // Global styles
 //
 
-.mdc-theme--dark {
-  @include mdc-theme-prop(color, text-primary-on-dark);
-
-  background-color: $material-color-grey-800;
-}
 
 figure {
   margin-left: 0;
@@ -133,42 +128,23 @@ figure {
 // Button demo
 //
 
-.mdc-button.secondary-text-button {
+.demo-button.secondary-text-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-states($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-states($mdc-theme-secondary);
-  }
 }
 
-.mdc-button.secondary-filled-button {
+.demo-button.secondary-filled-button {
   @include mdc-button-filled-accessible($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-filled-accessible($mdc-theme-secondary);
-  }
 }
 
-.mdc-button.secondary-stroked-button {
+.demo-button.secondary-stroked-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-button-stroke-color($mdc-theme-secondary);
   @include mdc-states($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-button-stroke-color($mdc-theme-secondary);
-    @include mdc-states($mdc-theme-secondary);
-  }
 }
 
 .demo-fieldset--button + .demo-fieldset--button {
   margin-top: 16px;
-}
-
-.demo-button {
-  margin: 10px;
 }
 
 .demo-button__code {
@@ -187,7 +163,7 @@ figure {
   vertical-align: top;
 }
 
-.demo-card--with-avatar .mdc-card__primary {
+.demo-card--with-avatar .demo-card__primary {
   position: relative;
 }
 
@@ -199,18 +175,18 @@ figure {
   background: #bdbdbd;
 }
 
-.demo-card--with-avatar .mdc-card__title,
-.demo-card--with-avatar .mdc-card__subtitle {
+.demo-card--with-avatar .demo-card__title,
+.demo-card--with-avatar .demo-card__subtitle {
   margin-left: 56px;
 }
 
-[dir="rtl"] .demo-card--with-avatar .mdc-card__title,
-[dir="rtl"] .demo-card--with-avatar .mdc-card__subtitle {
+[dir="rtl"] .demo-card--with-avatar .demo-card__title,
+[dir="rtl"] .demo-card--with-avatar .demo-card__subtitle {
   margin-right: 56px;
   margin-left: initial;
 }
 
-.demo-card--small .mdc-card__media {
+.demo-card--small .demo-card__media {
   height: 10.938rem; // 175sp, for 1:1 ratio with 175sp demo card width
   background-image: url(/images/1-1.jpg);
   background-repeat: no-repeat;
@@ -288,7 +264,7 @@ figure {
 // Icon Toggle demo
 //
 
-.mdc-icon-toggle {
+.demo-icon-toggle {
   // .material-icons and .mdc-icon-toggle each set different `display` values. Whichever CSS file is imported last
   // will win, so prevent them from fighting by specifying the value we want here.
   display: inline-flex;
@@ -333,16 +309,16 @@ figure {
 }
 
 @mixin demo-radio-color($color) {
-  .mdc-radio__native-control:checked + .mdc-radio__background {
+  .demo-radio__input:checked + .demo-radio__background {
     &::before {
       @include mdc-theme-prop(background-color, $color);
     }
 
-    .mdc-radio__outer-circle {
+    .demo-radio__outer-circle {
       @include mdc-theme-prop(border-color, $color);
     }
 
-    .mdc-radio__inner-circle {
+    .demo-radio__inner-circle {
       @include mdc-theme-prop(background-color, $color);
     }
   }
@@ -411,15 +387,15 @@ figure {
   @include mdc-states($demo-custom-color);
 }
 
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
+.de3mo-ripple-surface[data-mdc-ripple-is-unbounded] {
   width: 40px;
   height: 40px;
   padding: 0;
   border-radius: 50%;
 }
 
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
+.demo-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
+.demo-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
   height: 100%;
   left: 0;
   top: 0;
