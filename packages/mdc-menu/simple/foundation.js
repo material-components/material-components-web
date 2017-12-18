@@ -178,7 +178,6 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @param {!AnchorMargin} margin 4-plet of margins from anchor.
    */
   setAnchorMargin(margin) {
-    // assert that either all margins are set, or set to 0 ones that are not.
     if (Number.isInteger(margin.top)) {
       this.anchorMargin_.top = margin.top;
     }
