@@ -186,7 +186,7 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 Property | Value Type | Description
 --- | --- | ---
-`disable` | Boolean | Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set respectively
+`disable` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods when retrieved/set respectively
 `valid` | Boolean | Proxies to the foundation's `setValid` method when set
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes
