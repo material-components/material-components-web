@@ -387,7 +387,7 @@ figure {
   @include mdc-states($demo-custom-color);
 }
 
-.de3mo-ripple-surface[data-mdc-ripple-is-unbounded] {
+.demo-ripple-surface[data-mdc-ripple-is-unbounded] {
   width: 40px;
   height: 40px;
   padding: 0;
