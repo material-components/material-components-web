@@ -18,3 +18,66 @@
 @import "../../packages/mdc-drawer/mdc-drawer";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-list/mdc-list";
+
+/* Ensure layout covers the entire screen. */
+html {
+  height: 100%;
+}
+
+/* Place drawer and content side by side. */
+.demo-body {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+/* Stack toolbar and main on top of each other. */
+.demo-content {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Place drawer above toolbar shadow. */
+.demo-drawer-above-permanent {
+  z-index: 2;
+}
+
+.demo-main {
+  padding-left: 16px;
+}
+
+.extra-content-wrapper {
+  padding: 10px;
+}
+
+#extra-wide-content {
+  width: 200vw;
+}
+
+#extra-tall-content {
+  height: 200vh;
+}
+
+.demo-body--drawer-above,
+.demo-body--drawer-persistent {
+  flex-direction: row;
+  width: 100%;
+}
+
+.demo-body--drawer-below {
+  flex-direction: column;
+}
+
+.demo-content--drawer-below {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.demo-content--drawer-above,
+.demo-content--drawer-persistent {
+  display: inline-flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
