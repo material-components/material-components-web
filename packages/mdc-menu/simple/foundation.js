@@ -380,7 +380,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       corner |= CornerBit.BOTTOM;
     }
 
-    const leftAligned = this.adapter_.isRtl() ? (this.anchorCorner_ & CornerBit.FLIP_RTL & CornerBit.RIGHT) :
+    const leftAligned = this.adapter_.isRtl() ? (this.anchorCorner_ & (CornerBit.FLIP_RTL | CornerBit.RIGHT)) :
       !(this.anchorCorner_ & CornerBit.RIGHT);
     const availableLeft = leftAligned ? viewportMargin.left + this.anchorMargin_.left :
       viewportMargin.left + anchorWidth + this.anchorMargin_.right;

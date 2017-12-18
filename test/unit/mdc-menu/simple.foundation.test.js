@@ -43,6 +43,7 @@ const smallCenter = {height: 20, width: 40, top: 490, bottom: 510, left: 480, ri
 const smallAboveMiddleLeft = {height: 20, width: 40, top: 400, bottom: 420, left: 20, right: 60};
 const smallBelowMiddleLeft = {height: 20, width: 40, top: 600, bottom: 620, left: 20, right: 60};
 const wideCenter = {height: 20, width: 100, top: 490, bottom: 510, left: 450, right: 550};
+const wideTopLeft = {height: 20, width: 100, top: 20, bottom: 40, left: 20, right: 120};
 
 /**
  * Initializes viewport, anchor and menu dimensions. Viewport is 1000x1000. Default menu size is 100x200.
@@ -369,6 +370,16 @@ testFoundation('#open from wide anchor center of viewport, TOP_START anchor corn
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('center top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+  });
+
+testFoundation('#open from wide anchor top left of viewport, TOP_END anchor corner, RTL',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, wideTopLeft);
+    foundation.setAnchorCorner(Corner.TOP_END);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('center top'));
+    td.verify(mockAdapter.setPosition({left: '100px', top: '0'}));
   });
 
 testFoundation('#open anchors the menu to the bottom left in LTR when not close to the bottom edge with margin',
