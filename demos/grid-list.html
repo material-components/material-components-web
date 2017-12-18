@@ -15,6 +15,7 @@
   limitations under the License
 -->
 <html>
+
   <head>
     <meta charset="utf-8">
     <title>Grid List - Material Components Catalog</title>
@@ -24,40 +25,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .demo-grid-tile-content {
-        background-image: url("images/16-9.jpg");
-      }
-      /* Hack for webpack async loading: Hide grid list until styles have loaded */
-      .mdc-grid-list-demo {
-        visibility: hidden;
-      }
-
-      .example {
-        padding: 24px;
-      }
-
-      .example h2 {
-        font-size: 1.3em;
-        margin-bottom: 0.8em;
-        margin-top: 0.8em;
-      }
-
-      .hero .mdc-grid-list {
-        width: 320px;
-        background-color: white;
-      }
-
-      .hero .mdc-grid-tile__primary {
-        background-color: #212121;
-      }
-
-      .hero .mdc-grid-tile {
-        width: 76px;
-      }
-    </style>
   </head>
-  <body class="mdc-typography mdc-grid-list-demo">
+  <body id="demo-grid-list-body" class="mdc-typography demo-grid-list">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
@@ -71,7 +40,7 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-grid-list">
+        <div class="mdc-grid-list demo-grid-list">
           <ul class="mdc-grid-list__tiles">
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
@@ -87,7 +56,6 @@
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
-
           </ul>
         </div>
       </section>
@@ -747,7 +715,7 @@
       setTimeout(function() {
         initGridList();
         setTimeout (function() {
-          document.querySelector('.mdc-grid-list-demo').style.visibility = 'visible';
+          document.querySelector('.demo-grid-list-body').style.visibility = 'visible';
         }, 250);
       }, 100);
     </script>

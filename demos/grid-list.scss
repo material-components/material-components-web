@@ -18,3 +18,34 @@
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-grid-list/mdc-grid-list";
+
+.demo-grid-tile-content {
+  background-image: url("images/16-9.jpg");
+}
+/* Hack for webpack async loading: Hide grid list until styles have loaded */
+.demo-grid-list-body {
+  visibility: hidden;
+}
+
+.example {
+  padding: 24px;
+}
+
+.example h2 {
+  font-size: 1.3em;
+  margin-bottom: 0.8em;
+  margin-top: 0.8em;
+}
+
+.hero .demo-grid-list {
+  width: 320px;
+  background-color: white;
+}
+
+.hero li > div {
+  background-color: #212121;
+}
+
+.hero li {
+  width: 76px;
+}
