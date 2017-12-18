@@ -1,0 +1,79 @@
+// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@import "@material/rtl/mixins";
+@import "@material/theme/mixins";
+@import "./variables";
+
+//
+// Public
+//
+
+@mixin mdc-list-item-primary-text-ink-color($color) {
+  @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-list-item-secondary-text-ink-color($color) {
+  .mdc-list-item__secondary-text {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-list-item-graphic-fill-color($color) {
+  .mdc-list-item__graphic {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-list-item-graphic-ink-color($color) {
+  .mdc-list-item__graphic {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-list-item-meta-ink-color($color) {
+  .mdc-list-item__meta {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-list-divider-color($color) {
+  .mdc-list-divider {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-list-group-subheader-ink-color($color) {
+  .mdc-list-group__subheader {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+//
+// Private
+//
+
+// Sets the width and height of the graphic element, as well as calculates the margins for
+// the graphic element such that the text is always offset by 72px, which is defined within
+// the spec.
+@mixin mdc-list-graphic-size_($size) {
+  $text-offset: 72px;
+  $side-padding: $mdc-list-side-padding;
+  $margin-value: $text-offset - $side-padding - $size;
+
+  @include mdc-rtl-reflexive-box(margin, right, $margin-value, ".mdc-list-item");
+
+  width: $size;
+  height: $size;
+}

@@ -37,7 +37,8 @@ npm install --save @material/icon-toggle
 
 ## Usage
 
-In order to use MDC Icon Toggle, you will need to import an icon set, such as [Material Icons](https://design.google.com/icons/) or [Font Awesome](http://fontawesome.io/).
+In order to use MDC Icon Toggle, you will need to import an icon set, such as
+[Material Icons](https://design.google.com/icons/) or [Font Awesome](http://fontawesome.io/).
 
 ```html
 <i class="mdc-icon-toggle material-icons" role="button" aria-pressed="false"
@@ -92,11 +93,11 @@ allows MDCIconToggle to be so flexible. The `data-toggle-on` configuration will 
 MDCIconToggle is toggled on, and vice versa for `data-toggle-off`. Both data attributes are encoded
 as JSON and can contain the following properties:
 
-| Property | Description |
-| --- | --- |
-| `label` | The value to apply to the element's "aria-label" attribute. |
-| `content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead. |
-| `cssClass` | A css class to apply to the icon element for the given toggle state. The same rules regarding inner icon elements described for `content` apply here as well. |
+Property | Description
+--- | ---
+`label` | The value to apply to the element's "aria-label" attribute.
+`content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead.
+`cssClass` | A css class to apply to the icon element for the given toggle state. The same rules regarding inner icon elements described for `content` apply here as well.
 
 ### Disabled icon toggles
 
@@ -105,12 +106,6 @@ as JSON and can contain the following properties:
    role="button" tabindex="-1" aria-pressed="false" aria-disabled="true"
    data-toggle-on='{"content": "favorite"}' data-toggle-off='{"content": "favorite_border"}'></i>
 ```
-
-### Theming
-
-`mdc-icon-toggle` ships with two css classes, `mdc-icon-toggle--primary` and
-`mdc-icon-toggle--accent` that allow you to color mdc-icon-toggle based on your primary and secondary
-colors, respectively.
 
 ### Listening for change events
 
@@ -168,19 +163,19 @@ can use to build their own MDCIconToggle components with minimal effort. As with
 classes, an adapter object must be provided. The adapter for icon toggles must provide the following
 functions, with correct signatures:
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element, or the inner icon element. |
-| `removeClass(className: string) => void` | Removes a class from the root element, or the inner icon element. |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Registers an event handler for an interaction event, such as `click` or `keydown`. |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event handler for an interaction event, such as `click` or `keydown`. |
-| `setText(text: string) => void` | Sets the text content of the root element, or the inner icon element. |
-| `getTabIndex() => number` | Returns the tab index of the root element. |
-| `setTabIndex(tabIndex: number) => void` | Sets the tab index of the root element. |
-| `getAttr(name: string) => string` | Returns the value of the attribute `name` on the root element. Can also return `null`, similar to `getAttribute()`. |
-| `setAttr(name: string, value: string) => void` | Sets the attribute `name` to `value` on the root element. |
-| `rmAttr(name: string) => void` | Removes the attribute `name` on the root element. |
-| `notifyChange(evtData: {isOn: boolean}) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this. |
+Method Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element, or the inner icon element.
+`removeClass(className: string) => void` | Removes a class from the root element, or the inner icon element.
+`registerInteractionHandler(type: string, handler: EventListener) => void` | Registers an event handler for an interaction event, such as `click` or `keydown`.
+`deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event handler for an interaction event, such as `click` or `keydown`.
+`setText(text: string) => void` | Sets the text content of the root element, or the inner icon element.
+`getTabIndex() => number` | Returns the tab index of the root element.
+`setTabIndex(tabIndex: number) => void` | Sets the tab index of the root element.
+`getAttr(name: string) => string` | Returns the value of the attribute `name` on the root element. Can also return `null`, similar to `getAttribute()`.
+`setAttr(name: string, value: string) => void` | Sets the attribute `name` to `value` on the root element.
+`rmAttr(name: string) => void` | Removes the attribute `name` on the root element.
+`notifyChange(evtData: {isOn: boolean}) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this.
 
 #### Adapter implementer considerations
 
@@ -224,3 +219,9 @@ Enables / disables the foundation's state, updating the component via the adapte
 
 Returns true if the foundation is currently activated by a keyboard event, false otherwise.
 Useful for MDCRippleFoundation's `isSurfaceActive()` adapter method.
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-icon-toggle-ink-color($color)` | Sets the ink color of the icon toggle
