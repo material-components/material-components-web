@@ -43,7 +43,7 @@ Now the label will be positioned before the checkbox.
 
 ### Usage with MDC-Web Components
 
-`mdc-form-field` works not just with `input` elements, but with _any_ child element as long as its
+`mdc-form-field` works not just with `input` elements, but with _any_ immediate child element as long as its
 successive sibling is a `label` element. This means it will work for MDC-Web form controls such as Checkbox and Radio:
 
 ```html
@@ -66,6 +66,10 @@ successive sibling is a `label` element. This means it will work for MDC-Web for
   <label for="my-checkbox" id="my-checkbox-label">This is my checkbox</label>
 </div>
 ```
+
+> Note that MDC Form Field is **not** intended for cases where a label and input are already handled together by
+> another component's styles and logic. For example, JavaScript-enhanced instances of MDC Text Field already manage
+> a label and input together under their own root element.
 
 ### RTL Support
 
