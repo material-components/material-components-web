@@ -17,3 +17,35 @@
 @import "./common";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-textfield/mdc-text-field";
+
+.demo-theme-dark {
+  --mdc-theme-primary: var(--mdc-theme-secondary, #64dd17);
+  background-color: #303030;
+}
+
+input[type="checkbox"]:disabled + label {
+  opacity: .4;
+}
+
+.example {
+  margin: 24px;
+  padding: 24px;
+}
+
+#demo-text-field-hero {
+  min-width: 240px;
+}
+
+.demo-note {
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #f2f2f2;
+}
+
+.demo-text-field-input-custom {
+  width: 300px;
+}
+
+.demo-textarea-fullwidth {
+  margin-top: 16px;
+}

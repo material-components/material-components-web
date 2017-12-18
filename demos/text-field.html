@@ -24,40 +24,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .mdc-theme--dark {
-        --mdc-theme-primary: var(--mdc-theme-secondary, #64dd17);
-        background-color: #303030;
-      }
-
-      input[type="checkbox"]:disabled + label {
-        opacity: .4;
-      }
-
-      .example {
-        margin: 24px;
-        padding: 24px;
-      }
-
-      .hero .mdc-text-field {
-        min-width: 240px;
-      }
-
-      .demo-note {
-        padding: 20px;
-        margin: 20px 0;
-        background-color: #f2f2f2;
-      }
-
-      .custom-text-field-input {
-        width: 300px;
-      }
-
-      .full-width-textarea-example {
-        margin-top: 16px;
-      }
-
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
@@ -73,7 +39,7 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-text-field">
+        <div id="demo-text-field-hero" class="mdc-text-field">
           <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
           <label for="my-text-field" class="mdc-text-field__label">Text Field</label>
           <div class="mdc-text-field__bottom-line"></div>
@@ -199,6 +165,7 @@
 
             document.getElementById('box-dark-theme').addEventListener('change', function(evt) {
               wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+              wrapper.classList[evt.target.checked ? 'add' : 'remove']('demo-theme-dark');
             });
 
             document.getElementById('box-dense').addEventListener('change', function(evt) {
@@ -215,7 +182,7 @@
           <em>
             Note: Some implementations utilizing leading and trailing icons may wish to set a width on the
             <code>input</code> element to achieve uniform widths on text fields.
-            This demo achieves that by adding a custom class name: <code>custom-text-field-input</code> and setting
+            This demo achieves that by adding a custom class name: <code>demo-text-field-input-custom</code> and setting
             some style:
           </em>
           <br />
@@ -224,7 +191,7 @@
             since the <pre> tag honors whitespace and line breaks.
           -->
           <pre>
-<code>.custom-text-field-input {
+<code>.demo-text-field-input-custom {
   width: 300px;
 }</code></pre>
         </div>
@@ -232,7 +199,7 @@
           <div id="tf-box-leading-example"
             class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon" data-demo-no-auto-js>
             <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
-            <input type="text" id="tf-box-leading" class="mdc-text-field__input custom-text-field-input">
+            <input type="text" id="tf-box-leading" class="mdc-text-field__input demo-text-field-input-custom">
             <label for="tf-box-leading" class="mdc-text-field__label">Your name</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
@@ -240,7 +207,7 @@
         <div id="demo-tf-box-trailing-wrapper">
           <div id="tf-box-trailing-example"
             class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon" data-demo-no-auto-js>
-            <input type="text" id="tf-box-trailing" class="mdc-text-field__input custom-text-field-input">
+            <input type="text" id="tf-box-trailing" class="mdc-text-field__input demo-text-field-input-custom">
             <label for="tf-box-trailing" class="mdc-text-field__label">Your other name</label>
             <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
             <div class="mdc-text-field__bottom-line"></div>
@@ -342,7 +309,7 @@
             <input class="mdc-text-field__input" type="text" placeholder="Subject" aria-label="Subject">
             <div class="mdc-text-field__bottom-line"></div>
           </div>
-          <div class="mdc-text-field mdc-text-field--textarea mdc-text-field--fullwidth full-width-textarea-example">
+          <div class="mdc-text-field mdc-text-field--textarea mdc-text-field--fullwidth demo-textarea-fullwidth">
             <textarea id="full-width-textarea" class="mdc-text-field__input" rows="8"></textarea>
             <label for="full-width-textarea" class="mdc-text-field__label">Textarea Label</label>
           </div>
@@ -404,6 +371,8 @@
         document.getElementById('box-dark-theme-leading-trailing').addEventListener('change', function(evt) {
           wrapperLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
           wrapperTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperLeading.classList[evt.target.checked ? 'add' : 'remove']('demo-theme-dark');
+          wrapperTrailing.classList[evt.target.checked ? 'add' : 'remove']('demo-theme-dark');
         });
 
         document.getElementById('box-dense-leading-trailing').addEventListener('change', function(evt) {
@@ -443,6 +412,7 @@
         document.getElementById('dark-theme').addEventListener('change', function(evt) {
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          section.classList[target.checked ? 'add' : 'remove']('demo-theme-dark');
         });
         document.getElementById('dense').addEventListener('change', function(evt) {
           var target = evt.target;
@@ -493,6 +463,7 @@
         document.getElementById('textarea-dark-theme').addEventListener('change', function(evt) {
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          section.classList[target.checked ? 'add' : 'remove']('demo-theme-dark');
         });
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
           var target = evt.target;
@@ -525,6 +496,7 @@
         document.getElementById('fullwidth-dark-theme').addEventListener('change', function(evt) {
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          section.classList[target.checked ? 'add' : 'remove']('demo-theme-dark');
         });
       })();
     </script>
