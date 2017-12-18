@@ -140,6 +140,8 @@ testFoundation('#destroy unregisters all bound interaction handlers', ({foundati
   Object.keys(handlers).forEach((type) => {
     td.verify(adapter.deregisterInteractionHandler(type, handlers[type]));
   });
+
+  td.verify(adapter.deregisterDocumentInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)));
 });
 
 testFoundation('#destroy unregisters the resize handler', ({foundation, adapter}) => {
@@ -172,6 +174,18 @@ testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mock
   cssVars.forEach((cssVar) => {
     td.verify(adapter.updateCssVariable(cssVar, null));
   });
+});
+
+testFoundation('#destroy does nothing if CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
+  const isA = td.matchers.isA;
+  td.when(adapter.browserSupportsCssVars()).thenReturn(false);
+  foundation.destroy();
+  mockRaf.flush();
+
+  td.verify(adapter.deregisterInteractionHandler(isA(String), isA(Function)), {times: 0});
+  td.verify(adapter.deregisterResizeHandler(isA(Function)), {times: 0});
+  td.verify(adapter.removeClass(isA(String)), {times: 0});
+  td.verify(adapter.updateCssVariable(isA(String), isA(String)), {times: 0});
 });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
