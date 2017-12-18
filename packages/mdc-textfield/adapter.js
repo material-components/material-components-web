@@ -18,6 +18,7 @@
 /* eslint-disable no-unused-vars */
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
@@ -36,6 +37,7 @@ let NativeInputType;
  * @typedef {{
  *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
+ *   icon: (!MDCTextFieldIconFoundation|undefined),
  *   label: (!MDCTextFieldLabelFoundation|undefined)
  * }}
  */
@@ -65,21 +67,6 @@ class MDCTextFieldAdapter {
   removeClass(className) {}
 
   /**
-   * Sets an attribute on the icon Element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setIconAttr(name, value) {}
-
-  /**
-   * Returns true if classname exists for a given target element.
-   * @param {?EventTarget} target
-   * @param {string} className
-   * @return {boolean}
-   */
-  eventTargetHasClass(target, className) {}
-
-  /**
    * Registers an event handler on the root element for a given event.
    * @param {string} type
    * @param {function(!Event): undefined} handler
@@ -92,11 +79,6 @@ class MDCTextFieldAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterTextFieldInteractionHandler(type, handler) {}
-
-  /**
-   * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
-   */
-  notifyIconAction() {}
 
   /**
    * Registers an event listener on the native input element for a given event.
