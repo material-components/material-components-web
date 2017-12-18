@@ -110,9 +110,7 @@ testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} whe
 testFoundation('#init registers events for interactions on root element', ({foundation, adapter}) => {
   foundation.init();
 
-  expectedEvents.forEach(() => {
-    td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)));
-  });
+  td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)));
 });
 
 testFoundation('#init registers an event for when a resize occurs', ({foundation, adapter}) => {

@@ -155,7 +155,7 @@ test('adapter#deregisterInteractionHandler proxies to removeEventListener on the
 });
 
 test('adapter#registerDocumentInteractionHandler proxies to addEventListener on the documentElement', () => {
-  const {root, component} = setupTest();
+  const {component} = setupTest();
   const handler = td.func('interactionHandler');
   component.getDefaultFoundation().adapter_.registerDocumentInteractionHandler('foo', handler);
   domEvents.emit(document.documentElement, 'foo');

@@ -337,7 +337,9 @@ testFoundation('removes BG_FOCUSED class immediately without waiting for animati
 testFoundation('only re-activates when there are no additional pointer events to be processed',
   ({foundation, adapter, mockRaf}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
     const clock = lolex.install();
+
     foundation.init();
     mockRaf.flush();
 
@@ -348,7 +350,7 @@ testFoundation('only re-activates when there are no additional pointer events to
     mockRaf.flush();
 
     clock.tick(DEACTIVATION_TIMEOUT_MS);
-    handlers.pointerup();
+    documentHandlers.pointerup();
     mockRaf.flush();
 
     // At this point, the deactivation UX should have run, since the initial activation was triggered by
@@ -357,14 +359,10 @@ testFoundation('only re-activates when there are no additional pointer events to
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
-    handlers.touchend();
-    mockRaf.flush();
-
-    // Verify that deactivation UX has not been run redundantly
-    td.verify(adapter.removeClass(cssClasses.BG_FOCUSED), {times: 1});
-    td.verify(adapter.removeClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
-    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
-    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
+    // Also at this point, all of the document event handlers should have been deregistered so no more will be called.
+    ['mouseup', 'pointerup', 'touchend'].forEach((type) => {
+      td.verify(adapter.deregisterDocumentInteractionHandler(type, td.matchers.isA(Function)), {times: 1});
+    });
 
     handlers.mousedown({pageX: 0, pageY: 0});
     mockRaf.flush();
@@ -373,7 +371,7 @@ testFoundation('only re-activates when there are no additional pointer events to
     td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
 
-    handlers.mouseup();
+    documentHandlers.mouseup();
     mockRaf.flush();
     clock.tick(DEACTIVATION_TIMEOUT_MS);
 
