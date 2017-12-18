@@ -182,10 +182,10 @@ Mixin | Description
 
 ### `MDCTextField`
 
-See [Importing the JS component](../docs/importing-js.md) for more information on how to import JavaScript.
+See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
 Property | Value Type | Description
---- | ---
+--- | --- | ---
 `disable` | Boolean | Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
 respectively
 `valid` | Boolean | Proxies to the foundation's `setValid` method when set
