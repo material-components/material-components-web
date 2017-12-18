@@ -57,6 +57,7 @@
     transition: mdc-text-field-transition(opacity);
     border: none;
     border-bottom: 1px solid $mdc-text-field-underline-on-light-idle;
+    border-radius: 0;
     background: none;
     font-size: inherit;
     appearance: none;
