@@ -168,18 +168,29 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Default anchor corner alignment of top-left menu corner.
+   * @param {!Corner} corner Default anchor corner alignment of top-left menu corner.
    */
   setAnchorCorner(corner) {
     this.anchorCorner_ = corner;
   }
 
   /**
-   * @param {AnchorMargin} margin 4-plet of margins from anchor.
+   * @param {!AnchorMargin} margin 4-plet of margins from anchor.
    */
   setAnchorMargin(margin) {
     // assert that either all margins are set, or set to 0 ones that are not.
-    this.anchorMargin_ = margin;
+    if (Number.isInteger(margin.top)) {
+      this.anchorMargin_.top = margin.top;
+    }
+    if (Number.isInteger(margin.right)) {
+      this.anchorMargin_.right = margin.right;
+    }
+    if (Number.isInteger(margin.bottom)) {
+      this.anchorMargin_.bottom = margin.bottom;
+    }
+    if (Number.isInteger(margin.left)) {
+      this.anchorMargin_.left = margin.left;
+    }
   }
 
   /**
