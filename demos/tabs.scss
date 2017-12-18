@@ -128,3 +128,32 @@ fieldset legend {
   right: auto;
   left: 0;
 }
+
+
+.demo-tab-bar--indicator-primary{
+  .mdc-tab-bar__indicator {
+    @include mdc-tab-indicator-ink-color(primary);
+
+    @include mdc-theme-dark(".mdc-tab-bar") {
+      @include mdc-tab-indicator-ink-color(primary);
+    }
+  }
+
+  &.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
+    @include mdc-theme-prop(background-color, primary);
+  }
+}
+
+.demo-tab-bar--indicator-accent {
+  .mdc-tab-bar__indicator {
+    @include mdc-tab-indicator-ink-color(secondary);
+
+    @include mdc-theme-dark(".mdc-tab-bar") {
+      @include mdc-tab-indicator-ink-color(secondary);
+    };
+  }
+
+  &.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
+    @include mdc-theme-prop(background-color, secondary);
+  }
+}

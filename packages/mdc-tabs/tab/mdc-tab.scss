@@ -21,9 +21,7 @@
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "../mixins";
-
-$mdc-tab-with-text-height: 48px;
-$mdc-tab-with-icon-and-text-height: 72px;
+@import "../variables";
 
 @mixin mdc-tabs-icon-tab-content {
   display: block;
@@ -37,7 +35,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
   display: table-cell;
   position: relative;
   box-sizing: border-box;
-  min-width: 160px;
   min-height: $mdc-tab-with-text-height;
   padding: 0 24px;
   text-align: center;
@@ -46,26 +43,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
   cursor: pointer;
   overflow: hidden;
   vertical-align: middle;
-
-  &:hover {
-    @include mdc-theme-prop(color, text-primary-on-light);
-  }
-
-  &:focus {
-    @include mdc-theme-prop(outline-color, text-secondary-on-light);
-  }
-
-  @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-theme-prop(color, text-secondary-on-dark);
-
-    &:hover {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    &:focus {
-      @include mdc-theme-prop(outline-color, text-secondary-on-dark);
-    }
-  }
 
   // TODO: Replace with breakpoint variable
   @media screen and (max-width: 600px) {
@@ -95,16 +72,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
   }
 }
 
-.mdc-tab--active {
-  @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-  }
-
-  &::before {
-    bottom: 0;
-  }
-}
-
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab {
   position: relative;
@@ -112,10 +79,8 @@ $mdc-tab-with-icon-and-text-height: 72px;
   &::after {
     display: none;
     position: absolute;
-    top: $mdc-tab-with-text-height - 2px;
     left: 0;
     width: calc(100% - 4px);
-    height: 2px;
     content: "";
     pointer-events: none;
 
@@ -147,12 +112,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
     opacity: .87;
   }
 }
-// stylelint-enable plugin/selector-bem-pattern
 
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-tab-bar--icons-with-text:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
-  top: $mdc-tab-with-icon-and-text-height - 2px;
-}
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-tab.mdc-ripple-upgraded {
