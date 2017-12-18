@@ -24,93 +24,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .demo-surface {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 200px;
-        height: 100px;
-        padding: 1rem;
-        cursor: pointer;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-
-      .mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
-        width: 40px;
-        height: 40px;
-        padding: 0;
-        border-radius: 50%;
-      }
-
-      .mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
-      .mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
-        height: 100%;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
-
-      button.demo-surface {
-        display: inline-block; /* Safari does not center button text otherwise :( */
-        background: none;
-        border: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-      }
-
-      body {
-        font-family: sans-serif;
-      }
-
-      #unsupported-msg {
-        padding: 1rem;
-        border: 1px solid red;
-        color: red;
-        border-radius: 4px;
-        display: none;
-        position: absolute;
-        z-index: 10;
-      }
-
-      .unsupported #unsupported-msg {
-        display: block;
-      }
-
-      .unsupported main {
-        opacity: .2;
-        pointer-events: none;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-
-      @media (max-width: 565px) {
-        .example {
-          flex-direction: column;
-          width: 100%;
-        }
-      }
-
-      .example {
-        margin: 24px;
-        padding: 24px;
-        align-items: center;
-        display: flex;
-        margin-left: 10px;
-      }
-
-      .example > div {
-        margin: 48px 0;
-        width: 400px;
-      }
-
-      .example h2 {
-        font-size: 1.2em;
-        margin-bottom: 0.8em;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <aside id="unsupported-msg">
@@ -206,13 +119,15 @@
     <script src="/assets/material-components-web.js"></script>
     <script>
       (function(global) {
-        if (!mdc.ripple.util.supportsCssVariables(global)) {
-          document.documentElement.classList.add('unsupported');
-        }
+        document.body.onload = () => {
+          if (!mdc.ripple.util.supportsCssVariables(global)) {
+            document.documentElement.classList.add('unsupported');
+          }
 
-        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface:not([data-demo-no-js])'), function(surface) {
-          mdc.ripple.MDCRipple.attachTo(surface);
-        });
+          [].forEach.call(document.querySelectorAll('.mdc-ripple-surface:not([data-demo-no-js])'), function(surface) {
+            mdc.ripple.MDCRipple.attachTo(surface);
+          });
+        }
       })(this);
     </script>
   </body>
