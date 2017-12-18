@@ -25,29 +25,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      .mdc-toolbar-demo {
-        margin: 0px;
-      }
-      .demo-paragraph {
-        margin: 0px;
-        padding: 20px 28px;
-      }
       .demo-custom-scroll-title {
         line-height: 130%;
         margin-left: 0;
-      }
-      @media (max-width: 599px) {
-        .demo-paragraph {
-          padding: 16px;
-        }
-      }
-      footer {
-        position: fixed;
-        bottom: 20px;
-        width: 100%;
-        text-align: center;
-        color: red;
-        background-color: rgba(0, 0, 0, 0.8);
       }
       #my-flexible-header {
         --mdc-toolbar-ratio-to-extend-flexible: 2;
@@ -59,8 +39,8 @@
       }
     </style>
   </head>
-  <body class="mdc-typography mdc-toolbar-demo">
-    <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall mdc-toolbar--flexible" id="my-flexible-header">
+  <body class="mdc-typography">
+    <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall mdc-toolbar--flexible demo-toolbar" id="my-flexible-header">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-center">
           <span class="mdc-toolbar__title demo-custom-scroll-title">Hey!</span>
@@ -80,7 +60,7 @@
         </p>
       </div>
     </main>
-    <footer>
+    <footer class="demo-toolbar-floating-footer">
       <span>Flexible Expansion Ratio: <span id="ratio">0</span></span>
     </footer>
     <script src="/assets/material-components-web.js"></script>
