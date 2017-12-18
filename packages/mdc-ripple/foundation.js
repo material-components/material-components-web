@@ -165,6 +165,9 @@ class MDCRippleFoundation extends MDCFoundation {
       this.activationAnimationHasEnded_ = true;
       this.runDeactivationUXLogicIfReady_();
     };
+
+    /** @private {?Event} */
+    this.previousActivationEvent_ = null;
   }
 
   /**
@@ -287,6 +290,14 @@ class MDCRippleFoundation extends MDCFoundation {
 
     const {activationState_: activationState} = this;
     if (activationState.isActivated) {
+      return;
+    }
+
+    // Avoid reacting to follow-on event fired by touch device after an already-processed activation event
+    const previousActivationEvent = this.previousActivationEvent_;
+    const isSameInteraction = previousActivationEvent && previousActivationEvent.type !== e.type &&
+      previousActivationEvent.clientX === e.clientX && previousActivationEvent.clientY === e.clientY;
+    if (isSameInteraction) {
       return;
     }
 
@@ -415,6 +426,13 @@ class MDCRippleFoundation extends MDCFoundation {
     this.adapter_.computeBoundingRect();
   }
 
+  resetActivationState_() {
+    // Take note of previous activation event type to ignore follow-on event for the same interaction on touch devices
+    this.previousActivationEvent_ = this.activationState_.activationEvent;
+    this.activationState_ = this.defaultActivationState_();
+    setTimeout(() => this.previousActivationEvent_ = null, 100);
+  }
+
   /**
    * @param {Event} e
    * @private
@@ -431,13 +449,13 @@ class MDCRippleFoundation extends MDCFoundation {
     if (activationState.isProgrammatic) {
       const evtObject = null;
       requestAnimationFrame(() => this.animateDeactivation_(evtObject, state));
-      this.activationState_ = this.defaultActivationState_();
+      this.resetActivationState_();
     } else {
       this.deregisterDeactivationHandlers_();
       requestAnimationFrame(() => {
         this.activationState_.hasDeactivationUXRun = true;
         this.animateDeactivation_(e, state);
-        this.activationState_ = this.defaultActivationState_();
+        this.resetActivationState_();
       });
     }
   }
