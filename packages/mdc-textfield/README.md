@@ -137,6 +137,8 @@ included as part of the DOM structure of a full width text field.
 
 #### Disabled
 
+Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. You also need to add `mdc-text-field--disabled` to the `mdc-text-field`.
+
 ```html
 <div class="mdc-text-field mdc-text-field--disabled">
   <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
@@ -161,7 +163,6 @@ See [here](icon/) for more information on using icons.
 CSS Class | Description
 --- | ---
 `mdc-text-field` | Mandatory
-`mdc-text-field__input` | Mandatory
 `mdc-text-field--upgraded` | Indicates the text field is upgraded, normally by JavaScript
 `mdc-text-field--box` | Styles the text field as a box text field
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field
@@ -181,23 +182,20 @@ Mixin | Description
 
 ### `MDCTextField`
 
-#### `MDCTextField.disable`
+See [Importing the JS component](../docs/importing-js.md) for more information on how to import JavaScript.
 
-Boolean. Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
-respectively.
-
-#### `MDCTextField.valid`
-
-Boolean setter. Proxies to the foundation's `setValid` method when set.
-
-#### `MDCTextField.helperTextContent`
-
-String setter. Proxies to the foundation's `setHelperTextContent` method when set.
+Property | Value Type | Description
+--- | ---
+`disable` | Boolean | Proxies to the foundation's `isDisabled/setDisabled` methods when retrieved/set
+respectively
+`valid` | Boolean | Proxies to the foundation's `setValid` method when set
+`helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set
+`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField`
+initializes
 
 ##### `MDCTextField.ripple`
 
-`MDCRipple` instance. Set to the `MDCRipple` instance for the root element that `MDCTextField`
-initializes when given an `mdc-text-field--box` root element. Otherwise, the field is set to `null`.
+The `MDCRipple` instance for the root element that `MDCTextField` initializes when given an `mdc-text-field--box` root element. Otherwise, the field is set to `null`.
 
 ### `MDCTextFieldAdapter`
 
