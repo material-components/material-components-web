@@ -91,17 +91,6 @@ class MDCTextField extends MDCComponent {
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX)) {
-      const MATCHES = getMatchesProperty(HTMLElement.prototype);
-      const adapter = Object.assign(MDCRipple.createAdapter(this), {
-        isSurfaceActive: () => this.input_[MATCHES](':active'),
-        registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
-        deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
-      });
-      const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = rippleFactory(this.root_, foundation);
-    }
     const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
     if (bottomLineElement) {
       this.bottomLine_ = bottomLineFactory(bottomLineElement);
@@ -109,13 +98,6 @@ class MDCTextField extends MDCComponent {
     const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
     if (outlineElement) {
       this.outline_ = outlineFactory(outlineElement);
-      const adapter = Object.assign(MDCRipple.createAdapter(this.outline_), {
-        isSurfaceActive: () => this.input_[MATCHES](':active'),
-        registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
-        deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
-      });
-      const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = this.outline_.createRipple(rippleFactory, foundation);
     }
     if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
       const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
@@ -126,6 +108,23 @@ class MDCTextField extends MDCComponent {
     const iconElement = this.root_.querySelector(strings.ICON_SELECTOR);
     if (iconElement) {
       this.icon_ = iconFactory(iconElement);
+    }
+
+    this.ripple = null;
+    if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
+      const MATCHES = getMatchesProperty(HTMLElement.prototype);
+      const rippleInputMethods = {
+        isSurfaceActive: () => this.input_[MATCHES](':active'),
+        registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
+        deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
+      };
+      if (this.root_.classList.contains(cssClasses.BOX)) {
+        const adapter = Object.assign(MDCRipple.createAdapter(this), rippleInputMethods);
+        const foundation = new MDCRippleFoundation(adapter);
+        this.ripple = rippleFactory(this.root_, foundation);
+      } else if (this.root_.classList.contains(cssClasses.OUTLINED)) {
+        this.ripple = this.outline_.createRipple(rippleFactory, rippleInputMethods);
+      }
     }
   }
 

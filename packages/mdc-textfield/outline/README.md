@@ -23,6 +23,10 @@ The outline is a border around all sides of the text field. This is used for the
 
 #### MDCTextFieldOutline API
 
+##### MDCTextFieldOutline.createRipple(rippleFactory: (function(!Element, !MDCRippleFoundation): !MDCRipple), foundation: !MDCRippleFoundation)
+
+Returns an `MDCRipple` instance set on the `MDCTextFieldOutline` component and its `mdc-text-field__outline` root element.
+
 ##### MDCTextFieldOutline.foundation
 
 MDCTextFieldOutlineFoundation. This allows the parent MDCTextField component to access the public methods on the MDCTextFieldOutlineFoundation class.

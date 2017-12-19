@@ -15,8 +15,10 @@
  */
 
 import bel from 'bel';
+import td from 'testdouble';
 import {assert} from 'chai';
 
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCTextFieldOutline} from '../../../packages/mdc-textfield/outline';
 
 const getFixture = () => bel`
@@ -33,11 +35,31 @@ test('attachTo returns an MDCTextFieldOutline instance', () => {
   assert.isOk(MDCTextFieldOutline.attachTo(getFixture()) instanceof MDCTextFieldOutline);
 });
 
+class FakeRipple {
+  constructor(root) {
+    this.root = root;
+    this.layout = td.func('.layout');
+    this.destroy = td.func('.destroy');
+  }
+}
+
 function setupTest() {
   const root = getFixture();
   const component = new MDCTextFieldOutline(root);
   return {root, component};
 }
+
+test('#createRipple returns a ripple on the root element', () => {
+  const {root, component} = setupTest();
+  const ripple = component.createRipple((el, foundation) => new FakeRipple(root, foundation));
+  assert.equal(ripple.root, root);
+});
+
+test('#createRipple initializes a default ripple when no ripple factory given', () => {
+  const {component} = setupTest();
+  const ripple = component.createRipple();
+  assert.instanceOf(ripple, MDCRipple);
+});
 
 test('#adapter.getWidth returns the width of the element', () => {
   const {root, component} = setupTest();
