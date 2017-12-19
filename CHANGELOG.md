@@ -1,3 +1,53 @@
+<a name="0.27.0"></a>
+# [0.27.0](https://github.com/material-components/material-components-web/compare/v0.26.0...v0.27.0) (2017-12-11)
+
+
+### Bug Fixes
+
+* **demos:** add back button to header on drawer demos page ([#1703](https://github.com/material-components/material-components-web/issues/1703)) ([fa72e42](https://github.com/material-components/material-components-web/commit/fa72e42))
+* **drawer:** Change how click events are handled ([3e173e1](https://github.com/material-components/material-components-web/commit/3e173e1))
+* **icon-toggle:** Don't nuke tabindex if initializing disabled to false ([#1667](https://github.com/material-components/material-components-web/issues/1667)) ([9ec35b7](https://github.com/material-components/material-components-web/commit/9ec35b7))
+* **linear-progress:** default size ([#1694](https://github.com/material-components/material-components-web/issues/1694)) ([35d362c](https://github.com/material-components/material-components-web/commit/35d362c)), closes [#1528](https://github.com/material-components/material-components-web/issues/1528)
+* **toolbar:** margin for fixed toolbar ([28b97a5](https://github.com/material-components/material-components-web/commit/28b97a5))
+
+
+### Chores
+
+* **list:** Rename CSS class to follow BEM naming ([#1660](https://github.com/material-components/material-components-web/issues/1660)) ([7a23183](https://github.com/material-components/material-components-web/commit/7a23183))
+* **text-field:** Pass subelement foundations through MDCTextField super constructor ([#1684](https://github.com/material-components/material-components-web/issues/1684)) ([80223f2](https://github.com/material-components/material-components-web/commit/80223f2))
+
+
+### Features
+
+* **button:** Use mdc-states mixin for button styles ([#1668](https://github.com/material-components/material-components-web/issues/1668)) ([55fbba9](https://github.com/material-components/material-components-web/commit/55fbba9))
+* **checkbox:** Use new mdc-states mixin for checkbox styles ([#1672](https://github.com/material-components/material-components-web/issues/1672)) ([dab612c](https://github.com/material-components/material-components-web/commit/dab612c))
+* **fab:** Use new mdc-states mixin for fab styles ([#1669](https://github.com/material-components/material-components-web/issues/1669)) ([9ab48b7](https://github.com/material-components/material-components-web/commit/9ab48b7))
+* **icon-toggle:** Use new mdc-states mixin for icon-toggle styles ([#1685](https://github.com/material-components/material-components-web/issues/1685)) ([75eb1bc](https://github.com/material-components/material-components-web/commit/75eb1bc))
+* **infrastructure:** Add build command for static demo assets ([#1589](https://github.com/material-components/material-components-web/issues/1589)) ([54465d9](https://github.com/material-components/material-components-web/commit/54465d9))
+* **list:** Add color theme mixins & --selected/--activated modifiers ([#1663](https://github.com/material-components/material-components-web/issues/1663)) ([6ea948f](https://github.com/material-components/material-components-web/commit/6ea948f)), closes [#1662](https://github.com/material-components/material-components-web/issues/1662)
+* **menu:** Fix menu to only fire one event per interaction ([02fe795](https://github.com/material-components/material-components-web/commit/02fe795))
+* **radio:** Use new mdc-states mixin for radio styles ([#1673](https://github.com/material-components/material-components-web/issues/1673)) ([5065576](https://github.com/material-components/material-components-web/commit/5065576))
+* **ripple:** Add new states mixins ([#1624](https://github.com/material-components/material-components-web/issues/1624)) ([9356449](https://github.com/material-components/material-components-web/commit/9356449))
+* **ripple:** Add support for activated and selected states ([#1696](https://github.com/material-components/material-components-web/issues/1696)) ([6f7008c](https://github.com/material-components/material-components-web/commit/6f7008c))
+* **select:** Add new UX styles and behavior to select ([99878c1](https://github.com/material-components/material-components-web/commit/99878c1))
+* **select:** Use new mdc-states mixin for select styles ([#1704](https://github.com/material-components/material-components-web/issues/1704)) ([3043a54](https://github.com/material-components/material-components-web/commit/3043a54))
+* **tabs:** Use new mdc-states mixin for tab styles ([#1674](https://github.com/material-components/material-components-web/issues/1674)) ([f7f1eb0](https://github.com/material-components/material-components-web/commit/f7f1eb0))
+* **textfield:** Use mdc-states mixin and add support for focus shade ([#1677](https://github.com/material-components/material-components-web/issues/1677)) ([2918031](https://github.com/material-components/material-components-web/commit/2918031))
+* **theme:** Add accessible-ink-color function ([#1719](https://github.com/material-components/material-components-web/issues/1719)) ([49cd750](https://github.com/material-components/material-components-web/commit/49cd750))
+* **theme:** Support currentColor in mdc-theme-prop* ([#1657](https://github.com/material-components/material-components-web/issues/1657)) ([7e1255e](https://github.com/material-components/material-components-web/commit/7e1255e))
+
+
+### BREAKING CHANGES
+
+* **select:** Adds several adapter methods to facilitate the new UX styles. Changes DOM requirements. Refer to https://github.com/material-components/material-components-web/blob/master/packages/mdc-select/README.md for new implementation requirements.
+* **text-field:** Please update implementations of MDCTextField to pass in a map of subfoundations to the MDCTextFieldFoundation constructor. Methods getBottomLineFoundation() and getHelperTextFoundation() are no longer in MDCTextFieldAdapter. See the README for mdc-textfield/input for more information.
+* **button:** The $mdc-*-button-ripple-opacity variables have been removed, as these values are now available via the state opacity maps in mdc-ripple.
+* **drawer:** Adds eventTargetHasClass method to the temporary drawer adapter API.
+* **list:** The `mdc-list-item__text__secondary` class was renamed to `mdc-list-item__text-secondary` to follow BEM conventions. See the [BEM FAQ](http://getbem.com/faq/#css-nested-elements) for more details.
+* **menu:** Adds an adapter method eventTargetHasClass to check if a given event target has a given class
+
+
+
 <a name="0.26.0"></a>
 # [0.26.0](https://github.com/material-components/material-components-web/compare/v0.25.0...v0.26.0) (2017-11-27)
 

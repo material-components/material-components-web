@@ -18,8 +18,11 @@
 import MDCFoundation from '@material/base/foundation';
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 
 
@@ -47,13 +50,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
-      addClassToLabel: () => {},
-      removeClassFromLabel: () => {},
-      setIconAttr: () => {},
-      eventTargetHasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
-      notifyIconAction: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
       registerBottomLineEventHandler: () => {},
@@ -74,6 +72,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.bottomLine_ = foundationMap.bottomLine;
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
+    /** @type {!MDCTextFieldIconFoundation|undefined} */
+    this.icon_ = foundationMap.icon;
+    /** @type {!MDCTextFieldLabelFoundation|undefined} */
+    this.label_ = foundationMap.label;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -92,7 +94,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
-    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
+    this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Event): undefined} */
     this.bottomLineAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
   }
@@ -131,24 +133,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles all user interactions with the Text Field.
-   * @param {!Event} evt
+   * Handles user interactions with the Text Field.
    */
-  handleTextFieldInteraction(evt) {
+  handleTextFieldInteraction() {
     if (this.adapter_.getNativeInput().disabled) {
       return;
     }
-
     this.receivedUserInput_ = true;
-
-    const {target, type} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextFieldFoundation.cssClasses;
-    const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
-    const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
-
-    if (targetIsIcon && eventTriggersNotification) {
-      this.adapter_.notifyIconAction();
-    }
   }
 
   /**
@@ -342,16 +333,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
       if (!!optIsDisabled) {
         this.adapter_.addClass(DISABLED);
         this.adapter_.removeClass(INVALID);
-        this.adapter_.setIconAttr('tabindex', '-1');
       } else {
         this.adapter_.removeClass(DISABLED);
-        this.adapter_.setIconAttr('tabindex', '0');
+      }
+      if (this.icon_) {
+        this.icon_.setDisabled(!!optIsDisabled);
       }
     }
   }
-
-  // TODO(https://github.com/material-components/material-components-web/issues/1596)
-  // Will eventually be handled by the Label sub-component.
+  
   /**
    * Styles the Text Field's label to match the supplied optional params. If a
    * param is not supplied, the method makes no changes related to that param.
@@ -374,9 +364,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
     if (optValue !== undefined || optIsFocused !== undefined) {
       if (!!optValue || isFocused) {
-        this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
+        this.label_.floatAbove();
       } else if (!optIsBadInput) {
-        this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+        //TODO: add/adjust a method to MDCTextFieldLabel which allows for removing the float
+        //this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
         this.receivedUserInput_ = false;
       }
     }

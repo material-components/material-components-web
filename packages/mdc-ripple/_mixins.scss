@@ -17,35 +17,7 @@
 @import "@material/animation/variables";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
-@import "./keyframes";
 @import "./variables";
-
-// Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
-// (Every component using MDC Ripple imports these mixins, but doesn't necessarily import mdc-ripple.scss.)
-
-// This variable is not intended to be overridden externally; it uses !default to avoid being reset
-// every time this file is imported.
-$mdc-ripple-common-styles-emitted_: false !default;
-
-@if not $mdc-ripple-common-styles-emitted_ {
-  $mdc-ripple-common-styles-emitted_: true;
-
-  @include mdc-ripple-keyframes_;
-
-  // Styles used to detect buggy behavior of CSS custom properties in Edge.
-  // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-  // This is included in _mixins.scss rather than mdc-ripple.scss so that it will be
-  // present for other components which rely on ripple as well as mdc-ripple itself.
-  .mdc-ripple-surface--test-edge-var-bug {
-    --mdc-ripple-surface-test-edge-var: 1px solid #000;
-
-    visibility: hidden;
-
-    &::before {
-      border: var(--mdc-ripple-surface-test-edge-var);
-    }
-  }
-}
 
 @mixin mdc-ripple-surface() {
   --mdc-ripple-fg-size: 0;
@@ -61,6 +33,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
   &::after {
     position: absolute;
     border-radius: 50%;
+    opacity: 0;
     pointer-events: none;
     content: "";
     will-change: transform, opacity;
@@ -104,8 +77,6 @@ $mdc-ripple-common-styles-emitted_: false !default;
   &::before,
   &::after {
     @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
-
-    opacity: 0;
   }
 }
 
@@ -156,19 +127,43 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 }
 
-// Simple mixin which automatically selects opacity values based on whether the ink color is light or dark.
+// Simple mixin for base states which automatically selects opacity values based on whether the ink color is
+// light or dark.
 @mixin mdc-states($color: black, $has-nested-focusable-element: false) {
-  $color-value: mdc-theme-prop-value($color);
-  $opacity-map: if(
-    mdc-theme-tone($color-value) == "light",
-    $mdc-ripple-light-ink-opacities,
-    $mdc-ripple-dark-ink-opacities
-  );
+  @include mdc-states-interactions_($color, $has-nested-focusable-element);
+}
 
-  @include mdc-states-base-color($color);
-  @include mdc-states-hover-opacity(map-get($opacity-map, "hover"));
-  @include mdc-states-focus-opacity(map-get($opacity-map, "focus"), $has-nested-focusable-element);
-  @include mdc-states-press-opacity(map-get($opacity-map, "press"));
+// Simple mixin for activated states which automatically selects opacity values based on whether the ink color is
+// light or dark.
+@mixin mdc-states-activated($color, $has-nested-focusable-element: false) {
+  $opacity-map: mdc-states-opacities_($color);
+  $activated-opacity: map-get($opacity-map, "activated");
+
+  &--activated {
+    // Stylelint seems to think that '&' qualifies as a type selector here?
+    // stylelint-disable-next-line selector-max-type
+    &::before {
+      opacity: $activated-opacity;
+    }
+
+    @include mdc-states-interactions_($color, $has-nested-focusable-element, $activated-opacity);
+  }
+}
+
+// Simple mixin for selected states which automatically selects opacity values based on whether the ink color is
+// light or dark.
+@mixin mdc-states-selected($color, $has-nested-focusable-element: false) {
+  $opacity-map: mdc-states-opacities_($color);
+  $selected-opacity: map-get($opacity-map, "selected");
+
+  &--selected {
+    // stylelint-disable-next-line selector-max-type
+    &::before {
+      opacity: $selected-opacity;
+    }
+
+    @include mdc-states-interactions_($color, $has-nested-focusable-element, $selected-opacity);
+  }
 }
 
 @mixin mdc-ripple-radius($radius: 100%) {
@@ -250,6 +245,27 @@ $mdc-ripple-common-styles-emitted_: false !default;
 // Private
 //
 
+@function mdc-states-opacities_($color) {
+  $color-value: mdc-theme-prop-value($color);
+  $opacity-map: if(
+    mdc-theme-tone($color-value) == "light",
+    $mdc-ripple-light-ink-opacities,
+    $mdc-ripple-dark-ink-opacities
+  );
+
+  @return $opacity-map;
+}
+
+@mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0) {
+  $opacity-map: mdc-states-opacities_($color);
+
+  @include mdc-states-base-color($color);
+  @include mdc-states-hover-opacity(map-get($opacity-map, "hover") + $opacity-modifier);
+  @include mdc-states-focus-opacity(map-get($opacity-map, "focus") + $opacity-modifier, $has-nested-focusable-element);
+  @include mdc-states-press-opacity(map-get($opacity-map, "press") + $opacity-modifier);
+}
+
+// Note: This can be removed when we remove the legacy mdc-ripple-color mixin.
 @mixin mdc-ripple-color_($color, $opacity) {
   // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
   @if type-of($color) == "color" {

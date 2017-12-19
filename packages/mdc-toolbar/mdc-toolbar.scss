@@ -23,8 +23,7 @@
 
 // postcss-bem-linter: define toolbar
 .mdc-toolbar {
-  @include mdc-theme-prop(background-color, primary);
-  @include mdc-theme-prop(color, text-primary-on-primary);
+  @include mdc-toolbar-fill-color-accessible(primary);
 
   display: flex;
   position: relative;
@@ -86,12 +85,10 @@
   }
 
   &__icon {
-    @include mdc-shared-icon-style;
-    @include mdc-theme-prop(color, text-primary-on-primary);
+    @include mdc-toolbar-icon_;
 
     padding-right: $mdc-toolbar-element-horizontal-padding-desktop / 2;
     padding-left: $mdc-toolbar-element-horizontal-padding-desktop / 2;
-    cursor: pointer;
   }
 
   &__icon:last-of-type {
@@ -99,12 +96,10 @@
   }
 
   &__menu-icon {
-    @include mdc-shared-icon-style;
-    @include mdc-theme-prop(color, text-primary-on-primary);
+    @include mdc-toolbar-icon_;
 
     padding-right: $mdc-toolbar-element-horizontal-padding-desktop;
     padding-left: $mdc-toolbar-element-horizontal-padding-desktop;
-    cursor: pointer;
   }
 }
 

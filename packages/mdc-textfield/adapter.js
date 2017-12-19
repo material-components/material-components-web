@@ -18,6 +18,8 @@
 /* eslint-disable no-unused-vars */
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -37,7 +39,9 @@ let NativeInputType;
 /**
  * @typedef {{
  *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
- *   helperText: (!MDCTextFieldHelperTextFoundation|undefined)
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
+ *   icon: (!MDCTextFieldIconFoundation|undefined),
+ *   label: (!MDCTextFieldLabelFoundation|undefined)
  * }}
  */
 let FoundationMapType;
@@ -66,36 +70,6 @@ class MDCTextFieldAdapter {
   removeClass(className) {}
 
   /**
-   * Adds a class to the label Element. We recommend you add a conditional
-   * check here, and in removeClassFromLabel for whether or not the label is
-   * present so that the JS component could be used with text fields that don't
-   * require a label, such as the full-width text field.
-   * @param {string} className
-   */
-  addClassToLabel(className) {}
-
-  /**
-   * Removes a class from the label Element.
-   * @param {string} className
-   */
-  removeClassFromLabel(className) {}
-
-  /**
-   * Sets an attribute on the icon Element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setIconAttr(name, value) {}
-
-  /**
-   * Returns true if classname exists for a given target element.
-   * @param {?EventTarget} target
-   * @param {string} className
-   * @return {boolean}
-   */
-  eventTargetHasClass(target, className) {}
-
-  /**
    * Registers an event handler on the root element for a given event.
    * @param {string} type
    * @param {function(!Event): undefined} handler
@@ -108,11 +82,6 @@ class MDCTextFieldAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterTextFieldInteractionHandler(type, handler) {}
-
-  /**
-   * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
-   */
-  notifyIconAction() {}
 
   /**
    * Registers an event listener on the native input element for a given event.
