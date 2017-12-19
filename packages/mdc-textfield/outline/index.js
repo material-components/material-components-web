@@ -16,6 +16,8 @@
  */
 
 import MDCComponent from '@material/base/component';
+// eslint-disable-next-line no-unused-vars
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 
 import {strings} from './constants';
 import MDCTextFieldOutlineAdapter from './adapter';
@@ -39,6 +41,15 @@ class MDCTextFieldOutline extends MDCComponent {
    */
   get foundation() {
     return this.foundation_;
+  }
+
+  /**
+   * @param {(function(!Element, !MDCRippleFoundation): !MDCRipple)=} rippleFactory A function which
+   * creates a new MDCRipple.
+   * @param {!MDCRippleFoundation=} rippleFoundation A foundation for MDCRipple.
+   */
+  createRipple(rippleFactory = (el, foundation) => new MDCRipple(el, foundation), rippleFoundation) {
+    return rippleFactory(this.root_, rippleFoundation);
   }
 
   /**

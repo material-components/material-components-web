@@ -109,6 +109,13 @@ class MDCTextField extends MDCComponent {
     const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
     if (outlineElement) {
       this.outline_ = outlineFactory(outlineElement);
+      const adapter = Object.assign(MDCRipple.createAdapter(this.outline_), {
+        isSurfaceActive: () => this.input_[MATCHES](':active'),
+        registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
+        deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
+      });
+      const foundation = new MDCRippleFoundation(adapter);
+      this.ripple = this.outline_.createRipple(rippleFactory, foundation);
     }
     if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
       const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
