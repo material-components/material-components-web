@@ -29,7 +29,7 @@
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle">menu</button>
+          <button class="material-icons mdc-toolbar__menu-icon demo-toolbar__menu-icon demo-drawer-toggle">menu</button>
           <span class="mdc-toolbar__title catalog-title">Color Theming</span>
         </section>
       </div>
@@ -88,16 +88,16 @@
 
           <div>
             <h3 class="mdc-typography--body1">Default (primary theme color)</h3>
-            <button class="mdc-button demo-button">
+            <button class="mdc-button demo-button demo-button">
               Text
             </button>
-            <button class="mdc-button demo-button mdc-button--raised">
+            <button class="mdc-button demo-button mdc-button--raised demo-button--raised">
               Raised
             </button>
-            <button class="mdc-button demo-button mdc-button--unelevated">
+            <button class="mdc-button demo-button mdc-button--unelevated demo-button--unelevated">
               Unelevated
             </button>
-            <button class="mdc-button demo-button mdc-button--stroked">
+            <button class="mdc-button demo-button demo-button mdc-button--stroked demo-button--stroked">
               Stroked
             </button>
           </div>
@@ -107,13 +107,13 @@
             <button class="mdc-button demo-button secondary-text-button">
               Text
             </button>
-            <button class="mdc-button demo-button mdc-button--raised secondary-filled-button">
+            <button class="mdc-button demo-button mdc-button--raised demo-button--raised secondary-filled-button">
               Raised
             </button>
-            <button class="mdc-button demo-button mdc-button--unelevated secondary-filled-button">
+            <button class="mdc-button demo-button mdc-button--unelevated demo-button--unelevated secondary-filled-button">
               Unelevated
             </button>
-            <button class="mdc-button demo-button mdc-button--stroked secondary-stroked-button">
+            <button class="mdc-button demo-button mdc-button--stroked demo-button--stroked secondary-stroked-button">
               Stroked
             </button>
           </div>
@@ -123,16 +123,16 @@
           <legend class="mdc-typography--subheading2">Disabled</legend>
 
           <div>
-            <button class="mdc-button demo-button">
+            <button class="mdc-button demo-button demo-button">
               Text
             </button>
-            <button class="mdc-button demo-button mdc-button--raised">
+            <button class="mdc-button demo-button mdc-button--raised demo-button--raised">
               Raised
             </button>
-            <button class="mdc-button demo-button mdc-button--unelevated">
+            <button class="mdc-button demo-button mdc-button--unelevated demo-button--unelevated">
               Unelevated
             </button>
-            <button class="mdc-button demo-button mdc-button--stroked">
+            <button class="mdc-button demo-button mdc-button--stroked demo-button--stroked">
               Stroked
             </button>
           </div>
@@ -258,8 +258,8 @@
             <label for="disabled-checkbox" id="disabled-checkbox-label">Disabled</label>
           </div>
 
-          <button type="button" class="mdc-button demo-button mdc-button--raised demo-checkbox-toggle" id="checkbox-toggle--indeterminate">Toggle <code class="demo-button__code">indeterminate</code></button>
-          <button type="button" class="mdc-button demo-button mdc-button--raised demo-checkbox-toggle" id="checkbox-toggle--align-end">Toggle <code class="demo-button__code">--align-end</code></button>
+          <button type="button" class="mdc-button demo-button mdc-button--raised demo-button--raised demo-checkbox-toggle" id="checkbox-toggle--indeterminate">Toggle <code class="demo-button__code">indeterminate</code></button>
+          <button type="button" class="mdc-button demo-button mdc-button--raised demo-button--raised demo-checkbox-toggle" id="checkbox-toggle--align-end">Toggle <code class="demo-button__code">--align-end</code></button>
         </div>
       </section>
 
@@ -468,7 +468,7 @@
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
             <div class="mdc-radio">
-              <input class="mdc-radio__native-control demo-radio-form-field__input" type="radio" id="demo-radio-1" checked name="demo-radio-group-1">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-1" checked name="demo-radio-group-1">
               <div class="mdc-radio__background demo-radio__background">
                 <div class="mdc-radio__outer-circle demo-radio__outer-circle"></div>
                 <div class="mdc-radio__inner-circle demo-radio__inner-circle"></div>
@@ -491,7 +491,7 @@
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
             <div class="mdc-radio demo-radio--secondary">
-              <input class="mdc-radio__native-control demo-radio-form-field__input" type="radio" id="demo-radio-3" checked name="demo-radio-group-2">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-3" checked name="demo-radio-group-2">
               <div class="mdc-radio__background demo-radio__background">
                 <div class="mdc-radio__outer-circle demo-radio__outer-circle"></div>
                 <div class="mdc-radio__inner-circle demo-radio__inner-circle"></div>
@@ -501,7 +501,7 @@
           </div>
           <div class="mdc-form-field demo-radio-form-field">
             <div class="mdc-radio demo-radio--secondary">
-              <input class="mdc-radio__native-control demo-radio-form-field__input" type="radio" id="demo-radio-4" name="demo-radio-group-2">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-4" name="demo-radio-group-2">
               <div class="mdc-radio__background demo-radio__background">
                 <div class="mdc-radio__outer-circle demo-radio__outer-circle"></div>
                 <div class="mdc-radio__inner-circle demo-radio__inner-circle"></div>
@@ -514,7 +514,7 @@
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
             <div class="mdc-radio demo-radio--custom">
-              <input class="mdc-radio__native-control demo-radio-form-field__input" type="radio" id="demo-radio-5" checked name="demo-radio-group-3">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-5" checked name="demo-radio-group-3">
               <div class="mdc-radio__background demo-radio__background">
                 <div class="mdc-radio__outer-circle demo-radio__outer-circle"></div>
                 <div class="mdc-radio__inner-circle demo-radio__inner-circle"></div>
@@ -524,7 +524,7 @@
           </div>
           <div class="mdc-form-field demo-radio-form-field">
             <div class="mdc-radio demo-radio--custom">
-              <input class="mdc-radio__native-control demo-radio-form-field__input" type="radio" id="demo-radio-6" name="demo-radio-group-3">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-6" name="demo-radio-group-3">
               <div class="mdc-radio__background demo-radio__background">
                 <div class="mdc-radio__outer-circle demo-radio__outer-circle"></div>
                 <div class="mdc-radio__inner-circle demo-radio__inner-circle"></div>
@@ -537,7 +537,7 @@
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
             <div class="mdc-radio mdc-radio--disabled">
-              <input class="mdc-radio__native-control demo-radio-form-field__input" type="radio" id="demo-radio-7" disabled checked name="demo-radio-group-4">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-7" disabled checked name="demo-radio-group-4">
               <div class="mdc-radio__background demo-radio__background">
                 <div class="mdc-radio__outer-circle demo-radio__outer-circle"></div>
                 <div class="mdc-radio__inner-circle demo-radio__inner-circle"></div>
@@ -547,7 +547,7 @@
           </div>
           <div class="mdc-form-field demo-radio-form-field">
             <div class="mdc-radio mdc-radio--disabled">
-              <input class="mdc-radio__native-control demo-radio-form-field__input" type="radio" id="demo-radio-8" disabled name="demo-radio-group-4">
+              <input class="mdc-radio__native-control" type="radio" id="demo-radio-8" disabled name="demo-radio-group-4">
               <div class="mdc-radio__background demo-radio__background">
                 <div class="mdc-radio__outer-circle demo-radio__outer-circle"></div>
                 <div class="mdc-radio__inner-circle demo-radio__inner-circle"></div>

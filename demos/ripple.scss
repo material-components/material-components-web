@@ -18,7 +18,7 @@
 @import "../packages/mdc-elevation/mdc-elevation";
 @import "../packages/mdc-ripple/mdc-ripple";
 
-.demo-surface {
+.demo-surface:not(.hero) {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,15 +30,15 @@
   -webkit-user-select: none;
 }
 
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
+.demo-surface[data-mdc-ripple-is-unbounded] {
   width: 40px;
   height: 40px;
   padding: 0;
   border-radius: 50%;
 }
 
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
+.demo-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
+.demo-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
   height: 100%;
   left: 0;
   top: 0;

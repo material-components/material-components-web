@@ -103,7 +103,7 @@
   height: 72px;
 }
 
-.hero .catalog-toolbar-container .mdc-toolbar {
+.hero .catalog-toolbar-container .demo-toolbar {
   box-shadow:
     0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14),
@@ -130,7 +130,7 @@
   margin-bottom: 16px;
 }
 
-div.intro {
+.intro {
   padding: 48px 24px;
 }
 
@@ -144,7 +144,7 @@ div.intro {
   --mdc-toolbar-ratio-to-extend-flexible: 2;
   background-color: rgb(255, 64, 129);
 }
-#my-flexible-header .mdc-toolbar__title {
+#my-flexible-header .demo-custom-scroll-title {
   font-size: 5rem;
   transform: translateY(-30px);
 }

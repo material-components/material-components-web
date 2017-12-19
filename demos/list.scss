@@ -83,13 +83,14 @@ a.material-icons {
   padding: 24px;
 }
 
-#demo-wrapper .mdc-list, #demo-wrapper .mdc-list-group {
+#demo-wrapper .demo-list,
+#demo-wrapper .demo-list-group {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#demo-wrapper .mdc-list-group .mdc-list,
-#demo-wrapper .mdc-theme--dark .mdc-list,
-#demo-wrapper .mdc-theme--dark .mdc-list-group {
+#demo-wrapper .demo-list-group .demo-list,
+#demo-wrapper .demo-theme--dark .demo-list,
+#demo-wrapper .demo-theme--dark .demo-list-group {
   border: none;
 }
 

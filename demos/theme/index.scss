@@ -128,16 +128,16 @@ figure {
 // Button demo
 //
 
-.demo-button.secondary-text-button {
+.secondary-text-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-states($mdc-theme-secondary);
 }
 
-.demo-button.secondary-filled-button {
+.secondary-filled-button {
   @include mdc-button-filled-accessible($mdc-theme-secondary);
 }
 
-.demo-button.secondary-stroked-button {
+.secondary-stroked-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-button-stroke-color($mdc-theme-secondary);
   @include mdc-states($mdc-theme-secondary);

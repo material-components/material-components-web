@@ -45,7 +45,7 @@
   position: relative;
 }
 
-.demo-card--with-avatar .demo-card__avatar {
+.demo-card__avatar {
   position: absolute;
   background: #bdbdbd;
   height: 2.5rem;
@@ -55,13 +55,13 @@
   border-radius: 50%;
 }
 
-.demo-card--with-avatar .demo-card__title,
-.demo-card--with-avatar .demo-card__subtitle {
+.demo-card__title,
+.demo-card__subtitle {
   margin-left: 56px;
 }
 
-[dir="rtl"] .demo-card--with-avatar .demo-card__title,
-[dir="rtl"] .demo-card--with-avatar .demo-card__subtitle {
+[dir="rtl"] .demo-card__title,
+[dir="rtl"] .demo-card__subtitle {
   margin-right: 56px;
   margin-left: initial;
 }
