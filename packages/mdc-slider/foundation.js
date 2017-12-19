@@ -32,8 +32,21 @@ const KEY_IDS = {
   PAGE_DOWN: 'PageDown',
 };
 
-// Events that can constitute the user releasing drag on a slider
-const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
+/** @enum {!Object} */
+const EVENT_MAP = {
+  'mousedown': {
+    move: 'mousemove',
+    up: 'mouseup',
+  },
+  'touchstart': {
+    move: 'touchmove',
+    up: 'touchend',
+  },
+  'pointerdown': {
+    move: 'pointermove',
+    up: 'pointerup',
+  },
+};
 
 /**
  * @extends {MDCFoundation<!MDCSliderAdapter>}
@@ -113,10 +126,7 @@ class MDCSliderFoundation extends MDCFoundation {
     this.thumbContainerPointerHandler_ = () => {
       this.handlingThumbTargetEvt_ = true;
     };
-    this.mousedownHandler_ = this.createDownHandler_('mousemove');
-    this.pointerdownHandler_ = this.createDownHandler_('pointermove');
-    this.touchstartHandler_ = this.createDownHandler_(
-      'touchmove', ({targetTouches}) => targetTouches[0].pageX);
+    this.interactionStartHandler_ = this.createDownHandler_();
     this.keydownHandler_ = (evt) => this.handleKeydown_(evt);
     this.focusHandler_ = () => this.handleFocus_();
     this.blurHandler_ = () => this.handleBlur_();
@@ -126,14 +136,12 @@ class MDCSliderFoundation extends MDCFoundation {
   init() {
     this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
     this.hasTrackMarker_ = this.adapter_.hasClass(cssClasses.HAS_TRACK_MARKER);
-    this.adapter_.registerInteractionHandler('mousedown', this.mousedownHandler_);
-    this.adapter_.registerInteractionHandler('pointerdown', this.pointerdownHandler_);
-    this.adapter_.registerInteractionHandler('touchstart', this.touchstartHandler_);
     this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
     ['mousedown', 'pointerdown', 'touchstart'].forEach((evtName) => {
-      this.adapter_.registerThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
+      this.adapter_.registerInteractionHandler(evtName, this.interactionStartHandler_);
+      this.adapter_.registerThumbContainerInteractionHandler(evtName, (evt) => this.onDown_(evt));
     });
     this.adapter_.registerResizeHandler(this.resizeHandler_);
     this.layout();
@@ -144,13 +152,11 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   destroy() {
-    this.adapter_.deregisterInteractionHandler('mousedown', this.mousedownHandler_);
-    this.adapter_.deregisterInteractionHandler('pointerdown', this.pointerdownHandler_);
-    this.adapter_.deregisterInteractionHandler('touchstart', this.touchstartHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
     ['mousedown', 'pointerdown', 'touchstart'].forEach((evtName) => {
+      this.adapter_.deregisterInteractionHandler(evtName, this.interactionStartHandler_);
       this.adapter_.deregisterThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
     });
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
@@ -268,45 +274,62 @@ class MDCSliderFoundation extends MDCFoundation {
     }
   }
 
+  getPageX_(evt) {
+    if (evt.type === 'touchmove') {
+      return evt.targetTouches[0].pageX;
+    }
+    return evt.pageX;
+  }
+
+  createDownHandler_() {
+    return (evt) => this.onDown_(evt);
+  }
+
   /**
-   * Creates a handler for mouse/touch/pointer down events
-   * @param {string} moveEvt
-   * @param {(function(!Event): !number)=} getPageX
-   * @return {function(!Event): undefined}
+   * Called when the user starts interacting with the slider
+   * @param {!Event} evt
    */
-  createDownHandler_(moveEvt, getPageX = ({pageX}) => pageX) {
+  onDown_(evt) {
+    if (this.disabled_) {
+      return;
+    }
+
+    this.preventFocusState_ = true;
+    this.setInTransit_(!this.handlingThumbTargetEvt_);
+    this.handlingThumbTargetEvt_ = false;
+
+    this.setActive_(true);
+
     const moveHandler = (evt) => {
-      evt.preventDefault();
-      this.setValueFromEvt_(evt, /** @type {function(!Event): !number} */ (getPageX));
+      this.onMove_(evt);
     };
 
-    // Note: upHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
-    // do not always fire these consistently in pairs.
-    // (See https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
-      this.setActive_(false);
-      this.adapter_.deregisterBodyInteractionHandler(moveEvt, moveHandler);
-      UP_EVENTS.forEach((type) => this.adapter_.deregisterBodyInteractionHandler(type, upHandler));
-      this.adapter_.notifyChange();
+      this.onUp_();
+      this.adapter_.deregisterBodyInteractionHandler(EVENT_MAP[evt.type].move, moveHandler);
+      this.adapter_.deregisterBodyInteractionHandler(EVENT_MAP[evt.type].up, upHandler);
     };
 
-    const downHandler = (evt) => {
-      if (this.disabled_) {
-        return;
-      }
+    this.setValueFromEvt_(evt, this.getPageX_);
+    this.adapter_.registerBodyInteractionHandler(EVENT_MAP[evt.type].move, moveHandler);
+    this.adapter_.registerBodyInteractionHandler(EVENT_MAP[evt.type].up, upHandler);
+  }
 
-      this.preventFocusState_ = true;
-      this.setInTransit_(!this.handlingThumbTargetEvt_);
-      this.handlingThumbTargetEvt_ = false;
+  /**
+   * Called when the user moves the slider
+   * @param {!Event} evt
+   */
+  onMove_(evt) {
+    evt.preventDefault();
+    this.setValueFromEvt_(evt, this.getPageX_);
+  }
 
-      this.setActive_(true);
-
-      this.adapter_.registerBodyInteractionHandler(moveEvt, moveHandler);
-      UP_EVENTS.forEach((type) => this.adapter_.registerBodyInteractionHandler(type, upHandler));
-      this.setValueFromEvt_(evt, /** @type {function(!Event): !number} */ (getPageX));
-    };
-
-    return downHandler;
+  /**
+   * Called when the user's interaction with the slider ends
+   */
+  onUp_() {
+    this.setActive_(false);
+    this.adapter_.notifyChange();
   }
 
   /**
