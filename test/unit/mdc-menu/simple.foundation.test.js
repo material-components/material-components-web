@@ -433,6 +433,23 @@ testFoundation('#open anchors the menu to the bottom left in RTL when close to t
     td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
   });
 
+testFoundation('#open the menu after setting invalid margins.',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.hasAnchor()).thenReturn(true);
+    td.when(mockAdapter.isRtl()).thenReturn(true);
+    td.when(mockAdapter.getInnerDimensions()).thenReturn({height: 200, width: 100});
+    td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn({
+      height: 20, width: 40, top: 900, bottom: 920, left: 910, right: 950,
+    });
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 7});
+    foundation.setAnchorMargin({top: '5px', left: 'zz', bottom: '10dp', right: '7em'});
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('right bottom'));
+    td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
+  });
 testFoundation('#close does nothing if event target has aria-disabled set to true',
   ({foundation, mockAdapter}) => {
     const mockEvt = {
