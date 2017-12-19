@@ -288,6 +288,9 @@ class MDCSliderFoundation extends MDCFoundation {
       this.onMove(evt);
     };
 
+    // Note: upHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
+    // do not always fire these consistently in pairs.
+    // (See https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
       this.onUp();
       this.adapter_.deregisterBodyInteractionHandler(EVENT_MAP[evt.type], moveHandler);
