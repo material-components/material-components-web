@@ -53,12 +53,9 @@ label {
 
 section.demo-theme-dark {
   background-color: #333;
-}
 
-section.demo-theme-dark h2 {
-  color: white;
-}
-
-section.demo-theme-dark label {
-  color: white;
+  label,
+  h2 {
+    color: white;
+  }
 }
