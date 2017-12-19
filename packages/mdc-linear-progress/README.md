@@ -81,7 +81,7 @@ The adapter for linear progress must provide the following functions, with corre
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether the root element has a given class. |
 | `getPrimaryBar() => Element` | Returns the primary bar element. |
 | `getBuffer() => Element` | Returns the buffer element. |
-| `setTransform(el: Element, value: string) => void` | Sets the css transform property on the given element. |
+| `setStyle(el: Element, styleProperty: string, value: string) => void` | Sets the inline style on the given element. |
 
 ### MDCLinearProgressFoundation API
 
