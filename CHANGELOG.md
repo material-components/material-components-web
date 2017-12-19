@@ -43,7 +43,7 @@
 * **text-field:** Please update implementations of MDCTextField to pass in a map of subfoundations to the MDCTextFieldFoundation constructor. Methods getBottomLineFoundation() and getHelperTextFoundation() are no longer in MDCTextFieldAdapter. See the README for mdc-textfield/input for more information.
 * **button:** The $mdc-*-button-ripple-opacity variables have been removed, as these values are now available via the state opacity maps in mdc-ripple.
 * **drawer:** Adds eventTargetHasClass method to the temporary drawer adapter API.
-* **list:** The `mdc-list-item__text__secondary` class was renamed to `mdc-list-item__text-secondary` to follow BEM conventions. See the [BEM FAQ](http://getbem.com/faq/#css-nested-elements) for more details.
+* **list:** The `mdc-list-item__text__secondary` class was renamed to `mdc-list-item__secondary-text` to follow BEM conventions. See the [BEM FAQ](http://getbem.com/faq/#css-nested-elements) for more details.
 * **menu:** Adds an adapter method eventTargetHasClass to check if a given event target has a given class
 
 
