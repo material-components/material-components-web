@@ -84,14 +84,8 @@
     content: "";
     pointer-events: none;
 
-    @include mdc-theme-prop(background-color, text-primary-on-light);
-
     @include mdc-theme-dark(".mdc-tab-bar", true) {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
-    }
-
-    .mdc-toolbar & {
-      @include mdc-theme-prop(background-color, text-primary-on-primary);
     }
   }
 
@@ -105,11 +99,6 @@
 
   &:not(.mdc-tab--active):hover::after {
     opacity: .38;
-  }
-
-  &--active,
-  &:not(.mdc-tab--active):active::after {
-    opacity: .87;
   }
 }
 

@@ -25,7 +25,7 @@
   @include mdc-tab-label-ink-color(text-secondary-on-light);
   @include mdc-tab-label-activated-ink-color(text-primary-on-light);
   @include mdc-tab-indicator-ink-color(text-primary-on-light);
-  @include mdc-tab-underline-height(2px);
+  @include mdc-tab-indicator-height(2px);
   @include mdc-tab-width(160px);
 
   display: table;
@@ -52,9 +52,11 @@
 
   // postcss-bem-linter: ignore
   .mdc-toolbar & {
-    .mdc-tab {
-      // @include mdc-theme-prop(color, text-secondary-on-primary);
+    @include mdc-tab-label-ink-color(text-secondary-on-primary);
+    @include mdc-tab-label-activated-ink-color(text-primary-on-primary);
+    @include mdc-tab-indicator-ink-color(text-primary-on-primary);
 
+    .mdc-tab {
       @include mdc-theme-dark(".mdc-tab-bar") {
         @include mdc-theme-prop(color, text-secondary-on-dark);
       }
@@ -69,8 +71,6 @@
 
     // postcss-bem-linter: ignore
     .mdc-tab-bar__indicator {
-      // @include mdc-theme-prop(background-color, text-primary-on-primary);
-
       @include mdc-theme-dark(".mdc-tab-bar") {
         @include mdc-theme-prop(background-color, text-primary-on-dark);
       }
