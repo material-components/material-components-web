@@ -143,7 +143,7 @@ class MDCDragManager extends MDCComponent {
         this.globalEventListeners_.set(eventName, []);
       }
       this.globalEventListeners_.get(eventName).push({handlerFn, listenerOpts});
-      document.addEventListener(eventName, handlerFn, listenerOpts || {});
+      document.addEventListener(eventName, handlerFn, listenerOpts);
     });
   }
 
