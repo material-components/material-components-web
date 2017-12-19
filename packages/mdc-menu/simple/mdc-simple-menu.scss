@@ -68,12 +68,12 @@ $mdc-simple-menu-scale-duration: 0.12s;
 
   &--open {
     display: inline-block;
-/*    transform: scale(1);*/
+    transform: scale(1);
     opacity: 1;
-/*    > .mdc-simple-menu__items {
+    > .mdc-simple-menu__items {
       transform: scale(1);
     }
-*/  }
+  }
 
   &--animating-closed {
     display: inline-block;
