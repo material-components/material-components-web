@@ -205,6 +205,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.label_) {
       this.label_.style(this.getValue(), isValid, this.isBadInput_(), this.isFocused_);
     }
+    if (this.getValue() || !this.isBadInput_()) {
+      this.receivedUserInput_ = false;
+    }
   }
 
   /**
