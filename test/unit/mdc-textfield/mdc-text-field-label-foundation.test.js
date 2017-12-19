@@ -31,11 +31,18 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldLabelFoundation, [
-    'addClass', 'removeClass',
+    'addClass', 'removeClass', 'getWidth',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCTextFieldLabelFoundation);
+
+test('#getFloatingWidth returns the width of the label element scaled by 75%', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const width = 100;
+  td.when(mockAdapter.getWidth()).thenReturn(width);
+  assert.equal(foundation.getFloatingWidth(), width * 0.75);
+});
 
 test('#floatAbove adds mdc-text-field__label--float-above class', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -60,4 +67,10 @@ test('#setValidity adds mdc-text-field__label--shake class if isValid is false',
   const {foundation, mockAdapter} = setupTest();
   foundation.setValidity(false);
   td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE));
+});
+
+test('#setValidity does nothing if isValid is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setValidity(true);
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE), {times: 0});
 });

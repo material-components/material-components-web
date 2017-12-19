@@ -18,33 +18,33 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Text Field Label.
+ * Adapter for MDC Text Field Outline.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Text Field label into your framework. See
+ * adapter to integrate the Text Field outline into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCTextFieldLabelAdapter {
+class MDCTextFieldOutlineAdapter {
   /**
-   * Adds a class to the label element.
-   * @param {string} className
-   */
-  addClass(className) {}
-
-  /**
-   * Removes a class from the label element.
-   * @param {string} className
-   */
-  removeClass(className) {}
-
-  /**
-   * Returns the width of the label element.
+   * Returns the width of the root element.
    * @return {number}
    */
   getWidth() {}
+
+  /**
+   * Returns the height of the root element.
+   * @return {number}
+   */
+  getHeight() {}
+
+  /**
+   * Sets the "d" attribute of the outline element's SVG path.
+   * @param {string} value
+   */
+  setOutlinePathAttr(value) {}
 }
 
-export default MDCTextFieldLabelAdapter;
+export default MDCTextFieldOutlineAdapter;

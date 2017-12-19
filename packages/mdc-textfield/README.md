@@ -147,6 +147,25 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 </div>
 ```
 
+#### Outlined
+
+```html
+<div class="mdc-text-field mdc-text-field--outlined">
+  <input type="text" id="tf-outlined" class="mdc-text-field__input">
+  <label for="tf-outlined" class="mdc-text-field__label">Your Name</label>
+  <div class="mdc-text-field__outline">
+    <svg>
+      <path class="mdc-text-field__outline-path"/>
+    </svg>
+  </div>
+  <div class="mdc-text-field__idle-outline"></div>
+</div>
+```
+
+See [here](outline/) for more information on using the outline sub-component.
+
+> _NOTE_: Do not use `mdc-text-field__bottom-line` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Bottom line should not be included as part of the DOM structure of an outlined text field.
+
 #### Helper Text
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
@@ -191,6 +210,10 @@ Property | Value Type | Description
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes
 
+Method Signature | Description
+--- | ---
+`layout() => void` | Adjusts the dimensions and positions for all sub-elements
+
 ##### `MDCTextField.ripple`
 
 The `MDCRipple` instance for the root element that `MDCTextField` initializes when given an `mdc-text-field--box` root element. Otherwise, the field is set to `null`.
@@ -207,11 +230,17 @@ Method Signature | Description
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the native input element for a given event
 `registerBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the bottom line element for a given event
 `deregisterBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the bottom line element for a given event
-`getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape.
+`getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
+`getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`
+`isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
 Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully.
+
+#### `MDCTextFieldAdapter.getIdleOutlineStyleValue(propertyName: string)`
+
+Returns the idle outline element's computed style value of the given css property `propertyName`. The vanilla implementation achieves this via `getComputedStyle(...).getPropertyValue(propertyName)`.
 
 ### `MDCTextFieldFoundation`
 
@@ -226,5 +255,6 @@ Method Signature | Description
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `handleBottomLineAnimationEnd(evt: Event) => void` | Handles the end of the bottom line animation, performing actions that must wait for animations to finish. Expects a transition-end event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text
+`updateOutline() => void` | Updates the focus outline for outlined text fields
 
-`MDCTextFieldFoundation` supports multiple optional sub-elements: bottom line and helper text. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
+`MDCTextFieldFoundation` supports multiple optional sub-elements: bottom line, helper text, icon, label, and outline. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
