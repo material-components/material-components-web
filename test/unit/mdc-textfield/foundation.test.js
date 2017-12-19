@@ -39,7 +39,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput',
+    'getNativeInput', 'getIdleOutlineStyleValue', 'isRtl',
   ]);
 });
 
@@ -63,18 +63,23 @@ const setupTest = () => {
     handleInteraction: () => {},
   });
   const label = td.object({
+    getFloatingWidth: () => {},
     floatAbove: () => {},
     deactivateFocus: () => {},
     setValidity: () => {},
+  });
+  const outline = td.object({
+    updateSvgPath: () => {},
   });
   const foundationMap = {
     bottomLine: bottomLine,
     helperText: helperText,
     icon: icon,
     label: label,
+    outline: outline,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, bottomLine, helperText, icon, label};
+  return {foundation, mockAdapter, bottomLine, helperText, icon, label, outline};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -210,6 +215,16 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   td.verify(helperText.setContent('foo'));
 });
 
+test('#updateOutline updates the SVG path of the outline element', () => {
+  const {foundation, mockAdapter, label, outline} = setupTest();
+  td.when(label.getFloatingWidth()).thenReturn(30);
+  td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
+  td.when(mockAdapter.isRtl()).thenReturn(false);
+
+  foundation.updateOutline();
+  td.verify(outline.updateSvgPath(30, 8, false));
+});
+
 test('on input floats label if input event occurs without any other events', () => {
   const {foundation, mockAdapter, label} = setupTest();
   let input;
@@ -260,6 +275,18 @@ test('on focus adds mdc-text-field--focused class', () => {
   foundation.init();
   focus();
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED));
+});
+
+test('on focus activates bottom line', () => {
+  const {foundation, mockAdapter, bottomLine} = setupTest();
+  let focus;
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focus = handler;
+    });
+  foundation.init();
+  focus();
+  td.verify(bottomLine.activate());
 });
 
 test('on focus floats label', () => {
@@ -365,6 +392,22 @@ test('on blur handles getNativeInput() not returning anything gracefully', () =>
   const {mockAdapter, blur} = setupBlurTest();
   td.when(mockAdapter.getNativeInput()).thenReturn(null);
   assert.doesNotThrow(blur);
+});
+
+test('on keydown sets receivedUserInput to true when input is enabled', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let keydown;
+  td.when(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      keydown = handler;
+    });
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    disabled: false,
+  });
+  foundation.init();
+  assert.equal(foundation.receivedUserInput_, false);
+  keydown();
+  assert.equal(foundation.receivedUserInput_, true);
 });
 
 test('on transition end deactivates the bottom line if this.isFocused_ is false', () => {
