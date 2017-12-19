@@ -32,21 +32,15 @@ const KEY_IDS = {
   PAGE_DOWN: 'PageDown',
 };
 
-/** @enum {!Object} */
+/** @enum {string} */
 const EVENT_MAP = {
-  'mousedown': {
-    move: 'mousemove',
-    up: 'mouseup',
-  },
-  'touchstart': {
-    move: 'touchmove',
-    up: 'touchend',
-  },
-  'pointerdown': {
-    move: 'pointermove',
-    up: 'pointerup',
-  },
+  'mousedown': 'mousemove',
+  'touchstart': 'touchmove',
+  'pointerdown': 'pointermove',
 };
+
+const DOWN_EVENTS = ['mousedown', 'pointerdown', 'touchstart'];
+const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
 
 /**
  * @extends {MDCFoundation<!MDCSliderAdapter>}
@@ -136,12 +130,12 @@ class MDCSliderFoundation extends MDCFoundation {
   init() {
     this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
     this.hasTrackMarker_ = this.adapter_.hasClass(cssClasses.HAS_TRACK_MARKER);
+    DOWN_EVENTS.forEach((evtName) => this.adapter_.registerInteractionHandler(evtName, this.interactionStartHandler_));
     this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    ['mousedown', 'pointerdown', 'touchstart'].forEach((evtName) => {
-      this.adapter_.registerInteractionHandler(evtName, this.interactionStartHandler_);
-      this.adapter_.registerThumbContainerInteractionHandler(evtName, (evt) => this.onDown_(evt));
+    DOWN_EVENTS.forEach((evtName) => {
+      this.adapter_.registerThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
     });
     this.adapter_.registerResizeHandler(this.resizeHandler_);
     this.layout();
@@ -152,11 +146,13 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   destroy() {
+    DOWN_EVENTS.forEach((evtName) => {
+      this.adapter_.deregisterInteractionHandler(evtName, this.interactionStartHandler_);
+    });
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-    ['mousedown', 'pointerdown', 'touchstart'].forEach((evtName) => {
-      this.adapter_.deregisterInteractionHandler(evtName, this.interactionStartHandler_);
+    DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
     });
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
@@ -274,22 +270,11 @@ class MDCSliderFoundation extends MDCFoundation {
     }
   }
 
-  getPageX_(evt) {
-    if (evt.type === 'touchmove') {
-      return evt.targetTouches[0].pageX;
-    }
-    return evt.pageX;
-  }
-
-  createDownHandler_() {
-    return (evt) => this.onDown_(evt);
-  }
-
   /**
    * Called when the user starts interacting with the slider
    * @param {!Event} evt
    */
-  onDown_(evt) {
+  onDown(evt) {
     if (this.disabled_) {
       return;
     }
@@ -297,29 +282,28 @@ class MDCSliderFoundation extends MDCFoundation {
     this.preventFocusState_ = true;
     this.setInTransit_(!this.handlingThumbTargetEvt_);
     this.handlingThumbTargetEvt_ = false;
-
     this.setActive_(true);
 
     const moveHandler = (evt) => {
-      this.onMove_(evt);
+      this.onMove(evt);
     };
 
     const upHandler = () => {
-      this.onUp_();
-      this.adapter_.deregisterBodyInteractionHandler(EVENT_MAP[evt.type].move, moveHandler);
-      this.adapter_.deregisterBodyInteractionHandler(EVENT_MAP[evt.type].up, upHandler);
+      this.onUp();
+      this.adapter_.deregisterBodyInteractionHandler(EVENT_MAP[evt.type], moveHandler);
+      UP_EVENTS.forEach((evtName) => this.adapter_.deregisterBodyInteractionHandler(evtName, upHandler));
     };
 
+    this.adapter_.registerBodyInteractionHandler(EVENT_MAP[evt.type], moveHandler);
+    UP_EVENTS.forEach((evtName) => this.adapter_.registerBodyInteractionHandler(evtName, upHandler));
     this.setValueFromEvt_(evt, this.getPageX_);
-    this.adapter_.registerBodyInteractionHandler(EVENT_MAP[evt.type].move, moveHandler);
-    this.adapter_.registerBodyInteractionHandler(EVENT_MAP[evt.type].up, upHandler);
   }
 
   /**
    * Called when the user moves the slider
    * @param {!Event} evt
    */
-  onMove_(evt) {
+  onMove(evt) {
     evt.preventDefault();
     this.setValueFromEvt_(evt, this.getPageX_);
   }
@@ -327,9 +311,26 @@ class MDCSliderFoundation extends MDCFoundation {
   /**
    * Called when the user's interaction with the slider ends
    */
-  onUp_() {
+  onUp() {
     this.setActive_(false);
     this.adapter_.notifyChange();
+  }
+
+  /**
+   * Returns the pageX of the event
+   * @param {!Event} evt
+   * @return {number}
+   */
+  getPageX_(evt) {
+    if (evt.targetTouches && evt.targetTouches.length > 0) {
+      return evt.targetTouches[0].pageX;
+    }
+    return evt.pageX;
+  }
+
+  /** @return {function(!Event): undefined} */
+  createDownHandler_() {
+    return (evt) => this.onDown(evt);
   }
 
   /**
