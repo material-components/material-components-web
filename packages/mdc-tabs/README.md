@@ -51,9 +51,16 @@ icon-only, and text with icon. An example of each is available on the demo site.
 </nav>
 ```
 
+| Class | Description |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| `mdc-tab-bar`                          | Mandatory. Needs to be set on the root element of the component.           |
+| `mdc-tab`                              | Mandatory. Needs to be set on the child (tab) element of the component.    |
+| `mdc-tab-bar__indicator`               | Mandatory. Needs to be set as a child of the root element. The element acts as the activated affordance. |
+| `mdc-tab--active`                      | Optional. Should be set on the initial active tab.                         |
+
 #### Tab Bar with icon labels
 ```html
-<nav class="mdc-tab-bar mdc-tab-bar--icon-tab-bar">
+<nav class="mdc-tab-bar">
   <a class="mdc-tab mdc-tab--active" href="#recents">
     <i class="material-icons mdc-tab__icon" aria-label="Recents">phone</i>
   </a>
@@ -67,24 +74,39 @@ icon-only, and text with icon. An example of each is available on the demo site.
 </nav>
 ```
 
+| Class | Description |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| `mdc-tab-bar`                          | Mandatory. Needs to be set on the root element of the component.           |
+| `mdc-tab`                              | Mandatory. Needs to be set on the child (tab) element of the component.    |
+| `mdc-tab-bar__indicator`               | Mandatory. Needs to be set as a child of the root element. The element acts as the activated affordance. |
+| `mdc-tab--active`                      | Optional. Should be set on the initial active tab.                         |
+
 #### Tab Bar with icon and text labels
 ```html
 <nav id="icon-text-tab-bar" class="mdc-tab-bar mdc-tab-bar--icons-with-text">
-  <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="#recents">
+  <a class="mdc-tab mdc-tab--active" href="#recents">
     <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
     <span class="mdc-tab__icon-text">Recents</span>
   </a>
-  <a class="mdc-tab mdc-tab--with-icon-and-text" href="#favorites">
+  <a class="mdc-tab" href="#favorites">
     <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
     <span class="mdc-tab__icon-text">Favorites</span>
   </a>
-  <a class="mdc-tab mdc-tab--with-icon-and-text" href="#nearby">
+  <a class="mdc-tab" href="#nearby">
     <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
     <span class="mdc-tab__icon-text">Nearby</span>
   </a>
   <span class="mdc-tab-bar__indicator"></span>
 </nav>
 ```
+
+| Class | Description |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| `mdc-tab-bar`                          | Mandatory. Needs to be set on the root element of the component.           |
+| `mdc-tab-bar--icons-with-text`          | Mandatory. Needs to be set with root element to increase height.           |
+| `mdc-tab`                              | Mandatory. Needs to be set on the child (tab) element of the component.    |
+| `mdc-tab-bar__indicator`               | Mandatory. Needs to be set as a child of the root element. The element acts as the activated affordance. |
+| `mdc-tab--active`                      | Optional. Should be set on the initial active tab.                         |
 
 #### RTL Support
 
@@ -210,6 +232,38 @@ dots.addEventListener('click', function (evt) {
   updateDot(dotIndex);
 })
 ```
+
+### Sass Mixins
+
+To customize the label ink color, the icon ink color, the indicator ink color, the height of the indicator or the width of the tab, you can use the following mixins.
+
+#### `mdc-tab-label-ink-color($color)`
+
+This mixin customizes the label ink color of the tabs.
+
+#### `mdc-tab-icon-ink-color($color)`
+
+This mixin customizes the icon ink color of the drawer. Default is what is set by the `mdc-tab-label-ink-color` mixin.
+
+#### `mdc-tab-indicator-ink-color($color, <$opacity>)`
+
+This mixin customizes the indicator ink color in the activated state. It can accept a second optional argument for color opacity, which defaults to 0.87.
+
+#### `mdc-tab-label-activated-ink-color($color, <$opacity>)`
+
+This mixin customizes the label ink color in the activated state. It can accept a second optional argument for color opacity, which defaults to 0.87. It also sets the color of the hover state color of the icon and/or label.
+
+#### `mdc-tab-icon-activated-ink-color($color)`
+
+This mixin customizes the icon color in the activated state. It will default to what is set by the `mdc-tab-label-activated-ink-color` mixin.
+
+#### `mdc-tab-indicator-height($height)`
+
+This mixin customizes the height of the indicator. Default is 2px.
+
+#### `mdc-tab-width($width)`
+
+This mixin customizes the width of the tab. Defaults to 160px.
 
 ### Using the CSS-Only Component
 

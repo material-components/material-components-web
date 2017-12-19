@@ -77,6 +77,54 @@
       </section>
 
       <section>
+        <fieldset>
+          <legend class="mdc-typography--title">Basic Tab Bar with Custom Height</legend>
+          <nav id="basic-tab-bar-custom-height" class="mdc-tab-bar demo-tab-bar--custom-height">
+            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
+            <a class="mdc-tab" href="#two">Item Two</a>
+            <a class="mdc-tab" href="#three">Three</a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </fieldset>
+      </section>
+
+      <section>
+        <fieldset>
+          <legend class="mdc-typography--title">CSS-Only Tab Bar with Custom Height</legend>
+          <nav class="mdc-tab-bar demo-tab-bar--custom-height">
+            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
+            <a class="mdc-tab" href="#two">Item Two</a>
+            <a class="mdc-tab" href="#three">Three</a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </fieldset>
+      </section>
+
+      <section>
+        <fieldset>
+          <legend class="mdc-typography--title">Basic Tab Bar with Custom Width</legend>
+          <nav id="basic-tab-bar-custom-width" class="mdc-tab-bar demo-tab-bar--custom-width">
+            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
+            <a class="mdc-tab" href="#two">Item Two</a>
+            <a class="mdc-tab" href="#three">Three</a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </fieldset>
+      </section>
+
+      <section>
+        <fieldset>
+          <legend class="mdc-typography--title">CSS-Only Tab Bar with Custom Width</legend>
+          <nav class="mdc-tab-bar demo-tab-bar--custom-width">
+            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
+            <a class="mdc-tab" href="#two">Item Two</a>
+            <a class="mdc-tab" href="#three">Three</a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </fieldset>
+      </section>
+
+      <section>
         <div class="demo-tabs__scroller">
           <h2 class="mdc-typography--title demo-title">Tab Bar with Scroller</h2>
           <div id="tab-bar-scroller" class="mdc-tab-bar-scroller demo-tab-bar-scroller">
@@ -111,7 +159,7 @@
       <section>
         <fieldset>
           <legend class="mdc-typography--title">Icon Tab Labels</legend>
-          <nav id="icon-tab-bar" class="mdc-tab-bar mdc-tab-bar--icon-tabs">
+          <nav id="icon-tab-bar" class="mdc-tab-bar">
             <a class="mdc-tab mdc-tab--active" href="#recents">
               <i class="material-icons mdc-tab__icon" aria-label="Recents">phone</i>
             </a>
@@ -129,7 +177,7 @@
       <section>
         <fieldset>
           <legend class="mdc-typography--title">CSS-Only Icon Tab Labels</legend>
-          <nav class="mdc-tab-bar mdc-tab-bar--icon-tabs">
+          <nav class="mdc-tab-bar">
             <a class="mdc-tab mdc-tab--active" href="#recents">
               <i class="material-icons mdc-tab__icon" aria-label="Recents">phone</i>
             </a>
@@ -188,8 +236,8 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Primary Color Indicator</legend>
-          <nav id="primary-indicator-tab-bar" class="mdc-tab-bar demo-tab-bar--indicator-primary">
+          <legend class="mdc-typography--title">Custom Label Color</legend>
+          <nav id="custom-label-tab-bar" class="mdc-tab-bar demo-tab-bar--custom-label">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
             <a class="mdc-tab" href="#three">Three</a>
@@ -200,8 +248,8 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Primary Color Indicator - CSS-Only</legend>
-          <nav class="mdc-tab-bar demo-tab-bar--indicator-primary">
+          <legend class="mdc-typography--title">Custom Label Color - CSS-Only</legend>
+          <nav class="mdc-tab-bar demo-tab-bar--custom-label">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
             <a class="mdc-tab" href="#three">Three</a>
@@ -212,8 +260,8 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Secondary Color Indicator</legend>
-          <nav id="secondary-indicator-tab-bar" class="mdc-tab-bar demo-tab-bar--indicator-accent">
+          <legend class="mdc-typography--title">Custom Activated Label</legend>
+          <nav id="custom-label-activated-tab-bar" class="mdc-tab-bar demo-tab-bar--custom-label-activated">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
             <a class="mdc-tab" href="#three">Three</a>
@@ -224,14 +272,98 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Secondary Color Indicator - CSS-Only</legend>
-          <nav class="mdc-tab-bar demo-tab-bar--indicator-accent">
+          <legend class="mdc-typography--title">Custom Activated Label - CSS-Only</legend>
+          <nav class="mdc-tab-bar demo-tab-bar--custom-label-activated">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
             <a class="mdc-tab" href="#three">Three</a>
             <span class="mdc-tab-bar__indicator"></span>
           </nav>
         </fieldset>
+      </section>
+
+      <section>
+        <fieldset>
+          <legend class="mdc-typography--title">Custom Icon Color &amp; Text Labels</legend>
+          <nav id="icon-text-custom-icon-tab-bar" class="mdc-tab-bar mdc-tab-bar--icons-with-text demo-tab-bar--custom-icon">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="#recents">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="#favorites">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="#nearby">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </fieldset>
+      </section>
+
+      <section>
+        <fieldset>
+          <legend class="mdc-typography--title">CSS-Only Custom Icon Color &amp; Text Labels</legend>
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text demo-tab-bar--custom-icon">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="#recents">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="#favorites">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="#nearby">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+          <fieldset>
+      </section>
+
+      <section>
+        <fieldset>
+          <legend class="mdc-typography--title">Custom Activated Icon Color &amp; Text Labels</legend>
+          <nav id="icon-text-custom-icon-activated-tab-bar" class="mdc-tab-bar mdc-tab-bar--icons-with-text demo-tab-bar--custom-icon-activated">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="#recents">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="#favorites">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="#nearby">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </fieldset>
+      </section>
+
+      <section>
+        <fieldset>
+          <legend class="mdc-typography--title">CSS-Only Custom Activated Icon Color &amp; Text Labels</legend>
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text demo-tab-bar--custom-icon-activated">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="#recents">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
+              <span class="mdc-tab__icon-text">Recents</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="#favorites">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
+              <span class="mdc-tab__icon-text">Favorites</span>
+            </a>
+            <a class="mdc-tab mdc-tab--with-icon-and-text" href="#nearby">
+              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
+              <span class="mdc-tab__icon-text">Nearby</span>
+            </a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+          <fieldset>
       </section>
 
       <section>
@@ -325,18 +457,18 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + primary indicator</legend>
+          <legend class="mdc-typography--title">Within mdc-toolbar + custom indicator</legend>
           <div class="demo-note">
-            <em>Note: Changing the toolbar's background color here so that the primary indicator can be visible</em>
+            <em>Note: Changing the toolbar's background color here so that the indicator can be visible</em>
           </div>
-          <div class="mdc-toolbar mdc-theme--secondary-bg">
+          <div class="mdc-toolbar demo-toolbar-accent">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
                 <h1 class="mdc-toolbar__title">Title</h1>
               </div>
               <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
                 <div>
-                  <nav id="toolbar-tab-bar-primary-indicator" class="mdc-tab-bar demo-tab-bar--indicator-primary">
+                  <nav id="toolbar-tab-bar-custom-indicator" class="mdc-tab-bar demo-tab-bar--indicator-accent">
                     <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
                     <a class="mdc-tab" href="#two">Item Two</a> <a class="mdc-tab" href="#three">Item Three</a>
                     <span class="mdc-tab-bar__indicator"></span>
@@ -350,60 +482,14 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + primary indicator, CSS-Only</legend>
-          <div class="mdc-toolbar mdc-theme--secondary-bg">
+          <legend class="mdc-typography--title">Within mdc-toolbar + custom indicator, CSS-Only</legend>
+          <div class="mdc-toolbar demo-toolbar-accent">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
                 <h1 class="mdc-toolbar__title">Title</h1>
               </div>
               <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
                 <div>
-                  <nav class="mdc-tab-bar demo-tab-bar--indicator-primary">
-                    <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
-                    <a class="mdc-tab" href="#two">Item Two</a>
-                    <a class="mdc-tab" href="#three">Item Three</a>
-                    <span class="mdc-tab-bar__indicator"></span>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + secondary color indicator</legend>
-          <div class="mdc-toolbar">
-            <div class="mdc-toolbar__row">
-              <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
-                <h1 class="mdc-toolbar__title">Title</h1>
-              </div>
-              <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
-                <div>
-                  <nav id="toolbar-tab-bar-secondary-indicator" class="mdc-tab-bar demo-tab-bar--indicator-accent">
-                    <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
-                    <a class="mdc-tab" href="#two">Item Two</a>
-                    <a class="mdc-tab" href="#three">Item Three</a>
-                    <span class="mdc-tab-bar__indicator"></span>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + secondary color indicator, CSS-Only</legend>
-          <div class="mdc-toolbar">
-            <div class="mdc-toolbar__row">
-              <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
-                <h1 class="mdc-toolbar__title">Title</h1>
-              </div>
-              <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
-                <div class="mdc-toolbar__section--table-style-wrapper">
                   <nav class="mdc-tab-bar demo-tab-bar--indicator-accent">
                     <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
                     <a class="mdc-tab" href="#two">Item Two</a>
@@ -412,6 +498,7 @@
                   </nav>
                 </div>
               </div>
+            </div>
           </div>
         </fieldset>
       </section>
@@ -419,7 +506,7 @@
       <section>
         <fieldset>
           <legend class="mdc-typography--title">Within Toolbar, Dynamic Content Control</legend>
-          <div class="mdc-toolbar" id="dynamic-demo-toolbar">
+          <div class="mdc-toolbar demo-toolbar-accent" id="dynamic-demo-toolbar">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--align-start">
                 <nav id="dynamic-tab-bar" class="mdc-tab-bar demo-tab-bar--indicator-accent" role="tablist">
@@ -457,14 +544,18 @@
 
           window.demoTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#demo-tab-bar'));
           window.basicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar'));
+          window.basicTabBarHeight = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar-custom-height'));
+          window.basicTabBarWidth = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar-custom-width'));
           window.tabBarScroller = new mdc.tabs.MDCTabBarScroller(document.querySelector('#tab-bar-scroller'));
           window.iconTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-tab-bar'));
           window.iconTextTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
           window.toolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar'));
           window.toolbarTabBarModified = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-modified'));
-          window.primaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#primary-indicator-tab-bar'));
-          window.secondaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#secondary-indicator-tab-bar'));
-          window.primaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-primary-indicator'));
+          window.customLabelTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#custom-label-tab-bar'));
+          window.customLabelActivatedTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#custom-label-activated-tab-bar'));
+          window.customIconTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-custom-icon-tab-bar'));
+          window.customIconActivatedTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-custom-icon-activated-tab-bar'));
+          window.primaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-custom-indicator'));
           window.secondaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-secondary-indicator'));
 
           var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
@@ -530,15 +621,19 @@
 
             window.demoTabBar.layout();
             window.basicTabBar.layout();
+            window.basicTabBarHeight.layout();
+            window.basicTabBarWidth.layout();
             window.tabBarScroller.layout();
             window.tabBarScroller.tabBar.layout();
             window.iconTabBar.layout();
             window.iconTextTabBar.layout();
             window.toolbarTabBar.layout();
-            window.primaryIndicatorTabBar.layout();
-            window.secondaryIndicatorTabBar.layout();
+            window.customLabelTabBar.layout();
+            window.customLabelActivatedTabBar.layout();
             window.primaryIndicatorToolbarTabBar.layout();
             window.secondaryIndicatorToolbarTabBar.layout();
+            window.customIconTabBar.layout();
+            window.customIconActivatedTabBar.layout();
             window.dynamicTabBar.layout();
             toolbarTabBarModified.layout();
           });
