@@ -69,17 +69,35 @@
 
       .left-column-controls {
          display: inline-block;
+         vertical-align: top;
       }
 
       .right-column-controls {
         display: inline-block;
         margin-left: 2em;
+        vertical-align: top;
       }
 
-      .longAnchorWidth,
-      .longMenuItems,
-      .extraLongMenuItems {
+      .demo-button__normal-text,
+      .demo-button__long-text {
         display: none;
+      }
+
+      .demo-button--normal .demo-button__normal-text,
+      .demo-button--long .demo-button__normal-text,
+      .demo-button--long .demo-button__long-text {
+        display: inline;
+      }
+
+      .mdc-simple-menu__long-items,
+      .mdc-simple-menu__extra-long-items {
+        display: none;
+      }
+
+      .mdc-simple-menu--long .mdc-simple-menu__long-items,
+      .mdc-simple-menu--extra-long .mdc-simple-menu__long-items,
+      .mdc-simple-menu--extra-long .mdc-simple-menu__extra-long-items {
+        display: inline;
       }
     </style>
   </head>
@@ -101,8 +119,8 @@
       <div class="demo-content">
         <div id="demo-wrapper">
           <div class="mdc-menu-anchor">
-            <button class="mdc-button mdc-button--raised toggle">
-              Show<span class="normalAnchorWidth"> Menu</span><span class="longAnchorWidth"> From Here Now!</span>
+            <button id="menu-button" class="mdc-button mdc-button--raised demo-button demo-button--normal">
+              Show<span class="demo-button__normal-text"> Menu</span><span class="demo-button__long-text"> From Here Now!</span>
             </button>
 
             <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
@@ -114,14 +132,14 @@
 
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>
-                <span class="longMenuItems">
+                <span class="mdc-simple-menu__long-items">
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
                 </span>
-                <span class="extraLongMenuItems">
+                <span class="mdc-simple-menu__extra-long-items">
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
@@ -146,6 +164,12 @@
                 <label><input type="radio" name="position" value="top right"> Top right</label>
               </div>
               <div>
+                <label><input type="radio" name="position" value="middle left"> Middle left</label>
+              </div>
+              <div>
+                <label><input type="radio" name="position" value="middle right"> Middle right</label>
+              </div>
+              <div>
                 <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
               </div>
               <div>
@@ -155,32 +179,32 @@
             <div class="right-column-controls">
               Default Menu Position:
               <div>
-                <label><input type="radio" name="menuposition" value="top_start" checked> Top start</label>
+                <label><input type="radio" name="menu-position" value="top start" checked> Top start</label>
               </div>
 
               <div>
-                <label><input type="radio" name="menuposition" value="top_end"> Top end</label>
+                <label><input type="radio" name="menu-position" value="top end"> Top end</label>
               </div>
 
               <div>
-                <label><input type="radio" name="menuposition" value="bottom_start"> Bottom start</label>
+                <label><input type="radio" name="menu-position" value="bottom start"> Bottom start</label>
               </div>
 
               <div>
-                <label><input type="radio" name="menuposition" value="bottom_end"> Bottom end</label>
+                <label><input type="radio" name="menu-position" value="bottom end"> Bottom end</label>
               </div>
             </div>
             <p>
               Anchor Margins:
-              <div class="margin-inputs">
-                <label>T: <input type="text" name="topMargin" value="0" size="3" max-length="3"></label>
-                <label>B: <input type="text" name="bottomMargin" value="0" size="3"></label>
-                <label>L: <input type="text" name="leftMargin" value="0" size="3"></label>
-                <label>R: <input type="text" name="rightMargin" value="0" size="3"></label>
+              <div id="margin-inputs" class="margin-inputs">
+                <label>T: <input type="text" id="top-margin" value="0" size="3" max-length="3"></label>
+                <label>B: <input type="text" id="bottom-margin" value="0" size="3"></label>
+                <label>L: <input type="text" id="left-margin" value="0" size="3"></label>
+                <label>R: <input type="text" id="right-margin" value="0" size="3"></label>
               </div>
             </p>
             <div class="left-column-controls">
-              <label><input type="checkbox" name="isrtl"> RTL</label>
+              <label><input type="checkbox" name="is-rtl"> RTL</label>
             </div>
             <div class="right-column-controls">
               <label><input type="checkbox" name="dark"> Dark mode</label>
@@ -189,25 +213,25 @@
               <div class="left-column-controls">
                 Menu Sizes:
                 <div>
-                  <label><input type="radio" name="menulength" value="small" checked> Regular menu</label>
+                  <label><input type="radio" name="menu-length" value="small" checked> Regular menu</label>
                 </div>
                 <div>
-                  <label><input type="radio" name="menulength" value="large"> Large menu</label>
+                  <label><input type="radio" name="menu-length" value="large"> Large menu</label>
                 </div>
                 <div>
-                  <label><input type="radio" name="menulength" value="tall"> Extra tall menu</label>
+                  <label><input type="radio" name="menu-length" value="tall"> Extra tall menu</label>
                 </div>
               </div>
               <div class="right-column-controls">
                 Anchor Widths
                 <div>
-                  <label><input type="radio" name="anchorwidth" value="tiny"> Small button</label>
+                  <label><input type="radio" name="anchor-width" value="tiny"> Small button</label>
                 </div>
                 <div>
-                  <label><input type="radio" name="anchorwidth" value="regular" checked> Comparable to menu</label>
+                  <label><input type="radio" name="anchor-width" value="regular" checked> Comparable to menu</label>
                 </div>
                 <div>
-                  <label><input type="radio" name="anchorwidth" value="wide"> Wider than menu</label>
+                  <label><input type="radio" name="anchor-width" value="wide"> Wider than menu</label>
                 </div>
               </div>
             </p>
@@ -224,8 +248,8 @@
     <script>
       var menuEl = document.querySelector('#demo-menu');
       var menu = new mdc.menu.MDCSimpleMenu(menuEl);
-      var toggle = document.querySelector('.toggle');
-      toggle.addEventListener('click', function() {
+      var menuButtonEl = document.querySelector('#menu-button');
+      menuButtonEl.addEventListener('click', function() {
         menu.open = !menu.open;
       });
 
@@ -254,28 +278,32 @@
 
               var vertical = evt.target.value.split(' ')[0];
               var horizontal = evt.target.value.split(' ')[1];
-              anchor.style.setProperty(vertical, '0');
+              if (vertical == 'middle') {
+                anchor.style.setProperty('top', '35%');
+              } else {
+                anchor.style.setProperty(vertical, '0');
+              }
               anchor.style.setProperty(horizontal, '0');
             }
           }
         });
       }
 
-      var radios = document.querySelectorAll('input[name="menuposition"]');
+      var radios = document.querySelectorAll('input[name="menu-position"]');
       for (var i = 0; i < radios.length; i++) {
         radios[i].addEventListener('change', function(evt) {
           if (evt.target.checked) {
             switch (evt.target.value) {
-              case "top_start":
+              case "top start":
                 menu.setAnchorCorner(mdc.menu.constants.Corner.TOP_START);
                 break;
-              case "bottom_start":
+              case "bottom start":
                 menu.setAnchorCorner(mdc.menu.constants.Corner.BOTTOM_START);
                 break;
-              case "top_end":
+              case "top end":
                 menu.setAnchorCorner(mdc.menu.constants.Corner.TOP_END);
                 break;
-              case "bottom_end":
+              case "bottom end":
                 menu.setAnchorCorner(mdc.menu.constants.Corner.BOTTOM_END);
                 break;
             }
@@ -283,13 +311,14 @@
         });
       }
 
-      var inputs = document.querySelectorAll('input[type="text"]');
+      const marginInputsEl = document.querySelector('#margin-inputs');
+      var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
       for (var i = 0; i < inputs.length; i++) {
         inputs[i].addEventListener('change', () => {
-          const topMarginInput = document.querySelector('input[name="topMargin"]');
-          const bottomMarginInput = document.querySelector('input[name="bottomMargin"]');
-          const rightMarginInput = document.querySelector('input[name="rightMargin"]');
-          const leftMarginInput = document.querySelector('input[name="leftMargin"]');
+          const topMarginInput = document.getElementById('top-margin');
+          const bottomMarginInput = document.getElementById('bottom-margin');
+          const rightMarginInput = document.getElementById('right-margin');
+          const leftMarginInput = document.getElementById('left-margin');
           const margin = {top: parseInt(topMarginInput.value, 10),
                           right: parseInt(rightMarginInput.value, 10),
                           bottom: parseInt(bottomMarginInput.value, 10),
@@ -298,7 +327,7 @@
         });
       }
 
-      const rtl = document.querySelector('input[name="isrtl"]');
+      const rtl = document.querySelector('input[name="is-rtl"]');
       rtl.addEventListener('change', () => {
         const demoWrapper = document.getElementById('demo-wrapper');
         if (rtl.checked) {
@@ -308,44 +337,44 @@
         }
       });
 
-      var radios = document.querySelectorAll('input[name="menulength"]');
+      var radios = document.querySelectorAll('input[name="menu-length"]');
       for (var i = 0; i < radios.length; i++) {
         radios[i].addEventListener('change', function(evt) {
           if (evt.target.checked) {
             switch (evt.target.value) {
               case "small":
-                document.querySelector('.longMenuItems').style.display = 'none';
-                document.querySelector('.extraLongMenuItems').style.display = 'none';
+                menuEl.classList.remove('mdc-simple-menu--long');
+                menuEl.classList.remove('mdc-simple-menu--extra-long');
                 break;
               case "large":
-                document.querySelector('.longMenuItems').style.display = 'block';
-                document.querySelector('.extraLongMenuItems').style.display = 'none';
+                menuEl.classList.add('mdc-simple-menu--long');
+                menuEl.classList.remove('mdc-simple-menu--extra-long');
                 break;
               case "tall":
-                document.querySelector('.longMenuItems').style.display = 'block';
-                document.querySelector('.extraLongMenuItems').style.display = 'block';
+                menuEl.classList.remove('mdc-simple-menu--long');
+                menuEl.classList.add('mdc-simple-menu--extra-long');
                 break;
             }
           }
         });
       }
 
-      var radios = document.querySelectorAll('input[name="anchorwidth"]');
+      var radios = document.querySelectorAll('input[name="anchor-width"]');
       for (var i = 0; i < radios.length; i++) {
         radios[i].addEventListener('change', function(evt) {
           if (evt.target.checked) {
             switch (evt.target.value) {
               case "tiny":
-                document.querySelector('.normalAnchorWidth').style.display = 'none';
-                document.querySelector('.longAnchorWidth').style.display = 'none';
+                menuButtonEl.classList.remove('demo-button--normal');
+                menuButtonEl.classList.remove('demo-button--long');
                 break;
               case "regular":
-                document.querySelector('.normalAnchorWidth').style.display = 'inline';
-                document.querySelector('.longAnchorWidth').style.display = 'none';
+                menuButtonEl.classList.add('demo-button--normal');
+                menuButtonEl.classList.remove('demo-button--long');
                 break;
               case "wide":
-                document.querySelector('.normalAnchorWidth').style.display = 'inline';
-                document.querySelector('.longAnchorWidth').style.display = 'inline';
+                menuButtonEl.classList.remove('demo-button--normal');
+                menuButtonEl.classList.add('demo-button--long');
                 break;
             }
           }

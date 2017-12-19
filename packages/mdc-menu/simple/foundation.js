@@ -178,16 +178,16 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @param {!AnchorMargin} margin 4-plet of margins from anchor.
    */
   setAnchorMargin(margin) {
-    if (typeof margin.top == 'number') {
+    if (typeof margin.top === 'number') {
       this.anchorMargin_.top = margin.top;
     }
-    if (typeof margin.right == 'number') {
+    if (typeof margin.right === 'number') {
       this.anchorMargin_.right = margin.right;
     }
-    if (typeof margin.bottom == 'number') {
+    if (typeof margin.bottom === 'number') {
       this.anchorMargin_.bottom = margin.bottom;
     }
-    if (typeof margin.left == 'number') {
+    if (typeof margin.left === 'number') {
       this.anchorMargin_.left = margin.left;
     }
   }
@@ -469,7 +469,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
         maxHeight = viewportMargin.top + this.anchorMargin_.top;
       }
     }
-    // perhaps clip at viewport based maxHeight?
+
     return maxHeight;
   }
 
@@ -493,11 +493,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       [verticalAlignment]: verticalOffset ? verticalOffset + 'px' : '0',
     };
     const {anchorWidth, menuHeight, menuWidth} = this.measures_;
-    // center align when anchor width is comparable or greater than menu, otherwise keep corner.
+    // Center align when anchor width is comparable or greater than menu, otherwise keep corner.
     if (anchorWidth / menuWidth > numbers.ANCHOR_TO_MENU_WIDTH_RATIO) {
       horizontalAlignment = 'center';
     }
-    // adjust vertical origin when menu can and significantly overlaps anchor.
+    // Adjust vertical origin when menu can and significantly overlaps anchor.
     if (!(this.anchorCorner_ & CornerBit.BOTTOM) &&
         Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
       const verticalOffsetPercent = Math.abs(verticalOffset / menuHeight) * 100;
@@ -509,7 +509,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     this.adapter_.setPosition(position);
     this.adapter_.setMaxHeight(maxMenuHeight ? maxMenuHeight + 'px' : '');
 
-    // clear measures after positioning is complete.
+    // Clear measures after positioning is complete.
     this.measures_ = null;
   }
 
@@ -549,12 +549,12 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }
 
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
-    this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_CLOSE);
+    this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_CLOSED);
     requestAnimationFrame(() => {
       this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.OPEN);
       this.closeAnimationEndTimerId_ = setTimeout(() => {
         this.closeAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_CLOSE);
+        this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_CLOSED);
       }, numbers.TRANSITION_CLOSE_DURATION);
     });
     this.isOpen_ = false;

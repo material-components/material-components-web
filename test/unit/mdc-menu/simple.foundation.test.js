@@ -26,8 +26,8 @@ import {cssClasses, strings, numbers, Corner} from '../../../packages/mdc-menu/s
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSimpleMenuFoundation);
   const size = {width: 500, height: 200};
-  td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(true);
-  td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(false);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
   td.when(mockAdapter.getNumberOfItems()).thenReturn(1);
   td.when(mockAdapter.getInnerDimensions()).thenReturn(size);
@@ -105,7 +105,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 test('#init throws error when the root class is not present', () => {
   const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
-  td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(false);
 
   const foundation = new MDCSimpleMenuFoundation(mockAdapter);
   assert.throws(() => foundation.init());
@@ -113,7 +113,7 @@ test('#init throws error when the root class is not present', () => {
 
 test('#init throws error when the necessary DOM is not present', () => {
   const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
-  td.when(mockAdapter.hasClass('mdc-simple-menu')).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(false);
 
   const foundation = new MDCSimpleMenuFoundation(mockAdapter);
@@ -123,30 +123,26 @@ test('#init throws error when the necessary DOM is not present', () => {
 testFoundation('#open adds the animation class to start an animation',
   ({foundation, mockAdapter}) => {
     foundation.open();
-    td.verify(mockAdapter.addClass('mdc-simple-menu--animating-open'));
+    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN));
   });
 
 testFoundation('#open adds the open class to the menu', ({foundation, mockAdapter, mockRaf}) => {
-  td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
-
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
-  td.verify(mockAdapter.addClass('mdc-simple-menu--open'));
+  td.verify(mockAdapter.addClass(cssClasses.OPEN));
 });
 
 testFoundation('#open removes the animation class at the end of the animation',
   ({foundation, mockAdapter, mockRaf}) => {
     const clock = lolex.install();
-    td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-top-right')).thenReturn(true);
-
     foundation.open();
-    td.verify(mockAdapter.addClass('mdc-simple-menu--animating-open'));
+    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN));
     mockRaf.flush();
-    td.verify(mockAdapter.addClass('mdc-simple-menu--open'));
+    td.verify(mockAdapter.addClass(cssClasses.OPEN));
     clock.tick(numbers.TRANSITION_OPEN_DURATION);
     mockRaf.flush();
-    td.verify(mockAdapter.removeClass('mdc-simple-menu--animating-open'));
+    td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN));
   });
 
 testFoundation('#open focuses the menu at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
@@ -467,34 +463,28 @@ testFoundation('#close does nothing if event target has aria-disabled set to tru
 
 testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter}) => {
   foundation.close();
-  td.verify(mockAdapter.addClass('mdc-simple-menu--animating-close'));
+  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
 });
 
 testFoundation('#close removes the open class from the menu', ({foundation, mockAdapter, mockRaf}) => {
-  td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
-  td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-left')).thenReturn(true);
-
+  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.close();
   mockRaf.flush();
   mockRaf.flush();
-  td.verify(mockAdapter.removeClass('mdc-simple-menu--open'));
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
 testFoundation('#close removes the animation class at the end of the animation',
   ({foundation, mockAdapter, mockRaf}) => {
     const clock = lolex.install();
-    td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
-    td.when(mockAdapter.hasClass('mdc-simple-menu--open-from-bottom-right')).thenReturn(true);
-
+    td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
     foundation.close();
     mockRaf.flush();
     mockRaf.flush();
-    td.verify(mockAdapter.addClass('mdc-simple-menu--animating-close'));
-
+    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
     clock.tick(numbers.TRANSITION_OPEN_DURATION);
-
     mockRaf.flush();
-    td.verify(mockAdapter.removeClass('mdc-simple-menu--animating-close'));
+    td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED));
   });
 
 test('#isOpen returns true when the menu is open', () => {
@@ -513,7 +503,7 @@ test('#isOpen returns false when the menu is closed', () => {
 
 test('#isOpen returns true when the menu is initiated with the open class present', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
 
   foundation.init();
   assert.isOk(foundation.isOpen());
@@ -521,7 +511,7 @@ test('#isOpen returns true when the menu is initiated with the open class presen
 
 test('#isOpen returns false when the menu is initiated without the open class present', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass('mdc-simple-menu--open')).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(false);
 
   foundation.init();
   assert.isNotOk(foundation.isOpen());

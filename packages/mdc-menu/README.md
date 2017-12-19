@@ -292,6 +292,7 @@ The adapter for simple menu must provide the following functions, with correct s
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `setTransformOrigin(value: string) => void` | Sets the transform origin for the menu element. |
 | `setPosition(position: { top: string, right: string, bottom: string, left: string }) => void` | Sets the position of the menu element. |
+| `setMaxHeight(value: string) => void` | Sets maximum height style for the menu element. |
 
 ### The full foundation API
 
@@ -309,14 +310,18 @@ Returns whether or not the menu is open.
 
 #### MDCSimpleMenuFoundation.setAnchorCorner(Corner = Corner.TOP_START) => void
 
-Specifies the anchor corner to which top start (top left in ltr, top right in rtl) should align given there is enough
-space to show the menu.
+Specifies the anchor corner to which top start of the menu (top left in ltr, top right in rtl) should align given there
+is enough space to show the full menu.
+When menu display is constrained by viewport edge, TOP can be flipped to BOTTOM. Similarly START can flip to END.
+Specifying BOTTOM_START, TOP_END, and BOTTOM_END positions, indicates that the anchor cannot be covered by the menu.
+In such cases maximum height of the menu is enforced.
 
 #### MDCSimpleMenuFoundation.setAnchorMargin({top: number, right: number, bottom: number, left: number}) => void
 
 Specifies pixel margins that the menu should be offset from all four sides of an anchor. When menu overlaps an
-anchor (default anchor corner) and menu is taller than can would fit otherwise, margin is ignored and menu is not
-strictly aligned to an anchor corner.
+anchor (default anchor corner) and menu is taller than would fit (not extending beyond viewport edges), margin is
+ignored and menu allowed to display fully overlapping the anchor. In such cases menu is not strictly aligned to an
+anchor corner, also maximum height of the menu in such cases is constrained by the viewport height.
 
 
 ### The util API
