@@ -93,14 +93,14 @@ export class MDCSelect extends MDCComponent {
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
       computeBoundingRect: () => this.surface_.getBoundingClientRect(),
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      focus: () => this.root_.focus(),
+      registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
+      focus: () => this.surface_.focus(),
       makeTabbable: () => {
-        this.root_.tabIndex = 0;
+        this.surface_.tabIndex = 0;
       },
       makeUntabbable: () => {
-        this.root_.tabIndex = -1;
+        this.surface_.tabIndex = -1;
       },
       getComputedStyleValue: (prop) => window.getComputedStyle(this.surface_).getPropertyValue(prop),
       setStyle: (propertyName, value) => this.surface_.style.setProperty(propertyName, value),
