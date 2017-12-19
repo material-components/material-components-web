@@ -49,32 +49,33 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
     super(Object.assign(MDCTextFieldLabelFoundation.defaultAdapter, adapter));
   }
 
-  /** Makes the label float above the text field. */
-  floatAbove() {
-    this.adapter_.addClass(cssClasses.LABEL_FLOAT_ABOVE);
-    this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
-  }
-
   /**
-   * Deactivates the label's focus state based on whether the text
-   * field input is empty and passes validity checks.
-   * @param {boolean} shouldRemoveLabelFloat
+   * Styles the label to match the supplied optional params. If a
+   * param is not supplied, the method makes no changes related to that param.
+   * @param {string=} optValue
+   * @param {boolean=} optIsValid
+   * @param {boolean=} optIsBadInput
+   * @param {boolean=} optIsFocused
    */
-  deactivateFocus(shouldRemoveLabelFloat) {
-    this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
+  style(optValue, optIsValid, optIsBadInput, optIsFocused) {
+    const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldLabelFoundation.cssClasses;
+    const isFocused = !!optIsFocused;
 
-    if (shouldRemoveLabelFloat) {
-      this.adapter_.removeClass(cssClasses.LABEL_FLOAT_ABOVE);
+    if (optIsValid !== undefined || optIsFocused !== undefined) {
+      if (!!optIsValid || isFocused) {
+        this.adapter_.removeClass(LABEL_SHAKE);
+      } else {
+        this.adapter_.addClass(LABEL_SHAKE);
+      }
     }
-  }
 
-  /**
-   * Updates the label's valid state based on the supplied validity.
-   * @param {boolean} isValid
-   */
-  setValidity(isValid) {
-    if (!isValid) {
-      this.adapter_.addClass(cssClasses.LABEL_SHAKE);
+    if (optValue !== undefined || optIsFocused !== undefined) {
+      if (!!optValue || isFocused) {
+        this.adapter_.addClass(LABEL_FLOAT_ABOVE);
+      } else if (!optIsBadInput) {
+        this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
+        this.receivedUserInput_ = false;
+      }
     }
   }
 }

@@ -102,7 +102,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    this.styleLabel_(this.getValue() || undefined);
+    if (this.label_) {
+      this.label_.style(this.getValue() || undefined);
+    }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.registerInputInteractionHandler('blur', this.inputBlurHandler_);
@@ -148,7 +150,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
   activateFocus() {
     this.isFocused_ = true;
     this.styleRoot_(undefined, this.isFocused_);
-    this.styleLabel_(undefined, undefined, undefined, this.isFocused_);
+    if (this.label_) {
+      this.label_.style(undefined, undefined, undefined, this.isFocused_);
+    }
     if (this.bottomLine_) {
       this.bottomLine_.activate();
     }
@@ -198,7 +202,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = false;
     const isValid = this.isValid();
     this.styleRoot_(isValid, this.isFocused_);
-    this.styleLabel_(this.getValue(), isValid, this.isBadInput_(), this.isFocused_);
+    if (this.label_) {
+      this.label_.style(this.getValue(), isValid, this.isBadInput_(), this.isFocused_);
+    }
   }
 
   /**
@@ -215,7 +221,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.getNativeInput_().value = value;
     const isValid = this.isValid();
     this.styleRoot_(isValid);
-    this.styleLabel_(this.getValue(), isValid, this.isBadInput_());
+    if (this.label_) {
+      this.label_.style(this.getValue(), isValid, this.isBadInput_());
+    }
   }
 
   /**
@@ -253,7 +261,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // Retrieve from the getter to ensure correct logic is applied.
     isValid = this.isValid();
     this.styleRoot_(isValid);
-    this.styleLabel_(undefined, isValid);
+    if (this.label_) {
+      this.label_.style(undefined, isValid);
+    }
   }
 
   /**
@@ -338,37 +348,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       }
       if (this.icon_) {
         this.icon_.setDisabled(!!optIsDisabled);
-      }
-    }
-  }
-  
-  /**
-   * Styles the Text Field's label to match the supplied optional params. If a
-   * param is not supplied, the method makes no changes related to that param.
-   * @param {string=} optValue
-   * @param {boolean=} optIsValid
-   * @param {boolean=} optIsBadInput
-   * @param {boolean=} optIsFocused
-   */
-  styleLabel_(optValue, optIsValid, optIsBadInput, optIsFocused) {
-    const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
-    const isFocused = !!optIsFocused;
-
-    if (optIsValid !== undefined || optIsFocused !== undefined) {
-      if (!!optIsValid || isFocused) {
-        this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-      } else {
-        this.adapter_.addClassToLabel(LABEL_SHAKE);
-      }
-    }
-
-    if (optValue !== undefined || optIsFocused !== undefined) {
-      if (!!optValue || isFocused) {
-        this.label_.floatAbove();
-      } else if (!optIsBadInput) {
-        //TODO: add/adjust a method to MDCTextFieldLabel which allows for removing the float
-        //this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
-        this.receivedUserInput_ = false;
       }
     }
   }
