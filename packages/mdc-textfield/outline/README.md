@@ -57,17 +57,9 @@ CSS Class | Description
 
 #### `MDCTextFieldOutline`
 
-Method Signature | Description
---- | ---
-`MDCTextFieldOutline.createRipple(rippleFactory, rippleInputMethods) => MDCRipple` | Returns an `MDCRipple` instance set on the `mdc-text-field__outline` element
-
 ##### `MDCTextFieldOutline.foundation`
 
 This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldOutlineFoundation` class.
-
-##### `MDCTextFieldOutline.createRipple(rippleFactory: (function(Element, MDCRippleFoundation): MDCRipple), foundation: MDCRippleFoundation)`
-
-Returns an `MDCRipple` instance set on the `mdc-text-field__outline` element, which will be used by the parent `MDCTextField` component. 
 
 ### `MDCTextFieldOutlineAdapter`
 

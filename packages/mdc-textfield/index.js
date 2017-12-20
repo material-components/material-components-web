@@ -16,7 +16,9 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+/* eslint-disable no-unused-vars */
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple';
+/* eslint-enable no-unused-vars */
 import {getMatchesProperty} from '@material/ripple/util';
 
 
@@ -112,19 +114,17 @@ class MDCTextField extends MDCComponent {
 
     this.ripple = null;
     if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
+      const rippleCapableSurface = outlineElement ? this.outline_ : this;
+      const rippleRoot = outlineElement ? outlineElement : this.root_;
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
-      const rippleInputMethods = {
-        isSurfaceActive: () => this.input_[MATCHES](':active'),
-        registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
-        deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
-      };
-      if (this.root_.classList.contains(cssClasses.BOX)) {
-        const adapter = Object.assign(MDCRipple.createAdapter(this), rippleInputMethods);
-        const foundation = new MDCRippleFoundation(adapter);
-        this.ripple = rippleFactory(this.root_, foundation);
-      } else if (this.root_.classList.contains(cssClasses.OUTLINED)) {
-        this.ripple = this.outline_.createRipple(rippleFactory, rippleInputMethods);
-      }
+      const adapter =
+        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (rippleCapableSurface)), {
+          isSurfaceActive: () => this.input_[MATCHES](':active'),
+          registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
+          deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
+        });
+      const foundation = new MDCRippleFoundation(adapter);
+      this.ripple = rippleFactory(rippleRoot, foundation);
     }
   }
 

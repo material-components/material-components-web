@@ -88,6 +88,21 @@ test('#constructor when given a `mdc-text-field--box` element instantiates a rip
   assert.equal(component.ripple.root, root);
 });
 
+test('#constructor when given a `mdc-text-field--outlined` element instantiates a ripple on the ' +
+     'outline element', () => {
+  const root = bel`
+    <div class="mdc-text-field mdc-text-field--outlined">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+      <label class="mdc-text-field__label" for="my-text-field">My Label</label>
+      <div class="mdc-text-field__outline"></div>
+      <div class="mdc-text-field__idle-outline"></div>
+    </div>
+  `;
+  const outline = root.querySelector('.mdc-text-field__outline');
+  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
+  assert.equal(component.ripple.root, outline);
+});
+
 test('#constructor sets the ripple property to `null` when not given a `mdc-text-field--box` nor ' +
      'a `mdc-text-field--outlined` subelement', () => {
   const component = new MDCTextField(getFixture());
