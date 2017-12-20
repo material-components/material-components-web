@@ -126,6 +126,11 @@ import {MDCSnackbar} from '@material/snackbar';
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 ```
 
+#### Handling events
+
+When snackbar is shown or dismissed, the component will emit a `MDCSnackbar:show` or 
+`MDCSnackbar:hide` custom event with no data attached.
+
 ### Showing a message and action
 
 Once you have obtained an MDCSnackbar instance attached to the DOM, you can use
@@ -214,6 +219,8 @@ The adapter for snackbars must provide the following functions, with correct sig
 | `deregisterActionClickHandler(handler: EventListener) => void` | Deregisters an event handler from a `click` event on the action element. This will only be called with handlers that have previously been passed to `registerActionClickHandler` calls. |
 | `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when an `transitionend` event is triggered on the root element. Note that you must account for vendor prefixes in order for this to work correctly. |
 | `deregisterTransitionEndHandler(handler: EventListener) => void` | Deregisters an event handler from an `transitionend` event listener. This will only be called with handlers that have previously been passed to `registerTransitionEndHandler` calls. |
+| `notifyShow() => void` | Dispatches an event notifying listeners that the snackbar has been shown. |
+| `notifyHide() => void` | Dispatches an event notifying listeners that the snackbar has been hidden. |
 
 ## Avoiding Flash-Of-Unstyled-Content (FOUC)
 
