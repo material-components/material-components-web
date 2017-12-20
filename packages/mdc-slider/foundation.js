@@ -120,7 +120,7 @@ class MDCSliderFoundation extends MDCFoundation {
     this.thumbContainerPointerHandler_ = () => {
       this.handlingThumbTargetEvt_ = true;
     };
-    this.interactionStartHandler_ = this.createDownHandler_();
+    this.interactionStartHandler_ = (evt) => this.handleDown(evt);
     this.keydownHandler_ = (evt) => this.handleKeydown_(evt);
     this.focusHandler_ = () => this.handleFocus_();
     this.blurHandler_ = () => this.handleBlur_();
@@ -274,7 +274,7 @@ class MDCSliderFoundation extends MDCFoundation {
    * Called when the user starts interacting with the slider
    * @param {!Event} evt
    */
-  onDown(evt) {
+  handleDown(evt) {
     if (this.disabled_) {
       return;
     }
@@ -285,36 +285,36 @@ class MDCSliderFoundation extends MDCFoundation {
     this.setActive_(true);
 
     const moveHandler = (evt) => {
-      this.onMove(evt);
+      this.handleMove(evt);
     };
 
     // Note: upHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
     // do not always fire these consistently in pairs.
     // (See https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
-      this.onUp();
+      this.handleUp();
       this.adapter_.deregisterBodyInteractionHandler(EVENT_MAP[evt.type], moveHandler);
       UP_EVENTS.forEach((evtName) => this.adapter_.deregisterBodyInteractionHandler(evtName, upHandler));
     };
 
     this.adapter_.registerBodyInteractionHandler(EVENT_MAP[evt.type], moveHandler);
     UP_EVENTS.forEach((evtName) => this.adapter_.registerBodyInteractionHandler(evtName, upHandler));
-    this.setValueFromEvt_(evt, this.getPageX_);
+    this.setValueFromEvt_(evt);
   }
 
   /**
    * Called when the user moves the slider
    * @param {!Event} evt
    */
-  onMove(evt) {
+  handleMove(evt) {
     evt.preventDefault();
-    this.setValueFromEvt_(evt, this.getPageX_);
+    this.setValueFromEvt_(evt);
   }
 
   /**
    * Called when the user's interaction with the slider ends
    */
-  onUp() {
+  handleUp() {
     this.setActive_(false);
     this.adapter_.notifyChange();
   }
@@ -331,18 +331,12 @@ class MDCSliderFoundation extends MDCFoundation {
     return evt.pageX;
   }
 
-  /** @return {function(!Event): undefined} */
-  createDownHandler_() {
-    return (evt) => this.onDown(evt);
-  }
-
   /**
    * Sets the slider value from an event
    * @param {!Event} evt
-   * @param {!function(!Event): !number} getPageX
    */
-  setValueFromEvt_(evt, getPageX) {
-    const pageX = getPageX(evt);
+  setValueFromEvt_(evt) {
+    const pageX = this.getPageX_(evt);
     const value = this.computeValueFromPageX_(pageX);
     this.setValue_(value, true);
   }
