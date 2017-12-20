@@ -163,11 +163,9 @@ function transform(srcFile, rootDir) {
   const packageParts = relativePath.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
   const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
 
-  console.log(packageParts);
-
   outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode;
   fs.writeFileSync(srcFile, outputCode, 'utf8');
-  // console.log(`[rewrite] ${srcFile}`);
+  console.log(`[rewrite] ${srcFile}`);
 }
 
 function rewriteDeclarationSource(node, srcFile, rootDir) {
