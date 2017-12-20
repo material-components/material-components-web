@@ -169,6 +169,7 @@
 
   &.mdc-text-field--focused .mdc-text-field__outline-path {
     @include mdc-theme-prop(stroke, primary);
+
     stroke-width: 2px;
   }
 
