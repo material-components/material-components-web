@@ -34,8 +34,13 @@ Method Signature | Description
 --- | ---
 addClass(className: string) => void | Adds a class to the label element
 removeClass(className: string) => void | Removes a class from the label element
+getWidth() => number | Returns the width of the label element
 
 #### The full foundation API
+
+##### MDCTextFieldLabelFoundation.getFloatingWidth()
+
+Returns the width of the label element when it floats above the text field.
 
 ##### MDCTextFieldLabelFoundation.floatAbove()
 
