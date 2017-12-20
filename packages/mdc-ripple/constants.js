@@ -42,4 +42,11 @@ const numbers = {
   FG_DEACTIVATION_MS: 150, // Corresponds to $mdc-ripple-fade-out-duration (i.e. deactivation animation duration)
 };
 
-export {cssClasses, strings, numbers};
+const events = {
+  // 'Up' events needs to be at the window level, because if they
+  // are at the component level they will not fire if the mouse
+  // moves off of the element (or if the touch event has movement)
+  UP_EVENTS: ['mouseup', 'pointerup', 'touchend', 'keyup'],
+};
+
+export {cssClasses, strings, numbers, events};
