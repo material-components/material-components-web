@@ -21,27 +21,22 @@
 @import "./mixins";
 @import "./variables";
 
-// TODO(acdvorak): Find a way to remove parent .mdc-list and .mdc-list-group selectors; they violate BEM.
 .mdc-list,
 .mdc-list-group {
-  @include mdc-list-divider-color($mdc-list-divider-color-light);
-
   @include mdc-theme-dark {
     @include mdc-list-divider-color($mdc-list-divider-color-dark);
   }
+}
+
+@at-root {
+  @include mdc-list-divider-color($mdc-list-divider-color-light);
 }
 
 // postcss-bem-linter: define list
 
 .mdc-list {
   @include mdc-typography(subheading2);
-
-  // TODO(acdvorak): Find a way to remove parent .mdc-list selector; it violates BEM.
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background);
-  @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background);
-  @include mdc-list-item-graphic-fill-color(transparent);
-  @include mdc-list-item-graphic-ink-color(text-icon-on-background);
-  @include mdc-list-item-meta-ink-color(text-hint-on-background);
 
   @include mdc-theme-dark {
     @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
@@ -57,6 +52,13 @@
   // same as for subheading1.
   line-height: map-get(map-get($mdc-typography-styles, subheading1), line-height);
   list-style-type: none;
+}
+
+@at-root {
+  @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background);
+  @include mdc-list-item-graphic-fill-color(transparent);
+  @include mdc-list-item-graphic-ink-color(text-icon-on-background);
+  @include mdc-list-item-meta-ink-color(text-hint-on-background);
 }
 
 .mdc-list--dense {
@@ -215,8 +217,6 @@ a.mdc-list-item {
 // postcss-bem-linter: define list-group
 
 .mdc-list-group {
-  @include mdc-list-group-subheader-ink-color(text-primary-on-background);
-
   @include mdc-theme-dark {
     @include mdc-list-group-subheader-ink-color(text-primary-on-dark);
   }
@@ -236,6 +236,10 @@ a.mdc-list-item {
   .mdc-list {
     padding: 0;
   }
+}
+
+@at-root {
+  @include mdc-list-group-subheader-ink-color(text-primary-on-background);
 }
 
 // postcss-bem-linter: end
