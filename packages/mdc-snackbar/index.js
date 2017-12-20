@@ -45,8 +45,8 @@ export class MDCSnackbar extends MDCComponent {
       unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
       setActionAriaHidden: () => getActionButton().setAttribute('aria-hidden', 'true'),
       unsetActionAriaHidden: () => getActionButton().removeAttribute('aria-hidden'),
-      setActionText: (text) => { getActionButton().textContent = text; },
-      setMessageText: (text) => { getText().textContent = text; },
+      setActionText: (text) => {getActionButton().textContent = text;},
+      setMessageText: (text) => {getText().textContent = text;},
       setFocus: () => getActionButton().focus(),
       visibilityIsHidden: () => document.hidden,
       registerCapturedBlurHandler: (handler) => getActionButton().addEventListener('blur', handler, true),
@@ -63,6 +63,8 @@ export class MDCSnackbar extends MDCComponent {
         (handler) => this.root_.addEventListener(getCorrectEventName(window, 'transitionend'), handler),
       deregisterTransitionEndHandler:
         (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'transitionend'), handler),
+      notifyShow: () => this.emit(MDCSnackbarFoundation.strings.SHOW_EVENT),
+      notifyHide: () => this.emit(MDCSnackbarFoundation.strings.HIDE_EVENT),
     });
   }
 
