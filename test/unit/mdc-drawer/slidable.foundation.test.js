@@ -78,7 +78,6 @@ test('#init calls component and drawer event registrations', () => {
   const {isA} = td.matchers;
 
   foundation.init();
-  td.verify(mockAdapter.registerDrawerInteractionHandler('click', isA(Function)));
   td.verify(mockAdapter.registerDrawerInteractionHandler('touchstart', isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('touchmove', isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('touchend', isA(Function)));
@@ -90,7 +89,6 @@ test('#destroy calls component and drawer event deregistrations', () => {
 
   foundation.init();
   foundation.destroy();
-  td.verify(mockAdapter.deregisterDrawerInteractionHandler('click', isA(Function)));
   td.verify(
     mockAdapter.deregisterDrawerInteractionHandler('touchstart', isA(Function))
   );

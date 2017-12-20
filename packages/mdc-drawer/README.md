@@ -49,11 +49,11 @@ than mobile.
   <div class="mdc-permanent-drawer__toolbar-spacer"></div>
   <div class="mdc-permanent-drawer__content">
     <nav id="icon-with-text-demo" class="mdc-list">
-      <a class="mdc-list-item mdc-permanent-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </div>
@@ -75,11 +75,11 @@ Permanent drawers can also be set below the toolbar:
 <div class="content">
   <nav class="mdc-permanent-drawer mdc-typography">
     <nav id="icon-with-text-demo" class="mdc-list">
-      <a class="mdc-list-item mdc-permanent-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -112,11 +112,11 @@ Persistent drawers are acceptable for all sizes larger than mobile.
       </div>
     </header>
     <nav id="icon-with-text-demo" class="mdc-persistent-drawer__content mdc-list">
-      <a class="mdc-list-item mdc-persistent-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -246,11 +246,11 @@ for any display size.
       </div>
     </header>
     <nav id="icon-with-text-demo" class="mdc-temporary-drawer__content mdc-list">
-      <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -276,11 +276,11 @@ very useful for visual alignment and consistency. Note that you can place conten
     <div class="mdc-temporary-drawer__toolbar-spacer"></div>
 
     <nav id="icon-with-text-demo" class="mdc-temporary-drawer__content mdc-list">
-      <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -303,11 +303,11 @@ for placing the actual content, which will be bottom-aligned.
     </header>
 
     <nav id="icon-with-text-demo" class="mdc-temporary-drawer__content mdc-list">
-      <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
       </a>
     </nav>
   </nav>
@@ -402,6 +402,7 @@ The adapter for temporary drawers must provide the following functions, with cor
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
+| `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. |
 | `addBodyClass(className: string) => void` | Adds a class to the body. |
 | `removeBodyClass(className: string) => void` | Removes a class from the body. |
 | `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-temporary-drawer__drawer` drawer container). |

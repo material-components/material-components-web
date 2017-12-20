@@ -17,16 +17,10 @@
 @import "./common";
 @import "../packages/mdc-list/mdc-list";
 
-.catalog-list {
-  padding-left: 28px;
-}
-.catalog-list-icon {
-  margin-right: 24px;
+.demo-catalog-list a {
+  color: $material-color-grey-900;
 }
 
-ul.catalog-list {
-  a {
-    text-decoration: none;
-    color: #212121;
-  }
+.demo-catalog-list-icon {
+  margin: 0 24px 0 12px;
 }
