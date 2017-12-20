@@ -51,9 +51,9 @@ The outline is a border around all sides of the text field. This is used for the
 
 CSS Class | Description
 --- | ---
-`mdc-text-field__outline` | Mandatory
-`mdc-text-field__outline-path` | Mandatory
-`mdc-text-field__idle-outline` | Mandatory
+`mdc-text-field__outline` | Mandatory. Container for the SVG in the outline when the label is floating above the input.
+`mdc-text-field__outline-path` | Mandatory. The SVG path in the outline when the label is floating above the input.
+`mdc-text-field__idle-outline` | Mandatory. The outline when the label is resting in the input position.
 
 #### `MDCTextFieldOutline`
 
@@ -65,7 +65,7 @@ Method Signature | Description
 
 This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldOutlineFoundation` class.
 
-##### `MDCTextFieldOutline.createRipple(rippleFactory: (function(!Element, !MDCRippleFoundation): !MDCRipple), foundation: !MDCRippleFoundation)`
+##### `MDCTextFieldOutline.createRipple(rippleFactory: (function(Element, MDCRippleFoundation): MDCRipple), foundation: MDCRippleFoundation)`
 
 Returns an `MDCRipple` instance set on the `mdc-text-field__outline` element, which will be used by the parent `MDCTextField` component. 
 
