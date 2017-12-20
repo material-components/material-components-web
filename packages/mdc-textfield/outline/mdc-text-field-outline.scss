@@ -35,7 +35,7 @@
 .mdc-text-field__outline {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius;
-  @include mdc-states-base-color(black);
+  @include mdc-states-base-color(text-primary-on-light);
   @include mdc-states-press-opacity(0.12);
   @include mdc-theme-prop(color, primary);
   @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
