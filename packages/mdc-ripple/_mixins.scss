@@ -202,46 +202,6 @@
 }
 
 //
-// Legacy
-//
-
-@mixin mdc-ripple-color($color: black, $opacity: .06) {
-  // Opacity styles are here (rather than in mdc-ripple-surface) to ensure that opacity is re-initialized for
-  // cases where this mixin is used to override another inherited use of itself,
-  // without needing to re-include mdc-ripple-surface.
-  &::before,
-  &::after {
-    @include mdc-ripple-color_($color, $opacity);
-
-    opacity: 0;
-  }
-
-  // Note: when :active is applied, :focus is already applied, which will effectively double the effect.
-  &:not(.mdc-ripple-upgraded) {
-    &:hover::before,
-    &:focus::before,
-    &:active::after {
-      transition-duration: 85ms;
-      opacity: .6;
-    }
-  }
-
-  &.mdc-ripple-upgraded--background-focused::before {
-    opacity: .99999;
-  }
-
-  &.mdc-ripple-upgraded--background-active-fill::before {
-    transition-duration: 120ms;
-    opacity: 1;
-  }
-
-  &.mdc-ripple-upgraded::after {
-    // Set this to 1 for backwards compatibility with how the keyframes were originally coded for use with this mixin
-    --mdc-ripple-fg-opacity: 1;
-  }
-}
-
-//
 // Private
 //
 
@@ -263,26 +223,4 @@
   @include mdc-states-hover-opacity(map-get($opacity-map, "hover") + $opacity-modifier);
   @include mdc-states-focus-opacity(map-get($opacity-map, "focus") + $opacity-modifier, $has-nested-focusable-element);
   @include mdc-states-press-opacity(map-get($opacity-map, "press") + $opacity-modifier);
-}
-
-// Note: This can be removed when we remove the legacy mdc-ripple-color mixin.
-@mixin mdc-ripple-color_($color, $opacity) {
-  // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
-  @if type-of($color) == "color" {
-    background-color: rgba($color, $opacity);
-  } @else {
-    // Assume $color is a theme property name
-    $theme-value: map-get($mdc-theme-property-values, $color);
-    $css-var: var(--mdc-theme-#{$color}, $theme-value);
-
-    background-color: rgba($theme-value, $opacity);
-
-    // See: https://drafts.csswg.org/css-color/#modifying-colors
-    // While this is currently unsupported as of now, it will begin to work by default as browsers
-    // begin to implement the CSS 4 color spec.
-    @supports (background-color: color(green a(10%))) {
-      background-color: color(#{$css-var} a(#{percentage($opacity)}));
-    }
-  }
-  // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
 }
