@@ -21,26 +21,63 @@ The outline is a border around all sides of the text field. This is used for the
 
 ## Usage
 
-#### MDCTextFieldOutline API
+### HTML Structure
 
-##### MDCTextFieldOutline.createRipple(rippleFactory: (function(!Element, !MDCRippleFoundation): !MDCRipple), foundation: !MDCRippleFoundation)
+```html
+<div class="mdc-text-field__outline">
+  <svg>
+    <path class="mdc-text-field__outline-path"/>
+  </svg>
+</div>
+<div class="mdc-text-field__idle-outline"></div>
+```
 
-Returns an `MDCRipple` instance set on the `MDCTextFieldOutline` component and its `mdc-text-field__outline` root element.
+### Usage within `mdc-text-field`
 
-##### MDCTextFieldOutline.foundation
+```html
+<div class="mdc-text-field mdc-text-field--outlined">
+  <input class="mdc-text-field__input" id="my-text-field-id" type="text">
+  <label class="mdc-text-field__label" for="my-text-field-id">Label</label>
+  <div class="mdc-text-field__outline">
+    <svg>
+      <path class="mdc-text-field__outline-path"/>
+    </svg>
+  </div>
+  <div class="mdc-text-field__idle-outline"></div>
+</div>
+```
 
-MDCTextFieldOutlineFoundation. This allows the parent MDCTextField component to access the public methods on the MDCTextFieldOutlineFoundation class.
+### CSS Classes
 
-### Using the foundation class
+CSS Class | Description
+--- | ---
+`mdc-text-field-bottom-line` | Mandatory
+`mdc-text-field-bottom-line--active` | Styles the bottom line as an active bottom line
+
+#### `MDCTextFieldOutline`
 
 Method Signature | Description
 --- | ---
-getWidth() => number | Returns the width of the outline element
-getHeight() => number | Returns the height of the outline element
-setOutlinePathAttr(value: string) => void | Sets the "d" attribute of the outline element's SVG path
+`MDCTextFieldOutline.createRipple(rippleFactory, rippleInputMethods) => MDCRipple` | Returns an `MDCRipple` instance set on the `mdc-text-field__outline` element
 
-#### The full foundation API
+##### `MDCTextFieldOutline.foundation`
 
-##### MDCTextFieldOutlineFoundation.updateSvgPath(width: number, height: number, labelWidth: number, radius: number, isRtl: boolean)
+This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldOutlineFoundation` class.
 
-Updates the SVG path of the focus outline element based on the given width and height of the text field element, the width of the label element, the corner radius, and the RTL context.
+##### `MDCTextFieldOutline.createRipple(rippleFactory: (function(!Element, !MDCRippleFoundation): !MDCRipple), foundation: !MDCRippleFoundation)`
+
+Returns an `MDCRipple` instance set on the `mdc-text-field__outline` element, which will be used by the parent `MDCTextField` component. 
+
+### `MDCTextFieldOutlineAdapter`
+
+Method Signature | Description
+--- | ---
+`getWidth() => number` | Returns the width of the outline element
+`getHeight() => number` | Returns the height of the outline element
+`setOutlinePathAttr(value: string) => void` | Sets the "d" attribute of the outline element's SVG path
+
+### `MDCTextFieldOutlineFoundation`
+
+Method Signature | Description
+--- | ---
+`updateSvgPath(labelWidth: number, radius: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given the width of the label element, the corner radius, and the RTL context.

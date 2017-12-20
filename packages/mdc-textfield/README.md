@@ -309,7 +309,7 @@ String setter. Proxies to the foundation's `setHelperTextContent` method when se
 
 ##### MDCTextField.ripple
 
-`MDCRipple` instance. When given an `mdc-text-field--box` root element, set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, set to the `MDCRipple` instance on the outline element. Otherwise, the field is set to `null`.
+`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-text-field__outline` element. Otherwise, the field is set to `null`.
 
 ##### MDCTextField.layout()
 
