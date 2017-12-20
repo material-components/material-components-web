@@ -184,6 +184,7 @@ CSS Class | Description
 `mdc-text-field` | Mandatory
 `mdc-text-field--upgraded` | Indicates the text field is upgraded, normally by JavaScript
 `mdc-text-field--box` | Styles the text field as a box text field
+`mdc-text-field--outlined` | Styles the text field as an outlined text field
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`
 `mdc-text-field--disabled` | Styles the text field as a disabled text field
@@ -249,7 +250,6 @@ Method Signature | Description
 `isDisabled() => boolean` | Returns whether or not the input is disabled
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state
 `setValid(isValid: boolean) => void` | Sets the validity state of the Text Field. Triggers custom validity checking
-`setHelperTextContent(content: string) => void` | 
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
