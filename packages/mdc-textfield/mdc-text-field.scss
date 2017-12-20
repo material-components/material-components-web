@@ -634,7 +634,7 @@
   @include mdc-theme-dark {
     &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
       &:not(:focus) {
-        border-color: rgba(white, .12);
+        border-color: $mdc-text-field-underline-on-dark-idle;
       }
 
       &:disabled {
