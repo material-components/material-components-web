@@ -89,7 +89,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Creates a new instance of MDCSliderFoundation
-   * @param {MDCSliderAdapter} adapter
+   * @param {?MDCSliderAdapter} adapter
    */
   constructor(adapter) {
     super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
@@ -177,7 +177,7 @@ class MDCSliderFoundation extends MDCFoundation {
       if (indivisible) {
         const lastStepRatio = (max - numMarkers * step) / step + 1;
         const flex = getCorrectPropertyName(window, 'flex');
-        this.adapter_.setLastTrackMarkersStyleProperty(flex, lastStepRatio);
+        this.adapter_.setLastTrackMarkersStyleProperty(flex, String(lastStepRatio));
       }
     }
   }
@@ -271,13 +271,13 @@ class MDCSliderFoundation extends MDCFoundation {
   /**
    * Creates a handler for mouse/touch/pointer down events
    * @param {string} moveEvt
-   * @param {(function(!Event): !number)=} getPageX
+   * @param {(function(!Event): number)=} getPageX
    * @return {function(!Event): undefined}
    */
   createDownHandler_(moveEvt, getPageX = ({pageX}) => pageX) {
     const moveHandler = (evt) => {
       evt.preventDefault();
-      this.setValueFromEvt_(evt, /** @type {function(!Event): !number} */ (getPageX));
+      this.setValueFromEvt_(evt, /** @type {function(!Event): number} */ (getPageX));
     };
 
     // Note: upHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
@@ -303,7 +303,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
       this.adapter_.registerBodyInteractionHandler(moveEvt, moveHandler);
       UP_EVENTS.forEach((type) => this.adapter_.registerBodyInteractionHandler(type, upHandler));
-      this.setValueFromEvt_(evt, /** @type {function(!Event): !number} */ (getPageX));
+      this.setValueFromEvt_(evt, /** @type {function(!Event): number} */ (getPageX));
     };
 
     return downHandler;
@@ -312,7 +312,7 @@ class MDCSliderFoundation extends MDCFoundation {
   /**
    * Sets the slider value from an event
    * @param {!Event} evt
-   * @param {!function(!Event): !number} getPageX
+   * @param {function(!Event): number} getPageX
    */
   setValueFromEvt_(evt, getPageX) {
     const pageX = getPageX(evt);
@@ -339,7 +339,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Handles keydown events
-   * @param {Event} evt
+   * @param {?Event} evt
    */
   handleKeydown_(evt) {
     const keyId = this.getKeyId_(evt);
@@ -357,7 +357,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Returns the computed name of the event
-   * @param {Event} kbdEvt
+   * @param {?Event} kbdEvt
    * @return {string}
    */
   getKeyId_(kbdEvt) {
