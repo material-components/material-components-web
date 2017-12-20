@@ -31,19 +31,19 @@
 }
 
 @mixin mdc-list-item-graphic-fill-color($color) {
-  .mdc-list-item__start-detail {
+  .mdc-list-item__graphic {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
 @mixin mdc-list-item-graphic-ink-color($color) {
-  .mdc-list-item__start-detail {
+  .mdc-list-item__graphic {
     @include mdc-theme-prop(color, $color);
   }
 }
 
 @mixin mdc-list-item-meta-ink-color($color) {
-  .mdc-list-item__end-detail {
+  .mdc-list-item__meta {
     @include mdc-theme-prop(color, $color);
   }
 }
@@ -64,20 +64,16 @@
 // Private
 //
 
-// Sets the width and height of a detail element to the specified value.
-@mixin mdc-list-detail-size_($size) {
-  width: $size;
-  height: $size;
-}
-
-// Sets the width and height of the start detail element, as well as calculates the margins for
-// the start detail element such that the text is always offset by 72px, which is defined within
+// Sets the width and height of the graphic element, as well as calculates the margins for
+// the graphic element such that the text is always offset by 72px, which is defined within
 // the spec.
-@mixin mdc-list-start-detail-size_($size) {
+@mixin mdc-list-graphic-size_($size) {
   $text-offset: 72px;
   $side-padding: $mdc-list-side-padding;
   $margin-value: $text-offset - $side-padding - $size;
 
-  @include mdc-list-detail-size_($size);
   @include mdc-rtl-reflexive-box(margin, right, $margin-value, ".mdc-list-item");
+
+  width: $size;
+  height: $size;
 }
