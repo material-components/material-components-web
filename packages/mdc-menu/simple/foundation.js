@@ -37,7 +37,7 @@ let AnchorMargin;
  *   menuWidth: number,
  * }}
  */
-let AutoLayoutMeasures;
+let AutoLayoutMeasurements;
 /* eslint-enable no-unused-vars */
 
 import MDCFoundation from '@material/base/foundation';
@@ -131,7 +131,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     this.anchorCorner_ = Corner.TOP_START;
     /** @private {AnchorMargin} */
     this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
-    /** @private {?AutoLayoutMeasures} */
+    /** @private {?AutoLayoutMeasurements} */
     this.measures_ = null;
   }
 
@@ -336,9 +336,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {AutoLayoutMeasures} Measurements used to position menu popup.
+   * @return {AutoLayoutMeasurements} Measurements used to position menu popup.
    */
-  getAutoLayoutMeasures_() {
+  getAutoLayoutMeasurements_() {
     const anchorRect = this.adapter_.getAnchorDimensions();
     const viewport = this.adapter_.getWindowDimensions();
 
@@ -368,11 +368,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     let corner = Corner.TOP_LEFT;
 
     const {anchorRect, viewportMargin, anchorHeight, anchorWidth, menuHeight, menuWidth} = this.measures_;
-    const bottomAligned = this.anchorCorner_ & CornerBit.BOTTOM;
-    const availableTop = bottomAligned ? anchorRect.top + anchorHeight + this.anchorMargin_.bottom
+    const isBottomAligned = this.anchorCorner_ & CornerBit.BOTTOM;
+    const availableTop = isBottomAligned ? anchorRect.top + anchorHeight + this.anchorMargin_.bottom
       : viewportMargin.top + this.anchorMargin_.top;
-    const availableBottom = bottomAligned ? viewportMargin.bottom - this.anchorMargin_.bottom
-      : viewportMargin.bottom + anchorHeight - this.anchorMargin_.bottom;
+    const availableBottom = isBottomAligned ? viewportMargin.bottom - this.anchorMargin_.bottom
+      : viewportMargin.bottom + anchorHeight - this.anchorMargin_.top;
 
     const topOverflow = menuHeight - availableTop;
     const bottomOverflow = menuHeight - availableBottom;
@@ -380,11 +380,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       corner |= CornerBit.BOTTOM;
     }
 
-    const leftAligned = this.adapter_.isRtl() ? (this.anchorCorner_ & (CornerBit.FLIP_RTL | CornerBit.RIGHT)) :
+    const isLeftAligned = this.adapter_.isRtl() ? (this.anchorCorner_ & (CornerBit.FLIP_RTL | CornerBit.RIGHT)) :
       !(this.anchorCorner_ & CornerBit.RIGHT);
-    const availableLeft = leftAligned ? viewportMargin.left + this.anchorMargin_.left :
+    const availableLeft = isLeftAligned ? viewportMargin.left + this.anchorMargin_.left :
       viewportMargin.left + anchorWidth + this.anchorMargin_.right;
-    const availableRight = leftAligned ? anchorWidth - this.anchorMargin_.left + viewportMargin.right :
+    const availableRight = isLeftAligned ? viewportMargin.right + anchorWidth - this.anchorMargin_.left:
       viewportMargin.right - this.anchorMargin_.right;
 
     const leftOverflow = menuWidth - availableLeft;
@@ -480,7 +480,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }
 
     // Compute measurements for autoposition methods reuse.
-    this.measures_ = this.getAutoLayoutMeasures_();
+    this.measures_ = this.getAutoLayoutMeasurements_();
 
     const corner = this.getOriginCorner_();
     const maxMenuHeight = this.getMenuMaxHeight_(corner);
