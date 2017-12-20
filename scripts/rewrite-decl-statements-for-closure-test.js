@@ -160,12 +160,14 @@ function transform(srcFile, rootDir) {
   });
 
   const relativePath = path.relative(rootDir, srcFile);
-  const packageParts = relativePath.replace('mdc-', '').replace('.js', '').split('/');
+  const packageParts = relativePath.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
   const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
+
+  console.log(packageParts);
 
   outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode;
   fs.writeFileSync(srcFile, outputCode, 'utf8');
-  console.log(`[rewrite] ${srcFile}`);
+  // console.log(`[rewrite] ${srcFile}`);
 }
 
 function rewriteDeclarationSource(node, srcFile, rootDir) {
@@ -200,7 +202,7 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
       }));
     }
   }
-  const packageParts = resolvedSource.replace('mdc-', '').replace('.js', '').split('/');
+  const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
   const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
   return packageStr;
 }
