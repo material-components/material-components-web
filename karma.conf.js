@@ -30,7 +30,7 @@ const SL_LAUNCHERS = {
   'sl-chrome-beta': {
     base: 'SauceLabs',
     browserName: 'chrome',
-    version: 'beta',
+    version: 'dev',
     platform: 'macOS 10.12',
   },
   'sl-chrome-previous': {
