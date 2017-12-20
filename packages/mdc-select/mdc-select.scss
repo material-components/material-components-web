@@ -18,6 +18,7 @@
 @import "@material/animation/variables";
 @import "@material/typography/mixins";
 @import "@material/theme/mixins";
+@import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 
@@ -260,6 +261,15 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
         @include mdc-theme-prop(color, text-primary-on-dark);
       }
     }
+
+    // Styles to override mdc-ripple-radius from mdc-list, which causes display glitches in Chrome
+    // (See https://github.com/material-components/material-components-web/pull/1737#issuecomment-351105800)
+    @include mdc-ripple-radius(50%);
+
+    &::before,
+    &::after {
+      border-radius: 0;
+    }
   }
 
   .mdc-list-group,
@@ -342,6 +352,16 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
     &:last-child {
       margin-bottom: 8px;
+    }
+
+    // Browsers are inconsistent in what they allow us to override, and some (e.g. Chrome) don't allow overriding the
+    // OS-determined selection color, which states styles are not going to play well with.
+    // Additionally, Firefox seems to ignore position: relative on option elements, which causes the pseudo elements
+    // that we use for ripple/states to position and size themselves relative to the entire body instead.
+    // Disabling states-specific styles on multi-select options altogether is the most straightforward recourse.
+    &::before,
+    &::after {
+      content: none;
     }
   }
   // stylelint-enable plugin/selector-bem-pattern

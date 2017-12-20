@@ -117,36 +117,16 @@ By default an input's validity is checked via `checkValidity()` on blur, and the
 accordingly. Set the MDCTextField.valid field to set the input's validity explicitly. MDC Text Field
 automatically appends an asterisk to the label text if the required attribute is set.
 
+### Using Helper Text
+
+The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
+and disappears on input field blur by default, or it can be persistent. 
+See [here](helper-text/) for more information on using helper text.
+
 ### Leading and Trailing Icons
-Leading and trailing icons can be added to MDC Text Fields as visual indicators
-as well as interaction targets. To do so, add the relevant classes
-(`mdc-text-field--with-leading-icon` or `mdc-text-field--with-trailing-icon`) to the root element, add
-an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`.
 
-#### Leading:
-```html
-<div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
-  <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-text-field__label">Your Name</label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-```
-
-#### Trailing:
-```html
-<div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
-  <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-text-field__label">Your Name</label>
-  <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-```
-
->**NOTE:** if you would like to display un-clickable icons, simply remove `tabindex="0"`,
-and the css will ensure the cursor is set to default, and that actioning on an icon doesn't
-do anything unexpected.
-
+Leading and trailing icons can be added to MDC Text Fields as visual indicators as well as interaction targets.
+See [here](icon/) for more information on using icons.
 
 ### Textarea
 
@@ -189,6 +169,23 @@ Note that **full-width text fields do not support floating labels**. Labels shou
 included as part of the DOM structure for full-width text fields. Full-width textareas
 behave normally.
 
+### Outlined Text Fields
+
+```html
+<div class="mdc-text-field mdc-text-field--outlined">
+  <input type="text" id="tf-outlined" class="mdc-text-field__input">
+  <label for="tf-outlined" class="mdc-text-field__label">Your Name</label>
+  <div class="mdc-text-field__outline">
+    <svg>
+      <path class="mdc-text-field__outline-path"/>
+    </svg>
+  </div>
+  <div class="mdc-text-field__idle-outline"></div>
+</div>
+```
+
+See [here](outline/) for more information on using the outline sub-component.
+
 ### Text Field Boxes
 
 ```html
@@ -199,8 +196,7 @@ behave normally.
 </div>
 ```
 
-Note that Text field boxes support all of the same features as normal text-fields, including helper
-text, validation, and dense UI.
+Note that both Text Field Boxes and Outlined Text Fields support all of the same features as normal Text Fields, including helper text, validation, and dense UI.
 
 #### CSS-only text field boxes
 
@@ -316,6 +312,10 @@ String setter. Proxies to the foundation's `setHelperTextContent` method when se
 `MDCRipple` instance. Set to the `MDCRipple` instance for the root element that `MDCTextField`
 initializes when given an `mdc-text-field--box` root element. Otherwise, the field is set to `null`.
 
+##### MDCTextField.layout()
+
+Recomputes the outline SVG path for the outline element, and recomputes all dimensions and positions for the ripple element.
+
 ### Using the foundation class
 
 Because MDC Text Field is a feature-rich and relatively complex component, its adapter is a bit more
@@ -325,19 +325,17 @@ complicated.
 | --- | --- |
 | addClass(className: string) => void | Adds a class to the root element |
 | removeClass(className: string) => void | Removes a class from the root element |
-| addClassToLabel(className: string) => void | Adds a class to the label element. We recommend you add a conditional check here, and in `removeClassFromLabel` for whether or not the label is present so that the JS component could be used with text fields that don't require a label, such as the full-width text field. |
-| removeClassFromLabel(className: string) => void | Removes a class from the label element |
-| eventTargetHasClass(target: HTMLElement, className: string) => boolean | Returns true if classname exists for a given target element |
 | registerTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event handler on the root element for a given event |
 | deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event handler on the root element for a given event |
-| notifyIconAction() => void | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon |
 | registerInputInteractionHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the native input element for a given event |
 | deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the native input element for a given event |
 | registerBottomLineEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the bottom line element for a given event |
 | deregisterBottomLineEventHandler(evtType: string, handler: EventListener) => void | Deregisters an event listener on the bottom line element for a given event |
 | getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}? | Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. |
+| getIdleOutlineStyleValue(propertyName: string) => string | Returns the idle outline element's computed style value of the given css property `propertyName`. We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.|
+| isRtl() => boolean | Returns whether the direction of the root element is set to RTL. |
 
-MDC Text Field has multiple optional sub-elements: bottom line and helper text. The foundations of these sub-elements must be passed in as constructor arguments for the `MDCTextField` foundation. Since the `MDCTextField` component takes care of creating its foundation, we need to pass sub-element foundations through the `MDCTextField` component. This is typically done in the component's implementation of `getDefaultFoundation()`.
+MDC Text Field has multiple optional sub-elements: bottom line, helper text, and outline. The foundations of these sub-elements must be passed in as constructor arguments for the `MDCTextField` foundation. Since the `MDCTextField` component takes care of creating its foundation, we need to pass sub-element foundations through the `MDCTextField` component. This is typically done in the component's implementation of `getDefaultFoundation()`.
 
 #### The full foundation API
 
@@ -373,6 +371,10 @@ finish. Expects a transition-end event.
 ##### MDCTextFieldFoundation.setHelperTextContent(content)
 
 Sets the content of the helper text, if it exists.
+
+##### MDCTextFieldFoundation.updateOutline()
+
+Updates the focus outline for outlined text fields.
 
 ### Theming
 
