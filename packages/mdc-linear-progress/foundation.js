@@ -35,7 +35,7 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
       getBuffer: () => /* el: Element */ {},
       hasClass: (/* className: string */) => false,
       removeClass: (/* className: string */) => {},
-      setStyle: (/* el: Element, styleProperty: string, value: number */) => {},
+      setStyle: (/* el: Element, styleProperty: string, value: string */) => {},
     };
   }
 
