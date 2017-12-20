@@ -51,8 +51,9 @@ The outline is a border around all sides of the text field. This is used for the
 
 CSS Class | Description
 --- | ---
-`mdc-text-field-bottom-line` | Mandatory
-`mdc-text-field-bottom-line--active` | Styles the bottom line as an active bottom line
+`mdc-text-field__outline` | Mandatory
+`mdc-text-field__outline-path` | Mandatory
+`mdc-text-field__idle-outline` | Mandatory
 
 #### `MDCTextFieldOutline`
 
