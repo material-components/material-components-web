@@ -18,33 +18,41 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Text Field Label.
+ * Adapter for MDC Text Field Icon.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Text Field label into your framework. See
+ * adapter to integrate the text field icon into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCTextFieldLabelAdapter {
+class MDCTextFieldIconAdapter {
   /**
-   * Adds a class to the label element.
-   * @param {string} className
+   * Sets an attribute on the icon element.
+   * @param {string} attr
+   * @param {string} value
    */
-  addClass(className) {}
+  setAttr(attr, value) {}
 
   /**
-   * Removes a class from the label element.
-   * @param {string} className
+   * Registers an event listener on the icon element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
    */
-  removeClass(className) {}
+  registerInteractionHandler(evtType, handler) {}
 
   /**
-   * Returns the width of the label element.
-   * @return {number}
+   * Deregisters an event listener on the icon element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
    */
-  getWidth() {}
+  deregisterInteractionHandler(evtType, handler) {}
+
+  /**
+   * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
+   */
+  notifyIconAction() {}
 }
 
-export default MDCTextFieldLabelAdapter;
+export default MDCTextFieldIconAdapter;

@@ -20,10 +20,10 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCTextField, MDCTextFieldFoundation} from '../../../packages/mdc-textfield';
-import {MDCTextFieldHelperText} from '../../../packages/mdc-textfield/helper-text/index';
+import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldBottomLine, MDCTextFieldHelperText,
+  MDCTextFieldIcon, MDCTextFieldLabel, MDCTextFieldOutline} from '../../../packages/mdc-textfield';
 
-const {cssClasses, strings} = MDCTextFieldFoundation;
+const {cssClasses} = MDCTextFieldFoundation;
 
 const getFixture = () => bel`
   <div class="mdc-text-field">
@@ -52,6 +52,31 @@ class FakeBottomLine {
   constructor() {
     this.listen = td.func('bottomLine.listen');
     this.unlisten = td.func('bottomLine.unlisten');
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeHelperText {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeIcon {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeLabel {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeOutline {
+  constructor() {
+    this.destroy = td.func('.destroy');
   }
 }
 
@@ -75,10 +100,16 @@ test('#constructor when given a `mdc-text-field--box` element, initializes a def
   assert.instanceOf(component.ripple, MDCRipple);
 });
 
+test('#constructor instantiates a bottom line on the `.mdc-text-field__bottom-line` element if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.bottomLine_, MDCTextFieldBottomLine);
+});
+
 const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
 
 test('#constructor instantiates a helper text on the element with id specified in the input aria-controls' +
-     'if present', () => {
+  'if present', () => {
   const root = getFixture();
   root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
   const helperText = getHelperTextElement();
@@ -88,6 +119,53 @@ test('#constructor instantiates a helper text on the element with id specified i
   document.body.removeChild(helperText);
 });
 
+test('#constructor instantiates an icon on the `.mdc-text-field__icon` element if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.icon_, MDCTextFieldIcon);
+});
+
+test('#constructor instantiates a label on the `.mdc-text-field__label` element if present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.label_, MDCTextFieldLabel);
+});
+
+test('#constructor instantiates an outline on the `.mdc-text-field__outline` element if present', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.outline_, MDCTextFieldOutline);
+});
+
+test('#constructor handles undefined optional sub-elements gracefully', () => {
+  const root = bel`
+    <div class="mdc-text-field">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+    </div>
+  `;
+  assert.doesNotThrow(() => new MDCTextField(root));
+});
+
+function setupTest(root = getFixture()) {
+  const bottomLine = new FakeBottomLine();
+  const helperText = new FakeHelperText();
+  const icon = new FakeIcon();
+  const label = new FakeLabel();
+  const outline = new FakeOutline();
+  const component = new MDCTextField(
+    root,
+    undefined,
+    (el) => new FakeRipple(el),
+    () => bottomLine,
+    () => helperText,
+    () => icon,
+    () => label,
+    () => outline
+  );
+  return {root, component, bottomLine, helperText, icon, label, outline};
+}
+
 test('#destroy cleans up the ripple if present', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
@@ -96,18 +174,52 @@ test('#destroy cleans up the ripple if present', () => {
   td.verify(component.ripple.destroy());
 });
 
-test('#destroy accounts for ripple nullability', () => {
-  const component = new MDCTextField(getFixture());
-  assert.doesNotThrow(() => component.destroy());
+test('#destroy cleans up the bottom line if present', () => {
+  const {component, bottomLine} = setupTest();
+  component.destroy();
+  td.verify(bottomLine.destroy());
 });
 
-function setupTest() {
+test('#destroy cleans up the helper text if present', () => {
   const root = getFixture();
-  const icon = root.querySelector('.mdc-text-field__icon');
-  const bottomLine = new FakeBottomLine();
-  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el), () => bottomLine);
-  return {root, bottomLine, icon, component};
-}
+  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
+  const helperTextElement = getHelperTextElement();
+  document.body.appendChild(helperTextElement);
+  const {component, helperText} = setupTest(root);
+  component.destroy();
+  td.verify(helperText.destroy());
+  document.body.removeChild(helperTextElement);
+});
+
+test('#destroy cleans up the icon if present', () => {
+  const {component, icon} = setupTest();
+  component.destroy();
+  td.verify(icon.destroy());
+});
+
+test('#destroy cleans up the label if present', () => {
+  const {component, label} = setupTest();
+  component.destroy();
+  td.verify(label.destroy());
+});
+
+test('#destroy cleans up the outline if present', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
+  const {component, outline} = setupTest(root);
+  component.destroy();
+  td.verify(outline.destroy());
+});
+
+test('#destroy handles undefined optional sub-elements gracefully', () => {
+  const root = bel`
+    <div class="mdc-text-field">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+    </div>
+  `;
+  const component = new MDCTextField(root);
+  assert.doesNotThrow(() => component.destroy());
+});
 
 test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
   const {component} = setupTest();
@@ -140,17 +252,6 @@ test('set valid updates the component styles', () => {
   assert.isNotOk(root.classList.contains(cssClasses.INVALID));
 });
 
-test('set helperTextContent updates the helper text element content', () => {
-  const root = getFixture();
-  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperText = getHelperTextElement();
-  document.body.appendChild(helperText);
-  const component = new MDCTextField(root);
-  component.helperTextContent = 'foo';
-  assert.equal(helperText.textContent, 'foo');
-  document.body.removeChild(helperText);
-});
-
 test('set helperTextContent has no effect when no helper text element is present', () => {
   const {component} = setupTest();
   assert.doesNotThrow(() => {
@@ -158,11 +259,12 @@ test('set helperTextContent has no effect when no helper text element is present
   });
 });
 
-test('#adapter.setIconAttr sets a given attribute to a given value to the icon element', () => {
-  const {icon, component} = setupTest();
-
-  component.getDefaultFoundation().adapter_.setIconAttr('tabindex', '-1');
-  assert.equal(icon.getAttribute('tabindex'), '-1');
+test('#layout recomputes all dimensions and positions for the ripple element', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.BOX);
+  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
+  component.layout();
+  td.verify(component.ripple.layout());
 });
 
 test('#adapter.registerBottomLineEventHandler adds event listener to bottom line', () => {
@@ -237,12 +339,28 @@ test('#adapter.getNativeInput returns the component input element', () => {
   );
 });
 
-test(`#adapter.notifyIconAction emits ${strings.ICON_EVENT}`, () => {
-  const {component} = setupTest();
-  const handler = td.func('leadingHandler');
+test('#adapter.getIdleOutlineStyleValue returns the value of the given property on the idle outline element', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__idle-outline"></div>`);
+  const idleOutline = root.querySelector('.mdc-text-field__idle-outline');
+  idleOutline.style.width = '500px';
 
-  component.listen(strings.ICON_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyIconAction();
+  const component = new MDCTextField(root);
+  assert.equal(
+    component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'),
+    getComputedStyle(idleOutline).getPropertyValue('width')
+  );
+});
 
-  td.verify(handler(td.matchers.anything()));
+test('#adapter.isRtl returns true when the root element is in an RTL context' +
+  'and false otherwise', () => {
+  const wrapper = bel`<div dir="rtl"></div>`;
+  const {root, component} = setupTest();
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
+
+  wrapper.appendChild(root);
+  document.body.appendChild(wrapper);
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
+
+  document.body.removeChild(wrapper);
 });
