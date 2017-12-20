@@ -518,7 +518,7 @@ export class MDCDragCollection extends MDCComponent {
     const dropZone = this.activeDropZone_ = MDCDragCollection.getDropZone_(e, this.dropZones_);
 
     // TODO(acdvorak): Avoid thrashing the DOM, especially on low-end devices.
-    this.resetItemOffsets_(this.draggableItemList_);
+    this.resetDropShifts_(this.draggableItemList_);
 
     if (!dropZone) {
       this.removeDraggingStateElements_();
@@ -534,18 +534,18 @@ export class MDCDragCollection extends MDCComponent {
     if (this.isSingleColumnMode()) {
       const curCol = this.rows_.map((row) => row[0]);
       curCol.forEach((curItemInCol, curRowIndex) => {
-        this.setItemOffsetY_(curRowIndex, curItemInCol);
+        this.setVerticalDropShift_(curRowIndex, curItemInCol);
       });
     } else {
       const curRow = this.rows_[dropZone.rowIndex];
       curRow.forEach((curItemInRow, curColIndex) => {
-        this.setItemOffsetX_(curColIndex, curItemInRow);
+        this.setHorizontalDropShift_(curColIndex, curItemInRow);
       });
     }
   }
 
   handleDragStop_(e) {
-    this.resetItemOffsets_(this.draggableItemList_);
+    this.resetDropShifts_(this.draggableItemList_);
     this.removeDraggingStateElements_();
 
     if (this.activeDropZone_) {
@@ -627,23 +627,21 @@ export class MDCDragCollection extends MDCComponent {
     return !isFirstRow && isFirstItemInRow;
   }
 
-  setItemOffsetY_(itemRowIndex, item) {
+  setVerticalDropShift_(itemRowIndex, item) {
     const dzIsAfterItem = this.activeDropZone_.isAfterItem();
     const multiplier = (dzIsAfterItem || (itemRowIndex < this.activeDropZone_.rowIndex)) ? -1 : +1;
-    item.offsetX = 0;
-    item.offsetY = multiplier * (this.activeDropZone_.rowAlleyInPx_ / 2);
+    item.setDropShift({x: 0, y: multiplier * (this.activeDropZone_.rowAlleyInPx_ / 2)});
   }
 
-  setItemOffsetX_(itemColIndex, item) {
+  setHorizontalDropShift_(itemColIndex, item) {
     const dzIsAfterItem = this.activeDropZone_.isAfterItem();
     const multiplier = (dzIsAfterItem || (itemColIndex < this.activeDropZone_.colIndex)) ? -1 : +1;
-    item.offsetY = 0;
-    item.offsetX = multiplier * (this.colAlleyInPx_ / 2);
+    item.setDropShift({x: multiplier * (this.colAlleyInPx_ / 2), y: 0});
   }
 
-  resetItemOffsets_(items) {
+  resetDropShifts_(items) {
     items.forEach((item) => {
-      item.clearOffsets();
+      item.resetDropShift();
     });
   }
 

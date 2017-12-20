@@ -28,8 +28,6 @@ export class MDCDraggableItem extends MDCComponent {
   initialize() {
     this.dragCollectionEl = util.closest(this.root_, '.mdc-drag-collection');
     this.dragCollectionOffsetRect = util.getElementOffset(this.root_, this.dragCollectionEl);
-    this.offsetX_ = 0;
-    this.offsetY_ = 0;
 
     // this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, this.acceptButton_);
     // this.footerBtnRipples_ = [];
@@ -72,30 +70,13 @@ export class MDCDraggableItem extends MDCComponent {
     // });
   }
 
-  clearOffsets() {
-    this.offsetX_ = 0;
-    this.offsetY_ = 0;
-    this.root_.style.transform = '';
+  resetDropShift() {
+    this.setDropShift({x: 0, y: 0});
   }
 
-  get offsetX() {
-    return this.offsetX_;
-  }
-
-  set offsetX(offsetX) {
-    this.offsetX_ = offsetX;
+  setDropShift({x = 0, y = 0} = {}) {
     // TODO(acdvorak): Find a way to do this that won't prevent clients from being able to use `transform`.
-    this.root_.style.transform = this.offsetX_ ? `translateX(${this.offsetX_}px)` : '';
-  }
-
-  get offsetY() {
-    return this.offsetY_;
-  }
-
-  set offsetY(offsetY) {
-    this.offsetY_ = offsetY;
-    // TODO(acdvorak): Find a way to do this that won't prevent clients from being able to use `transform`.
-    this.root_.style.transform = this.offsetY_ ? `translateY(${this.offsetY_}px)` : '';
+    this.root_.style.transform = (x || y) ? `translate3d(${x}px, ${y}px, 0)` : '';
   }
 
   isDragSource() {
