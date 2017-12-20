@@ -47,3 +47,8 @@ test('#adapter.removeClass removes a class from the element', () => {
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
 });
+
+test('#adapter.getWidth returns the width of the label element', () => {
+  const {root, component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getWidth(), root.offsetWidth);
+});

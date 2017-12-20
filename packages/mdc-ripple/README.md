@@ -102,10 +102,6 @@ Mixin | Description
 `mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Adds styles for focus state using the provided opacity. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 `mdc-states-press-opacity($opacity)` | Adds styles for press state using the provided opacity
 
-#### Legacy Sass API
-
-The `mdc-ripple-color($color, $opacity)` mixin is deprecated. Use the basic or advanced states mixins (documented above) instead, which provide finer control over a component's opacity for different states of user interaction.
-
 ### Adding Ripple JS
 
 First import the ripple JS.

@@ -17,23 +17,7 @@
 
 /** @enum {string} */
 const strings = {
-  ARIA_CONTROLS: 'aria-controls',
-  INPUT_SELECTOR: '.mdc-text-field__input',
-  LABEL_SELECTOR: '.mdc-text-field__label',
-  ICON_SELECTOR: '.mdc-text-field__icon',
-  IDLE_OUTLINE_SELECTOR: '.mdc-text-field__idle-outline',
-  OUTLINE_SELECTOR: '.mdc-text-field__outline',
-  BOTTOM_LINE_SELECTOR: '.mdc-text-field__bottom-line',
+  PATH_SELECTOR: '.mdc-text-field__outline-path',
 };
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-text-field',
-  UPGRADED: 'mdc-text-field--upgraded',
-  DISABLED: 'mdc-text-field--disabled',
-  FOCUSED: 'mdc-text-field--focused',
-  INVALID: 'mdc-text-field--invalid',
-  BOX: 'mdc-text-field--box',
-};
-
-export {cssClasses, strings};
+export {strings};
