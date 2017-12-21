@@ -82,13 +82,13 @@ class MDCRipple extends MDCComponent {
 
   /** @param {boolean} unbounded */
   set unbounded(unbounded) {
-    const {UNBOUNDED} = MDCRippleFoundation.cssClasses;
     this.unbounded_ = Boolean(unbounded);
-    if (this.unbounded_) {
-      this.root_.classList.add(UNBOUNDED);
-    } else {
-      this.root_.classList.remove(UNBOUNDED);
-    }
+    this.setUnbounded_();
+  }
+
+  /** @private */
+  setUnbounded_() {
+    this.foundation_.setUnbounded(this.unbounded_);
   }
 
   activate() {
