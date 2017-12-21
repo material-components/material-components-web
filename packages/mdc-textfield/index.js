@@ -114,6 +114,8 @@ class MDCTextField extends MDCComponent {
 
     this.ripple = null;
     if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
+      // For outlined text fields, the ripple is instantiated on the outline element instead of the root element
+      // to clip the ripple at the outline while still allowing the label to be visible beyond the outline.
       const rippleCapableSurface = outlineElement ? this.outline_ : this;
       const rippleRoot = outlineElement ? outlineElement : this.root_;
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
