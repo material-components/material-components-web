@@ -217,7 +217,7 @@ Method Signature | Description
 
 ##### `MDCTextField.ripple`
 
-The `MDCRipple` instance for the root element that `MDCTextField` initializes when given an `mdc-text-field--box` root element. Otherwise, the field is set to `null`.
+`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-text-field__outline` element. Otherwise, the field is set to `null`.
 
 ### `MDCTextFieldAdapter`
 
