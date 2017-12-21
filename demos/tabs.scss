@@ -140,14 +140,6 @@ fieldset legend {
   }
 }
 
-.demo-tab-bar--custom-height {
-  @include mdc-tab-indicator-height(10px);
-}
-
-.demo-tab-bar--custom-width {
-  @include mdc-tab-width(90px);
-}
-
 .demo-tab-bar--custom-label {
   @include mdc-tab-label-ink-color($material-color-indigo-500);
 }

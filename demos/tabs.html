@@ -77,54 +77,6 @@
       </section>
 
       <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Basic Tab Bar with Custom Height</legend>
-          <nav id="basic-tab-bar-custom-height" class="mdc-tab-bar demo-tab-bar--custom-height">
-            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
-            <a class="mdc-tab" href="#two">Item Two</a>
-            <a class="mdc-tab" href="#three">Three</a>
-            <span class="mdc-tab-bar__indicator"></span>
-          </nav>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">CSS-Only Tab Bar with Custom Height</legend>
-          <nav class="mdc-tab-bar demo-tab-bar--custom-height">
-            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
-            <a class="mdc-tab" href="#two">Item Two</a>
-            <a class="mdc-tab" href="#three">Three</a>
-            <span class="mdc-tab-bar__indicator"></span>
-          </nav>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Basic Tab Bar with Custom Width</legend>
-          <nav id="basic-tab-bar-custom-width" class="mdc-tab-bar demo-tab-bar--custom-width">
-            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
-            <a class="mdc-tab" href="#two">Item Two</a>
-            <a class="mdc-tab" href="#three">Three</a>
-            <span class="mdc-tab-bar__indicator"></span>
-          </nav>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">CSS-Only Tab Bar with Custom Width</legend>
-          <nav class="mdc-tab-bar demo-tab-bar--custom-width">
-            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
-            <a class="mdc-tab" href="#two">Item Two</a>
-            <a class="mdc-tab" href="#three">Three</a>
-            <span class="mdc-tab-bar__indicator"></span>
-          </nav>
-        </fieldset>
-      </section>
-
-      <section>
         <div class="demo-tabs__scroller">
           <h2 class="mdc-typography--title demo-title">Tab Bar with Scroller</h2>
           <div id="tab-bar-scroller" class="mdc-tab-bar-scroller demo-tab-bar-scroller">
@@ -544,8 +496,6 @@
 
           window.demoTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#demo-tab-bar'));
           window.basicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar'));
-          window.basicTabBarHeight = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar-custom-height'));
-          window.basicTabBarWidth = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar-custom-width'));
           window.tabBarScroller = new mdc.tabs.MDCTabBarScroller(document.querySelector('#tab-bar-scroller'));
           window.iconTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-tab-bar'));
           window.iconTextTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
@@ -556,7 +506,6 @@
           window.customIconTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-custom-icon-tab-bar'));
           window.customIconActivatedTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-custom-icon-activated-tab-bar'));
           window.primaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-custom-indicator'));
-          window.secondaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-secondary-indicator'));
 
           var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
           var dots = document.querySelector('.dots');
@@ -621,8 +570,6 @@
 
             window.demoTabBar.layout();
             window.basicTabBar.layout();
-            window.basicTabBarHeight.layout();
-            window.basicTabBarWidth.layout();
             window.tabBarScroller.layout();
             window.tabBarScroller.tabBar.layout();
             window.iconTabBar.layout();
@@ -631,7 +578,6 @@
             window.customLabelTabBar.layout();
             window.customLabelActivatedTabBar.layout();
             window.primaryIndicatorToolbarTabBar.layout();
-            window.secondaryIndicatorToolbarTabBar.layout();
             window.customIconTabBar.layout();
             window.customIconActivatedTabBar.layout();
             window.dynamicTabBar.layout();

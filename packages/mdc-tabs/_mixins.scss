@@ -69,20 +69,3 @@
     @include mdc-theme-prop(color, $color);
   }
 }
-
-@mixin mdc-tab-indicator-height($height) {
-  .mdc-tab-bar__indicator {
-    height: $height;
-  }
-
-  &:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
-    bottom: 1px;
-    height: $height;
-  }
-}
-
-@mixin mdc-tab-width($width) {
-  .mdc-tab {
-    min-width: $width;
-  }
-}

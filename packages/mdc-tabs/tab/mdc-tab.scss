@@ -35,6 +35,7 @@
   display: table-cell;
   position: relative;
   box-sizing: border-box;
+  min-width: 160px;
   min-height: $mdc-tab-with-text-height;
   padding: 0 24px;
   text-align: center;
@@ -81,6 +82,7 @@
     position: absolute;
     left: 0;
     width: calc(100% - 4px);
+    height: 2px;
     content: "";
     pointer-events: none;
 

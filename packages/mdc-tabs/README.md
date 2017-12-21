@@ -51,16 +51,9 @@ icon-only, and text with icon. An example of each is available on the demo site.
 </nav>
 ```
 
-| Class | Description |
-| -------------------------------------- | -------------------------------------------------------------------------- |
-| `mdc-tab-bar`                          | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-tab`                              | Mandatory. Needs to be set on the child (tab) element of the component.    |
-| `mdc-tab-bar__indicator`               | Mandatory. Needs to be set as a child of the root element. The element acts as the activated affordance. |
-| `mdc-tab--active`                      | Optional. Should be set on the initial active tab.                         |
-
 #### Tab Bar with icon labels
 ```html
-<nav class="mdc-tab-bar">
+<nav class="mdc-tab-bar mdc-tab-bar--icon-tab-bar">
   <a class="mdc-tab mdc-tab--active" href="#recents">
     <i class="material-icons mdc-tab__icon" aria-label="Recents">phone</i>
   </a>
@@ -74,39 +67,24 @@ icon-only, and text with icon. An example of each is available on the demo site.
 </nav>
 ```
 
-| Class | Description |
-| -------------------------------------- | -------------------------------------------------------------------------- |
-| `mdc-tab-bar`                          | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-tab`                              | Mandatory. Needs to be set on the child (tab) element of the component.    |
-| `mdc-tab-bar__indicator`               | Mandatory. Needs to be set as a child of the root element. The element acts as the activated affordance. |
-| `mdc-tab--active`                      | Optional. Should be set on the initial active tab.                         |
-
 #### Tab Bar with icon and text labels
 ```html
 <nav id="icon-text-tab-bar" class="mdc-tab-bar mdc-tab-bar--icons-with-text">
-  <a class="mdc-tab mdc-tab--active" href="#recents">
+  <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="#recents">
     <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
     <span class="mdc-tab__icon-text">Recents</span>
   </a>
-  <a class="mdc-tab" href="#favorites">
+  <a class="mdc-tab mdc-tab--with-icon-and-text" href="#favorites">
     <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
     <span class="mdc-tab__icon-text">Favorites</span>
   </a>
-  <a class="mdc-tab" href="#nearby">
+  <a class="mdc-tab mdc-tab--with-icon-and-text" href="#nearby">
     <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
     <span class="mdc-tab__icon-text">Nearby</span>
   </a>
   <span class="mdc-tab-bar__indicator"></span>
 </nav>
 ```
-
-| Class | Description |
-| -------------------------------------- | -------------------------------------------------------------------------- |
-| `mdc-tab-bar`                          | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-tab-bar--icons-with-text`          | Mandatory. Needs to be set with root element to increase height.           |
-| `mdc-tab`                              | Mandatory. Needs to be set on the child (tab) element of the component.    |
-| `mdc-tab-bar__indicator`               | Mandatory. Needs to be set as a child of the root element. The element acts as the activated affordance. |
-| `mdc-tab--active`                      | Optional. Should be set on the initial active tab.                         |
 
 #### RTL Support
 
@@ -256,14 +234,6 @@ This mixin customizes the label ink color in the activated state. It can accept 
 #### `mdc-tab-icon-activated-ink-color($color)`
 
 This mixin customizes the icon color in the activated state. It will default to what is set by the `mdc-tab-label-activated-ink-color` mixin.
-
-#### `mdc-tab-indicator-height($height)`
-
-This mixin customizes the height of the indicator. Default is 2px.
-
-#### `mdc-tab-width($width)`
-
-This mixin customizes the width of the tab. Defaults to 160px.
 
 ### Using the CSS-Only Component
 
