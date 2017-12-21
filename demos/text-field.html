@@ -296,24 +296,24 @@
           </div>
         </div>
         <div>
-          <input id="box-disable-leading-trailing" type="checkbox">
-          <label for="box-disable-leading-trailing">Disabled</label>
+          <input id="disable-leading-trailing" type="checkbox">
+          <label for="disable-leading-trailing">Disabled</label>
         </div>
         <div>
-          <input id="box-rtl-leading-trailing" type="checkbox">
-          <label for="box-rtl-leading-trailing">RTL</label>
+          <input id="rtl-leading-trailing" type="checkbox">
+          <label for="rtl-leading-trailing">RTL</label>
         </div>
         <div>
-          <input id="box-dark-theme-leading-trailing" type="checkbox">
-          <label for="box-dark-theme-leading-trailing">Dark Theme</label>
+          <input id="dark-theme-leading-trailing" type="checkbox">
+          <label for="dark-theme-leading-trailing">Dark Theme</label>
         </div>
         <div>
-          <input id="box-dense-leading-trailing" type="checkbox">
-          <label for="box-dense-leading-trailing">Dense</label>
+          <input id="dense-leading-trailing" type="checkbox">
+          <label for="dense-leading-trailing">Dense</label>
         </div>
         <div>
-          <input id="box-unclickable-leading-trailing" type="checkbox">
-          <label for="box-unclickable-leading-trailing">Unclickable icons</label>
+          <input id="unclickable-leading-trailing" type="checkbox">
+          <label for="unclickable-leading-trailing">Unclickable icons</label>
         </div>
       </section>
 
@@ -423,46 +423,46 @@
     </script>
     <script>
       setTimeout(function() {
-        var tfLeadingEl = document.getElementById('tf-box-leading-example');
-        var tfLeading = new mdc.textField.MDCTextField(tfLeadingEl);
-        var wrapperLeading = document.getElementById('demo-tf-box-leading-wrapper');
+        var tfBoxLeadingEl = document.getElementById('tf-box-leading-example');
+        var tfBoxLeading = new mdc.textField.MDCTextField(tfBoxLeadingEl);
+        var wrapperBoxLeading = document.getElementById('demo-tf-box-leading-wrapper');
 
-        var tfTrailingEl = document.getElementById('tf-box-trailing-example');
-        var tfTrailing = new mdc.textField.MDCTextField(tfTrailingEl);
-        var wrapperTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+        var tfBoxTrailingEl = document.getElementById('tf-box-trailing-example');
+        var tfBoxTrailing = new mdc.textField.MDCTextField(tfBoxTrailingEl);
+        var wrapperBoxTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
 
         var tfIcons = document.querySelectorAll('.mdc-text-field__icon');
 
-        document.getElementById('box-disable-leading-trailing').addEventListener('change', function(evt) {
-          tfLeading.disabled = evt.target.checked;
-          tfTrailing.disabled = evt.target.checked;
+        document.getElementById('disable-leading-trailing').addEventListener('change', function(evt) {
+          tfBoxLeading.disabled = evt.target.checked;
+          tfBoxTrailing.disabled = evt.target.checked;
         });
 
-        document.getElementById('box-rtl-leading-trailing').addEventListener('change', function(evt) {
+        document.getElementById('rtl-leading-trailing').addEventListener('change', function(evt) {
           if (evt.target.checked) {
-            wrapperLeading.setAttribute('dir', 'rtl');
-            wrapperTrailing.setAttribute('dir', 'rtl');
+            wrapperBoxLeading.setAttribute('dir', 'rtl');
+            wrapperBoxTrailing.setAttribute('dir', 'rtl');
           } else {
-            wrapperLeading.removeAttribute('dir');
-            wrapperTrailing.removeAttribute('dir');
+            wrapperBoxLeading.removeAttribute('dir');
+            wrapperBoxTrailing.removeAttribute('dir');
           }
-          tfLeading.layout();
-          tfTrailing.layout();
+          tfBoxLeading.layout();
+          tfBoxTrailing.layout();
         });
 
-        document.getElementById('box-dark-theme-leading-trailing').addEventListener('change', function(evt) {
-          wrapperLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
-          wrapperTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        document.getElementById('dark-theme-leading-trailing').addEventListener('change', function(evt) {
+          wrapperBoxLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperBoxTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
 
-        document.getElementById('box-dense-leading-trailing').addEventListener('change', function(evt) {
-          tfLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-          tfLeading.layout();
-          tfTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-          tfTrailing.layout();
+        document.getElementById('dense-leading-trailing').addEventListener('change', function(evt) {
+          tfBoxLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfBoxLeading.layout();
+          tfBoxTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfBoxTrailing.layout();
         });
 
-        document.getElementById('box-unclickable-leading-trailing').addEventListener('change', function(evt) {
+        document.getElementById('unclickable-leading-trailing').addEventListener('change', function(evt) {
           [].slice.call(tfIcons).forEach(function (icon) {
             icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
           });
