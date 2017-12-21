@@ -250,12 +250,13 @@
 }
 
 @mixin mdc-checkbox__background_ {
-  @include mdc-checkbox__child--cover-parent_;
   @include mdc-rtl-reflexive-position(
     left, ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2, ".mdc-checkbox");
 
   display: inline-flex;
+  position: absolute;
   top: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
+  bottom: 0;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;

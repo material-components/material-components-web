@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "The bottom line indicates where to enter text, displayed below the label"
 iconId: text_field
-path: /catalog/input-controls/text-fields/bottom-line/
+path: /catalog/input-controls/text-field/bottom-line/
 -->
 
 # Text Field Bottom Line
@@ -19,41 +19,53 @@ The bottom line indicates where to enter text, displayed below the label. When a
   </li>
 </ul>
 
-
 ## Usage
 
-#### MDCTextFieldBottomLine API
+### HTML Structure
 
-##### MDCTextFieldBottomLine.foundation
+```html
+<div class="mdc-text-field__bottom-line"></div>
+```
 
-MDCTextFieldBottomLineFoundation. This allows the parent MDCTextField component to access the public methods on the MDCTextFieldBottomLineFoundation class.
+### Usage within `mdc-text-field`
 
-### Using the foundation class
+```html
+<div class="mdc-text-field">
+  <input type="text" id="my-text-field-id" class="mdc-text-field__input">
+  <label class="mdc-text-field__label" for="my-text-field-id">Hint text</label>
+  <div class="mdc-text-field__bottom-line"></div>
+</div>
+```
 
+### CSS Classes
+
+CSS Class | Description
+--- | ---
+`mdc-text-field-bottom-line` | Mandatory
+`mdc-text-field-bottom-line--active` | Styles the bottom line as an active bottom line
+
+### `MDCTextFieldBottomLine`
+
+##### `MDCTextFieldBottomLine.foundation`
+
+This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldBottomLineFoundation` class.
+
+### `MDCTextFieldBottomLineAdapter`
 
 Method Signature | Description
 --- | ---
-addClass(className: string) => void | Adds a class to the root element
-removeClass(className: string) => void | Removes a class from the root element
-setAttr(attr: string, value: string) => void | Sets an attribute with a given value on the root element
-registerEventHandler(evtType: string, handler: EventListener) => void | Registers an event listener on the root element for a given event
-deregisterEventHandler(handler: EventListener) => void | Deregisters an event listener on the root element for a given event
-notifyAnimationEnd() => void | Emits a custom event "MDCTextFieldBottomLine:animation-end" denoting the bottom line has finished its animation; either the activate or deactivate animation |
+`addClass(className: string) => void` | Adds a class to the root element
+`removeClass(className: string) => void` | Removes a class from the root element
+`setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the root element
+`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element for a given event
+`deregisterEventHandler(handler: EventListener) => void` | Deregisters an event listener on the root element for a given event
+`notifyAnimationEnd() => void` | Emits a custom event "MDCTextFieldBottomLine:animation-end" denoting the bottom line has finished its animation; either the activate or deactivate animation
 
-#### The full foundation API
+### `MDCTextFieldBottomLineFoundation`
 
-##### MDCTextFieldBottomLineFoundation.activate()
-
-Activates the bottom line
-
-##### MDCTextFieldBottomLineFoundation.deactivate()
-
-Deactivates the bottom line
-
-##### MDCTextFieldBottomLineFoundation.setTransformOrigin(evt: Event)
-
-Sets the transform origin given a user's click location.
-
-##### MDCTextFieldBottomLineFoundation.handleTransitionEnd(evt: Event)
-
-Handles a transition end event
+Method Signature | Description
+--- | ---
+`activate() => void` | Activates the bottom line
+`deactivate => void` | Deactivates the bottom line
+`setTransformOrigin(evt: Event) => void` | Sets the transform origin given a user's click location
+`handleTransitionEnd(evt: Event) => void` | Handles a transition end event
