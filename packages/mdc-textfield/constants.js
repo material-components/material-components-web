@@ -34,6 +34,7 @@ const cssClasses = {
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
   BOX: 'mdc-text-field--box',
+  OUTLINED: 'mdc-text-field--outlined',
 };
 
 export {cssClasses, strings};
