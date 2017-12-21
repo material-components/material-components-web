@@ -39,7 +39,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput', 'getIdleOutlineStyleValue', 'isRtl',
+    'getNativeInput', 'getIdleOutlineStyleValue', 'isFocused', 'isRtl',
   ]);
 });
 
@@ -155,6 +155,20 @@ test('#init adds mdc-text-field--upgraded class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
+});
+
+test('#init focuses on input if adapter.isFocused is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isFocused()).thenReturn(true);
+  foundation.init();
+  td.verify(foundation.inputFocusHandler_());
+});
+
+test('#init does not focus if adapter.isFocused is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isFocused()).thenReturn(false);
+  foundation.init();
+  td.verify(foundation.inputFocusHandler_(), {times: 0});
 });
 
 test('#init adds event listeners', () => {
