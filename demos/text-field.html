@@ -74,7 +74,7 @@
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
         <div class="mdc-text-field">
-          <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
+          <input type="text" class="mdc-text-field__input" aria-controls="my-text-field-helper-text">
           <label for="my-text-field" class="mdc-text-field__label">Text Field</label>
           <div class="mdc-text-field__bottom-line"></div>
         </div>
@@ -90,7 +90,7 @@
         <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
         <section id="demo-text-field-wrapper">
           <div class="mdc-text-field">
-            <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
+            <input type="text" class="mdc-text-field__input" aria-controls="my-text-field-helper-text">
             <label for="my-text-field" class="mdc-text-field__label">Email Address</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
@@ -177,6 +177,10 @@
           <input id="outlined-rtl" type="checkbox">
           <label for="outlined-rtl">RTL</label>
         </div>
+        <div>
+          <input id="outlined-dark-theme" type="checkbox">
+          <label for="outlined-dark-theme">Dark Theme</label>
+        </div>
         <script>
           setTimeout(function() {
             var tfEl = document.getElementById('tf-outlined-example');
@@ -192,6 +196,9 @@
                 wrapper.removeAttribute('dir');
               }
               tf.layout();
+            });
+            document.getElementById('outlined-dark-theme').addEventListener('change', function(evt) {
+              wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
             });
           }, 0);
         </script>

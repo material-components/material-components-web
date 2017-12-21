@@ -220,6 +220,9 @@ class MDCTextField extends MDCComponent {
             return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
           }
         },
+        isFocused: () => {
+          return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
+        },
         isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       },
       this.getInputAdapterMethods_())),
