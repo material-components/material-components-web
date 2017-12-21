@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+demo-menu__long-items<!DOCTYPE html>
 <!--
   Copyright 2016 Google Inc. All rights reserved.
 
@@ -28,20 +28,18 @@
       html,
       body,
       main {
-        display: flex;
+        position: relative;
         flex-direction: column;
-        height: 100%;
       }
 
       .demo-content {
         position: relative;
-        flex: 1;
-        padding: 16px;
+        top: 64px;
       }
 
       .demo-controls-container {
-        height: 100%;
         width: 100%;
+        height: calc(100vh - 80px);
       }
 
       .demo-controls {
@@ -51,16 +49,13 @@
       }
 
       .mdc-menu-anchor {
+        position: absolute;
         margin: 16px;
       }
 
       .mdc-theme--dark {
         background-color: #333;
         color: #ddd;
-      }
-
-      .mdc-menu-anchor {
-        position: absolute;
       }
 
       .margin-inputs input {
@@ -89,14 +84,14 @@
         display: inline;
       }
 
-      .mdc-simple-menu__long-items,
-      .mdc-simple-menu__extra-long-items {
+      .demo-menu__long-items,
+      .demo-menu__extra-long-items {
         display: none;
       }
 
-      .mdc-simple-menu--long .mdc-simple-menu__long-items,
-      .mdc-simple-menu--extra-long .mdc-simple-menu__long-items,
-      .mdc-simple-menu--extra-long .mdc-simple-menu__extra-long-items {
+      .demo-menu--long .demo-menu__long-items,
+      .demo-menu--extra-long .demo-menu__long-items,
+      .demo-menu--extra-long .demo-menu__extra-long-items {
         display: inline;
       }
     </style>
@@ -114,8 +109,6 @@
     </header>
 
     <main>
-      <div class="mdc-toolbar-fixed-adjust"></div>
-
       <div class="demo-content">
         <div id="demo-wrapper">
           <div class="mdc-menu-anchor">
@@ -132,14 +125,14 @@
 
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>
-                <span class="mdc-simple-menu__long-items">
+                <span class="demo-menu__long-items">
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
                 </span>
-                <span class="mdc-simple-menu__extra-long-items">
+                <span class="demo-menu__extra-long-items">
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
                   <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
@@ -266,11 +259,14 @@
       });
 
       var radios = document.querySelectorAll('input[name="position"]');
+      var anchor = document.querySelector('.mdc-menu-anchor');
+      // Initialize to top left.
+      anchor.style.setProperty('top', '0');
+      anchor.style.setProperty('left', '0');
       for (var i = 0; i < radios.length; i++) {
         radios[i].addEventListener('change', function(evt) {
           if (evt.target.checked) {
             if (evt.target.value) {
-              var anchor = document.querySelector('.mdc-menu-anchor');
               anchor.style.removeProperty('top');
               anchor.style.removeProperty('right');
               anchor.style.removeProperty('bottom');
@@ -278,7 +274,7 @@
 
               var vertical = evt.target.value.split(' ')[0];
               var horizontal = evt.target.value.split(' ')[1];
-              if (vertical == 'middle') {
+              if (vertical === 'middle') {
                 anchor.style.setProperty('top', '35%');
               } else {
                 anchor.style.setProperty(vertical, '0');
@@ -288,6 +284,8 @@
           }
         });
       }
+
+
 
       var radios = document.querySelectorAll('input[name="menu-position"]');
       for (var i = 0; i < radios.length; i++) {
@@ -314,7 +312,7 @@
       const marginInputsEl = document.querySelector('#margin-inputs');
       var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
       for (var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('change', () => {
+        inputs[i].addEventListener('change', function(evt) {
           const topMarginInput = document.getElementById('top-margin');
           const bottomMarginInput = document.getElementById('bottom-margin');
           const rightMarginInput = document.getElementById('right-margin');
@@ -343,16 +341,16 @@
           if (evt.target.checked) {
             switch (evt.target.value) {
               case "small":
-                menuEl.classList.remove('mdc-simple-menu--long');
-                menuEl.classList.remove('mdc-simple-menu--extra-long');
+                menuEl.classList.remove('demo-menu--long');
+                menuEl.classList.remove('demo-menu--extra-long');
                 break;
               case "large":
-                menuEl.classList.add('mdc-simple-menu--long');
-                menuEl.classList.remove('mdc-simple-menu--extra-long');
+                menuEl.classList.add('demo-menu--long');
+                menuEl.classList.remove('demo-menu--extra-long');
                 break;
               case "tall":
-                menuEl.classList.remove('mdc-simple-menu--long');
-                menuEl.classList.add('mdc-simple-menu--extra-long');
+                menuEl.classList.remove('demo-menu--long');
+                menuEl.classList.add('demo-menu--extra-long');
                 break;
             }
           }

@@ -35,6 +35,8 @@ let AnchorMargin;
  *   anchorWidth: number,
  *   menuHeight: number,
  *   menuWidth: number,
+ *   leftOverflow: number,
+ *   rightOverflow: number,
  * }}
  */
 let AutoLayoutMeasurements;
@@ -380,20 +382,22 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       corner |= CornerBit.BOTTOM;
     }
 
-    const isLeftAligned = this.adapter_.isRtl() ? (this.anchorCorner_ & (CornerBit.FLIP_RTL | CornerBit.RIGHT)) :
-      !(this.anchorCorner_ & CornerBit.RIGHT);
-    const availableLeft = isLeftAligned ? viewportMargin.left + this.anchorMargin_.left :
-      viewportMargin.left + anchorWidth + this.anchorMargin_.right;
-    const availableRight = isLeftAligned ? viewportMargin.right + anchorWidth - this.anchorMargin_.left:
-      viewportMargin.right - this.anchorMargin_.right;
+    const isRtl = this.adapter_.isRtl();
+    const isFlipRtl = !!(this.anchorCorner_ & CornerBit.FLIP_RTL);
+    const isAlignedRight = ((this.anchorCorner_ & CornerBit.RIGHT) && !isFlipRtl) ||
+      (!(this.anchorCorner_ & CornerBit.RIGHT) && isFlipRtl && isRtl);
+    const availableLeft = isAlignedRight ? viewportMargin.left + anchorWidth + this.anchorMargin_.right :
+      viewportMargin.left + this.anchorMargin_.left;
+    const availableRight = isAlignedRight ? viewportMargin.right - this.anchorMargin_.right :
+      viewportMargin.right + anchorWidth - this.anchorMargin_.left;
 
     const leftOverflow = menuWidth - availableLeft;
     const rightOverflow = menuWidth - availableRight;
-    if (this.adapter_.isRtl()) {
-      if (leftOverflow < 0 && this.anchorCorner_ & CornerBit.FLIP_RTL & ~CornerBit.RIGHT) {
-        corner |= CornerBit.RIGHT;
-      }
-    } else if (rightOverflow > 0 && leftOverflow < rightOverflow) {
+    this.measures_.leftOverflow = leftOverflow;
+    this.measures_.rightOverflow = rightOverflow;
+
+    if ((isRtl && leftOverflow < 0 && isFlipRtl && !(this.anchorCorner_ & CornerBit.RIGHT)) ||
+        (!isRtl && rightOverflow > 0 && leftOverflow < rightOverflow)) {
       corner |= CornerBit.RIGHT;
     }
 
@@ -406,16 +410,21 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @private
    */
   getHorizontalOriginOffset_(corner) {
-    const {anchorRect} = this.measures_;
+    const {anchorRect, menuWidth} = this.measures_;
     const horizontalAlignment = (corner & CornerBit.RIGHT) ? 'right' : 'left';
+    const avoidHorizontalOverlap = this.anchorCorner_ & CornerBit.RIGHT;
+    const canOverlapHorizontally = !avoidHorizontalOverlap;
     let x = 0;
     if (horizontalAlignment === 'right') {
       const rightOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
         anchorRect.width - this.anchorMargin_.left : this.anchorMargin_.right;
       x = rightOffset;
     } else {
+
       const leftOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
         anchorRect.width - this.anchorMargin_.right : this.anchorMargin_.left;
+      // const leftOffset = canOverlapHorizontally ? this.anchorMargin_.left :
+      //   -(menuWidth + this.anchorMargin_.left);
       x = leftOffset;
     }
     return x;
