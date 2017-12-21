@@ -69,7 +69,7 @@
     }
   }
 
-  &[aria-hidden] {
+  &[aria-hidden="true"] {
     visibility: hidden;
   }
 
