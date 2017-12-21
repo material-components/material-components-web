@@ -90,8 +90,8 @@
         <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
         <section id="demo-text-field-wrapper">
           <div class="mdc-text-field">
-            <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
-            <label for="my-text-field" class="mdc-text-field__label">Email Address</label>
+            <input type="text" class="mdc-text-field__input" id="full-func-text-field" aria-controls="my-text-field-helper-text">
+            <label for="full-func-text-field" class="mdc-text-field__label">Email Address</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
           <p id="my-text-field-helper-text" class="mdc-text-field-helper-text"
@@ -319,13 +319,22 @@
 
       <section class="example">
         <h2>CSS Only Text Field</h2>
-        <div class="mdc-form-field mdc-form-field--align-end">
+        <div class="mdc-form-field mdc-form-field--align-end" id="css-only-text-field-wrapper">
           <div class="mdc-text-field" data-demo-no-auto-js>
             <input type="text" class="mdc-text-field__input" id="css-only-text-field"
                    placeholder="Name">
             <div class="mdc-text-field__bottom-line"></div>
           </div>
           <label for="css-only-text-field">Your name:</label>
+        </div>
+
+        <div>
+          <input id="css-only-tf-disabled" type="checkbox">
+          <label for="css-only-tf-disabled">Disabled</label>
+        </div>
+        <div>
+          <input id="css-only-dark-theme-tf" type="checkbox">
+          <label for="css-only-dark-theme-tf">Dark Theme</label>
         </div>
       </section>
       <section class="example">
@@ -469,6 +478,19 @@
         });
 
       }, 0);
+    </script>
+    <script>
+    (function() {
+      var wrapperCssOnly = document.getElementById('css-only-text-field-wrapper');
+      var tfCssOnly = document.getElementById('css-only-text-field');
+
+      document.getElementById('css-only-tf-disabled').addEventListener('change', function(evt) {
+        tfCssOnly.disabled = evt.target.checked;
+      });
+      document.getElementById('css-only-dark-theme-tf').addEventListener('change', function(evt) {
+        wrapperCssOnly.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+      });
+    })();
     </script>
     <script>
       (function() {
