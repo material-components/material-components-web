@@ -463,7 +463,6 @@ class MDCRippleFoundation extends MDCFoundation {
     }
     this.layoutFrame_ = requestAnimationFrame(() => {
       this.layoutInternal_();
-
       this.layoutFrame_ = 0;
     });
   }
