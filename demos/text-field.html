@@ -177,6 +177,10 @@
           <input id="outlined-rtl" type="checkbox">
           <label for="outlined-rtl">RTL</label>
         </div>
+        <div>
+          <input id="outlined-dark-theme" type="checkbox">
+          <label for="outlined-dark-theme">Dark Theme</label>
+        </div>
         <script>
           setTimeout(function() {
             var tfEl = document.getElementById('tf-outlined-example');
@@ -192,6 +196,9 @@
                 wrapper.removeAttribute('dir');
               }
               tf.layout();
+            });
+            document.getElementById('outlined-dark-theme').addEventListener('change', function(evt) {
+              wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
             });
           }, 0);
         </script>
