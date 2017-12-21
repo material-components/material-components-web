@@ -295,6 +295,34 @@
             <div class="mdc-text-field__bottom-line"></div>
           </div>
         </div>
+        <div id="demo-tf-outlined-leading-wrapper">
+          <div id="tf-outlined-leading-example"
+            class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-demo-no-auto-js>
+            <input type="text" id="tf-outlined-leading" class="mdc-text-field__input custom-text-field-input">
+            <label for="tf-outlined-leading" class="mdc-text-field__label">Your other name</label>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
+          </div>
+        </div>
+        <div id="demo-tf-outlined-trailing-wrapper">
+          <div id="tf-outlined-trailing-example"
+            class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon" data-demo-no-auto-js>
+            <input type="text" id="tf-outlined-trailing" class="mdc-text-field__input custom-text-field-input">
+            <label for="tf-outlined-trailing" class="mdc-text-field__label">Your other name</label>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
+          </div>
+        </div>
         <div>
           <input id="disable-leading-trailing" type="checkbox">
           <label for="disable-leading-trailing">Disabled</label>
@@ -430,6 +458,14 @@
         var tfBoxTrailingEl = document.getElementById('tf-box-trailing-example');
         var tfBoxTrailing = new mdc.textField.MDCTextField(tfBoxTrailingEl);
         var wrapperBoxTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+
+        var tfOutlinedLeadingEl = document.getElementById('tf-outlined-leading-example');
+        var tfOutlinedLeading = new mdc.textField.MDCTextField(tfOutlinedLeadingEl);
+        var wrapperOutlinedLeading = document.getElementById('demo-tf-outlined-leading-wrapper');
+
+        var tfOutlinedTrailingEl = document.getElementById('tf-outlined-trailing-example');
+        var tfOutlinedTrailing = new mdc.textField.MDCTextField(tfOutlinedTrailingEl);
+        var wrapperOutlinedTrailing = document.getElementById('demo-tf-outlined-trailing-wrapper');
 
         var tfIcons = document.querySelectorAll('.mdc-text-field__icon');
 
