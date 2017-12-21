@@ -119,6 +119,20 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
+
+  /**
+   * Returns the idle outline element's computed style value of the given css property `propertyName`.
+   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+   * @param {string} propertyName
+   * @return {string}
+   */
+  getIdleOutlineStyleValue(propertyName) {}
+
+  /**
+   * Returns true if the direction of the root element is set to RTL.
+   * @return {boolean}
+   */
+  isRtl() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};
