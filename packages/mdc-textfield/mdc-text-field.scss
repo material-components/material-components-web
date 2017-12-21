@@ -665,8 +665,12 @@
       border: 1px solid $mdc-text-field-outlined-idle-border;
       transition: mdc-text-field-transition(border);
 
-      &:hover, &:focus {
+      &:hover {
         border-color: $mdc-text-field-outlined-hover-border;
+      }
+
+      &:focus {
+        @include mdc-theme-prop(border-color, primary);
       }
     }
   }
