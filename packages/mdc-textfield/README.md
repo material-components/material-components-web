@@ -80,7 +80,7 @@ Un-styled Content (**FOUC**).
 > _NOTE_: Only place an `mdc-text-field__label` inside of `mdc-text-field` _if you plan on using
 > JavaScript_. Otherwise, the label must go outside of `mdc-text-field`, as shown below.
 
-#### CSS Only 
+#### CSS Only
 
 ```html
 <label for="text-field-no-js">TextField with no JS: </label>
