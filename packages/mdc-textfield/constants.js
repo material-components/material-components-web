@@ -21,7 +21,8 @@ const strings = {
   INPUT_SELECTOR: '.mdc-text-field__input',
   LABEL_SELECTOR: '.mdc-text-field__label',
   ICON_SELECTOR: '.mdc-text-field__icon',
-  ICON_EVENT: 'MDCTextField:icon',
+  IDLE_OUTLINE_SELECTOR: '.mdc-text-field__idle-outline',
+  OUTLINE_SELECTOR: '.mdc-text-field__outline',
   BOTTOM_LINE_SELECTOR: '.mdc-text-field__bottom-line',
 };
 
@@ -33,8 +34,6 @@ const cssClasses = {
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
   BOX: 'mdc-text-field--box',
-  TEXT_FIELD_ICON: 'mdc-text-field__icon',
-  TEXTAREA: 'mdc-text-field--textarea',
 };
 
 export {cssClasses, strings};

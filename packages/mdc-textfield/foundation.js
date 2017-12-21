@@ -20,7 +20,9 @@ import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCTextFieldOutlineFoundation from './outline/foundation';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 
@@ -49,16 +51,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
-      setIconAttr: () => {},
-      eventTargetHasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
-      notifyIconAction: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
       registerBottomLineEventHandler: () => {},
       deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
+      getIdleOutlineStyleValue: () => {},
+      isRtl: () => {},
     });
   }
 
@@ -74,8 +75,12 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.bottomLine_ = foundationMap.bottomLine;
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
+    /** @type {!MDCTextFieldIconFoundation|undefined} */
+    this.icon_ = foundationMap.icon;
     /** @type {!MDCTextFieldLabelFoundation|undefined} */
     this.label_ = foundationMap.label;
+    /** @type {!MDCTextFieldOutlineFoundation|undefined} */
+    this.outline_ = foundationMap.outline;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -92,7 +97,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
-    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
+    this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Event): undefined} */
     this.bottomLineAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
   }
@@ -133,24 +138,29 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles all user interactions with the Text Field.
-   * @param {!Event} evt
+   * Handles user interactions with the Text Field.
    */
-  handleTextFieldInteraction(evt) {
+  handleTextFieldInteraction() {
     if (this.adapter_.getNativeInput().disabled) {
       return;
     }
-
     this.receivedUserInput_ = true;
+  }
 
-    const {target, type} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextFieldFoundation.cssClasses;
-    const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
-    const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
-
-    if (targetIsIcon && eventTriggersNotification) {
-      this.adapter_.notifyIconAction();
+  /**
+   * Updates the focus outline for outlined text fields.
+   */
+  updateOutline() {
+    if (!this.outline_ || !this.label_) {
+      return;
     }
+    const labelWidth = this.label_.getFloatingWidth();
+    // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
+    const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
+      this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
+    const radius = parseFloat(radiusStyleValue);
+    const isRtl = this.adapter_.isRtl();
+    this.outline_.updateSvgPath(labelWidth, radius, isRtl);
   }
 
   /**
@@ -161,6 +171,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.adapter_.addClass(FOCUSED);
     if (this.bottomLine_) {
       this.bottomLine_.activate();
+    }
+    if (this.outline_) {
+      this.updateOutline();
     }
     if (this.label_) {
       this.label_.floatAbove();
@@ -272,10 +285,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (disabled) {
       this.adapter_.addClass(DISABLED);
       this.adapter_.removeClass(INVALID);
-      this.adapter_.setIconAttr('tabindex', '-1');
     } else {
       this.adapter_.removeClass(DISABLED);
-      this.adapter_.setIconAttr('tabindex', '0');
+    }
+    if (this.icon_) {
+      this.icon_.setDisabled(disabled);
     }
   }
 
