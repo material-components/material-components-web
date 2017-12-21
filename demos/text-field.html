@@ -300,7 +300,7 @@
             class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-demo-no-auto-js>
             <input type="text" id="tf-outlined-leading" class="mdc-text-field__input custom-text-field-input">
             <label for="tf-outlined-leading" class="mdc-text-field__label">Your other name</label>
-            <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
             <div class="mdc-text-field__outline">
               <svg>
                 <path class="mdc-text-field__outline-path"/>
@@ -472,23 +472,33 @@
         document.getElementById('disable-leading-trailing').addEventListener('change', function(evt) {
           tfBoxLeading.disabled = evt.target.checked;
           tfBoxTrailing.disabled = evt.target.checked;
+          tfOutlinedLeading.disabled = evt.target.checked;
+          tfOutlinedTrailing.disabled = evt.target.checked;
         });
 
         document.getElementById('rtl-leading-trailing').addEventListener('change', function(evt) {
           if (evt.target.checked) {
             wrapperBoxLeading.setAttribute('dir', 'rtl');
             wrapperBoxTrailing.setAttribute('dir', 'rtl');
+            wrapperOutlinedLeading.setAttribute('dir', 'rtl');
+            wrapperOutlinedTrailing.setAttribute('dir', 'rtl');
           } else {
             wrapperBoxLeading.removeAttribute('dir');
             wrapperBoxTrailing.removeAttribute('dir');
+            wrapperOutlinedLeading.removeAttribute('dir');
+            wrapperOutlinedTrailing.removeAttribute('dir');
           }
           tfBoxLeading.layout();
           tfBoxTrailing.layout();
+          tfOutlinedLeading.layout();
+          tfOutlinedTrailing.layout();
         });
 
         document.getElementById('dark-theme-leading-trailing').addEventListener('change', function(evt) {
           wrapperBoxLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
           wrapperBoxTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperOutlinedLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperOutlinedTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
 
         document.getElementById('dense-leading-trailing').addEventListener('change', function(evt) {
@@ -496,6 +506,10 @@
           tfBoxLeading.layout();
           tfBoxTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
           tfBoxTrailing.layout();
+          tfOutlinedLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfOutlinedLeading.layout();
+          tfOutlinedTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfOutlinedTrailing.layout();
         });
 
         document.getElementById('unclickable-leading-trailing').addEventListener('change', function(evt) {

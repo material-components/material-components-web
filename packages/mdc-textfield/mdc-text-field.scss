@@ -197,6 +197,41 @@
     }
   }
 
+  @include mdc-theme-dark(".mdc-text-field") {
+    .mdc-text-field__label {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
+
+    .mdc-text-field__input {
+      border-bottom: none;
+
+      &:hover ~ .mdc-text-field__idle-outline{
+        border-color: $mdc-text-field-underline-on-dark;
+      }
+    }
+
+    .mdc-text-field__idle-outline {
+      border-color: $mdc-text-field-underline-on-dark-idle;
+    }
+  }
+
+  &.mdc-text-field--dense {
+    height: 48px;
+
+    .mdc-text-field__input {
+      padding: 12px 12px 0;
+    }
+
+    .mdc-text-field__label {
+      @include mdc-rtl-reflexive-position(left, 12px);
+
+      bottom: 20px;
+
+      &--float-above {
+        transform: translateY(calc(-75% - 2px)) scale(.923, .923);
+      }
+    }
+  }
   // stylelint-enable plugin/selector-bem-pattern
 }
 
@@ -437,7 +472,7 @@
 .mdc-text-field--disabled {
   pointer-events: none;
 
-  .mdc-text-field__input {
+  &:not(.mdc-text-field--outlined) .mdc-text-field__input {
     border-bottom: 1px dotted $mdc-text-field-disabled-border-on-light;
 
     @include mdc-theme-dark(".mdc-text-field", true) {
