@@ -163,7 +163,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
     const isDense = this.adapter_.hasClass(cssClasses.DENSE);
     const labelScale = isDense ? 0.923 : 0.75;
-    const labelWidth = this.label_.getFloatingWidth() * labelScale;
+    const labelWidth = this.label_.getWidth() * labelScale;
     // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
     const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
       this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');

@@ -63,7 +63,7 @@ const setupTest = () => {
     handleInteraction: () => {},
   });
   const label = td.object({
-    getFloatingWidth: () => {},
+    getWidth: () => {},
     floatAbove: () => {},
     deactivateFocus: () => {},
     setValidity: () => {},
@@ -231,7 +231,7 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
 
 test('#updateOutline updates the SVG path of the outline element', () => {
   const {foundation, mockAdapter, label, outline} = setupTest();
-  td.when(label.getFloatingWidth()).thenReturn(30);
+  td.when(label.getWidth()).thenReturn(30);
   td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
