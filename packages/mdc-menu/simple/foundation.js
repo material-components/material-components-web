@@ -35,8 +35,6 @@ let AnchorMargin;
  *   anchorWidth: number,
  *   menuHeight: number,
  *   menuWidth: number,
- *   leftOverflow: number,
- *   rightOverflow: number,
  * }}
  */
 let AutoLayoutMeasurements;
@@ -384,8 +382,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
 
     const isRtl = this.adapter_.isRtl();
     const isFlipRtl = !!(this.anchorCorner_ & CornerBit.FLIP_RTL);
-    const isAlignedRight = ((this.anchorCorner_ & CornerBit.RIGHT) && !isFlipRtl) ||
-      (!(this.anchorCorner_ & CornerBit.RIGHT) && isFlipRtl && isRtl);
+    const avoidHorizontalOverlap = this.anchorCorner_ & CornerBit.RIGHT;
+    const isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
+      (!avoidHorizontalOverlap && isFlipRtl && isRtl);
     const availableLeft = isAlignedRight ? viewportMargin.left + anchorWidth + this.anchorMargin_.right :
       viewportMargin.left + this.anchorMargin_.left;
     const availableRight = isAlignedRight ? viewportMargin.right - this.anchorMargin_.right :
@@ -393,11 +392,10 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
 
     const leftOverflow = menuWidth - availableLeft;
     const rightOverflow = menuWidth - availableRight;
-    this.measures_.leftOverflow = leftOverflow;
-    this.measures_.rightOverflow = rightOverflow;
 
-    if ((isRtl && leftOverflow < 0 && isFlipRtl && !(this.anchorCorner_ & CornerBit.RIGHT)) ||
-        (!isRtl && rightOverflow > 0 && leftOverflow < rightOverflow)) {
+    if ((leftOverflow < 0 && isAlignedRight && isRtl) ||
+        (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
+        (rightOverflow > 0 && leftOverflow < rightOverflow)) {
       corner |= CornerBit.RIGHT;
     }
 
@@ -410,21 +408,18 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @private
    */
   getHorizontalOriginOffset_(corner) {
-    const {anchorRect, menuWidth} = this.measures_;
+    const {anchorRect} = this.measures_;
     const horizontalAlignment = (corner & CornerBit.RIGHT) ? 'right' : 'left';
-    const avoidHorizontalOverlap = this.anchorCorner_ & CornerBit.RIGHT;
-    const canOverlapHorizontally = !avoidHorizontalOverlap;
+    // const avoidHorizontalOverlap = this.anchorCorner_ & CornerBit.RIGHT;
+    // const canOverlapHorizontally = !avoidHorizontalOverlap;
     let x = 0;
     if (horizontalAlignment === 'right') {
       const rightOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
         anchorRect.width - this.anchorMargin_.left : this.anchorMargin_.right;
       x = rightOffset;
     } else {
-
       const leftOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
         anchorRect.width - this.anchorMargin_.right : this.anchorMargin_.left;
-      // const leftOffset = canOverlapHorizontally ? this.anchorMargin_.left :
-      //   -(menuWidth + this.anchorMargin_.left);
       x = leftOffset;
     }
     return x;
@@ -437,13 +432,13 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    */
   getVerticalOriginOffset_(corner) {
     const {anchorRect, viewport, viewportMargin, anchorHeight, menuHeight} = this.measures_;
-    const verticalAlignment = (corner & CornerBit.BOTTOM) ? 'bottom' : 'top';
+    const isBottomAligned = !!(corner & CornerBit.BOTTOM);
     const {MARGIN_TO_EDGE} = MDCSimpleMenuFoundation.numbers;
     const avoidVerticalOverlap = this.anchorCorner_ & CornerBit.BOTTOM;
     const canOverlapVertically = !avoidVerticalOverlap;
     let y = 0;
 
-    if (verticalAlignment === 'bottom') {
+    if (isBottomAligned) {
       y = avoidVerticalOverlap ? anchorRect.height - this.anchorMargin_.top : -this.anchorMargin_.bottom;
       // adjust for when menu can overlap anchor, but too tall to be aligned to bottom
       // anchor corner. Bottom margin is ignored in such cases.
@@ -469,13 +464,14 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   getMenuMaxHeight_(corner) {
     let maxHeight = 0;
     const {viewportMargin} = this.measures_;
-    const verticalAlignment = (corner & CornerBit.BOTTOM) ? 'bottom' : 'top';
+    const isBottomAligned = !!(corner & CornerBit.BOTTOM);
 
+    // When maximum height is not specified, it is handled from css.
     if (this.anchorCorner_ & CornerBit.BOTTOM) {
-      if (verticalAlignment === 'top') {
-        maxHeight = viewportMargin.bottom - this.anchorMargin_.bottom;
-      } else {
+      if (isBottomAligned) {
         maxHeight = viewportMargin.top + this.anchorMargin_.top;
+      } else {
+        maxHeight = viewportMargin.bottom - this.anchorMargin_.bottom;
       }
     }
 
@@ -506,7 +502,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     if (anchorWidth / menuWidth > numbers.ANCHOR_TO_MENU_WIDTH_RATIO) {
       horizontalAlignment = 'center';
     }
-    // Adjust vertical origin when menu can and significantly overlaps anchor.
+
+    // Adjust vertical origin when menu is positioned with significant offset from anchor. This is done so that
+    // scale animation is "anchored" on the anchor.
     if (!(this.anchorCorner_ & CornerBit.BOTTOM) &&
         Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
       const verticalOffsetPercent = Math.abs(verticalOffset / menuHeight) * 100;

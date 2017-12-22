@@ -16,6 +16,5 @@
  */
 
 import * as util from './util';
-import * as constants from './simple/constants';
 import {MDCSimpleMenu, MDCSimpleMenuFoundation, CornerBit, Corner, AnchorMargin} from './simple';
-export {MDCSimpleMenu, MDCSimpleMenuFoundation, CornerBit, Corner, AnchorMargin, util, constants};
+export {MDCSimpleMenu, MDCSimpleMenuFoundation, CornerBit, Corner, AnchorMargin, util};

@@ -292,7 +292,7 @@ The adapter for simple menu must provide the following functions, with correct s
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `setTransformOrigin(value: string) => void` | Sets the transform origin for the menu element. |
 | `setPosition(position: { top: string, right: string, bottom: string, left: string }) => void` | Sets the position of the menu element. |
-| `setMaxHeight(value: string) => void` | Sets maximum height style for the menu element. |
+| `setMaxHeight(value: string) => void` | Sets `max-height` style for the menu element. |
 
 ### The full foundation API
 
@@ -312,9 +312,11 @@ Returns whether or not the menu is open.
 
 Specifies the anchor corner to which top start of the menu (top left in ltr, top right in rtl) should align given there
 is enough space to show the full menu.
-When menu display is constrained by viewport edge, TOP can be flipped to BOTTOM. Similarly START can flip to END.
-Specifying BOTTOM_START, TOP_END, and BOTTOM_END positions, indicates that the anchor cannot be covered by the menu.
-In such cases maximum height of the menu is enforced.
+When menu display is constrained by viewport edge, `TOP` can be flipped to `BOTTOM`. Similarly `START` can flip to `END`.
+Specifying `BOTTOM_START` and `BOTTOM_END` positions, indicates that the menu displayed either fully below or
+above the anchor. In such cases maximum height of the menu is enforced.
+When specifying `TOP_START` and `TOP_END` positions, the menu is allowed to be taller if it does not fit below
+or above the anchor.
 
 #### MDCSimpleMenuFoundation.setAnchorMargin({top: number, right: number, bottom: number, left: number}) => void
 
