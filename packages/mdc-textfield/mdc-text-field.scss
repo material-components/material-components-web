@@ -157,48 +157,15 @@
     }
   }
 
-  &.mdc-text-field--focused .mdc-text-field__idle-outline,
-  .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
-    opacity: 0;
-  }
-
-  &.mdc-text-field--focused .mdc-text-field__outline,
-  .mdc-text-field__label--float-above ~ .mdc-text-field__outline {
-    opacity: 1;
-  }
-
-  &.mdc-text-field--focused .mdc-text-field__outline-path {
-    @include mdc-theme-prop(stroke, primary);
-
-    stroke-width: 2px;
-  }
-
-  &.mdc-text-field--disabled {
-    @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
-
-    .mdc-text-field__input {
-      border-bottom: none;
-    }
-
-    .mdc-text-field__outline-path {
-      stroke: $mdc-text-field-outlined-disabled-border;
-      stroke-width: 1px;
-    }
-
-    .mdc-text-field__idle-outline {
-      border-color: $mdc-text-field-outlined-disabled-border;
-    }
-
-    .mdc-text-field__label {
-      bottom: 20px;
-    }
-
-    .mdc-text-field__icon {
-      @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-light);
-    }
-  }
-
   // stylelint-enable plugin/selector-bem-pattern
+}
+
+.mdc-text-field--outlined.mdc-text-field--focused {
+  @include mdc-text-field-focused-outline_();
+}
+
+.mdc-text-field--outlined.mdc-text-field--focused {
+  @include mdc-text-field-focused-disabled_();
 }
 
 .mdc-text-field--box {
@@ -263,48 +230,15 @@
     }
   }
 
-  &.mdc-text-field--disabled {
-    @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
-
-    border-bottom: none;
-    background-color: $mdc-text-field-box-disabled-background;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      @include mdc-theme-prop(background-color, $mdc-text-field-dark-background);
-      @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
-
-      border-bottom: none;
-    }
-
-    .mdc-text-field__label {
-      bottom: 20px;
-    }
-
-    .mdc-text-field__icon {
-      @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-light);
-
-      @include mdc-theme-dark() {
-        @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-dark);
-      }
-    }
-  }
-
-  &.mdc-text-field--dense {
-    .mdc-text-field__input {
-      padding: 12px 12px 0;
-    }
-
-    .mdc-text-field__label {
-      @include mdc-rtl-reflexive-position(left, 12px);
-
-      bottom: 20px;
-
-      &--float-above {
-        transform: translateY(calc(-75% - 2px)) scale(.923, .923);
-      }
-    }
-  }
   // stylelint-enable plugin/selector-bem-pattern
+}
+
+.mdc-text-field--box.mdc-text-field--disabled {
+  @include mdc-text-field-box-disabled_();
+}
+
+.mdc-text-field--box.mdc-text-field--dense {
+  @include mdc-text-field-box-dense();
 }
 
 .mdc-text-field--with-leading-icon {
@@ -321,6 +255,10 @@
   }
 }
 
+.mdc-text-field--with-leading-icon.mdc-text-field--dense {
+  @include mdc-text-field-leading-dense_();
+}
+
 .mdc-text-field--with-trailing-icon {
   .mdc-text-field__input {
     @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
@@ -331,36 +269,12 @@
   }
 }
 
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-text-field--with-leading-icon.mdc-text-field--dense .mdc-text-field__icon,
-.mdc-text-field--with-trailing-icon.mdc-text-field--dense .mdc-text-field__icon {
-  bottom: 16px;
-  transform: scale(.8);
-}
-
-.mdc-text-field--with-leading-icon.mdc-text-field--dense {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-position);
-  }
-
-  .mdc-text-field__label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
-  }
-}
-
 .mdc-text-field--with-trailing-icon.mdc-text-field--dense {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(right, $mdc-text-field-dense-icon-position);
-  }
+  @include mdc-text-field-trailing-dense_();
 }
+
+// stylelint-disable plugin/selector-bem-pattern
+
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box) {
@@ -380,102 +294,20 @@
   }
 }
 
-.mdc-text-field--invalid {
-  .mdc-text-field__label {
-    color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__bottom-line {
-    background-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__outline .mdc-text-field__outline-path {
-    stroke: $mdc-text-field-error-on-light;
-  }
-}
-
 // stylelint-disable plugin/selector-bem-pattern
-
-.mdc-text-field--invalid.mdc-text-field--textarea {
-  border-color: $mdc-text-field-error-on-light;
-}
 
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--dense {
-  margin-top: 12px;
-  margin-bottom: 4px;
-  font-size: .813rem;
-
-  .mdc-text-field__label--float-above {
-    // NOTE: This is an eyeball'd approximation of what's in the mocks.
-    transform: translateY(calc(-100% - 2px)) scale(.923, .923);
-  }
+  @include mdc-text-field-dense_();
 }
 
 .mdc-text-field--disabled {
-  pointer-events: none;
-
-  .mdc-text-field__input {
-    border-bottom: 1px dotted $mdc-text-field-disabled-border-on-light;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      border-bottom: 1px dotted $mdc-text-field-disabled-border-on-dark;
-    }
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field__input,
-  .mdc-text-field__label,
-  + .mdc-text-field-helper-text {
-    @include mdc-theme-prop(color, text-disabled-on-light);
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-
-  .mdc-text-field__input,
-  .mdc-text-field__label {
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    // stylelint-disable plugin/selector-bem-pattern
-    + .mdc-text-field-helper-text {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
-    // stylelint-enable plugin/selector-bem-pattern
-  }
-
-  .mdc-text-field__label {
-    bottom: 8px;
-    cursor: default;
-  }
+  @include mdc-text-field-disabled_;
 }
 
-.mdc-text-field__input:required + .mdc-text-field__label::after {
-  margin-left: 1px;
-  content: "*";
-
-  .mdc-text-field--focused & {
-    color: $mdc-text-field-error-on-light;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      color: $mdc-text-field-error-on-dark;
-    }
-  }
+.mdc-text-field--focused {
+  @include mdc-text-field-focused_();
 }
 
 .mdc-text-field--textarea {
@@ -515,6 +347,7 @@
       }
 
       &:focus {
+        // TODO: duplicate
         @include mdc-theme-prop(border-color, secondary);
       }
 
@@ -544,34 +377,21 @@
     }
   }
 
-  &.mdc-text-field--disabled {
-    border-style: solid;
-    border-color: $mdc-text-field-disabled-border-on-light;
-    background-color: $mdc-textarea-disabled-background-on-light;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      border-color: $mdc-text-field-disabled-border-on-dark;
-      background-color: $mdc-textarea-disabled-background-on-dark;
-    }
-
-    .mdc-text-field__label {
-      background-color: $mdc-textarea-disabled-background-on-light;
-
-      @include mdc-theme-dark(".mdc-text-field") {
-        background-color: $mdc-textarea-disabled-background-on-dark;
-      }
-    }
-  }
-
-  &:not(.mdc-text-field--upgraded) {
-    .mdc-text-field__input {
-      padding-top: $padding-inset;
-    }
+  &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
+    padding-top: $padding-inset;
   }
 }
 
 .mdc-text-field--textarea.mdc-text-field--focused {
-  @include mdc-theme-prop(border-color, primary);
+  @include mdc-text-field-focused-textarea_();
+}
+
+.mdc-text-field--textarea.mdc-text-field--invalid {
+  @include mdc-text-field-invalid-textarea_();
+}
+
+.mdc-text-field--textarea.mdc-text-field--disabled {
+  @include mdc-text-field-disabled-textarea_();
 }
 
 // stylelint-enable plugin/selector-bem-pattern
@@ -617,6 +437,7 @@
 
   &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
     &:focus {
+      // TODO: duplicate
       @include mdc-theme-prop(border-color, primary);
     }
 
@@ -670,39 +491,8 @@
 
 // postcss-bem-linter: end
 
-// postcss-bem-linter: define text-field-helper-text
-
-.mdc-text-field-helper-text {
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field--dense + & {
-    margin-bottom: 4px;
-  }
-
-  .mdc-text-field--focused + &:not(#{&}--validation-msg) {
-    opacity: 1;
-  }
-
-  .mdc-text-field--box + & {
-    margin-right: 16px;
-    margin-left: 16px;
-  }
-
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
-// postcss-bem-linter: end
-
 .mdc-text-field--invalid {
-  + .mdc-text-field-helper-text--validation-msg {
-    opacity: 1;
-    color: $mdc-text-field-error-on-light;
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    + .mdc-text-field-helper-text--validation-msg {
-      color: $mdc-text-field-error-on-dark;
-    }
-  }
+  @include mdc-text-field-invalid_;
 }
 
 // mdc-form-field tweaks to align text field label correctly
