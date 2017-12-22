@@ -503,6 +503,16 @@ class MDCRippleFoundation extends MDCFoundation {
       this.adapter_.updateCssVariable(VAR_TOP, `${this.unboundedCoords_.top}px`);
     }
   }
+
+  /** @param {boolean} unbounded */
+  setUnbounded(unbounded) {
+    const {UNBOUNDED} = MDCRippleFoundation.cssClasses;
+    if (unbounded) {
+      this.adapter_.addClass(UNBOUNDED);
+    } else {
+      this.adapter_.removeClass(UNBOUNDED);
+    }
+  }
 }
 
 export default MDCRippleFoundation;
