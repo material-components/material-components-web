@@ -255,3 +255,13 @@ testFoundation('#layout resets debounce latch when layout frame is run', ({found
   foundation.layout();
   assert.equal(mockRaf.pendingFrames.length, 1);
 });
+
+testFoundation('#setUnbounded adds unbounded class when unbounded is truthy', ({adapter, foundation}) => {
+  foundation.setUnbounded(true);
+  td.verify(adapter.addClass(cssClasses.UNBOUNDED));
+});
+
+testFoundation('#setUnbounded removes unbounded class when unbounded is falsy', ({adapter, foundation}) => {
+  foundation.setUnbounded(false);
+  td.verify(adapter.removeClass(cssClasses.UNBOUNDED));
+});

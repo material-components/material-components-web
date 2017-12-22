@@ -167,8 +167,10 @@
     opacity: 1;
   }
 
-  &:not(.mdc-text-field--focused) .mdc-text-field__outline-path {
-    stroke-width: 1px;
+  &.mdc-text-field--focused .mdc-text-field__outline-path {
+    @include mdc-theme-prop(stroke, primary);
+
+    stroke-width: 2px;
   }
 
   &.mdc-text-field--disabled {
