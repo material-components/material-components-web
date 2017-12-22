@@ -20,7 +20,6 @@
 @import "@material/theme/mixins";
 
 @include mdc-text-field-invalid-label-shake_keyframes_(standard, 0, 100%);
-@include mdc-text-field-invalid-label-shake_keyframes_(box, 0, 50%);
 
 // postcss-bem-linter: define text-field-label
 .mdc-text-field__label {
