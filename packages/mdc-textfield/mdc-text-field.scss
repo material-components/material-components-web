@@ -128,7 +128,8 @@
     display: flex;
     height: 30px;
     padding: 12px;
-    border: none;
+    // Use !important here to override all other border treatments
+    border: none !important;
     background-color: transparent;
     z-index: 3;
 
