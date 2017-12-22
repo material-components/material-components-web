@@ -54,10 +54,9 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
    * label element, the corner radius, and the RTL context.
    * @param {number} labelWidth
    * @param {number} radius
-   * @param {number} iconWidth
    * @param {boolean=} isRtl
    */
-  updateSvgPath(labelWidth, radius, iconWidth, isRtl = false) {
+  updateSvgPath(labelWidth, radius, isRtl = false) {
     const width = this.adapter_.getWidth() + 2;
     const height = this.adapter_.getHeight() + 2;
     // The right, bottom, and left sides of the outline follow the same SVG path.

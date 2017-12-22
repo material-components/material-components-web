@@ -45,7 +45,6 @@ class MDCTextFieldIcon extends MDCComponent {
    */
   getDefaultFoundation() {
     return new MDCTextFieldIconFoundation(/** @type {!MDCTextFieldIconAdapter} */ (Object.assign({
-      getWidth: () => this.root_.offsetWidth,
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),

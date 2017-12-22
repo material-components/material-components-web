@@ -29,12 +29,6 @@
  */
 class MDCTextFieldIconAdapter {
   /**
-   * Returns the width of the icon element.
-   * @return {number}
-   */
-  getWidth() {}
-
-  /**
    * Sets an attribute on the icon element.
    * @param {string} attr
    * @param {string} value

@@ -160,8 +160,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
     const radius = parseFloat(radiusStyleValue);
     const isRtl = this.adapter_.isRtl();
-    const iconWidth = this.icon_ ? this.icon_.getWidth() : 0;
-    this.outline_.updateSvgPath(labelWidth, radius, iconWidth, isRtl);
+    this.outline_.updateSvgPath(labelWidth, radius, isRtl);
   }
 
   /**

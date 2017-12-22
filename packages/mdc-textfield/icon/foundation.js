@@ -37,7 +37,6 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTextFieldIconAdapter} */ ({
-      getWidth: () => {},
       setAttr: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
@@ -65,14 +64,6 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
-  }
-
-  /**
-   * Returns the width of the icon element.
-   * @return {number}
-   */
-  getWidth() {
-    return this.adapter_.getWidth();
   }
 
   /**
