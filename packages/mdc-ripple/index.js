@@ -141,4 +141,4 @@ RippleCapableSurface.prototype.unbounded;
  */
 RippleCapableSurface.prototype.disabled;
 
-export {MDCRipple, MDCRippleFoundation, util};
+export {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util};
