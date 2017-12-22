@@ -610,12 +610,10 @@
 // Graceful degredation for css-only inputs
 
 .mdc-text-field {
-  &:not(.mdc-text-field--upgraded):not(.mdc-text-field--textarea) .mdc-text-field__input {
+  &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
     transition: mdc-text-field-transition(border-bottom-color);
     border-bottom: 1px solid $mdc-text-field-divider-on-light;
-  }
 
-  &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
     &:focus {
       @include mdc-theme-prop(border-color, primary);
     }
@@ -655,39 +653,43 @@
   }
 }
 
-.mdc-text-field:not(.mdc-text-field--upgraded) {
-  &.mdc-text-field--outlined {
-    height: 56px;
+.mdc-text-field--outlined:not(.mdc-text-field--upgraded) {
+  height: 56px;
 
-    .mdc-text-field__input{
-      @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
+  .mdc-text-field__input {
+    @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
 
-      height: 100%;
-      padding: 0 0 0 12px;
-      border: 1px solid $mdc-text-field-outlined-idle-border;
-      transition: mdc-text-field-transition(border);
+    height: 100%;
+    padding: 0 0 0 12px;
+    border: 1px solid $mdc-text-field-outlined-idle-border;
+    transition: mdc-text-field-transition(border);
 
-      &:hover {
-        border-color: $mdc-text-field-outlined-hover-border;
-      }
+    &:hover {
+      border-color: $mdc-text-field-outlined-hover-border;
+    }
 
-      &:focus {
-        @include mdc-theme-prop(border-color, primary);
-      }
+    &:focus {
+      @include mdc-theme-prop(border-color, primary);
     }
   }
+}
 
-  &.mdc-text-field--box {
-    height: 56px;
+.mdc-text-field--box:not(.mdc-text-field--upgraded) {
+  height: 56px;
 
-    &::before,
-    &::after {
-      border-radius: 0;
-    }
+  &::before,
+  &::after {
+    border-radius: 0;
+  }
 
-    .mdc-text-field__input {
-      padding-top: 0;
-    }
+  .mdc-text-field__input {
+    padding-top: 0;
+  }
+}
+
+.mdc-text-field--textarea:not(.mdc-text-field--upgraded) {
+  .mdc-text-field__input {
+    transition: mdc-text-field-transition(border-color);
   }
 }
 
