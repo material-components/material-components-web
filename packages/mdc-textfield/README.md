@@ -169,7 +169,7 @@ See [here](outline/) for more information on using the outline sub-component.
 #### Helper Text
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
-and disappears on input field blur by default, or it can be persistent. 
+and disappears on input field blur by default, or it can be persistent.
 See [here](helper-text/) for more information on using helper text.
 
 #### Leading and Trailing Icons
@@ -233,6 +233,7 @@ Method Signature | Description
 `deregisterBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the bottom line element for a given event
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
 `getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`
+`isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
 
 #### `MDCTextFieldAdapter.getNativeInput()`
