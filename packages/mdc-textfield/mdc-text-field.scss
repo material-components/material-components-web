@@ -198,6 +198,22 @@
     }
   }
 
+  &.mdc-text-field--dense {
+    height: 48px;
+
+    .mdc-text-field__input {
+      padding: 12px 12px 0;
+    }
+
+    .mdc-text-field__label {
+      @include mdc-rtl-reflexive-position(left, 12px);
+
+      &--float-above {
+        transform: translateY(calc(-75% - 2px)) scale(.923, .923);
+      }
+    }
+  }
+
   // stylelint-enable plugin/selector-bem-pattern
 }
 
