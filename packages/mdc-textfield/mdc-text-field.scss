@@ -142,13 +142,10 @@
 
     position: absolute;
     bottom: 20px;
-    left: 16px;
     transition: transform 260ms ease;
     z-index: 2;
 
     &--float-above {
-      @include mdc-theme-prop(color, primary);
-
       transform: scale(.75) translateY(-170%);
 
       &.mdc-text-field__label--shake {
@@ -167,10 +164,16 @@
     opacity: 1;
   }
 
-  &.mdc-text-field--focused .mdc-text-field__outline-path {
-    @include mdc-theme-prop(stroke, primary);
+  &.mdc-text-field--focused {
+    .mdc-text-field__outline-path {
+      @include mdc-theme-prop(stroke, primary);
 
-    stroke-width: 2px;
+      stroke-width: 2px;
+    }
+
+    &:not(.mdc-text-field--invalid) .mdc-text-field__label {
+      @include mdc-theme-prop(color, primary);
+    }
   }
 
   &.mdc-text-field--disabled {
@@ -202,14 +205,14 @@
     height: 48px;
 
     .mdc-text-field__input {
-      padding: 12px 12px 0;
+      padding: 12px 12px 7px 12px;
     }
 
     .mdc-text-field__label {
-      @include mdc-rtl-reflexive-position(left, 12px);
+      bottom: 18px;
 
       &--float-above {
-        transform: translateY(calc(-75% - 2px)) scale(.923, .923);
+        transform: translateY(calc(-122% - 2px)) scale(.923, .923);
       }
     }
   }
@@ -311,8 +314,6 @@
     }
 
     .mdc-text-field__label {
-      @include mdc-rtl-reflexive-position(left, 12px);
-
       bottom: 20px;
 
       &--float-above {

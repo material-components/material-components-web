@@ -31,6 +31,7 @@ const cssClasses = {
   ROOT: 'mdc-text-field',
   UPGRADED: 'mdc-text-field--upgraded',
   DISABLED: 'mdc-text-field--disabled',
+  DENSE: 'mdc-text-field--dense',
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
   BOX: 'mdc-text-field--box',

@@ -51,6 +51,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
+      hasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
@@ -159,7 +160,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (!this.outline_ || !this.label_) {
       return;
     }
-    const labelWidth = this.label_.getFloatingWidth();
+
+    const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+    const labelScale = isDense ? 0.923 : 0.75;
+    const labelWidth = this.label_.getFloatingWidth() * labelScale;
     // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
     const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
       this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
