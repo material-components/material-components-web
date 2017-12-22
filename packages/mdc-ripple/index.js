@@ -86,7 +86,13 @@ class MDCRipple extends MDCComponent {
     this.setUnbounded_();
   }
 
-  /** @private */
+  /**
+   * Closure Compiler throws an access control error when directly accessing a
+   * protected or private property inside a getter/setter, like unbounded above.
+   * By accessing the protected property inside a method, we solve that problem.
+   * That's why this function exists.
+   * @private
+   */
   setUnbounded_() {
     this.foundation_.setUnbounded(this.unbounded_);
   }
