@@ -44,21 +44,21 @@
 @mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionX, $positionY) {
   @keyframes invalid-shake-float-above-#{$modifier} {
     0% {
-      transform: translateX(0 - #{$positionX}) translateY(-#{$positionY}) scale(.75, .75);
+      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(.75, .75);
     }
 
     33% {
       animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
-      transform: translateX(4% - #{$positionX}) translateY(-#{$positionY}) scale(.75, .75);
+      transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(.75, .75);
     }
 
     66% {
       animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
-      transform: translateX(-4% - #{$positionX}) translateY(-#{$positionY}) scale(.75, .75);
+      transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(.75, .75);
     }
 
     100% {
-      transform: translateX(0 - #{$positionX}) translateY(-#{$positionY}) scale(.75, .75);
+      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(.75, .75);
     }
   }
 }
