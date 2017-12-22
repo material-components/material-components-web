@@ -41,7 +41,7 @@
   }
 }
 
-@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionX, $positionY) {
+@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $positionX: 0%) {
   @keyframes invalid-shake-float-above-#{$modifier} {
     0% {
       transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(.75, .75);
