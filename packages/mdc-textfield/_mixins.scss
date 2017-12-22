@@ -214,7 +214,6 @@
 
 // textarea
 @mixin mdc-text-field-focused-textarea_ {
-  // TODO: duplicate
   @include mdc-theme-prop(border-color, primary);
 }
 
