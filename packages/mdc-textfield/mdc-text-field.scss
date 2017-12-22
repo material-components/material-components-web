@@ -164,15 +164,19 @@
     opacity: 1;
   }
 
-  &.mdc-text-field--focused {
-    .mdc-text-field__outline-path {
-      @include mdc-theme-prop(stroke, primary);
+  &.mdc-text-field--focused .mdc-text-field__outline-path {
+    @include mdc-theme-prop(stroke, primary);
 
-      stroke-width: 2px;
+    stroke-width: 2px;
+  }
+
+  &:not(.mdc-text-field--invalid) {
+    &.mdc-text-field--focused .mdc-text-field__label {
+      @include mdc-theme-prop(color, primary);
     }
 
-    &:not(.mdc-text-field--invalid) .mdc-text-field__label {
-      @include mdc-theme-prop(color, primary);
+    .mdc-text-field__input:hover ~ .mdc-text-field__outline .mdc-text-field__outline-path {
+      stroke: $mdc-text-field-outlined-hover-border;
     }
   }
 
