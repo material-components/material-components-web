@@ -22,9 +22,8 @@
 
 // postcss-bem-linter: define tab-bar
 .mdc-tab-bar {
-  @include mdc-tab-label-ink-color(text-secondary-on-light);
-  @include mdc-tab-label-activated-ink-color(text-primary-on-light);
-  @include mdc-tab-indicator-ink-color(text-primary-on-light);
+  @include mdc-tab-ink-color(text-secondary-on-light);
+  @include mdc-tab-activated-ink-color(text-primary-on-light);
 
   display: table;
   position: relative;

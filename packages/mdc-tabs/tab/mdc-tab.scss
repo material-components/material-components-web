@@ -80,6 +80,7 @@
   &::after {
     display: none;
     position: absolute;
+    top: $mdc-tab-with-text-height - 2px;
     left: 0;
     width: calc(100% - 4px);
     height: 2px;
@@ -102,6 +103,15 @@
   &:not(.mdc-tab--active):hover::after {
     opacity: .38;
   }
+
+  &--active,
+  &:not(.mdc-tab--active):active::after {
+    opacity: .87;
+  }
+}
+
+.mdc-tab-bar--icons-with-text:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
+  top: $mdc-tab-with-icon-and-text-height - 2px;
 }
 
 // stylelint-enable plugin/selector-bem-pattern

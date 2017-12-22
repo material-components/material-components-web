@@ -132,10 +132,10 @@ fieldset legend {
 .demo-tab-bar--indicator-accent {
   &,
   .demo-toolbar-accent & {
-    @include mdc-tab-indicator-ink-color(secondary);
+    @include mdc-tab-activated-ink-color(secondary);
 
     @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-tab-indicator-ink-color(secondary);
+      @include mdc-tab-activated-ink-color(secondary);
     }
   }
 }
@@ -144,17 +144,11 @@ fieldset legend {
   @include mdc-tab-label-ink-color($material-color-indigo-500);
 }
 
-.demo-tab-bar--custom-label-activated {
-  @include mdc-tab-label-activated-ink-color($material-color-indigo-500);
-  @include mdc-tab-indicator-ink-color($material-color-indigo-500);
+.demo-tab-bar--custom-label-activated,
+.demo-tab-bar--custom-icon-activated {
+  @include mdc-tab-activated-ink-color($material-color-indigo-500);
 }
 
 .demo-tab-bar--custom-icon {
   @include mdc-tab-icon-ink-color($material-color-indigo-500);
-}
-
-.demo-tab-bar--custom-icon-activated {
-  // @include mdc-tab-label-activated-ink-color($material-color-indigo-500);
-  @include mdc-tab-icon-activated-ink-color($material-color-indigo-500);
-  @include mdc-tab-indicator-ink-color($material-color-indigo-500);
 }

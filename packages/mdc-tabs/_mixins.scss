@@ -15,57 +15,51 @@
 @import "@material/theme/mixins";
 @import "../variables";
 
+@mixin mdc-tab-ink-color($color) {
+  @include mdc-tab-label-ink-color($color);
+  @include mdc-tab-icon-ink-color($color);
+}
+
+@mixin mdc-tab-activated-ink-color($color) {
+  @include mdc-tab-label-activated-ink-color($color);
+  @include mdc-tab-icon-activated-ink-color($color);
+  @include mdc-tab-indicator-ink-color($color);
+}
+
 @mixin mdc-tab-label-ink-color($color) {
   .mdc-tab:not(.mdc-tab--active) {
     @include mdc-theme-prop(color, $color);
   }
+}
 
-  @include mdc-tab-icon-ink-color($color);
+@mixin mdc-tab-label-activated-ink-color($color) {
+  .mdc-tab--active,
+  .mdc-tab:hover {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
 @mixin mdc-tab-icon-ink-color($color) {
-  .mdc-tab:not(.mdc-tab--active) .mdc-tab__icon {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-tab-indicator-ink-color($color, $opacity: .87) {
-  .mdc-tab-bar__indicator {
-    @include mdc-theme-prop(background-color, $color);
-  }
-
-  &:not(.mdc-tab-bar-upgraded) .mdc-tab {
-    &:not(.mdc-tab--active):active::after {
-      opacity: $opacity;
-    }
-
-    &::after {
-      @include mdc-theme-prop(background-color, $color);
-    }
-  }
-}
-
-@mixin mdc-tab-label-activated-ink-color($color, $opacity: .87) {
-  @include mdc-tab-icon-activated-ink-color($color);
-
-  .mdc-tab.mdc-tab--active {
-    @include mdc-theme-prop(color, $color);
-  }
-
+  .mdc-tab:not(.mdc-tab--active),
   .mdc-tab:hover {
-    &,
     .mdc-tab__icon {
       @include mdc-theme-prop(color, $color);
     }
-  }
-
-  &:not(.mdc-tab-bar-upgraded) .mdc-tab--active {
-    opacity: $opacity;
   }
 }
 
 @mixin mdc-tab-icon-activated-ink-color($color) {
   .mdc-tab.mdc-tab--active .mdc-tab__icon {
     @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-tab-indicator-ink-color($color) {
+  .mdc-tab-bar__indicator {
+    @include mdc-theme-prop(background-color, $color);
+  }
+
+  &:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
+    @include mdc-theme-prop(background-color, $color);
   }
 }
