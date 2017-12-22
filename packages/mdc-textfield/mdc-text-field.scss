@@ -80,8 +80,13 @@
   &:focus {
     outline: none;
 
-    &::placeholder {
-      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+      &::placeholder {
+        @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+      }
+
+      ~ .mdc-text-field__label {
+        @include mdc-theme-prop(color, primary);
+      }
     }
   }
 
@@ -250,7 +255,6 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-text-field-icon-padding});
-    color: $mdc-text-field-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -258,10 +262,6 @@
     // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
 
     &--float-above {
       transform: translateY(-50%) scale(.75, .75);
