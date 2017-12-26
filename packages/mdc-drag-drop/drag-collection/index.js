@@ -62,6 +62,13 @@ class MDCDragManager extends MDCComponent {
     this.setRootEventListeners_(keyboardEventNames, (e) => this.handleKeyDown_(e));
     this.setRootEventListeners_(pointerEventNames, (e) => this.handlePointerDown_(e));
 
+    // Adds default document.ontouchmove. Workaround for preventing scrolling on touchmove.
+    // From Shopify Draggable lib.
+    // TODO(acdvorak): Find a better way to prevent scrolling after long press on iOS.
+    document.ontouchmove = document.ontouchmove || function() {
+      return true;
+    };
+
     // Mark all items as draggable and ensure that they are focusable.
     const itemEls = [].slice.call(this.root_.querySelectorAll(this.itemSelector_));
     itemEls.forEach((itemEl) => {
