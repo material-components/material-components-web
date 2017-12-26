@@ -380,7 +380,7 @@ handlePointerMoveWhileWaitingForLongPress_(e):
 
 // NOTE(acdvorak): This code assumes:
 // 1. ALL ITEMS ARE THE SAME SIZE
-// 2. HORIZONTAL AND VERTICAL ALLEYS BETWEEN ITEMS ARE IDENTICAL
+// 2. HORIZONTAL AND VERTICAL GUTTERS BETWEEN ITEMS ARE IDENTICAL
 //
 // TODO(acdvorak): Fix bug where Drop Spacer is placed incorrectly:
 // 1. Resize window so that 2 columns are visible
@@ -484,11 +484,11 @@ export class MDCDragCollection extends MDCComponent {
     // TODO(acdvorak): Destroy or reuse old objects; optimize performance on low-end devices.
     const {items, rows} = this.getDraggableItems_();
 
-    this.rowAlleyInPx_ = MDCDragCollection.getRowAlleyInPx_(rows);
-    this.colAlleyInPx_ = MDCDragCollection.getColAlleyInPx_(rows);
+    this.rowGutterInPx_ = MDCDragCollection.getRowGutterInPx_(rows);
+    this.colGutterInPx_ = MDCDragCollection.getColGutterInPx_(rows);
     this.draggableItemList_ = items;
     this.rows_ = rows;
-    this.dropZones_ = this.getDropZones_(rows, this.rowAlleyInPx_, this.colAlleyInPx_);
+    this.dropZones_ = this.getDropZones_(rows, this.rowGutterInPx_, this.colGutterInPx_);
     this.activeDropZone_ = null;
     this.sourceItemEl_ = null;
     this.spacerThicknessInPx_ = MDCDragCollection.getSpacerThicknessInPx_(this.root_, rows);
@@ -630,13 +630,13 @@ export class MDCDragCollection extends MDCComponent {
   setVerticalDropShift_(itemRowIndex, item) {
     const dzIsAfterItem = this.activeDropZone_.isAfterItem();
     const multiplier = (dzIsAfterItem || (itemRowIndex < this.activeDropZone_.rowIndex)) ? -1 : +1;
-    item.setDropShift({x: 0, y: multiplier * (this.activeDropZone_.rowAlleyInPx_ / 2)});
+    item.setDropShift({x: 0, y: multiplier * (this.activeDropZone_.rowGutterInPx_ / 2)});
   }
 
   setHorizontalDropShift_(itemColIndex, item) {
     const dzIsAfterItem = this.activeDropZone_.isAfterItem();
     const multiplier = (dzIsAfterItem || (itemColIndex < this.activeDropZone_.colIndex)) ? -1 : +1;
-    item.setDropShift({x: multiplier * (this.colAlleyInPx_ / 2), y: 0});
+    item.setDropShift({x: multiplier * (this.colGutterInPx_ / 2), y: 0});
   }
 
   resetDropShifts_(items) {
@@ -701,7 +701,7 @@ export class MDCDragCollection extends MDCComponent {
     return {items, rows};
   }
 
-  getDropZones_(rows, rowAlleyInPx, colAlleyInPx) {
+  getDropZones_(rows, rowGutterInPx, colGutterInPx) {
     const dropZones = [];
     const columnMode = this.isSingleColumnMode() ? ColumnMode.SINGLE_COLUMN : ColumnMode.MULTI_COLUMN;
 
@@ -711,8 +711,8 @@ export class MDCDragCollection extends MDCComponent {
           return new DropZone({
             associatedItem: curItemInRow,
             dropSide,
-            rowAlleyInPx,
-            colAlleyInPx,
+            rowGutterInPx,
+            colGutterInPx,
             rows,
             rowIndex,
             colIndex,
@@ -750,7 +750,7 @@ export class MDCDragCollection extends MDCComponent {
    * @returns {number}
    * @private
    */
-  static getColAlleyInPx_(rows) {
+  static getColGutterInPx_(rows) {
     if (rows.length < 1 || rows[0].length < 2) {
       return 0;
     }
@@ -763,7 +763,7 @@ export class MDCDragCollection extends MDCComponent {
    * @returns {number}
    * @private
    */
-  static getRowAlleyInPx_(rows) {
+  static getRowGutterInPx_(rows) {
     if (rows.length < 2) {
       return 0;
     }
@@ -803,22 +803,22 @@ export class MDCDragCollection extends MDCComponent {
 
 /** Represents an area of the screen where a draggable item can be dropped. */
 class DropZone {
-  constructor({associatedItem, dropSide, rows, rowIndex, colIndex, rowAlleyInPx, colAlleyInPx, columnMode} = {}) {
+  constructor({associatedItem, dropSide, rows, rowIndex, colIndex, rowGutterInPx, colGutterInPx, columnMode} = {}) {
     this.associatedItem = associatedItem;
     this.dropSide = dropSide;
     this.rows_ = rows;
     this.rowIndex = rowIndex;
     this.colIndex = colIndex;
-    this.colAlleyInPx_ = colAlleyInPx;
-    this.rowAlleyInPx_ = rowAlleyInPx;
+    this.colGutterInPx_ = colGutterInPx;
+    this.rowGutterInPx_ = rowGutterInPx;
     this.columnMode_ = columnMode;
 
     if (this.isSingleColumnMode()) {
-      this.horizontalToleranceInPx_ = this.colAlleyInPx_ / 2;
+      this.horizontalToleranceInPx_ = this.colGutterInPx_ / 2;
       this.verticalToleranceInPx_ = this.associatedItem.dragCollectionOffsetRect.height / 2;
     } else {
       this.horizontalToleranceInPx_ = this.associatedItem.dragCollectionOffsetRect.width / 2;
-      this.verticalToleranceInPx_ = this.rowAlleyInPx_ / 2;
+      this.verticalToleranceInPx_ = this.rowGutterInPx_ / 2;
     }
 
     this.dragCollectionOffsetRect = this.calculateParentOffsetRect_();
@@ -836,17 +836,17 @@ class DropZone {
       parentOffsetRect.left = parentOffsetRect.x = associatedItemParentOffsetRect.left;
       parentOffsetRect.top = parentOffsetRect.y =
         (this.isBeforeItem()
-          ? associatedItemParentOffsetRect.top - this.rowAlleyInPx_
+          ? associatedItemParentOffsetRect.top - this.rowGutterInPx_
           : associatedItemParentOffsetRect.bottom);
-      parentOffsetRect.bottom = parentOffsetRect.top + this.rowAlleyInPx_;
+      parentOffsetRect.bottom = parentOffsetRect.top + this.rowGutterInPx_;
       parentOffsetRect.right = associatedItemParentOffsetRect.right;
     } else {
       parentOffsetRect.top = parentOffsetRect.y = associatedItemParentOffsetRect.top;
       parentOffsetRect.left = parentOffsetRect.x =
         (this.isBeforeItem()
-          ? associatedItemParentOffsetRect.left - this.colAlleyInPx_
+          ? associatedItemParentOffsetRect.left - this.colGutterInPx_
           : associatedItemParentOffsetRect.right);
-      parentOffsetRect.right = parentOffsetRect.left + this.colAlleyInPx_;
+      parentOffsetRect.right = parentOffsetRect.left + this.colGutterInPx_;
       parentOffsetRect.bottom = associatedItemParentOffsetRect.bottom;
     }
 
