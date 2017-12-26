@@ -49,7 +49,10 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
 //
 
 .mdc-card {
-  @include mdc-ripple-color(black, .14);
+  @include mdc-states-base-color(black);
+  @include mdc-states-focus-opacity(.08);
+  @include mdc-states-hover-opacity(.08);
+  @include mdc-states-press-opacity(.08);
 
   cursor: pointer;
 }
@@ -225,7 +228,10 @@ $demo-drop-zone-thickness: 6px;
 .demo-card--color {
   $color-value: mdc-theme-prop-value(secondary);
 
-  @include mdc-ripple-color(white, .14);
+  @include mdc-states-base-color(white);
+  @include mdc-states-focus-opacity(.14);
+  @include mdc-states-hover-opacity(.14);
+  @include mdc-states-press-opacity(.14);
 
   background-color: $color-value;
   color: white;
