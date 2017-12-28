@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+// Public
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
 }
@@ -40,6 +41,172 @@
     border-radius: max($radius - 2, 0);
   }
 }
+
+// Color mixins
+@mixin mdc-text-field-text-color($color) {
+  .mdc-text-field__input {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-text-field-disabled-border-color($color) {
+  .mdc-text-field__input {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-disabled-text-color($color) {
+  .mdc-text-field__input,
+  .mdc-text-field__label,
+  + .mdc-text-field-helper-text {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-text-field-bottom-line-ink-color($color) {
+  .mdc-text-field__input {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-bottom-line-hover-ink-color($color) {
+  &:not(.mdc-text-field--invalid) .mdc-text-field__input:hover:not(:focus) {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-bottom-line-activated-ink-color($color) {
+  .mdc-text-field__bottom-line {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-text-field-input-focus-placeholder($color) {
+  .mdc-text-field__input:focus::placeholder,
+  .mdc-text-field--outlined.mdc-text-field--disabled,
+  .mdc-text-field--box.mdc-text-field--disabled,
+  .mdc-text-field:not(.mdc-text-field--upgraded) .mdc-text-field__input:disabled {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-text-field-label-activated-color($color, $opacity: .87) {
+  // stylelint-disable-next-line selector-max-specificity
+  .mdc-text-field:not(.mdc-text-field--invalid) .mdc-text-field__input:focus ~ .mdc-text-field__label--float-above {
+    @include mdc-theme-prop(color, $color);
+
+    opacity: $opacity;
+  }
+}
+
+@mixin mdc-text-field-validation-error-color($color) {
+  .mdc-text-field__label {
+    @include mdc-theme-prop(color, $color);
+  }
+
+  .mdc-text-field__input {
+    @include mdc-theme-prop(border-color, $color);
+  }
+
+  .mdc-text-field__bottom-line {
+    @include mdc-theme-prop(background-color, $color);
+  }
+
+  .mdc-text-field__idle-outline {
+    @include mdc-theme-prop(border-color, $color);
+  }
+
+  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    @include mdc-theme-prop(border-color, $color);
+  }
+
+  .mdc-text-field__outline .mdc-text-field__outline-path {
+    @include mdc-theme-prop(stroke, $color);
+  }
+
+  .mdc-text-field__input:required + .mdc-text-field__label::after {
+    @include mdc-theme-prop($color, $color);
+
+  }
+
+  .mdc-text-field--invalid.mdc-text-field--textarea {
+    @include mdc-theme-prop(border-color, $color);
+
+  }
+
+  &.mdc-text-field--textarea {
+    @include mdc-theme-prop(border-color, $color);
+
+  }
+}
+
+@mixin mdc-text-field-textarea-validation-error-color($color) {
+  .mdc-text-field__input:invalid:not(:focus) {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-text-field-textarea-input-focus-border-color($color) {
+  .mdc-text-field__input:focus {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-text-field-textarea-border-color($color) {
+  @include mdc-theme-prop(border-color, $color);
+}
+
+@mixin mdc-text-field-outlined-outline-color($color) {
+  &:not(.mdc-text-field--invalid) .mdc-text-field__idle-outline {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-text-field-outlined-hover-outline-color($color) {
+  &:not(.mdc-text-field--invalid) .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-text-field-outlined-focused-outline-stroke-color($color) {
+  &.mdc-text-field--focused .mdc-text-field__outline-path {
+    @include mdc-theme-prop(stroke, $color);
+  }
+}
+
+@mixin mdc-text-field-outlined-disabled($color) {
+  @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-text-field-outlined-disabled-border-color($color) {
+  .mdc-text-field__outline-path {
+    @include mdc-theme-prop(stroke, $color);
+  }
+
+  .mdc-text-field__idle-outline {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-text-field-outlined-disabled-icon-color($color) {
+  .mdc-text-field__icon {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-text-field-box-background-color($color) {
+
+}
+
+@mixin mdc-text-field-box-background-activated-color($color) {
+
+}
+
+@mixin mdc-text-field-box-stroke-color($color) {
+
+}
+
+// Private
 
 @mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY) {
   @keyframes invalid-shake-float-above-#{$modifier} {

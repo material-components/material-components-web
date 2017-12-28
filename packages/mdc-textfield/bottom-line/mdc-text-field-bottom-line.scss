@@ -15,14 +15,14 @@
 //
 
 @import "../functions";
+@import "../mixins";
 @import "@material/theme/mixins";
 
 // postcss-bem-linter: define textfield
 .mdc-text-field {
+  @include mdc-text-field-bottom-line-activated-ink-color(primary);
 
   &__bottom-line {
-    @include mdc-theme-prop(background-color, primary);
-
     position: absolute;
     bottom: 0;
     left: 0;
