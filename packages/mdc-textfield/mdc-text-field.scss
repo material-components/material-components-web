@@ -39,13 +39,13 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
-  @include mdc-text-field-text-color($mdc-text-field-base-primary-color);
+  @include mdc-text-field-input-text-color($mdc-text-field-base-primary-color);
   @include mdc-text-field-bottom-line-ink-color($mdc-text-field-underline-on-light-idle);
   @include mdc-text-field-bottom-line-hover-ink-color($mdc-text-field-underline-on-light);
   @include mdc-text-field-input-focus-placeholder($mdc-text-field-light-placeholder);
 
   @include mdc-theme-dark {
-    @include mdc-text-field-text-color($mdc-text-field-base-primary-color-dark); //text-primary-on-dark
+    @include mdc-text-field-input-text-color($mdc-text-field-base-primary-color-dark); //text-primary-on-dark
     @include mdc-text-field-bottom-line-ink-color($mdc-text-field-underline-on-dark-idle);
     @include mdc-text-field-bottom-line-hover-ink-color($mdc-text-field-underline-on-dark);
     @include mdc-text-field-input-focus-placeholder($mdc-text-field-dark-placeholder); // text-hint-on-dark
@@ -104,13 +104,13 @@
 }
 
 .mdc-text-field--outlined {
-  @include mdc-text-field-outlined-hover-outline-color($mdc-text-field-outlined-hover-border);
-  @include mdc-text-field-outlined-outline-color($mdc-text-field-outlined-idle-border);
+  @include mdc-text-field-outlined-hover-outline-border-color($mdc-text-field-outlined-hover-border);
+  @include mdc-text-field-outlined-outline-border-color($mdc-text-field-outlined-idle-border);
   @include mdc-text-field-outlined-focused-outline-stroke-color(primary);
 
   @include mdc-theme-dark {
-    @include mdc-text-field-outlined-hover-outline-color($mdc-text-field-outlined-hover-border-on-dark);
-    @include mdc-text-field-outlined-outline-color($mdc-text-field-outlined-idle-border-on-dark);
+    @include mdc-text-field-outlined-hover-outline-border-color($mdc-text-field-outlined-hover-border-on-dark);
+    @include mdc-text-field-outlined-outline-border-color($mdc-text-field-outlined-idle-border-on-dark);
   }
 
   height: 56px;
@@ -164,7 +164,7 @@
   }
 
   &.mdc-text-field--disabled {
-    @include mdc-text-field-outlined-disabled($mdc-text-field-light-placeholder);
+    @include mdc-text-field-outlined-disabled-text-color($mdc-text-field-light-placeholder);
     @include mdc-text-field-outlined-disabled-border-color($mdc-text-field-outlined-disabled-border);
     @include mdc-text-field-outlined-disabled-icon-color($mdc-text-field-disabled-icon-on-light);
 
@@ -382,12 +382,12 @@
 }
 
 .mdc-text-field--disabled {
-  @include mdc-text-field-disabled-border-color($mdc-text-field-disabled-border-on-light);
-  @include mdc-text-field-disabled-text-color(text-disabled-on-light);
+  @include mdc-text-field-input-disabled-border-color($mdc-text-field-disabled-border-on-light);
+  @include mdc-text-field-input-disabled-text-color(text-disabled-on-light);
 
   @include mdc-theme-dark {
-    @include mdc-text-field-disabled-border-color($mdc-text-field-disabled-border-on-dark);
-    @include mdc-text-field-disabled-text-color(text-disabled-on-dark);
+    @include mdc-text-field-input-disabled-border-color($mdc-text-field-disabled-border-on-dark);
+    @include mdc-text-field-input-disabled-text-color(text-disabled-on-dark);
   }
 
   pointer-events: none;
