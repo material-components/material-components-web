@@ -17,6 +17,7 @@
 @import "../mixins";
 @import "../variables";
 @import "@material/theme/mixins";
+@import "@material/ripple/variables";
 
 .mdc-text-field__idle-outline {
   @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
@@ -33,6 +34,10 @@
 }
 
 .mdc-text-field__outline {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states-base-color(text-primary-on-light);
+  @include mdc-states-press-opacity(map-get($mdc-ripple-dark-ink-opacities, "press"));
   @include mdc-theme-prop(color, primary);
   @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
 
@@ -44,6 +49,7 @@
   transition: mdc-text-field-transition(opacity);
   opacity: 0;
   z-index: 2;
+  overflow: hidden;
 
   svg {
     position: absolute;  
@@ -51,10 +57,10 @@
     height: 100%;  
   
     .mdc-text-field__outline-path {
-      @include mdc-theme-prop(stroke, primary);
-    
-      stroke-width: 2px;
-      transition: mdc-text-field-transition(stroke-width), mdc-text-field-transition(opacity);
+      stroke: $mdc-text-field-outlined-idle-border;
+      stroke-width: 1px;
+      transition: mdc-text-field-transition(stroke), mdc-text-field-transition(stroke-width),
+        mdc-text-field-transition(opacity);
       fill: transparent;
     }
   }

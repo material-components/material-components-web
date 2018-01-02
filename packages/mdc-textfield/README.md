@@ -86,11 +86,10 @@ Un-styled Content (**FOUC**).
 <label for="text-field-no-js">TextField with no JS: </label>
 <div class="mdc-text-field">
   <input type="text" id="text-field-no-js" class="mdc-text-field__input" placeholder="Hint text">
-  <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
 
-> _NOTE_: Do not use `mdc-text-field__bottom-line` inside of `mdc-text-field` _if you plan on using `mdc-text-field--box`, and do not plan on using JavaScript_. Bottom line should not be included as part of the DOM structure of a box text field.
+> _NOTE_: Do not use `mdc-text-field__bottom-line`, `mdc-text-field__outline`, or `mdc-text-field__idle-outline` inside of `mdc-text-field` _if you plan on using `mdc-text-field--box` or `mdc-text-field--outlined` without using JavaScript_. Bottom line and outline should not be included as part of the DOM structure of a CSS-only text field.
 
 ```html
 <label for="css-only-text-field-box">Your name:</label>
@@ -169,7 +168,7 @@ See [here](outline/) for more information on using the outline sub-component.
 #### Helper Text
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
-and disappears on input field blur by default, or it can be persistent. 
+and disappears on input field blur by default, or it can be persistent.
 See [here](helper-text/) for more information on using helper text.
 
 #### Leading and Trailing Icons
@@ -217,7 +216,7 @@ Method Signature | Description
 
 ##### `MDCTextField.ripple`
 
-The `MDCRipple` instance for the root element that `MDCTextField` initializes when given an `mdc-text-field--box` root element. Otherwise, the field is set to `null`.
+`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-text-field__outline` element. Otherwise, the field is set to `null`.
 
 ### `MDCTextFieldAdapter`
 
@@ -233,6 +232,7 @@ Method Signature | Description
 `deregisterBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the bottom line element for a given event
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
 `getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`
+`isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
 
 #### `MDCTextFieldAdapter.getNativeInput()`
