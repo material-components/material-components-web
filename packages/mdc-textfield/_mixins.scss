@@ -14,6 +14,10 @@
 // limitations under the License.
 //
 
+@mixin mdc-text-field-outlined-corner-radius($radius) {
+  border-radius: $radius;
+}
+
 @mixin mdc-text-field-box-corner-radius($radius) {
   border-radius: $radius $radius 0 0;
 }
@@ -45,7 +49,7 @@
 
     33% {
       animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
-      transform: translateX(10px) translateY(-#{$positionY}) scale(.75, .75);
+      transform: translateX(5px) translateY(-#{$positionY}) scale(.75, .75);
     }
 
     66% {

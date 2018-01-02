@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,39 +17,43 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCTextFieldLabelAdapter from './adapter';
-import MDCTextFieldLabelFoundation from './foundation';
+import {strings} from './constants';
+import MDCTextFieldOutlineAdapter from './adapter';
+import MDCTextFieldOutlineFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCTextFieldLabelFoundation>}
+ * @extends {MDCComponent<!MDCTextFieldOutlineFoundation>}
  * @final
  */
-class MDCTextFieldLabel extends MDCComponent {
+class MDCTextFieldOutline extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextFieldLabel}
+   * @return {!MDCTextFieldOutline}
    */
   static attachTo(root) {
-    return new MDCTextFieldLabel(root);
+    return new MDCTextFieldOutline(root);
   }
 
   /**
-   * @return {!MDCTextFieldLabelFoundation}.
+   * @return {!MDCTextFieldOutlineFoundation}
    */
   get foundation() {
     return this.foundation_;
   }
 
   /**
-   * @return {!MDCTextFieldLabelFoundation}
+   * @return {!MDCTextFieldOutlineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextFieldLabelFoundation(/** @type {!MDCTextFieldLabelAdapter} */ (Object.assign({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
+    return new MDCTextFieldOutlineFoundation(/** @type {!MDCTextFieldOutlineAdapter} */ (Object.assign({
       getWidth: () => this.root_.offsetWidth,
+      getHeight: () => this.root_.offsetHeight,
+      setOutlinePathAttr: (value) => {
+        const path = this.root_.querySelector(strings.PATH_SELECTOR);
+        path.setAttribute('d', value);
+      },
     })));
   }
 }
 
-export {MDCTextFieldLabel, MDCTextFieldLabelFoundation};
+export {MDCTextFieldOutline, MDCTextFieldOutlineFoundation};
