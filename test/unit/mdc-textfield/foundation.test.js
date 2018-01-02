@@ -35,7 +35,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldFoundation, [
-    'addClass', 'removeClass',
+    'addClass', 'removeClass', 'hasClass',
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
@@ -236,7 +236,7 @@ test('#updateOutline updates the SVG path of the outline element', () => {
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30, 8, false));
+  td.verify(outline.updateSvgPath(30 * 0.75, 8, false));
 });
 
 test('on input floats label if input event occurs without any other events', () => {
