@@ -30,7 +30,7 @@ let AnchorMargin;
  * @typedef {{
  *   anchorRect: {width: number, height: number, top: number, right: number, bottom: number, left: number},
  *   viewport: { width: number, height: number },
- *   viewportMargin: {top: number, right: number, bottom: number, left: number},
+ *   viewportDistance: {top: number, right: number, bottom: number, left: number},
  *   anchorHeight: number,
  *   anchorWidth: number,
  *   menuHeight: number,
@@ -61,6 +61,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   /** @return enum{numbers} */
   static get numbers() {
     return numbers;
+  }
+
+  /** @return enum{number} */
+  static get Corner() {
+    return Corner;
   }
 
   /**
@@ -345,7 +350,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     return {
       anchorRect: anchorRect,
       viewport: viewport,
-      viewportMargin: {
+      viewportDistance: {
         top: anchorRect.top,
         right: viewport.width - anchorRect.right,
         left: anchorRect.left,
@@ -367,12 +372,12 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     // Defaults: open from the top left.
     let corner = Corner.TOP_LEFT;
 
-    const {anchorRect, viewportMargin, anchorHeight, anchorWidth, menuHeight, menuWidth} = this.measures_;
-    const isBottomAligned = this.anchorCorner_ & CornerBit.BOTTOM;
+    const {anchorRect, viewportDistance, anchorHeight, anchorWidth, menuHeight, menuWidth} = this.measures_;
+    const isBottomAligned = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
     const availableTop = isBottomAligned ? anchorRect.top + anchorHeight + this.anchorMargin_.bottom
-      : viewportMargin.top + this.anchorMargin_.top;
-    const availableBottom = isBottomAligned ? viewportMargin.bottom - this.anchorMargin_.bottom
-      : viewportMargin.bottom + anchorHeight - this.anchorMargin_.top;
+      : viewportDistance.top + this.anchorMargin_.top;
+    const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
+      : viewportDistance.bottom + anchorHeight - this.anchorMargin_.top;
 
     const topOverflow = menuHeight - availableTop;
     const bottomOverflow = menuHeight - availableBottom;
@@ -381,14 +386,14 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }
 
     const isRtl = this.adapter_.isRtl();
-    const isFlipRtl = !!(this.anchorCorner_ & CornerBit.FLIP_RTL);
-    const avoidHorizontalOverlap = this.anchorCorner_ & CornerBit.RIGHT;
+    const isFlipRtl = Boolean(this.anchorCorner_ & CornerBit.FLIP_RTL);
+    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & CornerBit.RIGHT);
     const isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
       (!avoidHorizontalOverlap && isFlipRtl && isRtl);
-    const availableLeft = isAlignedRight ? viewportMargin.left + anchorWidth + this.anchorMargin_.right :
-      viewportMargin.left + this.anchorMargin_.left;
-    const availableRight = isAlignedRight ? viewportMargin.right - this.anchorMargin_.right :
-      viewportMargin.right + anchorWidth - this.anchorMargin_.left;
+    const availableLeft = isAlignedRight ? viewportDistance.left + anchorWidth + this.anchorMargin_.right :
+      viewportDistance.left + this.anchorMargin_.left;
+    const availableRight = isAlignedRight ? viewportDistance.right - this.anchorMargin_.right :
+      viewportDistance.right + anchorWidth - this.anchorMargin_.left;
 
     const leftOverflow = menuWidth - availableLeft;
     const rightOverflow = menuWidth - availableRight;
@@ -431,10 +436,10 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @private
    */
   getVerticalOriginOffset_(corner) {
-    const {anchorRect, viewport, viewportMargin, anchorHeight, menuHeight} = this.measures_;
-    const isBottomAligned = !!(corner & CornerBit.BOTTOM);
+    const {anchorRect, viewport, viewportDistance, anchorHeight, menuHeight} = this.measures_;
+    const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
     const {MARGIN_TO_EDGE} = MDCSimpleMenuFoundation.numbers;
-    const avoidVerticalOverlap = this.anchorCorner_ & CornerBit.BOTTOM;
+    const avoidVerticalOverlap = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
     const canOverlapVertically = !avoidVerticalOverlap;
     let y = 0;
 
@@ -442,15 +447,15 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       y = avoidVerticalOverlap ? anchorRect.height - this.anchorMargin_.top : -this.anchorMargin_.bottom;
       // adjust for when menu can overlap anchor, but too tall to be aligned to bottom
       // anchor corner. Bottom margin is ignored in such cases.
-      if (canOverlapVertically && menuHeight > viewportMargin.top + anchorHeight) {
-        y = -(Math.min(menuHeight, viewport.height - MARGIN_TO_EDGE) - (viewportMargin.top + anchorHeight));
+      if (canOverlapVertically && menuHeight > viewportDistance.top + anchorHeight) {
+        y = -(Math.min(menuHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.top + anchorHeight));
       }
     } else {
       y = avoidVerticalOverlap ? (anchorRect.height + this.anchorMargin_.bottom) : this.anchorMargin_.top;
       // adjust for when menu can overlap anchor, but too tall to be aligned to top
       // anchor corners. Top margin is ignored in that case.
-      if (canOverlapVertically && menuHeight > viewportMargin.bottom + anchorHeight) {
-        y = -(Math.min(menuHeight, viewport.height - MARGIN_TO_EDGE) - (viewportMargin.bottom + anchorHeight));
+      if (canOverlapVertically && menuHeight > viewportDistance.bottom + anchorHeight) {
+        y = -(Math.min(menuHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.bottom + anchorHeight));
       }
     }
     return y;
@@ -463,15 +468,15 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    */
   getMenuMaxHeight_(corner) {
     let maxHeight = 0;
-    const {viewportMargin} = this.measures_;
-    const isBottomAligned = !!(corner & CornerBit.BOTTOM);
+    const {viewportDistance} = this.measures_;
+    const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
 
     // When maximum height is not specified, it is handled from css.
     if (this.anchorCorner_ & CornerBit.BOTTOM) {
       if (isBottomAligned) {
-        maxHeight = viewportMargin.top + this.anchorMargin_.top;
+        maxHeight = viewportDistance.top + this.anchorMargin_.top;
       } else {
-        maxHeight = viewportMargin.bottom - this.anchorMargin_.bottom;
+        maxHeight = viewportDistance.bottom - this.anchorMargin_.bottom;
       }
     }
 
