@@ -59,6 +59,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
       getIdleOutlineStyleValue: () => {},
+      isFocused: () => {},
       isRtl: () => {},
     });
   }
@@ -107,6 +108,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // Ensure label does not collide with any pre-filled value.
     if (this.getNativeInput_().value && this.label_) {
       this.label_.floatAbove();
+    }
+
+    if (this.adapter_.isFocused()) {
+      this.inputFocusHandler_();
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
