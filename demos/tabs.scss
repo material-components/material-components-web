@@ -17,3 +17,138 @@
 @import "./common";
 @import "../packages/mdc-button/mdc-button";
 @import "../packages/mdc-tabs/mdc-tabs";
+
+fieldset {
+  padding: 0 24px 16px;
+}
+
+.demo-theme-dark fieldset {
+  background-color: #333;
+}
+
+.demo-theme-dark fieldset legend {
+  color: #f0f0f0;
+}
+
+.demo-theme-dark .demo-tabs__scroller {
+  background-color: #333;
+}
+
+.demo-theme-dark .demo-tabs__scroller .demo-title {
+  color: #f0f0f0;
+}
+
+.demo-header-toolbar {
+  z-index: 10;
+}
+
+.hero button {
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+.demo-buttons {
+  padding: 40px 40px 0 40px;
+}
+
+fieldset legend {
+  display: block;
+  padding: 64px 16px 24px;
+}
+
+.demo-tabs__scroller {
+  margin-top: 64px;
+  padding-bottom: 1px;
+}
+
+.demo-title {
+  padding: 0 40px 40px;
+}
+
+.demo-tab-bar-scroller {
+  margin-bottom: 16px;
+}
+
+.demo-note {
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #f2f2f2;
+}
+
+#dynamic-demo-toolbar h1 {
+  margin-left: 64px;
+}
+
+.panels {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+.panel {
+  display: none;
+}
+
+.panel.active {
+  display: block;
+}
+
+.dots {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 4px;
+  padding-bottom: 16px;
+}
+
+.dot {
+  margin: 0 4px;
+  border-radius: 50%;
+  border: 1px solid #64DD17;
+  width: 20px;
+  height: 20px;
+}
+
+.dot:last-child {
+  margin-right: 0;
+}
+
+.dot.active {
+  background-color: #64DD17;
+  border-color: #64DD17;
+}
+
+.my-modified-toolbar-section {
+  position: absolute;
+  right: 0;
+  bottom: -16px;
+}
+
+[dir="rtl"] .my-modified-toolbar-section {
+  right: auto;
+  left: 0;
+}
+
+.demo-tab-bar--indicator-accent {
+  &,
+  .demo-toolbar-accent & {
+    @include mdc-tab-activated-ink-color(secondary);
+
+    @include mdc-theme-dark(".mdc-tab-bar") {
+      @include mdc-tab-activated-ink-color(secondary);
+    }
+  }
+}
+
+.demo-tab-bar--custom-label {
+  @include mdc-tab-label-ink-color($material-color-indigo-500);
+}
+
+.demo-tab-bar--custom-label-activated,
+.demo-tab-bar--custom-icon-activated {
+  @include mdc-tab-activated-ink-color($material-color-indigo-500);
+}
+
+.demo-tab-bar--custom-icon {
+  @include mdc-tab-icon-ink-color($material-color-indigo-500);
+}

@@ -211,6 +211,38 @@ dots.addEventListener('click', function (evt) {
 })
 ```
 
+### Sass Mixins
+
+To customize the label ink color, the icon ink color or the indicator ink color you can use the following mixins.
+
+#### `mdc-tab-ink-color`
+
+Use this mixin to set the deactivated state of icon and label colors to be the same color. Do not use this if you are using the `mdc-tab-label-ink-color` or `mdc-tab-icon-ink-color` mixins.
+
+#### `mdc-tab-activated-ink-color`
+
+This mixin is to set the activated state of the icon, label and indicator color to all be the same color. Do not use this if you are using the `mdc-tab-activated-label-ink-color`, `mdc-tab-activated-icon-ink-color` or `mdc-tab-indicator-ink-color` mixins.
+
+#### `mdc-tab-label-ink-color($color)`
+
+This mixin customizes the label ink color of the tabs.
+
+#### `mdc-tab-label-activated-ink-color($color)`
+
+This mixin customizes the label ink color in the activated state.
+
+#### `mdc-tab-icon-ink-color($color)`
+
+This mixin customizes the icon ink color of the drawer.
+
+#### `mdc-tab-icon-activated-ink-color($color)`
+
+This mixin customizes the icon color in the activated state.
+
+#### `mdc-tab-indicator-ink-color($color)`
+
+This mixin customizes the indicator ink color in the activated state.
+
 ### Using the CSS-Only Component
 
 `mdc-tab-bar` ships with css for styling a tab layout according to the Material
