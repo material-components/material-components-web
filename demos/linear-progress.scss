@@ -22,3 +22,24 @@
   @include mdc-linear-progress-bar-color($material-color-red-500);
   @include mdc-linear-progress-buffer-color($material-color-red-100);
 }
+
+fieldset {
+  margin: 24px;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.demo-linear-progress {
+  margin: 16px 0;
+}
+
+fieldset legend {
+  display: block;
+  padding: 16px;
+  padding-top: 64px;
+  padding-bottom: 24px;
+}
+
+figure {
+  margin: 64px;
+}

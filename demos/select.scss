@@ -18,3 +18,27 @@
 @import "../packages/mdc-list/mdc-list";
 @import "../packages/mdc-menu/mdc-menu";
 @import "../packages/mdc-select/mdc-select";
+
+.demo-theme-dark {
+  background-color: #303030;
+}
+
+#demo-wrapper {
+  padding: 4px;
+  padding-left: 0;
+}
+
+/* Hack to work around style-loader asynchronously loading styles. */
+/* Equivalent to using mdc-typography's subheading2, which is used in the sass file. */
+.demo-select {
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+
+.example {
+  max-width: 400px;
+  margin: 24px;
+  padding: 24px;
+}

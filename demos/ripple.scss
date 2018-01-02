@@ -17,3 +17,87 @@
 @import "./common";
 @import "../packages/mdc-elevation/mdc-elevation";
 @import "../packages/mdc-ripple/mdc-ripple";
+
+.demo-surface:not(.hero) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 100px;
+  padding: 1rem;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.demo-surface[data-mdc-ripple-is-unbounded] {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.demo-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
+.demo-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+button.demo-surface {
+  display: inline-block; /* Safari does not center button text otherwise :( */
+  background: none;
+  border: none;
+  appearance: none;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+#unsupported-msg {
+  padding: 1rem;
+  border: 1px solid red;
+  color: red;
+  border-radius: 4px;
+  display: none;
+  position: absolute;
+  z-index: 10;
+}
+
+.unsupported #unsupported-msg {
+  display: block;
+}
+
+.unsupported main {
+  opacity: .2;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (max-width: 565px) {
+  .example {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.example {
+  margin: 24px;
+  padding: 24px;
+  align-items: center;
+  display: flex;
+  margin-left: 10px;
+}
+
+.example > div {
+  margin: 48px 0;
+  width: 400px;
+}
+
+.example h2 {
+  font-size: 1.2em;
+  margin-bottom: 0.8em;
+}

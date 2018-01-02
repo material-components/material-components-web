@@ -24,66 +24,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="/assets/button.css.js"></script>
-    <style>
-      .demo-wrapper {
-        padding-bottom: 100px;
-      }
-
-      .demo-wrapper.mdc-theme--dark{
-        background-color: #333;
-      }
-
-      .demo-wrapper.mdc-theme--dark fieldset legend, .demo-wrapper.mdc-theme--dark h1 {
-        color: #f0f0f0;
-      }
-
-      fieldset {
-        padding: 24px;
-        padding-top: 0;
-        padding-bottom: 16px;
-      }
-      fieldset .mdc-button {
-        margin: 16px;
-      }
-
-      .hero button {
-        margin-left: 32px;
-        margin-right: 32px;
-      }
-
-      fieldset legend {
-        display: block;
-        padding: 16px;
-        padding-top: 48px;
-        padding-bottom: 24px;
-      }
-      h1 {
-        padding-left: 36px;
-        padding-top: 64px;
-        padding-bottom: 8px;
-      }
-
-      .mdc-form-field {
-        margin: 50px 0 -20px 30px;
-      }
-      .hero {
-        position: relative;
-      }
-      .hero .note {
-        position: absolute;
-        bottom: 10px;
-        left: 36px;
-        color: rgba(33, 33, 33, .38);
-      }
-
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon demo-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Buttons</span>
         </section>
@@ -92,17 +39,17 @@
 
     <main class="mdc-toolbar-fixed-adjust">
       <section class="hero">
-        <button class="mdc-button">
+        <button class="mdc-button demo-button">
           Flat
         </button>
-        <button class="mdc-button mdc-button--raised">
+        <button class="mdc-button mdc-button--raised demo-button demo-button--raised">
           Raised
         </button>
         <small class="note">Note: "secondary" was previously called "accent" in the Material spec.</small>
       </section>
 
       <section class="demo-wrapper">
-        <div class="mdc-form-field">
+        <div class="mdc-form-field demo-form-field">
           <div class="mdc-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-dark" aria-labelledby="toggle-dark-label">
             <div class="mdc-checkbox__background">
@@ -115,7 +62,7 @@
           <label for="toggle-dark" id="toggle-dark-label">Dark Theme</label>
         </div>
 
-        <div class="mdc-form-field">
+        <div class="mdc-form-field demo-form-field">
           <div class="mdc-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-disabled" aria-labelledby="toggle-disabled-label">
             <div class="mdc-checkbox__background">
@@ -132,23 +79,23 @@
         <fieldset>
           <legend class="mdc-typography--title">Text Button</legend>
           <div>
-            <button class="mdc-button">
+            <button class="mdc-button demo-button">
               Baseline
             </button>
-            <button class="mdc-button mdc-button--compact">
+            <button class="mdc-button mdc-button--compact demo-button">
               Compact
             </button>
-            <button class="mdc-button mdc-button--dense">
+            <button class="mdc-button mdc-button--dense demo-button">
               Dense
             </button>
-            <button class="mdc-button secondary-text-button">
+            <button class="mdc-button secondary-text-button demo-button">
               Secondary
             </button>
-            <button class="mdc-button">
+            <button class="mdc-button demo-button">
               <i class="material-icons mdc-button__icon">favorite</i>
               Icon
             </button>
-            <a href="javascript:void(0)" class="mdc-button">
+            <a href="javascript:void(0)" class="mdc-button demo-button">
               Link
             </a>
           </div>
@@ -157,23 +104,23 @@
         <fieldset>
           <legend class="mdc-typography--title">Raised Button</legend>
           <div>
-            <button class="mdc-button mdc-button--raised">
+            <button class="mdc-button mdc-button--raised demo-button demo-button--raised">
               Baseline
             </button>
-            <button class="mdc-button mdc-button--raised mdc-button--compact">
+            <button class="mdc-button mdc-button--raised mdc-button--compact demo-button demo-button--raised">
               Compact
             </button>
-            <button class="mdc-button mdc-button--raised mdc-button--dense">
+            <button class="mdc-button mdc-button--raised mdc-button--dense demo-button demo-button--raised">
               Dense
             </button>
-            <button class="mdc-button mdc-button--raised secondary-filled-button">
+            <button class="mdc-button mdc-button--raised secondary-filled-button demo-button demo-button--raised">
               Secondary
             </button>
-            <button class="mdc-button mdc-button--raised">
+            <button class="mdc-button mdc-button--raised demo-button demo-button--raised">
               <i class="material-icons mdc-button__icon">favorite</i>
               Icon
             </button>
-            <a href="javascript:void(0)" class="mdc-button mdc-button--raised">
+            <a href="javascript:void(0)" class="mdc-button mdc-button--raised demo-button demo-button--raised">
               Link
             </a>
           </div>
@@ -182,23 +129,23 @@
         <fieldset>
           <legend class="mdc-typography--title">Unelevated Button (Experimental)</legend>
           <div>
-            <button class="mdc-button mdc-button--unelevated">
+            <button class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated">
               Baseline
             </button>
-            <button class="mdc-button mdc-button--unelevated mdc-button--compact">
+            <button class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated mdc-button--compact">
               Compact
             </button>
-            <button class="mdc-button mdc-button--unelevated mdc-button--dense">
+            <button class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated mdc-button--dense">
               Dense
             </button>
-            <button class="mdc-button mdc-button--unelevated secondary-filled-button">
+            <button class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated secondary-filled-button">
               Secondary
             </button>
-            <button class="mdc-button mdc-button--unelevated">
+            <button class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated">
               <i class="material-icons mdc-button__icon">favorite</i>
               Icon
             </button>
-            <a href="javascript:void(0)" class="mdc-button mdc-button--unelevated">
+            <a href="javascript:void(0)" class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated">
               Link
             </a>
           </div>
@@ -207,23 +154,23 @@
         <fieldset>
           <legend class="mdc-typography--title">Stroked Button (Experimental)</legend>
           <div>
-            <button class="mdc-button mdc-button--stroked">
+            <button class="mdc-button mdc-button--stroked demo-button demo-button--stroked">
               Baseline
             </button>
-            <button class="mdc-button mdc-button--stroked mdc-button--compact">
+            <button class="mdc-button mdc-button--stroked mdc-button--compact demo-button demo-button--stroked">
               Compact
             </button>
-            <button class="mdc-button mdc-button--stroked mdc-button--dense">
+            <button class="mdc-button mdc-button--stroked mdc-button--dense demo-button demo-button--stroked">
               Dense
             </button>
-            <button class="mdc-button mdc-button--stroked secondary-stroked-button">
+            <button class="mdc-button mdc-button--stroked secondary-stroked-button demo-button demo-button--stroked">
               Secondary
             </button>
-            <button class="mdc-button mdc-button--stroked">
+            <button class="mdc-button mdc-button--stroked demo-button demo-button--stroked">
               <i class="material-icons mdc-button__icon">favorite</i>
               Icon
             </button>
-            <a href="javascript:void(0)" class="mdc-button mdc-button--stroked">
+            <a href="javascript:void(0)" class="mdc-button mdc-button--stroked demo-button demo-button--stroked">
               Link
             </a>
           </div>
@@ -232,10 +179,10 @@
         <fieldset>
           <legend class="mdc-typography--title">Custom button (Experimental)</legend>
           <div>
-            <button class="mdc-button mdc-button--unelevated big-round-corner-button">
+            <button class="mdc-button mdc-button--unelevated big-round-corner-button demo-button demo-button--unelevated">
               Corner Radius
             </button>
-            <button class="mdc-button mdc-button--stroked thick-stroke-button">
+            <button class="mdc-button mdc-button--stroked thick-stroke-button demo-button demo-button--stroked">
               Thick Stroke Width
             </button>
           </div>
@@ -245,23 +192,23 @@
         <fieldset>
           <legend class="mdc-typography--title">Text Button</legend>
           <div>
-            <button class="mdc-button" data-demo-no-js>
+            <button class="mdc-button demo-button" data-demo-no-js>
               Baseline
             </button>
-            <button class="mdc-button mdc-button--compact" data-demo-no-js>
+            <button class="mdc-button mdc-button--compact demo-button" data-demo-no-js>
               Compact
             </button>
-            <button class="mdc-button mdc-button--dense" data-demo-no-js>
+            <button class="mdc-button mdc-button--dense demo-button" data-demo-no-js>
               Dense
             </button>
-            <button class="mdc-button secondary-text-button" data-demo-no-js>
+            <button class="mdc-button secondary-text-button demo-button" data-demo-no-js>
               Secondary
             </button>
-            <button class="mdc-button" data-demo-no-js>
+            <button class="mdc-button demo-button" data-demo-no-js>
               <i class="material-icons mdc-button__icon">favorite</i>
               Icon
             </button>
-            <a href="javascript:void(0)" class="mdc-button" data-demo-no-js>
+            <a href="javascript:void(0)" class="mdc-button demo-button" data-demo-no-js>
               Link
             </a>
           </div>
@@ -270,23 +217,23 @@
         <fieldset>
           <legend class="mdc-typography--title">Raised Button</legend>
           <div>
-            <button class="mdc-button mdc-button--raised" data-demo-no-js>
+            <button class="mdc-button mdc-button--raised demo-button demo-button--raised" data-demo-no-js>
               Baseline
             </button>
-            <button class="mdc-button mdc-button--raised mdc-button--compact" data-demo-no-js>
+            <button class="mdc-button mdc-button--raised mdc-button--compact demo-button demo-button--raised" data-demo-no-js>
               Compact
             </button>
-            <button class="mdc-button mdc-button--raised mdc-button--dense" data-demo-no-js>
+            <button class="mdc-button mdc-button--raised mdc-button--dense demo-button demo-button--raised" data-demo-no-js>
               Dense
             </button>
-            <button class="mdc-button mdc-button--raised secondary-filled-button" data-demo-no-js>
+            <button class="mdc-button--raised demo-button--raised secondary-filled-button" data-demo-no-js>
               Secondary
             </button>
-            <button class="mdc-button mdc-button--raised" data-demo-no-js>
+            <button class="mdc-button mdc-button--raised demo-button demo-button--raised" data-demo-no-js>
               <i class="material-icons mdc-button__icon">favorite</i>
               Icon
             </button>
-            <a href="javascript:void(0)" class="mdc-button mdc-button--raised" data-demo-no-js>
+            <a href="javascript:void(0)" class="mdc-button mdc-button--raised demo-button demo-button--raised" data-demo-no-js>
               Link
             </a>
           </div>
@@ -295,23 +242,23 @@
         <fieldset>
           <legend class="mdc-typography--title">Unelevated Button (Experimental)</legend>
           <div>
-            <button class="mdc-button mdc-button--unelevated" data-demo-no-js>
+            <button class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated" data-demo-no-js>
               Baseline
             </button>
-            <button class="mdc-button mdc-button--unelevated mdc-button--compact" data-demo-no-js>
+            <button class="mdc-button mdc-button--unelevated mdc-button--compact demo-button demo-button--unelevated" data-demo-no-js>
               Compact
             </button>
-            <button class="mdc-button mdc-button--unelevated mdc-button--dense" data-demo-no-js>
+            <button class="mdc-button mdc-button--unelevated mdc-button--dense demo-button demo-button--unelevated" data-demo-no-js>
               Dense
             </button>
-            <button class="mdc-button mdc-button--unelevated secondary-filled-button" data-demo-no-js>
+            <button class="mdc-button mdc-button--unelevated secondary-filled-button demo-button demo-button--unelevated" data-demo-no-js>
               Secondary
             </button>
-            <button class="mdc-button mdc-button--unelevated" data-demo-no-js>
+            <button class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated" data-demo-no-js>
               <i class="material-icons mdc-button__icon">favorite</i>
               Icon
             </button>
-            <a href="javascript:void(0)" class="mdc-button mdc-button--unelevated" data-demo-no-js>
+            <a href="javascript:void(0)" class="mdc-button mdc-button--unelevated demo-button demo-button--unelevated" data-demo-no-js>
               Link
             </a>
           </div>
@@ -320,23 +267,23 @@
         <fieldset>
           <legend class="mdc-typography--title">Stroked Button (Experimental)</legend>
           <div>
-            <button class="mdc-button mdc-button--stroked" data-demo-no-js>
+            <button class="mdc-button mdc-button--stroked demo-button demo-button--stroked" data-demo-no-js>
               Baseline
             </button>
-            <button class="mdc-button mdc-button--stroked mdc-button--compact" data-demo-no-js>
+            <button class="mdc-button mdc-button--stroked mdc-button--compact  demo-button demo-button--stroked" data-demo-no-js>
               Compact
             </button>
-            <button class="mdc-button mdc-button--stroked mdc-button--dense" data-demo-no-js>
+            <button class="mdc-button mdc-button--stroked mdc-button--dense  demo-button demo-button--stroked" data-demo-no-js>
               Dense
             </button>
-            <button class="mdc-button mdc-button--stroked secondary-stroked-button" data-demo-no-js>
+            <button class="mdc-button mdc-button--stroked secondary-stroked-button  demo-button demo-button--stroked" data-demo-no-js>
               Secondary
             </button>
-            <button class="mdc-button mdc-button--stroked" data-demo-no-js>
+            <button class="mdc-button mdc-button--stroked demo-button demo-button--stroked" data-demo-no-js>
               <i class="material-icons mdc-button__icon">favorite</i>
               Icon
             </button>
-            <a href="javascript:void(0)" class="mdc-button mdc-button--stroked" data-demo-no-js>
+            <a href="javascript:void(0)" class="mdc-button mdc-button--stroked demo-button demo-button--stroked" data-demo-no-js>
               Link
             </a>
           </div>
@@ -345,10 +292,10 @@
         <fieldset>
           <legend class="mdc-typography--title">Custom button (Experimental)</legend>
           <div>
-            <button class="mdc-button mdc-button--unelevated big-round-corner-button" data-demo-no-js>
+            <button class="mdc-button mdc-button--unelevated big-round-corner-button demo-button demo-button--unelevated" data-demo-no-js>
               Big Corner Radius
             </button>
-            <button class="mdc-button mdc-button--stroked thick-stroke-button" data-demo-no-js>
+            <button class="mdc-button mdc-button--stroked thick-stroke-button demo-button demo-button--stroked" data-demo-no-js>
               Thick Stroke Width
             </button>
           </div>
@@ -381,8 +328,10 @@
         document.getElementById('toggle-dark').addEventListener('change', function () {
           if (this.checked) {
             demoWrapper.classList.add('mdc-theme--dark');
+            demoWrapper.classList.add('demo-wrapper--dark');
           } else {
             demoWrapper.classList.remove('mdc-theme--dark');
+            demoWrapper.classList.remove('demo-wrapper--dark');
           }
         });
 

@@ -24,34 +24,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      fieldset {
-        margin: 24px;
-        margin-top: 0;
-        margin-bottom: 16px;
-      }
-      fieldset .mdc-linear-progress {
-        margin: 16px 0;
-      }
-
-      fieldset legend {
-        display: block;
-        padding: 16px;
-        padding-top: 64px;
-        padding-bottom: 24px;
-      }
-
-      .linear-progress-demo {
-        margin: 64px;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon demo-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Linear Progress Indicators</span>
         </section>
@@ -76,8 +55,8 @@
         <fieldset>
           <legend class="mdc-typography--title">Linear Progress Indicators</legend>
 
-          <figure class="linear-progress-demo">
-            <div role="progressbar" class="mdc-linear-progress">
+          <figure>
+            <div role="progressbar" class="mdc-linear-progress demo-linear-progress">
               <div class="mdc-linear-progress__buffering-dots"></div>
               <div class="mdc-linear-progress__buffer"></div>
               <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -90,8 +69,8 @@
             <figcaption>Determinate</figcaption>
           </figure>
 
-          <figure class="linear-progress-demo">
-            <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+          <figure>
+            <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate demo-linear-progress">
               <div class="mdc-linear-progress__buffering-dots"></div>
               <div class="mdc-linear-progress__buffer"></div>
               <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -104,8 +83,8 @@
             <figcaption>Indeterminate</figcaption>
           </figure>
 
-          <figure class="linear-progress-demo">
-            <div role="progressbar" class="mdc-linear-progress" data-buffer="true">
+          <figure>
+            <div role="progressbar" class="mdc-linear-progress demo-linear-progress" data-buffer="true">
               <div class="mdc-linear-progress__buffering-dots"></div>
               <div class="mdc-linear-progress__buffer"></div>
               <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -118,8 +97,8 @@
             <figcaption>Buffer</figcaption>
           </figure>
 
-          <figure class="linear-progress-demo">
-            <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--reversed">
+          <figure>
+            <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--reversed demo-linear-progress">
               <div class="mdc-linear-progress__buffering-dots"></div>
               <div class="mdc-linear-progress__buffer"></div>
               <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -132,8 +111,8 @@
             <figcaption>Reversed</figcaption>
           </figure>
 
-          <figure class="linear-progress-demo">
-            <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--reversed">
+          <figure>
+            <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--reversed demo-linear-progress">
               <div class="mdc-linear-progress__buffering-dots"></div>
               <div class="mdc-linear-progress__buffer"></div>
               <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -146,8 +125,8 @@
             <figcaption>Indeterminate Reversed</figcaption>
           </figure>
 
-          <figure class="linear-progress-demo">
-            <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--reversed" data-buffer="true">
+          <figure>
+            <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--reversed demo-linear-progress" data-buffer="true">
               <div class="mdc-linear-progress__buffering-dots"></div>
               <div class="mdc-linear-progress__buffer"></div>
               <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -160,8 +139,8 @@
             <figcaption>Buffer Reversed</figcaption>
           </figure>
 
-          <figure class="linear-progress-demo">
-            <div role="progressbar" class="mdc-linear-progress demo-linear-progress--custom" data-buffer="true">
+          <figure>
+            <div role="progressbar" class="mdc-linear-progress demo-linear-progress--custom demo-linear-progress" data-buffer="true">
               <div class="mdc-linear-progress__buffering-dots"></div>
               <div class="mdc-linear-progress__buffer"></div>
               <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">

@@ -24,46 +24,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      section.example  {
-        margin-bottom: 0.5rem;
-        margin: 16px;
-        padding: 40px;
-        background-color: #eee;
-      }
-
-      .demo-header-toolbar {
-        z-index: 10;
-      }
-
-      h2 {
-        margin: 0;
-        margin-bottom: 20px;
-      }
-
-      label {
-        font-size: 16px;
-      }
-
-      section.example.mdc-theme--dark {
-        background-color: #333;
-      }
-
-      section.example.mdc-theme--dark h2 {
-        color: white;
-      }
-
-      section.example.mdc-theme--dark label {
-        color: white;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon demo-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Switch</span>
         </section>
@@ -117,7 +84,7 @@
         </div>
       </section>
 
-      <section class="example mdc-theme--dark">
+      <section class="example mdc-theme--dark demo-theme-dark">
         <h2>Switch on Dark Theme</h2>
         <div class="demo-switch-wrapper">
           <div class="mdc-switch">
@@ -144,7 +111,7 @@
         </div>
       </section>
 
-      <section class="example mdc-theme--dark">
+      <section class="example mdc-theme--dark demo-theme-dark">
         <h2>Switch on Dark Theme - Disabled</h2>
         <div class="mdc-switch">
           <input type="checkbox"

@@ -43,27 +43,28 @@ fieldset {
   border: 0;
 }
 
-.mdc-toolbar__icon,
-.mdc-toolbar__menu-icon {
+.demo-toolbar__icon,
+.demo-toolbar__menu-icon {
   @include mdc-toolbar-icon-ink-color(#f0f0f0);
 }
 
-.mdc-button {
+.demo-button {
+  // TODO: remove when dark theme is removed
   @include mdc-theme-dark {
     @include mdc-button-ink-color($dark-button-color);
     @include mdc-states($dark-button-color);
   }
 }
 
-.mdc-button--raised,
-.mdc-button--unelevated {
-  @include mdc-theme-dark(".mdc-button", true) {
+.demo-button--raised,
+.demo-button--unelevated {
+  @include mdc-theme-dark(".demo-button", true) {
     @include mdc-button-filled-accessible($dark-button-color);
   }
 }
 
-.mdc-button--stroked {
-  @include mdc-theme-dark(".mdc-button", true) {
+.demo-button--stroked {
+  @include mdc-theme-dark(".demo-button", true) {
     @include mdc-button-stroke-color($dark-button-color);
   }
 }

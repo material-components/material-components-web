@@ -24,78 +24,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .demo-fabs {
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      legend {
-        display: block;
-        padding: 16px;
-        padding-top: 64px;
-        padding-bottom: 24px;
-      }
-
-      figcaption > div {
-        margin: 8px;
-      }
-
-      .mdc-fab {
-        margin: 16px;
-      }
-
-      .demo-absolute-fab,
-      .demo-fixed-fab {
-        position: absolute;
-        bottom: 1rem;
-        right: 1rem;
-        z-index: 1;
-      }
-
-      .demo-fixed-fab {
-        position: fixed;
-      }
-
-      @media(min-width: 1024px) {
-        .demo-fixed-fab {
-          bottom: 1.5rem;
-          right: 1.5rem;
-        }
-      }
-
-      .fab-motion-container {
-        border: 1px solid #ccc;
-        margin: 1rem;
-        padding: 0 1rem;
-        overflow: hidden;
-        position: relative;
-        height: 10rem;
-        width: 20rem;
-      }
-
-      .fab-motion-container__view {
-        background-color: #fff;
-        box-sizing: border-box;
-        position: absolute;
-        transition: transform 375ms cubic-bezier(0.0, 0.0, 0.2, 1);
-        height: 100%;
-        width: 100%;
-        will-change: transform;
-      }
-
-      .fab-motion-container__view--exited {
-        transition-timing-function: cubic-bezier(.4, 0, 1, 1);
-        transform: translateY(100%);
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon demo-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Floating Action Button</span>
         </section>
@@ -104,14 +39,14 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <button class="mdc-fab material-icons" aria-label="Favorite">
+        <button class="mdc-fab demo-fab material-icons" aria-label="Favorite">
           <span class="mdc-fab__icon">
             favorite_border
           </span>
         </button>
       </section>
 
-      <button class="mdc-fab demo-fixed-fab">
+      <button class="mdc-fab demo-fab demo-fab--fixed">
         <span class="mdc-fab__icon">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
@@ -123,7 +58,7 @@
         <legend>FABs with Ripple</legend>
         <div class="demo-fabs">
           <figure>
-            <button class="mdc-fab material-icons" aria-label="Favorite">
+            <button class="mdc-fab demo-fab material-icons" aria-label="Favorite">
               <span class="mdc-fab__icon">
                 favorite_border
               </span>
@@ -133,7 +68,7 @@
             </figcaption>
           </figure>
           <figure>
-            <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite">
+            <button class="mdc-fab mdc-fab--mini demo-fab material-icons" aria-label="Favorite">
               <span class="mdc-fab__icon">
                 favorite_border
               </span>
@@ -144,7 +79,7 @@
             </figcaption>
           </figure>
           <figure>
-            <button class="mdc-fab lightGreen800Fab material-icons" aria-label="Favorite">
+            <button class="mdc-fab lightGreen800Fab demo-fab material-icons" aria-label="Favorite">
               <span class="mdc-fab__icon">
                 favorite_border
               </span>
@@ -155,7 +90,7 @@
             </figcaption>
           </figure>
           <figure>
-            <button class="mdc-fab lightGreen800Fab mdc-fab--mini material-icons" aria-label="Favorite">
+            <button class="mdc-fab lightGreen800Fab mdc-fab--mini demo-fab material-icons" aria-label="Favorite">
               <span class="mdc-fab__icon">
                 favorite_border
               </span>
@@ -170,28 +105,28 @@
         <legend>CSS Only FABs</legend>
         <div class="demo-fabs">
           <figure>
-            <button class="mdc-fab material-icons" aria-label="Favorite" data-demo-no-js>
+            <button class="mdc-fab demo-fab material-icons" aria-label="Favorite" data-demo-no-js>
               <span class="mdc-fab__icon">
                 favorite_border
               </span>
             </button>
           </figure>
           <figure>
-            <button class="mdc-fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
+            <button class="mdc-fab mdc-fab--mini demo-fab material-icons" aria-label="Favorite" data-demo-no-js>
               <span class="mdc-fab__icon">
                 favorite_border
               </span>
             </button>
           </figure>
           <figure>
-            <button class="mdc-fab lightGreen800Fab material-icons" aria-label="Favorite" data-demo-no-js>
+            <button class="mdc-fab lightGreen800Fab demo-fab material-icons" aria-label="Favorite" data-demo-no-js>
               <span class="mdc-fab__icon">
                 favorite_border
               </span>
             </button>
           </figure>
           <figure>
-            <button class="mdc-fab lightGreen800Fab mdc-fab--mini material-icons" aria-label="Favorite" data-demo-no-js>
+            <button class="mdc-fab lightGreen800Fab mdc-fab--mini demo-fab material-icons" aria-label="Favorite" data-demo-no-js>
               <span class="mdc-fab__icon">
                 favorite_border
               </span>
@@ -209,7 +144,7 @@
             <p>View two (without FAB)</p>
             <p><button type="button" disabled id="enter-exit-back">Go back</button></p>
           </div>
-          <button id="enter-exit-add" class="mdc-fab demo-absolute-fab material-icons" aria-label="Add">
+          <button id="enter-exit-add" class="mdc-fab demo-fab demo-fab--absolute material-icons" aria-label="Add">
             <span class="mdc-fab__icon">
               add
             </span>

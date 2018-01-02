@@ -24,81 +24,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .demo-theme__color {
-        display: inline-flex;
-        flex-direction: column;
-        margin-right: 24px;
-      }
-      .demo-theme__color__label {
-        display: inline-block;
-        box-sizing: border-box;
-        width: 130px;
-        margin-bottom: 1em;
-      }
-      .demo-theme__color__block {
-        display: inline-block;
-        box-sizing: border-box;
-        width: 150px;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-        border: 1px solid #f0f0f0;
-        margin-bottom: 1px;
-      }
-      .demo-theme__text-styles {
-        display: inline-flex;
-        box-sizing: border-box;
-        padding: 16px;
-        border: 1px solid #f0f0f0;
-        align-items: center;
-        flex-direction: column;
-      }
-
-      @media(min-width: 768px) {
-        .demo-theme__text-styles {
-          flex-direction: row;
-        }
-      }
-
-      .demo-theme__text-styles > span {
-        padding: 0 16px;
-      }
-      .demo-theme--custom-light-bg {
-        background-color: #dddddd;
-      }
-      .demo-theme--custom-dark-bg {
-        background-color: #1d1d1d;
-      }
-
-      .example {
-        margin: 24px;
-        padding: 24px;
-      }
-
-      h2 {
-        margin-left: 48px;
-        margin-bottom: 0.8em;
-        margin-top: 0.8em;
-      }
-
-      h3 {
-        margin-bottom: 0.8em;
-        margin-top: 0.8em;
-      }
-
-      .hero button {
-        margin: 24px;
-      }
-
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon demo-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Theme</span>
         </section>
@@ -107,8 +39,8 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <button class="mdc-button mdc-button--raised mdc-theme--primary-bg mdc-theme--text-primary-on-primary">Primary</button>
-        <button class="mdc-button mdc-button--raised button mdc-theme--secondary-bg mdc-theme--text-primary-on-secondary">Secondary</button>
+        <button class="mdc-button mdc-button--raised mdc-theme--primary-bg mdc-theme--text-primary-on-primary demo-button demo-button--raise">Primary</button>
+        <button class="mdc-button mdc-button--raised button mdc-theme--secondary-bg mdc-theme--text-primary-on-secondary demo-button demo-button--raise">Secondary</button>
       </section>
 
       <h2 class="mdc-typography--display1">Theme colors</h2>

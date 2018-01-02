@@ -32,7 +32,7 @@
     $unmarked-fill-color: rgba($color, .25),
     $marked-fill-color: $color);
 
-  @include mdc-theme-dark(".mdc-checkbox", $compound: true) {
+  @include mdc-theme-dark(".demo-checkbox", $compound: true) {
     @include mdc-checkbox-ink-color(black);
     @include mdc-checkbox-container-colors(
       $unmarked-stroke-color: $color,
@@ -45,4 +45,33 @@
   @include mdc-checkbox-container-colors(
     $unmarked-stroke-color: $material-color-blue-500,
     $marked-fill-color: $material-color-purple-500);
+}
+
+@media screen {
+  .demo-theme-dark {
+    background: #262626;
+    color: white;
+  }
+
+  .demo-theme-dark > h2 {
+    margin-top: 0;
+  }
+
+  .demo-example .demo-form-field {
+    min-width: 450px;
+  }
+
+  .demo-toggle-group {
+    display: inline-block;
+  }
+
+  @media (max-width: 600px) {
+    .demo-button {
+      margin-bottom: 4px;
+    }
+  }
+
+  .demo-button code {
+    text-transform: none;
+  }
 }

@@ -25,28 +25,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .demo-body {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-      }
-
-      .demo-main {
-        padding-left: 16px;
-        padding-bottom: 16px;
-        overflow: auto;
-      }
-    </style>
   </head>
   <body class="mdc-typography demo-body">
     <div class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span>
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon demo-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
-          <button class="demo-menu material-icons mdc-toolbar__menu-icon">menu</button>
+          <button class="demo-menu material-icons mdc-toolbar__menu-icon demo-toolbar__menu-icon">menu</button>
           <span class="mdc-toolbar__title catalog-title">Temporary Drawer</span>
         </section>
       </div>
@@ -164,9 +151,9 @@
         drawerEl.classList.remove('demo-drawer--custom');
         drawerEl.classList.remove('demo-drawer--accessible');
 
-        if(e.target.id === 'accessible') {
+        if(e.target.id === 'theme-radio-accessible') {
           drawerEl.classList.add('demo-drawer--accessible');
-        } else if(e.target.id === 'custom') {
+        } else if(e.target.id === 'theme-radio-custom') {
           drawerEl.classList.add('demo-drawer--custom');
         }
       });

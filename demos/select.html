@@ -24,38 +24,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .mdc-theme--dark {
-        background-color: #303030;
-      }
-
-      #demo-wrapper {
-        padding: 4px;
-        padding-left: 0;
-      }
-
-      /* Hack to work around style-loader asynchronously loading styles. */
-      /* Equivalent to using mdc-typography's subheading2, which is used in the sass file. */
-      .mdc-select {
-        font-family: Roboto, sans-serif;
-        font-size: 1rem;
-        font-weight: 400;
-        letter-spacing: .04em;
-      }
-
-      .example {
-        max-width: 400px;
-        margin: 24px;
-        padding: 24px;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon demo-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Select</span>
         </section>
@@ -65,7 +40,7 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div id="hero-js-select" class="mdc-select" role="listbox">
+        <div id="hero-js-select" class="mdc-select demo-select" role="listbox">
           <div class="mdc-select__surface" tabindex="0">
             <div class="mdc-select__label">Pick a Food Group</div>
             <div class="mdc-select__selected-text"></div>
@@ -99,7 +74,7 @@
       <section class="example">
         <h2 class="mdc-typography--title">Fully-Featured Component</h2>
         <section id="box-demo-wrapper">
-          <div id="js-select-box" class="mdc-select" role="listbox">
+          <div id="js-select-box" class="mdc-select demo-select" role="listbox">
             <div class="mdc-select__surface" tabindex="0">
               <div class="mdc-select__label">Food Group</div>
               <div class="mdc-select__selected-text"></div>
@@ -137,7 +112,7 @@
 
       <section class="example">
         <h2 class="mdc-typography--title">CSS Only</h2>
-        <div class="mdc-select">
+        <div class="mdc-select demo-select">
           <select class="mdc-select__surface">
             <option value="" selected>Pick a food group</option>
             <option value="grains">Bread, Cereal, Rice, and Pasta</option>
@@ -201,6 +176,7 @@
 
         darkThemeCb.addEventListener('change', function() {
           boxDemoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('mdc-theme--dark');
+          boxDemoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('demo-theme-dark');
         });
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {

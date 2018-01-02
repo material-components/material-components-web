@@ -24,57 +24,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      #hero-slider-wrapper {
-        margin: 0 auto;
-        width: 100%;
-        max-width: 600px;
-        /* Blended equivalent of rgba(0, 0, 0, .05); */
-        --mdc-slider-bg-color-behind-component: #f2f2f2;
-      }
-
-      .mdc-theme--dark {
-        background-color: #333;
-      }
-
-      .custom-bg {
-        background-color: #eee;
-        --mdc-slider-bg-color-behind-component: #eee;
-      }
-
-      .mdc-theme--dark.custom-bg {
-        background-color: #102027;
-        --mdc-slider-bg-color-behind-component: #102027;
-      }
-
-      .slider-example {
-        margin-bottom: 48px;
-      }
-
-      .demo-param-field-group + .demo-param-field-group {
-        margin-top: 16px;
-      }
-
-      .demo-param-field {
-        display: block;
-      }
-
-      .demo-param-input-label {
-        display: inline-block;
-        min-width: 2.5em;
-      }
-
-      .example-slider-wrapper {
-        padding: 0 16px;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+            <a href="/" class="mdc-toolbar__menu-icon demo-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Slider</span>
         </section>
@@ -339,6 +295,7 @@
           darkTheme.addEventListener('change', function() {
             [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
               example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
+              example.classList[ darkTheme.checked ? 'add' : 'remove']('demo-theme-dark');
             });
           });
 
@@ -351,7 +308,7 @@
 
           useCustomColor.addEventListener('change', function() {
             [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
-              example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
+              example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('demo-custom-bg');
             });
           });
 
