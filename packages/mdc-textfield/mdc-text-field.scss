@@ -33,6 +33,7 @@
 @include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 130%, .923);
 
 // postcss-bem-linter: define text-field
 
@@ -217,6 +218,10 @@
 
       &--float-above {
         transform: translateY(calc(-122% - 2px)) scale(.923, .923);
+
+        &.mdc-text-field__label--shake {
+          animation: invalid-shake-float-above-outlined-dense 250ms 1;
+        }
       }
     }
   }
