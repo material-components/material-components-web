@@ -199,6 +199,43 @@ Mixin | Description
 --- | ---
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
+`mdc-text-field-bottom-line-ink-color($color)` | Changes the color of the bottom-line of the text-field. 
+`mdc-text-field-bottom-line-hover-ink-color($color)` | Changes the color of the bottom-line of the text-field when hover is activated. 
+`mdc-text-field-bottom-line-activated-ink-color($color)` | Changes the color of the bottom-line field when the `<input>` has focus.
+`mdc-text-field-input-text-color($color)` | Changes the color of the text entered into the `<input>` field. 
+`mdc-text-field-input-focus-placeholder($color)` | Changes the color of the placeholder text inside an empty `<input>` field.
+`mdc-text-field-input-disabled-border-color($color)` | Changes the color of the bottom-line of a disabled `<input>` field. 
+`mdc-text-field-input-disabled-text-color($color)` | Changes the color of the text entered into a disabled `<input>` field. 
+`mdc-text-field-input-not-upgraded-border-bottom-color($color)` | Changes the color of the non-upgraded border-bottom-color of the `<input>` field.
+`mdc-text-field-input-not-upgraded-focus-border-color($color)` | Changes the color of the non-upgraded border-color of a focused `<input>` field.
+`mdc-text-field-input-not-upgraded-not-focus-border-color($color)` |  Changes the color of the non-upgraded, not-focused `<input>` field.
+`mdc-text-field-input-not-upgraded-disabled-color($color)` | Changes the text color of the non-upgraded and disabled `<input>` field.
+`mdc-text-field-input-not-upgraded-disabled-border-color($color)` | Changed the border color of the non-upgraded and disabled `<input>` field.
+`mdc-text-field-input-not-upgraded-disabled-background-color($color)` |  Changes the background color of the non-upgraded and disabled `<input>` field.
+`mdc-text-field-input-not-upgraded-invalid-not-focused-border-color($color)` | Changes the color of the non-upgraded, invalid and un-focused `<input>` field.
+`mdc-text-field-label-activated-color($color, $opacity: .87)` | Changes the color of the `<label>` when the `<input>` field is focused. Opacity is by default set to 87%, but can be overridden.
+`mdc-text-field-textarea-border-color($color)` | Changes the border-color of the `<textarea>` field. 
+`mdc-text-field-textarea-input-focus-border-color($color)` | Changes the border-color of the `<textarea>` field when focused. 
+`mdc-text-field-textarea-input-focused-border-color($color)` | Changes the border-color of the `<textarea>` field when focused.
+`mdc-text-field-textarea-label-background-color($color)` | Changes the background-color of the `<label>` field. 
+`mdc-text-field-textarea-validation-error-color($color)` | Changes the validation error color of the `<textarea>` field. 
+`mdc-text-field-textarea-disabled-border-color($color)` | Changes the border-color of a disabled `<textarea>` field.
+`mdc-text-field-textarea-disabled-background-color($color)` | Changes the background-color of a disabled `<textarea>` field.
+`mdc-text-field-fullwidth-border-bottom-color($color)` | Changes the border-bottom-color of a fullwidth styled `<input>` field.
+`mdc-text-field-outlined-outline-color($color)` | Changes the outline color of an outlined `<input>` field.
+`mdc-text-field-outlined-hover-outline-color($color)` | Changes the outline color of an outlined `<input>` field when hover is activated.
+`mdc-text-field-outlined-focused-outline-stroke-color($color)` | Changes the outline stroke color of an outlined `<input>` field when focused. 
+`mdc-text-field-outlined-disabled-text-color($color)` | Changes the text color of a disabled outline `<input>` field. 
+`mdc-text-field-outlined-disabled-border-color($color)` | Changes the border-color of a disabled outline `<input>` field.
+`mdc-text-field-outlined-disabled-icon-color($color)` | Changes the icon color of a disabled outline `<input>` field. 
+`mdc-text-field-box-background-color($color)` | Changes the background color of a box `<input>` field. 
+`mdc-text-field-box-label-text-color($color)` | Changes the label text color of a box `<input>` field.
+`mdc-text-field-box-input-disabled-background-color($color)` | Changes the background-color of a disabled box `<input>` field.
+`mdc-text-field-box-input-disabled-text-color($color)` | Changes the text color of a disabled box `<input>` field.
+`mdc-text-field-box-input-disabled-icon-color($color)` | Changes the icon color of a disabled box `<input>` field.
+`mdc-text-field-validation-error-color($color)` | Changes the validation error color. 
+`mdc-text-field-invalid-helper-text-validation-msg-color($color)` | Changes the helper text validation message label color of an invalid `<input>` field. 
+
 
 ### `MDCTextField`
 

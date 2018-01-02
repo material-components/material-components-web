@@ -47,6 +47,10 @@ $mdc-text-field-outlined-idle-border: rgba(black, .12);
 $mdc-text-field-outlined-disabled-border: rgba(black, .06);
 $mdc-text-field-outlined-hover-border: rgba(black, .87);
 
+$mdc-text-field-outlined-idle-border-on-dark: rgba(white, .12);
+$mdc-text-field-outlined-disabled-border-on-dark: rgba(white, .06);
+$mdc-text-field-outlined-hover-border-on-dark: rgba(white, .87);
+
 $mdc-textarea-border-on-light: rgba(black, .73);
 $mdc-textarea-border-on-dark: rgba(white, 1);
 $mdc-textarea-light-background: rgba(white, 1);
@@ -55,3 +59,6 @@ $mdc-textarea-disabled-background-on-light: rgba(249, 249, 249, 1);
 $mdc-textarea-disabled-background-on-dark: rgba(47, 47, 47, 1);
 
 $mdc-text-field-border-radius: 4px !default;
+
+$mdc-text-field-base-primary-color: text-primary-on-light;
+$mdc-text-field-base-primary-color-dark: text-primary-on-dark;
