@@ -339,7 +339,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Handles keydown events
-   * @param {Event} evt
+   * @param {!Event} evt
    */
   handleKeydown_(evt) {
     const keyId = this.getKeyId_(evt);
@@ -357,7 +357,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Returns the computed name of the event
-   * @param {Event} kbdEvt
+   * @param {!Event} kbdEvt
    * @return {string}
    */
   getKeyId_(kbdEvt) {
