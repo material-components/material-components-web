@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <script src="/assets/drawer/drawer.css.js"></script>
+    <script src="/assets/radio.css.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -33,6 +34,7 @@
 
       .demo-main {
         padding-left: 16px;
+        padding-bottom: 16px;
         overflow: auto;
       }
     </style>
@@ -50,25 +52,25 @@
       </div>
     </div>
 
-    <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-        <header class="mdc-temporary-drawer__header">
-          <div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
+    <aside class="mdc-drawer mdc-drawer--temporary demo-drawer">
+      <nav class="mdc-drawer__drawer">
+        <header class="mdc-drawer__header">
+          <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg">
             Header here
           </div>
         </header>
-        <nav class="mdc-temporary-drawer__content mdc-list-group">
+        <nav class="mdc-drawer__content mdc-list-group">
           <div id="icon-with-text-demo" class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated" href="#">
+            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
             </a>
           </div>
@@ -76,13 +78,13 @@
           <hr class="mdc-list-divider">
 
           <div class="mdc-list">
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
             </a>
           </div>
@@ -92,11 +94,43 @@
     <main class="demo-main mdc-toolbar-fixed-adjust">
       <h1 class="mdc-typography--display1">Temporary Drawer</h1>
       <p class="mdc-typography--body1">Click the menu icon above to open.</p>
+      <div id="demo-radio-buttons">
+        <div class="mdc-form-field">
+          <div class="mdc-radio">
+            <input class="mdc-radio__native-control" type="radio" id="theme-radio-default" name="theme" checked>
+            <div class="mdc-radio__background">
+              <div class="mdc-radio__outer-circle"></div>
+              <div class="mdc-radio__inner-circle"></div>
+            </div>
+          </div>
+          <label for="theme-radio-default">Default</label>
+        </div>
+        <div class="mdc-form-field">
+          <div class="mdc-radio">
+            <input class="mdc-radio__native-control" type="radio" id="theme-radio-custom" name="theme">
+            <div class="mdc-radio__background">
+              <div class="mdc-radio__outer-circle"></div>
+              <div class="mdc-radio__inner-circle"></div>
+            </div>
+          </div>
+          <label for="theme-radio-custom">Custom Theme</label>
+        </div>
+        <div class="mdc-form-field">
+          <div class="mdc-radio">
+            <input class="mdc-radio__native-control" type="radio" id="theme-radio-accessible" name="theme">
+            <div class="mdc-radio__background">
+              <div class="mdc-radio__outer-circle"></div>
+              <div class="mdc-radio__inner-circle"></div>
+            </div>
+          </div>
+          <label for="theme-radio-accessible">Accessible Theme</label>
+        </div>
+      </div>
     </main>
 
     <script src="/assets/material-components-web.js"></script>
     <script>
-      var drawerEl = document.querySelector('.mdc-temporary-drawer');
+      var drawerEl = document.querySelector('.mdc-drawer');
       var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
       var drawer = new MDCTemporaryDrawer(drawerEl);
       document.querySelector('.demo-menu').addEventListener('click', function() {
@@ -110,8 +144,8 @@
       });
 
       // Demonstrate application of --activated modifier to drawer menu items
-      var activatedClass = 'mdc-list-item--activated';
-      document.querySelector('.mdc-temporary-drawer__drawer').addEventListener('click', function(event) {
+      var activatedClass = 'mdc-list-item--selected';
+      document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
         var el = event.target;
         while (!el.classList.contains('mdc-list-item') && el) {
           el = el.parentNode;
@@ -122,6 +156,18 @@
             activatedItem.classList.remove(activatedClass);
           }
           event.target.classList.add(activatedClass);
+        }
+      });
+
+      var radioEl = document.querySelector('#demo-radio-buttons');
+      radioEl.addEventListener('change', function(e) {
+        drawerEl.classList.remove('demo-drawer--custom');
+        drawerEl.classList.remove('demo-drawer--accessible');
+
+        if(e.target.id === 'accessible') {
+          drawerEl.classList.add('demo-drawer--accessible');
+        } else if(e.target.id === 'custom') {
+          drawerEl.classList.add('demo-drawer--custom');
         }
       });
     </script>
