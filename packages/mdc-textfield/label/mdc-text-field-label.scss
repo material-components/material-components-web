@@ -57,8 +57,3 @@
   }
 }
 // stylelint-enable plugin/selector-bem-pattern
-
-.mdc-text-field__input:required + .mdc-text-field__label::after {
-  margin-left: 1px;
-  content: "*";
-}

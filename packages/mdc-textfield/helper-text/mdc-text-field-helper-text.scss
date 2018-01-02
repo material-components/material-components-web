@@ -47,26 +47,3 @@
 }
 
 // postcss-bem-linter: end
-
-
-// postcss-bem-linter: define text-field-helper-text
-
-.mdc-text-field-helper-text {
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field--dense + & {
-    margin-bottom: 4px;
-  }
-
-  .mdc-text-field--focused + &:not(#{&}--validation-msg) {
-    opacity: 1;
-  }
-
-  .mdc-text-field--box + & {
-    margin-right: 16px;
-    margin-left: 16px;
-  }
-
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
-// postcss-bem-linter: end
