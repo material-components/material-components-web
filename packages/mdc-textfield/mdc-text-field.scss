@@ -107,6 +107,9 @@
   @include mdc-text-field-outlined-hover-outline-border-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-outlined-outline-border-color($mdc-text-field-outlined-idle-border);
   @include mdc-text-field-outlined-focused-outline-stroke-color(primary);
+  @include mdc-text-field-outlined-disabled-text-color($mdc-text-field-light-placeholder);
+  @include mdc-text-field-outlined-disabled-border-color($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-outlined-disabled-icon-color($mdc-text-field-disabled-icon-on-light);
 
   @include mdc-theme-dark {
     @include mdc-text-field-outlined-hover-outline-border-color($mdc-text-field-outlined-hover-border-on-dark);
@@ -164,10 +167,6 @@
   }
 
   &.mdc-text-field--disabled {
-    @include mdc-text-field-outlined-disabled-text-color($mdc-text-field-light-placeholder);
-    @include mdc-text-field-outlined-disabled-border-color($mdc-text-field-outlined-disabled-border);
-    @include mdc-text-field-outlined-disabled-icon-color($mdc-text-field-disabled-icon-on-light);
-
     .mdc-text-field__input {
       border-bottom: none;
     }
@@ -201,24 +200,19 @@
   @include mdc-text-field-box-input-disabled-text-color($mdc-text-field-light-placeholder);
   @include mdc-text-field-box-input-disabled-icon-color($mdc-text-field-disabled-icon-on-light);
 
-  @include mdc-theme-dark(".mdc-text-field") {
+  @include mdc-theme-dark(".mdc-text-field", true) {
     @include mdc-text-field-box-background-color($mdc-text-field-box-background-dark);
     @include mdc-text-field-box-label-text-color(text-secondary-on-dark);
     @include mdc-text-field-box-input-disabled-icon-color($mdc-text-field-disabled-icon-on-dark);
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
     @include mdc-text-field-box-input-disabled-background-color($mdc-text-field-dark-background);
     @include mdc-text-field-box-input-disabled-text-color($mdc-text-field-dark-placeholder);
+    @include mdc-states(text-primary-on-dark, $has-nested-focusable-element: true);
   }
-    display: inline-flex;
+
+  display: inline-flex;
   position: relative;
   height: 56px;
   overflow: hidden;
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    @include mdc-states(text-primary-on-dark, $has-nested-focusable-element: true);
-  }
 
   // NOTE: For some reason, stylelint complains that the patterns below don't follow BEM.
   // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where

@@ -207,21 +207,23 @@
 }
 
 @mixin mdc-text-field-outlined-disabled-text-color($color) {
-  @include mdc-theme-prop(color, $color);
+  &.mdc-text-field--disabled {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
 @mixin mdc-text-field-outlined-disabled-border-color($color) {
-  .mdc-text-field__outline-path {
+  &.mdc-text-field--disabled .mdc-text-field__outline-path {
     @include mdc-theme-prop(stroke, $color);
   }
 
-  .mdc-text-field__idle-outline {
+  &.mdc-text-field--disabled .mdc-text-field__idle-outline {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-text-field-outlined-disabled-icon-color($color) {
-  .mdc-text-field__icon {
+  &.mdc-text-field--disabled .mdc-text-field__icon {
     @include mdc-theme-prop(color, $color);
   }
 }
