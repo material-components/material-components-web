@@ -40,8 +40,8 @@ class FakeMenu {
 
 function getFixture() {
   return bel`
-    <div class="mdc-select" role="listbox" tabindex="0">
-      <div class="mdc-select__surface">
+    <div class="mdc-select" role="listbox">
+      <div class="mdc-select__surface" tabindex="0">
         <div class="mdc-select__label">Pick a Food Group</div>
         <div class="mdc-select__selected-text"></div>
         <div class="mdc-select__bottom-line"></div>
@@ -231,47 +231,45 @@ test('adapter#computeBoundingRect returns the result of getBoundingClientRect() 
   );
 });
 
-test('adapter#registerInteractionHandler adds an event listener to the root element', () => {
-  const {component, fixture} = setupTest();
+test('adapter#registerInteractionHandler adds an event listener to the surface element', () => {
+  const {component, surface} = setupTest();
   const listener = td.func('eventlistener');
   component.getDefaultFoundation().adapter_.registerInteractionHandler('click', listener);
-  domEvents.emit(fixture, 'click');
+  domEvents.emit(surface, 'click');
   td.verify(listener(td.matchers.anything()));
 });
 
-test('adapter#deregisterInteractionHandler removes an event listener from the root element', () => {
-  const {component, fixture} = setupTest();
+test('adapter#deregisterInteractionHandler removes an event listener from the surface element', () => {
+  const {component, surface} = setupTest();
   const listener = td.func('eventlistener');
-  fixture.addEventListener('click', listener);
+  surface.addEventListener('click', listener);
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', listener);
-  domEvents.emit(fixture, 'click');
+  domEvents.emit(surface, 'click');
   td.verify(listener(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#focus focuses on the root element', () => {
-  const {component, fixture} = setupTest();
-  const handler = td.func('fixture focus handler');
-  fixture.addEventListener('focus', handler);
+test('adapter#focus focuses on the surface element', () => {
+  const {component, fixture, surface} = setupTest();
   document.body.appendChild(fixture);
 
   component.getDefaultFoundation().adapter_.focus();
-  assert.equal(document.activeElement, fixture);
+  assert.equal(document.activeElement, surface);
 
   document.body.removeChild(fixture);
 });
 
-test('adapter#makeTabbable sets the root element\'s tabindex to 0', () => {
-  const {component, fixture} = setupTest();
-  fixture.tabIndex = -1;
+test('adapter#makeTabbable sets the surface element\'s tabindex to 0', () => {
+  const {component, surface} = setupTest();
+  surface.tabIndex = -1;
   component.getDefaultFoundation().adapter_.makeTabbable();
-  assert.equal(fixture.tabIndex, 0);
+  assert.equal(surface.tabIndex, 0);
 });
 
-test('adapter#makeUntabbable sets the root element\'s tabindex to -1', () => {
-  const {component, fixture} = setupTest();
-  fixture.tabIndex = 0;
+test('adapter#makeUntabbable sets the surface element\'s tabindex to -1', () => {
+  const {component, surface} = setupTest();
+  surface.tabIndex = 0;
   component.getDefaultFoundation().adapter_.makeUntabbable();
-  assert.equal(fixture.tabIndex, -1);
+  assert.equal(surface.tabIndex, -1);
 });
 
 test('adapter#getComputedStyleValue gets the computed style value of the prop from the surface element', () => {

@@ -54,18 +54,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     background-position: left 10px center;
   }
 
-  &:focus {
-    .mdc-select__bottom-line {
-      @include mdc-theme-prop(background-color, primary);
-
-      transform: scaleY(2);
-
-      &::after {
-        opacity: 1;
-      }
-    }
-  }
-
   @include mdc-theme-dark(".mdc-select") {
     @include mdc-select-dd-arrow-svg-bg_("fff", .54);
 
@@ -184,17 +172,28 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     }
   }
 
-  // Since the CSS only version's .mdc-select__surface element
-  // is an actual <select> element (and as such gets focus), this
-  // will only apply to CSS only selects
+  // JS-enhanced and CSS-only Selects require different selectors for focused bottom-line due to different DOM structure
+  &__surface:focus .mdc-select__bottom-line,
   &__surface:focus ~ .mdc-select__bottom-line {
     @include mdc-theme-prop(background-color, primary);
 
     transform: scaleY(2);
+
+    &::after {
+      opacity: 1;
+    }
   }
 }
 
 .mdc-select--open {
+  .mdc-select__surface::before {
+    opacity: map-get($mdc-ripple-dark-ink-opacities, "focus");
+
+    @include mdc-theme-dark(".mdc-select") {
+      opacity: map-get($mdc-ripple-light-ink-opacities, "focus");
+    }
+  }
+
   .mdc-select__selected-text {
     transform: translateY(8px);
     transition:
