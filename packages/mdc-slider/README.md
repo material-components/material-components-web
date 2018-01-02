@@ -272,9 +272,6 @@ use to build a custom MDCSlider component for their framework.
 | `isDisabled() => boolean` | Returns whether or not the slider is disabled |
 | `setDisabled(disabled: boolean) => void` | Disables the slider when given true, enables it otherwise. |
 | `setupTrackMarker() => void` | Put correct number of markers in track for discrete slider that display track markers. No-op if it doesn't meet those criteria. |
-| `handleDown(event) => void` | Starts interaction with the slider when modifying the value |
-| `handleMove(event) => void` | Continues interaction with the slider, modifying the value based on the event `pageX` and triggering `notifyInput()` |
-| `handleEnd() => void` | Ends interaction with the slider when modifying the value, triggering `notifyChange()` |
 
 ### Theming
 
