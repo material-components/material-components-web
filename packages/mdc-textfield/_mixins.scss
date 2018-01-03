@@ -165,7 +165,7 @@
 
 // Textarea
 
-@mixin mdc-text-field-box-disabled_ {
+@mixin mdc-text-field-textarea-disabled_ {
   border-style: solid;
   border-color: $mdc-text-field-disabled-border-on-light;
   background-color: $mdc-textarea-disabled-background-on-light;
