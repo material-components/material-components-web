@@ -130,10 +130,7 @@ function checkPkgDependencyAddedInMDCPackage() {
 
 function checkCSSDependencyAddedInMDCPackage() {
   const name = getPkgName();
-  let nameMDC = pkg.name.replace('@material/', 'mdc-');
-  if (name === 'text-field') {
-    nameMDC = 'mdc-text-field';
-  }
+  const nameMDC = `mdc-${name}`;
   if (CSS_WHITELIST.indexOf(name) === -1) {
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_PATH), 'utf8');
     const cssRules = cssom.parse(src).cssRules;
