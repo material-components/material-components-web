@@ -21,7 +21,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
-const {cssClasses} = MDCTextFieldFoundation;
+const {cssClasses, numbers} = MDCTextFieldFoundation;
 
 suite('MDCTextFieldFoundation');
 
@@ -31,6 +31,10 @@ test('exports strings', () => {
 
 test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCTextFieldFoundation);
+});
+
+test('exports numbers', () => {
+  assert.isOk('numbers' in MDCTextFieldFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
@@ -232,11 +236,23 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
 test('#updateOutline updates the SVG path of the outline element', () => {
   const {foundation, mockAdapter, label, outline} = setupTest();
   td.when(label.getWidth()).thenReturn(30);
+  td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(false);
   td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30 * 0.75, 8, false));
+  td.verify(outline.updateSvgPath(30 * numbers.LABEL_SCALE, 8, false));
+});
+
+test('#updateOutline updates the SVG path of the outline element when dense', () => {
+  const {foundation, mockAdapter, label, outline} = setupTest();
+  td.when(label.getWidth()).thenReturn(30);
+  td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(true);
+  td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
+  td.when(mockAdapter.isRtl()).thenReturn(false);
+
+  foundation.updateOutline();
+  td.verify(outline.updateSvgPath(30 * numbers.DENSE_LABEL_SCALE, 8, false));
 });
 
 test('on input floats label if input event occurs without any other events', () => {
