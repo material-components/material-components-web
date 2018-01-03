@@ -280,8 +280,8 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     this.itemCloneEl_.style.opacity = '1';
     this.itemSourceEl_.style.opacity = '0';
 
-    document.documentElement.classList.add('mdc-drag-touch-disabled');
-    document.documentElement.classList.add('mdc-drag-select-disabled');
+    document.body.classList.add('mdc-drag-touch-disabled');
+    document.body.classList.add('mdc-drag-select-disabled');
 
     this.emit('drag:move', {originalEvent: e, originalSource: this.itemSourceEl_});
     this.setClonePosition_();
@@ -358,8 +358,8 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     }
 
     this.root_.classList.remove(this.classes_['container:dragging']);
-    document.documentElement.classList.remove('mdc-drag-touch-disabled');
-    document.documentElement.classList.remove('mdc-drag-select-disabled');
+    document.body.classList.remove('mdc-drag-touch-disabled');
+    document.body.classList.remove('mdc-drag-select-disabled');
 
     if (prevDragState === DragState.DRAGGING) {
       this.emit('drag:stop', {originalEvent: e, originalSource: this.itemSourceEl_});
