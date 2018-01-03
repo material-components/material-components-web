@@ -41,69 +41,69 @@
   position: relative;
   margin-bottom: 8px;
   will-change: opacity, transform, color;
+}
 
-  &__input {
-    @include mdc-theme-prop(color, text-primary-on-light);
-    @include mdc-typography-base;
-    // We use only a subset of the MDC typography values here as changing things such as line-height
-    // affects how the labels are transformed.
-    // TODO: Re-add setting the font-size from mdc-typography-styles (currently
-    // setting it here has no effect because it is overriden by the font-size
-    // given below).
-    @each $prop in (letter-spacing) {
-      #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
-    }
+.mdc-text-field__input {
+  @include mdc-theme-prop(color, text-primary-on-light);
+  @include mdc-typography-base;
+  // We use only a subset of the MDC typography values here as changing things such as line-height
+  // affects how the labels are transformed.
+  // TODO: Re-add setting the font-size from mdc-typography-styles (currently
+  // setting it here has no effect because it is overriden by the font-size
+  // given below).
+  @each $prop in (letter-spacing) {
+    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
+  }
 
-    width: 100%;
-    padding: 0 0 8px;
-    transition: mdc-text-field-transition(opacity);
-    border: none;
-    border-bottom: 1px solid $mdc-text-field-underline-on-light-idle;
-    border-radius: 0;
-    background: none;
-    font-size: inherit;
-    appearance: none;
+  width: 100%;
+  padding: 0 0 8px;
+  transition: mdc-text-field-transition(opacity);
+  border: none;
+  border-bottom: 1px solid $mdc-text-field-underline-on-light-idle;
+  border-radius: 0;
+  background: none;
+  font-size: inherit;
+  appearance: none;
+
+  &::placeholder {
+    @include mdc-theme-prop(color, text-hint-on-light);
+
+    transition: mdc-text-field-transition(color);
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: $mdc-text-field-underline-on-light;
+  }
+
+  &:focus {
+    outline: none;
 
     &::placeholder {
-      @include mdc-theme-prop(color, text-hint-on-light);
-
-      transition: mdc-text-field-transition(color);
-      opacity: 1;
+      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
     }
+  }
+
+  // Remove red outline on firefox
+  &:invalid {
+    box-shadow: none;
+  }
+
+  @include mdc-theme-dark {
+    @include mdc-theme-prop(color, text-primary-on-dark);
+
+    border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
 
     &:hover {
-      border-color: $mdc-text-field-underline-on-light;
+      border-bottom: 1px solid $mdc-text-field-underline-on-dark;
     }
 
-    &:focus {
-      outline: none;
-
-      &::placeholder {
-        @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
-      }
+    &::placeholder {
+      @include mdc-theme-prop(color, text-hint-on-dark);
     }
 
-    // Remove red outline on firefox
-    &:invalid {
-      box-shadow: none;
-    }
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-
-      border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
-
-      &:hover {
-        border-bottom: 1px solid $mdc-text-field-underline-on-dark;
-      }
-
-      &::placeholder {
-        @include mdc-theme-prop(color, text-hint-on-dark);
-      }
-
-      &:focus::placeholder {
-        @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
-      }
+    &:focus::placeholder {
+      @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
     }
   }
 }
