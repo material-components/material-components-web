@@ -57,32 +57,28 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
    * @param {boolean=} isRtl
    */
   updateSvgPath(labelWidth, radius, isRtl = false) {
-    const width = this.adapter_.getWidth();
-    const height = this.adapter_.getHeight();
-    const cornerWidth = radius + 1.2;
-    const leadingStrokeLength = Math.abs(12.2 - cornerWidth);
-    const paddedLabelWidth = labelWidth + 8;
-
+    const width = this.adapter_.getWidth() + 2;
+    const height = this.adapter_.getHeight() + 2;
     // The right, bottom, and left sides of the outline follow the same SVG path.
     const pathMiddle = 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-      + 'v' + (height - (2 * cornerWidth))
+      + 'v' + (height - 2 * (radius + 2.1))
       + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-      + 'h' + (-width + (2 * cornerWidth))
+      + 'h' + (-width + 2 * (radius + 1.7))
       + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-      + 'v' + (-height + (2 * cornerWidth))
+      + 'v' + (-height + 2 * (radius + 2.1))
       + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius;
 
     let path;
     if (!isRtl) {
-      path = 'M' + (cornerWidth + leadingStrokeLength + paddedLabelWidth) + ',' + 1
-        + 'h' + (width - (2 * cornerWidth) - paddedLabelWidth - leadingStrokeLength)
+      path = 'M' + (radius + 2.1 + Math.abs(10 - radius) + labelWidth + 8) + ',' + 1
+        + 'h' + (width - (2 * (radius + 2.1)) - labelWidth - 8.5 - Math.abs(10 - radius))
         + pathMiddle
-        + 'h' + leadingStrokeLength;
+        + 'h' + Math.abs(10 - radius);
     } else {
-      path = 'M' + (width - cornerWidth - leadingStrokeLength) + ',' + 1
-        + 'h' + leadingStrokeLength
+      path = 'M' + (width - radius - 2.1 - Math.abs(10 - radius)) + ',' + 1
+        + 'h' + Math.abs(10 - radius)
         + pathMiddle
-        + 'h' + (width - (2 * cornerWidth) - paddedLabelWidth - leadingStrokeLength);
+        + 'h' + (width - (2 * (radius + 2.1)) - labelWidth - 8.5 - Math.abs(10 - radius));
     }
 
     this.adapter_.setOutlinePathAttr(path);
