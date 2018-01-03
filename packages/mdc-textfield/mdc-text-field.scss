@@ -181,7 +181,7 @@
       stroke: $mdc-text-field-outlined-hover-border;
     }
   }
-  
+
   &.mdc-text-field--disabled {
     @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
 
