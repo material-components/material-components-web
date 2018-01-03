@@ -226,6 +226,15 @@ class MDCDragManager extends MDCComponent {
 
     // Prevent the Chrome Dev Tools mobile emulator from displaying a context menu on long press.
     this.addGlobalEventListeners_('contextmenu', (e) => e.preventDefault());
+    // Once scrolling starts, prevent dragging.
+    // TODO(acdvorak): Remove this event handler once dragging starts?
+    this.addGlobalEventListeners_('scroll', (e) => {
+      if (this.dragState_ === DragState.DRAGGING) {
+        return;
+      }
+
+      this.handleDragEnd_(e);
+    });
 
     this.setDragState_(DragState.LONG_PRESS_WAITING);
 
