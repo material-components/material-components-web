@@ -44,8 +44,8 @@ npm install --save @material/select
 ### Using the full-fidelity JS component
 
 ```html
-<div class="mdc-select" role="listbox" tabindex="0">
-  <div class="mdc-select__surface">
+<div class="mdc-select" role="listbox">
+  <div class="mdc-select__surface" tabindex="0">
     <div class="mdc-select__label">Pick a Food Group</div>
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
@@ -98,8 +98,8 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 #### Select with pre-selected option
 
 ```html
-<div class="mdc-select" role="listbox" tabindex="0">
-  <div class="mdc-select__surface">
+<div class="mdc-select" role="listbox">
+  <div class="mdc-select__surface" tabindex="0">
     <div class="mdc-select__label">Pick a Food Group</div>
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
@@ -132,8 +132,8 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 #### Disabled select
 
 ```html
-<div class="mdc-select" role="listbox" aria-disabled="true" tabindex="0">
-  <div class="mdc-select__surface">
+<div class="mdc-select" role="listbox" aria-disabled="true">
+  <div class="mdc-select__surface" tabindex="-1">
     <div class="mdc-select__label">Pick a Food Group</div>
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
@@ -165,12 +165,12 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 
 #### Disabled options
 
-When used in components such as MDC Select, `mdc-list-item`'s can be disabled.
+When used in components such as MDC Select, `mdc-list-item`s can be disabled.
 To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `"-1"`.
 
 ```html
-<div class="mdc-select" role="listbox" tabindex="0">
-  <div class="mdc-select__surface">
+<div class="mdc-select" role="listbox">
+  <div class="mdc-select__surface" tabindex="0">
     <div class="mdc-select__label">Pick a Food Group</div>
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
@@ -358,11 +358,11 @@ within `componentDidUpdate`.
 | `setAttr(attr: string, value: string) => void` | Sets attribute `attr` to value `value` on the root element. |
 | `rmAttr(attr: string) => void` | Removes attribute `attr` from the root element. |
 | `computeBoundingRect() => {left: number, top: number}` | Returns an object with a shape similar to a `ClientRect` object, with a `left` and `top` property specifying the element's position on the page relative to the viewport. The easiest way to achieve this is by calling `getBoundingClientRect()` on the surface element. |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the root element. |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the root element. |
-| `focus() => void` | Focuses the root element |
-| `makeTabbable() => void` | Allows the root element to be tab-focused via keyboard. We achieve this by setting the root element's `tabIndex` property to `0`. |
-| `makeUntabbable() => void` | Disallows the root element to be tab-focused via keyboard. We achieve this by setting the root element's `tabIndex` property to `-1`. |
+| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the surface element. |
+| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the surface element. |
+| `focus() => void` | Focuses the surface element |
+| `makeTabbable() => void` | Allows the surface element to be tab-focused via keyboard. We achieve this by setting the surface element's `tabIndex` property to `0`. |
+| `makeUntabbable() => void` | Disallows the surface element from being tab-focused via keyboard. We achieve this by setting the surface element's `tabIndex` property to `-1`. |
 | `getComputedStyleValue(propertyName: string) => string` | Get the surface element's computed style value of the given dasherized css property `propertyName`. We achieve this via `getComputedStyle(...).getPropertyValue(propertyName). `|
 | `setStyle(propertyName: string, value: string) => void` | Sets a dasherized css property `propertyName` to the value `value` on the surface element. We achieve this via `root.style.setProperty(propertyName, value)`. |
 | `create2dRenderingContext() => {font: string, measureText: (string) => {width: number}}` | Returns an object which has the shape of a CanvasRenderingContext2d instance. Namely, it has a string property `font` which is writable, and a method `measureText` which given a string of text returns an object containing a `width` property specifying how wide that text should be rendered in the `font` specified by the font property. An easy way to achieve this is simply `document.createElement('canvas').getContext('2d');`. |
@@ -426,8 +426,8 @@ First, wrap both a custom select and a native select within a wrapper element, l
 ```html
 <div class="select-manager">
   <!-- Custom MDC Select, shown on desktop -->
-  <div class="mdc-select" role="listbox" tabindex="0">
-    <div class="mdc-select__surface">
+  <div class="mdc-select" role="listbox">
+    <div class="mdc-select__surface" tabindex="0">
       <div class="mdc-select__label">Pick One</div>
       <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__bottom-line"></div>
