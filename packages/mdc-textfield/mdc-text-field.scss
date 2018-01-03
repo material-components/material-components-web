@@ -33,6 +33,7 @@
 @include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 138%, .923);
 
 // postcss-bem-linter: define text-field
 
@@ -142,7 +143,6 @@
 
     position: absolute;
     bottom: 20px;
-    left: 16px;
     transition: transform 260ms ease;
     z-index: 2;
 
@@ -204,6 +204,29 @@
 
     .mdc-text-field__icon {
       @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-light);
+    }
+  }
+
+  &.mdc-text-field--dense {
+    height: 48px;
+
+    .mdc-text-field__input {
+      padding: 12px 12px 7px;
+    }
+
+    .mdc-text-field__label {
+      bottom: 18px;
+
+      &--float-above {
+        transform: translateY(calc(-122% - 2px)) scale(.923);
+
+        // stylelint-disable max-nesting-depth
+        // stylelint-disable-next-line selector-max-specificity
+        &.mdc-text-field__label--shake {
+          animation: invalid-shake-float-above-outlined-dense 250ms 1;
+        }
+        // stylelint-enable max-nesting-depth
+      }
     }
   }
 
@@ -304,8 +327,6 @@
     }
 
     .mdc-text-field__label {
-      @include mdc-rtl-reflexive-position(left, 12px);
-
       bottom: 20px;
 
       &--float-above {
