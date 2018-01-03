@@ -188,13 +188,13 @@ class MDCDragManager extends MDCComponent {
     // NOTE(acdvorak): Uncommenting this line breaks some native interactions (e.g., scrolling) on mobile.
     // e.preventDefault();
 
-    const eventPrefix = util.getEventPrefix(e);
-    const eventMap = util.EventMap[eventPrefix];
-    const isTouch = e.pointerType === 'touch' || eventPrefix === util.EventPrefix.TOUCH;
-
     if (this.dragState_ !== DragState.IDLE) {
       return;
     }
+
+    const eventPrefix = util.getEventPrefix(e);
+    const eventMap = util.EventMap[eventPrefix];
+    const isTouch = e.pointerType === 'touch' || eventPrefix === util.EventPrefix.TOUCH;
 
     // Ignore "mousedown" if it occurs immediately after "pointerdown" (which happens on mobile).
     if (this.currentEventPrefix_ && this.currentEventPrefix_ !== eventPrefix) {
