@@ -237,6 +237,10 @@
         // stylelint-enable max-nesting-depth
       }
     }
+
+    .mdc-text-field__icon {
+      top: 12px;
+    }
   }
   // stylelint-enable plugin/selector-bem-pattern
 }
@@ -371,10 +375,6 @@
       &.mdc-text-field__label--shake {
         animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
       }
-    }
-
-    .mdc-text-field__icon {
-      z-index: 2;
     }
 
     &.mdc-text-field--dense {
