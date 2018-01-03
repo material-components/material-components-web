@@ -109,14 +109,14 @@
 }
 
 @mixin mdc-text-field-focused_ {
-  color: $mdc-text-field-error-on-light;
+  @include mdc-required-text-field-label-asterix_ {
+    color: $mdc-text-field-error-on-light;
 
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    color: $mdc-text-field-error-on-dark;
+    @include mdc-theme-dark(".mdc-text-field", true) {
+      color: $mdc-text-field-error-on-dark;
+    }
   }
-}
 
-@mixin mdc-text-field-helper-text-focused_ {
   + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
     opacity: 1;
   }

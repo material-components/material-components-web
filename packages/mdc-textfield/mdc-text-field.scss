@@ -422,11 +422,7 @@
 }
 
 .mdc-text-field--focused {
-  @include mdc-required-text-field-label-asterix_ {
-    @include mdc-text-field-focused_;
-  }
-
-  @include mdc-text-field-helper-text-focused_;
+  @include mdc-text-field-focused_;
 }
 
 .mdc-text-field--textarea {
