@@ -538,13 +538,12 @@ export class MDCDragCollection extends MDCComponent {
     // (e.originalEvent || e.detail.originalEvent).preventDefault();
     const scrollZone = MDCDragCollection.getScrollZone_(e, this.scrollZones_);
 
-    if(!scrollZone) {
-      this.stopScrolling();
-    } else {
+    if(scrollZone) {
       this.handleScrollZone_(scrollZone);
       return;
     }
 
+    this.stopScrolling();
     this.handleDragZone_(e);
   }
 
@@ -608,12 +607,11 @@ export class MDCDragCollection extends MDCComponent {
   handleDragStop_(e) {
     this.resetDropShifts_(this.draggableItemList_);
     this.removeDraggingStateElements_();
+    this.stopScrolling();
 
     if (this.activeDropZone_) {
       this.dropItLikeItsHot_(e);
     }
-
-    this.stopScrolling();
 
     if (this.sourceItemEl_ && this.sourceItemEl_.ripple) {
       // TODO(acdvorak): Submit PR to "draggable" repo to pass through originalEvent to drag:stop
@@ -825,13 +823,9 @@ export class MDCDragCollection extends MDCComponent {
 
   static getScrollZone_(e, scrollZones) {
     const pointerPositionInViewport = util.getPointerPositionInViewport(e);
-    for (let i = 0; i < scrollZones.length; i++) {
-      const curScrollZone = scrollZones[i];
-      if (curScrollZone.pointInsideOrExtendsRect(pointerPositionInViewport)) {
-        return curScrollZone;
-      }
-    }
-    return null;
+    return scrollZones.find(scrollZone => {
+       return scrollZone.pointInsideOrExtendsRect(pointerPositionInViewport);
+    });
   }
 
   /**
