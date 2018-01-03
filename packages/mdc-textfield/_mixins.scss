@@ -316,37 +316,41 @@
 // Leading icon
 
 @mixin mdc-text-field-dense-leading_ {
-  .mdc-text-field__icon {
-    bottom: 16px;
-    transform: scale(.8);
-  }
+  &.mdc-text-field--dense {
+    .mdc-text-field__icon {
+      bottom: 16px;
+      transform: scale(.8);
+    }
 
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position);
-  }
+    .mdc-text-field__input {
+      @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position);
+    }
 
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-position);
-  }
+    .mdc-text-field__icon {
+      @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-position);
+    }
 
-  .mdc-text-field__label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
+    .mdc-text-field__label {
+      @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
+    }
   }
 }
 
 // Trailing icon
 
 @mixin mdc-text-field-dense-trailing_ {
-  .mdc-text-field__icon {
-    bottom: 16px;
-    transform: scale(.8);
-  }
+  &.mdc-text-field--dense {
+    .mdc-text-field__icon {
+      bottom: 16px;
+      transform: scale(.8);
+    }
 
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
-  }
+    .mdc-text-field__input {
+      @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
+    }
 
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(right, $mdc-text-field-dense-icon-position);
+    .mdc-text-field__icon {
+      @include mdc-rtl-reflexive-position(right, $mdc-text-field-dense-icon-position);
+    }
   }
 }
