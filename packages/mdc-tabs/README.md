@@ -514,6 +514,10 @@ Sets `computedWidth_` and `computedLeft_` for a tab.
 | `activeTab` | `MDCTab` | The currently active tab. Setting this makes the tab active. |
 | `activeTabIndex` | `number` | The index of the currently active tab. Setting this makes the tab at the given index active. |
 
+#### MDCTabBar.layout() => void
+
+Proxies to the foundation's `layout()` method.
+
 ### Tab Bar Events
 
 #### MDCTabBar:change

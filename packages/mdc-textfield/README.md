@@ -86,11 +86,10 @@ Un-styled Content (**FOUC**).
 <label for="text-field-no-js">TextField with no JS: </label>
 <div class="mdc-text-field">
   <input type="text" id="text-field-no-js" class="mdc-text-field__input" placeholder="Hint text">
-  <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
 
-> _NOTE_: Do not use `mdc-text-field__bottom-line` inside of `mdc-text-field` _if you plan on using `mdc-text-field--box`, and do not plan on using JavaScript_. Bottom line should not be included as part of the DOM structure of a box text field.
+> _NOTE_: Do not use `mdc-text-field__bottom-line`, `mdc-text-field__outline`, or `mdc-text-field__idle-outline` inside of `mdc-text-field` _if you plan on using `mdc-text-field--box` or `mdc-text-field--outlined` without using JavaScript_. Bottom line and outline should not be included as part of the DOM structure of a CSS-only text field.
 
 ```html
 <label for="css-only-text-field-box">Your name:</label>
