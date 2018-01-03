@@ -107,8 +107,7 @@
     }
   }
 
-// Move label when text-field gets autofilled in Chrome
-.mdc-text-field__input {
+  // Move label when text-field gets autofilled in Chrome
   // stylelint-disable plugin/selector-bem-pattern
   &:-webkit-autofill + .mdc-text-field__label {
     transform: translateY(-100%) scale(.75, .75);
