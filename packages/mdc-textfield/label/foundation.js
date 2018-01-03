@@ -50,8 +50,6 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
     super(Object.assign(MDCTextFieldLabelFoundation.defaultAdapter, adapter));
   }
 
-
-  // DO NOT SUBMIT: Are these the two public methods Lynn said she removed?
   /**
    * Returns the width of the label element.
    * @return {number}
@@ -59,13 +57,6 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   getWidth() {
     return this.adapter_.getWidth();
   }
-
-  /** Makes the label float above the text field. */
-  floatAbove() {
-    this.adapter_.addClass(cssClasses.LABEL_FLOAT_ABOVE);
-    this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
-  }
-  // DO NOT SUBMIT
 
   /**
    * Styles the label to match the supplied optional params. If a
