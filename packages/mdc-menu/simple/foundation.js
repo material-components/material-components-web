@@ -414,16 +414,15 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    */
   getHorizontalOriginOffset_(corner) {
     const {anchorRect} = this.measures_;
-    const horizontalAlignment = (corner & CornerBit.RIGHT) ? 'right' : 'left';
-    // const avoidHorizontalOverlap = this.anchorCorner_ & CornerBit.RIGHT;
-    // const canOverlapHorizontally = !avoidHorizontalOverlap;
+    const isRightAligned = Boolean(corner & CornerBit.RIGHT);
+    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & CornerBit.RIGHT);
     let x = 0;
-    if (horizontalAlignment === 'right') {
-      const rightOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
+    if (isRightAligned) {
+      const rightOffset = avoidHorizontalOverlap ?
         anchorRect.width - this.anchorMargin_.left : this.anchorMargin_.right;
       x = rightOffset;
     } else {
-      const leftOffset = (this.anchorCorner_ & CornerBit.RIGHT) ?
+      const leftOffset = avoidHorizontalOverlap ?
         anchorRect.width - this.anchorMargin_.right : this.anchorMargin_.left;
       x = leftOffset;
     }
