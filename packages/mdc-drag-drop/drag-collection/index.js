@@ -40,6 +40,14 @@ const DragState = {
   DRAGGING: 'DRAGGING',
 };
 
+/** @enum {string} */
+const PageSides = {
+  top: 'top',
+  left: 'left',
+  bottom: 'bottom',
+  right: 'right',
+}
+
 class MDCDragManager extends MDCComponent {
   initialize({draggable, delay, longPressToleranceInPx, classes} = {}) {
     this.delay_ = delay;
@@ -427,6 +435,8 @@ export class MDCDragCollection extends MDCComponent {
     // element is simply detached from the DOM.
     this.dropIndicatorEl_.setAttribute('aria-dropeffect', 'move');
 
+    this.scrollZones_ = MDCDragCollection.getScrollZones_();
+
     this.resetState_();
 
     // this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, this.acceptButton_);
@@ -497,6 +507,7 @@ export class MDCDragCollection extends MDCComponent {
     this.rows_ = rows;
     this.dropZones_ = this.getDropZones_(rows, this.rowGutterInPx_, this.colGutterInPx_);
     this.activeDropZone_ = null;
+    this.activeScrollZone_ = null;
     this.sourceItemEl_ = null;
     this.spacerThicknessInPx_ = MDCDragCollection.getSpacerThicknessInPx_(this.root_, rows);
 
@@ -521,7 +532,19 @@ export class MDCDragCollection extends MDCComponent {
 
   handleDragMove_(e) {
     // (e.originalEvent || e.detail.originalEvent).preventDefault();
+    const scrollZone = MDCDragCollection.getScrollZone_(e, this.scrollZones_);
 
+    if(!scrollZone) {
+      this.stopScrolling();
+    } else {
+      this.handleScrollZone_(scrollZone);
+      return;
+    }
+
+    this.handleDragZone_(e);
+  }
+
+  handleDragZone_(e) {
     const dropZone = this.activeDropZone_ = MDCDragCollection.getDropZone_(e, this.dropZones_);
 
     // TODO(acdvorak): Avoid thrashing the DOM, especially on low-end devices.
@@ -551,6 +574,33 @@ export class MDCDragCollection extends MDCComponent {
     }
   }
 
+  handleScrollZone_(scrollZone) {
+    if(!this.scrollZones_) {
+      return;
+    }
+
+    const isActiveScrollZone = this.activeScrollZone_ && this.activeScrollZone_.type === scrollZone.type;
+
+    if (isActiveScrollZone) {
+      return;
+    }
+
+    this.stopScrolling();
+    this.activeScrollZone_ = scrollZone;
+
+    const scrollLoop = () => {
+      const { type } = scrollZone;
+      const defaultScrollSpeed = 10;
+      const multiplier = type === PageSides.top || type === PageSides.left ? -1 : 1;
+      const isTopOrBottom = type === PageSides.top || type === PageSides.bottom;
+      const x = isTopOrBottom ? 0 : defaultScrollSpeed;
+      const y = isTopOrBottom ? defaultScrollSpeed : 0;
+      window.scrollBy(multiplier * x, multiplier * y);
+      this.activeScrollTimer_ = requestAnimationFrame(scrollLoop);
+    };
+    this.activeScrollTimer_ = requestAnimationFrame(scrollLoop);
+  }
+
   handleDragStop_(e) {
     this.resetDropShifts_(this.draggableItemList_);
     this.removeDraggingStateElements_();
@@ -558,6 +608,8 @@ export class MDCDragCollection extends MDCComponent {
     if (this.activeDropZone_) {
       this.dropItLikeItsHot_(e);
     }
+
+    this.stopScrolling();
 
     if (this.sourceItemEl_ && this.sourceItemEl_.ripple) {
       // TODO(acdvorak): Submit PR to "draggable" repo to pass through originalEvent to drag:stop
@@ -578,6 +630,13 @@ export class MDCDragCollection extends MDCComponent {
   // eslint-disable-next-line no-unused-vars
   handleResize_(e) {
     this.resetState_();
+  }
+
+  stopScrolling() {
+    this.activeScrollZone_ = null;
+    if (this.activeScrollTimer_) {
+      cancelAnimationFrame(this.activeScrollTimer_);
+    }
   }
 
   insertDropZoneElement_(dropZone) {
@@ -747,6 +806,25 @@ export class MDCDragCollection extends MDCComponent {
           return null;
         }
         return curDropZone;
+      }
+    }
+    return null;
+  }
+
+  static getScrollZones_() {
+    return Object.keys(PageSides)
+      .map(k => {
+        const side = PageSides[k];
+        return new ScrollZone({type: side});
+      });
+  }
+
+  static getScrollZone_(e, scrollZones) {
+    const pointerPositionInViewport = util.getPointerPositionInViewport(e);
+    for (let i = 0; i < scrollZones.length; i++) {
+      const curScrollZone = scrollZones[i];
+      if (curScrollZone.pointInsideOrExtendsRect(pointerPositionInViewport)) {
+        return curScrollZone;
       }
     }
     return null;
@@ -989,4 +1067,53 @@ class DropZone {
   isLTR() {
     return util.isLTR(this.associatedItem.root_.parentNode);
   }
+}
+
+
+class ScrollZone {
+  constructor({type, verticalToleranceInPx_ = 15, horizontalToleranceInPx_ = 15}) {
+    this.type = type;
+    this.verticalToleranceInPx_ = verticalToleranceInPx_;
+    this.horizontalToleranceInPx_ = horizontalToleranceInPx_;
+  }
+
+  getRectCoords() {
+    const pos = {
+      [PageSides.top]: {
+        top: -Infinity,
+        left: 0,
+        bottom: this.verticalToleranceInPx_,
+        right: window.innerWidth
+      },
+      [PageSides.left]: {
+        top: 0,
+        left: -Infinity,
+        bottom: window.innerHeight,
+        right: this.horizontalToleranceInPx_
+      },
+      [PageSides.bottom]: {
+        top: window.innerHeight - this.verticalToleranceInPx_,
+        left: 0,
+        bottom: Infinity,
+        right: window.innerWidth
+      },
+      [PageSides.right]: {
+        top: 0,
+        left: window.innerWidth - this.horizontalToleranceInPx_,
+        bottom: window.innerHeight,
+        right: Infinity
+      },
+    };
+    return pos[this.type];
+  }
+
+  pointInsideOrExtendsRect({x, y}) {
+    const {top, left, bottom, right} = this.getRectCoords();
+    const isPointInHorizontalBounds = left <= x && x <= right;
+    const isPointInVerticalBounds = top <= y && y <= bottom;
+    const isInBounds = isPointInVerticalBounds && isPointInHorizontalBounds;
+
+    return isInBounds;
+  }
+
 }
