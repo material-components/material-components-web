@@ -211,6 +211,19 @@ dots.addEventListener('click', function (evt) {
 })
 ```
 
+### Sass Mixins
+
+To customize the label ink color or the icon ink color you can use the following mixins. You would use these mixins on the `.mdc-tab:not(.mdc-tab--active)` selector or on the `.mdc-tab--active` selector to alter label or icon colors in the activated state.
+
+#### `mdc-tab-ink-color`
+Use this mixin to set the color of icon and label to have the same color. Do not use this if you are using the `mdc-tab-label-ink-color` or `mdc-tab-icon-ink-color` mixins.
+
+#### `mdc-tab-icon-ink-color`
+This mixin customizes the icon ink color.
+
+#### `mdc-tab-label-ink-color`
+This mixin customizes the label ink color.
+
 ### Using the CSS-Only Component
 
 `mdc-tab-bar` ships with css for styling a tab layout according to the Material
@@ -513,6 +526,10 @@ Sets `computedWidth_` and `computedLeft_` for a tab.
 | `tabs` | `MDCTab[]` | _(read-only)_ An array of the tab bar's instances of MDC Tab. |
 | `activeTab` | `MDCTab` | The currently active tab. Setting this makes the tab active. |
 | `activeTabIndex` | `number` | The index of the currently active tab. Setting this makes the tab at the given index active. |
+
+#### MDCTabBar.layout() => void
+
+Proxies to the foundation's `layout()` method.
 
 ### Tab Bar Events
 

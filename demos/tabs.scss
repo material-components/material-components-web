@@ -20,20 +20,31 @@
 @import "../packages/mdc-tabs/mdc-tabs";
 
 #basic-tab-bar-custom-label-color .mdc-tab--active,
-#css-tab-bar-custom-label-color .mdc-tab--active,
-#icon-tab-bar-custom-icon-color .mdc-tab--active,
-#css-icon-tab-bar-custom-icon-color .mdc-tab--active,
-#icon-tab-bar-custom-icon-color .mdc-tab--active,
-#icon-text-tab-bar-custom-colors .mdc-tab--active,
-#css-icon-text-tab-bar-custom-colors .mdc-tab--active {
+#css-tab-bar-custom-label-color .mdc-tab--active {
   @include mdc-tab-label-ink-color($material-color-indigo-500);
 }
 
-#css-tab-bar-custom-label-color .mdc-tab:not(.mdc-tab--active),
 #basic-tab-bar-custom-label-color .mdc-tab:not(.mdc-tab--active),
+#css-tab-bar-custom-label-color .mdc-tab:not(.mdc-tab--active) {
+  @include mdc-tab-label-ink-color($material-color-deep-purple-200);
+}
+
+#icon-tab-bar-custom-icon-color .mdc-tab--active,
+#css-icon-tab-bar-custom-icon-color .mdc-tab--active {
+  @include mdc-tab-icon-ink-color($material-color-indigo-500);
+}
+
 #icon-tab-bar-custom-icon-color .mdc-tab:not(.mdc-tab--active),
-#css-icon-tab-bar-custom-icon-color .mdc-tab:not(.mdc-tab--active),
+#css-icon-tab-bar-custom-icon-color .mdc-tab:not(.mdc-tab--active) {
+  @include mdc-tab-icon-ink-color($material-color-deep-purple-200);
+}
+
+#icon-text-tab-bar-custom-colors .mdc-tab--active,
+#css-icon-text-tab-bar-custom-colors .mdc-tab--active {
+  @include mdc-tab-ink-color($material-color-indigo-500);
+}
+
 #icon-text-tab-bar-custom-colors .mdc-tab:not(.mdc-tab--active),
 #css-icon-text-tab-bar-custom-colors .mdc-tab:not(.mdc-tab--active) {
-  @include mdc-tab-label-ink-color($material-color-deep-purple-200);
+  @include mdc-tab-ink-color($material-color-deep-purple-200);
 }
