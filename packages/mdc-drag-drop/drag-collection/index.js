@@ -538,12 +538,15 @@ export class MDCDragCollection extends MDCComponent {
     // (e.originalEvent || e.detail.originalEvent).preventDefault();
     const scrollZone = MDCDragCollection.getScrollZone_(e, this.scrollZones_);
 
-    if(scrollZone) {
+    this.stopScrolling();
+
+    // TODO(moog16): revisit to allow for both scrolling
+    // and dropping simultaneously
+    if (scrollZone) {
       this.handleScrollZone_(scrollZone);
       return;
     }
 
-    this.stopScrolling();
     this.handleDragZone_(e);
   }
 
@@ -578,7 +581,7 @@ export class MDCDragCollection extends MDCComponent {
   }
 
   handleScrollZone_(scrollZone) {
-    if(!this.scrollZones_) {
+    if (!this.scrollZones_) {
       return;
     }
 
@@ -588,11 +591,10 @@ export class MDCDragCollection extends MDCComponent {
       return;
     }
 
-    this.stopScrolling();
     this.activeScrollZone_ = scrollZone;
 
     const scrollLoop = () => {
-      const { type } = scrollZone;
+      const {type} = scrollZone;
       const defaultScrollSpeed = 10;
       const multiplier = type === PageSides.top || type === PageSides.left ? -1 : 1;
       const isTopOrBottom = type === PageSides.top || type === PageSides.bottom;
@@ -636,9 +638,7 @@ export class MDCDragCollection extends MDCComponent {
 
   stopScrolling() {
     this.activeScrollZone_ = null;
-    if (this.activeScrollTimer_) {
-      cancelAnimationFrame(this.activeScrollTimer_);
-    }
+    cancelAnimationFrame(this.activeScrollTimer_);
   }
 
   insertDropZoneElement_(dropZone) {
@@ -823,9 +823,13 @@ export class MDCDragCollection extends MDCComponent {
 
   static getScrollZone_(e, scrollZones) {
     const pointerPositionInViewport = util.getPointerPositionInViewport(e);
-    return scrollZones.find(scrollZone => {
-       return scrollZone.pointInsideOrExtendsRect(pointerPositionInViewport);
-    });
+    for (let i = 0; i < scrollZones.length; i++) {
+      const curScrollZone = scrollZones[i];
+      if (curScrollZone.pointInsideOrExtendsRect(pointerPositionInViewport)) {
+        return curScrollZone;
+      }
+    }
+    return null;
   }
 
   /**
