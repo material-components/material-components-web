@@ -28,10 +28,6 @@
   }
 }
 
-@at-root {
-  @include mdc-list-divider-color($mdc-list-divider-color-light);
-}
-
 // postcss-bem-linter: define list
 
 .mdc-list {
@@ -195,6 +191,10 @@ a.mdc-list-item {
   border: none;
   border-bottom-width: 1px;
   border-bottom-style: solid;
+}
+
+@at-root {
+  @include mdc-list-divider-color($mdc-list-divider-color-light);
 }
 
 .mdc-list-divider--padded {
