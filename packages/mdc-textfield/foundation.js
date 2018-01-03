@@ -24,7 +24,7 @@ import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
 import MDCTextFieldOutlineFoundation from './outline/foundation';
 /* eslint-enable no-unused-vars */
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 
 /**
@@ -42,6 +42,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get numbers() {
+    return numbers;
+  }
+
   /**
    * {@see MDCTextFieldAdapter} for typing information on parameters and return
    * types.
@@ -51,6 +56,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
+      hasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
@@ -159,7 +165,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (!this.outline_ || !this.label_) {
       return;
     }
-    const labelWidth = this.label_.getFloatingWidth();
+
+    const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+    const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+    const labelWidth = this.label_.getWidth() * labelScale;
     // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
     const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
       this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');

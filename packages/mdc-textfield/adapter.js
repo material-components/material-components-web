@@ -67,6 +67,12 @@ class MDCTextFieldAdapter {
   removeClass(className) {}
 
   /**
+   * Returns true if the root element contains the given class name.
+   * @param {string} className
+   */
+  hasClass(className) {}
+
+  /**
    * Registers an event handler on the root element for a given event.
    * @param {string} type
    * @param {function(!Event): undefined} handler
