@@ -147,8 +147,6 @@
     z-index: 2;
 
     &--float-above {
-      @include mdc-theme-prop(color, primary);
-
       transform: scale(.75) translateY(-170%);
 
       &.mdc-text-field__label--shake {
@@ -171,6 +169,17 @@
     @include mdc-theme-prop(stroke, primary);
 
     stroke-width: 2px;
+  }
+
+  &:not(.mdc-text-field--invalid) {
+    &.mdc-text-field--focused .mdc-text-field__label {
+      @include mdc-theme-prop(color, primary);
+    }
+
+    // stylelint-disable-next-line selector-max-specificity
+    .mdc-text-field__input:hover ~ .mdc-text-field__outline .mdc-text-field__outline-path {
+      stroke: $mdc-text-field-outlined-hover-border;
+    }
   }
 
   &.mdc-text-field--disabled {
