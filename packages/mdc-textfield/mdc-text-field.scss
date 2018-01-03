@@ -80,13 +80,8 @@
   &:focus {
     outline: none;
 
-      &::placeholder {
-        @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
-      }
-
-      ~ .mdc-text-field__label {
-        @include mdc-theme-prop(color, primary);
-      }
+    &::placeholder {
+      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
     }
   }
 
@@ -122,6 +117,13 @@
     cursor: auto;
   }
   // stylelint-enable plugin/selector-bem-pattern
+}
+
+.mdc-text-field:not(.mdc-text-field--invalid) .mdc-text-field__input {
+  // stylelint-disable-next-line selector-max-specificity
+  &:focus ~ .mdc-text-field__label {
+    @include mdc-theme-prop(color, primary);
+  }
 }
 
 .mdc-text-field--outlined {
@@ -255,6 +257,7 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-text-field-icon-padding});
+    color: $mdc-text-field-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -262,6 +265,10 @@
     // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
+
+    @include mdc-theme-dark(".mdc-text-field") {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
 
     &--float-above {
       transform: translateY(-50%) scale(.75, .75);
