@@ -250,9 +250,9 @@
   display: inline-flex;
   position: relative;
   height: 56px;
+  margin-top: 16px;
   background-color: $mdc-text-field-box-background;
   overflow: hidden;
-  margin-top: 16px;
 
   @include mdc-theme-dark(".mdc-text-field", true) {
     background-color: $mdc-text-field-box-background-dark;
@@ -359,6 +359,7 @@
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
   }
 
+  // stylelint-disable plugin/selector-bem-pattern
   &.mdc-text-field--outlined {
     .mdc-text-field__label--float-above {
       transform: scale(.75) translateX(-36%) translateY(-170%);
@@ -380,16 +381,20 @@
       .mdc-text-field__label--float-above {
         transform: translateX(-25%) translateY(-145%) scale(.923);
 
+        // stylelint-disable max-nesting-depth
         @include mdc-rtl {
           transform: translateX(25%) translateY(-145%) scale(.923);
         }
-  
+
+        // stylelint-disable-next-line selector-max-specificity
         &.mdc-text-field__label--shake {
           animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
         }
+        // stylelint-enable max-nesting-depth
       }
     }
   }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-text-field--with-trailing-icon {

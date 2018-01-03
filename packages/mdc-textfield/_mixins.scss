@@ -41,7 +41,6 @@
   }
 }
 
-
 @mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $positionX: 0%, $scale: .75) {
   @keyframes invalid-shake-float-above-#{$modifier} {
     0% {
