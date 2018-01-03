@@ -181,6 +181,10 @@
           <input id="outlined-dark-theme" type="checkbox">
           <label for="outlined-dark-theme">Dark Theme</label>
         </div>
+        <div>
+          <input id="outlined-dense" type="checkbox">
+          <label for="outlined-dense">Dense</label>
+        </div>
         <script>
           setTimeout(function() {
             var tfEl = document.getElementById('tf-outlined-example');
@@ -199,6 +203,10 @@
             });
             document.getElementById('outlined-dark-theme').addEventListener('change', function(evt) {
               wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+            });
+            document.getElementById('outlined-dense').addEventListener('change', function(evt) {
+              tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+              tf.layout();
             });
           }, 0);
         </script>
