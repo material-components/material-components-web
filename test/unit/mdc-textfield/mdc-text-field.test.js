@@ -76,6 +76,7 @@ class FakeLabel {
 
 class FakeOutline {
   constructor() {
+    this.createRipple = td.function('.createRipple');
     this.destroy = td.func('.destroy');
   }
 }
@@ -87,7 +88,23 @@ test('#constructor when given a `mdc-text-field--box` element instantiates a rip
   assert.equal(component.ripple.root, root);
 });
 
-test('#constructor sets the ripple property to `null` when given a non `mdc-text-field--box` element', () => {
+test('#constructor when given a `mdc-text-field--outlined` element instantiates a ripple on the ' +
+     'outline element', () => {
+  const root = bel`
+    <div class="mdc-text-field mdc-text-field--outlined">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+      <label class="mdc-text-field__label" for="my-text-field">My Label</label>
+      <div class="mdc-text-field__outline"></div>
+      <div class="mdc-text-field__idle-outline"></div>
+    </div>
+  `;
+  const outline = root.querySelector('.mdc-text-field__outline');
+  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
+  assert.equal(component.ripple.root, outline);
+});
+
+test('#constructor sets the ripple property to `null` when not given a `mdc-text-field--box` nor ' +
+     'a `mdc-text-field--outlined` subelement', () => {
   const component = new MDCTextField(getFixture());
   assert.isNull(component.ripple);
 });
@@ -96,6 +113,20 @@ test('#constructor when given a `mdc-text-field--box` element, initializes a def
      'ripple factory given', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.ripple, MDCRipple);
+});
+
+test('#constructor when given a `mdc-text-field--outlined` element, initializes a default ripple when no ' +
+     'ripple factory given', () => {
+  const root = bel`
+    <div class="mdc-text-field mdc-text-field--outlined">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+      <label class="mdc-text-field__label" for="my-text-field">My Label</label>
+      <div class="mdc-text-field__outline"></div>
+      <div class="mdc-text-field__idle-outline"></div>
+    </div>
+  `;
   const component = new MDCTextField(root);
   assert.instanceOf(component.ripple, MDCRipple);
 });

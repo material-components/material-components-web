@@ -37,11 +37,11 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTextFieldLabelFoundation);
 
-test('#getFloatingWidth returns the width of the label element scaled by 75%', () => {
+test('#getWidth returns the width of the label element scaled by 75%', () => {
   const {foundation, mockAdapter} = setupTest();
   const width = 100;
   td.when(mockAdapter.getWidth()).thenReturn(width);
-  assert.equal(foundation.getFloatingWidth(), width * 0.75);
+  assert.equal(foundation.getWidth(), width);
 });
 
 test('#floatAbove adds mdc-text-field__label--float-above class', () => {
