@@ -67,15 +67,14 @@ class MDCDragManager extends MDCComponent {
       util.EventMap.mouse.down,
     ];
 
-    this.setRootEventListeners_(keyboardEventNames, (e) => this.handleKeyDown_(e));
-    this.setRootEventListeners_(pointerEventNames, (e) => this.handlePointerDown_(e));
+    this.addRootEventListeners_(keyboardEventNames, (e) => this.handleKeyDown_(e));
+    this.addRootEventListeners_(pointerEventNames, (e) => this.handlePointerDown_(e));
 
-    // Adds default document.ontouchmove. Workaround for preventing scrolling on touchmove.
-    // From Shopify Draggable lib.
-    // TODO(acdvorak): Find a better way to prevent scrolling after long press on iOS.
-    document.ontouchmove = document.ontouchmove || function() {
-      return true;
-    };
+    // Prevent accidental scrolling while dragging on iOS. Don't ask me why this works.
+    // Alternative techniques that seem to work:
+    // 1. document.ontouchmove = function() { return true; }
+    // 2. document.body.addEventListener('touchmove', function() {}, false)
+    this.addRootEventListeners_(util.EventMap.touch.move, function() {}, false);
 
     // Mark all items as draggable and ensure that they are focusable.
     const itemEls = [].slice.call(this.root_.querySelectorAll(this.itemSelector_));
@@ -117,7 +116,7 @@ class MDCDragManager extends MDCComponent {
    * Root element event listeners
    */
 
-  setRootEventListeners_(eventNames, handlerFn) {
+  addRootEventListeners_(eventNames, handlerFn, listenerOpts) {
     if (!eventNames) {
       return;
     }
@@ -125,14 +124,19 @@ class MDCDragManager extends MDCComponent {
       eventNames = [eventNames];
     }
     eventNames.filter((eventName) => !!eventName).forEach((eventName) => {
-      this.rootEventListeners_.set(eventName, handlerFn);
-      this.root_.addEventListener(eventName, handlerFn);
+      if (!this.rootEventListeners_.has(eventName)) {
+        this.rootEventListeners_.set(eventName, []);
+      }
+      this.rootEventListeners_.get(eventName).push({handlerFn, listenerOpts});
+      this.root_.addEventListener(eventName, handlerFn, listenerOpts);
     });
   }
 
   removeRootEventListeners_(...eventNames) {
     eventNames.forEach((eventName) => {
-      this.root_.removeEventListener(eventName, this.rootEventListeners_.get(eventName));
+      this.rootEventListeners_.get(eventName).forEach(({handlerFn, listenerOpts}) => {
+        this.root_.removeEventListener(eventName, handlerFn, listenerOpts);
+      });
       this.rootEventListeners_.delete(eventName);
     });
   }
