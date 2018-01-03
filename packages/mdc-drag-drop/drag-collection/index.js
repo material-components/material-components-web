@@ -78,6 +78,19 @@ class MDCDragManager extends MDCComponent {
         itemEl.setAttribute('tabindex', '0');
       }
     });
+
+    this.resetGlobalEventListeners_();
+
+    // TODO(acdvorak): Prevent native gestures in IE/Edge. The code below is for debugging.
+    // ['touchstart', 'touchmove', 'pointerdown', 'pointermove', 'dragstart', 'drag', 'contextmenu'].forEach((type) => {
+    //   [window, document, document.documentElement, document.body].forEach((elem) => {
+    //     elem.addEventListener(type, (e) => {
+    //       console.error(`${type}:`, e, elem);
+    //       e.preventDefault();
+    //       return false;
+    //     });
+    //   });
+    // });
   }
 
   destroy() {
@@ -172,6 +185,58 @@ class MDCDragManager extends MDCComponent {
     this.globalEventListeners_.clear();
   }
 
+  resetGlobalEventListeners_() {
+    this.removeAllGlobalEventListeners_();
+
+    // Prevent MS Edge and the Chrome Dev Tools mobile emulator from displaying a context menu on long press.
+    this.addGlobalEventListeners_('contextmenu', (e) => {
+      if (this.dragState_ !== DragState.DRAGGING) {
+        return;
+      }
+
+      console.error('contextmenu:', e);
+      e.preventDefault();
+      return false;
+    });
+
+    // Prevent native scroll/pan/zoom gestures on iOS.
+    this.addGlobalEventListeners_('touchmove', (e) => {
+      if (this.dragState_ !== DragState.DRAGGING) {
+        return;
+      }
+
+      console.log('touchmove:', e);
+      e.preventDefault();
+      return false;
+    }, {passive: false});
+
+    //
+    // Prevent native scroll/pan/zoom gestures in IE/Edge
+    // TODO(acdvorak): Make this work
+    //
+
+    this.addGlobalEventListeners_('dragstart', (e) => {
+      // if (this.dragState_ !== DragState.DRAGGING) {
+      //   return;
+      // }
+
+      // console.error('dragstart:', e);
+      // e.preventDefault();
+      // return false;
+      // e.dataTransfer.setData('text/plain', 'Drag Me Button');
+    });
+
+    this.addGlobalEventListeners_('pointermove', (e) => {
+      // if (this.dragState_ !== DragState.DRAGGING) {
+      //   return;
+      // }
+
+      // console.log('pointermove:', e);
+      // e.preventDefault();
+      // return false;
+    }, {passive: false});
+  }
+
   /*
    * Keyboard event handlers
    */
@@ -224,8 +289,6 @@ class MDCDragManager extends MDCComponent {
     this.addGlobalEventListeners_(eventMap.up, (e) => this.handlePointerUp_(e));
     this.addGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
 
-    // Prevent the Chrome Dev Tools mobile emulator from displaying a context menu on long press.
-    this.addGlobalEventListeners_('contextmenu', (e) => e.preventDefault());
     // Once scrolling starts, prevent dragging.
     // TODO(acdvorak): Remove this event handler once dragging starts?
     this.addGlobalEventListeners_('scroll', (e) => {
@@ -338,10 +401,6 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     this.setClonePosition_();
     document.body.appendChild(this.itemCloneEl_);
 
-    // Prevent native scroll/pan/zoom gestures
-    this.addGlobalEventListeners_('dragstart', (e) => e.preventDefault());
-    this.addGlobalEventListeners_('touchmove', (e) => e.preventDefault(), {passive: false});
-
     this.emit('drag:start', {originalEvent: null, originalSource: this.itemSourceEl_});
   }
 
@@ -350,7 +409,7 @@ handlePointerMoveWhileWaitingForLongPress_(e):
     this.setDragState_(DragState.IDLE);
 
     clearTimeout(this.delayTimer_);
-    this.removeAllGlobalEventListeners_();
+    this.resetGlobalEventListeners_();
 
     console.log('handleDragEnd_(' + e.type + ')');
 

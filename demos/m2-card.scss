@@ -82,10 +82,28 @@ $mdc-card-baseline-drop-zone-thickness: 4px;
   user-select: none;
 }
 
+// TODO(acdvorak): Prevent native gestures (scrolling and back/forward) in IE/Edge.
 .mdc-drag-touch-disabled {
+  // Prevents scrolling in IE 11, but ONLY if it's applied to the <body> BEFORE pointerdown :-(
+  -ms-touch-action: none;
   touch-action: none;
+
+  // Prevent element hover effects while dragging.
   pointer-events: none;
+
+  // Doesn't seem to prevent scrolling in IE/Edge
+  //overflow: hidden;
+
+  // Failed attempt to prevent native back/forward gestures in MS Edge and IE 11
+  // https://stackoverflow.com/a/13709150/467582
+  //-ms-scroll-chaining: chained;
 }
+
+// TODO(acdvorak): Prevent native gestures (scrolling and back/forward) in IE/Edge.
+//body {
+//  // Prevents scrolling in IE 11, but ONLY if it's applied to the <body> BEFORE pointerdown.
+//  -ms-touch-action: none;
+//}
 
 .mdc-draggable-item.mdc-draggable-item--clone {
   transition: box-shadow .2s, opacity 0s, transform 0s;
