@@ -82,9 +82,3 @@ test('#style updates shake class', () => {
   foundation.style('', true);
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
 });
-
-test('#setValidity does nothing if isValid is true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.setValidity(true);
-  td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE), {times: 0});
-});

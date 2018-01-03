@@ -185,14 +185,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
   activateFocus() {
     this.isFocused_ = true;
     this.styleRoot_(undefined, this.isFocused_);
-    if (this.label_) {
-      this.label_.style(undefined, undefined, undefined, this.isFocused_);
-    }
     if (this.bottomLine_) {
       this.bottomLine_.activate();
     }
     if (this.outline_) {
       this.updateOutline();
+    }
+    if (this.label_) {
+      this.label_.style(undefined, undefined, undefined, this.isFocused_);
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();

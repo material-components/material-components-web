@@ -83,7 +83,6 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
         this.adapter_.addClass(LABEL_FLOAT_ABOVE);
       } else if (!optIsBadInput) {
         this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-        this.receivedUserInput_ = false;
       }
     }
   }

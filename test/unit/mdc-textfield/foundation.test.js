@@ -21,20 +21,20 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
-const {cssClasses, numbers} = MDCTextFieldFoundation;
+const {strings, cssClasses, numbers} = MDCTextFieldFoundation;
 
 suite('MDCTextFieldFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextFieldFoundation);
+  assert.deepEqual(MDCTextFieldFoundation.strings, strings);
 });
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextFieldFoundation);
+  assert.deepEqual(MDCTextFieldFoundation.cssClasses, cssClasses);
 });
 
 test('exports numbers', () => {
-  assert.isOk('numbers' in MDCTextFieldFoundation);
+  assert.deepEqual(MDCTextFieldFoundation.numbers, numbers);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
@@ -211,11 +211,13 @@ test('#setRequired updates CSS classes', () => {
     setupValueTest('', /* isValid */ false);
 
   foundation.setRequired(true);
+  assert.isOk(foundation.isRequired());
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(false));
 
   nativeInput.validity.valid = true;
   foundation.setRequired(false);
+  assert.isNotOk(foundation.isRequired());
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(true));
 
@@ -388,6 +390,29 @@ test('#updateOutline updates the SVG path of the outline element when dense', ()
 
   foundation.updateOutline();
   td.verify(outline.updateSvgPath(30 * numbers.DENSE_LABEL_SCALE, 8, false));
+});
+
+const setupBareBonesTest = () => {
+  const mockAdapter = td.object(MDCTextFieldFoundation.defaultAdapter);
+  const label = td.object({
+    getWidth: () => {},
+    floatAbove: () => {},
+    deactivateFocus: () => {},
+    setValidity: () => {},
+    style: () => {},
+  });
+  const foundationMap = {
+    label: label,
+  };
+  const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
+  return {foundation, mockAdapter, label};
+};
+
+test('#updateOutline does nothing if no outline is present', () => {
+  const {foundation, mockAdapter} = setupBareBonesTest();
+
+  foundation.updateOutline();
+  td.verify(mockAdapter.hasClass(cssClasses.DENSE), {times: 0});
 });
 
 test('on input styles label if input event occurs without any other events', () => {
@@ -578,6 +603,27 @@ test('on keydown sets receivedUserInput to true when input is enabled', () => {
   assert.equal(foundation.receivedUserInput_, false);
   keydown();
   assert.equal(foundation.receivedUserInput_, true);
+});
+
+test('on click does not set receivedUserInput if input is disabled', () => {
+  const {foundation, mockAdapter, label} = setupTest();
+  const mockEvt = {
+    type: 'click',
+  };
+  const mockInput = {
+    disabled: true,
+  };
+  let click;
+
+  td.when(mockAdapter.getNativeInput()).thenReturn(mockInput);
+  td.when(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      click = handler;
+    });
+  foundation.init();
+  assert.equal(foundation.receivedUserInput_, false);
+  click(mockEvt);
+  assert.equal(foundation.receivedUserInput_, false);
 });
 
 test('on transition end deactivates the bottom line if this.isFocused_ is false', () => {
