@@ -613,15 +613,12 @@ export class MDCDragCollection extends MDCComponent {
 
   handleDragMove_(e) {
     // (e.originalEvent || e.detail.originalEvent).preventDefault();
-    const scrollZone = MDCDragCollection.getScrollZone_(e, this.scrollZones_);
 
     this.stopScrolling();
 
-    // TODO(moog16): revisit to allow for both scrolling
-    // and dropping simultaneously
+    const scrollZone = MDCDragCollection.getScrollZone_(e, this.scrollZones_);
     if (scrollZone) {
       this.handleScrollZone_(scrollZone);
-      return;
     }
 
     this.handleDragZone_(e);
