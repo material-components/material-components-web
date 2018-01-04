@@ -91,4 +91,4 @@ Method Signature | Description
 `floatAbove() => void` | Makes the label float above the text field
 `deactivateFocus(shouldRemoveLabelFloat: boolean) => void` | Deactivates the label's focus state. `shouldRemoveLabelFloat` indicates whether to also reset the label's position and size.
 `setValidity(isValid: boolean)` | Updates the label's valid state based on the supplied validity
-`getFloatingWidth() => number` | Returns the width of the label element when it floats above the text field
+`getWidth() => number` | Returns the width of the label element
