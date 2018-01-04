@@ -21,20 +21,20 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
-const {strings, cssClasses, numbers} = MDCTextFieldFoundation;
+const {cssClasses, numbers} = MDCTextFieldFoundation;
 
 suite('MDCTextFieldFoundation');
 
 test('exports strings', () => {
-  assert.deepEqual(MDCTextFieldFoundation.strings, strings);
+  assert.isOk('strings' in MDCTextFieldFoundation);
 });
 
 test('exports cssClasses', () => {
-  assert.deepEqual(MDCTextFieldFoundation.cssClasses, cssClasses);
+  assert.isOk('cssClasses' in MDCTextFieldFoundation);
 });
 
 test('exports numbers', () => {
-  assert.deepEqual(MDCTextFieldFoundation.numbers, numbers);
+  assert.isOk('numbers' in MDCTextFieldFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
