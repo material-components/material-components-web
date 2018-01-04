@@ -416,17 +416,13 @@
   @include mdc-text-field-disabled_;
 }
 
-.mdc-text-field__input:required + .mdc-text-field__label::after {
+@include mdc-required-text-field-label-asterix_ {
   margin-left: 1px;
   content: "*";
+}
 
-  .mdc-text-field--focused & {
-    color: $mdc-text-field-error-on-light;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      color: $mdc-text-field-error-on-dark;
-    }
-  }
+.mdc-text-field--focused {
+  @include mdc-text-field-focused_;
 }
 
 .mdc-text-field--textarea {
@@ -628,10 +624,6 @@
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field--dense + & {
     margin-bottom: 4px;
-  }
-
-  .mdc-text-field--focused + &:not(#{&}--validation-msg) {
-    opacity: 1;
   }
 
   .mdc-text-field--box + & {

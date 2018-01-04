@@ -63,7 +63,6 @@
   }
 }
 
-
 // Private mixins
 
 // Common
@@ -105,6 +104,26 @@
   .mdc-text-field__label {
     bottom: 8px;
     cursor: default;
+  }
+}
+
+@mixin mdc-text-field-focused_ {
+  @include mdc-required-text-field-label-asterix_ {
+    color: $mdc-text-field-error-on-light;
+
+    @include mdc-theme-dark(".mdc-text-field", true) {
+      color: $mdc-text-field-error-on-dark;
+    }
+  }
+
+  + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
+    opacity: 1;
+  }
+}
+
+@mixin mdc-required-text-field-label-asterix_() {
+  .mdc-text-field__input:required + .mdc-text-field__label::after {
+    @content;
   }
 }
 
