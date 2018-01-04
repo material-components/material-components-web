@@ -49,7 +49,7 @@ Here's the markup:
 
 ```html
 <!DOCTYPE html>
-<html class="mdc-typography">
+<html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -81,7 +81,7 @@ Here's the markup:
       }
     </style>
   </head>
-  <body>
+  <body class="mdc-typography">
     <h1>Choose your element</h1>
     <div class="cards">
       <div class="mdc-card element-card earth">

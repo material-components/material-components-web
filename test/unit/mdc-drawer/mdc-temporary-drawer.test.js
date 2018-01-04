@@ -25,8 +25,8 @@ import {getTransformPropertyName, supportsCssCustomProperties} from '../../../pa
 
 function getFixture() {
   return bel`
-    <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
+    <aside class="mdc-drawer mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
       </nav>
     </aside>
   `;
@@ -53,12 +53,12 @@ test('get/set open', () => {
   root.addEventListener(strings.CLOSE_EVENT, closeHandler);
 
   component.open = true;
-  assert.isOk(root.classList.contains('mdc-temporary-drawer--open'));
+  assert.isOk(root.classList.contains('mdc-drawer--open'));
   assert.isOk(component.open);
   td.verify(openHandler(td.matchers.anything()));
 
   component.open = false;
-  assert.isNotOk(root.classList.contains('mdc-temporary-drawer--open'));
+  assert.isNotOk(root.classList.contains('mdc-drawer--open'));
   assert.isNotOk(component.open);
   td.verify(closeHandler(td.matchers.anything()));
 });
@@ -85,6 +85,15 @@ test('adapter#hasClass returns true if the root element has specified class', ()
 test('adapter#hasClass returns false if the root element does not have specified class', () => {
   const {component} = setupTest();
   assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
+});
+
+test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
+  const {component} = setupTest();
+  const target = bel`<div class="existent-class"></div>`;
+  const {adapter_: adapter} = component.getDefaultFoundation();
+
+  assert.isTrue(adapter.eventTargetHasClass(target, 'existent-class'));
+  assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
 });
 
 test('adapter#hasNecessaryDom returns true if the DOM includes a drawer', () => {
@@ -199,9 +208,9 @@ test('adapter#updateCssVariable sets custom property on root', () => {
 
 test('adapter#getFocusableElements returns all the focusable elements in the drawer', () => {
   const root = bel`
-    <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-        <div class="mdc-temporary-drawer__toolbar-spacer"></div>
+    <aside class="mdc-drawer mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
+        <div class="mdc-drawer__toolbar-spacer"></div>
         <button></button>
         <a href="foo"></a>
         <div></div>
@@ -215,8 +224,8 @@ test('adapter#getFocusableElements returns all the focusable elements in the dra
 
 test('adapter#restoreElementTabState restores tabindex and removes data-mdc-tabindex', () => {
   const root = bel`
-    <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
+    <aside class="mdc-drawer mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
         <div id="foo" tabindex="0"></div>
       </nav>
     </aside>
@@ -231,8 +240,8 @@ test('adapter#restoreElementTabState restores tabindex and removes data-mdc-tabi
 
 test('adapter#makeElementUntabbable sets a tab index of -1 on the element', () => {
   const root = bel`
-    <aside class="mdc-temporary-drawer mdc-temporary-drawer--open">
-      <nav class="mdc-temporary-drawer__drawer">
+    <aside class="mdc-drawer mdc-drawer--temporary mdc-drawer--open">
+      <nav class="mdc-drawer__drawer">
         <a id="foo" href="foo"></a>
       </nav>
     </aside>
@@ -261,8 +270,8 @@ test(`adapter#notifyClose fires an ${strings.CLOSE_EVENT} custom event`, () => {
 
 test('adapter#isRtl returns true for RTL documents', () => {
   const root = bel`
-    <aside dir="rtl" class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
+    <aside dir="rtl" class="mdc-drawer mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
       </nav>
     </aside>
   `;
@@ -273,8 +282,8 @@ test('adapter#isRtl returns true for RTL documents', () => {
 
 test('adapter#isRtl returns false for explicit LTR documents', () => {
   const root = bel`
-    <aside dir="ltr" class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
+    <aside dir="ltr" class="mdc-drawer mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
       </nav>
     </aside>
   `;
@@ -285,8 +294,8 @@ test('adapter#isRtl returns false for explicit LTR documents', () => {
 
 test('adapter#isRtl returns false for implicit LTR documents', () => {
   const root = bel`
-    <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
+    <aside class="mdc-drawer mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
       </nav>
     </aside>
   `;

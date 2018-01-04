@@ -17,6 +17,9 @@
 
 /* eslint-disable no-unused-vars */
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -29,6 +32,16 @@ import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
  * }}
  */
 let NativeInputType;
+
+/**
+ * @typedef {{
+ *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
+ *   icon: (!MDCTextFieldIconFoundation|undefined),
+ *   label: (!MDCTextFieldLabelFoundation|undefined)
+ * }}
+ */
+let FoundationMapType;
 
 /**
  * Adapter for MDC Text Field.
@@ -54,34 +67,10 @@ class MDCTextFieldAdapter {
   removeClass(className) {}
 
   /**
-   * Adds a class to the label Element. We recommend you add a conditional
-   * check here, and in removeClassFromLabel for whether or not the label is
-   * present so that the JS component could be used with text fields that don't
-   * require a label, such as the full-width text field.
+   * Returns true if the root element contains the given class name.
    * @param {string} className
    */
-  addClassToLabel(className) {}
-
-  /**
-   * Removes a class from the label Element.
-   * @param {string} className
-   */
-  removeClassFromLabel(className) {}
-
-  /**
-   * Sets an attribute on the icon Element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setIconAttr(name, value) {}
-
-  /**
-   * Returns true if classname exists for a given target element.
-   * @param {?EventTarget} target
-   * @param {string} className
-   * @return {boolean}
-   */
-  eventTargetHasClass(target, className) {}
+  hasClass(className) {}
 
   /**
    * Registers an event handler on the root element for a given event.
@@ -96,32 +85,6 @@ class MDCTextFieldAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterTextFieldInteractionHandler(type, handler) {}
-
-  /**
-   * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
-   */
-  notifyIconAction() {}
-
-  /**
-   * Adds a class to the helper text element. Note that in our code we check for
-   * whether or not we have a helper text element and if we don't, we simply
-   * return.
-   * @param {string} className
-   */
-  addClassToHelperText(className) {}
-
-  /**
-   * Removes a class from the helper text element.
-   * @param {string} className
-   */
-  removeClassFromHelperText(className) {}
-
-  /**
-   * Returns whether or not the helper text element contains the given class.
-   * @param {string} className
-   * @return {boolean}
-   */
-  helperTextHasClass(className) {}
 
   /**
    * Registers an event listener on the native input element for a given event.
@@ -152,25 +115,6 @@ class MDCTextFieldAdapter {
   deregisterBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Sets an attribute with a given value on the helper text element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setHelperTextAttr(name, value) {}
-
-  /**
-   * Removes an attribute from the helper text element.
-   * @param {string} name
-   */
-  removeHelperTextAttr(name) {}
-
-  /**
-   * Sets the text content for the help text element
-   * @param {string} content
-   */
-  setHelperTextContent(content) {}
-
-  /**
    * Returns an object representing the native text input element, with a
    * similar API shape. The object returned should include the value, disabled
    * and badInput properties, as well as the checkValidity() function. We never
@@ -183,11 +127,25 @@ class MDCTextFieldAdapter {
   getNativeInput() {}
 
   /**
-   * Returns the foundation for the bottom line element. Returns undefined if
-   * there is no bottom line element.
-   * @return {?MDCTextFieldBottomLineFoundation}
+   * Returns the idle outline element's computed style value of the given css property `propertyName`.
+   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+   * @param {string} propertyName
+   * @return {string}
    */
-  getBottomLineFoundation() {}
+  getIdleOutlineStyleValue(propertyName) {}
+
+  /**
+   * Returns true if the textfield is focused.
+   * We achieve this via `document.activeElement === this.root_`.
+   * @return {boolean}
+   */
+  isFocused() {}
+
+  /**
+   * Returns true if the direction of the root element is set to RTL.
+   * @return {boolean}
+   */
+  isRtl() {}
 }
 
-export {MDCTextFieldAdapter, NativeInputType};
+export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};
