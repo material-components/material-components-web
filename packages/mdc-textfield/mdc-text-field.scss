@@ -30,8 +30,9 @@
 @import "./icon/mdc-text-field-icon";
 @import "./label/mdc-text-field-label";
 @import "./outline/mdc-text-field-outline";
-@include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
+
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
+@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined, 129%);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 129%, 25%);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
@@ -301,6 +302,12 @@
 
       &--float-above {
         transform: translateY(calc(-75% - 2px)) scale(.923, .923);
+
+        // stylelint-disable max-nesting-depth
+        &.mdc-text-field__label--shake {
+          animation: invalid-shake-float-above-box-dense 250ms 1;
+        }
+        // stylelint-enable max-nesting-depth
       }
     }
   }
