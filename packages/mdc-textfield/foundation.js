@@ -16,9 +16,15 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCTextFieldAdapter, NativeInputType} from './adapter';
+import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
-import {cssClasses, strings} from './constants';
+/* eslint-disable no-unused-vars */
+import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCTextFieldOutlineFoundation from './outline/foundation';
+/* eslint-enable no-unused-vars */
+import {cssClasses, strings, numbers} from './constants';
 
 
 /**
@@ -36,6 +42,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get numbers() {
+    return numbers;
+  }
+
   /**
    * {@see MDCTextFieldAdapter} for typing information on parameters and return
    * types.
@@ -45,33 +56,38 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
-      addClassToLabel: () => {},
-      removeClassFromLabel: () => {},
-      setIconAttr: () => {},
-      eventTargetHasClass: () => {},
+      hasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
-      notifyIconAction: () => {},
-      addClassToHelperText: () => {},
-      removeClassFromHelperText: () => {},
-      helperTextHasClass: () => false,
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
       registerBottomLineEventHandler: () => {},
       deregisterBottomLineEventHandler: () => {},
-      setHelperTextAttr: () => {},
-      removeHelperTextAttr: () => {},
-      setHelperTextContent: () => {},
       getNativeInput: () => {},
-      getBottomLineFoundation: () => {},
+      getIdleOutlineStyleValue: () => {},
+      isFocused: () => {},
+      isRtl: () => {},
     });
   }
 
   /**
    * @param {!MDCTextFieldAdapter=} adapter
+   * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({})) {
+  constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({}),
+    foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
+
+    /** @type {!MDCTextFieldBottomLineFoundation|undefined} */
+    this.bottomLine_ = foundationMap.bottomLine;
+    /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
+    this.helperText_ = foundationMap.helperText;
+    /** @type {!MDCTextFieldIconFoundation|undefined} */
+    this.icon_ = foundationMap.icon;
+    /** @type {!MDCTextFieldLabelFoundation|undefined} */
+    this.label_ = foundationMap.label;
+    /** @type {!MDCTextFieldOutlineFoundation|undefined} */
+    this.outline_ = foundationMap.outline;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -88,7 +104,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
-    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
+    this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Event): undefined} */
     this.bottomLineAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
   }
@@ -96,8 +112,12 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.getNativeInput_().value) {
-      this.adapter_.addClassToLabel(MDCTextFieldFoundation.cssClasses.LABEL_FLOAT_ABOVE);
+    if (this.getNativeInput_().value && this.label_) {
+      this.label_.floatAbove();
+    }
+
+    if (this.adapter_.isFocused()) {
+      this.inputFocusHandler_();
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -129,39 +149,52 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles all user interactions with the Text Field.
-   * @param {!Event} evt
+   * Handles user interactions with the Text Field.
    */
-  handleTextFieldInteraction(evt) {
+  handleTextFieldInteraction() {
     if (this.adapter_.getNativeInput().disabled) {
       return;
     }
-
     this.receivedUserInput_ = true;
+  }
 
-    const {target, type} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextFieldFoundation.cssClasses;
-    const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
-    const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
-
-    if (targetIsIcon && eventTriggersNotification) {
-      this.adapter_.notifyIconAction();
+  /**
+   * Updates the focus outline for outlined text fields.
+   */
+  updateOutline() {
+    if (!this.outline_ || !this.label_) {
+      return;
     }
+
+    const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+    const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+    const labelWidth = this.label_.getWidth() * labelScale;
+    // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
+    const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
+      this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
+    const radius = parseFloat(radiusStyleValue);
+    const isRtl = this.adapter_.isRtl();
+    this.outline_.updateSvgPath(labelWidth, radius, isRtl);
   }
 
   /**
    * Activates the text field focus state.
    */
   activateFocus() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
     this.adapter_.addClass(FOCUSED);
-    const bottomLine = this.adapter_.getBottomLineFoundation();
-    if (bottomLine) {
-      bottomLine.activate();
+    if (this.bottomLine_) {
+      this.bottomLine_.activate();
     }
-    this.adapter_.addClassToLabel(LABEL_FLOAT_ABOVE);
-    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-    this.showHelperText_();
+    if (this.outline_) {
+      this.updateOutline();
+    }
+    if (this.label_) {
+      this.label_.floatAbove();
+    }
+    if (this.helperText_) {
+      this.helperText_.showToScreenReader();
+    }
     this.isFocused_ = true;
   }
 
@@ -171,9 +204,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   setBottomLineTransformOrigin(evt) {
-    const bottomLine = this.adapter_.getBottomLineFoundation();
-    if (bottomLine) {
-      bottomLine.setTransformOrigin(evt);
+    if (this.bottomLine_) {
+      this.bottomLine_.setTransformOrigin(evt);
     }
   }
 
@@ -188,25 +220,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Makes the helper text visible to screen readers.
-   * @private
-   */
-  showHelperText_() {
-    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.removeHelperTextAttr(ARIA_HIDDEN);
-  }
-
-  /**
    * Handles when bottom line animation ends, performing actions that must wait
    * for animations to finish.
    */
   handleBottomLineAnimationEnd() {
-    const bottomLine = this.adapter_.getBottomLineFoundation();
     // We need to wait for the bottom line to be entirely transparent
     // before removing the class. If we do not, we see the line start to
     // scale down before disappearing
-    if (!this.isFocused_ && bottomLine) {
-      bottomLine.deactivate();
+    if (!this.isFocused_ && this.bottomLine_) {
+      this.bottomLine_.deactivate();
     }
   }
 
@@ -214,15 +236,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Deactives the Text Field's focus state.
    */
   deactivateFocus() {
-    const {FOCUSED, LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
     const input = this.getNativeInput_();
+    const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
 
     this.isFocused_ = false;
     this.adapter_.removeClass(FOCUSED);
-    this.adapter_.removeClassFromLabel(LABEL_SHAKE);
-
-    if (!input.value && !this.isBadInput_()) {
-      this.adapter_.removeClassFromLabel(LABEL_FLOAT_ABOVE);
+    if (this.label_) {
+      this.label_.deactivateFocus(shouldRemoveLabelFloat);
+    }
+    if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
     }
 
@@ -237,47 +260,18 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @private
    */
   changeValidity_(isValid) {
-    const {INVALID, LABEL_SHAKE} = MDCTextFieldFoundation.cssClasses;
+    const {INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
     } else {
-      this.adapter_.addClassToLabel(LABEL_SHAKE);
       this.adapter_.addClass(INVALID);
     }
-    this.updateHelperText_(isValid);
-  }
-
-  /**
-   * Updates the state of the Text Field's helper text based on validity and
-   * the Text Field's options.
-   * @param {boolean} isValid
-   */
-  updateHelperText_(isValid) {
-    const {HELPER_TEXT_PERSISTENT, HELPER_TEXT_VALIDATION_MSG} = MDCTextFieldFoundation.cssClasses;
-    const {ROLE} = MDCTextFieldFoundation.strings;
-    const helperTextIsPersistent = this.adapter_.helperTextHasClass(HELPER_TEXT_PERSISTENT);
-    const helperTextIsValidationMsg = this.adapter_.helperTextHasClass(HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !isValid;
-
-    if (validationMsgNeedsDisplay) {
-      this.adapter_.setHelperTextAttr(ROLE, 'alert');
-    } else {
-      this.adapter_.removeHelperTextAttr(ROLE);
+    if (this.helperText_) {
+      this.helperText_.setValidity(isValid);
     }
-
-    if (helperTextIsPersistent || validationMsgNeedsDisplay) {
-      return;
+    if (this.label_) {
+      this.label_.setValidity(isValid);
     }
-    this.hideHelperText_();
-  }
-
-  /**
-   * Hides the helper text from screen readers.
-   * @private
-   */
-  hideHelperText_() {
-    const {ARIA_HIDDEN} = MDCTextFieldFoundation.strings;
-    this.adapter_.setHelperTextAttr(ARIA_HIDDEN, 'true');
   }
 
   /**
@@ -305,18 +299,21 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (disabled) {
       this.adapter_.addClass(DISABLED);
       this.adapter_.removeClass(INVALID);
-      this.adapter_.setIconAttr('tabindex', '-1');
     } else {
       this.adapter_.removeClass(DISABLED);
-      this.adapter_.setIconAttr('tabindex', '0');
+    }
+    if (this.icon_) {
+      this.icon_.setDisabled(disabled);
     }
   }
 
   /**
-   * @param {string} content Sets the content of the helper text field
+   * @param {string} content Sets the content of the helper text.
    */
   setHelperTextContent(content) {
-    this.adapter_.setHelperTextContent(content);
+    if (this.helperText_) {
+      this.helperText_.setContent(content);
+    }
   }
 
   /**

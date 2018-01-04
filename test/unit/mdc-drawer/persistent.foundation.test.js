@@ -24,7 +24,7 @@ import {cssClasses, strings} from '../../../packages/mdc-drawer/persistent/const
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCPersistentDrawerFoundation);
-  td.when(mockAdapter.hasClass('mdc-persistent-drawer')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--persistent')).thenReturn(true);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
   return {foundation, mockAdapter};
 }
@@ -48,14 +48,6 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'saveElementTabState', 'restoreElementTabState', 'makeElementUntabbable',
     'notifyOpen', 'notifyClose', 'isRtl', 'getDrawerWidth', 'isDrawer',
   ]);
-});
-
-test('#init is super.init', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.init();
-  td.verify(mockAdapter.registerDrawerInteractionHandler('click', isA(Function)));
 });
 
 test('#isRootTransitioningEventTarget_ returns true if the element is the drawer element', () => {
