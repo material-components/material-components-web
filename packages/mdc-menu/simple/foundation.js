@@ -372,9 +372,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     // Defaults: open from the top left.
     let corner = Corner.TOP_LEFT;
 
-    const {anchorRect, viewportDistance, anchorHeight, anchorWidth, menuHeight, menuWidth} = this.measures_;
+    const {viewportDistance, anchorHeight, anchorWidth, menuHeight, menuWidth} = this.measures_;
     const isBottomAligned = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
-    const availableTop = isBottomAligned ? anchorRect.top + anchorHeight + this.anchorMargin_.bottom
+    const availableTop = isBottomAligned ? viewportDistance.top + anchorHeight + this.anchorMargin_.bottom
       : viewportDistance.top + this.anchorMargin_.top;
     const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
       : viewportDistance.bottom + anchorHeight - this.anchorMargin_.top;
