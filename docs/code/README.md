@@ -16,7 +16,7 @@ many subsystem packages. But component packages rarely depend on other
 component packages. Components require an HTML structure. Some components are
 static, but most are dynamic and include some JavaScript.
 
-> Each component is usable seperate from any other component.
+> Each component is usable separately from any other component.
 
 ## Best Practices
 
