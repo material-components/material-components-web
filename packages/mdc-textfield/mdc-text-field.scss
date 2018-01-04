@@ -32,10 +32,8 @@
 @import "./outline/mdc-text-field-outline";
 @include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 129%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 129%, 25%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 138%, .923);
 
 // postcss-bem-linter: define text-field
 
@@ -206,7 +204,7 @@
       bottom: 18px;
 
       &--float-above {
-        transform: translateY(-145%) scale(.923);
+        transform: translateY(calc(-122% - 2px)) scale(.923);
 
         // stylelint-disable max-nesting-depth
         // stylelint-disable-next-line selector-max-specificity
@@ -328,10 +326,6 @@
       @include mdc-rtl {
         transform: scale(.75) translateX(36%) translateY(-170%);
       }
-
-      &.mdc-text-field__label--shake {
-        animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
-      }
     }
 
     &.mdc-text-field--dense {
@@ -341,11 +335,6 @@
         // stylelint-disable max-nesting-depth
         @include mdc-rtl {
           transform: translateX(25%) translateY(-145%) scale(.923);
-        }
-
-        // stylelint-disable-next-line selector-max-specificity
-        &.mdc-text-field__label--shake {
-          animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
         }
         // stylelint-enable max-nesting-depth
       }
