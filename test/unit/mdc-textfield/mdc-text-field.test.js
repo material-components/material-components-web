@@ -395,3 +395,36 @@ test('#adapter.isRtl returns true when the root element is in an RTL context' +
 
   document.body.removeChild(wrapper);
 });
+
+function setupMockFoundationTest(root = getFixture()) {
+  const MockFoundationConstructor = td.constructor(MDCTextFieldFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCTextField(
+    root,
+    mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+test('get/set value', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.value;
+  td.verify(mockFoundation.getValue());
+  component.value = 'foo';
+  td.verify(mockFoundation.setValue('foo'));
+});
+
+test('get/set valid', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.valid;
+  td.verify(mockFoundation.isValid());
+  component.valid = true;
+  td.verify(mockFoundation.setValid(true));
+});
+
+test('get/set required', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.required;
+  td.verify(mockFoundation.isRequired());
+  component.required = true;
+  td.verify(mockFoundation.setRequired(true));
+});

@@ -161,6 +161,20 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * @return {string} The value of the input.
+   */
+  get value() {
+    return this.foundation_.getValue();
+  }
+
+  /**
+   * @param {string} value The value to set on the input.
+   */
+  set value(value) {
+    this.foundation_.setValue(value);
+  }
+
+  /**
    * @return {boolean} True if the Text Field is disabled.
    */
   get disabled() {
@@ -175,10 +189,31 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * @return {boolean} valid True if the Text Field is valid.
+   */
+  get valid() {
+    return this.foundation_.isValid();
+  }
+
+  /**
    * @param {boolean} valid Sets the Text Field valid or invalid.
    */
   set valid(valid) {
     this.foundation_.setValid(valid);
+  }
+
+  /**
+   * @return {boolean} True if the Text Field is required.
+   */
+  get required() {
+    return this.foundation_.isRequired();
+  }
+
+  /**
+   * @param {boolean} required Sets the Text Field to required.
+   */
+  set required(required) {
+    this.foundation_.setRequired(required);
   }
 
   /**
