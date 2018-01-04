@@ -166,7 +166,8 @@
 
 @mixin mdc-button--raised_() {
   @include mdc-elevation(2);
-  @include mdc-elevation-transition;
+
+  transition: mdc-elevation-transition-value();
 
   &:hover,
   &:focus {
