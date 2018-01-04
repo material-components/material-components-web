@@ -404,7 +404,7 @@ testFoundation('#open anchors the menu to the bottom left in LTR when not close 
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
-    foundation.setAnchorMargin({top: 0, left: 7, bottom: 10, right: 0});
+    foundation.setAnchorMargin({left: 7, bottom: 10});
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left top'));
@@ -415,7 +415,7 @@ testFoundation('#open anchors the menu to the bottom left in LTR when close to t
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallBottomLeft);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
-    foundation.setAnchorMargin({top: 5, left: 7, bottom: 10, right: 0});
+    foundation.setAnchorMargin({top: 5, left: 7, bottom: 10});
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
@@ -426,24 +426,13 @@ testFoundation('#open anchors the menu to the bottom left in RTL when close to t
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallBottomRight, true);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
-    foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 7});
+    foundation.setAnchorMargin({top: 5, bottom: 10, right: 7});
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('right bottom'));
     td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
   });
 
-testFoundation('#open the menu after setting invalid margins.',
-  ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallBottomRight, true);
-    foundation.setAnchorCorner(Corner.BOTTOM_START);
-    foundation.setAnchorMargin({top: 5, left: 0, bottom: 10, right: 7});
-    foundation.setAnchorMargin({top: '5px', left: 'zz', bottom: '10dp', right: '7em'});
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('right bottom'));
-    td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
-  });
 testFoundation('#close does nothing if event target has aria-disabled set to true',
   ({foundation, mockAdapter}) => {
     const mockEvt = {

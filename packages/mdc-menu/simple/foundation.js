@@ -183,18 +183,10 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    * @param {!AnchorMargin} margin 4-plet of margins from anchor.
    */
   setAnchorMargin(margin) {
-    if (typeof margin.top === 'number') {
-      this.anchorMargin_.top = margin.top;
-    }
-    if (typeof margin.right === 'number') {
-      this.anchorMargin_.right = margin.right;
-    }
-    if (typeof margin.bottom === 'number') {
-      this.anchorMargin_.bottom = margin.bottom;
-    }
-    if (typeof margin.left === 'number') {
-      this.anchorMargin_.left = margin.left;
-    }
+    this.anchorMargin_.top = typeof margin.top === 'number' ? margin.top : 0;
+    this.anchorMargin_.right = typeof margin.right === 'number' ? margin.right : 0;
+    this.anchorMargin_.bottom = typeof margin.bottom === 'number' ? margin.bottom : 0;
+    this.anchorMargin_.left = typeof margin.left === 'number' ? margin.left : 0;
   }
 
   /**
