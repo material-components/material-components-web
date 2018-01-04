@@ -33,8 +33,8 @@
 
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 129%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 129%, 25%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 25%);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
 
@@ -116,7 +116,7 @@
 .mdc-text-field__input {
   // stylelint-disable plugin/selector-bem-pattern
   &:-webkit-autofill + .mdc-text-field__label {
-    transform: translateY(-100%) scale(.75, .75);
+    transform: translateY(-100%) scale(.75);
     cursor: auto;
   }
   // stylelint-enable plugin/selector-bem-pattern
@@ -149,7 +149,7 @@
     transition: transform 260ms ease;
 
     &--float-above {
-      transform: scale(.75) translateY(-170%);
+      transform: translateY(-130%) scale(.75);
 
       &.mdc-text-field__label--shake {
         animation: invalid-shake-float-above-outlined 250ms 1;
@@ -278,7 +278,7 @@
     }
 
     &--float-above {
-      transform: translateY(-50%) scale(.75, .75);
+      transform: translateY(-50%) scale(.75);
     }
   }
 
@@ -301,7 +301,7 @@
       bottom: 20px;
 
       &--float-above {
-        transform: translateY(calc(-75% - 2px)) scale(.923, .923);
+        transform: translateY(-90%) scale(.923);
 
         // stylelint-disable max-nesting-depth
         &.mdc-text-field__label--shake {
@@ -430,7 +430,7 @@
 
   .mdc-text-field__label--float-above {
     // NOTE: This is an eyeball'd approximation of what's in the mocks.
-    transform: translateY(calc(-100% - 2px)) scale(.923, .923);
+    transform: translateY(-110%) scale(.923);
   }
 }
 
@@ -509,7 +509,7 @@
       // Translate above the top of the input, and compensate for the amount of offset needed
       // to position the label within the bounds of the inset padding.
       // Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
-      transform: translateY(-50%) scale(.923, .923);
+      transform: translateY(-50%) scale(.923);
     }
   }
 
