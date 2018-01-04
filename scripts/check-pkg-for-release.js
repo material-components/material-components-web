@@ -70,7 +70,7 @@ function checkPublicConfigForNewComponent() {
 }
 
 function checkNameIsPresentInAllowedScope() {
-  const name = pkg.name.split('/')[1];
+  const name = getPkgName();
   assert.notEqual(REPO_PKG.config['validate-commit-msg']['scope']['allowed'].indexOf(name), -1,
     'FAILURE: Component ' + pkg.name + ' is not added to allowed scope. Please check package.json ' +
     'and add ' + name + ' to config["validate-commit-msg"]["scope"]["allowed"] before commit.');
@@ -98,7 +98,7 @@ function checkJSDependencyAddedInWebpackConfig() {
 }
 
 function checkCSSDependencyAddedInWebpackConfig() {
-  const name = pkg.name.split('/')[1];
+  const name = getPkgName();
   if (CSS_WHITELIST.indexOf(name) === -1) {
     const cssconfig = WEBPACK_CONFIG.find((value) => {
       return value.name === 'css';
@@ -129,11 +129,8 @@ function checkPkgDependencyAddedInMDCPackage() {
 }
 
 function checkCSSDependencyAddedInMDCPackage() {
-  const name = pkg.name.split('/')[1];
-  let nameMDC = pkg.name.replace('@material/', 'mdc-');
-  if (name === 'textfield') {
-    nameMDC = 'mdc-text-field';
-  }
+  const name = getPkgName();
+  const nameMDC = `mdc-${name}`;
   if (CSS_WHITELIST.indexOf(name) === -1) {
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_PATH), 'utf8');
     const cssRules = cssom.parse(src).cssRules;
@@ -150,7 +147,7 @@ function checkCSSDependencyAddedInMDCPackage() {
 function checkJSDependencyAddedInMDCPackage() {
   const NOT_IMPORTED = ['animation'];
   const NOT_AUTOINIT = ['auto-init', 'base', 'selection-control'];
-  const name = pkg.name.split('/')[1];
+  const name = getPkgName();
   if (typeof(pkg.main) !== 'undefined' && NOT_IMPORTED.indexOf(name) === -1) {
     const nameCamel = camelCase(pkg.name.replace('@material/', ''));
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_JS_PATH), 'utf8');
@@ -229,4 +226,14 @@ function checkComponentExportedAddedInMDCPackage(ast) {
     },
   });
   return isExported;
+}
+
+function getPkgName() {
+  let name = pkg.name.split('/')[1];
+  if (name === 'textfield') {
+    // Text-field now has a dash in the name. The package cannot be changed,
+    // since it is a lot of effort to rename npm package
+    name = 'text-field';
+  }
+  return name;
 }
