@@ -606,7 +606,7 @@ test('on keydown sets receivedUserInput to true when input is enabled', () => {
 });
 
 test('on click does not set receivedUserInput if input is disabled', () => {
-  const {foundation, mockAdapter, label} = setupTest();
+  const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
   };
