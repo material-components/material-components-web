@@ -230,6 +230,14 @@ class MDCDragManager extends MDCComponent {
       if (!this.itemSourceEl_) {
         return;
       }
+
+      // We only listen to 'drag' events to prevent native gestures in IE/Edge during 'touch' events.
+      // If the user started dragging with the mouse, we don't need to handle 'drag' events.
+      if (this.currentEventPointerType_ === util.EventPrefix.MOUSE) {
+        e.preventDefault();
+        return false;
+      }
+
       this.itemSourceEl_.style.visibility = 'hidden';
       setTimeout(() => {
         this.itemSourceEl_.style.visibility = 'visible';
@@ -283,6 +291,7 @@ class MDCDragManager extends MDCComponent {
     this.initialPointerPositionRelativeToItem_ = util.getPointerOffsetFromElement(e, this.itemSourceEl_);
 
     this.currentEventPrefix_ = eventPrefix;
+    this.currentEventPointerType_ = e.pointerType;
     this.currentEventIsTouch_ = isTouch;
 
     this.addGlobalEventListeners_(eventMap.move, (e) => this.handlePointerMove_(e));
