@@ -391,12 +391,42 @@
   .mdc-text-field__outline .mdc-text-field__outline-path {
     stroke: $mdc-text-field-error-on-light;
   }
+
+  @include mdc-theme-dark(".mdc-text-field", true) {
+    .mdc-text-field__label {
+      color: $mdc-text-field-error-on-dark;
+    }
+
+    .mdc-text-field__input {
+      border-color: $mdc-text-field-error-on-dark;
+    }
+
+    .mdc-text-field__bottom-line {
+      background-color: $mdc-text-field-error-on-dark;
+    }
+
+    .mdc-text-field__idle-outline {
+      border-color: $mdc-text-field-error-on-dark;
+    }
+
+    .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+      border-color: $mdc-text-field-error-on-dark;
+    }
+
+    .mdc-text-field__outline .mdc-text-field__outline-path {
+      stroke: $mdc-text-field-error-on-dark;
+    }
+  }
 }
 
 // stylelint-disable plugin/selector-bem-pattern
 
 .mdc-text-field--invalid.mdc-text-field--textarea {
   border-color: $mdc-text-field-error-on-light;
+
+  @include mdc-theme-dark(".mdc-text-field", true) {
+    border-color: $mdc-text-field-error-on-dark;
+  }
 }
 
 // stylelint-enable plugin/selector-bem-pattern
