@@ -37,8 +37,9 @@ export const InputModality = {
 export const EventPrefix = {
   UNKNOWN: 'unknown',
   POINTER: 'pointer',
-  MOUSE: 'mouse',
   TOUCH: 'touch',
+  MOUSE: 'mouse',
+  DRAG: 'drag',
   KEY: 'key',
 };
 
@@ -59,6 +60,12 @@ export const EventMap = {
     down: 'mousedown',
     up: 'mouseup',
     move: 'mousemove',
+    cancel: null,
+  },
+  drag: {
+    down: 'dragstart',
+    up: 'dragend',
+    move: 'drag',
     cancel: null,
   },
   key: {

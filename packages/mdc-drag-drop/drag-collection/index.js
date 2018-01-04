@@ -71,6 +71,10 @@ class MDCDragManager extends MDCComponent {
     // Mark all items as draggable and ensure that they are focusable.
     const itemEls = [].slice.call(this.root_.querySelectorAll(this.itemSelector_));
     itemEls.forEach((itemEl) => {
+      // This attribute, in combination with the 'drag' and 'dragend' event handlers, prevents IE/Edge from triggering
+      // native touch gestures (scroll, browser back/forward) while dragging.
+      itemEl.setAttribute('draggable', 'true');
+
       if (!itemEl.hasAttribute('aria-grabbed')) {
         itemEl.setAttribute('aria-grabbed', 'false');
       }
@@ -288,6 +292,11 @@ class MDCDragManager extends MDCComponent {
     this.addGlobalEventListeners_(eventMap.move, (e) => this.handlePointerMove_(e));
     this.addGlobalEventListeners_(eventMap.up, (e) => this.handlePointerUp_(e));
     this.addGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
+
+    // These event handlers, in combination with the 'draggable' attribute, prevent IE/Edge from triggering native touch
+    // gestures (scroll, browser back/forward) while dragging.
+    this.addGlobalEventListeners_(util.EventMap.drag.move, (e) => this.handlePointerMove_(e));
+    this.addGlobalEventListeners_(util.EventMap.drag.up, (e) => this.handlePointerUp_(e));
 
     // Once scrolling starts, prevent dragging.
     // TODO(acdvorak): Remove this event handler once dragging starts?
