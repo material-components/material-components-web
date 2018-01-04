@@ -24,9 +24,14 @@
   @include mdc-tab-label-ink-color($material-color-indigo-500);
 }
 
-#basic-tab-bar-custom-label-color .mdc-tab:not(.mdc-tab--active),
-#css-tab-bar-custom-label-color .mdc-tab:not(.mdc-tab--active) {
-  @include mdc-tab-label-ink-color($material-color-deep-purple-200);
+#basic-tab-bar-custom-label-color,
+#css-tab-bar-custom-label-color {
+  .mdc-tab:not(.mdc-tab--active) {
+    @include mdc-tab-label-ink-color($material-color-deep-purple-200);
+  }
+  .mdc-tab:hover {
+    @include mdc-tab-label-ink-color($material-color-indigo-500);
+  }
 }
 
 #icon-tab-bar-custom-icon-color .mdc-tab--active,
@@ -34,9 +39,14 @@
   @include mdc-tab-icon-ink-color($material-color-indigo-500);
 }
 
-#icon-tab-bar-custom-icon-color .mdc-tab:not(.mdc-tab--active),
-#css-icon-tab-bar-custom-icon-color .mdc-tab:not(.mdc-tab--active) {
-  @include mdc-tab-icon-ink-color($material-color-deep-purple-200);
+#icon-tab-bar-custom-icon-color,
+#css-icon-tab-bar-custom-icon-color {
+  .mdc-tab:not(.mdc-tab--active) {
+    @include mdc-tab-icon-ink-color($material-color-deep-purple-200);
+  }
+  .mdc-tab:hover {
+    @include mdc-tab-label-ink-color($material-color-indigo-500);
+  }
 }
 
 #icon-text-tab-bar-custom-colors .mdc-tab--active,
@@ -44,7 +54,12 @@
   @include mdc-tab-ink-color($material-color-indigo-500);
 }
 
-#icon-text-tab-bar-custom-colors .mdc-tab:not(.mdc-tab--active),
-#css-icon-text-tab-bar-custom-colors .mdc-tab:not(.mdc-tab--active) {
-  @include mdc-tab-ink-color($material-color-deep-purple-200);
+#icon-text-tab-bar-custom-colors,
+#css-icon-text-tab-bar-custom-colors {
+  .mdc-tab:not(.mdc-tab--active) {
+    @include mdc-tab-ink-color($material-color-deep-purple-200);
+  }
+  .mdc-tab:hover {
+    @include mdc-tab-label-ink-color($material-color-indigo-500);
+  }
 }

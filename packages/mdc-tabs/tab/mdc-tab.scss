@@ -50,7 +50,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 
 
   &:hover {
-    @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-tab-ink-color(text-primary-on-light);
   }
 
   &:focus {

@@ -213,10 +213,10 @@ dots.addEventListener('click', function (evt) {
 
 ### Sass Mixins
 
-To customize the label ink color or the icon ink color you can use the following mixins. You would use these mixins on the `.mdc-tab:not(.mdc-tab--active)` selector or on the `.mdc-tab--active` selector to alter label or icon colors in the activated state.
+To customize the ink color of any part of the tab, use the following mixins. We recommend you apply these mixins within CSS selectors like `.foo-tab:not(.mdc-tab--active)` to select your inactive tabs, and `.foo-tab.mdc-tab--active` to select your active tabs.
 
 #### `mdc-tab-ink-color`
-Use this mixin to set the color of icon and label to have the same color. Do not use this if you are using the `mdc-tab-label-ink-color` or `mdc-tab-icon-ink-color` mixins.
+Use this mixin to set the color of all ink on the tab.
 
 #### `mdc-tab-icon-ink-color`
 This mixin customizes the icon ink color.
