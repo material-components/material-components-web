@@ -70,12 +70,6 @@ class MDCTextFieldAdapter {
   removeClass(className) {}
 
   /**
-   * Returns true if the root element contains the given class name.
-   * @param {string} className
-   */
-  hasClass(className) {}
-
-  /**
    * Registers an event handler on the root element for a given event.
    * @param {string} type
    * @param {function(!Event): undefined} handler
@@ -128,27 +122,6 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
-
-  /**
-   * Returns the idle outline element's computed style value of the given css property `propertyName`.
-   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
-   * @param {string} propertyName
-   * @return {string}
-   */
-  getIdleOutlineStyleValue(propertyName) {}
-
-  /**
-   * Returns true if the textfield is focused.
-   * We achieve this via `document.activeElement === this.root_`.
-   * @return {boolean}
-   */
-  isFocused() {}
-
-  /**
-   * Returns true if the direction of the root element is set to RTL.
-   * @return {boolean}
-   */
-  isRtl() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

@@ -31,18 +31,11 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldLabelFoundation, [
-    'addClass', 'removeClass', 'getWidth',
+    'addClass', 'removeClass',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCTextFieldLabelFoundation);
-
-test('#getWidth returns the width of the label element scaled by 75%', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const width = 100;
-  td.when(mockAdapter.getWidth()).thenReturn(width);
-  assert.equal(foundation.getWidth(), width);
-});
 
 test('#style with non-empty value floats the label', () => {
   const value = 'new value';

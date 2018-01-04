@@ -20,8 +20,8 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldBottomLine, MDCTextFieldHelperText,
-  MDCTextFieldIcon, MDCTextFieldLabel, MDCTextFieldOutline} from '../../../packages/mdc-textfield';
+import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldBottomLine,
+  MDCTextFieldHelperText, MDCTextFieldIcon, MDCTextFieldLabel} from '../../../packages/mdc-textfield';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -74,13 +74,6 @@ class FakeLabel {
   }
 }
 
-class FakeOutline {
-  constructor() {
-    this.createRipple = td.function('.createRipple');
-    this.destroy = td.func('.destroy');
-  }
-}
-
 test('#constructor when given a `mdc-text-field--box` element instantiates a ripple on the root element', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
@@ -88,23 +81,7 @@ test('#constructor when given a `mdc-text-field--box` element instantiates a rip
   assert.equal(component.ripple.root, root);
 });
 
-test('#constructor when given a `mdc-text-field--outlined` element instantiates a ripple on the ' +
-     'outline element', () => {
-  const root = bel`
-    <div class="mdc-text-field mdc-text-field--outlined">
-      <input type="text" class="mdc-text-field__input" id="my-text-field">
-      <label class="mdc-text-field__label" for="my-text-field">My Label</label>
-      <div class="mdc-text-field__outline"></div>
-      <div class="mdc-text-field__idle-outline"></div>
-    </div>
-  `;
-  const outline = root.querySelector('.mdc-text-field__outline');
-  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
-  assert.equal(component.ripple.root, outline);
-});
-
-test('#constructor sets the ripple property to `null` when not given a `mdc-text-field--box` nor ' +
-     'a `mdc-text-field--outlined` subelement', () => {
+test('#constructor sets the ripple property to `null` when given a non `mdc-text-field--box` element', () => {
   const component = new MDCTextField(getFixture());
   assert.isNull(component.ripple);
 });
@@ -113,20 +90,6 @@ test('#constructor when given a `mdc-text-field--box` element, initializes a def
      'ripple factory given', () => {
   const root = getFixture();
   root.classList.add(cssClasses.BOX);
-  const component = new MDCTextField(root);
-  assert.instanceOf(component.ripple, MDCRipple);
-});
-
-test('#constructor when given a `mdc-text-field--outlined` element, initializes a default ripple when no ' +
-     'ripple factory given', () => {
-  const root = bel`
-    <div class="mdc-text-field mdc-text-field--outlined">
-      <input type="text" class="mdc-text-field__input" id="my-text-field">
-      <label class="mdc-text-field__label" for="my-text-field">My Label</label>
-      <div class="mdc-text-field__outline"></div>
-      <div class="mdc-text-field__idle-outline"></div>
-    </div>
-  `;
   const component = new MDCTextField(root);
   assert.instanceOf(component.ripple, MDCRipple);
 });
@@ -162,28 +125,11 @@ test('#constructor instantiates a label on the `.mdc-text-field__label` element 
   assert.instanceOf(component.label_, MDCTextFieldLabel);
 });
 
-test('#constructor instantiates an outline on the `.mdc-text-field__outline` element if present', () => {
-  const root = getFixture();
-  root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
-  const component = new MDCTextField(root);
-  assert.instanceOf(component.outline_, MDCTextFieldOutline);
-});
-
-test('#constructor handles undefined optional sub-elements gracefully', () => {
-  const root = bel`
-    <div class="mdc-text-field">
-      <input type="text" class="mdc-text-field__input" id="my-text-field">
-    </div>
-  `;
-  assert.doesNotThrow(() => new MDCTextField(root));
-});
-
 function setupTest(root = getFixture()) {
   const bottomLine = new FakeBottomLine();
   const helperText = new FakeHelperText();
   const icon = new FakeIcon();
   const label = new FakeLabel();
-  const outline = new FakeOutline();
   const component = new MDCTextField(
     root,
     undefined,
@@ -191,10 +137,9 @@ function setupTest(root = getFixture()) {
     () => bottomLine,
     () => helperText,
     () => icon,
-    () => label,
-    () => outline
+    () => label
   );
-  return {root, component, bottomLine, helperText, icon, label, outline};
+  return {root, component, bottomLine, helperText, icon, label};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -234,21 +179,8 @@ test('#destroy cleans up the label if present', () => {
   td.verify(label.destroy());
 });
 
-test('#destroy cleans up the outline if present', () => {
-  const root = getFixture();
-  root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
-  const {component, outline} = setupTest(root);
-  component.destroy();
-  td.verify(outline.destroy());
-});
-
-test('#destroy handles undefined optional sub-elements gracefully', () => {
-  const root = bel`
-    <div class="mdc-text-field">
-      <input type="text" class="mdc-text-field__input" id="my-text-field">
-    </div>
-  `;
-  const component = new MDCTextField(root);
+test('#destroy accounts for ripple nullability', () => {
+  const component = new MDCTextField(getFixture());
   assert.doesNotThrow(() => component.destroy());
 });
 
@@ -288,14 +220,6 @@ test('set helperTextContent has no effect when no helper text element is present
   assert.doesNotThrow(() => {
     component.helperTextContent = 'foo';
   });
-});
-
-test('#layout recomputes all dimensions and positions for the ripple element', () => {
-  const root = getFixture();
-  root.classList.add(cssClasses.BOX);
-  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
-  component.layout();
-  td.verify(component.ripple.layout());
 });
 
 test('#adapter.registerBottomLineEventHandler adds event listener to bottom line', () => {
@@ -368,63 +292,4 @@ test('#adapter.getNativeInput returns the component input element', () => {
     component.getDefaultFoundation().adapter_.getNativeInput(),
     root.querySelector('.mdc-text-field__input')
   );
-});
-
-test('#adapter.getIdleOutlineStyleValue returns the value of the given property on the idle outline element', () => {
-  const root = getFixture();
-  root.appendChild(bel`<div class="mdc-text-field__idle-outline"></div>`);
-  const idleOutline = root.querySelector('.mdc-text-field__idle-outline');
-  idleOutline.style.width = '500px';
-
-  const component = new MDCTextField(root);
-  assert.equal(
-    component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'),
-    getComputedStyle(idleOutline).getPropertyValue('width')
-  );
-});
-
-test('#adapter.isRtl returns true when the root element is in an RTL context' +
-  'and false otherwise', () => {
-  const wrapper = bel`<div dir="rtl"></div>`;
-  const {root, component} = setupTest();
-  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
-
-  wrapper.appendChild(root);
-  document.body.appendChild(wrapper);
-  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
-
-  document.body.removeChild(wrapper);
-});
-
-function setupMockFoundationTest(root = getFixture()) {
-  const MockFoundationConstructor = td.constructor(MDCTextFieldFoundation);
-  const mockFoundation = new MockFoundationConstructor();
-  const component = new MDCTextField(
-    root,
-    mockFoundation);
-  return {root, component, mockFoundation};
-}
-
-test('get/set value', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.value;
-  td.verify(mockFoundation.getValue());
-  component.value = 'foo';
-  td.verify(mockFoundation.setValue('foo'));
-});
-
-test('get/set valid', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.valid;
-  td.verify(mockFoundation.isValid());
-  component.valid = true;
-  td.verify(mockFoundation.setValid(true));
-});
-
-test('get/set required', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.required;
-  td.verify(mockFoundation.isRequired());
-  component.required = true;
-  td.verify(mockFoundation.setRequired(true));
 });

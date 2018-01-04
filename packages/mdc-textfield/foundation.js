@@ -22,9 +22,8 @@ import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
-import MDCTextFieldOutlineFoundation from './outline/foundation';
 /* eslint-enable no-unused-vars */
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings} from './constants';
 
 
 /**
@@ -42,11 +41,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return strings;
   }
 
-  /** @return enum {string} */
-  static get numbers() {
-    return numbers;
-  }
-
   /**
    * {@see MDCTextFieldAdapter} for typing information on parameters and return
    * types.
@@ -56,7 +50,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
-      hasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
@@ -64,9 +57,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       registerBottomLineEventHandler: () => {},
       deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
-      getIdleOutlineStyleValue: () => {},
-      isFocused: () => {},
-      isRtl: () => {},
     });
   }
 
@@ -86,8 +76,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.icon_ = foundationMap.icon;
     /** @type {!MDCTextFieldLabelFoundation|undefined} */
     this.label_ = foundationMap.label;
-    /** @type {!MDCTextFieldOutlineFoundation|undefined} */
-    this.outline_ = foundationMap.outline;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -116,10 +104,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // Ensure label does not collide with any pre-filled value.
     if (this.label_) {
       this.label_.style(this.getValue() || undefined);
-    }
-
-    if (this.adapter_.isFocused()) {
-      this.inputFocusHandler_();
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -161,38 +145,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the focus outline for outlined text fields.
-   */
-  updateOutline() {
-    if (!this.outline_ || !this.label_) {
-      return;
-    }
-
-    const isDense = this.adapter_.hasClass(cssClasses.DENSE);
-    const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
-    const labelWidth = this.label_.getWidth() * labelScale;
-    // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
-    const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
-      this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
-    const radius = parseFloat(radiusStyleValue);
-    const isRtl = this.adapter_.isRtl();
-    this.outline_.updateSvgPath(labelWidth, radius, isRtl);
-  }
-
-  /**
    * Activates the text field focus state.
    */
   activateFocus() {
     this.isFocused_ = true;
-    this.styleFocused_(this.isFocused_);
-    if (this.bottomLine_) {
-      this.bottomLine_.activate();
-    }
-    if (this.outline_) {
-      this.updateOutline();
-    }
+    this.styleRoot_(undefined, this.isFocused_);
     if (this.label_) {
       this.label_.style(undefined, undefined, undefined, this.isFocused_);
+    }
+    if (this.bottomLine_) {
+      this.bottomLine_.activate();
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
@@ -239,8 +201,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   deactivateFocus() {
     this.isFocused_ = false;
     const isValid = this.isValid();
-    this.styleValidity_(isValid);
-    this.styleFocused_(this.isFocused_);
+    this.styleRoot_(isValid, this.isFocused_);
     if (this.label_) {
       this.label_.style(this.getValue(), isValid, this.isBadInput_(), this.isFocused_);
     }
@@ -262,73 +223,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setValue(value) {
     this.getNativeInput_().value = value;
     const isValid = this.isValid();
-    this.styleValidity_(isValid);
+    this.styleRoot_(isValid);
     if (this.label_) {
       this.label_.style(this.getValue(), isValid, this.isBadInput_());
-    }
-  }
-
-  /**
-   * @return {boolean} If a custom validity is set, returns that value.
-   *     Otherwise, returns the result of native validity checks.
-   */
-  isValid() {
-    return this.useCustomValidityChecking_
-      ? this.isValid_ : this.isNativeInputValid_();
-  }
-
-  /**
-   * @param {boolean} isValid Sets the validity state of the Text Field.
-   */
-  setValid(isValid) {
-    this.useCustomValidityChecking_ = true;
-    this.isValid_ = isValid;
-    // Retrieve from the getter to ensure correct logic is applied.
-    isValid = this.isValid();
-    this.styleValidity_(isValid);
-    if (this.label_) {
-      this.label_.style(undefined, isValid);
-    }
-  }
-
-  /**
-   * @return {boolean} True if the Text Field is disabled.
-   */
-  isDisabled() {
-    return this.getNativeInput_().disabled;
-  }
-
-  /**
-   * @param {boolean} disabled Sets the text-field disabled or enabled.
-   */
-  setDisabled(disabled) {
-    this.getNativeInput_().disabled = disabled;
-    this.styleDisabled_(disabled);
-  }
-
-  /**
-   * @return {boolean} True if the Text Field is required.
-   */
-  isRequired() {
-    return this.getNativeInput_().required;
-  }
-
-  /**
-   * @param {boolean} isRequired Sets the text-field required or not.
-   */
-  setRequired(isRequired) {
-    this.getNativeInput_().required = isRequired;
-    // Addition of the asterisk is automatic based on CSS, but validity checking
-    // needs to be manually run.
-    this.styleValidity_(this.isValid());
-  }
-
-  /**
-   * @param {string} content Sets the content of the helper text.
-   */
-  setHelperTextContent(content) {
-    if (this.helperText_) {
-      this.helperText_.setContent(content);
     }
   }
 
@@ -350,51 +247,111 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Styles the component based on the validity state.
-   * @param {boolean} isValid
-   * @private
+   * @return {boolean} If a custom validity is set, returns that value.
+   *     Otherwise, returns the result of native validity checks.
    */
-  styleValidity_(isValid) {
-    const {INVALID} = MDCTextFieldFoundation.cssClasses;
-    if (isValid) {
-      this.adapter_.removeClass(INVALID);
-    } else {
-      this.adapter_.addClass(INVALID);
+  isValid() {
+    return this.useCustomValidityChecking_
+      ? this.isValid_ : this.isNativeInputValid_();
+  }
+
+  /**
+   * @param {boolean} isValid Sets the validity state of the Text Field.
+   */
+  setValid(isValid) {
+    this.useCustomValidityChecking_ = true;
+    this.isValid_ = isValid;
+    // Retrieve from the getter to ensure correct logic is applied.
+    isValid = this.isValid();
+    this.styleRoot_(isValid);
+    if (this.label_) {
+      this.label_.style(undefined, isValid);
     }
+  }
+
+  /**
+   * @return {boolean} True if the Text Field is disabled.
+   */
+  isDisabled() {
+    return this.getNativeInput_().disabled;
+  }
+
+  /**
+   * @param {boolean} disabled Sets the text-field disabled or enabled.
+   */
+  setDisabled(disabled) {
+    this.getNativeInput_().disabled = disabled;
+    this.styleRoot_(undefined, undefined, disabled);
+  }
+
+  /**
+   * @return {boolean} True if the Text Field is required.
+   */
+  isRequired() {
+    return this.getNativeInput_().required;
+  }
+
+  /**
+   * @param {boolean} isRequired Sets the text-field required or not.
+   */
+  setRequired(isRequired) {
+    this.getNativeInput_().required = isRequired;
+    // Addition of the asterisk is automatic based on CSS, but validity checking
+    // needs to be manually run.
+    this.styleRoot_(this.isValid());
+  }
+
+  /**
+   * @param {string} content Sets the content of the helper text.
+   */
+  setHelperTextContent(content) {
     if (this.helperText_) {
-      this.helperText_.setValidity(isValid);
+      this.helperText_.setContent(content);
     }
   }
 
   /**
-   * Styles the component based on the focused state.
-   * @param {boolean} isFocused
+   * Styles the Text Field component's root Element based on the optional
+   * params. If a param is not supplied, the method makes no changes related to
+   * that param.
+   * @param {boolean=} optIsValid
+   * @param {boolean=} optIsFocused
+   * @param {boolean=} optIsDisabled
    * @private
    */
-  styleFocused_(isFocused) {
-    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
-    if (isFocused) {
-      this.adapter_.addClass(FOCUSED);
-    } else {
-      this.adapter_.removeClass(FOCUSED);
-    }
-  }
+  styleRoot_(optIsValid, optIsFocused, optIsDisabled) {
+    const {DISABLED, FOCUSED, INVALID} = MDCTextFieldFoundation.cssClasses;
 
-  /**
-   * Styles the component based on the disabled state.
-   * @param {boolean} isDisabled
-   * @private
-   */
-  styleDisabled_(isDisabled) {
-    const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
-    if (isDisabled) {
-      this.adapter_.addClass(DISABLED);
-      this.adapter_.removeClass(INVALID);
-    } else {
-      this.adapter_.removeClass(DISABLED);
+    if (optIsValid !== undefined) {
+      const isValid = !!optIsValid;
+      if (isValid) {
+        this.adapter_.removeClass(INVALID);
+      } else {
+        this.adapter_.addClass(INVALID);
+      }
+      if (this.helperText_) {
+        this.helperText_.setValidity(isValid);
+      }
     }
-    if (this.icon_) {
-      this.icon_.setDisabled(isDisabled);
+
+    if (optIsFocused !== undefined) {
+      if (!!optIsFocused) {
+        this.adapter_.addClass(FOCUSED);
+      } else {
+        this.adapter_.removeClass(FOCUSED);
+      }
+    }
+
+    if (optIsDisabled !== undefined) {
+      if (!!optIsDisabled) {
+        this.adapter_.addClass(DISABLED);
+        this.adapter_.removeClass(INVALID);
+      } else {
+        this.adapter_.removeClass(DISABLED);
+      }
+      if (this.icon_) {
+        this.icon_.setDisabled(!!optIsDisabled);
+      }
     }
   }
 

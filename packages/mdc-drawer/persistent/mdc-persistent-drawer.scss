@@ -17,7 +17,6 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "../mixins";
-@import "../variables";
 @import "../slidable/mixins";
 @import "../slidable/variables";
 
@@ -28,14 +27,13 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
   --mdc-persistent-drawer-dark-theme-bg-color: #{$mdc-persistent-drawer-dark-theme-bg-color};
 }
 
-.mdc-drawer--persistent {
+.mdc-persistent-drawer {
   @include mdc-drawer-base_;
-  @include mdc-drawer-ink-color($mdc-persistent-drawer-ink-color);
-  @include mdc-drawer-fill-color($mdc-persistent-drawer-fill-color);
-  
+
   width: 0;
 
-  .mdc-drawer__drawer {
+  &__drawer {
+    @include mdc-theme-prop(background, background);
     @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
     @include mdc-rtl-reflexive-position(left, 0);
 
@@ -49,7 +47,7 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
 
     @include mdc-slideable-drawer;
 
-    @include mdc-rtl(".mdc-drawer--persistent") {
+    @include mdc-rtl(".mdc-persistent-drawer") {
       @include mdc-slideable-drawer-rtl;
     }
 
@@ -61,27 +59,27 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
     touch-action: none;
   }
 
-  &.mdc-drawer--animating {
-    .mdc-drawer__drawer {
+  &--animating {
+    .mdc-persistent-drawer__drawer {
       transition: $mdc-slidable-drawer-transition-close;
     }
 
-    &.mdc-drawer--open .mdc-drawer__drawer {
+    &.mdc-persistent-drawer--open .mdc-persistent-drawer__drawer {
       transition: $mdc-slidable-drawer-transition-open;
     }
   }
 
-  &.mdc-drawer--open {
+  &--open {
     width: $mdc-persistent-drawer-width;
     pointer-events: auto;
 
-    .mdc-drawer__drawer {
+    .mdc-persistent-drawer__drawer {
       @include mdc-slideable-drawer-open;
     }
 
     // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
     @include mdc-rtl {
-      .mdc-drawer__drawer {
+      .mdc-persistent-drawer__drawer {
         @include mdc-slideable-drawer-open;
       }
     }

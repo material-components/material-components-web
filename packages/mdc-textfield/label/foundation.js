@@ -39,7 +39,6 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldLabelAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
-      getWidth: () => {},
     });
   }
 
@@ -48,14 +47,6 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
    */
   constructor(adapter = /** @type {!MDCTextFieldLabelAdapter} */ ({})) {
     super(Object.assign(MDCTextFieldLabelFoundation.defaultAdapter, adapter));
-  }
-
-  /**
-   * Returns the width of the label element.
-   * @return {number}
-   */
-  getWidth() {
-    return this.adapter_.getWidth();
   }
 
   /**
@@ -83,6 +74,7 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
         this.adapter_.addClass(LABEL_FLOAT_ABOVE);
       } else if (!optIsBadInput) {
         this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
+        this.receivedUserInput_ = false;
       }
     }
   }
