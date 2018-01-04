@@ -80,7 +80,9 @@ class MDCDragManager extends MDCComponent {
     const itemEls = [].slice.call(this.root_.querySelectorAll(this.itemSelector_));
     itemEls.forEach((itemEl) => {
       // This attribute, in combination with the 'drag' and 'dragend' event handlers, prevents IE/Edge from triggering
-      // native touch gestures (scroll, browser back/forward) while dragging.
+      // native touch gestures (scroll, browser back/forward) while dragging. Other browsers do not fire the 'drag'
+      // events if you're already handling 'touch', 'pointer', or 'mouse' events, so we shouldn't need to worry about
+      // conflicts in non-Microsoft browsers.
       itemEl.setAttribute('draggable', 'true');
 
       if (!itemEl.hasAttribute('aria-grabbed')) {
@@ -222,31 +224,17 @@ class MDCDragManager extends MDCComponent {
       return false;
     }, {passive: false});
 
-    //
-    // Prevent native scroll/pan/zoom gestures in IE/Edge
-    // TODO(acdvorak): Make this work
-    //
-
+    // Hide default "ghost image" in Edge (we display our own drag clone).
+    // TODO(acdvorak): Hide "ghost image" in IE 11.
     this.addGlobalEventListeners_('dragstart', (e) => {
-      // if (this.dragState_ !== DragState.DRAGGING) {
-      //   return;
-      // }
-
-      // console.error('dragstart:', e);
-      // e.preventDefault();
-      // return false;
-      // e.dataTransfer.setData('text/plain', 'Drag Me Button');
+      if (!this.itemSourceEl_) {
+        return;
+      }
+      this.itemSourceEl_.style.visibility = 'hidden';
+      setTimeout(() => {
+        this.itemSourceEl_.style.visibility = 'visible';
+      });
     });
-
-    this.addGlobalEventListeners_('pointermove', (e) => {
-      // if (this.dragState_ !== DragState.DRAGGING) {
-      //   return;
-      // }
-
-      // console.log('pointermove:', e);
-      // e.preventDefault();
-      // return false;
-    }, {passive: false});
   }
 
   /*
@@ -302,8 +290,16 @@ class MDCDragManager extends MDCComponent {
     this.addGlobalEventListeners_(eventMap.cancel, (e) => this.handlePointerCancel_(e));
 
     // These event handlers, in combination with the 'draggable' attribute, prevent IE/Edge from triggering native touch
-    // gestures (scroll, browser back/forward) while dragging.
-    this.addGlobalEventListeners_(util.EventMap.drag.move, (e) => this.handlePointerMove_(e));
+    // gestures (scroll, browser back/forward) while dragging. Other browsers do not fire the 'drag' events if you're
+    // already handling 'touch', 'pointer', or 'mouse' events, so we shouldn't need to worry about conflicts in
+    // non-Microsoft browsers.
+    this.addGlobalEventListeners_(util.EventMap.drag.move, (e) => {
+      this.handlePointerMove_(e);
+
+      // IE/Edge automatically display a "ghost image" clone of the source element during 'drag' events.
+      // TODO(acdvorak): Figure out how to hide the default "ghost image" in IE/Edge.
+      // this.itemCloneEl_.style.display = 'none';
+    });
     this.addGlobalEventListeners_(util.EventMap.drag.up, (e) => this.handlePointerUp_(e));
 
     // Once scrolling starts, prevent dragging.
@@ -384,6 +380,11 @@ handlePointerMoveWhileWaitingForLongPress_(e):
   }
 
   handlePointerCancel_(e) {
+    if (this.dragState_ === DragState.DRAGGING) {
+      console.error('IGNORING handlePointerCancel_(' + e.type + '):', e);
+      return;
+    }
+
     console.error('handlePointerCancel_(' + e.type + '):', e);
 
     this.emit('drag:cancel', {originalEvent: e, originalSource: this.itemSourceEl_});
