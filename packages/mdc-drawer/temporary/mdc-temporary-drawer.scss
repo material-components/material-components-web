@@ -19,15 +19,11 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "../mixins";
-@import "../variables";
 @import "../slidable/mixins";
 @import "../slidable/variables";
 
-.mdc-drawer--temporary {
+.mdc-temporary-drawer {
   @include mdc-drawer-base_;
-  @include mdc-drawer-ink-color($mdc-temporary-drawer-ink-color);
-  @include mdc-drawer-fill-color($mdc-temporary-drawer-fill-color);
-  @include mdc-drawer-scrim-color($mdc-temporary-drawer-scrim-color, $mdc-temporary-drawer-scrim-opacity);
 
   position: fixed;
   top: 0;
@@ -49,17 +45,19 @@
     box-sizing: border-box;
     width: 100%;
     height: 100%;
+    background: rgba(0, 0, 0, .6);
     opacity: 0;
     opacity: var(--mdc-temporary-drawer-opacity, 0);
     content: "";
     will-change: opacity;
   }
 
-  .mdc-drawer__drawer {
+  &__drawer {
+    @include mdc-theme-prop(background, background);
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
 
-    @include mdc-theme-dark(".mdc-drawer--temporary") {
+    @include mdc-theme-dark(".mdc-temporary-drawer") {
       @include mdc-theme-prop(color, text-primary-on-dark);
 
       background: #303030;
@@ -67,7 +65,7 @@
 
     @include mdc-slideable-drawer;
 
-    @include mdc-rtl(".mdc-drawer--temporary") {
+    @include mdc-rtl(".mdc-temporary-drawer") {
       @include mdc-slideable-drawer-rtl;
     }
 
@@ -87,7 +85,7 @@
     }
   }
 
-  .mdc-drawer__content {
+  &__content {
     flex-grow: 1;
     box-sizing: border-box;
     margin: 0;
@@ -97,27 +95,27 @@
     touch-action: pan-y;
   }
 
-  .mdc-drawer__footer {
+  &__footer {
     @include mdc-elevation(2);
 
     flex-shrink: 0;
   }
 
-  &.mdc-drawer--animating {
+  &--animating {
     &::before {
       transition: mdc-animation-enter(opacity, .3s);
     }
 
-    &.mdc-drawer--open .mdc-drawer__drawer {
+    &.mdc-temporary-drawer--open .mdc-temporary-drawer__drawer {
       transition: $mdc-slidable-drawer-transition-open;
     }
 
-    .mdc-drawer__drawer {
+    .mdc-temporary-drawer__drawer {
       transition: $mdc-slidable-drawer-transition-close;
     }
   }
 
-  &.mdc-drawer--open {
+  &--open {
     pointer-events: auto;
 
     &::before {
@@ -125,13 +123,13 @@
       opacity: var(--mdc-temporary-drawer-opacity, 1);
     }
 
-    .mdc-drawer__drawer {
+    .mdc-temporary-drawer__drawer {
       @include mdc-slideable-drawer-open;
     }
 
     // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
     @include mdc-rtl {
-      .mdc-drawer__drawer {
+      .mdc-temporary-drawer__drawer {
         @include mdc-slideable-drawer-open;
       }
     }

@@ -17,11 +17,10 @@
 @import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
 @import "@material/typography/mixins";
 
 @mixin mdc-drawer-toolbar-spacer_() {
-  .mdc-drawer__toolbar-spacer {
+  &__toolbar-spacer {
     display: flex;
     position: relative;
     flex-direction: row;
@@ -47,17 +46,17 @@
   /* Use aspect ratio trick to maintain 16:9 aspect ratio on the header */
   // styline things header is a type
   // stylelint-disable selector-max-type
-  .mdc-drawer__header {
+  &__header {
     position: relative;
   }
 
-  .mdc-drawer__header::before {
+  &__header::before {
     display: block;
     padding-top: 9 / 16 * 100%;
     content: "";
   }
 
-  .mdc-drawer__header-content {
+  &__header-content {
     display: flex;
     position: absolute;
     top: 0;
@@ -94,26 +93,4 @@
   @include mdc-drawer-toolbar-spacer_;
   @include mdc-drawer-header_;
   @include mdc-drawer-list_;
-}
-
-@mixin mdc-drawer-fill-color($color) {
-  &.mdc-drawer--permanent,
-  .mdc-drawer__drawer {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
-@mixin mdc-drawer-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
-}
-
-@mixin mdc-drawer-scrim-color($color, $opacity) {
-  &::before {
-    background-color: rgba(mdc-theme-prop-value($color), $opacity);
-  }
-}
-
-@mixin mdc-drawer-fill-color-accessible($color) {
-  @include mdc-drawer-ink-color(mdc-theme-accessible-ink-color($color));
-  @include mdc-drawer-fill-color($color);
 }

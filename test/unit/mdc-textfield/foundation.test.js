@@ -21,7 +21,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
-const {cssClasses, numbers} = MDCTextFieldFoundation;
+const {cssClasses} = MDCTextFieldFoundation;
 
 suite('MDCTextFieldFoundation');
 
@@ -33,17 +33,13 @@ test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCTextFieldFoundation);
 });
 
-test('exports numbers', () => {
-  assert.isOk('numbers' in MDCTextFieldFoundation);
-});
-
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldFoundation, [
-    'addClass', 'removeClass', 'hasClass',
+    'addClass', 'removeClass',
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput', 'getIdleOutlineStyleValue', 'isFocused', 'isRtl',
+    'getNativeInput',
   ]);
 });
 
@@ -67,28 +63,158 @@ const setupTest = () => {
     handleInteraction: () => {},
   });
   const label = td.object({
-    getWidth: () => {},
     floatAbove: () => {},
     deactivateFocus: () => {},
     setValidity: () => {},
-  });
-  const outline = td.object({
-    updateSvgPath: () => {},
+    style: () => {},
   });
   const foundationMap = {
     bottomLine: bottomLine,
     helperText: helperText,
     icon: icon,
     label: label,
-    outline: outline,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, bottomLine, helperText, icon, label, outline};
+  return {foundation, mockAdapter, bottomLine, helperText, icon, label};
 };
 
 test('#constructor sets disabled to false', () => {
   const {foundation} = setupTest();
   assert.isNotOk(foundation.isDisabled());
+});
+
+const setupValueTest = (value, optIsValid, optIsBadInput) => {
+  const {foundation, mockAdapter, bottomLine, helperText, label} = setupTest();
+  const nativeInput = {
+    value: value,
+    validity: {
+      valid: optIsValid === undefined ? true : !!optIsValid,
+      badInput: optIsBadInput === undefined ? false : !!optIsBadInput,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+
+  return {foundation, mockAdapter, bottomLine, helperText, label, nativeInput};
+};
+
+test('#getValue returns the field\'s value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    value: 'initValue',
+  });
+  assert.equal('initValue', foundation.getValue(),
+    'getValue does not match input value.');
+});
+
+test('#setValue with non-empty value styles the label', () => {
+  const value = 'new value';
+  const {foundation, nativeInput, label} = setupValueTest('');
+  // Initial empty value should not float label.
+  td.verify(label.style(undefined));
+  nativeInput.value = value;
+  foundation.setValue(value);
+  td.verify(label.style(value, true, false));
+});
+
+test('#setValue with empty value styles the label', () => {
+  const {foundation, nativeInput, label} = setupValueTest('old value');
+  // Initial value should float the label.
+  td.verify(label.style('old value'));
+  nativeInput.value = '';
+  foundation.setValue('');
+  td.verify(label.style('', true, false));
+});
+
+test('#setValue valid and invalid input', () => {
+  const {foundation, mockAdapter, nativeInput, helperText, label} =
+    setupValueTest('', /* isValid */ false);
+
+  foundation.setValue('invalid');
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(label.style('invalid', false, false));
+  td.verify(helperText.setValidity(false));
+
+  nativeInput.validity.valid = true;
+  foundation.setValue('valid');
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(label.style('valid', true, false));
+  td.verify(helperText.setValidity(true));
+});
+
+test('#setValue does not affect focused state', () => {
+  const {foundation, mockAdapter} = setupValueTest('');
+  foundation.setValue('');
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+});
+
+test('#setValue does not affect disabled state', () => {
+  const {foundation, mockAdapter} = setupValueTest('');
+  foundation.setValue('');
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+  // Called once initially because the field is valid, should not be called twice.
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 1});
+});
+
+test('#isValid for native validation', () => {
+  const {foundation, nativeInput} = setupValueTest('', /* isValid */ true);
+  assert.isOk(foundation.isValid());
+
+  nativeInput.validity.valid = false;
+  assert.isNotOk(foundation.isValid());
+});
+
+test('#setValid overrides native validation', () => {
+  const {foundation, nativeInput} = setupValueTest('', /* isValid */ false);
+  foundation.setValid(true);
+  assert.isOk(foundation.isValid());
+
+  nativeInput.validity.valid = true;
+  foundation.setValid(false);
+  assert.isNotOk(foundation.isValid());
+});
+
+test('#setValid updates classes', () => {
+  const {foundation, mockAdapter, helperText, label} = setupTest();
+
+  foundation.setValid(false);
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+  td.verify(label.style(undefined, false));
+
+  foundation.setValid(true);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
+  td.verify(label.style(undefined, true));
+
+  // None of these is affected by setValid.
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+});
+
+test('#setRequired updates CSS classes', () => {
+  // Native validity checking does not apply in unittests, so manually mark as valid or invalid.
+  const {foundation, mockAdapter, nativeInput, helperText} =
+    setupValueTest('', /* isValid */ false);
+
+  foundation.setRequired(true);
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+
+  nativeInput.validity.valid = true;
+  foundation.setRequired(false);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
+
+  // None of these is affected by setRequired.
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
 });
 
 test('#setDisabled flips disabled when a native input is given', () => {
@@ -161,20 +287,6 @@ test('#init adds mdc-text-field--upgraded class', () => {
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
 
-test('#init focuses on input if adapter.isFocused is true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isFocused()).thenReturn(true);
-  foundation.init();
-  td.verify(foundation.inputFocusHandler_());
-});
-
-test('#init does not focus if adapter.isFocused is false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isFocused()).thenReturn(false);
-  foundation.init();
-  td.verify(foundation.inputFocusHandler_(), {times: 0});
-});
-
 test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
@@ -213,7 +325,7 @@ test('#init floats label if the input contains a value', () => {
     checkValidity: () => true,
   });
   foundation.init();
-  td.verify(label.floatAbove());
+  td.verify(label.style('Pre-filled value'));
 });
 
 test('#init does not float label if the input does not contain a value', () => {
@@ -224,7 +336,7 @@ test('#init does not float label if the input does not contain a value', () => {
     checkValidity: () => true,
   });
   foundation.init();
-  td.verify(label.floatAbove(), {times: 0});
+  td.verify(label.style(), {times: 0});
 });
 
 test('#setHelperTextContent sets the content of the helper text element', () => {
@@ -233,29 +345,7 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   td.verify(helperText.setContent('foo'));
 });
 
-test('#updateOutline updates the SVG path of the outline element', () => {
-  const {foundation, mockAdapter, label, outline} = setupTest();
-  td.when(label.getWidth()).thenReturn(30);
-  td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(false);
-  td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
-  td.when(mockAdapter.isRtl()).thenReturn(false);
-
-  foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30 * numbers.LABEL_SCALE, 8, false));
-});
-
-test('#updateOutline updates the SVG path of the outline element when dense', () => {
-  const {foundation, mockAdapter, label, outline} = setupTest();
-  td.when(label.getWidth()).thenReturn(30);
-  td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(true);
-  td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
-  td.when(mockAdapter.isRtl()).thenReturn(false);
-
-  foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30 * numbers.DENSE_LABEL_SCALE, 8, false));
-});
-
-test('on input floats label if input event occurs without any other events', () => {
+test('on input styles label if input event occurs without any other events', () => {
   const {foundation, mockAdapter, label} = setupTest();
   let input;
 
@@ -264,8 +354,9 @@ test('on input floats label if input event occurs without any other events', () 
       input = handler;
     });
   foundation.init();
+  td.verify(label.style(undefined));
   input();
-  td.verify(label.floatAbove());
+  td.verify(label.style(undefined, undefined, undefined, true));
 });
 
 test('on input does nothing if input event preceded by keydown event', () => {
@@ -292,7 +383,7 @@ test('on input does nothing if input event preceded by keydown event', () => {
   foundation.init();
   keydown(mockEvt);
   input();
-  td.verify(label.floatAbove(), {times: 0});
+  td.verify(label.style(), {times: 0});
 });
 
 test('on focus adds mdc-text-field--focused class', () => {
@@ -307,19 +398,7 @@ test('on focus adds mdc-text-field--focused class', () => {
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED));
 });
 
-test('on focus activates bottom line', () => {
-  const {foundation, mockAdapter, bottomLine} = setupTest();
-  let focus;
-  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      focus = handler;
-    });
-  foundation.init();
-  focus();
-  td.verify(bottomLine.activate());
-});
-
-test('on focus floats label', () => {
+test('on focus styles label', () => {
   const {foundation, mockAdapter, label} = setupTest();
   let focus;
   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
@@ -327,8 +406,9 @@ test('on focus floats label', () => {
       focus = handler;
     });
   foundation.init();
+  td.verify(label.style(undefined));
   focus();
-  td.verify(label.floatAbove());
+  td.verify(label.style(undefined, undefined, undefined, true));
 });
 
 test('on focus makes helper text visible to the screen reader', () => {
@@ -351,7 +431,9 @@ const setupBlurTest = () => {
   });
   const nativeInput = {
     value: '',
-    checkValidity: () => true,
+    validity: {
+      valid: true,
+    },
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
@@ -365,18 +447,19 @@ test('on blur removes mdc-text-field--focused class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED));
 });
 
-test('on blur deactivates label focus with shouldRemoveLabelFloat=true when no input value present and '
-    + 'validity checks pass', () => {
+test('on blur styles label when no input value present and validity checks pass', () => {
   const {blur, label} = setupBlurTest();
+  td.verify(label.style(undefined));
   blur();
-  td.verify(label.deactivateFocus(true /* shouldRemoveLabelFloat */));
+  td.verify(label.style('', true, undefined, false));
 });
 
-test('on blur deactivates label focus with shouldRemoveLabelFloat=false if input has a value', () => {
+test('on blur styles label if input has a value', () => {
   const {blur, nativeInput, label} = setupBlurTest();
+  td.verify(label.style(undefined));
   nativeInput.value = 'non-empty value';
   blur();
-  td.verify(label.deactivateFocus(false /* shouldRemoveLabelFloat */));
+  td.verify(label.style('non-empty value', true, undefined, false));
 });
 
 test('on blur removes mdc-text-field--invalid if custom validity is false and' +
@@ -389,7 +472,7 @@ test('on blur removes mdc-text-field--invalid if custom validity is false and' +
 test('on blur adds mdc-textfied--invalid if custom validity is false and' +
      'input.checkValidity() returns false', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
-  nativeInput.checkValidity = () => false;
+  nativeInput.validity.valid = false;
   blur();
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
@@ -413,7 +496,7 @@ test('on blur does not add mdc-textfied--invalid if custom validity is true and'
 
 test('on blur set validity of helper text', () => {
   const {blur, nativeInput, helperText} = setupBlurTest();
-  nativeInput.checkValidity = () => false;
+  nativeInput.validity.valid = false;
   blur();
   td.verify(helperText.setValidity(false));
 });
@@ -422,22 +505,6 @@ test('on blur handles getNativeInput() not returning anything gracefully', () =>
   const {mockAdapter, blur} = setupBlurTest();
   td.when(mockAdapter.getNativeInput()).thenReturn(null);
   assert.doesNotThrow(blur);
-});
-
-test('on keydown sets receivedUserInput to true when input is enabled', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let keydown;
-  td.when(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      keydown = handler;
-    });
-  td.when(mockAdapter.getNativeInput()).thenReturn({
-    disabled: false,
-  });
-  foundation.init();
-  assert.equal(foundation.receivedUserInput_, false);
-  keydown();
-  assert.equal(foundation.receivedUserInput_, true);
 });
 
 test('on transition end deactivates the bottom line if this.isFocused_ is false', () => {

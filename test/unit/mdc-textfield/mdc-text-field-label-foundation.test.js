@@ -31,46 +31,47 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldLabelFoundation, [
-    'addClass', 'removeClass', 'getWidth',
+    'addClass', 'removeClass',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCTextFieldLabelFoundation);
 
-test('#getWidth returns the width of the label element scaled by 75%', () => {
+test('#style with non-empty value floats the label', () => {
+  const value = 'new value';
   const {foundation, mockAdapter} = setupTest();
-  const width = 100;
-  td.when(mockAdapter.getWidth()).thenReturn(width);
-  assert.equal(foundation.getWidth(), width);
-});
-
-test('#floatAbove adds mdc-text-field__label--float-above class', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.floatAbove();
+  foundation.style(value);
   td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('#deactivateFocus does not remove mdc-text-field__label--float-above class' +
-  'if shouldRemoveLabelFloat=false', () => {
+test('#style with empty value de-floats the label', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.deactivateFocus(false);
-  td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
-});
-
-test('#deactivateFocus removes mdc-text-field__label--float-above class if shouldRemoveLabelFloat=true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.deactivateFocus(true);
+  foundation.style('');
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('#setValidity adds mdc-text-field__label--shake class if isValid is false', () => {
+test('#style with valid and invalid input', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.setValidity(false);
+  foundation.style('invalid', false);
   td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE));
+
+  foundation.style('valid', true);
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
 });
 
-test('#setValidity does nothing if isValid is true', () => {
+test('#style with empty value and badInput does not touch floating label', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.setValidity(true);
-  td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE), {times: 0});
+  foundation.style('', false, true);
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
+});
+
+test('#style updates shake class', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.style('', false);
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE));
+
+  foundation.style('', true);
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
 });

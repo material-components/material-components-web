@@ -29,11 +29,8 @@
 @import "./helper-text/mdc-text-field-helper-text";
 @import "./icon/mdc-text-field-icon";
 @import "./label/mdc-text-field-label";
-@import "./outline/mdc-text-field-outline";
 @include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 138%, .923);
 
 // postcss-bem-linter: define text-field
 
@@ -42,69 +39,69 @@
   position: relative;
   margin-bottom: 8px;
   will-change: opacity, transform, color;
-}
 
-.mdc-text-field__input {
-  @include mdc-theme-prop(color, text-primary-on-light);
-  @include mdc-typography-base;
-  // We use only a subset of the MDC typography values here as changing things such as line-height
-  // affects how the labels are transformed.
-  // TODO: Re-add setting the font-size from mdc-typography-styles (currently
-  // setting it here has no effect because it is overriden by the font-size
-  // given below).
-  @each $prop in (letter-spacing) {
-    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
-  }
+  &__input {
+    @include mdc-theme-prop(color, text-primary-on-light);
+    @include mdc-typography-base;
+    // We use only a subset of the MDC typography values here as changing things such as line-height
+    // affects how the labels are transformed.
+    // TODO: Re-add setting the font-size from mdc-typography-styles (currently
+    // setting it here has no effect because it is overriden by the font-size
+    // given below).
+    @each $prop in (letter-spacing) {
+      #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
+    }
 
-  width: 100%;
-  padding: 0 0 8px;
-  transition: mdc-text-field-transition(opacity);
-  border: none;
-  border-bottom: 1px solid $mdc-text-field-underline-on-light-idle;
-  border-radius: 0;
-  background: none;
-  font-size: inherit;
-  appearance: none;
-
-  &::placeholder {
-    @include mdc-theme-prop(color, text-hint-on-light);
-
-    transition: mdc-text-field-transition(color);
-    opacity: 1;
-  }
-
-  &:hover {
-    border-color: $mdc-text-field-underline-on-light;
-  }
-
-  &:focus {
-    outline: none;
+    width: 100%;
+    padding: 0 0 8px;
+    transition: mdc-text-field-transition(opacity);
+    border: none;
+    border-bottom: 1px solid $mdc-text-field-underline-on-light-idle;
+    border-radius: 0;
+    background: none;
+    font-size: inherit;
+    appearance: none;
 
     &::placeholder {
-      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+      @include mdc-theme-prop(color, text-hint-on-light);
+
+      transition: mdc-text-field-transition(color);
+      opacity: 1;
     }
-  }
-
-  // Remove red outline on firefox
-  &:invalid {
-    box-shadow: none;
-  }
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
-    border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
 
     &:hover {
-      border-bottom: 1px solid $mdc-text-field-underline-on-dark;
+      border-color: $mdc-text-field-underline-on-light;
     }
 
-    &::placeholder {
-      @include mdc-theme-prop(color, text-hint-on-dark);
+    &:focus {
+      outline: none;
+
+      &::placeholder {
+        @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+      }
     }
 
-    &:focus::placeholder {
-      @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
+    // Remove red outline on firefox
+    &:invalid {
+      box-shadow: none;
+    }
+
+    @include mdc-theme-dark {
+      @include mdc-theme-prop(color, text-primary-on-dark);
+
+      border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
+
+      &:hover {
+        border-bottom: 1px solid $mdc-text-field-underline-on-dark;
+      }
+
+      &::placeholder {
+        @include mdc-theme-prop(color, text-hint-on-dark);
+      }
+
+      &:focus::placeholder {
+        @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
+      }
     }
   }
 }
@@ -284,6 +281,8 @@
     }
 
     .mdc-text-field__label {
+      @include mdc-rtl-reflexive-position(left, 12px);
+
       bottom: 20px;
 
       &--float-above {
@@ -357,8 +356,7 @@
   box-sizing: border-box;
   margin-top: 16px;
 
-  // stylelint-disable-next-line selector-max-specificity
-  &:not(.mdc-text-field--textarea):not(.mdc-text-field--outlined) {
+  &:not(.mdc-text-field--textarea) {
     height: 48px;
   }
 
@@ -378,18 +376,6 @@
 
   .mdc-text-field__bottom-line {
     background-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__outline .mdc-text-field__outline-path {
-    stroke: $mdc-text-field-error-on-light;
   }
 }
 
@@ -542,15 +528,18 @@
 // Graceful degredation for css-only inputs
 
 .mdc-text-field {
-  &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
+  &:not(.mdc-text-field--upgraded):not(.mdc-text-field--textarea) .mdc-text-field__input {
+    transition: mdc-text-field-transition(border-bottom-color);
     border-bottom: 1px solid $mdc-text-field-divider-on-light;
+  }
 
+  &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
     &:focus {
       @include mdc-theme-prop(border-color, primary);
     }
 
     &:disabled {
-      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+      @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
 
       border-bottom-style: dotted;
     }
@@ -565,7 +554,7 @@
   @include mdc-theme-dark {
     &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
       &:not(:focus) {
-        border-color: $mdc-text-field-underline-on-dark-idle;
+        border-color: rgba(white, .12);
       }
 
       &:disabled {
@@ -584,26 +573,6 @@
   }
 }
 
-.mdc-text-field--outlined:not(.mdc-text-field--upgraded) {
-  height: 56px;
-
-  .mdc-text-field__input {
-    @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
-
-    height: 100%;
-    padding: 0 0 0 12px;
-    border: 1px solid $mdc-text-field-outlined-idle-border;
-
-    &:hover {
-      border-color: $mdc-text-field-outlined-hover-border;
-    }
-
-    &:focus {
-      @include mdc-theme-prop(border-color, primary);
-    }
-  }
-}
-
 .mdc-text-field--box:not(.mdc-text-field--upgraded) {
   height: 56px;
 
@@ -616,6 +585,7 @@
     padding-top: 0;
   }
 }
+
 // postcss-bem-linter: end
 
 // postcss-bem-linter: define text-field-helper-text

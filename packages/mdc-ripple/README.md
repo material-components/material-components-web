@@ -102,6 +102,10 @@ Mixin | Description
 `mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Adds styles for focus state using the provided opacity. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 `mdc-states-press-opacity($opacity)` | Adds styles for press state using the provided opacity
 
+#### Legacy Sass API
+
+The `mdc-ripple-color($color, $opacity)` mixin is deprecated. Use the basic or advanced states mixins (documented above) instead, which provide finer control over a component's opacity for different states of user interaction.
+
 ### Adding Ripple JS
 
 First import the ripple JS.
@@ -248,7 +252,6 @@ ripple to. The adapter API is as follows:
 | --- | --- |
 | `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
-| `setUnbounded(unbounded: boolean) => void` | Adds the unbounded class when truthy, removes when falsy |
 | `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
 | `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
