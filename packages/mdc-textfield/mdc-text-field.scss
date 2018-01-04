@@ -32,8 +32,8 @@
 @import "./outline/mdc-text-field-outline";
 @include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 25%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 129%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 129%, 25%);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
 
