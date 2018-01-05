@@ -851,8 +851,8 @@
         var cssPollId = setInterval(function() {
           var pos = getComputedStyle(document.querySelector('.mdc-button')).position;
           if (pos === 'relative') {
-            init();
             clearInterval(cssPollId);
+            init();
           }
         }, 250);
 
