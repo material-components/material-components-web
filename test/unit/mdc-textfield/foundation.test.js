@@ -71,7 +71,8 @@ const setupTest = () => {
     floatAbove: () => {},
     deactivateFocus: () => {},
     setValidity: () => {},
-    style: () => {},
+    styleShake: () => {},
+    styleFloat: () => {},
   });
   const outline = td.object({
     updateSvgPath: () => {},
@@ -120,19 +121,21 @@ test('#setValue with non-empty value styles the label', () => {
   const value = 'new value';
   const {foundation, nativeInput, label} = setupValueTest('');
   // Initial empty value should not float label.
-  td.verify(label.style(undefined));
+  td.verify(label.styleFloat('', /* isFocused */ false, /* isBadInput */ false), {times: 0});
   nativeInput.value = value;
   foundation.setValue(value);
-  td.verify(label.style(value, true, false));
+  td.verify(label.styleShake(/* isValid */ true, /* isFocused */ false));
+  td.verify(label.styleFloat(value, /* isFocused */ false, /* isBadInput */ false));
 });
 
 test('#setValue with empty value styles the label', () => {
   const {foundation, nativeInput, label} = setupValueTest('old value');
   // Initial value should float the label.
-  td.verify(label.style('old value'));
+  td.verify(label.styleFloat('old value', /* isFocused */ false, /* isBadInput */ false));
   nativeInput.value = '';
   foundation.setValue('');
-  td.verify(label.style('', true, false));
+  td.verify(label.styleShake(/* isValid */ true, /* isFocused */ false));
+  td.verify(label.styleFloat('', /* isFocused */ false, /* isBadInput */ false));
 });
 
 test('#setValue valid and invalid input', () => {
@@ -141,14 +144,16 @@ test('#setValue valid and invalid input', () => {
 
   foundation.setValue('invalid');
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
-  td.verify(label.style('invalid', false, false));
   td.verify(helperText.setValidity(false));
+  td.verify(label.styleShake(/* isValid */ false, /* isFocused */ false));
+  td.verify(label.styleFloat('invalid', /* isFocused */ false, /* isBadInput */ false));
 
   nativeInput.validity.valid = true;
   foundation.setValue('valid');
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
-  td.verify(label.style('valid', true, false));
   td.verify(helperText.setValidity(true));
+  td.verify(label.styleShake(/* isValid */ true, /* isFocused */ false));
+  td.verify(label.styleFloat('valid', /* isFocused */ false, /* isBadInput */ false));
 });
 
 test('#setValue does not affect focused state', () => {
@@ -191,12 +196,12 @@ test('#setValid updates classes', () => {
   foundation.setValid(false);
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(false));
-  td.verify(label.style(undefined, false));
+  td.verify(label.styleShake(/* isValid */ false, /* isFocused */ false));
 
   foundation.setValid(true);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(true));
-  td.verify(label.style(undefined, true));
+  td.verify(label.styleShake(/* isValid */ true, /* isFocused */ false));
 
   // None of these is affected by setValid.
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
@@ -347,10 +352,12 @@ test('#init floats label if the input contains a value', () => {
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: 'Pre-filled value',
     disabled: false,
-    checkValidity: () => true,
+    validity: {
+      badInput: false,
+    },
   });
   foundation.init();
-  td.verify(label.style('Pre-filled value'));
+  td.verify(label.styleFloat('Pre-filled value', /* isFocused */ false, /* isBadInput */ false));
 });
 
 test('#init does not float label if the input does not contain a value', () => {
@@ -358,10 +365,12 @@ test('#init does not float label if the input does not contain a value', () => {
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: '',
     disabled: false,
-    checkValidity: () => true,
+    validity: {
+      badInput: false,
+    },
   });
   foundation.init();
-  td.verify(label.style(), {times: 0});
+  td.verify(label.styleFloat(/* value */ '', /* isFocused */ false, /* isBadInput */ false), {times: 0});
 });
 
 test('#setHelperTextContent sets the content of the helper text element', () => {
@@ -424,9 +433,10 @@ test('on input styles label if input event occurs without any other events', () 
       input = handler;
     });
   foundation.init();
-  td.verify(label.style(undefined));
+  td.verify(label.styleFloat(), {times: 0});
   input();
-  td.verify(label.style(undefined, undefined, undefined, true));
+  td.verify(label.styleShake(/* isValid */ true, /* isFocused */ true));
+  td.verify(label.styleFloat(/* value */ '', /* isFocused */ true, /* isBadInput */ false));
 });
 
 test('on input does nothing if input event preceded by keydown event', () => {
@@ -453,7 +463,8 @@ test('on input does nothing if input event preceded by keydown event', () => {
   foundation.init();
   keydown(mockEvt);
   input();
-  td.verify(label.style(), {times: 0});
+  td.verify(label.styleShake(), {times: 0});
+  td.verify(label.styleFloat(), {times: 0});
 });
 
 test('on focus adds mdc-text-field--focused class', () => {
@@ -488,9 +499,9 @@ test('on focus styles label', () => {
       focus = handler;
     });
   foundation.init();
-  td.verify(label.style(undefined));
+  td.verify(label.styleFloat(/* value */ '', /* isFocused */ false, /* isBadInput */ false), {times: 0});
   focus();
-  td.verify(label.style(undefined, undefined, undefined, true));
+  td.verify(label.styleShake(/* isValid */ true, /* isFocused */ true));
 });
 
 test('on focus makes helper text visible to the screen reader', () => {
@@ -515,6 +526,7 @@ const setupBlurTest = () => {
     value: '',
     validity: {
       valid: true,
+      badInput: false,
     },
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
@@ -531,17 +543,19 @@ test('on blur removes mdc-text-field--focused class', () => {
 
 test('on blur styles label when no input value present and validity checks pass', () => {
   const {blur, label} = setupBlurTest();
-  td.verify(label.style(undefined));
+  td.verify(label.styleFloat(/* value */ '', /* isFocused */ false), {times: 0});
   blur();
-  td.verify(label.style('', true, undefined, false));
+  td.verify(label.styleShake(/* isValid */ true, /* isFocused */ false));
+  td.verify(label.styleFloat(/* value */ '', /* isFocused */ false, /* isBadInput */ false));
 });
 
 test('on blur styles label if input has a value', () => {
   const {blur, nativeInput, label} = setupBlurTest();
-  td.verify(label.style(undefined));
+  td.verify(label.styleFloat(/* value */ '', /* isFocused */ false), {times: 0});
   nativeInput.value = 'non-empty value';
   blur();
-  td.verify(label.style('non-empty value', true, undefined, false));
+  td.verify(label.styleShake(/* isValid */ true, /* isFocused */ false));
+  td.verify(label.styleFloat('non-empty value', /* isFocused */ false, /* isBadInput */ false));
 });
 
 test('on blur removes mdc-text-field--invalid if custom validity is false and' +

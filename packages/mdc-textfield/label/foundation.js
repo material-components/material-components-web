@@ -59,31 +59,32 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   }
 
   /**
-   * Styles the label to match the supplied optional params. If a
-   * param is not supplied, the method makes no changes related to that param.
-   * @param {string=} optValue
-   * @param {boolean=} optIsValid
-   * @param {boolean=} optIsBadInput
-   * @param {boolean=} optIsFocused
+   * Styles the label to produce the label shake for errors.
+   * @param {boolean} isValid Whether the input's value is valid (passes all
+   *     validity checks).
+   * @param {boolean} isFocused Whether the input is focused.
    */
-  style(optValue, optIsValid, optIsBadInput, optIsFocused) {
-    const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldLabelFoundation.cssClasses;
-    const isFocused = !!optIsFocused;
-
-    if (optIsValid !== undefined || optIsFocused !== undefined) {
-      if (!!optIsValid || isFocused) {
-        this.adapter_.removeClass(LABEL_SHAKE);
-      } else {
-        this.adapter_.addClass(LABEL_SHAKE);
-      }
+  styleShake(isValid, isFocused) {
+    const {LABEL_SHAKE} = MDCTextFieldLabelFoundation.cssClasses;
+    if (isValid || isFocused) {
+      this.adapter_.removeClass(LABEL_SHAKE);
+    } else {
+      this.adapter_.addClass(LABEL_SHAKE);
     }
+  }
 
-    if (optValue !== undefined || optIsFocused !== undefined) {
-      if (!!optValue || isFocused) {
-        this.adapter_.addClass(LABEL_FLOAT_ABOVE);
-      } else if (!optIsBadInput) {
-        this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-      }
+  /**
+   * Styles the label to float or defloat as necessary.
+   * @param {string} value The value of the input.
+   * @param {boolean} isFocused Whether the input is focused.
+   * @param {boolean} isBadInput The input's `validity.badInput` value.
+   */
+  styleFloat(value, isFocused, isBadInput) {
+    const {LABEL_FLOAT_ABOVE} = MDCTextFieldLabelFoundation.cssClasses;
+    if (!!value || isFocused) {
+      this.adapter_.addClass(LABEL_FLOAT_ABOVE);
+    } else if (!isBadInput) {
+      this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
     }
   }
 }

@@ -114,8 +114,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.label_) {
-      this.label_.style(this.getValue() || undefined);
+    if (this.label_ && this.getValue()) {
+      this.label_.styleFloat(
+        this.getValue(), this.isFocused_, this.isBadInput_());
     }
 
     if (this.adapter_.isFocused()) {
@@ -192,7 +193,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.updateOutline();
     }
     if (this.label_) {
-      this.label_.style(undefined, undefined, undefined, this.isFocused_);
+      this.label_.styleShake(this.isValid(), this.isFocused_);
+      this.label_.styleFloat(
+        this.getValue(), this.isFocused_, this.isBadInput_());
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
@@ -244,7 +247,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.styleValidity_(isValid);
     this.styleFocused_(this.isFocused_);
     if (this.label_) {
-      this.label_.style(this.getValue(), isValid, this.isBadInput_(), this.isFocused_);
+      this.label_.styleShake(this.isValid(), this.isFocused_);
+      this.label_.styleFloat(
+        this.getValue(), this.isFocused_, this.isBadInput_());
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
@@ -266,7 +271,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     if (this.label_) {
-      this.label_.style(this.getValue(), isValid, this.isBadInput_());
+      this.label_.styleShake(isValid, this.isFocused_);
+      this.label_.styleFloat(
+        this.getValue(), this.isFocused_, this.isBadInput_());
     }
   }
 
@@ -289,7 +296,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     isValid = this.isValid();
     this.styleValidity_(isValid);
     if (this.label_) {
-      this.label_.style(undefined, isValid);
+      this.label_.styleShake(isValid, this.isFocused_);
     }
   }
 
