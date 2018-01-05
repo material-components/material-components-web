@@ -32,6 +32,14 @@
         flex-direction: column;
       }
 
+      .demo-header-toolbar {
+        z-index: 10;
+      }
+
+      #demo-menu {
+        z-index: 11;
+      }
+
       .demo-content {
         position: relative;
         top: 64px;
@@ -337,7 +345,7 @@
       }
 
       const rtl = document.querySelector('input[name="is-rtl"]');
-      rtl.addEventListener('change', () => {
+      rtl.addEventListener('change', function() {
         const demoWrapper = document.getElementById('demo-wrapper');
         if (rtl.checked) {
           demoWrapper.setAttribute('dir', 'rtl');
