@@ -77,6 +77,10 @@
 .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
 .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
   @include mdc-checkbox__background--marked_;
+
+  .mdc-checkbox__checkmark__path {
+    @include mdc-checkbox__checkmark__path--marked_;
+  }
 }
 
 // The frame's ::before element is used as a focus indicator for the checkbox
@@ -106,11 +110,6 @@
 
 .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
   @include mdc-checkbox__checkmark--indeterminate_;
-}
-
-.mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark__path,
-.mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__checkmark__path {
-  @include mdc-checkbox__checkmark__path--marked_;
 }
 
 .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
