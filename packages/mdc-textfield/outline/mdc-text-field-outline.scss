@@ -30,7 +30,6 @@
   transition: opacity 100ms ease;
   border: 1px solid $mdc-text-field-outlined-idle-border;
   opacity: 1;
-  z-index: 2;
 }
 
 .mdc-text-field__outline {
@@ -48,7 +47,6 @@
   height: calc(100% - 2px);
   transition: mdc-text-field-transition(opacity);
   opacity: 0;
-  z-index: 2;
   overflow: hidden;
 
   svg {
