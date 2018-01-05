@@ -107,6 +107,43 @@
   }
 }
 
+@mixin mdc-text-field-invalid_ {
+  .mdc-text-field__label {
+    color: $mdc-text-field-error-on-light;
+  }
+
+  .mdc-text-field__input {
+    border-color: $mdc-text-field-error-on-light;
+  }
+
+  .mdc-text-field__bottom-line {
+    background-color: $mdc-text-field-error-on-light;
+  }
+
+  .mdc-text-field__idle-outline {
+    border-color: $mdc-text-field-error-on-light;
+  }
+
+  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    border-color: $mdc-text-field-error-on-light;
+  }
+
+  .mdc-text-field__outline .mdc-text-field__outline-path {
+    stroke: $mdc-text-field-error-on-light;
+  }
+
+  + .mdc-text-field-helper-text--validation-msg {
+    opacity: 1;
+    color: $mdc-text-field-error-on-light;
+  }
+
+  @include mdc-theme-dark(".mdc-text-field", true) {
+    + .mdc-text-field-helper-text--validation-msg {
+      color: $mdc-text-field-error-on-dark;
+    }
+  }
+}
+
 @mixin mdc-text-field-focused_ {
   @include mdc-required-text-field-label-asterix_ {
     color: $mdc-text-field-error-on-light;
