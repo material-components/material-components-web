@@ -35,14 +35,14 @@
       </div>
     </header>
 
-    <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-        <header class="mdc-temporary-drawer__header">
-          <div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
+    <aside class="mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
+        <header class="mdc-drawer__header">
+          <div class="mdc-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
             Header here
           </div>
         </header>
-        <nav class="mdc-temporary-drawer__content mdc-list-group">
+        <nav class="mdc-drawer__content mdc-list-group">
           <div class="mdc-list">
             <a class="mdc-list-item mdc-list-item--selected" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
@@ -938,7 +938,7 @@
            * Drawer
            */
 
-          var drawerEl = document.querySelector('.mdc-temporary-drawer');
+          var drawerEl = document.querySelector('.mdc-drawer--temporary');
           var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
           getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
