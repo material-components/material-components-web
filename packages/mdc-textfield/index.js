@@ -16,7 +16,9 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+/* eslint-disable no-unused-vars */
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple';
+/* eslint-enable no-unused-vars */
 import {getMatchesProperty} from '@material/ripple/util';
 
 
@@ -91,17 +93,6 @@ class MDCTextField extends MDCComponent {
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX)) {
-      const MATCHES = getMatchesProperty(HTMLElement.prototype);
-      const adapter = Object.assign(MDCRipple.createAdapter(this), {
-        isSurfaceActive: () => this.input_[MATCHES](':active'),
-        registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
-        deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
-      });
-      const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = rippleFactory(this.root_, foundation);
-    }
     const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
     if (bottomLineElement) {
       this.bottomLine_ = bottomLineFactory(bottomLineElement);
@@ -119,6 +110,23 @@ class MDCTextField extends MDCComponent {
     const iconElement = this.root_.querySelector(strings.ICON_SELECTOR);
     if (iconElement) {
       this.icon_ = iconFactory(iconElement);
+    }
+
+    this.ripple = null;
+    if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
+      // For outlined text fields, the ripple is instantiated on the outline element instead of the root element
+      // to clip the ripple at the outline while still allowing the label to be visible beyond the outline.
+      const rippleCapableSurface = outlineElement ? this.outline_ : this;
+      const rippleRoot = outlineElement ? outlineElement : this.root_;
+      const MATCHES = getMatchesProperty(HTMLElement.prototype);
+      const adapter =
+        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (rippleCapableSurface)), {
+          isSurfaceActive: () => this.input_[MATCHES](':active'),
+          registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
+          deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
+        });
+      const foundation = new MDCRippleFoundation(adapter);
+      this.ripple = rippleFactory(rippleRoot, foundation);
     }
   }
 
@@ -202,6 +210,7 @@ class MDCTextField extends MDCComponent {
       /** @type {!MDCTextFieldAdapter} */ (Object.assign({
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
+        hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         registerBottomLineEventHandler: (evtType, handler) => {
@@ -219,6 +228,9 @@ class MDCTextField extends MDCComponent {
           if (idleOutlineElement) {
             return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
           }
+        },
+        isFocused: () => {
+          return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },
         isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       },

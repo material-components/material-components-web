@@ -21,7 +21,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
 
-const {cssClasses} = MDCTextFieldFoundation;
+const {cssClasses, numbers} = MDCTextFieldFoundation;
 
 suite('MDCTextFieldFoundation');
 
@@ -33,13 +33,17 @@ test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCTextFieldFoundation);
 });
 
+test('exports numbers', () => {
+  assert.isOk('numbers' in MDCTextFieldFoundation);
+});
+
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldFoundation, [
-    'addClass', 'removeClass',
+    'addClass', 'removeClass', 'hasClass',
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput', 'getIdleOutlineStyleValue', 'isRtl',
+    'getNativeInput', 'getIdleOutlineStyleValue', 'isFocused', 'isRtl',
   ]);
 });
 
@@ -63,7 +67,7 @@ const setupTest = () => {
     handleInteraction: () => {},
   });
   const label = td.object({
-    getFloatingWidth: () => {},
+    getWidth: () => {},
     floatAbove: () => {},
     deactivateFocus: () => {},
     setValidity: () => {},
@@ -157,6 +161,20 @@ test('#init adds mdc-text-field--upgraded class', () => {
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
 
+test('#init focuses on input if adapter.isFocused is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isFocused()).thenReturn(true);
+  foundation.init();
+  td.verify(foundation.inputFocusHandler_());
+});
+
+test('#init does not focus if adapter.isFocused is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isFocused()).thenReturn(false);
+  foundation.init();
+  td.verify(foundation.inputFocusHandler_(), {times: 0});
+});
+
 test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
@@ -217,12 +235,24 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
 
 test('#updateOutline updates the SVG path of the outline element', () => {
   const {foundation, mockAdapter, label, outline} = setupTest();
-  td.when(label.getFloatingWidth()).thenReturn(30);
+  td.when(label.getWidth()).thenReturn(30);
+  td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(false);
   td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30, 8, false));
+  td.verify(outline.updateSvgPath(30 * numbers.LABEL_SCALE, 8, false));
+});
+
+test('#updateOutline updates the SVG path of the outline element when dense', () => {
+  const {foundation, mockAdapter, label, outline} = setupTest();
+  td.when(label.getWidth()).thenReturn(30);
+  td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(true);
+  td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
+  td.when(mockAdapter.isRtl()).thenReturn(false);
+
+  foundation.updateOutline();
+  td.verify(outline.updateSvgPath(30 * numbers.DENSE_LABEL_SCALE, 8, false));
 });
 
 test('on input floats label if input event occurs without any other events', () => {
