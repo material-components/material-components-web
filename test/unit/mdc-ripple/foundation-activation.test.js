@@ -234,6 +234,26 @@ testFoundation('adds activation classes on programmatic activation', ({foundatio
   td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
 });
 
+testFoundation('programmatic activation immediately after interaction', ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+  const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
+
+  td.when(adapter.isSurfaceActive()).thenReturn(true);
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
+  mockRaf.flush();
+  documentHandlers.touchend();
+  mockRaf.flush();
+
+  foundation.activate();
+  mockRaf.flush();
+
+  td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
+  td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 2});
+});
+
 testFoundation('sets FG position to center on non-pointer activation', ({foundation, adapter, mockRaf}) => {
   const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   const left = 50;

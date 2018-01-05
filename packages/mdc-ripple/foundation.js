@@ -129,12 +129,12 @@ class MDCRippleFoundation extends MDCFoundation {
     /** @private {function(!Event)} */
     this.deactivateHandler_ = (e) => this.deactivate_(e);
 
-    /** @private {function(!Event)} */
+    /** @private {function(?Event=)} */
     this.focusHandler_ = () => requestAnimationFrame(
       () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
     );
 
-    /** @private {function(!Event)} */
+    /** @private {function(?Event=)} */
     this.blurHandler_ = () => requestAnimationFrame(
       () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
     );
@@ -238,7 +238,7 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Event} e
+   * @param {!Event} e
    * @private
    */
   registerDeactivationHandlers_(e) {
@@ -280,7 +280,7 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Event} e
+   * @param {?Event} e
    * @private
    */
   activate_(e) {
@@ -293,9 +293,9 @@ class MDCRippleFoundation extends MDCFoundation {
       return;
     }
 
-    // Avoid reacting to follow-on event fired by touch device after an already-processed activation event
+    // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
     const previousActivationEvent = this.previousActivationEvent_;
-    const isSameInteraction = previousActivationEvent && previousActivationEvent.type !== e.type &&
+    const isSameInteraction = previousActivationEvent && e && previousActivationEvent.type !== e.type &&
       previousActivationEvent.clientX === e.clientX && previousActivationEvent.clientY === e.clientY;
     if (isSameInteraction) {
       return;
@@ -308,7 +308,7 @@ class MDCRippleFoundation extends MDCFoundation {
       e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown'
     );
 
-    if (!activationState.isProgrammatic) {
+    if (e) {
       this.registerDeactivationHandlers_(e);
     }
 
@@ -427,14 +427,15 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   resetActivationState_() {
-    // Take note of previous activation event type to ignore follow-on event for the same interaction on touch devices
     this.previousActivationEvent_ = this.activationState_.activationEvent;
     this.activationState_ = this.defaultActivationState_();
+    // Touch devices may fire additional events for the same interaction within a short time.
+    // Store the previous event until it's safe to assume that subsequent events are for new interactions.
     setTimeout(() => this.previousActivationEvent_ = null, 100);
   }
 
   /**
-   * @param {Event} e
+   * @param {?Event} e
    * @private
    */
   deactivate_(e) {
