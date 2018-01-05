@@ -30,7 +30,6 @@
 @import "./icon/mdc-text-field-icon";
 @import "./label/mdc-text-field-label";
 @import "./outline/mdc-text-field-outline";
-
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
