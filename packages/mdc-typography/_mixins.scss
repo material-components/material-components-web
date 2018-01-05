@@ -31,12 +31,11 @@
 
   @include mdc-typography-base;
 
-  font-size: map-get($style-props, font-size);
-  font-weight: #{map-get($style-props, font-weight)};
-  letter-spacing: map-get($style-props, letter-spacing);
-  line-height: map-get($style-props, line-height);
-  text-decoration: map-get($style-props, text-decoration);
-  text-transform: map-get($style-props, text-transform);
+  $style-props: map-remove($style-props, margin);
+
+  @each $key, $value in $style-props {
+    #{$key}: $value;
+  }
 }
 
 @mixin mdc-typography-adjust-margin($style) {

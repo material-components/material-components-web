@@ -16,7 +16,9 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+/* eslint-disable no-unused-vars */
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple';
+/* eslint-enable no-unused-vars */
 import {getMatchesProperty} from '@material/ripple/util';
 
 
@@ -26,6 +28,9 @@ import MDCTextFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
 import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
+import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon';
+import {MDCTextFieldLabel, MDCTextFieldLabelFoundation} from './label';
+import {MDCTextFieldOutline, MDCTextFieldOutlineFoundation} from './outline';
 /* eslint-enable no-unused-vars */
 
 /**
@@ -40,16 +45,18 @@ class MDCTextField extends MDCComponent {
     super(...args);
     /** @private {?Element} */
     this.input_;
-    /** @private {?Element} */
-    this.label_;
     /** @type {?MDCRipple} */
     this.ripple;
     /** @private {?MDCTextFieldBottomLine} */
     this.bottomLine_;
     /** @private {?MDCTextFieldHelperText} */
     this.helperText_;
-    /** @private {?Element} */
+    /** @private {?MDCTextFieldIcon} */
     this.icon_;
+    /** @private {?MDCTextFieldLabel} */
+    this.label_;
+    /** @private {?MDCTextFieldOutline} */
+    this.outline_;
   }
 
   /**
@@ -65,38 +72,62 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCRipple.
    * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
    * creates a new MDCTextFieldBottomLine.
+   * @param {(function(!Element): !MDCTextFieldHelperText)=} helperTextFactory A function which
+   * creates a new MDCTextFieldHelperText.
+   * @param {(function(!Element): !MDCTextFieldIcon)=} iconFactory A function which
+   * creates a new MDCTextFieldIcon.
+   * @param {(function(!Element): !MDCTextFieldLabel)=} labelFactory A function which
+   * creates a new MDCTextFieldLabel.
+   * @param {(function(!Element): !MDCTextFieldOutline)=} outlineFactory A function which
+   * creates a new MDCTextFieldOutline.
    */
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el)) {
+    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
+    helperTextFactory = (el) => new MDCTextFieldHelperText(el),
+    iconFactory = (el) => new MDCTextFieldIcon(el),
+    labelFactory = (el) => new MDCTextFieldLabel(el),
+    outlineFactory = (el) => new MDCTextFieldOutline(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
-    this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
-    this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX)) {
-      const MATCHES = getMatchesProperty(HTMLElement.prototype);
-      const adapter = Object.assign(MDCRipple.createAdapter(this), {
-        isSurfaceActive: () => this.input_[MATCHES](':active'),
-        registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
-        deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
-      });
-      const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = rippleFactory(this.root_, foundation);
-    };
-    if (!this.root_.classList.contains(cssClasses.TEXTAREA)) {
-      const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
-      if (bottomLineElement) {
-        this.bottomLine_ = bottomLineFactory(bottomLineElement);
-      }
-    };
+    const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
+    if (labelElement) {
+      this.label_ = labelFactory(labelElement);
+    }
+    const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    if (bottomLineElement) {
+      this.bottomLine_ = bottomLineFactory(bottomLineElement);
+    }
+    const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
+    if (outlineElement) {
+      this.outline_ = outlineFactory(outlineElement);
+    }
     if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
       const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
       if (helperTextElement) {
-        this.helperText_ = new MDCTextFieldHelperText(helperTextElement);
+        this.helperText_ = helperTextFactory(helperTextElement);
       }
     }
-    if (!this.root_.classList.contains(cssClasses.TEXT_FIELD_ICON)) {
-      this.icon_ = this.root_.querySelector(strings.ICON_SELECTOR);
-    };
+    const iconElement = this.root_.querySelector(strings.ICON_SELECTOR);
+    if (iconElement) {
+      this.icon_ = iconFactory(iconElement);
+    }
+
+    this.ripple = null;
+    if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
+      // For outlined text fields, the ripple is instantiated on the outline element instead of the root element
+      // to clip the ripple at the outline while still allowing the label to be visible beyond the outline.
+      const rippleCapableSurface = outlineElement ? this.outline_ : this;
+      const rippleRoot = outlineElement ? outlineElement : this.root_;
+      const MATCHES = getMatchesProperty(HTMLElement.prototype);
+      const adapter =
+        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (rippleCapableSurface)), {
+          isSurfaceActive: () => this.input_[MATCHES](':active'),
+          registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
+          deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
+        });
+      const foundation = new MDCRippleFoundation(adapter);
+      this.ripple = rippleFactory(rippleRoot, foundation);
+    }
   }
 
   destroy() {
@@ -108,6 +139,15 @@ class MDCTextField extends MDCComponent {
     }
     if (this.helperText_) {
       this.helperText_.destroy();
+    }
+    if (this.icon_) {
+      this.icon_.destroy();
+    }
+    if (this.label_) {
+      this.label_.destroy();
+    }
+    if (this.outline_) {
+      this.outline_.destroy();
     }
     super.destroy();
   }
@@ -150,6 +190,19 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Recomputes the outline SVG path for the outline element, and recomputes
+   * all dimensions and positions for the ripple element.
+   */
+  layout() {
+    if (this.outline_) {
+      this.foundation_.updateOutline();
+    }
+    if (this.ripple) {
+      this.ripple.layout();
+    }
+  }
+
+  /**
    * @return {!MDCTextFieldFoundation}
    */
   getDefaultFoundation() {
@@ -157,22 +210,9 @@ class MDCTextField extends MDCComponent {
       /** @type {!MDCTextFieldAdapter} */ (Object.assign({
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        addClassToLabel: (className) => {
-          const label = this.label_;
-          if (label) {
-            label.classList.add(className);
-          }
-        },
-        removeClassFromLabel: (className) => {
-          const label = this.label_;
-          if (label) {
-            label.classList.remove(className);
-          }
-        },
-        eventTargetHasClass: (target, className) => target.classList.contains(className),
+        hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-        notifyIconAction: () => this.emit(MDCTextFieldFoundation.strings.ICON_EVENT, {}),
         registerBottomLineEventHandler: (evtType, handler) => {
           if (this.bottomLine_) {
             this.bottomLine_.listen(evtType, handler);
@@ -183,25 +223,19 @@ class MDCTextField extends MDCComponent {
             this.bottomLine_.unlisten(evtType, handler);
           }
         },
+        getIdleOutlineStyleValue: (propertyName) => {
+          const idleOutlineElement = this.root_.querySelector(strings.IDLE_OUTLINE_SELECTOR);
+          if (idleOutlineElement) {
+            return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
+          }
+        },
+        isFocused: () => {
+          return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
+        },
+        isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       },
-      this.getInputAdapterMethods_(),
-      this.getIconAdapterMethods_())),
+      this.getInputAdapterMethods_())),
       this.getFoundationMap_());
-  }
-
-  /**
-   * @return {!{
-   *   setIconAttr: function(string, string): undefined,
-   * }}
-   */
-  getIconAdapterMethods_() {
-    return {
-      setIconAttr: (name, value) => {
-        if (this.icon_) {
-          this.icon_.setAttribute(name, value);
-        }
-      },
-    };
   }
 
   /**
@@ -227,10 +261,16 @@ class MDCTextField extends MDCComponent {
     return {
       bottomLine: this.bottomLine_ ? this.bottomLine_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
+      icon: this.icon_ ? this.icon_.foundation : undefined,
+      label: this.label_ ? this.label_.foundation : undefined,
+      outline: this.outline_ ? this.outline_.foundation : undefined,
     };
   }
 }
 
 export {MDCTextField, MDCTextFieldFoundation,
   MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation,
-  MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation};
+  MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation,
+  MDCTextFieldIcon, MDCTextFieldIconFoundation,
+  MDCTextFieldLabel, MDCTextFieldLabelFoundation,
+  MDCTextFieldOutline, MDCTextFieldOutlineFoundation};

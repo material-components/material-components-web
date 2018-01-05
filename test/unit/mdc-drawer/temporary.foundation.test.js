@@ -25,7 +25,7 @@ import {cssClasses, strings} from '../../../packages/mdc-drawer/temporary/consta
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCTemporaryDrawerFoundation);
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--temporary')).thenReturn(true);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
   return {foundation, mockAdapter};
 }
@@ -74,7 +74,7 @@ test('on touch start updates the drawer to the touch target coordinates', () => 
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -91,7 +91,7 @@ test('on touch start does not update the drawer when drawer not open', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(false);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(false);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -108,7 +108,7 @@ test('on touch start works for pointer events', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -126,7 +126,7 @@ test('on touch start does not update the drawer when pointertype != touch', () =
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -145,7 +145,7 @@ test('on touch move updates currentX causing the drawer to update', () => {
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -177,7 +177,7 @@ test('on touch move does not allow the drawer to move past its width', () => {
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -201,7 +201,7 @@ test('on touch move does not allow the drawer to move past its width in RTL', ()
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   td.when(mockAdapter.isRtl()).thenReturn(true);
   foundation.init();
@@ -226,7 +226,7 @@ test('on touch move works for pointer events', () => {
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -252,7 +252,7 @@ test('on touch move does not update the drawer when pointertype != touch', () =>
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -277,7 +277,7 @@ test('on touch end resets touch update styles', () => {
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 
@@ -296,7 +296,7 @@ test('on touch end does not update drawer', () => {
   const drawerHandlers = captureHandlers(mockAdapter, 'registerDrawerInteractionHandler');
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const raf = createMockRaf();
-  td.when(mockAdapter.hasClass('mdc-temporary-drawer--open')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--open')).thenReturn(true);
   td.when(mockAdapter.getDrawerWidth()).thenReturn(500);
   foundation.init();
 

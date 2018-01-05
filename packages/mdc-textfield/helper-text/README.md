@@ -4,12 +4,12 @@ layout: detail
 section: components
 excerpt: "The helper text provides supplemental information and/or validation messages to users"
 iconId: text_field
-path: /catalog/input-controls/text-fields/helper-text/
+path: /catalog/input-controls/text-field/helper-text/
 -->
 
 # Text Field Helper Text
 
-The helper text provides supplemental information and/or validation messages to users. It appears on input field focus and disappears on input field blur by default, or it can be persistent.
+Helper text gives context about a field’s input, such as how the input will be used. It should be visible either persistently or only on focus.
 
 ## Design & API Documentation
 
@@ -19,12 +19,15 @@ The helper text provides supplemental information and/or validation messages to 
   </li>
 </ul>
 
-
 ## Usage
 
-### Using helper text
+### HTML Structure
 
-MDC Text Fields can include helper text that is useful for providing supplemental information to users.
+```html
+<p class="mdc-text-field-helper-text" aria-hidden="true">
+```
+
+### Usage within `mdc-text-field`
 
 ```html
 <div class="mdc-text-field">
@@ -37,25 +40,7 @@ MDC Text Fields can include helper text that is useful for providing supplementa
 </p>
 ```
 
-Helper text appears on input field focus and disappears on input field blur by default when using
-the Text Field JS component.
-
-#### Persistent helper text
-
-If you'd like the helper text to always be visible, add the `mdc-text-field-helper-text--persistent` modifier class to the element.
-
-```html
-<div class="mdc-text-field">
-  <input type="email" id="email" class="mdc-text-field__input">
-  <label for="email" class="mdc-text-field__label">Email address</label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-<p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">
-  We will <em>never</em> share your email address with third parties
-</p>
-```
-
-#### Helper text and accessibility
+#### Accessibility
 
 Note that in every example where the helper text is dependent on the state of the input element, we
 assign an id to the `mdc-text-field-helper-text` element and set that id to the value of the
@@ -80,55 +65,35 @@ text element, taking care of adding/removing `aria-hidden` and other accessibili
 and removing classes and attributes to the helper text element can also be done using the
 MDCTextFieldHelperText API, which is described below.
 
-### Validation
+### CSS Classes
 
-Helper text can be used to provide validation messages in addition to the validity styling provided by
-MDC TextField. Use `mdc-text-field-helper-text--validation-msg` to provide styles for using the helper
-text as a validation message. This can be combined with `mdc-text-field-helper-text--persistent` to
-provide a robust UX for client-side form field validation.
+CSS Class | Description
+--- | ---
+`mdc-text-field-helper-text` | Mandatory
+`mdc-text-field-helper-text--persistent` | Makes the helper text permanently visible
+`mdc-text-field-helper-text--validation-msg` | Indicates the helper text is a validation message
 
-```html
-<div class="mdc-text-field">
-  <input required minlength=8 type="password" class="mdc-text-field__input" id="pw"
-         aria-controls="pw-validation-msg">
-  <label for="pw" class="mdc-text-field__label">Choose password</label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-<p class="mdc-text-field-helper-text
-          mdc-text-field-helper-text--persistent
-          mdc-text-field-helper-text--validation-msg"
-   id="pw-validation-msg">
-  Must be at least 8 characters long
-</p>
-```
+### `MDCTextFieldHelperText`
 
-#### MDCTextFieldHelperText API
+##### `MDCTextFieldHelperText.foundation`
 
-##### MDCTextFieldHelperText.foundation
+This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldHelperTextFoundation` class.
 
-MDCTextFieldHelperTextFoundation. This allows the parent MDCTextField component to access the public methods on the MDCTextFieldHelperTextFoundation class.
-
-### Using the foundation class
+### `MDCTextFieldHelperTextAdapter`
 
 Method Signature | Description
 --- | ---
-addClass(className: string) => void | Adds a class to the helper text element
-removeClass(className: string) => void | Removes a class from the helper text element
-hasClass(className: string) => boolean | Returns true if classname exists for the helper text element
-setAttr(attr: string, value: string) => void | Sets an attribute with a given value on the helper text element
-removeAttr(attr: string) => void | Removes an attribute on the helper text element
-setContent(attr: string) => void | Sets the text content for the helper text element
+`addClass(className: string) => void` | Adds a class to the helper text element
+`removeClass(className: string) => void` | Removes a class from the helper text element
+`hasClass(className: string) => boolean` | Returns true if classname exists for the helper text element
+`setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the helper text element
+`removeAttr(attr: string) => void` | Removes an attribute on the helper text element
+`setContent(attr: string) => void` | Sets the text content for the helper text element
 
-#### The full foundation API
+### `MDCTextFieldHelperTextFoundation`
 
-##### MDCTextFieldHelperTextFoundation.setContent()
-
-Sets the content of the helper text.
-
-##### MDCTextFieldHelperTextFoundation.showToScreenReader()
-
-Makes the helper text visible to the screen reader.
-
-##### MDCTextFieldHelperTextFoundation.setValidity(inputIsValid)
-
-Sets the validity of the helper text based on the input validity.
+Method Signature | Description
+--- | ---
+`setContent(content: string) => void` | Sets the content of the helper text
+`showToScreenReader() => void` | Makes the helper text visible to the screen reader
+`setValidity(inputIsValid: boolean) => void` | Sets the validity of the helper text based on the input validity

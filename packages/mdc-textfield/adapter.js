@@ -18,6 +18,8 @@
 /* eslint-disable no-unused-vars */
 import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -34,7 +36,9 @@ let NativeInputType;
 /**
  * @typedef {{
  *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
- *   helperText: (!MDCTextFieldHelperTextFoundation|undefined)
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
+ *   icon: (!MDCTextFieldIconFoundation|undefined),
+ *   label: (!MDCTextFieldLabelFoundation|undefined)
  * }}
  */
 let FoundationMapType;
@@ -63,34 +67,10 @@ class MDCTextFieldAdapter {
   removeClass(className) {}
 
   /**
-   * Adds a class to the label Element. We recommend you add a conditional
-   * check here, and in removeClassFromLabel for whether or not the label is
-   * present so that the JS component could be used with text fields that don't
-   * require a label, such as the full-width text field.
+   * Returns true if the root element contains the given class name.
    * @param {string} className
    */
-  addClassToLabel(className) {}
-
-  /**
-   * Removes a class from the label Element.
-   * @param {string} className
-   */
-  removeClassFromLabel(className) {}
-
-  /**
-   * Sets an attribute on the icon Element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setIconAttr(name, value) {}
-
-  /**
-   * Returns true if classname exists for a given target element.
-   * @param {?EventTarget} target
-   * @param {string} className
-   * @return {boolean}
-   */
-  eventTargetHasClass(target, className) {}
+  hasClass(className) {}
 
   /**
    * Registers an event handler on the root element for a given event.
@@ -105,11 +85,6 @@ class MDCTextFieldAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterTextFieldInteractionHandler(type, handler) {}
-
-  /**
-   * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
-   */
-  notifyIconAction() {}
 
   /**
    * Registers an event listener on the native input element for a given event.
@@ -150,6 +125,27 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
+
+  /**
+   * Returns the idle outline element's computed style value of the given css property `propertyName`.
+   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+   * @param {string} propertyName
+   * @return {string}
+   */
+  getIdleOutlineStyleValue(propertyName) {}
+
+  /**
+   * Returns true if the textfield is focused.
+   * We achieve this via `document.activeElement === this.root_`.
+   * @return {boolean}
+   */
+  isFocused() {}
+
+  /**
+   * Returns true if the direction of the root element is set to RTL.
+   * @return {boolean}
+   */
+  isRtl() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

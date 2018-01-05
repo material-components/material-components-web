@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
@@ -20,11 +21,8 @@
 @import "./mixins";
 @import "./variables";
 
-// TODO(acdvorak): Find a way to remove parent .mdc-list and .mdc-list-group selectors; they violate BEM.
 .mdc-list,
 .mdc-list-group {
-  @include mdc-list-divider-color($mdc-list-divider-color-light);
-
   @include mdc-theme-dark {
     @include mdc-list-divider-color($mdc-list-divider-color-dark);
   }
@@ -34,13 +32,7 @@
 
 .mdc-list {
   @include mdc-typography(subheading2);
-
-  // TODO(acdvorak): Find a way to remove parent .mdc-list selector; it violates BEM.
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background);
-  @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background);
-  @include mdc-list-item-graphic-fill-color(transparent);
-  @include mdc-list-item-graphic-ink-color(text-icon-on-background);
-  @include mdc-list-item-meta-ink-color(text-hint-on-background);
 
   @include mdc-theme-dark {
     @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
@@ -50,12 +42,19 @@
   }
 
   margin: 0;
-  padding: 8px $mdc-list-side-padding;
+  padding: 8px 0;
 
   // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
   // same as for subheading1.
   line-height: map-get(map-get($mdc-typography-styles, subheading1), line-height);
   list-style-type: none;
+}
+
+@at-root {
+  @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background);
+  @include mdc-list-item-graphic-fill-color(transparent);
+  @include mdc-list-item-graphic-ink-color(text-icon-on-background);
+  @include mdc-list-item-meta-ink-color(text-hint-on-background);
 }
 
 .mdc-list--dense {
@@ -75,6 +74,7 @@
   align-items: center;
   justify-content: flex-start;
   height: 48px;
+  padding: 0 $mdc-list-side-padding;
 
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
@@ -85,16 +85,15 @@
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
-  &__start-detail {
-    @include mdc-list-start-detail-size_(24px);
+  &__graphic {
+    @include mdc-list-graphic-size_(24px);
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
-  &__end-detail {
-    @include mdc-list-detail-size_(24px);
+  &__meta {
     @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
   }
 
@@ -118,20 +117,16 @@
   .mdc-list--dense & {
     height: 40px;
 
-    &__start-detail {
-      @include mdc-list-start-detail-size_(20px);
-    }
-
-    &__end-detail {
-      @include mdc-list-detail-size_(20px);
+    &__graphic {
+      @include mdc-list-graphic-size_(20px);
     }
   }
 
   .mdc-list--avatar-list & {
     height: 56px;
 
-    &__start-detail {
-      @include mdc-list-start-detail-size_(40px);
+    &__graphic {
+      @include mdc-list-graphic-size_(40px);
 
       border-radius: 50%;
     }
@@ -140,8 +135,8 @@
   .mdc-list--avatar-list.mdc-list--dense .mdc-list__item {
     height: 48px;
 
-    &__start-detail {
-      @include mdc-list-start-detail-size_(36px);
+    &__graphic {
+      @include mdc-list-graphic-size_(36px);
     }
   }
 
@@ -163,25 +158,28 @@ a.mdc-list-item {
 }
 // stylelint-enable selector-max-type,selector-no-qualifying-type
 
-.mdc-list-item.mdc-ripple-upgraded {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-color;
-  @include mdc-ripple-radius;
-  @include mdc-rtl-reflexive-position(left, $mdc-list-side-padding * -1);
-
+.mdc-list-item {
   position: relative;
-  // Cause the upgraded list item to cover the entirety of the list, causing ripples to emanate
-  // across the entire list element.
-  width: 100%;
-  padding: 0 $mdc-list-side-padding;
   overflow: hidden;
 
   &:focus {
     outline: none;
   }
+}
+
+// List items should support states by default, but it should be possible to opt out.
+// Direct child combinator is necessary for non-interactive modifier on parent to not match this selector.
+:not(.mdc-list--non-interactive) > .mdc-list-item {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states;
+  @include mdc-states-activated(primary);
+  @include mdc-states-selected(primary);
 
   @include mdc-theme-dark(".mdc-list") {
-    @include mdc-ripple-color(white, .12);
+    @include mdc-states(white);
+    @include mdc-states-activated(primary);
+    @include mdc-states-selected(primary);
   }
 }
 
@@ -195,12 +193,23 @@ a.mdc-list-item {
   border-bottom-style: solid;
 }
 
+@at-root {
+  @include mdc-list-divider-color($mdc-list-divider-color-light);
+}
+
+.mdc-list-divider--padded {
+  // Leave gaps on each side to match the padding on list items
+  margin: 0 $mdc-list-side-padding;
+}
+
 .mdc-list-divider--inset {
-  $mdc-list-divider-inset-amt: /* text offset */ 72px - /* padding offset */ $mdc-list-side-padding;
+  @include mdc-rtl-reflexive-box(margin, left, $mdc-list-text-offset, ".mdc-list-group");
 
-  @include mdc-rtl-reflexive-box(margin, left, $mdc-list-divider-inset-amt, ".mdc-list-group");
+  width: calc(100% - #{$mdc-list-text-offset});
+}
 
-  width: calc(100% - #{$mdc-list-divider-inset-amt});
+.mdc-list-divider--inset.mdc-list-divider--padded {
+  width: calc(100% - #{$mdc-list-text-offset} - #{$mdc-list-side-padding});
 }
 
 // postcss-bem-linter: end
@@ -208,13 +217,9 @@ a.mdc-list-item {
 // postcss-bem-linter: define list-group
 
 .mdc-list-group {
-  @include mdc-list-group-subheader-ink-color(text-primary-on-background);
-
   @include mdc-theme-dark {
     @include mdc-list-group-subheader-ink-color(text-primary-on-dark);
   }
-
-  padding: 0 $mdc-list-side-padding;
 
   &__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
@@ -224,13 +229,17 @@ a.mdc-list-item {
 
     @include mdc-typography(body2);
 
-    margin: $mdc-list-subheader-margin 0;
+    margin: $mdc-list-subheader-margin $mdc-list-side-padding;
   }
 
-  // Reset padding on mdc-list since it's already accounted for by the list group.
+  // Cancel top/bottom padding on individual lists within group
   .mdc-list {
     padding: 0;
   }
+}
+
+@at-root {
+  @include mdc-list-group-subheader-ink-color(text-primary-on-background);
 }
 
 // postcss-bem-linter: end

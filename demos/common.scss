@@ -22,6 +22,7 @@
 
 // Base style
 $mdc-theme-primary: $material-color-grey-900 !default;
+$mdc-theme-primary: $material-color-blue-500 !default;
 $mdc-theme-secondary: $material-color-light-green-a700 !default;
 
 // Import button and ripple mixins to apply overrides for dark theme
@@ -34,20 +35,19 @@ $mdc-theme-secondary: $material-color-light-green-a700 !default;
 @import "../packages/mdc-toolbar/mdc-toolbar";
 @import "../packages/mdc-typography/mdc-typography";
 
+$dark-button-color: $material-color-light-green-a200;
+
 fieldset {
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-.mdc-toolbar {
-  a {
-    color: #f0f0f0;
-    text-decoration: none;
-  }
+.mdc-toolbar__icon,
+.mdc-toolbar__menu-icon {
+  @include mdc-toolbar-icon-ink-color(#f0f0f0);
 }
 
-$dark-button-color: $material-color-light-green-a200;
 .mdc-button {
   @include mdc-theme-dark {
     @include mdc-button-ink-color($dark-button-color);
@@ -89,7 +89,7 @@ $dark-button-color: $material-color-light-green-a200;
   background-color: rgba(0, 0, 0, .05);
 }
 
-/* Default padding on all examples. */
+// Default padding on all examples.
 section.example {
   margin: 24px;
   padding: 24px;
