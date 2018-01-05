@@ -544,10 +544,10 @@
           tfOutlinedLeadingEl.querySelector('.mdc-text-field__input').required = target.checked;
           tfOutlinedTrailingEl.querySelector('.mdc-text-field__input').required = target.checked;
 
-          tfBoxLeadingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? ".{8,}" : "*";
-          tfBoxTrailingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? ".{8,}" : "*";
-          tfOutlinedLeadingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? ".{8,}" : "*";
-          tfOutlinedTrailingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? ".{8,}" : "*";
+          tfBoxLeadingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? '.{8,}' : '.*';
+          tfBoxTrailingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? '.{8,}' : '.*';
+          tfOutlinedLeadingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? '.{8,}' : '.*';
+          tfOutlinedTrailingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? '.{8,}' : '.*';
         });
       }, 0);
     </script>
