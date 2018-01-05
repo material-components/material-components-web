@@ -24,7 +24,7 @@ import {cssClasses, strings} from '../../../packages/mdc-drawer/persistent/const
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCPersistentDrawerFoundation);
-  td.when(mockAdapter.hasClass('mdc-persistent-drawer')).thenReturn(true);
+  td.when(mockAdapter.hasClass('mdc-drawer--persistent')).thenReturn(true);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(true);
   return {foundation, mockAdapter};
 }
