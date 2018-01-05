@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +15,9 @@
  * limitations under the License.
  */
 
-import {FOCUSABLE_ELEMENTS} from '../slidable';
-
-export const cssClasses = {
-  ROOT: 'mdc-drawer--temporary',
-  OPEN: 'mdc-drawer--open',
-  ANIMATING: 'mdc-drawer--animating',
-  SCROLL_LOCK: 'mdc-drawer-scroll-lock',
+/** @enum {string} */
+const strings = {
+  PATH_SELECTOR: '.mdc-text-field__outline-path',
 };
 
-export const strings = {
-  DRAWER_SELECTOR: '.mdc-drawer--temporary .mdc-drawer__drawer',
-  OPACITY_VAR_NAME: '--mdc-temporary-drawer-opacity',
-  FOCUSABLE_ELEMENTS,
-  OPEN_EVENT: 'MDCTemporaryDrawer:open',
-  CLOSE_EVENT: 'MDCTemporaryDrawer:close',
-};
+export {strings};

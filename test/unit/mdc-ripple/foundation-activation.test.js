@@ -32,7 +32,6 @@ testFoundation('does nothing if component if isSurfaceDisabled is true',
 
     handlers.mousedown();
 
-    td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 0});
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
   });
 
@@ -43,7 +42,6 @@ testFoundation('adds activation classes on mousedown', ({foundation, adapter, mo
 
   handlers.mousedown();
   mockRaf.flush();
-  td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL));
   td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
 });
 
@@ -91,7 +89,6 @@ testFoundation('adds activation classes on touchstart', ({foundation, adapter, m
 
   handlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
   mockRaf.flush();
-  td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL));
   td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
 });
 
@@ -139,7 +136,6 @@ testFoundation('adds activation classes on pointerdown', ({foundation, adapter, 
 
   handlers.pointerdown();
   mockRaf.flush();
-  td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL));
   td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
 });
 
@@ -190,7 +186,6 @@ testFoundation('adds activation classes on keydown when surface is made active',
     handlers.keydown();
     mockRaf.flush();
 
-    td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL));
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
   });
 
@@ -230,7 +225,6 @@ testFoundation('adds activation classes on programmatic activation', ({foundatio
   foundation.activate();
   mockRaf.flush();
 
-  td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL));
   td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
 });
 
@@ -250,7 +244,6 @@ testFoundation('programmatic activation immediately after interaction', ({founda
   foundation.activate();
   mockRaf.flush();
 
-  td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 2});
   td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 2});
 });
 
@@ -292,7 +285,6 @@ testFoundation('does not redundantly add classes on touchstart followed by mouse
     mockRaf.flush();
     handlers.mousedown();
     mockRaf.flush();
-    td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
   });
 
@@ -306,7 +298,6 @@ testFoundation('does not redundantly add classes on touchstart followed by point
     mockRaf.flush();
     handlers.pointerdown();
     mockRaf.flush();
-    td.verify(adapter.addClass(cssClasses.BG_ACTIVE_FILL), {times: 1});
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
   });
 

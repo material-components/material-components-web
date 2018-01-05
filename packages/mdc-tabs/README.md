@@ -385,7 +385,7 @@ from the `mdc-tab-bar` Element inside of the `mdc-tab-bar-scroller` node during 
 of `MDCTabBarScroller`, e.g.:
 
 ```html
-<div id="my-tab-bar-scroller" class="mdc-tab-bar-scroller">
+<div id="my-mdc-tab-bar-scroller" class="mdc-tab-bar-scroller">
   <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--back">
     <a class="mdc-tab-bar-scroller__indicator__inner material-icons" href="#" aria-label="scroll back button">
       navigate_before
@@ -513,6 +513,10 @@ Sets `computedWidth_` and `computedLeft_` for a tab.
 | `tabs` | `MDCTab[]` | _(read-only)_ An array of the tab bar's instances of MDC Tab. |
 | `activeTab` | `MDCTab` | The currently active tab. Setting this makes the tab active. |
 | `activeTabIndex` | `number` | The index of the currently active tab. Setting this makes the tab at the given index active. |
+
+#### MDCTabBar.layout() => void
+
+Proxies to the foundation's `layout()` method.
 
 ### Tab Bar Events
 

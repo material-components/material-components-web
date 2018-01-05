@@ -338,11 +338,7 @@ class MDCRippleFoundation extends MDCFoundation {
   /** @private */
   animateActivation_() {
     const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
-    const {
-      BG_ACTIVE_FILL,
-      FG_DEACTIVATION,
-      FG_ACTIVATION,
-    } = MDCRippleFoundation.cssClasses;
+    const {FG_DEACTIVATION, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     const {DEACTIVATION_TIMEOUT_MS} = MDCRippleFoundation.numbers;
 
     let translateStart = '';
@@ -364,7 +360,6 @@ class MDCRippleFoundation extends MDCFoundation {
 
     // Force layout in order to re-trigger the animation.
     this.adapter_.computeBoundingRect();
-    this.adapter_.addClass(BG_ACTIVE_FILL);
     this.adapter_.addClass(FG_ACTIVATION);
     this.activationTimer_ = setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);
   }
@@ -405,9 +400,12 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /** @private */
   runDeactivationUXLogicIfReady_() {
+    // This method is called both when a pointing device is released, and when the activation animation ends.
+    // The deactivation animation should only run after both of those occur.
     const {FG_DEACTIVATION} = MDCRippleFoundation.cssClasses;
     const {hasDeactivationUXRun, isActivated} = this.activationState_;
     const activationHasEnded = hasDeactivationUXRun || !isActivated;
+
     if (activationHasEnded && this.activationAnimationHasEnded_) {
       this.rmBoundedActivationClasses_();
       this.adapter_.addClass(FG_DEACTIVATION);
@@ -419,8 +417,7 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /** @private */
   rmBoundedActivationClasses_() {
-    const {BG_ACTIVE_FILL, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-    this.adapter_.removeClass(BG_ACTIVE_FILL);
+    const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     this.adapter_.removeClass(FG_ACTIVATION);
     this.activationAnimationHasEnded_ = false;
     this.adapter_.computeBoundingRect();
@@ -474,10 +471,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @private
    */
   animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive}) {
-    const {BG_FOCUSED} = MDCRippleFoundation.cssClasses;
     if (wasActivatedByPointer || wasElementMadeActive) {
-      // Remove class left over by element being focused
-      this.adapter_.removeClass(BG_FOCUSED);
       this.runDeactivationUXLogicIfReady_();
     }
   }
@@ -526,6 +520,16 @@ class MDCRippleFoundation extends MDCFoundation {
 
       this.adapter_.updateCssVariable(VAR_LEFT, `${this.unboundedCoords_.left}px`);
       this.adapter_.updateCssVariable(VAR_TOP, `${this.unboundedCoords_.top}px`);
+    }
+  }
+
+  /** @param {boolean} unbounded */
+  setUnbounded(unbounded) {
+    const {UNBOUNDED} = MDCRippleFoundation.cssClasses;
+    if (unbounded) {
+      this.adapter_.addClass(UNBOUNDED);
+    } else {
+      this.adapter_.removeClass(UNBOUNDED);
     }
   }
 }

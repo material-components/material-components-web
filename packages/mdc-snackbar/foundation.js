@@ -48,6 +48,8 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       deregisterActionClickHandler: (/* handler: EventListener */) => {},
       registerTransitionEndHandler: (/* handler: EventListener */) => {},
       deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
+      notifyShow: () => {},
+      notifyHide: () => {},
     };
   }
 
@@ -166,6 +168,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.active_ = true;
     this.adapter_.addClass(ACTIVE);
     this.adapter_.unsetAriaHidden();
+    this.adapter_.notifyShow();
 
     this.timeoutId_ = setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || numbers.MESSAGE_TIMEOUT);
   }
@@ -218,6 +221,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
         this.adapter_.setAriaHidden();
         this.active_ = false;
         this.snackbarHasFocus_ = false;
+        this.adapter_.notifyHide();
         this.showNext_();
       };
 
