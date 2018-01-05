@@ -23,5 +23,6 @@
 }
 
 .mdc-elevation-transition {
-  @include mdc-elevation-transition;
+  transition: mdc-elevation-transition-value();
+  will-change: $mdc-elevation-property;
 }
