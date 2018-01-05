@@ -119,9 +119,8 @@
   // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-text-field:not(.mdc-text-field--invalid) .mdc-text-field__input {
-  // stylelint-disable-next-line selector-max-specificity
-  &:focus ~ .mdc-text-field__label {
+.mdc-text-field:not(.mdc-text-field--invalid).mdc-text-field--focused {
+  .mdc-text-field__label {
     @include mdc-theme-prop(color, primary);
   }
 }
