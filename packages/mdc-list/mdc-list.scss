@@ -71,10 +71,16 @@
   @include mdc-typography-overflow-ellipsis;
 
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: flex-start;
   height: 48px;
   padding: 0 $mdc-list-side-padding;
+  overflow: hidden;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
@@ -132,6 +138,22 @@
   border-radius: 50%;
 }
 
+// List items should support states by default, but it should be possible to opt out.
+// Direct child combinator is necessary for non-interactive modifier on parent to not match this selector.
+:not(.mdc-list--non-interactive) > .mdc-list-item {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states;
+  @include mdc-states-activated(primary);
+  @include mdc-states-selected(primary);
+
+  @include mdc-theme-dark(".mdc-list") {
+    @include mdc-states(white);
+    @include mdc-states-activated(primary);
+    @include mdc-states-selected(primary);
+  }
+}
+
 .mdc-list--avatar-list.mdc-list--dense .mdc-list__item {
   height: 48px;
 }
@@ -156,31 +178,6 @@ a.mdc-list-item {
   text-decoration: none;
 }
 // stylelint-enable selector-max-type,selector-no-qualifying-type
-
-.mdc-list-item {
-  position: relative;
-  overflow: hidden;
-
-  &:focus {
-    outline: none;
-  }
-}
-
-// List items should support states by default, but it should be possible to opt out.
-// Direct child combinator is necessary for non-interactive modifier on parent to not match this selector.
-:not(.mdc-list--non-interactive) > .mdc-list-item {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
-  @include mdc-states;
-  @include mdc-states-activated(primary);
-  @include mdc-states-selected(primary);
-
-  @include mdc-theme-dark(".mdc-list") {
-    @include mdc-states(white);
-    @include mdc-states-activated(primary);
-    @include mdc-states-selected(primary);
-  }
-}
 
 // postcss-bem-linter: define list-divider
 
