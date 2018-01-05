@@ -41,6 +41,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCRippleFoundation, [
     'browserSupportsCssVars', 'isUnbounded', 'isSurfaceActive', 'isSurfaceDisabled',
     'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'registerDocumentInteractionHandler', 'deregisterDocumentInteractionHandler',
     'registerResizeHandler', 'deregisterResizeHandler', 'updateCssVariable',
     'computeBoundingRect', 'getWindowPageOffset',
   ]);
@@ -106,19 +107,10 @@ testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} whe
       `${Math.round((height / 2) - (initialSize / 2))}px`));
   });
 
-testFoundation('#init registers events for all types of common interactions', ({foundation, adapter}) => {
-  const expectedEvents = [
-    'mousedown', 'mouseup',
-    'touchstart', 'touchend',
-    'pointerdown', 'pointerup',
-    'keydown', 'keyup',
-    'focus', 'blur',
-  ];
+testFoundation('#init registers events for interactions on root element', ({foundation, adapter}) => {
   foundation.init();
 
-  expectedEvents.forEach((evt) => {
-    td.verify(adapter.registerInteractionHandler(evt, td.matchers.isA(Function)));
-  });
+  td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)));
 });
 
 testFoundation('#init registers an event for when a resize occurs', ({foundation, adapter}) => {
@@ -127,21 +119,11 @@ testFoundation('#init registers an event for when a resize occurs', ({foundation
   td.verify(adapter.registerResizeHandler(td.matchers.isA(Function)));
 });
 
-testFoundation('#destroy not supported', ({foundation, adapter}) => {
-  const handlers = {};
-
-  td.when(
-    adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function))
-  ).thenDo((type, handler) => {
-    handlers[type] = handler;
-  });
-  foundation.init();
+testFoundation('#init does not register events if CSS custom properties not supported', ({foundation, adapter}) => {
   td.when(adapter.browserSupportsCssVars()).thenReturn(false);
-  foundation.destroy();
+  foundation.init();
 
-  Object.keys(handlers).forEach((type) => {
-    td.verify(adapter.deregisterInteractionHandler(type, handlers[type]), {times: 0});
-  });
+  td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)), {times: 0});
 });
 
 testFoundation('#destroy unregisters all bound interaction handlers', ({foundation, adapter}) => {
@@ -158,6 +140,8 @@ testFoundation('#destroy unregisters all bound interaction handlers', ({foundati
   Object.keys(handlers).forEach((type) => {
     td.verify(adapter.deregisterInteractionHandler(type, handlers[type]));
   });
+
+  td.verify(adapter.deregisterDocumentInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)));
 });
 
 testFoundation('#destroy unregisters the resize handler', ({foundation, adapter}) => {
@@ -190,6 +174,18 @@ testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mock
   cssVars.forEach((cssVar) => {
     td.verify(adapter.updateCssVariable(cssVar, null));
   });
+});
+
+testFoundation('#destroy does nothing if CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
+  const isA = td.matchers.isA;
+  td.when(adapter.browserSupportsCssVars()).thenReturn(false);
+  foundation.destroy();
+  mockRaf.flush();
+
+  td.verify(adapter.deregisterInteractionHandler(isA(String), isA(Function)), {times: 0});
+  td.verify(adapter.deregisterResizeHandler(isA(Function)), {times: 0});
+  td.verify(adapter.removeClass(isA(String)), {times: 0});
+  td.verify(adapter.updateCssVariable(isA(String), isA(String)), {times: 0});
 });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
