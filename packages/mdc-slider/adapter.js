@@ -70,7 +70,7 @@ class MDCSliderAdapter {
 
   /**
    * Returns the bounding client rect for the slider Element
-   * @return {ClientRect}
+   * @return {?ClientRect}
    */
   computeBoundingRect() {}
 
@@ -178,12 +178,12 @@ class MDCSliderAdapter {
   /**
    * Sets a style property of the last track marker to the passed value
    * @param {string} propertyName
-   * @param {string|number} value
+   * @param {string} value
    */
   setLastTrackMarkersStyleProperty(propertyName, value) {}
 
   /**
-   * Returns true if RTL is enabled, false if not
+   * Returns true if the root element is RTL, otherwise false
    * @return {boolean}
    */
   isRTL() {}

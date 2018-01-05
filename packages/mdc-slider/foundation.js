@@ -96,7 +96,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Creates a new instance of MDCSliderFoundation
-   * @param {MDCSliderAdapter} adapter
+   * @param {?MDCSliderAdapter} adapter
    */
   constructor(adapter) {
     super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
@@ -179,7 +179,7 @@ class MDCSliderFoundation extends MDCFoundation {
       if (indivisible) {
         const lastStepRatio = (max - numMarkers * step) / step + 1;
         const flex = getCorrectPropertyName(window, 'flex');
-        this.adapter_.setLastTrackMarkersStyleProperty(flex, lastStepRatio);
+        this.adapter_.setLastTrackMarkersStyleProperty(flex, String(lastStepRatio));
       }
     }
   }
@@ -360,7 +360,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Handles keydown events
-   * @param {Event} evt
+   * @param {!Event} evt
    */
   handleKeydown_(evt) {
     const keyId = this.getKeyId_(evt);
@@ -378,7 +378,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Returns the computed name of the event
-   * @param {Event} kbdEvt
+   * @param {!Event} kbdEvt
    * @return {string}
    */
   getKeyId_(kbdEvt) {

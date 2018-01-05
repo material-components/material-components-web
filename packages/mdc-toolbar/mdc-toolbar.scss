@@ -141,10 +141,9 @@
 }
 
 .mdc-toolbar--flexible {
-  // stylelint-disable plugin/selector-bem-pattern
   // bem linter is disabled because it cannot correctly reconcile mdc prefix for css variables.
+  // stylelint-disable-next-line plugin/selector-bem-pattern
   --mdc-toolbar-ratio-to-extend-flexible: #{$mdc-toolbar-ratio-to-extend-flexible};
-  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-toolbar__row:first-child {
     height: $mdc-toolbar-row-height * $mdc-toolbar-ratio-to-extend-flexible;
@@ -192,13 +191,14 @@
       }
     }
   }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-toolbar--waterfall {
   &.mdc-toolbar--fixed {
     @include mdc-elevation(0);
-    @include mdc-elevation-transition;
+
+    transition: mdc-elevation-transition-value();
+    will-change: $mdc-elevation-property;
 
     &.mdc-toolbar--flexible-space-minimized {
       @include mdc-elevation(4);
@@ -216,6 +216,7 @@
   }
 }
 // postcss-bem-linter: end
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-toolbar-fixed-adjust {
   margin-top: $mdc-toolbar-row-height;

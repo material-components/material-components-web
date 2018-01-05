@@ -30,13 +30,13 @@ class MDCSlider extends MDCComponent {
 
   constructor(...args) {
     super(...args);
-    /** @type {Element} */
+    /** @type {?Element} */
     this.thumbContainer_;
-    /** @type {Element} */
+    /** @type {?Element} */
     this.track_;
-    /** @type {Element} */
+    /** @type {?Element} */
     this.pinValueMarker_;
-    /** @type {Element} */
+    /** @type {?Element} */
     this.trackMarkerContainer_;
   }
 

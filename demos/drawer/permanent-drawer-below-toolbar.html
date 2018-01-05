@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <script src="/assets/drawer/drawer.css.js"></script>
+    <script src="/assets/radio.css.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -78,19 +79,19 @@
     </header>
 
     <div class="demo-content mdc-toolbar-fixed-adjust">
-      <nav class="mdc-permanent-drawer">
+      <nav id="demo-drawer" class="mdc-drawer mdc-drawer--permanent demo-drawer">
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated" href="#">
+            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
             </a>
           </nav>
@@ -98,13 +99,13 @@
           <hr class="mdc-list-divider">
 
           <nav class="mdc-list">
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
             </a>
-            <a class="mdc-list-item" href="#">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
             </a>
           </nav>
@@ -113,6 +114,40 @@
       <main class="demo-main">
         <h1 class="mdc-typography--display1">Permanent Drawer</h1>
         <p class="mdc-typography--body1">It sits to the left of this content.</p>
+
+        <div id="demo-radio-buttons">
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-default" name="theme" checked>
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-default">Default</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-custom" name="theme">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-custom">Custom Theme</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-accessible" name="theme">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-accessible">Accessible Theme</label>
+          </div>
+        </div>
+
         <div class="extra-content-wrapper">
           <button id="toggle-wide">Toggle extra-wide content</button>
           <div id="extra-wide-content" class="mdc-elevation--z2">&nbsp;</div>
@@ -137,8 +172,8 @@
       });
 
       // Demonstrate application of --activated modifier to drawer menu items
-      var activatedClass = 'mdc-list-item--activated';
-      document.querySelector('.mdc-permanent-drawer').addEventListener('click', function(event) {
+      var activatedClass = 'mdc-list-item--selected';
+      document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
         var el = event.target;
         while (!el.classList.contains('mdc-list-item') && el) {
           el = el.parentNode;
@@ -149,6 +184,19 @@
             activatedItem.classList.remove(activatedClass);
           }
           event.target.classList.add(activatedClass);
+        }
+      });
+
+      var drawerEl = document.getElementById('demo-drawer');
+      var radioEl = document.querySelector('#demo-radio-buttons');
+      radioEl.addEventListener('change', function(e) {
+        drawerEl.classList.remove('demo-drawer--custom');
+        drawerEl.classList.remove('demo-drawer--accessible');
+
+        if(e.target.id === 'accessible') {
+          drawerEl.classList.add('demo-drawer--accessible');
+        } else if(e.target.id === 'custom') {
+          drawerEl.classList.add('demo-drawer--custom');
         }
       });
     </script>
