@@ -33,7 +33,7 @@ const KEY_IDS = {
 };
 
 /** @enum {string} */
-const EVENT_MAP = {
+const MOVE_EVENT_MAP = {
   'mousedown': 'mousemove',
   'touchstart': 'touchmove',
   'pointerdown': 'pointermove',
@@ -293,11 +293,11 @@ class MDCSliderFoundation extends MDCFoundation {
     // (See https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
       this.handleUp_();
-      this.adapter_.deregisterBodyInteractionHandler(EVENT_MAP[evt.type], moveHandler);
+      this.adapter_.deregisterBodyInteractionHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
       UP_EVENTS.forEach((evtName) => this.adapter_.deregisterBodyInteractionHandler(evtName, upHandler));
     };
 
-    this.adapter_.registerBodyInteractionHandler(EVENT_MAP[evt.type], moveHandler);
+    this.adapter_.registerBodyInteractionHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
     UP_EVENTS.forEach((evtName) => this.adapter_.registerBodyInteractionHandler(evtName, upHandler));
     this.setValueFromEvt_(evt);
   }
