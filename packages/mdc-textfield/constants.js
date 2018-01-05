@@ -21,7 +21,8 @@ const strings = {
   INPUT_SELECTOR: '.mdc-text-field__input',
   LABEL_SELECTOR: '.mdc-text-field__label',
   ICON_SELECTOR: '.mdc-text-field__icon',
-  ICON_EVENT: 'MDCTextField:icon',
+  IDLE_OUTLINE_SELECTOR: '.mdc-text-field__idle-outline',
+  OUTLINE_SELECTOR: '.mdc-text-field__outline',
   BOTTOM_LINE_SELECTOR: '.mdc-text-field__bottom-line',
 };
 
@@ -30,13 +31,17 @@ const cssClasses = {
   ROOT: 'mdc-text-field',
   UPGRADED: 'mdc-text-field--upgraded',
   DISABLED: 'mdc-text-field--disabled',
+  DENSE: 'mdc-text-field--dense',
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
-  LABEL_FLOAT_ABOVE: 'mdc-text-field__label--float-above',
-  LABEL_SHAKE: 'mdc-text-field__label--shake',
   BOX: 'mdc-text-field--box',
-  TEXT_FIELD_ICON: 'mdc-text-field__icon',
-  TEXTAREA: 'mdc-text-field--textarea',
+  OUTLINED: 'mdc-text-field--outlined',
 };
 
-export {cssClasses, strings};
+/** @enum {number} */
+const numbers = {
+  LABEL_SCALE: 0.75,
+  DENSE_LABEL_SCALE: 0.923,
+};
+
+export {cssClasses, strings, numbers};

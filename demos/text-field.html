@@ -49,14 +49,9 @@
         background-color: #f2f2f2;
       }
 
-      .custom-text-field-input {
-        width: 300px;
-      }
-
       .full-width-textarea-example {
         margin-top: 16px;
       }
-
     </style>
   </head>
   <body class="mdc-typography">
@@ -90,8 +85,8 @@
         <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
         <section id="demo-text-field-wrapper">
           <div class="mdc-text-field">
-            <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
-            <label for="my-text-field" class="mdc-text-field__label">Email Address</label>
+            <input type="text" class="mdc-text-field__input" id="full-func-text-field" aria-controls="my-text-field-helper-text">
+            <label for="full-func-text-field" class="mdc-text-field__label">Email Address</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
           <p id="my-text-field-helper-text" class="mdc-text-field-helper-text"
@@ -134,6 +129,7 @@
           </label>
         </div>
       </section>
+
       <section class="example">
         <h2>Password field with validation</h2>
         <div class="mdc-text-field">
@@ -148,6 +144,69 @@
           Must be at least 8 characters long
         </p>
       </section>
+
+      <section class="example">
+        <h2>Outlined Text Field</h2>
+        <div id="demo-tf-outlined-wrapper">
+          <div id="tf-outlined-example" class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
+            <input required pattern=".{8,}" type="text" id="tf-outlined-input" class="mdc-text-field__input"
+                   aria-controls="name-validation-message">
+            <label for="tf-outlined-input" class="mdc-text-field__label">Your Name</label>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
+          </div>
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+            id="name-validation-msg">
+            Must be at least 8 characters
+          </p>
+        </div>
+        <div>
+          <input id="outlined-disable" type="checkbox">
+          <label for="outlined-disable">Disabled</label>
+        </div>
+        <div>
+          <input id="outlined-rtl" type="checkbox">
+          <label for="outlined-rtl">RTL</label>
+        </div>
+        <div>
+          <input id="outlined-dark-theme" type="checkbox">
+          <label for="outlined-dark-theme">Dark Theme</label>
+        </div>
+        <div>
+          <input id="outlined-dense" type="checkbox">
+          <label for="outlined-dense">Dense</label>
+        </div>
+        <script>
+          setTimeout(function() {
+            var tfEl = document.getElementById('tf-outlined-example');
+            var tf = new mdc.textField.MDCTextField(tfEl);
+            var wrapper = document.getElementById('demo-tf-outlined-wrapper');
+            document.getElementById('outlined-disable').addEventListener('change', function(evt) {
+              tf.disabled = evt.target.checked;
+            });
+            document.getElementById('outlined-rtl').addEventListener('change', function(evt) {
+              if (evt.target.checked) {
+                wrapper.setAttribute('dir', 'rtl');
+              } else {
+                wrapper.removeAttribute('dir');
+              }
+              tf.layout();
+            });
+            document.getElementById('outlined-dark-theme').addEventListener('change', function(evt) {
+              wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+            });
+            document.getElementById('outlined-dense').addEventListener('change', function(evt) {
+              tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+              tf.layout();
+            });
+          }, 0);
+        </script>
+      </section>
+
       <section class="example">
         <h2>Text Field box</h2>
         <div id="demo-tf-box-wrapper">
@@ -194,7 +253,7 @@
               } else {
                 wrapper.removeAttribute('dir');
               }
-              tf.ripple.layout();
+              tf.layout();
             });
 
             document.getElementById('box-dark-theme').addEventListener('change', function(evt) {
@@ -203,7 +262,7 @@
 
             document.getElementById('box-dense').addEventListener('change', function(evt) {
               tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-              tf.ripple.layout();
+              tf.layout();
             });
           }, 0);
         </script>
@@ -211,28 +270,11 @@
 
       <section class="example">
         <h2>Text Field - Leading/Trailing icons</h2>
-        <div class="demo-note">
-          <em>
-            Note: Some implementations utilizing leading and trailing icons may wish to set a width on the
-            <code>input</code> element to achieve uniform widths on text fields.
-            This demo achieves that by adding a custom class name: <code>custom-text-field-input</code> and setting
-            some style:
-          </em>
-          <br />
-          <!--
-            The following text formatting achieves the visual output we are aiming for
-            since the <pre> tag honors whitespace and line breaks.
-          -->
-          <pre>
-<code>.custom-text-field-input {
-  width: 300px;
-}</code></pre>
-        </div>
         <div id="demo-tf-box-leading-wrapper">
           <div id="tf-box-leading-example"
             class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon" data-demo-no-auto-js>
             <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
-            <input type="text" id="tf-box-leading" class="mdc-text-field__input custom-text-field-input">
+            <input type="text" id="tf-box-leading" class="mdc-text-field__input">
             <label for="tf-box-leading" class="mdc-text-field__label">Your name</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
@@ -240,37 +282,65 @@
         <div id="demo-tf-box-trailing-wrapper">
           <div id="tf-box-trailing-example"
             class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon" data-demo-no-auto-js>
-            <input type="text" id="tf-box-trailing" class="mdc-text-field__input custom-text-field-input">
+            <input type="text" id="tf-box-trailing" class="mdc-text-field__input">
             <label for="tf-box-trailing" class="mdc-text-field__label">Your other name</label>
             <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
         </div>
-        <div>
-          <input id="box-disable-leading-trailing" type="checkbox">
-          <label for="box-disable-leading-trailing">Disabled</label>
+        <div id="demo-tf-outlined-leading-wrapper">
+          <div id="tf-outlined-leading-example"
+            class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-demo-no-auto-js>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+            <input type="text" id="tf-outlined-leading" class="mdc-text-field__input">
+            <label for="tf-outlined-leading" class="mdc-text-field__label">Your other name</label>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
+          </div>
+        </div>
+        <div id="demo-tf-outlined-trailing-wrapper">
+          <div id="tf-outlined-trailing-example"
+            class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon" data-demo-no-auto-js>
+            <input type="text" id="tf-outlined-trailing" class="mdc-text-field__input">
+            <label for="tf-outlined-trailing" class="mdc-text-field__label">Your other name</label>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
+          </div>
         </div>
         <div>
-          <input id="box-rtl-leading-trailing" type="checkbox">
-          <label for="box-rtl-leading-trailing">RTL</label>
+          <input id="disable-leading-trailing" type="checkbox">
+          <label for="disable-leading-trailing">Disabled</label>
         </div>
         <div>
-          <input id="box-dark-theme-leading-trailing" type="checkbox">
-          <label for="box-dark-theme-leading-trailing">Dark Theme</label>
+          <input id="rtl-leading-trailing" type="checkbox">
+          <label for="rtl-leading-trailing">RTL</label>
         </div>
         <div>
-          <input id="box-dense-leading-trailing" type="checkbox">
-          <label for="box-dense-leading-trailing">Dense</label>
+          <input id="dark-theme-leading-trailing" type="checkbox">
+          <label for="dark-theme-leading-trailing">Dark Theme</label>
         </div>
         <div>
-          <input id="box-unclickable-leading-trailing" type="checkbox">
-          <label for="box-unclickable-leading-trailing">Unclickable icons</label>
+          <input id="dense-leading-trailing" type="checkbox">
+          <label for="dense-leading-trailing">Dense</label>
+        </div>
+        <div>
+          <input id="unclickable-leading-trailing" type="checkbox">
+          <label for="unclickable-leading-trailing">Unclickable icons</label>
         </div>
       </section>
 
       <section class="example">
         <h2>CSS Only Text Field</h2>
-        <div class="mdc-form-field mdc-form-field--align-end">
+        <div class="mdc-form-field mdc-form-field--align-end" id="css-only-text-field-wrapper">
           <div class="mdc-text-field" data-demo-no-auto-js>
             <input type="text" class="mdc-text-field__input" id="css-only-text-field"
                    placeholder="Name">
@@ -278,7 +348,17 @@
           </div>
           <label for="css-only-text-field">Your name:</label>
         </div>
+
+        <div>
+          <input id="css-only-tf-disabled" type="checkbox">
+          <label for="css-only-tf-disabled">Disabled</label>
+        </div>
+        <div>
+          <input id="css-only-dark-theme-tf" type="checkbox">
+          <label for="css-only-dark-theme-tf">Dark Theme</label>
+        </div>
       </section>
+
       <section class="example">
         <h2>CSS Only Text Field box</h2>
         <div>
@@ -289,6 +369,18 @@
           </div>
         </div>
       </section>
+
+      <section class="example">
+        <h2>CSS-Only Outlined Text Field</h2>
+        <div>
+          <label for="css-only-outlined-text-field">Your name:</label>
+          <div class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
+            <input type="text" class="mdc-text-field__input" id="css-only-outlined-text-field"
+                   placeholder="Name">
+          </div>
+        </div>
+      </section>
+
       <section class="example">
         <h2>Preventing FOUC</h2>
         <div class="mdc-text-field mdc-text-field--upgraded">
@@ -374,52 +466,87 @@
     </script>
     <script>
       setTimeout(function() {
-        var tfLeadingEl = document.getElementById('tf-box-leading-example');
-        var tfLeading = new mdc.textField.MDCTextField(tfLeadingEl);
-        var wrapperLeading = document.getElementById('demo-tf-box-leading-wrapper');
+        var tfBoxLeadingEl = document.getElementById('tf-box-leading-example');
+        var tfBoxLeading = new mdc.textField.MDCTextField(tfBoxLeadingEl);
+        var wrapperBoxLeading = document.getElementById('demo-tf-box-leading-wrapper');
 
-        var tfTrailingEl = document.getElementById('tf-box-trailing-example');
-        var tfTrailing = new mdc.textField.MDCTextField(tfTrailingEl);
-        var wrapperTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+        var tfBoxTrailingEl = document.getElementById('tf-box-trailing-example');
+        var tfBoxTrailing = new mdc.textField.MDCTextField(tfBoxTrailingEl);
+        var wrapperBoxTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+
+        var tfOutlinedLeadingEl = document.getElementById('tf-outlined-leading-example');
+        var tfOutlinedLeading = new mdc.textField.MDCTextField(tfOutlinedLeadingEl);
+        var wrapperOutlinedLeading = document.getElementById('demo-tf-outlined-leading-wrapper');
+
+        var tfOutlinedTrailingEl = document.getElementById('tf-outlined-trailing-example');
+        var tfOutlinedTrailing = new mdc.textField.MDCTextField(tfOutlinedTrailingEl);
+        var wrapperOutlinedTrailing = document.getElementById('demo-tf-outlined-trailing-wrapper');
 
         var tfIcons = document.querySelectorAll('.mdc-text-field__icon');
 
-        document.getElementById('box-disable-leading-trailing').addEventListener('change', function(evt) {
-          tfLeading.disabled = evt.target.checked;
-          tfTrailing.disabled = evt.target.checked;
+        document.getElementById('disable-leading-trailing').addEventListener('change', function(evt) {
+          tfBoxLeading.disabled = evt.target.checked;
+          tfBoxTrailing.disabled = evt.target.checked;
+          tfOutlinedLeading.disabled = evt.target.checked;
+          tfOutlinedTrailing.disabled = evt.target.checked;
         });
 
-        document.getElementById('box-rtl-leading-trailing').addEventListener('change', function(evt) {
+        document.getElementById('rtl-leading-trailing').addEventListener('change', function(evt) {
           if (evt.target.checked) {
-            wrapperLeading.setAttribute('dir', 'rtl');
-            wrapperTrailing.setAttribute('dir', 'rtl');
+            wrapperBoxLeading.setAttribute('dir', 'rtl');
+            wrapperBoxTrailing.setAttribute('dir', 'rtl');
+            wrapperOutlinedLeading.setAttribute('dir', 'rtl');
+            wrapperOutlinedTrailing.setAttribute('dir', 'rtl');
           } else {
-            wrapperLeading.removeAttribute('dir');
-            wrapperTrailing.removeAttribute('dir');
+            wrapperBoxLeading.removeAttribute('dir');
+            wrapperBoxTrailing.removeAttribute('dir');
+            wrapperOutlinedLeading.removeAttribute('dir');
+            wrapperOutlinedTrailing.removeAttribute('dir');
           }
-          tfLeading.ripple.layout();
-          tfTrailing.ripple.layout();
+          tfBoxLeading.layout();
+          tfBoxTrailing.layout();
+          tfOutlinedLeading.layout();
+          tfOutlinedTrailing.layout();
         });
 
-        document.getElementById('box-dark-theme-leading-trailing').addEventListener('change', function(evt) {
-          wrapperLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
-          wrapperTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        document.getElementById('dark-theme-leading-trailing').addEventListener('change', function(evt) {
+          wrapperBoxLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperBoxTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperOutlinedLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperOutlinedTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
 
-        document.getElementById('box-dense-leading-trailing').addEventListener('change', function(evt) {
-          tfLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-          tfLeading.ripple.layout();
-          tfTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-          tfTrailing.ripple.layout();
+        document.getElementById('dense-leading-trailing').addEventListener('change', function(evt) {
+          tfBoxLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfBoxLeading.layout();
+          tfBoxTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfBoxTrailing.layout();
+          tfOutlinedLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfOutlinedLeading.layout();
+          tfOutlinedTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfOutlinedTrailing.layout();
         });
 
-        document.getElementById('box-unclickable-leading-trailing').addEventListener('change', function(evt) {
+        document.getElementById('unclickable-leading-trailing').addEventListener('change', function(evt) {
           [].slice.call(tfIcons).forEach(function (icon) {
             icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
           });
         });
 
       }, 0);
+    </script>
+    <script>
+    (function() {
+      var wrapperCssOnly = document.getElementById('css-only-text-field-wrapper');
+      var tfCssOnly = document.getElementById('css-only-text-field');
+
+      document.getElementById('css-only-tf-disabled').addEventListener('change', function(evt) {
+        tfCssOnly.disabled = evt.target.checked;
+      });
+      document.getElementById('css-only-dark-theme-tf').addEventListener('change', function(evt) {
+        wrapperCssOnly.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+      });
+    })();
     </script>
     <script>
       (function() {

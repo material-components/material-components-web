@@ -14,7 +14,44 @@
 // limitations under the License.
 //
 
+@import "../../packages/mdc-list/mixins";
+@import "../../packages/mdc-form-field/mdc-form-field";
 @import "../common";
 @import "../../packages/mdc-drawer/mdc-drawer";
+@import "../../packages/mdc-drawer/mixins";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-list/mdc-list";
+
+.demo-drawer--custom {
+  @include mdc-drawer-fill-color($material-color-teal-900);
+  @include mdc-drawer-ink-color(#fff);
+  @include mdc-list-item-graphic-ink-color(#fff);
+
+  .demo-drawer-list-item {
+    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
+    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
+  }
+
+  .demo-drawer-list-item.mdc-list-item--selected {
+    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
+    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
+  }
+}
+
+.demo-drawer--accessible {
+  @include mdc-drawer-fill-color-accessible($material-color-indigo-500);
+
+  .demo-drawer-list-item {
+    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
+    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
+  }
+
+  .demo-drawer-list-item.mdc-list-item--selected {
+    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
+    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
+  }
+}
+
+.demo-form-field {
+  margin: 16px 0;
+}

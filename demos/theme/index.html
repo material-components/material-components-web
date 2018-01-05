@@ -44,17 +44,17 @@
         </header>
         <nav class="mdc-temporary-drawer__content mdc-list-group">
           <div class="mdc-list">
-            <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+            <a class="mdc-list-item mdc-list-item--selected" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
             </a>
             <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
             </a>
             <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
             </a>
             <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
             </a>
           </div>
 
@@ -62,13 +62,13 @@
 
           <div class="mdc-list">
             <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
             </a>
             <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
             </a>
             <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
             </a>
           </div>
         </nav>
@@ -621,8 +621,12 @@
           <a href="#select" class="demo-component-section__permalink" title="Permalink to the theme demo for the select component">#</a>
         </h2>
 
-        <div class="mdc-select" role="listbox" tabindex="0">
-          <span class="mdc-select__selected-text">Pick a food group</span>
+        <div class="mdc-select" role="listbox">
+          <div class="mdc-select__surface" tabindex="0">
+            <div class="mdc-select__label">Pick a food group</div>
+            <div class="mdc-select__selected-text"></div>
+            <div class="mdc-select__bottom-line"></div>
+          </div>
           <div class="mdc-simple-menu mdc-select__menu">
             <ul class="mdc-list mdc-simple-menu__items">
               <li class="mdc-list-item" role="option" id="grains" aria-disabled="true">
