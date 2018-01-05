@@ -403,29 +403,7 @@
 }
 
 .mdc-text-field--invalid {
-  .mdc-text-field__label {
-    color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__bottom-line {
-    background-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__outline .mdc-text-field__outline-path {
-    stroke: $mdc-text-field-error-on-light;
-  }
+  @include mdc-text-field-invalid_;
 }
 
 // stylelint-disable plugin/selector-bem-pattern
@@ -670,19 +648,6 @@
 }
 
 // postcss-bem-linter: end
-
-.mdc-text-field--invalid {
-  + .mdc-text-field-helper-text--validation-msg {
-    opacity: 1;
-    color: $mdc-text-field-error-on-light;
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    + .mdc-text-field-helper-text--validation-msg {
-      color: $mdc-text-field-error-on-dark;
-    }
-  }
-}
 
 // mdc-form-field tweaks to align text field label correctly
 // stylelint-disable selector-max-type
