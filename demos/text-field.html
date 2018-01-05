@@ -336,6 +336,10 @@
           <input id="unclickable-leading-trailing" type="checkbox">
           <label for="unclickable-leading-trailing">Unclickable icons</label>
         </div>
+        <div>
+            <input id="required-leading-trailing" type="checkbox">
+            <label for="required-leading-trailing">Required and must be at least 8 characters</label>
+          </div>
       </section>
 
       <section class="example">
@@ -533,6 +537,18 @@
           });
         });
 
+        document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
+          var target = evt.target;
+          tfBoxLeadingEl.querySelector('.mdc-text-field__input').required = target.checked;
+          tfBoxTrailingEl.querySelector('.mdc-text-field__input').required = target.checked;
+          tfOutlinedLeadingEl.querySelector('.mdc-text-field__input').required = target.checked;
+          tfOutlinedTrailingEl.querySelector('.mdc-text-field__input').required = target.checked;
+
+          tfBoxLeadingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? ".{8,}" : "*";
+          tfBoxTrailingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? ".{8,}" : "*";
+          tfOutlinedLeadingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? ".{8,}" : "*";
+          tfOutlinedTrailingEl.querySelector('.mdc-text-field__input').pattern = target.checked ? ".{8,}" : "*";
+        });
       }, 0);
     </script>
     <script>

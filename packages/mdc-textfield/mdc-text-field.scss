@@ -335,6 +335,10 @@
       @include mdc-rtl {
         transform: scale(.75) translateX(36%) translateY(-170%);
       }
+
+      &.mdc-text-field__label--shake {
+        animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
+      }
     }
 
     &.mdc-text-field--dense {
@@ -344,6 +348,11 @@
         // stylelint-disable max-nesting-depth
         @include mdc-rtl {
           transform: translateX(25%) translateY(-145%) scale(.923);
+        }
+
+        // stylelint-disable-next-line selector-max-specificity
+        &.mdc-text-field__label--shake {
+          animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
         }
         // stylelint-enable max-nesting-depth
       }
