@@ -88,7 +88,7 @@ Let's take a look at a few aspects of the above HTML.
 * **No automatic DOM rendering** - For all components, MDC-Web does not render _any_ DOM elements
   itself. MDC-Web is similar to [Bootstrap](http://getbootstrap.com/) in this respect; it expects you to render the DOM using the proper CSS classes. This avoids a litany of problems for integrating MDC-Web into
   complex applications.
-* **Elements are not natively styled** - Notice how above, we give the `<html>` element a class of
+* **Elements are not natively styled** - Notice how above, we give the `<body>` element a class of
   `mdc-typography`, the `<h1>` element a class of `mdc-typography--display1`, and the button a class
   of `mdc-button`, along with multiple _modifier classes_. MDC-Web _never_ makes any assumptions about
   which elements are being used for our components, instead relying on CSS classes for maximum
