@@ -211,6 +211,19 @@ dots.addEventListener('click', function (evt) {
 })
 ```
 
+### Sass Mixins
+
+To customize the ink color of any part of the tab, use the following mixins. We recommend you apply these mixins within CSS selectors like `.foo-tab:not(.mdc-tab--active)` to select your inactive tabs, `foo-tab:hover` to select the hover state of your tabs, and `.foo-tab.mdc-tab--active` to select your active tabs.
+
+#### `mdc-tab-ink-color`
+Use this mixin to set the color of all ink on the tab.
+
+#### `mdc-tab-icon-ink-color`
+This mixin customizes the icon ink color.
+
+#### `mdc-tab-label-ink-color`
+This mixin customizes the label ink color.
+
 ### Using the CSS-Only Component
 
 `mdc-tab-bar` ships with css for styling a tab layout according to the Material
