@@ -61,27 +61,13 @@
  *
  * ```scss
  * .foo {
- *   transition: mdc-elevation-transition-rule(), opacity 100ms ease;
+ *   transition: mdc-elevation-transition-value(), opacity 100ms ease;
  *   will-change: $mdc-elevation-property, opacity;
  * }
  * ```
  */
-@function mdc-elevation-transition-rule(
+@function mdc-elevation-transition-value(
   $duration: $mdc-elevation-transition-duration,
   $easing: $mdc-elevation-transition-timing-function) {
   @return #{$mdc-elevation-property} #{$duration} #{$easing};
-}
-
-/**
- * Applies the correct css rules needed to have an element transition between elevations.
- * This mixin should be applied to elements whose elevation values will change depending on their
- * context (e.g. when active or disabled).
- */
-// NOTE(traviskaufman): Both this mixin and the above function use default parameters so they can
-// be used in the same way by clients.
-@mixin mdc-elevation-transition(
-  $duration: $mdc-elevation-transition-duration,
-  $easing: $mdc-elevation-transition-timing-function) {
-  transition: mdc-elevation-transition-rule($duration, $easing);
-  will-change: $mdc-elevation-property;
 }

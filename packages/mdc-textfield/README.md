@@ -205,8 +205,10 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 Property | Value Type | Description
 --- | --- | ---
-`disable` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods when retrieved/set respectively
-`valid` | Boolean | Proxies to the foundation's `setValid` method when set
+`value` | String | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
+`required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes
 
@@ -248,9 +250,14 @@ Returns the idle outline element's computed style value of the given css propert
 
 Method Signature | Description
 --- | ---
+`getValue() => string` | Returns the input's value.
+`setValue(value: string)` | Sets the input's value.
+`isValid() => boolean` | If a custom validity is set, returns that value. Otherwise, returns the result of native validity checks.
+`setValid(isValid: boolean)` | Sets custom validity. Once set, native validity checking is ignored.
 `isDisabled() => boolean` | Returns whether or not the input is disabled
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state
-`setValid(isValid: boolean) => void` | Sets the validity state of the Text Field. Triggers custom validity checking
+`isRequired() => boolean` | Returns whether the input is required.
+`setRequired(isRequired: boolean)` | Sets whether the input is required.
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.

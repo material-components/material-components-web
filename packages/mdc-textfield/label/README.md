@@ -88,7 +88,6 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`floatAbove() => void` | Makes the label float above the text field
-`deactivateFocus(shouldRemoveLabelFloat: boolean) => void` | Deactivates the label's focus state. `shouldRemoveLabelFloat` indicates whether to also reset the label's position and size.
-`setValidity(isValid: boolean)` | Updates the label's valid state based on the supplied validity
 `getWidth() => number` | Returns the width of the label element
+`styleShake(isValid: boolean, isFocused: boolean)` | Styles the label to produce the shake effect when needed.
+`styleFloat(value: string, isFocused: boolean, isBadInput: boolean)` | Styles the label to float or defloat as necessary.
