@@ -124,7 +124,7 @@ Our entire coding style is enforced automatically through the use of linters. Ch
 
 ### Submitting Pull Requests
 
-When submitting PRs, make sure you're following our commit message conventions (which are the same as [angular's](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit)); our `commit-msg` hook should automatically enforce this. We also support [commitizen](https://www.npmjs.com/package/commitizen), which you can
+When submitting PRs, make sure you're following our commit message conventions (which are the same as [angular's](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits)); our `commit-msg` hook should automatically enforce this. We also support [commitizen](https://www.npmjs.com/package/commitizen), which you can
 use to auto-format commit messages for you.
 
 When submitting PRs for large changes, be sure to include an adequate background in the description
