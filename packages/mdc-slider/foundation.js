@@ -272,8 +272,8 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Called when the user starts interacting with the slider
-   * @private
    * @param {!Event} evt
+   * @private
    */
   handleDown_(evt) {
     if (this.disabled_) {
@@ -305,8 +305,8 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Called when the user moves the slider
-   * @private
    * @param {!Event} evt
+   * @private
    */
   handleMove_(evt) {
     evt.preventDefault();
@@ -324,9 +324,9 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Returns the pageX of the event
-   * @private
    * @param {!Event} evt
    * @return {number}
+   * @private
    */
   getPageX_(evt) {
     if (evt.targetTouches && evt.targetTouches.length > 0) {
@@ -337,8 +337,8 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Sets the slider value from an event
-   * @private
    * @param {!Event} evt
+   * @private
    */
   setValueFromEvt_(evt) {
     const pageX = this.getPageX_(evt);
