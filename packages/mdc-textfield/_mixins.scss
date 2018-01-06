@@ -267,8 +267,7 @@
 // Private Color Mixins
 
 @mixin mdc-text-field-bottom-line-color_($color) {
-  .mdc-text-field__input,
-  .mdc-text-field__input::placeholder {
+  .mdc-text-field__input {
     @include mdc-theme-prop(border-color, $color);
   }
 }
@@ -286,7 +285,8 @@
 }
 
 @mixin mdc-text-field-label-color_($color) {
-  .mdc-text-field__label {
+  .mdc-text-field__label,
+  .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
     @include mdc-theme-prop(color, $color);
   }
 }
