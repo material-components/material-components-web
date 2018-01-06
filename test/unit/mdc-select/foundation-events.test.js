@@ -20,6 +20,7 @@ import td from 'testdouble';
 import {setupFoundationTest} from '../helpers/setup';
 import {captureHandlers} from '../helpers/foundation';
 import {strings as menuStrings} from '../../../packages/mdc-menu/simple/constants';
+import {createMockRaf} from '../helpers/raf';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 
@@ -55,23 +56,29 @@ suite('MDCSelectFoundation - Events');
 
 test('on click opens the menu', () => {
   const {mockAdapter, handlers} = setupTest();
+  const raf = createMockRaf();
   handlers.click(createEvent());
   td.verify(mockAdapter.addClass(cssClasses.OPEN));
+  raf.flush();
   td.verify(mockAdapter.openMenu(0));
 });
 
 test('on click does not open the menu if it is already open', () => {
   const {mockAdapter, handlers} = setupTest();
+  const raf = createMockRaf();
   td.when(mockAdapter.isMenuOpen()).thenReturn(true);
   handlers.click(createEvent());
   td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
+  raf.flush();
   td.verify(mockAdapter.openMenu(0), {times: 0});
 });
 
 test('on click opens the menu focused at the selected index, if any', () => {
   const {foundation, mockAdapter, handlers} = setupTest();
+  const raf = createMockRaf();
   foundation.setSelectedIndex(1);
   handlers.click(createEvent());
+  raf.flush();
   td.verify(mockAdapter.openMenu(1));
 });
 
@@ -85,8 +92,10 @@ test('on click cancels the event to prevent it from propagating', () => {
 test('on ArrowUp keydown on the select itself opens the menu', () => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'ArrowUp', eventPhase: Event.AT_TARGET});
+  const raf = createMockRaf();
   handlers.keydown(evt);
   td.verify(mockAdapter.addClass(cssClasses.OPEN));
+  raf.flush();
   td.verify(mockAdapter.openMenu(0));
   td.verify(evt.preventDefault());
 });
@@ -108,8 +117,10 @@ test('on ArrowUp keydown does not open the menu on bubbled events', () => {
 test('on ArrowDown keydown on the select itself opens the menu', () => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'ArrowDown', eventPhase: Event.AT_TARGET});
+  const raf = createMockRaf();
   handlers.keydown(evt);
   td.verify(mockAdapter.addClass(cssClasses.OPEN));
+  raf.flush();
   td.verify(mockAdapter.openMenu(0));
   td.verify(evt.preventDefault());
 });
@@ -145,8 +156,10 @@ test('on Space keydown works with keyCode', () => {
 test('on Space keyup on the select itself opens the menu', () => {
   const {mockAdapter, handlers} = setupTest();
   const evt = createEvent({key: 'Space', eventPhase: Event.AT_TARGET});
+  const raf = createMockRaf();
   handlers.keyup(evt);
   td.verify(mockAdapter.addClass(cssClasses.OPEN));
+  raf.flush();
   td.verify(mockAdapter.openMenu(0));
   td.verify(evt.preventDefault());
 });
