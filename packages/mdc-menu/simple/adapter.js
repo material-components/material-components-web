@@ -32,7 +32,7 @@
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/architecture.md
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  *
  * @record
  */

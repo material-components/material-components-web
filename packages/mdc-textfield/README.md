@@ -86,11 +86,10 @@ Un-styled Content (**FOUC**).
 <label for="text-field-no-js">TextField with no JS: </label>
 <div class="mdc-text-field">
   <input type="text" id="text-field-no-js" class="mdc-text-field__input" placeholder="Hint text">
-  <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
 
-> _NOTE_: Do not use `mdc-text-field__bottom-line` inside of `mdc-text-field` _if you plan on using `mdc-text-field--box`, and do not plan on using JavaScript_. Bottom line should not be included as part of the DOM structure of a box text field.
+> _NOTE_: Do not use `mdc-text-field__bottom-line`, `mdc-text-field__outline`, or `mdc-text-field__idle-outline` inside of `mdc-text-field` _if you plan on using `mdc-text-field--box` or `mdc-text-field--outlined` without using JavaScript_. Bottom line and outline should not be included as part of the DOM structure of a CSS-only text field.
 
 ```html
 <label for="css-only-text-field-box">Your name:</label>
@@ -169,7 +168,7 @@ See [here](outline/) for more information on using the outline sub-component.
 #### Helper Text
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
-and disappears on input field blur by default, or it can be persistent. 
+and disappears on input field blur by default, or it can be persistent.
 See [here](helper-text/) for more information on using helper text.
 
 #### Leading and Trailing Icons
@@ -206,8 +205,10 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 Property | Value Type | Description
 --- | --- | ---
-`disable` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods when retrieved/set respectively
-`valid` | Boolean | Proxies to the foundation's `setValid` method when set
+`value` | String | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
+`required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes
 
@@ -217,7 +218,7 @@ Method Signature | Description
 
 ##### `MDCTextField.ripple`
 
-The `MDCRipple` instance for the root element that `MDCTextField` initializes when given an `mdc-text-field--box` root element. Otherwise, the field is set to `null`.
+`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-text-field__outline` element. Otherwise, the field is set to `null`.
 
 ### `MDCTextFieldAdapter`
 
@@ -225,6 +226,7 @@ Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element
 `removeClass(className: string) => void` | Removes a class from the root element
+`hasClass(className: string) => boolean` | Returns true if the root element contains the given class name
 `registerTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event handler on the root element for a given event
 `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event handler on the root element for a given event
 `registerInputInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the native input element for a given event
@@ -233,6 +235,7 @@ Method Signature | Description
 `deregisterBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the bottom line element for a given event
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
 `getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`
+`isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
 
 #### `MDCTextFieldAdapter.getNativeInput()`
@@ -247,9 +250,14 @@ Returns the idle outline element's computed style value of the given css propert
 
 Method Signature | Description
 --- | ---
+`getValue() => string` | Returns the input's value.
+`setValue(value: string)` | Sets the input's value.
+`isValid() => boolean` | If a custom validity is set, returns that value. Otherwise, returns the result of native validity checks.
+`setValid(isValid: boolean)` | Sets custom validity. Once set, native validity checking is ignored.
 `isDisabled() => boolean` | Returns whether or not the input is disabled
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state
-`setValid(isValid: boolean) => void` | Sets the validity state of the Text Field. Triggers custom validity checking
+`isRequired() => boolean` | Returns whether the input is required.
+`setRequired(isRequired: boolean)` | Sets whether the input is required.
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
