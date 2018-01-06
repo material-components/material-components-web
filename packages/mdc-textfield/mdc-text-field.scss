@@ -39,12 +39,10 @@
 
 .mdc-text-field {
   @include mdc-text-field-bottom-line-color($mdc-text-field-underline-on-light-idle);
-  @include mdc-text-field-bottom-line-hover-color($mdc-text-field-underline-on-light);
-  @include mdc-text-field-bottom-line-focused-color(primary);
-  @include mdc-text-field-label-ink-color($mdc-text-field-light-label);
-  @include mdc-text-field-input-ink-color(text-primary-on-light);
-  @include mdc-text-field-input-placeholder-ink-color(text-hint-on-light);
-  @include mdc-text-field-input-placeholder-hover-ink-color($mdc-text-field-light-placeholder);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-on-light);
+  @include mdc-text-field-focused-bottom-line-color(primary);
+  @include mdc-text-field-ink-color(text-primary-on-light);
+  @include mdc-text-field-label-color($mdc-text-field-light-label);
 
   display: inline-block;
   position: relative;

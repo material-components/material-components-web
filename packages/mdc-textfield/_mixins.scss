@@ -69,39 +69,27 @@
   }
 }
 
-@mixin mdc-text-field-bottom-line-hover-color($color) {
+@mixin mdc-text-field-hover-bottom-line-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-bottom-line-hover-color_($color);
+    @include mdc-text-field-hover-bottom-line-color_($color);
   }
 }
 
-@mixin mdc-text-field-bottom-line-focused-color($color) {
+@mixin mdc-text-field-focused-bottom-line-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-bottom-line-focused-color_($color);
+    @include mdc-text-field-focused-bottom-line-color_($color);
   }
 }
 
-@mixin mdc-text-field-label-ink-color($color) {
+@mixin mdc-text-field-label-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-label-ink-color_($color);
+    @include mdc-text-field-label-color_($color);
   }
 }
 
-@mixin mdc-text-field-input-ink-color($color) {
+@mixin mdc-text-field-ink-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-input-ink-color_($color);
-  }
-}
-
-@mixin mdc-text-field-input-placeholder-ink-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-input-placeholder-ink-color_($color);
-  }
-}
-
-@mixin mdc-text-field-input-placeholder-hover-ink-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-input-placeholder-hover-ink-color_($color);
+    @include mdc-text-field-ink-color_($color);
   }
 }
 
@@ -111,13 +99,13 @@
 
 @mixin mdc-text-field-disabled_ {
   @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-light);
-  @include mdc-text-field-input-ink-color_(text-disabled-on-light);
-  @include mdc-text-field-label-ink-color_(text-disabled-on-light);
+  @include mdc-text-field-ink-color_(text-disabled-on-light);
+  @include mdc-text-field-label-color_(text-disabled-on-light);
 
   @include mdc-theme-dark(".mdc-text-field") {
     @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-dark);
-    @include mdc-text-field-input-ink-color_(text-disabled-on-dark);
-    @include mdc-text-field-label-ink-color_(text-disabled-on-dark);
+    @include mdc-text-field-ink-color_(text-disabled-on-dark);
+    @include mdc-text-field-label-color_(text-disabled-on-dark);
   }
 
   pointer-events: none;
@@ -152,9 +140,9 @@
 
 @mixin mdc-text-field-invalid_ {
   @include mdc-text-field-bottom-line-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-bottom-line-hover-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-bottom-line-focused-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-label-ink-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-focused-bottom-line-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-label-color($mdc-text-field-error-on-light);
 
   .mdc-text-field__idle-outline {
     border-color: $mdc-text-field-error-on-light;
@@ -279,43 +267,32 @@
 // Private Color Mixins
 
 @mixin mdc-text-field-bottom-line-color_($color) {
-  .mdc-text-field__input {
+  .mdc-text-field__input,
+  .mdc-text-field__input::placeholder {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-text-field-bottom-line-hover-color_($color) {
+@mixin mdc-text-field-hover-bottom-line-color($color) {
   .mdc-text-field__input:hover {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-text-field-bottom-line-focused-color_($color) {
+@mixin mdc-text-field-focused-bottom-line-color($color) {
   .mdc-text-field__bottom-line {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-text-field-label-ink-color_($color) {
+@mixin mdc-text-field-label-color_($color) {
   .mdc-text-field__label {
     @include mdc-theme-prop(color, $color);
   }
 }
 
-@mixin mdc-text-field-input-ink-color_($color) {
+@mixin mdc-text-field-ink-color_($color) {
   .mdc-text-field__input {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-text-field-input-placeholder-ink-color_($color) {
-  .mdc-text-field__input::placeholder {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-text-field-input-placeholder-hover-ink-color_($color) {
-  .mdc-text-field__input:focus::placeholder {
     @include mdc-theme-prop(color, $color);
   }
 }

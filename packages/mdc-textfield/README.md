@@ -198,6 +198,12 @@ Mixin | Description
 --- | ---
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
+`mdc-text-field-bottom-line-color($color)` | Customizes the color of the default bottom line of the text-field.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover color of the bottom line of the text-field. 
+`mdc-text-field-focused-bottom-line-color($color)` | Customizes the bottom-line ripple color when the text-field is selected. 
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
+`mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
+}
 
 ### `MDCTextField`
 
