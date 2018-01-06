@@ -31,10 +31,17 @@ const cssClasses = {
   ROOT: 'mdc-text-field',
   UPGRADED: 'mdc-text-field--upgraded',
   DISABLED: 'mdc-text-field--disabled',
+  DENSE: 'mdc-text-field--dense',
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
   BOX: 'mdc-text-field--box',
   OUTLINED: 'mdc-text-field--outlined',
 };
 
-export {cssClasses, strings};
+/** @enum {number} */
+const numbers = {
+  LABEL_SCALE: 0.75,
+  DENSE_LABEL_SCALE: 0.923,
+};
+
+export {cssClasses, strings, numbers};
