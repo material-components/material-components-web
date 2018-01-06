@@ -70,6 +70,18 @@ class MDCRippleAdapter {
   deregisterInteractionHandler(evtType, handler) {}
 
   /**
+   * @param {string} evtType
+   * @param {!Function} handler
+   */
+  registerDocumentInteractionHandler(evtType, handler) {}
+
+  /**
+   * @param {string} evtType
+   * @param {!Function} handler
+   */
+  deregisterDocumentInteractionHandler(evtType, handler) {}
+
+  /**
    * @param {!Function} handler
    */
   registerResizeHandler(handler) {}

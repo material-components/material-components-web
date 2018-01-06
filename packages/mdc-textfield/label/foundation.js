@@ -58,32 +58,33 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
     return this.adapter_.getWidth();
   }
 
-  /** Makes the label float above the text field. */
-  floatAbove() {
-    this.adapter_.addClass(cssClasses.LABEL_FLOAT_ABOVE);
-    this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
-  }
-
   /**
-   * Deactivates the label's focus state based on whether the text
-   * field input is empty and passes validity checks.
-   * @param {boolean} shouldRemoveLabelFloat
+   * Styles the label to produce the label shake for errors.
+   * @param {boolean} isValid Whether the input's value is valid (passes all
+   *     validity checks).
+   * @param {boolean} isFocused Whether the input is focused.
    */
-  deactivateFocus(shouldRemoveLabelFloat) {
-    this.adapter_.removeClass(cssClasses.LABEL_SHAKE);
-
-    if (shouldRemoveLabelFloat) {
-      this.adapter_.removeClass(cssClasses.LABEL_FLOAT_ABOVE);
+  styleShake(isValid, isFocused) {
+    const {LABEL_SHAKE} = MDCTextFieldLabelFoundation.cssClasses;
+    if (isValid || isFocused) {
+      this.adapter_.removeClass(LABEL_SHAKE);
+    } else {
+      this.adapter_.addClass(LABEL_SHAKE);
     }
   }
 
   /**
-   * Updates the label's valid state based on the supplied validity.
-   * @param {boolean} isValid
+   * Styles the label to float or defloat as necessary.
+   * @param {string} value The value of the input.
+   * @param {boolean} isFocused Whether the input is focused.
+   * @param {boolean} isBadInput The input's `validity.badInput` value.
    */
-  setValidity(isValid) {
-    if (!isValid) {
-      this.adapter_.addClass(cssClasses.LABEL_SHAKE);
+  styleFloat(value, isFocused, isBadInput) {
+    const {LABEL_FLOAT_ABOVE} = MDCTextFieldLabelFoundation.cssClasses;
+    if (!!value || isFocused) {
+      this.adapter_.addClass(LABEL_FLOAT_ABOVE);
+    } else if (!isBadInput) {
+      this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
     }
   }
 }
