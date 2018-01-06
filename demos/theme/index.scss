@@ -184,14 +184,6 @@ $high-luminance-color: #fff8e1;
   border-radius: 4px;
 }
 
-.demo-theme-color-swatch--stroked {
-  border: 1px solid #f0f0f0;
-}
-
-.demo-theme-color-swatch--elevated {
-  @include mdc-elevation(1);
-}
-
 .demo-theme__text-styles {
   display: inline-flex;
   box-sizing: border-box;
