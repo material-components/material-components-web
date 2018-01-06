@@ -24,7 +24,7 @@ import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
 import MDCTextFieldOutlineFoundation from './outline/foundation';
 /* eslint-enable no-unused-vars */
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 
 /**
@@ -42,6 +42,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get numbers() {
+    return numbers;
+  }
+
   /**
    * {@see MDCTextFieldAdapter} for typing information on parameters and return
    * types.
@@ -51,6 +56,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
+      hasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
@@ -59,6 +65,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
       getIdleOutlineStyleValue: () => {},
+      isFocused: () => {},
       isRtl: () => {},
     });
   }
@@ -88,6 +95,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.receivedUserInput_ = false;
     /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
+    /** @private {boolean} */
+    this.isValid_ = true;
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -105,8 +114,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.getNativeInput_().value && this.label_) {
-      this.label_.floatAbove();
+    if (this.label_ && this.getValue()) {
+      this.label_.styleFloat(
+        this.getValue(), this.isFocused_, this.isBadInput_());
+    }
+
+    if (this.adapter_.isFocused()) {
+      this.inputFocusHandler_();
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -154,7 +168,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (!this.outline_ || !this.label_) {
       return;
     }
-    const labelWidth = this.label_.getFloatingWidth();
+
+    const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+    const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+    const labelWidth = this.label_.getWidth() * labelScale;
     // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
     const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
       this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
@@ -167,8 +184,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Activates the text field focus state.
    */
   activateFocus() {
-    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
-    this.adapter_.addClass(FOCUSED);
+    this.isFocused_ = true;
+    this.styleFocused_(this.isFocused_);
     if (this.bottomLine_) {
       this.bottomLine_.activate();
     }
@@ -176,12 +193,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.updateOutline();
     }
     if (this.label_) {
-      this.label_.floatAbove();
+      this.label_.styleShake(this.isValid(), this.isFocused_);
+      this.label_.styleFloat(
+        this.getValue(), this.isFocused_, this.isBadInput_());
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
     }
-    this.isFocused_ = true;
   }
 
   /**
@@ -219,54 +237,67 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Deactives the Text Field's focus state.
+   * Deactivates the Text Field's focus state.
    */
   deactivateFocus() {
-    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
+    this.isFocused_ = false;
     const input = this.getNativeInput_();
     const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
-
-    this.isFocused_ = false;
-    this.adapter_.removeClass(FOCUSED);
+    const isValid = this.isValid();
+    this.styleValidity_(isValid);
+    this.styleFocused_(this.isFocused_);
     if (this.label_) {
-      this.label_.deactivateFocus(shouldRemoveLabelFloat);
+      this.label_.styleShake(this.isValid(), this.isFocused_);
+      this.label_.styleFloat(
+        this.getValue(), this.isFocused_, this.isBadInput_());
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
     }
-
-    if (!this.useCustomValidityChecking_) {
-      this.changeValidity_(input.checkValidity());
-    }
   }
 
   /**
-   * Updates the Text Field's valid state based on the supplied validity.
-   * @param {boolean} isValid
-   * @private
+   * @return {string} The value of the input Element.
    */
-  changeValidity_(isValid) {
-    const {INVALID} = MDCTextFieldFoundation.cssClasses;
-    if (isValid) {
-      this.adapter_.removeClass(INVALID);
-    } else {
-      this.adapter_.addClass(INVALID);
-    }
-    if (this.helperText_) {
-      this.helperText_.setValidity(isValid);
-    }
+  getValue() {
+    return this.getNativeInput_().value;
+  }
+
+  /**
+   * @param {string} value The value to set on the input Element.
+   */
+  setValue(value) {
+    this.getNativeInput_().value = value;
+    const isValid = this.isValid();
+    this.styleValidity_(isValid);
     if (this.label_) {
-      this.label_.setValidity(isValid);
+      this.label_.styleShake(isValid, this.isFocused_);
+      this.label_.styleFloat(
+        this.getValue(), this.isFocused_, this.isBadInput_());
     }
   }
 
   /**
-   * @return {boolean} True if the Text Field input fails validity checks.
-   * @private
+   * @return {boolean} If a custom validity is set, returns that value.
+   *     Otherwise, returns the result of native validity checks.
    */
-  isBadInput_() {
-    const input = this.getNativeInput_();
-    return input.validity ? input.validity.badInput : input.badInput;
+  isValid() {
+    return this.useCustomValidityChecking_
+      ? this.isValid_ : this.isNativeInputValid_();
+  }
+
+  /**
+   * @param {boolean} isValid Sets the validity state of the Text Field.
+   */
+  setValid(isValid) {
+    this.useCustomValidityChecking_ = true;
+    this.isValid_ = isValid;
+    // Retrieve from the getter to ensure correct logic is applied.
+    isValid = this.isValid();
+    this.styleValidity_(isValid);
+    if (this.label_) {
+      this.label_.styleShake(isValid, this.isFocused_);
+    }
   }
 
   /**
@@ -280,17 +311,25 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {boolean} disabled Sets the text-field disabled or enabled.
    */
   setDisabled(disabled) {
-    const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
     this.getNativeInput_().disabled = disabled;
-    if (disabled) {
-      this.adapter_.addClass(DISABLED);
-      this.adapter_.removeClass(INVALID);
-    } else {
-      this.adapter_.removeClass(DISABLED);
-    }
-    if (this.icon_) {
-      this.icon_.setDisabled(disabled);
-    }
+    this.styleDisabled_(disabled);
+  }
+
+  /**
+   * @return {boolean} True if the Text Field is required.
+   */
+  isRequired() {
+    return this.getNativeInput_().required;
+  }
+
+  /**
+   * @param {boolean} isRequired Sets the text-field required or not.
+   */
+  setRequired(isRequired) {
+    this.getNativeInput_().required = isRequired;
+    // Addition of the asterisk is automatic based on CSS, but validity checking
+    // needs to be manually run.
+    this.styleValidity_(this.isValid());
   }
 
   /**
@@ -303,6 +342,72 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * @return {boolean} True if the Text Field input fails in converting the
+   *     user-supplied value.
+   * @private
+   */
+  isBadInput_() {
+    return this.getNativeInput_().validity.badInput;
+  }
+
+  /**
+   * @return {boolean} The result of native validity checking
+   *     (ValidityState.valid).
+   */
+  isNativeInputValid_() {
+    return this.getNativeInput_().validity.valid;
+  }
+
+  /**
+   * Styles the component based on the validity state.
+   * @param {boolean} isValid
+   * @private
+   */
+  styleValidity_(isValid) {
+    const {INVALID} = MDCTextFieldFoundation.cssClasses;
+    if (isValid) {
+      this.adapter_.removeClass(INVALID);
+    } else {
+      this.adapter_.addClass(INVALID);
+    }
+    if (this.helperText_) {
+      this.helperText_.setValidity(isValid);
+    }
+  }
+
+  /**
+   * Styles the component based on the focused state.
+   * @param {boolean} isFocused
+   * @private
+   */
+  styleFocused_(isFocused) {
+    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
+    if (isFocused) {
+      this.adapter_.addClass(FOCUSED);
+    } else {
+      this.adapter_.removeClass(FOCUSED);
+    }
+  }
+
+  /**
+   * Styles the component based on the disabled state.
+   * @param {boolean} isDisabled
+   * @private
+   */
+  styleDisabled_(isDisabled) {
+    const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
+    if (isDisabled) {
+      this.adapter_.addClass(DISABLED);
+      this.adapter_.removeClass(INVALID);
+    } else {
+      this.adapter_.removeClass(DISABLED);
+    }
+    if (this.icon_) {
+      this.icon_.setDisabled(isDisabled);
+    }
+  }
+
+  /**
    * @return {!Element|!NativeInputType} The native text input from the
    * host environment, or a dummy if none exists.
    * @private
@@ -310,19 +415,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   getNativeInput_() {
     return this.adapter_.getNativeInput() ||
     /** @type {!NativeInputType} */ ({
-      checkValidity: () => true,
       value: '',
       disabled: false,
-      badInput: false,
+      validity: {
+        badInput: false,
+        valid: true,
+      },
     });
-  }
-
-  /**
-   * @param {boolean} isValid Sets the validity state of the Text Field.
-   */
-  setValid(isValid) {
-    this.useCustomValidityChecking_ = true;
-    this.changeValidity_(isValid);
   }
 }
 

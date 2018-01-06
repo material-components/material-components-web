@@ -28,7 +28,10 @@ import MDCTextFieldLabelFoundation from './label/foundation';
  *   value: string,
  *   disabled: boolean,
  *   badInput: boolean,
- *   checkValidity: (function(): boolean)
+ *   validity: {
+ *     badInput: boolean,
+ *     valid: boolean,
+ *   },
  * }}
  */
 let NativeInputType;
@@ -65,6 +68,12 @@ class MDCTextFieldAdapter {
    * @param {string} className
    */
   removeClass(className) {}
+
+  /**
+   * Returns true if the root element contains the given class name.
+   * @param {string} className
+   */
+  hasClass(className) {}
 
   /**
    * Registers an event handler on the root element for a given event.
@@ -127,6 +136,13 @@ class MDCTextFieldAdapter {
    * @return {string}
    */
   getIdleOutlineStyleValue(propertyName) {}
+
+  /**
+   * Returns true if the textfield is focused.
+   * We achieve this via `document.activeElement === this.root_`.
+   * @return {boolean}
+   */
+  isFocused() {}
 
   /**
    * Returns true if the direction of the root element is set to RTL.

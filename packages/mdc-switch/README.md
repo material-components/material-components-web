@@ -50,7 +50,7 @@ npm install --save @material/switch
 
 ### Disabled
 ```html
-<div class="mdc-switch mdc-switch--disabled">
+<div class="mdc-switch">
   <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" disabled />
   <div class="mdc-switch__background">
     <div class="mdc-switch__knob"></div>
@@ -64,14 +64,6 @@ npm install --save @material/switch
 #### Block
 
 The block class is `mdc-switch`. This defines the top-level switch element.
-
-#### Modifier
-
-The provided modifiers are:
-
-| Class                  | Description                                  |
-| -----------------------| -------------------------------------------- |
-| `mdc-switch--disabled` | Applies disabled style to disabled switches. |
 
 ### Sass Mixins
 

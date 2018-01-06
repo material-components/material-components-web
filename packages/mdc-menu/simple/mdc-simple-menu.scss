@@ -19,8 +19,9 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
-$mdc-simple-menu-fade-duration: .2s;
-$mdc-simple-menu-item-fade-duration: .3s;
+$mdc-simple-menu-fade-in-duration: 0.03s;
+$mdc-simple-menu-fade-out-duration: 0.075s;
+$mdc-simple-menu-scale-duration: 0.12s;
 
 // postcss-bem-linter: define simple-menu
 .mdc-simple-menu {
@@ -38,7 +39,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
   max-height: calc(100vh - 32px);
   margin: 0;
   padding: 0;
-  transform: scale(0);
+  transform: scale(1);
   transform-origin: top left;
   border-radius: 2px;
   background-color: white;
@@ -53,16 +54,32 @@ $mdc-simple-menu-item-fade-duration: .3s;
     outline: none;
   }
 
+  &--animating-open {
+    display: inline-block;
+    overflow-y: hidden;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity $mdc-simple-menu-fade-in-duration linear,
+                transform $mdc-simple-menu-scale-duration $mdc-animation-deceleration-curve-timing-function;
+    > .mdc-simple-menu__items {
+      transform: scale(1.25);
+    }
+  }
+
   &--open {
     display: inline-block;
     transform: scale(1);
     opacity: 1;
+    > .mdc-simple-menu__items {
+      transform: scale(1);
+    }
   }
 
-  &--animating {
+  &--animating-closed {
     display: inline-block;
-    transition: opacity $mdc-simple-menu-fade-duration $mdc-animation-deceleration-curve-timing-function;
     overflow-y: hidden;
+    opacity: 0;
+    transition: opacity $mdc-simple-menu-fade-out-duration linear;
   }
 
   &__items {
@@ -70,11 +87,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
     overflow-x: hidden;
     overflow-y: auto;
     will-change: transform;
-
-    // stylelint-disable plugin/selector-bem-pattern, selector-no-universal, selector-max-universal
-    > * {
-      opacity: 0;
-    }
+    transform: scale(1);
 
     > .mdc-list-item {
       cursor: pointer;
@@ -82,21 +95,7 @@ $mdc-simple-menu-item-fade-duration: .3s;
 
     .mdc-simple-menu--animating & {
       overflow-y: hidden;
-
-      > * {
-        transition-duration: $mdc-simple-menu-item-fade-duration;
-        transition-property: opacity;
-        transition-timing-function: $mdc-animation-deceleration-curve-timing-function;
-      }
     }
-
-    .mdc-simple-menu--open & {
-      > * {
-        opacity: 1;
-        will-change: opacity;
-      }
-    }
-    // stylelint-enable plugin/selector-bem-pattern, selector-no-universal, selector-max-universal
   }
 
   // stylelint-disable plugin/selector-bem-pattern
@@ -104,25 +103,6 @@ $mdc-simple-menu-item-fade-duration: .3s;
     transform-origin: top right;
   }
   // stylelint-enable plugin/selector-bem-pattern
-
-  // Note: it's appropriate to use `!important` for these since:
-  // - they override defaults at several levels of specificity;
-  // - they're optional classes that are purposely added by the developer to obtain a desired behaviour.
-  &--open-from-top-left {
-    transform-origin: top left !important;
-  }
-
-  &--open-from-top-right {
-    transform-origin: top right !important;
-  }
-
-  &--open-from-bottom-left {
-    transform-origin: bottom left !important;
-  }
-
-  &--open-from-bottom-right {
-    transform-origin: bottom right !important;
-  }
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list-group,
