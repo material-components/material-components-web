@@ -36,7 +36,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCIconToggleFoundation, [
     'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
-    'setText', 'getTabIndex', 'setTabIndex', 'getAttr', 'setAttr', 'rmAttr', 'notifyChange',
+    'setText', 'setPath', 'getTabIndex', 'setTabIndex', 'getAttr', 'setAttr', 'rmAttr', 'notifyChange',
   ]);
 });
 
@@ -105,6 +105,16 @@ test('#toggle sets text to content in "data-toggle-on" if specified when toggled
   td.verify(mockAdapter.setText(content));
 });
 
+test('#toggle sets path in "data-toggle-on" if specified when toggled on', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const path = 'toggle on path';
+  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON)).thenReturn(JSON.stringify({path}));
+  foundation.init();
+
+  foundation.toggle(true);
+  td.verify(mockAdapter.setPath(path));
+});
+
 test('#toggle sets aria-label to label in "data-toggle-on" if specified when toggled on', () => {
   const {foundation, mockAdapter} = setupTest();
   const label = 'toggle on label';
@@ -151,6 +161,16 @@ test('#toggle sets text to content in "data-toggle-off" if specified when toggle
 
   foundation.toggle(false);
   td.verify(mockAdapter.setText(content));
+});
+
+test('#toggle sets path in "data-toggle-off" if specified when toggled off', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const path = 'toggle off path';
+  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF)).thenReturn(JSON.stringify({path}));
+  foundation.init();
+
+  foundation.toggle(false);
+  td.verify(mockAdapter.setPath(path));
 });
 
 test('#toggle sets aria-label to label in "data-toggle-off" if specified when toggled off', () => {

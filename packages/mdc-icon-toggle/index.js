@@ -79,6 +79,12 @@ class MDCIconToggle extends MDCComponent {
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       setText: (text) => this.iconEl_.textContent = text,
+      setPath: (path) => {
+        const pathElm = this.iconEl_.querySelector('path');
+        if (pathElm) {
+          pathElm.setAttribute('d', path);
+        }
+      },
       getTabIndex: () => /* number */ this.root_.tabIndex,
       setTabIndex: (tabIndex) => this.root_.tabIndex = tabIndex,
       getAttr: (name, value) => this.root_.getAttribute(name, value),

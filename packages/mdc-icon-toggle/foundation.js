@@ -39,6 +39,7 @@ class MDCIconToggleFoundation extends MDCFoundation {
       registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
       setText: (/* text: string */) => {},
+      setPath: (/* path: string */) => {},
       getTabIndex: () => /* number */ 0,
       setTabIndex: (/* tabIndex: number */) => {},
       getAttr: (/* name: string */) => /* string */ '',
@@ -138,7 +139,7 @@ class MDCIconToggleFoundation extends MDCFoundation {
       this.adapter_.removeClass(classToRemove);
     }
 
-    const {content, label, cssClass} = this.on_ ? this.toggleOnData_ : this.toggleOffData_;
+    const {content, label, cssClass, path} = this.on_ ? this.toggleOnData_ : this.toggleOffData_;
 
     if (cssClass) {
       this.adapter_.addClass(cssClass);
@@ -148,6 +149,9 @@ class MDCIconToggleFoundation extends MDCFoundation {
     }
     if (label) {
       this.adapter_.setAttr(ARIA_LABEL, label);
+    }
+    if (path) {
+      this.adapter_.setPath(path);
     }
   }
 

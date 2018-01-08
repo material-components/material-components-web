@@ -37,8 +37,9 @@ npm install --save @material/icon-toggle
 
 ## Usage
 
-In order to use MDC Icon Toggle, you will need to import an icon set, such as
-[Material Icons](https://design.google.com/icons/) or [Font Awesome](http://fontawesome.io/).
+In order to use MDC Icon Toggle, you will either need to import an icon set, such as
+[Material Icons](https://design.google.com/icons/) or [Font Awesome](http://fontawesome.io/),
+or you use SVG icons.
 
 ```html
 <i class="mdc-icon-toggle material-icons" role="button" aria-pressed="false"
@@ -80,10 +81,31 @@ In order to get around this, you can nest the icon itself inside the icon toggle
 </span>
 ```
 
-`data-icon-inner-selector` tells MDCIconToggle to look for an element within itself that matches
+`data-icon-inner-selector` tells `MDCIconToggle` to look for an element within itself that matches
 that selector, and treat it as the element containing the icon. Also note the `aria-hidden`
 attribute on the icon. This is important to ensure that screen readers produce the correct output
 when reading this element.
+
+### Using with SVG icons
+
+If you add the CSS class `mdc-icon-toggle` directly to the `<svg>` element, the ripple effect
+will not work. Therefore you should wrap the SVG icon with a `<div>` or `<span>` element.  
+
+```html
+<span class="mdc-icon-toggle" role="button" aria-pressed="false"
+      aria-label="Play" tabindex="0"
+      data-icon-inner-selector="svg"
+      data-toggle-on='{"label": "Pause", "path": "M6 19h4V5H6v14zm8-14v14h4V5h-4z"}'
+      data-toggle-off='{"label": "Play", "path": "M8 5v14l11-7z"}'>
+  <svg width="24" height="24" viewBox="0 0 24 24">
+    <path d="M8 5v14l11-7z"/>
+  </svg>
+</span>
+```
+
+`data-icon-inner-selector` tells `MDCIconToggle` to look for an element within itself that matches
+that selector, and treat it as the element containing the icon. Whenever the icon is toggled, the
+`d` attribute of the first nested `<path>` element is updated.
 
 ### Configuring the icon toggle states
 
@@ -98,6 +120,7 @@ Property | Description
 `label` | The value to apply to the element's "aria-label" attribute.
 `content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead.
 `cssClass` | A css class to apply to the icon element for the given toggle state. The same rules regarding inner icon elements described for `content` apply here as well.
+`path` | Only for SVG icons. The value the `d` attribute of the first nested `<path>` element should have for the given toggle state.
 
 ### Disabled icon toggles
 

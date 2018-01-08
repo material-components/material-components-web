@@ -58,6 +58,9 @@ class MDCIconToggleAdapter {
   /** @param {string} text */
   setText(text) {}
 
+  /** @param {string} path */
+  setPath(path) {}
+
   /** @return {number} */
   getTabIndex() {}
 
