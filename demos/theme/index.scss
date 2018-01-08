@@ -48,12 +48,6 @@ $demo-custom-color: $material-color-red-500;
 // Global styles
 //
 
-.mdc-theme--dark {
-  @include mdc-theme-prop(color, text-primary-on-dark);
-
-  background-color: $material-color-grey-800;
-}
-
 figure {
   margin-left: 0;
   margin-right: 0;
@@ -127,6 +121,96 @@ figure {
   .demo-component-section__heading--focus & {
     opacity: 1;
   }
+}
+
+//
+// Baseline theme color demo
+//
+
+$low-luminance-color: #3e2723;
+$high-luminance-color: #fff8e1;
+
+.demo-theme-color-group {
+  padding: 16px 0;
+}
+
+.demo-theme-color-swatches {
+  display: inline-flex;
+  flex-direction: column;
+  margin-right: 36px;
+}
+
+.demo-theme-color-swatches__label {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 130px;
+  margin-bottom: 1em;
+}
+
+.demo-theme-color-swatch {
+  // TODO(acdvorak): mdc-elevation (and other similar mixins) should figure out the correct contrast color automatically
+  // based on $mdc-theme-background.
+  @include mdc-elevation(1);
+
+  display: inline-block;
+  box-sizing: border-box;
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.demo-theme-bg--low-luminance {
+  background-color: $low-luminance-color;
+}
+
+.demo-theme-bg--low-luminance-light {
+  background-color: mdc-theme-light-variant($low-luminance-color);
+}
+
+.demo-theme-bg--low-luminance-dark {
+  background-color: mdc-theme-dark-variant($low-luminance-color);
+}
+
+.demo-theme-bg--high-luminance {
+  background-color: $high-luminance-color;
+}
+
+.demo-theme-bg--high-luminance-light {
+  background-color: mdc-theme-light-variant($high-luminance-color);
+}
+
+.demo-theme-bg--high-luminance-dark {
+  background-color: mdc-theme-dark-variant($high-luminance-color);
+}
+
+.demo-theme-bg--custom-light {
+  background-color: #dddddd;
+}
+
+.demo-theme-bg--custom-dark {
+  background-color: #1d1d1d;
+}
+
+.demo-theme-text-row {
+  display: inline-flex;
+  box-sizing: border-box;
+  padding: 16px;
+  border: 1px solid #f0f0f0;
+  align-items: center;
+  flex-direction: column;
+}
+
+@media(min-width: 768px) {
+  .demo-theme-text-row {
+    flex-direction: row;
+  }
+}
+
+.demo-theme-text-style {
+  padding: 0 16px;
 }
 
 //
@@ -268,10 +352,6 @@ figure {
   margin: 16px 0 0 0;
 }
 
-.demo-fab--custom {
-  @include mdc-fab-accessible($demo-custom-color);
-}
-
 .demo-fab-tile {
   margin: 0 48px 1em 0;
 }
@@ -352,10 +432,6 @@ figure {
   @include demo-radio-color($mdc-theme-secondary);
 }
 
-.demo-radio--custom {
-  @include demo-radio-color($demo-custom-color);
-}
-
 //
 // Ripple demo
 //
@@ -389,10 +465,6 @@ figure {
   @include mdc-theme-prop(color, secondary);
 }
 
-.demo-ripple-box--custom {
-  @include mdc-theme-prop(color, $demo-custom-color);
-}
-
 .demo-ripple-surface {
   cursor: pointer;
   user-select: none;
@@ -405,10 +477,6 @@ figure {
 
 .demo-ripple-surface--secondary {
   @include mdc-states(secondary);
-}
-
-.demo-ripple-surface--custom {
-  @include mdc-states($demo-custom-color);
 }
 
 .mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
