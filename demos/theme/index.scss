@@ -186,6 +186,14 @@ $high-luminance-color: #fff8e1;
   background-color: mdc-theme-dark-variant($high-luminance-color);
 }
 
+.demo-theme-bg--custom-light {
+  background-color: #dddddd;
+}
+
+.demo-theme-bg--custom-dark {
+  background-color: #1d1d1d;
+}
+
 .demo-theme-text-row {
   display: inline-flex;
   box-sizing: border-box;
@@ -203,14 +211,6 @@ $high-luminance-color: #fff8e1;
 
 .demo-theme-text-style {
   padding: 0 16px;
-}
-
-.demo-theme--custom-light-bg {
-  background-color: #dddddd;
-}
-
-.demo-theme--custom-dark-bg {
-  background-color: #1d1d1d;
 }
 
 //
