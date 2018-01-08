@@ -195,9 +195,10 @@ CSS Class | Description
 ### Sass Mixins
 
 To customize the colors of any part of the text-field, use the following mixins. We recommend you apply 
-these mixins within CSS selectors like .foo-text-field:not(.mdc-text-field--focused) to select your inactive text-fields, 
-and .foo-tab.mdc-text-field--focused to select your active text-fields (Note: the `mdc-text-field-focused-bottom-line-color`
-mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`). 
+these mixins within CSS selectors like .foo-text-field:not(.mdc-text-field--focused) to select your unfocused text fields, 
+and .foo-tab.mdc-text-field--focused to select your active text-fields.
+
+> _NOTE_: the `mdc-text-field-focused-bottom-line-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`). 
 
 Mixin | Description
 --- | ---

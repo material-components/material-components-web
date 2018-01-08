@@ -14,6 +14,9 @@
 // limitations under the License.
 //
 
+@import "bottom-line/mixins";
+@import "label/mixins";
+
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
 }
@@ -60,30 +63,6 @@
     100% {
       transform: translateX(0) translateY(-#{$positionY}) scale(#{$scale});
     }
-  }
-}
-
-@mixin mdc-text-field-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-bottom-line-color_($color);
-  }
-}
-
-@mixin mdc-text-field-hover-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-hover-bottom-line-color_($color);
-  }
-}
-
-@mixin mdc-text-field-focused-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-focused-bottom-line-color_($color);
-  }
-}
-
-@mixin mdc-text-field-label-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-label-color_($color);
   }
 }
 
@@ -265,31 +244,6 @@
 }
 
 // Private Color Mixins
-
-@mixin mdc-text-field-bottom-line-color_($color) {
-  .mdc-text-field__input {
-    @include mdc-theme-prop(border-color, $color);
-  }
-}
-
-@mixin mdc-text-field-hover-bottom-line-color($color) {
-  .mdc-text-field__input:hover {
-    @include mdc-theme-prop(border-color, $color);
-  }
-}
-
-@mixin mdc-text-field-focused-bottom-line-color($color) {
-  .mdc-text-field__bottom-line {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
-
-@mixin mdc-text-field-label-color_($color) {
-  .mdc-text-field__label,
-  .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
-    @include mdc-theme-prop(color, $color);
-  }
-}
 
 @mixin mdc-text-field-ink-color_($color) {
   .mdc-text-field__input {
