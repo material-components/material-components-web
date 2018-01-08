@@ -45,7 +45,6 @@ npm install --save @material/tooltip
 </button>
 
 <!-- or by using the 'for' attribute -->
-
 <button id="example" class="mdc-fab material-icons" aria-label="Favorite">
   <span class="mdc-fab__icon">
     arrow_downward
