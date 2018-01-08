@@ -115,6 +115,14 @@
           <label for="required">Required</label>
         </div>
         <div>
+          <input id="alternate-colors" type="checkbox">
+          <label for="alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
+          <input id="alternate-error-colors" type="checkbox">
+          <label for="alternate-error-colors">Alternate Error Colors</label>
+        </div>
+        <div>
           <input id="use-helper-text" type="checkbox">
           <label for="use-helper-text">Use Helper Text</label>
         </div>
@@ -578,6 +586,14 @@
         document.getElementById('required').addEventListener('change', function(evt) {
           var target = evt.target;
           tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
+        });
+        document.getElementById('alternate-colors').addEventListener('change', function (evt) {
+          var target = evt.target;
+          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
+        });
+        document.getElementById('alternate-error-colors').addEventListener('change', function (evt) {
+          var target = evt.target;
+          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
         });
         document.getElementById('use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
