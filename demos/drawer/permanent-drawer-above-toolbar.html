@@ -75,7 +75,6 @@
   </head>
   <body class="mdc-typography demo-body">
     <nav id="demo-drawer" class="mdc-drawer mdc-drawer--permanent demo-drawer">
-      <div class="mdc-drawer__toolbar-spacer"></div>
       <div class="mdc-list-group">
         <nav class="mdc-list">
           <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
@@ -202,9 +201,9 @@
         drawerEl.classList.remove('demo-drawer--custom');
         drawerEl.classList.remove('demo-drawer--accessible');
 
-        if(e.target.id === 'accessible') {
+        if(e.target.id === 'theme-radio-accessible') {
           drawerEl.classList.add('demo-drawer--accessible');
-        } else if(e.target.id === 'custom') {
+        } else if(e.target.id === 'theme-radio-custom') {
           drawerEl.classList.add('demo-drawer--custom');
         }
       });
