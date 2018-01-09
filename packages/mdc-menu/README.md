@@ -108,8 +108,9 @@ or a wrapper element that contains the actual visible element to attach to:
 the menu is positioned and displayed correctly.
 
 The menu will check if its parent element has the `mdc-menu-anchor` class set, and if so, it will automatically position
-itself relative to this anchor element. It will open from the top left (top right in RTL) corner of the anchor by
-default, but will choose an appropriate different corner if close to the edge of the screen.
+itself relative to this anchor element. Unless anchor corner is specified, menu will open from the top left
+(top right in RTL) corner of the anchor by default, but will choose an appropriate different corner if close
+to the edge of the screen.
 
 #### Manual Positioning
 
@@ -274,15 +275,11 @@ The adapter for simple menu must provide the following functions, with correct s
 | `hasAnchor: () => boolean` | Returns whether the menu has an anchor for positioning. |
 | `getAnchorDimensions() => { width: number, height: number, top: number, right: number, bottom: number, left: number }` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`). |
 | `getWindowDimensions() => {width: number, height: number}` | Returns an object with width and height of the page, in pixels. |
-| `setScale(x: string, y: string) => void` | Sets the transform on the root element to the provided (x, y) scale. |
-| `setInnerScale(x: string, y: string) => void` | Sets the transform on the items container to the provided (x, y) scale. |
 | `getNumberOfItems() => numbers` | Returns the number of _item_ elements inside the items container. In our vanilla component, we determine this by counting the number of list items whose `role` attribute corresponds to the correct child role of the role present on the menu list element. For example, if the list element has a role of `menu` this queries for all elements that have a role of `menuitem`. |
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type`. |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type`. |
 | `registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type 'click'. |
 | `deregisterBodyClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type 'click'. |
-| `getYParamsForItemAtIndex(index: number) => {top: number, height: number}` | Returns an object with the offset top and offset height values for the _item_ element inside the items container at the provided index. Note that this is an index into the list of _item_ elements, and not necessarily every child element of the list. |
-| `setTransitionDelayForItemAtIndex(index: number, value: string) => void` | Sets the transition delay on the element inside the items container at the provided index to the provided value. The same notice for `index` applies here as above. |
 | `getIndexForEventTarget(target: EventTarget) => number` | Checks to see if the `target` of an event pertains to one of the menu items, and if so returns the index of that item. Returns -1 if the target is not one of the menu items. The same notice for `index` applies here as above. |
 | `notifySelected(evtData: {index: number}) => void` | Dispatches an event notifying listeners that a menu item has been selected. The function should accept an `evtData` parameter containing the an object with an `index` property representing the index of the selected item. Implementations may choose to supplement this data with additional data, such as the item itself. |
 | `notifyCancel() => void` | Dispatches an event notifying listeners that the menu has been closed with no selection made. |
@@ -295,7 +292,7 @@ The adapter for simple menu must provide the following functions, with correct s
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
 | `setTransformOrigin(value: string) => void` | Sets the transform origin for the menu element. |
 | `setPosition(position: { top: string, right: string, bottom: string, left: string }) => void` | Sets the position of the menu element. |
-| `getAccurateTime() => number` | Returns a number representing the number of milliseconds (and fractional milliseconds, as the decimal part) since a given point in time, which should remain constant during the component's lifecycle. Ideally, this should be provided by `window.performance.now()`, which has enough precision for high frequency animation calculations. Using `Date.now()` or equivalent may result in some aliasing in animations. |
+| `setMaxHeight(value: string) => void` | Sets `max-height` style for the menu element. |
 
 ### The full foundation API
 
@@ -310,6 +307,23 @@ Closes the menu.
 #### MDCSimpleMenuFoundation.isOpen() => boolean
 
 Returns whether or not the menu is open.
+
+#### MDCSimpleMenuFoundation.setAnchorCorner(Corner = Corner.TOP_START) => void
+
+Specifies the anchor corner to which top start of the menu (top left in ltr, top right in rtl) should align given there
+is enough space to show the full menu.
+When menu display is constrained by viewport edge, `TOP` can be flipped to `BOTTOM`. Similarly `START` can flip to `END`.
+Specifying `BOTTOM_START` and `BOTTOM_END` positions, indicates that the menu displayed either fully below or
+above the anchor. In such cases maximum height of the menu is enforced.
+When specifying `TOP_START` and `TOP_END` positions, the menu is allowed to be taller if it does not fit below
+or above the anchor.
+
+#### MDCSimpleMenuFoundation.setAnchorMargin({top: number, right: number, bottom: number, left: number}) => void
+
+Specifies pixel margins that the menu should be offset from all four sides of an anchor. When menu overlaps an
+anchor (default anchor corner) and menu is taller than would fit (not extending beyond viewport edges), margin is
+ignored and menu allowed to display fully overlapping the anchor. In such cases menu is not strictly aligned to an
+anchor corner, also maximum height of the menu in such cases is constrained by the viewport height.
 
 
 ### The util API
