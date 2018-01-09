@@ -15,6 +15,7 @@
 //
 
 @import "../common";
+@import "../../packages/mdc-animation/functions";
 @import "../../packages/mdc-button/mdc-button";
 @import "../../packages/mdc-card/mdc-card";
 @import "../../packages/mdc-checkbox/mdc-checkbox";
@@ -89,6 +90,17 @@ figure {
 .demo-toolbar-icon--last,
 .demo-toolbar-icon--last:last-of-type {
   padding-right: 24px;
+}
+
+.demo-toolbar-progress-row {
+  min-height: auto;
+  // TODO(acdvorak): Use correct timing for enter/exit animations
+  transition: mdc-animation-enter(opacity, 240ms);
+  opacity: 0;
+}
+
+.demo-toolbar-progress-row--active {
+  opacity: 1;
 }
 
 .demo-anchor-with-toolbar-offset {

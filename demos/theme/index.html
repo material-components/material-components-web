@@ -131,6 +131,18 @@
           </div>
         </section>
       </div>
+      <div class="mdc-toolbar__row demo-toolbar-progress-row" id="demo-toolbar-progress-row">
+        <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+          <div class="mdc-linear-progress__buffering-dots"></div>
+          <div class="mdc-linear-progress__buffer"></div>
+          <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+          </div>
+          <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+          </div>
+        </div>
+      </div>
     </header>
 
     <aside class="mdc-drawer--temporary">
@@ -980,7 +992,7 @@
             timeout = setTimeout(later, wait);
             if (callNow) func.apply(context, args);
           };
-        };
+        }
 
         // Because we load our CSS via webpack, we need to ensure that all of the correct styles
         // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
@@ -994,6 +1006,19 @@
         }, 250);
 
         function init() {
+          /*
+           * Toolbar linear-progress for loading state
+           */
+
+          function setIsLoading(isLoading) {
+            var rowEl = document.querySelector('#demo-toolbar-progress-row');
+            if (isLoading) {
+              rowEl.classList.add('demo-toolbar-progress-row--active');
+            } else {
+              rowEl.classList.remove('demo-toolbar-progress-row--active');
+            }
+          }
+
           /*
            * Permalinks for component section headings
            */
@@ -1102,6 +1127,8 @@
             var swapMessage = '"' + oldLink.getAttribute('href') + '"' + (newUrl ? ' with "' + newUrl + '"' : '');
             console.log('Hot swapping stylesheet ' + swapMessage + '...');
 
+            setIsLoading(true);
+
             var newLink = oldLink.cloneNode(false);
             if (newUrl) {
               newLink.href = newUrl;
@@ -1111,6 +1138,7 @@
               setTimeout(function() {
                 oldLink.parentNode.removeChild(oldLink);
               }, 0);
+              setIsLoading(false);
             });
 
             oldLink.parentNode.insertBefore(newLink, oldLink);
