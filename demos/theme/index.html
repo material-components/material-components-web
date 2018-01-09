@@ -58,9 +58,6 @@
         <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
           <button id="rtl-action" class="mdc-toolbar__icon material-icons" title="Toggle RTL">format_align_left</button>
 
-          <!-- lightbulb_outline --> <!-- brightness_medium --> <!-- settings_brightness -->
-          <button id="dark-mode-action" class="mdc-toolbar__icon material-icons" title="Toggle dark mode">brightness_high</button>
-
           <div class="mdc-menu-anchor">
             <button id="theme-color-action" class="mdc-toolbar__icon demo-toolbar-icon--last" title="Change theme colors" data-theme="baseline">
               <i class="demo-theme-color-radio">
@@ -1026,16 +1023,6 @@
 
           themeActionEl.addEventListener('click', function() {
             themeMenu.open = !themeMenu.open;
-          });
-
-          document.querySelector('#dark-mode-action').addEventListener('click', function(e) {
-            const rootClassList = document.documentElement.classList;
-            rootClassList.toggle('mdc-theme--dark');
-            if (rootClassList.contains('mdc-theme--dark')) {
-              e.target.innerHTML = 'brightness_low';
-            } else {
-              e.target.innerHTML = 'brightness_high';
-            }
           });
 
           document.querySelector('#rtl-action').addEventListener('click', function(e) {
