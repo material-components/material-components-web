@@ -274,12 +274,19 @@ if (!IS_DEV) {
 
 if (IS_DEV) {
   const demoStyleEntry = {};
-  glob.sync('demos/**/*.scss').forEach((filename) => {
-    // Ignore import-only Sass files (filename begins with an underscore)
-    if (path.basename(filename).charAt(0) !== '_') {
-      // Strip leading "demo/" and trailing ".scss" from filename. E.g., "demos/foo/bar.scss" -> "foo/bar".
-      demoStyleEntry[filename.slice(6, -5)] = path.resolve(filename);
+  glob.sync('demos/**/*.scss').forEach((relativeFilePath) => {
+    const filename = path.basename(relativeFilePath);
+
+    // Ignore import-only Sass files.
+    if (filename.charAt(0) === '_') {
+      return;
     }
+
+    // The Webpack entry key for each Sass file is the relative path of the file with its leading "demo/" and trailing
+    // ".scss" affixes removed.
+    // E.g., "demos/foo/bar.scss" becomes {"foo/bar": "/absolute/path/to/demos/foo/bar.scss"}.
+    const entryName = relativeFilePath.replace(new RegExp('^demos/|\\.scss$', 'g'), '');
+    demoStyleEntry[entryName] = path.resolve(relativeFilePath);
   });
 
   module.exports.push({
