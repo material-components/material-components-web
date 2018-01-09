@@ -35,11 +35,11 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
   .mdc-grid-tile {
     margin: $gutter-width/2 0;
     padding: 0 $gutter-width/2;
+  }
 
-    &__secondary {
-      left: $gutter-width/2;
-      width: calc(100% - #{$gutter-width});
-    }
+  .mdc-grid-tile__secondary {
+    left: $gutter-width/2;
+    width: calc(100% - #{$gutter-width});
   }
 
   .mdc-grid-list__tiles {
@@ -51,13 +51,13 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 .mdc-grid-list {
   @include mdc-grid-list-tile-aspect(1);
   @include mdc-grid-list-tile-gutter(4px);
+}
 
-  &__tiles {
-    display: flex;
-    flex-flow: row wrap;
-    margin: 0;
-    padding: 0;
-  }
+.mdc-grid-list__tiles {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0;
+  padding: 0;
 }
 
 .mdc-grid-list--tile-gutter-1 {
@@ -86,17 +86,13 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 
 // stylelint-disable plugin/selector-bem-pattern
 // We need to disable linter here because we are nesting grid-tile under grid list here.
-.mdc-grid-list--twoline-caption {
-  .mdc-grid-tile__secondary {
-    height: $mdc-grid-list-twoline-cap-secondary-height;
-  }
+.mdc-grid-list--twoline-caption .mdc-grid-tile__secondary {
+  height: $mdc-grid-list-twoline-cap-secondary-height;
 }
 
-.mdc-grid-list--header-caption {
-  .mdc-grid-tile__secondary {
-    top: 0;
-    bottom: auto;
-  }
+.mdc-grid-list--header-caption .mdc-grid-tile__secondary {
+  top: 0;
+  bottom: auto;
 }
 
 .mdc-grid-list--with-icon-align-start {
@@ -133,64 +129,64 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
   /* @alternate */
   width: $mdc-grid-list-tile-width;
   width: var(--mdc-grid-list-tile-width, $mdc-grid-list-tile-width);
+}
 
-  &__primary {
-    @include mdc-theme-prop(background-color, background);
-    @include mdc-theme-prop(color, text-primary-on-background);
+.mdc-grid-tile__primary {
+  @include mdc-theme-prop(background-color, background);
+  @include mdc-theme-prop(color, text-primary-on-background);
 
-    position: relative;
-    height: 0;
+  position: relative;
+  height: 0;
+}
 
-    &-content {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-    }
-  }
+.mdc-grid-tile__primary-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
 
-  &__secondary {
-    @include mdc-theme-prop(background-color, primary);
-    @include mdc-theme-prop(color, text-primary-on-primary);
+.mdc-grid-tile__secondary {
+  @include mdc-theme-prop(background-color, primary);
+  @include mdc-theme-prop(color, text-primary-on-primary);
 
-    position: absolute;
-    bottom: 0;
-    box-sizing: border-box;
-    height: $mdc-grid-list-oneline-cap-secondary-height;
-    padding: $mdc-grid-list-tile-secondary-padding;
-  }
+  position: absolute;
+  bottom: 0;
+  box-sizing: border-box;
+  height: $mdc-grid-list-oneline-cap-secondary-height;
+  padding: $mdc-grid-list-tile-secondary-padding;
+}
 
-  &__title {
-    @include mdc-typography-overflow-ellipsis;
+.mdc-grid-tile__title {
+  @include mdc-typography-overflow-ellipsis;
 
-    display: block;
-    margin: 0;
-    padding: 0;
-    font-size: 1rem;
-    font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
-    line-height: 1rem;
-  }
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
+  line-height: 1rem;
+}
 
-  &__support-text {
-    @include mdc-typography(body1);
-    @include mdc-typography-overflow-ellipsis;
+.mdc-grid-tile__support-text {
+  @include mdc-typography(body1);
+  @include mdc-typography-overflow-ellipsis;
 
-    display: block;
-    margin: 0;
-    margin-top: 4px;
-    padding: 0;
-  }
+  display: block;
+  margin: 0;
+  margin-top: 4px;
+  padding: 0;
+}
 
-  &__icon {
-    position: absolute;
-    top: calc(50% - #{$mdc-grid-list-tile-secondary-icon-size} / 2);
-    font-size: 0;
-  }
+.mdc-grid-tile__icon {
+  position: absolute;
+  top: calc(50% - #{$mdc-grid-list-tile-secondary-icon-size} / 2);
+  font-size: 0;
 }
 // postcss-bem-linter: end
