@@ -145,7 +145,9 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
 // TODO: Replace with breakpoint variable
 @media (max-width: 640px) {
-  min-width: 280px;
+  .mdc-dialog {
+    min-width: 280px;
+  }
 
   .mdc-dialog__surface {
     min-width: 280px;
