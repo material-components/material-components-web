@@ -38,6 +38,12 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
+  @include mdc-text-field-bottom-line-color($mdc-text-field-underline-on-light-idle);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-on-light);
+  @include mdc-text-field-focused-bottom-line-color(primary);
+  @include mdc-text-field-ink-color(text-primary-on-light);
+  @include mdc-text-field-label-color($mdc-text-field-light-label);
+
   display: inline-block;
   position: relative;
   margin-bottom: 8px;
@@ -45,7 +51,6 @@
 }
 
 .mdc-text-field__input {
-  @include mdc-theme-prop(color, text-primary-on-light);
   @include mdc-typography-base;
   // We use only a subset of the MDC typography values here as changing things such as line-height
   // affects how the labels are transformed.
@@ -60,29 +65,19 @@
   padding: 0 0 8px;
   transition: mdc-text-field-transition(opacity);
   border: none;
-  border-bottom: 1px solid $mdc-text-field-underline-on-light-idle;
+  border-bottom: 1px solid;
   border-radius: 0;
   background: none;
   font-size: inherit;
   appearance: none;
 
   &::placeholder {
-    @include mdc-theme-prop(color, text-hint-on-light);
-
     transition: mdc-text-field-transition(color);
     opacity: 1;
   }
 
-  &:hover {
-    border-color: $mdc-text-field-underline-on-light;
-  }
-
   &:focus {
     outline: none;
-
-    &::placeholder {
-      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
-    }
   }
 
   // Remove red outline on firefox
@@ -91,12 +86,10 @@
   }
 
   @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
     border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
 
     &:hover {
-      border-bottom: 1px solid $mdc-text-field-underline-on-dark;
+      border-bottom: 1px solid;
     }
 
     &::placeholder {

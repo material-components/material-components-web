@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "The outline is a border around the text field"
 iconId: text_field
-path: /catalog/input-controls/text-fields/outline/
+path: /catalog/input-controls/text-field/outline/
 -->
 
 # Text Field Outline

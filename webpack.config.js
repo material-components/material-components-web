@@ -36,7 +36,7 @@ const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
-const GENERATE_DEMO_THEMES = process.env.MDC_GENERATE_DEMO_THEMES === 'true' && IS_DEV;
+const GENERATE_DEMO_THEMES = process.env.MDC_GENERATE_DEMO_THEMES !== 'false' && IS_DEV;
 const BUILD_STATIC_DEMO_ASSETS = process.env.MDC_BUILD_STATIC_DEMO_ASSETS === 'true';
 
 const banner = [
