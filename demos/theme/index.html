@@ -25,26 +25,44 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script>
       (function() {
-        let theme = 'baseline';
+        var DEFAULT_THEME = 'baseline';
 
-        const qsList = location.search.replace(/^[?]/, '').split('&');
-        const qsMap = {};
-        qsList.forEach(function(query) {
-          const split = query.split('=');
-          const key = split[0];
-          const value = split[1] || '';
-          if (!(key in qsMap)) {
-            qsMap[key] = [];
+        window.getDemoThemeFromUrl = function(url) {
+          url = url || window.location.href;
+
+          if (url.indexOf('?') === -1) {
+            return DEFAULT_THEME;
           }
-          qsMap[key].push(value);
-        });
 
-        if ('theme' in qsMap) {
-          const values = qsMap['theme'];
-          theme = values[values.length - 1];
-        }
+          var qsList = url
+            // Remove the first '?' character and everything before it
+            .replace(/^.*[?]/, '')
+            // Remove the first '#' character and everything after it
+            .replace(/#.*$/, '')
+            // Split entire query string into an array of 'key=value' strings
+            .split('&');
 
-        document.write('<link rel="stylesheet" href="/assets/theme/theme-' + theme + '.css" id="theme-stylesheet" data-hot>');
+          var qsMap = {};
+          qsList.forEach(function(query) {
+            var split = query.split('=');
+            var key = split[0];
+            var value = split[1] || '';
+            if (!(key in qsMap)) {
+              qsMap[key] = [];
+            }
+            qsMap[key].push(value);
+          });
+
+          var theme = DEFAULT_THEME;
+          if ('theme' in qsMap) {
+            var values = qsMap['theme'];
+            theme = values[values.length - 1];
+          }
+          return theme;
+        };
+
+        var demoThemeFromUrl = getDemoThemeFromUrl();
+        document.write('<link rel="stylesheet" href="/assets/theme/theme-' + demoThemeFromUrl + '.css" id="theme-stylesheet" data-hot>');
       })();
     </script>
   </head>
@@ -1019,16 +1037,16 @@
            * Theme
            */
 
-          const themeActionEl = document.querySelector('#theme-color-action');
-          const themeMenuEl = document.querySelector('#theme-color-menu');
-          const themeMenu = new mdc.menu.MDCSimpleMenu(themeMenuEl);
+          var themeActionEl = document.querySelector('#theme-color-action');
+          var themeMenuEl = document.querySelector('#theme-color-menu');
+          var themeMenu = new mdc.menu.MDCSimpleMenu(themeMenuEl);
 
           themeActionEl.addEventListener('click', function() {
             themeMenu.open = !themeMenu.open;
           });
 
           document.querySelector('#rtl-action').addEventListener('click', function(e) {
-            const rootEl = document.documentElement;
+            var rootEl = document.documentElement;
             if (rootEl.getAttribute('dir') === 'rtl') {
               rootEl.setAttribute('dir', 'ltr');
               e.target.innerHTML = 'format_align_left';
@@ -1056,29 +1074,28 @@
           });
 
           window.addEventListener('popstate', function(event) {
-            var color = (event.state || {}).color;
-            swapThemeImpl(color);
+            var newTheme = (event.state || {theme: getDemoThemeFromUrl()}).theme;
+            swapThemeImpl(newTheme);
           });
 
-          function swapTheme(color) {
-            history.pushState({color: color}, '', '?theme=' + color);
-            swapThemeImpl(color);
+          function swapTheme(newTheme) {
+            var hash = window.location.hash || '';
+            history.pushState({theme: newTheme}, '', '?theme=' + newTheme + hash);
+            swapThemeImpl(newTheme);
           }
 
-          function swapThemeImpl(color) {
-            color = color || 'baseline';
+          function swapThemeImpl(newTheme) {
+            newTheme = newTheme || 'baseline';
 
-            document.title = color.replace(/-/g, ' ');
+            hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/theme/theme-' + newTheme + '.css');
 
-            hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/theme/theme-' + color + '.css');
-
-            const selectedItems = getAll('.demo-theme-menu__list-item--selected[data-theme]', themeMenuEl);
+            var selectedItems = getAll('.demo-theme-menu__list-item--selected[data-theme]', themeMenuEl);
             selectedItems.forEach(function(colorIcon) {
               colorIcon.classList.remove('demo-theme-menu__list-item--selected');
             });
-            document.querySelector('.mdc-list-item[data-theme="' + color + '"]').classList.add('demo-theme-menu__list-item--selected');
+            document.querySelector('.mdc-list-item[data-theme="' + newTheme + '"]').classList.add('demo-theme-menu__list-item--selected');
 
-            document.querySelector('#theme-color-action').setAttribute('data-theme', color);
+            document.querySelector('#theme-color-action').setAttribute('data-theme', newTheme);
           }
 
           function hotSwapStylesheet(oldLink, newUrl) {
@@ -1099,25 +1116,8 @@
             oldLink.parentNode.insertBefore(newLink, oldLink);
           }
 
-          // TODO(acdvorak): De-dupe this logic w/ the JS in <head>
-          // TODO(acdvorak): Create a constant for the default theme color
-          var qsColor = 'baseline';
-          const qsList = location.search.replace(/^[?]/, '').split('&');
-          const qsMap = {};
-          qsList.forEach(function(query) {
-            const split = query.split('=');
-            const key = split[0];
-            const value = split[1] || '';
-            if (!(key in qsMap)) {
-              qsMap[key] = [];
-            }
-            qsMap[key].push(value);
-          });
-          if ('theme' in qsMap) {
-            const values = qsMap['theme'];
-            qsColor = values[values.length - 1];
-          }
-          swapThemeImpl(qsColor);
+          // Mark the selected theme in the toolbar menu
+          swapThemeImpl(getDemoThemeFromUrl());
 
           /*
            * Button
