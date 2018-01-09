@@ -1,0 +1,41 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "./common";
+@import "../packages/mdc-form-field/mdc-form-field";
+@import "../packages/mdc-textfield/mdc-text-field";
+
+// stylelint-disable selector-class-pattern
+.demo-text-field-custom-colors:not(.mdc-text-field--invalid) {
+  @include mdc-text-field-bottom-line-color(rgba(blue, .38));
+  @include mdc-text-field-hover-bottom-line-color(rgba(blue, .6));
+  @include mdc-text-field-focused-bottom-line-color(blue);
+  @include mdc-text-field-ink-color(black);
+  @include mdc-text-field-label-color(rgba(blue, .5));
+
+  &.mdc-text-field--focused {
+    @include mdc-text-field-label-color(rgba(blue, .87));
+  }
+}
+
+.demo-text-field-custom-error-colors.mdc-text-field--invalid {
+  @include mdc-text-field-bottom-line-color(rgba(orange, .38));
+  @include mdc-text-field-hover-bottom-line-color(rgba(orange, .6));
+  @include mdc-text-field-focused-bottom-line-color(orange);
+  @include mdc-text-field-ink-color(orange);
+  @include mdc-text-field-label-color(rgba(orange, .87));
+}
+// stylelint-enable selector-class-pattern

@@ -17,33 +17,20 @@
 /** postcss-bem-linter: define icon-toggle */
 
 @import "@material/animation/functions";
+@import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
+@import "./mixins";
 
 .mdc-icon-toggle {
-  @include mdc-theme-prop(color, text-secondary-on-light);
-  @include mdc-ripple-base;
-  // NOTE: The spec denotes specific opacity values to use for different styles of icon buttons,
-  // either "light", "dark", or "color". Because ripples are made up of two distinct elements,
-  // we need to use an opacity value such that when two elements of the same color and opacity are
-  // layered on top of one another, they create the opacity specified in the spec.
-  // This is done by using the painter's compositing algorithm:
-  //
-  // alpha[desired] = alpha[a] + alpha[b](1 - alpha[a]).
-  //
-  // Because both alpha values are the same this reduces to:
-  //
-  // alpha[desired] = alpha[a] + alpha[a](1 - alpha[a]).
-  //
-  // We simply solve this quadratic equation for the nonnegative root between [0, 1].
-  // E.g. for black 12% opacity:
-  // https://www.wolframalpha.com/input/?i=x+%2B+x(1+-+x)+%3D+.12,+x+%3C%3D+1,+x+%3E%3D+0
-  @include mdc-ripple-bg((pseudo: "::before", opacity: .062));
-  @include mdc-ripple-fg((pseudo: "::after", opacity: .062));
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states(black);
+  @include mdc-icon-toggle-ink-color(text-primary-on-light);
 
   @include mdc-theme-dark(".mdc-icon-toggle", true) {
-    @include mdc-ripple-bg((pseudo: "::before", base-color: white, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", base-color: white, opacity: .16));
+    @include mdc-states(white);
+    @include mdc-icon-toggle-ink-color(text-primary-on-dark);
   }
 
   display: flex;
@@ -68,22 +55,6 @@
     pointer-events: none;
     content: "";
   }
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-  }
-}
-
-.mdc-icon-toggle--primary {
-  @include mdc-theme-prop(color, primary);
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .14));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .14));
-}
-
-.mdc-icon-toggle--accent {
-  @include mdc-theme-prop(color, secondary);
-  @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .14));
-  @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .14));
 }
 
 .mdc-icon-toggle--disabled {

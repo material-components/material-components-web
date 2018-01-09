@@ -20,7 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCSimpleMenu} from '../../../packages/mdc-menu/simple';
-import {strings} from '../../../packages/mdc-menu/simple/constants';
+import {strings, Corner} from '../../../packages/mdc-menu/simple/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu/util';
 
 function getFixture(open) {
@@ -37,8 +37,9 @@ function getFixture(open) {
 
 function setupTest(open = false) {
   const root = getFixture(open);
+  const listItem = root.querySelector('.mdc-list-item');
   const component = new MDCSimpleMenu(root);
-  return {root, component};
+  return {root, listItem, component};
 }
 
 suite('MDCSimpleMenu');
@@ -73,6 +74,18 @@ test('hide closes the menu', () => {
   component.open = true;
   component.hide();
   assert.isNotOk(component.open);
+});
+
+test('setAnchorCorner', () => {
+  const {component} = setupTest();
+  component.setAnchorCorner(Corner.TOP_START);
+  // The method sets private variable on the foundation, nothing to verify.
+});
+
+test('setAnchorMargin', () => {
+  const {component} = setupTest();
+  component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
+  // The method sets private variable on the foundation, nothing to verify.
 });
 
 test('items returns all menu items', () => {
@@ -121,6 +134,13 @@ test('adapter#getAttributeForEventTarget returns the value of an attribute for a
   assert.equal(component.getDefaultFoundation().adapter_.getAttributeForEventTarget(target, attrName), attrVal);
 });
 
+test('adapter#eventTargetHasClass returns true if a target has a given classname', () => {
+  const {listItem, component} = setupTest();
+  listItem.classList.add('foo');
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(listItem, 'foo'));
+});
+
 test('adapter#hasNecessaryDom returns false if the DOM does not include the items container', () => {
   const {root, component} = setupTest();
   const items = root.querySelector(strings.ITEMS_SELECTOR);
@@ -133,19 +153,6 @@ test('adapter#getInnerDimensions returns the dimensions of the items container',
   const items = root.querySelector(strings.ITEMS_SELECTOR);
   assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().width, items.offsetWidth);
   assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().height, items.offsetHeight);
-});
-
-test('adapter#setScale sets the correct transform on the menu element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setScale(0.42, 0.84);
-  assert.equal(root.style.getPropertyValue(getTransformPropertyName(window)), 'scale(0.42, 0.84)');
-});
-
-test('adapter#setInnerScale sets the correct transform on the items container', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelector(strings.ITEMS_SELECTOR);
-  component.getDefaultFoundation().adapter_.setInnerScale(0.42, 0.84);
-  assert.equal(items.style.getPropertyValue(getTransformPropertyName(window)), 'scale(0.42, 0.84)');
 });
 
 test('adapter#getNumberOfItems returns the number of item elements within the items container', () => {
@@ -188,29 +195,6 @@ test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => 
   component.getDefaultFoundation().adapter_.deregisterBodyClickHandler(handler);
   domEvents.emit(document.body, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#getYParamsForItemAtIndex returns the height and top of the item at the provided index', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelector(strings.ITEMS_SELECTOR);
-  Object.assign(items.children[0].style, {
-    position: 'absolute',
-    top: '50px',
-    height: '100px',
-  });
-  document.body.appendChild(root);
-  assert.deepEqual(
-    component.getDefaultFoundation().adapter_.getYParamsForItemAtIndex(0),
-    {top: 50, height: 100}
-  );
-  document.body.removeChild(root);
-});
-
-test('adapter#setTransitionDelayForItemAtIndex sets the correct transition-delay for the element ' +
-     'at the provided index', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setTransitionDelayForItemAtIndex(0, '0.42s');
-  assert.equal(root.querySelector(strings.ITEMS_SELECTOR).children[0].style.transitionDelay, '0.42s');
 });
 
 test('adapter#getIndexForEventTarget returns the item index of the event target', () => {
@@ -390,4 +374,10 @@ test('adapter#setPosition sets the correct position on the menu element', () => 
   component.getDefaultFoundation().adapter_.setPosition({bottom: '10px', right: '11px'});
   assert.equal(root.style.bottom, '10px');
   assert.equal(root.style.right, '11px');
+});
+
+test('adapter#setMaxHeight sets the maxHeight style on the menu element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setMaxHeight('100px');
+  assert.equal(root.style.maxHeight, '100px');
 });

@@ -9,36 +9,32 @@ path: /catalog/ripples/
 
 # Ripples
 
-- [MDC Ripple](#mdc-ripple)
-    - [An aside regarding browser support](#an-aside-regarding-browser-support)
-  - [Installation](#installation)
-  - [Usage](#usage)
-      - [Adding the ripple Sass](#adding-the-ripple-sass)
-        - [The full Sass API](#the-full-sass-api)
-      - [Adding the ripple JS](#adding-the-ripple-js)
-        - [ES2015](#es2015)
-        - [CommonJS](#commonjs)
-        - [AMD](#amd)
-        - [Global](#global)
-    - [Unbounded Ripples](#unbounded-ripples)
-      - [Using JS](#using-js)
-      - [Using DOM (Component Only)](#using-dom-component-only)
-    - [The mdc-ripple-surface class](#the-mdc-ripple-surface-class)
-    - [Using the foundation](#using-the-foundation)
-    - [Using the vanilla DOM adapter](#using-the-vanilla-DOM-adapter)
-  - [Tips/Tricks](#tipstricks)
-    - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
-    - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
-    - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
-    - [Specifying known element dimensions](#specifying-known-element-dimensions)
-  - [Caveat: Edge](#caveat-edge)
-  - [Caveat: Safari](#caveat-safari)
-  - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
-  - [The util API](#the-util-api)
+MDC Ripple provides the JavaScript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
 
-MDC Ripple provides the Javascript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
+MDC Ripple also works without JavaScript, where it gracefully degrades to a simpler CSS-Only implementation.
 
-MDC Ripple also works without javascript, where it gracefully degrades to a simpler CSS-Only implementation.
+## Table of Contents
+
+- [An aside regarding browser support](#an-aside-regarding-browser-support)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Adding Ripple styles](#adding-ripple-styles)
+  - [Adding Ripple JS](#adding-ripple-js)
+  - [Ripple JS API](#ripple-js-api)
+  - [Unbounded Ripples](#unbounded-ripples)
+  - [The mdc-ripple-surface class](#the-mdc-ripple-surface-class)
+  - [Using the foundation](#using-the-foundation)
+  - [Using the vanilla DOM adapter](#using-the-vanilla-dom-adapter)
+- [Tips/Tricks](#tipstricks)
+  - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
+  - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
+  - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
+  - [Specifying known element dimensions](#specifying-known-element-dimensions)
+- [Caveat: Edge](#caveat-edge)
+- [Caveat: Safari 9](#caveat-safari)
+- [Caveat: Mobile Safari](#caveat-mobile-safari)
+- [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
+- [The util API](#the-util-api)
 
 ### An aside regarding browser support
 
@@ -46,7 +42,7 @@ In order to function correctly, MDC Ripple requires a _browser_ implementation o
 
 Because we rely on scoped, dynamic CSS variables, static pre-processors such as [postcss-custom-properties](https://github.com/postcss/postcss-custom-properties) will not work as an adequate polyfill ([...yet?](https://github.com/postcss/postcss-custom-properties/issues/32)).
 
-Edge and Safari, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari](#caveat-safari) for an explanation.
+Edge and Safari 9, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari 9](#caveat-safari) for an explanation.
 
 ## Installation
 
@@ -56,73 +52,61 @@ npm install --save @material/ripple
 
 ## Usage
 
-For many components, providing a ripple interaction is straightforward.
+### Adding Ripple styles
 
-Let's say we have a `surface` element that represents a basic surface.
+General notes:
 
-```html
-<div class="surface" tabindex="0">
-  <p>A surface</p>
-</div>
-```
+* Ripple mixins can be applied to a variety of elements representing interactive surfaces. These mixins are also used by other MDC Web components such as Button, FAB, Checkbox, Radio, etc.
+* Surfaces for bounded ripples should have `overflow` set to `hidden`, while surfaces for unbounded ripples should have it set to `visible`
+* When a ripple is successfully initialized on an element using JS, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple JS is not initialized but Sass mixins are included on the surface, the ripple will still work, but it uses a simpler, CSS-only implementation which relies on `:hover`, `:focus`, and `:active`.
 
-We also have some basic styles for our surface that
-use [mdc-elevation](../mdc-elevation) to raise it up off of its background.
+#### Sass API
 
-```scss
-@import "@material/elevation/mixins";
+In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic or advanced `mdc-states` mixins documented below.
 
-.surface {
-  @include mdc-elevation(2);
+Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states` specifically) for specific variants (e.g. for flat vs. raised buttons).
 
-  position: relative;
-  border-radius: 2px;
-  text-align: center;
-  /* Indicate to user element is interactive. */
-  cursor: pointer;
-```
+These APIs implicitly use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
 
-#### Adding the ripple Sass
+##### Ripple Mixins
 
-To add a ripple to our surface, first we include the proper Sass mixins within our surface's styles. We also add a few additional properties that ensure the ripple's UX is correct.
+Mixin | Description
+--- | ---
+`mdc-ripple-surface` | Adds base styles for a ripple surface
+`mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
 
-```scss
-@import "@material/elevation/mixins";
-@import "@material/ripple/mixins";
+##### Basic States Mixins
 
-.surface {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before"));
-  @include mdc-ripple-fg((pseudo: "::after"));
-  // ...
+When using the basic states mixins, inclusion of the `mdc-states` mixin is mandatory.
+Inclusion of `mdc-states-activated` or `mdc-states-selected` is optional, depending on whether activated or selected
+states are applicable to the component in question.
 
-  /* "Bound" the ripple, preventing the pseudo-elements from bleeding out of the box. */
-  overflow: hidden;
-}
-```
+Mixin | Description
+--- | ---
+`mdc-states($color, $has-nested-focusable-element)` | Adds state and ripple styles using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states-activated($color, $has-nested-focusable-element)` | Adds state and ripple styles for activated states using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states-selected($color, $has-nested-focusable-element)` | Adds state and ripple styles for selected states using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 
-This code sets up `.surface` with the correct css variables as well as `will-change` properties to support the ripple. It then dynamically generates the correct selectors such that the surface's `::before` element functions as a background ripple, and the surface's `::after` element functions as a foreground ripple.
+##### Advanced States Mixins
 
-When a ripple is successfully initialized on an element, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple is not initialized but Sass mixins are included within our surface, the ripple will still work, but it would use a simpler, CSS-Only implementation which relies on `:hover`, `:active`, and `:focus`.
+When using the advanced states mixins, every one of the mixins below should be included at least once to establish base
+styles for states.
 
-##### The full Sass API
+These mixins can also be used to emit activated or selected styles if applicable, by applying them within a selector for
+`&--activated` or `&--selected` modifier classes.
 
-Both `mdc-ripple-bg` and `mdc-ripple-fg` take an `$config` map as an optional
-argument, with which you can specify the following parameters:
+Mixin | Description
+--- | ---
+`mdc-states-base-color($color)` | Sets up base state styles using the provided color
+`mdc-states-hover-opacity($opacity)` | Adds styles for hover state using the provided opacity
+`mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Adds styles for focus state using the provided opacity. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states-press-opacity($opacity)` | Adds styles for press state using the provided opacity
 
-| Parameter | Description | Default |
-| --- | --- | --- |
-| `pseudo` | The name of the pseudo-element you want to use to style the ripple. Using pseudo-elements to style ripples obviates the need for any extra DOM and is recommended. However, if given `null` it will style the element directly, rather than attaching styles to the pseudo element. | `null` |
-| `radius` | For _bounded_ ripples, specifies radii of the ripple circles. Can be any valid numeric CSS unit. | `100%` |
-| `theme-style` | When provided, will use a style specified by `mdc-theme` to provide colors to the ripple. For example, passing `(theme-style: primary)` would make the ripples the color of the theme's primary color. Note that there are some current limitations here. See [below](#caveat-theme-custom-variables) | `null` |
-| `base-color` | The RGB color (_without_ an alpha component) of the ripple. This will only be used if `theme-style` isn't specified. | `black` |
-| `opacity` | A unitless number from `0-1` specifying the opacity that either the `base-color` or the `theme-style` color will take on. | `.06` |
+### Adding Ripple JS
 
-#### Adding the ripple JS
+First import the ripple JS.
 
-First import the ripple JS
-
-##### ES2015
+#### ES2015
 
 ```javascript
 import {MDCRipple, MDCRippleFoundation, util} from '@material/ripple';
@@ -134,7 +118,7 @@ import {MDCRipple, MDCRippleFoundation, util} from '@material/ripple';
 const {MDCRipple, MDCRippleFoundation, util} = require('@material/ripple');
 ```
 
-##### AMD
+#### AMD
 
 ```javascript
 require('path/to/@material/ripple', function(mdcRipple) {
@@ -144,7 +128,7 @@ require('path/to/@material/ripple', function(mdcRipple) {
 });
 ```
 
-##### Global
+#### Global
 
 ```javascript
 const MDCRipple = mdc.ripple.MDCRipple;
@@ -166,7 +150,7 @@ ripple.
 MDCRipple.attachTo(document.querySelector('.surface'));
 ```
 
-### Ripple API
+### Ripple JS API
 
 The component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
 components. This is used for making form field labels trigger the ripples in their corresponding input elements, for
@@ -262,14 +246,17 @@ ripple to. The adapter API is as follows:
 
 | Method Signature | Description |
 | --- | --- |
-| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
+| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
+| `setUnbounded(unbounded: boolean) => void` | Adds the unbounded class when truthy, removes when falsy |
 | `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
 | `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
 | `removeClass(className: string) => void` | Removes a class from the ripple surface |
 | `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler that's invoked when the ripple is interacted with using type `evtType`. Essentially equivalent to `HTMLElement.prototype.addEventListener`. |
 | `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler that's invoked when the ripple is interacted with using type `evtType`. Essentially equivalent to `HTMLElement.prototype.removeEventListener`. |
+| `registerDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler that's invoked when the documentElement is interacted with using type `evtType` |
+| `deregisterDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler that's invoked when the documentElement is interacted with using type `evtType` |
 | `registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize()` event. |
 | `deregisterResizeHandler(handler: Function) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize()` event. |
 | `updateCssVariable(varName: string, value: (string or null)) => void` | Programmatically sets the css variable `varName` on the surface to the value specified. |
@@ -390,20 +377,31 @@ We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not
 observed. Earlier versions of Edge (and IE) are not affected, as they do not report support for CSS variables at all,
 and as such ripples are never initialized.
 
-## Caveat: Safari
+<a name="caveat-safari"></a>
+## Caveat: Safari 9
 
-> TL;DR ripples are disabled in Safari < 10 because of a nasty CSS variables bug.
+> TL;DR ripples are disabled in Safari 9 because of a nasty CSS variables bug.
 
 The ripple works by updating CSS Variables which are used by pseudo-elements. This allows ripple
 effects to work on elements without the need to add a bunch of extra DOM to them. Unfortunately, in
 Safari 9.1, there is a nasty bug where updating a css variable on an element will _not_ trigger a
 style recalculation on that element's pseudo-elements which make use of the css variable (try out
-[this codepen](http://codepen.io/traviskaufman/pen/jARYOR) in Chrome, and then in Safari <= 9.1 to
+[this codepen](http://codepen.io/traviskaufman/pen/jARYOR) in Chrome, and then in Safari 9.1 to
 see the issue). We feature-detect around this using alternative heuristics regarding different
 webkit versions: Webkit builds which have this bug fixed (e.g. the builds used in Safari 10+)
 support [CSS 4 Hex Notation](https://drafts.csswg.org/css-color/#hex-notation) while those do not
 have the fix don't. We use this to reliably feature-detect whether we are working with a WebKit
 build that can handle our usage of CSS variables.
+
+## Caveat: Mobile Safari
+
+> TL;DR for CSS-only ripple styles to work as intended, register a `touchstart` event handler on the affected element or its ancestor.
+
+Mobile Safari does not trigger `:active` styles noticeably by default, as
+[documented](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/AdjustingtheTextSize/AdjustingtheTextSize.html#//apple_ref/doc/uid/TP40006510-SW5)
+in the Safari Web Content Guide. This effectively suppresses the intended pressed state styles for CSS-only ripple surfaces. This behavior can be remedied by registering a `touchstart` event handler on the element, or on any common ancestor of the desired elements.
+
+See [this StackOverflow answer](https://stackoverflow.com/a/33681490) for additional information on mobile Safari's behavior.
 
 ## Caveat: Theme Custom Variables
 

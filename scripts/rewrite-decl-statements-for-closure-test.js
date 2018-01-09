@@ -22,7 +22,7 @@
  *  * Rewrite import Foo from './foo' to const Foo = goog.require('mdc.foo')
  *  * Rewrite import {foo, bar} from './util' to const {foo, bar} = goog.require('mdc.util')
  *
- *  
+ *
  * This script rewrites import statements such that:
  *
  * ```js
@@ -160,7 +160,7 @@ function transform(srcFile, rootDir) {
   });
 
   const relativePath = path.relative(rootDir, srcFile);
-  const packageParts = relativePath.replace('mdc-', '').replace('.js', '').split('/');
+  const packageParts = relativePath.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
   const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
 
   outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode;
@@ -200,7 +200,7 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
       }));
     }
   }
-  const packageParts = resolvedSource.replace('mdc-', '').replace('.js', '').split('/');
+  const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
   const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
   return packageStr;
 }

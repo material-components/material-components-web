@@ -211,6 +211,19 @@ dots.addEventListener('click', function (evt) {
 })
 ```
 
+### Sass Mixins
+
+To customize the ink color of any part of the tab, use the following mixins. We recommend you apply these mixins within CSS selectors like `.foo-tab:not(.mdc-tab--active)` to select your inactive tabs, `foo-tab:hover` to select the hover state of your tabs, and `.foo-tab.mdc-tab--active` to select your active tabs.
+
+#### `mdc-tab-ink-color`
+Use this mixin to set the color of all ink on the tab.
+
+#### `mdc-tab-icon-ink-color`
+This mixin customizes the icon ink color.
+
+#### `mdc-tab-label-ink-color`
+This mixin customizes the label ink color.
+
 ### Using the CSS-Only Component
 
 `mdc-tab-bar` ships with css for styling a tab layout according to the Material
@@ -385,7 +398,7 @@ from the `mdc-tab-bar` Element inside of the `mdc-tab-bar-scroller` node during 
 of `MDCTabBarScroller`, e.g.:
 
 ```html
-<div id="my-tab-bar-scroller" class="mdc-tab-bar-scroller">
+<div id="my-mdc-tab-bar-scroller" class="mdc-tab-bar-scroller">
   <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--back">
     <a class="mdc-tab-bar-scroller__indicator__inner material-icons" href="#" aria-label="scroll back button">
       navigate_before
@@ -513,6 +526,10 @@ Sets `computedWidth_` and `computedLeft_` for a tab.
 | `tabs` | `MDCTab[]` | _(read-only)_ An array of the tab bar's instances of MDC Tab. |
 | `activeTab` | `MDCTab` | The currently active tab. Setting this makes the tab active. |
 | `activeTabIndex` | `number` | The index of the currently active tab. Setting this makes the tab at the given index active. |
+
+#### MDCTabBar.layout() => void
+
+Proxies to the foundation's `layout()` method.
 
 ### Tab Bar Events
 

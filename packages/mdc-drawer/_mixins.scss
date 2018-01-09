@@ -17,15 +17,16 @@
 @import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/theme/mixins";
+@import "@material/theme/variables";
 @import "@material/typography/mixins";
 
 @mixin mdc-drawer-toolbar-spacer_() {
-  &__toolbar-spacer {
+  .mdc-drawer__toolbar-spacer {
     display: flex;
     position: relative;
     flex-direction: row;
     flex-shrink: 0;
-    align-items: flex-center;
+    align-items: center;
     box-sizing: border-box;
     height: 56px;
     padding: 16px;
@@ -46,17 +47,17 @@
   /* Use aspect ratio trick to maintain 16:9 aspect ratio on the header */
   // styline things header is a type
   // stylelint-disable selector-max-type
-  &__header {
+  .mdc-drawer__header {
     position: relative;
   }
 
-  &__header::before {
+  .mdc-drawer__header::before {
     display: block;
     padding-top: 9 / 16 * 100%;
     content: "";
   }
 
-  &__header-content {
+  .mdc-drawer__header-content {
     display: flex;
     position: absolute;
     top: 0;
@@ -71,74 +72,21 @@
 }
 
 @mixin mdc-drawer-list_() {
-  .mdc-list-group,
-  .mdc-list {
-    padding-right: 0;
-    padding-left: 0;
-  }
-
   .mdc-list-item {
     @include mdc-typography(body2);
 
     position: relative;
-    padding: 0 16px;
     outline: none;
     color: inherit;
     text-decoration: none;
-
-    // Remove the 16px left offset since we already expand the padding of the list item to take up
-    // the width of the drawer.
-    &.mdc-ripple-upgraded {
-      left: 0;
-    }
   }
 
-  .mdc-list-item__start-detail {
+  .mdc-list-item__graphic {
     color: rgba(0, 0, 0, .54);
 
     @include mdc-theme-dark(#{&}) {
       color: rgba(255, 255, 255, .54);
     }
-  }
-
-  /* stylelint-disable selector-no-qualifying-type */
-  &--selected.mdc-list-item,
-  &--selected.mdc-list-item .mdc-list-item__start-detail {
-    @include mdc-theme-prop(color, primary);
-  }
-  /* stylelint-enable selector-no-qualifying-type */
-
-  /* TODO(sgomes): Revisit when we have interactive lists. */
-  .mdc-list-item::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: mdc-animation-exit-temporary(opacity, 120ms);
-    border-radius: inherit;
-    background: currentColor;
-    opacity: 0;
-    content: "";
-  }
-
-  .mdc-list-item:focus::before {
-    transition: mdc-animation-enter(opacity, 180ms);
-    opacity: .12;
-  }
-
-  .mdc-list-item:active::before {
-    /*
-      Slightly darker value for visual distinction.
-      This allows a full base that has distinct modes.
-      Progressive enhancement with ripples will provide complete button spec alignment.
-    */
-    transition: mdc-animation-enter(opacity, 180ms);
-    opacity: .18;
-  }
-
-  .mdc-list-item:active:focus::before {
-    transition-timing-function: $mdc-animation-standard-curve-timing-function;
   }
 }
 
@@ -146,4 +94,26 @@
   @include mdc-drawer-toolbar-spacer_;
   @include mdc-drawer-header_;
   @include mdc-drawer-list_;
+}
+
+@mixin mdc-drawer-fill-color($color) {
+  &.mdc-drawer--permanent,
+  .mdc-drawer__drawer {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-drawer-ink-color($color) {
+  @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-drawer-scrim-color($color, $opacity) {
+  &::before {
+    background-color: rgba(mdc-theme-prop-value($color), $opacity);
+  }
+}
+
+@mixin mdc-drawer-fill-color-accessible($color) {
+  @include mdc-drawer-ink-color(mdc-theme-accessible-ink-color($color));
+  @include mdc-drawer-fill-color($color);
 }

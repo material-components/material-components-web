@@ -23,8 +23,7 @@
 
 // postcss-bem-linter: define toolbar
 .mdc-toolbar {
-  @include mdc-theme-prop(background-color, primary);
-  @include mdc-theme-prop(color, text-primary-on-primary);
+  @include mdc-toolbar-fill-color-accessible(primary);
 
   display: flex;
   position: relative;
@@ -86,29 +85,25 @@
   }
 
   &__icon {
-    @include mdc-shared-icon-style;
-    @include mdc-theme-prop(color, text-primary-on-primary);
+    @include mdc-toolbar-icon_;
 
     padding-right: $mdc-toolbar-element-horizontal-padding-desktop / 2;
     padding-left: $mdc-toolbar-element-horizontal-padding-desktop / 2;
-    cursor: pointer;
   }
 
   &__icon:last-of-type {
     @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-desktop / 2, $mdc-toolbar-element-horizontal-padding-desktop);
   }
 
-  &__icon--menu {
-    @include mdc-shared-icon-style;
-    @include mdc-theme-prop(color, text-primary-on-primary);
+  &__menu-icon {
+    @include mdc-toolbar-icon_;
 
     padding-right: $mdc-toolbar-element-horizontal-padding-desktop;
     padding-left: $mdc-toolbar-element-horizontal-padding-desktop;
-    cursor: pointer;
   }
 }
 
-.mdc-toolbar__icon--menu + .mdc-toolbar__title {
+.mdc-toolbar__menu-icon + .mdc-toolbar__title {
   @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-desktop);
 }
 
@@ -126,12 +121,12 @@
     @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-mobile / 2, $mdc-toolbar-element-horizontal-padding-mobile);
   }
 
-  .mdc-toolbar__icon--menu {
+  .mdc-toolbar__menu-icon {
     padding-right: $mdc-toolbar-element-horizontal-padding-mobile;
     padding-left: $mdc-toolbar-element-horizontal-padding-mobile;
   }
 
-  .mdc-toolbar__icon--menu + .mdc-toolbar__title {
+  .mdc-toolbar__menu-icon + .mdc-toolbar__title {
     @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-mobile);
   }
 }
@@ -146,10 +141,9 @@
 }
 
 .mdc-toolbar--flexible {
-  // stylelint-disable plugin/selector-bem-pattern
   // bem linter is disabled because it cannot correctly reconcile mdc prefix for css variables.
+  // stylelint-disable-next-line plugin/selector-bem-pattern
   --mdc-toolbar-ratio-to-extend-flexible: #{$mdc-toolbar-ratio-to-extend-flexible};
-  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-toolbar__row:first-child {
     height: $mdc-toolbar-row-height * $mdc-toolbar-ratio-to-extend-flexible;
@@ -197,13 +191,14 @@
       }
     }
   }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-toolbar--waterfall {
   &.mdc-toolbar--fixed {
     @include mdc-elevation(0);
-    @include mdc-elevation-transition;
+
+    transition: mdc-elevation-transition-value();
+    will-change: $mdc-elevation-property;
 
     &.mdc-toolbar--flexible-space-minimized {
       @include mdc-elevation(4);
@@ -221,12 +216,13 @@
   }
 }
 // postcss-bem-linter: end
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-toolbar-fixed-adjust {
   margin-top: $mdc-toolbar-row-height;
 
   @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
-    and (orientation: landscape) {
+    and (max-height: $mdc-toolbar-mobile-breakpoint) {
     margin-top: $mdc-toolbar-mobile-landscape-row-height;
   }
 

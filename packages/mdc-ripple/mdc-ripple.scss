@@ -16,14 +16,16 @@
 
 @import "@material/animation/functions";
 @import "@material/theme/mixins";
+@import "./common";
 @import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define ripple-surface
 
 .mdc-ripple-surface {
-  @include mdc-ripple-base;
-  @include mdc-ripple-bg((pseudo: "::before"));
-  @include mdc-ripple-fg((pseudo: "::after"));
+  @include mdc-ripple-surface;
+  @include mdc-states;
+  @include mdc-ripple-radius;
 
   position: relative;
   outline: none;
@@ -34,23 +36,11 @@
   }
 
   &--primary {
-    &::before,
-    &::after {
-      @include mdc-theme-prop(background-color, primary);
-    }
-
-    @include mdc-ripple-bg((pseudo: "::before", theme-style: primary, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", theme-style: primary, opacity: .16));
+    @include mdc-states(primary);
   }
 
   &--accent {
-    &::before,
-    &::after {
-      @include mdc-theme-prop(background-color, primary);
-    }
-
-    @include mdc-ripple-bg((pseudo: "::before", theme-style: secondary, opacity: .16));
-    @include mdc-ripple-fg((pseudo: "::after", theme-style: secondary, opacity: .16));
+    @include mdc-states(secondary);
   }
 }
 

@@ -199,8 +199,20 @@ not return an object.
 
 ## Theming
 
-MDC Radios use the theme's primary color by default for on states, and are completely dark theme
-aware.
+MDC Radios use the theme's secondary color by default for checked states, and are completely dark theme aware.
+
+### Sass Mixins
+
+The following mixins apply only to _enabled_ radio buttons. It is not currently possible to customize the color of a _disabled_ radio button.
+
+Mixin | Description
+--- | ---
+`mdc-radio-unchecked-stroke-color($color)` | Sets the stroke color of an unchecked radio
+`mdc-radio-checked-stroke-color($color)` | Sets the stroke color of a checked radio
+`mdc-radio-ink-color($color)` | Sets the ink color
+`mdc-radio-focus-indicator-color($color)` | Sets the color of the focus indicator
+
+The ripple effect for the Radio Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
 ### Caveat: Edge and CSS Variables
 

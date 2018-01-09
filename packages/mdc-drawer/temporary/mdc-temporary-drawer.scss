@@ -19,20 +19,24 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "../mixins";
+@import "../variables";
 @import "../slidable/mixins";
 @import "../slidable/variables";
 
-.mdc-temporary-drawer {
+.mdc-drawer--temporary {
   @include mdc-drawer-base_;
+  @include mdc-drawer-ink-color($mdc-temporary-drawer-ink-color);
+  @include mdc-drawer-fill-color($mdc-temporary-drawer-fill-color);
+  @include mdc-drawer-scrim-color($mdc-temporary-drawer-scrim-color, $mdc-temporary-drawer-scrim-opacity);
 
   position: fixed;
   top: 0;
   left: 0;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  overflow: hidden;
   pointer-events: none;
-  box-sizing: border-box;
+  overflow: hidden;
   contain: strict;
   z-index: 5;
 
@@ -42,39 +46,37 @@
     position: absolute;
     top: 0;
     left: 0;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, .6);
-    content: "";
     opacity: 0;
     opacity: var(--mdc-temporary-drawer-opacity, 0);
+    content: "";
     will-change: opacity;
-    box-sizing: border-box;
   }
 
-  &__drawer {
-    @include mdc-theme-prop(background, background);
+  .mdc-drawer__drawer {
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
 
-    @include mdc-theme-dark(".mdc-temporary-drawer") {
-      background: #303030;
-
+    @include mdc-theme-dark(".mdc-drawer--temporary") {
       @include mdc-theme-prop(color, text-primary-on-dark);
+
+      background: #303030;
     }
 
     @include mdc-slideable-drawer;
 
-    @include mdc-rtl(".mdc-temporary-drawer") {
+    @include mdc-rtl(".mdc-drawer--temporary") {
       @include mdc-slideable-drawer-rtl;
     }
 
     display: flex;
     position: absolute;
     flex-direction: column;
+    box-sizing: border-box;
     width: calc(100% - 56px);
     max-width: 280px;
-    box-sizing: border-box;
     overflow: hidden;
     touch-action: none;
 
@@ -85,37 +87,37 @@
     }
   }
 
-  &__content {
+  .mdc-drawer__content {
     flex-grow: 1;
+    box-sizing: border-box;
     margin: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
   }
 
-  &__footer {
+  .mdc-drawer__footer {
     @include mdc-elevation(2);
 
     flex-shrink: 0;
   }
 
-  &--animating {
+  &.mdc-drawer--animating {
     &::before {
       transition: mdc-animation-enter(opacity, .3s);
     }
 
-    &.mdc-temporary-drawer--open .mdc-temporary-drawer__drawer {
+    &.mdc-drawer--open .mdc-drawer__drawer {
       transition: $mdc-slidable-drawer-transition-open;
     }
 
-    .mdc-temporary-drawer__drawer {
+    .mdc-drawer__drawer {
       transition: $mdc-slidable-drawer-transition-close;
     }
   }
 
-  &--open {
+  &.mdc-drawer--open {
     pointer-events: auto;
 
     &::before {
@@ -123,13 +125,13 @@
       opacity: var(--mdc-temporary-drawer-opacity, 1);
     }
 
-    .mdc-temporary-drawer__drawer {
+    .mdc-drawer__drawer {
       @include mdc-slideable-drawer-open;
     }
 
     // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
     @include mdc-rtl {
-      .mdc-temporary-drawer__drawer {
+      .mdc-drawer__drawer {
         @include mdc-slideable-drawer-open;
       }
     }
@@ -137,6 +139,5 @@
 }
 
 .mdc-drawer-scroll-lock {
-  height: 100vh;
   overflow: hidden;
 }

@@ -15,6 +15,12 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-unused-vars */
+import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCTextFieldLabelFoundation from './label/foundation';
+
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -22,22 +28,35 @@
  *   value: string,
  *   disabled: boolean,
  *   badInput: boolean,
- *   checkValidity: (function(): boolean)
+ *   validity: {
+ *     badInput: boolean,
+ *     valid: boolean,
+ *   },
  * }}
  */
 let NativeInputType;
 
 /**
- * Adapter for MDC Textfield.
+ * @typedef {{
+ *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
+ *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
+ *   icon: (!MDCTextFieldIconFoundation|undefined),
+ *   label: (!MDCTextFieldLabelFoundation|undefined)
+ * }}
+ */
+let FoundationMapType;
+
+/**
+ * Adapter for MDC Text Field.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Textfield into your framework. See
+ * adapter to integrate the Text Field into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCTextfieldAdapter {
+class MDCTextFieldAdapter {
   /**
    * Adds a class to the root Element.
    * @param {string} className
@@ -51,34 +70,10 @@ class MDCTextfieldAdapter {
   removeClass(className) {}
 
   /**
-   * Adds a class to the label Element. We recommend you add a conditional
-   * check here, and in removeClassFromLabel for whether or not the label is
-   * present so that the JS component could be used with text fields that don't
-   * require a label, such as the full-width text field.
+   * Returns true if the root element contains the given class name.
    * @param {string} className
    */
-  addClassToLabel(className) {}
-
-  /**
-   * Removes a class from the label Element.
-   * @param {string} className
-   */
-  removeClassFromLabel(className) {}
-
-  /**
-   * Sets an attribute on the icon Element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setIconAttr(name, value) {}
-
-  /**
-   * Returns true if classname exists for a given target element.
-   * @param {?EventTarget} target
-   * @param {string} className
-   * @return {boolean}
-   */
-  eventTargetHasClass(target, className) {}
+  hasClass(className) {}
 
   /**
    * Registers an event handler on the root element for a given event.
@@ -95,44 +90,6 @@ class MDCTextfieldAdapter {
   deregisterTextFieldInteractionHandler(type, handler) {}
 
   /**
-   * Emits a custom event "MDCTextfield:icon" denoting a user has clicked the icon.
-   */
-  notifyIconAction() {}
-
-  /**
-   * Adds a class to the bottom line element.
-   * @param {string} className
-   */
-  addClassToBottomLine(className) {}
-
-  /**
-   * Removes a class from the bottom line element.
-   * @param {string} className
-   */
-  removeClassFromBottomLine(className) {}
-
-  /**
-   * Adds a class to the help text element. Note that in our code we check for
-   * whether or not we have a help text element and if we don't, we simply
-   * return.
-   * @param {string} className
-   */
-  addClassToHelptext(className) {}
-
-  /**
-   * Removes a class from the help text element.
-   * @param {string} className
-   */
-  removeClassFromHelptext(className) {}
-
-  /**
-   * Returns whether or not the help text element contains the given class.
-   * @param {string} className
-   * @return {boolean}
-   */
-  helptextHasClass(className) {}
-
-  /**
    * Registers an event listener on the native input element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
@@ -147,36 +104,18 @@ class MDCTextfieldAdapter {
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
-   * Registers an event listener on the bottom line element for a "transitionend" event.
+   * Registers an event listener on the bottom line element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerTransitionEndHandler(handler) {}
+  registerBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the bottom line element for a "transitionend" event.
+   * Deregisters an event listener on the bottom line element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterTransitionEndHandler(handler) {}
-
-  /**
-   * Sets an attribute with a given value on the bottom line element.
-   * @param {string} attr
-   * @param {string} value
-   */
-  setBottomLineAttr(attr, value) {}
-
-  /**
-   * Sets an attribute with a given value on the help text element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setHelptextAttr(name, value) {}
-
-  /**
-   * Removes an attribute from the help text element.
-   * @param {string} name
-   */
-  removeHelptextAttr(name) {}
+  deregisterBottomLineEventHandler(evtType, handler) {}
 
   /**
    * Returns an object representing the native text input element, with a
@@ -189,6 +128,27 @@ class MDCTextfieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
+
+  /**
+   * Returns the idle outline element's computed style value of the given css property `propertyName`.
+   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+   * @param {string} propertyName
+   * @return {string}
+   */
+  getIdleOutlineStyleValue(propertyName) {}
+
+  /**
+   * Returns true if the textfield is focused.
+   * We achieve this via `document.activeElement === this.root_`.
+   * @return {boolean}
+   */
+  isFocused() {}
+
+  /**
+   * Returns true if the direction of the root element is set to RTL.
+   * @return {boolean}
+   */
+  isRtl() {}
 }
 
-export {MDCTextfieldAdapter, NativeInputType};
+export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

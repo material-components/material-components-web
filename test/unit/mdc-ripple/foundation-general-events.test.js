@@ -17,7 +17,8 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {testFoundation, captureHandlers} from './helpers';
+import {captureHandlers} from '../helpers/foundation';
+import {testFoundation} from './helpers';
 import {cssClasses, strings} from '../../../packages/mdc-ripple/constants';
 
 suite('MDCRippleFoundation - General Events');
@@ -44,14 +45,12 @@ testFoundation('re-lays out the component on resize event', ({foundation, adapte
     return;
   }
 
-  td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '100px'));
-  td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '200px'));
+  td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, '120px'));
 
   resizeHandler();
   mockRaf.flush();
 
-  td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, '50px'));
-  td.verify(adapter.updateCssVariable(strings.VAR_SURFACE_HEIGHT, '100px'));
+  td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, '60px'));
 });
 
 testFoundation('debounces layout within the same frame on resize', ({foundation, adapter, mockRaf}) => {
@@ -80,7 +79,7 @@ testFoundation('debounces layout within the same frame on resize', ({foundation,
   resizeHandler();
   mockRaf.flush();
   td.verify(
-    adapter.updateCssVariable(strings.VAR_SURFACE_WIDTH, td.matchers.isA(String)),
+    adapter.updateCssVariable(strings.VAR_FG_SIZE, td.matchers.isA(String)),
     {
       times: 2,
     }
@@ -88,7 +87,7 @@ testFoundation('debounces layout within the same frame on resize', ({foundation,
 });
 
 testFoundation('activates the background on focus', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   foundation.init();
   mockRaf.flush();
 
@@ -98,7 +97,7 @@ testFoundation('activates the background on focus', ({foundation, adapter, mockR
 });
 
 testFoundation('deactivates the background on blur', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   foundation.init();
   mockRaf.flush();
 

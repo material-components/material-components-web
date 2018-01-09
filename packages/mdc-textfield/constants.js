@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,30 +17,31 @@
 
 /** @enum {string} */
 const strings = {
-  ARIA_HIDDEN: 'aria-hidden',
-  ROLE: 'role',
-  INPUT_SELECTOR: '.mdc-textfield__input',
-  LABEL_SELECTOR: '.mdc-textfield__label',
-  ICON_SELECTOR: '.mdc-textfield__icon',
-  ICON_EVENT: 'MDCTextfield:icon',
-  BOTTOM_LINE_SELECTOR: '.mdc-textfield__bottom-line',
+  ARIA_CONTROLS: 'aria-controls',
+  INPUT_SELECTOR: '.mdc-text-field__input',
+  LABEL_SELECTOR: '.mdc-text-field__label',
+  ICON_SELECTOR: '.mdc-text-field__icon',
+  IDLE_OUTLINE_SELECTOR: '.mdc-text-field__idle-outline',
+  OUTLINE_SELECTOR: '.mdc-text-field__outline',
+  BOTTOM_LINE_SELECTOR: '.mdc-text-field__bottom-line',
 };
 
 /** @enum {string} */
 const cssClasses = {
-  ROOT: 'mdc-textfield',
-  UPGRADED: 'mdc-textfield--upgraded',
-  DISABLED: 'mdc-textfield--disabled',
-  FOCUSED: 'mdc-textfield--focused',
-  INVALID: 'mdc-textfield--invalid',
-  HELPTEXT_PERSISTENT: 'mdc-textfield-helptext--persistent',
-  HELPTEXT_VALIDATION_MSG: 'mdc-textfield-helptext--validation-msg',
-  LABEL_FLOAT_ABOVE: 'mdc-textfield__label--float-above',
-  LABEL_SHAKE: 'mdc-textfield__label--shake',
-  BOX: 'mdc-textfield--box',
-  TEXT_FIELD_ICON: 'mdc-textfield__icon',
-  TEXTAREA: 'mdc-textfield--textarea',
-  BOTTOM_LINE_ACTIVE: 'mdc-textfield__bottom-line--active',
+  ROOT: 'mdc-text-field',
+  UPGRADED: 'mdc-text-field--upgraded',
+  DISABLED: 'mdc-text-field--disabled',
+  DENSE: 'mdc-text-field--dense',
+  FOCUSED: 'mdc-text-field--focused',
+  INVALID: 'mdc-text-field--invalid',
+  BOX: 'mdc-text-field--box',
+  OUTLINED: 'mdc-text-field--outlined',
 };
 
-export {cssClasses, strings};
+/** @enum {number} */
+const numbers = {
+  LABEL_SCALE: 0.75,
+  DENSE_LABEL_SCALE: 0.923,
+};
+
+export {cssClasses, strings, numbers};

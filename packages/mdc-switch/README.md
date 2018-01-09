@@ -50,7 +50,7 @@ npm install --save @material/switch
 
 ### Disabled
 ```html
-<div class="mdc-switch mdc-switch--disabled">
+<div class="mdc-switch">
   <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" disabled />
   <div class="mdc-switch__background">
     <div class="mdc-switch__knob"></div>
@@ -59,16 +59,19 @@ npm install --save @material/switch
 <label for="another-basic-switch" class="mdc-switch-label">off/on</label>
 ```
 
-## Classes
+### Classes
 
-### Block
+#### Block
 
 The block class is `mdc-switch`. This defines the top-level switch element.
 
-### Modifier
+### Sass Mixins
 
-The provided modifiers are:
+The following mixins apply only to _enabled_ switches in the _on_ (checked) state.
+It is not currently possible to customize the color of a _disabled_ or _off_ (unchecked) switch.
 
-| Class                 | Description                                  |
-| ----------------------| -------------------------------------------- |
-| `mdc-switch--disabled`   | Applies disabled style to disabled switches. |
+Mixin | Description
+--- | ---
+`mdc-switch-track-color($color)` | Sets the track color
+`mdc-switch-knob-color($color)` | Sets the knob color
+`mdc-switch-focus-indicator-color($color)` | Sets the focus indicator color

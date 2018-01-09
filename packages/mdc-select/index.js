@@ -15,9 +15,11 @@
  */
 
 import {MDCComponent} from '@material/base';
+import {MDCRipple} from '@material/ripple';
 import {MDCSimpleMenu} from '@material/menu';
 
 import MDCSelectFoundation from './foundation';
+import {strings} from './constants';
 
 export {MDCSelectFoundation};
 
@@ -69,29 +71,39 @@ export class MDCSelect extends MDCComponent {
   }
 
   initialize(menuFactory = (el) => new MDCSimpleMenu(el)) {
-    this.menuEl_ = this.root_.querySelector('.mdc-select__menu');
+    this.surface_ = this.root_.querySelector(strings.SURFACE_SELECTOR);
+    this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
+    this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
+    this.menuEl_ = this.root_.querySelector(strings.MENU_SELECTOR);
     this.menu_ = menuFactory(this.menuEl_);
-    this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
+
+    this.ripple = new MDCRipple(this.surface_);
   }
 
   getDefaultFoundation() {
     return new MDCSelectFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      addClassToLabel: (className) => this.label_.classList.add(className),
+      removeClassFromLabel: (className) => this.label_.classList.remove(className),
+      addClassToBottomLine: (className) => this.bottomLine_.classList.add(className),
+      removeClassFromBottomLine: (className) => this.bottomLine_.classList.remove(className),
+      setBottomLineAttr: (attr, value) => this.bottomLine_.setAttribute(attr, value),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
-      computeBoundingRect: () => this.root_.getBoundingClientRect(),
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      focus: () => this.root_.focus(),
+      computeBoundingRect: () => this.surface_.getBoundingClientRect(),
+      registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
+      focus: () => this.surface_.focus(),
       makeTabbable: () => {
-        this.root_.tabIndex = 0;
+        this.surface_.tabIndex = 0;
       },
       makeUntabbable: () => {
-        this.root_.tabIndex = -1;
+        this.surface_.tabIndex = -1;
       },
-      getComputedStyleValue: (prop) => window.getComputedStyle(this.root_).getPropertyValue(prop),
-      setStyle: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
+      getComputedStyleValue: (prop) => window.getComputedStyle(this.surface_).getPropertyValue(prop),
+      setStyle: (propertyName, value) => this.surface_.style.setProperty(propertyName, value),
       create2dRenderingContext: () => document.createElement('canvas').getContext('2d'),
       setMenuElStyle: (propertyName, value) => this.menuEl_.style.setProperty(propertyName, value),
       setMenuElAttr: (attr, value) => this.menuEl_.setAttribute(attr, value),
@@ -112,6 +124,8 @@ export class MDCSelect extends MDCComponent {
       deregisterMenuInteractionHandler: (type, handler) => this.menu_.unlisten(type, handler),
       notifyChange: () => this.emit(MDCSelectFoundation.strings.CHANGE_EVENT, this),
       getWindowInnerHeight: () => window.innerHeight,
+      addBodyClass: (className) => document.body.classList.add(className),
+      removeBodyClass: (className) => document.body.classList.remove(className),
     });
   }
 

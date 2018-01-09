@@ -30,9 +30,10 @@ attribute to the root element with its value set to the Component's class name. 
 writing the markup, simply insert a script tag that calls `mdc.autoInit()`. Make sure you call `mdc.autoInit()` after all scripts are loaded so it works properly.
 
 ```html
-<div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-  <input class="mdc-textfield__input" type="text" id="input">
-  <label for="input" class="mdc-textfield__label">Input Label</label>
+<div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+  <input class="mdc-text-field__input" type="text" id="input">
+  <label for="input" class="mdc-text-field__label">Input Label</label>
+  <div class="mdc-text-field__bottom-line"></div>
 </div>
 
 <!-- at the bottom of the page -->
@@ -41,7 +42,7 @@ writing the markup, simply insert a script tag that calls `mdc.autoInit()`. Make
 </script>
 ```
 
-This will attach an [MDCTextfield](../mdc-textfield) instance to the root `<div>` element.
+This will attach an [MDCTextField](../mdc-textfield) instance to the root `<div>` element.
 
 #### Accessing the component instance
 
@@ -49,17 +50,18 @@ When `mdc-auto-init` attaches a component to an element, it assign that instance
 using a property whose name is the value of `data-mdc-auto-init`. For example, given
 
 ```html
-<div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
-  <input class="mdc-textfield__input" type="text" id="input">
-  <label for="input" class="mdc-textfield__label">Input Label</label>
+<div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+  <input class="mdc-text-field__input" type="text" id="input">
+  <label for="input" class="mdc-text-field__label">Input Label</label>
+  <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
 
-Once `mdc.autoInit()` is called, you can access the component instance via an `MDCTextfield`
+Once `mdc.autoInit()` is called, you can access the component instance via an `MDCTextField`
 property on that element.
 
 ```js
-document.querySelector('.mdc-textfield').MDCTextfield.disabled = true;
+document.querySelector('.mdc-text-field').MDCTextField.disabled = true;
 ```
 
 ### Using as a standalone module
@@ -72,13 +74,13 @@ be achieved via `mdcAutoInit.register`.
 
 ```js
 import mdcAutoInit from '@material/auto-init';
-import {MDCTextfield} from '@material/textfield';
+import {MDCTextField} from '@material/textfield';
 
-mdcAutoInit.register('MDCTextfield', MDCTextfield);
+mdcAutoInit.register('MDCTextField', MDCTextField);
 ```
 
 `mdcAutoInit.register()` tells `mdc-auto-init` that when it comes across an element with a
-`data-mdc-auto-init` attribute set to `"MDCTextfield"`, it should initialize an `MDCTextfield`
+`data-mdc-auto-init` attribute set to `"MDCTextField"`, it should initialize an `MDCTextField`
 instance on that element. The `material-components-web` package does this for all components for
 convenience.
 
@@ -86,13 +88,13 @@ Also note that a component can be mapped to any string, not necessarily the name
 
 ```js
 import mdcAutoInit from '@material/auto-init';
-import {MDCTextfield} from '@material/textfield';
+import {MDCTextField} from '@material/textfield';
 
-mdcAutoInit.register('My amazing text field!!!', MDCTextfield);
+mdcAutoInit.register('My amazing text field!!!', MDCTextField);
 ```
 
 ```html
-<div class="mdc-textfield" data-mdc-auto-init="My amazing text field!!!">
+<div class="mdc-text-field" data-mdc-auto-init="My amazing text field!!!">
   <!-- ... -->
 </div>
 <script>window.mdc.autoInit();</script>
@@ -104,7 +106,7 @@ Any component can be deregistered by calling `mdcAutoInit.deregister` with the n
 the component.
 
 ```js
-mdcAutoInit.deregister('MDCTextfield');
+mdcAutoInit.deregister('MDCTextField');
 ```
 
 This will simply remove the name -> component mapping. It will _not_ affect any already-instantiated

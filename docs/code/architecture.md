@@ -4,18 +4,18 @@ MDC Web is split into packages. Each package is either a Subsystem or a
 Component. Subsystems apply to many components. They generally describe style
 (e.g. color) or motion (e.g. animation). Component packages tend to rely on
 many subsystem packages. But component packages rarely depend on other
-component packages. Components require an HTML struture. Some components are
+component packages. Components require an HTML structure. Some components are
 static, but most are dynamic and include some JavaScript.
 
-> Each component is usable separate from any other component.
+> Each component is usable separately from any other component.
 
 ## Sass
 
 All of MDC Web's CSS is generated using [Sass](http://sass-lang.com/). Sass
 mixins lets us make groups of CSS declarations that we want to reuse on
 multiple components. Subsystems provide a Sass mixin, which the component
-imports in it's Sass file. Each package compiles it's Sass files into a single
-CSS file.
+imports in its Sass file. Each package compiles its Sass files into a single CSS
+file.
 
 ## HTML
 
@@ -26,7 +26,7 @@ with the required HTML structure.
 
 MDC Web has split each dynamic component's JavaScript into two pieces:
 Foundation and Adapter. This lets us reuse Foundation code across multiple web
-platforms, e.g. Wiz and Angular, by re-implementing only the Adapter. For now
+platforms, e.g. React and Angular, by re-implementing only the Adapter. For now
 we've only implemented a vanilla JavaScript version of the Adapter.
 
 ### Foundation

@@ -24,10 +24,9 @@ Note that **vertical sliders and range (multi-thumb) sliders are not supported, 
 from the material design spec**.
 
 Also note that we have taken certain deviations from the UX within the spec, e.g. nuances as to the
-slider's motion across the track, as well as the style of the slider thumb when in the "off" state
-in dark mode. Thus, there may be some treatments which deviate from the mocks. These deviations
-arose out of design feedback from seeing sliders used on the web, and thus have been endorsed by
-the Material Design team.
+slider's motion across the track, as well as the color of the tick marks. Thus, there may be some
+treatments which deviate from the mocks. These deviations arose out of design feedback from seeing
+sliders used on the web, and thus have been endorsed by the Material Design team.
 
 ## Design and API Documentation
 
@@ -170,8 +169,8 @@ track container.
 </div>
 ```
 
-> **NOTE**: When the provided step is indivisble to distance between max and min,
-> we place the secondary to last marker proportionally at where thumb could reach and
+> **NOTE**: When the provided step is indivisible to distance between max and min,
+> we place the second to last marker proportionally at where thumb could reach and
 > place the last marker at max value.
 
 ### Disabled sliders
@@ -276,20 +275,37 @@ use to build a custom MDCSlider component for their framework.
 
 ### Theming
 
-All thematic elements of sliders make use of the **primary theme color**, including when the
+By default, all thematic elements of sliders make use of the **secondary theme color**, including when the
 component is used within a dark mode context.
 
-#### Setting the correct background color for disabled/off slider thumbs
+#### Sass Mixins
 
-One tricky issue with sliders is how the thumb is supposed to look when in the disabled or
-"off" states. In these cases, certain portions of the slider's thumb and track are supposed to
+The following mixins apply only to _enabled_ sliders.
+It is not currently possible to customize the color of a _disabled_ slider.
+
+Mixin | Description
+--- | ---
+`mdc-slider-color-accessible($color)` | Sets the color of all slider elements and automatically sets an accessible ink color with high contrast for the value indicator pin
+`mdc-slider-highlight-color($color)` | Sets the color of the highlighted (aka "on") portion of the slider
+`mdc-slider-rail-color($color, $opacity)` | Sets the color (and optionally the opacity) of the rail
+`mdc-slider-rail-tick-mark-color($color)` | Sets the color of the tick marks on the rail
+`mdc-slider-thumb-color($color)` | Sets the color of the thumb (grab handle)
+`mdc-slider-focus-halo-color($color)` | Sets the color of the focus halo
+`mdc-slider-value-pin-fill-color-accessible($color)` | Sets the fill color of the value indicator pin and automatically sets an accessible ink color with high contrast
+`mdc-slider-value-pin-fill-color($color)` | Sets the fill color of the value indicator pin
+`mdc-slider-value-pin-ink-color($color)` | Sets the ink color of the value indicator pin
+
+#### Setting the correct background color for disabled slider thumbs
+
+One tricky issue with sliders is how the thumb is supposed to look when in the disabled state.
+In this case, certain portions of the slider's thumb and track are supposed to
 become "transparent" and reveal the background color behind it. However, this presents a problem as
 there is no elegant way to derive what the background color behind the slider should be. We could
 theoretically walk up the DOM until we found an ancestor with a set background, but that would break
 the component's encapsulation model.
 
 To solve this, you can supply a css custom property `--mdc-slider-bg-color-behind-component`. When
-used, this will override the default colors used for the disabled/off state slider thumb and use
+used, this will override the default color used for the disabled state slider thumb and use
 the color specified:
 
 ```css
@@ -313,23 +329,6 @@ $mdc-slider-default-assumed-bg-color: #fafafa;
 
 If you're using the `.mdc-theme--dark` classes, you'll want to override `$mdc-slider-dark-theme-assumed-bg-color` instead.
 
-Finally, if you'd prefer not to use Sass, you can use the following CSS snippet which should be
-included _after_ the `@material/slider` styles have been loaded onto the page:
-
-```css
-.mdc-slider--off .mdc-slider__thumb {
-  fill: YOUR_CUSTOM_COLOR;
-}
-
-.mdc-slider--disabled .mdc-slider__thumb {
-  stroke: YOUR_CUSTOM_COLOR !important;
-}
-```
-
-Note that the following snippet assumes you are not using `mdc-theme--dark`. If you are, you may
-need to add `.mdc-theme--dark` as an additional ancestor selector before the `.mdc-slider--*`
-classes.
-
 ### Tips/Tricks
 
 #### Preventing [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)
@@ -337,9 +336,6 @@ classes.
 Because `MDCSlider` updates its UI based on the values it reads in when it is instantiated, there is
 potential for an incorrect first render before the script containing the `MDCSlider` initialization
 logic executes. To avoid this, there are a few things you can attempt to do:
-
-If the slider's `aria-valuenow` is set to `"0"`, you can manually add the class `mdc-slider--off`
-to the root `mdc-slider` element.
 
 If you know how wide the slider will be at the time of instantiation, you can add an inline style
 to the `mdc-slider__thumb-container`/`mdc-slider__track` elements which will position it correctly
