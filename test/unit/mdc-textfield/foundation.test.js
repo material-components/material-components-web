@@ -43,7 +43,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput', 'getIdleOutlineStyleValue', 'isFocused', 'isRtl',
+    'getNativeInput', 'isFocused', 'isRtl',
   ]);
 });
 
@@ -383,22 +383,20 @@ test('#updateOutline updates the SVG path of the outline element', () => {
   const {foundation, mockAdapter, label, outline} = setupTest();
   td.when(label.getWidth()).thenReturn(30);
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(false);
-  td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30 * numbers.LABEL_SCALE, 8, false));
+  td.verify(outline.updateSvgPath(30 * numbers.LABEL_SCALE, false));
 });
 
 test('#updateOutline updates the SVG path of the outline element when dense', () => {
   const {foundation, mockAdapter, label, outline} = setupTest();
   td.when(label.getWidth()).thenReturn(30);
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(true);
-  td.when(mockAdapter.getIdleOutlineStyleValue('border-radius')).thenReturn('8px');
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30 * numbers.DENSE_LABEL_SCALE, 8, false));
+  td.verify(outline.updateSvgPath(30 * numbers.DENSE_LABEL_SCALE, false));
 });
 
 const setupBareBonesTest = () => {
