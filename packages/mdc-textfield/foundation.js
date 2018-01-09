@@ -64,7 +64,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       registerBottomLineEventHandler: () => {},
       deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
-      getIdleOutlineStyleValue: () => {},
       isFocused: () => {},
       isRtl: () => {},
     });

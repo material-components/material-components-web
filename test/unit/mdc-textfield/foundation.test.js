@@ -43,7 +43,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput', 'getIdleOutlineStyleValue', 'isFocused', 'isRtl',
+    'getNativeInput', 'isFocused', 'isRtl',
   ]);
 });
 
