@@ -403,7 +403,7 @@ Temporary drawers can easily be initialized using their default constructors as 
 ```javascript
 import {MDCTemporaryDrawer} from '@material/drawer';
 
-const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
+const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
 ```
 
 #### Handling events
