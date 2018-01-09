@@ -15,10 +15,33 @@
  * limitations under the License.
  */
 
+/**
+ * @typedef {{
+ *   top: number,
+ *   right: number,
+ *   bottom: number,
+ *   left: number
+ * }}
+ */
+let AnchorMargin;
+
+/* eslint-disable no-unused-vars */
+/**
+ * @typedef {{
+ *   viewport: { width: number, height: number },
+ *   viewportDistance: {top: number, right: number, bottom: number, left: number},
+ *   anchorHeight: number,
+ *   anchorWidth: number,
+ *   menuHeight: number,
+ *   menuWidth: number,
+ * }}
+ */
+let AutoLayoutMeasurements;
+/* eslint-enable no-unused-vars */
+
 import MDCFoundation from '@material/base/foundation';
-import MDCSimpleMenuAdapter from './adapter';
-import {cssClasses, strings, numbers} from './constants';
-import {clamp, bezierProgress} from '../util';
+import {MDCSimpleMenuAdapter} from './adapter';
+import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCSimpleMenuAdapter>}
@@ -39,6 +62,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     return numbers;
   }
 
+  /** @return enum{number} */
+  static get Corner() {
+    return Corner;
+  }
+
   /**
    * {@see MDCSimpleMenuAdapter} for typing information on parameters and return
    * types.
@@ -56,15 +84,11 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       hasAnchor: () => false,
       getAnchorDimensions: () => ({}),
       getWindowDimensions: () => ({}),
-      setScale: () => {},
-      setInnerScale: () => {},
       getNumberOfItems: () => 0,
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       registerBodyClickHandler: () => {},
       deregisterBodyClickHandler: () => {},
-      getYParamsForItemAtIndex: () => ({}),
-      setTransitionDelayForItemAtIndex: () => {},
       getIndexForEventTarget: () => 0,
       notifySelected: () => {},
       notifyCancel: () => {},
@@ -77,7 +101,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
       isRtl: () => false,
       setTransformOrigin: () => {},
       setPosition: () => {},
-      getAccurateTime: () => 0,
+      setMaxHeight: () => {},
     });
   }
 
@@ -96,17 +120,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.isOpen_ = false;
     /** @private {number} */
-    this.startScaleX_ = 0;
+    this.openAnimationEndTimerId_ = 0;
     /** @private {number} */
-    this.startScaleY_ = 0;
-    /** @private {number} */
-    this.targetScale_ = 1;
-    /** @private {number} */
-    this.scaleX_ = 0;
-    /** @private {number} */
-    this.scaleY_ = 0;
-    /** @private {boolean} */
-    this.running_ = false;
+    this.closeAnimationEndTimerId_ = 0;
     /** @private {number} */
     this.selectedTriggerTimerId_ = 0;
     /** @private {number} */
@@ -114,9 +130,13 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     /** @private {!{ width: number, height: number }} */
     this.dimensions_;
     /** @private {number} */
-    this.startTime_;
-    /** @private {number} */
     this.itemHeight_;
+    /** @private {Corner} */
+    this.anchorCorner_ = Corner.TOP_START;
+    /** @private {AnchorMargin} */
+    this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
+    /** @private {?AutoLayoutMeasurements} */
+    this.measures_ = null;
   }
 
   init() {
@@ -141,6 +161,8 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
 
   destroy() {
     clearTimeout(this.selectedTriggerTimerId_);
+    clearTimeout(this.openAnimationEndTimerId_);
+    clearTimeout(this.closeAnimationEndTimerId_);
     // Cancel any currently running animations.
     cancelAnimationFrame(this.animationRequestId_);
     this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
@@ -150,110 +172,20 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * Calculates transition delays for individual menu items, so that they fade in one at a time.
-   * @private
+   * @param {!Corner} corner Default anchor corner alignment of top-left menu corner.
    */
-  applyTransitionDelays_() {
-    const {BOTTOM_LEFT, BOTTOM_RIGHT} = MDCSimpleMenuFoundation.cssClasses;
-    const numItems = this.adapter_.getNumberOfItems();
-    const {height} = this.dimensions_;
-    const transitionDuration = MDCSimpleMenuFoundation.numbers.TRANSITION_DURATION_MS / 1000;
-    const start = MDCSimpleMenuFoundation.numbers.TRANSITION_SCALE_ADJUSTMENT_Y;
-
-    for (let index = 0; index < numItems; index++) {
-      const {top: itemTop, height: itemHeight} = this.adapter_.getYParamsForItemAtIndex(index);
-      this.itemHeight_ = itemHeight;
-      let itemDelayFraction = itemTop / height;
-      if (this.adapter_.hasClass(BOTTOM_LEFT) || this.adapter_.hasClass(BOTTOM_RIGHT)) {
-        itemDelayFraction = ((height - itemTop - itemHeight) / height);
-      }
-      const itemDelay = (start + itemDelayFraction * (1 - start)) * transitionDuration;
-      // Use toFixed() here to normalize CSS unit precision across browsers
-      this.adapter_.setTransitionDelayForItemAtIndex(index, `${itemDelay.toFixed(3)}s`);
-    }
+  setAnchorCorner(corner) {
+    this.anchorCorner_ = corner;
   }
 
   /**
-   * Removes transition delays from menu items.
-   * @private
+   * @param {!AnchorMargin} margin 4-plet of margins from anchor.
    */
-  removeTransitionDelays_() {
-    const numItems = this.adapter_.getNumberOfItems();
-    for (let i = 0; i < numItems; i++) {
-      this.adapter_.setTransitionDelayForItemAtIndex(i, null);
-    }
-  }
-
-  /**
-   * Animates menu opening or closing.
-   * @private
-   */
-  animationLoop_() {
-    const time = this.adapter_.getAccurateTime();
-    const {TRANSITION_DURATION_MS, TRANSITION_X1, TRANSITION_Y1, TRANSITION_X2, TRANSITION_Y2,
-      TRANSITION_SCALE_ADJUSTMENT_X, TRANSITION_SCALE_ADJUSTMENT_Y} = MDCSimpleMenuFoundation.numbers;
-    const currentTime = clamp((time - this.startTime_) / TRANSITION_DURATION_MS);
-
-    // Animate X axis very slowly, so that only the Y axis animation is visible during fade-out.
-    let currentTimeX = clamp(
-      (currentTime - TRANSITION_SCALE_ADJUSTMENT_X) / (1 - TRANSITION_SCALE_ADJUSTMENT_X)
-    );
-    // No time-shifting on the Y axis when closing.
-    let currentTimeY = currentTime;
-
-    let startScaleY = this.startScaleY_;
-    if (this.targetScale_ === 1) {
-      // Start with the menu at the height of a single item.
-      if (this.itemHeight_) {
-        startScaleY = Math.max(this.itemHeight_ / this.dimensions_.height, startScaleY);
-      }
-      // X axis moves faster, so time-shift forward.
-      currentTimeX = clamp(currentTime + TRANSITION_SCALE_ADJUSTMENT_X);
-      // Y axis moves slower, so time-shift backwards and adjust speed by the difference.
-      currentTimeY = clamp(
-        (currentTime - TRANSITION_SCALE_ADJUSTMENT_Y) / (1 - TRANSITION_SCALE_ADJUSTMENT_Y)
-      );
-    }
-
-    // Apply cubic bezier easing independently to each axis.
-    const easeX = bezierProgress(currentTimeX, TRANSITION_X1, TRANSITION_Y1, TRANSITION_X2, TRANSITION_Y2);
-    const easeY = bezierProgress(currentTimeY, TRANSITION_X1, TRANSITION_Y1, TRANSITION_X2, TRANSITION_Y2);
-
-    // Calculate the scales to apply to the outer container and inner container.
-    this.scaleX_ = this.startScaleX_ + (this.targetScale_ - this.startScaleX_) * easeX;
-    const invScaleX = 1 / (this.scaleX_ === 0 ? 1 : this.scaleX_);
-    this.scaleY_ = startScaleY + (this.targetScale_ - startScaleY) * easeY;
-    const invScaleY = 1 / (this.scaleY_ === 0 ? 1 : this.scaleY_);
-
-    // Apply scales.
-    this.adapter_.setScale(this.scaleX_, this.scaleY_);
-    this.adapter_.setInnerScale(invScaleX, invScaleY);
-
-    // Stop animation when we've covered the entire 0 - 1 range of time.
-    if (currentTime < 1) {
-      this.animationRequestId_ = requestAnimationFrame(() => this.animationLoop_());
-    } else {
-      this.animationRequestId_ = 0;
-      this.running_ = false;
-      this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
-    }
-  }
-
-  /**
-   * Starts the open or close animation.
-   * @private
-   */
-  animateMenu_() {
-    this.startTime_ = this.adapter_.getAccurateTime();
-    this.startScaleX_ = this.scaleX_;
-    this.startScaleY_ = this.scaleY_;
-
-    this.targetScale_ = this.isOpen_ ? 1 : 0;
-
-    if (!this.running_) {
-      this.running_ = true;
-      this.animationRequestId_ = requestAnimationFrame(() => this.animationLoop_());
-    }
+  setAnchorMargin(margin) {
+    this.anchorMargin_.top = typeof margin.top === 'number' ? margin.top : 0;
+    this.anchorMargin_.right = typeof margin.right === 'number' ? margin.right : 0;
+    this.anchorMargin_.bottom = typeof margin.bottom === 'number' ? margin.bottom : 0;
+    this.anchorMargin_.left = typeof margin.left === 'number' ? margin.left : 0;
   }
 
   /**
@@ -399,53 +331,186 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }, numbers.SELECTED_TRIGGER_DELAY);
   }
 
+  /**
+   * @return {AutoLayoutMeasurements} Measurements used to position menu popup.
+   */
+  getAutoLayoutMeasurements_() {
+    const anchorRect = this.adapter_.getAnchorDimensions();
+    const viewport = this.adapter_.getWindowDimensions();
+
+    return {
+      viewport: viewport,
+      viewportDistance: {
+        top: anchorRect.top,
+        right: viewport.width - anchorRect.right,
+        left: anchorRect.left,
+        bottom: viewport.height - anchorRect.bottom,
+      },
+      anchorHeight: anchorRect.height,
+      anchorWidth: anchorRect.width,
+      menuHeight: this.dimensions_.height,
+      menuWidth: this.dimensions_.width,
+    };
+  }
+
+  /**
+   * Computes the corner of the anchor from which to animate and position the menu.
+   * @return {Corner}
+   * @private
+   */
+  getOriginCorner_() {
+    // Defaults: open from the top left.
+    let corner = Corner.TOP_LEFT;
+
+    const {viewportDistance, anchorHeight, anchorWidth, menuHeight, menuWidth} = this.measures_;
+    const isBottomAligned = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
+    const availableTop = isBottomAligned ? viewportDistance.top + anchorHeight + this.anchorMargin_.bottom
+      : viewportDistance.top + this.anchorMargin_.top;
+    const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
+      : viewportDistance.bottom + anchorHeight - this.anchorMargin_.top;
+
+    const topOverflow = menuHeight - availableTop;
+    const bottomOverflow = menuHeight - availableBottom;
+    if (bottomOverflow > 0 && topOverflow < bottomOverflow) {
+      corner |= CornerBit.BOTTOM;
+    }
+
+    const isRtl = this.adapter_.isRtl();
+    const isFlipRtl = Boolean(this.anchorCorner_ & CornerBit.FLIP_RTL);
+    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & CornerBit.RIGHT);
+    const isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
+      (!avoidHorizontalOverlap && isFlipRtl && isRtl);
+    const availableLeft = isAlignedRight ? viewportDistance.left + anchorWidth + this.anchorMargin_.right :
+      viewportDistance.left + this.anchorMargin_.left;
+    const availableRight = isAlignedRight ? viewportDistance.right - this.anchorMargin_.right :
+      viewportDistance.right + anchorWidth - this.anchorMargin_.left;
+
+    const leftOverflow = menuWidth - availableLeft;
+    const rightOverflow = menuWidth - availableRight;
+
+    if ((leftOverflow < 0 && isAlignedRight && isRtl) ||
+        (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
+        (rightOverflow > 0 && leftOverflow < rightOverflow)) {
+      corner |= CornerBit.RIGHT;
+    }
+
+    return corner;
+  }
+
+  /**
+   * @param {Corner} corner Origin corner of the menu.
+   * @return {number} Horizontal offset of menu origin corner from corresponding anchor corner.
+   * @private
+   */
+  getHorizontalOriginOffset_(corner) {
+    const {anchorWidth} = this.measures_;
+    const isRightAligned = Boolean(corner & CornerBit.RIGHT);
+    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & CornerBit.RIGHT);
+    let x = 0;
+    if (isRightAligned) {
+      const rightOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.left : this.anchorMargin_.right;
+      x = rightOffset;
+    } else {
+      const leftOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.right : this.anchorMargin_.left;
+      x = leftOffset;
+    }
+    return x;
+  }
+
+  /**
+   * @param {Corner} corner Origin corner of the menu.
+   * @return {number} Vertical offset of menu origin corner from corresponding anchor corner.
+   * @private
+   */
+  getVerticalOriginOffset_(corner) {
+    const {viewport, viewportDistance, anchorHeight, menuHeight} = this.measures_;
+    const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
+    const {MARGIN_TO_EDGE} = MDCSimpleMenuFoundation.numbers;
+    const avoidVerticalOverlap = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
+    const canOverlapVertically = !avoidVerticalOverlap;
+    let y = 0;
+
+    if (isBottomAligned) {
+      y = avoidVerticalOverlap ? anchorHeight - this.anchorMargin_.top : -this.anchorMargin_.bottom;
+      // adjust for when menu can overlap anchor, but too tall to be aligned to bottom
+      // anchor corner. Bottom margin is ignored in such cases.
+      if (canOverlapVertically && menuHeight > viewportDistance.top + anchorHeight) {
+        y = -(Math.min(menuHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.top + anchorHeight));
+      }
+    } else {
+      y = avoidVerticalOverlap ? (anchorHeight + this.anchorMargin_.bottom) : this.anchorMargin_.top;
+      // adjust for when menu can overlap anchor, but too tall to be aligned to top
+      // anchor corners. Top margin is ignored in that case.
+      if (canOverlapVertically && menuHeight > viewportDistance.bottom + anchorHeight) {
+        y = -(Math.min(menuHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.bottom + anchorHeight));
+      }
+    }
+    return y;
+  }
+
+  /**
+   * @param {Corner} corner Origin corner of the menu.
+   * @return {number} Maximum height of the menu, based on available space. 0 indicates should not be set.
+   * @private
+   */
+  getMenuMaxHeight_(corner) {
+    let maxHeight = 0;
+    const {viewportDistance} = this.measures_;
+    const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
+
+    // When maximum height is not specified, it is handled from css.
+    if (this.anchorCorner_ & CornerBit.BOTTOM) {
+      if (isBottomAligned) {
+        maxHeight = viewportDistance.top + this.anchorMargin_.top;
+      } else {
+        maxHeight = viewportDistance.bottom - this.anchorMargin_.bottom;
+      }
+    }
+
+    return maxHeight;
+  }
+
   /** @private */
   autoPosition_() {
     if (!this.adapter_.hasAnchor()) {
       return;
     }
 
-    // Defaults: open from the top left.
-    let vertical = 'top';
-    let horizontal = 'left';
+    // Compute measurements for autoposition methods reuse.
+    this.measures_ = this.getAutoLayoutMeasurements_();
 
-    const anchor = this.adapter_.getAnchorDimensions();
-    const windowDimensions = this.adapter_.getWindowDimensions();
-
-    const topOverflow = anchor.top + this.dimensions_.height - windowDimensions.height;
-    const bottomOverflow = this.dimensions_.height - anchor.bottom;
-    const extendsBeyondTopBounds = topOverflow > 0;
-
-    if (extendsBeyondTopBounds) {
-      if (bottomOverflow < topOverflow) {
-        vertical = 'bottom';
-      }
-    }
-
-    const leftOverflow = anchor.left + this.dimensions_.width - windowDimensions.width;
-    const rightOverflow = this.dimensions_.width - anchor.right;
-    const extendsBeyondLeftBounds = leftOverflow > 0;
-    const extendsBeyondRightBounds = rightOverflow > 0;
-
-    if (this.adapter_.isRtl()) {
-      // In RTL, we prefer to open from the right.
-      horizontal = 'right';
-      if (extendsBeyondRightBounds && leftOverflow < rightOverflow) {
-        horizontal = 'left';
-      }
-    } else if (extendsBeyondLeftBounds && rightOverflow < leftOverflow) {
-      horizontal = 'right';
-    }
-
+    const corner = this.getOriginCorner_();
+    const maxMenuHeight = this.getMenuMaxHeight_(corner);
+    let verticalAlignment = (corner & CornerBit.BOTTOM) ? 'bottom' : 'top';
+    let horizontalAlignment = (corner & CornerBit.RIGHT) ? 'right' : 'left';
+    const horizontalOffset = this.getHorizontalOriginOffset_(corner);
+    const verticalOffset = this.getVerticalOriginOffset_(corner);
     const position = {
-      [horizontal]: '0',
-      [vertical]: '0',
+      [horizontalAlignment]: horizontalOffset ? horizontalOffset + 'px' : '0',
+      [verticalAlignment]: verticalOffset ? verticalOffset + 'px' : '0',
     };
+    const {anchorWidth, menuHeight, menuWidth} = this.measures_;
+    // Center align when anchor width is comparable or greater than menu, otherwise keep corner.
+    if (anchorWidth / menuWidth > numbers.ANCHOR_TO_MENU_WIDTH_RATIO) {
+      horizontalAlignment = 'center';
+    }
 
-    this.adapter_.setTransformOrigin(`${vertical} ${horizontal}`);
+    // Adjust vertical origin when menu is positioned with significant offset from anchor. This is done so that
+    // scale animation is "anchored" on the anchor.
+    if (!(this.anchorCorner_ & CornerBit.BOTTOM) &&
+        Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
+      const verticalOffsetPercent = Math.abs(verticalOffset / menuHeight) * 100;
+      const originPercent = (corner & CornerBit.BOTTOM) ? 100 - verticalOffsetPercent : verticalOffsetPercent;
+      verticalAlignment = Math.round(originPercent * 100) / 100 + '%';
+    }
+
+    this.adapter_.setTransformOrigin(`${horizontalAlignment} ${verticalAlignment}`);
     this.adapter_.setPosition(position);
-  }
+    this.adapter_.setMaxHeight(maxMenuHeight ? maxMenuHeight + 'px' : '');
 
+    // Clear measures after positioning is complete.
+    this.measures_ = null;
+  }
 
   /**
    * Open the menu.
@@ -453,15 +518,18 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    */
   open({focusIndex = null} = {}) {
     this.adapter_.saveFocus();
-    this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
+    this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_OPEN);
+
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.dimensions_ = this.adapter_.getInnerDimensions();
-      this.applyTransitionDelays_();
       this.autoPosition_();
-      this.animateMenu_();
       this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.OPEN);
       this.focusOnOpen_(focusIndex);
       this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
+      this.openAnimationEndTimerId_ = setTimeout(() => {
+        this.openAnimationEndTimerId_ = 0;
+        this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_OPEN);
+      }, numbers.TRANSITION_OPEN_DURATION);
     });
     this.isOpen_ = true;
   }
@@ -480,11 +548,13 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }
 
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
-    this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING);
+    this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_CLOSED);
     requestAnimationFrame(() => {
-      this.removeTransitionDelays_();
-      this.animateMenu_();
       this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.OPEN);
+      this.closeAnimationEndTimerId_ = setTimeout(() => {
+        this.closeAnimationEndTimerId_ = 0;
+        this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_CLOSED);
+      }, numbers.TRANSITION_CLOSE_DURATION);
     });
     this.isOpen_ = false;
     this.adapter_.restoreFocus();
@@ -496,4 +566,4 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 }
 
-export default MDCSimpleMenuFoundation;
+export {MDCSimpleMenuFoundation, AnchorMargin};

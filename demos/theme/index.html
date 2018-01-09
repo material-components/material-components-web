@@ -35,14 +35,14 @@
       </div>
     </header>
 
-    <aside class="mdc-temporary-drawer">
-      <nav class="mdc-temporary-drawer__drawer">
-        <header class="mdc-temporary-drawer__header">
-          <div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
+    <aside class="mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
+        <header class="mdc-drawer__header">
+          <div class="mdc-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
             Header here
           </div>
         </header>
-        <nav class="mdc-temporary-drawer__content mdc-list-group">
+        <nav class="mdc-drawer__content mdc-list-group">
           <div class="mdc-list">
             <a class="mdc-list-item mdc-list-item--selected" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
@@ -76,18 +76,158 @@
     </aside>
 
     <main class="mdc-toolbar-fixed-adjust demo-main">
+
+      <h2 class="mdc-typography--display1">
+        Baseline Colors
+      </h2>
+
+      <section class="demo-component-section">
+        <i id="classes" class="demo-anchor-with-toolbar-offset"></i>
+        <h3 class="mdc-typography--headline demo-component-section__heading">
+          CSS Classes
+          <a href="#classes" class="demo-component-section__permalink" title="Permalink to the theme demo for baseline CSS classes">#</a>
+        </h3>
+
+        <fieldset class="demo-fieldset--color">
+          <legend class="mdc-typography--subheading2">Theme colors as text</legend>
+
+          <div class="demo-theme-color-group">
+            <div class="demo-theme-color-swatches">
+              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary mdc-typography--body2">Primary</div>
+              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary-light mdc-typography--body2">Primary Light</div>
+              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary-dark mdc-typography--body2">Primary Dark</div>
+            </div>
+            <div class="demo-theme-color-swatches">
+              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary mdc-typography--body2">Secondary</div>
+              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary-light mdc-typography--body2">Secondary Light</div>
+              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary-dark mdc-typography--body2">Secondary Dark</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--color">
+          <legend class="mdc-typography--subheading2">Theme colors as background</legend>
+
+          <div class="demo-theme-color-group">
+            <div class="demo-theme-color-swatches">
+              <div class="demo-theme-color-swatch mdc-theme--primary-bg mdc-theme--text-primary-on-primary">Primary</div>
+              <div class="demo-theme-color-swatch mdc-theme--primary-light-bg mdc-theme--text-primary-on-primary-light">Primary Light</div>
+              <div class="demo-theme-color-swatch mdc-theme--primary-dark-bg mdc-theme--text-primary-on-primary-dark">Primary Dark</div>
+            </div>
+            <div class="demo-theme-color-swatches">
+              <div class="demo-theme-color-swatch mdc-theme--secondary-bg mdc-theme--text-primary-on-secondary">Secondary</div>
+              <div class="demo-theme-color-swatch mdc-theme--secondary-light-bg mdc-theme--text-primary-on-secondary-light">Secondary Light</div>
+              <div class="demo-theme-color-swatch mdc-theme--secondary-dark-bg mdc-theme--text-primary-on-secondary-dark">Secondary Dark</div>
+            </div>
+            <div class="demo-theme-color-swatches">
+              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--background mdc-theme--text-primary-on-background">Background</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--color">
+          <legend class="mdc-typography--subheading2">Light and dark tonal variants for extreme input luminance</legend>
+
+          <div class="demo-theme-color-group">
+            <div class="demo-theme-color-swatches">
+              <div class="demo-theme-color-swatch demo-theme-bg--low-luminance mdc-theme--text-primary-on-dark">Low Luminance</div>
+              <div class="demo-theme-color-swatch demo-theme-bg--low-luminance-light mdc-theme--text-primary-on-dark">Light Variant</div>
+              <div class="demo-theme-color-swatch demo-theme-bg--low-luminance-dark mdc-theme--text-primary-on-dark">Dark Variant</div>
+            </div>
+            <div class="demo-theme-color-swatches">
+              <div class="demo-theme-color-swatch demo-theme-bg--high-luminance mdc-theme--text-primary-on-light">High Luminance</div>
+              <div class="demo-theme-color-swatch demo-theme-bg--high-luminance-light mdc-theme--text-primary-on-light">Light Variant</div>
+              <div class="demo-theme-color-swatch demo-theme-bg--high-luminance-dark mdc-theme--text-primary-on-light">Dark Variant</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--color">
+          <legend class="mdc-typography--subheading2">Text on background</legend>
+
+          <div class="demo-theme-color-group">
+            <div class="demo-theme-text-row mdc-theme--background mdc-typography--body2">
+              <span class="demo-theme-text-style mdc-theme--text-primary-on-background">Primary</span>
+              <span class="demo-theme-text-style mdc-theme--text-secondary-on-background">Secondary</span>
+              <span class="demo-theme-text-style mdc-theme--text-hint-on-background">Hint</span>
+              <span class="demo-theme-text-style mdc-theme--text-disabled-on-background">Disabled</span>
+              <span class="demo-theme-text-style mdc-theme--text-icon-on-background material-icons">favorite</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--color">
+          <legend class="mdc-typography--subheading2">Text on primary</legend>
+
+          <div class="demo-theme-color-group">
+            <div class="demo-theme-text-row mdc-theme--primary-bg mdc-typography--body2">
+              <span class="demo-theme-text-style mdc-theme--text-primary-on-primary">Primary</span>
+              <span class="demo-theme-text-style mdc-theme--text-secondary-on-primary">Secondary</span>
+              <span class="demo-theme-text-style mdc-theme--text-hint-on-primary">Hint</span>
+              <span class="demo-theme-text-style mdc-theme--text-disabled-on-primary">Disabled</span>
+              <span class="demo-theme-text-style mdc-theme--text-icon-on-primary material-icons">favorite</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--color">
+          <legend class="mdc-typography--subheading2">Text on secondary</legend>
+
+          <div class="demo-theme-color-group">
+            <div class="demo-theme-text-row mdc-theme--secondary-bg mdc-typography--body2">
+              <span class="demo-theme-text-style mdc-theme--text-primary-on-secondary">Primary</span>
+              <span class="demo-theme-text-style mdc-theme--text-secondary-on-secondary">Secondary</span>
+              <span class="demo-theme-text-style mdc-theme--text-hint-on-secondary">Hint</span>
+              <span class="demo-theme-text-style mdc-theme--text-disabled-on-secondary">Disabled</span>
+              <span class="demo-theme-text-style mdc-theme--text-icon-on-secondary material-icons">favorite</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--color">
+          <legend class="mdc-typography--subheading2">Text on user-defined light background</legend>
+
+          <div class="demo-theme-color-group">
+            <div class="demo-theme-text-row demo-theme-bg--custom-light mdc-typography--body2">
+              <span class="demo-theme-text-style mdc-theme--text-primary-on-light">Primary</span>
+              <span class="demo-theme-text-style mdc-theme--text-secondary-on-light">Secondary</span>
+              <span class="demo-theme-text-style mdc-theme--text-hint-on-light">Hint</span>
+              <span class="demo-theme-text-style mdc-theme--text-disabled-on-light">Disabled</span>
+              <span class="demo-theme-text-style mdc-theme--text-icon-on-light material-icons">favorite</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="demo-fieldset--color">
+          <legend class="mdc-typography--subheading2">Text on user-defined dark background</legend>
+
+          <div class="demo-theme-color-group">
+            <div class="demo-theme-text-row demo-theme-bg--custom-dark mdc-typography--body2">
+              <span class="demo-theme-text-style mdc-theme--text-primary-on-dark">Primary</span>
+              <span class="demo-theme-text-style mdc-theme--text-secondary-on-dark">Secondary</span>
+              <span class="demo-theme-text-style mdc-theme--text-hint-on-dark">Hint</span>
+              <span class="demo-theme-text-style mdc-theme--text-disabled-on-dark">Disabled</span>
+              <span class="demo-theme-text-style mdc-theme--text-icon-on-dark material-icons">favorite</span>
+            </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <h2 class="mdc-typography--display1">
+        Baseline Component Stickersheet
+      </h2>
+
       <section class="demo-component-section">
         <i id="button" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Button
           <a href="#button" class="demo-component-section__permalink" title="Permalink to the theme demo for the button component">#</a>
-        </h2>
+        </h3>
 
         <fieldset class="demo-fieldset--button">
           <legend class="mdc-typography--subheading2">Enabled</legend>
 
           <div>
-            <h3 class="mdc-typography--body1">Default (primary theme color)</h3>
             <button class="mdc-button">
               Text
             </button>
@@ -98,22 +238,6 @@
               Unelevated
             </button>
             <button class="mdc-button mdc-button--stroked">
-              Stroked
-            </button>
-          </div>
-
-          <div>
-            <h3 class="mdc-typography--body1">Custom (secondary theme color)</h3>
-            <button class="mdc-button secondary-text-button">
-              Text
-            </button>
-            <button class="mdc-button mdc-button--raised secondary-filled-button">
-              Raised
-            </button>
-            <button class="mdc-button mdc-button--unelevated secondary-filled-button">
-              Unelevated
-            </button>
-            <button class="mdc-button mdc-button--stroked secondary-stroked-button">
               Stroked
             </button>
           </div>
@@ -141,16 +265,16 @@
 
       <section class="demo-component-section">
         <i id="card" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Card
           <a href="#card" class="demo-component-section__permalink" title="Permalink to the theme demo for the card component">#</a>
-        </h2>
+        </h3>
 
         <div class="demo-card-wrapper">
           <div class="mdc-card">
             <section class="mdc-card__primary">
               <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-              <h2 class="mdc-card__subtitle">Subtitle here</h2>
+              <h3 class="mdc-card__subtitle">Subtitle here</h3>
             </section>
             <section class="mdc-card__supporting-text">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -168,7 +292,7 @@
             <section class="mdc-card__primary">
               <div class="demo-card__avatar"></div>
               <h1 class="mdc-card__title">Title</h1>
-              <h2 class="mdc-card__subtitle">Subhead</h2>
+              <h3 class="mdc-card__subtitle">Subhead</h3>
             </section>
             <section class="mdc-card__supporting-text">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
@@ -194,10 +318,10 @@
 
       <section class="demo-component-section">
         <i id="checkbox" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Checkbox
           <a href="#checkbox" class="demo-component-section__permalink" title="Permalink to the theme demo for the checkbox component">#</a>
-        </h2>
+        </h3>
 
         <div class="demo-checkbox-row">
           <div class="mdc-form-field demo-checkbox-wrapper">
@@ -265,17 +389,17 @@
 
       <section class="demo-component-section">
         <i id="dialog" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Dialog
           <a href="#dialog" class="demo-component-section__permalink" title="Permalink to the theme demo for the dialog component">#</a>
-        </h2>
+        </h3>
 
         <aside class="mdc-dialog mdc-dialog--open demo-dialog">
           <div class="mdc-dialog__surface">
             <header class="mdc-dialog__header">
-              <h2 id="mdc-dialog-default-label" class="mdc-dialog__header__title">
+              <h3 id="mdc-dialog-default-label" class="mdc-dialog__header__title">
                 Fire photon torpedoes?
-              </h2>
+              </h3>
             </header>
             <section id="mdc-dialog-default-description" class="mdc-dialog__body">
               Shields at 60% and falling, captain.
@@ -290,20 +414,20 @@
 
       <section class="demo-component-section">
         <i id="drawer" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Drawer
           <a href="#drawer" class="demo-component-section__permalink" title="Permalink to the theme demo for the drawer component">#</a>
-        </h2>
+        </h3>
 
         <p class="mdc-typography--body1">Tap the menu icon (<i class="material-icons demo-drawer-toggle">menu</i>) in the toolbar at the top of the page to open the drawer.</p>
       </section>
 
       <section class="demo-component-section">
         <i id="fab" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Floating Action Button (FAB)
           <a href="#fab" class="demo-component-section__permalink" title="Permalink to the theme demo for the floating action button component">#</a>
-        </h2>
+        </h3>
 
         <fieldset>
           <div class="demo-fab-row">
@@ -329,42 +453,20 @@
                 </span>
               </button>
             </figure>
-            <figure class="demo-fab-tile">
-              <figcaption>
-                <div class="demo-fab-tile__title">Custom Color with Accessible Ink</div>
-                <div class="demo-fab-tile__snippet mdc-typography--body1"><code>@include mdc-fab-accessible</code></div>
-              </figcaption>
-              <button class="mdc-fab material-icons demo-fab demo-fab--custom" aria-label="Favorite">
-                <span class="mdc-fab__icon">
-                  favorite_border
-                </span>
-              </button>
-            </figure>
-            <figure class="demo-fab-tile">
-              <figcaption>
-                <div class="demo-fab-tile__title">Custom Color with Accessible Ink (Mini)</div>
-                <div class="demo-fab-tile__snippet mdc-typography--body1"></div>
-              </figcaption>
-              <button class="mdc-fab mdc-fab--mini material-icons demo-fab demo-fab--custom" aria-label="Favorite">
-                <span class="mdc-fab__icon">
-                  favorite_border
-                </span>
-              </button>
-            </figure>
           </div>
         </fieldset>
       </section>
 
       <section class="demo-component-section">
         <i id="icon-toggle" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Icon Toggle
           <a href="#icon-toggle" class="demo-component-section__permalink" title="Permalink to the theme demo for the icon toggle component">#</a>
-        </h2>
+        </h3>
 
         <div class="demo-icon-toggle__row">
           <div class="mdc-elevation--z2 demo-icon-toggle__tile">
-            <h3 class="mdc-typography--subheading2">Primary Colored Icon</h3>
+            <h4 class="mdc-typography--subheading2">Enabled</h4>
 
             <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
                role="button"
@@ -378,21 +480,7 @@
           </div>
 
           <div class="mdc-elevation--z2 demo-icon-toggle__tile">
-            <h3 class="mdc-typography--subheading2">Accent Colored Icon</h3>
-
-            <i class="mdc-icon-toggle mdc-icon-toggle--accent material-icons"
-               role="button"
-               aria-label="Add to favorites"
-               aria-pressed="false"
-               tabindex="0"
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-              favorite_border
-            </i>
-          </div>
-
-          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
-            <h3 class="mdc-typography--subheading2">Disabled Icon</h3>
+            <h4 class="mdc-typography--subheading2">Disabled</h4>
 
             <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
                role="button"
@@ -410,10 +498,10 @@
 
       <section class="demo-component-section">
         <i id="linear-progress" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Linear Progress
           <a href="#linear-progress" class="demo-component-section__permalink" title="Permalink to the theme demo for the linear progress component">#</a>
-        </h2>
+        </h3>
 
         <figure class="demo-linear-progress__row">
           <figcaption class="mdc-typography--subheading2">Indeterminate</figcaption>
@@ -442,28 +530,14 @@
             </div>
           </div>
         </figure>
-
-        <figure class="demo-linear-progress__row">
-          <figcaption class="mdc-typography--subheading2">Accent</figcaption>
-          <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--accent">
-            <div class="mdc-linear-progress__buffering-dots"></div>
-            <div class="mdc-linear-progress__buffer"></div>
-            <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-              <span class="mdc-linear-progress__bar-inner"></span>
-            </div>
-            <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-              <span class="mdc-linear-progress__bar-inner"></span>
-            </div>
-          </div>
-        </figure>
       </section>
 
       <section class="demo-component-section">
         <i id="radio" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Radio Button
           <a href="#radio" class="demo-component-section__permalink" title="Permalink to the theme demo for the radio button component">#</a>
-        </h2>
+        </h3>
 
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
@@ -474,7 +548,7 @@
                 <div class="mdc-radio__inner-circle"></div>
               </div>
             </div>
-            <label id="demo-radio-1-label" for="demo-radio-1">Default 1</label>
+            <label id="demo-radio-1-label" for="demo-radio-1">Enabled 1</label>
           </div>
           <div class="mdc-form-field demo-radio-form-field">
             <div class="mdc-radio">
@@ -484,53 +558,7 @@
                 <div class="mdc-radio__inner-circle"></div>
               </div>
             </div>
-            <label id="demo-radio-2-label" for="demo-radio-2">Default 2</label>
-          </div>
-        </figure>
-
-        <figure class="demo-radio-group">
-          <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio demo-radio--secondary">
-              <input class="mdc-radio__native-control" type="radio" id="demo-radio-3" checked name="demo-radio-group-2">
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label id="demo-radio-3-label" for="demo-radio-3">Secondary 1</label>
-          </div>
-          <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio demo-radio--secondary">
-              <input class="mdc-radio__native-control" type="radio" id="demo-radio-4" name="demo-radio-group-2">
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label id="demo-radio-4-label" for="demo-radio-4">Secondary 2</label>
-          </div>
-        </figure>
-
-        <figure class="demo-radio-group">
-          <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio demo-radio--custom">
-              <input class="mdc-radio__native-control" type="radio" id="demo-radio-5" checked name="demo-radio-group-3">
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label id="demo-radio-5-label" for="demo-radio-5">Custom 1</label>
-          </div>
-          <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio demo-radio--custom">
-              <input class="mdc-radio__native-control" type="radio" id="demo-radio-6" name="demo-radio-group-3">
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label id="demo-radio-6-label" for="demo-radio-6">Custom 2</label>
+            <label id="demo-radio-2-label" for="demo-radio-2">Enabled 2</label>
           </div>
         </figure>
 
@@ -560,10 +588,10 @@
 
       <section class="demo-component-section">
         <i id="ripple" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Ripple
           <a href="#ripple" class="demo-component-section__permalink" title="Permalink to the theme demo for the ripple component">#</a>
-        </h2>
+        </h3>
 
         <figure class="demo-ripple__row">
           <figcaption class="mdc-typography--subheading2">Bounded</figcaption>
@@ -575,9 +603,6 @@
           </div>
           <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-box--secondary demo-ripple-surface demo-ripple-surface--secondary" tabindex="0">
             Secondary Color
-          </div>
-          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-box--custom demo-ripple-surface demo-ripple-surface--custom" tabindex="0">
-            Custom Color
           </div>
         </figure>
 
@@ -604,22 +629,15 @@
               favorite
             </div>
           </div>
-          <div class="demo-ripple-box demo-ripple-box--custom">
-            Custom Color
-            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--custom" data-mdc-ripple-is-unbounded
-                 aria-label="Favorite" tabindex="0">
-              favorite
-            </div>
-          </div>
         </figure>
       </section>
 
       <section class="demo-component-section">
         <i id="select" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Select
           <a href="#select" class="demo-component-section__permalink" title="Permalink to the theme demo for the select component">#</a>
-        </h2>
+        </h3>
 
         <div class="mdc-select" role="listbox">
           <div class="mdc-select__surface" tabindex="0">
@@ -657,10 +675,10 @@
 
       <section class="demo-component-section">
         <i id="slider" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Slider
           <a href="#slider" class="demo-component-section__permalink" title="Permalink to the theme demo for the slider component">#</a>
-        </h2>
+        </h3>
 
         <div class="mdc-slider mdc-slider--discrete mdc-slider--display-markers" tabindex="0" role="slider"
              aria-valuemin="0" aria-valuemax="100" aria-valuenow="30"
@@ -683,10 +701,10 @@
 
       <section class="demo-component-section">
         <i id="switch" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Switch
           <a href="#switch" class="demo-component-section__permalink" title="Permalink to the theme demo for the switch component">#</a>
-        </h2>
+        </h3>
 
         <fieldset class="demo-switch-wrapper">
           <div class="mdc-switch">
@@ -710,10 +728,10 @@
 
       <section class="demo-component-section">
         <i id="tabs" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Tabs
           <a href="#tabs" class="demo-component-section__permalink" title="Permalink to the theme demo for the tabs component">#</a>
-        </h2>
+        </h3>
 
         <figure>
           <figcaption>Default</figcaption>
@@ -776,10 +794,10 @@
 
       <section class="demo-component-section">
         <i id="text-field" class="demo-anchor-with-toolbar-offset"></i>
-        <h2 class="mdc-typography--headline demo-component-section__heading">
+        <h3 class="mdc-typography--headline demo-component-section__heading">
           Text Field
           <a href="#text-field" class="demo-component-section__permalink" title="Permalink to the theme demo for the text field component">#</a>
-        </h2>
+        </h3>
 
         <figure class="demo-text-field-wrapper">
           <div class="mdc-text-field">
@@ -851,8 +869,8 @@
         var cssPollId = setInterval(function() {
           var pos = getComputedStyle(document.querySelector('.mdc-button')).position;
           if (pos === 'relative') {
-            init();
             clearInterval(cssPollId);
+            init();
           }
         }, 250);
 
@@ -938,7 +956,7 @@
            * Drawer
            */
 
-          var drawerEl = document.querySelector('.mdc-temporary-drawer');
+          var drawerEl = document.querySelector('.mdc-drawer--temporary');
           var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
           getAll('.demo-drawer-toggle').forEach(function(toggleElem) {

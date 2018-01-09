@@ -28,7 +28,10 @@ import MDCTextFieldLabelFoundation from './label/foundation';
  *   value: string,
  *   disabled: boolean,
  *   badInput: boolean,
- *   checkValidity: (function(): boolean)
+ *   validity: {
+ *     badInput: boolean,
+ *     valid: boolean,
+ *   },
  * }}
  */
 let NativeInputType;

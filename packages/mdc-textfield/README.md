@@ -194,10 +194,23 @@ CSS Class | Description
 
 ### Sass Mixins
 
+To customize the colors of any part of the text-field, use the following mixins. We recommend you apply 
+these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--focused)` to select your unfocused text fields, 
+and `.foo-tab.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields, 
+apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--invalid`.
+
+> _NOTE_: the `mdc-text-field-focused-bottom-line-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`). 
+
 Mixin | Description
 --- | ---
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
+`mdc-text-field-bottom-line-color($color)` | Customizes the color of the default bottom line of the text-field.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover color of the bottom line of the text-field. 
+`mdc-text-field-focused-bottom-line-color($color)` | Customizes the bottom-line ripple color when the text-field is focused.  
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
+`mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
+}
 
 ### `MDCTextField`
 
@@ -205,8 +218,10 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 Property | Value Type | Description
 --- | --- | ---
-`disable` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods when retrieved/set respectively
-`valid` | Boolean | Proxies to the foundation's `setValid` method when set
+`value` | String | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
+`required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes
 
@@ -248,9 +263,14 @@ Returns the idle outline element's computed style value of the given css propert
 
 Method Signature | Description
 --- | ---
+`getValue() => string` | Returns the input's value.
+`setValue(value: string)` | Sets the input's value.
+`isValid() => boolean` | If a custom validity is set, returns that value. Otherwise, returns the result of native validity checks.
+`setValid(isValid: boolean)` | Sets custom validity. Once set, native validity checking is ignored.
 `isDisabled() => boolean` | Returns whether or not the input is disabled
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state
-`setValid(isValid: boolean) => void` | Sets the validity state of the Text Field. Triggers custom validity checking
+`isRequired() => boolean` | Returns whether the input is required.
+`setRequired(isRequired: boolean)` | Sets whether the input is required.
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
