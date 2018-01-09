@@ -39,7 +39,7 @@
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
 @import "../../packages/mdc-typography/mdc-typography";
-@import "menu";
+@import "./menu";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
@@ -50,10 +50,9 @@ $demo-custom-color: $material-color-red-500;
 // Global styles
 //
 
-.mdc-theme--dark {
-  @include mdc-theme-prop(color, text-primary-on-dark);
-
-  background-color: $material-color-grey-800;
+body {
+  color: mdc-theme-accessible-ink-color($mdc-theme-background);
+  background-color: $mdc-theme-background;
 }
 
 figure {

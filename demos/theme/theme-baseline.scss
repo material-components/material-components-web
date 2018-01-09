@@ -16,7 +16,4 @@
 
 @import "../../packages/mdc-theme/color-palette";
 
-$mdc-theme-primary: $material-color-deep-purple-a700;
-$mdc-theme-secondary: $material-color-teal-a400;
-
-@import "./index";
+@import "./theme-shared";

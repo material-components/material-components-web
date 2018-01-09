@@ -56,18 +56,22 @@
   border-radius: 50%;
 }
 
-[data-color="grey-900"] .demo-theme-color-radio__inner {
+[data-theme="black"] .demo-theme-color-radio__inner {
   border-color: $material-color-grey-900 $material-color-light-green-a700 $material-color-light-green-a700 $material-color-grey-900;
 }
 
-[data-color="deep-purple-a700"] .demo-theme-color-radio__inner {
+[data-theme="dark"] .demo-theme-color-radio__inner {
+  border-color: $material-color-amber-300 $material-color-pink-400 $material-color-pink-400 $material-color-amber-300;
+}
+
+[data-theme="baseline"] .demo-theme-color-radio__inner {
   border-color: $material-color-deep-purple-a700 $material-color-teal-a400 $material-color-teal-a400 $material-color-deep-purple-a700;
 }
 
-[data-color="yellow-500"] .demo-theme-color-radio__inner {
+[data-theme="yellow"] .demo-theme-color-radio__inner {
   border-color: $material-color-yellow-500 $material-color-blue-500 $material-color-blue-500 $material-color-yellow-500;
 }
 
-[data-color="white"] .demo-theme-color-radio__inner {
+[data-theme="white"] .demo-theme-color-radio__inner {
   border-color: #fff $material-color-orange-500 $material-color-orange-500 #fff;
 }

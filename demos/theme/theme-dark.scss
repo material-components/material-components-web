@@ -16,7 +16,8 @@
 
 @import "../../packages/mdc-theme/color-palette";
 
-$mdc-theme-primary: #fff;
-$mdc-theme-secondary: $material-color-orange-500;
+$mdc-theme-primary: $material-color-amber-300;
+$mdc-theme-secondary: $material-color-pink-400;
+$mdc-theme-background: $material-color-grey-900;
 
 @import "./theme-shared";

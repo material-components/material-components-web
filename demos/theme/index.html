@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script>
       (function() {
-        let theme = 'grey-900';
+        let theme = 'baseline';
 
         const qsList = location.search.replace(/^[?]/, '').split('&');
         const qsMap = {};
@@ -44,7 +44,7 @@
           theme = values[values.length - 1];
         }
 
-        document.write('<link rel="stylesheet" href="/assets/demo-theme-' + theme + '.css" id="theme-stylesheet" data-hot>');
+        document.write('<link rel="stylesheet" href="/assets/theme/theme-' + theme + '.css" id="theme-stylesheet" data-hot>');
       })();
     </script>
   </head>
@@ -62,44 +62,52 @@
           <button id="dark-mode-action" class="mdc-toolbar__icon material-icons" title="Toggle dark mode">brightness_high</button>
 
           <div class="mdc-menu-anchor">
-            <button id="theme-color-action" class="mdc-toolbar__icon demo-toolbar-icon--last" title="Change theme colors" data-color="grey-900">
+            <button id="theme-color-action" class="mdc-toolbar__icon demo-toolbar-icon--last" title="Change theme colors" data-theme="baseline">
               <i class="demo-theme-color-radio">
                 <span class="demo-theme-color-radio__inner"></span>
               </i>
             </button>
             <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
               <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
-                <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-color="grey-900">
-                  <div class="mdc-list-item__start-detail">
+                <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-theme="baseline">
+                  <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  Grey 900 / Light Green A700
+                  Baseline
                 </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" data-color="deep-purple-a700">
-                  <div class="mdc-list-item__start-detail">
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="dark">
+                  <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  Deep Purple A700 / Teal A400
+                  Dark Mode (Custom)
                 </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" data-color="yellow-500">
-                  <div class="mdc-list-item__start-detail">
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="black">
+                  <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  Yellow 500 / Blue 500
+                  Black Primary (Custom)
                 </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" data-color="white">
-                  <div class="mdc-list-item__start-detail">
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="white">
+                  <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  White / Orange 500
+                  White Primary (Custom)
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="yellow">
+                  <div class="mdc-list-item__graphic">
+                    <i class="demo-theme-color-radio">
+                      <span class="demo-theme-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  Yellow Primary (Custom)
                 </li>
               </ul>
             </div>
@@ -1042,7 +1050,7 @@
           });
 
           themeMenuEl.addEventListener('MDCSimpleMenu:selected', function(e) {
-            swapTheme(e.detail.item.dataset.color);
+            swapTheme(e.detail.item.getAttribute('data-theme'));
           });
 
           var hotSwapAllStylesheets = debounce(function() {
@@ -1069,19 +1077,19 @@
           }
 
           function swapThemeImpl(color) {
-            color = color || 'grey-900';
+            color = color || 'baseline';
 
             document.title = color.replace(/-/g, ' ');
 
-            hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/demo-theme-' + color + '.css');
+            hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/theme/theme-' + color + '.css');
 
-            const selectedItems = getAll('.demo-theme-menu__list-item--selected[data-color]', themeMenuEl);
+            const selectedItems = getAll('.demo-theme-menu__list-item--selected[data-theme]', themeMenuEl);
             selectedItems.forEach(function(colorIcon) {
               colorIcon.classList.remove('demo-theme-menu__list-item--selected');
             });
-            document.querySelector('.mdc-list-item[data-color="' + color + '"]').classList.add('demo-theme-menu__list-item--selected');
+            document.querySelector('.mdc-list-item[data-theme="' + color + '"]').classList.add('demo-theme-menu__list-item--selected');
 
-            document.querySelector('#theme-color-action').dataset.color = color;
+            document.querySelector('#theme-color-action').setAttribute('data-theme', color);
           }
 
           function hotSwapStylesheet(oldLink, newUrl) {
@@ -1104,7 +1112,7 @@
 
           // TODO(acdvorak): De-dupe this logic w/ the JS in <head>
           // TODO(acdvorak): Create a constant for the default theme color
-          var qsColor = 'grey-900';
+          var qsColor = 'baseline';
           const qsList = location.search.replace(/^[?]/, '').split('&');
           const qsMap = {};
           qsList.forEach(function(query) {

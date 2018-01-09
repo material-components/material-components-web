@@ -36,7 +36,6 @@ const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
-const GENERATE_DEMO_THEMES = process.env.MDC_GENERATE_DEMO_THEMES !== 'false' && IS_DEV;
 const BUILD_STATIC_DEMO_ASSETS = process.env.MDC_BUILD_STATIC_DEMO_ASSETS === 'true';
 
 const banner = [
@@ -275,12 +274,10 @@ if (!IS_DEV) {
 
 if (IS_DEV) {
   const demoStyleEntry = {};
-  const exceptions = {};
-  if (!GENERATE_DEMO_THEMES) {
-    exceptions['demos/theme/index.scss'] = true;
-  }
   glob.sync('demos/**/*.scss').forEach((filename) => {
-    if (!exceptions[filename]) {
+    // Ignore import-only Sass files (filename begins with an underscore)
+    if (path.basename(filename).charAt(0) !== '_') {
+      // Strip leading "demo/" and trailing ".scss" from filename. E.g., "demos/foo/bar.scss" -> "foo/bar".
       demoStyleEntry[filename.slice(6, -5)] = path.resolve(filename);
     }
   });
@@ -306,32 +303,4 @@ if (IS_DEV) {
       createStaticDemoPlugin(),
     ],
   });
-
-  if (GENERATE_DEMO_THEMES) {
-    module.exports.push({
-      name: 'demo-theme-css',
-      entry: {
-        'demo-theme-grey-900': path.resolve('./demos/theme/theme-grey-900.scss'),
-        'demo-theme-deep-purple-a700': path.resolve('./demos/theme/theme-deep-purple-a700.scss'),
-        'demo-theme-yellow-500': path.resolve('./demos/theme/theme-yellow-500.scss'),
-        'demo-theme-white': path.resolve('./demos/theme/theme-white.scss'),
-      },
-      output: {
-        path: OUT_DIR_ABS,
-        publicPath: DEMO_ASSET_DIR_REL,
-        filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
-      },
-      devtool: DEVTOOL,
-      module: {
-        rules: [{
-          test: /\.scss$/,
-          use: createCssLoaderConfig(),
-        }],
-      },
-      plugins: [
-        createCssExtractTextPlugin(),
-        createBannerPlugin(),
-      ],
-    });
-  }
 }
