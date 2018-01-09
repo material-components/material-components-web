@@ -61,27 +61,6 @@ fieldset {
   }
 }
 
-//$dark-button-color: $material-color-light-green-a200;
-//.mdc-button {
-//  @include mdc-theme-dark {
-//    @include mdc-button-ink-color($dark-button-color);
-//    @include mdc-button-ripple((base-color: $dark-button-color, opacity: $mdc-unfilled-button-ripple-opacity));
-//  }
-//}
-//
-//.mdc-button--raised,
-//.mdc-button--unelevated {
-//  @include mdc-theme-dark(".mdc-button", true) {
-//    @include mdc-button-filled-accessible($dark-button-color);
-//  }
-//}
-//
-//.mdc-button--stroked {
-//  @include mdc-theme-dark(".mdc-button", true) {
-//    @include mdc-button-stroke-color($dark-button-color);
-//  }
-//}
-
 .catalog-title {
   font-family: "Roboto Mono", monospace;
 }

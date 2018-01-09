@@ -55,6 +55,23 @@ body {
   background-color: $mdc-theme-background;
 }
 
+// Override values in common.scss
+// TODO(acdvorak): Fix common.scss so it always sets the right color (see below)
+.mdc-toolbar__icon,
+.mdc-toolbar__menu-icon {
+  color: inherit;
+}
+
+// TODO(acdvorak): Do this automatically in the component's baseline styles
+.demo-toolbar {
+  color: mdc-theme-accessible-ink-color(primary);
+}
+
+// TODO(acdvorak): Do this automatically in the component's baseline styles
+.demo-theme-list {
+  @include mdc-theme-prop(color, text-primary-on-light);
+}
+
 figure {
   margin-left: 0;
   margin-right: 0;
@@ -63,6 +80,16 @@ figure {
 //
 // Page toolbar
 //
+
+.mdc-toolbar__icon,
+.mdc-toolbar__icon:last-of-type {
+  padding: 16px;
+}
+
+.demo-toolbar-icon--last,
+.demo-toolbar-icon--last:last-of-type {
+  padding-right: 24px;
+}
 
 .demo-anchor-with-toolbar-offset {
   $margin: $demo-section-margin / 2;
@@ -81,16 +108,6 @@ figure {
   }
 
   visibility: hidden;
-}
-
-.mdc-toolbar__icon,
-.mdc-toolbar__icon:last-of-type {
-  padding: 16px;
-}
-
-.demo-toolbar-icon--last,
-.demo-toolbar-icon--last:last-of-type {
-  padding-right: 24px;
 }
 
 //

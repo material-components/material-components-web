@@ -26,6 +26,10 @@
   background-color: transparent;
 }
 
+.demo-theme-menu__group-heading {
+  padding: 16px;
+}
+
 .demo-theme-menu__list-item--selected {
   background-color: $material-color-grey-200;
   box-shadow: inset 0 0 5px $material-color-grey-500;

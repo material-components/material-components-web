@@ -49,7 +49,7 @@
     </script>
   </head>
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed demo-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle">menu</button>
@@ -64,15 +64,16 @@
                 <span class="demo-theme-color-radio__inner"></span>
               </i>
             </button>
-            <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
-              <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+            <div class="mdc-simple-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
+              <ul class="mdc-simple-menu__items mdc-list demo-theme-list" role="menu" aria-hidden="true">
+                <li class="demo-theme-menu__group-heading">Moderate luminance</li>
                 <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-theme="baseline">
                   <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  Baseline
+                  Baseline (default)
                 </li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="dark">
                   <div class="mdc-list-item__graphic">
@@ -80,15 +81,16 @@
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  Dark Mode (Custom)
+                  Dark mode (custom)
                 </li>
+                <li class="demo-theme-menu__group-heading">Extreme luminance</li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="black">
                   <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  Black Primary (Custom)
+                  Black primary (custom)
                 </li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="white">
                   <div class="mdc-list-item__graphic">
@@ -96,7 +98,7 @@
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  White Primary (Custom)
+                  White primary (custom)
                 </li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="yellow">
                   <div class="mdc-list-item__graphic">
@@ -104,7 +106,7 @@
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  Yellow Primary (Custom)
+                  Yellow primary (custom)
                 </li>
               </ul>
             </div>
