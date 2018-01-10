@@ -36,6 +36,11 @@ $mdc-theme-secondary: #018786 !default; // baseline teal, 600 tone
 
 $dark-button-color: $material-color-light-green-a200;
 
+// Used by ready.js to test whether the CSS has finished loading.
+.demo-ready-detect {
+  position: relative;
+}
+
 fieldset {
   margin: 0;
   padding: 0;
