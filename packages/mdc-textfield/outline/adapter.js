@@ -45,6 +45,14 @@ class MDCTextFieldOutlineAdapter {
    * @param {string} value
    */
   setOutlinePathAttr(value) {}
+
+  /**
+   * Returns the idle outline element's computed style value of the given css property `propertyName`.
+   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+   * @param {string} propertyName
+   * @return {string}
+   */
+  getIdleOutlineStyleValue(propertyName) {}
 }
 
 export default MDCTextFieldOutlineAdapter;

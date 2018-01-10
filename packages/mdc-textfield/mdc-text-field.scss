@@ -38,6 +38,12 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
+  @include mdc-text-field-bottom-line-color($mdc-text-field-underline-on-light-idle);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-on-light);
+  @include mdc-text-field-focused-bottom-line-color(primary);
+  @include mdc-text-field-ink-color(text-primary-on-light);
+  @include mdc-text-field-label-color($mdc-text-field-light-label);
+
   display: inline-block;
   position: relative;
   margin-bottom: 8px;
@@ -45,7 +51,6 @@
 }
 
 .mdc-text-field__input {
-  @include mdc-theme-prop(color, text-primary-on-light);
   @include mdc-typography-base;
   // We use only a subset of the MDC typography values here as changing things such as line-height
   // affects how the labels are transformed.
@@ -60,29 +65,19 @@
   padding: 0 0 8px;
   transition: mdc-text-field-transition(opacity);
   border: none;
-  border-bottom: 1px solid $mdc-text-field-underline-on-light-idle;
+  border-bottom: 1px solid;
   border-radius: 0;
   background: none;
   font-size: inherit;
   appearance: none;
 
   &::placeholder {
-    @include mdc-theme-prop(color, text-hint-on-light);
-
     transition: mdc-text-field-transition(color);
     opacity: 1;
   }
 
-  &:hover {
-    border-color: $mdc-text-field-underline-on-light;
-  }
-
   &:focus {
     outline: none;
-
-    &::placeholder {
-      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
-    }
   }
 
   // Remove red outline on firefox
@@ -91,12 +86,10 @@
   }
 
   @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
     border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
 
     &:hover {
-      border-bottom: 1px solid $mdc-text-field-underline-on-dark;
+      border-bottom: 1px solid;
     }
 
     &::placeholder {
@@ -137,7 +130,7 @@
     padding: 12px;
     border: none;
     background-color: transparent;
-    z-index: 3;
+    z-index: 1;
 
     &:hover ~ .mdc-text-field__idle-outline {
       border: 1px solid $mdc-text-field-outlined-hover-border;
@@ -150,7 +143,6 @@
     position: absolute;
     bottom: 20px;
     transition: transform 260ms ease;
-    z-index: 2;
 
     &--float-above {
       transform: scale(.75) translateY(-170%);
@@ -158,6 +150,14 @@
       &.mdc-text-field__label--shake {
         animation: invalid-shake-float-above-outlined 250ms 1;
       }
+    }
+  }
+
+  .mdc-text-field__icon {
+    z-index: 2;
+
+    &:hover ~ .mdc-text-field__idle-outline {
+      border: 1px solid $mdc-text-field-outlined-hover-border;
     }
   }
 
@@ -183,7 +183,7 @@
     }
 
     // stylelint-disable-next-line selector-max-specificity
-    .mdc-text-field__input:hover ~ .mdc-text-field__outline .mdc-text-field__outline-path {
+    &:not(.mdc-text-field--focused) .mdc-text-field__input:hover ~ .mdc-text-field__outline .mdc-text-field__outline-path {
       stroke: $mdc-text-field-outlined-hover-border;
     }
   }
@@ -213,8 +213,11 @@
         // stylelint-enable max-nesting-depth
       }
     }
-  }
 
+    .mdc-text-field__icon {
+      top: 12px;
+    }
+  }
   // stylelint-enable plugin/selector-bem-pattern
 }
 
@@ -227,6 +230,7 @@
   display: inline-flex;
   position: relative;
   height: 56px;
+  margin-top: 16px;
   background-color: $mdc-text-field-box-background;
   overflow: hidden;
 
@@ -312,6 +316,30 @@
   .mdc-text-field__label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
   }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  &.mdc-text-field--outlined {
+    .mdc-text-field__label--float-above {
+      transform: scale(.75) translateX(-36%) translateY(-170%);
+
+      @include mdc-rtl {
+        transform: scale(.75) translateX(36%) translateY(-170%);
+      }
+    }
+
+    &.mdc-text-field--dense {
+      .mdc-text-field__label--float-above {
+        transform: translateX(-25%) translateY(-145%) scale(.923);
+
+        // stylelint-disable max-nesting-depth
+        @include mdc-rtl {
+          transform: translateX(25%) translateY(-145%) scale(.923);
+        }
+        // stylelint-enable max-nesting-depth
+      }
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-text-field--with-trailing-icon {
@@ -374,29 +402,7 @@
 }
 
 .mdc-text-field--invalid {
-  .mdc-text-field__label {
-    color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__bottom-line {
-    background-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__outline .mdc-text-field__outline-path {
-    stroke: $mdc-text-field-error-on-light;
-  }
+  @include mdc-text-field-invalid_;
 }
 
 // stylelint-disable plugin/selector-bem-pattern
@@ -439,6 +445,7 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
+  width: fit-content;
   height: initial;
   transition: none;
   border: 1px solid $mdc-textarea-border-on-light;
@@ -450,6 +457,7 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input {
+    margin: 0;
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
     border: 1px solid transparent;
@@ -484,6 +492,7 @@
     bottom: auto;
     padding: 8px 16px;
     background-color: $mdc-textarea-light-background;
+    line-height: 1.15;
 
     @include mdc-theme-dark(".mdc-text-field") {
       background-color: $mdc-textarea-dark-background;
@@ -536,6 +545,10 @@
       // Use !important here to override all other border treatments
       border: none !important;
     }
+  }
+
+  .mdc-text-field__input {
+    resize: vertical;
   }
 
   @include mdc-theme-dark {
@@ -641,19 +654,6 @@
 }
 
 // postcss-bem-linter: end
-
-.mdc-text-field--invalid {
-  + .mdc-text-field-helper-text--validation-msg {
-    opacity: 1;
-    color: $mdc-text-field-error-on-light;
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    + .mdc-text-field-helper-text--validation-msg {
-      color: $mdc-text-field-error-on-dark;
-    }
-  }
-}
 
 // mdc-form-field tweaks to align text field label correctly
 // stylelint-disable selector-max-type

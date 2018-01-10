@@ -22,13 +22,13 @@
 // If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
 //
 
-$mdc-theme-primary: #3f51b5 !default; // Indigo 500
+$mdc-theme-primary: #6200ee !default; // baseline purple, 500 tone
 $mdc-theme-primary-light: mdc-theme-light-variant($mdc-theme-primary) !default;
 $mdc-theme-primary-dark: mdc-theme-dark-variant($mdc-theme-primary) !default;
 
 // The $mdc-theme-accent variable is DEPRECATED - it exists purely for backward compatibility.
 // The $mdc-theme-secondary* variables should be used for all new projects.
-$mdc-theme-accent: #ff4081 !default; // Pink A200
+$mdc-theme-accent: #018786 !default; // baseline teal, 600 tone
 $mdc-theme-secondary: $mdc-theme-accent !default;
 $mdc-theme-secondary-light: mdc-theme-light-variant($mdc-theme-secondary) !default;
 $mdc-theme-secondary-dark: mdc-theme-dark-variant($mdc-theme-secondary) !default;

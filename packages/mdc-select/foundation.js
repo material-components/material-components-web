@@ -84,6 +84,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.selectedIndex_ = -1;
     this.disabled_ = false;
     this.isFocused_ = false;
+
+    /** @private {number} */
+    this.animationRequestId_ = 0;
+
     this.setPointerXOffset_ = (evt) => this.setBottomLineOrigin_(evt);
     this.displayHandler_ = (evt) => {
       evt.preventDefault();
@@ -128,6 +132,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   destroy() {
     // Drop reference to context object to prevent potential leaks
     this.ctx_ = null;
+    cancelAnimationFrame(this.animationRequestId_);
     this.adapter_.deregisterInteractionHandler('click', this.displayHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.deregisterInteractionHandler('keyup', this.displayViaKeyboardHandler_);
@@ -219,8 +224,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE);
     this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.addClass(OPEN);
-    this.adapter_.openMenu(focusIndex);
-    this.isFocused_ = true;
+    this.animationRequestId_ = requestAnimationFrame(() => {
+      this.adapter_.openMenu(focusIndex);
+      this.isFocused_ = true;
+    });
   }
 
   setBottomLineOrigin_(evt) {
