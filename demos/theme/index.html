@@ -84,7 +84,13 @@
               </i>
             </button>
             <div class="mdc-simple-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
-              <ul class="mdc-simple-menu__items mdc-list demo-theme-list" role="menu" aria-hidden="true">
+              <!--
+                TODO(acdvorak): Document this IE 11 workaround in list's README.
+                See:
+                - https://stackoverflow.com/a/23717689/467582
+                - https://stackoverflow.com/a/24997233/467582
+              -->
+              <ul class="mdc-simple-menu__items mdc-list demo-theme-list" role="menu" aria-hidden="true" style="list-style-type: none">
                 <li class="demo-theme-menu__group-heading">Moderate luminance</li>
                 <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-theme="baseline">
                   <div class="mdc-list-item__graphic">
