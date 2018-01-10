@@ -68,9 +68,10 @@ Method Signature | Description
 `getWidth() => number` | Returns the width of the outline element
 `getHeight() => number` | Returns the height of the outline element
 `setOutlinePathAttr(value: string) => void` | Sets the "d" attribute of the outline element's SVG path
+`getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`
 
 ### `MDCTextFieldOutlineFoundation`
 
 Method Signature | Description
 --- | ---
-`updateSvgPath(labelWidth: number, radius: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given the width of the label element, the corner radius, and the RTL context.
+`updateSvgPath(labelWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given the width of the label element and the RTL context.
