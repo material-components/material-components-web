@@ -491,7 +491,7 @@ const changeHandler = ({type}) =>  {
     selectToUpdate = selects.native;
     value = changedSelect.selectedOptions[0].id;
   } else {
-    changeSelect = selects.native;
+    changedSelect = selects.native;
     selectToUpdate = selects.custom;
     value = changedSelect.selectedOptions[0].value;
   }

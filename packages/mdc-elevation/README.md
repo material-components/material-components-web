@@ -56,20 +56,24 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-elevation($z-value, $color, $opacity-boost)` | Sets the elevation to the z-space for that given elevation, and optionally sets the color and/or boosts the opacity of the shadow
-`mdc-elevation-transition($duration, $easing)` | Applies the correct css rules to transition an element between elevations
+
+Function | Description
+--- | ---
+`mdc-elevation-transition-value($duration, $easing)` | Returns a value for the `transition` property to transition an element between elevations
 
 Variable | Description
 --- | ---
+`mdc-elevation-property` | Default property for elevation transitions
 `mdc-elevation-transition-duration` | Default duration value for elevation transitions
 `mdc-elevation-transition-timing-function` | Default easing value for elevation transitions
 
-If you need more configurability over your transitions, use the `mdc-elevation-transition-rule` function in conjunction with the exported sass variables.
+If you need more configurability over your transitions, use the `mdc-elevation-transition-value` function in conjunction with the exported sass variables.
 
 ```scss
 .my-component-with-custom-transitions {
 
   transition:
-    mdc-elevation-transition-rule(),
+    mdc-elevation-transition-value(),
     /* Configure opacity to use same duration and easing values as elevation */
     opacity $mdc-elevation-transition-duration $mdc-elevation-transition-timing-function;
   opacity: .7;

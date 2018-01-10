@@ -29,7 +29,6 @@
   left: 0;
   transform-origin: left top;
   transition: mdc-text-field-transition(transform), mdc-text-field-transition(color);
-  color: $mdc-text-field-light-label;
   cursor: text;
 
   // stylelint-disable plugin/selector-bem-pattern
@@ -39,10 +38,6 @@
     transform-origin: right top;
   }
   // stylelint-enable plugin/selector-bem-pattern
-
-  @include mdc-theme-dark(".mdc-text-field") {
-    @include mdc-theme-prop(color, $mdc-text-field-dark-label);
-  }
 
   &--float-above {
     transform: translateY(-100%) scale(.75, .75);

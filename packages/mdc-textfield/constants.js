@@ -21,7 +21,6 @@ const strings = {
   INPUT_SELECTOR: '.mdc-text-field__input',
   LABEL_SELECTOR: '.mdc-text-field__label',
   ICON_SELECTOR: '.mdc-text-field__icon',
-  IDLE_OUTLINE_SELECTOR: '.mdc-text-field__idle-outline',
   OUTLINE_SELECTOR: '.mdc-text-field__outline',
   BOTTOM_LINE_SELECTOR: '.mdc-text-field__bottom-line',
 };
