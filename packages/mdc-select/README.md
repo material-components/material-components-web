@@ -258,7 +258,7 @@ If you'd like to maintain the width or height outside of the attribute, you'll n
 }
 ```
 
-#### Classes
+#### CSS Classes
 
 | Class                    | Description                                     |
 | ------------------------ | ----------------------------------------------- |
@@ -268,6 +268,23 @@ If you'd like to maintain the width or height outside of the attribute, you'll n
 | `mdc-list-divider`       | A divider.                                      |
 
 It is advised that dividers also set `role="presentation"` to disable selection and not cloud accessibility.
+
+### Sass Mixins
+
+To customize the colors of any part of the select, use the following mixins. We recommend you apply 
+these mixins within CSS selectors like `.foo-select:not(.mdc-select--open)` to select your unfocused selects, 
+and `.foo-select.mdc-select--open` to select your focused selects.
+
+Mixin | Description
+--- | ---
+`mdc-select-ink-color($color)` | Customizes the text entered into the select. 
+>_NOTE_: This style applies to the css only version.
+`mdc-select-fill-color($color)` | Customizes the backgrond color of the select. 
+`mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state. 
+`mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
+`mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
+`mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
+`mdc-select-selected-text-color($color)` | Customizes the color of the option that has been selected. 
 
 ### MDC Select Component API
 

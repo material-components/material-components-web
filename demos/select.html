@@ -130,6 +130,10 @@
           <label for="rtl">RTL</label>
         </div>
         <div>
+          <input type="checkbox" id="alternate-colors">
+          <label for="alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
         </div>
@@ -197,6 +201,7 @@
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');
         var darkThemeCb = document.getElementById('dark-theme');
         var rtlCb = document.getElementById('rtl');
+        var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
 
         darkThemeCb.addEventListener('change', function() {
@@ -208,6 +213,9 @@
           } else {
             boxDemoWrapper.removeAttribute('dir');
           }
+        });
+        alternateColorsCb.addEventListener('change', function() {
+          boxDemoWrapper.classList[alternateColorsCb.checked ? 'add' : 'remove']('demo-select-custom-colors');
         });
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;

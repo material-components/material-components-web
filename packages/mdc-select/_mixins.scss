@@ -28,9 +28,15 @@
   }
 }
 
-@mixin mdc-select-label-color($color, $opacity: .87) {
+@mixin mdc-select-label-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-label-color_($color, $opacity);
+    @include mdc-select-label-color_($color);
+  }
+}
+
+@mixin mdc-select-focused-label-color($color, $opacity: .87) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-focused-label-color_($color, $opacity);
   }
 }
 
@@ -40,9 +46,9 @@
   }
 }
 
-@mixin mdc-select-css-only-bottom-line-color($color) {
+@mixin mdc-select-focused-bottom-line-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-css-only-bottom-line-color_($color);
+    @include mdc-select-focused-bottom-line-color_($color);
   }
 }
 
@@ -66,10 +72,21 @@
   }
 }
 
-@mixin mdc-select-label-color_($color, $opacity: .87) {
+@mixin mdc-select-label-color_($color) {
   .mdc-select__label {
     @include mdc-theme-prop(color, $color);
+  }
+}
 
+@mixin mdc-select-focused-label-color_($color, $opacity: .87) {
+  .mdc-select__surface:focus .mdc-select__label {
+    @include mdc-theme-prop(color, $color);
+  }
+
+  // Separate parameter is used for opacity, because opacity is only applied when the
+  // label is floating, but the label is the same color when the select is focused
+  // but an option has not been selected.
+  .mdc-select__surface:focus .mdc-select__label--float-above {
     opacity: $opacity;
   }
 }
@@ -80,9 +97,13 @@
   }
 }
 
-@mixin mdc-select-css-only-bottom-line-color_($color) {
-  .mdc-select__surface:not(.mdc-ripple-upgraded):focus .mdc-select__bottom-line,
-  .mdc-select__surface:not(.mdc-ripple-upgraded):focus ~ .mdc-select__bottom-line {
+@mixin mdc-select-focused-bottom-line-color_($color) {
+  .mdc-select__surface:focus .mdc-select__bottom-line,
+  .mdc-select__surface:focus ~ .mdc-select__bottom-line {
+    @include mdc-theme-prop(background-color, $color);
+  }
+
+  .mdc-select--open .mdc-select__bottom-line {
     @include mdc-theme-prop(background-color, $color);
   }
 }

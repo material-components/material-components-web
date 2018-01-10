@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-@import "_mixins";
+@import "./_mixins";
 @import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/typography/mixins";
@@ -33,12 +33,11 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   @include mdc-select-ink-color(primary);
   @include mdc-select-label-color(rgba(black, .6));
   @include mdc-select-bottom-line-color(rgba(black, .5));
-  @include mdc-select-css-only-bottom-line-color(primary);
   @include mdc-select-selected-text-color(text-primary-on-light);
-}
 
-.mdc-select--open {
-  @include mdc-select-bottom-line-color(primary);
+  // Focused state colors
+  @include mdc-select-focused-bottom-line-color(primary);
+  @include mdc-select-focused-label-color(primary);
 }
 
 // postcss-bem-linter: define select
