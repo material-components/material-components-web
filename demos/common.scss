@@ -21,9 +21,8 @@
 @import "../packages/mdc-theme/color-palette";
 
 // Base style
-$mdc-theme-primary: $material-color-grey-900 !default;
-$mdc-theme-primary: $material-color-blue-500 !default;
-$mdc-theme-secondary: $material-color-light-green-a700 !default;
+$mdc-theme-primary: #6200ee !default; // baseline purple, 500 tone
+$mdc-theme-secondary: #018786 !default; // baseline teal, 600 tone
 
 // Import button and ripple mixins to apply overrides for dark theme
 // TODO(kfranqueiro): Pending further design discussion around how to manage dark theme
