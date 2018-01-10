@@ -177,7 +177,7 @@
     }
 
     // stylelint-disable-next-line selector-max-specificity
-    .mdc-text-field__input:hover ~ .mdc-text-field__outline .mdc-text-field__outline-path {
+    &:not(.mdc-text-field--focused) .mdc-text-field__input:hover ~ .mdc-text-field__outline .mdc-text-field__outline-path {
       stroke: $mdc-text-field-outlined-hover-border;
     }
   }

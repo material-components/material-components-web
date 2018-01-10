@@ -39,6 +39,7 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
       getWidth: () => {},
       getHeight: () => {},
       setOutlinePathAttr: () => {},
+      getIdleOutlineStyleValue: () => {},
     });
   }
 
@@ -51,12 +52,15 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
 
   /**
    * Updates the SVG path of the focus outline element based on the given width of the
-   * label element, the corner radius, and the RTL context.
+   * label element and the RTL context.
    * @param {number} labelWidth
-   * @param {number} radius
    * @param {boolean=} isRtl
    */
-  updateSvgPath(labelWidth, radius, isRtl = false) {
+  updateSvgPath(labelWidth, isRtl = false) {
+    // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
+    const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
+        this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
+    const radius = parseFloat(radiusStyleValue);
     const width = this.adapter_.getWidth();
     const height = this.adapter_.getHeight();
     const cornerWidth = radius + 1.2;
