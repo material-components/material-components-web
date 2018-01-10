@@ -36,7 +36,6 @@ const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
 const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
-const GENERATE_DEMO_THEMES = process.env.MDC_GENERATE_DEMO_THEMES !== 'false' && IS_DEV;
 const BUILD_STATIC_DEMO_ASSETS = process.env.MDC_BUILD_STATIC_DEMO_ASSETS === 'true';
 
 const banner = [
@@ -275,14 +274,19 @@ if (!IS_DEV) {
 
 if (IS_DEV) {
   const demoStyleEntry = {};
-  const exceptions = {};
-  if (!GENERATE_DEMO_THEMES) {
-    exceptions['demos/theme/index.scss'] = true;
-  }
-  glob.sync('demos/**/*.scss').forEach((filename) => {
-    if (!exceptions[filename]) {
-      demoStyleEntry[filename.slice(6, -5)] = path.resolve(filename);
+  glob.sync('demos/**/*.scss').forEach((relativeFilePath) => {
+    const filename = path.basename(relativeFilePath);
+
+    // Ignore import-only Sass files.
+    if (filename.charAt(0) === '_') {
+      return;
     }
+
+    // The Webpack entry key for each Sass file is the relative path of the file with its leading "demo/" and trailing
+    // ".scss" affixes removed.
+    // E.g., "demos/foo/bar.scss" becomes {"foo/bar": "/absolute/path/to/demos/foo/bar.scss"}.
+    const entryName = relativeFilePath.replace(new RegExp('^demos/|\\.scss$', 'g'), '');
+    demoStyleEntry[entryName] = path.resolve(relativeFilePath);
   });
 
   module.exports.push({
