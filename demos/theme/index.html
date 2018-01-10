@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <script>
       (function() {
         var DEFAULT_THEME = 'baseline';
@@ -949,11 +950,9 @@
       </section>
     </main>
 
-    <script src="/assets/material-components-web.js" charset="utf-8"></script>
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
-        'use strict';
-
+      demoReady(function() {
         function getAll(query, parentNode) {
           parentNode = parentNode || document;
           return [].slice.call(parentNode.querySelectorAll(query));
@@ -1286,7 +1285,7 @@
             formFieldInstance.input = radioInstance;
           }
         }
-      })();
+      });
     </script>
   </body>
 </html>

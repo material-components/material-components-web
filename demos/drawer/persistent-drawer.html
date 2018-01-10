@@ -22,6 +22,7 @@
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <script src="/assets/drawer/drawer.css.js"></script>
     <script src="/assets/radio.css.js"></script>
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -144,8 +145,9 @@
         </div>
       </main>
 
-      <script src="/assets/material-components-web.js"></script>
+      <script src="/assets/material-components-web.js" async></script>
       <script>
+        demoReady(function() {
         var drawerEl = document.querySelector('.mdc-drawer');
         var MDCPersistentDrawer = mdc.drawer.MDCPersistentDrawer;
         var drawer = new MDCPersistentDrawer(drawerEl);
@@ -184,6 +186,7 @@
           } else if(e.target.id === 'theme-radio-custom') {
             drawerEl.classList.add('demo-drawer--custom');
           }
+          });
         });
       </script>
     </div>
