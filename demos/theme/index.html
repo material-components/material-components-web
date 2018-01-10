@@ -132,8 +132,10 @@
           </div>
         </section>
       </div>
-      <div class="mdc-toolbar__row demo-toolbar-progress-row" id="demo-toolbar-progress-row">
-        <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+      <div class="mdc-toolbar__row demo-toolbar-progress-row">
+        <div role="progressbar"
+             class="mdc-linear-progress mdc-linear-progress--indeterminate demo-toolbar-progress-bar"
+             id="demo-toolbar-progress-bar">
           <div class="mdc-linear-progress__buffering-dots"></div>
           <div class="mdc-linear-progress__buffer"></div>
           <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -1002,11 +1004,11 @@
          */
 
         function setIsLoading(isLoading) {
-          var rowEl = document.querySelector('#demo-toolbar-progress-row');
+          var barEl = document.querySelector('#demo-toolbar-progress-bar');
           if (isLoading) {
-            rowEl.classList.add('demo-toolbar-progress-row--active');
+            barEl.classList.add('demo-toolbar-progress-bar--active');
           } else {
-            rowEl.classList.remove('demo-toolbar-progress-row--active');
+            barEl.classList.remove('demo-toolbar-progress-bar--active');
           }
         }
 

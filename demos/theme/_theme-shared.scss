@@ -43,6 +43,9 @@
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
+$demo-toolbar-progress-bar-color: secondary !default;
+$demo-toolbar-progress-buffer-color: primary !default;
+
 $demo-section-margin: 48px;
 $demo-custom-color: $material-color-red-500;
 
@@ -93,13 +96,25 @@ figure {
 
 .demo-toolbar-progress-row {
   min-height: auto;
-  // TODO(acdvorak): Use correct timing for enter/exit animations
-  transition: mdc-animation-enter(opacity, 240ms);
-  opacity: 0;
+  height: $mdc-linear-progress-height;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
 }
 
-.demo-toolbar-progress-row--active {
-  opacity: 1;
+.demo-toolbar-progress-bar {
+  transform: translateY(100%);
+  // TODO(acdvorak): Use correct timing for enter/exit animations
+  transition: mdc-animation-exit-temporary(transform, 150ms);
+
+  @include mdc-linear-progress-bar-color($demo-toolbar-progress-bar-color);
+  @include mdc-linear-progress-buffer-color($demo-toolbar-progress-buffer-color);
+}
+
+.demo-toolbar-progress-bar--active {
+  transform: none;
+  // TODO(acdvorak): Use correct timing for enter/exit animations
+  transition: mdc-animation-enter(transform, 200ms);
 }
 
 .demo-anchor-with-toolbar-offset {
