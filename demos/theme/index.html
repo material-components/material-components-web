@@ -1123,6 +1123,12 @@
           }
 
           function hotSwapStylesheet(oldLink, newUrl) {
+            // Don't reload the CSS if the user clicked on the current theme a second time.
+            // TODO(acdvorak): Test this in all browsers.
+            if (oldLink.getAttribute('href') === newUrl) {
+              return;
+            }
+
             var swapMessage = '"' + oldLink.getAttribute('href') + '"' + (newUrl ? ' with "' + newUrl + '"' : '');
             console.log('Hot swapping stylesheet ' + swapMessage + '...');
 
