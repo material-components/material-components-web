@@ -993,286 +993,273 @@
           };
         }
 
-        // Because we load our CSS via webpack, we need to ensure that all of the correct styles
-        // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
-        // elements before our CSS is applied, leading to improper UX.
-        var cssPollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-button')).position;
-          if (pos === 'relative') {
-            clearInterval(cssPollId);
-            init();
+        /*
+         * Toolbar linear-progress for loading state
+         */
+
+        function setIsLoading(isLoading) {
+          var rowEl = document.querySelector('#demo-toolbar-progress-row');
+          if (isLoading) {
+            rowEl.classList.add('demo-toolbar-progress-row--active');
+          } else {
+            rowEl.classList.remove('demo-toolbar-progress-row--active');
           }
+        }
+
+        /*
+         * Permalinks for component section headings
+         */
+
+        document.addEventListener('focusin', function(e) {
+          if (e.target.classList.contains('demo-component-section__permalink')) {
+            e.target.parentElement.classList.add('demo-component-section__heading--focus');
+          }
+        });
+        document.addEventListener('focusout', function(e) {
+          if (e.target.classList.contains('demo-component-section__permalink')) {
+            e.target.parentElement.classList.remove('demo-component-section__heading--focus');
+          }
+        });
+
+        function flashCurrentSection() {
+          var id = location.href.split('#')[1];
+          if (!id) {
+            return;
+          }
+          var anchor = document.getElementById(id);
+          if (!anchor) {
+            return;
+          }
+          var section = closest(anchor, '.demo-component-section');
+          if (!section) {
+            return;
+          }
+          section.classList.add('demo-component-section--flash');
+          setTimeout(function() {
+            section.classList.remove('demo-component-section--flash');
+          }, 200);
+        }
+
+        window.addEventListener('hashchange', function(e) {
+          flashCurrentSection();
+        });
+        flashCurrentSection();
+
+        /*
+         * Theme
+         */
+
+        var themeActionEl = document.querySelector('#theme-color-action');
+        var themeMenuEl = document.querySelector('#theme-color-menu');
+        var themeMenu = new mdc.menu.MDCSimpleMenu(themeMenuEl);
+
+        themeActionEl.addEventListener('click', function() {
+          themeMenu.open = !themeMenu.open;
+        });
+
+        document.querySelector('#rtl-action').addEventListener('click', function(e) {
+          var rootEl = document.documentElement;
+          if (rootEl.getAttribute('dir') === 'rtl') {
+            rootEl.setAttribute('dir', 'ltr');
+            e.target.innerHTML = 'format_align_left';
+          } else {
+            rootEl.setAttribute('dir', 'rtl');
+            e.target.innerHTML = 'format_align_right';
+          }
+        });
+
+        themeMenuEl.addEventListener('MDCSimpleMenu:selected', function(e) {
+          swapTheme(e.detail.item.getAttribute('data-theme'));
+        });
+
+        var hotSwapAllStylesheets = debounce(function() {
+          getAll('link[data-hot]', document.head).forEach(function(link) {
+            hotSwapStylesheet(link);
+          });
         }, 250);
 
-        function init() {
-          /*
-           * Toolbar linear-progress for loading state
-           */
-
-          function setIsLoading(isLoading) {
-            var rowEl = document.querySelector('#demo-toolbar-progress-row');
-            if (isLoading) {
-              rowEl.classList.add('demo-toolbar-progress-row--active');
-            } else {
-              rowEl.classList.remove('demo-toolbar-progress-row--active');
-            }
+        // TODO(acdvorak): Add IE 11 support
+        window.addEventListener('message', function(event) {
+          if (typeof event.data === 'string' && event.data.indexOf('webpackHotUpdate') === 0) {
+            hotSwapAllStylesheets();
           }
+        });
 
-          /*
-           * Permalinks for component section headings
-           */
+        window.addEventListener('popstate', function(event) {
+          var newTheme = (event.state || {theme: getDemoThemeFromUrl()}).theme;
+          swapThemeImpl(newTheme);
+        });
 
-          document.addEventListener('focusin', function(e) {
-            if (e.target.classList.contains('demo-component-section__permalink')) {
-              e.target.parentElement.classList.add('demo-component-section__heading--focus');
-            }
-          });
-          document.addEventListener('focusout', function(e) {
-            if (e.target.classList.contains('demo-component-section__permalink')) {
-              e.target.parentElement.classList.remove('demo-component-section__heading--focus');
-            }
-          });
-
-          function flashCurrentSection() {
-            var id = location.href.split('#')[1];
-            if (!id) {
-              return;
-            }
-            var anchor = document.getElementById(id);
-            if (!anchor) {
-              return;
-            }
-            var section = closest(anchor, '.demo-component-section');
-            if (!section) {
-              return;
-            }
-            section.classList.add('demo-component-section--flash');
-            setTimeout(function() {
-              section.classList.remove('demo-component-section--flash');
-            }, 200);
-          }
-
-          window.addEventListener('hashchange', function(e) {
-            flashCurrentSection();
-          });
-          flashCurrentSection();
-
-          /*
-           * Theme
-           */
-
-          var themeActionEl = document.querySelector('#theme-color-action');
-          var themeMenuEl = document.querySelector('#theme-color-menu');
-          var themeMenu = new mdc.menu.MDCSimpleMenu(themeMenuEl);
-
-          themeActionEl.addEventListener('click', function() {
-            themeMenu.open = !themeMenu.open;
-          });
-
-          document.querySelector('#rtl-action').addEventListener('click', function(e) {
-            var rootEl = document.documentElement;
-            if (rootEl.getAttribute('dir') === 'rtl') {
-              rootEl.setAttribute('dir', 'ltr');
-              e.target.innerHTML = 'format_align_left';
-            } else {
-              rootEl.setAttribute('dir', 'rtl');
-              e.target.innerHTML = 'format_align_right';
-            }
-          });
-
-          themeMenuEl.addEventListener('MDCSimpleMenu:selected', function(e) {
-            swapTheme(e.detail.item.getAttribute('data-theme'));
-          });
-
-          var hotSwapAllStylesheets = debounce(function() {
-            getAll('link[data-hot]', document.head).forEach(function(link) {
-              hotSwapStylesheet(link);
-            });
-          }, 250);
-
-          // TODO(acdvorak): Add IE 11 support
-          window.addEventListener('message', function(event) {
-            if (typeof event.data === 'string' && event.data.indexOf('webpackHotUpdate') === 0) {
-              hotSwapAllStylesheets();
-            }
-          });
-
-          window.addEventListener('popstate', function(event) {
-            var newTheme = (event.state || {theme: getDemoThemeFromUrl()}).theme;
-            swapThemeImpl(newTheme);
-          });
-
-          function swapTheme(newTheme) {
-            var hash = window.location.hash || '';
-            history.pushState({theme: newTheme}, '', '?theme=' + newTheme + hash);
-            swapThemeImpl(newTheme);
-          }
-
-          function swapThemeImpl(newTheme) {
-            newTheme = newTheme || 'baseline';
-
-            hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/theme/theme-' + newTheme + '.css');
-
-            var selectedItems = getAll('.demo-theme-menu__list-item--selected[data-theme]', themeMenuEl);
-            selectedItems.forEach(function(colorIcon) {
-              colorIcon.classList.remove('demo-theme-menu__list-item--selected');
-            });
-            document.querySelector('.mdc-list-item[data-theme="' + newTheme + '"]').classList.add('demo-theme-menu__list-item--selected');
-
-            document.querySelector('#theme-color-action').setAttribute('data-theme', newTheme);
-          }
-
-          function hotSwapStylesheet(oldLink, newUrl) {
-            // Don't reload the CSS if the user clicked on the current theme a second time.
-            // TODO(acdvorak): Test this in all browsers.
-            if (oldLink.getAttribute('href') === newUrl) {
-              return;
-            }
-
-            var swapMessage = '"' + oldLink.getAttribute('href') + '"' + (newUrl ? ' with "' + newUrl + '"' : '');
-            console.log('Hot swapping stylesheet ' + swapMessage + '...');
-
-            setIsLoading(true);
-
-            var newLink = oldLink.cloneNode(false);
-            if (newUrl) {
-              newLink.href = newUrl;
-            }
-            newLink.addEventListener('load', function() {
-              console.log('Hot swapped stylesheet ' + swapMessage + '!');
-              setTimeout(function() {
-                oldLink.parentNode.removeChild(oldLink);
-              }, 0);
-              setIsLoading(false);
-            });
-
-            oldLink.parentNode.insertBefore(newLink, oldLink);
-          }
-
-          // Mark the selected theme in the toolbar menu
-          swapThemeImpl(getDemoThemeFromUrl());
-
-          /*
-           * Button
-           */
-
-          var buttons = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
-          for (var i = 0, button; button = buttons[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(button);
-          }
-
-          /*
-           * FAB
-           */
-
-          var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
-          for (var i = 0, fab; fab = fabs[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(fab);
-          }
-
-          /*
-           * Checkbox
-           */
-
-          document.querySelector('#indeterminate-checkbox').indeterminate = true;
-
-          document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
-            var checkboxes = getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
-            checkboxes.forEach(function(checkbox) {
-              checkbox.indeterminate = !checkbox.indeterminate;
-            });
-          });
-
-          document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
-            var formFields = getAll('.demo-checkbox-wrapper.mdc-form-field');
-            formFields.forEach(function(formField) {
-              formField.classList.toggle('mdc-form-field--align-end');
-            });
-          });
-
-          /*
-           * Drawer
-           */
-
-          var drawerEl = document.querySelector('.mdc-drawer--temporary');
-          var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
-
-          getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
-            toggleElem.addEventListener('click', function() {
-              drawer.open = true;
-            });
-          });
-
-          drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
-            console.log('Received MDCTemporaryDrawer:open');
-          });
-
-          drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
-            console.log('Received MDCTemporaryDrawer:close');
-          });
-
-          /*
-           * Icon Toggle
-           */
-
-          var iconToggleEls = getAll('.mdc-icon-toggle');
-          for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
-            mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
-          }
-
-          /*
-           * Linear Progress
-           */
-
-          var progressEls = getAll('.mdc-linear-progress');
-          for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
-            var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
-            linearProgress.progress = 0.5;
-            if (progressEl.dataset.buffer) {
-              linearProgress.buffer = 0.75;
-            }
-          }
-
-          /*
-           * Ripple
-           */
-
-          getAll('.mdc-ripple-surface:not([data-demo-no-js])').forEach(function(surface) {
-            mdc.ripple.MDCRipple.attachTo(surface);
-          });
-
-          /*
-           * Select
-           */
-
-          getAll('.mdc-select:not(select)').forEach(function(select) {
-            mdc.select.MDCSelect.attachTo(select);
-          });
-
-          /*
-           * Slider
-           */
-
-          getAll('.mdc-slider').forEach(function(slider) {
-            mdc.slider.MDCSlider.attachTo(slider);
-          });
-
-          /*
-           * Tabs
-           */
-
-          getAll('.mdc-tab-bar').forEach(function(tabBar) {
-            mdc.tabs.MDCTabBar.attachTo(tabBar);
-          });
-
-          /*
-           * TextField
-           */
-
-          getAll('.mdc-text-field:not([data-demo-no-js])').forEach(function(textField) {
-            mdc.textField.MDCTextField.attachTo(textField);
-          });
+        function swapTheme(newTheme) {
+          var hash = window.location.hash || '';
+          history.pushState({theme: newTheme}, '', '?theme=' + newTheme + hash);
+          swapThemeImpl(newTheme);
         }
+
+        function swapThemeImpl(newTheme) {
+          newTheme = newTheme || 'baseline';
+
+          hotSwapStylesheet(document.querySelector('#theme-stylesheet'), '/assets/theme/theme-' + newTheme + '.css');
+
+          var selectedItems = getAll('.demo-theme-menu__list-item--selected[data-theme]', themeMenuEl);
+          selectedItems.forEach(function(colorIcon) {
+            colorIcon.classList.remove('demo-theme-menu__list-item--selected');
+          });
+          document.querySelector('.mdc-list-item[data-theme="' + newTheme + '"]').classList.add('demo-theme-menu__list-item--selected');
+
+          document.querySelector('#theme-color-action').setAttribute('data-theme', newTheme);
+        }
+
+        function hotSwapStylesheet(oldLink, newUrl) {
+          // Don't reload the CSS if the user clicked on the current theme a second time.
+          // TODO(acdvorak): Test this in all browsers.
+          if (oldLink.getAttribute('href') === newUrl) {
+            return;
+          }
+
+          var swapMessage = '"' + oldLink.getAttribute('href') + '"' + (newUrl ? ' with "' + newUrl + '"' : '');
+          console.log('Hot swapping stylesheet ' + swapMessage + '...');
+
+          setIsLoading(true);
+
+          var newLink = oldLink.cloneNode(false);
+          if (newUrl) {
+            newLink.href = newUrl;
+          }
+          newLink.addEventListener('load', function() {
+            console.log('Hot swapped stylesheet ' + swapMessage + '!');
+            setTimeout(function() {
+              oldLink.parentNode.removeChild(oldLink);
+            }, 0);
+            setIsLoading(false);
+          });
+
+          oldLink.parentNode.insertBefore(newLink, oldLink);
+        }
+
+        // Mark the selected theme in the toolbar menu
+        swapThemeImpl(getDemoThemeFromUrl());
+
+        /*
+         * Button
+         */
+
+        var buttons = document.querySelectorAll('.mdc-button');
+        for (var i = 0, button; button = buttons[i]; i++) {
+          mdc.ripple.MDCRipple.attachTo(button);
+        }
+
+        /*
+         * FAB
+         */
+
+        var fabs = document.querySelectorAll('.mdc-fab');
+        for (var i = 0, fab; fab = fabs[i]; i++) {
+          mdc.ripple.MDCRipple.attachTo(fab);
+        }
+
+        /*
+         * Checkbox
+         */
+
+        document.querySelector('#indeterminate-checkbox').indeterminate = true;
+
+        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
+          var checkboxes = getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
+          checkboxes.forEach(function(checkbox) {
+            checkbox.indeterminate = !checkbox.indeterminate;
+          });
+        });
+
+        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
+          var formFields = getAll('.demo-checkbox-wrapper.mdc-form-field');
+          formFields.forEach(function(formField) {
+            formField.classList.toggle('mdc-form-field--align-end');
+          });
+        });
+
+        /*
+         * Drawer
+         */
+
+        var drawerEl = document.querySelector('.mdc-drawer--temporary');
+        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+
+        getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
+          toggleElem.addEventListener('click', function() {
+            drawer.open = true;
+          });
+        });
+
+        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+          console.log('Received MDCTemporaryDrawer:open');
+        });
+
+        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+          console.log('Received MDCTemporaryDrawer:close');
+        });
+
+        /*
+         * Icon Toggle
+         */
+
+        var iconToggleEls = getAll('.mdc-icon-toggle');
+        for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
+          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
+        }
+
+        /*
+         * Linear Progress
+         */
+
+        var progressEls = getAll('.mdc-linear-progress');
+        for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
+          var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
+          linearProgress.progress = 0.5;
+          if (progressEl.dataset.buffer) {
+            linearProgress.buffer = 0.75;
+          }
+        }
+
+        /*
+         * Ripple
+         */
+
+        getAll('.mdc-ripple-surface').forEach(function(surface) {
+          mdc.ripple.MDCRipple.attachTo(surface);
+        });
+
+        /*
+         * Select
+         */
+
+        getAll('.mdc-select:not(select)').forEach(function(select) {
+          mdc.select.MDCSelect.attachTo(select);
+        });
+
+        /*
+         * Slider
+         */
+
+        getAll('.mdc-slider').forEach(function(slider) {
+          mdc.slider.MDCSlider.attachTo(slider);
+        });
+
+        /*
+         * Tabs
+         */
+
+        getAll('.mdc-tab-bar').forEach(function(tabBar) {
+          mdc.tabs.MDCTabBar.attachTo(tabBar);
+        });
+
+        /*
+         * TextField
+         */
+
+        getAll('.mdc-text-field').forEach(function(textField) {
+          mdc.textField.MDCTextField.attachTo(textField);
+        });
 
         /*
          * Radio Button
@@ -1285,7 +1272,7 @@
         for (var i = 0, formField; formField = formFields[i]; i++) {
           var formFieldInstance = new MDCFormField(formField);
 
-          var radio = formField.querySelector('.mdc-radio:not([data-demo-no-js])');
+          var radio = formField.querySelector('.mdc-radio');
           if (radio) {
             var radioInstance = new MDCRadio(radio);
             formFieldInstance.input = radioInstance;
