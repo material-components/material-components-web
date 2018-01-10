@@ -16,8 +16,9 @@
  */
 
 import MDCComponent from '@material/base/component';
-import MDCSimpleMenuFoundation from './foundation';
 import {getTransformPropertyName} from '../util';
+import {MDCSimpleMenuFoundation, AnchorMargin} from './foundation';
+import {Corner, CornerBit} from './constants';
 
 /**
  * @extends MDCComponent<!MDCSimpleMenuFoundation>
@@ -62,6 +63,21 @@ class MDCSimpleMenu extends MDCComponent {
   }
 
   /**
+   * @param {Corner} corner Default anchor corner alignment of top-left
+   *     menu corner.
+   */
+  setAnchorCorner(corner) {
+    this.foundation_.setAnchorCorner(corner);
+  }
+
+  /**
+   * @param {AnchorMargin} margin
+   */
+  setAnchorMargin(margin) {
+    this.foundation_.setAnchorMargin(margin);
+  }
+
+  /**
    * Return the item container element inside the component.
    * @return {?Element}
    */
@@ -98,23 +114,11 @@ class MDCSimpleMenu extends MDCComponent {
       getWindowDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
       },
-      setScale: (x, y) => {
-        this.root_.style[getTransformPropertyName(window)] = `scale(${x}, ${y})`;
-      },
-      setInnerScale: (x, y) => {
-        this.itemsContainer_.style[getTransformPropertyName(window)] = `scale(${x}, ${y})`;
-      },
       getNumberOfItems: () => this.items.length,
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
       deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
-      getYParamsForItemAtIndex: (index) => {
-        const {offsetTop: top, offsetHeight: height} = this.items[index];
-        return {top, height};
-      },
-      setTransitionDelayForItemAtIndex: (index, value) =>
-        this.items[index].style.setProperty('transition-delay', value),
       getIndexForEventTarget: (target) => this.items.indexOf(target),
       notifySelected: (evtData) => this.emit(MDCSimpleMenuFoundation.strings.SELECTED_EVENT, {
         index: evtData.index,
@@ -143,9 +147,11 @@ class MDCSimpleMenu extends MDCComponent {
         this.root_.style.top = 'top' in position ? position.top : null;
         this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
       },
-      getAccurateTime: () => window.performance.now(),
+      setMaxHeight: (height) => {
+        this.root_.style.maxHeight = height;
+      },
     });
   }
 }
 
-export {MDCSimpleMenuFoundation, MDCSimpleMenu};
+export {MDCSimpleMenuFoundation, MDCSimpleMenu, AnchorMargin, Corner, CornerBit};

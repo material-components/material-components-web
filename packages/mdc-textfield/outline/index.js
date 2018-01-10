@@ -52,6 +52,12 @@ class MDCTextFieldOutline extends MDCComponent {
         const path = this.root_.querySelector(strings.PATH_SELECTOR);
         path.setAttribute('d', value);
       },
+      getIdleOutlineStyleValue: (propertyName) => {
+        const idleOutlineElement = this.root_.parentNode.querySelector(strings.IDLE_OUTLINE_SELECTOR);
+        if (idleOutlineElement) {
+          return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
+        }
+      },
     })));
   }
 }
