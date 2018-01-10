@@ -221,7 +221,7 @@ rules:
   max-nesting-depth: 3
   # Because we adhere to BEM we can limit the amount of necessary compound selectors. Most should
   # just be 1 level selector. However, modifiers can introduce an additional compound selector.
-  # Futhermore, generic qualifying selectors (e.g. `[dir="rtl"]`) can introduce yet another level.
+  # Furthermore, generic qualifying selectors (e.g. `[dir="rtl"]`) can introduce yet another level.
   selector-max-compound-selectors: 4
   # For specificity: disallow IDs (0). Allow for complex combinations of classes, pseudo-classes,
   # attribute modifiers based on selector-max-compound-selectors, plus an addition for
