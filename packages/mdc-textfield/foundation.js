@@ -64,7 +64,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       registerBottomLineEventHandler: () => {},
       deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
-      getIdleOutlineStyleValue: () => {},
       isFocused: () => {},
       isRtl: () => {},
     });
@@ -172,12 +171,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const isDense = this.adapter_.hasClass(cssClasses.DENSE);
     const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
     const labelWidth = this.label_.getWidth() * labelScale;
-    // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
-    const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
-      this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
-    const radius = parseFloat(radiusStyleValue);
     const isRtl = this.adapter_.isRtl();
-    this.outline_.updateSvgPath(labelWidth, radius, isRtl);
+    this.outline_.updateSvgPath(labelWidth, isRtl);
   }
 
   /**
