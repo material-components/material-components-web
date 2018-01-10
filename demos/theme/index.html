@@ -1133,6 +1133,10 @@
           newLink.addEventListener('load', function() {
             console.log('Hot swapped stylesheet ' + swapMessage + '!');
             setTimeout(function() {
+              // Already removed from DOM
+              if (!oldLink.parentNode) {
+                return;
+              }
               oldLink.parentNode.removeChild(oldLink);
             }, 0);
             setIsLoading(false);
