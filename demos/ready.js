@@ -87,7 +87,7 @@ window.demoReady = (function() {
   }
 
   function invokeHandlers() {
-    handlers.forEach((handler) => {
+    handlers.forEach(function(handler) {
       handler();
     });
   }
