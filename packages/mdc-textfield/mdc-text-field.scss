@@ -112,10 +112,8 @@
   // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-text-field:not(.mdc-text-field--invalid).mdc-text-field--focused {
-  .mdc-text-field__label {
-    @include mdc-theme-prop(color, primary);
-  }
+.mdc-text-field--focused:not(.mdc-text-field--invalid) {
+  @include mdc-text-field-label-color(primary);
 }
 
 .mdc-text-field--outlined {
