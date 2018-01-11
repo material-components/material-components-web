@@ -33,7 +33,7 @@
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 25%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 28%);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
 
@@ -322,10 +322,10 @@
   // stylelint-disable plugin/selector-bem-pattern
   &.mdc-text-field--outlined {
     .mdc-text-field__label--float-above {
-      transform: scale(.75) translateX(-36%) translateY(-170%);
+      transform: translateX(-28%) translateY(-130%) scale(.75);
 
       @include mdc-rtl {
-        transform: scale(.75) translateX(36%) translateY(-170%);
+        transform: translateX(28%) translateY(-130%) scale(.75);
       }
 
       &.mdc-text-field__label--shake {
