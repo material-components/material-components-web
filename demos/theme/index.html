@@ -24,48 +24,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="/ready.js"></script>
-    <script>
-      (function() {
-        var DEFAULT_THEME = 'baseline';
-
-        window.getDemoThemeFromUrl = function(url) {
-          url = url || window.location.href;
-
-          if (url.indexOf('?') === -1) {
-            return DEFAULT_THEME;
-          }
-
-          var qsList = url
-            // Remove the first '?' character and everything before it
-            .replace(/^.*[?]/, '')
-            // Remove the first '#' character and everything after it
-            .replace(/#.*$/, '')
-            // Split entire query string into an array of 'key=value' strings
-            .split('&');
-
-          var qsMap = {};
-          qsList.forEach(function(query) {
-            var split = query.split('=');
-            var key = split[0];
-            var value = split[1] || '';
-            if (!(key in qsMap)) {
-              qsMap[key] = [];
-            }
-            qsMap[key].push(value);
-          });
-
-          var theme = DEFAULT_THEME;
-          if ('theme' in qsMap) {
-            var values = qsMap['theme'];
-            theme = values[values.length - 1];
-          }
-          return theme;
-        };
-
-        var demoThemeFromUrl = getDemoThemeFromUrl();
-        document.write('<link rel="stylesheet" href="/assets/theme/theme-' + demoThemeFromUrl + '.css" id="theme-stylesheet" data-hot>');
-      })();
-    </script>
+    <script src="/uri.js"></script>
+    <script src="/theme-loader.js"></script>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed demo-toolbar">
