@@ -165,10 +165,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
     transition: mdc-animation-enter(opacity, 120ms);
   }
 
-  .mdc-dialog--open .mdc-dialog__surface {
-    transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
-  }
-
   .mdc-dialog__surface {
     transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
   }
