@@ -370,19 +370,6 @@ test('#adapter.getNativeInput returns the component input element', () => {
   );
 });
 
-test('#adapter.getIdleOutlineStyleValue returns the value of the given property on the idle outline element', () => {
-  const root = getFixture();
-  root.appendChild(bel`<div class="mdc-text-field__idle-outline"></div>`);
-  const idleOutline = root.querySelector('.mdc-text-field__idle-outline');
-  idleOutline.style.width = '500px';
-
-  const component = new MDCTextField(root);
-  assert.equal(
-    component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'),
-    getComputedStyle(idleOutline).getPropertyValue('width')
-  );
-});
-
 test('#adapter.isRtl returns true when the root element is in an RTL context' +
   'and false otherwise', () => {
   const wrapper = bel`<div dir="rtl"></div>`;
