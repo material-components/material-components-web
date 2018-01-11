@@ -154,11 +154,11 @@
   }
 }
 
-.mdc-list--avatar-list.mdc-list--dense .mdc-list__item {
+.mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
   height: 48px;
 }
 
-.mdc-list--avatar-list.mdc-list--dense .mdc-list__item__graphic {
+.mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
   @include mdc-list-graphic-size_(36px);
 }
 
