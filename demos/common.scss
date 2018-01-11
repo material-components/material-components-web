@@ -54,7 +54,12 @@ fieldset {
   }
 }
 
-.mdc-button--raised,
+.mdc-button--raised {
+  @include mdc-theme-dark(".mdc-button", true) {
+    @include mdc-button-filled-accessible($dark-button-color);
+  }
+}
+
 .mdc-button--unelevated {
   @include mdc-theme-dark(".mdc-button", true) {
     @include mdc-button-filled-accessible($dark-button-color);
