@@ -60,24 +60,24 @@
 
 .mdc-checkbox__background {
   @include mdc-checkbox__background_;
+}
 
-  .mdc-checkbox__native-control:enabled:checked ~ &,
-  .mdc-checkbox__native-control:enabled:indeterminate ~ & {
-    @include mdc-checkbox__background--marked_;
-  }
+.mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+.mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
+  @include mdc-checkbox__background--marked_;
 }
 
 // The frame's ::before element is used as a focus indicator for the checkbox
 .mdc-checkbox__background::before {
   @include mdc-checkbox__focus-indicator_;
+}
 
-  .mdc-checkbox__native-control:focus ~ & {
-    @include mdc-checkbox__focus-indicator--focused_;
-  }
+.mdc-checkbox__native-control:focus ~ .mdc-checkbox__background::before {
+  @include mdc-checkbox__focus-indicator--focused_;
+}
 
-  .mdc-ripple-upgraded--unbounded & {
-    @include mdc-checkbox__focus-indicator--ripple-upgraded-unbounded_;
-  }
+.mdc-ripple-upgraded--unbounded .mdc-checkbox__background::before {
+  @include mdc-checkbox__focus-indicator--ripple-upgraded-unbounded_;
 }
 
 .mdc-checkbox__native-control {
@@ -90,35 +90,35 @@
 
 .mdc-checkbox__checkmark {
   @include mdc-checkbox__checkmark_;
+}
 
-  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__checkmark--checked_;
-  }
+.mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
+  @include mdc-checkbox__checkmark--checked_;
+}
 
-  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__checkmark--indeterminate_;
-  }
+.mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
+  @include mdc-checkbox__checkmark--indeterminate_;
 }
 
 .mdc-checkbox__checkmark__path {
   @include mdc-checkbox__checkmark__path_;
+}
 
-  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background &,
-  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__checkmark__path--marked_;
-  }
+.mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark__path,
+.mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__checkmark__path {
+  @include mdc-checkbox__checkmark__path--marked_;
 }
 
 .mdc-checkbox__mixedmark {
   @include mdc-checkbox__mixedmark_;
+}
 
-  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__mixedmark--checked_;
-  }
+.mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
+  @include mdc-checkbox__mixedmark--checked_;
+}
 
-  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background & {
-    @include mdc-checkbox__mixedmark--indeterminate_;
-  }
+.mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
+  @include mdc-checkbox__mixedmark--indeterminate_;
 }
 
 // postcss-bem-linter: end
