@@ -126,6 +126,9 @@ import * as util from '../util.js';
   };
 
   demoReady(() => {
-    Object.values(initializers).forEach((initializer) => initializer());
+    for (const key in initializers) {
+      const initializer = initializers[key];
+      initializer();
+    }
   });
 })();
