@@ -137,7 +137,7 @@ test('adapter#removeClass removes a class from the root', () => {
   assert.isNotOk(root.classList.contains('foo'));
 });
 
-test('adapter#registerInteractionHandler proxies to addEventListener', () => {
+test('adapter#registerInteractionHandler proxies to addEventListener on the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
@@ -145,12 +145,29 @@ test('adapter#registerInteractionHandler proxies to addEventListener', () => {
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterInteractionHandler proxies to removeEventListener', () => {
+test('adapter#deregisterInteractionHandler proxies to removeEventListener on the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
   root.addEventListener('foo', handler);
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('foo', handler);
   domEvents.emit(root, 'foo');
+  td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('adapter#registerDocumentInteractionHandler proxies to addEventListener on the documentElement', () => {
+  const {component} = setupTest();
+  const handler = td.func('interactionHandler');
+  component.getDefaultFoundation().adapter_.registerDocumentInteractionHandler('foo', handler);
+  domEvents.emit(document.documentElement, 'foo');
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#deregisterDocumentInteractionHandler proxies to removeEventListener on the documentElement', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('interactionHandler');
+  root.addEventListener('foo', handler);
+  component.getDefaultFoundation().adapter_.deregisterDocumentInteractionHandler('foo', handler);
+  domEvents.emit(document.documentElement, 'foo');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 

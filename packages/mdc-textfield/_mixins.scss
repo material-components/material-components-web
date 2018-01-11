@@ -14,6 +14,9 @@
 // limitations under the License.
 //
 
+@import "bottom-line/mixins";
+@import "label/mixins";
+
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
 }
@@ -63,35 +66,42 @@
   }
 }
 
+@mixin mdc-text-field-ink-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-ink-color_($color);
+  }
+}
+
 // Private mixins
 
 // Common
 
 @mixin mdc-text-field-disabled_ {
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-light);
+  @include mdc-text-field-ink-color_(text-disabled-on-light);
+  @include mdc-text-field-label-color_(text-disabled-on-light);
+
+  @include mdc-theme-dark(".mdc-text-field") {
+    @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-dark);
+    @include mdc-text-field-ink-color_(text-disabled-on-dark);
+    @include mdc-text-field-label-color_(text-disabled-on-dark);
+  }
+
   pointer-events: none;
 
   .mdc-text-field__input {
-    border-bottom: 1px dotted $mdc-text-field-disabled-border-on-light;
+    border-bottom: 1px dotted;
 
     @include mdc-theme-dark(".mdc-text-field", true) {
-      border-bottom: 1px dotted $mdc-text-field-disabled-border-on-dark;
+      border-bottom: 1px dotted;
     }
   }
 
   // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field__input,
-  .mdc-text-field__label,
   + .mdc-text-field-helper-text {
     @include mdc-theme-prop(color, text-disabled-on-light);
   }
   // stylelint-enable plugin/selector-bem-pattern
-
-  .mdc-text-field__input,
-  .mdc-text-field__label {
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
-  }
 
   @include mdc-theme-dark(".mdc-text-field", true) {
     // stylelint-disable plugin/selector-bem-pattern
@@ -108,17 +118,10 @@
 }
 
 @mixin mdc-text-field-invalid_ {
-  .mdc-text-field__label {
-    color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__bottom-line {
-    background-color: $mdc-text-field-error-on-light;
-  }
+  @include mdc-text-field-bottom-line-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-focused-bottom-line-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-label-color($mdc-text-field-error-on-light);
 
   .mdc-text-field__idle-outline {
     border-color: $mdc-text-field-error-on-light;
@@ -237,5 +240,13 @@
     @include mdc-theme-dark(".mdc-text-field") {
       background-color: $mdc-textarea-disabled-background-on-dark;
     }
+  }
+}
+
+// Private Color Mixins
+
+@mixin mdc-text-field-ink-color_($color) {
+  .mdc-text-field__input {
+    @include mdc-theme-prop(color, $color);
   }
 }
