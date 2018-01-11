@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "The label is a text caption or description for the text field."
 iconId: text_field
-path: /catalog/input-control/text-field/label/
+path: /catalog/input-controls/text-field/label/
 -->
 
 # Text Field Label
