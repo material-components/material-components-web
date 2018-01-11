@@ -144,7 +144,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     left: 0;
     width: 100%;
     height: 1px;
-    transform: scaleY(1);
     transform-origin: bottom;
     transition: $mdc-select-menu-transition;
     background-color: rgba(black, .5);
@@ -167,14 +166,14 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
   &__bottom-line--active {
     &::after {
-      transform: scaleX(1);
+      transform: scale(1, 2);
       opacity: 1;
     }
   }
 
   // JS-enhanced and CSS-only Selects require different selectors for focused bottom-line due to different DOM structure
-  &__surface:focus .mdc-select__bottom-line,
-  &__surface:focus ~ .mdc-select__bottom-line {
+  &__surface:focus:not(.mdc-ripple-upgraded) .mdc-select__bottom-line,
+  &__surface:focus:not(.mdc-ripple-upgraded) ~ .mdc-select__bottom-line {
     @include mdc-theme-prop(background-color, primary);
 
     transform: scaleY(2);
@@ -203,10 +202,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 
   .mdc-select__bottom-line {
-    @include mdc-theme-prop(background-color, primary);
-
-    transform: scaleY(2);
-
     &::after {
       opacity: 1;
     }
