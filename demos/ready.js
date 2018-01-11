@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-// eslint-disable no-unused-vars no-var
-
 /**
  * Adds the given event handler to the queue. It will be executed asynchronously after all external JS and CSS resources
  * have finished loading (as determined by continuous long-polling with a timeout). If this function is called after all
