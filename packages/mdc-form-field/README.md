@@ -19,7 +19,8 @@ npm install --save @material/form-field
 
 ## CSS Usage
 
-The `mdc-form-field` class can be used as a wrapper element with any `input` + `label` combo:
+The `mdc-form-field` class can be used as a parent element, with any combination of adjacent `input` and `label` as
+immediate children:
 
 ```html
 <div class="mdc-form-field">
@@ -42,9 +43,8 @@ Now the label will be positioned before the checkbox.
 
 ### Usage with MDC-Web Components
 
-`mdc-form-field` will work not just with `input` elements, but with _any_ element as long as its
-successive sibling is a label element. This means it will work for any MDC-Web form control, such as a
-checkbox:
+`mdc-form-field` works not just with `input` elements, but with _any_ immediate child element as long as its
+successive sibling is a `label` element. This means it will work for MDC-Web form controls such as Checkbox and Radio:
 
 ```html
 <div class="mdc-form-field">
@@ -66,6 +66,10 @@ checkbox:
   <label for="my-checkbox" id="my-checkbox-label">This is my checkbox</label>
 </div>
 ```
+
+> Note that MDC Form Field is **not** intended for cases where a label and input are already handled together by
+> another component's styles and logic. For example, JavaScript-enhanced instances of MDC Text Field already manage
+> a label and input together under their own root element.
 
 ### RTL Support
 
@@ -143,10 +147,6 @@ No action is taken if the `input` property is not set or the input instance does
 
 
 ### Adapter
-
-The adapter for `MDCFormField` is extremely simple, providing only methods for adding and
-removing event listeners from the label, as well as methods for activating and deactivating
-the input ripple.
 
 | Method Signature | Description |
 | --- | --- |

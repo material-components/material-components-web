@@ -26,7 +26,6 @@ import {getNormalizedEventCoords} from './util';
  *   hasDeactivationUXRun: (boolean|undefined),
  *   wasActivatedByPointer: (boolean|undefined),
  *   wasElementMadeActive: (boolean|undefined),
- *   activationStartTime: (number|undefined),
  *   activationEvent: Event,
  *   isProgrammatic: (boolean|undefined)
  * }}
@@ -61,16 +60,11 @@ let ListenersType;
  */
 let PointType;
 
-/**
- * @enum {string}
- */
-const DEACTIVATION_ACTIVATION_PAIRS = {
-  mouseup: 'mousedown',
-  pointerup: 'pointerdown',
-  touchend: 'touchstart',
-  keyup: 'keydown',
-  blur: 'focus',
-};
+// Activation events registered on the root element of each instance for activation
+const ACTIVATION_EVENT_TYPES = ['touchstart', 'pointerdown', 'mousedown', 'keydown'];
+
+// Deactivation events registered on documentElement when a pointer-related down event occurs
+const POINTER_DEACTIVATION_EVENT_TYPES = ['touchend', 'pointerup', 'mouseup'];
 
 /**
  * @extends {MDCFoundation<!MDCRippleAdapter>}
@@ -98,6 +92,8 @@ class MDCRippleFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       registerInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
+      registerDocumentInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
+      deregisterDocumentInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
       registerResizeHandler: (/* handler: EventListener */) => {},
       deregisterResizeHandler: (/* handler: EventListener */) => {},
       updateCssVariable: (/* varName: string, value: string */) => {},
@@ -127,26 +123,21 @@ class MDCRippleFoundation extends MDCFoundation {
     /** @private {number} */
     this.maxRadius_ = 0;
 
-    /** @private {!Array<{ListenerInfoType}>} */
-    this.listenerInfos_ = [
-      {activate: 'touchstart', deactivate: 'touchend'},
-      {activate: 'pointerdown', deactivate: 'pointerup'},
-      {activate: 'mousedown', deactivate: 'mouseup'},
-      {activate: 'keydown', deactivate: 'keyup'},
-      {focus: 'focus', blur: 'blur'},
-    ];
+    /** @private {function(!Event)} */
+    this.activateHandler_ = (e) => this.activate_(e);
 
-    /** @private {!ListenersType} */
-    this.listeners_ = {
-      activate: (e) => this.activate_(e),
-      deactivate: (e) => this.deactivate_(e),
-      focus: () => requestAnimationFrame(
-        () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-      ),
-      blur: () => requestAnimationFrame(
-        () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-      ),
-    };
+    /** @private {function(!Event)} */
+    this.deactivateHandler_ = (e) => this.deactivate_(e);
+
+    /** @private {function(?Event=)} */
+    this.focusHandler_ = () => requestAnimationFrame(
+      () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
+    );
+
+    /** @private {function(?Event=)} */
+    this.blurHandler_ = () => requestAnimationFrame(
+      () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
+    );
 
     /** @private {!Function} */
     this.resizeHandler_ = () => this.layout();
@@ -174,6 +165,9 @@ class MDCRippleFoundation extends MDCFoundation {
       this.activationAnimationHasEnded_ = true;
       this.runDeactivationUXLogicIfReady_();
     };
+
+    /** @private {?Event} */
+    this.previousActivationEvent_ = null;
   }
 
   /**
@@ -197,7 +191,6 @@ class MDCRippleFoundation extends MDCFoundation {
       hasDeactivationUXRun: false,
       wasActivatedByPointer: false,
       wasElementMadeActive: false,
-      activationStartTime: 0,
       activationEvent: null,
       isProgrammatic: false,
     };
@@ -207,7 +200,7 @@ class MDCRippleFoundation extends MDCFoundation {
     if (!this.isSupported_()) {
       return;
     }
-    this.addEventListeners_();
+    this.registerRootHandlers_();
 
     const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
     requestAnimationFrame(() => {
@@ -219,18 +212,75 @@ class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
-  /** @private */
-  addEventListeners_() {
-    this.listenerInfos_.forEach((info) => {
-      Object.keys(info).forEach((k) => {
-        this.adapter_.registerInteractionHandler(info[k], this.listeners_[k]);
-      });
+  destroy() {
+    if (!this.isSupported_()) {
+      return;
+    }
+    this.deregisterRootHandlers_();
+    this.deregisterDeactivationHandlers_();
+
+    const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
+    requestAnimationFrame(() => {
+      this.adapter_.removeClass(ROOT);
+      this.adapter_.removeClass(UNBOUNDED);
+      this.removeCssVars_();
     });
+  }
+
+  /** @private */
+  registerRootHandlers_() {
+    ACTIVATION_EVENT_TYPES.forEach((type) => {
+      this.adapter_.registerInteractionHandler(type, this.activateHandler_);
+    });
+    this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
+    this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
     this.adapter_.registerResizeHandler(this.resizeHandler_);
   }
 
   /**
-   * @param {Event} e
+   * @param {!Event} e
+   * @private
+   */
+  registerDeactivationHandlers_(e) {
+    if (e.type === 'keydown') {
+      this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
+    } else {
+      POINTER_DEACTIVATION_EVENT_TYPES.forEach((type) => {
+        this.adapter_.registerDocumentInteractionHandler(type, this.deactivateHandler_);
+      });
+    }
+  }
+
+  /** @private */
+  deregisterRootHandlers_() {
+    ACTIVATION_EVENT_TYPES.forEach((type) => {
+      this.adapter_.deregisterInteractionHandler(type, this.activateHandler_);
+    });
+    this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
+    this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
+    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+  }
+
+  /** @private */
+  deregisterDeactivationHandlers_() {
+    this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
+    POINTER_DEACTIVATION_EVENT_TYPES.forEach((type) => {
+      this.adapter_.deregisterDocumentInteractionHandler(type, this.deactivateHandler_);
+    });
+  }
+
+  /** @private */
+  removeCssVars_() {
+    const {strings} = MDCRippleFoundation;
+    Object.keys(strings).forEach((k) => {
+      if (k.indexOf('VAR_') === 0) {
+        this.adapter_.updateCssVariable(strings[k], null);
+      }
+    });
+  }
+
+  /**
+   * @param {?Event} e
    * @private
    */
   activate_(e) {
@@ -243,13 +293,24 @@ class MDCRippleFoundation extends MDCFoundation {
       return;
     }
 
+    // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
+    const previousActivationEvent = this.previousActivationEvent_;
+    const isSameInteraction = previousActivationEvent && e && previousActivationEvent.type !== e.type &&
+      previousActivationEvent.clientX === e.clientX && previousActivationEvent.clientY === e.clientY;
+    if (isSameInteraction) {
+      return;
+    }
+
     activationState.isActivated = true;
     activationState.isProgrammatic = e === null;
     activationState.activationEvent = e;
     activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : (
       e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown'
     );
-    activationState.activationStartTime = Date.now();
+
+    if (e) {
+      this.registerDeactivationHandlers_(e);
+    }
 
     requestAnimationFrame(() => {
       // This needs to be wrapped in an rAF call b/c web browsers
@@ -277,11 +338,7 @@ class MDCRippleFoundation extends MDCFoundation {
   /** @private */
   animateActivation_() {
     const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
-    const {
-      BG_ACTIVE_FILL,
-      FG_DEACTIVATION,
-      FG_ACTIVATION,
-    } = MDCRippleFoundation.cssClasses;
+    const {FG_DEACTIVATION, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     const {DEACTIVATION_TIMEOUT_MS} = MDCRippleFoundation.numbers;
 
     let translateStart = '';
@@ -303,7 +360,6 @@ class MDCRippleFoundation extends MDCFoundation {
 
     // Force layout in order to re-trigger the animation.
     this.adapter_.computeBoundingRect();
-    this.adapter_.addClass(BG_ACTIVE_FILL);
     this.adapter_.addClass(FG_ACTIVATION);
     this.activationTimer_ = setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);
   }
@@ -344,9 +400,12 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /** @private */
   runDeactivationUXLogicIfReady_() {
+    // This method is called both when a pointing device is released, and when the activation animation ends.
+    // The deactivation animation should only run after both of those occur.
     const {FG_DEACTIVATION} = MDCRippleFoundation.cssClasses;
     const {hasDeactivationUXRun, isActivated} = this.activationState_;
     const activationHasEnded = hasDeactivationUXRun || !isActivated;
+
     if (activationHasEnded && this.activationAnimationHasEnded_) {
       this.rmBoundedActivationClasses_();
       this.adapter_.addClass(FG_DEACTIVATION);
@@ -358,55 +417,45 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /** @private */
   rmBoundedActivationClasses_() {
-    const {BG_ACTIVE_FILL, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-    this.adapter_.removeClass(BG_ACTIVE_FILL);
+    const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     this.adapter_.removeClass(FG_ACTIVATION);
     this.activationAnimationHasEnded_ = false;
     this.adapter_.computeBoundingRect();
   }
 
+  resetActivationState_() {
+    this.previousActivationEvent_ = this.activationState_.activationEvent;
+    this.activationState_ = this.defaultActivationState_();
+    // Touch devices may fire additional events for the same interaction within a short time.
+    // Store the previous event until it's safe to assume that subsequent events are for new interactions.
+    setTimeout(() => this.previousActivationEvent_ = null, 100);
+  }
+
   /**
-   * @param {Event} e
+   * @param {?Event} e
    * @private
    */
   deactivate_(e) {
-    const {activationState_: activationState} = this;
+    const activationState = this.activationState_;
     // This can happen in scenarios such as when you have a keyup event that blurs the element.
     if (!activationState.isActivated) {
       return;
     }
-    // Programmatic deactivation.
-    if (activationState.isProgrammatic) {
-      const evtObject = null;
-      const state = /** @type {!ActivationStateType} */ (Object.assign({}, activationState));
-      requestAnimationFrame(() => this.animateDeactivation_(evtObject, state));
-      this.activationState_ = this.defaultActivationState_();
-      return;
-    }
-
-    const actualActivationType = DEACTIVATION_ACTIVATION_PAIRS[e.type];
-    const expectedActivationType = activationState.activationEvent.type;
-    // NOTE: Pointer events are tricky - https://patrickhlauke.github.io/touch/tests/results/
-    // Essentially, what we need to do here is decouple the deactivation UX from the actual
-    // deactivation state itself. This way, touch/pointer events in sequence do not trample one
-    // another.
-    const needsDeactivationUX = actualActivationType === expectedActivationType;
-    let needsActualDeactivation = needsDeactivationUX;
-    if (activationState.wasActivatedByPointer) {
-      needsActualDeactivation = e.type === 'mouseup';
-    }
 
     const state = /** @type {!ActivationStateType} */ (Object.assign({}, activationState));
-    requestAnimationFrame(() => {
-      if (needsDeactivationUX) {
+
+    if (activationState.isProgrammatic) {
+      const evtObject = null;
+      requestAnimationFrame(() => this.animateDeactivation_(evtObject, state));
+      this.resetActivationState_();
+    } else {
+      this.deregisterDeactivationHandlers_();
+      requestAnimationFrame(() => {
         this.activationState_.hasDeactivationUXRun = true;
         this.animateDeactivation_(e, state);
-      }
-
-      if (needsActualDeactivation) {
-        this.activationState_ = this.defaultActivationState_();
-      }
-    });
+        this.resetActivationState_();
+      });
+    }
   }
 
   /**
@@ -422,46 +471,9 @@ class MDCRippleFoundation extends MDCFoundation {
    * @private
    */
   animateDeactivation_(e, {wasActivatedByPointer, wasElementMadeActive}) {
-    const {BG_FOCUSED} = MDCRippleFoundation.cssClasses;
     if (wasActivatedByPointer || wasElementMadeActive) {
-      // Remove class left over by element being focused
-      this.adapter_.removeClass(BG_FOCUSED);
       this.runDeactivationUXLogicIfReady_();
     }
-  }
-
-  destroy() {
-    if (!this.isSupported_()) {
-      return;
-    }
-    this.removeEventListeners_();
-
-    const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
-    requestAnimationFrame(() => {
-      this.adapter_.removeClass(ROOT);
-      this.adapter_.removeClass(UNBOUNDED);
-      this.removeCssVars_();
-    });
-  }
-
-  /** @private */
-  removeEventListeners_() {
-    this.listenerInfos_.forEach((info) => {
-      Object.keys(info).forEach((k) => {
-        this.adapter_.deregisterInteractionHandler(info[k], this.listeners_[k]);
-      });
-    });
-    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
-  }
-
-  /** @private */
-  removeCssVars_() {
-    const {strings} = MDCRippleFoundation;
-    Object.keys(strings).forEach((k) => {
-      if (k.indexOf('VAR_') === 0) {
-        this.adapter_.updateCssVariable(strings[k], null);
-      }
-    });
   }
 
   layout() {
@@ -508,6 +520,16 @@ class MDCRippleFoundation extends MDCFoundation {
 
       this.adapter_.updateCssVariable(VAR_LEFT, `${this.unboundedCoords_.left}px`);
       this.adapter_.updateCssVariable(VAR_TOP, `${this.unboundedCoords_.top}px`);
+    }
+  }
+
+  /** @param {boolean} unbounded */
+  setUnbounded(unbounded) {
+    const {UNBOUNDED} = MDCRippleFoundation.cssClasses;
+    if (unbounded) {
+      this.adapter_.addClass(UNBOUNDED);
+    } else {
+      this.adapter_.removeClass(UNBOUNDED);
     }
   }
 }

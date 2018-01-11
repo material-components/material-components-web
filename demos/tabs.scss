@@ -15,5 +15,45 @@
 //
 
 @import "./common";
+@import "../packages/mdc-tabs/tab/mixins";
 @import "../packages/mdc-button/mdc-button";
 @import "../packages/mdc-tabs/mdc-tabs";
+
+.custom-label-color-tab {
+  .mdc-tab:not(.mdc-tab--active) {
+    @include mdc-tab-label-ink-color($material-color-deep-purple-200);
+  }
+}
+
+.custom-label-color-tab {
+  .mdc-tab--active,
+  .mdc-tab:hover {
+    @include mdc-tab-label-ink-color($material-color-indigo-500);
+  }
+}
+
+.custom-icon-color-tab {
+  .mdc-tab:not(.mdc-tab--active) {
+    @include mdc-tab-icon-ink-color($material-color-deep-purple-200);
+  }
+}
+
+.custom-icon-color-tab {
+  .mdc-tab--active,
+  .mdc-tab:hover {
+    @include mdc-tab-icon-ink-color($material-color-indigo-500);
+  }
+}
+
+.custom-ink-color-tab{
+  .mdc-tab:not(.mdc-tab--active) {
+    @include mdc-tab-ink-color($material-color-deep-purple-200);
+  }
+}
+
+.custom-ink-color-tab {
+  .mdc-tab--active,
+  .mdc-tab:hover {
+    @include mdc-tab-ink-color($material-color-indigo-500);
+  }
+}

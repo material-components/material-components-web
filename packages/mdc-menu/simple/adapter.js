@@ -32,7 +32,7 @@
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/architecture.md
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  *
  * @record
  */
@@ -78,18 +78,6 @@ class MDCSimpleMenuAdapter {
   /** @return {{ width: number, height: number }} */
   getWindowDimensions() {}
 
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  setScale(x, y) {}
-
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  setInnerScale(x, y) {}
-
   /** @return {number} */
   getNumberOfItems() {}
 
@@ -110,18 +98,6 @@ class MDCSimpleMenuAdapter {
 
   /** @param {function(!Event)} handler */
   deregisterBodyClickHandler(handler) {}
-
-  /**
-   * @param {number} index
-   * @return {{top: number, height: number}}
-   */
-  getYParamsForItemAtIndex(index) {}
-
-  /**
-   * @param {number} index
-   * @param {string|null} value
-   */
-  setTransitionDelayForItemAtIndex(index, value) {}
 
   /**
    * @param {EventTarget} target
@@ -163,8 +139,8 @@ class MDCSimpleMenuAdapter {
   * }} position */
   setPosition(position) {}
 
-  /** @return {number} */
-  getAccurateTime() {}
+  /** @param {string} height */
+  setMaxHeight(height) {}
 }
 
-export default MDCSimpleMenuAdapter;
+export {MDCSimpleMenuAdapter};
