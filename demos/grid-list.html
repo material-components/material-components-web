@@ -20,17 +20,13 @@
     <title>Grid List - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <script src="/assets/grid-list.css.js"></script>
+    <link rel="stylesheet" href="/assets/grid-list.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
       .demo-grid-tile-content {
         background-image: url("images/16-9.jpg");
-      }
-      /* Hack for webpack async loading: Hide grid list until styles have loaded */
-      .mdc-grid-list-demo {
-        visibility: hidden;
       }
 
       .example {
@@ -57,7 +53,7 @@
       }
     </style>
   </head>
-  <body class="mdc-typography mdc-grid-list-demo">
+  <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
@@ -87,24 +83,23 @@
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
-
           </ul>
         </div>
       </section>
 
       <section class="example">
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox">
-              <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
             </div>
-            <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
           </div>
+          <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
+        </div>
       </section>
 
       <section class="example examples">
@@ -746,9 +741,6 @@
       // This is not needed when using pre-built css and js
       setTimeout(function() {
         initGridList();
-        setTimeout (function() {
-          document.querySelector('.mdc-grid-list-demo').style.visibility = 'visible';
-        }, 250);
       }, 100);
     </script>
   </body>
