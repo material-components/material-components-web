@@ -29,13 +29,11 @@ Icons describe the type of input a text field requires. They can also be interac
 
 ### Usage within `mdc-text-field`
 
-Leading and trailing icons can be added to `mdc-text-field` as visual indicators
-as well as interaction targets. To do so, add the relevant classes
-(`mdc-text-field--with-leading-icon` or `mdc-text-field--with-trailing-icon`) to the root element, add
-an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`.
+Leading and trailing icons can be applied to text fields styled as `mdc-text-field--box` or `mdc-text-field--outlined`. To add an icon, add the relevant class (either `mdc-text-field--with-leading-icon` or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`.
 
-#### Leading:
+#### Leading icon
 
+In text field box:
 ```html
 <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
@@ -45,14 +43,45 @@ an `i` element with your preferred icon, and give it a class of `mdc-text-field_
 </div>
 ```
 
-#### Trailing:
+In outlined text field:
+```html
+<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
+  <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+  <input type="text" id="my-input" class="mdc-text-field__input">
+  <label for="my-input" class="mdc-text-field__label">Your Name</label>
+  <div class="mdc-text-field__outline">
+    <svg>
+      <path class="mdc-text-field__outline-path"/>
+    </svg>
+  </div>
+  <div class="mdc-text-field__idle-outline"></div>
+</div>
+```
 
+#### Trailing icon
+
+In text field box:
 ```html
 <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-text-field__label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
   <div class="mdc-text-field__bottom-line"></div>
+</div>
+```
+
+In outlined text field:
+```html
+<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
+  <input type="text" id="my-input" class="mdc-text-field__input">
+  <label for="my-input" class="mdc-text-field__label">Your Name</label>
+  <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+  <div class="mdc-text-field__outline">
+    <svg>
+      <path class="mdc-text-field__outline-path"/>
+    </svg>
+  </div>
+  <div class="mdc-text-field__idle-outline"></div>
 </div>
 ```
 

@@ -20,6 +20,7 @@ import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCTextFieldOutlineFoundation from './outline/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -28,7 +29,10 @@ import MDCTextFieldLabelFoundation from './label/foundation';
  *   value: string,
  *   disabled: boolean,
  *   badInput: boolean,
- *   checkValidity: (function(): boolean)
+ *   validity: {
+ *     badInput: boolean,
+ *     valid: boolean,
+ *   },
  * }}
  */
 let NativeInputType;
@@ -38,7 +42,8 @@ let NativeInputType;
  *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
- *   label: (!MDCTextFieldLabelFoundation|undefined)
+ *   label: (!MDCTextFieldLabelFoundation|undefined),
+ *   outline: (!MDCTextFieldOutlineFoundation|undefined)
  * }}
  */
 let FoundationMapType;
@@ -125,14 +130,6 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
-
-  /**
-   * Returns the idle outline element's computed style value of the given css property `propertyName`.
-   * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
-   * @param {string} propertyName
-   * @return {string}
-   */
-  getIdleOutlineStyleValue(propertyName) {}
 
   /**
    * Returns true if the textfield is focused.

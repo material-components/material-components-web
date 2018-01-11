@@ -57,3 +57,18 @@ test('#adapter.setOutlinePathAttr sets the SVG path of the element', () => {
   const path = root.querySelector('.mdc-text-field__outline-path');
   assert.equal(path.getAttribute('d'), 'M 0 1');
 });
+
+test('#adapter.getIdleOutlineStyleValue returns the value of the given property on the idle outline element', () => {
+  const outlineRoot = getFixture();
+  const root = bel`<div></div>`;
+  root.appendChild(outlineRoot);
+  root.appendChild(bel`<div class="mdc-text-field__idle-outline"></div>`);
+  const idleOutline = root.querySelector('.mdc-text-field__idle-outline');
+  idleOutline.style.width = '500px';
+
+  const component = new MDCTextFieldOutline(outlineRoot);
+  assert.equal(
+    component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'),
+    getComputedStyle(idleOutline).getPropertyValue('width')
+  );
+});

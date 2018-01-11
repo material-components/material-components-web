@@ -29,7 +29,7 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldOutlineFoundation, [
-    'getWidth', 'getHeight', 'setOutlinePathAttr',
+    'getWidth', 'getHeight', 'setOutlinePathAttr', 'getIdleOutlineStyleValue',
   ]);
 });
 
@@ -38,8 +38,7 @@ const setupTest = () => setupFoundationTest(MDCTextFieldOutlineFoundation);
 test('#updateSvgPath sets the path of the outline element', () => {
   const {foundation, mockAdapter} = setupTest();
   const labelWidth = 30;
-  const radius = 8;
   const isRtl = true;
-  foundation.updateSvgPath(labelWidth, radius, isRtl);
+  foundation.updateSvgPath(labelWidth, isRtl);
   td.verify(mockAdapter.setOutlinePathAttr(td.matchers.anything()));
 });
