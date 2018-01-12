@@ -61,10 +61,9 @@ window.demoReady = (function() {
   }
 
   function startTimer() {
-    if (isReady() || timer) {
+    if (timer) {
       return;
     }
-
     startTimeMs = Date.now();
     timer = setInterval(tick, DELAY_MS);
   }
