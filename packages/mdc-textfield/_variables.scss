@@ -50,6 +50,8 @@ $mdc-text-field-outlined-hover-border: rgba(black, .87);
 $mdc-textarea-border-on-light: rgba(black, .73);
 $mdc-textarea-border-on-dark: rgba(white, 1);
 $mdc-textarea-light-background: rgba(white, 1);
+// cannot be transparent because multiline textarea input
+// will make text unreadable
 $mdc-textarea-dark-background: rgba(48, 48, 48, 1);
 $mdc-textarea-disabled-background-on-light: rgba(249, 249, 249, 1);
 $mdc-textarea-disabled-background-on-dark: rgba(47, 47, 47, 1);
