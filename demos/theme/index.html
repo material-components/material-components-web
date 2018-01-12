@@ -587,52 +587,6 @@
       </section>
 
       <section class="demo-component-section">
-        <i id="ripple" class="demo-anchor-with-toolbar-offset"></i>
-        <h3 class="mdc-typography--headline demo-component-section__heading">
-          Ripple
-          <a href="#ripple" class="demo-component-section__permalink" title="Permalink to the theme demo for the ripple component">#</a>
-        </h3>
-
-        <figure class="demo-ripple__row">
-          <figcaption class="mdc-typography--subheading2">Bounded</figcaption>
-          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-surface" tabindex="0">
-            Default
-          </div>
-          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-box--primary demo-ripple-surface demo-ripple-surface--primary" tabindex="0">
-            Primary Color
-          </div>
-          <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-box--secondary demo-ripple-surface demo-ripple-surface--secondary" tabindex="0">
-            Secondary Color
-          </div>
-        </figure>
-
-        <figure class="demo-ripple__row">
-          <figcaption class="mdc-typography--subheading2">Unbounded</figcaption>
-          <div class="demo-ripple-box">
-            Default
-            <div class="mdc-ripple-surface material-icons demo-ripple-surface" data-mdc-ripple-is-unbounded
-                 aria-label="Favorite" tabindex="0">
-              favorite
-            </div>
-          </div>
-          <div class="demo-ripple-box demo-ripple-box--primary">
-            Primary Color
-            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--primary" data-mdc-ripple-is-unbounded
-                 aria-label="Favorite" tabindex="0">
-              favorite
-            </div>
-          </div>
-          <div class="demo-ripple-box demo-ripple-box--secondary">
-            Secondary Color
-            <div class="mdc-ripple-surface material-icons demo-ripple-surface demo-ripple-surface--secondary" data-mdc-ripple-is-unbounded
-                 aria-label="Favorite" tabindex="0">
-              favorite
-            </div>
-          </div>
-        </figure>
-      </section>
-
-      <section class="demo-component-section">
         <i id="select" class="demo-anchor-with-toolbar-offset"></i>
         <h3 class="mdc-typography--headline demo-component-section__heading">
           Select
@@ -994,14 +948,6 @@
               linearProgress.buffer = 0.75;
             }
           }
-
-          /*
-           * Ripple
-           */
-
-          getAll('.mdc-ripple-surface:not([data-demo-no-js])').forEach(function(surface) {
-            mdc.ripple.MDCRipple.attachTo(surface);
-          });
 
           /*
            * Select
