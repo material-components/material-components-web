@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,19 @@
 // limitations under the License.
 //
 
-@import "./mixins";
+// Public
 
-@for $z-value from 0 through 24 {
-  .mdc-elevation--z#{$z-value} {
-    @include mdc-elevation($z-value);
+@mixin mdc-text-field-label-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-label-color_($color);
   }
 }
 
-.mdc-elevation-transition {
-  transition: mdc-elevation-transition-value();
-  will-change: $mdc-elevation-property;
+// Private
+
+@mixin mdc-text-field-label-color_($color) {
+  .mdc-text-field__label,
+  .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
+    @include mdc-theme-prop(color, $color);
+  }
 }

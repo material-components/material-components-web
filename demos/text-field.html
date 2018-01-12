@@ -20,7 +20,7 @@
     <title>Text Field - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <script src="/assets/text-field.css.js"></script>
+    <link rel="stylesheet" href="/assets/text-field.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -49,14 +49,9 @@
         background-color: #f2f2f2;
       }
 
-      .custom-text-field-input {
-        width: 300px;
-      }
-
       .full-width-textarea-example {
         margin-top: 16px;
       }
-
     </style>
   </head>
   <body class="mdc-typography">
@@ -118,6 +113,14 @@
         <div>
           <input id="required" type="checkbox">
           <label for="required">Required</label>
+        </div>
+        <div>
+          <input id="alternate-colors" type="checkbox">
+          <label for="alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
+          <input id="alternate-error-colors" type="checkbox">
+          <label for="alternate-error-colors">Alternate Error Colors</label>
         </div>
         <div>
           <input id="use-helper-text" type="checkbox">
@@ -275,28 +278,11 @@
 
       <section class="example">
         <h2>Text Field - Leading/Trailing icons</h2>
-        <div class="demo-note">
-          <em>
-            Note: Some implementations utilizing leading and trailing icons may wish to set a width on the
-            <code>input</code> element to achieve uniform widths on text fields.
-            This demo achieves that by adding a custom class name: <code>custom-text-field-input</code> and setting
-            some style:
-          </em>
-          <br />
-          <!--
-            The following text formatting achieves the visual output we are aiming for
-            since the <pre> tag honors whitespace and line breaks.
-          -->
-          <pre>
-<code>.custom-text-field-input {
-  width: 300px;
-}</code></pre>
-        </div>
         <div id="demo-tf-box-leading-wrapper">
           <div id="tf-box-leading-example"
             class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon" data-demo-no-auto-js>
             <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
-            <input type="text" id="tf-box-leading" class="mdc-text-field__input custom-text-field-input">
+            <input type="text" id="tf-box-leading" class="mdc-text-field__input">
             <label for="tf-box-leading" class="mdc-text-field__label">Your name</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
@@ -304,31 +290,59 @@
         <div id="demo-tf-box-trailing-wrapper">
           <div id="tf-box-trailing-example"
             class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon" data-demo-no-auto-js>
-            <input type="text" id="tf-box-trailing" class="mdc-text-field__input custom-text-field-input">
+            <input type="text" id="tf-box-trailing" class="mdc-text-field__input">
             <label for="tf-box-trailing" class="mdc-text-field__label">Your other name</label>
             <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
         </div>
-        <div>
-          <input id="box-disable-leading-trailing" type="checkbox">
-          <label for="box-disable-leading-trailing">Disabled</label>
+        <div id="demo-tf-outlined-leading-wrapper">
+          <div id="tf-outlined-leading-example"
+            class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-demo-no-auto-js>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+            <input type="text" id="tf-outlined-leading" class="mdc-text-field__input">
+            <label for="tf-outlined-leading" class="mdc-text-field__label">Your other name</label>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
+          </div>
+        </div>
+        <div id="demo-tf-outlined-trailing-wrapper">
+          <div id="tf-outlined-trailing-example"
+            class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon" data-demo-no-auto-js>
+            <input type="text" id="tf-outlined-trailing" class="mdc-text-field__input">
+            <label for="tf-outlined-trailing" class="mdc-text-field__label">Your other name</label>
+            <i class="material-icons mdc-text-field__icon" tabindex="0">delete</i>
+            <div class="mdc-text-field__outline">
+              <svg>
+                <path class="mdc-text-field__outline-path"/>
+              </svg>
+            </div>
+            <div class="mdc-text-field__idle-outline"></div>
+          </div>
         </div>
         <div>
-          <input id="box-rtl-leading-trailing" type="checkbox">
-          <label for="box-rtl-leading-trailing">RTL</label>
+          <input id="disable-leading-trailing" type="checkbox">
+          <label for="disable-leading-trailing">Disabled</label>
         </div>
         <div>
-          <input id="box-dark-theme-leading-trailing" type="checkbox">
-          <label for="box-dark-theme-leading-trailing">Dark Theme</label>
+          <input id="rtl-leading-trailing" type="checkbox">
+          <label for="rtl-leading-trailing">RTL</label>
         </div>
         <div>
-          <input id="box-dense-leading-trailing" type="checkbox">
-          <label for="box-dense-leading-trailing">Dense</label>
+          <input id="dark-theme-leading-trailing" type="checkbox">
+          <label for="dark-theme-leading-trailing">Dark Theme</label>
         </div>
         <div>
-          <input id="box-unclickable-leading-trailing" type="checkbox">
-          <label for="box-unclickable-leading-trailing">Unclickable icons</label>
+          <input id="dense-leading-trailing" type="checkbox">
+          <label for="dense-leading-trailing">Dense</label>
+        </div>
+        <div>
+          <input id="unclickable-leading-trailing" type="checkbox">
+          <label for="unclickable-leading-trailing">Unclickable icons</label>
         </div>
       </section>
 
@@ -460,46 +474,68 @@
     </script>
     <script>
       setTimeout(function() {
-        var tfLeadingEl = document.getElementById('tf-box-leading-example');
-        var tfLeading = new mdc.textField.MDCTextField(tfLeadingEl);
-        var wrapperLeading = document.getElementById('demo-tf-box-leading-wrapper');
+        var tfBoxLeadingEl = document.getElementById('tf-box-leading-example');
+        var tfBoxLeading = new mdc.textField.MDCTextField(tfBoxLeadingEl);
+        var wrapperBoxLeading = document.getElementById('demo-tf-box-leading-wrapper');
 
-        var tfTrailingEl = document.getElementById('tf-box-trailing-example');
-        var tfTrailing = new mdc.textField.MDCTextField(tfTrailingEl);
-        var wrapperTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+        var tfBoxTrailingEl = document.getElementById('tf-box-trailing-example');
+        var tfBoxTrailing = new mdc.textField.MDCTextField(tfBoxTrailingEl);
+        var wrapperBoxTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+
+        var tfOutlinedLeadingEl = document.getElementById('tf-outlined-leading-example');
+        var tfOutlinedLeading = new mdc.textField.MDCTextField(tfOutlinedLeadingEl);
+        var wrapperOutlinedLeading = document.getElementById('demo-tf-outlined-leading-wrapper');
+
+        var tfOutlinedTrailingEl = document.getElementById('tf-outlined-trailing-example');
+        var tfOutlinedTrailing = new mdc.textField.MDCTextField(tfOutlinedTrailingEl);
+        var wrapperOutlinedTrailing = document.getElementById('demo-tf-outlined-trailing-wrapper');
 
         var tfIcons = document.querySelectorAll('.mdc-text-field__icon');
 
-        document.getElementById('box-disable-leading-trailing').addEventListener('change', function(evt) {
-          tfLeading.disabled = evt.target.checked;
-          tfTrailing.disabled = evt.target.checked;
+        document.getElementById('disable-leading-trailing').addEventListener('change', function(evt) {
+          tfBoxLeading.disabled = evt.target.checked;
+          tfBoxTrailing.disabled = evt.target.checked;
+          tfOutlinedLeading.disabled = evt.target.checked;
+          tfOutlinedTrailing.disabled = evt.target.checked;
         });
 
-        document.getElementById('box-rtl-leading-trailing').addEventListener('change', function(evt) {
+        document.getElementById('rtl-leading-trailing').addEventListener('change', function(evt) {
           if (evt.target.checked) {
-            wrapperLeading.setAttribute('dir', 'rtl');
-            wrapperTrailing.setAttribute('dir', 'rtl');
+            wrapperBoxLeading.setAttribute('dir', 'rtl');
+            wrapperBoxTrailing.setAttribute('dir', 'rtl');
+            wrapperOutlinedLeading.setAttribute('dir', 'rtl');
+            wrapperOutlinedTrailing.setAttribute('dir', 'rtl');
           } else {
-            wrapperLeading.removeAttribute('dir');
-            wrapperTrailing.removeAttribute('dir');
+            wrapperBoxLeading.removeAttribute('dir');
+            wrapperBoxTrailing.removeAttribute('dir');
+            wrapperOutlinedLeading.removeAttribute('dir');
+            wrapperOutlinedTrailing.removeAttribute('dir');
           }
-          tfLeading.layout();
-          tfTrailing.layout();
+          tfBoxLeading.layout();
+          tfBoxTrailing.layout();
+          tfOutlinedLeading.layout();
+          tfOutlinedTrailing.layout();
         });
 
-        document.getElementById('box-dark-theme-leading-trailing').addEventListener('change', function(evt) {
-          wrapperLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
-          wrapperTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        document.getElementById('dark-theme-leading-trailing').addEventListener('change', function(evt) {
+          wrapperBoxLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperBoxTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperOutlinedLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+          wrapperOutlinedTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
 
-        document.getElementById('box-dense-leading-trailing').addEventListener('change', function(evt) {
-          tfLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-          tfLeading.layout();
-          tfTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-          tfTrailing.layout();
+        document.getElementById('dense-leading-trailing').addEventListener('change', function(evt) {
+          tfBoxLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfBoxLeading.layout();
+          tfBoxTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfBoxTrailing.layout();
+          tfOutlinedLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfOutlinedLeading.layout();
+          tfOutlinedTrailingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tfOutlinedTrailing.layout();
         });
 
-        document.getElementById('box-unclickable-leading-trailing').addEventListener('change', function(evt) {
+        document.getElementById('unclickable-leading-trailing').addEventListener('change', function(evt) {
           [].slice.call(tfIcons).forEach(function (icon) {
             icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
           });
@@ -550,6 +586,14 @@
         document.getElementById('required').addEventListener('change', function(evt) {
           var target = evt.target;
           tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
+        });
+        document.getElementById('alternate-colors').addEventListener('change', function (evt) {
+          var target = evt.target;
+          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
+        });
+        document.getElementById('alternate-error-colors').addEventListener('change', function (evt) {
+          var target = evt.target;
+          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
         });
         document.getElementById('use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
