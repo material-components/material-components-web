@@ -58,15 +58,15 @@
   }
 }
 
-@mixin mdc-select-focused-bottom-line {
+// Private
+
+@mixin mdc-select-focused-bottom-line_ {
   // JS-enhanced and CSS-only Selects require different selectors for focused bottom-line due to different DOM structure
   .mdc-select__surface:focus .mdc-select__bottom-line,
   .mdc-select__surface:focus ~ .mdc-select__bottom-line {
     @content;
   }
 }
-
-// Private
 
 @mixin mdc-select-ink-color_($color) {
   .mdc-select__surface {
@@ -106,7 +106,7 @@
 }
 
 @mixin mdc-select-focused-bottom-line-color_($color) {
-  @include mdc-select-focused-bottom-line {
+  @include mdc-select-focused-bottom-line_ {
     @include mdc-theme-prop(background-color, $color);
   }
 

@@ -157,7 +157,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     }
   }
 
-  @include mdc-select-focused-bottom-line {
+  @include mdc-select-focused-bottom-line_ {
     transform: scaleY(2);
 
     &::after {
