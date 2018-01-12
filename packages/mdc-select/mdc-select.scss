@@ -29,8 +29,8 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
 .mdc-select {
   @include mdc-select-dd-arrow-svg-bg_;
-  @include mdc-select-fill-color(rgba(white, .1));
-  @include mdc-select-ink-color(primary);
+  @include mdc-select-container-fill-color(rgba(white, .1));
+  @include mdc-select-ink-color(text-primary-on-light);
   @include mdc-select-label-color(rgba(black, .6));
   @include mdc-select-bottom-line-color(rgba(black, .5));
   @include mdc-select-selected-text-color(text-primary-on-light);
@@ -160,9 +160,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     }
   }
 
-  // JS-enhanced and CSS-only Selects require different selectors for focused bottom-line due to different DOM structure
-  &__surface:focus .mdc-select__bottom-line,
-  &__surface:focus ~ .mdc-select__bottom-line {
+  @include mdc-select-focused-bottom-line {
     transform: scaleY(2);
 
     &::after {

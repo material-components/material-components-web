@@ -215,7 +215,7 @@
           }
         });
         alternateColorsCb.addEventListener('change', function() {
-          boxDemoWrapper.classList[alternateColorsCb.checked ? 'add' : 'remove']('demo-select-custom-colors');
+          root.classList[alternateColorsCb.checked ? 'add' : 'remove']('demo-select-custom-colors');
         });
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;

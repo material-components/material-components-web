@@ -17,14 +17,14 @@
 // Public
 
 @mixin mdc-select-ink-color($color) {
-  :not(.mdc-select--disabled) {
+  &:not(.mdc-select--disabled) {
     @include mdc-select-ink-color_($color);
   }
 }
 
-@mixin mdc-select-fill-color($color) {
-  :not(.mdc-select--disabled) {
-    @include mdc-select-fill-color_($color);
+@mixin mdc-select-container-fill-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-container-fill-color_($color);
   }
 }
 
@@ -58,6 +58,14 @@
   }
 }
 
+@mixin mdc-select-focused-bottom-line {
+  // JS-enhanced and CSS-only Selects require different selectors for focused bottom-line due to different DOM structure
+  .mdc-select__surface:focus .mdc-select__bottom-line,
+  .mdc-select__surface:focus ~ .mdc-select__bottom-line {
+    @content;
+  }
+}
+
 // Private
 
 @mixin mdc-select-ink-color_($color) {
@@ -66,7 +74,7 @@
   }
 }
 
-@mixin mdc-select-fill-color_($color) {
+@mixin mdc-select-container-fill-color_($color) {
   .mdc-select__surface {
     @include mdc-theme-prop(background-color, $color);
   }
@@ -98,12 +106,11 @@
 }
 
 @mixin mdc-select-focused-bottom-line-color_($color) {
-  .mdc-select__surface:focus .mdc-select__bottom-line,
-  .mdc-select__surface:focus ~ .mdc-select__bottom-line {
+  @include mdc-select-focused-bottom-line {
     @include mdc-theme-prop(background-color, $color);
   }
 
-  .mdc-select--open .mdc-select__bottom-line {
+  &.mdc-select--open .mdc-select__bottom-line {
     @include mdc-theme-prop(background-color, $color);
   }
 }
