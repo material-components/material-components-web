@@ -54,12 +54,12 @@ class Permalinker {
   initialize() {
     this.root_.addEventListener('focusin', function(e) {
       if (e.target.classList.contains('demo-component-section__permalink')) {
-        e.target.parentElement.classList.add('demo-component-section__heading--focus');
+        e.target.parentElement.classList.add('demo-component-section__heading--focus-within');
       }
     });
     this.root_.addEventListener('focusout', function(e) {
       if (e.target.classList.contains('demo-component-section__permalink')) {
-        e.target.parentElement.classList.remove('demo-component-section__heading--focus');
+        e.target.parentElement.classList.remove('demo-component-section__heading--focus-within');
       }
     });
 

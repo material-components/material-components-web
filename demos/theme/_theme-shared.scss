@@ -38,6 +38,7 @@
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
+@import "../../packages/mdc-rtl/mixins";
 @import "../common";
 @import "./menu";
 
@@ -58,40 +59,37 @@ body {
   background-color: $mdc-theme-background;
 }
 
-// Override values in common.scss
+figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+// Override values set in common.scss.
 // TODO(acdvorak): Fix common.scss so it always sets the right color (see below)
 .mdc-toolbar__icon,
 .mdc-toolbar__menu-icon {
   color: inherit;
 }
 
-// TODO(acdvorak): Do this automatically in the component's baseline styles
+// TODO(acdvorak): Do this automatically in mdc-toolbar's baseline styles
 .demo-toolbar {
   color: mdc-theme-accessible-ink-color(primary);
 }
 
-// TODO(acdvorak): Do this automatically in the component's baseline styles
-.demo-theme-list {
-  @include mdc-theme-prop(color, text-primary-on-light);
-}
-
-figure {
-  margin-left: 0;
-  margin-right: 0;
-}
-
 //
-// Page toolbar
+// Toolbar
 //
 
-.mdc-toolbar__icon,
-.mdc-toolbar__icon:last-of-type {
-  padding: 16px;
+// TODO(acdvorak): Why does mdc-toolbar__icon need a :last-of-type selector?
+.demo-toolbar-icon,
+.demo-toolbar-icon:last-of-type {
+  @include mdc-rtl-reflexive-property(padding, right, 12px);
 }
 
+// TODO(acdvorak): Why does mdc-toolbar__icon need a :last-of-type selector?
 .demo-toolbar-icon--last,
 .demo-toolbar-icon--last:last-of-type {
-  padding-right: 24px;
+  @include mdc-rtl-reflexive-property(padding, right, 24px);
 }
 
 .demo-toolbar-progress-row {
@@ -170,24 +168,22 @@ figure {
   transition: none;
 }
 
-.demo-component-section__heading .demo-component-section__permalink {
+.demo-component-section__permalink {
   color: inherit;
   opacity: 0;
 }
 
-.demo-component-section__permalink {
-  .demo-component-section:hover &,
-  .demo-component-section__heading--focus & {
-    opacity: 1;
-  }
+.demo-component-section:hover .demo-component-section__permalink,
+.demo-component-section__heading--focus-within .demo-component-section__permalink {
+  opacity: 1;
 }
 
 //
-// Baseline theme color demo
+// Theme CSS class demo
 //
 
-$low-luminance-color: #3e2723;
-$high-luminance-color: #fff8e1;
+$demo-color-low-luminance: #3e2723;
+$demo-color-high-luminance: #fff8e1;
 
 .demo-theme-color-group {
   padding: 16px 0;
@@ -222,27 +218,27 @@ $high-luminance-color: #fff8e1;
 }
 
 .demo-theme-bg--low-luminance {
-  background-color: $low-luminance-color;
+  background-color: $demo-color-low-luminance;
 }
 
 .demo-theme-bg--low-luminance-light {
-  background-color: mdc-theme-light-variant($low-luminance-color);
+  background-color: mdc-theme-light-variant($demo-color-low-luminance);
 }
 
 .demo-theme-bg--low-luminance-dark {
-  background-color: mdc-theme-dark-variant($low-luminance-color);
+  background-color: mdc-theme-dark-variant($demo-color-low-luminance);
 }
 
 .demo-theme-bg--high-luminance {
-  background-color: $high-luminance-color;
+  background-color: $demo-color-high-luminance;
 }
 
 .demo-theme-bg--high-luminance-light {
-  background-color: mdc-theme-light-variant($high-luminance-color);
+  background-color: mdc-theme-light-variant($demo-color-high-luminance);
 }
 
 .demo-theme-bg--high-luminance-dark {
-  background-color: mdc-theme-dark-variant($high-luminance-color);
+  background-color: mdc-theme-dark-variant($demo-color-high-luminance);
 }
 
 .demo-theme-bg--custom-light {
@@ -275,36 +271,6 @@ $high-luminance-color: #fff8e1;
 //
 // Button demo
 //
-
-.mdc-button.secondary-text-button {
-  @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-states($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-states($mdc-theme-secondary);
-  }
-}
-
-.mdc-button.secondary-filled-button {
-  @include mdc-button-filled-accessible($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-filled-accessible($mdc-theme-secondary);
-  }
-}
-
-.mdc-button.secondary-stroked-button {
-  @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-button-stroke-color($mdc-theme-secondary);
-  @include mdc-states($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-button-stroke-color($mdc-theme-secondary);
-    @include mdc-states($mdc-theme-secondary);
-  }
-}
 
 .demo-fieldset--button + .demo-fieldset--button {
   margin-top: 16px;
@@ -411,10 +377,6 @@ $high-luminance-color: #fff8e1;
   margin: 16px 0 0 0;
 }
 
-.demo-fab--custom {
-  @include mdc-fab-accessible($demo-custom-color);
-}
-
 .demo-fab-tile {
   margin: 0 48px 1em 0;
 }
@@ -437,12 +399,12 @@ $high-luminance-color: #fff8e1;
   display: inline-flex;
 }
 
-.demo-icon-toggle__row {
+.demo-icon-toggle-row {
   display: flex;
   flex-wrap: wrap;
 }
 
-.demo-icon-toggle__tile {
+.demo-icon-toggle-tile {
   width: 200px;
   margin: 0 10px 10px 0;
   padding: 20px;
@@ -454,11 +416,11 @@ $high-luminance-color: #fff8e1;
 // Linear Progress demo
 //
 
-.demo-linear-progress__row {
+.demo-linear-progress-row {
   margin: 32px 0;
 }
 
-.demo-linear-progress__row + .demo-linear-progress__row {
+.demo-linear-progress-row + .demo-linear-progress-row {
   margin-top: 64px;
 }
 
@@ -475,31 +437,11 @@ $high-luminance-color: #fff8e1;
   margin-right: 8px;
 }
 
-@mixin demo-radio-color($color) {
-  .mdc-radio__native-control:checked + .mdc-radio__background {
-    &::before {
-      @include mdc-theme-prop(background-color, $color);
-    }
-
-    .mdc-radio__outer-circle {
-      @include mdc-theme-prop(border-color, $color);
-    }
-
-    .mdc-radio__inner-circle {
-      @include mdc-theme-prop(background-color, $color);
-    }
-  }
-}
-
-.demo-radio--secondary {
-  @include demo-radio-color($mdc-theme-secondary);
-}
-
 //
 // Ripple demo
 //
 
-.demo-ripple__row {
+.demo-ripple-row {
   margin: 32px 0;
 }
 

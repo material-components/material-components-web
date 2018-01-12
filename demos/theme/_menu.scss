@@ -18,26 +18,20 @@
 @import "../../packages/mdc-theme/mixins";
 
 //
-// Toolbar
+// Toolbar and menu
 //
-
-.mdc-toolbar__icon {
-  // TODO(advorak): Move this to mdc-shared-icon-style mixin
-  background-color: transparent;
-}
 
 .demo-theme-menu__group-heading {
   padding: 16px;
 }
 
 .demo-theme-menu__list-item--selected {
-  background-color: $material-color-grey-200;
-  box-shadow: inset 0 0 5px $material-color-grey-500;
+  background-color: $material-color-grey-300;
+}
 
-  @include mdc-theme-dark {
-    background-color: $material-color-grey-700;
-    box-shadow: inset 0 0 5px $material-color-grey-400;
-  }
+// TODO(acdvorak): Do this automatically in the component's baseline styles
+.demo-theme-list {
+  @include mdc-theme-prop(color, text-primary-on-light);
 }
 
 //
@@ -48,16 +42,16 @@
   display: block;
   border: 1px solid $material-color-grey-500;
   border-radius: 50%;
-
-  @include mdc-theme-dark {
-    border-color: $material-color-grey-100;
-  }
 }
 
 .demo-theme-color-radio__inner {
   display: block;
   border: 11px solid;
   border-radius: 50%;
+}
+
+[data-theme="baseline"] .demo-theme-color-radio__inner {
+  border-color: $material-color-deep-purple-a700 $material-color-teal-a400 $material-color-teal-a400 $material-color-deep-purple-a700;
 }
 
 [data-theme="black"] .demo-theme-color-radio__inner {
@@ -68,14 +62,10 @@
   border-color: $material-color-amber-300 $material-color-pink-400 $material-color-pink-400 $material-color-amber-300;
 }
 
-[data-theme="baseline"] .demo-theme-color-radio__inner {
-  border-color: $material-color-deep-purple-a700 $material-color-teal-a400 $material-color-teal-a400 $material-color-deep-purple-a700;
+[data-theme="white"] .demo-theme-color-radio__inner {
+  border-color: #fff $material-color-orange-500 $material-color-orange-500 #fff;
 }
 
 [data-theme="yellow"] .demo-theme-color-radio__inner {
   border-color: $material-color-yellow-500 $material-color-blue-500 $material-color-blue-500 $material-color-yellow-500;
-}
-
-[data-theme="white"] .demo-theme-color-radio__inner {
-  border-color: #fff $material-color-orange-500 $material-color-orange-500 #fff;
 }

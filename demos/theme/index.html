@@ -38,10 +38,10 @@
           <span class="mdc-toolbar__title catalog-title">Color Theming</span>
         </section>
         <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
-          <button id="rtl-action" class="mdc-toolbar__icon material-icons" title="Toggle RTL">format_align_left</button>
+          <button id="rtl-action" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
 
           <div class="mdc-menu-anchor">
-            <button id="theme-color-action" class="mdc-toolbar__icon demo-toolbar-icon--last" title="Change theme colors" data-theme="baseline">
+            <button id="theme-color-action" class="mdc-toolbar__icon demo-toolbar-icon demo-toolbar-icon--last" title="Change theme colors" data-theme="baseline">
               <i class="demo-theme-color-radio">
                 <span class="demo-theme-color-radio__inner"></span>
               </i>
@@ -57,7 +57,6 @@
                   role="menu"
                   aria-hidden="true"
                   style="list-style-type: none"><!-- Inline style needed to fix IE 11 rendering bug -->
-                <li class="demo-theme-menu__group-heading">Moderate luminance</li>
                 <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-theme="baseline">
                   <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
@@ -66,15 +65,15 @@
                   </div>
                   Baseline (default)
                 </li>
+                <li class="mdc-list-divider" role="separator"></li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="dark">
                   <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  Dark mode (custom)
+                  Dark background (custom)
                 </li>
-                <li class="demo-theme-menu__group-heading">Extreme luminance</li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="black">
                   <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
@@ -549,8 +548,8 @@
           <a href="#icon-toggle" class="demo-component-section__permalink" title="Permalink to the theme demo for the icon toggle component">#</a>
         </h3>
 
-        <div class="demo-icon-toggle__row">
-          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+        <div class="demo-icon-toggle-row">
+          <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subheading2">Enabled</h4>
 
             <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
@@ -564,7 +563,7 @@
             </i>
           </div>
 
-          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+          <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subheading2">Disabled</h4>
 
             <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
@@ -588,7 +587,7 @@
           <a href="#linear-progress" class="demo-component-section__permalink" title="Permalink to the theme demo for the linear progress component">#</a>
         </h3>
 
-        <figure class="demo-linear-progress__row">
+        <figure class="demo-linear-progress-row">
           <figcaption class="mdc-typography--subheading2">Indeterminate</figcaption>
           <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
             <div class="mdc-linear-progress__buffering-dots"></div>
@@ -602,7 +601,7 @@
           </div>
         </figure>
 
-        <figure class="demo-linear-progress__row">
+        <figure class="demo-linear-progress-row">
           <figcaption class="mdc-typography--subheading2">Buffer</figcaption>
           <div role="progressbar" class="mdc-linear-progress" data-buffer="true">
             <div class="mdc-linear-progress__buffering-dots"></div>
@@ -678,7 +677,7 @@
           <a href="#ripple" class="demo-component-section__permalink" title="Permalink to the theme demo for the ripple component">#</a>
         </h3>
 
-        <figure class="demo-ripple__row">
+        <figure class="demo-ripple-row">
           <figcaption class="mdc-typography--subheading2">Bounded</figcaption>
           <div class="mdc-ripple-surface mdc-elevation--z2 demo-ripple-box demo-ripple-surface" tabindex="0">
             Default
@@ -691,7 +690,7 @@
           </div>
         </figure>
 
-        <figure class="demo-ripple__row">
+        <figure class="demo-ripple-row">
           <figcaption class="mdc-typography--subheading2">Unbounded</figcaption>
           <div class="demo-ripple-box">
             Default
