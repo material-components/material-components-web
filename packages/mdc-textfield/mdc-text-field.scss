@@ -439,6 +439,7 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
+  width: fit-content;
   height: initial;
   transition: none;
   border: 1px solid $mdc-textarea-border-on-light;
@@ -450,6 +451,7 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input {
+    margin: 0;
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
     border: 1px solid transparent;
@@ -484,6 +486,7 @@
     bottom: auto;
     padding: 8px 16px;
     background-color: $mdc-textarea-light-background;
+    line-height: 1.15;
 
     @include mdc-theme-dark(".mdc-text-field") {
       background-color: $mdc-textarea-dark-background;
@@ -536,6 +539,10 @@
       // Use !important here to override all other border treatments
       border: none !important;
     }
+  }
+
+  .mdc-text-field__input {
+    resize: vertical;
   }
 
   @include mdc-theme-dark {
