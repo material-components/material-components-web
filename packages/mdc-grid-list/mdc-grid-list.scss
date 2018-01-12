@@ -83,42 +83,6 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 .mdc-grid-list--tile-aspect-3x4 {
   @include mdc-grid-list-tile-aspect(3 / 4);
 }
-
-// stylelint-disable plugin/selector-bem-pattern
-// We need to disable linter here because we are nesting grid-tile under grid list here.
-.mdc-grid-list--twoline-caption .mdc-grid-tile__secondary {
-  height: $mdc-grid-list-twoline-cap-secondary-height;
-}
-
-.mdc-grid-list--header-caption .mdc-grid-tile__secondary {
-  top: 0;
-  bottom: auto;
-}
-
-.mdc-grid-list--with-icon-align-start {
-  .mdc-grid-tile__secondary {
-    @include mdc-rtl-reflexive-property(padding, $mdc-grid-list-tile-secondary-padding * 2 + $mdc-grid-list-tile-secondary-icon-size, $mdc-grid-list-tile-secondary-padding-narrow, ".mdc-grid-list");
-  }
-
-  .mdc-grid-tile__icon {
-    @include mdc-rtl-reflexive-position(left, $mdc-grid-list-tile-secondary-padding, ".mdc-grid-list");
-
-    font-size: $mdc-grid-list-tile-secondary-icon-size;
-  }
-}
-
-.mdc-grid-list--with-icon-align-end {
-  .mdc-grid-tile__secondary {
-    @include mdc-rtl-reflexive-property(padding, $mdc-grid-list-tile-secondary-padding, $mdc-grid-list-tile-secondary-padding * 2 + $mdc-grid-list-tile-secondary-icon-size, ".mdc-grid-list");
-  }
-
-  .mdc-grid-tile__icon {
-    @include mdc-rtl-reflexive-position(right, $mdc-grid-list-tile-secondary-padding, ".mdc-grid-list");
-
-    font-size: $mdc-grid-list-tile-secondary-icon-size;
-  }
-}
-// stylelint-enable plugin/selector-bem-pattern
 // postcss-bem-linter: end
 
 // postcss-bem-linter: define grid-tile
@@ -189,4 +153,40 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
   top: calc(50% - #{$mdc-grid-list-tile-secondary-icon-size} / 2);
   font-size: 0;
 }
+
+// stylelint-disable plugin/selector-bem-pattern
+// Linter disabled because we are nesting grid-tile under grid-list.
+.mdc-grid-list--twoline-caption .mdc-grid-tile__secondary {
+  height: $mdc-grid-list-twoline-cap-secondary-height;
+}
+
+.mdc-grid-list--header-caption .mdc-grid-tile__secondary {
+  top: 0;
+  bottom: auto;
+}
+
+.mdc-grid-list--with-icon-align-start {
+  .mdc-grid-tile__secondary {
+    @include mdc-rtl-reflexive-property(padding, $mdc-grid-list-tile-secondary-padding * 2 + $mdc-grid-list-tile-secondary-icon-size, $mdc-grid-list-tile-secondary-padding-narrow, ".mdc-grid-list");
+  }
+
+  .mdc-grid-tile__icon {
+    @include mdc-rtl-reflexive-position(left, $mdc-grid-list-tile-secondary-padding, ".mdc-grid-list");
+
+    font-size: $mdc-grid-list-tile-secondary-icon-size;
+  }
+}
+
+.mdc-grid-list--with-icon-align-end {
+  .mdc-grid-tile__secondary {
+    @include mdc-rtl-reflexive-property(padding, $mdc-grid-list-tile-secondary-padding, $mdc-grid-list-tile-secondary-padding * 2 + $mdc-grid-list-tile-secondary-icon-size, ".mdc-grid-list");
+  }
+
+  .mdc-grid-tile__icon {
+    @include mdc-rtl-reflexive-position(right, $mdc-grid-list-tile-secondary-padding, ".mdc-grid-list");
+
+    font-size: $mdc-grid-list-tile-secondary-icon-size;
+  }
+}
+// stylelint-enable plugin/selector-bem-pattern
 // postcss-bem-linter: end

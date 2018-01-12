@@ -61,7 +61,7 @@ window.demoReady = (function() {
   }
 
   function startTimer() {
-    if (isReady() || timer) {
+    if (timer) {
       return;
     }
 
