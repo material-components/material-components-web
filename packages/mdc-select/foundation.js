@@ -222,7 +222,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       this.isFocused_ = true;
     });
   }
-  
+
   setMenuStylesForOpenAtIndex_(index) {
     const innerHeight = this.adapter_.getWindowInnerHeight();
     const {left, top} = this.adapter_.computeBoundingRect();
