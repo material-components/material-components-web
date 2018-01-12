@@ -276,13 +276,12 @@ these mixins within CSS selectors like `.foo-select` to apply styling.
 
 Mixin | Description
 --- | ---
-`mdc-select-ink-color($color)` | Customizes the text entered into the select. This style applies only to the css version.  
+`mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select. On css version, this also customized the color of the label.
 `mdc-select-container-fill-color($color)` | Customizes the background color of the select. 
 `mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state. 
 `mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
-`mdc-select-selected-text-color($color)` | Customizes the color of the option that has been selected. 
 
 ### MDC Select Component API
 

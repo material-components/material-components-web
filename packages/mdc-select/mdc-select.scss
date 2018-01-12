@@ -34,7 +34,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   @include mdc-select-ink-color(text-primary-on-light);
   @include mdc-select-label-color(rgba(black, .6));
   @include mdc-select-bottom-line-color(rgba(black, .5));
-  @include mdc-select-selected-text-color(text-primary-on-light);
 
   // Focused state colors
   @include mdc-select-focused-bottom-line-color(primary);

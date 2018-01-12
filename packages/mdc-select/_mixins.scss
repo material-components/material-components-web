@@ -52,12 +52,6 @@
   }
 }
 
-@mixin mdc-select-selected-text-color($color) {
-  &:not(.mdc-select--disabled) {
-    @include mdc-select-selected-text-color_($color);
-  }
-}
-
 // Private
 
 @mixin mdc-select-focused-bottom-line_ {
@@ -69,7 +63,8 @@
 }
 
 @mixin mdc-select-ink-color_($color) {
-  .mdc-select__surface {
+  .mdc-select__surface,
+  .mdc-select__selected-text {
     @include mdc-theme-prop(color, $color);
   }
 }
@@ -112,12 +107,6 @@
 
   &.mdc-select--open .mdc-select__bottom-line {
     @include mdc-theme-prop(background-color, $color);
-  }
-}
-
-@mixin mdc-select-selected-text-color_($color) {
-  .mdc-select__selected-text {
-    @include mdc-theme-prop(color, $color);
   }
 }
 
