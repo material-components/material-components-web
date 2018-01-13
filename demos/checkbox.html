@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/checkbox.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -518,12 +519,11 @@
       </section>
 
     </main>
-    <script src="/assets/material-components-web.js"></script>
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function(global) {
-        'use strict';
-        var MDCCheckbox = global.mdc.checkbox.MDCCheckbox;
-        var MDCFormField = global.mdc.formField.MDCFormField;
+      demoReady(function() {
+        var MDCCheckbox = mdc.checkbox.MDCCheckbox;
+        var MDCFormField = mdc.formField.MDCFormField;
 
         var checkboxes = [].slice.call(document.querySelectorAll('.mdc-checkbox[data-js]'));
         checkboxes.forEach(function(checkbox) {
@@ -549,7 +549,7 @@
             });
           }
         });
-      })(this);
+      });
     </script>
   </body>
 </html>
