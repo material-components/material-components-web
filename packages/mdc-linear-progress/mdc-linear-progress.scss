@@ -23,7 +23,7 @@
 
   position: relative;
   width: 100%;
-  height: $mdc-linear-progress-height;
+  height: 4px;
   transform: translateZ(0);
   transition: mdc-animation-exit-temporary(opacity, 250ms);
   overflow: hidden;
