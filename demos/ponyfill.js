@@ -15,31 +15,41 @@
  * limitations under the License.
  */
 
+/*
+ * Object ponyfills from TC39 proposal (MIT license).
+ * https://github.com/tc39/proposal-object-values-entries/blob/7c2a54c56a529af1925a881e1b4c9e8b2d885a6c/polyfill.js
+ */
+
 const reduce = Function.bind.call(Function.call, Array.prototype.reduce);
 const isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
 const concat = Function.bind.call(Function.call, Array.prototype.concat);
 const keys = Object.keys;
 
 /**
- * From TC39 proposal (MIT license):
- * https://github.com/tc39/proposal-object-values-entries/blob/7c2a54c56a529af1925a881e1b4c9e8b2d885a6c/polyfill.js
  * @param {!Object} obj
- * @returns {!Array<!Array<string>>} An array of [key, value] pairs.
+ * @return {!Array<*>} An array of [key, value] pairs.
  */
 export function objectValues(obj) {
   return reduce(keys(obj), (v, k) => concat(v, typeof k === 'string' && isEnumerable(obj, k) ? [obj[k]] : []), []);
 }
 
 /**
- * From TC39 proposal (MIT license):
- * https://github.com/tc39/proposal-object-values-entries/blob/7c2a54c56a529af1925a881e1b4c9e8b2d885a6c/polyfill.js
  * @param {!Object} obj
- * @returns {!Array<!Array<string>>} An array of [key, value] pairs.
+ * @return {!Array<!Array<*>>} An array of [key, value] pairs.
  */
 export function objectEntries(obj) {
   return reduce(keys(obj), (e, k) => concat(e, typeof k === 'string' && isEnumerable(obj, k) ? [[k, obj[k]]] : []), []);
 }
 
+/*
+ * DOM ponyfills
+ */
+
+/**
+ * @param {!Element} elem
+ * @param {string} selector
+ * @return {boolean}
+ */
 export function matches(elem, selector) {
   const nativeMatches = elem.matches
     || elem.webkitMatchesSelector
@@ -49,6 +59,11 @@ export function matches(elem, selector) {
   return nativeMatches.call(elem, selector);
 }
 
+/**
+ * @param {!Element} elem
+ * @param {string} selector
+ * @return {?Element}
+ */
 export function closest(elem, selector) {
   if (elem.closest) {
     return elem.closest(selector);

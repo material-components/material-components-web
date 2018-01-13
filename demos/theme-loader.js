@@ -49,7 +49,7 @@
 
   /**
    * @param {string} unsafeThemeName
-   * @returns {!SafeTheme}
+   * @return {!SafeTheme}
    */
   window.getSafeDemoTheme = function(unsafeThemeName) {
     if (TRUSTED_THEMES.indexOf(unsafeThemeName) > -1) {
@@ -60,7 +60,7 @@
 
   /**
    * @param {string|undefined=} opt_uri
-   * @returns {!SafeTheme}
+   * @return {!SafeTheme}
    */
   window.getSafeDemoThemeFromUri = function(opt_uri) {
     return getSafeDemoTheme(parseQueryString(opt_uri).getLast('theme'));
@@ -68,7 +68,7 @@
 
   /**
    * @param {!SafeTheme} safeTheme
-   * @returns {string}
+   * @return {string}
    */
   window.unwrapSafeDemoTheme = function(safeTheme) {
     if (safeTheme instanceof SafeTheme &&
