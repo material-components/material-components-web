@@ -244,11 +244,7 @@
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
-  // stylelint-disable plugin/selector-bem-pattern
-
   border-color: $mdc-text-field-error-on-light;
-
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 @mixin mdc-text-field-textarea-focused_ {
@@ -315,13 +311,13 @@
     @include mdc-theme-dark(".mdc-text-field") {
       background-color: $mdc-textarea-dark-background;
     }
+  }
 
-    &--float-above {
-      // Translate above the top of the input, and compensate for the amount of offset needed
-      // to position the label within the bounds of the inset padding.
-      // Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
-      transform: translateY(-50%) scale(.923, .923);
-    }
+  .mdc-text-field__label--float-above {
+    // Translate above the top of the input, and compensate for the amount of offset needed
+    // to position the label within the bounds of the inset padding.
+    // Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
+    transform: translateY(-50%) scale(.923, .923);
   }
 
   &.mdc-text-field--disabled {
