@@ -28,7 +28,8 @@ const classes = {
 };
 
 const attributes = {
-  DATA_THEME: 'data-theme',
+  THEME_NAME: 'data-theme',
+  HOT_SWAP: 'data-hot',
 };
 
 const ids = {
@@ -65,6 +66,16 @@ class InteractivityManager {
   getElementById_(id, opt_root) {
     const root = opt_root || this.root_;
     return root.querySelector(`#${id}`);
+  }
+
+  /**
+   * @param {string} id
+   * @param {!Document|!Element=} opt_root
+   * @protected
+   */
+  querySelectorAll_(selector, opt_root) {
+    const root = opt_root || this.root_;
+    return util.getAll(selector, root);
   }
 }
 
@@ -198,7 +209,7 @@ class Themer extends InteractivityManager {
   /** @private */
   registerThemeMenuChangeHandler_() {
     this.themeMenuEl_.addEventListener(events.MDC_SIMPLE_MENU_SELECTED, (e) => {
-      const safeNewTheme = getSafeDemoTheme(e.detail.item.getAttribute(attributes.DATA_THEME));
+      const safeNewTheme = getSafeDemoTheme(e.detail.item.getAttribute(attributes.THEME_NAME));
       this.swapTheme_(safeNewTheme);
       this.pushHistoryState_(safeNewTheme);
     });
@@ -228,23 +239,24 @@ class Themer extends InteractivityManager {
 
   /** @private */
   toggleRTL_(e) {
-    const docEl = this.document_.documentElement;
-    if (docEl.getAttribute('dir') === 'rtl') {
-      docEl.setAttribute('dir', 'ltr');
+    const el = this.document_.documentElement;
+    if (el.getAttribute('dir') === 'rtl') {
+      el.setAttribute('dir', 'ltr');
       e.target.innerHTML = 'format_align_left';
     } else {
-      docEl.setAttribute('dir', 'rtl');
+      el.setAttribute('dir', 'rtl');
       e.target.innerHTML = 'format_align_right';
     }
   }
 
   /** @private */
   hotSwapAllStylesheets_() {
-    util.getAll('link[data-hot]', this.document_.head).forEach((link) => {
+    util.getAll(`link[${attributes.HOT_SWAP}]`, this.document_.head).forEach((link) => {
       this.hotSwapStylesheet_(link);
     });
   }
 
+  // TODO(acdvorak): Cancel previous HTTP requests (in case user switches themes quickly over a slow network).
   /** @private */
   hotSwapStylesheet_(oldLink, newUri) {
     // Don't reload the CSS if the user clicked on the current theme a second time.
@@ -253,8 +265,12 @@ class Themer extends InteractivityManager {
       return;
     }
 
-    const swapMessage = `"${oldLink.getAttribute('href')}"${newUri ? ` with "${newUri}"` : ''}`;
-    console.log(`Hot swapping stylesheet ${swapMessage}...`);
+    const logHotSwap = (verb, trailingPunctuation) => {
+      const swapMessage = `"${oldLink.getAttribute('href')}"${newUri ? ` with "${newUri}"` : ''}`;
+      console.log(`Hot ${verb} stylesheet ${swapMessage}${trailingPunctuation}`);
+    };
+
+    logHotSwap('swapping', '...');
 
     this.toolbarManager_.setIsLoading(true);
 
@@ -262,15 +278,19 @@ class Themer extends InteractivityManager {
     if (newUri) {
       newLink.href = newUri;
     }
+
     newLink.addEventListener('load', () => {
-      console.log(`Hot swapped stylesheet ${swapMessage}!`);
+      logHotSwap('swapped', '!');
+
       setTimeout(() => {
-        // Already removed from DOM
+        // Link has already been detached from the DOM. I'm not sure what causes this to happen; I've only seen it in
+        // IE 11 and/or Edge so far, and only occasionally.
         if (!oldLink.parentNode) {
           return;
         }
         oldLink.parentNode.removeChild(oldLink);
       });
+
       this.toolbarManager_.setIsLoading(false);
     });
 
@@ -308,7 +328,7 @@ class Themer extends InteractivityManager {
   selectThemeInMenu_(safeNewTheme) {
     const selectedMenuItemClass = classes.THEME_MENU_ITEM_SELECTED;
     const mdcListItemClass = classes.MDC_LIST_ITEM;
-    const themeAttr = attributes.DATA_THEME;
+    const themeAttr = attributes.THEME_NAME;
     const menuActionId = ids.THEME_COLOR_MENU_ACTION;
 
     const unwrappedSafeNewTheme = unwrapSafeDemoTheme(safeNewTheme);

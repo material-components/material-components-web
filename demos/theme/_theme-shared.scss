@@ -83,13 +83,13 @@ figure {
 // TODO(acdvorak): Why does mdc-toolbar__icon need a :last-of-type selector?
 .demo-toolbar-icon,
 .demo-toolbar-icon:last-of-type {
-  @include mdc-rtl-reflexive-property(padding, right, 12px);
+  @include mdc-rtl-reflexive-property(padding, 12px, 12px);
 }
 
 // TODO(acdvorak): Why does mdc-toolbar__icon need a :last-of-type selector?
 .demo-toolbar-icon--last,
 .demo-toolbar-icon--last:last-of-type {
-  @include mdc-rtl-reflexive-property(padding, right, 24px);
+  @include mdc-rtl-reflexive-property(padding, 12px, 24px);
 }
 
 .demo-toolbar-progress-row {
@@ -185,14 +185,28 @@ figure {
 $demo-color-low-luminance: #3e2723;
 $demo-color-high-luminance: #fff8e1;
 
+.demo-theme-color-section + .demo-theme-color-section {
+  margin-top: 36px;
+}
+
+.demo-theme-color-section__row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.demo-fieldset--color {
+  @include mdc-rtl-reflexive-box(margin, right, 36px);
+}
+
 .demo-theme-color-group {
   padding: 16px 0;
 }
 
 .demo-theme-color-swatches {
+  @include mdc-rtl-reflexive-box(margin, right, 16px);
+
   display: inline-flex;
   flex-direction: column;
-  margin-right: 36px;
 }
 
 .demo-theme-color-swatches__label {
@@ -290,9 +304,12 @@ $demo-color-high-luminance: #fff8e1;
 //
 
 .demo-card-wrapper {
+  @include mdc-rtl-reflexive-box(margin, right, 24px);
+
+  margin-bottom: 24px;
+
   display: inline-block;
   width: 350px;
-  margin: 0 24px 24px 0;
   vertical-align: top;
 }
 
@@ -310,13 +327,7 @@ $demo-color-high-luminance: #fff8e1;
 
 .demo-card--with-avatar .mdc-card__title,
 .demo-card--with-avatar .mdc-card__subtitle {
-  margin-left: 56px;
-}
-
-[dir="rtl"] .demo-card--with-avatar .mdc-card__title,
-[dir="rtl"] .demo-card--with-avatar .mdc-card__subtitle {
-  margin-right: 56px;
-  margin-left: initial;
+  @include mdc-rtl-reflexive-property(margin, 56px, initial);
 }
 
 .demo-card--small .mdc-card__media {
@@ -336,13 +347,16 @@ $demo-color-high-luminance: #fff8e1;
   align-items: center;
 }
 
-.demo-checkbox-wrapper,
-.demo-checkbox-toggle {
-  margin-right: 10px;
+.demo-checkbox-wrapper {
+  @include mdc-rtl-reflexive-box(margin, right, 10px);
 }
 
-.demo-checkbox-wrapper + .demo-checkbox-toggle {
-  margin-left: 20px;
+.demo-checkbox-toggle-button {
+  @include mdc-rtl-reflexive-box(margin, right, 10px);
+}
+
+.demo-checkbox-wrapper + .demo-checkbox-toggle-button {
+  @include mdc-rtl-reflexive-property(margin, 20px, 10px);
 }
 
 //
@@ -358,6 +372,7 @@ $demo-color-high-luminance: #fff8e1;
 //
 // Drawer demo
 //
+
 
 .demo-drawer-toggle {
   vertical-align: middle;
@@ -378,7 +393,10 @@ $demo-color-high-luminance: #fff8e1;
 }
 
 .demo-fab-tile {
-  margin: 0 48px 1em 0;
+  @include mdc-rtl-reflexive-box(margin, right, 48px);
+
+  margin-top: 0;
+  margin-bottom: 1em;
 }
 
 .demo-fab-tile__title {
@@ -405,8 +423,12 @@ $demo-color-high-luminance: #fff8e1;
 }
 
 .demo-icon-toggle-tile {
+  @include mdc-rtl-reflexive-box(margin, right, 10px);
+
+  margin-top: 0;
+  margin-bottom: 10px;
+
   width: 200px;
-  margin: 0 10px 10px 0;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
@@ -429,12 +451,16 @@ $demo-color-high-luminance: #fff8e1;
 //
 
 .demo-radio-group {
+  @include mdc-rtl-reflexive-box(margin, right, 24px);
+
+  margin-top: 0;
+  margin-bottom: 24px;
+
   display: inline-block;
-  margin: 0 24px 24px 0;
 }
 
 .demo-radio-form-field {
-  margin-right: 8px;
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
 }
 
 //
@@ -442,8 +468,24 @@ $demo-color-high-luminance: #fff8e1;
 //
 
 .demo-switch-wrapper {
+  @include mdc-rtl-reflexive-box(margin, right, 16px);
+
+  margin-top: 16px;
+  margin-bottom: 0;
+
   display: inline-block;
-  margin: 16px 16px 0 0;
+}
+
+//
+// Tab Bar demo
+//
+
+.demo-figure--tab-bar + .demo-figure--tab-bar {
+  margin-top: 36px;
+}
+
+.demo-tab-bar {
+  margin: 0;
 }
 
 //
@@ -451,6 +493,14 @@ $demo-color-high-luminance: #fff8e1;
 //
 
 .demo-text-field-wrapper {
+  @include mdc-rtl-reflexive-box(margin, right, 16px);
+
+  margin-top: 0;
+  margin-bottom: 16px;
+
   display: inline-block;
-  margin: 16px 16px 0 0;
+}
+
+.demo-text-field {
+  margin-top: 0 !important;
 }
