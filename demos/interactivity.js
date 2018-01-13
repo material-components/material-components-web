@@ -46,6 +46,7 @@ const events = {
   MDC_SIMPLE_MENU_SELECTED: 'MDCSimpleMenu:selected',
 };
 
+/** @abstract */
 class InteractivityManager {
   constructor(root) {
     /** @protected {!Document|!Element} */
