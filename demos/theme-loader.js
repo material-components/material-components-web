@@ -36,6 +36,11 @@
     this.PRIVATE_SAFE_VALUE_ = '';
   }
 
+  /** @return {string} */
+  SafeTheme.prototype.toString = function() {
+    return 'SafeTheme{' + this.PRIVATE_SAFE_VALUE_ + '}';
+  };
+
   function createSafeTheme(safeValue) {
     var safeTheme = new SafeTheme();
     safeTheme.PRIVATE_SAFE_VALUE_ = safeValue;
