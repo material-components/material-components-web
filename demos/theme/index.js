@@ -15,12 +15,13 @@
  * limitations under the License.
  */
 
-import * as util from '../util.js';
+import * as dom from '../dom.js';
+import * as pony from '../ponyfill.js';
 
 (function() {
   const initializers = {
     button() {
-      util.getAll('.mdc-button').forEach((button) => {
+      dom.getAll('.mdc-button').forEach((button) => {
         mdc.ripple.MDCRipple.attachTo(button);
       });
     },
@@ -29,14 +30,14 @@ import * as util from '../util.js';
       document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
       document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
-        const checkboxes = util.getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
+        const checkboxes = dom.getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
         checkboxes.forEach(function(checkbox) {
           checkbox.indeterminate = !checkbox.indeterminate;
         });
       });
 
       document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
-        const formFields = util.getAll('.demo-checkbox-wrapper.mdc-form-field');
+        const formFields = dom.getAll('.demo-checkbox-wrapper.mdc-form-field');
         formFields.forEach(function(formField) {
           formField.classList.toggle('mdc-form-field--align-end');
         });
@@ -47,7 +48,7 @@ import * as util from '../util.js';
       const drawerEl = document.querySelector('.mdc-drawer--temporary');
       const drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-      util.getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
+      dom.getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
         toggleElem.addEventListener('click', function() {
           drawer.open = true;
         });
@@ -63,19 +64,19 @@ import * as util from '../util.js';
     },
 
     fab() {
-      util.getAll('.mdc-fab').forEach((fab) => {
+      dom.getAll('.mdc-fab').forEach((fab) => {
         mdc.ripple.MDCRipple.attachTo(fab);
       });
     },
 
     iconToggle() {
-      util.getAll('.mdc-icon-toggle').forEach((iconToggleEl) => {
+      dom.getAll('.mdc-icon-toggle').forEach((iconToggleEl) => {
         mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
       });
     },
 
     linearProgress() {
-      util.getAll('.mdc-linear-progress').forEach((progressEl) => {
+      dom.getAll('.mdc-linear-progress').forEach((progressEl) => {
         const linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
         linearProgress.progress = 0.5;
         if (progressEl.dataset.buffer) {
@@ -85,37 +86,37 @@ import * as util from '../util.js';
     },
 
     ripple() {
-      util.getAll('.mdc-ripple-surface').forEach(function(surface) {
+      dom.getAll('.mdc-ripple-surface').forEach(function(surface) {
         mdc.ripple.MDCRipple.attachTo(surface);
       });
     },
 
     select() {
-      util.getAll('.mdc-select:not(select)').forEach(function(select) {
+      dom.getAll('.mdc-select:not(select)').forEach(function(select) {
         mdc.select.MDCSelect.attachTo(select);
       });
     },
 
     slider() {
-      util.getAll('.mdc-slider').forEach(function(slider) {
+      dom.getAll('.mdc-slider').forEach(function(slider) {
         mdc.slider.MDCSlider.attachTo(slider);
       });
     },
 
     tab() {
-      util.getAll('.mdc-tab-bar').forEach(function(tabBar) {
+      dom.getAll('.mdc-tab-bar').forEach(function(tabBar) {
         mdc.tabs.MDCTabBar.attachTo(tabBar);
       });
     },
 
     textfield() {
-      util.getAll('.mdc-text-field').forEach(function(textField) {
+      dom.getAll('.mdc-text-field').forEach(function(textField) {
         mdc.textField.MDCTextField.attachTo(textField);
       });
     },
 
     radio() {
-      util.getAll('.mdc-form-field.demo-radio-form-field').forEach((formField) => {
+      dom.getAll('.mdc-form-field.demo-radio-form-field').forEach((formField) => {
         const formFieldInstance = new mdc.formField.MDCFormField(formField);
         const radio = formField.querySelector('.mdc-radio');
         if (radio) {
@@ -126,9 +127,6 @@ import * as util from '../util.js';
   };
 
   demoReady(() => {
-    for (const key in initializers) {
-      const initializer = initializers[key];
-      initializer();
-    }
+    pony.objectEntries(initializers).forEach(([key, initializer]) => initializer());
   });
 })();

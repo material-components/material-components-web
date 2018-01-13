@@ -15,14 +15,7 @@
  * limitations under the License.
  */
 
-import * as interactivity from './interactivity.js';
-
-demoReady(() => {
-  interactivity.init(document);
-});
-
-// Export useful libs to aid debugging/experimentation in the browser's dev tools console.
-import * as dom from './dom.js';
-import * as pony from './ponyfill.js';
-import * as util from './util.js';
-export {dom, pony, util};
+export function getAll(query, parentNode) {
+  parentNode = parentNode || document;
+  return [].slice.call(parentNode.querySelectorAll(query));
+}

@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+import * as dom from './dom.js';
+import * as pony from './ponyfill.js';
 import * as util from './util.js';
 
 const classes = {
@@ -75,7 +77,7 @@ class InteractivityManager {
    */
   querySelectorAll_(selector, opt_root) {
     const root = opt_root || this.root_;
-    return util.getAll(selector, root);
+    return dom.getAll(selector, root);
   }
 }
 
@@ -146,7 +148,7 @@ class Permalinker extends InteractivityManager {
       return;
     }
 
-    const section = util.closest(anchor, `.${classes.COMPONENT_SECTION}`);
+    const section = pony.closest(anchor, `.${classes.COMPONENT_SECTION}`);
     if (!section) {
       return;
     }
@@ -251,7 +253,7 @@ class Themer extends InteractivityManager {
 
   /** @private */
   hotSwapAllStylesheets_() {
-    util.getAll(`link[${attributes.HOT_SWAP}]`, this.document_.head).forEach((link) => {
+    dom.getAll(`link[${attributes.HOT_SWAP}]`, this.document_.head).forEach((link) => {
       this.hotSwapStylesheet_(link);
     });
   }
@@ -332,7 +334,7 @@ class Themer extends InteractivityManager {
     const menuActionId = ids.THEME_COLOR_MENU_ACTION;
 
     const unwrappedSafeNewTheme = unwrapSafeDemoTheme(safeNewTheme);
-    const oldSelectedItems = util.getAll(`.${selectedMenuItemClass}[${themeAttr}]`, this.themeMenuEl_);
+    const oldSelectedItems = dom.getAll(`.${selectedMenuItemClass}[${themeAttr}]`, this.themeMenuEl_);
     const newSelectedItem =
       this.themeMenuEl_.querySelector(`.${mdcListItemClass}[${themeAttr}="${unwrappedSafeNewTheme}"]`);
 
