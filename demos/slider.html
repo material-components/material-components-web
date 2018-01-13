@@ -254,6 +254,8 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
+        mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
+
         var demoRoot = document.getElementById('slider-example')
         var min = demoRoot.querySelector('[name="min"]');
         var max = demoRoot.querySelector('[name="max"]');
