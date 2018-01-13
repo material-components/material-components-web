@@ -18,5 +18,5 @@
 import * as interactivity from './interactivity.js';
 
 demoReady(() => {
-  interactivity.init();
+  interactivity.init(document);
 });

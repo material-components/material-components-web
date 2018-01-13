@@ -41,14 +41,14 @@
     return key in this.params_ ? this.params_[key] : defaultValue;
   };
 
-  QueryString.parse = function(opt_url) {
-    var url = typeof opt_url === 'undefined' ? window.location.href : opt_url;
+  QueryString.parse = function(opt_uri) {
+    var uri = typeof opt_uri === 'undefined' ? window.location.href : opt_uri;
 
-    if (url.indexOf('?') === -1) {
+    if (uri.indexOf('?') === -1) {
       return new QueryString({});
     }
 
-    var qsList = url
+    var qsList = uri
       // Remove the first '?' character and everything before it
       .replace(/^.*[?]/, '')
       // Remove the first '#' character and everything after it
@@ -70,7 +70,7 @@
     return new QueryString(qsMap);
   };
 
-  window.parseQueryString = function(opt_url) {
-    return QueryString.parse(opt_url);
+  window.parseQueryString = function(opt_uri) {
+    return QueryString.parse(opt_uri);
   };
 })();
