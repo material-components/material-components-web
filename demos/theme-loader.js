@@ -81,10 +81,33 @@
   };
 
   /** @type {string} */
-  var unwrappedSafeTheme = unwrapSafeDemoTheme(getSafeDemoThemeFromUri());
+  var unwrappedTheme = unwrapSafeDemoTheme(getSafeDemoThemeFromUri());
 
-  // TODO(acdvorak): Is document.write necessary to block page rendering until the CSS loads? It's inherently unsafe;
-  // would document.createElement('link') work instead?
-  document.write(
-    '<link rel="stylesheet" href="/assets/theme/theme-' + unwrappedSafeTheme + '.css" id="theme-stylesheet" data-hot>');
+  // TODO(acdvorak): Test this in all browsers
+  // - Chrome 63 on macOS High Sierra 10.13.2: Blocks page rendering
+  function loadThemeSync() {
+    // TODO(acdvorak): Is document.write necessary to block page rendering until the CSS loads? It's inherently unsafe;
+    // would document.createElement('link') work instead?
+    document.write(
+      '<link rel="stylesheet" href="/assets/theme/theme-' + unwrappedTheme + '.css" id="theme-stylesheet" data-hot>');
+  }
+
+  function loadThemeAsync() {
+    var oldLink = document.getElementById('theme-stylesheet');
+    if (!oldLink.parentElement) {
+      return;
+    }
+
+    var newLink = oldLink.cloneNode(true);
+    newLink.href = '/assets/theme/theme-' + unwrappedTheme + '.css';
+    newLink.addEventListener('load', function() {
+      if (!oldLink.parentElement) {
+        return;
+      }
+      oldLink.parentElement.removeChild(oldLink);
+    });
+    oldLink.insertAdjacentElement('afterend', newLink);
+  }
+
+  loadThemeSync();
 })();
