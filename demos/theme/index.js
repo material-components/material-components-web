@@ -16,7 +16,7 @@
  */
 
 import * as dom from '../dom.js';
-import * as pony from '../ponyfill.js';
+import * as util from '../util.js';
 
 (function() {
   const initializers = {
@@ -127,6 +127,6 @@ import * as pony from '../ponyfill.js';
   };
 
   demoReady(() => {
-    pony.objectEntries(initializers).forEach(([key, initializer]) => initializer());
+    util.objectForEach(initializers, (initializer) => initializer());
   });
 })();
