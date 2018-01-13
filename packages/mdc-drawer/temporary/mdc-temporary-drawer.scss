@@ -65,11 +65,8 @@
       background: #303030;
     }
 
-    @include mdc-slideable-drawer;
 
-    @include mdc-rtl(".mdc-drawer--temporary") {
-      @include mdc-slideable-drawer-rtl;
-    }
+    @include mdc-slideable-drawer;
 
     display: flex;
     position: absolute;
@@ -84,6 +81,12 @@
     @media (min-width: 600px) {
       width: calc(100% - 64px);
       max-width: 320px;
+    }
+  }
+
+  @include mdc-rtl {
+    .mdc-drawer__drawer {
+      @include mdc-slideable-drawer-rtl;
     }
   }
 
