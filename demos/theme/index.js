@@ -18,7 +18,7 @@
 import * as dom from '../dom.js';
 import * as util from '../util.js';
 
-(function() {
+(() => {
   const initializers = {
     button() {
       dom.getAll('.mdc-button').forEach((button) => {
@@ -29,14 +29,14 @@ import * as util from '../util.js';
     checkbox() {
       document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
-      document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
+      document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', () => {
         const checkboxes = dom.getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
         checkboxes.forEach(function(checkbox) {
           checkbox.indeterminate = !checkbox.indeterminate;
         });
       });
 
-      document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
+      document.querySelector('#checkbox-toggle--align-end').addEventListener('click', () => {
         const formFields = dom.getAll('.demo-checkbox-wrapper.mdc-form-field');
         formFields.forEach(function(formField) {
           formField.classList.toggle('mdc-form-field--align-end');
@@ -48,17 +48,17 @@ import * as util from '../util.js';
       const drawerEl = document.querySelector('.mdc-drawer--temporary');
       const drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-      dom.getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
-        toggleElem.addEventListener('click', function() {
+      dom.getAll('.demo-drawer-toggle').forEach((toggleElem) => {
+        toggleElem.addEventListener('click', () => {
           drawer.open = true;
         });
       });
 
-      drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+      drawerEl.addEventListener('MDCTemporaryDrawer:open', () => {
         console.log('Received MDCTemporaryDrawer:open');
       });
 
-      drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+      drawerEl.addEventListener('MDCTemporaryDrawer:close', () => {
         console.log('Received MDCTemporaryDrawer:close');
       });
     },
@@ -86,31 +86,31 @@ import * as util from '../util.js';
     },
 
     ripple() {
-      dom.getAll('.mdc-ripple-surface').forEach(function(surface) {
+      dom.getAll('.mdc-ripple-surface').forEach((surface) => {
         mdc.ripple.MDCRipple.attachTo(surface);
       });
     },
 
     select() {
-      dom.getAll('.mdc-select:not(select)').forEach(function(select) {
+      dom.getAll('.mdc-select:not(select)').forEach((select) => {
         mdc.select.MDCSelect.attachTo(select);
       });
     },
 
     slider() {
-      dom.getAll('.mdc-slider').forEach(function(slider) {
+      dom.getAll('.mdc-slider').forEach((slider) => {
         mdc.slider.MDCSlider.attachTo(slider);
       });
     },
 
     tab() {
-      dom.getAll('.mdc-tab-bar').forEach(function(tabBar) {
+      dom.getAll('.mdc-tab-bar').forEach((tabBar) => {
         mdc.tabs.MDCTabBar.attachTo(tabBar);
       });
     },
 
     textfield() {
-      dom.getAll('.mdc-text-field').forEach(function(textField) {
+      dom.getAll('.mdc-text-field').forEach((textField) => {
         mdc.textField.MDCTextField.attachTo(textField);
       });
     },

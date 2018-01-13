@@ -120,15 +120,15 @@ class Permalinker extends InteractivityManager {
 
   /** @override */
   initialize() {
-    this.root_.addEventListener('focusin', function(e) {
-      if (e.target.classList.contains(classes.COMPONENT_SECTION_PERMALINK)) {
-        e.target.parentElement.classList.add(classes.COMPONENT_SECTION_HEADING_FOCUS_WITHIN);
+    this.root_.addEventListener('focusin', (evt) => {
+      if (evt.target.classList.contains(classes.COMPONENT_SECTION_PERMALINK)) {
+        evt.target.parentElement.classList.add(classes.COMPONENT_SECTION_HEADING_FOCUS_WITHIN);
       }
     });
 
-    this.root_.addEventListener('focusout', function(e) {
-      if (e.target.classList.contains(classes.COMPONENT_SECTION_PERMALINK)) {
-        e.target.parentElement.classList.remove(classes.COMPONENT_SECTION_HEADING_FOCUS_WITHIN);
+    this.root_.addEventListener('focusout', (evt) => {
+      if (evt.target.classList.contains(classes.COMPONENT_SECTION_PERMALINK)) {
+        evt.target.parentElement.classList.remove(classes.COMPONENT_SECTION_HEADING_FOCUS_WITHIN);
       }
     });
 
@@ -195,24 +195,20 @@ class Themer extends InteractivityManager {
 
   /** @private */
   registerRTLToggleHandler_() {
-    this.getElementById_(ids.RTL_ACTION).addEventListener('click', (e) => {
-      this.toggleRTL_(e);
-    });
+    this.getElementById_(ids.RTL_ACTION).addEventListener('click', (evt) => this.toggleRTL_(evt));
   }
 
   /** @private */
   registerThemeMenuOpenHandler_() {
     const menu = new mdc.menu.MDCSimpleMenu(this.themeMenuEl_);
     const actionEl = this.getElementById_(ids.THEME_COLOR_MENU_ACTION);
-    actionEl.addEventListener('click', () => {
-      menu.open = !menu.open;
-    });
+    actionEl.addEventListener('click', () => menu.open = !menu.open);
   }
 
   /** @private */
   registerThemeMenuChangeHandler_() {
-    this.themeMenuEl_.addEventListener(events.MDC_SIMPLE_MENU_SELECTED, (e) => {
-      const safeNewTheme = getSafeDemoTheme(e.detail.item.getAttribute(attributes.THEME_NAME));
+    this.themeMenuEl_.addEventListener(events.MDC_SIMPLE_MENU_SELECTED, (evt) => {
+      const safeNewTheme = getSafeDemoTheme(evt.detail.item.getAttribute(attributes.THEME_NAME));
       this.swapTheme_(safeNewTheme);
       this.pushHistoryState_(safeNewTheme);
     });
@@ -223,8 +219,8 @@ class Themer extends InteractivityManager {
     const hotSwapAllStylesheets = util.debounce(() => this.hotSwapAllStylesheets_(), Themer.hotUpdateWaitPeriodMs_);
 
     // TODO(acdvorak): Add IE 11 support?
-    this.window_.addEventListener('message', (event) => {
-      if (typeof event.data === 'string' && event.data.indexOf('webpackHotUpdate') === 0) {
+    this.window_.addEventListener('message', (evt) => {
+      if (typeof evt.data === 'string' && evt.data.indexOf('webpackHotUpdate') === 0) {
         hotSwapAllStylesheets();
       }
     });
@@ -232,23 +228,23 @@ class Themer extends InteractivityManager {
 
   /** @private */
   registerUrlChangeHandler_() {
-    this.window_.addEventListener('popstate', (event) => {
+    this.window_.addEventListener('popstate', (evt) => {
       const getDefaultState = () => ({theme: getSafeDemoThemeFromUri()});
-      const unsafeNewTheme = (event.state || getDefaultState()).theme;
+      const unsafeNewTheme = (evt.state || getDefaultState()).theme;
       const safeNewTheme = getSafeDemoTheme(unsafeNewTheme);
       this.swapTheme_(safeNewTheme);
     });
   }
 
   /** @private */
-  toggleRTL_(e) {
+  toggleRTL_(evt) {
     const el = this.document_.documentElement;
     if (el.getAttribute('dir') === 'rtl') {
       el.setAttribute('dir', 'ltr');
-      e.target.innerHTML = 'format_align_left';
+      evt.target.innerHTML = 'format_align_left';
     } else {
       el.setAttribute('dir', 'rtl');
-      e.target.innerHTML = 'format_align_right';
+      evt.target.innerHTML = 'format_align_right';
     }
   }
 
