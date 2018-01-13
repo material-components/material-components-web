@@ -49,7 +49,7 @@ const events = {
 /** @abstract */
 class InteractivityManager {
   constructor(root) {
-    /** @protected {!Document|!Element} */
+    /** @protected {!Element|!Document} */
     this.root_ = root;
 
     /** @protected {!Document} */
@@ -63,7 +63,7 @@ class InteractivityManager {
 
   /**
    * @param {string} id
-   * @param {!Document|!Element=} opt_root
+   * @param {!Element|!Document=} opt_root
    * @protected
    */
   getElementById_(id, opt_root) {
@@ -73,7 +73,7 @@ class InteractivityManager {
 
   /**
    * @param {string} id
-   * @param {!Document|!Element=} opt_root
+   * @param {!Element|!Document=} opt_root
    * @protected
    */
   querySelectorAll_(selector, opt_root) {
@@ -83,7 +83,7 @@ class InteractivityManager {
 }
 
 class ToolbarManager extends InteractivityManager {
-  /** @param {!Document|!Element} root */
+  /** @param {!Element|!Document} root */
   static attachTo(root) {
     const instance = new ToolbarManager(root);
     instance.initialize();
@@ -106,7 +106,7 @@ class ToolbarManager extends InteractivityManager {
 }
 
 class Permalinker extends InteractivityManager {
-  /** @param {!Document|!Element} root */
+  /** @param {!Element|!Document} root */
   static attachTo(root) {
     const instance = new Permalinker(root);
     instance.initialize();
@@ -163,7 +163,7 @@ class Permalinker extends InteractivityManager {
 
 class Themer extends InteractivityManager {
   /**
-   * @param {!Document|!Element} root
+   * @param {!Element|!Document} root
    * @param {!ToolbarManager} toolbarManager
    */
   static attachTo(root, toolbarManager) {
@@ -346,7 +346,7 @@ class Themer extends InteractivityManager {
   }
 }
 
-/** @param {!Document|!Element} root */
+/** @param {!Element|!Document} root */
 export function init(root) {
   Permalinker.attachTo(root);
   Themer.attachTo(root, ToolbarManager.attachTo(root));
