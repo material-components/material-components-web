@@ -327,7 +327,7 @@ $demo-color-high-luminance: #fff8e1;
 
 .demo-card--with-avatar .mdc-card__title,
 .demo-card--with-avatar .mdc-card__subtitle {
-  @include mdc-rtl-reflexive-property(margin, 56px, initial);
+  @include mdc-rtl-reflexive-property(margin, 56px, 0);
 }
 
 .demo-card--small .mdc-card__media {
@@ -365,8 +365,8 @@ $demo-color-high-luminance: #fff8e1;
 
 .demo-dialog {
   position: relative;
-  justify-content: unset;
-  z-index: unset;
+  justify-content: flex-start;
+  z-index: auto;
 }
 
 //
