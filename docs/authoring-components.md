@@ -7,8 +7,8 @@ path: /docs/authoring-components/
 
 # Authoring Components
 
-This document serves as a reference for developing components either directly for MDC-Web or
-external components that would like to interface with the MDC-Web ecosystem.
+This document serves as a reference for developing components either directly for MDC Web or
+external components that would like to interface with the MDC Web ecosystem.
 
 > Please note that since this project is still in its early stages of development, these practices
 may be subject to change. They will stabilize as we near towards a full release.
@@ -31,7 +31,7 @@ may be subject to change. They will stabilize as we near towards a full release.
   * [Design adapter interfaces to be simple and intuitive](#design-adapter-interfaces-to-be-simple-and-intuitive)
   * [Do not reference host objects within foundation code.](#do-not-reference-host-objects-within-foundation-code)
   * [Clean up all references on destruction](#clean-up-all-references-on-destruction)
-* [Authoring components for MDC-Web](#authoring-components-for-mdc-web)
+* [Authoring components for MDC Web](#authoring-components-for-mdc-web)
   * [File Structure](#file-structure)
   * [License Stanzas](#license-stanzas)
   * [Scss](#scss)
@@ -57,9 +57,9 @@ may be subject to change. They will stabilize as we near towards a full release.
 
 The first two sections of this document describe general guidelines for how to think about building
 a component, as well as criteria for what makes a good component. Anyone interested in building
-components either directly for MDC-Web or as an external component that plays well within the
-MDC-Web ecosystem should find it useful. The third section talks about authoring components
-specifically for MDC-Web, and is best suited for those looking to contribute directly to the
+components either directly for MDC Web or as an external component that plays well within the
+MDC Web ecosystem should find it useful. The third section talks about authoring components
+specifically for MDC Web, and is best suited for those looking to contribute directly to the
 project.
 
 Note that this document assumes you are familiar with the library and its
@@ -68,7 +68,7 @@ are brand new to the project, we recommend starting with our [Getting Started Gu
 
 ## How to build a component
 
-This section outlines the thought process behind authoring new components for MDC-Web. It is
+This section outlines the thought process behind authoring new components for MDC Web. It is
 inspired by React's [Thinking in React](https://facebook.github.io/react/docs/thinking-in-react.html) article.
 
 Starting out from nothing and going straight to a component/adapter/foundation implementation can be
@@ -79,7 +79,7 @@ following steps.
 
 To demonstrate this approach, we will build a **red-blue toggle**, very simple toggle button that
 toggles between a red background with blue text, and vice versa. While not a Material Design
-component, it demonstrates the concepts of how to think about building for MDC-Web.
+component, it demonstrates the concepts of how to think about building for MDC Web.
 
 ### Start with a simple component prototype
 
@@ -144,10 +144,10 @@ class RedblueTogglePrototype {
 new RedblueTogglePrototype(document.querySelector('.redblue-toggle'));
 ```
 
-Note how the JS Component does not reference MDC-Web in any way, nor does it have any notion
+Note how the JS Component does not reference MDC Web in any way, nor does it have any notion
 of foundations or adapters. By omitting this work, you can rapidly experiment with your component,
 incorporating changes quickly and easily. Nonetheless, the way the component is prototype looks
-quite similar to the way that the MDC-Web component will eventually be built.
+quite similar to the way that the MDC Web component will eventually be built.
 
 ### Identify host environment interactions
 
@@ -457,9 +457,9 @@ may be retained. There are two accurate litmus tests to ensure this is being don
    is kept track of, and cleaned up within destroy. For example, every `setTimeout()` call should have its ID retained by the foundation/component, and have `clearTimeout()` called on it within
    destroy.
 
-## Authoring components for MDC-Web
+## Authoring components for MDC Web
 
-The following guidelines are for those who wish to contribute directly to MDC-web. In addition to
+The following guidelines are for those who wish to contribute directly to MDC Web. In addition to
 adhering to all of the practices above, we have additional conventions we expect contributors to
 adhere to. It's worth noting that most of these conventions - including our coding style, commit
 message format, and test coverage - are _automatically enforced via linters_, both so that
@@ -761,13 +761,13 @@ Concretely:
 > NOTE: This section was introduced as part of our [closure compatibility milestone](https://github.com/material-components/material-components-web/milestone/4). Our
 currently existing components are in the process of being made compatible with closure.
 
-All core MDC-Web components must be fully compatible with the Google Closure Compiler using its
+All core MDC Web components must be fully compatible with the Google Closure Compiler using its
 advanced compilation mechanisms. We've provided a thorough explanation of this, as well as
 conventions, examples, and common closure patterns you may not be used to, in our [closure compiler documentation](./closure-compiler.md).
 
 ### Testing
 
-The following guidelines should be used to help write tests for MDC-Web code. Our tests are written
+The following guidelines should be used to help write tests for MDC Web code. Our tests are written
 using [mocha](https://mochajs.org/) with the [qunit UI](https://mochajs.org/#qunit), and are driven by [karma](https://karma-runner.github.io/1.0/index.html). We use the [chai assert API](http://chaijs.com/api/assert/)
 for assertions, and [testdouble](https://github.com/testdouble/testdouble.js/) for mocking and stubbing.
 
