@@ -17,6 +17,7 @@
 @import "@material/animation/functions";
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
+@import "./mixins";
 
 // postcss-bem-linter: define tab-bar
 .mdc-tab-bar {
@@ -26,14 +27,14 @@
   margin: 0 auto;
   text-transform: uppercase;
 
+  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
+
   &__indicator {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 2px;
-
-    @include mdc-theme-prop(background-color, text-primary-on-light);
 
     @include mdc-theme-dark(".mdc-tab-bar") {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
@@ -47,6 +48,7 @@
 
   // postcss-bem-linter: ignore
   .mdc-toolbar & {
+    @include mdc-tab-bar-indicator-ink-color(text-primary-on-primary);
     .mdc-tab {
       @include mdc-theme-prop(color, text-secondary-on-primary);
 
@@ -66,8 +68,6 @@
 
     // postcss-bem-linter: ignore
     .mdc-tab-bar__indicator {
-      @include mdc-theme-prop(background-color, text-primary-on-primary);
-
       @include mdc-theme-dark(".mdc-tab-bar") {
         @include mdc-theme-prop(background-color, text-primary-on-dark);
       }
@@ -78,34 +78,3 @@
 .mdc-tab-bar--icons-with-text {
   height: 72px;
 }
-
-.mdc-tab-bar--indicator-primary,
-.mdc-toolbar .mdc-tab-bar--indicator-primary {
-  .mdc-tab-bar__indicator {
-    @include mdc-theme-prop(background-color, primary);
-
-    @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(background-color, primary);
-    }
-  }
-
-  &.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
-    @include mdc-theme-prop(background-color, primary);
-  }
-}
-
-.mdc-tab-bar--indicator-accent,
-.mdc-toolbar .mdc-tab-bar--indicator-accent {
-  .mdc-tab-bar__indicator {
-    @include mdc-theme-prop(background-color, secondary);
-
-    @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(background-color, secondary);
-    };
-  }
-
-  &.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
-    @include mdc-theme-prop(background-color, secondary);
-  }
-}
-// postcss-bem-linter: end

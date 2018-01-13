@@ -123,8 +123,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
     content: "";
     pointer-events: none;
 
-    @include mdc-theme-prop(background-color, text-primary-on-light);
-
     @include mdc-theme-dark(".mdc-tab-bar", true) {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
     }

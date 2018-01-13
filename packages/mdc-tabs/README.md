@@ -130,7 +130,7 @@ provides a minimal example of how to do so using JavaScript, also shown below.
 #### Markup:
 ```html
 <section id="dynamic-demo-toolbar">
-  <nav id="dynamic-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent" role="tablist">
+  <nav id="dynamic-tab-bar" class="mdc-tab-bar" role="tablist">
     <a role="tab" aria-controls="panel-1"
        class="mdc-tab mdc-tab--active" href="#panel-1">Item One</a>
     <a role="tab" aria-controls="panel-2"
