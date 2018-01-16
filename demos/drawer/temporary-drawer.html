@@ -22,6 +22,7 @@
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/drawer/drawer.css">
     <link rel="stylesheet" href="/assets/radio.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -128,47 +129,49 @@
       </div>
     </main>
 
-    <script src="/assets/material-components-web.js"></script>
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      var drawerEl = document.querySelector('.mdc-drawer');
-      var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
-      var drawer = new MDCTemporaryDrawer(drawerEl);
-      document.querySelector('.demo-menu').addEventListener('click', function() {
-        drawer.open = true;
-      });
-      drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
-        console.log('Received MDCTemporaryDrawer:open');
-      });
-      drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
-        console.log('Received MDCTemporaryDrawer:close');
-      });
+      demoReady(function() {
+        var drawerEl = document.querySelector('.mdc-drawer');
+        var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
+        var drawer = new MDCTemporaryDrawer(drawerEl);
+        document.querySelector('.demo-menu').addEventListener('click', function() {
+          drawer.open = true;
+        });
+        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+          console.log('Received MDCTemporaryDrawer:open');
+        });
+        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+          console.log('Received MDCTemporaryDrawer:close');
+        });
 
-      // Demonstrate application of --activated modifier to drawer menu items
-      var activatedClass = 'mdc-list-item--selected';
-      document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
-        var el = event.target;
-        while (!el.classList.contains('mdc-list-item') && el) {
-          el = el.parentNode;
-        }
-        if (el) {
-          var activatedItem = document.querySelector('.' + activatedClass);
-          if (activatedItem) {
-            activatedItem.classList.remove(activatedClass);
+        // Demonstrate application of --activated modifier to drawer menu items
+        var activatedClass = 'mdc-list-item--selected';
+        document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
+          var el = event.target;
+          while (!el.classList.contains('mdc-list-item') && el) {
+            el = el.parentNode;
           }
-          event.target.classList.add(activatedClass);
-        }
-      });
+          if (el) {
+            var activatedItem = document.querySelector('.' + activatedClass);
+            if (activatedItem) {
+              activatedItem.classList.remove(activatedClass);
+            }
+            event.target.classList.add(activatedClass);
+          }
+        });
 
-      var radioEl = document.querySelector('#demo-radio-buttons');
-      radioEl.addEventListener('change', function(e) {
-        drawerEl.classList.remove('demo-drawer--custom');
-        drawerEl.classList.remove('demo-drawer--accessible');
+        var radioEl = document.querySelector('#demo-radio-buttons');
+        radioEl.addEventListener('change', function(e) {
+          drawerEl.classList.remove('demo-drawer--custom');
+          drawerEl.classList.remove('demo-drawer--accessible');
 
-        if(e.target.id === 'theme-radio-accessible') {
-          drawerEl.classList.add('demo-drawer--accessible');
-        } else if(e.target.id === 'theme-radio-custom') {
-          drawerEl.classList.add('demo-drawer--custom');
-        }
+          if(e.target.id === 'theme-radio-accessible') {
+            drawerEl.classList.add('demo-drawer--accessible');
+          } else if(e.target.id === 'theme-radio-custom') {
+            drawerEl.classList.add('demo-drawer--custom');
+          }
+        });
       });
     </script>
   </body>

@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/icon-toggle.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -184,11 +185,10 @@
         </div>
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
-    <script>
-      (function() {
-        'use strict';
 
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
         var nodes = document.querySelectorAll('.mdc-icon-toggle');
         for (var i = 0, node; node = nodes[i]; i++) {
           mdc.iconToggle.MDCIconToggle.attachTo(node);
@@ -200,7 +200,7 @@
           var newStatus = evt.detail.isOn ? 'yes' : 'no';
           favoritedStatus.textContent = newStatus;
         });
-      })();
+      });
     </script>
   </body>
 </html>
