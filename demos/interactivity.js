@@ -47,7 +47,7 @@ const events = {
 };
 
 /** @abstract */
-class InteractivityManager {
+class InteractivityProvider {
   constructor(root) {
     /** @protected {!Element|!Document} */
     this.root_ = root;
@@ -82,7 +82,7 @@ class InteractivityManager {
   }
 }
 
-class ToolbarManager extends InteractivityManager {
+class ToolbarManager extends InteractivityProvider {
   /** @param {!Element|!Document} root */
   static attachTo(root) {
     const instance = new ToolbarManager(root);
@@ -105,7 +105,7 @@ class ToolbarManager extends InteractivityManager {
   }
 }
 
-class Permalinker extends InteractivityManager {
+class Permalinker extends InteractivityProvider {
   /** @param {!Element|!Document} root */
   static attachTo(root) {
     const instance = new Permalinker(root);
@@ -161,7 +161,7 @@ class Permalinker extends InteractivityManager {
   }
 }
 
-class Themer extends InteractivityManager {
+class Themer extends InteractivityProvider {
   /**
    * @param {!Element|!Document} root
    * @param {!ToolbarManager} toolbarManager
