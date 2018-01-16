@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/slider.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -249,126 +250,119 @@
         </div>
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
-        // Wait for Webpack to load CSS. Otherwise, size/position calculations will be incorrect.
-        var interval = setInterval(function() {
-          const element = document.getElementById('hero-slider');
-          if (getComputedStyle(element).position === 'relative') {
-            clearInterval(interval);
-            mdc.slider.MDCSlider.attachTo(element);
-            initDemo(document.getElementById('slider-example'));
-          }
-        }, 100);
+      demoReady(function() {
+        mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
 
-        function initDemo(demoRoot) {
-          var min = demoRoot.querySelector('[name="min"]');
-          var max = demoRoot.querySelector('[name="max"]');
-          var step = demoRoot.querySelector('[name="step"]');
-          var darkTheme = demoRoot.querySelector('[name="dark-theme"]');
-          var disabled = demoRoot.querySelector('[name="disabled"]');
-          var useCustomColor = demoRoot.querySelector('[name="use-custom-color"]');
-          var rtl = demoRoot.querySelector('[name="rtl"]');
+        var demoRoot = document.getElementById('slider-example')
+        var min = demoRoot.querySelector('[name="min"]');
+        var max = demoRoot.querySelector('[name="max"]');
+        var step = demoRoot.querySelector('[name="step"]');
+        var darkTheme = demoRoot.querySelector('[name="dark-theme"]');
+        var disabled = demoRoot.querySelector('[name="disabled"]');
+        var useCustomColor = demoRoot.querySelector('[name="use-custom-color"]');
+        var rtl = demoRoot.querySelector('[name="rtl"]');
 
-          var continuousValue = demoRoot.querySelector('#continuous-slider-value');
-          var continuousCommittedValue = demoRoot.querySelector('#continuous-slider-committed-value');
-          var continuousSliderEl = demoRoot.querySelector('#continuous-mdc-slider');
-          var continuousSlider = new mdc.slider.MDCSlider(continuousSliderEl);
-          continuousSlider.listen('MDCSlider:input', function() {
-            continuousValue.textContent = continuousSlider.value;
-          });
-          continuousSlider.listen('MDCSlider:change', function() {
-            continuousCommittedValue.textContent = continuousSlider.value;
-          });
+        var continuousValue = demoRoot.querySelector('#continuous-slider-value');
+        var continuousCommittedValue = demoRoot.querySelector('#continuous-slider-committed-value');
+        var continuousSliderEl = demoRoot.querySelector('#continuous-mdc-slider');
+        var continuousSlider = new mdc.slider.MDCSlider(continuousSliderEl);
+        continuousSlider.listen('MDCSlider:input', function() {
+          continuousValue.textContent = continuousSlider.value;
+        });
+        continuousSlider.listen('MDCSlider:change', function() {
+          continuousCommittedValue.textContent = continuousSlider.value;
+        });
 
-          var discreteValue = demoRoot.querySelector('#discrete-slider-value');
-          var discreteCommittedValue = demoRoot.querySelector('#discrete-slider-committed-value');
-          var discreteSliderEl = demoRoot.querySelector('#discrete-mdc-slider');
-          var discreteSlider = new mdc.slider.MDCSlider(discreteSliderEl);
-          discreteSlider.listen('MDCSlider:input', function() {
-            discreteValue.textContent = discreteSlider.value;
-          });
-          discreteSlider.listen('MDCSlider:change', function() {
-            discreteCommittedValue.textContent = discreteSlider.value;
-          });
+        var discreteValue = demoRoot.querySelector('#discrete-slider-value');
+        var discreteCommittedValue = demoRoot.querySelector('#discrete-slider-committed-value');
+        var discreteSliderEl = demoRoot.querySelector('#discrete-mdc-slider');
+        var discreteSlider = new mdc.slider.MDCSlider(discreteSliderEl);
+        discreteSlider.listen('MDCSlider:input', function() {
+          discreteValue.textContent = discreteSlider.value;
+        });
+        discreteSlider.listen('MDCSlider:change', function() {
+          discreteCommittedValue.textContent = discreteSlider.value;
+        });
 
-          var discreteWMarkerValue = demoRoot.querySelector('#discrete-slider-w-marker-value');
-          var discreteWMarkerCommittedValue = demoRoot.querySelector('#discrete-slider-w-marker-committed-value');
-          var discreteWMarkerSliderEl = demoRoot.querySelector('#discrete-mdc-slider-w-marker');
-          var discreteWMarkerSlider = new mdc.slider.MDCSlider(discreteWMarkerSliderEl);
-          discreteWMarkerSlider.listen('MDCSlider:input', function() {
-            discreteWMarkerValue.textContent = discreteWMarkerSlider.value;
-          });
-          discreteWMarkerSlider.listen('MDCSlider:change', function() {
-            discreteWMarkerCommittedValue.textContent = discreteWMarkerSlider.value;
-          });
+        var discreteWMarkerValue = demoRoot.querySelector('#discrete-slider-w-marker-value');
+        var discreteWMarkerCommittedValue = demoRoot.querySelector('#discrete-slider-w-marker-committed-value');
+        var discreteWMarkerSliderEl = demoRoot.querySelector('#discrete-mdc-slider-w-marker');
+        var discreteWMarkerSlider = new mdc.slider.MDCSlider(discreteWMarkerSliderEl);
+        discreteWMarkerSlider.listen('MDCSlider:input', function() {
+          discreteWMarkerValue.textContent = discreteWMarkerSlider.value;
+        });
+        discreteWMarkerSlider.listen('MDCSlider:change', function() {
+          discreteWMarkerCommittedValue.textContent = discreteWMarkerSlider.value;
+        });
 
-          var customDiscreteWMarkerValue = demoRoot.querySelector('#custom-discrete-slider-w-marker-value');
-          var customDiscreteWMarkerCommittedValue = demoRoot.querySelector('#custom-discrete-slider-w-marker-committed-value');
-          var customDiscreteWMarkerSliderEl = demoRoot.querySelector('#custom-discrete-mdc-slider-w-marker');
-          var customDiscreteWMarkerSlider = new mdc.slider.MDCSlider(customDiscreteWMarkerSliderEl);
-          customDiscreteWMarkerSlider.listen('MDCSlider:input', function() {
-            customDiscreteWMarkerValue.textContent = customDiscreteWMarkerSlider.value;
-          });
-          customDiscreteWMarkerSlider.listen('MDCSlider:change', function() {
-            customDiscreteWMarkerCommittedValue.textContent = customDiscreteWMarkerSlider.value;
-          });
+        var customDiscreteWMarkerValue = demoRoot.querySelector('#custom-discrete-slider-w-marker-value');
+        var customDiscreteWMarkerCommittedValue = demoRoot.querySelector('#custom-discrete-slider-w-marker-committed-value');
+        var customDiscreteWMarkerSliderEl = demoRoot.querySelector('#custom-discrete-mdc-slider-w-marker');
+        var customDiscreteWMarkerSlider = new mdc.slider.MDCSlider(customDiscreteWMarkerSliderEl);
+        customDiscreteWMarkerSlider.listen('MDCSlider:input', function() {
+          customDiscreteWMarkerValue.textContent = customDiscreteWMarkerSlider.value;
+        });
+        customDiscreteWMarkerSlider.listen('MDCSlider:change', function() {
+          customDiscreteWMarkerCommittedValue.textContent = customDiscreteWMarkerSlider.value;
+        });
 
-          min.addEventListener('input', function() {
-            continuousSlider.min = parseFloat(min.value);
-            discreteSlider.min = parseFloat(min.value);
-            discreteWMarkerSlider.min = parseFloat(min.value);
-            customDiscreteWMarkerSlider.min = parseFloat(min.value);
-          });
+        min.addEventListener('input', function() {
+          continuousSlider.min = parseFloat(min.value);
+          discreteSlider.min = parseFloat(min.value);
+          discreteWMarkerSlider.min = parseFloat(min.value);
+          customDiscreteWMarkerSlider.min = parseFloat(min.value);
+        });
 
-          max.addEventListener('input', function() {
-            continuousSlider.max = parseFloat(max.value);
-            discreteSlider.max = parseFloat(max.value);
-            discreteWMarkerSlider.max = parseFloat(max.value);
-            customDiscreteWMarkerSlider.max = parseFloat(max.value);
-          });
+        max.addEventListener('input', function() {
+          continuousSlider.max = parseFloat(max.value);
+          discreteSlider.max = parseFloat(max.value);
+          discreteWMarkerSlider.max = parseFloat(max.value);
+          customDiscreteWMarkerSlider.max = parseFloat(max.value);
+        });
 
-          step.addEventListener('input', function() {
-            continuousSlider.step = parseFloat(step.value);
-            discreteSlider.step = parseFloat(step.value);
-            discreteWMarkerSlider.step = parseFloat(step.value);
-            customDiscreteWMarkerSlider.step = parseFloat(step.value);
-          });
+        step.addEventListener('input', function() {
+          continuousSlider.step = parseFloat(step.value);
+          discreteSlider.step = parseFloat(step.value);
+          discreteWMarkerSlider.step = parseFloat(step.value);
+          customDiscreteWMarkerSlider.step = parseFloat(step.value);
+        });
 
-          darkTheme.addEventListener('change', function() {
-            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
-              example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
-            });
+        darkTheme.addEventListener('change', function() {
+          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
+            example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
           });
+        });
 
-          disabled.addEventListener('change', function() {
-            continuousSlider.disabled = disabled.checked;
-            discreteSlider.disabled = disabled.checked;
-            discreteWMarkerSlider.disabled = disabled.checked;
-            customDiscreteWMarkerSlider.disabled = disabled.checked;
-          });
+        disabled.addEventListener('change', function() {
+          continuousSlider.disabled = disabled.checked;
+          discreteSlider.disabled = disabled.checked;
+          discreteWMarkerSlider.disabled = disabled.checked;
+          customDiscreteWMarkerSlider.disabled = disabled.checked;
+        });
 
-          useCustomColor.addEventListener('change', function() {
-            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
-              example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
-            });
+        useCustomColor.addEventListener('change', function() {
+          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
+            example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
           });
+        });
 
-          rtl.addEventListener('change', function() {
-            [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
-              if (rtl.checked) {
-                example.setAttribute('dir', 'rtl');
-              } else {
-                example.removeAttribute('dir');
-              }
-            });
-            continuousSlider.layout();
-            discreteSlider.layout();
-            discreteWMarkerSlider.layout();
-            customDiscreteWMarkerSlider.layout();
+        rtl.addEventListener('change', function() {
+          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
+            if (rtl.checked) {
+              example.setAttribute('dir', 'rtl');
+            } else {
+              example.removeAttribute('dir');
+            }
           });
-        }
-      })();
+          continuousSlider.layout();
+          discreteSlider.layout();
+          discreteWMarkerSlider.layout();
+          customDiscreteWMarkerSlider.layout();
+        });
+      });
     </script>
+  </body>
 </html>

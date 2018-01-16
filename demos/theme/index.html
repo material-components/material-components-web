@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/assets/theme/index.css">
+    <script src="/ready.js"></script>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
@@ -793,11 +794,9 @@
       </section>
     </main>
 
-    <script src="/assets/material-components-web.js" charset="utf-8"></script>
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
-        'use strict';
-
+      demoReady(function() {
         function getAll(query) {
           return [].slice.call(document.querySelectorAll(query));
         }
@@ -817,170 +816,157 @@
           return null;
         }
 
-        // Because we load our CSS via webpack, we need to ensure that all of the correct styles
-        // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
-        // elements before our CSS is applied, leading to improper UX.
-        var cssPollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-button')).position;
-          if (pos === 'relative') {
-            clearInterval(cssPollId);
-            init();
+        /*
+         * Permalinks for component section headings
+         */
+
+        document.addEventListener('focusin', function(e) {
+          if (e.target.classList.contains('demo-component-section__permalink')) {
+            e.target.parentElement.classList.add('demo-component-section__heading--focus');
           }
-        }, 250);
-
-        function init() {
-          /*
-           * Permalinks for component section headings
-           */
-
-          document.addEventListener('focusin', function(e) {
-            if (e.target.classList.contains('demo-component-section__permalink')) {
-              e.target.parentElement.classList.add('demo-component-section__heading--focus');
-            }
-          });
-          document.addEventListener('focusout', function(e) {
-            if (e.target.classList.contains('demo-component-section__permalink')) {
-              e.target.parentElement.classList.remove('demo-component-section__heading--focus');
-            }
-          });
-
-          function flashCurrentSection() {
-            var id = location.href.split('#')[1];
-            if (!id) {
-              return;
-            }
-            var anchor = document.getElementById(id);
-            if (!anchor) {
-              return;
-            }
-            var section = closest(anchor, '.demo-component-section');
-            if (!section) {
-              return;
-            }
-            section.classList.add('demo-component-section--flash');
-            setTimeout(function() {
-              section.classList.remove('demo-component-section--flash');
-            }, 200);
+        });
+        document.addEventListener('focusout', function(e) {
+          if (e.target.classList.contains('demo-component-section__permalink')) {
+            e.target.parentElement.classList.remove('demo-component-section__heading--focus');
           }
+        });
 
-          window.addEventListener('hashchange', function(e) {
-            flashCurrentSection();
-          });
-          flashCurrentSection();
-
-          /*
-           * Button
-           */
-
-          var buttons = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
-          for (var i = 0, button; button = buttons[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(button);
+        function flashCurrentSection() {
+          var id = location.href.split('#')[1];
+          if (!id) {
+            return;
           }
-
-          /*
-           * FAB
-           */
-
-          var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
-          for (var i = 0, fab; fab = fabs[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(fab);
+          var anchor = document.getElementById(id);
+          if (!anchor) {
+            return;
           }
-
-          /*
-           * Checkbox
-           */
-
-          document.querySelector('#indeterminate-checkbox').indeterminate = true;
-
-          document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
-            var checkboxes = getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
-            checkboxes.forEach(function(checkbox) {
-              checkbox.indeterminate = !checkbox.indeterminate;
-            });
-          });
-
-          document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
-            var formFields = getAll('.demo-checkbox-wrapper.mdc-form-field');
-            formFields.forEach(function(formField) {
-              formField.classList.toggle('mdc-form-field--align-end');
-            });
-          });
-
-          /*
-           * Drawer
-           */
-
-          var drawerEl = document.querySelector('.mdc-drawer--temporary');
-          var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
-
-          getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
-            toggleElem.addEventListener('click', function() {
-              drawer.open = true;
-            });
-          });
-
-          drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
-            console.log('Received MDCTemporaryDrawer:open');
-          });
-
-          drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
-            console.log('Received MDCTemporaryDrawer:close');
-          });
-
-          /*
-           * Icon Toggle
-           */
-
-          var iconToggleEls = getAll('.mdc-icon-toggle');
-          for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
-            mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
+          var section = closest(anchor, '.demo-component-section');
+          if (!section) {
+            return;
           }
-
-          /*
-           * Linear Progress
-           */
-
-          var progressEls = getAll('.mdc-linear-progress');
-          for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
-            var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
-            linearProgress.progress = 0.5;
-            if (progressEl.dataset.buffer) {
-              linearProgress.buffer = 0.75;
-            }
-          }
-
-          /*
-           * Select
-           */
-
-          getAll('.mdc-select:not(select)').forEach(function(select) {
-            mdc.select.MDCSelect.attachTo(select);
-          });
-
-          /*
-           * Slider
-           */
-
-          getAll('.mdc-slider').forEach(function(slider) {
-            mdc.slider.MDCSlider.attachTo(slider);
-          });
-
-          /*
-           * Tabs
-           */
-
-          getAll('.mdc-tab-bar').forEach(function(tabBar) {
-            mdc.tabs.MDCTabBar.attachTo(tabBar);
-          });
-
-          /*
-           * TextField
-           */
-
-          getAll('.mdc-text-field:not([data-demo-no-js])').forEach(function(textField) {
-            mdc.textField.MDCTextField.attachTo(textField);
-          });
+          section.classList.add('demo-component-section--flash');
+          setTimeout(function() {
+            section.classList.remove('demo-component-section--flash');
+          }, 200);
         }
+
+        window.addEventListener('hashchange', function(e) {
+          flashCurrentSection();
+        });
+        flashCurrentSection();
+
+        /*
+         * Button
+         */
+
+        var buttons = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
+        for (var i = 0, button; button = buttons[i]; i++) {
+          mdc.ripple.MDCRipple.attachTo(button);
+        }
+
+        /*
+         * FAB
+         */
+
+        var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
+        for (var i = 0, fab; fab = fabs[i]; i++) {
+          mdc.ripple.MDCRipple.attachTo(fab);
+        }
+
+        /*
+         * Checkbox
+         */
+
+        document.querySelector('#indeterminate-checkbox').indeterminate = true;
+
+        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
+          var checkboxes = getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
+          checkboxes.forEach(function(checkbox) {
+            checkbox.indeterminate = !checkbox.indeterminate;
+          });
+        });
+
+        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
+          var formFields = getAll('.demo-checkbox-wrapper.mdc-form-field');
+          formFields.forEach(function(formField) {
+            formField.classList.toggle('mdc-form-field--align-end');
+          });
+        });
+
+        /*
+         * Drawer
+         */
+
+        var drawerEl = document.querySelector('.mdc-drawer--temporary');
+        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+
+        getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
+          toggleElem.addEventListener('click', function() {
+            drawer.open = true;
+          });
+        });
+
+        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+          console.log('Received MDCTemporaryDrawer:open');
+        });
+
+        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+          console.log('Received MDCTemporaryDrawer:close');
+        });
+
+        /*
+         * Icon Toggle
+         */
+
+        var iconToggleEls = getAll('.mdc-icon-toggle');
+        for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
+          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
+        }
+
+        /*
+         * Linear Progress
+         */
+
+        var progressEls = getAll('.mdc-linear-progress');
+        for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
+          var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
+          linearProgress.progress = 0.5;
+          if (progressEl.dataset.buffer) {
+            linearProgress.buffer = 0.75;
+          }
+        }
+
+        /*
+         * Select
+         */
+
+        getAll('.mdc-select:not(select)').forEach(function(select) {
+          mdc.select.MDCSelect.attachTo(select);
+        });
+
+        /*
+         * Slider
+         */
+
+        getAll('.mdc-slider').forEach(function(slider) {
+          mdc.slider.MDCSlider.attachTo(slider);
+        });
+
+        /*
+         * Tabs
+         */
+
+        getAll('.mdc-tab-bar').forEach(function(tabBar) {
+          mdc.tabs.MDCTabBar.attachTo(tabBar);
+        });
+
+        /*
+         * TextField
+         */
+
+        getAll('.mdc-text-field:not([data-demo-no-js])').forEach(function(textField) {
+          mdc.textField.MDCTextField.attachTo(textField);
+        });
 
         /*
          * Radio Button
@@ -999,7 +985,7 @@
             formFieldInstance.input = radioInstance;
           }
         }
-      })();
+      });
     </script>
   </body>
 </html>
