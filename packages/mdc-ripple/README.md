@@ -37,7 +37,7 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
 - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
 - [The util API](#the-util-api)
 
-##### An aside regarding browser support
+#### An aside regarding browser support
 
 In order to function correctly, MDC Ripple requires a _browser_ implementation of [CSS Variables](https://www.w3.org/TR/css-variables/). MDC Ripple uses custom properties to dynamically position pseudo elements, which allows us to not need any extra DOM for this effect.
 
@@ -140,21 +140,16 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
-`activate() => void` | Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction, such as a `mousedown` or a `pointerdown` event). It expands from the center.
-`deactivate() => void` | Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
-`layout() => void` | Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically.
+`activate() => void` | Proxies to the foundation's `activate` method. Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction, such as a `mousedown` or a `pointerdown` event). It expands from the center.
+`deactivate() => void` | Proxies to the foundation's `deactivate` method. Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
+`layout() => void` | Proxies to the foundation's `layout` method. Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically.
 
-### MDCRippleFoundation
-
-The MDCRippleFoundation can be used like any other foundation component. Usually, you'll want to use
-it in your component _along_ with the foundation for the actual UI element you're trying to add a
-ripple to. The adapter API is as follows:
+### MDCRippleAdapter
 
 | Method Signature | Description |
 | --- | --- |
 | `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
-| `setUnbounded(unbounded: boolean) => void` | Adds the unbounded class when truthy, removes when falsy |
 | `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
 | `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
@@ -168,26 +163,6 @@ ripple to. The adapter API is as follows:
 | `updateCssVariable(varName: string, value: (string or null)) => void` | Programmatically sets the css variable `varName` on the surface to the value specified. |
 | `computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface. |
 | `getWindowPageOffset() => {x: number, y: number}` | Returns the `page{X,Y}Offset` values for the window object as `x` and `y` properties of an object (respectively). |
-
-### Using the vanilla DOM adapter
-
-Because ripples are used so ubiquitously throughout our codebase, `MDCRipple` has a static
-`createAdapter(instance)` method that can be used to instantiate an adapter object that can be used by
-any `MDCComponent` that needs to instantiate an `MDCRippleFoundation` with custom functionality.
-
-```js
-class MyMDCComponent extends MDCComponent {
-  constructor() {
-    super(...arguments);
-    this.ripple_ = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
-      isSurfaceActive: () => this.isActive_
-    }));
-    this.ripple_.init();
-  }
-
-  // ...
-}
-```
 
 ## Tips/Tricks
 
@@ -233,6 +208,24 @@ data attribute to your root element indicating that you wish the ripple to be un
 <div class="surface" data-mdc-ripple-is-unbounded>
   <p>A surface</p>
 </div>
+```
+
+### Using MDCRipple with custom functionality
+
+Usually, you'll want to use `MDCRipple` _along_ with the component for the actual UI element you're trying to add a
+ripple to. `MDCRipple` has a static `createAdapter(instance)` method that can be used to instantiate a ripple within
+any `MDCComponent` that requires custom adapter functionality.
+
+```js
+class MyMDCComponent extends MDCComponent {
+  constructor() {
+    super(...arguments);
+    const foundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
+      isSurfaceActive: () => this.isActive_, /* Custom functionality */
+    }));
+    this.ripple_ = new MDCRipple(this.root_, foundation);
+  }
+}
 ```
 
 ### Keyboard interaction for custom UI components
