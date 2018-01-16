@@ -71,11 +71,6 @@ figure {
 // Toolbar
 //
 
-// TODO(acdvorak): Do this automatically in mdc-toolbar's baseline styles
-.demo-toolbar {
-  color: mdc-theme-accessible-ink-color(primary);
-}
-
 .demo-toolbar-icon,
 .demo-toolbar-icon:last-of-type {
   @include mdc-rtl-reflexive-property(padding, 12px, 12px);
