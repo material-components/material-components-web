@@ -25,7 +25,6 @@
   background-color: $material-color-grey-400;
 }
 
-// TODO(acdvorak): Do this automatically in the component's baseline styles
 .demo-theme-list {
   @include mdc-theme-prop(color, text-primary-on-light);
 }

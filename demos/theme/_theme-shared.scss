@@ -194,8 +194,6 @@ figure {
 }
 
 .demo-theme-color-swatch {
-  // TODO(acdvorak): mdc-elevation (and other similar mixins) should figure out the correct contrast color automatically
-  // based on $mdc-theme-background.
   @include mdc-elevation(1);
 
   display: inline-block;
