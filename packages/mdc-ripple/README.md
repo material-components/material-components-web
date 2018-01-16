@@ -7,7 +7,7 @@ iconId: ripple
 path: /catalog/ripples/
 -->
 
-# Ripples
+# Ripple
 
 MDC Ripple provides the JavaScript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.
 
@@ -66,7 +66,7 @@ npm install --save @material/ripple
 
 A ripple can be applied to a variety of elements to represent interactive surfaces. Several MDC Web components, such as Button, FAB, Checkbox and Radio, also use ripples.
 
-A ripple can be added to an element through either a JS or CSS-only implementation. When a ripple is initialized on an element using JS, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple JS is not initialized but Sass mixins are included on the surface, the ripple uses a simpler CSS-only implementation which relies on `:hover`, `:focus`, and `:active`.
+A ripple can be added to an element through either a JavaScript or CSS-only implementation. When a ripple is initialized on an element using JS, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple JS is not initialized but Sass mixins are included on the surface, the ripple uses a simpler CSS-only implementation which relies on `:hover`, `:focus`, and `:active`.
 
 ### CSS Classes
 
@@ -116,14 +116,13 @@ Mixin | Description
 
 ### MDCRipple
 
-The MDCRipple JavaScript component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
+The `MDCRipple` JavaScript component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
 components. For example, this is used for making form field labels trigger the ripples in their corresponding input elements.
 
-To use the MDCRipple component, first import the ripple JS. See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
-Then, initialize the ripple with the correct DOM element.
+To use the `MDCRipple` component, first [import the `MDCRipple` JS](../../docs/importing-js.md). Then, initialize the ripple with the correct DOM element.
 
 ```javascript
-const surface = document.querySelector('.my-surface');
+const surface = document.querySelector('.my-ripple-surface');
 const ripple = new MDCRipple(surface);
 ```
 
@@ -131,7 +130,7 @@ You can also use `attachTo()` as an alias if you don't care about retaining a re
 ripple.
 
 ```javascript
-MDCRipple.attachTo(document.querySelector('.my-surface'));
+MDCRipple.attachTo(document.querySelector('.my-ripple-surface'));
 ```
 
 Property | Value Type | Description
@@ -140,9 +139,9 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
-`activate() => void` | Proxies to the foundation's `activate` method. Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction, such as a `mousedown` or a `pointerdown` event). It expands from the center.
-`deactivate() => void` | Proxies to the foundation's `deactivate` method. Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
-`layout() => void` | Proxies to the foundation's `layout` method. Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically.
+`activate() => void` | Proxies to the foundation's `activate` method
+`deactivate() => void` | Proxies to the foundation's `deactivate` method
+`layout() => void` | Proxies to the foundation's `layout` method
 
 ### MDCRippleAdapter
 
@@ -163,6 +162,15 @@ Method Signature | Description
 | `updateCssVariable(varName: string, value: (string or null)) => void` | Programmatically sets the css variable `varName` on the surface to the value specified. |
 | `computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface. |
 | `getWindowPageOffset() => {x: number, y: number}` | Returns the `page{X,Y}Offset` values for the window object as `x` and `y` properties of an object (respectively). |
+
+### MDCRippleFoundation
+
+Method Signature | Description
+--- | ---
+`activate() => void` | Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction, such as a `mousedown` or a `pointerdown` event). It expands from the center.
+`deactivate() => void` | Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
+`layout() => void` | Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically.
+`setUnbounded(boolean: unbounded) => void` | Sets the ripple to be unbounded or not based on the given boolean.
 
 ## Tips/Tricks
 
