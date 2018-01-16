@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/linear-progress.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -176,18 +177,20 @@
 
         </fieldset>
       </section>
-
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      var determinates = document.querySelectorAll('.mdc-linear-progress');
-      for (var i = 0, determinate; determinate = determinates[i]; i++) {
-        var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(determinate);
-        linearProgress.progress = 0.5;
-        if (determinate.dataset.buffer) {
-          linearProgress.buffer = 0.75;
+      demoReady(function() {
+        var determinates = document.querySelectorAll('.mdc-linear-progress');
+        for (var i = 0, determinate; determinate = determinates[i]; i++) {
+          var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(determinate);
+          linearProgress.progress = 0.5;
+          if (determinate.dataset.buffer) {
+            linearProgress.buffer = 0.75;
+          }
         }
-      }
+      });
     </script>
   </body>
 </html>
