@@ -217,8 +217,6 @@ class Themer extends InteractivityManager {
   /** @private */
   registerHotUpdateHandler_() {
     const hotSwapAllStylesheets = util.debounce(() => this.hotSwapAllStylesheets_(), Themer.hotUpdateWaitPeriodMs_);
-
-    // TODO(acdvorak): Add IE 11 support?
     this.window_.addEventListener('message', (evt) => {
       if (typeof evt.data === 'string' && evt.data.indexOf('webpackHotUpdate') === 0) {
         hotSwapAllStylesheets();
@@ -255,17 +253,25 @@ class Themer extends InteractivityManager {
     });
   }
 
-  // TODO(acdvorak): Cancel previous HTTP requests (in case user switches themes quickly over a slow network).
   /** @private */
   hotSwapStylesheet_(oldLink, newUri) {
-    // Don't reload the CSS if the user clicked on the current theme a second time.
-    // TODO(acdvorak): Test this in all browsers.
-    if (oldLink.getAttribute('href') === newUri) {
+    // Remove query string from old URI
+    const oldUri = (oldLink.getAttribute('href') || '').replace(/[?].*$/, '');
+
+    // oldLink was probably detached from the DOM
+    if (!oldUri) {
       return;
     }
 
+    if (!newUri) {
+      newUri = oldUri;
+    }
+
+    // Force IE 11 and Edge to bypass the cache and request a fresh copy of the CSS.
+    newUri += `?timestamp=${Date.now()}`;
+
     const logHotSwap = (verb, trailingPunctuation) => {
-      const swapMessage = `"${oldLink.getAttribute('href')}"${newUri ? ` with "${newUri}"` : ''}`;
+      const swapMessage = `"${oldUri}"${newUri ? ` with "${newUri}"` : ''}`;
       console.log(`Hot ${verb} stylesheet ${swapMessage}${trailingPunctuation}`);
     };
 
@@ -274,10 +280,7 @@ class Themer extends InteractivityManager {
     this.toolbarManager_.setIsLoading(true);
 
     const newLink = oldLink.cloneNode(false);
-    if (newUri) {
-      newLink.href = newUri;
-    }
-
+    newLink.setAttribute('href', newUri);
     newLink.addEventListener('load', () => {
       logHotSwap('swapped', '!');
 
