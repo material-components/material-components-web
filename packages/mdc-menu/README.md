@@ -221,8 +221,8 @@ require(['path/to/mdc-menu'], mdcMenu => {
 ##### Global
 
 ```javascript
-const MDCSimpleMenu = mdc.Menu.MDCSimpleMenu;
-const MDCSimpleMenuFoundation = mdc.Menu.MDCSimpleMenuFoundation;
+const MDCSimpleMenu = mdc.menu.MDCSimpleMenu;
+const MDCSimpleMenuFoundation = mdc.menu.MDCSimpleMenuFoundation;
 const util = mdc.menu.util;
 ```
 
