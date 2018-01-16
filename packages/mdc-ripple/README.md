@@ -68,31 +68,6 @@ A ripple can be applied to a variety of elements to represent interactive surfac
 
 A ripple can be added to an element through either a JS or CSS-only implementation. When a ripple is initialized on an element using JS, it dynamically adds a `mdc-ripple-upgraded` class to that element. If ripple JS is not initialized but Sass mixins are included on the surface, the ripple uses a simpler CSS-only implementation which relies on `:hover`, `:focus`, and `:active`.
 
-#### Unbounded ripples
-
-If you'd like to use _unbounded_ ripples, such as those used for checkboxes and radio buttons, you
-can do so either imperatively in JS _or_ declaratively using the DOM.
-
-##### Using JS
-
-You can set an `unbounded` property to specify whether or not the ripple is unbounded.
-
-```javascript
-const ripple = new MDCRipple(root);
-ripple.unbounded = true;
-```
-
-##### Using DOM (Component Only)
-
-If you are using our vanilla component for the ripple (not our foundation class), you can add a
-data attribute to your root element indicating that you wish the ripple to be unbounded:
-
-```html
-<div class="surface" data-mdc-ripple-is-unbounded>
-  <p>A surface</p>
-</div>
-```
-
 ### CSS Classes
 
 CSS Class | Description
@@ -101,20 +76,18 @@ CSS Class | Description
 
 ### Sass Mixins
 
-In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic or advanced `mdc-states` mixins documented below.
+In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins, as well as either the basic or advanced `mdc-states` mixins must be included.
 
-Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states` specifically) for specific variants (e.g. for flat vs. raised buttons).
+These APIs use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
 
-These APIs implicitly use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
-
-##### Ripple Mixins
+#### Ripple Mixins
 
 Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Adds base styles for a ripple surface
 `mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
 
-##### Basic States Mixins
+#### Basic States Mixins
 
 When using the basic states mixins, inclusion of the `mdc-states` mixin is mandatory.
 Inclusion of `mdc-states-activated` or `mdc-states-selected` is optional, depending on whether activated or selected
@@ -126,7 +99,7 @@ Mixin | Description
 `mdc-states-activated($color, $has-nested-focusable-element)` | Adds state and ripple styles for activated states using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 `mdc-states-selected($color, $has-nested-focusable-element)` | Adds state and ripple styles for selected states using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 
-##### Advanced States Mixins
+#### Advanced States Mixins
 
 When using the advanced states mixins, every one of the mixins below should be included at least once to establish base
 styles for states.
@@ -143,9 +116,8 @@ Mixin | Description
 
 ### MDCRipple
 
-The MDCRipple component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
-components. This is used for making form field labels trigger the ripples in their corresponding input elements, for
-example.
+The MDCRipple JavaScript component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
+components. For example, this is used for making form field labels trigger the ripples in their corresponding input elements.
 
 To use the MDCRipple component, first import the ripple JS. See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 Then, initialize the ripple with the correct DOM element.
@@ -168,12 +140,9 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
-`activate() => void` | Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction,
-such as a `mousedown` or a `pointerdown` event). It expands from the center.
-`deactivate() => void` | Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via
-interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
-`layout() => void` | Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's
-position or dimension is changed programmatically.
+`activate() => void` | Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction, such as a `mousedown` or a `pointerdown` event). It expands from the center.
+`deactivate() => void` | Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
+`layout() => void` | Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically.
 
 ### MDCRippleFoundation
 
@@ -238,6 +207,31 @@ the same effect.
 <div class="my-component">
   <div class="mdc-ripple-surface"></div>
   <!-- your component DOM -->
+</div>
+```
+
+### Unbounded ripple
+
+If you'd like to use _unbounded_ ripples, such as those used for checkboxes and radio buttons, you
+can do so either imperatively in JS _or_ declaratively using the DOM.
+
+##### Using JS
+
+You can set an `unbounded` property to specify whether or not the ripple is unbounded.
+
+```javascript
+const ripple = new MDCRipple(root);
+ripple.unbounded = true;
+```
+
+##### Using DOM (Component Only)
+
+If you are using our vanilla component for the ripple (not our foundation class), you can add a
+data attribute to your root element indicating that you wish the ripple to be unbounded:
+
+```html
+<div class="surface" data-mdc-ripple-is-unbounded>
+  <p>A surface</p>
 </div>
 ```
 
