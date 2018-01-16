@@ -144,7 +144,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     left: 0;
     width: 100%;
     height: 1px;
-    transform: scaleY(1);
     transform-origin: bottom;
     transition: $mdc-select-menu-transition;
     background-color: rgba(black, .5);
@@ -167,14 +166,14 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
   &__bottom-line--active {
     &::after {
-      transform: scaleX(1);
+      transform: scale(1, 2);
       opacity: 1;
     }
   }
 
   // JS-enhanced and CSS-only Selects require different selectors for focused bottom-line due to different DOM structure
-  &__surface:focus .mdc-select__bottom-line,
-  &__surface:focus ~ .mdc-select__bottom-line {
+  &__surface:focus:not(.mdc-ripple-upgraded) .mdc-select__bottom-line,
+  &__surface:focus:not(.mdc-ripple-upgraded) ~ .mdc-select__bottom-line {
     @include mdc-theme-prop(background-color, primary);
 
     transform: scaleY(2);
@@ -203,10 +202,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 
   .mdc-select__bottom-line {
-    @include mdc-theme-prop(background-color, primary);
-
-    transform: scaleY(2);
-
     &::after {
       opacity: 1;
     }
@@ -294,99 +289,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
         @include mdc-theme-prop(color, text-primary-on-dark);
       }
     }
-  }
-}
-
-// postcss-bem-linter: define multi-select
-.mdc-multi-select {
-  @include mdc-theme-prop(border-color, text-hint-on-light);
-
-  width: 250px;
-  padding: 0;
-  border-width: 1px;
-  border-style: solid;
-  outline: none;
-  appearance: none;
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(border-color, text-hint-on-dark);
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-group {
-    @include mdc-theme-prop(color, text-hint-on-light);
-
-    margin: 16px 0 0;
-    padding: 0 0 0 16px;
-    font-weight: normal;
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-hint-on-dark);
-    }
-
-    &:last-child {
-      margin-bottom: 16px;
-    }
-
-    .mdc-list-divider {
-      margin-left: -16px;
-    }
-    // stylelint-enable plugin/selector-bem-pattern
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-item {
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    margin: 0 0 0 -16px;
-    padding: 0 16px;
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    &:first-child {
-      margin-top: 12px;
-    }
-
-    &:last-child {
-      margin-bottom: 8px;
-    }
-
-    // Browsers are inconsistent in what they allow us to override, and some (e.g. Chrome) don't allow overriding the
-    // OS-determined selection color, which states styles are not going to play well with.
-    // Additionally, Firefox seems to ignore position: relative on option elements, which causes the pseudo elements
-    // that we use for ripple/states to position and size themselves relative to the entire body instead.
-    // Disabling states-specific styles on multi-select options altogether is the most straightforward recourse.
-    &::before,
-    &::after {
-      content: none;
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-item:checked {
-    @include mdc-theme-prop(background-color, background);
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(background-color, text-primary-on-dark);
-    }
-  }
-
-  .mdc-list-divider {
-    margin-bottom: 8px;
-    padding-top: 8px;
-    font-size: 0;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
-.mdc-multi-select:focus .mdc-list-item:checked {
-  @include mdc-theme-prop(background-color, primary);
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(background-color, text-primary-on-dark);
   }
 }
 
