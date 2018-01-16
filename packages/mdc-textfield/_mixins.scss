@@ -135,7 +135,7 @@
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
   }
-  
+
   @include mdc-theme-dark(".mdc-text-field", true) {
     + .mdc-text-field-helper-text--validation-msg {
       color: $mdc-text-field-error-on-dark;
