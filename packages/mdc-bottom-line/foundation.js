@@ -16,15 +16,15 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTextFieldBottomLineAdapter from './adapter';
+import MDCBottomLineAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
 
 /**
- * @extends {MDCFoundation<!MDCTextFieldBottomLineAdapter>}
+ * @extends {MDCFoundation<!MDCBottomLineAdapter>}
  * @final
  */
-class MDCTextFieldBottomLineFoundation extends MDCFoundation {
+class MDCBottomLineFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
@@ -36,12 +36,12 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * {@see MDCTextFieldBottomLineAdapter} for typing information on parameters and return
+   * {@see MDCBottomLineAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCTextFieldBottomLineAdapter}
+   * @return {!MDCBottomLineAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTextFieldBottomLineAdapter} */ ({
+    return /** @type {!MDCBottomLineAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
       setAttr: () => {},
@@ -52,13 +52,15 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextFieldBottomLineAdapter=} adapter
+   * @param {!MDCBottomLineAdapter=} adapter
    */
-  constructor(adapter = /** @type {!MDCTextFieldBottomLineAdapter} */ ({})) {
-    super(Object.assign(MDCTextFieldBottomLineFoundation.defaultAdapter, adapter));
+  constructor(adapter = /** @type {!MDCBottomLineAdapter} */ ({})) {
+    super(Object.assign(MDCBottomLineFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
+    /** @private {boolean} */
+    this.isActive_ = false;
   }
 
   init() {
@@ -73,6 +75,7 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
    * Activates the bottom line
    */
   activate() {
+    this.isActive_ = true;
     this.adapter_.addClass(cssClasses.BOTTOM_LINE_ACTIVE);
   }
 
@@ -85,7 +88,7 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
     const evtCoords = {x: evt.clientX, y: evt.clientY};
     const normalizedX = evtCoords.x - targetClientRect.left;
     const attributeString =
-      `transform-origin: ${normalizedX}px center`;
+        `transform-origin: ${normalizedX}px center`;
 
     this.adapter_.setAttr('style', attributeString);
   }
@@ -98,16 +101,23 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
+   * Sets our active transition to false to prepare to deactivate.
+   */
+  deactivateFocus() {
+    this.isActive_ = false;
+  }
+
+  /**
    * Handles a transition end event
    * @param {!Event} evt
    */
   handleTransitionEnd(evt) {
     // Wait for the bottom line to be either transparent or opaque
     // before emitting the animation end event
-    if (evt.propertyName === 'opacity') {
-      this.adapter_.notifyAnimationEnd();
+    if (!this.isActive_ && evt.propertyName === 'opacity') {
+      this.deactivate();
     }
   }
 }
 
-export default MDCTextFieldBottomLineFoundation;
+export default MDCBottomLineFoundation;

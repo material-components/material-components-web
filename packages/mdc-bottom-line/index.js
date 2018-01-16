@@ -17,44 +17,44 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCTextFieldBottomLineAdapter from './adapter';
-import MDCTextFieldBottomLineFoundation from './foundation';
+import MDCBottomLineAdapter from './adapter';
+import MDCBottomLineFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCTextFieldBottomLineFoundation>}
+ * @extends {MDCComponent<!MDCBottomLineFoundation>}
  * @final
  */
-class MDCTextFieldBottomLine extends MDCComponent {
+class MDCBottomLine extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextFieldBottomLine}
+   * @return {!MDCBottomLine}
    */
   static attachTo(root) {
-    return new MDCTextFieldBottomLine(root);
+    return new MDCBottomLine(root);
   }
 
   /**
-   * @return {!MDCTextFieldBottomLineFoundation}
+   * @return {!MDCBottomLineFoundation}
    */
   get foundation() {
     return this.foundation_;
   }
 
   /**
-   * @return {!MDCTextFieldBottomLineFoundation}
+   * @return {!MDCBottomLineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextFieldBottomLineFoundation(/** @type {!MDCTextFieldBottomLineAdapter} */ (Object.assign({
+    return new MDCBottomLineFoundation(/** @type {!MDCBottomLineAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyAnimationEnd: () => {
-        this.emit(MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, {});
+        this.emit(MDCBottomLineFoundation.strings.ANIMATION_END_EVENT, {});
       },
     })));
   }
 }
 
-export {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation};
+export {MDCBottomLine, MDCBottomLineFoundation};

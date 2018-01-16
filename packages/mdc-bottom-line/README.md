@@ -24,7 +24,7 @@ The bottom line indicates where to enter text, displayed below the label. When a
 ### HTML Structure
 
 ```html
-<div class="mdc-text-field__bottom-line"></div>
+<div class="mdc-bottom-line"></div>
 ```
 
 ### Usage within `mdc-text-field`
@@ -33,7 +33,7 @@ The bottom line indicates where to enter text, displayed below the label. When a
 <div class="mdc-text-field">
   <input type="text" id="my-text-field-id" class="mdc-text-field__input">
   <label class="mdc-text-field__label" for="my-text-field-id">Hint text</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <div class="mdc-bottom-line"></div>
 </div>
 ```
 

@@ -16,7 +16,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
+import MDCBottomLineFoundation from '@material/bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
@@ -39,7 +39,7 @@ let NativeInputType;
 
 /**
  * @typedef {{
- *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
+ *   bottomLine: (!MDCBottomLineFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
  *   label: (!MDCTextFieldLabelFoundation|undefined),

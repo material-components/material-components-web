@@ -26,7 +26,7 @@ import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter, FoundationMapType} from './adapter';
 import MDCTextFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
-import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
+import {MDCBottomLine, MDCBottomLineFoundation} from '@material/bottom-line';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon';
 import {MDCTextFieldLabel, MDCTextFieldLabelFoundation} from './label';
@@ -47,7 +47,7 @@ class MDCTextField extends MDCComponent {
     this.input_;
     /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {?MDCTextFieldBottomLine} */
+    /** @private {?MDCBottomLine} */
     this.bottomLine_;
     /** @private {?MDCTextFieldHelperText} */
     this.helperText_;
@@ -70,8 +70,8 @@ class MDCTextField extends MDCComponent {
   /**
    * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which
    * creates a new MDCRipple.
-   * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
-   * creates a new MDCTextFieldBottomLine.
+   * @param {(function(!Element): !MDCBottomLine)=} bottomLineFactory A function which
+   * creates a new MDCBottomLine.
    * @param {(function(!Element): !MDCTextFieldHelperText)=} helperTextFactory A function which
    * creates a new MDCTextFieldHelperText.
    * @param {(function(!Element): !MDCTextFieldIcon)=} iconFactory A function which
@@ -83,7 +83,7 @@ class MDCTextField extends MDCComponent {
    */
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
+    bottomLineFactory = (el) => new MDCBottomLine(el),
     helperTextFactory = (el) => new MDCTextFieldHelperText(el),
     iconFactory = (el) => new MDCTextFieldIcon(el),
     labelFactory = (el) => new MDCTextFieldLabel(el),
@@ -298,7 +298,6 @@ class MDCTextField extends MDCComponent {
 }
 
 export {MDCTextField, MDCTextFieldFoundation,
-  MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation,
   MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation,
   MDCTextFieldIcon, MDCTextFieldIconFoundation,
   MDCTextFieldLabel, MDCTextFieldLabelFoundation,

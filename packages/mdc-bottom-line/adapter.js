@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,13 @@
  * Adapter for MDC TextField Bottom Line.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the TextField bottom line into your framework. See
+ * adapter to integrate the TextField or Select bottom line into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCTextFieldBottomLineAdapter {
+class MDCBottomLineAdapter {
   /**
    * Adds a class to the bottom line element.
    * @param {string} className
@@ -62,11 +62,11 @@ class MDCTextFieldBottomLineAdapter {
   deregisterEventHandler(evtType, handler) {}
 
   /**
-   * Emits a custom event "MDCTextFieldBottomLine:animation-end" denoting the
+   * Emits a custom event "MDCBottomLine:animation-end" denoting the
    * bottom line has finished its animation; either the activate or
    * deactivate animation
    */
   notifyAnimationEnd() {}
 }
 
-export default MDCTextFieldBottomLineAdapter;
+export default MDCBottomLineAdapter;
