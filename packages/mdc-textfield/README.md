@@ -210,7 +210,6 @@ Mixin | Description
 `mdc-text-field-focused-bottom-line-color($color)` | Customizes the bottom-line ripple color when the text-field is focused.  
 `mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
 `mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
-}
 
 ### `MDCTextField`
 
