@@ -15,7 +15,7 @@ path: /catalog/input-controls/select-menus/
   </a>
 </div>-->
 
-MDC Select provides Material Design single-option and multi-option select menus. It functions analogously to the
+MDC Select provides Material Design single-option select menus. It functions analogously to the
 browser's native `<select>` element, and includes a gracefully degraded version that can be used
 in conjunction with the browser's native element. Both are fully accessible, and fully RTL-aware.
 
@@ -224,38 +224,6 @@ E.g.:
   </select>
   <div class="mdc-select__bottom-line"></div>
 </div>
-```
-
-### Multi Select
-
-MDC-Web implements multi-select on top of the `<select multiple>` element.
-
-```html
-<select multiple size="6" class="mdc-multi-select mdc-list" >
-  <optgroup class="mdc-list-group" label="Starches">
-    <option class="mdc-list-item">
-      Potato
-    </option>
-    <option class="mdc-list-item">
-      Cereal
-    </option>
-  </optgroup>
-  <option class="mdc-list-divider" role="presentation" disabled />
-  <option>
-    misc...
-  </option>
-</select>
-```
-
-Select elements take a `size` attribute to determine the height of the select box.
-
-If you'd like to maintain the width or height outside of the attribute, you'll need to set it in your styles:
-
-```css
-.my-select-container .mdc-select {
-  width: 300px;
-  height: 550px;
-}
 ```
 
 #### Classes
