@@ -43,6 +43,12 @@
   @include mdc-text-field-focused-bottom-line-color(primary);
   @include mdc-text-field-ink-color(text-primary-on-light);
   @include mdc-text-field-label-color($mdc-text-field-light-label);
+  @include mdc-text-field-helper-text-color(text-hint-on-light);
+
+  // Outline specific colors
+  @include mdc-text-field-outline-stroke-color($mdc-text-field-outlined-idle-border);
+  @include mdc-text-field-hover-outline-stroke-color($mdc-text-field-outlined-hover-border);
+  @include mdc-text-field-focused-outline-stroke-color(primary);
 
   display: inline-block;
   position: relative;
@@ -127,7 +133,7 @@
     z-index: 1;
 
     &:hover ~ .mdc-text-field__idle-outline {
-      border: 1px solid $mdc-text-field-outlined-hover-border;
+      border: 1px solid;
     }
   }
 
@@ -151,7 +157,7 @@
     z-index: 2;
 
     &:hover ~ .mdc-text-field__idle-outline {
-      border: 1px solid $mdc-text-field-outlined-hover-border;
+      border: 1px solid;
     }
   }
 
@@ -166,20 +172,7 @@
   }
 
   &.mdc-text-field--focused .mdc-text-field__outline-path {
-    @include mdc-theme-prop(stroke, primary);
-
     stroke-width: 2px;
-  }
-
-  &:not(.mdc-text-field--invalid) {
-    &.mdc-text-field--focused .mdc-text-field__label {
-      @include mdc-theme-prop(color, primary);
-    }
-
-    // stylelint-disable-next-line selector-max-specificity
-    &:not(.mdc-text-field--focused) .mdc-text-field__input:hover ~ .mdc-text-field__outline .mdc-text-field__outline-path {
-      stroke: $mdc-text-field-outlined-hover-border;
-    }
   }
 
   &.mdc-text-field--disabled {

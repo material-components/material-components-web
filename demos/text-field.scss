@@ -25,6 +25,10 @@
   @include mdc-text-field-focused-bottom-line-color(blue);
   @include mdc-text-field-ink-color(black);
   @include mdc-text-field-label-color(rgba(blue, .5));
+  @include mdc-text-field-outline-stroke-color(rgba(blue, .38));
+  @include mdc-text-field-hover-outline-stroke-color(rgba(blue, .6));
+  @include mdc-text-field-focused-outline-stroke-color(rgba(blue, 1));
+  @include mdc-text-field-helper-text-color(rgba(blue, .38));
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));
@@ -37,5 +41,9 @@
   @include mdc-text-field-focused-bottom-line-color(orange);
   @include mdc-text-field-ink-color(orange);
   @include mdc-text-field-label-color(rgba(orange, .87));
+  @include mdc-text-field-outline-stroke-color(rgba(orange, .38));
+  @include mdc-text-field-hover-outline-stroke-color(rgba(orange, .6));
+  @include mdc-text-field-focused-outline-stroke-color(rgba(orange, 1));
+  @include mdc-text-field-helper-text-validation-color(rgba(orange, .6));
 }
 // stylelint-enable selector-class-pattern
