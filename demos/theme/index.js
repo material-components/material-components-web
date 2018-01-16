@@ -200,13 +200,11 @@ class ThemePicker extends HotSwapper {
 }
 
 const initializers = {
-  permalinker() {
-    const root = document;
+  permalinker(root) {
     Permalinker.attachTo(root);
   },
 
-  themePicker() {
-    const root = document;
+  themePicker(root) {
     ThemePicker.attachTo(root, ToolbarProvider.attachTo(root));
   },
 
@@ -317,5 +315,6 @@ const initializers = {
 };
 
 demoReady(() => {
-  util.objectForEach(initializers, (initializer) => initializer());
+  const root = document;
+  util.objectForEach(initializers, (initializer) => initializer(root));
 });

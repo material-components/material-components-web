@@ -28,8 +28,8 @@ const attributes = {
 };
 
 const ids = {
-  TOOLBAR_PROGRESS_BAR: 'demo-toolbar-progress-bar',
   RTL_ACTION: 'rtl-action',
+  TOOLBAR_PROGRESS_BAR: 'demo-toolbar-progress-bar',
 };
 
 /** @abstract */
@@ -156,15 +156,28 @@ export class HotSwapper extends InteractivityProvider {
     });
   }
 
+  /**
+   * @param {!Event} evt
+   * @return {boolean}
+   * @private
+   */
   isWebpackRecompileStart_(evt) {
     return Boolean(evt.data) && evt.data.type === 'webpackInvalid';
   }
 
+  /**
+   * @param {!Event} evt
+   * @return {boolean}
+   * @private
+   */
   isWebpackRecompileEnd_(evt) {
     return typeof evt.data === 'string' && evt.data.indexOf('webpackHotUpdate') === 0;
   }
 
-  /** @private */
+  /**
+   * @param {!Event} evt
+   * @private
+   */
   toggleRTL_(evt) {
     const el = this.document_.documentElement;
     if (el.getAttribute('dir') === 'rtl') {
@@ -183,7 +196,11 @@ export class HotSwapper extends InteractivityProvider {
     });
   }
 
-  /** @protected */
+  /**
+   * @param {!Element} oldLink
+   * @param {string|undefined=} newUri
+   * @protected
+   */
   hotSwapStylesheet_(oldLink, newUri) {
     // Remove query string from old URI
     const oldUri = (oldLink.getAttribute('href') || '').replace(/[?].*$/, '');
