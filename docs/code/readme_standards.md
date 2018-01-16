@@ -44,10 +44,6 @@ CSS Class | Description
 Remember to document `<COMPONENT_NAME>--theme-dark` CSS class if the component
 changes its appearance in Dark Theme context.
 
-### JavaScript
-
-TODO: Finalize standards for documenting JavaScript
-
 ### Sass Variables and Mixins
 
 Sass variables are documented in a tabular format (See Tabular Format section).
@@ -59,12 +55,48 @@ Variable | Description
 ```
 
 Sass mixins, including their method signature, are documented in a
-tabular format (See Tabular Format section).
+[tabular format](#tabular-format).
 
 ```
 Mixin | Description
 --- | ---
 `mdc-foo($value)` | Sets the foo
+```
+
+### JavaScript
+
+First have a section for the Vanilla Component. The title of the
+section should be the name of the class, formatted as inline code, aka with the \` marks.
+At the top of the section you should reference our generic documentation for
+importing a JavaScript component.
+
+```
+See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+```
+
+Then document properties and methods in [tabular format](#tabular-format)
+
+```
+Property | Value Type | Description
+--- | --- | ---
+`foo` | String | Proxies to the foundation's `getFoo`/`setFoo` methods.
+```
+
+```
+Method Signature | Description
+--- | ---
+`doFoo() => void` | Does the foo
+```
+
+There should also be a section for the Adapter and the Foundation. The title of each
+section should be the name of the class, in code syntax, aka with the \` marks.
+
+Methods are documented in a [tabular format](#tabular-format)
+
+```
+Method Signature | Description
+--- | ---
+`getFoo() => string` | Returns the foo
 ```
 
 ### Tabular format
