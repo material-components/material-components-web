@@ -23,14 +23,14 @@
  * @param {function() : undefined} handler
  */
 window.demoReady = (function() {
-  var TIMEOUT_MS = 60 * 1000;
-  var DELAY_MS = 100;
+  var POLL_INTERVAL_MS = 100;
+  var POLL_MAX_WAIT_MS = 60 * 1000;
 
   var isReadyCached = false;
   var handlers = [];
   var testDom = null;
   var startTimeMs = null;
-  var timer = null;
+  var pollTimer = null;
 
   function isReady() {
     if (isReadyCached) {
@@ -59,24 +59,24 @@ window.demoReady = (function() {
   }
 
   function startTimer() {
-    if (timer) {
+    if (pollTimer) {
       return;
     }
     startTimeMs = Date.now();
-    timer = setInterval(tick, DELAY_MS);
+    pollTimer = setInterval(tick, POLL_INTERVAL_MS);
   }
 
   function tick() {
     if (isReady()) {
-      clearInterval(timer);
+      clearInterval(pollTimer);
       removeDetectionDom();
       invokeHandlers();
       return;
     }
 
     const elapsedTimeMs = Date.now() - startTimeMs;
-    if (elapsedTimeMs > TIMEOUT_MS) {
-      clearInterval(timer);
+    if (elapsedTimeMs > POLL_MAX_WAIT_MS) {
+      clearInterval(pollTimer);
       removeDetectionDom();
       console.error('Timed out waiting for JS and CSS to load');
       return;
@@ -94,7 +94,6 @@ window.demoReady = (function() {
       handler();
       return;
     }
-
     handlers.push(handler);
     startTimer();
   };
