@@ -41,7 +41,8 @@
     return 'SafeTheme{' + this.PRIVATE_SAFE_VALUE_ + '}';
   };
 
-  function createSafeTheme(safeValue) {
+  function createSafeTheme(unsafeValue) {
+    var safeValue = TRUSTED_THEMES.indexOf(unsafeValue) > -1 ? unsafeValue : DEFAULT_THEME;
     var safeTheme = new SafeTheme();
     safeTheme.PRIVATE_SAFE_VALUE_ = safeValue;
     return safeTheme;
@@ -52,10 +53,7 @@
    * @return {!SafeTheme}
    */
   window.getSafeDemoTheme = function(unsafeThemeName) {
-    if (TRUSTED_THEMES.indexOf(unsafeThemeName) > -1) {
-      return createSafeTheme(unsafeThemeName);
-    }
-    return createSafeTheme(DEFAULT_THEME);
+    return createSafeTheme(unsafeThemeName);
   };
 
   /**
@@ -83,31 +81,8 @@
   /** @type {string} */
   var unwrappedTheme = unwrapSafeDemoTheme(getSafeDemoThemeFromUri());
 
-  // TODO(acdvorak): Test this in all browsers
-  // - Chrome 63 on macOS High Sierra 10.13.2: Blocks page rendering
-  function loadThemeSync() {
-    // TODO(acdvorak): Is document.write necessary to block page rendering until the CSS loads? It's inherently unsafe;
-    // would document.createElement('link') work instead?
-    document.write(
-      '<link rel="stylesheet" href="/assets/theme/theme-' + unwrappedTheme + '.css" id="theme-stylesheet" data-hot>');
-  }
-
-  function loadThemeAsync() {
-    var oldLink = document.getElementById('theme-stylesheet');
-    if (!oldLink.parentElement) {
-      return;
-    }
-
-    var newLink = oldLink.cloneNode(true);
-    newLink.href = '/assets/theme/theme-' + unwrappedTheme + '.css';
-    newLink.addEventListener('load', function() {
-      if (!oldLink.parentElement) {
-        return;
-      }
-      oldLink.parentElement.removeChild(oldLink);
-    });
-    oldLink.insertAdjacentElement('afterend', newLink);
-  }
-
-  loadThemeSync();
+  // Avoid a FOUC by injecting the stylesheet directly into the HTML stream while the browser is parsing the page.
+  // This causes the browser to block page rendering until the CSS has finished loading.
+  document.write(
+    '<link rel="stylesheet" href="/assets/theme/theme-' + unwrappedTheme + '.css" id="theme-stylesheet" data-hot>');
 })();
