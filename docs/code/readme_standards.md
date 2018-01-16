@@ -55,7 +55,7 @@ Variable | Description
 ```
 
 Sass mixins, including their method signature, are documented in a
-tabular format (See Tabular Format section).
+[tabular format](#tabular-format).
 
 ```
 Mixin | Description
@@ -66,7 +66,7 @@ Mixin | Description
 ### JavaScript
 
 First have a section for the Vanilla Component. The title of the
-section should be the name of the class, in code syntax, aka with the \` marks.
+section should be the name of the class, formatted as inline code, aka with the \` marks.
 At the top of the section you should reference our generic documentation for
 importing a JavaScript component.
 
@@ -74,7 +74,7 @@ importing a JavaScript component.
 See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 ```
 
-Then document properties and methods in [tabular formart](#tabular-format)
+Then document properties and methods in [tabular format](#tabular-format)
 
 ```
 Property | Value Type | Description
