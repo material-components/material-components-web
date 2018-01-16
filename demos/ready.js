@@ -64,6 +64,7 @@ window.demoReady = (function() {
     if (timer) {
       return;
     }
+
     startTimeMs = Date.now();
     timer = setInterval(tick, DELAY_MS);
   }

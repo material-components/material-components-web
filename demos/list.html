@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/list.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -1111,9 +1112,10 @@
         </section>
       </div>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
+      demoReady(function() {
         var formField = new mdc.formField.MDCFormField(document.querySelector('.mdc-form-field'));
         var cb = mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
         formField.input = cb;
@@ -1128,21 +1130,18 @@
             hero.removeAttribute('dir');
           }
         });
-        // Delay initialization within development until styles have loaded
-        setTimeout(initInteractiveLists, 250);
-        function initInteractiveLists() {
-          var interactiveListItems = document.querySelectorAll(
-            '[data-demo-interactive-list] .mdc-list-item, .hero .mdc-list-item'
-          );
-          for (var i = 0, li; li = interactiveListItems[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(li);
-            // Prevent link clicks from jumping demo to the top of the page
-            li.addEventListener('click', function(evt) {
-              evt.preventDefault();
-            });
-          }
+
+        var interactiveListItems = document.querySelectorAll(
+          '[data-demo-interactive-list] .mdc-list-item, .hero .mdc-list-item'
+        );
+        for (var i = 0, li; li = interactiveListItems[i]; i++) {
+          mdc.ripple.MDCRipple.attachTo(li);
+          // Prevent link clicks from jumping demo to the top of the page
+          li.addEventListener('click', function(evt) {
+            evt.preventDefault();
+          });
         }
-      })();
+      });
     </script>
   </body>
 </html>
