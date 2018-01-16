@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/text-field.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -189,7 +190,7 @@
           <label for="outlined-dense">Dense</label>
         </div>
         <script>
-          setTimeout(function() {
+          demoReady(function() {
             var tfEl = document.getElementById('tf-outlined-example');
             var tf = new mdc.textField.MDCTextField(tfEl);
             var wrapper = document.getElementById('demo-tf-outlined-wrapper');
@@ -211,7 +212,7 @@
               tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
               tf.layout();
             });
-          }, 0);
+          });
         </script>
       </section>
 
@@ -246,7 +247,7 @@
           <label for="box-dense">Dense</label>
         </div>
         <script>
-          setTimeout(function() {
+          demoReady(function() {
             var tfEl = document.getElementById('tf-box-example');
             var tf = new mdc.textField.MDCTextField(tfEl);
             var wrapper = document.getElementById('demo-tf-box-wrapper');
@@ -272,7 +273,7 @@
               tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
               tf.layout();
             });
-          }, 0);
+          });
         </script>
       </section>
 
@@ -461,19 +462,19 @@
         </div>
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
+      demoReady(function() {
         var tfs = document.querySelectorAll(
           '.mdc-text-field:not([data-demo-no-auto-js])'
         );
         for (var i = 0, tf; tf = tfs[i]; i++) {
           mdc.textField.MDCTextField.attachTo(tf);
         }
-      })();
-    </script>
-    <script>
-      setTimeout(function() {
+      });
+
+      demoReady(function() {
         var tfBoxLeadingEl = document.getElementById('tf-box-leading-example');
         var tfBoxLeading = new mdc.textField.MDCTextField(tfBoxLeadingEl);
         var wrapperBoxLeading = document.getElementById('demo-tf-box-leading-wrapper');
@@ -540,24 +541,21 @@
             icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
           });
         });
-
-      }, 0);
-    </script>
-    <script>
-    (function() {
-      var wrapperCssOnly = document.getElementById('css-only-text-field-wrapper');
-      var tfCssOnly = document.getElementById('css-only-text-field');
-
-      document.getElementById('css-only-tf-disabled').addEventListener('change', function(evt) {
-        tfCssOnly.disabled = evt.target.checked;
       });
-      document.getElementById('css-only-dark-theme-tf').addEventListener('change', function(evt) {
-        wrapperCssOnly.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+
+      demoReady(function() {
+        var wrapperCssOnly = document.getElementById('css-only-text-field-wrapper');
+        var tfCssOnly = document.getElementById('css-only-text-field');
+
+        document.getElementById('css-only-tf-disabled').addEventListener('change', function(evt) {
+          tfCssOnly.disabled = evt.target.checked;
+        });
+        document.getElementById('css-only-dark-theme-tf').addEventListener('change', function(evt) {
+          wrapperCssOnly.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
       });
-    })();
-    </script>
-    <script>
-      (function() {
+
+      demoReady(function() {
         var section = document.getElementById('demo-text-field-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var helperText = section.querySelector('.mdc-text-field-helper-text');
@@ -614,10 +612,9 @@
             'mdc-text-field-helper-text--validation-msg'
           );
         });
-      })();
-    </script>
-    <script>
-      (function() {
+      });
+
+      demoReady(function() {
         var section = document.getElementById('demo-text-field-textarea-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var tf = new mdc.textField.MDCTextField(tfRoot);
@@ -641,10 +638,9 @@
           var target = evt.target;
           tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
         });
-      })();
-    </script>
-    <script charset="utf-8">
-      (function() {
+      });
+
+      demoReady(function() {
         var section = document.getElementById('demo-fullwidth-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var tfMultiRoot = section.querySelector('.mdc-text-field--textarea');
@@ -669,7 +665,7 @@
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
-      })();
+      });
     </script>
   </body>
 </html>
