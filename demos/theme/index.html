@@ -889,5 +889,137 @@
     <script src="/assets/material-components-web.js" async></script>
     <script src="/assets/common.js" async></script>
     <script src="/assets/theme/index.js" async></script>
+    <script>
+      demoReady(function() {
+        /*
+         * Button
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-button')).forEach(function(button) {
+          mdc.ripple.MDCRipple.attachTo(button);
+        });
+
+        /*
+         * Checkbox
+         */
+
+        document.querySelector('#indeterminate-checkbox').indeterminate = true;
+
+        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function() {
+          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'))
+            .forEach(function(checkbox) {
+              checkbox.indeterminate = !checkbox.indeterminate;
+            });
+        });
+
+        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function() {
+          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper.mdc-form-field'))
+            .forEach(function(formField) {
+              formField.classList.toggle('mdc-form-field--align-end');
+            });
+        });
+
+        /*
+         * Drawer
+         */
+
+        const drawerEl = document.querySelector('.mdc-drawer--temporary');
+        const drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+
+        [].slice.call(document.querySelectorAll('.demo-drawer-toggle')).forEach(function(toggleElem) {
+          toggleElem.addEventListener('click', function() {
+            drawer.open = true;
+          });
+        });
+
+        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+          console.log('Received MDCTemporaryDrawer:open');
+        });
+
+        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+          console.log('Received MDCTemporaryDrawer:close');
+        });
+
+        /*
+         * FAB
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-fab')).forEach(function(fab) {
+          mdc.ripple.MDCRipple.attachTo(fab);
+        });
+
+        /*
+         * Icon Toggle
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-icon-toggle')).forEach(function(iconToggleEl) {
+          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
+        });
+
+        /*
+         * Linear Progress
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-linear-progress')).forEach(function(progressEl) {
+          var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
+          linearProgress.progress = 0.5;
+          if (progressEl.dataset.buffer) {
+            linearProgress.buffer = 0.75;
+          }
+        });
+
+        /*
+         * Ripple
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-ripple-surface')).forEach(function(surface) {
+          mdc.ripple.MDCRipple.attachTo(surface);
+        });
+
+        /*
+         * Select
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-select:not(select)')).forEach(function(select) {
+          mdc.select.MDCSelect.attachTo(select);
+        });
+
+        /*
+         * Slider
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-slider')).forEach(function(slider) {
+          mdc.slider.MDCSlider.attachTo(slider);
+        });
+
+        /*
+         * Tab
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-tab-bar')).forEach(function(tabBar) {
+          mdc.tabs.MDCTabBar.attachTo(tabBar);
+        });
+
+        /*
+         * Textfield
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-text-field')).forEach(function(textField) {
+          mdc.textField.MDCTextField.attachTo(textField);
+        });
+
+        /*
+         * Radio
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-form-field.demo-radio-form-field')).forEach(function(formField) {
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
+          var radio = formField.querySelector('.mdc-radio');
+          if (radio) {
+            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
+          }
+        });
+      });
+    </script>
   </body>
 </html>

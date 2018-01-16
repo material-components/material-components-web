@@ -17,7 +17,6 @@
 
 import {InteractivityProvider, ToolbarProvider, HotSwapper} from '../interactivity.js';
 import * as dom from '../dom.js';
-import * as util from '../util.js';
 import * as pony from '../ponyfill.js';
 
 const classes = {
@@ -199,122 +198,9 @@ class ThemePicker extends HotSwapper {
   }
 }
 
-const initializers = {
-  permalinker(root) {
-    Permalinker.attachTo(root);
-  },
-
-  themePicker(root) {
-    ThemePicker.attachTo(root, ToolbarProvider.attachTo(root));
-  },
-
-  button() {
-    dom.getAll('.mdc-button').forEach((button) => {
-      mdc.ripple.MDCRipple.attachTo(button);
-    });
-  },
-
-  checkbox() {
-    document.querySelector('#indeterminate-checkbox').indeterminate = true;
-
-    document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', () => {
-      const checkboxes = dom.getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
-      checkboxes.forEach(function(checkbox) {
-        checkbox.indeterminate = !checkbox.indeterminate;
-      });
-    });
-
-    document.querySelector('#checkbox-toggle--align-end').addEventListener('click', () => {
-      const formFields = dom.getAll('.demo-checkbox-wrapper.mdc-form-field');
-      formFields.forEach(function(formField) {
-        formField.classList.toggle('mdc-form-field--align-end');
-      });
-    });
-  },
-
-  drawer() {
-    const drawerEl = document.querySelector('.mdc-drawer--temporary');
-    const drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
-
-    dom.getAll('.demo-drawer-toggle').forEach((toggleElem) => {
-      toggleElem.addEventListener('click', () => {
-        drawer.open = true;
-      });
-    });
-
-    drawerEl.addEventListener('MDCTemporaryDrawer:open', () => {
-      console.log('Received MDCTemporaryDrawer:open');
-    });
-
-    drawerEl.addEventListener('MDCTemporaryDrawer:close', () => {
-      console.log('Received MDCTemporaryDrawer:close');
-    });
-  },
-
-  fab() {
-    dom.getAll('.mdc-fab').forEach((fab) => {
-      mdc.ripple.MDCRipple.attachTo(fab);
-    });
-  },
-
-  iconToggle() {
-    dom.getAll('.mdc-icon-toggle').forEach((iconToggleEl) => {
-      mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
-    });
-  },
-
-  linearProgress() {
-    dom.getAll('.mdc-linear-progress').forEach((progressEl) => {
-      const linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
-      linearProgress.progress = 0.5;
-      if (progressEl.dataset.buffer) {
-        linearProgress.buffer = 0.75;
-      }
-    });
-  },
-
-  ripple() {
-    dom.getAll('.mdc-ripple-surface').forEach((surface) => {
-      mdc.ripple.MDCRipple.attachTo(surface);
-    });
-  },
-
-  select() {
-    dom.getAll('.mdc-select:not(select)').forEach((select) => {
-      mdc.select.MDCSelect.attachTo(select);
-    });
-  },
-
-  slider() {
-    dom.getAll('.mdc-slider').forEach((slider) => {
-      mdc.slider.MDCSlider.attachTo(slider);
-    });
-  },
-
-  tab() {
-    dom.getAll('.mdc-tab-bar').forEach((tabBar) => {
-      mdc.tabs.MDCTabBar.attachTo(tabBar);
-    });
-  },
-
-  textfield() {
-    dom.getAll('.mdc-text-field').forEach((textField) => {
-      mdc.textField.MDCTextField.attachTo(textField);
-    });
-  },
-
-  radio() {
-    dom.getAll('.mdc-form-field.demo-radio-form-field').forEach((formField) => {
-      const formFieldInstance = new mdc.formField.MDCFormField(formField);
-      const radio = formField.querySelector('.mdc-radio');
-      if (radio) {
-        formFieldInstance.input = new mdc.radio.MDCRadio(radio);
-      }
-    });
-  },
-};
-
 demoReady(() => {
   const root = document;
-  util.objectForEach(initializers, (initializer) => initializer(root));
+
+  Permalinker.attachTo(root);
+  ThemePicker.attachTo(root, ToolbarProvider.attachTo(root));
 });

@@ -229,7 +229,7 @@ export class HotSwapper extends InteractivityProvider {
 
     const newLink = oldLink.cloneNode(false);
     newLink.setAttribute('href', newUri);
-    newLink.addEventListener('load', () => {
+    newLink.addEventListener('load', util.once(() => {
       logHotSwap('swapped', '!');
 
       setTimeout(() => {
@@ -245,7 +245,7 @@ export class HotSwapper extends InteractivityProvider {
       if (this.numPending_ === 0) {
         this.toolbarProvider_.setIsLoading(false);
       }
-    });
+    }));
 
     oldLink.parentNode.insertBefore(newLink, oldLink);
   }
