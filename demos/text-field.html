@@ -595,7 +595,6 @@
         });
         document.getElementById('use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
-          tf.helperTextElement = target.checked ? helperText : null;
           helperText.style.display = target.checked ? 'block' : 'none';
           document.getElementById('persistent-helper-text').disabled = !target.checked;
           document.getElementById('helper-text-as-validation').disabled = !target.checked;
