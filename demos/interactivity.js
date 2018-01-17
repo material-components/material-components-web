@@ -16,7 +16,6 @@
  */
 
 import * as dom from './dom.js';
-import * as pony from './ponyfill.js';
 import * as util from './util.js';
 
 const classes = {
@@ -94,46 +93,6 @@ export class ToolbarProvider extends InteractivityProvider {
       this.progressBarEl_.classList.add(classes.TOOLBAR_PROGRESS_BAR_ACTIVE);
     } else {
       this.progressBarEl_.classList.remove(classes.TOOLBAR_PROGRESS_BAR_ACTIVE);
-    }
-  }
-}
-
-export class RtlToggler extends InteractivityProvider {
-  /** @param {!Element|!Document} root */
-  static attachTo(root) {
-    const instance = new RtlToggler(root);
-    instance.initialize();
-    return instance;
-  }
-
-  /** @override */
-  initialize() {
-    /** @type {?Element} */
-    this.rtlActionEl_ = this.getElementById_(ids.RTL_ACTION);
-
-    this.registerRTLToggleHandler_();
-  }
-
-  /** @private */
-  registerRTLToggleHandler_() {
-    if (!this.rtlActionEl_) {
-      return;
-    }
-    this.rtlActionEl_.addEventListener('click', (evt) => this.toggleRTL_(evt));
-  }
-
-  /**
-   * @param {!Event} evt
-   * @private
-   */
-  toggleRTL_(evt) {
-    const el = this.document_.documentElement;
-    if (el.getAttribute('dir') === 'rtl') {
-      el.setAttribute('dir', 'ltr');
-      evt.target.innerHTML = 'format_align_left';
-    } else {
-      el.setAttribute('dir', 'rtl');
-      evt.target.innerHTML = 'format_align_right';
     }
   }
 }
@@ -327,6 +286,5 @@ export class HotSwapper extends InteractivityProvider {
 
 /** @param {!Element|!Document} root */
 export function init(root) {
-  RtlToggler.attachTo(root);
   HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
 }
