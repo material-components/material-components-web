@@ -17,8 +17,8 @@
 
 import * as interactivity from './interactivity.js';
 
-demoReady(() => {
-  interactivity.init(document);
+demoReady((root) => {
+  interactivity.init(root);
 });
 
 // Export useful libs to aid debugging/experimentation in the browser's dev tools console.

@@ -98,22 +98,27 @@ class Permalinker extends InteractivityProvider {
   }
 }
 
-class ThemePicker extends HotSwapper {
+class ThemePicker extends InteractivityProvider {
   /**
    * @param {!Element|!Document} root
+   * @param {!HotSwapper} hotSwapper
    * @param {!ToolbarProvider} toolbarProvider
    */
-  static attachTo(root, toolbarProvider) {
+  static attachTo(root, hotSwapper, toolbarProvider) {
     const instance = new ThemePicker(root);
-    instance.initialize(toolbarProvider);
+    instance.initialize(hotSwapper, toolbarProvider);
     return instance;
   }
 
   /**
+   * @param {!HotSwapper} hotSwapper
    * @param {!ToolbarProvider} toolbarProvider
    * @override
    */
-  initialize(toolbarProvider) {
+  initialize(hotSwapper, toolbarProvider) {
+    /** @type {!HotSwapper} */
+    this.hotSwapper_ = hotSwapper;
+
     /** @type {!ToolbarProvider} */
     this.toolbarProvider_ = toolbarProvider;
 
@@ -167,7 +172,7 @@ class ThemePicker extends HotSwapper {
   swapTheme_(safeNewTheme) {
     const oldLink = this.getElementById_(ids.THEME_STYLESHEET);
     const newUri = `/assets/theme/theme-${unwrapSafeDemoTheme(safeNewTheme)}.css`;
-    this.hotSwapStylesheet_(oldLink, newUri);
+    this.hotSwapper_.hotSwapStylesheet_(oldLink, newUri);
     this.selectThemeInMenu_(safeNewTheme);
   }
 
@@ -198,9 +203,7 @@ class ThemePicker extends HotSwapper {
   }
 }
 
-demoReady(() => {
-  const root = document;
-
+demoReady((root) => {
   Permalinker.attachTo(root);
-  ThemePicker.attachTo(root, ToolbarProvider.attachTo(root));
+  ThemePicker.attachTo(root, HotSwapper.getInstance(root), ToolbarProvider.attachTo(root));
 });

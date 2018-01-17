@@ -100,8 +100,8 @@ export class HotSwapper extends InteractivityProvider {
   constructor(root) {
     super(root);
 
-    /** @type {number} */
-    this.numPending_ = 0;
+    /** @type {!Array<string>} */
+    this.pendingRequests_ = [];
   }
 
   /**
@@ -165,7 +165,7 @@ export class HotSwapper extends InteractivityProvider {
 
   /** @private */
   hotSwapAllStylesheets_() {
-    dom.getAll(`link[${attributes.HOT_SWAP}]`, this.document_.head).forEach((link) => {
+    dom.getAll(`link[${attributes.HOT_SWAP}]:not([data-is-loading])`, this.document_.head).forEach((link) => {
       this.hotSwapStylesheet_(link);
     });
   }
@@ -197,10 +197,12 @@ export class HotSwapper extends InteractivityProvider {
 
     const newLink = oldLink.cloneNode(false);
     newLink.setAttribute('href', newUri);
+    newLink.setAttribute('data-is-loading', 'true');
 
     // IE 11 and Edge fire the `load` event twice for `<link>` elements.
     newLink.addEventListener('load', util.debounce(() => {
       this.dequeuePendingRequest_(oldUri, newUri, newId);
+      newLink.removeAttribute('data-is-loading');
     }, 50));
 
     oldLink.parentNode.insertBefore(newLink, oldLink);
@@ -214,7 +216,7 @@ export class HotSwapper extends InteractivityProvider {
   enqueuePendingRequest_(oldUri, newUri) {
     this.logHotSwap_('swapping', oldUri, newUri, '...');
     this.toolbarProvider_.setIsLoading(true);
-    this.numPending_++;
+    this.pendingRequests_.push(newUri);
   }
 
   /**
@@ -225,8 +227,8 @@ export class HotSwapper extends InteractivityProvider {
    */
   dequeuePendingRequest_(oldUri, newUri, newId) {
     this.logHotSwap_('swapped', oldUri, newUri, '!');
-    this.numPending_--;
-    if (this.numPending_ === 0) {
+    this.pendingRequests_.splice(this.pendingRequests_.indexOf(newUri), 1);
+    if (this.pendingRequests_.length === 0) {
       this.toolbarProvider_.setIsLoading(false);
     }
     setTimeout(() => this.purgeOldStylesheets_(newId));
@@ -240,7 +242,7 @@ export class HotSwapper extends InteractivityProvider {
     let oldLinks;
 
     // New links are inserted before old links in the DOM, so we skip the first matching ID because it is the newest.
-    const getOldLinks = () => this.querySelectorAll_(`link[id="${newId}"]`).slice(1);
+    const getOldLinks = () => this.querySelectorAll_(`link[id="${newId}"]:not([data-is-loading])`).slice(1);
 
     while ((oldLinks = getOldLinks()).length > 0) {
       oldLinks.forEach((oldLink) => {
@@ -281,9 +283,50 @@ export class HotSwapper extends InteractivityProvider {
     const swapMessage = `"${oldUri}"${newUri ? ` with "${newUri}"` : ''}`;
     console.log(`Hot ${verb} stylesheet ${swapMessage}${trailingPunctuation}`);
   }
+
+  static getInstance(root) {
+    if (!HotSwapper.singletonMap_) {
+      /** @private {?SlowObjectKeyMap} */
+      HotSwapper.singletonMap_ = new SlowObjectKeyMap();
+    }
+    let instance = HotSwapper.singletonMap_.get(root);
+    if (!instance) {
+      instance = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
+      HotSwapper.singletonMap_.set(root, instance);
+    }
+    return instance;
+  }
+}
+
+class SlowObjectKeyMap {
+  constructor() {
+    this.entries_ = [];
+  }
+
+  get(key) {
+    const entries = this.getEntriesWithKey_(key);
+    return entries[0];
+  }
+
+  set(key, value) {
+    const entry = this.get(key);
+    if (entry) {
+      entry.value = value;
+    } else {
+      this.entries_.push({key, value});
+    }
+  }
+
+  contains(key) {
+    return this.getEntriesWithKey_(key).length > 0;
+  }
+
+  getEntriesWithKey_(key) {
+    return this.entries_.filter((entry) => entry.key === key);
+  }
 }
 
 /** @param {!Element|!Document} root */
 export function init(root) {
-  HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
+  HotSwapper.getInstance(root);
 }
