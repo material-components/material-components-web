@@ -163,15 +163,15 @@ figure {
 .demo-component-section__permalink {
   color: inherit;
   opacity: 0;
-}
 
-.demo-component-section:hover .demo-component-section__permalink,
-.demo-component-section__heading--focus-within .demo-component-section__permalink {
-  opacity: 1;
+  .demo-component-section:hover &,
+  .demo-component-section__heading--focus-within & {
+    opacity: 1;
+  }
 }
 
 //
-// Theme CSS class demo
+// CSS class demo
 //
 
 .demo-theme-color-section + .demo-theme-color-section {

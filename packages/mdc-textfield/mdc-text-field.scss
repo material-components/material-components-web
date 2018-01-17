@@ -392,14 +392,6 @@
   @include mdc-text-field-invalid_;
 }
 
-// stylelint-disable plugin/selector-bem-pattern
-
-.mdc-text-field--invalid.mdc-text-field--textarea {
-  border-color: $mdc-text-field-error-on-light;
-}
-
-// stylelint-enable plugin/selector-bem-pattern
-
 .mdc-text-field--dense {
   margin-top: 12px;
   margin-bottom: 4px;
@@ -425,90 +417,8 @@
 }
 
 .mdc-text-field--textarea {
-  @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
-
-  $padding-inset: 16px;
-  $label-offset-y: $padding-inset + 2;
-  $label-offset-x: $padding-inset;
-
-  display: flex;
-  width: fit-content;
-  height: initial;
-  transition: none;
-  border: 1px solid $mdc-textarea-border-on-light;
-  overflow: hidden;
-
-  @include mdc-theme-dark(".mdc-text-field") {
-    border-color: $mdc-textarea-border-on-dark;
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field__input {
-    margin: 0;
-    padding: $padding-inset;
-    padding-top: $padding-inset * 2;
-    border: 1px solid transparent;
-
-    &:focus {
-      @include mdc-theme-prop(border-color, primary);
-    }
-
-    &:invalid:not(:focus) {
-      border-color: $mdc-text-field-error-on-light;
-    }
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      &:hover {
-        border-bottom-color: transparent;
-      }
-
-      &:focus {
-        @include mdc-theme-prop(border-color, secondary);
-      }
-
-      &:invalid:not(:focus) {
-        border-color: $mdc-text-field-error-on-dark;
-      }
-    }
-  }
-
-  .mdc-text-field__label {
-    @include mdc-rtl-reflexive-position(left, 1px);
-
-    top: $label-offset-y;
-    bottom: auto;
-    padding: 8px 16px;
-    background-color: $mdc-textarea-light-background;
-    line-height: 1.15;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      background-color: $mdc-textarea-dark-background;
-    }
-
-    &--float-above {
-      // Translate above the top of the input, and compensate for the amount of offset needed
-      // to position the label within the bounds of the inset padding.
-      // Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
-      transform: translateY(-50%) scale(.923, .923);
-    }
-  }
-
-  &.mdc-text-field--disabled {
-    @include mdc-text-field-textarea-disabled_;
-  }
-
-  &:not(.mdc-text-field--upgraded) {
-    .mdc-text-field__input {
-      padding-top: $padding-inset;
-    }
-  }
+  @include mdc-text-field-textarea_;
 }
-
-.mdc-text-field--textarea.mdc-text-field--focused {
-  @include mdc-theme-prop(border-color, primary);
-}
-
-// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--fullwidth {
   width: 100%;
