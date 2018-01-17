@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/fab.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -217,25 +218,13 @@
         </div>
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      // Because we load our CSS via webpack, we need to ensure that all of the correct styles
-      // are applied before ripples are attached. Otherwise, ripples may use the computed styles of
-      // elements before our CSS is applied, leading to improper UX.
-      (function() {
-        var pollId = 0;
-        pollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-fab.material-icons')).position;
-          if (pos === 'relative') {
-            init();
-            clearInterval(pollId);
-          }
-        }, 250);
-        function init() {
-          var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
-          for (var i = 0, fab; fab = fabs[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(fab);
-          }
+      demoReady(function() {
+        var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
+        for (var i = 0, fab; fab = fabs[i]; i++) {
+          mdc.ripple.MDCRipple.attachTo(fab);
         }
 
         var addFab = document.getElementById('enter-exit-add');
@@ -268,7 +257,7 @@
             backButton.focus();
           }
         });
-      })();
+      });
     </script>
   </body>
 </html>

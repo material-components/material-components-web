@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/radio.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -263,24 +264,19 @@
         </div>
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function(global) {
-        'use strict';
-        var MDCFormField = global.mdc.formField.MDCFormField;
-        var MDCRadio = global.mdc.radio.MDCRadio;
-
+      demoReady(function() {
         var formFields = document.querySelectorAll('.mdc-form-field');
         for (var i = 0, formField; formField = formFields[i]; i++) {
-          var formFieldInstance = new MDCFormField(formField);
-
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
           var radio = formField.querySelector('.mdc-radio:not([data-demo-no-js])');
           if (radio) {
-            var radioInstance = new MDCRadio(radio);
+            var radioInstance = new mdc.radio.MDCRadio(radio);
             formFieldInstance.input = radioInstance;
           }
         }
-      })(this);
+      });
     </script>
   </body>
 </html>
