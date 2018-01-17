@@ -23,8 +23,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/theme/index.css">
     <script src="/ready.js"></script>
+    <script src="/uri.js"></script>
+    <script src="/theme-loader.js"></script>
+    <noscript>
+      <link rel="stylesheet" href="/assets/theme/theme-baseline.css">
+    </noscript>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
@@ -326,7 +330,7 @@
 
         <div class="demo-checkbox-row">
           <div class="mdc-form-field demo-checkbox-wrapper">
-            <div class="mdc-checkbox">
+            <div class="mdc-checkbox demo-checkbox">
               <input type="checkbox"
                      id="enabled-checkbox"
                      class="mdc-checkbox__native-control"/>
@@ -345,7 +349,7 @@
           </div>
 
           <div class="mdc-form-field demo-checkbox-wrapper">
-            <div class="mdc-checkbox">
+            <div class="mdc-checkbox demo-checkbox">
               <input type="checkbox"
                      id="indeterminate-checkbox"
                      class="mdc-checkbox__native-control"/>
@@ -364,7 +368,7 @@
           </div>
 
           <div class="mdc-form-field demo-checkbox-wrapper">
-            <div class="mdc-checkbox mdc-checkbox--disabled">
+            <div class="mdc-checkbox mdc-checkbox--disabled demo-checkbox">
               <input type="checkbox"
                      id="disabled-checkbox"
                      class="mdc-checkbox__native-control"
@@ -542,7 +546,7 @@
 
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio">
+            <div class="mdc-radio demo-radio">
               <input class="mdc-radio__native-control" type="radio" id="demo-radio-1" checked name="demo-radio-group-1">
               <div class="mdc-radio__background">
                 <div class="mdc-radio__outer-circle"></div>
@@ -552,7 +556,7 @@
             <label id="demo-radio-1-label" for="demo-radio-1">Enabled 1</label>
           </div>
           <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio">
+            <div class="mdc-radio demo-radio">
               <input class="mdc-radio__native-control" type="radio" id="demo-radio-2" name="demo-radio-group-1">
               <div class="mdc-radio__background">
                 <div class="mdc-radio__outer-circle"></div>
@@ -565,7 +569,7 @@
 
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio mdc-radio--disabled">
+            <div class="mdc-radio mdc-radio--disabled demo-radio">
               <input class="mdc-radio__native-control" type="radio" id="demo-radio-7" disabled checked name="demo-radio-group-4">
               <div class="mdc-radio__background">
                 <div class="mdc-radio__outer-circle"></div>
@@ -575,7 +579,7 @@
             <label id="demo-radio-7-label" for="demo-radio-7">Disabled 1</label>
           </div>
           <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio mdc-radio--disabled">
+            <div class="mdc-radio mdc-radio--disabled demo-radio">
               <input class="mdc-radio__native-control" type="radio" id="demo-radio-8" disabled name="demo-radio-group-4">
               <div class="mdc-radio__background">
                 <div class="mdc-radio__outer-circle"></div>
@@ -691,16 +695,16 @@
         <figure>
           <figcaption>Default</figcaption>
 
-          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text">
-            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text demo-tab-bar">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
               <span class="mdc-tab__icon-text">Recents</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
               <span class="mdc-tab__icon-text">Favorites</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
               <span class="mdc-tab__icon-text">Nearby</span>
             </a>
@@ -710,16 +714,16 @@
         <figure>
           <figcaption>Primary Color</figcaption>
 
-          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-primary">
-            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-primary demo-tab-bar">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
               <span class="mdc-tab__icon-text">Recents</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
               <span class="mdc-tab__icon-text">Favorites</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
               <span class="mdc-tab__icon-text">Nearby</span>
             </a>
@@ -729,16 +733,16 @@
         <figure>
           <figcaption>Secondary Color</figcaption>
 
-          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-accent">
-            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-accent demo-tab-bar">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
               <span class="mdc-tab__icon-text">Recents</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
               <span class="mdc-tab__icon-text">Favorites</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
               <span class="mdc-tab__icon-text">Nearby</span>
             </a>
@@ -755,7 +759,7 @@
         </h3>
 
         <figure class="demo-text-field-wrapper">
-          <div class="mdc-text-field">
+          <div class="mdc-text-field demo-text-field">
             <input type="text" class="mdc-text-field__input" id="demo-text-field-default"
                    name="email" aria-controls="demo-text-field-default-helper-text"
                    data-demo-no-js autocomplete="email">
@@ -768,7 +772,7 @@
           </p>
         </figure>
         <figure class="demo-text-field-wrapper">
-          <div class="mdc-text-field">
+          <div class="mdc-text-field demo-text-field">
             <input type="text" class="mdc-text-field__input" id="demo-text-field-required" required
                    name="email" aria-controls="demo-text-field-required-helper-text"
                    data-demo-no-js autocomplete="email">
@@ -780,7 +784,7 @@
           </p>
         </figure>
         <figure class="demo-text-field-wrapper">
-          <div class="mdc-text-field mdc-text-field--box">
+          <div class="mdc-text-field mdc-text-field--box demo-text-field">
             <input type="text" class="mdc-text-field__input" id="demo-text-field-box"
                    aria-controls="name-validation-message">
             <label for="demo-text-field-box" class="mdc-text-field__label">With <code>--box</code> modifier</label>
@@ -978,7 +982,6 @@
         var formFields = getAll('.mdc-form-field.demo-radio-form-field');
         for (var i = 0, formField; formField = formFields[i]; i++) {
           var formFieldInstance = new MDCFormField(formField);
-
           var radio = formField.querySelector('.mdc-radio:not([data-demo-no-js])');
           if (radio) {
             var radioInstance = new MDCRadio(radio);
