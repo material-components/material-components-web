@@ -186,7 +186,7 @@ export class HotSwapper extends InteractivityProvider {
     // Force IE 11 and Edge to bypass the cache and request a fresh copy of the CSS.
     newUri = this.bustCache_(newUri);
 
-    this.enqueueRequest_(oldUri, newUri, oldLink);
+    this.swapItLikeItsHot_(oldUri, newUri, oldLink);
   }
 
   /**
@@ -195,7 +195,7 @@ export class HotSwapper extends InteractivityProvider {
    * @param {!Element} oldLink
    * @private
    */
-  enqueueRequest_(oldUri, newUri, oldLink) {
+  swapItLikeItsHot_(oldUri, newUri, oldLink) {
     this.logHotSwap_('swapping', oldUri, newUri, '...');
 
     // Ensure that oldLink has a unique ID so we can remove all stale stylesheets from the DOM after newLink loads.
@@ -212,7 +212,7 @@ export class HotSwapper extends InteractivityProvider {
 
     // IE 11 and Edge fire the `load` event twice for `<link>` elements.
     newLink.addEventListener('load', util.debounce(() => {
-      this.dequeueRequest_(oldUri, newUri, newLink);
+      this.handleStylesheetLoad_(oldUri, newUri, newLink);
     }, 50));
 
     oldLink.parentNode.insertBefore(newLink, oldLink);
@@ -227,7 +227,7 @@ export class HotSwapper extends InteractivityProvider {
    * @param {!Element} newLink
    * @private
    */
-  dequeueRequest_(oldUri, newUri, newLink) {
+  handleStylesheetLoad_(oldUri, newUri, newLink) {
     this.logHotSwap_('swapped', oldUri, newUri, '!');
 
     this.pendingRequests_.splice(this.pendingRequests_.indexOf(newUri), 1);
