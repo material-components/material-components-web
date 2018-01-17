@@ -42,13 +42,13 @@
   }
 }
 
-@mixin mdc-text-field-hover-bottom-line-color($color) {
+@mixin mdc-text-field-hover-bottom-line-color_($color) {
   .mdc-text-field__input:hover {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-text-field-focused-bottom-line-color($color) {
+@mixin mdc-text-field-focused-bottom-line-color_($color) {
   .mdc-text-field__bottom-line {
     @include mdc-theme-prop(background-color, $color);
   }
