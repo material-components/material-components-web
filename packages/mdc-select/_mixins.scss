@@ -108,6 +108,10 @@
   &.mdc-select--open .mdc-select__bottom-line {
     @include mdc-theme-prop(background-color, $color);
   }
+
+  .mdc-select__bottom-line:after {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
 @mixin mdc-select-dd-arrow-svg-bg_($fill-hex-number: 000000, $opacity: .54) {
