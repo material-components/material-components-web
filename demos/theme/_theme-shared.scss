@@ -38,7 +38,6 @@
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
-@import "../../packages/mdc-rtl/mixins";
 @import "../common";
 @import "./menu";
 
@@ -75,16 +74,6 @@ figure {
 //
 // Toolbar
 //
-
-.demo-toolbar-icon,
-.demo-toolbar-icon:last-of-type {
-  @include mdc-rtl-reflexive-property(padding, 12px, 12px);
-}
-
-.demo-toolbar-icon--last,
-.demo-toolbar-icon--last:last-of-type {
-  @include mdc-rtl-reflexive-property(padding, 12px, 24px);
-}
 
 .demo-toolbar-progress-row {
   min-height: auto;
@@ -184,7 +173,7 @@ figure {
 }
 
 .demo-fieldset--color {
-  @include mdc-rtl-reflexive-box(margin, right, 36px);
+  margin-right: 36px;
 }
 
 .demo-theme-color-group {
@@ -192,10 +181,9 @@ figure {
 }
 
 .demo-theme-color-swatches {
-  @include mdc-rtl-reflexive-box(margin, right, 16px);
-
   display: inline-flex;
   flex-direction: column;
+  margin-right: 16px;
 }
 
 .demo-theme-color-swatch {
@@ -280,12 +268,9 @@ figure {
 //
 
 .demo-card-wrapper {
-  @include mdc-rtl-reflexive-box(margin, right, 24px);
-
-  margin-bottom: 24px;
-
   display: inline-block;
   width: 350px;
+  margin: 0 24px 24px 0;
   vertical-align: top;
 }
 
@@ -303,7 +288,7 @@ figure {
 
 .demo-card--with-avatar .mdc-card__title,
 .demo-card--with-avatar .mdc-card__subtitle {
-  @include mdc-rtl-reflexive-property(margin, 56px, 0);
+  margin-left: 56px;
 }
 
 .demo-card--small .mdc-card__media {
@@ -323,16 +308,13 @@ figure {
   align-items: center;
 }
 
-.demo-checkbox-wrapper {
-  @include mdc-rtl-reflexive-box(margin, right, 10px);
-}
-
+.demo-checkbox-wrapper,
 .demo-checkbox-toggle-button {
-  @include mdc-rtl-reflexive-box(margin, right, 10px);
+  margin-right: 10px;
 }
 
 .demo-checkbox-wrapper + .demo-checkbox-toggle-button {
-  @include mdc-rtl-reflexive-property(margin, 20px, 10px);
+  margin-left: 20px;
 }
 
 //
@@ -368,10 +350,7 @@ figure {
 }
 
 .demo-fab-tile {
-  @include mdc-rtl-reflexive-box(margin, right, 48px);
-
-  margin-top: 0;
-  margin-bottom: 1em;
+  margin: 0 48px 1em 0;
 }
 
 .demo-fab-tile__title {
@@ -398,12 +377,8 @@ figure {
 }
 
 .demo-icon-toggle-tile {
-  @include mdc-rtl-reflexive-box(margin, right, 10px);
-
-  margin-top: 0;
-  margin-bottom: 10px;
-
   width: 200px;
+  margin: 0 10px 10px 0;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
@@ -426,16 +401,12 @@ figure {
 //
 
 .demo-radio-group {
-  @include mdc-rtl-reflexive-box(margin, right, 24px);
-
-  margin-top: 0;
-  margin-bottom: 24px;
-
   display: inline-block;
+  margin: 0 24px 24px 0;
 }
 
 .demo-radio-form-field {
-  @include mdc-rtl-reflexive-box(margin, right, 8px);
+  margin-right: 8px;
 }
 
 //
@@ -443,12 +414,8 @@ figure {
 //
 
 .demo-switch-wrapper {
-  @include mdc-rtl-reflexive-box(margin, right, 16px);
-
-  margin-top: 16px;
-  margin-bottom: 0;
-
   display: inline-block;
+  margin: 16px 16px 0 0;
 }
 
 //
@@ -468,12 +435,8 @@ figure {
 //
 
 .demo-text-field-wrapper {
-  @include mdc-rtl-reflexive-box(margin, right, 16px);
-
-  margin-top: 0;
-  margin-bottom: 16px;
-
   display: inline-block;
+  margin: 16px 16px 0 0;
 }
 
 .demo-text-field {
