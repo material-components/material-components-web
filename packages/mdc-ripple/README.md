@@ -138,6 +138,7 @@ MDCRipple.attachTo(document.querySelector('.my-ripple-surface'));
 Property | Value Type | Description
 --- | --- | ---
 `unbounded` | Boolean | Whether or not the ripple is unbounded
+> _NOTE_: Surfaces for bounded ripples should have the `overflow` property set to `hidden`, while surfaces for unbounded ripples should have it set to `visible`.
 
 Method Signature | Description
 --- | ---
