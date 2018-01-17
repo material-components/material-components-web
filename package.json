@@ -116,7 +116,7 @@
   },
   "config": {
     "validate-commit-msg": {
-      "helpMessage": "%s\nNOTE: Please see angular's commit message guidelines (https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit) for information on how to format commit messages.\n\nAs an example, here is a valid commit message: 'docs(slider): Document slider public api'\n\nIf this commit is on a development / WIP branch, you can disable this by running `git commit --no-verify`.",
+      "helpMessage": "%s\nNOTE: Please see angular's commit message guidelines (https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits) for information on how to format commit messages.\n\nAs an example, here is a valid commit message: 'docs(slider): Document slider public api'\n\nIf this commit is on a development / WIP branch, you can disable this by running `git commit --no-verify`.",
       "scope": {
         "allowed": [
           "animation",
