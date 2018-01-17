@@ -42,7 +42,10 @@
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
 $demo-section-margin: 48px;
-$demo-custom-color: $material-color-red-500;
+
+$demo-color-custom: $material-color-red-500;
+$demo-color-low-luminance: $material-color-brown-900;
+$demo-color-high-luminance: $material-color-amber-50;
 
 //
 // Global styles
@@ -59,7 +62,7 @@ body {
 }
 
 //
-// Page toolbar
+// Toolbar
 //
 
 .demo-anchor-with-toolbar-offset {
@@ -116,24 +119,19 @@ body {
   transition: none;
 }
 
-.demo-component-section__heading .demo-component-section__permalink {
+.demo-component-section__permalink {
   color: inherit;
   opacity: 0;
-}
 
-.demo-component-section__permalink {
   .demo-component-section:hover &,
-  .demo-component-section__heading--focus & {
+  .demo-component-section__heading--focus-within & {
     opacity: 1;
   }
 }
 
 //
-// Baseline theme color demo
+// CSS class demo
 //
-
-$low-luminance-color: #3e2723;
-$high-luminance-color: #fff8e1;
 
 .demo-theme-color-group {
   padding: 16px 0;
@@ -145,16 +143,7 @@ $high-luminance-color: #fff8e1;
   margin-right: 36px;
 }
 
-.demo-theme-color-swatches__label {
-  display: inline-block;
-  box-sizing: border-box;
-  width: 130px;
-  margin-bottom: 1em;
-}
-
 .demo-theme-color-swatch {
-  // TODO(acdvorak): mdc-elevation (and other similar mixins) should figure out the correct contrast color automatically
-  // based on $mdc-theme-background.
   @include mdc-elevation(1);
 
   display: inline-block;
@@ -168,27 +157,27 @@ $high-luminance-color: #fff8e1;
 }
 
 .demo-theme-bg--low-luminance {
-  background-color: $low-luminance-color;
+  background-color: $demo-color-low-luminance;
 }
 
 .demo-theme-bg--low-luminance-light {
-  background-color: mdc-theme-light-variant($low-luminance-color);
+  background-color: mdc-theme-light-variant($demo-color-low-luminance);
 }
 
 .demo-theme-bg--low-luminance-dark {
-  background-color: mdc-theme-dark-variant($low-luminance-color);
+  background-color: mdc-theme-dark-variant($demo-color-low-luminance);
 }
 
 .demo-theme-bg--high-luminance {
-  background-color: $high-luminance-color;
+  background-color: $demo-color-high-luminance;
 }
 
 .demo-theme-bg--high-luminance-light {
-  background-color: mdc-theme-light-variant($high-luminance-color);
+  background-color: mdc-theme-light-variant($demo-color-high-luminance);
 }
 
 .demo-theme-bg--high-luminance-dark {
-  background-color: mdc-theme-dark-variant($high-luminance-color);
+  background-color: mdc-theme-dark-variant($demo-color-high-luminance);
 }
 
 .demo-theme-bg--custom-light {
@@ -222,42 +211,8 @@ $high-luminance-color: #fff8e1;
 // Button demo
 //
 
-.mdc-button.secondary-text-button {
-  @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-states($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-states($mdc-theme-secondary);
-  }
-}
-
-.mdc-button.secondary-filled-button {
-  @include mdc-button-filled-accessible($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-filled-accessible($mdc-theme-secondary);
-  }
-}
-
-.mdc-button.secondary-stroked-button {
-  @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-button-stroke-color($mdc-theme-secondary);
-  @include mdc-states($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-button-stroke-color($mdc-theme-secondary);
-    @include mdc-states($mdc-theme-secondary);
-  }
-}
-
 .demo-fieldset--button + .demo-fieldset--button {
   margin-top: 16px;
-}
-
-.demo-button {
-  margin: 10px;
 }
 
 .demo-button__code {
@@ -317,11 +272,11 @@ $high-luminance-color: #fff8e1;
 }
 
 .demo-checkbox-wrapper,
-.demo-checkbox-toggle {
+.demo-checkbox-toggle-button {
   margin-right: 10px;
 }
 
-.demo-checkbox-wrapper + .demo-checkbox-toggle {
+.demo-checkbox-wrapper + .demo-checkbox-toggle-button {
   margin-left: 20px;
 }
 
@@ -331,8 +286,8 @@ $high-luminance-color: #fff8e1;
 
 .demo-dialog {
   position: relative;
-  justify-content: unset;
-  z-index: unset;
+  justify-content: flex-start;
+  z-index: auto;
 }
 
 //
@@ -379,12 +334,12 @@ $high-luminance-color: #fff8e1;
   display: inline-flex;
 }
 
-.demo-icon-toggle__row {
+.demo-icon-toggle-row {
   display: flex;
   flex-wrap: wrap;
 }
 
-.demo-icon-toggle__tile {
+.demo-icon-toggle-tile {
   width: 200px;
   margin: 0 10px 10px 0;
   padding: 20px;
@@ -396,11 +351,11 @@ $high-luminance-color: #fff8e1;
 // Linear Progress demo
 //
 
-.demo-linear-progress__row {
+.demo-linear-progress-row {
   margin: 32px 0;
 }
 
-.demo-linear-progress__row + .demo-linear-progress__row {
+.demo-linear-progress-row + .demo-linear-progress-row {
   margin-top: 64px;
 }
 
@@ -415,26 +370,6 @@ $high-luminance-color: #fff8e1;
 
 .demo-radio-form-field {
   margin-right: 8px;
-}
-
-@mixin demo-radio-color($color) {
-  .mdc-radio__native-control:checked + .mdc-radio__background {
-    &::before {
-      @include mdc-theme-prop(background-color, $color);
-    }
-
-    .mdc-radio__outer-circle {
-      @include mdc-theme-prop(border-color, $color);
-    }
-
-    .mdc-radio__inner-circle {
-      @include mdc-theme-prop(background-color, $color);
-    }
-  }
-}
-
-.demo-radio--secondary {
-  @include demo-radio-color($mdc-theme-secondary);
 }
 
 //
