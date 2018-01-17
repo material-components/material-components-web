@@ -73,6 +73,8 @@ A ripple can be added to an element through either a JavaScript or CSS-only impl
 CSS Class | Description
 --- | ---
 `mdc-ripple-surface` | Adds a ripple to the element
+`mdc-ripple-surface--primary` | Sets the ripple color to the theme primary color
+`mdc-ripple-surface--secondary` | Sets the ripple color to the theme secondary color
 
 ### Sass Mixins
 
