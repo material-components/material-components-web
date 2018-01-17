@@ -224,8 +224,6 @@ export class HotSwapper extends InteractivityProvider {
    * @private
    */
   handleStylesheetLoad_(newLink, newUri, oldUri) {
-    this.logHotSwap_('swapped', oldUri, newUri, '!');
-
     this.pendingRequests_.splice(this.pendingRequests_.indexOf(newUri), 1);
     if (this.pendingRequests_.length === 0) {
       this.toolbarProvider_.setIsLoading(false);
@@ -236,6 +234,8 @@ export class HotSwapper extends InteractivityProvider {
 
       // Remove the 'loading' attribute *after* purging old stylesheets to avoid purging this one.
       newLink.removeAttribute(attrs.IS_LOADING);
+
+      this.logHotSwap_('swapped', oldUri, newUri, '!');
     });
   }
 
