@@ -109,7 +109,7 @@
     @include mdc-theme-prop(background-color, $color);
   }
 
-  .mdc-select__bottom-line:after {
+  .mdc-select__bottom-line::after {
     @include mdc-theme-prop(background-color, $color);
   }
 }
