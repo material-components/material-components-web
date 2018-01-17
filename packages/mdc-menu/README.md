@@ -126,15 +126,7 @@ The menu is `position: absolute` by default, and must be positioned by the user 
 
 The menu will open from the top left by default (top right in RTL). Depending on how you've positioned your button, you
 may want to change the point it opens from.
-To override the opening point, you can style `transform-origin` directly, or use one of the following convenience
-classes:
-
-| class name                                | description                          |
-| ----------------------------------------- | ------------------------------------ |
-| `mdc-simple-menu--open-from-top-left`     | Open the menu from the top left.     |
-| `mdc-simple-menu--open-from-top-right`    | Open the menu from the top right.    |
-| `mdc-simple-menu--open-from-bottom-left`  | Open the menu from the bottom left.  |
-| `mdc-simple-menu--open-from-bottom-right` | Open the menu from the bottom right. |
+To override the opening point, you can style `transform-origin` directly.
 
 
 #### Disabled menu items
