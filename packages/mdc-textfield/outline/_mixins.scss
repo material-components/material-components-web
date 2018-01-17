@@ -16,27 +16,27 @@
 
 // Public mixins
 
-@mixin mdc-text-field-outline-stroke-color($color) {
+@mixin mdc-text-field-outline-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-outline-stroke-color_($color);
+    @include mdc-text-field-outline-color_($color);
   }
 }
 
-@mixin mdc-text-field-hover-outline-stroke-color($color) {
+@mixin mdc-text-field-hover-outline-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-hover-outline-stroke-color_($color);
+    @include mdc-text-field-hover-outline-color_($color);
   }
 }
 
-@mixin mdc-text-field-focused-outline-stroke-color($color) {
+@mixin mdc-text-field-focused-outline-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-focused-outline-stroke-color_($color);
+    @include mdc-text-field-focused-outline-color_($color);
   }
 }
 
 // Private mixins
 
-@mixin mdc-text-field-outline-stroke-color_($color) {
+@mixin mdc-text-field-outline-color_($color) {
   .mdc-text-field__idle-outline {
     @include mdc-theme-prop(border-color, $color);
   }
@@ -46,14 +46,14 @@
   }
 }
 
-@mixin mdc-text-field-hover-outline-stroke-color_($color) {
+@mixin mdc-text-field-hover-outline-color_($color) {
   .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline,
   .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-text-field-focused-outline-stroke-color_($color) {
+@mixin mdc-text-field-focused-outline-color_($color) {
   &.mdc-text-field--focused .mdc-text-field__outline-path {
     @include mdc-theme-prop(stroke, $color);
   }

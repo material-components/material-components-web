@@ -74,12 +74,6 @@
   }
 }
 
-@mixin mdc-text-field-input-hover-outline-stroke-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-input-hover-outline-stroke-color_($color);
-  }
-}
-
 // Private mixins
 
 // Common
@@ -128,9 +122,9 @@
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error-on-light);
 
   // Outline specific mixins
-  @include mdc-text-field-outline-stroke-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-hover-outline-stroke-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-focused-outline-stroke-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-focused-outline-color($mdc-text-field-error-on-light);
 
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
@@ -167,7 +161,7 @@
 
 @mixin mdc-text-field-outline-disabled_ {
   @include mdc-text-field-ink-color_($mdc-text-field-light-placeholder);
-  @include mdc-text-field-outline-stroke-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
 
   .mdc-text-field__input {
     border-bottom: none;
@@ -240,11 +234,5 @@
 @mixin mdc-text-field-ink-color_($color) {
   .mdc-text-field__input {
     @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-text-field-input-hover-outline-stroke-color_($color) {
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    @include mdc-theme-prop(border-color, $color);
   }
 }
