@@ -47,3 +47,12 @@ $mdc-theme-background: $material-color-grey-900;
   @include mdc-theme-prop(color, text-primary-on-dark);
 }
 
+.demo-tab {
+  @include mdc-tab-label-ink-color(text-secondary-on-dark);
+  @include mdc-tab-icon-ink-color(text-icon-on-dark);
+
+  &:hover {
+    @include mdc-tab-label-ink-color(text-primary-on-dark);
+    @include mdc-tab-icon-ink-color(text-secondary-on-dark);
+  }
+}
