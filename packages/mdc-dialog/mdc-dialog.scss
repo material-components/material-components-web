@@ -40,148 +40,146 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
   height: 100%;
   visibility: hidden;
   z-index: 5;
+}
 
-  &__backdrop {
-    @include mdc-theme-prop(background-color, text-primary-on-light);
+.mdc-dialog__backdrop {
+  @include mdc-theme-prop(background-color, text-primary-on-light);
 
-    position: fixed;
-    top: 0;
-    left: 0;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: -1;
+}
+
+.mdc-dialog__surface {
+  @include mdc-elevation(24);
+  @include mdc-theme-prop(background-color, background);
+
+  display: inline-flex;
+  flex-direction: column;
+  width: calc(100% - 30px);
+  min-width: 640px;
+  max-width: 865px;
+  transform: translateY(150px) scale(.8);
+  border-radius: 2px;
+  opacity: 0;
+
+  @include mdc-theme-dark(".mdc-dialog") {
+    @include mdc-theme-prop(color, text-primary-on-dark);
+
+    background-color: $mdc-dialog-dark-theme-bg-color;
+    background-color: var(--mdc-dialog-dark-theme-bg-color, #{$mdc-dialog-dark-theme-bg-color});
   }
 
-  &__surface {
-    @include mdc-elevation(24);
-    @include mdc-theme-prop(background-color, background);
-
-    display: inline-flex;
-    flex-direction: column;
-    width: calc(100% - 30px);
-    min-width: 640px;
-    max-width: 865px;
-    transform: translateY(150px) scale(.8);
-    border-radius: 2px;
-    opacity: 0;
-
-    @include mdc-theme-dark(".mdc-dialog") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-
-      background-color: $mdc-dialog-dark-theme-bg-color;
-      background-color: var(--mdc-dialog-dark-theme-bg-color, #{$mdc-dialog-dark-theme-bg-color});
-    }
-
-    @include mdc-rtl(".mdc-dialog") {
-      text-align: right;
-    }
+  @include mdc-rtl(".mdc-dialog") {
+    text-align: right;
   }
+}
 
-  &__header {
-    display: flex;
-    align-items: center;
-    padding: 24px 24px 0;
+.mdc-dialog__header {
+  display: flex;
+  align-items: center;
+  padding: 24px 24px 0;
 
-    &__empty {
-      padding: 0;
-    }
-
-    @include mdc-rtl(".mdc-dialog") {
-      text-align: right;
-    }
-
-    &__title {
-      @include mdc-typography(title);
-
-      flex: 1;
-      margin: 0;
-    }
+  @include mdc-rtl(".mdc-dialog") {
+    text-align: right;
   }
+}
 
-  &__body {
-    @include mdc-theme-prop(color, text-secondary-on-light);
-    @include mdc-typography(body1);
+.mdc-dialog__header__empty {
+  padding: 0;
+}
 
-    margin-top: 20px;
-    padding: 0 24px 24px;
+.mdc-dialog__header__title {
+  @include mdc-typography(title);
 
-    @include mdc-theme-dark(".mdc-dialog") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
+  flex: 1;
+  margin: 0;
+}
 
-    &--scrollable {
-      max-height: 195px;
-      border-top: 1px solid rgba(0, 0, 0, .1);
-      border-bottom: 1px solid rgba(0, 0, 0, .1);
-      overflow-x: auto;
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
-    }
+.mdc-dialog__body {
+  @include mdc-theme-prop(color, text-secondary-on-light);
+  @include mdc-typography(body1);
+
+  margin-top: 20px;
+  padding: 0 24px 24px;
+
+  @include mdc-theme-dark(".mdc-dialog") {
+    @include mdc-theme-prop(color, text-secondary-on-dark);
   }
+}
 
-  &__footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 8px;
+.mdc-dialog__body--scrollable {
+  max-height: 195px;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  overflow-x: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
 
-    &__button {
-      @include mdc-rtl-reflexive-box(margin, right, 8px);
+.mdc-dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px;
+}
 
-      &:last-child {
-        @include mdc-rtl-reflexive-box(margin, right, 0);
-      }
-    }
+.mdc-dialog__footer__button {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
+  &:last-child {
+    @include mdc-rtl-reflexive-box(margin, right, 0);
   }
+}
 
-  &__action {
-    @include mdc-theme-prop(color, secondary);
-  }
+.mdc-dialog__action {
+  @include mdc-theme-prop(color, secondary);
+}
 
-  // TODO: Replace with breakpoint variable
-  @media (max-width: 640px) {
+// TODO: Replace with breakpoint variable
+@media (max-width: 640px) {
+  .mdc-dialog {
     min-width: 280px;
-
-    &__surface {
-      min-width: 280px;
-    }
-
-    &__body {
-      line-height: 24px;
-    }
   }
 
-  &--animating {
-    visibility: visible;
-
-    .mdc-dialog__backdrop {
-      transition: mdc-animation-enter(opacity, 120ms);
-    }
-
-    .mdc-dialog--open .mdc-dialog__surface {
-      transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
-    }
-
-    .mdc-dialog__surface {
-      transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
-    }
+  .mdc-dialog__surface {
+    min-width: 280px;
   }
 
-  &--open {
-    visibility: visible;
+  .mdc-dialog__body {
+    line-height: 24px;
+  }
+}
 
-    .mdc-dialog__backdrop {
-      opacity: .3;
-    }
+.mdc-dialog--animating {
+  visibility: visible;
 
-    .mdc-dialog__surface {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
+  .mdc-dialog__backdrop {
+    transition: mdc-animation-enter(opacity, 120ms);
+  }
+
+  .mdc-dialog__surface {
+    transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
+  }
+}
+
+.mdc-dialog--open {
+  visibility: visible;
+
+  .mdc-dialog__backdrop {
+    opacity: .3;
+  }
+
+  .mdc-dialog__surface {
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
 }
 

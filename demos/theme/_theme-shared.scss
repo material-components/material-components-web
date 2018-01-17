@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-@import "../common";
 @import "../../packages/mdc-button/mdc-button";
 @import "../../packages/mdc-card/mdc-card";
 @import "../../packages/mdc-checkbox/mdc-checkbox";
@@ -38,6 +37,7 @@
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
+@import "../common";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
@@ -51,6 +51,11 @@ $demo-custom-color: $material-color-red-500;
 figure {
   margin-left: 0;
   margin-right: 0;
+}
+
+body {
+  color: mdc-theme-accessible-ink-color($mdc-theme-background);
+  background-color: $mdc-theme-background;
 }
 
 //
@@ -430,68 +435,6 @@ $high-luminance-color: #fff8e1;
 
 .demo-radio--secondary {
   @include demo-radio-color($mdc-theme-secondary);
-}
-
-//
-// Ripple demo
-//
-
-.demo-ripple__row {
-  margin: 32px 0;
-}
-
-.demo-ripple-box,
-.demo-ripple-surface {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.demo-ripple-box {
-  vertical-align: top;
-  width: 200px;
-  height: 100px;
-  padding: 1rem;
-  margin: 16px 16px 0 0;
-  font-weight: 500;
-}
-
-.demo-ripple-box--primary {
-  @include mdc-theme-prop(color, primary);
-}
-
-.demo-ripple-box--secondary {
-  @include mdc-theme-prop(color, secondary);
-}
-
-.demo-ripple-surface {
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.demo-ripple-surface--primary {
-  @include mdc-states(primary);
-}
-
-.demo-ripple-surface--secondary {
-  @include mdc-states(secondary);
-}
-
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border-radius: 50%;
-}
-
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
-.mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
-  height: 100%;
-  left: 0;
-  top: 0;
-  width: 100%;
 }
 
 //
