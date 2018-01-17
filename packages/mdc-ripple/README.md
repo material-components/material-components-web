@@ -191,7 +191,7 @@ const ripple = new MDCRipple(root);
 ripple.unbounded = true;
 ```
 
-#### Using DOM (Component Only)
+#### Using DOM
 
 Add a `data-mdc-ripple-is-unbounded` attribute to your root element.
 
