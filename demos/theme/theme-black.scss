@@ -16,6 +16,7 @@
 
 @import "../../packages/mdc-theme/color-palette";
 
+// TODO(acdvorak): Use theme mixin(s) instead
 $mdc-theme-primary: $material-color-grey-900;
 $mdc-theme-secondary: $material-color-light-green-a700;
 

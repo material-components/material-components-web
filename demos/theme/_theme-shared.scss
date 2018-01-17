@@ -57,6 +57,11 @@ $demo-color-high-luminance: $material-color-amber-50;
 // Global styles
 //
 
+figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 body {
   color: mdc-theme-accessible-ink-color($mdc-theme-background);
   background-color: $mdc-theme-background;

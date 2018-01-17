@@ -16,6 +16,7 @@
 
 @import "../../packages/mdc-theme/color-palette";
 
+// TODO(acdvorak): Use theme mixin(s) instead
 $demo-toolbar-progress-bar-color: secondary-light;
 
 @import "./theme-shared";
