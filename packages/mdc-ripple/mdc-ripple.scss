@@ -34,14 +34,6 @@
   &[data-mdc-ripple-is-unbounded] {
     overflow: visible;
   }
-
-  &--primary {
-    @include mdc-states(primary);
-  }
-
-  &--accent {
-    @include mdc-states(secondary);
-  }
 }
 
 // postcss-bem-linter: end
