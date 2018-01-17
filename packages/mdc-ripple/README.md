@@ -28,15 +28,17 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
   - [MDCRippleAdapter](#MDCRippleAdapter)
   - [MDCRippleFoundation](#MDCRippleFoundation)
 - [Tips/Tricks](#tipstricks)
-  - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
   - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
+  - [Unbounded ripple](#unbounded-ripple)
+  - [MDCRipple with custom functionality](#mdcripple-with-custom-functionality)
   - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
   - [Specifying known element dimensions](#specifying-known-element-dimensions)
-- [Caveat: Edge](#caveat-edge)
-- [Caveat: Safari 9](#caveat-safari)
-- [Caveat: Mobile Safari](#caveat-mobile-safari)
-- [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
-- [The util API](#the-util-api)
+  - [The util API](#the-util-api)
+- [Caveats](#caveats)
+  - [Caveat: Edge](#caveat-edge)
+  - [Caveat: Safari 9](#caveat-safari)
+  - [Caveat: Mobile Safari](#caveat-mobile-safari)
+  - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
 
 #### An aside regarding browser support
 
@@ -211,7 +213,7 @@ data attribute to your root element indicating that you wish the ripple to be un
 </div>
 ```
 
-### Using MDCRipple with custom functionality
+### MDCRipple with custom functionality
 
 Usually, you'll want to use `MDCRipple` _along_ with the component for the actual UI element you're trying to add a
 ripple to. `MDCRipple` has a static `createAdapter(instance)` method that can be used to instantiate a ripple within
