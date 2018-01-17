@@ -62,7 +62,10 @@ In order to fully style the ripple effect for different states (hover/focus/pres
 .my-surface {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius;
-  @include mdc-states;
+  @include mdc-states-base-color(black);
+  @include mdc-states-hover-opacity(.1);
+  @include mdc-states-focus-opacity(.3);
+  @include mdc-states-press-opacity(.4);
 }
 ```
 
