@@ -46,21 +46,3 @@ export function debounce(func, wait, immediate) {
     }
   };
 }
-
-/**
- * From https://davidwalsh.name/javascript-once (MIT license).
- * @param {function(): undefined} fn
- * @param {!Object|undefined=} context
- * @return {function(): undefined}
- */
-export function once(fn, context) {
-  let result;
-
-  return function(...args) {
-    if (fn) {
-      result = fn.apply(context || this, ...args);
-      fn = null;
-    }
-    return result;
-  };
-}

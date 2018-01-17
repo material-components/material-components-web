@@ -227,12 +227,39 @@ export class HotSwapper extends InteractivityProvider {
     this.toolbarProvider_.setIsLoading(true);
     this.numPending_++;
 
+    const newId = oldLink.id || `stylesheet-${Math.floor(Math.random() * Date.now())}`;
+    oldLink.id = newId;
+
     const newLink = oldLink.cloneNode(false);
     newLink.setAttribute('href', newUri);
-    newLink.addEventListener('load', util.once(() => {
+
+    // IE 11 and Edge fire the `load` event twice for `<link>` elements.
+    newLink.addEventListener('load', util.debounce(() => {
       logHotSwap('swapped', '!');
 
-      setTimeout(() => {
+      setTimeout(() => this.purgeOldStylesheets_(newId));
+
+      this.numPending_--;
+      if (this.numPending_ === 0) {
+        this.toolbarProvider_.setIsLoading(false);
+      }
+    }, 50));
+
+    oldLink.parentNode.insertBefore(newLink, oldLink);
+  }
+
+  /**
+   * @param {string} newId
+   * @private
+   */
+  purgeOldStylesheets_(newId) {
+    let oldLinks;
+
+    // New links are inserted before old links in the DOM, so we skip the first matching ID because it is the newest.
+    const getOldLinks = () => this.querySelectorAll_(`link[id="${newId}"]`).slice(1);
+
+    while ((oldLinks = getOldLinks()).length > 0) {
+      oldLinks.forEach((oldLink) => {
         // Link has already been detached from the DOM. I'm not sure what causes this to happen; I've only seen it in
         // IE 11 and/or Edge so far, and only occasionally.
         if (!oldLink.parentNode) {
@@ -240,14 +267,7 @@ export class HotSwapper extends InteractivityProvider {
         }
         oldLink.parentNode.removeChild(oldLink);
       });
-
-      this.numPending_--;
-      if (this.numPending_ === 0) {
-        this.toolbarProvider_.setIsLoading(false);
-      }
-    }));
-
-    oldLink.parentNode.insertBefore(newLink, oldLink);
+    }
   }
 }
 
