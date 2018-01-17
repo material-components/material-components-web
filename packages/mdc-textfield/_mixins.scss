@@ -15,7 +15,9 @@
 //
 
 @import "bottom-line/mixins";
+@import "outline/mixins";
 @import "label/mixins";
+@import "helper-text/mixins";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
@@ -80,6 +82,7 @@
   @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-light);
   @include mdc-text-field-ink-color_(text-disabled-on-light);
   @include mdc-text-field-label-color_(text-disabled-on-light);
+  @include mdc-text-field-helper-text-color_(text-disabled-on-light);
 
   @include mdc-theme-dark(".mdc-text-field") {
     @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-dark);
@@ -96,12 +99,6 @@
       border-bottom: 1px dotted;
     }
   }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  + .mdc-text-field-helper-text {
-    @include mdc-theme-prop(color, text-disabled-on-light);
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 
   @include mdc-theme-dark(".mdc-text-field", true) {
     // stylelint-disable plugin/selector-bem-pattern
@@ -122,22 +119,15 @@
   @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error-on-light);
   @include mdc-text-field-focused-bottom-line-color($mdc-text-field-error-on-light);
   @include mdc-text-field-label-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error-on-light);
 
-  .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__outline .mdc-text-field__outline-path {
-    stroke: $mdc-text-field-error-on-light;
-  }
+  // Outline specific mixins
+  @include mdc-text-field-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-focused-outline-color($mdc-text-field-error-on-light);
 
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
-    color: $mdc-text-field-error-on-light;
   }
 
   @include mdc-theme-dark(".mdc-text-field", true) {
@@ -170,19 +160,15 @@
 // Outline
 
 @mixin mdc-text-field-outline-disabled_ {
-  @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+  @include mdc-text-field-ink-color_($mdc-text-field-light-placeholder);
+  @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
 
   .mdc-text-field__input {
     border-bottom: none;
   }
 
   .mdc-text-field__outline-path {
-    stroke: $mdc-text-field-outlined-disabled-border;
     stroke-width: 1px;
-  }
-
-  .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-outlined-disabled-border;
   }
 
   .mdc-text-field__label {
