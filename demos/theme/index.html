@@ -81,7 +81,6 @@
     </aside>
 
     <main class="mdc-toolbar-fixed-adjust demo-main">
-
       <h2 class="mdc-typography--display1">
         Baseline Colors
       </h2>
@@ -387,8 +386,8 @@
             <label for="disabled-checkbox" id="disabled-checkbox-label">Disabled</label>
           </div>
 
-          <button type="button" class="mdc-button mdc-button--raised demo-checkbox-toggle" id="checkbox-toggle--indeterminate">Toggle <code class="demo-button__code">indeterminate</code></button>
-          <button type="button" class="mdc-button mdc-button--raised demo-checkbox-toggle" id="checkbox-toggle--align-end">Toggle <code class="demo-button__code">--align-end</code></button>
+          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--indeterminate">Toggle <code class="demo-button__code">indeterminate</code></button>
+          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--align-end">Toggle <code class="demo-button__code">--align-end</code></button>
         </div>
       </section>
 
@@ -469,8 +468,8 @@
           <a href="#icon-toggle" class="demo-component-section__permalink" title="Permalink to the theme demo for the icon toggle component">#</a>
         </h3>
 
-        <div class="demo-icon-toggle__row">
-          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+        <div class="demo-icon-toggle-row">
+          <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subheading2">Enabled</h4>
 
             <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
@@ -484,7 +483,7 @@
             </i>
           </div>
 
-          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+          <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subheading2">Disabled</h4>
 
             <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
@@ -508,7 +507,7 @@
           <a href="#linear-progress" class="demo-component-section__permalink" title="Permalink to the theme demo for the linear progress component">#</a>
         </h3>
 
-        <figure class="demo-linear-progress__row">
+        <figure class="demo-linear-progress-row">
           <figcaption class="mdc-typography--subheading2">Indeterminate</figcaption>
           <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
             <div class="mdc-linear-progress__buffering-dots"></div>
@@ -522,7 +521,7 @@
           </div>
         </figure>
 
-        <figure class="demo-linear-progress__row">
+        <figure class="demo-linear-progress-row">
           <figcaption class="mdc-typography--subheading2">Buffer</figcaption>
           <div role="progressbar" class="mdc-linear-progress" data-buffer="true">
             <div class="mdc-linear-progress__buffering-dots"></div>
@@ -606,7 +605,7 @@
           </div>
           <div class="mdc-simple-menu mdc-select__menu">
             <ul class="mdc-list mdc-simple-menu__items">
-              <li class="mdc-list-item" role="option" id="grains" aria-disabled="true">
+              <li class="mdc-list-item" role="option" id="none" aria-disabled="true">
                 Pick a food group
               </li>
               <li class="mdc-list-item" role="option" id="grains" tabindex="0">
@@ -676,12 +675,12 @@
         </fieldset>
         <fieldset class="demo-switch-wrapper" disabled>
           <div class="mdc-switch">
-            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" checked />
+            <input type="checkbox" id="disabled-switch" class="mdc-switch__native-control" checked />
             <div class="mdc-switch__background">
               <div class="mdc-switch__knob"></div>
             </div>
           </div>
-          <label for="basic-switch" class="mdc-switch-label">disabled</label>
+          <label for="disabled-switch" class="mdc-switch-label">disabled</label>
         </fieldset>
       </section>
 
@@ -760,10 +759,11 @@
 
         <figure class="demo-text-field-wrapper">
           <div class="mdc-text-field demo-text-field">
-            <input type="text" class="mdc-text-field__input" id="demo-text-field-default"
-                   name="email" aria-controls="demo-text-field-default-helper-text"
-                   data-demo-no-js autocomplete="email">
-            <label for="demo-text-field-default" class="mdc-text-field__label">Default</label>
+            <input type="text" class="mdc-text-field__input"
+                   id="demo-text-field-default"
+                   aria-controls="demo-text-field-default-helper-text"
+                   autocomplete="email">
+            <label for="demo-text-field-default" class="mdc-text-field__label">Name (optional)</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
           <p class="mdc-text-field-helper-text" id="demo-text-field-default-helper-text"
@@ -773,19 +773,22 @@
         </figure>
         <figure class="demo-text-field-wrapper">
           <div class="mdc-text-field demo-text-field">
-            <input type="text" class="mdc-text-field__input" id="demo-text-field-required" required
-                   name="email" aria-controls="demo-text-field-required-helper-text"
-                   data-demo-no-js autocomplete="email">
-            <label for="demo-text-field-required" class="mdc-text-field__label">Required</label>
+            <input type="email" class="mdc-text-field__input"
+                   id="demo-text-field-required"
+                   aria-controls="demo-text-field-required-helper-text"
+                   autocomplete="email"
+                   required>
+            <label for="demo-text-field-required" class="mdc-text-field__label">Email (required)</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
           <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" id="demo-text-field-required-helper-text">
-            Must provide a name
+            A valid email address is required
           </p>
         </figure>
         <figure class="demo-text-field-wrapper">
           <div class="mdc-text-field mdc-text-field--box demo-text-field">
-            <input type="text" class="mdc-text-field__input" id="demo-text-field-box"
+            <input type="text" class="mdc-text-field__input"
+                   id="demo-text-field-box"
                    aria-controls="name-validation-message">
             <label for="demo-text-field-box" class="mdc-text-field__label">With <code>--box</code> modifier</label>
             <div class="mdc-text-field__bottom-line"></div>
@@ -801,10 +804,6 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        function getAll(query) {
-          return [].slice.call(document.querySelectorAll(query));
-        }
-
         function matches(elem, selector) {
           var nativeMatches = elem.matches || elem.webkitMatchesSelector || elem.mozMatchesSelector || elem.msMatchesSelector || elem.oMatchesSelector;
           return nativeMatches.call(elem, selector);
@@ -863,19 +862,9 @@
          * Button
          */
 
-        var buttons = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
-        for (var i = 0, button; button = buttons[i]; i++) {
+        [].slice.call(document.querySelectorAll('.mdc-button')).forEach(function(button) {
           mdc.ripple.MDCRipple.attachTo(button);
-        }
-
-        /*
-         * FAB
-         */
-
-        var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
-        for (var i = 0, fab; fab = fabs[i]; i++) {
-          mdc.ripple.MDCRipple.attachTo(fab);
-        }
+        });
 
         /*
          * Checkbox
@@ -883,18 +872,18 @@
 
         document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
-        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
-          var checkboxes = getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
-          checkboxes.forEach(function(checkbox) {
-            checkbox.indeterminate = !checkbox.indeterminate;
-          });
+        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function() {
+          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'))
+            .forEach(function(checkbox) {
+              checkbox.indeterminate = !checkbox.indeterminate;
+            });
         });
 
-        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
-          var formFields = getAll('.demo-checkbox-wrapper.mdc-form-field');
-          formFields.forEach(function(formField) {
-            formField.classList.toggle('mdc-form-field--align-end');
-          });
+        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function() {
+          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper'))
+            .forEach(function(formField) {
+              formField.classList.toggle('mdc-form-field--align-end');
+            });
         });
 
         /*
@@ -904,7 +893,7 @@
         var drawerEl = document.querySelector('.mdc-drawer--temporary');
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
+        [].slice.call(document.querySelectorAll('.demo-drawer-toggle')).forEach(function(toggleElem) {
           toggleElem.addEventListener('click', function() {
             drawer.open = true;
           });
@@ -919,32 +908,38 @@
         });
 
         /*
+         * FAB
+         */
+
+        [].slice.call(document.querySelectorAll('.mdc-fab')).forEach(function(fab) {
+          mdc.ripple.MDCRipple.attachTo(fab);
+        });
+
+        /*
          * Icon Toggle
          */
 
-        var iconToggleEls = getAll('.mdc-icon-toggle');
-        for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
+        [].slice.call(document.querySelectorAll('.mdc-icon-toggle')).forEach(function(iconToggleEl) {
           mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
-        }
+        });
 
         /*
          * Linear Progress
          */
 
-        var progressEls = getAll('.mdc-linear-progress');
-        for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
+        [].slice.call(document.querySelectorAll('.mdc-linear-progress')).forEach(function(progressEl) {
           var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
           linearProgress.progress = 0.5;
           if (progressEl.dataset.buffer) {
             linearProgress.buffer = 0.75;
           }
-        }
+        });
 
         /*
          * Select
          */
 
-        getAll('.mdc-select:not(select)').forEach(function(select) {
+        [].slice.call(document.querySelectorAll('.mdc-select:not(select)')).forEach(function(select) {
           mdc.select.MDCSelect.attachTo(select);
         });
 
@@ -952,42 +947,37 @@
          * Slider
          */
 
-        getAll('.mdc-slider').forEach(function(slider) {
+        [].slice.call(document.querySelectorAll('.mdc-slider')).forEach(function(slider) {
           mdc.slider.MDCSlider.attachTo(slider);
         });
 
         /*
-         * Tabs
+         * Tab Bar
          */
 
-        getAll('.mdc-tab-bar').forEach(function(tabBar) {
+        [].slice.call(document.querySelectorAll('.mdc-tab-bar')).forEach(function(tabBar) {
           mdc.tabs.MDCTabBar.attachTo(tabBar);
         });
 
         /*
-         * TextField
+         * Text Field
          */
 
-        getAll('.mdc-text-field:not([data-demo-no-js])').forEach(function(textField) {
+        [].slice.call(document.querySelectorAll('.mdc-text-field')).forEach(function(textField) {
           mdc.textField.MDCTextField.attachTo(textField);
         });
 
         /*
-         * Radio Button
+         * Radio
          */
 
-        var MDCFormField = mdc.formField.MDCFormField;
-        var MDCRadio = mdc.radio.MDCRadio;
-
-        var formFields = getAll('.mdc-form-field.demo-radio-form-field');
-        for (var i = 0, formField; formField = formFields[i]; i++) {
-          var formFieldInstance = new MDCFormField(formField);
-          var radio = formField.querySelector('.mdc-radio:not([data-demo-no-js])');
+        [].slice.call(document.querySelectorAll('.demo-radio-form-field')).forEach(function(formField) {
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
+          var radio = formField.querySelector('.mdc-radio');
           if (radio) {
-            var radioInstance = new MDCRadio(radio);
-            formFieldInstance.input = radioInstance;
+            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
           }
-        }
+        });
       });
     </script>
   </body>
