@@ -13,38 +13,6 @@ MDC Ripple provides the JavaScript and CSS required to provide components (or an
 
 MDC Ripple also works without JavaScript, where it gracefully degrades to a simpler CSS-Only implementation.
 
-## Table of Contents
-
-- [An aside regarding browser support](#an-aside-regarding-browser-support)
-- [Design & API Documentation](#design--api-documentation)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [CSS Classes](#css-classes)
-  - [Sass Mixins](#sass-mixins)
-  - [MDCRipple](#mdcripple)
-  - [MDCRippleAdapter](#mdcrippleadapter)
-  - [MDCRippleFoundation](#mdcripplefoundation)
-- [Tips/Tricks](#tipstricks)
-  - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
-  - [Unbounded ripple](#unbounded-ripple)
-  - [MDCRipple with custom functionality](#mdcripple-with-custom-functionality)
-  - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
-  - [Specifying known element dimensions](#specifying-known-element-dimensions)
-  - [The util API](#the-util-api)
-- [Caveats](#caveats)
-  - [Caveat: Edge](#caveat-edge)
-  - [Caveat: Safari 9](#caveat-safari)
-  - [Caveat: Mobile Safari](#caveat-mobile-safari)
-  - [Caveat: Theme Custom Variables](#caveat-theme-custom-variables)
-
-#### An aside regarding browser support
-
-In order to function correctly, MDC Ripple requires a _browser_ implementation of [CSS Variables](https://www.w3.org/TR/css-variables/). MDC Ripple uses custom properties to dynamically position `::before` and `::after` pseudo-elements, which allows us to not need any extra DOM for this effect.
-
-Because we rely on scoped, dynamic CSS variables, static pre-processors such as [postcss-custom-properties](https://github.com/postcss/postcss-custom-properties) will not work as an adequate polyfill ([...yet?](https://github.com/postcss/postcss-custom-properties/issues/32)).
-
-Edge and Safari 9, although they do [support CSS variables](http://caniuse.com/#feat=css-variables), do not support MDC Ripple. See the respective caveats for [Edge](#caveat-edge) and [Safari 9](#caveat-safari) for an explanation.
-
 ## Design & API Documentation
 
 <ul class="icon-list">
@@ -80,6 +48,14 @@ CSS Class | Description
 
 In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins, as well as either the basic or advanced `mdc-states` mixins must be included.
 
+```
+.my-ripple-surface {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states; /* Basic mdc-states mixin */
+}
+```
+
 These APIs use pseudo-elements for the ripple effect: `::before` for the background, and `::after` for the foreground.
 
 #### Ripple Mixins
@@ -97,26 +73,29 @@ states are applicable to the component in question.
 
 Mixin | Description
 --- | ---
-`mdc-states($color, $has-nested-focusable-element)` | Adds state and ripple styles using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
-`mdc-states-activated($color, $has-nested-focusable-element)` | Adds state and ripple styles for activated states using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
-`mdc-states-selected($color, $has-nested-focusable-element)` | Adds state and ripple styles for selected states using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+`mdc-states($color, $has-nested-focusable-element)` | Mandatory. Adds state and ripple styles in the given color
+`mdc-states-activated($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for activated states in the given color
+`mdc-states-selected($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for selected states in the given color
+
+> _NOTE_: Each of the mixins above adds state and ripple styles using the indicated color, deciding opacities based on whether the passed color is light or dark.<br>`$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
 
 #### Advanced States Mixins
 
-When using the advanced states mixins, every one of the mixins below should be included at least once to establish base
-styles for states.
+When using the advanced states mixins, every one of the mixins below should be included at least once.
 
 These mixins can also be used to emit activated or selected styles if applicable, by applying them within a selector for
 `&--activated` or `&--selected` modifier classes.
 
 Mixin | Description
 --- | ---
-`mdc-states-base-color($color)` | Sets up base state styles using the provided color
-`mdc-states-hover-opacity($opacity)` | Adds styles for hover state using the provided opacity
-`mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Adds styles for focus state using the provided opacity. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
-`mdc-states-press-opacity($opacity)` | Adds styles for press state using the provided opacity
+`mdc-states-base-color($color)` | Mandatory. Sets up base state styles using the provided color
+`mdc-states-hover-opacity($opacity)` | Mandatory. Adds styles for hover state using the provided opacity
+`mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Mandatory. Adds styles for focus state using the provided opacity
+`mdc-states-press-opacity($opacity)` | Mandatory. Adds styles for press state using the provided opacity
 
-### MDCRipple
+> _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+
+### `MDCRipple`
 
 The `MDCRipple` JavaScript component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
 components. For example, this is used for making form field labels trigger the ripples in their corresponding input elements.
@@ -146,27 +125,29 @@ Method Signature | Description
 `deactivate() => void` | Proxies to the foundation's `deactivate` method
 `layout() => void` | Proxies to the foundation's `layout` method
 
-### MDCRippleAdapter
+### `MDCRippleAdapter`
 
 | Method Signature | Description |
 | --- | --- |
-| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. When implementing this, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. |
+| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. |
 | `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
-| `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos). We use this to detect whether or not a keyboard event has activated the surface the ripple is on. This does not need to make use of `:active` (which is what we do); feel free to supply your own heuristics for it. |
-| `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component. If true, the ripple will not activate. |
+| `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos) |
+| `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component |
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
 | `removeClass(className: string) => void` | Removes a class from the ripple surface |
-| `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler that's invoked when the ripple is interacted with using type `evtType`. Essentially equivalent to `HTMLElement.prototype.addEventListener`. |
-| `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler that's invoked when the ripple is interacted with using type `evtType`. Essentially equivalent to `HTMLElement.prototype.removeEventListener`. |
-| `registerDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler that's invoked when the documentElement is interacted with using type `evtType` |
-| `deregisterDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler that's invoked when the documentElement is interacted with using type `evtType` |
-| `registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize()` event. |
-| `deregisterResizeHandler(handler: Function) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize()` event. |
-| `updateCssVariable(varName: string, value: (string or null)) => void` | Programmatically sets the css variable `varName` on the surface to the value specified. |
-| `computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface. |
-| `getWindowPageOffset() => {x: number, y: number}` | Returns the `page{X,Y}Offset` values for the window object as `x` and `y` properties of an object (respectively). |
+| `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the ripple surface |
+| `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler on the ripple surface |
+| `registerDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the documentElement |
+| `deregisterDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler on the documentElement |
+| `registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the ripple surface (or its viewport) resizes |
+| `deregisterResizeHandler(handler: Function) => void` | Unregisters a handler to be called when the ripple surface (or its viewport) resizes |
+| `updateCssVariable(varName: string, value: (string or null)) => void` | Sets the CSS property `varName` on the ripple surface to the value specified |
+| `computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface |
+| `getWindowPageOffset() => {x: number, y: number}` | Returns the `page{X,Y}Offset` values for the window object |
 
-### MDCRippleFoundation
+> _NOTE_: When implementing `browserSupportsCssVars`, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. 
+
+### `MDCRippleFoundation`
 
 Method Signature | Description
 --- | ---
