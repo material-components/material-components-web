@@ -186,6 +186,18 @@ export class HotSwapper extends InteractivityProvider {
     // Force IE 11 and Edge to bypass the cache and request a fresh copy of the CSS.
     newUri = this.bustCache_(newUri);
 
+    this.enqueueRequest_(oldUri, newUri, oldLink);
+  }
+
+  /**
+   * @param {string} oldUri
+   * @param {string} newUri
+   * @param {!Element} oldLink
+   * @private
+   */
+  enqueueRequest_(oldUri, newUri, oldLink) {
+    this.logHotSwap_('swapping', oldUri, newUri, '...');
+
     // Ensure that oldLink has a unique ID so we can remove all stale stylesheets from the DOM after newLink loads.
     // This is a more robust approach than holding a reference to oldLink and removing it directly, because a user might
     // quickly switch themes several times before the first stylesheet finishes loading (especially over a slow network)
@@ -195,32 +207,18 @@ export class HotSwapper extends InteractivityProvider {
     }
 
     const newLink = /** @type {!Element} */ (oldLink.cloneNode(false));
-
-    this.enqueuePendingRequest_(oldUri, newUri, newLink);
-
-    // IE 11 and Edge fire the `load` event twice for `<link>` elements.
-    newLink.addEventListener('load', util.debounce(() => {
-      this.dequeuePendingRequest_(oldUri, newUri, newLink);
-    }, 50));
-
-    oldLink.parentNode.insertBefore(newLink, oldLink);
-  }
-
-  /**
-   * @param {string} oldUri
-   * @param {string} newUri
-   * @param {!Element} newLink
-   * @private
-   */
-  enqueuePendingRequest_(oldUri, newUri, newLink) {
-    this.logHotSwap_('swapping', oldUri, newUri, '...');
-
     newLink.setAttribute('href', newUri);
     newLink.setAttribute(attrs.IS_LOADING, 'true');
 
-    this.toolbarProvider_.setIsLoading(true);
-    this.pendingRequests_.push(newUri);
+    // IE 11 and Edge fire the `load` event twice for `<link>` elements.
+    newLink.addEventListener('load', util.debounce(() => {
+      this.dequeueRequest_(oldUri, newUri, newLink);
+    }, 50));
 
+    oldLink.parentNode.insertBefore(newLink, oldLink);
+
+    this.pendingRequests_.push(newUri);
+    this.toolbarProvider_.setIsLoading(true);
   }
 
   /**
@@ -229,7 +227,7 @@ export class HotSwapper extends InteractivityProvider {
    * @param {!Element} newLink
    * @private
    */
-  dequeuePendingRequest_(oldUri, newUri, newLink) {
+  dequeueRequest_(oldUri, newUri, newLink) {
     this.logHotSwap_('swapped', oldUri, newUri, '!');
 
     this.pendingRequests_.splice(this.pendingRequests_.indexOf(newUri), 1);
