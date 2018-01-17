@@ -242,7 +242,7 @@ class MyComponent {
   constructor(el) {
     this.el = el;
     this.active = false;
-    this.ripple_ = new MDCRippleFoundation({
+    const foundation = new MDCRippleFoundation({
       // ...
       isSurfaceActive: () => this.active
     });
@@ -256,6 +256,7 @@ class MyComponent {
         this.active = false;
       }
     });
+    this.ripple_ = new MDCRipple(this.root_, foundation);
   }
 }
 ```
@@ -272,7 +273,7 @@ example, if you know an icon font sizes its elements to `24px` width/height, you
 following:
 
 ```js
-this.ripple_ = new MDCRippleFoundation({
+const foundation = new MDCRippleFoundation({
   // ...
   computeBoundingRect: () => {
     const {left, top} = element.getBoundingClientRect();
@@ -287,6 +288,7 @@ this.ripple_ = new MDCRippleFoundation({
     };
   }
 });
+this.ripple_ = new MDCRipple(this.root_, foundation);
 ```
 
 ### The util API
