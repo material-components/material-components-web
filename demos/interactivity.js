@@ -38,10 +38,10 @@ export class InteractivityProvider {
     this.root_ = root;
 
     /** @protected {!Document} */
-    this.document_ = this.root_.ownerDocument || this.root_;
+    this.document_ = dom.getDocument(this.root_);
 
     /** @protected {!Window} */
-    this.window_ = this.document_.defaultView || this.document_.parentWindow;
+    this.window_ = dom.getWindow(this.root_);
   }
 
   initialize() {}
@@ -166,7 +166,7 @@ export class HotSwapper extends InteractivityProvider {
 
   /** @private */
   hotSwapAllStylesheets_() {
-    dom.getAll(`link[${attrs.HOT_SWAP}]:not([${attrs.IS_LOADING}])`, this.root_).forEach((link) => {
+    this.querySelectorAll_(`link[${attrs.HOT_SWAP}]:not([${attrs.IS_LOADING}])`).forEach((link) => {
       this.hotSwapStylesheet(link);
     });
   }

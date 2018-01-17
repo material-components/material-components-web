@@ -15,7 +15,29 @@
  * limitations under the License.
  */
 
-export function getAll(query, parentNode) {
-  parentNode = parentNode || document;
-  return [].slice.call(parentNode.querySelectorAll(query));
+/**
+ * @param {string} query
+ * @param {!Document|!Element=} opt_root
+ * @return {!Array<!Element>}
+ */
+export function getAll(query, opt_root) {
+  opt_root = opt_root || document;
+  return [].slice.call(opt_root.querySelectorAll(query));
+}
+
+/**
+ * @param {!Window|!Document|!Element} root
+ * @return {!Document|undefined}
+ */
+export function getDocument(root) {
+  return root.ownerDocument || root.document || (root.documentElement ? root : undefined);
+}
+
+/**
+ * @param {!Window|!Document|!Element} root
+ * @return {!Window|undefined}
+ */
+export function getWindow(root) {
+  const doc = getDocument(root);
+  return doc.defaultView || doc.parentWindow || (root.document ? root : undefined);
 }
