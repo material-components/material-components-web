@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/ripple.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -203,17 +204,18 @@
 
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function(global) {
-        if (!mdc.ripple.util.supportsCssVariables(global)) {
+      demoReady(function() {
+        if (!mdc.ripple.util.supportsCssVariables(window)) {
           document.documentElement.classList.add('unsupported');
         }
 
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface:not([data-demo-no-js])'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
         });
-      })(this);
+      });
     </script>
   </body>
 </html>

@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/grid-list.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -717,31 +718,25 @@
           </ul>
         </div>
       </section>
-
     </main>
-    <script src="/assets/material-components-web.js"></script>
-    <script type="text/javascript">
-      function initGridList() {
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
         var nodes = document.querySelectorAll('.mdc-grid-list');
         for (var i = 0, node; node = nodes[i]; i++) {
           mdc.gridList.MDCGridList.attachTo(node);
         }
-      }
 
-      var demoWrapper = document.querySelector('.examples');
-      document.getElementById('toggle-rtl').addEventListener('change', function () {
-        if (this.checked) {
-          demoWrapper.setAttribute('dir', 'rtl');
-        } else {
-          demoWrapper.removeAttribute('dir');
-        }
+        var demoWrapper = document.querySelector('.examples');
+        document.getElementById('toggle-rtl').addEventListener('change', function () {
+          if (this.checked) {
+            demoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            demoWrapper.removeAttribute('dir');
+          }
+        });
       });
-
-      // Hack for webpack async loading: Delay initialization until styles have loaded
-      // This is not needed when using pre-built css and js
-      setTimeout(function() {
-        initGridList();
-      }, 100);
     </script>
   </body>
 </html>
