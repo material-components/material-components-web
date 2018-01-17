@@ -210,6 +210,11 @@ Mixin | Description
 `mdc-text-field-focused-bottom-line-color($color)` | Customizes the bottom-line ripple color when the text-field is focused.  
 `mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
 `mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
+`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field. 
+`mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
+`mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
+`mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
+`mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
 
 ### `MDCTextField`
 
