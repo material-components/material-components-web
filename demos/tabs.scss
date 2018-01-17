@@ -46,7 +46,7 @@
   }
 }
 
-.custom-ink-color-tab {
+.custom-ink-color-tab{
   .mdc-tab:not(.mdc-tab--active) {
     @include mdc-tab-ink-color($material-color-deep-purple-200);
   }
@@ -63,28 +63,6 @@
   @include mdc-tab-bar-indicator-ink-color(primary);
 }
 
-.custom-indicator-tab-bar-in-toolbar {
+.custom-toolbar-indicator .custom-indicator-toolbar-tab-bar {
   @include mdc-tab-bar-indicator-ink-color(secondary);
-
-  .mdc-tab:not(.mdc-tab--active) {
-    @include mdc-tab-ink-color(rgba(mdc-theme-prop-value(text-primary-on-primary), 0.54));
-  }
-
-  .mdc-tab--active,
-  .mdc-tab:hover {
-    @include mdc-tab-ink-color(text-primary-on-primary);
-  }
-}
-
-.custom-tab-bar-in-toolbar {
-  @include mdc-tab-bar-indicator-ink-color(text-primary-on-primary);
-
-  .mdc-tab:not(.mdc-tab--active) {
-    @include mdc-tab-ink-color(rgba(mdc-theme-prop-value(text-primary-on-primary), 0.54));
-  }
-
-  .mdc-tab--active,
-  .mdc-tab:hover {
-    @include mdc-tab-ink-color(text-primary-on-primary);
-  }
 }

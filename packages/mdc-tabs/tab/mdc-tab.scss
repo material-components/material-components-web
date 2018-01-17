@@ -126,6 +126,10 @@ $mdc-tab-with-icon-and-text-height: 72px;
     @include mdc-theme-dark(".mdc-tab-bar", true) {
       @include mdc-theme-prop(background-color, text-primary-on-dark);
     }
+
+    .mdc-toolbar & {
+      @include mdc-theme-prop(background-color, text-primary-on-primary);
+    }
   }
 
   &--active,
@@ -160,6 +164,10 @@ $mdc-tab-with-icon-and-text-height: 72px;
 
   @include mdc-theme-dark(".mdc-tab-bar") {
     @include mdc-states(text-primary-on-dark);
+  }
+
+  .mdc-toolbar & {
+    @include mdc-states(text-primary-on-primary);
   }
 
   // stylelint-disable plugin/selector-bem-pattern
