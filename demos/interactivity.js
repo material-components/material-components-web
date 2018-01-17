@@ -34,7 +34,7 @@ const ids = {
 /** @abstract */
 export class InteractivityProvider {
   constructor(root) {
-    /** @protected {!Element|!Document} */
+    /** @protected {!Document|!Element} */
     this.root_ = root;
 
     /** @protected {!Document} */
@@ -48,7 +48,7 @@ export class InteractivityProvider {
 
   /**
    * @param {string} id
-   * @param {!Element|!Document=} opt_root
+   * @param {!Document|!Element=} opt_root
    * @return {?Element}
    * @protected
    */
@@ -59,7 +59,7 @@ export class InteractivityProvider {
 
   /**
    * @param {string} selector
-   * @param {!Element|!Document=} opt_root
+   * @param {!Document|!Element=} opt_root
    * @return {!Array<!Element>}
    * @protected
    */
@@ -70,7 +70,7 @@ export class InteractivityProvider {
 }
 
 export class ToolbarProvider extends InteractivityProvider {
-  /** @param {!Element|!Document} root */
+  /** @param {!Document|!Element} root */
   static attachTo(root) {
     const instance = new ToolbarProvider(root);
     instance.initialize();
@@ -99,7 +99,7 @@ export class ToolbarProvider extends InteractivityProvider {
 
 export class HotSwapper extends InteractivityProvider {
   /**
-   * @param {!Element|!Document} root
+   * @param {!Document|!Element} root
    * @param {!ToolbarProvider} toolbarProvider
    */
   static attachTo(root, toolbarProvider) {
@@ -307,7 +307,7 @@ export class HotSwapper extends InteractivityProvider {
   }
 }
 
-/** @param {!Element|!Document} root */
+/** @param {!Document|!Element} root */
 export function init(root) {
   HotSwapper.getInstance(root);
 }

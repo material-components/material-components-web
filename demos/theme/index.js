@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {InteractivityProvider, ToolbarProvider, HotSwapper} from '../interactivity.js';
+import {HotSwapper, InteractivityProvider, ToolbarProvider} from '../interactivity.js';
 import * as dom from '../dom.js';
 import * as pony from '../ponyfill.js';
 
@@ -43,7 +43,7 @@ const events = {
 };
 
 class Permalinker extends InteractivityProvider {
-  /** @param {!Element|!Document} root */
+  /** @param {!Document|!Element} root */
   static attachTo(root) {
     const instance = new Permalinker(root);
     instance.initialize();
@@ -100,7 +100,7 @@ class Permalinker extends InteractivityProvider {
 
 class ThemePicker extends InteractivityProvider {
   /**
-   * @param {!Element|!Document} root
+   * @param {!Document|!Element} root
    * @param {!HotSwapper} hotSwapper
    * @param {!ToolbarProvider} toolbarProvider
    */
