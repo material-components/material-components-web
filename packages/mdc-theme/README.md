@@ -2,7 +2,7 @@
 title: "Theme"
 layout: detail
 section: components
-excerpt: "Color theming for MDC-Web components."
+excerpt: "Color theming for MDC Web components."
 iconId: theme
 path: /catalog/theme/
 -->
@@ -61,7 +61,7 @@ npm install --save @material/theme
 
 MDC Theme makes it easy to develop your brand colors. You override the default theme color through Sass variables or CSS custom properties. CSS custom properties enables runtime theming.
 
-> **A note about Sass variables**, you need to define the three theme color variables before importing mdc-theme or any MDC-Web components that rely on it, like following:
+> **A note about Sass variables**, you need to define the three theme color variables before importing mdc-theme or any MDC Web components that rely on it, like following:
 
 ```scss
 $mdc-theme-primary: #9c27b0; // Purple 500
@@ -111,7 +111,7 @@ CSS Custom property | Description
 
 ### CSS Classes
 
-MDC-Web provides SASS mixins, such as `mdc-button-filled-accessible`, to facilitate customization of some components. For more information, consult the documentation for each component.
+MDC Web provides SASS mixins, such as `mdc-button-filled-accessible`, to facilitate customization of some components. For more information, consult the documentation for each component.
 
 If you want to modify an element, which is not a Material Design component, you can apply the following modifier CSS classes.
 

@@ -1,4 +1,4 @@
-# Material Components Web (MDC-Web)
+# Material Components Web (MDC Web)
 
 This package contains the master library for Material Components Web. It simply wraps all of its
 sibling packages up into one comprehensive library for convenience.
@@ -32,7 +32,7 @@ const checkbox = new checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'
 
 ### Auto-initialization of components
 
-The `material-components-web` package automatically registers all MDC-Web components with
+The `material-components-web` package automatically registers all MDC Web components with
 [mdc-auto-init](../mdc-auto-init), making it dead simple to create and initialize components
 with zero configuration or manual work.
 
