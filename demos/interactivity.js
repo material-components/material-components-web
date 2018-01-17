@@ -22,8 +22,9 @@ const classes = {
   TOOLBAR_PROGRESS_BAR_ACTIVE: 'demo-toolbar-progress-bar--active',
 };
 
-const attributes = {
+const attrs = {
   HOT_SWAP: 'data-hot',
+  IS_LOADING: 'data-is-loading',
 };
 
 const ids = {
@@ -165,7 +166,7 @@ export class HotSwapper extends InteractivityProvider {
 
   /** @private */
   hotSwapAllStylesheets_() {
-    dom.getAll(`link[${attributes.HOT_SWAP}]:not([data-is-loading])`, this.document_.head).forEach((link) => {
+    dom.getAll(`link[${attrs.HOT_SWAP}]:not([${attrs.IS_LOADING}])`, this.document_.head).forEach((link) => {
       this.hotSwapStylesheet_(link);
     });
   }
@@ -186,23 +187,21 @@ export class HotSwapper extends InteractivityProvider {
     // Force IE 11 and Edge to bypass the cache and request a fresh copy of the CSS.
     newUri = this.bustCache_(newUri);
 
-    this.enqueuePendingRequest_(oldUri, newUri);
-
     // Ensure that oldLink has a unique ID so we can remove all stale stylesheets from the DOM after newLink loads.
     // This is a more robust approach than holding a reference to oldLink and removing it directly, because a user might
     // quickly switch themes several times before the first stylesheet finishes loading (especially over a slow network)
     // and each new stylesheet would try to remove the first one, leaving multiple conflicting stylesheets in the DOM.
-    const newId = oldLink.id || `stylesheet-${Math.floor(Math.random() * Date.now())}`;
-    oldLink.id = newId;
+    if (!oldLink.id) {
+      oldLink.id = `stylesheet-${Math.floor(Math.random() * Date.now())}`;
+    }
 
-    const newLink = oldLink.cloneNode(false);
-    newLink.setAttribute('href', newUri);
-    newLink.setAttribute('data-is-loading', 'true');
+    const newLink = /** @type {!Element} */ (oldLink.cloneNode(false));
+
+    this.enqueuePendingRequest_(oldUri, newUri, newLink);
 
     // IE 11 and Edge fire the `load` event twice for `<link>` elements.
     newLink.addEventListener('load', util.debounce(() => {
-      this.dequeuePendingRequest_(oldUri, newUri, newId);
-      newLink.removeAttribute('data-is-loading');
+      this.dequeuePendingRequest_(oldUri, newUri, newLink);
     }, 50));
 
     oldLink.parentNode.insertBefore(newLink, oldLink);
@@ -211,38 +210,50 @@ export class HotSwapper extends InteractivityProvider {
   /**
    * @param {string} oldUri
    * @param {string} newUri
+   * @param {!Element} newLink
    * @private
    */
-  enqueuePendingRequest_(oldUri, newUri) {
+  enqueuePendingRequest_(oldUri, newUri, newLink) {
     this.logHotSwap_('swapping', oldUri, newUri, '...');
+
+    newLink.setAttribute('href', newUri);
+    newLink.setAttribute(attrs.IS_LOADING, 'true');
+
     this.toolbarProvider_.setIsLoading(true);
     this.pendingRequests_.push(newUri);
+
   }
 
   /**
    * @param {string} oldUri
    * @param {string} newUri
-   * @param {string} newId
+   * @param {!Element} newLink
    * @private
    */
-  dequeuePendingRequest_(oldUri, newUri, newId) {
+  dequeuePendingRequest_(oldUri, newUri, newLink) {
     this.logHotSwap_('swapped', oldUri, newUri, '!');
+
     this.pendingRequests_.splice(this.pendingRequests_.indexOf(newUri), 1);
     if (this.pendingRequests_.length === 0) {
       this.toolbarProvider_.setIsLoading(false);
     }
-    setTimeout(() => this.purgeOldStylesheets_(newId));
+
+    setTimeout(() => {
+      this.purgeOldStylesheets_(newLink);
+
+      // Remove the 'loading' attribute *after* purging old stylesheets to avoid purging this one.
+      newLink.removeAttribute(attrs.IS_LOADING);
+    });
   }
 
   /**
-   * @param {string} newId
+   * @param {!Element} newLink
    * @private
    */
-  purgeOldStylesheets_(newId) {
+  purgeOldStylesheets_(newLink) {
     let oldLinks;
 
-    // New links are inserted before old links in the DOM, so we skip the first matching ID because it is the newest.
-    const getOldLinks = () => this.querySelectorAll_(`link[id="${newId}"]:not([data-is-loading])`).slice(1);
+    const getOldLinks = () => this.querySelectorAll_(`link[id="${newLink.id}"]:not([${attrs.IS_LOADING}])`);
 
     while ((oldLinks = getOldLinks()).length > 0) {
       oldLinks.forEach((oldLink) => {
