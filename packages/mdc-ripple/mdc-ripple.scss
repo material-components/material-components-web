@@ -39,7 +39,7 @@
     @include mdc-states(primary);
   }
 
-  &--secondary {
+  &--accent {
     @include mdc-states(secondary);
   }
 }

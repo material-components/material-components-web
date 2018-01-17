@@ -74,7 +74,7 @@ CSS Class | Description
 --- | ---
 `mdc-ripple-surface` | Adds a ripple to the element
 `mdc-ripple-surface--primary` | Sets the ripple color to the theme primary color
-`mdc-ripple-surface--secondary` | Sets the ripple color to the theme secondary color
+`mdc-ripple-surface--accent` | Sets the ripple color to the theme secondary color
 
 ### Sass Mixins
 
