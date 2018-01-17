@@ -922,8 +922,8 @@
          * Drawer
          */
 
-        const drawerEl = document.querySelector('.mdc-drawer--temporary');
-        const drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+        var drawerEl = document.querySelector('.mdc-drawer--temporary');
+        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
         [].slice.call(document.querySelectorAll('.demo-drawer-toggle')).forEach(function(toggleElem) {
           toggleElem.addEventListener('click', function() {
@@ -965,14 +965,6 @@
           if (progressEl.dataset.buffer) {
             linearProgress.buffer = 0.75;
           }
-        });
-
-        /*
-         * Ripple
-         */
-
-        [].slice.call(document.querySelectorAll('.mdc-ripple-surface')).forEach(function(surface) {
-          mdc.ripple.MDCRipple.attachTo(surface);
         });
 
         /*
