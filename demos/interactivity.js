@@ -99,9 +99,7 @@ export class ToolbarProvider extends InteractivityProvider {
 }
 
 export class RtlToggler extends InteractivityProvider {
-  /**
-   * @param {!Element|!Document} root
-   */
+  /** @param {!Element|!Document} root */
   static attachTo(root) {
     const instance = new RtlToggler(root);
     instance.initialize();
@@ -301,7 +299,7 @@ export class HotSwapper extends InteractivityProvider {
   /**
    * Adds a timestamp to the given URI to force IE 11 and Edge to bypass the cache and request a fresh copy of the CSS.
    * @param oldUri
-   * @returns {string}
+   * @return {string}
    * @private
    */
   bustCache_(oldUri) {
@@ -314,6 +312,13 @@ export class HotSwapper extends InteractivityProvider {
     return `${newUri}${separator}timestamp=${Date.now()}`;
   }
 
+  /**
+   * @param {string} verb
+   * @param {string} oldUri
+   * @param {string} newUri
+   * @param {string} trailingPunctuation
+   * @private
+   */
   logHotSwap_(verb, oldUri, newUri, trailingPunctuation) {
     const swapMessage = `"${oldUri}"${newUri ? ` with "${newUri}"` : ''}`;
     console.log(`Hot ${verb} stylesheet ${swapMessage}${trailingPunctuation}`);
