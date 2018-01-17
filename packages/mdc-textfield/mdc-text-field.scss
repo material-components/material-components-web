@@ -38,6 +38,18 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
+  @include mdc-text-field-bottom-line-color($mdc-text-field-underline-on-light-idle);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-on-light);
+  @include mdc-text-field-focused-bottom-line-color(primary);
+  @include mdc-text-field-ink-color(text-primary-on-light);
+  @include mdc-text-field-label-color($mdc-text-field-light-label);
+  @include mdc-text-field-helper-text-color(text-hint-on-light);
+
+  // Outline specific colors
+  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
+  @include mdc-text-field-focused-outline-color(primary);
+
   display: inline-block;
   position: relative;
   margin-bottom: 8px;
@@ -45,7 +57,6 @@
 }
 
 .mdc-text-field__input {
-  @include mdc-theme-prop(color, text-primary-on-light);
   @include mdc-typography-base;
   // We use only a subset of the MDC typography values here as changing things such as line-height
   // affects how the labels are transformed.
@@ -60,29 +71,19 @@
   padding: 0 0 8px;
   transition: mdc-text-field-transition(opacity);
   border: none;
-  border-bottom: 1px solid $mdc-text-field-underline-on-light-idle;
+  border-bottom: 1px solid;
   border-radius: 0;
   background: none;
   font-size: inherit;
   appearance: none;
 
   &::placeholder {
-    @include mdc-theme-prop(color, text-hint-on-light);
-
     transition: mdc-text-field-transition(color);
     opacity: 1;
   }
 
-  &:hover {
-    border-color: $mdc-text-field-underline-on-light;
-  }
-
   &:focus {
     outline: none;
-
-    &::placeholder {
-      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
-    }
   }
 
   // Remove red outline on firefox
@@ -91,12 +92,10 @@
   }
 
   @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
     border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
 
     &:hover {
-      border-bottom: 1px solid $mdc-text-field-underline-on-dark;
+      border-bottom: 1px solid;
     }
 
     &::placeholder {
@@ -134,7 +133,7 @@
     z-index: 1;
 
     &:hover ~ .mdc-text-field__idle-outline {
-      border: 1px solid $mdc-text-field-outlined-hover-border;
+      border: 1px solid;
     }
   }
 
@@ -158,7 +157,7 @@
     z-index: 2;
 
     &:hover ~ .mdc-text-field__idle-outline {
-      border: 1px solid $mdc-text-field-outlined-hover-border;
+      border: 1px solid;
     }
   }
 
@@ -173,20 +172,7 @@
   }
 
   &.mdc-text-field--focused .mdc-text-field__outline-path {
-    @include mdc-theme-prop(stroke, primary);
-
     stroke-width: 2px;
-  }
-
-  &:not(.mdc-text-field--invalid) {
-    &.mdc-text-field--focused .mdc-text-field__label {
-      @include mdc-theme-prop(color, primary);
-    }
-
-    // stylelint-disable-next-line selector-max-specificity
-    .mdc-text-field__input:hover ~ .mdc-text-field__outline .mdc-text-field__outline-path {
-      stroke: $mdc-text-field-outlined-hover-border;
-    }
   }
 
   &.mdc-text-field--disabled {
@@ -446,6 +432,7 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
+  width: fit-content;
   height: initial;
   transition: none;
   border: 1px solid $mdc-textarea-border-on-light;
@@ -457,6 +444,7 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input {
+    margin: 0;
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
     border: 1px solid transparent;
@@ -491,6 +479,7 @@
     bottom: auto;
     padding: 8px 16px;
     background-color: $mdc-textarea-light-background;
+    line-height: 1.15;
 
     @include mdc-theme-dark(".mdc-text-field") {
       background-color: $mdc-textarea-dark-background;
@@ -543,6 +532,10 @@
       // Use !important here to override all other border treatments
       border: none !important;
     }
+  }
+
+  .mdc-text-field__input {
+    resize: vertical;
   }
 
   @include mdc-theme-dark {

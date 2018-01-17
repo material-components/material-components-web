@@ -20,8 +20,8 @@
     <title>Drawer Below Toolbar - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <script src="/assets/drawer/drawer.css.js"></script>
-    <script src="/assets/radio.css.js"></script>
+    <link rel="stylesheet" href="/assets/drawer/drawer.css">
+    <link rel="stylesheet" href="/assets/radio.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -175,8 +175,8 @@
       var activatedClass = 'mdc-list-item--selected';
       document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
         var el = event.target;
-        while (!el.classList.contains('mdc-list-item') && el) {
-          el = el.parentNode;
+        while (el && !el.classList.contains('mdc-list-item')) {
+          el = el.parentElement;
         }
         if (el) {
           var activatedItem = document.querySelector('.' + activatedClass);

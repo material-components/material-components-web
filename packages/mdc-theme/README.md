@@ -11,7 +11,7 @@ path: /catalog/theme/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/theme.html">
+     href="https://material-components-web.appspot.com/theme/index.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/themes.png" width="241" alt="Themes screenshot">
   </a>
 </div>-->
@@ -45,7 +45,7 @@ Some components can change their appearance when in a Dark Theme context, aka pl
     <a href="https://material.io/guidelines/style/color.html">Material Design guidelines: Color</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/theme.html">Demo</a>
+    <a href="https://material-components-web.appspot.com/theme/index.html">Demo</a>
   </li>
 </ul>
 

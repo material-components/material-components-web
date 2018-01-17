@@ -11,7 +11,7 @@ path: /catalog/input-controls/text-field/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/text-field.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/text-fields.png" width="240" alt="Text fields screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
   </a>
 </div>-->
 
@@ -194,10 +194,27 @@ CSS Class | Description
 
 ### Sass Mixins
 
+To customize the colors of any part of the text-field, use the following mixins. We recommend you apply 
+these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--focused)` to select your unfocused text fields, 
+and `.foo-tab.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields, 
+apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--invalid`.
+
+> _NOTE_: the `mdc-text-field-focused-bottom-line-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`). 
+
 Mixin | Description
 --- | ---
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
+`mdc-text-field-bottom-line-color($color)` | Customizes the color of the default bottom line of the text-field.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover color of the bottom line of the text-field. 
+`mdc-text-field-focused-bottom-line-color($color)` | Customizes the bottom-line ripple color when the text-field is focused.  
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
+`mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
+`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field. 
+`mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
+`mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
+`mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
+`mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
 
 ### `MDCTextField`
 
@@ -234,7 +251,6 @@ Method Signature | Description
 `registerBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the bottom line element for a given event
 `deregisterBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the bottom line element for a given event
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
-`getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`
 `isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
 

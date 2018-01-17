@@ -71,100 +71,71 @@
   @include mdc-typography-overflow-ellipsis;
 
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: flex-start;
   height: 48px;
   padding: 0 $mdc-list-side-padding;
-
-  // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
-  // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
-  &--selected,
-  &--activated {
-    @include mdc-list-item-primary-text-ink-color(primary);
-    @include mdc-list-item-graphic-ink-color(primary);
-  }
-
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  &__graphic {
-    @include mdc-list-graphic-size_(24px);
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__meta {
-    @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
-  }
-
-  &__text {
-    display: inline-flex;
-    flex-direction: column;
-  }
-
-  &__secondary-text {
-    @include mdc-typography(body1);
-
-    // Match the font size to the primary text when dense
-    // stylelint-disable plugin/selector-bem-pattern
-    .mdc-list--dense & {
-      font-size: inherit;
-    }
-    // stylelint-enable plugin/selector-bem-pattern
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list--dense & {
-    height: 40px;
-
-    &__graphic {
-      @include mdc-list-graphic-size_(20px);
-    }
-  }
-
-  .mdc-list--avatar-list & {
-    height: 56px;
-
-    &__graphic {
-      @include mdc-list-graphic-size_(40px);
-
-      border-radius: 50%;
-    }
-  }
-
-  .mdc-list--avatar-list.mdc-list--dense .mdc-list__item {
-    height: 48px;
-
-    &__graphic {
-      @include mdc-list-graphic-size_(36px);
-    }
-  }
-
-  .mdc-list--two-line & {
-    height: 72px;
-  }
-
-  .mdc-list--two-line.mdc-list--dense & {
-    height: 60px;
-  }
-}
-// postcss-bem-linter: end
-
-// Override anchor tag styles for the use-case of a list being used for navigation
-// stylelint-disable selector-max-type,selector-no-qualifying-type
-a.mdc-list-item {
-  color: inherit;
-  text-decoration: none;
-}
-// stylelint-enable selector-max-type,selector-no-qualifying-type
-
-.mdc-list-item {
-  position: relative;
   overflow: hidden;
 
   &:focus {
     outline: none;
   }
+}
+
+// "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
+// "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
+.mdc-list-item--selected,
+.mdc-list-item--activated {
+  @include mdc-list-item-primary-text-ink-color(primary);
+  @include mdc-list-item-graphic-ink-color(primary);
+}
+
+.mdc-list-item__graphic {
+  @include mdc-list-graphic-size_(24px);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mdc-list-item__meta {
+  @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
+}
+
+.mdc-list-item__text {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.mdc-list-item__secondary-text {
+  @include mdc-typography(body1);
+}
+
+// Match the font size to the primary text when dense
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-list--dense .mdc-list-item__secondary-text {
+  font-size: inherit;
+}
+// stylelint-enable plugin/selector-bem-pattern
+
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-list--dense .mdc-list-item {
+  height: 40px;
+}
+
+.mdc-list--dense .mdc-list-item__graphic {
+  @include mdc-list-graphic-size_(20px);
+}
+
+.mdc-list--avatar-list .mdc-list-item {
+  height: 56px;
+}
+
+.mdc-list--avatar-list .mdc-list-item__graphic {
+  @include mdc-list-graphic-size_(40px);
+
+  border-radius: 50%;
 }
 
 // List items should support states by default, but it should be possible to opt out.
@@ -182,6 +153,31 @@ a.mdc-list-item {
     @include mdc-states-selected(primary);
   }
 }
+
+.mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
+  height: 48px;
+}
+
+.mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
+  @include mdc-list-graphic-size_(36px);
+}
+
+.mdc-list--two-line .mdc-list-item {
+  height: 72px;
+}
+
+.mdc-list--two-line.mdc-list--dense .mdc-list-item {
+  height: 60px;
+}
+// postcss-bem-linter: end
+
+// Override anchor tag styles for the use-case of a list being used for navigation
+// stylelint-disable selector-max-type,selector-no-qualifying-type
+a.mdc-list-item {
+  color: inherit;
+  text-decoration: none;
+}
+// stylelint-enable selector-max-type,selector-no-qualifying-type
 
 // postcss-bem-linter: define list-divider
 
@@ -221,21 +217,21 @@ a.mdc-list-item {
     @include mdc-list-group-subheader-ink-color(text-primary-on-dark);
   }
 
-  &__subheader {
-    $mdc-list-subheader-virtual-height: 3rem;
-    $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body2), line-height);
-    $mdc-list-subheader-margin:
-      ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
-
-    @include mdc-typography(body2);
-
-    margin: $mdc-list-subheader-margin $mdc-list-side-padding;
-  }
-
   // Cancel top/bottom padding on individual lists within group
   .mdc-list {
     padding: 0;
   }
+}
+
+.mdc-list-group__subheader {
+  $mdc-list-subheader-virtual-height: 3rem;
+  $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body2), line-height);
+  $mdc-list-subheader-margin:
+    ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
+
+  @include mdc-typography(body2);
+
+  margin: $mdc-list-subheader-margin $mdc-list-side-padding;
 }
 
 @at-root {
