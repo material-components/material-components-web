@@ -75,8 +75,8 @@ These APIs use pseudo-elements for the ripple effect: `::before` for the backgro
 
 Mixin | Description
 --- | ---
-`mdc-ripple-surface` | Adds base styles for a ripple surface
-`mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
+`mdc-ripple-surface` | Mandatory. Adds base styles for a ripple surface
+`mdc-ripple-radius($radius)` | Mandatory. Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
 
 #### Basic States Mixins
 
@@ -86,13 +86,13 @@ Mixin | Description
 `mdc-states-activated($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for activated states in the given color
 `mdc-states-selected($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for selected states in the given color
 
-> _NOTE_: Each of the mixins above adds ripple styles using the indicated color, applying opacities based on whether the passed color is light or dark. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root element.
+> _NOTE_: Each of the mixins above adds ripple styles using the indicated color, deciding opacity values based on whether the passed color is light or dark. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
 #### Advanced States Mixins
 
-When using the advanced states mixins, every one of the mixins below should be included at least once.
+When using the advanced states mixins instead of the basic states mixins, every one of the mixins below should be included at least once.
 
-These mixins can also be used to emit activated or selected styles if applicable, by applying them within a selector for
+These mixins can also be used to emit activated or selected styles, by applying them within a selector for
 `&--activated` or `&--selected` modifier classes.
 
 Mixin | Description
@@ -102,7 +102,7 @@ Mixin | Description
 `mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Mandatory. Adds styles for focus state using the provided opacity
 `mdc-states-press-opacity($opacity)` | Mandatory. Adds styles for press state using the provided opacity
 
-> _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) under the root node.
+> _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
 ### `MDCRipple`
 
@@ -169,7 +169,7 @@ Method Signature | Description
 
 ### Using a sentinel element for a ripple
 
-Usually, you'll want to leverage `::before` and `::after` pseudo-elements when integrating the ripple into MDC Web components. However if you can't use pseudo-elements, create a sentinel element inside your root element. The sentinel element covers the root element's surface.
+Usually, you'll want to leverage `::before` and `::after` pseudo-elements when integrating the ripple into MDC Web components. If you can't use pseudo-elements, create a sentinel element inside your root element. The sentinel element covers the root element's surface.
 
 ```html
 <div class="my-component">
