@@ -105,7 +105,7 @@ ancestor element with attribute `dir="rtl"`.
 
 #### Dark Mode Support
 
-Like other MDC-Web components, tabs support dark mode either when an
+Like other MDC Web components, tabs support dark mode either when an
 `mdc-tab-bar--theme-dark` class is attached to the root element, or the element has
 an ancestor with class `mdc-theme--dark`.
 

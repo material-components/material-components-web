@@ -36,7 +36,7 @@ Get up and running with Material Components for web
 
 2.  {: .step-list-item } ### Include the stylesheet
     
-    Include the MDC-Web stylesheet in the head of your file
+    Include the MDC Web stylesheet in the head of your file
     
     ```html
     <html>
@@ -63,7 +63,7 @@ Get up and running with Material Components for web
 
 4.  {: .step-list-item } ### Add scripts and instantiate
 
-    Add the MDC-Web scripts and call MDC Auto Init. 
+    Add the MDC Web scripts and call MDC Auto Init. 
 
     ```html
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>

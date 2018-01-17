@@ -18,7 +18,7 @@ Duration: 6:00
 
 Let’s add a [toolbar](https://material.io/guidelines/components/toolbars.html) to better convey the branding and ensure the user always knows where they are.
 
-It is easy to implement the toolbar using MDC-Web’s [mdc-toolbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-toolbar) component. Use a [fixed toolbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-toolbar#fixed-toolbars), because it has elevation and floats above the main content.
+It is easy to implement the toolbar using MDC Web’s [mdc-toolbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-toolbar) component. Use a [fixed toolbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-toolbar#fixed-toolbars), because it has elevation and floats above the main content.
 
 ## Add the toolbar in index.html
 
@@ -30,7 +30,7 @@ In `index.html`, replace the whole file with the following:
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Shrine (MDC-Web Example App)</title>
+  <title>Shrine (MDC Web Example App)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" sizes="192x192" href="https://material.io/static/images/simple-lp/favicons/components-192x192.png">
   <link rel="shortcut icon" href="https://material.io/static/images/simple-lp/favicons/components-72x72.png">

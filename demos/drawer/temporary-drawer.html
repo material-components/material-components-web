@@ -149,8 +149,8 @@
         var activatedClass = 'mdc-list-item--selected';
         document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
           var el = event.target;
-          while (!el.classList.contains('mdc-list-item') && el) {
-            el = el.parentNode;
+          while (el && !el.classList.contains('mdc-list-item')) {
+            el = el.parentElement;
           }
           if (el) {
             var activatedItem = document.querySelector('.' + activatedClass);

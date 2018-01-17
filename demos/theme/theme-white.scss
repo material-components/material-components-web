@@ -14,30 +14,10 @@
 // limitations under the License.
 //
 
-@import "../functions";
-@import "@material/theme/mixins";
+@import "../../packages/mdc-theme/color-palette";
 
-// postcss-bem-linter: define text-field-helper-text
+// TODO: Use theme mixin(s) instead
+$mdc-theme-primary: #fff;
+$mdc-theme-secondary: $material-color-orange-500;
 
-.mdc-text-field-helper-text {
-  margin: 0;
-  transition: mdc-text-field-transition(opacity);
-  opacity: 0;
-  font-size: .75rem;
-  will-change: opacity;
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field + & {
-    margin-bottom: 8px;
-  }
-
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
-.mdc-text-field-helper-text--persistent {
-  transition: none;
-  opacity: 1;
-  will-change: initial;
-}
-
-// postcss-bem-linter: end
+@import "./theme-shared";
