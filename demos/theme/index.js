@@ -172,7 +172,7 @@ class ThemePicker extends InteractivityProvider {
   swapTheme_(safeNewTheme) {
     const oldLink = this.getElementById_(ids.THEME_STYLESHEET);
     const newUri = `/assets/theme/theme-${unwrapSafeDemoTheme(safeNewTheme)}.css`;
-    this.hotSwapper_.hotSwapStylesheet_(oldLink, newUri);
+    this.hotSwapper_.hotSwapStylesheet(oldLink, newUri);
     this.selectThemeInMenu_(safeNewTheme);
   }
 

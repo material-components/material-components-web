@@ -166,17 +166,16 @@ export class HotSwapper extends InteractivityProvider {
 
   /** @private */
   hotSwapAllStylesheets_() {
-    dom.getAll(`link[${attrs.HOT_SWAP}]:not([${attrs.IS_LOADING}])`, this.document_.head).forEach((link) => {
-      this.hotSwapStylesheet_(link);
+    dom.getAll(`link[${attrs.HOT_SWAP}]:not([${attrs.IS_LOADING}])`, this.root_).forEach((link) => {
+      this.hotSwapStylesheet(link);
     });
   }
 
   /**
    * @param {!Element} oldLink
    * @param {string|undefined=} newUri
-   * @protected
    */
-  hotSwapStylesheet_(oldLink, newUri) {
+  hotSwapStylesheet(oldLink, newUri) {
     const oldUri = oldLink.getAttribute('href');
 
     // Reload existing stylesheet
@@ -295,45 +294,21 @@ export class HotSwapper extends InteractivityProvider {
     console.log(`Hot ${verb} stylesheet ${swapMessage}${trailingPunctuation}`);
   }
 
+  /**
+   * @param {!Document|!Element} root
+   * @return {!HotSwapper}
+   */
   static getInstance(root) {
-    if (!HotSwapper.singletonMap_) {
-      /** @private {?SlowObjectKeyMap} */
-      HotSwapper.singletonMap_ = new SlowObjectKeyMap();
+    if (!root.demoHotSwapperInstance_) {
+      /** @type {?SlowObjectKeyMap} @private */
+      root.demoHotSwapperInstance_ = new util.SlowObjectKeyMap();
     }
-    let instance = HotSwapper.singletonMap_.get(root);
+    let instance = root.demoHotSwapperInstance_.get(root);
     if (!instance) {
       instance = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
-      HotSwapper.singletonMap_.set(root, instance);
+      root.demoHotSwapperInstance_.set(root, instance);
     }
     return instance;
-  }
-}
-
-class SlowObjectKeyMap {
-  constructor() {
-    this.entries_ = [];
-  }
-
-  get(key) {
-    const entries = this.getEntriesWithKey_(key);
-    return entries[0];
-  }
-
-  set(key, value) {
-    const entry = this.get(key);
-    if (entry) {
-      entry.value = value;
-    } else {
-      this.entries_.push({key, value});
-    }
-  }
-
-  contains(key) {
-    return this.getEntriesWithKey_(key).length > 0;
-  }
-
-  getEntriesWithKey_(key) {
-    return this.entries_.filter((entry) => entry.key === key);
   }
 }
 
