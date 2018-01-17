@@ -182,8 +182,8 @@
           <label for="outlined-rtl">RTL</label>
         </div>
         <div>
-          <input id="outlined-dark-theme" type="checkbox">
-          <label for="outlined-dark-theme">Dark Theme</label>
+          <input id="outlined-custom-colors" type="checkbox">
+          <label for="outlined-custom-colors">Alternate Colors</label>
         </div>
         <div>
           <input id="outlined-dense" type="checkbox">
@@ -205,8 +205,9 @@
               }
               tf.layout();
             });
-            document.getElementById('outlined-dark-theme').addEventListener('change', function(evt) {
-              wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+            document.getElementById('outlined-custom-colors').addEventListener('change', function(evt) {
+              tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
+              tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
             });
             document.getElementById('outlined-dense').addEventListener('change', function(evt) {
               tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
@@ -277,7 +278,7 @@
         </script>
       </section>
 
-      <section class="example">
+      <section class="example" id="demo-tf-icon-container">
         <h2>Text Field - Leading/Trailing icons</h2>
         <div id="demo-tf-box-leading-wrapper">
           <div id="tf-box-leading-example"
@@ -344,6 +345,10 @@
         <div>
           <input id="unclickable-leading-trailing" type="checkbox">
           <label for="unclickable-leading-trailing">Unclickable icons</label>
+        </div>
+        <div>
+          <input id="required-leading-trailing" type="checkbox">
+          <label for="required-leading-trailing">Required</label>
         </div>
       </section>
 
@@ -475,6 +480,8 @@
       });
 
       demoReady(function() {
+        var tfIconContainer = document.getElementById('demo-tf-icon-container');
+
         var tfBoxLeadingEl = document.getElementById('tf-box-leading-example');
         var tfBoxLeading = new mdc.textField.MDCTextField(tfBoxLeadingEl);
         var wrapperBoxLeading = document.getElementById('demo-tf-box-leading-wrapper');
@@ -540,6 +547,13 @@
           [].slice.call(tfIcons).forEach(function (icon) {
             icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
           });
+        });
+
+        document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
+          tfIconContainer.querySelectorAll('.mdc-text-field__input')
+              .forEach(function(input) {
+                input.required = evt.target.checked;
+              });
         });
       });
 
