@@ -89,7 +89,7 @@ Method Signature | Description
 ```
 
 There should also be a section for the Adapter and the Foundation. The title of each
-section should be the name of the class, in code syntax, aka with the \` marks.
+section should be the name of the class, formatted as inline code, aka with the \` marks.
 
 Methods are documented in a [tabular format](#tabular-format)
 

@@ -66,6 +66,27 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
     this.adapter_.setContent(content);
   }
 
+  /** @param {boolean} isPersistent Sets the persistency of the helper text. */
+  setPersistent(isPersistent) {
+    if (isPersistent) {
+      this.adapter_.addClass(cssClasses.HELPER_TEXT_PERSISTENT);
+    } else {
+      this.adapter_.removeClass(cssClasses.HELPER_TEXT_PERSISTENT);
+    }
+  }
+
+  /**
+   * @param {boolean} isValidation True to make the helper text act as an
+   *   error validation message.
+   */
+  setValidation(isValidation) {
+    if (isValidation) {
+      this.adapter_.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+    } else {
+      this.adapter_.removeClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+    }
+  }
+
   /** Makes the helper text visible to the screen reader. */
   showToScreenReader() {
     this.adapter_.removeAttr(strings.ARIA_HIDDEN);
