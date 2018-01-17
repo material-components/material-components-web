@@ -20,14 +20,17 @@
 @import "./mixins";
 
 // postcss-bem-linter: define tab-bar
+
+@at-root {
+  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
+}
+
 .mdc-tab-bar {
   display: table;
   position: relative;
   height: 48px;
   margin: 0 auto;
   text-transform: uppercase;
-
-  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
 
   &__indicator {
     position: absolute;
@@ -48,7 +51,6 @@
 
   // postcss-bem-linter: ignore
   .mdc-toolbar & {
-    @include mdc-tab-bar-indicator-ink-color(text-primary-on-primary);
     .mdc-tab {
       @include mdc-theme-prop(color, text-secondary-on-primary);
 
@@ -68,6 +70,8 @@
 
     // postcss-bem-linter: ignore
     .mdc-tab-bar__indicator {
+      @include mdc-theme-prop(background-color, text-primary-on-primary);
+
       @include mdc-theme-dark(".mdc-tab-bar") {
         @include mdc-theme-prop(background-color, text-primary-on-dark);
       }
