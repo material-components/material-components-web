@@ -37,6 +37,7 @@
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
+@import "../../packages/mdc-rtl/mixins";
 @import "../common";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
@@ -133,14 +134,19 @@ body {
 // CSS class demo
 //
 
+.demo-fieldset--color {
+  @include mdc-rtl-reflexive-box(margin, right, 36px);
+}
+
 .demo-theme-color-group {
   padding: 16px 0;
 }
 
 .demo-theme-color-swatches {
+  @include mdc-rtl-reflexive-box(margin, right, 16px);
+
   display: inline-flex;
   flex-direction: column;
-  margin-right: 36px;
 }
 
 .demo-theme-color-swatch {
@@ -225,9 +231,12 @@ body {
 //
 
 .demo-card-wrapper {
+  @include mdc-rtl-reflexive-box(margin, right, 24px);
+
+  margin-bottom: 24px;
+
   display: inline-block;
   width: 350px;
-  margin: 0 24px 24px 0;
   vertical-align: top;
 }
 
@@ -245,13 +254,7 @@ body {
 
 .demo-card--with-avatar .mdc-card__title,
 .demo-card--with-avatar .mdc-card__subtitle {
-  margin-left: 56px;
-}
-
-[dir="rtl"] .demo-card--with-avatar .mdc-card__title,
-[dir="rtl"] .demo-card--with-avatar .mdc-card__subtitle {
-  margin-right: 56px;
-  margin-left: initial;
+  @include mdc-rtl-reflexive-property(margin, 56px, 0);
 }
 
 .demo-card--small .mdc-card__media {
@@ -271,13 +274,16 @@ body {
   align-items: center;
 }
 
-.demo-checkbox-wrapper,
+.demo-checkbox-wrapper {
+  @include mdc-rtl-reflexive-box(margin, right, 10px);
+}
+
 .demo-checkbox-toggle-button {
-  margin-right: 10px;
+  @include mdc-rtl-reflexive-box(margin, right, 10px);
 }
 
 .demo-checkbox-wrapper + .demo-checkbox-toggle-button {
-  margin-left: 20px;
+  @include mdc-rtl-reflexive-property(margin, 20px, 10px);
 }
 
 //
@@ -313,7 +319,10 @@ body {
 }
 
 .demo-fab-tile {
-  margin: 0 48px 1em 0;
+  @include mdc-rtl-reflexive-box(margin, right, 48px);
+
+  margin-top: 0;
+  margin-bottom: 1em;
 }
 
 .demo-fab-tile__title {
@@ -340,8 +349,12 @@ body {
 }
 
 .demo-icon-toggle-tile {
+  @include mdc-rtl-reflexive-box(margin, right, 10px);
+
+  margin-top: 0;
+  margin-bottom: 10px;
+
   width: 200px;
-  margin: 0 10px 10px 0;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
@@ -364,8 +377,12 @@ body {
 //
 
 .demo-radio-group {
+  @include mdc-rtl-reflexive-box(margin, right, 24px);
+
+  margin-top: 0;
+  margin-bottom: 24px;
+
   display: inline-block;
-  margin: 0 24px 24px 0;
 }
 
 .demo-radio-form-field {
@@ -377,8 +394,12 @@ body {
 //
 
 .demo-switch-wrapper {
+  @include mdc-rtl-reflexive-box(margin, right, 16px);
+
+  margin-top: 16px;
+  margin-bottom: 0;
+
   display: inline-block;
-  margin: 16px 16px 0 0;
 }
 
 //
@@ -386,6 +407,10 @@ body {
 //
 
 .demo-text-field-wrapper {
+  @include mdc-rtl-reflexive-box(margin, right, 16px);
+
+  margin-top: 0;
+  margin-bottom: 16px;
+
   display: inline-block;
-  margin: 16px 16px 0 0;
 }
