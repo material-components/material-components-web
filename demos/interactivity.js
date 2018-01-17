@@ -98,13 +98,6 @@ export class ToolbarProvider extends InteractivityProvider {
 }
 
 export class HotSwapper extends InteractivityProvider {
-  constructor(root) {
-    super(root);
-
-    /** @type {!Array<string>} */
-    this.pendingRequests_ = [];
-  }
-
   /**
    * @param {!Element|!Document} root
    * @param {!ToolbarProvider} toolbarProvider
@@ -127,6 +120,9 @@ export class HotSwapper extends InteractivityProvider {
   initialize(toolbarProvider) {
     /** @type {!ToolbarProvider} */
     this.toolbarProvider_ = toolbarProvider;
+
+    /** @type {!Array<string>} */
+    this.pendingRequests_ = [];
 
     this.registerHotUpdateHandler_();
   }
@@ -297,14 +293,15 @@ export class HotSwapper extends InteractivityProvider {
    * @return {!HotSwapper}
    */
   static getInstance(root) {
-    if (!root.demoHotSwapperInstance_) {
-      /** @type {?SlowObjectKeyMap} @private */
-      root.demoHotSwapperInstance_ = new util.SlowObjectKeyMap();
+    // Yeah, I know, this is gross.
+    if (!root.demoHotSwapperRootMap_) {
+      /** @type {?Map<{key:*, value:*}>} @private */
+      root.demoHotSwapperRootMap_ = new Map();
     }
-    let instance = root.demoHotSwapperInstance_.get(root);
+    let instance = root.demoHotSwapperRootMap_.get(root);
     if (!instance) {
       instance = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
-      root.demoHotSwapperInstance_.set(root, instance);
+      root.demoHotSwapperRootMap_.set(root, instance);
     }
     return instance;
   }

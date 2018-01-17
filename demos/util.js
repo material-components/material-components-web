@@ -46,31 +46,3 @@ export function debounce(func, wait, immediate) {
     }
   };
 }
-
-export class SlowObjectKeyMap {
-  constructor() {
-    this.entries_ = [];
-  }
-
-  get(key, opt_default) {
-    const entries = this.getEntriesWithKey_(key);
-    return entries.length > 0 ? entries[0].value : opt_default;
-  }
-
-  set(key, value) {
-    const entry = this.get(key);
-    if (entry) {
-      entry.value = value;
-    } else {
-      this.entries_.push({key, value});
-    }
-  }
-
-  contains(key) {
-    return this.getEntriesWithKey_(key).length > 0;
-  }
-
-  getEntriesWithKey_(key) {
-    return this.entries_.filter((entry) => entry.key === key);
-  }
-}
