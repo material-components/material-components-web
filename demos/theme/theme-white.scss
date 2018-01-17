@@ -14,8 +14,10 @@
 // limitations under the License.
 //
 
-@import "@material/animation/variables";
+@import "../../packages/mdc-theme/color-palette";
 
-@function mdc-text-field-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
-}
+// TODO: Use theme mixin(s) instead
+$mdc-theme-primary: #fff;
+$mdc-theme-secondary: $material-color-orange-500;
+
+@import "./theme-shared";

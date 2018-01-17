@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/toolbar/toolbar.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -63,47 +64,38 @@
     <footer class="demo-toolbar-floating-footer">
       <span>Flexible Expansion Ratio: <span id="ratio">0</span></span>
     </footer>
-    <script src="/assets/material-components-web.js"></script>
-    <script type="text/javascript">
-      (function() {
-        var pollId = 0;
-        pollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-toolbar')).position;
-          if (pos === 'fixed' || pos === 'relative') {
-            init();
-            clearInterval(pollId);
-          }
-        }, 250);
-        function init() {
-          var initialR = 100;
-          var initialG = 221;
-          var initialB = 23;
-          var endR = 33;
-          var endG = 33;
-          var endB = 33;
-          var initialFontSize = 5;
-          var initialTransY = -30;
-          var endFontSize = 1.25;
-          var endTransY = 0;
-          var ratioSpan = document.querySelector("#ratio");
-          var myFlexibleHeader = document.querySelector("#my-flexible-header");
-          var myFlexibleHeaderTitle = document.querySelector("#my-flexible-header .mdc-toolbar__title");
-          var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
-          toolbar.listen('MDCToolbar:change', function(evt) {
-            var flexibleExpansionRatio = evt.detail.flexibleExpansionRatio;
-            var currentR = Math.round(endR - (endR - initialR) * flexibleExpansionRatio);
-            var currentG = Math.round(endG - (endG - initialG) * flexibleExpansionRatio);
-            var currentB = Math.round(endB - (endB - initialB) * flexibleExpansionRatio);
-            var currentTransY = endTransY - (endTransY - initialTransY) * (flexibleExpansionRatio - 0.5) * 2;
-            var currentFontsize = endFontSize - (endFontSize - initialFontSize) * flexibleExpansionRatio;
-            myFlexibleHeader.style.backgroundColor = `rgb(${currentR}, ${currentG}, ${currentB})`;
-            myFlexibleHeaderTitle.style.transform = `translateY(${currentTransY}px)`;
-            myFlexibleHeaderTitle.style.fontSize = `${currentFontsize}rem`;
-            ratioSpan.innerHTML = flexibleExpansionRatio.toFixed(2);
-          });
-          toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
-        }
-      })();
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
+        var initialR = 100;
+        var initialG = 221;
+        var initialB = 23;
+        var endR = 33;
+        var endG = 33;
+        var endB = 33;
+        var initialFontSize = 5;
+        var initialTransY = -30;
+        var endFontSize = 1.25;
+        var endTransY = 0;
+        var ratioSpan = document.querySelector("#ratio");
+        var myFlexibleHeader = document.querySelector("#my-flexible-header");
+        var myFlexibleHeaderTitle = document.querySelector("#my-flexible-header .mdc-toolbar__title");
+        var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
+        toolbar.listen('MDCToolbar:change', function(evt) {
+          var flexibleExpansionRatio = evt.detail.flexibleExpansionRatio;
+          var currentR = Math.round(endR - (endR - initialR) * flexibleExpansionRatio);
+          var currentG = Math.round(endG - (endG - initialG) * flexibleExpansionRatio);
+          var currentB = Math.round(endB - (endB - initialB) * flexibleExpansionRatio);
+          var currentTransY = endTransY - (endTransY - initialTransY) * (flexibleExpansionRatio - 0.5) * 2;
+          var currentFontsize = endFontSize - (endFontSize - initialFontSize) * flexibleExpansionRatio;
+          myFlexibleHeader.style.backgroundColor = `rgb(${currentR}, ${currentG}, ${currentB})`;
+          myFlexibleHeaderTitle.style.transform = `translateY(${currentTransY}px)`;
+          myFlexibleHeaderTitle.style.fontSize = `${currentFontsize}rem`;
+          ratioSpan.innerHTML = flexibleExpansionRatio.toFixed(2);
+        });
+        toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
+      });
     </script>
   </body>
 </html>
