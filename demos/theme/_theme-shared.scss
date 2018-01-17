@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-@import "../common";
 @import "../../packages/mdc-button/mdc-button";
 @import "../../packages/mdc-card/mdc-card";
 @import "../../packages/mdc-checkbox/mdc-checkbox";
@@ -38,6 +37,7 @@
 @import "../../packages/mdc-theme/mixins";
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
+@import "../common";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
 
@@ -51,6 +51,11 @@ $demo-custom-color: $material-color-red-500;
 figure {
   margin-left: 0;
   margin-right: 0;
+}
+
+body {
+  color: mdc-theme-accessible-ink-color($mdc-theme-background);
+  background-color: $mdc-theme-background;
 }
 
 //
