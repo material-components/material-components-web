@@ -27,7 +27,6 @@ const attributes = {
 };
 
 const ids = {
-  RTL_ACTION: 'rtl-action',
   TOOLBAR_PROGRESS_BAR: 'demo-toolbar-progress-bar',
 };
 
