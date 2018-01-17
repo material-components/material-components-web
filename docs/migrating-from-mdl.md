@@ -8,28 +8,28 @@ path: /docs/migrating-from-mdl/
 
 # Migrating from Material Design Lite
 
-Material Components for the web (MDC-Web) is the successor to the Material Design Lite (MDL) project.
+Material Components for the web (MDC Web) is the successor to the Material Design Lite (MDL) project.
 
-While the philosophy behind the two projects is quite similar, migrating to MDC-Web requires a number of changes, from
+While the philosophy behind the two projects is quite similar, migrating to MDC Web requires a number of changes, from
 class names to different DOM structures. In addition, there are several choices to be made regarding component
-initialization, how to depend on MDC-Web, and theming/styling mechanisms.
+initialization, how to depend on MDC Web, and theming/styling mechanisms.
 
 This document attempts to summarize and guide you through the work involved. Let’s get started!
 
-> **Note:** If you’re thinking of migrating your application to MDC-Web, please bear in mind that it’s still in an alpha
+> **Note:** If you’re thinking of migrating your application to MDC Web, please bear in mind that it’s still in an alpha
 state and thus APIs and certain UX features are subject to change.
 
 
-## Depending on MDC-Web
+## Depending on MDC Web
 
-MDL is distributed on NPM, Bower, and through its own CDN. MDC-Web is currently only available on NPM.
+MDL is distributed on NPM, Bower, and through its own CDN. MDC Web is currently only available on NPM.
 
-While MDL is a singular, universal library consisting of all components and styles, MDC-Web has been designed to be
+While MDL is a singular, universal library consisting of all components and styles, MDC Web has been designed to be
 modular, allowing you to make the choice of either pulling in everything, or just the packages you want.
 
 ### NPM
 
-MDC-Web is made available on [NPM](https://www.npmjs.com/), with packages living under the `@material` namespace.
+MDC Web is made available on [NPM](https://www.npmjs.com/), with packages living under the `@material` namespace.
 
 In order to install e.g. the button component, you can run:
 
@@ -38,9 +38,9 @@ npm install --save @material/button
 ```
 
 Some packages serve as dependencies for others, so don’t be surprised if you end up with multiple packages in your
-`node_modules` folder! There are no runtime dependencies outside of MDC-Web, so the dependency tree should remain small.
+`node_modules` folder! There are no runtime dependencies outside of MDC Web, so the dependency tree should remain small.
 
-If you want all of MDC-Web, you can pull in the meta package:
+If you want all of MDC Web, you can pull in the meta package:
 
 ```
 npm install --save material-components-web
@@ -48,13 +48,13 @@ npm install --save material-components-web
 
 ### Content Distribution Network (CDN)
 
-While MDL is available over a CDN, there’s currently no equivalent in MDC-Web (it’s in the plans for the future,
+While MDL is available over a CDN, there’s currently no equivalent in MDC Web (it’s in the plans for the future,
 though!).
 
 In the meantime, you can take advantage of the [unpkg CDN](https://unpkg.com/), which automatically provides
 distribution for all NPM packages.
 
-For easily getting all MDC-Web CSS:
+For easily getting all MDC Web CSS:
 
 ```
 https://unpkg.com/material-components-web@latest/dist/material-components-web.css
@@ -73,7 +73,7 @@ There’s also the option of getting individual packages, rather than the `mater
 
 ## Initializing components
 
-Both MDL and MDC-Web require the user to provide a specific DOM for a component, in order for it to function correctly.
+Both MDL and MDC Web require the user to provide a specific DOM for a component, in order for it to function correctly.
 This DOM has certain requirements, such as requiring the presence of specific CSS classes, a certain hierarchy, and in
 some cases, specific HTML elements.
 
@@ -87,7 +87,7 @@ MDL:
 ```
 
 
-MDC-Web:
+MDC Web:
 
 ```html
 <div class="mdc-text-field">
@@ -97,20 +97,20 @@ MDC-Web:
 </div>
 ```
 
-In MDC-Web, the DOM you specify must be complete; unlike MDL, the library will not create any missing elements for you.
+In MDC Web, the DOM you specify must be complete; unlike MDL, the library will not create any missing elements for you.
 This is done in order to make behavior more deterministic and give you greater freedom in customizing the non-critical
 parts of a component's DOM.
 
 Once a DOM is available, MDL manages component lifecycles automatically, by running through the page on load,
 identifying DOM structures that correspond to MDL components, and automatically upgrading them.
 
-In MDC-Web, however, you have the choice between managing components’ lifecycles yourself, or having them automatically
+In MDC Web, however, you have the choice between managing components’ lifecycles yourself, or having them automatically
 initialized, similarly to MDL.
 
 ### Auto-initialization
 
 Auto-initialization is handled by the `@material/auto-init` package, so start by ensuring that you’re depending on it
-(check the [Depending on MDC-Web section](#depending-on-mdc-web)).
+(check the [Depending on MDC Web section](#depending-on-mdc-web)).
 
 For every component that you want to automatically initialize, set the `data-mdc-auto-init` attribute on the root
 element, with the component’s class name as the value. For example:
@@ -146,7 +146,7 @@ Be sure to read the [`@material/auto-init` README](../packages/mdc-auto-init/REA
 While auto-initialization works very well for simpler use-cases, manual management of components’ lifecycles is a better
 option for complex applications that create and destroy parts of their user interface in runtime.
 
-MDC-Web modules include both ES2015 sources and bundled, transpiled ES5, so you can choose the best option depending on
+MDC Web modules include both ES2015 sources and bundled, transpiled ES5, so you can choose the best option depending on
 your build pipeline.
 
 #### Importing a component from ES2015 sources
@@ -168,7 +168,7 @@ auto-initialization, there is no way to retrieve it later via the DOM.
 
 #### Using the component class in an ES5 bundle
 
-Each MDC-Web component ships with an ES5 transpiled [UMD](https://github.com/umdjs/umd) bundle, with component classes placed into a package-specific property inside of the `mdc` namespace. In order to easily access it in your code, you can do:
+Each MDC Web component ships with an ES5 transpiled [UMD](https://github.com/umdjs/umd) bundle, with component classes placed into a package-specific property inside of the `mdc` namespace. In order to easily access it in your code, you can do:
 
 ```js
 const MDCTextField = mdc.textField.MDCTextField;
@@ -189,7 +189,7 @@ auto-initialization, there is no way to retrieve it later via the DOM.
 Styling in MDL is achieved with a collection of CSS classes that get applied to the DOM. Internally, MDL is built with
 Sass, but there was no effort in exposing the Sass mixins and functions to developers.
 
-In MDC-Web, components can expose both CSS and Sass interfaces to their styles. This is particularly true for
+In MDC Web, components can expose both CSS and Sass interfaces to their styles. This is particularly true for
 foundational components, such as `@material/elevation` or `@material/theme`.
 
 ### Using CSS classes
@@ -208,7 +208,7 @@ Every component lists the required CSS classes, as well as all of the optional m
 
 ### Using CSS Custom Properties
 
-Some MDC-Web components include CSS custom properties as part of their interfaces. An example of this is the
+Some MDC Web components include CSS custom properties as part of their interfaces. An example of this is the
 `@material/layout-grid`, which exposes custom properties for modifying the default margin and gutter sizes:
 
 ```css
@@ -227,7 +227,7 @@ mixins, which may cover your use-case.
 
 ### Using Sass
 
-Many MDC-Web components expose Sass mixins and functions that you can directly use on your site. These make it possible
+Many MDC Web components expose Sass mixins and functions that you can directly use on your site. These make it possible
 to customize components beyond what’s possible with the provided CSS classes, as well as reduce CSS class usage in the
 DOM.
 
@@ -259,7 +259,7 @@ end user’s browser.
 Theming in MDL is primarily handled either by overriding the theme variables in Sass, or by depending on a pre-generated
 CSS bundle with the colors baked in, via [the customizer](https://getmdl.io/customize/index.html).
 
-In MDC-Web, all theming is handled via the `@material/theme` package. There’s the option of overriding the theme
+In MDC Web, all theming is handled via the `@material/theme` package. There’s the option of overriding the theme
 variables in Sass, as in MDL, but there’s no longer a customizer or a CDN with different combinations. There is custom property support, however.
 
 In the future, there will likely be other options available via a planned CDN.
@@ -270,7 +270,7 @@ summary below.
 ### Sass variables
 
 In order to change the theme colors for your entire application, simply define the three theme color variables before
-importing `@material/theme` or any MDC-Web components that rely on it:
+importing `@material/theme` or any MDC Web components that rely on it:
 
 ```scss
 $mdc-theme-primary: #9c27b0;
@@ -302,39 +302,39 @@ Please check the [`@material/theme` README](../packages/mdc-theme/README.md) for
 
 ## Browser support
 
-Unlike MDL, in which support goes back to Internet Explorer 9, MDC-Web only supports IE 11.
+Unlike MDL, in which support goes back to Internet Explorer 9, MDC Web only supports IE 11.
 
-For modern major browsers, MDC-Web guarantees support for up to 2 versions prior to the current stable release.
+For modern major browsers, MDC Web guarantees support for up to 2 versions prior to the current stable release.
 
 
 ## Component equivalence
 
-For many components, there is a 1:1 relation between MDL and MDC-Web. In other cases there are some differences, with
-MDL components being split up into multiple MDC-Web ones, new ones being added, and some still to be implemented.
+For many components, there is a 1:1 relation between MDL and MDC Web. In other cases there are some differences, with
+MDL components being split up into multiple MDC Web ones, new ones being added, and some still to be implemented.
 
 The following table summarizes the current situation (TBI = to be implemented):
 
-| MDL component | MDC-Web component | Notes |
+| MDL component | MDC Web component | Notes |
 | ------------- | ----------------- | ----- |
 | `mdl-animation` | [`@material/animation`](../packages/mdc-animation/README.md) | Very similar. |
-| `mdl-badge` | None | Not currently planned for MDC-Web. |
-| `mdl-button` | Split into [`@material/button`](../packages/mdc-button/README.md) and [`@material/fab`](../packages/mdc-fab/README.md) | No icon button in MDC-Web at the moment, [TBI](https://github.com/material-components/material-components-web/issues/12). |
-| `mdl-card` | [`@material/card`](../packages/mdc-card/README.md) | Very different DOM. More options in MDC-Web. |
+| `mdl-badge` | None | Not currently planned for MDC Web. |
+| `mdl-button` | Split into [`@material/button`](../packages/mdc-button/README.md) and [`@material/fab`](../packages/mdc-fab/README.md) | No icon button in MDC Web at the moment, [TBI](https://github.com/material-components/material-components-web/issues/12). |
+| `mdl-card` | [`@material/card`](../packages/mdc-card/README.md) | Very different DOM. More options in MDC Web. |
 | `mdl-checkbox` | [`@material/checkbox`](../packages/mdc-checkbox/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
 | `mdl-chip` | TBI | [#56](https://github.com/material-components/material-components-web/issues/56) |
 | `mdl-data-table` | TBI | [#57](https://github.com/material-components/material-components-web/issues/57) |
 | `mdl-dialog` | [`@material/dialog`](../packages/mdc-dialog/README.md) | Sufficiently different from MDL. MDL uses the `dialog` element which has limited cross-browser support. `mdc-dialog` relies on elements with more cross-browser support. |
-| `mdl-footer` | None | Not currently planned for MDC-Web. |
-| `mdl-grid` | [`@material/layout-grid`](../packages/mdc-layout-grid/README.md) | Very similar. No offsets in MDC-Web. |
+| `mdl-footer` | None | Not currently planned for MDC Web. |
+| `mdl-grid` | [`@material/layout-grid`](../packages/mdc-layout-grid/README.md) | Very similar. No offsets in MDC Web. |
 | `mdl-icon-toggle` | [`@material/icon-toggle`](../packages/mdc-icon-toggle/README.md) | Very different DOM. |
-| `mdl-layout` | Split into [`@material/drawer`](../packages/mdc-drawer/README.md), [`@material/toolbar`](../packages/mdc-toolbar/README.md), and [`@material/layout-grid`](../packages/mdc-layout-grid/README.md) | No tabs component in MDC-Web at the moment, [TBI](https://github.com/material-components/material-components-web/issues/37). |
+| `mdl-layout` | Split into [`@material/drawer`](../packages/mdc-drawer/README.md), [`@material/toolbar`](../packages/mdc-toolbar/README.md), and [`@material/layout-grid`](../packages/mdc-layout-grid/README.md) | No tabs component in MDC Web at the moment, [TBI](https://github.com/material-components/material-components-web/issues/37). |
 | `mdl-list` | [`@material/list`](../packages/mdc-list/README.md) | Very different DOM. |
 | `mdl-menu` | [`@material/menu`](../packages/mdc-menu/README.md) | Very different DOM. |
 | `mdl-palette` | [`@material/theme`](../packages/mdc-theme/README.md) | All theming is handled via [`@material/theme`](../packages/mdc-theme/README.md) |
 | `mdl-progress` | [`@material/linear-progress`](../packages/mdc-linear-progress/README.md) | Very different DOM. |
 | `mdl-radio` | [`@material/radio`](../packages/mdc-radio/README.md) | Very different DOM. Recommended use with [`@material/form-field`](../packages/mdc-form-field/README.md). |
 | `mdl-resets` | None. | There are plans for an [optional resets/defaults library](https://github.com/material-components/material-components-web/issues/42). |
-| `mdl-ripple` | [`@material/ripple`](../packages/mdc-ripple/README.md) | Very different usage; much improved in MDC-Web. |
+| `mdl-ripple` | [`@material/ripple`](../packages/mdc-ripple/README.md) | Very different usage; much improved in MDC Web. |
 | `mdl-shadow` | [`@material/elevation`](../packages/mdc-elevation/README.md) | Similar usage. |
 | `mdl-slider` | [`@material/slider`](../packages/mdc-slider/README.md) | Very different DOM. |
 | `mdl-snackbar` | [`@material/snackbar`](../packages/mdc-snackbar/README.md) | Very different DOM. |
@@ -345,11 +345,11 @@ The following table summarizes the current situation (TBI = to be implemented):
 | `mdl-tooltip` | TBI | [#24](https://github.com/material-components/material-components-web/issues/24) |
 | `mdl-typography` | [`@material/typography`](../packages/mdc-typography/README.md) | Somewhat different usage. |
 
-New MDC-Web components:
+New MDC Web components:
 
 | Component | Description |
 | --------- | ----------- |
-| [`@material/auto-init`](../packages/mdc-auto-init/README.md) | Helper for automatically initializing components (optional in MDC-Web). |
+| [`@material/auto-init`](../packages/mdc-auto-init/README.md) | Helper for automatically initializing components (optional in MDC Web). |
 | [`@material/form-field`](../packages/mdc-form-field/README.md) | Helpers for using labels with form field elements (radios and checkboxes). |
 | [`@material/grid-list`](../packages/mdc-grid-list/README.md) | An RTL-aware grid list component. |
 | [`@material/rtl`](../packages/mdc-rtl/README.md) | Helpers for working with right-to-left languages. |
