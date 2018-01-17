@@ -16,16 +16,17 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
 ## Table of Contents
 
 - [An aside regarding browser support](#an-aside-regarding-browser-support)
-- [Design & API Documentation](#installation)
+- [Design & API Documentation](#design--api-documentation)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Adding Ripple styles](#adding-ripple-styles)
-  - [Adding Ripple JS](#adding-ripple-js)
-  - [Ripple JS API](#ripple-js-api)
-  - [Unbounded Ripples](#unbounded-ripples)
-  - [The mdc-ripple-surface class](#the-mdc-ripple-surface-class)
-  - [Using the foundation](#using-the-foundation)
-  - [Using the vanilla DOM adapter](#using-the-vanilla-dom-adapter)
+  - [CSS Classes](#css-classes)
+  - [Sass Mixins](#sass-mixins)
+    - [Ripple Mixins](#ripple-mixins)
+    - [Basic States Mixins](#basic-states-mixins)
+    - [Advanced States Mixins](#advanced-states-mixins)
+  - [MDCRipple](#MDCRipple)
+  - [MDCRippleAdapter](#MDCRippleAdapter)
+  - [MDCRippleFoundation](#MDCRippleFoundation)
 - [Tips/Tricks](#tipstricks)
   - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
   - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
@@ -39,7 +40,7 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
 
 #### An aside regarding browser support
 
-In order to function correctly, MDC Ripple requires a _browser_ implementation of [CSS Variables](https://www.w3.org/TR/css-variables/). MDC Ripple uses custom properties to dynamically position pseudo elements, which allows us to not need any extra DOM for this effect.
+In order to function correctly, MDC Ripple requires a _browser_ implementation of [CSS Variables](https://www.w3.org/TR/css-variables/). MDC Ripple uses custom properties to dynamically position `::before` and `::after` pseudo-elements, which allows us to not need any extra DOM for this effect.
 
 Because we rely on scoped, dynamic CSS variables, static pre-processors such as [postcss-custom-properties](https://github.com/postcss/postcss-custom-properties) will not work as an adequate polyfill ([...yet?](https://github.com/postcss/postcss-custom-properties/issues/32)).
 
@@ -174,17 +175,9 @@ Method Signature | Description
 
 ## Tips/Tricks
 
-### Integrating ripples into MDC-Web components
-
-Usually, you'll want to leverage `::before` and `::after` pseudo-elements when integrating the
-ripple into MDC-Web components. Furthermore, when defining your component, you can instantiate the
-ripple foundation at the top level, and share logic between those adapters.
-
 ### Using a sentinel element for a ripple
 
-If you find you can't use pseudo-elements to style the ripple, another strategy could be to use a
-sentinel element that goes inside your element and covers its surface. Doing this should get you
-the same effect.
+Usually, you'll want to leverage `::before` and `::after` pseudo-elements when integrating the ripple into MDC-Web components. If you find you can't use pseudo-elements to style the ripple, another strategy could be to use a sentinel element that goes inside your element and covers its surface. Doing this should get you the same effect.
 
 ```html
 <div class="my-component">
@@ -198,7 +191,7 @@ the same effect.
 If you'd like to use _unbounded_ ripples, such as those used for checkboxes and radio buttons, you
 can do so either imperatively in JS _or_ declaratively using the DOM.
 
-##### Using JS
+#### Using JS
 
 You can set an `unbounded` property to specify whether or not the ripple is unbounded.
 
@@ -207,7 +200,7 @@ const ripple = new MDCRipple(root);
 ripple.unbounded = true;
 ```
 
-##### Using DOM (Component Only)
+#### Using DOM (Component Only)
 
 If you are using our vanilla component for the ripple (not our foundation class), you can add a
 data attribute to your root element indicating that you wish the ripple to be unbounded:
@@ -243,8 +236,7 @@ way in which our default vanilla DOM adapter determines this is by using
 `element.matches(':active')`. However, this approach will _not_ work for custom components that
 the browser does not apply this pseudo-class to.
 
-If you want your component to work properly with keyboard events, you'll have to listen for both `keydown` and `keyup` and set some sort of state that the adapter can use to determine whether or
-not the surface is "active", e.g.
+If you want your component to work properly with keyboard events, you'll have to listen for both `keydown` and `keyup` and set some sort of state that the adapter can use to determine whether or not the surface is "active".
 
 ```js
 class MyComponent {
@@ -298,7 +290,20 @@ this.ripple_ = new MDCRippleFoundation({
 });
 ```
 
-## Caveat: Edge
+### The util API
+
+External frameworks and libraries can use the following utility methods when integrating a component.
+
+Method Signature | Description
+--- | ---
+`util.supportsCssVariables(windowObj, forceRefresh = false) => Boolean` | Determine whether the current browser supports CSS variables (custom properties). This function caches its result; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
+`util.applyPassive(globalObj = window, forceRefresh = false) => object` | Determine whether the current browser supports passive event listeners, and if so, use them. This function caches its result; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
+`util.getMatchesProperty(HTMLElementPrototype) => Function` | Choose the correct matches property to use on the current browser.
+`util.getNormalizedEventCoords(ev, pageOffset, clientRect) => object` | Determines X/Y coordinates of an event normalized for touch events and ripples.
+
+## Caveats
+
+### Caveat: Edge
 
 > TL;DR ripples are disabled in Edge because of issues with its support of CSS variables in pseudo elements.
 
@@ -309,8 +314,7 @@ We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not
 observed. Earlier versions of Edge (and IE) are not affected, as they do not report support for CSS variables at all,
 and as such ripples are never initialized.
 
-<a name="caveat-safari"></a>
-## Caveat: Safari 9
+### Caveat: Safari 9
 
 > TL;DR ripples are disabled in Safari 9 because of a nasty CSS variables bug.
 
@@ -325,7 +329,7 @@ support [CSS 4 Hex Notation](https://drafts.csswg.org/css-color/#hex-notation) w
 have the fix don't. We use this to reliably feature-detect whether we are working with a WebKit
 build that can handle our usage of CSS variables.
 
-## Caveat: Mobile Safari
+### Caveat: Mobile Safari
 
 > TL;DR for CSS-only ripple styles to work as intended, register a `touchstart` event handler on the affected element or its ancestor.
 
@@ -335,7 +339,7 @@ in the Safari Web Content Guide. This effectively suppresses the intended presse
 
 See [this StackOverflow answer](https://stackoverflow.com/a/33681490) for additional information on mobile Safari's behavior.
 
-## Caveat: Theme Custom Variables
+### Caveat: Theme Custom Variables
 
 > TL;DR theme custom variable changes will not propagate to ripples if the browser does not support
 > [CSS 4 color-mod functions](https://drafts.csswg.org/css-color/).
@@ -351,23 +355,3 @@ background: color(var(--mdc-theme-primary) a(6%));
 But as far as we know, no browsers yet support it. We have added a `@supports` clause into our code
 to make sure that it can be used as soon as browsers adopt it, but for now this means that _changes
 to your theme via a custom variable will not propagate to ripples._ We don't see this being a gigantic issue as we envision most users configuring one theme via sass. For places where you do need this, special treatment will have to be given.
-
-### The util API
-
-External frameworks and libraries can use the following utility methods when integrating a component.
-
-#### util.supportsCssVariables(windowObj, forceRefresh = false) => Boolean
-
-Determine whether the current browser supports CSS variables (custom properties). This function caches its result; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
-
-#### util.applyPassive(globalObj = window, forceRefresh = false) => object
-
-Determine whether the current browser supports passive event listeners, and if so, use them. This function caches its result; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
-
-#### getMatchesProperty(HTMLElementPrototype) => Function
-
-Choose the correct matches property to use on the current browser.
-
-#### getNormalizedEventCoords(ev, pageOffset, clientRect) => object
-
-Determines X/Y coordinates of an event normalized for touch events and ripples.
