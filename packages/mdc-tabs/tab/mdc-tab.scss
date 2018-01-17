@@ -113,49 +113,22 @@ $mdc-tab-with-icon-and-text-height: 72px;
 .mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab {
   position: relative;
 
-  &::after {
-    display: none;
-    position: absolute;
-    top: $mdc-tab-with-text-height - 2px;
-    left: 0;
-    width: calc(100% - 4px);
-    height: 2px;
-    content: "";
-    pointer-events: none;
-
-    @include mdc-theme-prop(background-color, text-primary-on-light);
-
-    @include mdc-theme-dark(".mdc-tab-bar", true) {
-      @include mdc-theme-prop(background-color, text-primary-on-dark);
-    }
-
-    .mdc-toolbar & {
-      @include mdc-theme-prop(background-color, text-primary-on-primary);
+  &.mdc-tab--active,
+  &:hover,
+  &:active {
+    .mdc-tab-bar__indicator {
+      visibility: visible;
     }
   }
 
-  &--active,
-  &:active,
-  &:hover {
-    &::after {
-      display: block;
-    }
-  }
-
-  &:not(.mdc-tab--active):hover::after {
+  &:not(.mdc-tab--active):hover .mdc-tab-bar__indicator {
     opacity: .38;
   }
 
   &--active,
-  &:not(.mdc-tab--active):active::after {
+  &:not(.mdc-tab--active):active .mdc-tab-bar__indicator {
     opacity: .87;
   }
-}
-// stylelint-enable plugin/selector-bem-pattern
-
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-tab-bar--icons-with-text:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
-  top: $mdc-tab-with-icon-and-text-height - 2px;
 }
 // stylelint-enable plugin/selector-bem-pattern
 
