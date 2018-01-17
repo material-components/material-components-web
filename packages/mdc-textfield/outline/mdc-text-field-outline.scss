@@ -14,52 +14,53 @@
 // limitations under the License.
 //
 
+@import "./mixins";
 @import "../mixins";
 @import "../variables";
 @import "@material/theme/mixins";
 @import "@material/ripple/variables";
 
-.mdc-text-field__idle-outline {
-  @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
+.mdc-text-field {
+  &__idle-outline {
+    @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
 
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(100% - 4px);
-  height: calc(100% - 4px);
-  transition: opacity 100ms ease;
-  border: 1px solid $mdc-text-field-outlined-idle-border;
-  opacity: 1;
-}
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    transition: opacity 100ms ease;
+    border: 1px solid;
+    opacity: 1;
+  }
 
-.mdc-text-field__outline {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
-  @include mdc-states-base-color(text-primary-on-light);
-  @include mdc-states-press-opacity(map-get($mdc-ripple-dark-ink-opacities, "press"));
-  @include mdc-theme-prop(color, primary);
-  @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
+  &__outline {
+    @include mdc-ripple-surface;
+    @include mdc-ripple-radius;
+    @include mdc-states-base-color(text-primary-on-light);
+    @include mdc-states-press-opacity(map-get($mdc-ripple-dark-ink-opacities, "press"));
+    @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
 
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(100% - 1px);
-  height: calc(100% - 2px);
-  transition: mdc-text-field-transition(opacity);
-  opacity: 0;
-  overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 1px);
+    height: calc(100% - 2px);
+    transition: mdc-text-field-transition(opacity);
+    opacity: 0;
+    overflow: hidden;
 
-  svg {
-    position: absolute;  
-    width: 100%;
-    height: 100%;  
-  
-    .mdc-text-field__outline-path {
-      stroke: $mdc-text-field-outlined-idle-border;
-      stroke-width: 1px;
-      transition: mdc-text-field-transition(stroke), mdc-text-field-transition(stroke-width),
+    svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      .mdc-text-field__outline-path {
+        stroke-width: 1px;
+        transition: mdc-text-field-transition(stroke), mdc-text-field-transition(stroke-width),
         mdc-text-field-transition(opacity);
-      fill: transparent;
+        fill: transparent;
+      }
     }
   }
 }
