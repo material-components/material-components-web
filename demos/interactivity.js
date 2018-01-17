@@ -98,6 +98,48 @@ export class ToolbarProvider extends InteractivityProvider {
   }
 }
 
+export class RtlToggler extends InteractivityProvider {
+  /**
+   * @param {!Element|!Document} root
+   */
+  static attachTo(root) {
+    const instance = new RtlToggler(root);
+    instance.initialize();
+    return instance;
+  }
+
+  /** @override */
+  initialize() {
+    /** @type {?Element} */
+    this.rtlActionEl_ = this.getElementById_(ids.RTL_ACTION);
+
+    this.registerRTLToggleHandler_();
+  }
+
+  /** @private */
+  registerRTLToggleHandler_() {
+    if (!this.rtlActionEl_) {
+      return;
+    }
+    this.rtlActionEl_.addEventListener('click', (evt) => this.toggleRTL_(evt));
+  }
+
+  /**
+   * @param {!Event} evt
+   * @private
+   */
+  toggleRTL_(evt) {
+    const el = this.document_.documentElement;
+    if (el.getAttribute('dir') === 'rtl') {
+      el.setAttribute('dir', 'ltr');
+      evt.target.innerHTML = 'format_align_left';
+    } else {
+      el.setAttribute('dir', 'rtl');
+      evt.target.innerHTML = 'format_align_right';
+    }
+  }
+}
+
 export class HotSwapper extends InteractivityProvider {
   constructor(root) {
     super(root);
@@ -129,24 +171,15 @@ export class HotSwapper extends InteractivityProvider {
     /** @type {!ToolbarProvider} */
     this.toolbarProvider_ = toolbarProvider;
 
-    /** @type {?Element} */
-    this.rtlActionEl_ = this.getElementById_(ids.RTL_ACTION);
-
-    this.registerRTLToggleHandler_();
     this.registerHotUpdateHandler_();
   }
 
   /** @private */
-  registerRTLToggleHandler_() {
-    if (!this.rtlActionEl_) {
-      return;
-    }
-    this.rtlActionEl_.addEventListener('click', (evt) => this.toggleRTL_(evt));
-  }
-
-  /** @private */
   registerHotUpdateHandler_() {
-    const hotSwapAllStylesheets = util.debounce(() => this.hotSwapAllStylesheets_(), HotSwapper.hotUpdateWaitPeriodMs_);
+    const hotSwapAllStylesheets = util.debounce(() => {
+      this.hotSwapAllStylesheets_();
+    }, HotSwapper.hotUpdateWaitPeriodMs_);
+
     this.window_.addEventListener('message', (evt) => {
       if (this.isWebpackRecompileStart_(evt)) {
         this.toolbarProvider_.setIsLoading(true);
@@ -174,21 +207,6 @@ export class HotSwapper extends InteractivityProvider {
     return typeof evt.data === 'string' && evt.data.indexOf('webpackHotUpdate') === 0;
   }
 
-  /**
-   * @param {!Event} evt
-   * @private
-   */
-  toggleRTL_(evt) {
-    const el = this.document_.documentElement;
-    if (el.getAttribute('dir') === 'rtl') {
-      el.setAttribute('dir', 'ltr');
-      evt.target.innerHTML = 'format_align_left';
-    } else {
-      el.setAttribute('dir', 'rtl');
-      evt.target.innerHTML = 'format_align_right';
-    }
-  }
-
   /** @private */
   hotSwapAllStylesheets_() {
     dom.getAll(`link[${attributes.HOT_SWAP}]`, this.document_.head).forEach((link) => {
@@ -202,31 +220,22 @@ export class HotSwapper extends InteractivityProvider {
    * @protected
    */
   hotSwapStylesheet_(oldLink, newUri) {
-    // Remove query string from old URI
-    const oldUri = (oldLink.getAttribute('href') || '').replace(/[?].*$/, '');
+    const oldUri = oldLink.getAttribute('href');
 
-    // oldLink was probably detached from the DOM
-    if (!oldUri) {
-      return;
-    }
-
+    // Reload existing stylesheet
     if (!newUri) {
       newUri = oldUri;
     }
 
     // Force IE 11 and Edge to bypass the cache and request a fresh copy of the CSS.
-    newUri += `?timestamp=${Date.now()}`;
+    newUri = this.bustCache_(newUri);
 
-    const logHotSwap = (verb, trailingPunctuation) => {
-      const swapMessage = `"${oldUri}"${newUri ? ` with "${newUri}"` : ''}`;
-      console.log(`Hot ${verb} stylesheet ${swapMessage}${trailingPunctuation}`);
-    };
+    this.enqueuePendingRequest_(oldUri, newUri);
 
-    logHotSwap('swapping', '...');
-
-    this.toolbarProvider_.setIsLoading(true);
-    this.numPending_++;
-
+    // Ensure that oldLink has a unique ID so we can remove all stale stylesheets from the DOM after newLink loads.
+    // This is a more robust approach than holding a reference to oldLink and removing it directly, because a user might
+    // quickly switch themes several times before the first stylesheet finishes loading (especially over a slow network)
+    // and each new stylesheet would try to remove the first one, leaving multiple conflicting stylesheets in the DOM.
     const newId = oldLink.id || `stylesheet-${Math.floor(Math.random() * Date.now())}`;
     oldLink.id = newId;
 
@@ -235,17 +244,36 @@ export class HotSwapper extends InteractivityProvider {
 
     // IE 11 and Edge fire the `load` event twice for `<link>` elements.
     newLink.addEventListener('load', util.debounce(() => {
-      logHotSwap('swapped', '!');
-
-      setTimeout(() => this.purgeOldStylesheets_(newId));
-
-      this.numPending_--;
-      if (this.numPending_ === 0) {
-        this.toolbarProvider_.setIsLoading(false);
-      }
+      this.dequeuePendingRequest_(oldUri, newUri, newId);
     }, 50));
 
     oldLink.parentNode.insertBefore(newLink, oldLink);
+  }
+
+  /**
+   * @param {string} oldUri
+   * @param {string} newUri
+   * @private
+   */
+  enqueuePendingRequest_(oldUri, newUri) {
+    this.logHotSwap_('swapping', oldUri, newUri, '...');
+    this.toolbarProvider_.setIsLoading(true);
+    this.numPending_++;
+  }
+
+  /**
+   * @param {string} oldUri
+   * @param {string} newUri
+   * @param {string} newId
+   * @private
+   */
+  dequeuePendingRequest_(oldUri, newUri, newId) {
+    this.logHotSwap_('swapped', oldUri, newUri, '!');
+    this.numPending_--;
+    if (this.numPending_ === 0) {
+      this.toolbarProvider_.setIsLoading(false);
+    }
+    setTimeout(() => this.purgeOldStylesheets_(newId));
   }
 
   /**
@@ -269,9 +297,31 @@ export class HotSwapper extends InteractivityProvider {
       });
     }
   }
+
+  /**
+   * Adds a timestamp to the given URI to force IE 11 and Edge to bypass the cache and request a fresh copy of the CSS.
+   * @param oldUri
+   * @returns {string}
+   * @private
+   */
+  bustCache_(oldUri) {
+    const newUri = oldUri
+      // Remove previous timestamp param (if present)
+      .replace(/[?&]timestamp=\d+(&|$)/, '')
+      // Remove trailing '?' or '&' char (if present)
+      .replace(/[?&]$/, '');
+    const separator = newUri.indexOf('?') === -1 ? '?' : '&';
+    return `${newUri}${separator}timestamp=${Date.now()}`;
+  }
+
+  logHotSwap_(verb, oldUri, newUri, trailingPunctuation) {
+    const swapMessage = `"${oldUri}"${newUri ? ` with "${newUri}"` : ''}`;
+    console.log(`Hot ${verb} stylesheet ${swapMessage}${trailingPunctuation}`);
+  }
 }
 
 /** @param {!Element|!Document} root */
 export function init(root) {
+  RtlToggler.attachTo(root);
   HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
 }
