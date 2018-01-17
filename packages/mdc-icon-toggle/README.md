@@ -67,7 +67,7 @@ un-styled content.
 ### Using with Font Awesome and similar libraries
 
 Font Awesome - as well as other popular icon font libraries - use pseudo-elements in order to
-provide the icon, via the `content` property. However, MDC-Web uses pseudo-elements for ripple styles.
+provide the icon, via the `content` property. However, MDC Web uses pseudo-elements for ripple styles.
 In order to get around this, you can nest the icon itself inside the icon toggle.
 
 ```html

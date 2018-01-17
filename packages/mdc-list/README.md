@@ -69,7 +69,7 @@ attribute with value `"rtl"`_. This applies to all lists regardless of type.
 
 #### Dark Mode Support
 
-Like other MDC-Web components, lists support dark mode either when an `mdc-list--theme-dark` class is
+Like other MDC Web components, lists support dark mode either when an `mdc-list--theme-dark` class is
 attached to the root element, or the element has an ancestor with class `mdc-theme--dark`.
 
 ```html

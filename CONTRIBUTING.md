@@ -1,4 +1,4 @@
-# Contributing to Material Components Web (MDC-Web)
+# Contributing to Material Components Web (MDC Web)
 
 We'd love for you to contribute and make Material Components for the web even better than it is today!
 Here are the guidelines we'd like you to follow:
@@ -8,7 +8,7 @@ Here are the guidelines we'd like you to follow:
   - [Setting up your development environment](#setting-up-your-development-environment)
   - [Building Components](#building-components)
   - [Running the development server](#running-the-development-server)
-  - [Building MDC-Web](#building-mdc-web)
+  - [Building MDC Web](#building-mdc-web)
   - [Linting / Testing / Coverage Enforcement](#linting--testing--coverage-enforcement)
     - [Running Tests across browsers](#running-tests-across-browsers)
   - [Coding Style](#coding-style)
@@ -20,11 +20,11 @@ The Material Components contributing policies and procedures can be found in the
 
 ## Development Process
 
-We strive to make developing Material Components Web as frictionless as possible, both for ourselves and for our community. This section should get you up and running working on the MDC-Web codebase. Before beginning development, you may want to read through our overview on [architecture and best practices](./docs/code) to get a better understanding of our overall structure.
+We strive to make developing Material Components Web as frictionless as possible, both for ourselves and for our community. This section should get you up and running working on the MDC Web codebase. Before beginning development, you may want to read through our overview on [architecture and best practices](./docs/code) to get a better understanding of our overall structure.
 
 ### Setting up your development environment
 
-You'll need a recent version of [nodejs](https://nodejs.org/en/) to work on MDC-Web. We [test our builds](https://travis-ci.org/material-components/material-components-web) using both the latest and LTS node versions, so use of one of those is recommended. You can use [nvm](https://github.com/creationix/nvm) to easily install and manage different versions of node on your system.
+You'll need a recent version of [nodejs](https://nodejs.org/en/) to work on MDC Web. We [test our builds](https://travis-ci.org/material-components/material-components-web) using both the latest and LTS node versions, so use of one of those is recommended. You can use [nvm](https://github.com/creationix/nvm) to easily install and manage different versions of node on your system.
 
 > **NOTE**: If you expect to commit updated or new dependencies, please ensure you are using npm 5, which will
 > also update `package-lock.json` correctly when you install or upgrade packages.
@@ -75,12 +75,12 @@ MDC_ENV=development npm run build && gcloud app deploy app.yaml --project google
 gcloud app browse
 ```
 
-The above script will build and deploy the app to mdc-web's dev server with your userid as its version number, you can switch to your version by prepending `$USER-dot-` to the URL opened when you run `gcloud app browse`. This would be helpful if we need to share work-in-progress work within teams and designers.
+The above script will build and deploy the app to MDC Web's dev server with your userid as its version number, you can switch to your version by prepending `$USER-dot-` to the URL opened when you run `gcloud app browse`. This would be helpful if we need to share work-in-progress work within teams and designers.
 
-### Building MDC-Web
+### Building MDC Web
 
 ```
-npm run build # Builds an unminified version of MDC-Web within build/
+npm run build # Builds an unminified version of MDC Web within build/
 npm run build:min # Same as above, but enables minification
 npm run dist # Cleans out build/ and runs both of the above commands sequentially
 ```
