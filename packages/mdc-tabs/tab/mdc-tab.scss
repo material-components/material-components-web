@@ -109,6 +109,10 @@ $mdc-tab-with-icon-and-text-height: 72px;
   }
 }
 
+.mdc-tab__indicator {
+  width: calc(100% - 4px);
+}
+
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab {
   position: relative;
@@ -116,17 +120,17 @@ $mdc-tab-with-icon-and-text-height: 72px;
   &.mdc-tab--active,
   &:hover,
   &:active {
-    .mdc-tab-bar__indicator {
+    .mdc-tab__indicator {
       visibility: visible;
     }
   }
 
-  &:not(.mdc-tab--active):hover .mdc-tab-bar__indicator {
+  &:not(.mdc-tab--active):hover .mdc-tab__indicator {
     opacity: .38;
   }
 
   &--active,
-  &:not(.mdc-tab--active):active .mdc-tab-bar__indicator {
+  &:not(.mdc-tab--active):active .mdc-tab__indicator {
     opacity: .87;
   }
 }
