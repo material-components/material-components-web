@@ -70,32 +70,7 @@
 //
 
 .demo-card__media {
-  position: relative;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.demo-card__media-16-9 {
   background-image: url("/images/16-9.jpg");
-}
-
-// This clever trick brought to you by: http://www.mademyday.de/css-height-equals-width-with-pure-css.html
-.demo-card__media::before {
-  display: block;
-  content: "";
-  margin-top: 100%;
-}
-
-.demo-card__media-16-9::before {
-  margin-top: 56.25%;
-}
-
-.demo-card__media-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
 }
 
 //

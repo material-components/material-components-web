@@ -51,7 +51,7 @@ npm install --save @material/card
     veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
     commodo consequat.
   </section>
-  <section class="mdc-card__actions">
+  <section class="mdc-card__action-bar">
     <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
     <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
   </section>
@@ -83,7 +83,7 @@ Cards can use a dark theme by either having the `mdc-card--theme-dark` option di
     <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
     <h2 class="mdc-card__subtitle">Subtitle here</h2>
   </section>
-  <section class="mdc-card__actions">
+  <section class="mdc-card__action-bar">
     <button class="mdc-button mdc-button--theme-dark mdc-button--compact mdc-card__action">Action 1</button>
     <button class="mdc-button mdc-button--theme-dark mdc-button--compact mdc-card__action">Action 2</button>
   </section>
@@ -99,7 +99,7 @@ Or by using the `mdc-theme--dark` global modifier class that affects all childre
       <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
       <h2 class="mdc-card__subtitle">Subtitle here</h2>
     </section>
-    <section class="mdc-card__actions">
+    <section class="mdc-card__action-bar">
       <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
       <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
     </section>
@@ -135,7 +135,7 @@ This area is used for showing rich media in cards, and optionally as a container
 #### Actions
 
 ```html
-<section class="mdc-card__actions">
+<section class="mdc-card__action-bar">
   <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
   <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
 </section>
@@ -146,10 +146,10 @@ above, or with icon buttons, as below:
 
 > TODO(sgomes): Add icon button support and example.
 
-You can use the `mdc-card__actions--vertical` option to lay actions out vertically instead of horizontally:
+You can use the `mdc-card__action-bar--vertical` option to lay actions out vertically instead of horizontally:
 
 ```html
-<section class="mdc-card__actions mdc-card__actions--vertical">
+<section class="mdc-card__action-bar mdc-card__action-bar--vertical">
   <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
   <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
 </section>
@@ -205,7 +205,7 @@ You can stack multiple card blocks horizontally instead of vertically, by placin
     <h1 class="mdc-card__title mdc-card__title--large">Title here</h1>
     <h2 class="mdc-card__subtitle">Subtitle here</h2>
   </section>
-  <section class="mdc-card__actions">
+  <section class="mdc-card__action-bar">
     <button class="mdc-button mdc-button--compact mdc-card__action">Action</button>
   </section>
 </div>
