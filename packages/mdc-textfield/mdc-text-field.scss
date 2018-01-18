@@ -188,17 +188,7 @@
   }
 
   &.mdc-text-field--dense {
-    .mdc-text-field__input {
-      padding: 12px 12px 0;
-    }
-
-    .mdc-text-field__label {
-      bottom: 20px;
-
-      &--float-above {
-        transform: translateY(calc(-75% - 2px)) scale(.923, .923);
-      }
-    }
+    @include mdc-text-field-box-dense_;
   }
   // stylelint-enable plugin/selector-bem-pattern
 
