@@ -138,6 +138,10 @@
 }
 
 @mixin mdc-text-field-focused_ {
+  &:not(.mdc-text-field--invalid) {
+    @include mdc-text-field-label-color(primary);
+  }
+
   @include mdc-required-text-field-label-asterix_ {
     color: $mdc-text-field-error-on-light;
 

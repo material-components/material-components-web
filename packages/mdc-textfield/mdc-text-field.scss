@@ -106,20 +106,14 @@
       @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
     }
   }
-}
 
-// Move label when text-field gets autofilled in Chrome
-.mdc-text-field__input {
+  // Move label when text-field gets autofilled in Chrome
   // stylelint-disable plugin/selector-bem-pattern
   &:-webkit-autofill + .mdc-text-field__label {
     transform: translateY(-100%) scale(.75, .75);
     cursor: auto;
   }
   // stylelint-enable plugin/selector-bem-pattern
-}
-
-.mdc-text-field--focused:not(.mdc-text-field--invalid) {
-  @include mdc-text-field-label-color(primary);
 }
 
 .mdc-text-field--outlined {
@@ -207,6 +201,19 @@
     }
   }
   // stylelint-enable plugin/selector-bem-pattern
+
+  &:not(.mdc-text-field--upgraded) {
+    height: 56px;
+
+    &::before,
+    &::after {
+      border-radius: 0;
+    }
+
+    .mdc-text-field__input {
+      padding-top: 0;
+    }
+  }
 }
 
 .mdc-text-field--with-leading-icon {
@@ -418,18 +425,6 @@
   }
 }
 
-.mdc-text-field--box:not(.mdc-text-field--upgraded) {
-  height: 56px;
-
-  &::before,
-  &::after {
-    border-radius: 0;
-  }
-
-  .mdc-text-field__input {
-    padding-top: 0;
-  }
-}
 // postcss-bem-linter: end
 
 // postcss-bem-linter: define text-field-helper-text
