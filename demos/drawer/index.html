@@ -90,14 +90,5 @@
     </section>
 
     <script src="/assets/material-components-web.js" async></script>
-
-    <script>
-      [].slice.call(document.querySelectorAll('.examples button')).forEach(function(button) {
-        button.addEventListener('click', function(event) {
-          var iframeMainEl = event.target.parentNode.parentNode.querySelector('iframe').contentWindow.document.querySelector('body');
-          iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
-        });
-      });
-    </script>
   </body>
 </html>
