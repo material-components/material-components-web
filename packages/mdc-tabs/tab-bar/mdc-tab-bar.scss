@@ -20,14 +20,17 @@
 @import "./mixins";
 
 // postcss-bem-linter: define tab-bar
+
+@at-root {
+  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
+}
+
 .mdc-tab-bar {
   display: table;
   position: relative;
   height: 48px;
   margin: 0 auto;
   text-transform: uppercase;
-
-  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
 
   &__indicator {
     position: absolute;

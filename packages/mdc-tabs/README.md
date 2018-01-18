@@ -224,6 +224,9 @@ This mixin customizes the icon ink color.
 #### `mdc-tab-label-ink-color`
 This mixin customizes the label ink color.
 
+#### `mdc-tab-bar-indicator-ink-color`
+This mixin customizes the indicator ink color.
+
 ### Using the CSS-Only Component
 
 `mdc-tab-bar` ships with css for styling a tab layout according to the Material
