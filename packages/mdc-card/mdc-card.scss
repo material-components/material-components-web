@@ -15,8 +15,7 @@
 //
 
 @import "@material/elevation/mixins";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
+@import "@material/icon-toggle/mixins";
 @import "@material/rtl/mixins";
 
 // postcss-bem-linter: define card
@@ -31,12 +30,31 @@
 
 .mdc-card__actions {
   display: flex;
+  align-items: center;
   box-sizing: border-box;
   padding: 8px;
 }
 
-.mdc-card__actions--full-bleed {
-  padding: 0;
+.mdc-card__actions--with-icons {
+  justify-content: space-between;
+}
+
+.mdc-card__action-buttons,
+.mdc-card__action-icons {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.mdc-card__action {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-card__action.mdc-icon-toggle {
+  margin: -6px 0;
 }
 
 // Tweak button padding and margin when they're used as actions.
@@ -44,10 +62,18 @@
   @include mdc-rtl-reflexive-box(margin, right, 8px);
 }
 
-.mdc-card__actions--full-bleed .mdc-card__action {
-  box-sizing: content-box;
+.mdc-card__action--full-bleed {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
+  height: auto;
+  max-height: none;
   padding: 8px 16px;
+  text-align: left;
+
+  @include mdc-rtl("mdc-card") {
+    text-align: right;
+  }
 }
 
 // postcss-bem-linter: end

@@ -26,31 +26,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      .hero .demo-card {
-        width: 320px;
-        background-color: white;
-      }
-
-      .hero {
-        min-height: 480px;
-      }
-
-      .demo-card {
-        max-width: 21.875rem;
-        /* 350sp */
-        margin-bottom: 48px;
-      }
-
-      @media(min-width: 768px) {
-        .demo-card {
-          margin-bottom: 24px;
-        }
-      }
-
-      .demo-card--with-avatar .mdc-card__primary {
-        position: relative;
-      }
-
       .demo-card--with-avatar .demo-card__avatar {
         position: absolute;
         background: #bdbdbd;
@@ -61,21 +36,8 @@
         border-radius: 50%;
       }
 
-      .demo-card--with-avatar .mdc-card__title,
-      .demo-card--with-avatar .mdc-card__subtitle {
-        margin-left: 56px;
-      }
-
-      [dir="rtl"] .demo-card--with-avatar .mdc-card__title,
-      [dir="rtl"] .demo-card--with-avatar .mdc-card__subtitle {
-        margin-right: 56px;
-        margin-left: initial;
-      }
-
       .demo-card__16-9-media {
         background-image: url("images/16-9.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
         height: 12.313rem;
         /* 197sp, for 16:9 ratio with 350sp demo card width */
       }
@@ -95,25 +57,6 @@
         background-size: cover;
         background-repeat: no-repeat;
       }
-
-      .demo-card--bg-demo .mdc-card__primary,
-      .demo-card--bg-demo .mdc-card__actions {
-        background: rgba(0, 0, 0, .4);
-      }
-
-      #demo-wrapper {
-        margin: 24px;
-        display: flex;
-        flex-flow: row wrap;
-        align-content: left;
-        justify-content: left;
-        align-items: flex-start;
-      }
-
-      #demo-wrapper .demo-card {
-        margin: 24px;
-        min-width: 320px;
-      }
     </style>
   </head>
 
@@ -128,19 +71,37 @@
         </section>
       </div>
     </header>
+
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
+
       <section class="hero">
         <div class="mdc-card demo-card">
-          <section class="mdc-card__media demo-card__16-9-media"></section>
-          <section class="mdc-card__primary">
-            <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-            <h2 class="mdc-card__subtitle">Subtitle here</h2>
-          </section>
-          <section class="mdc-card__actions">
-            <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-            <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-          </section>
+          <div class="demo-card__media demo-card__16-9-media"></div>
+          <div class="demo-card__primary">
+            <h2 class="mdc-typography--title demo-card__title demo-card__title--large">Our Changing Planet</h2>
+            <h3 class="mdc-typography--subheading1 demo-card__subtitle">by Kurt Wagner</h3>
+          </div>
+          <div class="mdc-typography--body1 demo-card__secondary">
+            Visit ten places on our planet that are undergoing the biggest changes today.
+          </div>
+          <div class="mdc-card__actions mdc-card__actions--with-icons">
+            <div class="mdc-card__action-buttons">
+              <button class="mdc-button mdc-card__action">Read</button>
+              <button class="mdc-button mdc-card__action">Bookmark</button>
+            </div>
+            <div class="mdc-card__action-icons">
+              <i class="mdc-icon-toggle material-icons mdc-card__action"
+                 role="button"
+                 aria-label="Add to favorites"
+                 aria-pressed="false"
+                 tabindex="0"
+                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                favorite_border
+              </i>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -159,8 +120,12 @@
         </div>
       </section>
 
-      <section class="demo-typography--section" id="demo-wrapper">
+      <section class="demo-card-collection">
         <div class="mdc-card demo-card">
+          <div class="mdc-typography--subheading2 demo-card-article-group-heading">Headlines</div>
+
+          <hr class="mdc-list-divider">
+
           <a class="demo-card-article mdc-ripple-surface" href="javascript:">
             <h2 class="mdc-typography--headline demo-card-article__title">Copper on the rise</h2>
             <p class="mdc-typography--body1 demo-card-article__snippet">
@@ -190,15 +155,13 @@
 
           <hr class="mdc-list-divider">
 
-          <section class="mdc-card__actions mdc-card__actions--full-bleed">
-            <a class="mdc-button mdc-card__action demo-card-action" href="javascript:">
-              <span class="demo-card-action__text">All Business Headlines</span>
-              <i class="material-icons">arrow_forward</i>
-            </a>
-          </section>
+          <a class="mdc-button mdc-card__action mdc-card__action--full-bleed demo-card-action" href="javascript:">
+            <span class="demo-card-action__text">All Business Headlines</span>
+            <i class="material-icons">arrow_forward</i>
+          </a>
         </div>
 
-        <div class="mdc-card demo-card demo-card--with-avatar">
+        <div class="mdc-card demo-card">
           <section class="mdc-card__primary">
             <div class="demo-card__avatar"></div>
             <h1 class="mdc-card__title">Title</h1>
@@ -206,17 +169,17 @@
           </section>
           <section class="mdc-card__media demo-card__16-9-media"></section>
           <section class="mdc-card__actions mdc-card__actions--vertical">
-            <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-            <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+            <button class="mdc-button mdc-card__action">Action 1</button>
+            <button class="mdc-button mdc-card__action">Action 2</button>
           </section>
         </div>
 
-        <div class="mdc-card demo-card demo-card--small">
+        <div class="mdc-card demo-card">
           <section class="mdc-card__media">
             <h1 class="mdc-card__title mdc-card__title--large">Title</h1>
           </section>
           <section class="mdc-card__actions">
-            <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
+            <button class="mdc-button mdc-card__action">Action 1</button>
           </section>
         </div>
       </section>
@@ -225,17 +188,26 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var demoWrapper = document.getElementById('demo-wrapper');
-        document.getElementById('toggle-rtl').addEventListener('change', function() {
-          if (this.checked) {
-            demoWrapper.setAttribute('dir', 'rtl');
+        document.addEventListener('change', function(evt) {
+          var target = evt.target;
+          if (target.id !== 'toggle-rtl') {
+            return;
+          }
+
+          var docEl = document.documentElement;
+          if (target.checked) {
+            docEl.setAttribute('dir', 'rtl');
           } else {
-            demoWrapper.removeAttribute('dir');
+            docEl.removeAttribute('dir');
           }
         });
 
         [].forEach.call(document.querySelectorAll('.mdc-button'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
+        });
+
+        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggle) {
+          mdc.iconToggle.MDCIconToggle.attachTo(iconToggle);
         });
 
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
