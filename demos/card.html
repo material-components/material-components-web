@@ -48,10 +48,10 @@
             <div class="mdc-card__media-content"></div>
           </div>
           <div class="demo-card__primary">
-            <h2 class="mdc-typography--title demo-card__title demo-card__title--large">Our Changing Planet</h2>
-            <h3 class="mdc-typography--subheading1 demo-card__subtitle">by Kurt Wagner</h3>
+            <h2 class="demo-card__title mdc-typography--title">Our Changing Planet</h2>
+            <h3 class="demo-card__subtitle mdc-typography--subheading1">by Kurt Wagner</h3>
           </div>
-          <div class="mdc-typography--body1 demo-card__secondary">
+          <div class="demo-card__secondary mdc-typography--body1">
             Visit ten places on our planet that are undergoing the biggest changes today.
           </div>
           <div class="mdc-card__action-bar mdc-card__action-bar--with-icons">
@@ -60,15 +60,20 @@
               <button class="mdc-button mdc-card__action">Bookmark</button>
             </div>
             <div class="mdc-card__action-icons">
-              <i class="mdc-icon-toggle material-icons mdc-card__action"
+              <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
                  role="button"
                  aria-label="Add to favorites"
                  aria-pressed="false"
                  tabindex="0"
-                 data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-                 data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+                 data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+                 data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
                 favorite_border
               </i>
+              <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
+                <i class="material-icons" role="presentation">
+                  share
+                </i>
+              </button>
             </div>
           </div>
         </div>
@@ -91,13 +96,13 @@
 
       <section class="demo-card-collection">
         <div class="mdc-card demo-card">
-          <div class="mdc-typography--subheading2 demo-card-article-group-heading">Headlines</div>
+          <div class="demo-card-article-group-heading mdc-typography--subheading2">Headlines</div>
 
           <hr class="mdc-list-divider">
 
           <a class="demo-card-article mdc-ripple-surface" href="javascript:">
-            <h2 class="mdc-typography--headline demo-card-article__title">Copper on the rise</h2>
-            <p class="mdc-typography--body1 demo-card-article__snippet">
+            <h2 class="demo-card-article__title mdc-typography--headline">Copper on the rise</h2>
+            <p class="demo-card-article__snippet mdc-typography--body1">
               Copper price soars amid global market optimism and increased demand.
             </p>
           </a>
@@ -105,8 +110,8 @@
           <hr class="mdc-list-divider">
 
           <a class="demo-card-article mdc-ripple-surface" href="javascript:">
-            <h2 class="mdc-typography--headline demo-card-article__title">U.S. tech startups rebound</h2>
-            <p class="mdc-typography--body1 demo-card-article__snippet">
+            <h2 class="demo-card-article__title mdc-typography--headline">U.S. tech startups rebound</h2>
+            <p class="demo-card-article__snippet mdc-typography--body1">
               Favorable business conditions have allowed startups to secure more fundraising deals compared to last
               year.
             </p>
@@ -115,8 +120,8 @@
           <hr class="mdc-list-divider">
 
           <a class="demo-card-article mdc-ripple-surface" href="javascript:">
-            <h2 class="mdc-typography--headline demo-card-article__title">Asia's clean energy ambitions</h2>
-            <p class="mdc-typography--body1 demo-card-article__snippet">
+            <h2 class="demo-card-article__title mdc-typography--headline">Asia's clean energy ambitions</h2>
+            <p class="demo-card-article__snippet mdc-typography--body1">
               China plans to invest billions of dollars for the development of over 300 clean energy projects in
               Southeast Asia.
             </p>
