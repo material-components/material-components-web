@@ -25,39 +25,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .demo-card--with-avatar .demo-card__avatar {
-        position: absolute;
-        background: #bdbdbd;
-        height: 2.5rem;
-        /* 40sp */
-        width: 2.5rem;
-        /* 40sp */
-        border-radius: 50%;
-      }
-
-      .demo-card__16-9-media {
-        background-image: url("images/16-9.jpg");
-        height: 12.313rem;
-        /* 197sp, for 16:9 ratio with 350sp demo card width */
-      }
-
-      .demo-card--small .mdc-card__media {
-        background-image: url("images/1-1.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 10.938rem;
-        /* 175sp, for 1:1 ratio with 175sp demo card width */
-      }
-
-      .demo-card--bg-demo {
-        height: 21.875rem;
-        /* 350sp */
-        background-image: url("images/1-1.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-      }
-    </style>
   </head>
 
   <body class="mdc-typography">
@@ -77,7 +44,9 @@
 
       <section class="hero">
         <div class="mdc-card demo-card">
-          <div class="demo-card__media demo-card__16-9-media"></div>
+          <div class="demo-card__media demo-card__media-16-9">
+            <div class="demo-card__media-inner"></div>
+          </div>
           <div class="demo-card__primary">
             <h2 class="mdc-typography--title demo-card__title demo-card__title--large">Our Changing Planet</h2>
             <h3 class="mdc-typography--subheading1 demo-card__subtitle">by Kurt Wagner</h3>
@@ -167,7 +136,7 @@
             <h1 class="mdc-card__title">Title</h1>
             <h2 class="mdc-card__subtitle">Subhead</h2>
           </section>
-          <section class="mdc-card__media demo-card__16-9-media"></section>
+          <section class="mdc-card__media demo-card__media-16-9"></section>
           <section class="mdc-card__actions mdc-card__actions--vertical">
             <button class="mdc-button mdc-card__action">Action 1</button>
             <button class="mdc-button mdc-card__action">Action 2</button>
