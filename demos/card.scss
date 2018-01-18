@@ -19,3 +19,42 @@
 @import "../packages/mdc-card/mdc-card";
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
+@import "../packages/mdc-list/mdc-list";
+@import "../packages/mdc-ripple/mixins";
+
+.demo-card-article {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states;
+
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.demo-card-article__title {
+  margin: 0 0 4px 0;
+}
+
+.demo-card-article__snippet {
+  margin: 0;
+}
+
+.mdc-card__actions--full-bleed .demo-card-action {
+  display: flex;
+  align-items: center;
+  text-align: left;
+
+  [dir="rtl"] & {
+    text-align: right;
+  }
+}
+
+.mdc-card__actions--full-bleed .demo-card-action__text {
+  flex-grow: 1;
+}

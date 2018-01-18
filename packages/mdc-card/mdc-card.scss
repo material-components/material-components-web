@@ -20,169 +20,34 @@
 @import "@material/rtl/mixins";
 
 // postcss-bem-linter: define card
+
 .mdc-card {
   @include mdc-elevation(2);
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  box-sizing: border-box;
-  padding: 0;
   border-radius: 2px;
-  overflow: hidden;
+}
 
-  &__primary {
-    padding: 16px;
+.mdc-card__actions {
+  display: flex;
+  box-sizing: border-box;
+  padding: 8px;
+}
 
-    // Add extra space before large title.
-    .mdc-card__title--large {
-      padding-top: 8px;
-    }
+.mdc-card__actions--full-bleed {
+  padding: 0;
+}
 
-    // Add extra padding if this is the last block.
-    &:last-child {
-      padding-bottom: 24px;
-    }
-  }
+// Tweak button padding and margin when they're used as actions.
+.mdc-card__action:not(:last-child) {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+}
 
-  &__supporting-text {
-    @include mdc-typography(body1);
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    box-sizing: border-box;
-    padding: 8px 16px;
-
-    @include mdc-theme-dark(".mdc-card") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    // Remove top padding if immediately preceded by a primary block.
-    .mdc-card__primary + & {
-      margin-top: -8px;
-      padding-top: 0;
-    }
-
-    // Add extra padding if this is the last block.
-    &:last-child {
-      padding-bottom: 24px;
-    }
-  }
-
-  &__actions {
-    display: flex;
-    box-sizing: border-box;
-    padding: 8px;
-
-    // Adjust text color for dark theme.
-    @include mdc-theme-dark(".mdc-card") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    // Tweak button paddings and margins when they're used as actions
-    .mdc-card__action {
-      margin: 0 8px 0 0;
-
-      @include mdc-rtl {
-        margin: 0 0 0 8px;
-      }
-    }
-
-    .mdc-card__action:last-child {
-      @include mdc-rtl-reflexive-box(margin, right, 0);
-    }
-
-    // Vertical actions (one per line)
-    &--vertical {
-      flex-flow: column;
-      align-items: flex-start;
-
-      .mdc-card__action {
-        margin: 0 0 4px;
-      }
-
-      .mdc-card__action:last-child {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  &__media {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    box-sizing: border-box;
-    padding: 16px;
-  }
-
-  &__media-item {
-    display: inline-block;
-    width: auto;
-    height: 80px;
-    margin: 16px 0 0;
-    padding: 0;
-
-    @each $mult, $name in (1.5: "1dot5", 2: "2", 3: "3") {
-      // postcss-bem-linter: ignore
-      &--#{$name}x {
-        width: auto;
-        height: $mult * 80px;
-      }
-    }
-  }
-
-  &__title {
-    @include mdc-typography(body2);
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    // Adjust text color for dark theme.
-    @include mdc-theme-dark(".mdc-card") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    margin: -.063rem 0; // -1sp 0
-  }
-
-  &__title--large {
-    @include mdc-typography(headline);
-
-    margin: 0;
-  }
-
-  &__subtitle {
-    @include mdc-typography(body1);
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    // Adjust text color for dark theme.
-    @include mdc-theme-dark(".mdc-card") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    margin: -.063rem 0; // -1sp 0
-  }
-
-  &__horizontal-block {
-    @include mdc-rtl-reflexive-property(padding, 0, 16px);
-
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    box-sizing: border-box;
-
-    // postcss-bem-linter: ignore
-    .mdc-card__actions--vertical {
-      margin: 16px;
-    }
-
-    .mdc-card__media-item {
-      @include mdc-rtl-reflexive-box(margin, left, 16px);
-    }
-
-    // postcss-bem-linter: ignore
-    .mdc-card__media-item--3x {
-      margin-bottom: 16px;
-    }
-  }
+.mdc-card__actions--full-bleed .mdc-card__action {
+  box-sizing: content-box;
+  width: 100%;
+  padding: 8px 16px;
 }
 
 // postcss-bem-linter: end
