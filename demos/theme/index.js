@@ -157,7 +157,10 @@ class ThemePicker extends InteractivityProvider {
     });
   }
 
-  /** @private */
+  /**
+   * @param {!SafeTheme} safeNewTheme
+   * @private
+   */
   pushHistoryState_(safeNewTheme) {
     const hash = this.window_.location.hash || '';
     const url = `?theme=${unwrapSafeDemoTheme(safeNewTheme) + hash}`;
