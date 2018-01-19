@@ -73,6 +73,10 @@
   padding: 8px;
 }
 
+.mdc-card__action-bar--full-bleed {
+  padding: 0;
+}
+
 .mdc-card__action-buttons,
 .mdc-card__action-icons {
   display: flex;
@@ -111,7 +115,7 @@
   padding: 0 8px;
 }
 
-.mdc-card__actions--full-bleed .mdc-card__action {
+.mdc-card__action-bar--full-bleed .mdc-card__action {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -129,20 +133,20 @@
 // Action icons
 //
 
+.mdc-card__action--icon:not(:disabled) {
+  @include mdc-theme-prop(color, text-icon-on-background);
+  @include mdc-states;
+}
+
 // stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-card__action--icon.mdc-button {
   padding: 0 4px;
 }
 
-// Icon toggles are taller than buttons, so we need to adjust the margins to prevent the action bar from expanding.
+// Icon toggles are taller than buttons, so we need to adjust their margins to prevent the action bar from expanding.
 // stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-card__action--icon.mdc-icon-toggle {
   margin: -6px 0;
-}
-
-.mdc-card__action--icon:not(:disabled) {
-  @include mdc-theme-prop(color, text-icon-on-background);
-  @include mdc-states;
 }
 
 // postcss-bem-linter: end
