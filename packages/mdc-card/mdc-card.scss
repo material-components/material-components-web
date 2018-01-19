@@ -89,6 +89,10 @@
   justify-content: flex-end;
 }
 
+.mdc-card__action-buttons + .mdc-card__action-icons {
+  @include mdc-rtl-reflexive-box(margin, left, 16px);
+}
+
 //
 // Action items
 //
