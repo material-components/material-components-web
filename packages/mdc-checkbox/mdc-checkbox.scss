@@ -114,7 +114,6 @@
   }
 }
 
-
 .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
   .mdc-checkbox__checkmark {
     @include mdc-checkbox__checkmark--indeterminate_;
