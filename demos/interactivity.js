@@ -48,23 +48,21 @@ export class InteractivityProvider {
 
   /**
    * @param {string} id
-   * @param {!Document|!Element=} opt_root
+   * @param {!Document|!Element=} root
    * @return {?Element}
    * @protected
    */
-  getElementById_(id, opt_root) {
-    const root = opt_root || this.root_;
+  getElementById_(id, root = this.root_) {
     return root.querySelector(`#${id}`);
   }
 
   /**
    * @param {string} selector
-   * @param {!Document|!Element=} opt_root
+   * @param {!Document|!Element=} root
    * @return {!Array<!Element>}
    * @protected
    */
-  querySelectorAll_(selector, opt_root) {
-    const root = opt_root || this.root_;
+  querySelectorAll_(selector, root = this.root_) {
     return dom.getAll(selector, root);
   }
 }
@@ -169,7 +167,7 @@ export class HotSwapper extends InteractivityProvider {
 
   /**
    * @param {!Element} oldLink
-   * @param {string|undefined=} newUri
+   * @param {string=} newUri
    */
   hotSwapStylesheet(oldLink, newUri) {
     const oldUri = oldLink.getAttribute('href');

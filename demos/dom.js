@@ -17,12 +17,11 @@
 
 /**
  * @param {string} query
- * @param {!Document|!Element=} opt_root
+ * @param {!Document|!Element=} root
  * @return {!Array<!Element>}
  */
-export function getAll(query, opt_root) {
-  opt_root = opt_root || document;
-  return [].slice.call(opt_root.querySelectorAll(query));
+export function getAll(query, root = document) {
+  return [].slice.call(root.querySelectorAll(query));
 }
 
 /**
