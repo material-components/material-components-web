@@ -39,89 +39,59 @@ npm install --save @material/card
 
 ## Usage
 
+Bare bones:
+
 ```html
 <div class="mdc-card">
-  <section class="mdc-card__primary">
-    <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-    <h2 class="mdc-card__subtitle">Subtitle here</h2>
-  </section>
-  <section class="mdc-card__supporting-text">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-    commodo consequat.
-  </section>
-  <section class="mdc-card__action-bar">
-    <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-    <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-  </section>
+  Bare-bones
 </div>
 ```
 
-Cards don't come with a predefined width or height. They expand horizontally to fill all available space, and vertically
-to fit their contents.
+Fully-featured:
 
-If you'd like to maintain a consistent height and width across cards, you'll need to set it in your styles:
+```html
+<div class="mdc-card">
+  <div class="mdc-card__media mdc-card__media--auto-height">
+    <div class="mdc-card__media-content">Title</div>
+  </div>
+  <div class="mdc-card__action-bar">
+    <div class="mdc-card__action-buttons">
+      <div class="mdc-button mdc-card__action">Action 1</div>
+      <div class="mdc-button mdc-card__action">Action 2</div>
+    </div>
+    <div class="mdc-card__action-icons">
+      <i class="material-icons mdc-card__action" role="button" title="Share">share</i>
+      <i class="material-icons mdc-card__action" role="button" title="More">more_vert</i>
+    </div>
+  </div>
+</div>
+```
+
+Cards don't come with a predefined width, height, padding, or margin. They expand horizontally to fill all available
+space, and vertically to fit their contents.
+
+If you'd like to maintain a consistent width and height across cards, you'll need to set it in your styles:
 
 ```css
-.my-card-container .mdc-card {
+.my-card {
   height: 350px;
   width: 350px;
 }
 ```
 
-Content will be bottom-aligned if it's smaller than the height of the card.
-
-
-### Dark theme
-
-Cards can use a dark theme by either having the `mdc-card--theme-dark` option directly applied to the card:
-
-```html
-<div class="mdc-card mdc-card--theme-dark">
-  <section class="mdc-card__primary">
-    <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-    <h2 class="mdc-card__subtitle">Subtitle here</h2>
-  </section>
-  <section class="mdc-card__action-bar">
-    <button class="mdc-button mdc-button--theme-dark mdc-button--compact mdc-card__action">Action 1</button>
-    <button class="mdc-button mdc-button--theme-dark mdc-button--compact mdc-card__action">Action 2</button>
-  </section>
-</div>
-```
-
-Or by using the `mdc-theme--dark` global modifier class that affects all children:
-
-```html
-<body class="mdc-theme--dark">
-  <div class="mdc-card">
-    <section class="mdc-card__primary">
-      <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-      <h2 class="mdc-card__subtitle">Subtitle here</h2>
-    </section>
-    <section class="mdc-card__action-bar">
-      <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-      <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-    </section>
-  </div>
-</body>
-```
-
-
-
 ### Content blocks
 
-Cards are composed of different content blocks, which are typically laid out in vertical succession.
+Cards are composed of different content blocks, which are typically laid out vertically.
 
+Because every app is different, there are no "standard" layouts for card content; each app should define their own.
+
+However, MDC Card _does_ provide styles for two common card elements: _rich media_ (images or video) and _action bars_.
 
 #### Rich media
 
 ```css
 #example .mdc-card__media {
   background-image: url("pretty.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 90px;
 }
 ```
 
