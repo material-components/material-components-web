@@ -41,6 +41,20 @@
   background-color: white;
 }
 
+.demo-card--small {
+  width: 200px;
+}
+
+//
+// Small
+//
+
+.demo-card__action-icons--centered {
+  // `space-evenly` looks nicer, but not all browsers support it yet.
+  justify-content: space-around;
+  justify-content: space-evenly;
+}
+
 //
 // Text
 //
@@ -70,8 +84,14 @@
 //
 
 .demo-card__media {
+  background-image: url("/images/1-1.jpg");
+}
+
+.demo-card__media--16-9 {
   background-image: url("/images/16-9.jpg");
 }
+
+// TODO(acdvorak): Delete images/4-3.jpg - 4:3 ratio is not in spec
 
 //
 // News headlines

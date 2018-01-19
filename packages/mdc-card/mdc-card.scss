@@ -72,16 +72,21 @@
   padding: 8px;
 }
 
-.mdc-card__action-bar--with-icons {
-  justify-content: space-between;
-}
-
 .mdc-card__action-buttons,
 .mdc-card__action-icons {
   display: flex;
   align-items: center;
   box-sizing: border-box;
 }
+
+.mdc-card__action-icons {
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+//
+// Action items
+//
 
 .mdc-card__action {
   display: inline-flex;
@@ -91,31 +96,20 @@
   margin: 0;
 }
 
-.mdc-card__action:not(:last-child):not(.mdc-icon-toggle) {
+.mdc-card__action:not(:last-child) {
   @include mdc-rtl-reflexive-box(margin, right, 8px);
 }
 
+//
+// Action buttons
+//
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-card__action.mdc-button {
   padding: 0 8px;
 }
 
-.mdc-card__action--icon.mdc-button {
-  padding: 0 4px;
-}
-
-.mdc-card__action--icon:not(:disabled) {
-  @include mdc-theme-prop(color, text-icon-on-background);
-  @include mdc-states;
-}
-
-// Icon toggles are taller than buttons, so we need to adjust the margins to prevent the action bar from expanding.
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action--icon.mdc-icon-toggle {
-  margin-top: -6px;
-  margin-bottom: -6px;
-}
-
-.mdc-card__action--full-bleed {
+.mdc-card__actions--full-bleed .mdc-card__action {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -127,6 +121,26 @@
   @include mdc-rtl("mdc-card") {
     text-align: right;
   }
+}
+
+//
+// Action icons
+//
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-card__action--icon.mdc-button {
+  padding: 0 4px;
+}
+
+// Icon toggles are taller than buttons, so we need to adjust the margins to prevent the action bar from expanding.
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-card__action--icon.mdc-icon-toggle {
+  margin: -6px 0;
+}
+
+.mdc-card__action--icon:not(:disabled) {
+  @include mdc-theme-prop(color, text-icon-on-background);
+  @include mdc-states;
 }
 
 // postcss-bem-linter: end

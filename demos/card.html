@@ -44,7 +44,7 @@
 
       <section class="hero">
         <div class="mdc-card demo-card">
-          <div class="mdc-card__media mdc-card__media--auto-height mdc-card__media--16-9 demo-card__media">
+          <div class="mdc-card__media mdc-card__media--auto-height mdc-card__media--16-9 demo-card__media demo-card__media--16-9">
             <div class="mdc-card__media-content"></div>
           </div>
           <div class="demo-card__primary">
@@ -135,32 +135,47 @@
 
           <hr class="mdc-list-divider">
 
-          <a class="mdc-button mdc-card__action mdc-card__action--full-bleed demo-card-action" href="javascript:">
-            <span class="demo-card-action__text">All Business Headlines</span>
-            <i class="material-icons">arrow_forward</i>
-          </a>
+          <div class="mdc-card__actions mdc-card__actions--full-bleed">
+            <a class="mdc-button mdc-card__action demo-card-action" href="javascript:">
+              <span class="demo-card-action__text">All Business Headlines</span>
+              <i class="material-icons">arrow_forward</i>
+            </a>
+          </div>
         </div>
 
-        <div class="mdc-card demo-card">
-          <section class="mdc-card__primary">
-            <div class="demo-card__avatar"></div>
-            <h1 class="mdc-card__title">Title</h1>
-            <h2 class="mdc-card__subtitle">Subhead</h2>
-          </section>
-          <section class="mdc-card__media mdc-card__media--auto-height mdc-card__media--16-9 demo-card__media"></section>
-          <section class="mdc-card__action-bar mdc-card__action-bar--vertical">
-            <button class="mdc-button mdc-card__action">Action 1</button>
-            <button class="mdc-button mdc-card__action">Action 2</button>
-          </section>
-        </div>
-
-        <div class="mdc-card demo-card">
-          <section class="mdc-card__media">
-            <h1 class="mdc-card__title mdc-card__title--large">Title</h1>
-          </section>
-          <section class="mdc-card__action-bar">
-            <button class="mdc-button mdc-card__action">Action 1</button>
-          </section>
+        <div class="mdc-card demo-card demo-card--small">
+          <div class="mdc-card__media mdc-card__media--auto-height demo-card__media">
+            <div class="mdc-card__media-content"></div>
+          </div>
+          <div class="mdc-card__action-bar">
+            <div class="mdc-card__action-icons demo-card__action-icons--centered">
+              <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+                 tabindex="0"
+                 role="button"
+                 aria-pressed="false"
+                 aria-label="Add to favorites"
+                 title="Add to favorites"
+                 data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+                 data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+                favorite_border
+              </i>
+              <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+                 tabindex="0"
+                 role="button"
+                 aria-pressed="false"
+                 aria-label="Add bookmark"
+                 title="Add bookmark"
+                 data-toggle-on='{"content": "bookmark", "label": "Remove bookmark"}'
+                 data-toggle-off='{"content": "bookmark_border", "label": "Add bookmark"}'>
+                bookmark_border
+              </i>
+              <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
+                <i class="material-icons" role="presentation">
+                  share
+                </i>
+              </button>
+            </div>
+          </div>
         </div>
       </section>
     </main>
