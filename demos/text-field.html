@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/text-field.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -181,15 +182,15 @@
           <label for="outlined-rtl">RTL</label>
         </div>
         <div>
-          <input id="outlined-dark-theme" type="checkbox">
-          <label for="outlined-dark-theme">Dark Theme</label>
+          <input id="outlined-custom-colors" type="checkbox">
+          <label for="outlined-custom-colors">Alternate Colors</label>
         </div>
         <div>
           <input id="outlined-dense" type="checkbox">
           <label for="outlined-dense">Dense</label>
         </div>
         <script>
-          setTimeout(function() {
+          demoReady(function() {
             var tfEl = document.getElementById('tf-outlined-example');
             var tf = new mdc.textField.MDCTextField(tfEl);
             var wrapper = document.getElementById('demo-tf-outlined-wrapper');
@@ -204,14 +205,15 @@
               }
               tf.layout();
             });
-            document.getElementById('outlined-dark-theme').addEventListener('change', function(evt) {
-              wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+            document.getElementById('outlined-custom-colors').addEventListener('change', function(evt) {
+              tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
+              tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
             });
             document.getElementById('outlined-dense').addEventListener('change', function(evt) {
               tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
               tf.layout();
             });
-          }, 0);
+          });
         </script>
       </section>
 
@@ -246,7 +248,7 @@
           <label for="box-dense">Dense</label>
         </div>
         <script>
-          setTimeout(function() {
+          demoReady(function() {
             var tfEl = document.getElementById('tf-box-example');
             var tf = new mdc.textField.MDCTextField(tfEl);
             var wrapper = document.getElementById('demo-tf-box-wrapper');
@@ -272,11 +274,11 @@
               tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
               tf.layout();
             });
-          }, 0);
+          });
         </script>
       </section>
 
-      <section class="example">
+      <section class="example" id="demo-tf-icon-container">
         <h2>Text Field - Leading/Trailing icons</h2>
         <div id="demo-tf-box-leading-wrapper">
           <div id="tf-box-leading-example"
@@ -343,6 +345,10 @@
         <div>
           <input id="unclickable-leading-trailing" type="checkbox">
           <label for="unclickable-leading-trailing">Unclickable icons</label>
+        </div>
+        <div>
+          <input id="required-leading-trailing" type="checkbox">
+          <label for="required-leading-trailing">Required</label>
         </div>
       </section>
 
@@ -461,19 +467,21 @@
         </div>
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
+      demoReady(function() {
         var tfs = document.querySelectorAll(
           '.mdc-text-field:not([data-demo-no-auto-js])'
         );
         for (var i = 0, tf; tf = tfs[i]; i++) {
           mdc.textField.MDCTextField.attachTo(tf);
         }
-      })();
-    </script>
-    <script>
-      setTimeout(function() {
+      });
+
+      demoReady(function() {
+        var tfIconContainer = document.getElementById('demo-tf-icon-container');
+
         var tfBoxLeadingEl = document.getElementById('tf-box-leading-example');
         var tfBoxLeading = new mdc.textField.MDCTextField(tfBoxLeadingEl);
         var wrapperBoxLeading = document.getElementById('demo-tf-box-leading-wrapper');
@@ -541,23 +549,27 @@
           });
         });
 
-      }, 0);
-    </script>
-    <script>
-    (function() {
-      var wrapperCssOnly = document.getElementById('css-only-text-field-wrapper');
-      var tfCssOnly = document.getElementById('css-only-text-field');
+        document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
+          tfIconContainer.querySelectorAll('.mdc-text-field__input')
+              .forEach(function(input) {
+                input.required = evt.target.checked;
+              });
+        });
+      });
 
-      document.getElementById('css-only-tf-disabled').addEventListener('change', function(evt) {
-        tfCssOnly.disabled = evt.target.checked;
+      demoReady(function() {
+        var wrapperCssOnly = document.getElementById('css-only-text-field-wrapper');
+        var tfCssOnly = document.getElementById('css-only-text-field');
+
+        document.getElementById('css-only-tf-disabled').addEventListener('change', function(evt) {
+          tfCssOnly.disabled = evt.target.checked;
+        });
+        document.getElementById('css-only-dark-theme-tf').addEventListener('change', function(evt) {
+          wrapperCssOnly.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
+        });
       });
-      document.getElementById('css-only-dark-theme-tf').addEventListener('change', function(evt) {
-        wrapperCssOnly.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
-      });
-    })();
-    </script>
-    <script>
-      (function() {
+
+      demoReady(function() {
         var section = document.getElementById('demo-text-field-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var helperText = section.querySelector('.mdc-text-field-helper-text');
@@ -597,7 +609,6 @@
         });
         document.getElementById('use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
-          tf.helperTextElement = target.checked ? helperText : null;
           helperText.style.display = target.checked ? 'block' : 'none';
           document.getElementById('persistent-helper-text').disabled = !target.checked;
           document.getElementById('helper-text-as-validation').disabled = !target.checked;
@@ -614,10 +625,9 @@
             'mdc-text-field-helper-text--validation-msg'
           );
         });
-      })();
-    </script>
-    <script>
-      (function() {
+      });
+
+      demoReady(function() {
         var section = document.getElementById('demo-text-field-textarea-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var tf = new mdc.textField.MDCTextField(tfRoot);
@@ -641,10 +651,9 @@
           var target = evt.target;
           tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
         });
-      })();
-    </script>
-    <script charset="utf-8">
-      (function() {
+      });
+
+      demoReady(function() {
         var section = document.getElementById('demo-fullwidth-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var tfMultiRoot = section.querySelector('.mdc-text-field--textarea');
@@ -669,7 +678,7 @@
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
-      })();
+      });
     </script>
   </body>
 </html>

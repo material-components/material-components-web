@@ -310,4 +310,33 @@ if (IS_DEV) {
       createStaticDemoPlugin(),
     ],
   });
+
+  module.exports.push({
+    name: 'demo-js',
+    entry: {
+      'common': [path.resolve('./demos/common.js')],
+      'theme/index': [path.resolve('./demos/theme/index.js')],
+    },
+    output: {
+      path: OUT_DIR_ABS,
+      publicPath: DEMO_ASSET_DIR_REL,
+      filename: '[name].js',
+      libraryTarget: 'umd',
+      library: ['demo', '[name]'],
+    },
+    devtool: DEVTOOL,
+    module: {
+      rules: [{
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        },
+      }],
+    },
+    plugins: [
+      createBannerPlugin(),
+    ],
+  });
 }
