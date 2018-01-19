@@ -73,7 +73,6 @@ class Permalinker extends InteractivityProvider {
     this.flashCurrentSection_();
   }
 
-  // TODO(acdvorak): Replace page URL hash with current section on scroll
   /** @private */
   flashCurrentSection_() {
     const id = location.href.split('#')[1];
