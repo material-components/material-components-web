@@ -118,6 +118,10 @@
   // stylelint-enable plugin/selector-bem-pattern
 }
 
+.mdc-text-field--focused:not(.mdc-text-field--invalid) {
+  @include mdc-text-field-label-color(primary);
+}
+
 .mdc-text-field--outlined {
   height: 56px;
   border: none;
