@@ -282,16 +282,11 @@ export class HotSwapper extends InteractivityProvider {
    */
   static getInstance(root) {
     // Yeah, I know, this is gross.
-    if (!root.demoHotSwapperRootMap_) {
-      /** @type {?Map<{key:*, value:*}>} @private */
-      root.demoHotSwapperRootMap_ = new Map();
+    if (!root.demoHotSwapper_) {
+      /** @type {?HotSwapper} */
+      root.demoHotSwapper_ = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
     }
-    let instance = root.demoHotSwapperRootMap_.get(root);
-    if (!instance) {
-      instance = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
-      root.demoHotSwapperRootMap_.set(root, instance);
-    }
-    return instance;
+    return root.demoHotSwapper_;
   }
 }
 
