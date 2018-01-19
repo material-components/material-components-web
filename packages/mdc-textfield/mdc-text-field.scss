@@ -120,6 +120,18 @@
   @include mdc-text-field-outlined_;
 }
 
+.mdc-text-field--outlined.mdc-text-field--focused {
+  @include mdc-text-field-outlined-focused_;
+}
+
+.mdc-text-field--outlined.mdc-text-field--disabled {
+  @include mdc-text-field-outlined-disabled_;
+}
+
+.mdc-text-field--outlined.mdc-text-field--dense {
+  @include mdc-text-field-outlined-dense_;
+}
+
 .mdc-text-field--box {
   @include mdc-ripple-surface;
   @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
@@ -171,10 +183,10 @@
     @include mdc-theme-dark(".mdc-text-field") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
+  }
 
-    &--float-above {
-      transform: translateY(-50%) scale(.75, .75);
-    }
+  .mdc-text-field__label--float-above {
+    transform: translateY(-50%) scale(.75, .75);
   }
 
   .mdc-text-field__label--float-above {
@@ -182,28 +194,15 @@
       animation: invalid-shake-float-above-box 250ms 1;
     }
   }
-
-  &.mdc-text-field--disabled {
-    @include mdc-text-field-box-disabled_;
-  }
-
-  &.mdc-text-field--dense {
-    @include mdc-text-field-box-dense_;
-  }
   // stylelint-enable plugin/selector-bem-pattern
+}
 
-  &:not(.mdc-text-field--upgraded) {
-    height: 56px;
+.mdc-text-field--box.mdc-text-field--disabled {
+  @include mdc-text-field-box-disabled_;
+}
 
-    &::before,
-    &::after {
-      border-radius: 0;
-    }
-
-    .mdc-text-field__input {
-      padding-top: 0;
-    }
-  }
+.mdc-text-field--box.mdc-text-field--dense {
+  @include mdc-text-field-box-dense_;
 }
 
 .mdc-text-field--with-leading-icon {
@@ -415,6 +414,18 @@
   }
 }
 
+.mdc-text-field--box::not(.mdc-text-field--upgraded) {
+  height: 56px;
+
+  &::before,
+  &::after {
+    border-radius: 0;
+  }
+
+  .mdc-text-field__input {
+    padding-top: 0;
+  }
+}
 // postcss-bem-linter: end
 
 // postcss-bem-linter: define text-field-helper-text
