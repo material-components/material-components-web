@@ -35,7 +35,6 @@
   @include mdc-text-field-helper-text-color($idle-border);
   @include mdc-text-field-textarea-stroke-color($idle-border);
   @include mdc-text-field-icon-color($hover-border);
-  @include mdc-text-field-textarea-background-color(rgba(blue, .10));
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));

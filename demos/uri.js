@@ -16,36 +16,63 @@
  */
 
 (function() {
+  /**
+   * @param {!Object=} map
+   * @constructor
+   */
   function QueryString(map) {
-    this.params_ = map;
+    this.params_ = map || {};
   }
 
+  /**
+   * @param {string} key
+   * @return {boolean}
+   */
   QueryString.prototype.contains = function(key) {
     return key in this.params_;
   };
 
-  QueryString.prototype.getFirst = function(key, opt_default) {
-    var defaultValue = typeof opt_default === 'undefined' ? null : opt_default;
+  /**
+   * @param {string} key
+   * @param {string=} defaultIfNotPresent
+   * @return {?string}
+   */
+  QueryString.prototype.getFirst = function(key, defaultIfNotPresent) {
+    var defaultValue = typeof defaultIfNotPresent === 'undefined' ? null : defaultIfNotPresent;
     var list = this.getAll(key);
     return list.length ? list[0] : defaultValue;
   };
 
-  QueryString.prototype.getLast = function(key, opt_default) {
-    var defaultValue = typeof opt_default === 'undefined' ? null : opt_default;
+  /**
+   * @param {string} key
+   * @param {string=} defaultIfNotPresent
+   * @return {?string}
+   */
+  QueryString.prototype.getLast = function(key, defaultIfNotPresent) {
+    var defaultValue = typeof defaultIfNotPresent === 'undefined' ? null : defaultIfNotPresent;
     var list = this.getAll(key);
     return list.length ? list[list.length - 1] : defaultValue;
   };
 
-  QueryString.prototype.getAll = function(key, opt_default) {
-    var defaultValue = typeof opt_default === 'undefined' ? [] : opt_default;
+  /**
+   * @param {string} key
+   * @param {string=} defaultIfNotPresent
+   * @return {!Array<string>}
+   */
+  QueryString.prototype.getAll = function(key, defaultIfNotPresent) {
+    var defaultValue = typeof defaultIfNotPresent === 'undefined' ? [] : defaultIfNotPresent;
     return key in this.params_ ? this.params_[key] : defaultValue;
   };
 
-  QueryString.parse = function(opt_uri) {
-    var uri = typeof opt_uri === 'undefined' ? window.location.href : opt_uri;
+  /**
+   * @param {string=} uri
+   * @return {!QueryString}
+   */
+  QueryString.parse = function(uri) {
+    uri = typeof uri === 'undefined' ? window.location.href : uri;
 
     if (uri.indexOf('?') === -1) {
-      return new QueryString({});
+      return new QueryString();
     }
 
     var qsList = uri
@@ -70,7 +97,11 @@
     return new QueryString(qsMap);
   };
 
-  window.parseQueryString = function(opt_uri) {
-    return QueryString.parse(opt_uri);
+  /**
+   * @param {string=} uri
+   * @return {!QueryString}
+   */
+  window.parseQueryString = function(uri) {
+    return QueryString.parse(uri);
   };
 })();
