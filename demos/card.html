@@ -61,10 +61,11 @@
             </div>
             <div class="mdc-card__action-icons">
               <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
-                 role="button"
-                 aria-label="Add to favorites"
-                 aria-pressed="false"
                  tabindex="0"
+                 role="button"
+                 aria-pressed="false"
+                 aria-label="Add to favorites"
+                 title="Add to favorites"
                  data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
                  data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
                 favorite_border
@@ -72,6 +73,11 @@
               <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
                 <i class="material-icons" role="presentation">
                   share
+                </i>
+              </button>
+              <button class="mdc-button mdc-card__action mdc-card__action--icon" title="More options">
+                <i class="material-icons" role="presentation">
+                  more_vert
                 </i>
               </button>
             </div>
@@ -182,6 +188,11 @@
 
         [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggle) {
           mdc.iconToggle.MDCIconToggle.attachTo(iconToggle);
+        });
+
+        document.addEventListener('MDCIconToggle:change', function(evt) {
+          // TODO(acdvorak): Do this in icon-toggle
+          evt.target.setAttribute('title', evt.target.getAttribute('aria-label'));
         });
 
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
