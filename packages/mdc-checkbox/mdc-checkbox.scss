@@ -100,12 +100,14 @@
   }
 }
 
-.mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
-  @include mdc-checkbox__checkmark--checked_;
-}
+.mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
+  .mdc-checkbox__checkmark {
+    @include mdc-checkbox__checkmark--checked_;
+  }
 
-.mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
-  @include mdc-checkbox__checkmark--indeterminate_;
+  .mdc-checkbox__mixedmark {
+    @include mdc-checkbox__mixedmark--checked_;
+  }
 }
 
 .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark__path,
@@ -113,12 +115,14 @@
   @include mdc-checkbox__checkmark__path--marked_;
 }
 
-.mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
-  @include mdc-checkbox__mixedmark--checked_;
-}
+.mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+  .mdc-checkbox__checkmark {
+    @include mdc-checkbox__checkmark--indeterminate_;
+  }
 
-.mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
-  @include mdc-checkbox__mixedmark--indeterminate_;
+  .mdc-checkbox__mixedmark {
+    @include mdc-checkbox__mixedmark--indeterminate_;
+  }
 }
 
 // postcss-bem-linter: end
