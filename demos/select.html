@@ -131,6 +131,10 @@
           <label for="rtl">RTL</label>
         </div>
         <div>
+          <input type="checkbox" id="alternate-colors">
+          <label for="alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
         </div>
@@ -151,27 +155,6 @@
           <div class="mdc-select__bottom-line"></div>
         </div>
       </section>
-
-      <!--<section class="example">-->
-        <!--<h2>Select Multiple - CSS Only</h2>-->
-        <!--<select multiple size="8" class="mdc-multi-select mdc-list">-->
-
-          <!--<optgroup class="mdc-list-group" label="Fats, Oils, &amp; Sweets">-->
-            <!--<option class="mdc-list-item">Olive Oil</option>-->
-            <!--<option class="mdc-list-item">Brown Sugar</option>-->
-            <!--<option class="mdc-list-item">Ice Cream</option>-->
-          <!--</optgroup>-->
-          <!--<option class="mdc-list-divider" role="presentation" disabled />-->
-
-          <!--<optgroup class="mdc-list-group" label="Dairy">-->
-            <!--<option class="mdc-list-item">Milk</option>-->
-            <!--<option class="mdc-list-item">Cheese</option>-->
-            <!--<option class="mdc-list-item">More Cheese</option>-->
-          <!--</optgroup>-->
-
-        <!--</select>-->
-      <!--</section>-->
-
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -193,6 +176,7 @@
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');
         var darkThemeCb = document.getElementById('dark-theme');
         var rtlCb = document.getElementById('rtl');
+        var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
 
         darkThemeCb.addEventListener('change', function() {
@@ -204,6 +188,9 @@
           } else {
             boxDemoWrapper.removeAttribute('dir');
           }
+        });
+        alternateColorsCb.addEventListener('change', function() {
+          root.classList[alternateColorsCb.checked ? 'add' : 'remove']('demo-select-custom-colors');
         });
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;

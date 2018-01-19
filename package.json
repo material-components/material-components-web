@@ -66,12 +66,12 @@
     "karma-mocha": "^1.3.0",
     "karma-sauce-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-tap": "^2.1.4",
+    "karma-tap": "^4.0.0",
     "karma-webpack": "^2.0.4",
     "lerna": "2.0.0-beta.36",
     "lolex": "2.1.3",
     "mkdirp": "^0.5.1",
-    "mocha": "^4.0.0",
+    "mocha": "^5.0.0",
     "node-sass": "^4.0.0",
     "npm-run-all": "^4.1.1",
     "postcss-loader": "^2.0.3",
@@ -116,7 +116,7 @@
   },
   "config": {
     "validate-commit-msg": {
-      "helpMessage": "%s\nNOTE: Please see angular's commit message guidelines (https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit) for information on how to format commit messages.\n\nAs an example, here is a valid commit message: 'docs(slider): Document slider public api'\n\nIf this commit is on a development / WIP branch, you can disable this by running `git commit --no-verify`.",
+      "helpMessage": "%s\nNOTE: Please see angular's commit message guidelines (https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits) for information on how to format commit messages.\n\nAs an example, here is a valid commit message: 'docs(slider): Document slider public api'\n\nIf this commit is on a development / WIP branch, you can disable this by running `git commit --no-verify`.",
       "scope": {
         "allowed": [
           "animation",
