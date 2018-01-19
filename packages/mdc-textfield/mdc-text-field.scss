@@ -189,10 +189,10 @@
     @include mdc-theme-dark(".mdc-text-field") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
+  }
 
-    &--float-above {
-      transform: translateY(-50%) scale(.75, .75);
-    }
+  .mdc-text-field__label--float-above {
+    transform: translateY(-50%) scale(.75, .75);
   }
 
   .mdc-text-field__label--float-above {
@@ -200,25 +200,25 @@
       animation: invalid-shake-float-above-box 250ms 1;
     }
   }
-
-  &.mdc-text-field--disabled {
-    @include mdc-text-field-box-disabled_;
-  }
-
-  &.mdc-text-field--dense {
-    .mdc-text-field__input {
-      padding: 12px 12px 0;
-    }
-
-    .mdc-text-field__label {
-      bottom: 20px;
-
-      &--float-above {
-        transform: translateY(calc(-75% - 2px)) scale(.923, .923);
-      }
-    }
-  }
   // stylelint-enable plugin/selector-bem-pattern
+}
+
+.mdc-text-field--box.mdc-text-field--disabled {
+  @include mdc-text-field-box-disabled_;
+}
+
+.mdc-text-field--box.mdc-text-field--dense {
+  .mdc-text-field__input {
+    padding: 12px 12px 0;
+  }
+
+  .mdc-text-field__label {
+    bottom: 20px;
+  }
+
+  .mdc-text-field__label--float-above {
+    transform: translateY(calc(-75% - 2px)) scale(.923, .923);
+  }
 }
 
 .mdc-text-field--with-leading-icon {
