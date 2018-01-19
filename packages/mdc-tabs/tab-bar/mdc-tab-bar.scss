@@ -17,15 +17,11 @@
 @import "@material/animation/functions";
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
+@import "../mixins";
 
-.mdc-tab-bar__indicator,
-.mdc-tab__indicator {
-  position: absolute;
+.mdc-tab-bar__indicator {
+  @include mdc-tab-bar-indicator-mixin_;
   bottom: 0;
-  left: 0;
-  height: 2px;
-  @include mdc-theme-prop(background-color, text-primary-on-light);
-  visibility: hidden;
 }
 
 // postcss-bem-linter: define tab-bar

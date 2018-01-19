@@ -1,0 +1,7 @@
+@mixin mdc-tab-bar-indicator-mixin_ {
+  position: absolute;
+  left: 0;
+  height: 2px;
+  @include mdc-theme-prop(background-color, text-primary-on-light);
+  visibility: hidden;
+}
