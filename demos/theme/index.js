@@ -46,7 +46,7 @@ class Permalinker extends InteractivityProvider {
   /** @param {!Document|!Element} root */
   static attachTo(root) {
     const instance = new Permalinker(root);
-    instance.initialize();
+    instance.lazyInit();
     return instance;
   }
 
@@ -56,7 +56,7 @@ class Permalinker extends InteractivityProvider {
   }
 
   /** @override */
-  initialize() {
+  lazyInit() {
     this.root_.addEventListener('focusin', (evt) => {
       if (evt.target.classList.contains(classes.COMPONENT_SECTION_PERMALINK)) {
         evt.target.parentElement.classList.add(classes.COMPONENT_SECTION_HEADING_FOCUS_WITHIN);
@@ -106,7 +106,7 @@ class ThemePicker extends InteractivityProvider {
    */
   static attachTo(root, hotSwapper, toolbarProvider) {
     const instance = new ThemePicker(root);
-    instance.initialize(hotSwapper, toolbarProvider);
+    instance.lazyInit(hotSwapper, toolbarProvider);
     return instance;
   }
 
@@ -115,7 +115,7 @@ class ThemePicker extends InteractivityProvider {
    * @param {!ToolbarProvider} toolbarProvider
    * @override
    */
-  initialize(hotSwapper, toolbarProvider) {
+  lazyInit(hotSwapper, toolbarProvider) {
     /** @type {!HotSwapper} */
     this.hotSwapper_ = hotSwapper;
 

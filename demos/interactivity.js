@@ -44,7 +44,7 @@ export class InteractivityProvider {
     this.window_ = dom.getWindow(this.root_);
   }
 
-  initialize() {}
+  lazyInit() {}
 
   /**
    * @param {string} selector
@@ -61,12 +61,12 @@ export class ToolbarProvider extends InteractivityProvider {
   /** @param {!Document|!Element} root */
   static attachTo(root) {
     const instance = new ToolbarProvider(root);
-    instance.initialize();
+    instance.lazyInit();
     return instance;
   }
 
   /** @override */
-  initialize() {
+  lazyInit() {
     /** @type {?Element} */
     this.progressBarEl_ = this.root_.getElementById(ids.TOOLBAR_PROGRESS_BAR);
   }
@@ -92,7 +92,7 @@ export class HotSwapper extends InteractivityProvider {
    */
   static attachTo(root, toolbarProvider) {
     const instance = new HotSwapper(root);
-    instance.initialize(toolbarProvider);
+    instance.lazyInit(toolbarProvider);
     return instance;
   }
 
@@ -105,7 +105,7 @@ export class HotSwapper extends InteractivityProvider {
    * @param {!ToolbarProvider} toolbarProvider
    * @override
    */
-  initialize(toolbarProvider) {
+  lazyInit(toolbarProvider) {
     /** @type {!ToolbarProvider} */
     this.toolbarProvider_ = toolbarProvider;
 
