@@ -413,7 +413,7 @@
   }
 }
 
-.mdc-text-field--box::not(.mdc-text-field--upgraded) {
+.mdc-text-field--box:not(.mdc-text-field--upgraded) {
   height: 56px;
 
   &::before,
