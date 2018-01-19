@@ -95,5 +95,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `setContent(content: string) => void` | Sets the content of the helper text
+`setPersistent(isPersistent: boolean) => void` | Sets the helper text as persistent
+`setValidation(isValidation: boolean) => void` | Sets the helper text as a validation message
 `showToScreenReader() => void` | Makes the helper text visible to the screen reader
 `setValidity(inputIsValid: boolean) => void` | Sets the validity of the helper text based on the input validity

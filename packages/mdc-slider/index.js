@@ -202,4 +202,4 @@ class MDCSlider extends MDCComponent {
   }
 }
 
-export {MDCSlider};
+export {MDCSliderFoundation, MDCSlider};

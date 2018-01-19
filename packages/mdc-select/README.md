@@ -15,7 +15,7 @@ path: /catalog/input-controls/select-menus/
   </a>
 </div>-->
 
-MDC Select provides Material Design single-option and multi-option select menus. It functions analogously to the
+MDC Select provides Material Design single-option select menus. It functions analogously to the
 browser's native `<select>` element, and includes a gracefully degraded version that can be used
 in conjunction with the browser's native element. Both are fully accessible, and fully RTL-aware.
 
@@ -226,39 +226,7 @@ E.g.:
 </div>
 ```
 
-### Multi Select
-
-MDC-Web implements multi-select on top of the `<select multiple>` element.
-
-```html
-<select multiple size="6" class="mdc-multi-select mdc-list" >
-  <optgroup class="mdc-list-group" label="Starches">
-    <option class="mdc-list-item">
-      Potato
-    </option>
-    <option class="mdc-list-item">
-      Cereal
-    </option>
-  </optgroup>
-  <option class="mdc-list-divider" role="presentation" disabled />
-  <option>
-    misc...
-  </option>
-</select>
-```
-
-Select elements take a `size` attribute to determine the height of the select box.
-
-If you'd like to maintain the width or height outside of the attribute, you'll need to set it in your styles:
-
-```css
-.my-select-container .mdc-select {
-  width: 300px;
-  height: 550px;
-}
-```
-
-#### Classes
+#### CSS Classes
 
 | Class                    | Description                                     |
 | ------------------------ | ----------------------------------------------- |
@@ -268,6 +236,20 @@ If you'd like to maintain the width or height outside of the attribute, you'll n
 | `mdc-list-divider`       | A divider.                                      |
 
 It is advised that dividers also set `role="presentation"` to disable selection and not cloud accessibility.
+
+### Sass Mixins
+
+To customize the colors of any part of the select, use the following mixins. We recommend you use 
+these mixins within CSS selectors like `.foo-select` to apply styling. 
+
+Mixin | Description
+--- | ---
+`mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select. On the css version, this also customizes the color of the label.
+`mdc-select-container-fill-color($color)` | Customizes the background color of the select. 
+`mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state. This mixin is only used for the JS version of the select.
+`mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
+`mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
+`mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 
 ### MDC Select Component API
 

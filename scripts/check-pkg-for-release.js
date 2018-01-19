@@ -124,7 +124,7 @@ function checkDependencyAddedInMDCPackage() {
 
 function checkPkgDependencyAddedInMDCPackage() {
   assert.notEqual(typeof MASTER_PKG.dependencies[pkg.name], 'undefined',
-    'FAILURE: Component ' + pkg.name + ' is not a denpendency for MDC-web. ' +
+    'FAILURE: Component ' + pkg.name + ' is not a denpendency for MDC Web. ' +
     'Please add ' + pkg.name +' to ' + MASTER_PKG_PATH + '\' dependencies before commit.');
 }
 
@@ -139,7 +139,7 @@ function checkCSSDependencyAddedInMDCPackage() {
     assert.notEqual(typeof cssRules.find((value) => {
       return value.href === cssRule;
     }), 'undefined',
-    'FAILURE: Component ' + pkg.name + ' is not being imported in MDC-web. ' +
+    'FAILURE: Component ' + pkg.name + ' is not being imported in MDC Web. ' +
     'Please add ' + name + ' to ' + MASTER_CSS_PATH + ' import rule before commit.');
   }
 }
@@ -157,14 +157,14 @@ function checkJSDependencyAddedInMDCPackage() {
       },
     });
     assert(checkComponentImportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
-      pkg.name + ' is not being imported in MDC-web. ' + 'Please add ' + nameCamel +
+      pkg.name + ' is not being imported in MDC Web. ' + 'Please add ' + nameCamel +
       ' to '+ MASTER_JS_PATH + ' import rule before commit.');
     assert(checkComponentExportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
-      pkg.name + ' is not being exported in MDC-web. ' + 'Please add ' + nameCamel +
+      pkg.name + ' is not being exported in MDC Web. ' + 'Please add ' + nameCamel +
       ' to '+ MASTER_JS_PATH + ' export before commit.');
     if (NOT_AUTOINIT.indexOf(name) === -1) {
       assert(checkAutoInitAddedInMDCPackage(ast) > 0, 'FAILURE: Component ' +
-        pkg.name + ' seems not being auto inited in MDC-web. ' + 'Please add ' +
+        pkg.name + ' seems not being auto inited in MDC Web. ' + 'Please add ' +
         nameCamel + ' to '+ MASTER_JS_PATH + ' autoInit statement before commit.');
     }
   }

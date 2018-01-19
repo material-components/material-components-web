@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/tabs.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -671,111 +672,104 @@
           </section>
         </fieldset>
       </section>
-
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
-        setTimeout(function () {
+      demoReady(function() {
+        window.demoTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#demo-tab-bar'));
+        window.basicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar'));
+        window.basicTabBarCustomLabel = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar-custom-label-color'));
+        window.tabBarScroller = new mdc.tabs.MDCTabBarScroller(document.querySelector('#tab-bar-scroller'));
+        window.iconTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-tab-bar'));
+        window.iconTabBarCustomIcon = new mdc.tabs.MDCTabBar(document.querySelector('#icon-tab-bar-custom-icon-color'));
+        window.iconTextTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
+        window.iconTextTabBarLabel = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar-custom-colors'));
+        window.toolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar'));
+        window.toolbarTabBarModified = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-modified'));
+        window.primaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#primary-indicator-tab-bar'));
+        window.secondaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#secondary-indicator-tab-bar'));
+        window.primaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-primary-indicator'));
+        window.secondaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-secondary-indicator'));
 
-          window.demoTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#demo-tab-bar'));
-          window.basicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar'));
-          window.basicTabBarCustomLabel = new mdc.tabs.MDCTabBar(document.querySelector('#basic-tab-bar-custom-label-color'));
-          window.tabBarScroller = new mdc.tabs.MDCTabBarScroller(document.querySelector('#tab-bar-scroller'));
-          window.iconTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-tab-bar'));
-          window.iconTabBarCustomIcon = new mdc.tabs.MDCTabBar(document.querySelector('#icon-tab-bar-custom-icon-color'));
-          window.iconTextTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
-          window.iconTextTabBarLabel = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar-custom-colors'));
-          window.toolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar'));
-          window.toolbarTabBarModified = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-modified'));
-          window.primaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#primary-indicator-tab-bar'));
-          window.secondaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#secondary-indicator-tab-bar'));
-          window.primaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-primary-indicator'));
-          window.secondaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-secondary-indicator'));
+        var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
+        var dots = document.querySelector('.dots');
+        var panels = document.querySelector('.panels');
 
-          var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
-          var dots = document.querySelector('.dots');
-          var panels = document.querySelector('.panels');
+        dynamicTabBar.preventDefaultOnClick = true;
 
-          dynamicTabBar.preventDefaultOnClick = true;
+        function updateDot(index) {
+          var activeDot = dots.querySelector('.dot.active');
+          if (activeDot) {
+            activeDot.classList.remove('active');
+          }
+          var newActiveDot = dots.querySelector('.dot:nth-child(' + (index + 1) + ')');
+          if (newActiveDot) {
+            newActiveDot.classList.add('active');
+          }
+        }
 
-          function updateDot(index) {
-            var activeDot = dots.querySelector('.dot.active');
-            if (activeDot) {
-              activeDot.classList.remove('active');
-            }
-            var newActiveDot = dots.querySelector('.dot:nth-child(' + (index + 1) + ')');
-            if (newActiveDot) {
-              newActiveDot.classList.add('active');
-            }
+        function updatePanel(index) {
+          var activePanel = panels.querySelector('.panel.active');
+          if (activePanel) {
+            activePanel.classList.remove('active');
+          }
+          var newActivePanel = panels.querySelector('.panel:nth-child(' + (index + 1) + ')');
+          if (newActivePanel) {
+            newActivePanel.classList.add('active');
+          }
+        }
+
+        dynamicTabBar.listen('MDCTabBar:change', function (t) {
+          var dynamicTabBar = t.detail;
+          var nthChildIndex = dynamicTabBar.activeTabIndex;
+
+          updatePanel(nthChildIndex);
+          updateDot(nthChildIndex);
+        });
+
+        dots.addEventListener('click', function (evt) {
+          if (!evt.target.classList.contains('dot')) {
+            return;
           }
 
-          function updatePanel(index) {
-            var activePanel = panels.querySelector('.panel.active');
-            if (activePanel) {
-              activePanel.classList.remove('active');
-            }
-            var newActivePanel = panels.querySelector('.panel:nth-child(' + (index + 1) + ')');
-            if (newActivePanel) {
-              newActivePanel.classList.add('active');
-            }
+          evt.preventDefault();
+
+          var dotIndex = [].slice.call(dots.querySelectorAll('.dot')).indexOf(evt.target);
+
+          if (dotIndex >= 0) {
+            dynamicTabBar.activeTabIndex = dotIndex;
           }
 
-          dynamicTabBar.listen('MDCTabBar:change', function (t) {
-            var dynamicTabBar = t.detail;
-            var nthChildIndex = dynamicTabBar.activeTabIndex;
+          updatePanel(dotIndex);
+          updateDot(dotIndex);
+        });
 
-            updatePanel(nthChildIndex);
-            updateDot(nthChildIndex);
-          });
+        document.getElementById('toggle-rtl').addEventListener('click', function(evt) {
+          var mainElement = document.querySelector('#tabs-demo-main-section');
+          mainElement.hasAttribute('dir') ? mainElement.removeAttribute('dir') : mainElement.setAttribute('dir', 'rtl');
 
-          dots.addEventListener('click', function (evt) {
-            if (!evt.target.classList.contains('dot')) {
-              return;
-            }
-
-            evt.preventDefault();
-
-            var dotIndex = [].slice.call(dots.querySelectorAll('.dot')).indexOf(evt.target);
-
-            if (dotIndex >= 0) {
-              dynamicTabBar.activeTabIndex = dotIndex;
-            }
-
-            updatePanel(dotIndex);
-            updateDot(dotIndex);
-          });
-        },200)
-      })();
+          window.demoTabBar.layout();
+          window.basicTabBar.layout();
+          window.basicTabBarCustomLabel.layout();
+          window.tabBarScroller.layout();
+          window.tabBarScroller.tabBar.layout();
+          window.iconTabBarCustomIcon.layout();
+          window.iconTabBar.layout();
+          window.iconTextTabBar.layout();
+          window.iconTextTabBarLabel.layout();
+          window.toolbarTabBar.layout();
+          window.primaryIndicatorTabBar.layout();
+          window.secondaryIndicatorTabBar.layout();
+          window.primaryIndicatorToolbarTabBar.layout();
+          window.secondaryIndicatorToolbarTabBar.layout();
+          window.dynamicTabBar.layout();
+          toolbarTabBarModified.layout();
+        });
+        document.getElementById('toggle-dark-theme').addEventListener('click', function(evt) {
+          document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
+        });
+      });
     </script>
-    <script>
-        (function() {
-          document.getElementById('toggle-rtl').addEventListener('click', function(evt) {
-            var mainElement = document.querySelector('#tabs-demo-main-section');
-            mainElement.hasAttribute('dir') ? mainElement.removeAttribute('dir') : mainElement.setAttribute('dir', 'rtl');
-
-            window.demoTabBar.layout();
-            window.basicTabBar.layout();
-            window.basicTabBarCustomLabel.layout();
-            window.tabBarScroller.layout();
-            window.tabBarScroller.tabBar.layout();
-            window.iconTabBarCustomIcon.layout();
-            window.iconTabBar.layout();
-            window.iconTextTabBar.layout();
-            window.iconTextTabBarLabel.layout();
-            window.toolbarTabBar.layout();
-            window.primaryIndicatorTabBar.layout();
-            window.secondaryIndicatorTabBar.layout();
-            window.primaryIndicatorToolbarTabBar.layout();
-            window.secondaryIndicatorToolbarTabBar.layout();
-            window.dynamicTabBar.layout();
-            toolbarTabBarModified.layout();
-          });
-          document.getElementById('toggle-dark-theme').addEventListener('click', function(evt) {
-            document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
-          });
-        })();
-      </script>
-
   </body>
 </html>

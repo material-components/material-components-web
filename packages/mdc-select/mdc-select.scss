@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "./mixins";
 @import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/typography/mixins";
@@ -22,19 +23,22 @@
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 
-@mixin mdc-select-dd-arrow-svg-bg_($fill-hex-number: 000000, $opacity: .54) {
-  background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E);
-}
-
 $mdc-select-arrow-padding: 26px;
 $mdc-select-label-padding: 16px;
 $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timing-function;
 
 // postcss-bem-linter: define select
 .mdc-select {
-  @include mdc-typography(subheading2);
-  @include mdc-theme-prop(color, text-primary-on-light);
   @include mdc-select-dd-arrow-svg-bg_;
+  @include mdc-select-container-fill-color(rgba(white, .1));
+  @include mdc-select-ink-color(text-primary-on-light);
+  @include mdc-select-label-color(rgba(black, .6));
+  @include mdc-select-bottom-line-color(rgba(black, .5));
+
+  // Focused state colors
+  @include mdc-select-focused-bottom-line-color(primary);
+  @include mdc-select-focused-label-color(primary);
+  @include mdc-typography(subheading2);
 
   display: inline-flex;
   position: relative;
@@ -54,12 +58,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     background-position: left 10px center;
   }
 
-  @include mdc-theme-dark(".mdc-select") {
-    @include mdc-select-dd-arrow-svg-bg_("fff", .54);
-
-    background-color: rgba(white, .1);
-  }
-
   &__menu {
     position: fixed;
     top: 0;
@@ -71,7 +69,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
   &__surface {
     @include mdc-typography(subheading2);
-    @include mdc-theme-prop(color, text-primary-on-light);
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding, ".mdc-select");
     @include mdc-ripple-surface;
     @include mdc-ripple-radius;
@@ -93,7 +90,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     border: none;
     border-radius: 4px 4px 0 0;
     outline: none;
-    background-color: rgba(black, .04);
     // Resets for <select> element
     appearance: none;
     overflow: hidden;
@@ -106,13 +102,8 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     bottom: 12px;
     transform-origin: left top;
     transition: $mdc-select-menu-transition;
-    color: rgba(black, .6);
     pointer-events: none;
     will-change: transform;
-
-    @include mdc-theme-dark(".mdc-select") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
 
     @include mdc-rtl(".mdc-select") {
       transform-origin: right top;
@@ -132,10 +123,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
       mdc-animation-exit-temporary(transform, 125ms);
     white-space: nowrap;
     overflow: hidden;
-
-    @include mdc-theme-dark(".mdc-select") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
   }
 
   &__bottom-line {
@@ -147,16 +134,13 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     transform: scaleY(1);
     transform-origin: bottom;
     transition: $mdc-select-menu-transition;
-    background-color: rgba(black, .5);
 
     &::after {
-      @include mdc-theme-prop(background-color, primary);
-
       position: absolute;
-      bottom: -1px;
+      bottom: 0;
       left: 0;
       width: 100%;
-      height: 2px;
+      height: 1px;
       transform: scaleX(0);
       transition: $mdc-select-menu-transition;
       opacity: 0;
@@ -167,19 +151,13 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
   &__bottom-line--active {
     &::after {
-      transform: scaleX(1);
       opacity: 1;
     }
   }
 
-  // JS-enhanced and CSS-only Selects require different selectors for focused bottom-line due to different DOM structure
-  &__surface:focus .mdc-select__bottom-line,
-  &__surface:focus ~ .mdc-select__bottom-line {
-    @include mdc-theme-prop(background-color, primary);
-
-    transform: scaleY(2);
-
+  @include mdc-select-focused-bottom-line_ {
     &::after {
+      transform: scale(1, 2);
       opacity: 1;
     }
   }
@@ -203,11 +181,8 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 
   .mdc-select__bottom-line {
-    @include mdc-theme-prop(background-color, primary);
-
-    transform: scaleY(2);
-
     &::after {
+      transform: scaleY(2);
       opacity: 1;
     }
   }
@@ -215,7 +190,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
 .mdc-select--disabled,
 .mdc-select[disabled] {
-  @include mdc-theme-prop(color, text-disabled-on-light);
+  @include mdc-select-label-color_(text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
 
   border-bottom-width: 1px;
@@ -294,99 +269,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
         @include mdc-theme-prop(color, text-primary-on-dark);
       }
     }
-  }
-}
-
-// postcss-bem-linter: define multi-select
-.mdc-multi-select {
-  @include mdc-theme-prop(border-color, text-hint-on-light);
-
-  width: 250px;
-  padding: 0;
-  border-width: 1px;
-  border-style: solid;
-  outline: none;
-  appearance: none;
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(border-color, text-hint-on-dark);
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-group {
-    @include mdc-theme-prop(color, text-hint-on-light);
-
-    margin: 16px 0 0;
-    padding: 0 0 0 16px;
-    font-weight: normal;
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-hint-on-dark);
-    }
-
-    &:last-child {
-      margin-bottom: 16px;
-    }
-
-    .mdc-list-divider {
-      margin-left: -16px;
-    }
-    // stylelint-enable plugin/selector-bem-pattern
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-item {
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    margin: 0 0 0 -16px;
-    padding: 0 16px;
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    &:first-child {
-      margin-top: 12px;
-    }
-
-    &:last-child {
-      margin-bottom: 8px;
-    }
-
-    // Browsers are inconsistent in what they allow us to override, and some (e.g. Chrome) don't allow overriding the
-    // OS-determined selection color, which states styles are not going to play well with.
-    // Additionally, Firefox seems to ignore position: relative on option elements, which causes the pseudo elements
-    // that we use for ripple/states to position and size themselves relative to the entire body instead.
-    // Disabling states-specific styles on multi-select options altogether is the most straightforward recourse.
-    &::before,
-    &::after {
-      content: none;
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list-item:checked {
-    @include mdc-theme-prop(background-color, background);
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(background-color, text-primary-on-dark);
-    }
-  }
-
-  .mdc-list-divider {
-    margin-bottom: 8px;
-    padding-top: 8px;
-    font-size: 0;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
-.mdc-multi-select:focus .mdc-list-item:checked {
-  @include mdc-theme-prop(background-color, primary);
-
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(background-color, text-primary-on-dark);
   }
 }
 
