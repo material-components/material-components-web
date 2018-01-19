@@ -21,6 +21,10 @@
   transform: translateX(-107%);
   transform: translateX(calc(-100% - 20px));
   will-change: transform;
+
+  @include mdc-rtl {
+    transform: translateX(calc(100% + 20px));
+  }
 }
 
 @mixin mdc-slideable-drawer-rtl {
