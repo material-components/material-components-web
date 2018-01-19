@@ -138,6 +138,10 @@
 }
 
 @mixin mdc-text-field-focused_ {
+  &:not(.mdc-text-field--invalid) {
+    @include mdc-text-field-label-color(primary);
+  }
+
   @include mdc-required-text-field-label-asterix_ {
     color: $mdc-text-field-error-on-light;
 
@@ -316,6 +320,20 @@
     @include mdc-theme-dark() {
       @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-dark);
     }
+  }
+}
+
+@mixin mdc-text-field-box-dense_ {
+  .mdc-text-field__input {
+    padding: 12px 12px 0;
+  }
+
+  .mdc-text-field__label {
+    bottom: 20px;
+  }
+
+  .mdc-text-field__label--float-above {
+    transform: translateY(calc(-75% - 2px)) scale(.923, .923);
   }
 }
 
