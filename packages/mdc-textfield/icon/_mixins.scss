@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
 // limitations under the License.
 //
 
-@import "@material/theme/variables";
-@import "@material/theme/mixins";
+// Public mixins
 
-.mdc-text-field--with-leading-icon .mdc-text-field__icon,
-.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
-  position: absolute;
-  bottom: 16px;
-  cursor: pointer;
+@mixin mdc-text-field-icon-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-icon-color_($color);
+  }
 }
 
-.mdc-text-field__icon:not([tabindex]),
-.mdc-text-field__icon[tabindex="-1"] {
-  cursor: default;
-  pointer-events: none;
+// Private mixins
+
+@mixin mdc-text-field-icon-color_($color) {
+  .mdc-text-field__icon {
+    @include mdc-theme-prop(color, $color);
+  }
 }

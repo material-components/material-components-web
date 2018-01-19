@@ -44,11 +44,8 @@
   @include mdc-text-field-ink-color(text-primary-on-light);
   @include mdc-text-field-label-color($mdc-text-field-light-label);
   @include mdc-text-field-helper-text-color(text-hint-on-light);
-
-  // Outline specific colors
-  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
-  @include mdc-text-field-focused-outline-color(primary);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider-on-light);
+  @include mdc-text-field-icon-color($mdc-text-field-underline-on-light);
 
   display: inline-block;
   position: relative;
@@ -123,6 +120,11 @@
 }
 
 .mdc-text-field--outlined {
+  // Outline specific colors
+  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
+  @include mdc-text-field-focused-outline-color(primary);
+
   height: 56px;
   border: none;
 
@@ -218,11 +220,13 @@
   @include mdc-ripple-radius;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
 
+  // Colors
+  @include mdc-text-field-box-background-color($mdc-text-field-box-background);
+
   display: inline-flex;
   position: relative;
   height: 56px;
   margin-top: 16px;
-  background-color: $mdc-text-field-box-background;
   overflow: hidden;
 
   @include mdc-theme-dark(".mdc-text-field", true) {
@@ -251,7 +255,6 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-text-field-icon-padding});
-    color: $mdc-text-field-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -435,7 +438,7 @@
     height: 56px;
     margin: 0;
     border: none;
-    border-bottom: 1px solid $mdc-text-field-divider-on-light;
+    border-bottom: 1px solid;
     outline: none;
 
     .mdc-text-field__input {
@@ -458,85 +461,6 @@
 
   // stylelint-enable plugin/selector-bem-pattern
 }
-
-// Graceful degredation for css-only inputs
-
-.mdc-text-field {
-  &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
-    border-bottom: 1px solid $mdc-text-field-divider-on-light;
-
-    &:focus {
-      @include mdc-theme-prop(border-color, primary);
-    }
-
-    &:disabled {
-      @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
-
-      border-bottom-style: dotted;
-    }
-
-    // stylelint-disable selector-max-specificity
-    &:invalid:not(:focus) {
-      border-color: $mdc-text-field-error-on-light;
-    }
-    // stylelint-enable selector-max-specificity
-  }
-
-  @include mdc-theme-dark {
-    &:not(.mdc-text-field--upgraded) .mdc-text-field__input {
-      &:not(:focus) {
-        border-color: $mdc-text-field-underline-on-dark-idle;
-      }
-
-      &:disabled {
-        @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
-
-        border-color: $mdc-text-field-disabled-border-on-dark;
-        background-color: $mdc-textarea-disabled-background-on-dark;
-      }
-
-      // stylelint-disable selector-max-specificity
-      &:invalid:not(:focus) {
-        border-color: $mdc-text-field-error-on-dark;
-      }
-      // stylelint-enable selector-max-specificity
-    }
-  }
-}
-
-.mdc-text-field--outlined:not(.mdc-text-field--upgraded) {
-  height: 56px;
-
-  .mdc-text-field__input {
-    @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
-
-    height: 100%;
-    padding: 0 0 0 12px;
-    border: 1px solid $mdc-text-field-outlined-idle-border;
-
-    &:hover {
-      border-color: $mdc-text-field-outlined-hover-border;
-    }
-
-    &:focus {
-      @include mdc-theme-prop(border-color, primary);
-    }
-  }
-}
-
-.mdc-text-field--box:not(.mdc-text-field--upgraded) {
-  height: 56px;
-
-  &::before,
-  &::after {
-    border-radius: 0;
-  }
-
-  .mdc-text-field__input {
-    padding-top: 0;
-  }
-}
-// postcss-bem-linter: end
 
 // postcss-bem-linter: define text-field-helper-text
 

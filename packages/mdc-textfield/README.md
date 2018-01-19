@@ -215,6 +215,7 @@ Mixin | Description
 `mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
 `mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
 `mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
+`mdc-text-field-box-background-color($color)` | Customized the background color of the text-field box. 
 
 ### `MDCTextField`
 
