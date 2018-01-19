@@ -295,8 +295,7 @@ class MDCRippleFoundation extends MDCFoundation {
 
     // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
     const previousActivationEvent = this.previousActivationEvent_;
-    const isSameInteraction = previousActivationEvent && e && previousActivationEvent.type !== e.type &&
-      previousActivationEvent.clientX === e.clientX && previousActivationEvent.clientY === e.clientY;
+    const isSameInteraction = previousActivationEvent && e && previousActivationEvent.type !== e.type;
     if (isSameInteraction) {
       return;
     }
@@ -428,7 +427,7 @@ class MDCRippleFoundation extends MDCFoundation {
     this.activationState_ = this.defaultActivationState_();
     // Touch devices may fire additional events for the same interaction within a short time.
     // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-    setTimeout(() => this.previousActivationEvent_ = null, 100);
+    setTimeout(() => this.previousActivationEvent_ = null, MDCRippleFoundation.numbers.TAP_DELAY_MS);
   }
 
   /**
