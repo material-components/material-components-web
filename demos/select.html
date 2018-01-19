@@ -20,7 +20,8 @@
     <title>Select Menu - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <script src="/assets/select.css.js"></script>
+    <link rel="stylesheet" href="/assets/select.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -130,6 +131,10 @@
           <label for="rtl">RTL</label>
         </div>
         <div>
+          <input type="checkbox" id="alternate-colors">
+          <label for="alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
         </div>
@@ -150,42 +155,16 @@
           <div class="mdc-select__bottom-line"></div>
         </div>
       </section>
-
-      <section class="example">
-        <h2>Select Multiple - CSS Only</h2>
-        <select multiple size="8" class="mdc-multi-select mdc-list">
-
-          <optgroup class="mdc-list-group" label="Fats, Oils, &amp; Sweets">
-            <option class="mdc-list-item">Olive Oil</option>
-            <option class="mdc-list-item">Brown Sugar</option>
-            <option class="mdc-list-item">Ice Cream</option>
-          </optgroup>
-          <option class="mdc-list-divider" role="presentation" disabled />
-
-          <optgroup class="mdc-list-group" label="Dairy">
-            <option class="mdc-list-item">Milk</option>
-            <option class="mdc-list-item">Cheese</option>
-            <option class="mdc-list-item">More Cheese</option>
-          </optgroup>
-
-        </select>
-      </section>
-
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      setTimeout(function() {
-        var MDCSelect = mdc.select.MDCSelect;
-        var heroSelect = document.getElementById('hero-js-select');
-        var heroSelectComponent = new mdc.select.MDCSelect(heroSelect);
-      }, 300);
-    </script>
-    <script>
-      setTimeout(function() {
-        var MDCSelect = mdc.select.MDCSelect;
+      demoReady(function() {
+        mdc.select.MDCSelect.attachTo(document.getElementById('hero-js-select'));
+
         var root = document.getElementById('js-select-box');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
-        var select = new MDCSelect(root);
+        var select = new mdc.select.MDCSelect(root);
 
         root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];
@@ -197,6 +176,7 @@
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');
         var darkThemeCb = document.getElementById('dark-theme');
         var rtlCb = document.getElementById('rtl');
+        var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
 
         darkThemeCb.addEventListener('change', function() {
@@ -209,10 +189,13 @@
             boxDemoWrapper.removeAttribute('dir');
           }
         });
+        alternateColorsCb.addEventListener('change', function() {
+          root.classList[alternateColorsCb.checked ? 'add' : 'remove']('demo-select-custom-colors');
+        });
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-      }, 300);
+      });
     </script>
   </body>
 </html>
