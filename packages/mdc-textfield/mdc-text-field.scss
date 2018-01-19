@@ -207,6 +207,7 @@
   @include mdc-text-field-box-disabled_;
 }
 
+// stylelint-disable plugin/selector-bem-pattern
 .mdc-text-field--box.mdc-text-field--dense {
   .mdc-text-field__input {
     padding: 12px 12px 0;
@@ -220,6 +221,7 @@
     transform: translateY(calc(-75% - 2px)) scale(.923, .923);
   }
 }
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--with-leading-icon {
   .mdc-text-field__input {
