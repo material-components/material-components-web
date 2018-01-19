@@ -123,7 +123,7 @@ class ThemePicker extends InteractivityProvider {
     this.toolbarProvider_ = toolbarProvider;
 
     /** @type {?Element} */
-    this.themeMenuEl_ = this.getElementById_(ids.THEME_COLOR_MENU);
+    this.themeMenuEl_ = this.root_.getElementById(ids.THEME_COLOR_MENU);
 
     this.registerThemeMenuOpenHandler_();
     this.registerThemeMenuChangeHandler_();
@@ -134,7 +134,7 @@ class ThemePicker extends InteractivityProvider {
   /** @private */
   registerThemeMenuOpenHandler_() {
     const menu = new mdc.menu.MDCSimpleMenu(this.themeMenuEl_);
-    const actionEl = this.getElementById_(ids.THEME_COLOR_MENU_ACTION);
+    const actionEl = this.root_.getElementById(ids.THEME_COLOR_MENU_ACTION);
     actionEl.addEventListener('click', () => menu.open = !menu.open);
   }
 
@@ -170,7 +170,7 @@ class ThemePicker extends InteractivityProvider {
    * @private
    */
   swapTheme_(safeNewTheme) {
-    const oldLink = this.getElementById_(ids.THEME_STYLESHEET);
+    const oldLink = this.root_.getElementById(ids.THEME_STYLESHEET);
     const newUri = `/assets/theme/theme-${unwrapSafeDemoTheme(safeNewTheme)}.css`;
     this.hotSwapper_.hotSwapStylesheet(oldLink, newUri);
     this.selectThemeInMenu_(safeNewTheme);
@@ -199,7 +199,7 @@ class ThemePicker extends InteractivityProvider {
     oldSelectedItems.forEach((colorIcon) => colorIcon.classList.remove(selectedMenuItemClass));
     newSelectedItem.classList.add(selectedMenuItemClass);
 
-    this.getElementById_(menuActionId).setAttribute(themeAttr, unwrappedSafeNewTheme);
+    this.root_.getElementById(menuActionId).setAttribute(themeAttr, unwrappedSafeNewTheme);
   }
 }
 

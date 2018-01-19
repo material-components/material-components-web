@@ -47,16 +47,6 @@ export class InteractivityProvider {
   initialize() {}
 
   /**
-   * @param {string} id
-   * @param {!Document|!Element=} root
-   * @return {?Element}
-   * @protected
-   */
-  getElementById_(id, root = this.root_) {
-    return root.querySelector(`#${id}`);
-  }
-
-  /**
    * @param {string} selector
    * @param {!Document|!Element=} root
    * @return {!Array<!Element>}
@@ -78,7 +68,7 @@ export class ToolbarProvider extends InteractivityProvider {
   /** @override */
   initialize() {
     /** @type {?Element} */
-    this.progressBarEl_ = this.getElementById_(ids.TOOLBAR_PROGRESS_BAR);
+    this.progressBarEl_ = this.root_.getElementById(ids.TOOLBAR_PROGRESS_BAR);
   }
 
   /** @param {boolean} isLoading */
