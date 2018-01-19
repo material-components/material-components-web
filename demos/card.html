@@ -44,9 +44,7 @@
 
       <section class="hero">
         <div class="mdc-card demo-card">
-          <div class="mdc-card__media mdc-card__media--auto-height mdc-card__media--16-9 demo-card__media demo-card__media--16-9">
-            <div class="mdc-card__media-content"></div>
-          </div>
+          <div class="mdc-card__media mdc-card__media--auto-height mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></div>
           <div class="demo-card__primary">
             <h2 class="demo-card__title mdc-typography--title">Our Changing Planet</h2>
             <h3 class="demo-card__subtitle mdc-typography--subheading1">by Kurt Wagner</h3>
@@ -85,7 +83,7 @@
         </div>
       </section>
 
-      <section class="example">
+      <section class="demo-card-toggles">
         <div class="mdc-form-field">
           <div class="mdc-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
@@ -143,9 +141,13 @@
           </div>
         </div>
 
-        <div class="mdc-card demo-card demo-card--small">
+        <div class="mdc-card demo-card demo-card--photo-album">
           <div class="mdc-card__media mdc-card__media--auto-height demo-card__media">
-            <div class="mdc-card__media-content"></div>
+            <div class="mdc-card__media-content demo-card__media-content--with-title">
+              <div class="demo-card__media-title mdc-typography--subheading2">
+                Vacation Photos
+              </div>
+            </div>
           </div>
           <div class="mdc-card__action-bar">
             <div class="mdc-card__action-icons demo-card__action-icons--centered">
@@ -174,6 +176,53 @@
                   share
                 </i>
               </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdc-card demo-card demo-card--music-album">
+          <div class="demo-card__music-row">
+            <div class="mdc-card__media mdc-card__media--auto-height demo-card__media demo-card__media--music"></div>
+            <div class="demo-card__music-info">
+              <div class="demo-card__music-title mdc-typography--headline">Rozes</div>
+              <div class="demo-card__music-artist mdc-typography--body1">Under the Grave</div>
+              <div class="demo-card__music-year mdc-typography--body1">(2016)</div>
+            </div>
+          </div>
+          <hr class="mdc-list-divider">
+          <div class="mdc-card__action-bar">
+            <div class="mdc-card__action-buttons demo-card__action-buttons--text">Rate this album</div>
+            <div class="mdc-card__action-icons">
+              <i class="material-icons mdc-card__action mdc-card__action--icon"
+                 tabindex="0"
+                 role="button"
+                 title="1 star">
+                star_border
+              </i>
+              <i class="material-icons mdc-card__action mdc-card__action--icon"
+                 tabindex="0"
+                 role="button"
+                 title="2 stars">
+                star_border
+              </i>
+              <i class="material-icons mdc-card__action mdc-card__action--icon"
+                 tabindex="0"
+                 role="button"
+                 title="3 stars">
+                star_border
+              </i>
+              <i class="material-icons mdc-card__action mdc-card__action--icon"
+                 tabindex="0"
+                 role="button"
+                 title="4 stars">
+                star_border
+              </i>
+              <i class="material-icons mdc-card__action mdc-card__action--icon"
+                 tabindex="0"
+                 role="button"
+                 title="5 stars">
+                star_border
+              </i>
             </div>
           </div>
         </div>

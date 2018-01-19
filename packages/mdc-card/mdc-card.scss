@@ -69,6 +69,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  min-height: 52px;
   padding: 8px;
 }
 
@@ -94,6 +95,7 @@
   box-sizing: border-box;
   min-width: auto;
   margin: 0;
+  cursor: pointer;
 }
 
 .mdc-card__action:not(:last-child) {

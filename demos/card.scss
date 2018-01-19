@@ -32,17 +32,24 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  justify-content: center;
   padding: 0 24px;
 }
 
 .demo-card {
   width: 350px;
-  margin: 24px;
+  margin: 48px;
   background-color: white;
 }
 
-.demo-card--small {
+.demo-card--photo-album {
   width: 200px;
+}
+
+.demo-card-toggles {
+  margin: 24px;
+  padding: 24px;
+  text-align: center;
 }
 
 //
@@ -50,9 +57,29 @@
 //
 
 .demo-card__action-icons--centered {
-  // `space-evenly` looks nicer, but not all browsers support it yet.
-  justify-content: space-around;
-  justify-content: space-evenly;
+  justify-content: center;
+}
+
+.demo-card__action-buttons--text {
+  padding: 8px;
+}
+
+//
+// Music
+//
+
+.demo-card__music-row {
+  display: flex;
+}
+
+.demo-card__media--music {
+  width: 110px;
+}
+
+.demo-card__music-info {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
 }
 
 //
@@ -89,6 +116,18 @@
 
 .demo-card__media--16-9 {
   background-image: url("/images/16-9.jpg");
+}
+
+.demo-card__media-content--with-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.demo-card__media-title {
+  padding: 8px 16px;
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.5) 100%);
+  color: white;
 }
 
 // TODO(acdvorak): Delete images/4-3.jpg - 4:3 ratio is not in spec
