@@ -47,11 +47,6 @@ fieldset {
   border: 0;
 }
 
-.mdc-toolbar__icon,
-.mdc-toolbar__menu-icon {
-  @include mdc-toolbar-icon-ink-color(#f0f0f0);
-}
-
 .mdc-button {
   @include mdc-theme-dark {
     @include mdc-button-ink-color($dark-button-color);
