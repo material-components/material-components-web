@@ -26,7 +26,7 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
   - [Using the foundation](#using-the-foundation)
   - [Using the vanilla DOM adapter](#using-the-vanilla-dom-adapter)
 - [Tips/Tricks](#tipstricks)
-  - [Integrating ripples into MDC-Web components](#integrating-ripples-into-mdc-web-components)
+  - [Integrating ripples into MDC Web components](#integrating-ripples-into-mdc-web-components)
   - [Using a sentinel element for a ripple](#using-a-sentinel-element-for-a-ripple)
   - [Keyboard interaction for custom UI components](#keyboard-interaction-for-custom-ui-components)
   - [Specifying known element dimensions](#specifying-known-element-dimensions)
@@ -285,10 +285,10 @@ class MyMDCComponent extends MDCComponent {
 
 ## Tips/Tricks
 
-### Integrating ripples into MDC-Web components
+### Integrating ripples into MDC Web components
 
 Usually, you'll want to leverage `::before` and `::after` pseudo-elements when integrating the
-ripple into MDC-Web components. Furthermore, when defining your component, you can instantiate the
+ripple into MDC Web components. Furthermore, when defining your component, you can instantiate the
 ripple foundation at the top level, and share logic between those adapters.
 
 ### Using a sentinel element for a ripple
