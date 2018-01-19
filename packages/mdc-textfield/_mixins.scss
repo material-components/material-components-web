@@ -213,7 +213,7 @@
     transform: translateY(calc(-122% - 2px)) scale(.923);
   }
 
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-outlined-dense 250ms 1;
   }
 
@@ -253,7 +253,7 @@
     transform: scale(.75) translateY(-170%);
   }
 
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-outlined 250ms 1;
   }
 
