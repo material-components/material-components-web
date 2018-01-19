@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/ripple.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -129,8 +130,8 @@
     </header>
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
-      <section class="hero mdc-ripple-surface">
-      </section>
+
+      <section class="hero mdc-ripple-surface"></section>
 
       <section class="example">
         <div>
@@ -189,7 +190,6 @@
             Secondary
           </div>
         </div>
-
       </section>
       <section class="example">
         <div>
@@ -200,20 +200,20 @@
           <h2>Applied to <code>&lt;button&gt;</code> element - CSS Only</h2>
           <button type="button" class="mdc-ripple-surface mdc-elevation--z2 demo-surface" data-demo-no-js>button</button>
         </div>
-
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function(global) {
-        if (!mdc.ripple.util.supportsCssVariables(global)) {
+      demoReady(function() {
+        if (!mdc.ripple.util.supportsCssVariables(window)) {
           document.documentElement.classList.add('unsupported');
         }
 
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface:not([data-demo-no-js])'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
         });
-      })(this);
+      });
     </script>
   </body>
 </html>

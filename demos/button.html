@@ -365,7 +365,7 @@
         }
 
         var demoWrapper = document.querySelector('.demo-wrapper');
-        document.getElementById('toggle-dark').addEventListener('change', function () {
+        document.getElementById('toggle-dark').addEventListener('change', function() {
           if (this.checked) {
             demoWrapper.classList.add('mdc-theme--dark');
           } else {
@@ -373,12 +373,11 @@
           }
         });
 
-        document.getElementById('toggle-disabled').addEventListener('change', function () {
+        document.getElementById('toggle-disabled').addEventListener('change', function() {
           var isDisabled = this.checked;
           [].slice.call(document.querySelectorAll('button')).forEach(function(button) {
             button.disabled = isDisabled;
           });
-
         });
       });
     </script>

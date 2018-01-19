@@ -88,7 +88,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     /** @private {number} */
     this.animationRequestId_ = 0;
 
-    this.setPointerXOffset_ = (evt) => this.setBottomLineOrigin_(evt);
     this.displayHandler_ = (evt) => {
       evt.preventDefault();
       if (!this.adapter_.isMenuOpen()) {
@@ -123,9 +122,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.registerMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.registerInteractionHandler(evtType, this.setPointerXOffset_);
-    });
     this.resize();
   }
 
@@ -140,9 +136,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.deregisterMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.deregisterInteractionHandler(evtType, this.setPointerXOffset_);
-    });
   }
 
   getValue() {
@@ -228,16 +221,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       this.adapter_.openMenu(focusIndex);
       this.isFocused_ = true;
     });
-  }
-
-  setBottomLineOrigin_(evt) {
-    const targetClientRect = evt.target.getBoundingClientRect();
-    const evtCoords = {x: evt.clientX, y: evt.clientY};
-    const normalizedX = evtCoords.x - targetClientRect.left;
-    const attributeString =
-      `transform-origin: ${normalizedX}px bottom`;
-
-    this.adapter_.setBottomLineAttr('style', attributeString);
   }
 
   setMenuStylesForOpenAtIndex_(index) {

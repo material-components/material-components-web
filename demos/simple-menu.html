@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/simple-menu.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -254,151 +255,153 @@
       </div>
     </main>
 
-    <script src="/assets/material-components-web.js"></script>
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      var menuEl = document.querySelector('#demo-menu');
-      var menu = new mdc.menu.MDCSimpleMenu(menuEl);
-      var menuButtonEl = document.querySelector('#menu-button');
-      menuButtonEl.addEventListener('click', function() {
-        menu.open = !menu.open;
-      });
+      demoReady(function() {
+        var menuEl = document.querySelector('#demo-menu');
+        var menu = new mdc.menu.MDCSimpleMenu(menuEl);
+        var menuButtonEl = document.querySelector('#menu-button');
+        menuButtonEl.addEventListener('click', function() {
+          menu.open = !menu.open;
+        });
 
-      var dark = document.querySelector('input[name="dark"]');
-      dark.addEventListener('change', function(evt) {
-        var contentEl = document.querySelector('.demo-content');
-        if (evt.target.checked) {
-          contentEl.classList.add('mdc-theme--dark');
-          menuEl.classList.add('mdc-simple-menu--theme-dark');
-        } else {
-          contentEl.classList.remove('mdc-theme--dark');
-          menuEl.classList.remove('mdc-simple-menu--theme-dark');
-        }
-      });
-
-      var radios = document.querySelectorAll('input[name="position"]');
-      var anchor = document.querySelector('.mdc-menu-anchor');
-      // Initialize to top left.
-      anchor.style.setProperty('top', '0');
-      anchor.style.setProperty('left', '0');
-      for (var i = 0; i < radios.length; i++) {
-        radios[i].addEventListener('change', function(evt) {
+        var dark = document.querySelector('input[name="dark"]');
+        dark.addEventListener('change', function(evt) {
+          var contentEl = document.querySelector('.demo-content');
           if (evt.target.checked) {
-            if (evt.target.value) {
-              anchor.style.removeProperty('top');
-              anchor.style.removeProperty('right');
-              anchor.style.removeProperty('bottom');
-              anchor.style.removeProperty('left');
+            contentEl.classList.add('mdc-theme--dark');
+            menuEl.classList.add('mdc-simple-menu--theme-dark');
+          } else {
+            contentEl.classList.remove('mdc-theme--dark');
+            menuEl.classList.remove('mdc-simple-menu--theme-dark');
+          }
+        });
 
-              var vertical = evt.target.value.split(' ')[0];
-              var horizontal = evt.target.value.split(' ')[1];
-              if (vertical === 'middle') {
-                anchor.style.setProperty('top', '35%');
-              } else {
-                anchor.style.setProperty(vertical, '0');
+        var radios = document.querySelectorAll('input[name="position"]');
+        var anchor = document.querySelector('.mdc-menu-anchor');
+        // Initialize to top left.
+        anchor.style.setProperty('top', '0');
+        anchor.style.setProperty('left', '0');
+        for (var i = 0; i < radios.length; i++) {
+          radios[i].addEventListener('change', function(evt) {
+            if (evt.target.checked) {
+              if (evt.target.value) {
+                anchor.style.removeProperty('top');
+                anchor.style.removeProperty('right');
+                anchor.style.removeProperty('bottom');
+                anchor.style.removeProperty('left');
+
+                var vertical = evt.target.value.split(' ')[0];
+                var horizontal = evt.target.value.split(' ')[1];
+                if (vertical === 'middle') {
+                  anchor.style.setProperty('top', '35%');
+                } else {
+                  anchor.style.setProperty(vertical, '0');
+                }
+                anchor.style.setProperty(horizontal, '0');
               }
-              anchor.style.setProperty(horizontal, '0');
             }
-          }
-        });
-      }
-
-      radios = document.querySelectorAll('input[name="menu-position"]');
-      for (var i = 0; i < radios.length; i++) {
-        radios[i].addEventListener('change', function(evt) {
-          if (evt.target.checked) {
-            switch (evt.target.value) {
-              case "top start":
-                menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.TOP_START);
-                break;
-              case "bottom start":
-                menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.BOTTOM_START);
-                break;
-              case "top end":
-                menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.TOP_END);
-                break;
-              case "bottom end":
-                menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.BOTTOM_END);
-                break;
-            }
-          }
-        });
-      }
-
-      const marginInputsEl = document.querySelector('#margin-inputs');
-      var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
-      for (var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('change', function(evt) {
-          const topMarginInput = document.getElementById('top-margin');
-          const bottomMarginInput = document.getElementById('bottom-margin');
-          const rightMarginInput = document.getElementById('right-margin');
-          const leftMarginInput = document.getElementById('left-margin');
-          const margin = {top: parseInt(topMarginInput.value, 10),
-                          right: parseInt(rightMarginInput.value, 10),
-                          bottom: parseInt(bottomMarginInput.value, 10),
-                          left: parseInt(leftMarginInput.value, 10)};
-          menu.setAnchorMargin(margin);
-        });
-      }
-
-      const rtl = document.querySelector('input[name="is-rtl"]');
-      rtl.addEventListener('change', function() {
-        const demoWrapper = document.getElementById('demo-wrapper');
-        if (rtl.checked) {
-          demoWrapper.setAttribute('dir', 'rtl');
-        } else {
-          demoWrapper.removeAttribute('dir');
+          });
         }
-      });
 
-      radios = document.querySelectorAll('input[name="menu-length"]');
-      for (var i = 0; i < radios.length; i++) {
-        radios[i].addEventListener('change', function(evt) {
-          if (evt.target.checked) {
-            switch (evt.target.value) {
-              case "small":
-                menuEl.classList.remove('demo-menu--long');
-                menuEl.classList.remove('demo-menu--extra-long');
-                break;
-              case "large":
-                menuEl.classList.add('demo-menu--long');
-                menuEl.classList.remove('demo-menu--extra-long');
-                break;
-              case "tall":
-                menuEl.classList.remove('demo-menu--long');
-                menuEl.classList.add('demo-menu--extra-long');
-                break;
+        radios = document.querySelectorAll('input[name="menu-position"]');
+        for (var i = 0; i < radios.length; i++) {
+          radios[i].addEventListener('change', function(evt) {
+            if (evt.target.checked) {
+              switch (evt.target.value) {
+                case "top start":
+                  menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.TOP_START);
+                  break;
+                case "bottom start":
+                  menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.BOTTOM_START);
+                  break;
+                case "top end":
+                  menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.TOP_END);
+                  break;
+                case "bottom end":
+                  menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.BOTTOM_END);
+                  break;
+              }
             }
+          });
+        }
+
+        const marginInputsEl = document.querySelector('#margin-inputs');
+        var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].addEventListener('change', function(evt) {
+            const topMarginInput = document.getElementById('top-margin');
+            const bottomMarginInput = document.getElementById('bottom-margin');
+            const rightMarginInput = document.getElementById('right-margin');
+            const leftMarginInput = document.getElementById('left-margin');
+            const margin = {top: parseInt(topMarginInput.value, 10),
+                            right: parseInt(rightMarginInput.value, 10),
+                            bottom: parseInt(bottomMarginInput.value, 10),
+                            left: parseInt(leftMarginInput.value, 10)};
+            menu.setAnchorMargin(margin);
+          });
+        }
+
+        const rtl = document.querySelector('input[name="is-rtl"]');
+        rtl.addEventListener('change', function() {
+          const demoWrapper = document.getElementById('demo-wrapper');
+          if (rtl.checked) {
+            demoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            demoWrapper.removeAttribute('dir');
           }
         });
-      }
 
-      radios = document.querySelectorAll('input[name="anchor-width"]');
-      for (var i = 0; i < radios.length; i++) {
-        radios[i].addEventListener('change', function(evt) {
-          if (evt.target.checked) {
-            switch (evt.target.value) {
-              case "tiny":
-                menuButtonEl.classList.remove('demo-button--normal');
-                menuButtonEl.classList.remove('demo-button--long');
-                break;
-              case "regular":
-                menuButtonEl.classList.add('demo-button--normal');
-                menuButtonEl.classList.remove('demo-button--long');
-                break;
-              case "wide":
-                menuButtonEl.classList.remove('demo-button--normal');
-                menuButtonEl.classList.add('demo-button--long');
-                break;
+        radios = document.querySelectorAll('input[name="menu-length"]');
+        for (var i = 0; i < radios.length; i++) {
+          radios[i].addEventListener('change', function(evt) {
+            if (evt.target.checked) {
+              switch (evt.target.value) {
+                case "small":
+                  menuEl.classList.remove('demo-menu--long');
+                  menuEl.classList.remove('demo-menu--extra-long');
+                  break;
+                case "large":
+                  menuEl.classList.add('demo-menu--long');
+                  menuEl.classList.remove('demo-menu--extra-long');
+                  break;
+                case "tall":
+                  menuEl.classList.remove('demo-menu--long');
+                  menuEl.classList.add('demo-menu--extra-long');
+                  break;
+              }
             }
-          }
-        });
-      }
+          });
+        }
 
-      var lastSelected = document.getElementById('last-selected');
-      menuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
-        var detail = evt.detail;
-        lastSelected.textContent = '"' + detail.item.textContent.trim() +
-          '" at index ' + detail.index;
+        radios = document.querySelectorAll('input[name="anchor-width"]');
+        for (var i = 0; i < radios.length; i++) {
+          radios[i].addEventListener('change', function(evt) {
+            if (evt.target.checked) {
+              switch (evt.target.value) {
+                case "tiny":
+                  menuButtonEl.classList.remove('demo-button--normal');
+                  menuButtonEl.classList.remove('demo-button--long');
+                  break;
+                case "regular":
+                  menuButtonEl.classList.add('demo-button--normal');
+                  menuButtonEl.classList.remove('demo-button--long');
+                  break;
+                case "wide":
+                  menuButtonEl.classList.remove('demo-button--normal');
+                  menuButtonEl.classList.add('demo-button--long');
+                  break;
+              }
+            }
+          });
+        }
+
+        var lastSelected = document.getElementById('last-selected');
+        menuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
+          var detail = evt.detail;
+          lastSelected.textContent = '"' + detail.item.textContent.trim() +
+            '" at index ' + detail.index;
+        });
       });
     </script>
   </body>

@@ -25,97 +25,96 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-    .demo-grid {
-      background-color: #DDDDDD;
-      margin-bottom: 32px;
-    }
+      .demo-grid {
+        background-color: #DDDDDD;
+        margin-bottom: 32px;
+      }
 
-    .demo-cell {
-      box-sizing: border-box;
-      background-color: #666666;
-      height: 200px;
-      padding: 8px;
-      color: white;
+      .demo-cell {
+        box-sizing: border-box;
+        background-color: #666666;
+        height: 200px;
+        padding: 8px;
+        color: white;
 
-      font-size: 1.5em;
-    }
+        font-size: 1.5em;
+      }
 
-    .demo-parent-cell {
-      position: relative;
-      background-color: #aaaaaa;
-    }
+      .demo-parent-cell {
+        position: relative;
+        background-color: #aaaaaa;
+      }
 
-    .demo-parent-cell>span{
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      font-size: 1.5em;
-      color: white;
-    }
+      .demo-parent-cell>span{
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        font-size: 1.5em;
+        color: white;
+      }
 
-    .demo-child-cell {
-      position: relative;
-    }
+      .demo-child-cell {
+        position: relative;
+      }
 
-    .demo-child-cell>span{
-      position: absolute;
-      bottom: 8px;
-      right: 8px;
-      color: #ddd;
-    }
+      .demo-child-cell>span{
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        color: #ddd;
+      }
 
-    .demo-grid.max-width {
-      max-width: 1280px;
-    }
+      .demo-grid.max-width {
+        max-width: 1280px;
+      }
 
-    .demo-grid-legend {
-      margin: 16px 0 8px 0;
-    }
+      .demo-grid-legend {
+        margin: 16px 0 8px 0;
+      }
 
-    .demo-ruler {
-      position: fixed;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      bottom: 0;
-      left: 0;
-      height: 20px;
-      width: 100%;
-      margin: 0;
-      background: black;
-      color: white;
-    }
+      .demo-ruler {
+        position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        bottom: 0;
+        left: 0;
+        height: 20px;
+        width: 100%;
+        margin: 0;
+        background: black;
+        color: white;
+      }
 
-    .demo-controls {
-      display: none;
-      margin-bottom: 8px;
-    }
-    .demo-warning::after {
-      content: "This browser does not support custom properties, so margins and gutters cannot be changed at runtime.";
-    }
-
-    @supports (--foo: green) {
       .demo-controls {
-        display: block;
+        display: none;
+        margin-bottom: 8px;
       }
-
       .demo-warning::after {
-        content: "";
+        content: "This browser does not support custom properties, so margins and gutters cannot be changed at runtime.";
       }
-    }
 
-    .examples {
-      margin: 24px;
-    }
+      @supports (--foo: green) {
+        .demo-controls {
+          display: block;
+        }
 
-    .hero .demo-grid {
-      min-width: 360px;
-    }
+        .demo-warning::after {
+          content: "";
+        }
+      }
 
-    .hero .demo-cell {
-      height: 60px;
-    }
+      .examples {
+        margin: 24px;
+      }
 
+      .hero .demo-grid {
+        min-width: 360px;
+      }
+
+      .hero .demo-cell {
+        height: 60px;
+      }
     </style>
   </head>
   <body class="mdc-typography">
@@ -417,13 +416,11 @@
         </section>
 
         <div class="demo-ruler"><div id="current"></div></div>
-    </section>
-
+      </section>
     </main>
 
     <script>
-      (function(global) {
-        'use strict';
+      (function() {
         var fluidContainerSection = document.getElementById('layout-grid-in-fluid-container');
         var fixedWidthSection = document.getElementById('fixed-column-width-layout-grid');
 
@@ -514,7 +511,7 @@
         };
         window.addEventListener('resize', update);
         update();
-      })(this);
+      })();
     </script>
   </body>
 </html>

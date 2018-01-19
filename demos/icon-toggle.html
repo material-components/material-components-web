@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/icon-toggle.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -41,16 +42,15 @@
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
         <div class="demo-wrapper">
-          <i
-          class="mdc-icon-toggle material-icons"
-          role="button"
-          aria-label="Add to favorites"
-          aria-pressed="false"
-          tabindex="0"
-          data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-          data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-          <!-- Prevent FOUC by putting the initial content in -->
-          favorite_border
+          <i class="mdc-icon-toggle material-icons"
+             role="button"
+             aria-label="Add to favorites"
+             aria-pressed="false"
+             tabindex="0"
+             data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+             data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+             <!-- Prevent FOUC by putting the initial content in -->
+             favorite_border
           </i>
         </div>
       </section>
@@ -60,15 +60,15 @@
           <h2>Using Material Icons</h2>
           <div class="demo-wrapper">
             <i id="add-to-favorites"
-            class="mdc-icon-toggle material-icons"
-            role="button"
-            aria-label="Add to favorites"
-            aria-pressed="false"
-            tabindex="0"
-            data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-            data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-            <!-- Prevent FOUC by putting the initial content in -->
-            favorite_border
+               class="mdc-icon-toggle material-icons"
+               role="button"
+               aria-label="Add to favorites"
+               aria-pressed="false"
+               tabindex="0"
+               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+               <!-- Prevent FOUC by putting the initial content in -->
+               favorite_border
             </i>
           </div>
           <p>Favorited? <span id="favorited-status">no</span></p>
@@ -78,13 +78,13 @@
           <h2>Using Font Awesome</h2>
           <div class="demo-wrapper">
             <span class="mdc-icon-toggle mdc-icon-toggle--on"
-               role="button"
-               aria-label="Unstar this item"
-               aria-pressed="true"
-               tabindex="0"
-               data-icon-inner-selector=".fa"
-               data-toggle-on='{"cssClass": "fa-star", "label": "Unstar this item"}'
-               data-toggle-off='{"cssClass": "fa-star-o", "label": "Star this item"}'>
+                  role="button"
+                  aria-label="Unstar this item"
+                  aria-pressed="true"
+                  tabindex="0"
+                  data-icon-inner-selector=".fa"
+                  data-toggle-on='{"cssClass": "fa-star", "label": "Unstar this item"}'
+                  data-toggle-off='{"cssClass": "fa-star-o", "label": "Star this item"}'>
               <i class="fa fa-star" aria-hidden="true"></i>
             </span>
           </div>
@@ -184,11 +184,10 @@
         </div>
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
-    <script>
-      (function() {
-        'use strict';
 
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
         var nodes = document.querySelectorAll('.mdc-icon-toggle');
         for (var i = 0, node; node = nodes[i]; i++) {
           mdc.iconToggle.MDCIconToggle.attachTo(node);
@@ -200,7 +199,7 @@
           var newStatus = evt.detail.isOn ? 'yes' : 'no';
           favoritedStatus.textContent = newStatus;
         });
-      })();
+      });
     </script>
   </body>
 </html>
