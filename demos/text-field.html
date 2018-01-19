@@ -112,11 +112,11 @@
           <label for="dense">Dense</label>
         </div>
         <div>
-          <input id="required" type="checkbox">
+          <input id="required" class="required" type="checkbox">
           <label for="required">Required</label>
         </div>
         <div>
-          <input id="alternate-colors" type="checkbox">
+          <input id="alternate-colors" class="alternate-colors" type="checkbox">
           <label for="alternate-colors">Alternate Colors</label>
         </div>
         <div>
@@ -168,8 +168,7 @@
             </div>
             <div class="mdc-text-field__idle-outline"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-            id="name-validation-msg">
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
             Must be at least 8 characters
           </p>
         </div>
@@ -205,10 +204,6 @@
               }
               tf.layout();
             });
-            document.getElementById('outlined-custom-colors').addEventListener('change', function(evt) {
-              tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
-              tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
-            });
             document.getElementById('outlined-dense').addEventListener('change', function(evt) {
               tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
               tf.layout();
@@ -221,7 +216,7 @@
         <h2>Text Field box</h2>
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
-            <input required pattern=".{8,}" type="text" id="tf-box" class="mdc-text-field__input"
+            <input type="text" id="tf-box" class="mdc-text-field__input"
                    aria-controls="name-validation-message">
             <label for="tf-box" class="mdc-text-field__label">Your Name</label>
             <div class="mdc-text-field__bottom-line"></div>
@@ -246,6 +241,14 @@
         <div>
           <input id="box-dense" type="checkbox">
           <label for="box-dense">Dense</label>
+        </div>
+        <div>
+          <input id="box-alternate-colors" class="alternate-colors" type="checkbox">
+          <label for="box-alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
+          <input id="box-required" class="required" type="checkbox">
+          <label for="box-required">Required</label>
         </div>
         <script>
           demoReady(function() {
@@ -358,18 +361,25 @@
           <div class="mdc-text-field" data-demo-no-auto-js>
             <input type="text" class="mdc-text-field__input" id="css-only-text-field"
                    placeholder="Name">
-            <div class="mdc-text-field__bottom-line"></div>
           </div>
           <label for="css-only-text-field">Your name:</label>
         </div>
 
         <div>
-          <input id="css-only-tf-disabled" type="checkbox">
+          <input id="css-only-tf-disabled" class="demo-disabled" type="checkbox">
           <label for="css-only-tf-disabled">Disabled</label>
         </div>
         <div>
           <input id="css-only-dark-theme-tf" type="checkbox">
           <label for="css-only-dark-theme-tf">Dark Theme</label>
+        </div>
+        <div>
+          <input id="css-only-alternate-colors" class="alternate-colors" type="checkbox">
+          <label for="css-only-alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
+          <input id="css-only-required" class="required" type="checkbox">
+          <label for="css-only-required">Required</label>
         </div>
       </section>
 
@@ -382,6 +392,22 @@
                    placeholder="Name">
           </div>
         </div>
+        <div>
+          <input type="checkbox" class="demo-disabled" id="css-only-box-disable">
+          <label for="css-only-box-disable">Disabled</label>
+        </div>
+        <div>
+          <input type="checkbox" class="demo-dense" id="css-only-box-dense">
+          <label for="css-only-box-dense">Dense</label>
+        </div>
+        <div>
+          <input id="css-only-box-required" class="required" type="checkbox">
+          <label for="css-only-box-required">Required</label>
+        </div>
+        <div>
+          <input id="css-only-box-alternate-colors" class="alternate-colors" type="checkbox">
+          <label for="css-only-box-alternate-colors">Alternate Colors</label>
+        </div>
       </section>
 
       <section class="example">
@@ -392,6 +418,22 @@
             <input type="text" class="mdc-text-field__input" id="css-only-outlined-text-field"
                    placeholder="Name">
           </div>
+        </div>
+        <div>
+          <input type="checkbox" class="demo-disabled" id="css-only-outlined-disable">
+          <label for="css-only-outlined-disable">Disabled</label>
+        </div>
+        <div>
+          <input type="checkbox" class="demo-dense" id="css-only-outlined-dense">
+          <label for="css-only-outlined-dense">Dense</label>
+        </div>
+        <div>
+          <input id="css-only-outlined-required" class="required" type="checkbox">
+          <label for="css-only-outlined-required">Required</label>
+        </div>
+        <div>
+          <input id="css-only-outlined-alternate-colors" class="alternate-colors" type="checkbox">
+          <label for="css-only-outlined-alternate-colors">Alternate Colors</label>
         </div>
       </section>
 
@@ -427,7 +469,11 @@
           <label for="textarea-dark-theme">Dark Theme</label>
         </div>
         <div>
-          <input id="textarea-required" type="checkbox">
+          <input id="textarea-alternate-colors" class="alternate-colors" type="checkbox">
+          <label for="textarea-alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
+          <input id="textarea-required" class="required" type="checkbox">
           <label for="textarea-required">Required</label>
         </div>
       </section>
@@ -439,6 +485,16 @@
             <textarea id="textarea-css-only" class="mdc-text-field__input" rows="8" cols="40" placeholder="Enter something about yourself"></textarea>
           </div>
         </section>
+        <div>
+          <div>
+            <input id="textarea-css-only-required" class="required" type="checkbox">
+            <label for="textarea-css-only-required">Required</label>
+          </div>
+          <div>
+            <input id="textarea-css-only-alternate-colors" class="alternate-colors" type="checkbox">
+            <label for="textarea-css-only-alternate-colors">Alternate Colors</label>
+          </div>
+        </div>
       </section>
 
       <section class="example">
@@ -464,6 +520,14 @@
         <div>
           <input type="checkbox" id="fullwidth-dark-theme">
           <label for="fullwidth-dark-theme">Dark Theme</label>
+        </div>
+        <div>
+          <input id="fullwidth-required" class="required" type="checkbox">
+          <label for="fullwidth-required">Required</label>
+        </div>
+        <div>
+          <input id="fullwidth-alternate-colors" class="alternate-colors" type="checkbox">
+          <label for="fullwidth-alternate-colors">Alternate Colors</label>
         </div>
       </section>
     </main>
@@ -595,14 +659,6 @@
           var target = evt.target;
           tfRoot.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
         });
-        document.getElementById('required').addEventListener('change', function(evt) {
-          var target = evt.target;
-          tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
-        });
-        document.getElementById('alternate-colors').addEventListener('change', function (evt) {
-          var target = evt.target;
-          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
-        });
         document.getElementById('alternate-error-colors').addEventListener('change', function (evt) {
           var target = evt.target;
           tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
@@ -647,10 +703,6 @@
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
-        document.getElementById('textarea-required').addEventListener('change', function(evt) {
-          var target = evt.target;
-          tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
-        });
       });
 
       demoReady(function() {
@@ -678,6 +730,56 @@
           var target = evt.target;
           section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
+      });
+
+      demoReady(function() {
+
+        // Initializes all checkboxes to find closest "example" class (section), finds the elementToExecuteCallbackOn
+        // and calls a function with the event and each element found.
+        var findElementAndAddClickHandlerToCheckBox = function(checkboxClassName, elementToExecuteCallbackOn, handlerCallback) {
+          var checkboxes = Array.from(document.getElementsByClassName(checkboxClassName));
+
+          checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function (evt) {
+              var parentSection = (function (box) {
+                // walk up the dom to find the "example" class.
+                while (!box.classList.contains('example')) {
+                  if(box.parentElement === document.body) {
+                    return null;
+                  }
+                  box = box.parentElement;
+                }
+                return box;
+              })(checkbox);
+
+              parentSection.querySelectorAll(elementToExecuteCallbackOn)
+                  .forEach(function (element) {
+                    handlerCallback(evt, element);
+                  });
+            });
+          });
+        };
+
+        findElementAndAddClickHandlerToCheckBox('required', '.mdc-text-field__input', function(evt, input) {
+          input.required = evt.target.checked;
+          evt.target.checked ? input.setAttribute("pattern", ".{8,}") : input.removeAttribute("pattern");
+        });
+
+        findElementAndAddClickHandlerToCheckBox('alternate-colors', '.mdc-text-field', function(evt, wrapper) {
+          var target = evt.target;
+          wrapper.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
+          wrapper.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
+        });
+
+        findElementAndAddClickHandlerToCheckBox('demo-disabled', '.mdc-text-field__input', function(evt, input) {
+          evt.target.checked ? input.setAttribute("disabled", "disabled") : input.removeAttribute("disabled");
+        });
+
+        findElementAndAddClickHandlerToCheckBox('demo-dense', '.mdc-text-field', function(evt, wrapper) {
+          var target = evt.target;
+          wrapper.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+        });
+
       });
     </script>
   </body>
