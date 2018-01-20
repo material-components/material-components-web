@@ -352,7 +352,7 @@
   border-style: solid;
 
   .mdc-text-field__input {
-    border: none;
+    border: 1px solid transparent;
   }
 
   @include mdc-theme-dark(".mdc-text-field") {

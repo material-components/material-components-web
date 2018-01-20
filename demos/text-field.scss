@@ -38,7 +38,6 @@
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));
-    @include mdc-text-field-focused-textarea-stroke-color($focused-border);
     @include mdc-text-field-icon-color($focused-border);
   }
 }
@@ -105,7 +104,6 @@
   @include mdc-text-field-focused-outline-color($focused-border);
   @include mdc-text-field-helper-text-validation-color($hover-border);
   @include mdc-text-field-textarea-stroke-color($idle-border);
-  @include mdc-text-field-focused-textarea-stroke-color($focused-border);
 
   @include mdc-text-field-icon-color($focused-border);
 
