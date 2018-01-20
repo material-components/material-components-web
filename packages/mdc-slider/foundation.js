@@ -251,7 +251,7 @@ class MDCSliderFoundation extends MDCFoundation {
     if (step < 0) {
       throw new Error('Step cannot be set to a negative number');
     }
-    if (this.isDiscrete_ && (typeof(step) !== 'number' || step < 1)) {
+    if (this.isDiscrete_ && step < 1) {
       step = 1;
     }
     this.step_ = step;
