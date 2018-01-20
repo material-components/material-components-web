@@ -45,7 +45,7 @@ class MDCSlider extends MDCComponent {
     return this.foundation_.getValue();
   }
 
-  /** @param {number} value */
+  /** @param {number|string} value */
   set value(value) {
     this.foundation_.setValue(value);
   }
@@ -55,7 +55,7 @@ class MDCSlider extends MDCComponent {
     return this.foundation_.getMin();
   }
 
-  /** @param {number} min */
+  /** @param {number|string} min */
   set min(min) {
     this.foundation_.setMin(min);
   }
@@ -65,7 +65,7 @@ class MDCSlider extends MDCComponent {
     return this.foundation_.getMax();
   }
 
-  /** @param {number} max */
+  /** @param {number|string} max */
   set max(max) {
     this.foundation_.setMax(max);
   }
@@ -75,7 +75,7 @@ class MDCSlider extends MDCComponent {
     return this.foundation_.getStep();
   }
 
-  /** @param {number} step */
+  /** @param {number|string} step */
   set step(step) {
     this.foundation_.setStep(step);
   }
