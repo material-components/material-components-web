@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       .demo-grid {
         background-color: #DDDDDD;
@@ -118,7 +119,7 @@
     </style>
   </head>
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed" dir="auto">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
@@ -126,13 +127,16 @@
           </span>
           <span class="mdc-toolbar__title catalog-title">Layout Grid</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
+        </section>
       </div>
     </header>
 
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
-      <section class="hero">
 
+      <section class="hero">
         <div class="demo-grid mdc-layout-grid">
           <div class="mdc-layout-grid__inner">
             <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
@@ -140,7 +144,6 @@
             <div class="demo-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-4"></div>
           </div>
         </div>
-
       </section>
 
       <section class="examples">
@@ -419,8 +422,10 @@
       </section>
     </main>
 
+    <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
-      (function() {
+      demoReady(function() {
         var fluidContainerSection = document.getElementById('layout-grid-in-fluid-container');
         var fixedWidthSection = document.getElementById('fixed-column-width-layout-grid');
 
@@ -511,7 +516,7 @@
         };
         window.addEventListener('resize', update);
         update();
-      })();
+      });
     </script>
   </body>
 </html>
