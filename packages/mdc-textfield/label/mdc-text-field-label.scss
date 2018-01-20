@@ -14,13 +14,11 @@
 // limitations under the License.
 //
 
+@import "../mixins";
 @import "../variables";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
-
-@include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
-@include mdc-text-field-invalid-label-shake_keyframes_(box, 50%);
 
 // postcss-bem-linter: define text-field-label
 .mdc-text-field__label {
@@ -40,7 +38,7 @@
   // stylelint-enable plugin/selector-bem-pattern
 
   &--float-above {
-    transform: translateY(-100%) scale(.75, .75);
+    transform: translateY(-100%) scale(.75);
     cursor: auto;
   }
 }

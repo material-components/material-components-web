@@ -17,6 +17,7 @@
 @import "@material/animation/functions";
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
+@import "./mixins";
 @import "../mixins";
 
 .mdc-tab-bar__indicator {
@@ -25,6 +26,11 @@
 }
 
 // postcss-bem-linter: define tab-bar
+
+@at-root {
+  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
+}
+
 .mdc-tab-bar {
   display: table;
   position: relative;
@@ -77,34 +83,3 @@
 .mdc-tab-bar--icons-with-text {
   height: 72px;
 }
-
-.mdc-tab-bar--indicator-primary,
-.mdc-toolbar .mdc-tab-bar--indicator-primary {
-  .mdc-tab-bar__indicator {
-    @include mdc-theme-prop(background-color, primary);
-
-    @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(background-color, primary);
-    }
-  }
-
-  &.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
-    @include mdc-theme-prop(background-color, primary);
-  }
-}
-
-.mdc-tab-bar--indicator-accent,
-.mdc-toolbar .mdc-tab-bar--indicator-accent {
-  .mdc-tab-bar__indicator {
-    @include mdc-theme-prop(background-color, secondary);
-
-    @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(background-color, secondary);
-    };
-  }
-
-  &.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
-    @include mdc-theme-prop(background-color, secondary);
-  }
-}
-// postcss-bem-linter: end
