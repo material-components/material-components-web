@@ -98,12 +98,6 @@
   }
 }
 
-@mixin mdc-text-field-focused-textarea-stroke-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-focused-textarea-stroke-color_($color);
-  }
-}
-
 @mixin mdc-text-field-fullwidth-bottom-line-color($color) {
   &:not(.mdc-text-field--disabled) {
     @include mdc-text-field-fullwidth-bottom-line-color_($color);
@@ -367,13 +361,7 @@
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
-  // Textarea specific mixins
   @include mdc-text-field-textarea-stroke-color($mdc-text-field-error-on-light);
-
-  &.mdc-text-field--focused {
-    @include mdc-text-field-focused-textarea-stroke-color($mdc-text-field-error-on-light);
-    //@include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider-on-light);
-  }
 }
 
 @mixin mdc-text-field-textarea_ {
@@ -460,12 +448,6 @@
 
 @mixin mdc-text-field-textarea-fill-color_($color) {
   @include mdc-theme-prop(background-color, $color);
-}
-
-@mixin mdc-text-field-focused-textarea-stroke-color_($color) {
-
-
-  //@include mdc-theme-prop(border-color, $color);
 }
 
 @mixin mdc-text-field-fullwidth-bottom-line-color_($color) {

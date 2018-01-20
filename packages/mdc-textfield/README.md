@@ -183,7 +183,6 @@ Mixin | Description
 `mdc-text-field-box-fill-color($color)` | Customizes the background color of the text-field box. 
 `mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea. 
 `mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea. 
-`mdc-text-field-focused-textarea-stroke-color($color)` | Customizes the textarea border color when focused. 
 `mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the bottom line under a fullwidth text field. Doesn't apply to a textarea.
 `mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
 `mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
