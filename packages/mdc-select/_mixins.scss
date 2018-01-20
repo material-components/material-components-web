@@ -139,7 +139,7 @@
 }
 
 @mixin mdc-select-menu-item-color_($color) {
-  .mdc-select__menu .mdc-list-item:not([aria-disabled="true"]){
+  .mdc-select__menu .mdc-list-item:not([aria-disabled="true"]) {
     @include mdc-theme-prop(color, $color);
   }
 }
