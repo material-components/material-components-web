@@ -31,12 +31,8 @@
 @import "./label/mdc-text-field-label";
 @import "./outline/mdc-text-field-outline";
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
-@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 27%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
-@include mdc-text-field-invalid-label-shake-keyframes_(textarea, 50%, 0%, .923);
 
 // postcss-bem-linter: define text-field
 
@@ -193,8 +189,7 @@
   }
 
   .mdc-text-field__label--float-above {
-    animation: invalid-shake-float-above-box 250ms 1;
-    transform: translateY(-50%) scale(.75, .75);
+    transform: translateY(-50%) scale(.75);
   }
 
   .mdc-text-field__label--float-above.mdc-text-field__label--shake {
