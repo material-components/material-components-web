@@ -217,7 +217,6 @@
   @include mdc-text-field-outline-color($mdc-text-field-error-on-light);
   @include mdc-text-field-hover-outline-color($mdc-text-field-error-on-light);
   @include mdc-text-field-focused-outline-color($mdc-text-field-error-on-light);
-
 }
 
 @mixin mdc-text-field-outlined-focused_ {
