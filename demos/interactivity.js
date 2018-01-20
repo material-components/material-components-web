@@ -345,6 +345,10 @@ export class RtlToggler extends InteractivityProvider {
    * @private
    */
   setRTL_(newDirection) {
+    if (!(this.rtlTargetEl_ && this.rtlActionEl_)) {
+      return;
+    }
+
     if (newDirection === 'rtl') {
       this.rtlTargetEl_.setAttribute('dir', 'rtl');
       this.rtlActionEl_.innerHTML = 'format_align_right';
