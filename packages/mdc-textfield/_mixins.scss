@@ -68,6 +68,7 @@
   }
 }
 
+@include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
 @include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
 @include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
