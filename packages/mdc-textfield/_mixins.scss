@@ -46,27 +46,36 @@
   }
 }
 
-@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $scale: .75) {
+@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $positionX: 0%, $scale: .75) {
   @keyframes invalid-shake-float-above-#{$modifier} {
     0% {
-      transform: translateX(0) translateY(-#{$positionY}) scale(#{$scale});
+      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
     }
 
     33% {
       animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
-      transform: translateX(5px) translateY(-#{$positionY}) scale(#{$scale});
+      transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
     }
 
     66% {
       animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
-      transform: translateX(-5px) translateY(-#{$positionY}) scale(#{$scale});
+      transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
     }
 
     100% {
-      transform: translateX(0) translateY(-#{$positionY}) scale(#{$scale});
+      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
     }
   }
 }
+
+@include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
+@include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
+@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 27%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
+@include mdc-text-field-invalid-label-shake-keyframes_(textarea, 50%, 0%, .923);
 
 @mixin mdc-text-field-ink-color($color) {
   &:not(.mdc-text-field--disabled) {
@@ -210,7 +219,7 @@
   }
 
   .mdc-text-field__label--float-above {
-    transform: translateY(calc(-122% - 2px)) scale(.923);
+    transform: translateY(-145%) scale(.923);
   }
 
   .mdc-text-field__label--float-above.mdc-text-field__label--shake {
@@ -250,7 +259,7 @@
   }
 
   .mdc-text-field__label--float-above {
-    transform: scale(.75) translateY(-170%);
+    transform: translateY(-130%) scale(.75);
   }
 
   .mdc-text-field__label--float-above.mdc-text-field__label--shake {
@@ -313,7 +322,11 @@
   }
 
   .mdc-text-field__label--float-above {
-    transform: translateY(calc(-75% - 2px)) scale(.923, .923);
+    transform: translateY(-90%) scale(.923);
+  }
+
+  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-box-dense 250ms 1;
   }
 }
 
@@ -399,7 +412,9 @@
 
     top: $label-offset-y;
     bottom: auto;
-    padding: 8px 16px;
+    margin-top: 2px;
+    margin-left: 8px;
+    padding: 8px;
     background-color: $mdc-textarea-light-background;
     line-height: 1.15;
 
@@ -412,7 +427,11 @@
     // Translate above the top of the input, and compensate for the amount of offset needed
     // to position the label within the bounds of the inset padding.
     // Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
-    transform: translateY(-50%) scale(.923, .923);
+    transform: translateY(-50%) scale(.923);
+  }
+
+  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-textarea 250ms 1;
   }
 
   &.mdc-text-field--disabled {
