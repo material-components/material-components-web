@@ -119,7 +119,7 @@ This area is used for showing different actions the user can take. It's typicall
 above, or with icon buttons, as below:
 
 ```html
-<div class="mdc-card__action-bar mdc-card__action-bar--with-icons">
+<div class="mdc-card__action-bar">
   <div class="mdc-card__action-buttons">
     <button class="mdc-button mdc-card__action">Read</button>
     <button class="mdc-button mdc-card__action">Bookmark</button>
