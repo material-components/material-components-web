@@ -39,6 +39,7 @@
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
 @import "../common";
+@import "../card";
 @import "./menu";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
@@ -264,33 +265,12 @@ figure {
 
 .demo-card-wrapper {
   display: inline-block;
-  width: 350px;
   margin: 0 24px 24px 0;
   vertical-align: top;
 }
 
-.demo-card--with-avatar .mdc-card__primary {
-  position: relative;
-}
-
-.demo-card--with-avatar .demo-card__avatar {
-  position: absolute;
-  width: 2.5rem; // 40sp
-  height: 2.5rem; // 40sp
-  border-radius: 50%;
-  background: #bdbdbd;
-}
-
-.demo-card--with-avatar .mdc-card__title,
-.demo-card--with-avatar .mdc-card__subtitle {
-  margin-left: 56px;
-}
-
-.demo-card--small .mdc-card__media {
-  height: 10.938rem; // 175sp, for 1:1 ratio with 175sp demo card width
-  background-image: url(/images/1-1.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
+.demo-card {
+  margin: 0;
 }
 
 //

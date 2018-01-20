@@ -39,7 +39,7 @@
 .demo-card {
   width: 350px;
   margin: 48px;
-  background-color: white;
+  background-color: mdc-theme-light-variant($mdc-theme-background, 1);
 }
 
 .demo-card--photo-album {
@@ -95,13 +95,13 @@
 }
 
 .demo-card__subtitle {
-  @include mdc-theme-prop(color, text-secondary-on-light);
+  @include mdc-theme-prop(color, text-secondary-on-background);
 
   margin: 0;
 }
 
 .demo-card__secondary {
-  @include mdc-theme-prop(color, text-secondary-on-light);
+  @include mdc-theme-prop(color, text-secondary-on-background);
 
   padding: 0 1rem 8px 1rem;
 }
