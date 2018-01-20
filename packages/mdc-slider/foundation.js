@@ -202,10 +202,17 @@ class MDCSliderFoundation extends MDCFoundation {
     return this.max_;
   }
 
-  /** @param {number} max */
+  /** @param {number|string} max */
   setMax(max) {
+    max = parseFloat(max);
+    if (!Number.isFinite(max)) {
+      throw new Error('Value for max must be a finite number');
+    }
+    if (max < 0) {
+      throw new Error('Max cannot be negative');
+    }
     if (max < this.min_) {
-      throw new Error('Cannot set max to be less than the slider\'s minimum value');
+      throw new Error("Cannot set max to be less than the slider's minimum value");
     }
     this.max_ = max;
     this.setValue_(this.value_, false, true);
@@ -218,10 +225,17 @@ class MDCSliderFoundation extends MDCFoundation {
     return this.min_;
   }
 
-  /** @param {number} min */
+  /** @param {number|string} min */
   setMin(min) {
+    min = parseFloat(min);
+    if (!Number.isFinite(min)) {
+      throw new Error('Value for min must be a finite number');
+    }
+    if (min < 0) {
+      throw new Error('Min cannot be negative');
+    }
     if (min > this.max_) {
-      throw new Error('Cannot set min to be greater than the slider\'s maximum value');
+      throw new Error("Cannot set min to be greater than the slider's maximum value");
     }
     this.min_ = min;
     this.setValue_(this.value_, false, true);
@@ -234,8 +248,12 @@ class MDCSliderFoundation extends MDCFoundation {
     return this.step_;
   }
 
-  /** @param {number} step */
+  /** @param {number|string} step */
   setStep(step) {
+    step = parseFloat(step);
+    if (!Number.isFinite(step)) {
+      throw new Error('Value for step must be a finite number');
+    }
     if (step < 0) {
       throw new Error('Step cannot be set to a negative number');
     }
