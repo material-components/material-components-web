@@ -208,9 +208,6 @@ class MDCSliderFoundation extends MDCFoundation {
     if (!Number.isFinite(max)) {
       throw new Error('Value for max must be a finite number');
     }
-    if (max < 0) {
-      throw new Error('Max cannot be negative');
-    }
     if (max < this.min_) {
       throw new Error("Cannot set max to be less than the slider's minimum value");
     }
@@ -230,9 +227,6 @@ class MDCSliderFoundation extends MDCFoundation {
     min = parseFloat(min);
     if (!Number.isFinite(min)) {
       throw new Error('Value for min must be a finite number');
-    }
-    if (min < 0) {
-      throw new Error('Min cannot be negative');
     }
     if (min > this.max_) {
       throw new Error("Cannot set min to be greater than the slider's maximum value");
