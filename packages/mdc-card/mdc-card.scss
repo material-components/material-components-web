@@ -17,14 +17,15 @@
 @import "@material/elevation/mixins";
 @import "@material/icon-toggle/mixins";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
+@import "./mixins";
 
 // postcss-bem-linter: define card
 
 .mdc-card {
   @include mdc-elevation(2);
+  @include mdc-card-fill-color(background);
 
   display: flex;
   flex-direction: column;
@@ -41,16 +42,14 @@
   background-size: cover;
 }
 
-// This clever trick brought to you by: http://www.mademyday.de/css-height-equals-width-with-pure-css.html
-.mdc-card__media--auto-height::before {
-  display: block;
-  margin-top: 100%;
-  content: "";
+.mdc-card__media--square {
+  @include mdc-card-media-aspect-ratio(1, 1);
+  @include mdc-card-media-aspect-ratio-base_;
 }
 
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__media--16-9::before {
-  margin-top: 56.25%;
+.mdc-card__media--16-9 {
+  @include mdc-card-media-aspect-ratio(16, 9);
+  @include mdc-card-media-aspect-ratio-base_;
 }
 
 .mdc-card__media-content {
@@ -94,7 +93,7 @@
 }
 
 //
-// Action items
+// Actions
 //
 
 .mdc-card__action {
@@ -128,7 +127,7 @@
   padding: 8px 16px;
   text-align: left;
 
-  @include mdc-rtl("mdc-card") {
+  @include mdc-rtl {
     text-align: right;
   }
 }
