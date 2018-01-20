@@ -2,7 +2,7 @@
 
 @mixin mdc-tab-bar-indicator-ink-color($color) {
   .mdc-tab-bar__indicator,
-  &.mdc-tab-bar:not(.mdc-tab-bar-upgraded) .mdc-tab::after {
+  .mdc-tab__indicator {
     @include mdc-theme-prop(background-color, $color);
   }
 }
