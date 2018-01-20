@@ -106,7 +106,7 @@ class MDCComponent {
    * @param {!Object} evtData
    * @param {boolean=} shouldBubble
    */
-  emit(evtType, evtData, shouldBubble = true) {
+  emit(evtType, evtData, shouldBubble = false) {
     let evt;
     if (typeof CustomEvent === 'function') {
       evt = new CustomEvent(evtType, {
