@@ -264,7 +264,7 @@
     <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
-        mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
+        var heroSlider = mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
 
         var demoRoot = document.getElementById('slider-example')
         var min = demoRoot.querySelector('[name="min"]');
@@ -360,6 +360,7 @@
 
         document.querySelector('#rtl-toggle').addEventListener('click', function() {
           setTimeout(function() {
+            heroSlider.layout();
             continuousSlider.layout();
             discreteSlider.layout();
             discreteWMarkerSlider.layout();
