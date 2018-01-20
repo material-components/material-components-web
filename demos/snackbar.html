@@ -83,7 +83,6 @@
         </div>
       </section>
 
-
       <section class="example">
         <h2 class="mdc-typography--title">Basic Example</h2>
 
@@ -153,7 +152,18 @@
         <button type="button" class="demo-activate-button mdc-button mdc-button--raised" id="show-start-aligned-snackbar">Show Start Aligned</button>
         <button type="button" class="demo-activate-button mdc-button mdc-button--raised" id="show-start-aligned-rtl-snackbar">Show Start Aligned (RTL)</button>
 
-          <div id="mdc-js-snackbar"
+        <div id="mdc-js-snackbar"
+             class="mdc-snackbar demo-hidden"
+             aria-live="assertive"
+             aria-atomic="true"
+             aria-hidden="true">
+          <div class="mdc-snackbar__text"></div>
+          <div class="mdc-snackbar__action-wrapper">
+            <button type="button" class="mdc-snackbar__action-button"></button>
+          </div>
+        </div>
+        <div dir="rtl">
+          <div id="mdc-rtl-js-snackbar"
                class="mdc-snackbar demo-hidden"
                aria-live="assertive"
                aria-atomic="true"
@@ -163,19 +173,19 @@
               <button type="button" class="mdc-snackbar__action-button"></button>
             </div>
           </div>
-          <div dir="rtl">
-            <div id="mdc-rtl-js-snackbar"
-                 class="mdc-snackbar demo-hidden"
-                 aria-live="assertive"
-                 aria-atomic="true"
-                 aria-hidden="true">
-              <div class="mdc-snackbar__text"></div>
-              <div class="mdc-snackbar__action-wrapper">
-                <button type="button" class="mdc-snackbar__action-button"></button>
-              </div>
-            </div>
+        </div>
+        <div id="mdc-align-start-js-snackbar"
+             class="mdc-snackbar mdc-snackbar--align-start demo-hidden"
+             aria-live="assertive"
+             aria-atomic="true"
+             aria-hidden="true">
+          <div class="mdc-snackbar__text"></div>
+          <div class="mdc-snackbar__action-wrapper">
+            <button type="button" class="mdc-snackbar__action-button"></button>
           </div>
-          <div id="mdc-align-start-js-snackbar"
+        </div>
+        <div dir="rtl">
+          <div id="mdc-align-start-rtl-js-snackbar"
                class="mdc-snackbar mdc-snackbar--align-start demo-hidden"
                aria-live="assertive"
                aria-atomic="true"
@@ -183,18 +193,6 @@
             <div class="mdc-snackbar__text"></div>
             <div class="mdc-snackbar__action-wrapper">
               <button type="button" class="mdc-snackbar__action-button"></button>
-            </div>
-          </div>
-          <div dir="rtl">
-            <div id="mdc-align-start-rtl-js-snackbar"
-                 class="mdc-snackbar mdc-snackbar--align-start demo-hidden"
-                 aria-live="assertive"
-                 aria-atomic="true"
-                 aria-hidden="true">
-              <div class="mdc-snackbar__text"></div>
-              <div class="mdc-snackbar__action-wrapper">
-                <button type="button" class="mdc-snackbar__action-button"></button>
-              </div>
             </div>
           </div>
         </div>

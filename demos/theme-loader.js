@@ -57,11 +57,11 @@
   };
 
   /**
-   * @param {string|undefined=} opt_uri
+   * @param {string=} uri
    * @return {!SafeTheme}
    */
-  window.getSafeDemoThemeFromUri = function(opt_uri) {
-    return getSafeDemoTheme(parseQueryString(opt_uri).getLast('theme'));
+  window.getSafeDemoThemeFromUri = function(uri) {
+    return getSafeDemoTheme(parseQueryString(uri).getLast('theme'));
   };
 
   /**
@@ -79,10 +79,10 @@
   };
 
   /** @type {string} */
-  var unwrappedTheme = unwrapSafeDemoTheme(getSafeDemoThemeFromUri());
+  var unwrappedThemeStr = unwrapSafeDemoTheme(getSafeDemoThemeFromUri());
 
   // Avoid a FOUC by injecting the stylesheet directly into the HTML stream while the browser is parsing the page.
   // This causes the browser to block page rendering until the CSS has finished loading.
   document.write(
-    '<link rel="stylesheet" href="/assets/theme/theme-' + unwrappedTheme + '.css" id="theme-stylesheet" data-hot>');
+    '<link rel="stylesheet" href="/assets/theme/theme-' + unwrappedThemeStr + '.css" id="theme-stylesheet" data-hot>');
 })();
