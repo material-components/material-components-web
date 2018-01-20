@@ -22,12 +22,6 @@
   }
 }
 
-@mixin mdc-text-field-label-background-color($color) {
-  &:not(.mdc-text-field--disabled).mdc-text-field--textarea {
-    @include mdc-text-field-label-background-color_($color);
-  }
-}
-
 // Private
 
 @mixin mdc-text-field-label-color_($color) {

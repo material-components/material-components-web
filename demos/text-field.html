@@ -628,8 +628,7 @@
 
         document.getElementById('textarea-alternate-colors').addEventListener('change', function (evt) {
           var target = evt.target;
-          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
-          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
+          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-textarea');
         });
 
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
@@ -677,10 +676,8 @@
 
         document.getElementById('fullwidth-alternate-colors').addEventListener('change', function (evt) {
           var target = evt.target;
-          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
-          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
-          tfMultiRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
-          tfMultiRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
+          tfRoot.classList[target.checked ? 'add' : 'remove']('demo-fullwidth-input');
+          tfMultiRoot.classList[target.checked ? 'add' : 'remove']('demo-textarea');
         });
       });
     </script>
