@@ -340,8 +340,8 @@
         });
 
         darkTheme.addEventListener('change', function() {
-          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
-            example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
+          [].forEach.call(demoRoot.querySelectorAll('.example-slider-wrapper'), function(example) {
+            example.classList[darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
           });
         });
 
@@ -353,7 +353,7 @@
         });
 
         useCustomColor.addEventListener('change', function() {
-          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
+          [].forEach.call(demoRoot.querySelectorAll('.example-slider-wrapper'), function(example) {
             example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
           });
         });
