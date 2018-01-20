@@ -30,10 +30,6 @@
 @import "./icon/mdc-text-field-icon";
 @import "./label/mdc-text-field-label";
 @import "./outline/mdc-text-field-outline";
-@include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
-@include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 138%, .923);
 
 // postcss-bem-linter: define text-field
 
@@ -110,7 +106,7 @@
   // Move label when text-field gets autofilled in Chrome
   // stylelint-disable plugin/selector-bem-pattern
   &:-webkit-autofill + .mdc-text-field__label {
-    transform: translateY(-100%) scale(.75, .75);
+    transform: translateY(-100%) scale(.75);
     cursor: auto;
   }
   // stylelint-enable plugin/selector-bem-pattern
@@ -183,11 +179,14 @@
     @include mdc-theme-dark(".mdc-text-field") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
+
+    &--float-above {
+      transform: translateY(-50%) scale(.75);
+    }
   }
 
   .mdc-text-field__label--float-above {
-    animation: invalid-shake-float-above-box 250ms 1;
-    transform: translateY(-50%) scale(.75, .75);
+    transform: translateY(-50%) scale(.75);
   }
 
   .mdc-text-field__label--float-above.mdc-text-field__label--shake {
@@ -220,10 +219,14 @@
   // stylelint-disable plugin/selector-bem-pattern
   &.mdc-text-field--outlined {
     .mdc-text-field__label--float-above {
-      transform: scale(.75) translateX(-36%) translateY(-170%);
+      transform: translateX(-27%) translateY(-130%) scale(.75);
 
       @include mdc-rtl {
-        transform: scale(.75) translateX(36%) translateY(-170%);
+        transform: translateX(27%) translateY(-130%) scale(.75);
+      }
+
+      &.mdc-text-field__label--shake {
+        animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
       }
     }
 
@@ -234,6 +237,11 @@
         // stylelint-disable max-nesting-depth
         @include mdc-rtl {
           transform: translateX(25%) translateY(-145%) scale(.923);
+        }
+
+        // stylelint-disable-next-line selector-max-specificity
+        &.mdc-text-field__label--shake {
+          animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
         }
         // stylelint-enable max-nesting-depth
       }
@@ -312,7 +320,7 @@
 
   .mdc-text-field__label--float-above {
     // NOTE: This is an eyeball'd approximation of what's in the mocks.
-    transform: translateY(calc(-100% - 2px)) scale(.923, .923);
+    transform: translateY(-110%) scale(.923);
   }
 }
 

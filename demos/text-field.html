@@ -348,7 +348,7 @@
         </div>
         <div>
           <input id="required-leading-trailing" type="checkbox">
-          <label for="required-leading-trailing">Required</label>
+          <label for="required-leading-trailing">Required and must be at least 8 characters</label>
         </div>
       </section>
 
@@ -501,6 +501,7 @@
           tfIconContainer.querySelectorAll('.mdc-text-field__input')
               .forEach(function(input) {
                 input.required = evt.target.checked;
+                input.pattern = evt.target.checked ? '.{8,}' : '.*';
               });
         });
       });
