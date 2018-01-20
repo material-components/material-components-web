@@ -411,13 +411,11 @@
     @include mdc-text-field-textarea-disabled_;
   }
 
-
   &.mdc-text-field--focused:not(.mdc-text-field--invalid) {
     @include mdc-text-field-focused-textarea-stroke-color(primary);
   }
+  // stylelint-enable plugin/selector-bem-pattern
 }
-
-// stylelint-enable plugin/selector-bem-pattern
 
 // Private Color Mixins
 
