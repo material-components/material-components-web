@@ -450,11 +450,16 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Sets the value of the slider
-   * @param {number} value
+   * @param {number|string} value
    * @param {boolean} shouldFireInput
    * @param {boolean=} force
    */
   setValue_(value, shouldFireInput, force = false) {
+    value = parseFloat(value);
+    if (!Number.isFinite(value)) {
+      throw new Error('Value for value must be a finite number');
+    }
+
     if (value === this.value_ && !force) {
       return;
     }
