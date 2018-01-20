@@ -77,8 +77,6 @@ Un-styled Content (**FOUC**).
   <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
-> _NOTE_: Only place an `mdc-text-field__label` inside of `mdc-text-field` _if you plan on using
-> JavaScript_. Otherwise, the label must go outside of `mdc-text-field`, as shown below.
 
 #### Full Width
 
