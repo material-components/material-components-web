@@ -256,6 +256,10 @@
       demoReady(function() {
         mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
 
+        var numberIsFinite = Number.isFinite || function(value) {
+          return typeof value === 'number' && isFinite(value);
+        };
+
         var demoRoot = document.getElementById('slider-example')
         var minInput = demoRoot.querySelector('[name="min"]');
         var maxInput = demoRoot.querySelector('[name="max"]');
@@ -311,7 +315,7 @@
 
         minInput.addEventListener('input', function() {
           var minValue = parseFloat(minInput.value);
-          if (!Number.isFinite(minValue)) {
+          if (!numberIsFinite(minValue)) {
             return;
           }
           continuousSlider.min = minValue;
@@ -322,7 +326,7 @@
 
         maxInput.addEventListener('input', function() {
           var minValue = parseFloat(maxInput.value);
-          if (!Number.isFinite(minValue)) {
+          if (!numberIsFinite(minValue)) {
             return;
           }
           continuousSlider.max = minValue;
@@ -333,7 +337,7 @@
 
         step.addEventListener('input', function() {
           var stepValue = parseFloat(step.value);
-          if (!Number.isFinite(stepValue)) {
+          if (!numberIsFinite(stepValue)) {
             return;
           }
           continuousSlider.step = stepValue;
