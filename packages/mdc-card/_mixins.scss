@@ -16,6 +16,10 @@
 
 @import "@material/theme/mixins";
 
+//
+// Public
+//
+
 @mixin mdc-card-fill-color($color) {
   @include mdc-theme-prop(background-color, $color);
 }
@@ -26,6 +30,10 @@
     margin-top: percentage($height-unitless / $width-unitless);
   }
 }
+
+//
+// Private
+//
 
 @mixin mdc-card-media-aspect-ratio-base_() {
   &::before {

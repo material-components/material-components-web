@@ -39,11 +39,11 @@ npm install --save @material/card
 
 ## Usage
 
-Bare bones:
+### HTML Structure
 
 ```html
 <div class="mdc-card">
-  Bare-bones
+  Simple
 </div>
 ```
 
@@ -51,7 +51,7 @@ Fully-featured:
 
 ```html
 <div class="mdc-card">
-  <div class="mdc-card__media mdc-card__media--auto-height">
+  <div class="mdc-card__media mdc-card__media--square">
     <div class="mdc-card__media-content">Title</div>
   </div>
   <div class="mdc-card__action-bar">
@@ -67,8 +67,10 @@ Fully-featured:
 </div>
 ```
 
-Cards don't come with a predefined width, height, padding, or margin. They expand horizontally to fill all available
-space, and vertically to fit their contents.
+Cards don't come with a predefined width, height, padding, or margin. In its simplest form (just a single element with
+`mdc-card`), a card is basically just `mdc-elevation` + `border-radius`.
+
+Cards expand horizontally to fill all available space, and vertically to fit their contents.
 
 If you'd like to maintain a consistent width and height across cards, you'll need to set it in your styles:
 
@@ -79,7 +81,7 @@ If you'd like to maintain a consistent width and height across cards, you'll nee
 }
 ```
 
-### Content blocks
+#### Content blocks
 
 Cards are composed of different content blocks, which are typically laid out vertically.
 
@@ -87,122 +89,97 @@ Because every app is different, there are no "standard" layouts for card content
 
 However, MDC Card _does_ provide styles for two common card elements: _rich media_ (images or video) and _action bars_.
 
-#### Rich media
+##### Rich media
 
 ```css
-#example .mdc-card__media {
+.my-card__media {
   background-image: url("pretty.jpg");
 }
 ```
 
 ```html
-<section class="mdc-card__media"></section>
+<section class="my-card__media mdc-card__media mdc-card__media--16-9">
+  <div class="mdc-card__media-content">Title</div>
+</section>
 ```
 
-This area is used for showing rich media in cards, and optionally as a container. Use the `mdc-card__media` CSS class.
+This area is used for showing rich media in cards, and optionally as a container. Use the `mdc-card__media` CSS class
+and the optional modifier classes shown below.
 
-
-#### Actions
+##### Actions
 
 ```html
 <section class="mdc-card__action-bar">
-  <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-  <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
+  <button class="mdc-button mdc-card__action">Action 1</button>
+  <button class="mdc-button mdc-card__action">Action 2</button>
 </section>
 ```
 
 This area is used for showing different actions the user can take. It's typically used with buttons, as in the example
 above, or with icon buttons, as below:
 
-> TODO(sgomes): Add icon button support and example.
-
-You can use the `mdc-card__action-bar--vertical` option to lay actions out vertically instead of horizontally:
-
 ```html
-<section class="mdc-card__action-bar mdc-card__action-bar--vertical">
-  <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-  <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-</section>
-```
-
-Be sure to include the `mdc-card__action` class on every action for correct positioning. Also, be sure to include the
-`mdc-button--compact` class on buttons for correct alignment.
-
-
-#### Primary title / text
-
-```html
-<section class="mdc-card__primary">
-  <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-  <h2 class="mdc-card__subtitle">Subtitle here</h2>
-</section>
-```
-
-This area is used for titles and subtitles:
-
-| Class                    | Description                                     |
-| ------------------------ | ----------------------------------------------- |
-| `mdc-card__primary`      | Defines the primary text / title content block. |
-| `mdc-card__title`        | A title block.                                  |
-| `mdc-card__title--large` | An option for the title, to make it larger.     |
-| `mdc-card__subtitle`     | A subtitle block.                               |
-
-Note that the title and subtitle classes can also be used outside of the primary title / text content block.
-
-
-#### Supporting text
-
-```html
-<section class="mdc-card__supporting-text">
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-  commodo consequat.
-</section>
-```
-
-This area is used for displaying the bulk of the textual content of the card. Use the `mdc-card__supporting-text` CSS
-class.
-
-
-### Horizontal blocks
-
-You can stack multiple card blocks horizontally instead of vertically, by placing them inside of a horizontal block:
-
-```html
-<div class="mdc-card__horizontal-block">
-  <section class="mdc-card__primary">
-    <h1 class="mdc-card__title mdc-card__title--large">Title here</h1>
-    <h2 class="mdc-card__subtitle">Subtitle here</h2>
-  </section>
-  <section class="mdc-card__action-bar">
-    <button class="mdc-button mdc-button--compact mdc-card__action">Action</button>
-  </section>
+<div class="mdc-card__action-bar mdc-card__action-bar--with-icons">
+  <div class="mdc-card__action-buttons">
+    <button class="mdc-button mdc-card__action">Read</button>
+    <button class="mdc-button mdc-card__action">Bookmark</button>
+  </div>
+  <div class="mdc-card__action-icons">
+    <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+       tabindex="0"
+       role="button"
+       aria-pressed="false"
+       aria-label="Add to favorites"
+       title="Add to favorites"
+       data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+       data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+      favorite_border
+    </i>
+    <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
+      <i class="material-icons" role="presentation">share</i>
+    </button>
+    <button class="mdc-button mdc-card__action mdc-card__action--icon" title="More options">
+      <i class="material-icons" role="presentation">more_vert</i>
+    </button>
+  </div>
 </div>
 ```
 
-#### Media items
+Be sure to include the `mdc-card__action` class on every action for correct positioning. In addition, icon actions
+should use the `mdc-card__action--icon` class.
 
-Media items are designed to be used in horizontal blocks, taking up a fixed height, rather than stretching to the width
-of the card.
-
-> Note: Unlike media blocks, media items are not designed to be used as optional containers.
+To have a single action button take up the entire width of the action bar, use the `--full-bleed` modifier:
 
 ```html
-<div class="mdc-card__horizontal-block">
-  <section class="mdc-card__primary">
-    <h1 class="mdc-card__title mdc-card__title--large">Title here</h1>
-    <h2 class="mdc-card__subtitle">Subtitle here</h2>
-  </section>
-  <img class="mdc-card__media-item mdc-card__media-item--1x" src="image.jpg">
+<div class="mdc-card__action-bar mdc-card__action-bar--full-bleed">
+  <a class="mdc-button mdc-card__action" href="javascript:">
+    <span>All Business Headlines</span>
+    <i class="material-icons">arrow_forward</i>
+  </a>
 </div>
 ```
 
-There are several predefined media item sizes you can use:
+### CSS Classes
 
-| Class                           | Description                                                      |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `mdc-card__media-item`          | Defines a media item and sets it to the default height of 80px.  |
-| `mdc-card__media-item--1dot5x`  | Sets the media item height to 120px.                             |
-| `mdc-card__media-item--2x`      | Sets the media item height to 160px.                             |
-| `mdc-card__media-item--3x`      | Sets the media item height to 240px.                             |
+CSS Class | Description
+--- | ---
+`mdc-card` | A card
+`mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
+`mdc-card__media--square` | Automatically scales the media area's height to equal its width
+`mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
+`mdc-card__media-content` | An absolutely-positioned box the same size as the media area, for displaying a title or icon on top of the `background-image`
+`mdc-card__action-bar` | Row of primary and supplemental actions
+`mdc-card__action-bar--full-bleed` | Eliminates the action bar's padding padding, and causes its child `mdc-card__action` to consume 100% of the action bar's width
+`mdc-card__action-buttons` | A group of action buttons, displayed on the left side of the card (in LTR), adjacent to `mdc-card__action-icons`
+`mdc-card__action-icons` | A group of supplemental action icons, displayed on the right side of the card (in LTR), adjacent to `__action-buttons`
+`mdc-card__action` | An individual action button or icon
+`mdc-card__action--icon` | An icon action
+
+### Sass Mixins
+
+
+Mixin | Description
+--- | ---
+`mdc-card-fill-color($color)` | Sets the fill color of a `mdc-card`
+`mdc-card-media-aspect-ratio($width-unitless, $height-unitless)` | Automatically sets the height of the `mdc-card__media` subelement to maintain a given aspect ratio based on its width
+
