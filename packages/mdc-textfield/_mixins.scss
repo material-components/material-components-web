@@ -18,10 +18,6 @@
 @import "outline/mixins";
 @import "label/mixins";
 @import "helper-text/mixins";
-@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
-@include mdc-text-field-invalid-label-shake-keyframes_(textarea, 50%, 0%, .923);
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
@@ -71,6 +67,14 @@
     }
   }
 }
+
+@include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
+@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 27%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
+@include mdc-text-field-invalid-label-shake-keyframes_(textarea, 50%, 0%, .923);
 
 @mixin mdc-text-field-ink-color($color) {
   &:not(.mdc-text-field--disabled) {
@@ -427,7 +431,9 @@
 
     top: $label-offset-y;
     bottom: auto;
-    padding: 8px 16px;
+    margin-top: 2px;
+    margin-left: 8px;
+    padding: 8px;
     background-color: $mdc-textarea-light-background;
     line-height: 1.15;
 
