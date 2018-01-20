@@ -29,5 +29,11 @@
   // Focused colors
   @include mdc-select-focused-bottom-line-color(green);
   @include mdc-select-focused-label-color(green);
+
+  // Menu colors
+  @include mdc-select-menu-item-color(blue);
+  @include mdc-select-menu-selected-item-color(green);
+  @include mdc-select-menu-group-color(yellow);
+  @include mdc-select-menu-group-item-color(purple);
 }
 // stylelint-enable selector-class-pattern
