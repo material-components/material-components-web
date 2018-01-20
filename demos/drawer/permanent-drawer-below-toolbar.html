@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       /* Ensure layout covers the entire screen. */
       html {
@@ -66,6 +67,7 @@
       }
     </style>
   </head>
+
   <body class="mdc-typography demo-body">
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
@@ -74,6 +76,9 @@
             <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <span class="mdc-toolbar__title catalog-title">Permanent Drawer Below Toolbar</span>
+        </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
         </section>
       </div>
     </header>
@@ -111,6 +116,7 @@
           </nav>
         </div>
       </nav>
+
       <main class="demo-main">
         <h1 class="mdc-typography--display1">Permanent Drawer</h1>
         <p class="mdc-typography--body1">It sits to the left of this content.</p>
@@ -149,55 +155,57 @@
         </div>
 
         <div class="extra-content-wrapper">
-          <button id="toggle-wide">Toggle extra-wide content</button>
-          <div id="extra-wide-content" class="mdc-elevation--z2">&nbsp;</div>
+          <button class="mdc-button mdc-button--stroked" id="toggle-wide">Toggle extra-wide content</button>
+          <div id="extra-wide-content" class="demo-page-large-content mdc-elevation--z8" style="display: none">&nbsp;</div>
         </div>
         <div class="extra-content-wrapper">
-          <button id="toggle-tall">Toggle extra-tall content</button>
-          <div id="extra-tall-content" class="mdc-elevation--z2">&nbsp;</div>
+          <button class="mdc-button mdc-button--stroked" id="toggle-tall">Toggle extra-tall content</button>
+          <div id="extra-tall-content" class="demo-page-large-content mdc-elevation--z8" style="display: none">&nbsp;</div>
         </div>
       </main>
     </div>
 
+    <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
-      var extraWide = document.querySelector('#extra-wide-content');
-      extraWide.style.display = 'none';
-      document.querySelector('#toggle-wide').addEventListener('click', function() {
-        extraWide.style.display = extraWide.style.display ? '' : 'none';
-      });
-      var extraTall = document.querySelector('#extra-tall-content');
-      extraTall.style.display = 'none';
-      document.querySelector('#toggle-tall').addEventListener('click', function() {
-        extraTall.style.display = extraTall.style.display ? '' : 'none';
-      });
+      demoReady(function() {
+        var extraWide = document.querySelector('#extra-wide-content');
+        document.querySelector('#toggle-wide').addEventListener('click', function() {
+          extraWide.style.display = extraWide.style.display ? '' : 'none';
+        });
+        var extraTall = document.querySelector('#extra-tall-content');
+        document.querySelector('#toggle-tall').addEventListener('click', function() {
+          extraTall.style.display = extraTall.style.display ? '' : 'none';
+        });
 
-      // Demonstrate application of --activated modifier to drawer menu items
-      var activatedClass = 'mdc-list-item--selected';
-      document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
-        var el = event.target;
-        while (el && !el.classList.contains('mdc-list-item')) {
-          el = el.parentElement;
-        }
-        if (el) {
-          var activatedItem = document.querySelector('.' + activatedClass);
-          if (activatedItem) {
-            activatedItem.classList.remove(activatedClass);
+        // Demonstrate application of --activated modifier to drawer menu items
+        var activatedClass = 'mdc-list-item--selected';
+        document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
+          var el = event.target;
+          while (el && !el.classList.contains('mdc-list-item')) {
+            el = el.parentElement;
           }
-          event.target.classList.add(activatedClass);
-        }
-      });
+          if (el) {
+            var activatedItem = document.querySelector('.' + activatedClass);
+            if (activatedItem) {
+              activatedItem.classList.remove(activatedClass);
+            }
+            event.target.classList.add(activatedClass);
+          }
+        });
 
-      var drawerEl = document.getElementById('demo-drawer');
-      var radioEl = document.querySelector('#demo-radio-buttons');
-      radioEl.addEventListener('change', function(e) {
-        drawerEl.classList.remove('demo-drawer--custom');
-        drawerEl.classList.remove('demo-drawer--accessible');
+        var drawerEl = document.getElementById('demo-drawer');
+        var radioEl = document.querySelector('#demo-radio-buttons');
+        radioEl.addEventListener('change', function(e) {
+          drawerEl.classList.remove('demo-drawer--custom');
+          drawerEl.classList.remove('demo-drawer--accessible');
 
-        if(e.target.id === 'theme-radio-accessible') {
-          drawerEl.classList.add('demo-drawer--accessible');
-        } else if(e.target.id === 'theme-radio-custom') {
-          drawerEl.classList.add('demo-drawer--custom');
-        }
+          if(e.target.id === 'theme-radio-accessible') {
+            drawerEl.classList.add('demo-drawer--accessible');
+          } else if(e.target.id === 'theme-radio-custom') {
+            drawerEl.classList.add('demo-drawer--custom');
+          }
+        });
       });
     </script>
   </body>
