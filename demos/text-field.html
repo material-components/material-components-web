@@ -353,49 +353,6 @@
       </section>
 
       <section class="example">
-        <h2>CSS Only Text Field</h2>
-        <div class="mdc-form-field mdc-form-field--align-end" id="css-only-text-field-wrapper">
-          <div class="mdc-text-field" data-demo-no-auto-js>
-            <input type="text" class="mdc-text-field__input" id="css-only-text-field"
-                   placeholder="Name">
-            <div class="mdc-text-field__bottom-line"></div>
-          </div>
-          <label for="css-only-text-field">Your name:</label>
-        </div>
-
-        <div>
-          <input id="css-only-tf-disabled" type="checkbox">
-          <label for="css-only-tf-disabled">Disabled</label>
-        </div>
-        <div>
-          <input id="css-only-dark-theme-tf" type="checkbox">
-          <label for="css-only-dark-theme-tf">Dark Theme</label>
-        </div>
-      </section>
-
-      <section class="example">
-        <h2>CSS Only Text Field box</h2>
-        <div>
-          <label for="css-only-text-field-box">Your name:</label>
-          <div class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
-            <input type="text" class="mdc-text-field__input" id="css-only-text-field-box"
-                   placeholder="Name">
-          </div>
-        </div>
-      </section>
-
-      <section class="example">
-        <h2>CSS-Only Outlined Text Field</h2>
-        <div>
-          <label for="css-only-outlined-text-field">Your name:</label>
-          <div class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
-            <input type="text" class="mdc-text-field__input" id="css-only-outlined-text-field"
-                   placeholder="Name">
-          </div>
-        </div>
-      </section>
-
-      <section class="example">
         <h2>Preventing FOUC</h2>
         <div class="mdc-text-field mdc-text-field--upgraded">
           <input id="fouc" type="text" class="mdc-text-field__input" value="Pre-filled value">
@@ -430,15 +387,6 @@
           <input id="textarea-required" type="checkbox">
           <label for="textarea-required">Required</label>
         </div>
-      </section>
-
-      <section class="example">
-        <h2>CSS Only Textarea</h2>
-        <section>
-          <div class="mdc-text-field mdc-text-field--textarea" data-demo-no-auto-js>
-            <textarea id="textarea-css-only" class="mdc-text-field__input" rows="8" cols="40" placeholder="Enter something about yourself"></textarea>
-          </div>
-        </section>
       </section>
 
       <section class="example">
@@ -554,18 +502,6 @@
               .forEach(function(input) {
                 input.required = evt.target.checked;
               });
-        });
-      });
-
-      demoReady(function() {
-        var wrapperCssOnly = document.getElementById('css-only-text-field-wrapper');
-        var tfCssOnly = document.getElementById('css-only-text-field');
-
-        document.getElementById('css-only-tf-disabled').addEventListener('change', function(evt) {
-          tfCssOnly.disabled = evt.target.checked;
-        });
-        document.getElementById('css-only-dark-theme-tf').addEventListener('change', function(evt) {
-          wrapperCssOnly.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
       });
 

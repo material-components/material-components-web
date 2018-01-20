@@ -273,26 +273,6 @@
     opacity: 1;
   }
   // stylelint-enable plugin/selector-bem-pattern
-
-  &:not(.mdc-text-field--upgraded) {
-    height: 56px;
-
-    .mdc-text-field__input {
-      @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
-
-      height: 100%;
-      padding: 0 0 0 12px;
-      border: 1px solid $mdc-text-field-outlined-idle-border;
-
-      &:hover {
-        border-color: $mdc-text-field-outlined-hover-border;
-      }
-
-      &:focus {
-        @include mdc-theme-prop(border-color, primary);
-      }
-    }
-  }
 }
 
 // Box
@@ -439,11 +419,6 @@
     @include mdc-text-field-textarea-disabled_;
   }
 
-  &:not(.mdc-text-field--upgraded) {
-    .mdc-text-field__input {
-      padding-top: $padding-inset;
-    }
-  }
 
   &.mdc-text-field--invalid {
     @include mdc-text-field-textarea-invalid_;
