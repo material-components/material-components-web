@@ -54,7 +54,7 @@
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));
-    @include mdc-text-field-focused-textarea-stroke-color($focused-border);
+    @include mdc-text-field-textarea-stroke-color($focused-border);
   }
 }
 
@@ -65,7 +65,7 @@
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(orange, .87));
-    @include mdc-text-field-focused-textarea-stroke-color(orange);
+    @include mdc-text-field-textarea-stroke-color(orange);
   }
 }
 
