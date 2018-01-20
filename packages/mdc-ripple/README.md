@@ -86,7 +86,9 @@ Mixin | Description
 `mdc-states-activated($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for activated states in the given color
 `mdc-states-selected($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for selected states in the given color
 
-> _NOTE_: Each of the mixins above adds ripple styles using the indicated color, deciding opacity values based on whether the passed color is light or dark. `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
+> _NOTE_: Each of the mixins above adds ripple styles using the indicated color, deciding opacity values based on whether the passed color is light or dark.
+
+> _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
 #### Advanced States Mixins
 
@@ -287,7 +289,7 @@ Method Signature | Description
 `util.getMatchesProperty(HTMLElementPrototype) => Function` | Return the correct "matches" property to use on the current browser
 `util.getNormalizedEventCoords(ev, pageOffset, clientRect) => object` | Determines X/Y coordinates of an event normalized for touch events and ripples
 
-> _NOTE_: The functions `util.supportsCssVariables` and `util.applyPassive` caches their results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
+> _NOTE_: The functions `util.supportsCssVariables` and `util.applyPassive` cache their results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
 
 ## Caveats
 
