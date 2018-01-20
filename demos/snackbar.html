@@ -282,7 +282,7 @@
           document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
         });
 
-        [].slice.call(document.querySelectorAll('.mdc-text-field')).forEach(function(tf) {
+        [].forEach.call(document.querySelectorAll('.mdc-text-field'), function(tf) {
           MDCTextField.attachTo(tf);
         });
 
