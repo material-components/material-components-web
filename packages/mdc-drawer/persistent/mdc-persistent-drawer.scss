@@ -32,7 +32,7 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
   @include mdc-drawer-base_;
   @include mdc-drawer-ink-color($mdc-persistent-drawer-ink-color);
   @include mdc-drawer-fill-color($mdc-persistent-drawer-fill-color);
-  
+
   width: 0;
 
   .mdc-drawer__drawer {
@@ -57,8 +57,9 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
     flex-direction: column;
     box-sizing: border-box;
     width: $mdc-persistent-drawer-width;
-    overflow: hidden;
-    touch-action: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    touch-action: pan-y;
   }
 
   &.mdc-drawer--animating {
