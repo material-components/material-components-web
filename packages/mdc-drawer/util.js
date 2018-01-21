@@ -30,6 +30,8 @@ export function remapEvent(eventName, globalObj = window) {
       return 'pointermove';
     case 'touchend':
       return 'pointerup';
+    case 'touchcancel':
+      return 'pointercancel';
     default:
       return eventName;
     }

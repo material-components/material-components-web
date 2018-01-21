@@ -86,12 +86,14 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.adapter_.registerDrawerInteractionHandler('touchstart', this.componentTouchStartHandler_);
     this.adapter_.registerInteractionHandler('touchmove', this.componentTouchMoveHandler_);
     this.adapter_.registerInteractionHandler('touchend', this.componentTouchEndHandler_);
+    this.adapter_.registerInteractionHandler('touchcancel', this.componentTouchEndHandler_);
   }
 
   destroy() {
     this.adapter_.deregisterDrawerInteractionHandler('touchstart', this.componentTouchStartHandler_);
     this.adapter_.deregisterInteractionHandler('touchmove', this.componentTouchMoveHandler_);
     this.adapter_.deregisterInteractionHandler('touchend', this.componentTouchEndHandler_);
+    this.adapter_.deregisterInteractionHandler('touchcancel', this.componentTouchEndHandler_);
     // Deregister the document keydown handler just in case the component is destroyed while the menu is open.
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
   }
