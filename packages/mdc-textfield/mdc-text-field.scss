@@ -30,10 +30,6 @@
 @import "./icon/mdc-text-field-icon";
 @import "./label/mdc-text-field-label";
 @import "./outline/mdc-text-field-outline";
-@include mdc-text-field-invalid-label-shake-keyframes_(standard, 100%);
-@include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 138%, .923);
 
 // postcss-bem-linter: define text-field
 
@@ -44,11 +40,8 @@
   @include mdc-text-field-ink-color(text-primary-on-light);
   @include mdc-text-field-label-color($mdc-text-field-light-label);
   @include mdc-text-field-helper-text-color(text-hint-on-light);
-
-  // Outline specific colors
-  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
-  @include mdc-text-field-focused-outline-color(primary);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider-on-light);
+  @include mdc-text-field-icon-color($mdc-text-field-underline-on-light);
 
   display: inline-block;
   position: relative;
@@ -110,7 +103,7 @@
   // Move label when text-field gets autofilled in Chrome
   // stylelint-disable plugin/selector-bem-pattern
   &:-webkit-autofill + .mdc-text-field__label {
-    transform: translateY(-100%) scale(.75, .75);
+    transform: translateY(-100%) scale(.75);
     cursor: auto;
   }
   // stylelint-enable plugin/selector-bem-pattern
@@ -138,11 +131,13 @@
   @include mdc-ripple-radius;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
 
+  // Colors
+  @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
+
   display: inline-flex;
   position: relative;
   height: 56px;
   margin-top: 16px;
-  background-color: $mdc-text-field-box-background;
   overflow: hidden;
 
   @include mdc-theme-dark(".mdc-text-field", true) {
@@ -171,7 +166,6 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-text-field-icon-padding});
-    color: $mdc-text-field-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -183,11 +177,14 @@
     @include mdc-theme-dark(".mdc-text-field") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
+
+    &--float-above {
+      transform: translateY(-50%) scale(.75);
+    }
   }
 
   .mdc-text-field__label--float-above {
-    animation: invalid-shake-float-above-box 250ms 1;
-    transform: translateY(-50%) scale(.75, .75);
+    transform: translateY(-50%) scale(.75);
   }
 
   .mdc-text-field__label--float-above.mdc-text-field__label--shake {
@@ -220,10 +217,14 @@
   // stylelint-disable plugin/selector-bem-pattern
   &.mdc-text-field--outlined {
     .mdc-text-field__label--float-above {
-      transform: scale(.75) translateX(-36%) translateY(-170%);
+      transform: translateX(-27%) translateY(-130%) scale(.75);
 
       @include mdc-rtl {
-        transform: scale(.75) translateX(36%) translateY(-170%);
+        transform: translateX(27%) translateY(-130%) scale(.75);
+      }
+
+      &.mdc-text-field__label--shake {
+        animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
       }
     }
 
@@ -234,6 +235,11 @@
         // stylelint-disable max-nesting-depth
         @include mdc-rtl {
           transform: translateX(25%) translateY(-145%) scale(.923);
+        }
+
+        // stylelint-disable-next-line selector-max-specificity
+        &.mdc-text-field__label--shake {
+          animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
         }
         // stylelint-enable max-nesting-depth
       }
@@ -301,10 +307,6 @@
   }
 }
 
-.mdc-text-field--invalid {
-  @include mdc-text-field-invalid_;
-}
-
 .mdc-text-field--dense {
   margin-top: 12px;
   margin-bottom: 4px;
@@ -312,21 +314,13 @@
 
   .mdc-text-field__label--float-above {
     // NOTE: This is an eyeball'd approximation of what's in the mocks.
-    transform: translateY(calc(-100% - 2px)) scale(.923, .923);
+    transform: translateY(-110%) scale(.923);
   }
-}
-
-.mdc-text-field--disabled {
-  @include mdc-text-field-disabled_;
 }
 
 @include mdc-required-text-field-label-asterix_ {
   margin-left: 1px;
   content: "*";
-}
-
-.mdc-text-field--focused {
-  @include mdc-text-field-focused_;
 }
 
 .mdc-text-field--textarea {
@@ -344,7 +338,7 @@
     height: 56px;
     margin: 0;
     border: none;
-    border-bottom: 1px solid $mdc-text-field-divider-on-light;
+    border-bottom: 1px solid;
     outline: none;
 
     .mdc-text-field__input {
@@ -392,3 +386,31 @@
   align-self: flex-start;
 }
 // stylelint-enable selector-max-type
+
+.mdc-text-field--focused {
+  @include mdc-text-field-focused_;
+}
+
+.mdc-text-field--textarea.mdc-text-field--focused {
+  @include mdc-text-field-textarea-stroke-color(primary);
+}
+
+.mdc-text-field--invalid {
+  @include mdc-text-field-invalid_;
+}
+
+.mdc-text-field--textarea.mdc-text-field--invalid {
+  @include mdc-text-field-textarea-invalid_;
+}
+
+.mdc-text-field--outlined.mdc-text-field--invalid {
+  @include mdc-text-field-outlined-invalid_;
+}
+
+.mdc-text-field--disabled {
+  @include mdc-text-field-disabled_;
+}
+
+.mdc-text-field--textarea.mdc-text-field--disabled {
+  @include mdc-text-field-textarea-disabled_;
+}

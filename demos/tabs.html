@@ -436,8 +436,8 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Primary Color Indicator</legend>
-          <nav id="primary-indicator-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-primary">
+          <legend class="mdc-typography--title">Custom Indicator Colors</legend>
+          <nav id="custom-indicator-tab-bar" class="mdc-tab-bar custom-indicator-tab-bar">
             <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
             <a class="mdc-tab" href="#two">Item Two</a>
             <a class="mdc-tab" href="#three">Three</a>
@@ -448,40 +448,8 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Primary Color Indicator - CSS-Only</legend>
-          <nav class="mdc-tab-bar mdc-tab-bar--indicator-primary">
-            <a class="mdc-tab mdc-tab--active" href="#one">
-              Item One
-              <span class="mdc-tab__indicator"></span>
-            </a>
-            <a class="mdc-tab" href="#two">
-              Item Two
-              <span class="mdc-tab__indicator"></span>
-            </a>
-            <a class="mdc-tab" href="#three">
-              Three
-              <span class="mdc-tab__indicator"></span>
-            </a>
-          </nav>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Secondary Color Indicator</legend>
-          <nav id="secondary-indicator-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
-            <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
-            <a class="mdc-tab" href="#two">Item Two</a>
-            <a class="mdc-tab" href="#three">Three</a>
-            <span class="mdc-tab-bar__indicator"></span>
-          </nav>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Secondary Color Indicator - CSS-Only</legend>
-          <nav class="mdc-tab-bar mdc-tab-bar--indicator-accent">
+          <legend class="mdc-typography--title">Custom Indicator Colors - CSS-Only</legend>
+          <nav class="mdc-tab-bar custom-indicator-tab-bar">
             <a class="mdc-tab mdc-tab--active" href="#one">
               Item One
               <span class="mdc-tab__indicator"></span>
@@ -597,71 +565,18 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + primary indicator</legend>
-          <div class="demo-note">
-            <em>Note: Changing the toolbar's background color here so that the primary indicator can be visible</em>
-          </div>
-          <div class="mdc-toolbar mdc-theme--secondary-bg">
-            <div class="mdc-toolbar__row">
-              <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
-                <h1 class="mdc-toolbar__title">Title</h1>
-              </div>
-              <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
-                <div>
-                  <nav id="toolbar-tab-bar-primary-indicator" class="mdc-tab-bar mdc-tab-bar--indicator-primary">
-                    <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
-                    <a class="mdc-tab" href="#two">Item Two</a> <a class="mdc-tab" href="#three">Item Three</a>
-                    <span class="mdc-tab-bar__indicator"></span>
-                  </nav>
-                </div>
-              </div>
+          <legend class="mdc-typography--title">Within mdc-toolbar + custom color indicator</legend>
+            <div class="demo-note">
+                <em>Note: Changing the toolbar's background color here so that the primary indicator can be visible</em>
             </div>
-          </div>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + primary indicator, CSS-Only</legend>
-          <div class="mdc-toolbar mdc-theme--secondary-bg">
+            <div class="mdc-toolbar custom-toolbar-indicator">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
                 <h1 class="mdc-toolbar__title">Title</h1>
               </div>
               <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
                 <div>
-                  <nav class="mdc-tab-bar mdc-tab-bar--indicator-primary">
-                    <a class="mdc-tab mdc-tab--active" href="#one">
-                      Item One
-                      <span class="mdc-tab__indicator"></span>
-                    </a>
-                    <a class="mdc-tab" href="#two">
-                      Item Two
-                      <span class="mdc-tab__indicator"></span>
-                    </a>
-                    <a class="mdc-tab" href="#three">
-                      Item Three
-                      <span class="mdc-tab__indicator"></span>
-                    </a>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      </section>
-
-      <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + secondary color indicator</legend>
-          <div class="mdc-toolbar">
-            <div class="mdc-toolbar__row">
-              <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
-                <h1 class="mdc-toolbar__title">Title</h1>
-              </div>
-              <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
-                <div>
-                  <nav id="toolbar-tab-bar-secondary-indicator" class="mdc-tab-bar mdc-tab-bar--indicator-accent">
+                  <nav id="toolbar-tab-bar-custom-indicator" class="mdc-tab-bar custom-indicator-toolbar-tab-bar">
                     <a class="mdc-tab mdc-tab--active" href="#one">Item One</a>
                     <a class="mdc-tab" href="#two">Item Two</a>
                     <a class="mdc-tab" href="#three">Item Three</a>
@@ -676,27 +591,27 @@
 
       <section>
         <fieldset>
-          <legend class="mdc-typography--title">Within mdc-toolbar + secondary color indicator, CSS-Only</legend>
-          <div class="mdc-toolbar">
+          <legend class="mdc-typography--title">Within mdc-toolbar + custom color indicator, CSS-Only</legend>
+          <div class="mdc-toolbar custom-toolbar-indicator">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--shrink-to-fit mdc-toolbar__section--align-start">
                 <h1 class="mdc-toolbar__title">Title</h1>
               </div>
               <div class="mdc-toolbar__section mdc-toolbar__section--align-end">
                 <div class="mdc-toolbar__section--table-style-wrapper">
-                  <nav class="mdc-tab-bar mdc-tab-bar--indicator-accent">
-                    <a class="mdc-tab mdc-tab--active" href="#one">
-                      Item One
-                      <span class="mdc-tab__indicator"></span>
-                    </a>
-                    <a class="mdc-tab" href="#two">
-                      Item Two
-                      <span class="mdc-tab__indicator"></span>
-                    </a>
-                    <a class="mdc-tab" href="#three">
-                      Item Three
-                      <span class="mdc-tab__indicator"></span>
-                    </a>
+                  <nav class="mdc-tab-bar custom-indicator-toolbar-tab-bar">
+                      <a class="mdc-tab mdc-tab--active" href="#one">
+                          Item One
+                          <span class="mdc-tab__indicator"></span>
+                      </a>
+                      <a class="mdc-tab" href="#two">
+                          Item Two
+                          <span class="mdc-tab__indicator"></span>
+                      </a>
+                      <a class="mdc-tab" href="#three">
+                          Item Three
+                          <span class="mdc-tab__indicator"></span>
+                      </a>
                   </nav>
                 </div>
               </div>
@@ -707,10 +622,10 @@
       <section>
         <fieldset>
           <legend class="mdc-typography--title">Within Toolbar, Dynamic Content Control</legend>
-          <div class="mdc-toolbar" id="dynamic-demo-toolbar">
+          <div class="mdc-toolbar custom-toolbar-indicator" id="dynamic-demo-toolbar">
             <div class="mdc-toolbar__row">
               <div class="mdc-toolbar__section mdc-toolbar__section--align-start">
-                <nav id="dynamic-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent" role="tablist">
+                <nav id="dynamic-tab-bar" class="mdc-tab-bar custom-indicator-toolbar-tab-bar" role="tablist">
                   <a role="tab" aria-controls="panel-1"
                      class="mdc-tab mdc-tab--active" href="#panel-1">Item One</a>
                   <a role="tab" aria-controls="panel-2"
@@ -751,10 +666,8 @@
         window.iconTextTabBarLabel = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar-custom-colors'));
         window.toolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar'));
         window.toolbarTabBarModified = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-modified'));
-        window.primaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#primary-indicator-tab-bar'));
-        window.secondaryIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#secondary-indicator-tab-bar'));
-        window.primaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-primary-indicator'));
-        window.secondaryIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-secondary-indicator'));
+        window.customIndicatorTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#custom-indicator-tab-bar'));
+        window.customIndicatorToolbarTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#toolbar-tab-bar-custom-indicator'));
 
         var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
         var dots = document.querySelector('.dots');
@@ -823,10 +736,8 @@
           window.iconTextTabBar.layout();
           window.iconTextTabBarLabel.layout();
           window.toolbarTabBar.layout();
-          window.primaryIndicatorTabBar.layout();
-          window.secondaryIndicatorTabBar.layout();
-          window.primaryIndicatorToolbarTabBar.layout();
-          window.secondaryIndicatorToolbarTabBar.layout();
+          window.customIndicatorTabBar.layout();
+          window.customIndicatorToolbarTabBar.layout();
           window.dynamicTabBar.layout();
           toolbarTabBarModified.layout();
         });

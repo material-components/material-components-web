@@ -22,10 +22,6 @@
   position: absolute;
   bottom: 16px;
   cursor: pointer;
-
-  @include mdc-theme-dark(".mdc-text-field") {
-    @include mdc-theme-prop(color, text-secondary-on-dark);
-  }
 }
 
 .mdc-text-field__icon:not([tabindex]),
