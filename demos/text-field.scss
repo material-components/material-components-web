@@ -20,30 +20,94 @@
 
 // stylelint-disable selector-class-pattern
 .demo-text-field-custom-colors:not(.mdc-text-field--invalid) {
-  @include mdc-text-field-bottom-line-color(rgba(blue, .38));
-  @include mdc-text-field-hover-bottom-line-color(rgba(blue, .6));
-  @include mdc-text-field-focused-bottom-line-color(blue);
+  $idle-border: rgba(blue, .38);
+  $hover-border: rgba(blue, .6);
+  $focused-border: rgba(blue, 1);
+
+  @include mdc-text-field-bottom-line-color($idle-border);
+  @include mdc-text-field-hover-bottom-line-color($hover-border);
+  @include mdc-text-field-focused-bottom-line-color($focused-border);
   @include mdc-text-field-ink-color(black);
   @include mdc-text-field-label-color(rgba(blue, .5));
-  @include mdc-text-field-outline-color(rgba(blue, .38));
-  @include mdc-text-field-hover-outline-color(rgba(blue, .6));
-  @include mdc-text-field-focused-outline-color(rgba(blue, 1));
-  @include mdc-text-field-helper-text-color(rgba(blue, .38));
+  @include mdc-text-field-outline-color($idle-border);
+  @include mdc-text-field-hover-outline-color($hover-border);
+  @include mdc-text-field-focused-outline-color($focused-border);
+  @include mdc-text-field-helper-text-color($idle-border);
+  @include mdc-text-field-textarea-stroke-color($idle-border);
+  @include mdc-text-field-icon-color($hover-border);
+
+  &.mdc-text-field--focused {
+    @include mdc-text-field-label-color(rgba(blue, .87));
+    @include mdc-text-field-icon-color($focused-border);
+  }
+}
+
+.demo-textarea:not(.mdc-text-field--invalid) {
+  $idle-border: rgba(blue, .38);
+  $hover-border: rgba(blue, .6);
+  $focused-border: rgba(blue, 1);
+
+  @include mdc-text-field-ink-color(black);
+  @include mdc-text-field-label-color(rgba(blue, .5));
+  @include mdc-text-field-textarea-stroke-color($idle-border);
+
+  &.mdc-text-field--focused {
+    @include mdc-text-field-label-color(rgba(blue, .87));
+    @include mdc-text-field-textarea-stroke-color($focused-border);
+  }
+}
+
+.demo-textarea.mdc-text-field--invalid {
+  @include mdc-text-field-ink-color(orange);
+  @include mdc-text-field-label-color(rgba(orange, .5));
+  @include mdc-text-field-textarea-stroke-color(orange);
+
+  &.mdc-text-field--focused {
+    @include mdc-text-field-label-color(rgba(orange, .87));
+    @include mdc-text-field-textarea-stroke-color(orange);
+  }
+}
+
+.demo-fullwidth-input:not(.mdc-text-field--invalid) {
+  @include mdc-text-field-ink-color(black);
+  @include mdc-text-field-label-color(rgba(blue, .5));
+  @include mdc-text-field-focused-bottom-line-color(blue);
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));
   }
 }
 
-.demo-text-field-custom-error-colors.mdc-text-field--invalid {
-  @include mdc-text-field-bottom-line-color(rgba(orange, .38));
-  @include mdc-text-field-hover-bottom-line-color(rgba(orange, .6));
+.demo-fullwidth-input.mdc-text-field--invalid {
+  @include mdc-text-field-ink-color(orange);
+  @include mdc-text-field-label-color(rgba(orange, .5));
   @include mdc-text-field-focused-bottom-line-color(orange);
+
+  &.mdc-text-field--focused {
+    @include mdc-text-field-label-color(rgba(orange, .87));
+    @include mdc-text-field-fullwidth-bottom-line-color(orange);
+  }
+}
+
+.demo-text-field-custom-error-colors.mdc-text-field--invalid {
+  $idle-border: rgba(orange, .38);
+  $hover-border: rgba(orange, .6);
+  $focused-border: rgba(orange, 1);
+
+  @include mdc-text-field-bottom-line-color($idle-border);
+  @include mdc-text-field-hover-bottom-line-color($hover-border);
+  @include mdc-text-field-focused-bottom-line-color($focused-border);
   @include mdc-text-field-ink-color(orange);
   @include mdc-text-field-label-color(rgba(orange, .87));
-  @include mdc-text-field-outline-color(rgba(orange, .38));
-  @include mdc-text-field-hover-outline-color(rgba(orange, .6));
-  @include mdc-text-field-focused-outline-color(rgba(orange, 1));
-  @include mdc-text-field-helper-text-validation-color(rgba(orange, .6));
+  @include mdc-text-field-outline-color($idle-border);
+  @include mdc-text-field-hover-outline-color($hover-border);
+  @include mdc-text-field-focused-outline-color($focused-border);
+  @include mdc-text-field-helper-text-validation-color($hover-border);
+  @include mdc-text-field-textarea-stroke-color($idle-border);
+
+  @include mdc-text-field-icon-color($focused-border);
+
+  // Example for --invalid textfield when helper text is not a validation message.
+  @include mdc-text-field-helper-text-color(rgba(blue, .6));
 }
 // stylelint-enable selector-class-pattern
