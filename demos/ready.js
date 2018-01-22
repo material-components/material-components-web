@@ -20,9 +20,9 @@
  * have finished loading (as determined by continuous long-polling with a timeout). If this function is called after all
  * resources have finished loading, the given handler function will be invoked synchronously (in the same call stack).
  * Handlers are invoked in FIFO order.
- * @param {function() : undefined} handler
+ * @param {function(!Document|!Element) : undefined} handler
  */
-window.demoReady = (function() {
+window.demoReady = (function(root) {
   var POLL_INTERVAL_MS = 100;
   var POLL_MAX_WAIT_MS = 60 * 1000;
 
@@ -64,6 +64,9 @@ window.demoReady = (function() {
     }
     startTimeMs = Date.now();
     pollTimer = setInterval(tick, POLL_INTERVAL_MS);
+    window.addEventListener('load', function() {
+      tick();
+    });
   }
 
   function tick() {
@@ -78,23 +81,24 @@ window.demoReady = (function() {
     if (elapsedTimeMs > POLL_MAX_WAIT_MS) {
       clearInterval(pollTimer);
       removeDetectionDom();
-      console.error('Timed out waiting for JS and CSS to load');
+      console.error('Timed out waiting for JS and CSS to load after ' + POLL_MAX_WAIT_MS + ' ms');
       return;
     }
   }
 
   function invokeHandlers() {
     handlers.forEach(function(handler) {
-      handler();
+      handler(root);
     });
+    handlers.length = 0;
   }
 
   return function addHandler(handler) {
     if (isReady()) {
-      handler();
+      handler(root);
       return;
     }
     handlers.push(handler);
     startTimer();
   };
-})();
+})(document);
