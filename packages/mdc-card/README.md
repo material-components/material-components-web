@@ -164,6 +164,7 @@ To have a single action button take up the entire width of the action bar, use t
 CSS Class | Description
 --- | ---
 `mdc-card` | A card
+`mdc-card--stroked` | Gives the card a `1px` stroke instead of elevation
 `mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
 `mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
@@ -183,4 +184,5 @@ Mixin | Description
 `mdc-card-fill-color($color)` | Sets the fill color of a `mdc-card`
 `mdc-card-media-aspect-ratio($width-unitless, $height-unitless)` | Automatically sets the height of the `mdc-card__media` subelement to maintain a given aspect ratio based on its width
 `mdc-card-corner-radius($radius)` | Sets the corner radius of a card
+`mdc-card-stroke($color, $thickness)` | Sets the color and thickness of a card's stroke
 
