@@ -26,7 +26,7 @@
 .mdc-card {
   @include mdc-elevation(2, text-primary-on-background);
   @include mdc-card-fill-color(background);
-  @include mdc-card-corner-radius(2px);
+  @include mdc-card-corner-radius(4px);
 
   display: flex;
   flex-direction: column;
