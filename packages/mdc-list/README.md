@@ -1,5 +1,7 @@
 # Lists
 
+MDC List provides styles which implement Material Design Lists - "A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are supported (with three-line lists planned). MDC Lists are designed to be accessible and RTL aware.
+
 ## Design & API Documentation
 
 * [Material Design guidelines: List](https://material.io/guidelines/components/lists.html)
@@ -103,6 +105,14 @@ CSS Class | Description
 * *Activated* state is similar to selected state, however should only be implemented once within a specific list.
 * *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page.
 
+#### Sass Variables and Mixins
+Mixin | Description
+--- | ---
+`mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text of the list-item
+`mdc-list-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text of the list-item
+`mdc-list-item-graphic-fill-color($color)` | Sets background ink color of the graphic element within list-item
+`mdc-list-item-graphic-ink-color($color)` | Sets ink color of the graphic element within list-item
+`mdc-list-item-meta-ink-color($color)` | Sets ink color of the meta element within list-item
 
 ## List Groups
 
@@ -131,8 +141,12 @@ CSS Class | Description
 `mdc-list-group` | Mandatory, wrapper around two or more mdc-list elements to be grouped together
 `mdc-list-group__subheader` |	Optional, heading text displayed above each list in a group
 
+#### Sass Variables and Mixins
+Mixin | Description
+--- | ---
+`mdc-list-group-subheader-ink-color($color)` | Sets ink color of subheader text within list group
 
-## List Items
+## List Dividers
 
 #### HTML Structure
 ```html
@@ -170,8 +184,7 @@ CSS Class | Description
 
 \* **Note**: class can be used between list-items (example 1) *OR* between two lists (example 2)
 
-
-
-
-### JavaScript
 ### Sass Variables and Mixins
+Mixin | Description
+--- | ---
+`mdc-list-divider-color($color)` | Sets divider ink color
