@@ -1,3 +1,73 @@
+<a name="0.29.0"></a>
+# [0.29.0](https://github.com/material-components/material-components-web/compare/v0.28.0...v0.29.0) (2018-01-22)
+
+
+### Bug Fixes
+
+* **checkbox:** Remove unnecessary :enabled ([#1944](https://github.com/material-components/material-components-web/issues/1944)) ([9525aec](https://github.com/material-components/material-components-web/commit/9525aec))
+* **demos:** Fix CSS selector for dark theme buttons ([#1933](https://github.com/material-components/material-components-web/issues/1933)) ([bbc479c](https://github.com/material-components/material-components-web/commit/bbc479c))
+* **demos:** Fix NPEs in drawer demos ([#1946](https://github.com/material-components/material-components-web/issues/1946)) ([2c92827](https://github.com/material-components/material-components-web/commit/2c92827))
+* **dialog:** Remove code that does nothing ([#1935](https://github.com/material-components/material-components-web/issues/1935)) ([fd0c675](https://github.com/material-components/material-components-web/commit/fd0c675))
+* **list:** Fix the height of the dense avatar list ([#1905](https://github.com/material-components/material-components-web/issues/1905)) ([3e5f6e0](https://github.com/material-components/material-components-web/commit/3e5f6e0))
+* **ripple:** Relax deduplication conditions for touch devices ([#1990](https://github.com/material-components/material-components-web/issues/1990)) ([450a699](https://github.com/material-components/material-components-web/commit/450a699))
+* **rtl:** Fix typo in error message and make it more readable ([#1956](https://github.com/material-components/material-components-web/issues/1956)) ([6e4432c](https://github.com/material-components/material-components-web/commit/6e4432c))
+* **select:** Remove unused JS logic for bottom-line scaleX transform ([#1910](https://github.com/material-components/material-components-web/issues/1910)) ([82a9fa3](https://github.com/material-components/material-components-web/commit/82a9fa3))
+* **slider:** Add MDCSliderFoundation export ([#1959](https://github.com/material-components/material-components-web/issues/1959)) ([3a1786f](https://github.com/material-components/material-components-web/commit/3a1786f))
+* **tabs:** removed ::after for css-only .mdc-tab__indicator ([#1983](https://github.com/material-components/material-components-web/issues/1983)) ([5787846](https://github.com/material-components/material-components-web/commit/5787846))
+* **text-field:** Add outline to foundation map ([#1914](https://github.com/material-components/material-components-web/issues/1914)) ([8a8d53e](https://github.com/material-components/material-components-web/commit/8a8d53e))
+* **text-field:** Fix focused hover state on outlined text field ([4df8319](https://github.com/material-components/material-components-web/commit/4df8319))
+* **text-field:** Fix label shake animation ([#1882](https://github.com/material-components/material-components-web/issues/1882)) ([f7b5da4](https://github.com/material-components/material-components-web/commit/f7b5da4))
+* **text-field:** Remove extra adapter method ([#1913](https://github.com/material-components/material-components-web/issues/1913)) ([656dc7c](https://github.com/material-components/material-components-web/commit/656dc7c))
+* **textfield:** add primary color to textfield label on focus ([#1820](https://github.com/material-components/material-components-web/issues/1820)) ([31aa288](https://github.com/material-components/material-components-web/commit/31aa288))
+* **textfield:** Fix textarea label from overlapping border. ([#1715](https://github.com/material-components/material-components-web/issues/1715)) ([673a84d](https://github.com/material-components/material-components-web/commit/673a84d))
+* **toolbar:** Use transparent bg for menu icon to avoid IE 11 bug ([#1909](https://github.com/material-components/material-components-web/issues/1909)) ([2da3dc8](https://github.com/material-components/material-components-web/commit/2da3dc8)), closes [#881](https://github.com/material-components/material-components-web/issues/881)
+
+
+### Chores
+
+* **demos:** Use CSS files directly instead of Webpack's .css.js ([#1916](https://github.com/material-components/material-components-web/issues/1916)) ([d1ec729](https://github.com/material-components/material-components-web/commit/d1ec729))
+* **select:** Remove multi-select from mdc-select. ([#1917](https://github.com/material-components/material-components-web/issues/1917)) ([145217c](https://github.com/material-components/material-components-web/commit/145217c))
+* **tabs:** move indicator sass into custom mixins ([#1965](https://github.com/material-components/material-components-web/issues/1965)) ([fc3a9d5](https://github.com/material-components/material-components-web/commit/fc3a9d5))
+* **text-field:** Move idle outline style method ([#1911](https://github.com/material-components/material-components-web/issues/1911)) ([5d3b350](https://github.com/material-components/material-components-web/commit/5d3b350))
+
+
+### Features
+
+* **demos:** Add global `demoReady()` function ([#1919](https://github.com/material-components/material-components-web/issues/1919)) ([da34cc9](https://github.com/material-components/material-components-web/commit/da34cc9))
+* **demos:** Add theme switcher to theme demo page ([#1975](https://github.com/material-components/material-components-web/issues/1975)) ([4f89819](https://github.com/material-components/material-components-web/commit/4f89819))
+* **select:** Move colors for default select to mixins ([#1934](https://github.com/material-components/material-components-web/issues/1934)) ([d6c68ce](https://github.com/material-components/material-components-web/commit/d6c68ce))
+* **text-field:** Expand the helper text foundation ([#1955](https://github.com/material-components/material-components-web/issues/1955)) ([468942b](https://github.com/material-components/material-components-web/commit/468942b))
+* **text-field:** Move color for default text-field to mixins. ([#1899](https://github.com/material-components/material-components-web/issues/1899)) ([ec4d18e](https://github.com/material-components/material-components-web/commit/ec4d18e))
+* **text-field:** Move text-field outline colors to mixins ([#1963](https://github.com/material-components/material-components-web/issues/1963)) ([1dae53c](https://github.com/material-components/material-components-web/commit/1dae53c))
+* **text-field:** Remove css only options. Update docs. Update demo ([#2012](https://github.com/material-components/material-components-web/issues/2012)) ([9d87adf](https://github.com/material-components/material-components-web/commit/9d87adf))
+
+
+### BREAKING CHANGES
+
+* **tabs:** removal of .mdc-toolbar selector forces clients to
+customize tab-bars within toolbars that require a different ink color.
+* **text-field:** Removes the css only version of the text-field component. 
+* **tabs:** all css-only mdc-tab elements must have a .mdc-tab__indicator
+child element
+* **select:** Move colors for default select element to mixins. Refer to the documentation for guidance. 
+refs: #1150
+
+Move colors for the select into a new mixins file.
+* **text-field:** Moves color customization of the outline text-field to SASS mixins.
+* **select:** Removes mdc-multi-select from the mdc-select package. Use lists to create components that allow multiple items to be selected.
+* **demos:** Sass source maps and hot reloading no longer work on demo pages. We can address those issues in future PRs if they become a problem. In addition, the `MDC_WRAP_CSS_IN_JS` env var now defaults to `false`.
+
+This change:
+
+1. Makes it possible to dynamically switch themes at runtime (follow-up PR)
+2. Fixes the FOUC on all demo pages
+3. Fixes sporadic rendering errors on all demo pages that call `getComputedStyle()` on page load (e.g., ripple)
+4. Allows us to remove CSS polling from our demo JS (follow-up PR)
+5. Reduces Chrome devtools memory leaks after hot reloading
+* **text-field:** Text field outline adapter now must implement the `getIdleOutlineStyleValue` method previously implemented in the text field adapter. The functionality is exactly the same and requires only small changes to accessing the outline node.
+
+
+
 <a name="0.28.0"></a>
 # [0.28.0](https://github.com/material-components/material-components-web/compare/v0.27.0...v0.28.0) (2018-01-08)
 
