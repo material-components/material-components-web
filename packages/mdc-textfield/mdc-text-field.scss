@@ -391,10 +391,26 @@
   @include mdc-text-field-focused_;
 }
 
+.mdc-text-field--textarea.mdc-text-field--focused {
+  @include mdc-text-field-textarea-stroke-color(primary);
+}
+
 .mdc-text-field--invalid {
   @include mdc-text-field-invalid_;
 }
 
+.mdc-text-field--textarea.mdc-text-field--invalid {
+  @include mdc-text-field-textarea-invalid_;
+}
+
+.mdc-text-field--outlined.mdc-text-field--invalid {
+  @include mdc-text-field-outlined-invalid_;
+}
+
 .mdc-text-field--disabled {
   @include mdc-text-field-disabled_;
+}
+
+.mdc-text-field--textarea.mdc-text-field--disabled {
+  @include mdc-text-field-textarea-disabled_;
 }
