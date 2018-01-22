@@ -40,11 +40,8 @@
   @include mdc-text-field-ink-color(text-primary-on-light);
   @include mdc-text-field-label-color($mdc-text-field-light-label);
   @include mdc-text-field-helper-text-color(text-hint-on-light);
-
-  // Outline specific colors
-  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
-  @include mdc-text-field-focused-outline-color(primary);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider-on-light);
+  @include mdc-text-field-icon-color($mdc-text-field-underline-on-light);
 
   display: inline-block;
   position: relative;
@@ -134,11 +131,13 @@
   @include mdc-ripple-radius;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
 
+  // Colors
+  @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
+
   display: inline-flex;
   position: relative;
   height: 56px;
   margin-top: 16px;
-  background-color: $mdc-text-field-box-background;
   overflow: hidden;
 
   @include mdc-theme-dark(".mdc-text-field", true) {
@@ -167,7 +166,6 @@
     position: absolute;
     bottom: 20px;
     width: calc(100% - #{$mdc-text-field-icon-padding});
-    color: $mdc-text-field-box-secondary-text;
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
@@ -309,10 +307,6 @@
   }
 }
 
-.mdc-text-field--invalid {
-  @include mdc-text-field-invalid_;
-}
-
 .mdc-text-field--dense {
   margin-top: 12px;
   margin-bottom: 4px;
@@ -324,17 +318,9 @@
   }
 }
 
-.mdc-text-field--disabled {
-  @include mdc-text-field-disabled_;
-}
-
 @include mdc-required-text-field-label-asterix_ {
   margin-left: 1px;
   content: "*";
-}
-
-.mdc-text-field--focused {
-  @include mdc-text-field-focused_;
 }
 
 .mdc-text-field--textarea {
@@ -352,7 +338,7 @@
     height: 56px;
     margin: 0;
     border: none;
-    border-bottom: 1px solid $mdc-text-field-divider-on-light;
+    border-bottom: 1px solid;
     outline: none;
 
     .mdc-text-field__input {
@@ -400,3 +386,31 @@
   align-self: flex-start;
 }
 // stylelint-enable selector-max-type
+
+.mdc-text-field--focused {
+  @include mdc-text-field-focused_;
+}
+
+.mdc-text-field--textarea.mdc-text-field--focused {
+  @include mdc-text-field-textarea-stroke-color(primary);
+}
+
+.mdc-text-field--invalid {
+  @include mdc-text-field-invalid_;
+}
+
+.mdc-text-field--textarea.mdc-text-field--invalid {
+  @include mdc-text-field-textarea-invalid_;
+}
+
+.mdc-text-field--outlined.mdc-text-field--invalid {
+  @include mdc-text-field-outlined-invalid_;
+}
+
+.mdc-text-field--disabled {
+  @include mdc-text-field-disabled_;
+}
+
+.mdc-text-field--textarea.mdc-text-field--disabled {
+  @include mdc-text-field-textarea-disabled_;
+}

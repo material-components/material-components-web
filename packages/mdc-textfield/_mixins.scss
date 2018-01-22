@@ -18,6 +18,7 @@
 @import "outline/mixins";
 @import "label/mixins";
 @import "helper-text/mixins";
+@import "icon/mixins";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
@@ -83,6 +84,33 @@
   }
 }
 
+@mixin mdc-text-field-box-fill-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-box-fill-color_($color);
+  }
+}
+
+@mixin mdc-text-field-textarea-stroke-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-textarea-stroke-color_($color);
+  }
+}
+
+@mixin mdc-text-field-textarea-fill-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-textarea-fill-color_($color);
+    // Automatically add label background color the same color as well to ensure
+    // the label can be seen if the input scrolls behind the label
+    @include mdc-text-field-label-background-color_($color);
+  }
+}
+
+@mixin mdc-text-field-fullwidth-bottom-line-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-fullwidth-bottom-line-color_($color);
+  }
+}
+
 // Private mixins
 
 // Common
@@ -92,6 +120,8 @@
   @include mdc-text-field-ink-color_(text-disabled-on-light);
   @include mdc-text-field-label-color_(text-disabled-on-light);
   @include mdc-text-field-helper-text-color_(text-disabled-on-light);
+  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon-on-light);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider-on-light);
 
   @include mdc-theme-dark(".mdc-text-field") {
     @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-dark);
@@ -130,11 +160,6 @@
   @include mdc-text-field-label-color($mdc-text-field-error-on-light);
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error-on-light);
 
-  // Outline specific mixins
-  @include mdc-text-field-outline-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-focused-outline-color($mdc-text-field-error-on-light);
-
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
   }
@@ -147,9 +172,7 @@
 }
 
 @mixin mdc-text-field-focused_ {
-  &:not(.mdc-text-field--invalid) {
-    @include mdc-text-field-label-color(primary);
-  }
+  @include mdc-text-field-label-color(primary);
 
   @include mdc-required-text-field-label-asterix_ {
     color: $mdc-text-field-error-on-light;
@@ -187,10 +210,13 @@
   .mdc-text-field__label {
     bottom: 20px;
   }
+}
 
-  .mdc-text-field__icon {
-    @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-light);
-  }
+@mixin mdc-text-field-outlined-invalid_ {
+  // Outline specific mixins
+  @include mdc-text-field-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-focused-outline-color($mdc-text-field-error-on-light);
 }
 
 @mixin mdc-text-field-outlined-focused_ {
@@ -232,6 +258,11 @@
 }
 
 @mixin mdc-text-field-outlined_ {
+  // Outline specific colors
+  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
+  @include mdc-text-field-focused-outline-color(primary);
+
   height: 56px;
   border: none;
 
@@ -281,34 +312,21 @@
   .mdc-text-field__label--float-above ~ .mdc-text-field__outline {
     opacity: 1;
   }
+
   // stylelint-enable plugin/selector-bem-pattern
 }
 
 // Box
 
 @mixin mdc-text-field-box-disabled_ {
-  @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+  @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-label-color(text-hint-on-light);
 
   border-bottom: none;
-  background-color: $mdc-text-field-box-disabled-background;
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    @include mdc-theme-prop(background-color, $mdc-text-field-dark-background);
-    @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
-
-    border-bottom: none;
-  }
 
   .mdc-text-field__label {
     bottom: 20px;
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-light);
-
-    @include mdc-theme-dark() {
-      @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-dark);
-    }
   }
 }
 
@@ -333,34 +351,29 @@
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  border-style: solid;
-  border-color: $mdc-text-field-disabled-border-on-light;
-  background-color: $mdc-textarea-disabled-background-on-light;
+  @include mdc-text-field-label-background-color_($mdc-textarea-disabled-background-on-light);
+  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border-on-light);
+  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background-on-light);
 
-  @include mdc-theme-dark(".mdc-text-field") {
-    border-color: $mdc-text-field-disabled-border-on-dark;
-    background-color: $mdc-textarea-disabled-background-on-dark;
+  border-style: solid;
+
+  .mdc-text-field__input {
+    border: 1px solid transparent;
   }
 
-  .mdc-text-field__label {
-    background-color: $mdc-textarea-disabled-background-on-light;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      background-color: $mdc-textarea-disabled-background-on-dark;
-    }
+  @include mdc-theme-dark(".mdc-text-field") {
+    background-color: $mdc-textarea-disabled-background-on-dark;
   }
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
-  border-color: $mdc-text-field-error-on-light;
-}
-
-@mixin mdc-text-field-textarea-focused_ {
-  @include mdc-theme-prop(border-color, primary);
+  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error-on-light);
 }
 
 @mixin mdc-text-field-textarea_ {
   @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-label-background-color_($mdc-textarea-light-background);
+  @include mdc-text-field-textarea-stroke-color($mdc-textarea-border-on-light);
 
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
@@ -370,7 +383,7 @@
   width: fit-content;
   height: initial;
   transition: none;
-  border: 1px solid $mdc-textarea-border-on-light;
+  border: 1px solid;
   overflow: hidden;
 
   @include mdc-theme-dark(".mdc-text-field") {
@@ -383,28 +396,6 @@
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
     border: 1px solid transparent;
-
-    &:focus {
-      @include mdc-theme-prop(border-color, primary);
-    }
-
-    &:invalid:not(:focus) {
-      border-color: $mdc-text-field-error-on-light;
-    }
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      &:hover {
-        border-bottom-color: transparent;
-      }
-
-      &:focus {
-        @include mdc-theme-prop(border-color, secondary);
-      }
-
-      &:invalid:not(:focus) {
-        border-color: $mdc-text-field-error-on-dark;
-      }
-    }
   }
 
   .mdc-text-field__label {
@@ -415,7 +406,6 @@
     margin-top: 2px;
     margin-left: 8px;
     padding: 8px;
-    background-color: $mdc-textarea-light-background;
     line-height: 1.15;
 
     @include mdc-theme-dark(".mdc-text-field") {
@@ -434,25 +424,35 @@
     animation: invalid-shake-float-above-textarea 250ms 1;
   }
 
-  &.mdc-text-field--disabled {
-    @include mdc-text-field-textarea-disabled_;
-  }
-
-  &.mdc-text-field--invalid {
-    @include mdc-text-field-textarea-invalid_;
-  }
-
-  &.mdc-text-field--focused {
-    @include mdc-text-field-textarea-focused_;
-  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
-
-// stylelint-enable plugin/selector-bem-pattern
 
 // Private Color Mixins
 
 @mixin mdc-text-field-ink-color_($color) {
   .mdc-text-field__input {
     @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-text-field-box-fill-color_($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-text-field-textarea-stroke-color_($color) {
+  @include mdc-theme-prop(border-color, $color);
+
+  .mdc-text-field__input:focus {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-text-field-textarea-fill-color_($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-text-field-fullwidth-bottom-line-color_($color) {
+  &:not(.mdc-text-field--textarea) {
+    @include mdc-theme-prop(border-bottom-color, $color);
   }
 }
