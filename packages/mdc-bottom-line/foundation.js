@@ -101,7 +101,7 @@ class MDCBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets our active transition to false to prepare to deactivate.
+   * Sets our active flag to false to prepare to deactivate.
    */
   deactivateFocus() {
     this.isActive_ = false;
