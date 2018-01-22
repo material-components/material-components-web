@@ -35,14 +35,6 @@
         margin-top: 0;
       }
 
-      .example--with-js .mdc-form-field {
-        min-width: 450px;
-      }
-
-      .demo-toggle-group {
-        display: inline-block;
-      }
-
       @media (max-width: 600px) {
         .mdc-button {
           margin-bottom: 4px;
@@ -54,8 +46,9 @@
       }
     </style>
   </head>
+
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed" dir="auto">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
@@ -63,27 +56,45 @@
           </span>
           <span class="mdc-toolbar__title catalog-title">Checkbox</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
+        </section>
       </div>
     </header>
+
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-checkbox">
-          <input type="checkbox"
-                 id="hero-checkbox"
-                 class="mdc-checkbox__native-control"/>
-          <div class="mdc-checkbox__background">
-            <svg class="mdc-checkbox__checkmark"
-                 viewBox="0 0 24 24">
-              <path class="mdc-checkbox__checkmark__path"
-                    fill="none"
-                    stroke="white"
-                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-            </svg>
-            <div class="mdc-checkbox__mixedmark"></div>
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox"
+                   id="hero-checkbox"
+                   class="mdc-checkbox__native-control"/>
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark"
+                   viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark__path"
+                      fill="none"
+                      stroke="white"
+                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
           </div>
+          <label for="hero-checkbox" id="hero-checkbox-label">Checkbox</label>
         </div>
-        <label for="hero-checkbox" id="hero-checkbox-label">Checkbox</label>
+      </section>
+
+      <section class="example">
+        <button type="button" class="mdc-button mdc-button--stroked" id="align-end-toggle-button">
+          Toggle <code>--align-end</code>
+        </button>
+        <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate" id="indeterminate-toggle-button">
+          Toggle <code>indeterminate</code>
+        </button>
+        <button type="button" class="mdc-button mdc-button--stroked toggle-disabled" id="disabled-toggle-button">
+          Toggle <code>disabled</code>
+        </button>
       </section>
 
       <section class="example">
@@ -106,10 +117,6 @@
               </div>
             </div>
             <label for="basic-checkbox">Default checkbox</label>
-          </div>
-          <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact" onclick="this.parentElement.parentElement.hasAttribute('dir') ? this.parentElement.parentElement.removeAttribute('dir') : this.parentElement.parentElement.setAttribute('dir', 'rtl');">Toggle RTL</button>
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">Toggle <code>--align-end</code></button>
           </div>
         </div>
         <div>
@@ -198,7 +205,7 @@
         </div>
       </section>
 
-      <section class="example example--with-js">
+      <section class="example">
         <h2>With JavaScript</h2>
         <div>
           <div class="mdc-form-field">
@@ -218,10 +225,6 @@
               </div>
             </div>
             <label for="native-js-checkbox">Default checkbox</label>
-          </div>
-          <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-indeterminate">Toggle <code>indeterminate</code></button>
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-disabled">Toggle <code>disabled</code></button>
           </div>
         </div>
         <div>
@@ -243,10 +246,6 @@
               </div>
             </div>
             <label for="native-js-checkbox-indeterminate">Indeterminate checkbox</label>
-          </div>
-          <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-indeterminate">Toggle <code>indeterminate</code></button>
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-disabled">Toggle <code>disabled</code></button>
           </div>
           <script>
             document.getElementById('native-js-checkbox-indeterminate').indeterminate = true;
@@ -271,10 +270,6 @@
             </div>
             <label for="native-js-checkbox-custom-all">Custom colored checkbox (stroke, fill, ripple, and focus)</label>
           </div>
-          <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-indeterminate">Toggle <code>indeterminate</code></button>
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-disabled">Toggle <code>disabled</code></button>
-          </div>
         </div>
         <div>
           <div class="mdc-form-field">
@@ -294,10 +289,6 @@
               </div>
             </div>
             <label for="native-js-checkbox-custom-stroke-and-fill">Custom colored checkbox (stroke and fill only)</label>
-          </div>
-          <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-indeterminate">Toggle <code>indeterminate</code></button>
-            <button type="button" class="mdc-button mdc-button--stroked mdc-button--compact toggle-disabled">Toggle <code>disabled</code></button>
           </div>
         </div>
       </section>
@@ -364,7 +355,7 @@
             </div>
             <label for="basic-indeterminate-checkbox-dark">Indeterminate checkbox</label>
           </div>
-          <script type="text/javascript">
+          <script>
             document.getElementById('basic-indeterminate-checkbox-dark').indeterminate = true;
           </script>
         </div>
@@ -472,7 +463,7 @@
             </div>
             <label for="basic-indeterminate-checkbox-dark-2">Indeterminate checkbox</label>
           </div>
-          <script type="text/javascript">
+          <script>
             document.getElementById('basic-indeterminate-checkbox-dark-2').indeterminate = true;
           </script>
         </div>
@@ -517,37 +508,57 @@
           </div>
         </div>
       </section>
-
     </main>
+
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
         var MDCCheckbox = mdc.checkbox.MDCCheckbox;
         var MDCFormField = mdc.formField.MDCFormField;
 
-        var checkboxes = [].slice.call(document.querySelectorAll('.mdc-checkbox[data-js]'));
-        checkboxes.forEach(function(checkbox) {
-          var checkboxInstance = new MDCCheckbox(checkbox);
+        var indeterminateToggleHandlers = [];
+        var disabledToggleHandlers = [];
 
-          var formField = checkbox.parentElement;
-          var formFieldInstance = new MDCFormField(formField);
-          formFieldInstance.input = checkboxInstance;
+        // JS-enabled
+        [].slice.call(document.querySelectorAll('.mdc-checkbox')).forEach(function(checkboxEl) {
+          var target;
 
-          var row = formField.parentElement;
-
-          var indeterminateToggle = row.querySelector('.toggle-indeterminate');
-          if (indeterminateToggle) {
-            indeterminateToggle.addEventListener('click', function() {
-              checkboxInstance.indeterminate = !checkboxInstance.indeterminate;
-            });
+          if (checkboxEl.hasAttribute('data-js')) {
+            var formFieldEl = checkboxEl.parentElement;
+            var formFieldInstance = new MDCFormField(formFieldEl);
+            var checkboxInstance = new MDCCheckbox(checkboxEl);
+            formFieldInstance.input = checkboxInstance;
+            target = checkboxInstance;
+          } else {
+            target = checkboxEl.querySelector('.mdc-checkbox__native-control');
           }
 
-          var disabledToggle = row.querySelector('.toggle-disabled');
-          if (disabledToggle) {
-            disabledToggle.addEventListener('click', function() {
-              checkboxInstance.disabled = !checkboxInstance.disabled;
-            });
-          }
+          indeterminateToggleHandlers.push(function() {
+            target.indeterminate = !target.indeterminate;
+          });
+
+          disabledToggleHandlers.push(function() {
+            target.disabled = !target.disabled;
+          });
+        });
+
+        document.querySelector('#align-end-toggle-button').addEventListener('click', function() {
+          [].slice.call(document.querySelectorAll('.mdc-form-field')).forEach(function(formField) {
+            formField.classList.toggle('mdc-form-field--align-end');
+          });
+        });
+
+        document.querySelector('#indeterminate-toggle-button').addEventListener('click', function() {
+          indeterminateToggleHandlers.forEach(function(handler) {
+            handler();
+          });
+        });
+
+        document.querySelector('#disabled-toggle-button').addEventListener('click', function() {
+          disabledToggleHandlers.forEach(function(handler) {
+            handler();
+          });
         });
       });
     </script>

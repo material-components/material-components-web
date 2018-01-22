@@ -21,10 +21,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/slider.css">
-    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       #hero-slider-wrapper {
         margin: 0 auto;
@@ -70,8 +70,9 @@
       }
     </style>
   </head>
+
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed" dir="auto">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
@@ -79,10 +80,23 @@
           </span>
           <span class="mdc-toolbar__title catalog-title">Slider</span>
         </section>
+        <div class="mdc-toolbar__row">
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+            <span class="mdc-toolbar__title catalog-title">Checkbox</span>
+          </section>
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+            <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
+          </section>
+        </div>
       </div>
     </header>
+
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
+
       <section class="hero">
         <div id="hero-slider-wrapper">
           <div id="hero-slider" class="mdc-slider" tabindex="0"
@@ -126,7 +140,6 @@
             Value from <code>MDCSlider:change</code> event: <span id="continuous-slider-committed-value"></span>
           </p>
         </div>
-
 
         <h2>Discrete Slider</h2>
         <div class="slider-example">
@@ -243,18 +256,15 @@
             <input type="checkbox" name="use-custom-color">
             Use Custom BG Color
           </label>
-          <label class="demo-param-field">
-            <input type="checkbox" name="rtl">
-            RTL
-          </label>
         </div>
       </section>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
-        mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
+        var heroSlider = mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
 
         var demoRoot = document.getElementById('slider-example')
         var min = demoRoot.querySelector('[name="min"]');
@@ -263,7 +273,6 @@
         var darkTheme = demoRoot.querySelector('[name="dark-theme"]');
         var disabled = demoRoot.querySelector('[name="disabled"]');
         var useCustomColor = demoRoot.querySelector('[name="use-custom-color"]');
-        var rtl = demoRoot.querySelector('[name="rtl"]');
 
         var continuousValue = demoRoot.querySelector('#continuous-slider-value');
         var continuousCommittedValue = demoRoot.querySelector('#continuous-slider-committed-value');
@@ -331,8 +340,8 @@
         });
 
         darkTheme.addEventListener('change', function() {
-          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
-            example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
+          [].forEach.call(demoRoot.querySelectorAll('.example-slider-wrapper'), function(example) {
+            example.classList[darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
           });
         });
 
@@ -344,23 +353,19 @@
         });
 
         useCustomColor.addEventListener('change', function() {
-          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
+          [].forEach.call(demoRoot.querySelectorAll('.example-slider-wrapper'), function(example) {
             example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
           });
         });
 
-        rtl.addEventListener('change', function() {
-          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
-            if (rtl.checked) {
-              example.setAttribute('dir', 'rtl');
-            } else {
-              example.removeAttribute('dir');
-            }
-          });
-          continuousSlider.layout();
-          discreteSlider.layout();
-          discreteWMarkerSlider.layout();
-          customDiscreteWMarkerSlider.layout();
+        document.querySelector('#rtl-toggle').addEventListener('click', function() {
+          setTimeout(function() {
+            heroSlider.layout();
+            continuousSlider.layout();
+            discreteSlider.layout();
+            discreteWMarkerSlider.layout();
+            customDiscreteWMarkerSlider.layout();
+          }, 10);
         });
       });
     </script>

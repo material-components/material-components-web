@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       .hero .demo-card {
         width: 320px;
@@ -112,12 +113,11 @@
         margin: 24px;
         min-width: 320px;
       }
-
     </style>
   </head>
 
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed" dir="auto">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
@@ -125,10 +125,15 @@
           </span>
           <span class="mdc-toolbar__title catalog-title">Card</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
+        </section>
       </div>
     </header>
+
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
+
       <section class="hero">
         <div class="mdc-card demo-card">
           <section class="mdc-card__media demo-card__16-9-media"></section>
@@ -141,21 +146,6 @@
             <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
           </section>
         </div>
-      </section>
-
-      <section class="example">
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox">
-              <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
-          </div>
       </section>
 
       <section class="demo-typography--section" id="demo-wrapper">
@@ -316,22 +306,10 @@
             </div>
           </div>
         </div>
-
       </section>
-
     </main>
-    <script>
-      // var formField = new mdc.formField.MDCFormField(document.querySelector('.mdc-form-field'));
-      // var cb = mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
-      // formField.input = cb;
-      var demoWrapper = document.getElementById('demo-wrapper');
-      document.getElementById('toggle-rtl').addEventListener('change', function () {
-        if (this.checked) {
-          demoWrapper.setAttribute('dir', 'rtl');
-        } else {
-          demoWrapper.removeAttribute('dir');
-        }
-      });
-    </script>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
   </body>
 </html>

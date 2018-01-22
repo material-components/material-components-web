@@ -28,6 +28,7 @@ const attrs = {
 };
 
 const ids = {
+  RTL_TOGGLE: 'rtl-toggle',
   TOOLBAR_PROGRESS_BAR: 'demo-toolbar-progress-bar',
 };
 
@@ -295,7 +296,71 @@ export class HotSwapper extends InteractivityProvider {
   }
 }
 
+export class RtlToggler extends InteractivityProvider {
+  /** @param {!Element|!Document} root */
+  static attachTo(root) {
+    const instance = new RtlToggler(root);
+    instance.lazyInit();
+    return instance;
+  }
+
+  /** @override */
+  lazyInit() {
+    /**
+     * @type {?Element}
+     * @private
+     */
+    this.rtlActionEl_ = this.root_.getElementById(ids.RTL_TOGGLE);
+
+    /**
+     * @type {HTMLElement}
+     * @private
+     */
+    this.rtlTargetEl_ = this.document_.documentElement;
+
+    this.registerRTLToggleHandler_();
+    this.syncWithDom_();
+  }
+
+  /** @private */
+  registerRTLToggleHandler_() {
+    if (!this.rtlActionEl_) {
+      return;
+    }
+    this.rtlActionEl_.addEventListener('click', () => this.toggleRTL_());
+  }
+
+  /** @private */
+  syncWithDom_() {
+    this.setRTL_(this.rtlTargetEl_.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr');
+  }
+
+  /** @private */
+  toggleRTL_() {
+    this.setRTL_(this.rtlTargetEl_.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+  }
+
+  /**
+   * @param {string} newDirection One of ['ltr', 'rtl']
+   * @private
+   */
+  setRTL_(newDirection) {
+    if (!(this.rtlTargetEl_ && this.rtlActionEl_)) {
+      return;
+    }
+
+    if (newDirection === 'rtl') {
+      this.rtlTargetEl_.setAttribute('dir', 'rtl');
+      this.rtlActionEl_.innerHTML = 'format_align_right';
+    } else {
+      this.rtlTargetEl_.setAttribute('dir', 'ltr');
+      this.rtlActionEl_.innerHTML = 'format_align_left';
+    }
+  }
+}
+
 /** @param {!Document|!Element} root */
 export function init(root) {
   HotSwapper.getInstance(root);
+  RtlToggler.attachTo(root);
 }

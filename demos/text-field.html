@@ -21,10 +21,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/text-field.css">
-    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       .mdc-theme--dark {
         --mdc-theme-primary: var(--mdc-theme-secondary, #64dd17);
@@ -54,9 +54,13 @@
         margin-top: 16px;
       }
     </style>
+    <script>
+      window.allTextFields = [];
+    </script>
   </head>
+
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed" dir="auto">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
@@ -64,10 +68,15 @@
           </span>
           <span class="mdc-toolbar__title catalog-title">Text Field</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
+        </section>
       </div>
     </header>
+
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
+
       <section class="hero">
         <div class="mdc-text-field">
           <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
@@ -98,10 +107,6 @@
         <div>
           <input id="disable" type="checkbox">
           <label for="disable">Disabled</label>
-        </div>
-        <div>
-          <input id="rtl" type="checkbox">
-          <label for="rtl">RTL</label>
         </div>
         <div>
           <input id="dark-theme" type="checkbox">
@@ -168,18 +173,13 @@
             </div>
             <div class="mdc-text-field__idle-outline"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-            id="name-validation-msg">
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
             Must be at least 8 characters
           </p>
         </div>
         <div>
           <input id="outlined-disable" type="checkbox">
           <label for="outlined-disable">Disabled</label>
-        </div>
-        <div>
-          <input id="outlined-rtl" type="checkbox">
-          <label for="outlined-rtl">RTL</label>
         </div>
         <div>
           <input id="outlined-custom-colors" type="checkbox">
@@ -193,17 +193,11 @@
           demoReady(function() {
             var tfEl = document.getElementById('tf-outlined-example');
             var tf = new mdc.textField.MDCTextField(tfEl);
-            var wrapper = document.getElementById('demo-tf-outlined-wrapper');
+
+            allTextFields.push(tf);
+
             document.getElementById('outlined-disable').addEventListener('change', function(evt) {
               tf.disabled = evt.target.checked;
-            });
-            document.getElementById('outlined-rtl').addEventListener('change', function(evt) {
-              if (evt.target.checked) {
-                wrapper.setAttribute('dir', 'rtl');
-              } else {
-                wrapper.removeAttribute('dir');
-              }
-              tf.layout();
             });
             document.getElementById('outlined-custom-colors').addEventListener('change', function(evt) {
               tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
@@ -226,18 +220,13 @@
             <label for="tf-box" class="mdc-text-field__label">Your Name</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-             id="name-validation-msg">
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
             Must be at least 8 characters
           </p>
         </div>
         <div>
           <input id="box-disable" type="checkbox">
           <label for="box-disable">Disabled</label>
-        </div>
-        <div>
-          <input id="box-rtl" type="checkbox">
-          <label for="box-rtl">RTL</label>
         </div>
         <div>
           <input id="box-dark-theme" type="checkbox">
@@ -253,17 +242,10 @@
             var tf = new mdc.textField.MDCTextField(tfEl);
             var wrapper = document.getElementById('demo-tf-box-wrapper');
 
+            allTextFields.push(tf);
+
             document.getElementById('box-disable').addEventListener('change', function(evt) {
               tf.disabled = evt.target.checked;
-            });
-
-            document.getElementById('box-rtl').addEventListener('change', function(evt) {
-              if (evt.target.checked) {
-                wrapper.setAttribute('dir', 'rtl');
-              } else {
-                wrapper.removeAttribute('dir');
-              }
-              tf.layout();
             });
 
             document.getElementById('box-dark-theme').addEventListener('change', function(evt) {
@@ -331,10 +313,6 @@
           <label for="disable-leading-trailing">Disabled</label>
         </div>
         <div>
-          <input id="rtl-leading-trailing" type="checkbox">
-          <label for="rtl-leading-trailing">RTL</label>
-        </div>
-        <div>
           <input id="dark-theme-leading-trailing" type="checkbox">
           <label for="dark-theme-leading-trailing">Dark Theme</label>
         </div>
@@ -376,10 +354,6 @@
           <label for="textarea-disable">Disabled</label>
         </div>
         <div>
-          <input id="textarea-rtl" type="checkbox">
-          <label for="textarea-rtl">RTL</label>
-        </div>
-        <div>
           <input id="textarea-dark-theme" type="checkbox">
           <label for="textarea-dark-theme">Dark Theme</label>
         </div>
@@ -417,14 +391,20 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
-        var tfs = document.querySelectorAll(
-          '.mdc-text-field:not([data-demo-no-auto-js])'
-        );
-        for (var i = 0, tf; tf = tfs[i]; i++) {
-          mdc.textField.MDCTextField.attachTo(tf);
-        }
+        [].forEach.call(document.querySelectorAll('.mdc-text-field:not([data-demo-no-auto-js])'), function(tf) {
+          allTextFields.push(mdc.textField.MDCTextField.attachTo(tf));
+        });
+
+        document.querySelector('#rtl-toggle').addEventListener('click', function() {
+          setTimeout(function() {
+            allTextFields.forEach(function(tf) {
+              tf.layout();
+            });
+          }, 10);
+        });
       });
 
       demoReady(function() {
@@ -446,31 +426,13 @@
         var tfOutlinedTrailing = new mdc.textField.MDCTextField(tfOutlinedTrailingEl);
         var wrapperOutlinedTrailing = document.getElementById('demo-tf-outlined-trailing-wrapper');
 
-        var tfIcons = document.querySelectorAll('.mdc-text-field__icon');
+        allTextFields.push(tfBoxLeading, tfBoxTrailing, tfOutlinedLeading, tfOutlinedTrailing);
 
         document.getElementById('disable-leading-trailing').addEventListener('change', function(evt) {
           tfBoxLeading.disabled = evt.target.checked;
           tfBoxTrailing.disabled = evt.target.checked;
           tfOutlinedLeading.disabled = evt.target.checked;
           tfOutlinedTrailing.disabled = evt.target.checked;
-        });
-
-        document.getElementById('rtl-leading-trailing').addEventListener('change', function(evt) {
-          if (evt.target.checked) {
-            wrapperBoxLeading.setAttribute('dir', 'rtl');
-            wrapperBoxTrailing.setAttribute('dir', 'rtl');
-            wrapperOutlinedLeading.setAttribute('dir', 'rtl');
-            wrapperOutlinedTrailing.setAttribute('dir', 'rtl');
-          } else {
-            wrapperBoxLeading.removeAttribute('dir');
-            wrapperBoxTrailing.removeAttribute('dir');
-            wrapperOutlinedLeading.removeAttribute('dir');
-            wrapperOutlinedTrailing.removeAttribute('dir');
-          }
-          tfBoxLeading.layout();
-          tfBoxTrailing.layout();
-          tfOutlinedLeading.layout();
-          tfOutlinedTrailing.layout();
         });
 
         document.getElementById('dark-theme-leading-trailing').addEventListener('change', function(evt) {
@@ -492,17 +454,16 @@
         });
 
         document.getElementById('unclickable-leading-trailing').addEventListener('change', function(evt) {
-          [].slice.call(tfIcons).forEach(function (icon) {
+          [].forEach.call(document.querySelectorAll('.mdc-text-field__icon'), function (icon) {
             icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
           });
         });
 
         document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
-          tfIconContainer.querySelectorAll('.mdc-text-field__input')
-              .forEach(function(input) {
-                input.required = evt.target.checked;
-                input.pattern = evt.target.checked ? '.{8,}' : '.*';
-              });
+          [].forEach.call(tfIconContainer.querySelectorAll('.mdc-text-field__input'), function(input) {
+            input.required = evt.target.checked;
+            input.pattern = evt.target.checked ? '.{8,}' : '.*';
+          });
         });
       });
 
@@ -512,17 +473,11 @@
         var helperText = section.querySelector('.mdc-text-field-helper-text');
         var tf = new mdc.textField.MDCTextField(tfRoot);
 
+        allTextFields.push(tf);
+
         document.getElementById('disable').addEventListener('change', function(evt) {
           var target = evt.target;
           tf.disabled = target.checked;
-        });
-        document.getElementById('rtl').addEventListener('change', function(evt) {
-          var target = evt.target;
-          if (target.checked) {
-            section.setAttribute('dir', 'rtl');
-          } else {
-            section.removeAttribute('dir');
-          }
         });
         document.getElementById('dark-theme').addEventListener('change', function(evt) {
           var target = evt.target;
@@ -568,17 +523,12 @@
         var section = document.getElementById('demo-text-field-textarea-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var tf = new mdc.textField.MDCTextField(tfRoot);
+
+        allTextFields.push(tf);
+
         document.getElementById('textarea-disable').addEventListener('change', function(evt) {
           var target = evt.target;
           tf.disabled = target.checked;
-        });
-        document.getElementById('textarea-rtl').addEventListener('change', function(evt) {
-          var target = evt.target;
-          if (target.checked) {
-            section.setAttribute('dir', 'rtl');
-          } else {
-            section.removeAttribute('dir');
-          }
         });
         document.getElementById('textarea-dark-theme').addEventListener('change', function(evt) {
           var target = evt.target;
@@ -596,6 +546,8 @@
         var tfMultiRoot = section.querySelector('.mdc-text-field--textarea');
         var tf = new mdc.textField.MDCTextField(tfRoot);
         var tfMulti = new mdc.textField.MDCTextField(tfMultiRoot);
+
+        allTextFields.push(tf, tfMulti);
 
         document.getElementById('fullwidth-disable').addEventListener('change', function(evt) {
           var target = evt.target;

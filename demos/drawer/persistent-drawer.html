@@ -22,10 +22,10 @@
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/drawer/drawer.css">
     <link rel="stylesheet" href="/assets/radio.css">
-    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       /* Ensure layout covers the entire screen. */
       html {
@@ -58,6 +58,7 @@
       }
     </style>
   </head>
+
   <body class="mdc-typography demo-body">
     <aside class="mdc-drawer mdc-drawer--persistent demo-drawer">
       <nav class="mdc-drawer__drawer">
@@ -94,6 +95,7 @@
         </div>
       </nav>
     </aside>
+
     <div class="demo-content">
       <header class="mdc-toolbar mdc-elevation--z4">
         <div class="mdc-toolbar__row">
@@ -103,6 +105,9 @@
             </span>
             <button class="demo-menu material-icons mdc-toolbar__menu-icon">menu</button>
             <span class="mdc-toolbar__title catalog-title">Persistent Drawer</span>
+          </section>
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+            <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
           </section>
         </div>
       </header>
@@ -146,6 +151,7 @@
       </main>
 
       <script src="/assets/material-components-web.js" async></script>
+      <script src="/assets/common.js" async></script>
       <script>
         demoReady(function() {
           var drawerEl = document.querySelector('.mdc-drawer');

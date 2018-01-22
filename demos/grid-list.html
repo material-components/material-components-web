@@ -21,10 +21,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/grid-list.css">
-    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       .demo-grid-tile-content {
         background-image: url("images/16-9.jpg");
@@ -54,8 +54,9 @@
       }
     </style>
   </head>
+
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed" dir="auto">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
@@ -63,8 +64,12 @@
           </span>
           <span class="mdc-toolbar__title catalog-title">Grid List</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
+        </section>
       </div>
     </header>
+
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
@@ -85,21 +90,6 @@
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
             <li class="mdc-grid-tile"><div class="mdc-grid-tile__primary"></div></li>
           </ul>
-        </div>
-      </section>
-
-      <section class="example">
-        <div class="mdc-form-field">
-          <div class="mdc-checkbox">
-            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
-            <div class="mdc-checkbox__background">
-              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-              </svg>
-              <div class="mdc-checkbox__mixedmark"></div>
-            </div>
-          </div>
-          <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
         </div>
       </section>
 
@@ -721,21 +711,13 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
         var nodes = document.querySelectorAll('.mdc-grid-list');
         for (var i = 0, node; node = nodes[i]; i++) {
           mdc.gridList.MDCGridList.attachTo(node);
         }
-
-        var demoWrapper = document.querySelector('.examples');
-        document.getElementById('toggle-rtl').addEventListener('change', function () {
-          if (this.checked) {
-            demoWrapper.setAttribute('dir', 'rtl');
-          } else {
-            demoWrapper.removeAttribute('dir');
-          }
-        });
       });
     </script>
   </body>

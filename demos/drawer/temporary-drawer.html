@@ -22,10 +22,10 @@
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/drawer/drawer.css">
     <link rel="stylesheet" href="/assets/radio.css">
-    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       .demo-body {
         padding: 0;
@@ -40,8 +40,9 @@
       }
     </style>
   </head>
+
   <body class="mdc-typography demo-body">
-    <div class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span>
@@ -50,8 +51,11 @@
           <button class="demo-menu material-icons mdc-toolbar__menu-icon">menu</button>
           <span class="mdc-toolbar__title catalog-title">Temporary Drawer</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
+        </section>
       </div>
-    </div>
+    </header>
 
     <aside class="mdc-drawer mdc-drawer--temporary demo-drawer">
       <nav class="mdc-drawer__drawer">
@@ -60,7 +64,7 @@
             Header here
           </div>
         </header>
-        <nav class="mdc-drawer__content mdc-list-group">
+        <div class="mdc-drawer__content mdc-list-group">
           <div id="icon-with-text-demo" class="mdc-list">
             <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
@@ -89,9 +93,10 @@
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
             </a>
           </div>
-        </nav>
+        </div>
       </nav>
     </aside>
+
     <main class="demo-main mdc-toolbar-fixed-adjust">
       <h1 class="mdc-typography--display1">Temporary Drawer</h1>
       <p class="mdc-typography--body1">Click the menu icon above to open.</p>
@@ -130,6 +135,7 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
         var drawerEl = document.querySelector('.mdc-drawer');

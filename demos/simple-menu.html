@@ -21,10 +21,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/simple-menu.css">
-    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       html,
       body,
@@ -48,9 +48,12 @@
       }
 
       .demo-controls {
-        margin-left: auto;
-        margin-right: auto;
-        width: 360px;
+        margin: 0 auto;
+        width: 500px;
+      }
+
+      .demo-menu-config-fieldset {
+        margin-bottom: 32px;
       }
 
       .mdc-menu-anchor {
@@ -64,7 +67,7 @@
       }
 
       .margin-inputs input {
-        width: 2em;
+        width: 3.5em;
       }
 
       .left-column-controls {
@@ -74,7 +77,7 @@
 
       .right-column-controls {
         display: inline-block;
-        margin-left: 2em;
+        margin-left: 4em;
         vertical-align: top;
       }
 
@@ -99,10 +102,21 @@
       .demo-menu--extra-long .demo-menu__extra-long-items {
         display: inline;
       }
+
+      .demo-numeric-config-label {
+        display: block;
+        margin: 5px 0;
+      }
+
+      .demo-numeric-config-label__text {
+        display: inline-block;
+        min-width: 4em;
+      }
     </style>
   </head>
+
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
+    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar" dir="auto">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <span class="catalog-back">
@@ -110,11 +124,15 @@
           </span>
           <span class="mdc-toolbar__title catalog-title">Simple Menu</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <button id="rtl-toggle" class="mdc-toolbar__icon material-icons demo-toolbar-icon" title="Toggle RTL">format_align_left</button>
+        </section>
       </div>
     </header>
 
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
+
       <section class="hero">
         <div class="mdc-simple-menu mdc-simple-menu--open">
           <ul class="mdc-simple-menu__items mdc-list">
@@ -127,6 +145,7 @@
           </ul>
         </div>
       </section>
+
       <div class="demo-content">
         <div id="demo-wrapper">
           <div class="mdc-menu-anchor">
@@ -166,87 +185,100 @@
 
         <div class="demo-controls-container">
           <div class="demo-controls">
-            <div class="left-column-controls">
-              Button Position:
-              <div>
-                <label><input type="radio" name="position" value="top left" checked> Top left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="top right"> Top right</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="middle left"> Middle left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="middle right"> Middle right</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
-              </div>
+            <div>
+              <fieldset class="demo-menu-config-fieldset left-column-controls">
+                <legend class="mdc-typography--subheading2">Button Position:</legend>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="position" value="top left" checked> Top left</label>
+                </div>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="position" value="top right"> Top right</label>
+                </div>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="position" value="middle left"> Middle left</label>
+                </div>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="position" value="middle right"> Middle right</label>
+                </div>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
+                </div>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
+                </div>
+              </fieldset>
+              <fieldset class="demo-menu-config-fieldset right-column-controls">
+                <legend class="mdc-typography--subheading2">Default Menu Position:</legend>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="menu-position" value="top start" checked> Top start</label>
+                </div>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="menu-position" value="top end"> Top end</label>
+                </div>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="menu-position" value="bottom start"> Bottom start</label>
+                </div>
+                <div class="mdc-form-field">
+                  <label><input type="radio" name="menu-position" value="bottom end"> Bottom end</label>
+                </div>
+              </fieldset>
             </div>
-            <div class="right-column-controls">
-              Default Menu Position:
-              <div>
-                <label><input type="radio" name="menu-position" value="top start" checked> Top start</label>
-              </div>
 
-              <div>
-                <label><input type="radio" name="menu-position" value="top end"> Top end</label>
-              </div>
-
-              <div>
-                <label><input type="radio" name="menu-position" value="bottom start"> Bottom start</label>
-              </div>
-
-              <div>
-                <label><input type="radio" name="menu-position" value="bottom end"> Bottom end</label>
-              </div>
-            </div>
-            <p>
-              Anchor Margins:
+            <fieldset class="demo-menu-config-fieldset">
+              <legend class="mdc-typography--subheading2">Anchor Margins:</legend>
               <div id="margin-inputs" class="margin-inputs">
-                <label>T: <input type="text" id="top-margin" value="0" size="3" max-length="3"></label>
-                <label>B: <input type="text" id="bottom-margin" value="0" size="3"></label>
-                <label>L: <input type="text" id="left-margin" value="0" size="3"></label>
-                <label>R: <input type="text" id="right-margin" value="0" size="3"></label>
+                <label class="demo-numeric-config-label">
+                  <span class="demo-numeric-config-label__text">Top:</span>
+                  <input type="number" id="top-margin" value="0" maxlength="3">px
+                </label>
+                <label class="demo-numeric-config-label">
+                  <span class="demo-numeric-config-label__text">Right:</span>
+                  <input type="number" id="right-margin" value="0" maxlength="3">px
+                </label>
+                <label class="demo-numeric-config-label">
+                  <span class="demo-numeric-config-label__text">Bottom:</span>
+                  <input type="number" id="bottom-margin" value="0" maxlength="3">px
+                </label>
+                <label class="demo-numeric-config-label">
+                  <span class="demo-numeric-config-label__text">Left:</span>
+                  <input type="number" id="left-margin" value="0" maxlength="3">px
+                </label>
               </div>
-            </p>
-            <div class="left-column-controls">
-              <label><input type="checkbox" name="is-rtl"> RTL</label>
-            </div>
-            <div class="right-column-controls">
-              <label><input type="checkbox" name="dark"> Dark mode</label>
-            </div>
-            <p>
-              <div class="left-column-controls">
-                Menu Sizes:
-                <div>
+            </fieldset>
+
+            <div>
+              <fieldset class="demo-menu-config-fieldset left-column-controls">
+                <legend class="mdc-typography--subheading2">Menu Sizes:</legend>
+                <div class="mdc-form-field">
                   <label><input type="radio" name="menu-length" value="small" checked> Regular menu</label>
                 </div>
-                <div>
+                <div class="mdc-form-field">
                   <label><input type="radio" name="menu-length" value="large"> Large menu</label>
                 </div>
-                <div>
+                <div class="mdc-form-field">
                   <label><input type="radio" name="menu-length" value="tall"> Extra tall menu</label>
                 </div>
-              </div>
-              <div class="right-column-controls">
-                Anchor Widths
-                <div>
+              </fieldset>
+              <fieldset class="demo-menu-config-fieldset right-column-controls">
+                <legend class="mdc-typography--subheading2">Anchor Widths</legend>
+                <div class="mdc-form-field">
                   <label><input type="radio" name="anchor-width" value="tiny"> Small button</label>
                 </div>
-                <div>
+                <div class="mdc-form-field">
                   <label><input type="radio" name="anchor-width" value="regular" checked> Comparable to menu</label>
                 </div>
-                <div>
+                <div class="mdc-form-field">
                   <label><input type="radio" name="anchor-width" value="wide"> Wider than menu</label>
                 </div>
-              </div>
-            </p>
+              </fieldset>
+            </div>
+
+            <div>
+              <label><input type="checkbox" name="dark"> Dark mode</label>
+            </div>
+
             <hr>
+
             <div>
               <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
             </div>
@@ -256,6 +288,7 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
         var menuEl = document.querySelector('#demo-menu');
@@ -276,6 +309,23 @@
             menuEl.classList.remove('mdc-simple-menu--theme-dark');
           }
         });
+
+        function scrollIntoView(el) {
+          var docEl = document.documentElement;
+          var elRecto = el.getBoundingClientRect();
+          var viewportRect = {
+            left: 0,
+            right: docEl.clientWidth,
+            top: document.querySelector('.mdc-toolbar').offsetHeight + 24,
+            bottom: docEl.clientHeight,
+          };
+
+          if (elRecto.top < viewportRect.top) {
+            docEl.scrollBy(0, elRecto.top - viewportRect.top);
+          } else if (elRecto.bottom > viewportRect.bottom) {
+            docEl.scrollBy(0, elRecto.bottom - viewportRect.bottom);
+          }
+        }
 
         var radios = document.querySelectorAll('input[name="position"]');
         var anchor = document.querySelector('.mdc-menu-anchor');
@@ -301,6 +351,8 @@
                 anchor.style.setProperty(horizontal, '0');
               }
             }
+
+            scrollIntoView(anchor);
           });
         }
 
@@ -327,9 +379,9 @@
         }
 
         const marginInputsEl = document.querySelector('#margin-inputs');
-        var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
+        var inputs = marginInputsEl.querySelectorAll('input');
         for (var i = 0; i < inputs.length; i++) {
-          inputs[i].addEventListener('change', function(evt) {
+          inputs[i].addEventListener('change', function() {
             const topMarginInput = document.getElementById('top-margin');
             const bottomMarginInput = document.getElementById('bottom-margin');
             const rightMarginInput = document.getElementById('right-margin');
@@ -341,16 +393,6 @@
             menu.setAnchorMargin(margin);
           });
         }
-
-        const rtl = document.querySelector('input[name="is-rtl"]');
-        rtl.addEventListener('change', function() {
-          const demoWrapper = document.getElementById('demo-wrapper');
-          if (rtl.checked) {
-            demoWrapper.setAttribute('dir', 'rtl');
-          } else {
-            demoWrapper.removeAttribute('dir');
-          }
-        });
 
         radios = document.querySelectorAll('input[name="menu-length"]');
         for (var i = 0; i < radios.length; i++) {
