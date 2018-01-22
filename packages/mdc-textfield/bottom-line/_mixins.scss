@@ -17,19 +17,19 @@
 //Public
 
 @mixin mdc-text-field-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
     @include mdc-text-field-bottom-line-color_($color);
   }
 }
 
 @mixin mdc-text-field-hover-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
     @include mdc-text-field-hover-bottom-line-color_($color);
   }
 }
 
 @mixin mdc-text-field-focused-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
     @include mdc-text-field-focused-bottom-line-color_($color);
   }
 }
@@ -38,13 +38,13 @@
 
 @mixin mdc-text-field-bottom-line-color_($color) {
   .mdc-text-field__input {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop(border-bottom-color, $color);
   }
 }
 
 @mixin mdc-text-field-hover-bottom-line-color_($color) {
   .mdc-text-field__input:hover {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop(border-bottom-color, $color);
   }
 }
 
