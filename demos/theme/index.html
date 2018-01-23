@@ -894,7 +894,7 @@
          * Button
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-button')).forEach(function(button) {
+        [].forEach.call(document.querySelectorAll('.mdc-button'), function(button) {
           mdc.ripple.MDCRipple.attachTo(button);
         });
 
@@ -905,17 +905,17 @@
         document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
         document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function() {
-          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'))
-            .forEach(function(checkbox) {
+          [].forEach.call(
+            document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'),
+            function(checkbox) {
               checkbox.indeterminate = !checkbox.indeterminate;
             });
         });
 
         document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function() {
-          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper'))
-            .forEach(function(formField) {
-              formField.classList.toggle('mdc-form-field--align-end');
-            });
+          [].forEach.call(document.querySelectorAll('.demo-checkbox-wrapper'), function(formField) {
+            formField.classList.toggle('mdc-form-field--align-end');
+          });
         });
 
         /*
@@ -925,7 +925,7 @@
         var drawerEl = document.querySelector('.mdc-drawer--temporary');
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        [].slice.call(document.querySelectorAll('.demo-drawer-toggle')).forEach(function(toggleElem) {
+        [].forEach.call(document.querySelectorAll('.demo-drawer-toggle'), function(toggleElem) {
           toggleElem.addEventListener('click', function() {
             drawer.open = true;
           });
@@ -943,7 +943,7 @@
          * FAB
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-fab')).forEach(function(fab) {
+        [].forEach.call(document.querySelectorAll('.mdc-fab'), function(fab) {
           mdc.ripple.MDCRipple.attachTo(fab);
         });
 
@@ -951,7 +951,7 @@
          * Icon Toggle
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-icon-toggle')).forEach(function(iconToggleEl) {
+        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggleEl) {
           mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
         });
 
@@ -959,7 +959,7 @@
          * Linear Progress
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-linear-progress')).forEach(function(progressEl) {
+        [].forEach.call(document.querySelectorAll('.mdc-linear-progress'), function(progressEl) {
           var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
           linearProgress.progress = 0.5;
           if (progressEl.dataset.buffer) {
@@ -968,10 +968,22 @@
         });
 
         /*
+         * Radio
+         */
+
+        [].forEach.call(document.querySelectorAll('.demo-radio-form-field'), function(formField) {
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
+          var radio = formField.querySelector('.mdc-radio');
+          if (radio) {
+            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
+          }
+        });
+
+        /*
          * Select
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-select:not(select)')).forEach(function(select) {
+        [].forEach.call(document.querySelectorAll('.mdc-select:not(select)'), function(select) {
           mdc.select.MDCSelect.attachTo(select);
         });
 
@@ -979,7 +991,7 @@
          * Slider
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-slider')).forEach(function(slider) {
+        [].forEach.call(document.querySelectorAll('.mdc-slider'), function(slider) {
           mdc.slider.MDCSlider.attachTo(slider);
         });
 
@@ -987,7 +999,7 @@
          * Tab Bar
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-tab-bar')).forEach(function(tabBar) {
+        [].forEach.call(document.querySelectorAll('.mdc-tab-bar'), function(tabBar) {
           mdc.tabs.MDCTabBar.attachTo(tabBar);
         });
 
@@ -995,20 +1007,8 @@
          * Text Field
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-text-field')).forEach(function(textField) {
+        [].forEach.call(document.querySelectorAll('.mdc-text-field'), function(textField) {
           mdc.textField.MDCTextField.attachTo(textField);
-        });
-
-        /*
-         * Radio
-         */
-
-        [].slice.call(document.querySelectorAll('.demo-radio-form-field')).forEach(function(formField) {
-          var formFieldInstance = new mdc.formField.MDCFormField(formField);
-          var radio = formField.querySelector('.mdc-radio');
-          if (radio) {
-            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
-          }
         });
       });
     </script>
