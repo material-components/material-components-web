@@ -44,14 +44,16 @@
 
       <section class="hero">
         <div class="mdc-card demo-card">
-          <section class="mdc-card__media mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></section>
-          <div class="demo-card__primary">
-            <h2 class="demo-card__title mdc-typography--title">Our Changing Planet</h2>
-            <h3 class="demo-card__subtitle mdc-typography--subheading1">by Kurt Wagner</h3>
-          </div>
-          <div class="demo-card__secondary mdc-typography--body1">
-            Visit ten places on our planet that are undergoing the biggest changes today.
-          </div>
+          <a class="mdc-card__primary-action" href="javascript:">
+            <section class="mdc-card__media mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></section>
+            <div class="demo-card__primary">
+              <h2 class="demo-card__title mdc-typography--title">Our Changing Planet</h2>
+              <h3 class="demo-card__subtitle mdc-typography--subheading1">by Kurt Wagner</h3>
+            </div>
+            <div class="demo-card__secondary mdc-typography--body1">
+              Visit ten places on our planet that are undergoing the biggest changes today.
+            </div>
+          </a>
           <div class="mdc-card__action-bar">
             <div class="mdc-card__action-buttons">
               <button class="mdc-button mdc-card__action">Read</button>
@@ -138,13 +140,15 @@
         </div>
 
         <div class="mdc-card demo-card demo-card--photo-album">
-          <section class="mdc-card__media mdc-card__media--square demo-card__media">
-            <div class="mdc-card__media-content demo-card__media-content--with-title">
-              <div class="demo-card__media-title mdc-typography--subheading2">
-                Vacation Photos
+          <a class="mdc-card__primary-action demo-card__primary-action" href="javascript:">
+            <section class="mdc-card__media mdc-card__media--square demo-card__media">
+              <div class="mdc-card__media-content demo-card__media-content--with-title">
+                <div class="demo-card__media-title mdc-typography--subheading2">
+                  Vacation Photos
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </a>
           <section class="mdc-card__action-bar">
             <div class="mdc-card__action-icons demo-card__action-icons--centered">
               <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
@@ -177,14 +181,16 @@
         </div>
 
         <div class="mdc-card demo-card demo-card--music-album">
-          <section class="demo-card__music-row">
-            <div class="mdc-card__media mdc-card__media--square demo-card__media demo-card__media--music"></div>
-            <div class="demo-card__music-info">
-              <div class="demo-card__music-title mdc-typography--headline">Rozes</div>
-              <div class="demo-card__music-artist mdc-typography--body1">Under the Grave</div>
-              <div class="demo-card__music-year mdc-typography--body1">(2016)</div>
-            </div>
-          </section>
+          <a class="mdc-card__primary-action demo-card__primary-action" href="javascript:">
+            <section class="demo-card__music-row">
+              <div class="mdc-card__media mdc-card__media--square demo-card__media demo-card__media--music"></div>
+              <div class="demo-card__music-info">
+                <div class="demo-card__music-title mdc-typography--headline">Rozes</div>
+                <div class="demo-card__music-artist mdc-typography--body1">Under the Grave</div>
+                <div class="demo-card__music-year mdc-typography--body1">(2016)</div>
+              </div>
+            </section>
+          </a>
           <hr class="mdc-list-divider">
           <section class="mdc-card__action-bar">
             <div class="mdc-card__action-buttons demo-card__action-buttons--text">Rate this album</div>
@@ -257,6 +263,10 @@
 
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
+        });
+
+        [].forEach.call(document.querySelectorAll('.mdc-card__primary-action'), function(el) {
+          mdc.ripple.MDCRipple.attachTo(el);
         });
       });
     </script>

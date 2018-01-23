@@ -23,6 +23,11 @@
 @import "../packages/mdc-list/mdc-list";
 @import "../packages/mdc-ripple/mixins";
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .hero {
   height: auto;
   padding: 24px;
@@ -67,12 +72,18 @@
 // Music
 //
 
+.demo-card--music-album {
+  border-radius: 16px 0;
+}
+
 .demo-card__music-row {
   display: flex;
+  border-top-left-radius: inherit;
 }
 
 .demo-card__media--music {
   width: 110px;
+  border-top-left-radius: inherit;
 }
 
 .demo-card__music-info {

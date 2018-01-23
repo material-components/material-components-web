@@ -164,6 +164,7 @@ To have a single action button take up the entire width of the action bar, use t
 CSS Class | Description
 --- | ---
 `mdc-card` | A card
+`mdc-card__primary-action` | The main tappable area of the card, which typically wraps everything in the card except `mdc-card__action-bar`
 `mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
 `mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
@@ -177,9 +178,7 @@ CSS Class | Description
 
 ### Sass Mixins
 
-
 Mixin | Description
 --- | ---
 `mdc-card-fill-color($color)` | Sets the fill color of a `mdc-card`
 `mdc-card-media-aspect-ratio($width-unitless, $height-unitless)` | Automatically sets the height of the `mdc-card__media` subelement to maintain a given aspect ratio based on its width
-
