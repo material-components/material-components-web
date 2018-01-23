@@ -24,7 +24,7 @@
 
 .mdc-icon-toggle {
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-unbounded;
   @include mdc-states(black);
   @include mdc-icon-toggle-ink-color(text-primary-on-light);
 

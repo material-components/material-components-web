@@ -215,7 +215,7 @@
 .mdc-text-field--box {
   @include mdc-ripple-surface;
   @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
 
   display: inline-flex;

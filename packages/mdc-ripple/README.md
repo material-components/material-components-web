@@ -62,7 +62,7 @@ General notes:
 
 #### Sass API
 
-In order to fully style states as well as the ripple effect for pressed state, both `mdc-ripple` mixins below must be included, as well as either the basic or advanced `mdc-states` mixins documented below.
+In order to fully style states as well as the ripple effect for pressed state, `mdc-ripple-surface` and one of the two `mdc-ripple-radius` mixins below must be included, as well as either the basic or advanced `mdc-states` mixins documented below.
 
 Once these styles are in place for a component, it is feasible to further override only the parts necessary (e.g. `mdc-states` specifically) for specific variants (e.g. for flat vs. raised buttons).
 
@@ -73,7 +73,8 @@ These APIs implicitly use pseudo-elements for the ripple effect: `::before` for 
 Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Adds base styles for a ripple surface
-`mdc-ripple-radius($radius)` | Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
+`mdc-ripple-radius-bounded($radius)` | Adds styles for the radius of the ripple effect,<br>for bounded ripple surfaces
+`mdc-ripple-radius-unbounded($radius)` | Adds styles for the radius of the ripple effect,<br>for unbounded ripple surfaces
 
 ##### Basic States Mixins
 

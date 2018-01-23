@@ -71,7 +71,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     @include mdc-typography(subheading2);
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding, ".mdc-select");
     @include mdc-ripple-surface;
-    @include mdc-ripple-radius;
+    @include mdc-ripple-radius-bounded;
     @include mdc-states;
 
     @include mdc-theme-dark(".mdc-select") {
@@ -238,7 +238,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
     // Styles to override mdc-ripple-radius from mdc-list, which causes display glitches in Chrome
     // (See https://github.com/material-components/material-components-web/pull/1737#issuecomment-351105800)
-    @include mdc-ripple-radius(50%);
+    @include mdc-ripple-radius-bounded(50%);
 
     &::before,
     &::after {
