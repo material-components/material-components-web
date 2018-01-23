@@ -31,10 +31,6 @@
   }
 }
 
-@mixin mdc-card-corner-radius($radius) {
-  border-radius: $radius;
-}
-
 @mixin mdc-card-stroke($color, $thickness: 1px) {
   border: $thickness solid mdc-theme-prop-value($color);
 }
