@@ -71,7 +71,7 @@ In order to implement a component via a foundation, take the following steps:
 
 1. Include the component's CSS on the page any way you wish
 2. Add an instance property to your component which will be set to the proper foundation class.
-   We'll calls this `mdcFoundation`.
+   We'll call this `mdcFoundation`.
 3. Instantiate a foundation class, passing it a properly configured adapter as an argument
 4. When your component is initialized, call `mdcFoundation.init()`
 5. When your component is destroyed, call `mdcFoundation.destroy()`
