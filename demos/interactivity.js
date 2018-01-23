@@ -85,6 +85,9 @@ export class ToolbarProvider extends InteractivityProvider {
   }
 }
 
+/** @type {?HotSwapper} */
+let hotSwapperInstance = null;
+
 export class HotSwapper extends InteractivityProvider {
   /**
    * @param {!Document|!Element} root
@@ -281,11 +284,10 @@ export class HotSwapper extends InteractivityProvider {
    * @return {!HotSwapper}
    */
   static getInstance(root) {
-    if (!HotSwapper.instance_) {
-      /** @private {?HotSwapper} */
-      HotSwapper.instance_ = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
+    if (!hotSwapperInstance) {
+      hotSwapperInstance = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
     }
-    return HotSwapper.instance_;
+    return hotSwapperInstance;
   }
 }
 
