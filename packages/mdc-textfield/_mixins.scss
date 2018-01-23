@@ -275,10 +275,10 @@
     border: none;
     background-color: transparent;
     z-index: 1;
+  }
 
-    &:hover ~ .mdc-text-field__idle-outline {
-      border: 1px solid;
-    }
+  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid;
   }
 
   .mdc-text-field__label {
@@ -299,10 +299,10 @@
 
   .mdc-text-field__icon {
     z-index: 2;
+  }
 
-    &:hover ~ .mdc-text-field__idle-outline {
-      border: 1px solid $mdc-text-field-outlined-hover-border;
-    }
+  .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid $mdc-text-field-outlined-hover-border;
   }
 
   .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
