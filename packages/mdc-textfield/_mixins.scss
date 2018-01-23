@@ -433,6 +433,20 @@
   }
 }
 
+@mixin mdc-text-field-dense-with-leading-icon_ {
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position);
+  }
+
+  .mdc-text-field__icon {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-position);
+  }
+
+  .mdc-text-field__label {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
+  }
+}
+
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   .mdc-text-field__label--float-above {
     transform: translateX(-27%) translateY(-130%) scale(.75);
