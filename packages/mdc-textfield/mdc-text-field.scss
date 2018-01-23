@@ -150,13 +150,7 @@
 }
 
 .mdc-text-field--with-trailing-icon {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(right, $mdc-text-field-icon-position);
-  }
+  @include mdc-text-field-with-trailing-icon_;
 }
 
 // stylelint-disable plugin/selector-bem-pattern
@@ -179,17 +173,11 @@
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
   }
 }
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--with-trailing-icon.mdc-text-field--dense {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(right, $mdc-text-field-dense-icon-position);
-  }
+  @include mdc-text-field-dense-with-trailing-icon_;
 }
-// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box) {
   display: inline-flex;
