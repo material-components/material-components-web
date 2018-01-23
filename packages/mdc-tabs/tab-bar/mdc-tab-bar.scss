@@ -49,35 +49,6 @@
     transition: mdc-animation-enter(transform, 240ms);
     will-change: transform;
   }
-
-  // postcss-bem-linter: ignore
-  .mdc-toolbar & {
-    .mdc-tab {
-      @include mdc-theme-prop(color, text-secondary-on-primary);
-
-      @include mdc-theme-dark(".mdc-tab-bar") {
-        @include mdc-theme-prop(color, text-secondary-on-dark);
-      }
-    }
-
-    .mdc-tab--active,
-    .mdc-tab:hover {
-      @include mdc-theme-prop(color, text-primary-on-primary);
-
-      @include mdc-theme-dark(".mdc-tab-bar") {
-        @include mdc-theme-prop(color, text-primary-on-dark);
-      }
-    }
-
-    // postcss-bem-linter: ignore
-    .mdc-tab-bar__indicator {
-      @include mdc-theme-prop(background-color, text-primary-on-primary);
-
-      @include mdc-theme-dark(".mdc-tab-bar") {
-        @include mdc-theme-prop(background-color, text-primary-on-dark);
-      }
-    }
-  }
 }
 
 .mdc-tab-bar--icons-with-text {
