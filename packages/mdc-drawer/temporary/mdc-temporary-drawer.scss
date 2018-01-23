@@ -67,10 +67,6 @@
 
     @include mdc-slideable-drawer;
 
-    @include mdc-rtl(".mdc-drawer--temporary") {
-      @include mdc-slideable-drawer-rtl;
-    }
-
     display: flex;
     position: absolute;
     flex-direction: column;
