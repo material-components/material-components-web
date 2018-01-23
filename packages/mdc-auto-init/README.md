@@ -9,7 +9,7 @@ path: /catalog/auto-init/
 # Auto Init
 
 `mdc-auto-init` is a utility package that provides declarative, DOM-based method of initialization
-for MDC-Web components on simple web sites. Note that for more advanced use-cases and complex sites,
+for MDC Web components on simple web sites. Note that for more advanced use-cases and complex sites,
 manual instantiation of components will give you more flexibility. However, `mdc-auto-init` is great
 for static websites, prototypes, and other use-cases where simplicity and convenience is most
 appropriate.
@@ -140,7 +140,7 @@ the root node whose children will be queried for instantiation.
 
 ```html
 <div id="mdc-section">
-  <!-- MDC-Web Components, etc. -->
+  <!-- MDC Web Components, etc. -->
 </div>
 <script>window.mdc.autoInit(document.getElementById('mdc-section'));</script>
 ```
@@ -152,7 +152,7 @@ In the above example, only elements within `<div id="mdc-section">` will be quer
 By default, `mdc-auto-init` only expects to be called once, at page-load time. However, there may be
 certain scenarios where one may want to use `mdc-auto-init` and may still need to call it multiple
 times, such as on a Wordpress site that contains an infinitely-scrolling list of new blog post
-elements containing MDC-Web components. `mdcAutoInit()` takes an optional second argument which is the
+elements containing MDC Web components. `mdcAutoInit()` takes an optional second argument which is the
 function used to warn users when a component is initialized multiple times. By default, this is just
 `console.warn()`. However, to skip over already-initialized components without logging a
 warning, you could simply pass in a nop.

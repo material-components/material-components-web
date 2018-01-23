@@ -20,7 +20,7 @@
     <title>Toolbar - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <script src="/assets/toolbar/toolbar.css.js"></script>
+    <link rel="stylesheet" href="/assets/toolbar/toolbar.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -71,7 +71,6 @@
       div.intro {
         padding: 48px 24px;
       }
-
     </style>
   </head>
   <body class="mdc-typography">
@@ -191,7 +190,7 @@
       </section>
     </main>
     <script>
-      [].slice.call(document.querySelectorAll('.examples button')).forEach(function(button) {
+      [].forEach.call(document.querySelectorAll('.examples button'), function(button) {
         button.addEventListener('click', function(event) {
           var iframeMainEl = event.target.parentNode.parentNode.querySelector('iframe').contentWindow.document.querySelector('body');
           iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');

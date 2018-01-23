@@ -14,6 +14,12 @@
 // limitations under the License.
 //
 
+@import "bottom-line/mixins";
+@import "outline/mixins";
+@import "label/mixins";
+@import "helper-text/mixins";
+@import "icon/mixins";
+
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
 }
@@ -41,55 +47,95 @@
   }
 }
 
-@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $scale: .75) {
-  @keyframes invalid-shake-float-above-#{$modifier} {
-    0% {
-      transform: translateX(0) translateY(-#{$positionY}) scale(#{$scale});
-    }
+@mixin mdc-text-field-ink-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-ink-color_($color);
+  }
+}
 
-    33% {
-      animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
-      transform: translateX(5px) translateY(-#{$positionY}) scale(#{$scale});
-    }
+@mixin mdc-text-field-box-fill-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-box-fill-color_($color);
+  }
+}
 
-    66% {
-      animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
-      transform: translateX(-5px) translateY(-#{$positionY}) scale(#{$scale});
-    }
+@mixin mdc-text-field-textarea-stroke-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-textarea-stroke-color_($color);
+  }
+}
 
-    100% {
-      transform: translateX(0) translateY(-#{$positionY}) scale(#{$scale});
-    }
+@mixin mdc-text-field-textarea-fill-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-textarea-fill-color_($color);
+    // Automatically add label background color the same color as well to ensure
+    // the label can be seen if the input scrolls behind the label
+    @include mdc-text-field-label-background-color_($color);
+  }
+}
+
+@mixin mdc-text-field-fullwidth-bottom-line-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-fullwidth-bottom-line-color_($color);
   }
 }
 
 // Private mixins
 
-// Common
+// Baseline
+
+@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $positionX: 0%, $scale: .75) {
+  @keyframes invalid-shake-float-above-#{$modifier} {
+    0% {
+      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+    }
+
+    33% {
+      animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
+      transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+    }
+
+    66% {
+      animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
+      transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+    }
+
+    100% {
+      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+    }
+  }
+}
+
+@include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
+@include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
+@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 27%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
+@include mdc-text-field-invalid-label-shake-keyframes_(textarea, 50%, 0%, .923);
 
 @mixin mdc-text-field-disabled_ {
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-light);
+  @include mdc-text-field-ink-color_(text-disabled-on-light);
+  @include mdc-text-field-label-color_(text-disabled-on-light);
+  @include mdc-text-field-helper-text-color_(text-disabled-on-light);
+  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon-on-light);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider-on-light);
+
+  @include mdc-theme-dark(".mdc-text-field") {
+    @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-dark);
+    @include mdc-text-field-ink-color_(text-disabled-on-dark);
+    @include mdc-text-field-label-color_(text-disabled-on-dark);
+  }
+
   pointer-events: none;
 
   .mdc-text-field__input {
-    border-bottom: 1px dotted $mdc-text-field-disabled-border-on-light;
+    border-bottom: 1px dotted;
 
     @include mdc-theme-dark(".mdc-text-field", true) {
-      border-bottom: 1px dotted $mdc-text-field-disabled-border-on-dark;
-    }
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field__input,
-  .mdc-text-field__label,
-  + .mdc-text-field-helper-text {
-    @include mdc-theme-prop(color, text-disabled-on-light);
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-
-  .mdc-text-field__input,
-  .mdc-text-field__label {
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
+      border-bottom: 1px dotted;
     }
   }
 
@@ -108,33 +154,14 @@
 }
 
 @mixin mdc-text-field-invalid_ {
-  .mdc-text-field__label {
-    color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__bottom-line {
-    background-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-error-on-light;
-  }
-
-  .mdc-text-field__outline .mdc-text-field__outline-path {
-    stroke: $mdc-text-field-error-on-light;
-  }
+  @include mdc-text-field-bottom-line-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-focused-bottom-line-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-label-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error-on-light);
 
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
-    color: $mdc-text-field-error-on-light;
   }
 
   @include mdc-theme-dark(".mdc-text-field", true) {
@@ -145,6 +172,8 @@
 }
 
 @mixin mdc-text-field-focused_ {
+  @include mdc-text-field-label-color(primary);
+
   @include mdc-required-text-field-label-asterix_ {
     color: $mdc-text-field-error-on-light;
 
@@ -158,84 +187,419 @@
   }
 }
 
+@mixin mdc-text-field-dense_ {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: .813rem;
+
+  .mdc-text-field__label--float-above {
+    // NOTE: This is an eyeball'd approximation of what's in the mocks.
+    transform: translateY(-110%) scale(.923);
+  }
+}
+
 @mixin mdc-required-text-field-label-asterix_() {
   .mdc-text-field__input:required + .mdc-text-field__label::after {
     @content;
   }
 }
 
-// Outline
+// Outlined
 
-@mixin mdc-text-field-outline-disabled_ {
-  @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+@mixin mdc-text-field-outlined-disabled_ {
+  @include mdc-text-field-ink-color_($mdc-text-field-light-placeholder);
+  @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
 
   .mdc-text-field__input {
     border-bottom: none;
   }
 
   .mdc-text-field__outline-path {
-    stroke: $mdc-text-field-outlined-disabled-border;
     stroke-width: 1px;
-  }
-
-  .mdc-text-field__idle-outline {
-    border-color: $mdc-text-field-outlined-disabled-border;
   }
 
   .mdc-text-field__label {
     bottom: 20px;
   }
+}
+
+@mixin mdc-text-field-outlined-invalid_ {
+  // Outline specific mixins
+  @include mdc-text-field-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-focused-outline-color($mdc-text-field-error-on-light);
+}
+
+@mixin mdc-text-field-outlined-focused_ {
+  .mdc-text-field__idle-outline {
+    opacity: 0;
+  }
+
+  .mdc-text-field__outline {
+    opacity: 1;
+  }
+
+  .mdc-text-field__outline-path {
+    stroke-width: 2px;
+  }
+}
+
+@mixin mdc-text-field-outlined-dense_ {
+  height: 48px;
+
+  .mdc-text-field__input {
+    padding: 12px 12px 7px;
+  }
+
+  .mdc-text-field__label {
+    bottom: 18px;
+  }
+
+  .mdc-text-field__label--float-above {
+    transform: translateY(-145%) scale(.923);
+  }
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-outlined-dense 250ms 1;
+  }
 
   .mdc-text-field__icon {
-    @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-light);
+    top: 12px;
   }
+}
+
+@mixin mdc-text-field-outlined_ {
+  // Outline specific colors
+  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
+  @include mdc-text-field-focused-outline-color(primary);
+
+  height: 56px;
+  border: none;
+
+  // stylelint-disable plugin/selector-bem-pattern
+
+  .mdc-text-field__input {
+    display: flex;
+    height: 30px;
+    padding: 12px;
+    border: none;
+    background-color: transparent;
+    z-index: 1;
+  }
+
+  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid;
+  }
+
+  .mdc-text-field__label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    position: absolute;
+    bottom: 20px;
+    transition: transform 260ms ease;
+  }
+
+  .mdc-text-field__label--float-above {
+    transform: translateY(-130%) scale(.75);
+  }
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-outlined 250ms 1;
+  }
+
+  .mdc-text-field__icon {
+    z-index: 2;
+  }
+
+  .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid $mdc-text-field-outlined-hover-border;
+  }
+
+  .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
+    opacity: 0;
+  }
+
+  .mdc-text-field__label--float-above ~ .mdc-text-field__outline {
+    opacity: 1;
+  }
+
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 // Box
 
-@mixin mdc-text-field-box-disabled_ {
-  @include mdc-theme-prop(color, $mdc-text-field-light-placeholder);
+@mixin mdc-text-field-box_ {
+  @include mdc-ripple-surface;
+  @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
+  @include mdc-ripple-radius;
+  @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
 
-  border-bottom: none;
-  background-color: $mdc-text-field-box-disabled-background;
+  // Colors
+  @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
+
+  display: inline-flex;
+  position: relative;
+  height: 56px;
+  margin-top: 16px;
+  overflow: hidden;
 
   @include mdc-theme-dark(".mdc-text-field", true) {
-    @include mdc-theme-prop(background-color, $mdc-text-field-dark-background);
-    @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
+    background-color: $mdc-text-field-box-background-dark;
+  }
 
-    border-bottom: none;
+  @include mdc-theme-dark(".mdc-text-field", true) {
+    @include mdc-states(text-primary-on-dark, $has-nested-focusable-element: true);
+  }
+
+  .mdc-text-field__input {
+    align-self: flex-end;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 20px 16px 0;
+  }
+
+  .mdc-text-field__label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    position: absolute;
+    bottom: 20px;
+    width: calc(100% - #{$mdc-text-field-icon-padding});
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    overflow: hidden;
+    // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
+    // when the ripple is activated behind it.
+    will-change: transform;
+
+    @include mdc-theme-dark(".mdc-text-field") {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
+  }
+
+  .mdc-text-field__label--float-above {
+    transform: translateY(-50%) scale(.75);
+  }
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-box 250ms 1;
+  }
+}
+
+@mixin mdc-text-field-box-disabled_ {
+  @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-label-color(text-hint-on-light);
+
+  border-bottom: none;
+
+  .mdc-text-field__label {
+    bottom: 20px;
+  }
+}
+
+@mixin mdc-text-field-box-dense_ {
+  .mdc-text-field__input {
+    padding: 12px 12px 0;
   }
 
   .mdc-text-field__label {
     bottom: 20px;
   }
 
-  .mdc-text-field__icon {
-    @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-light);
+  .mdc-text-field__label--float-above {
+    transform: translateY(-90%) scale(.923);
+  }
 
-    @include mdc-theme-dark() {
-      @include mdc-theme-prop(color, $mdc-text-field-disabled-icon-on-dark);
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-box-dense 250ms 1;
+  }
+}
+
+// Icons
+
+@mixin mdc-text-field-with-leading-icon_ {
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-padding, $mdc-text-field-icon-position);
+  }
+
+  .mdc-text-field__icon {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-position);
+  }
+
+  .mdc-text-field__label {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
+  }
+}
+
+@mixin mdc-text-field-dense-with-leading-icon_ {
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position);
+  }
+
+  .mdc-text-field__icon {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-position);
+  }
+
+  .mdc-text-field__label {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
+  }
+}
+
+@mixin mdc-text-field-outlined-with-leading-icon_ {
+  .mdc-text-field__label--float-above {
+    transform: translateX(-27%) translateY(-130%) scale(.75);
+
+    @include mdc-rtl {
+      transform: translateX(27%) translateY(-130%) scale(.75);
     }
+  }
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
+  }
+}
+
+@mixin mdc-text-field-outlined-dense-with-leading-icon_ {
+  .mdc-text-field__label--float-above {
+    transform: translateX(-25%) translateY(-145%) scale(.923);
+
+    @include mdc-rtl {
+      transform: translateX(25%) translateY(-145%) scale(.923);
+    }
+  }
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
+  }
+}
+
+@mixin mdc-text-field-with-trailing-icon_ {
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+  }
+
+  .mdc-text-field__icon {
+    @include mdc-rtl-reflexive-position(right, $mdc-text-field-icon-position);
+  }
+}
+
+@mixin mdc-text-field-dense-with-trailing-icon_ {
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
+  }
+
+  .mdc-text-field__icon {
+    @include mdc-rtl-reflexive-position(right, $mdc-text-field-dense-icon-position);
   }
 }
 
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
+  @include mdc-text-field-label-background-color_($mdc-textarea-disabled-background-on-light);
+  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border-on-light);
+  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background-on-light);
+
   border-style: solid;
-  border-color: $mdc-text-field-disabled-border-on-light;
-  background-color: $mdc-textarea-disabled-background-on-light;
+
+  .mdc-text-field__input {
+    border: 1px solid transparent;
+  }
 
   @include mdc-theme-dark(".mdc-text-field") {
-    border-color: $mdc-text-field-disabled-border-on-dark;
     background-color: $mdc-textarea-disabled-background-on-dark;
+  }
+}
+
+@mixin mdc-text-field-textarea-invalid_ {
+  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error-on-light);
+}
+
+@mixin mdc-text-field-textarea_ {
+  @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-label-background-color_($mdc-textarea-light-background);
+  @include mdc-text-field-textarea-stroke-color($mdc-textarea-border-on-light);
+
+  $padding-inset: 16px;
+  $label-offset-y: $padding-inset + 2;
+  $label-offset-x: $padding-inset;
+
+  display: flex;
+  width: fit-content;
+  height: initial;
+  transition: none;
+  border: 1px solid;
+  overflow: hidden;
+
+  @include mdc-theme-dark(".mdc-text-field") {
+    border-color: $mdc-textarea-border-on-dark;
+  }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-text-field__input {
+    margin: 0;
+    padding: $padding-inset;
+    padding-top: $padding-inset * 2;
+    border: 1px solid transparent;
   }
 
   .mdc-text-field__label {
-    background-color: $mdc-textarea-disabled-background-on-light;
+    @include mdc-rtl-reflexive-position(left, 1px);
+
+    top: $label-offset-y;
+    bottom: auto;
+    margin-top: 2px;
+    margin-left: 8px;
+    padding: 8px;
+    line-height: 1.15;
 
     @include mdc-theme-dark(".mdc-text-field") {
-      background-color: $mdc-textarea-disabled-background-on-dark;
+      background-color: $mdc-textarea-dark-background;
     }
+  }
+
+  .mdc-text-field__label--float-above {
+    // Translate above the top of the input, and compensate for the amount of offset needed
+    // to position the label within the bounds of the inset padding.
+    // Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
+    transform: translateY(-50%) scale(.923);
+  }
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-textarea 250ms 1;
+  }
+
+  // stylelint-enable plugin/selector-bem-pattern
+}
+
+// Customization
+
+@mixin mdc-text-field-ink-color_($color) {
+  .mdc-text-field__input {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-text-field-box-fill-color_($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-text-field-textarea-stroke-color_($color) {
+  @include mdc-theme-prop(border-color, $color);
+
+  .mdc-text-field__input:focus {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-text-field-textarea-fill-color_($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-text-field-fullwidth-bottom-line-color_($color) {
+  &:not(.mdc-text-field--textarea) {
+    @include mdc-theme-prop(border-bottom-color, $color);
   }
 }

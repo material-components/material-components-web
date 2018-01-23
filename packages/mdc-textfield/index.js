@@ -258,12 +258,6 @@ class MDCTextField extends MDCComponent {
             this.bottomLine_.unlisten(evtType, handler);
           }
         },
-        getIdleOutlineStyleValue: (propertyName) => {
-          const idleOutlineElement = this.root_.querySelector(strings.IDLE_OUTLINE_SELECTOR);
-          if (idleOutlineElement) {
-            return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
-          }
-        },
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },

@@ -5,26 +5,26 @@ section: docs
 path: /docs/closure-compiler/
 -->
 
-# Annotating MDC-Web for the Closure Compiler
+# Annotating MDC Web for the Closure Compiler
 
 > TL;DR read the section on our [type system](#mdc-web-type-system) and our [closure compiler conventions](#mdc-web-closure-conventions).
 
 ## Who this document is for
 
-This document is for _core contributors to MDC-Web, as well as contributors who wish to author
+This document is for _core contributors to MDC Web, as well as contributors who wish to author
 new components, or make non-trivial changes to existing components._ It assumes you're familiar with
 our codebase, and have read through most of our [Authoring Components guide](./authoring-components.md).
 
 ## Why this is needed
 
-MDC-Web - and Material Design in general - was created by Google. Therefore, it is not only a top
-priority that MDC-Web works seamlessly for our external community, but also that _MDC-Web works
+MDC Web - and Material Design in general - was created by Google. Therefore, it is not only a top
+priority that MDC Web works seamlessly for our external community, but also that _MDC Web works
 seamlessly for all Google applications_.
 
 At Google, all Javascript is processed and minified by the
 [Closure Compiler](https://github.com/google/closure-compiler) (which will be referred to as
 **closure**, the **compiler**, or any combination of those terms). Thus, _in order for every Google
-application to deem MDC-Web viable for use within it, the library must be compilable using
+application to deem MDC Web viable for use within it, the library must be compilable using
 closure's [advanced compilation](https://developers.google.com/closure/compiler/docs/api-tutorial3)
 mechanisms_.
 
@@ -68,12 +68,12 @@ accessor properties).
 You can use [this starter template](https://goo.gl/YSQkDi) to help debug your closure code, which
 has all of the above settings pre-configured (Even though the UI shows optimization is simple).
 
-## MDC-Web Type System
+## MDC Web Type System
 
-The following UML-like diagram shows a conceptual overview of the basic type system for MDC-Web. The
+The following UML-like diagram shows a conceptual overview of the basic type system for MDC Web. The
 diagram uses closure-esque type syntax, and represents what's in [mdc-base](../packages/mdc-base).
 
-![MDC-Web Type System UML(-like) diagram](https://docs.google.com/drawings/d/1mJBPiUkdFiXkU5A6kAdpZD5nXr6NkHIIW_vMNVdIvYY/pub?w=960&amp;h=720)
+![MDC Web Type System UML(-like) diagram](https://docs.google.com/drawings/d/1mJBPiUkdFiXkU5A6kAdpZD5nXr6NkHIIW_vMNVdIvYY/pub?w=960&amp;h=720)
 
 > Note that the actual code to express this parameterization will vary slightly from the UML above,
   since closure does not support bounded generics.
@@ -90,13 +90,13 @@ The overall type system is relatively straightforward, and boils down to 3 main 
   `MDCRippleAdapter`. Thus, when declaring the `MDCRipple` class, the proper JSDoc to specify this
   would be included: `@extends MDCComponent<!MDCRippleFoundation>`.
 
-## MDC-Web Closure Conventions
+## MDC Web Closure Conventions
 
-The following guidelines outline the general conventions for writing closurized code for MDC-Web.
+The following guidelines outline the general conventions for writing closurized code for MDC Web.
 This section should contain most - if not all - of what you need to get up and running writing
 closure for our codebase. It also includes an [example component skeleton](#an-example-component-skeleton).
 
-### Making MDC-Web aware of closure components (temporary)
+### Making MDC Web aware of closure components (temporary)
 
 Until our [closure compatibility milestone](https://github.com/material-components/material-components-web/milestone/4) has been reached, please ensure that whenever a
 component is annotated, it's directory name under `packages/` is added to the `"closureWhitelist"`
@@ -772,6 +772,6 @@ be found within that file.
 
 ## Where to go for more help
 
-If you're working on an issue for MDC-Web and find yourself wrestling with closure, please don't
+If you're working on an issue for MDC Web and find yourself wrestling with closure, please don't
 hesitate to [reach out on our discord channel](https://discord.gg/pRKaJB9) and we'll try and help
 you out.

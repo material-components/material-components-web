@@ -20,7 +20,8 @@
     <title>List Item - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <script src="/assets/list.css.js"></script>
+    <link rel="stylesheet" href="/assets/list.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -306,6 +307,68 @@
             </ul>
           </section>
           <section>
+            <h3>Checkbox Example - Icon with Text</h3>
+            <ul class="mdc-list demo-list">
+              <li class="mdc-list-item">
+                <span class="mdc-list-item__graphic">
+                  <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"/>
+                    <div class="mdc-checkbox__background">
+                      <svg class="mdc-checkbox__checkmark"
+                           viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark__path"
+                              fill="none"
+                              stroke="white"
+                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                      </svg>
+                      <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                  </div>
+                </span>
+                Blueberries
+              </li>
+              <li class="mdc-list-item">
+                <span class="mdc-list-item__graphic">
+                  <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"/>
+                    <div class="mdc-checkbox__background">
+                      <svg class="mdc-checkbox__checkmark"
+                           viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark__path"
+                              fill="none"
+                              stroke="white"
+                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                      </svg>
+                      <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                  </div>
+                </span>
+                Boysenberries
+              </li>
+              <li class="mdc-list-item">
+                <span class="mdc-list-item__graphic">
+                  <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"/>
+                    <div class="mdc-checkbox__background">
+                      <svg class="mdc-checkbox__checkmark"
+                           viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark__path"
+                              fill="none"
+                              stroke="white"
+                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                      </svg>
+                      <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                  </div>
+                </span>
+                Strawberries
+              </li>
+            </ul>
+          </section>
+          <section>
             <h3>Avatar List</h3>
             <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
               <li class="mdc-list-item">
@@ -416,6 +479,68 @@
               <li class="mdc-list-item">
                 Single-line item
                 <span class="mdc-list-item__meta">$30.00</span>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h3>Metadata - Checkbox Example</h3>
+            <ul class="mdc-list demo-list">
+              <li class="mdc-list-item">
+                Blueberries
+                <span class="mdc-list-item__meta">
+                  <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"/>
+                    <div class="mdc-checkbox__background">
+                      <svg class="mdc-checkbox__checkmark"
+                           viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark__path"
+                              fill="none"
+                              stroke="white"
+                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                      </svg>
+                      <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                  </div>
+                </span>
+              </li>
+              <li class="mdc-list-item">
+                Boysenberries
+                <span class="mdc-list-item__meta">
+                  <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"/>
+                    <div class="mdc-checkbox__background">
+                      <svg class="mdc-checkbox__checkmark"
+                           viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark__path"
+                              fill="none"
+                              stroke="white"
+                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                      </svg>
+                      <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                  </div>
+                </span>
+              </li>
+              <li class="mdc-list-item">
+                Strawberries
+                <span class="mdc-list-item__meta">
+                  <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"/>
+                    <div class="mdc-checkbox__background">
+                      <svg class="mdc-checkbox__checkmark"
+                           viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark__path"
+                              fill="none"
+                              stroke="white"
+                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                      </svg>
+                      <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                  </div>
+                </span>
               </li>
             </ul>
           </section>
@@ -1111,9 +1236,10 @@
         </section>
       </div>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
+      demoReady(function() {
         var formField = new mdc.formField.MDCFormField(document.querySelector('.mdc-form-field'));
         var cb = mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
         formField.input = cb;
@@ -1128,21 +1254,18 @@
             hero.removeAttribute('dir');
           }
         });
-        // Delay initialization within development until styles have loaded
-        setTimeout(initInteractiveLists, 250);
-        function initInteractiveLists() {
-          var interactiveListItems = document.querySelectorAll(
-            '[data-demo-interactive-list] .mdc-list-item, .hero .mdc-list-item'
-          );
-          for (var i = 0, li; li = interactiveListItems[i]; i++) {
-            mdc.ripple.MDCRipple.attachTo(li);
-            // Prevent link clicks from jumping demo to the top of the page
-            li.addEventListener('click', function(evt) {
-              evt.preventDefault();
-            });
-          }
+
+        var interactiveListItems = document.querySelectorAll(
+          '[data-demo-interactive-list] .mdc-list-item, .hero .mdc-list-item'
+        );
+        for (var i = 0, li; li = interactiveListItems[i]; i++) {
+          mdc.ripple.MDCRipple.attachTo(li);
+          // Prevent link clicks from jumping demo to the top of the page
+          li.addEventListener('click', function(evt) {
+            evt.preventDefault();
+          });
         }
-      })();
+      });
     </script>
   </body>
 </html>

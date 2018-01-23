@@ -21,6 +21,9 @@ user interaction.
     <a href="https://material.io/guidelines/patterns/navigation-drawer.html">Material Design guidelines: Navigation drawer</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/drawer/temporary-drawer.html">Demo: Temporary Drawer</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/drawer/persistent-drawer.html">Demo: Persistent Drawer</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
@@ -403,7 +406,7 @@ Temporary drawers can easily be initialized using their default constructors as 
 ```javascript
 import {MDCTemporaryDrawer} from '@material/drawer';
 
-const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
+const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
 ```
 
 #### Handling events

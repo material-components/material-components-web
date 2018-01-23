@@ -2,7 +2,7 @@
 title: "Theme"
 layout: detail
 section: components
-excerpt: "Color theming for MDC-Web components."
+excerpt: "Color theming for MDC Web components."
 iconId: theme
 path: /catalog/theme/
 -->
@@ -11,7 +11,7 @@ path: /catalog/theme/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/theme.html">
+     href="https://material-components-web.appspot.com/theme/index.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/themes.png" width="241" alt="Themes screenshot">
   </a>
 </div>-->
@@ -45,7 +45,7 @@ Some components can change their appearance when in a Dark Theme context, aka pl
     <a href="https://material.io/guidelines/style/color.html">Material Design guidelines: Color</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/theme.html">Demo</a>
+    <a href="https://material-components-web.appspot.com/theme/index.html">Demo</a>
   </li>
 </ul>
 
@@ -61,7 +61,7 @@ npm install --save @material/theme
 
 MDC Theme makes it easy to develop your brand colors. You override the default theme color through Sass variables or CSS custom properties. CSS custom properties enables runtime theming.
 
-> **A note about Sass variables**, you need to define the three theme color variables before importing mdc-theme or any MDC-Web components that rely on it, like following:
+> **A note about Sass variables**, you need to define the three theme color variables before importing mdc-theme or any MDC Web components that rely on it, like following:
 
 ```scss
 $mdc-theme-primary: #9c27b0; // Purple 500
@@ -111,7 +111,7 @@ CSS Custom property | Description
 
 ### CSS Classes
 
-MDC-Web provides SASS mixins, such as `mdc-button-filled-accessible`, to facilitate customization of some components. For more information, consult the documentation for each component.
+MDC Web provides SASS mixins, such as `mdc-button-filled-accessible`, to facilitate customization of some components. For more information, consult the documentation for each component.
 
 If you want to modify an element, which is not a Material Design component, you can apply the following modifier CSS classes.
 

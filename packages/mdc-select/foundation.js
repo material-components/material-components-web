@@ -84,7 +84,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.selectedIndex_ = -1;
     this.disabled_ = false;
     this.isFocused_ = false;
-    this.setPointerXOffset_ = (evt) => this.setBottomLineOrigin_(evt);
+
+    /** @private {number} */
+    this.animationRequestId_ = 0;
+
     this.displayHandler_ = (evt) => {
       evt.preventDefault();
       if (!this.adapter_.isMenuOpen()) {
@@ -119,15 +122,13 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.registerMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.registerInteractionHandler(evtType, this.setPointerXOffset_);
-    });
     this.resize();
   }
 
   destroy() {
     // Drop reference to context object to prevent potential leaks
     this.ctx_ = null;
+    cancelAnimationFrame(this.animationRequestId_);
     this.adapter_.deregisterInteractionHandler('click', this.displayHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.deregisterInteractionHandler('keyup', this.displayViaKeyboardHandler_);
@@ -135,9 +136,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.deregisterMenuInteractionHandler(
       MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.adapter_.deregisterInteractionHandler(evtType, this.setPointerXOffset_);
-    });
   }
 
   getValue() {
@@ -219,18 +217,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE);
     this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.addClass(OPEN);
-    this.adapter_.openMenu(focusIndex);
-    this.isFocused_ = true;
-  }
-
-  setBottomLineOrigin_(evt) {
-    const targetClientRect = evt.target.getBoundingClientRect();
-    const evtCoords = {x: evt.clientX, y: evt.clientY};
-    const normalizedX = evtCoords.x - targetClientRect.left;
-    const attributeString =
-      `transform-origin: ${normalizedX}px bottom`;
-
-    this.adapter_.setBottomLineAttr('style', attributeString);
+    this.animationRequestId_ = requestAnimationFrame(() => {
+      this.adapter_.openMenu(focusIndex);
+      this.isFocused_ = true;
+    });
   }
 
   setMenuStylesForOpenAtIndex_(index) {
