@@ -971,7 +971,7 @@
          * Select
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-select:not(select)')).forEach(function(select) {
+        [].forEach.call(document.querySelectorAll('.mdc-select:not(select)'), function(select) {
           mdc.select.MDCSelect.attachTo(select);
         });
 
