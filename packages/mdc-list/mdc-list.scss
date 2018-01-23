@@ -95,6 +95,7 @@
   @include mdc-list-graphic-size_(24px);
 
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
 }
