@@ -42,7 +42,6 @@ $_mdc-theme-tonal-offset: 7%;
 
 // Determine whether the color is "light" or "dark".
 @function mdc-theme-tone($color) {
-  // TODO: update to remove support for dark
   @if $color == "dark" or $color == "light" {
     @return $color;
   }
