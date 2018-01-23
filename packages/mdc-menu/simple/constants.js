@@ -21,9 +21,6 @@ const cssClasses = {
   OPEN: 'mdc-simple-menu--open',
   ANIMATING_OPEN: 'mdc-simple-menu--animating-open',
   ANIMATING_CLOSED: 'mdc-simple-menu--animating-closed',
-  TOP_RIGHT: 'mdc-simple-menu--open-from-top-right',
-  BOTTOM_LEFT: 'mdc-simple-menu--open-from-bottom-left',
-  BOTTOM_RIGHT: 'mdc-simple-menu--open-from-bottom-right',
   LIST_ITEM: 'mdc-list-item',
 };
 
