@@ -126,67 +126,7 @@
 }
 
 .mdc-text-field--box {
-  @include mdc-ripple-surface;
-  @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
-  @include mdc-ripple-radius;
-  @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
-
-  // Colors
-  @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
-
-  display: inline-flex;
-  position: relative;
-  height: 56px;
-  margin-top: 16px;
-  overflow: hidden;
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    background-color: $mdc-text-field-box-background-dark;
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    @include mdc-states(text-primary-on-dark, $has-nested-focusable-element: true);
-  }
-
-  // NOTE: For some reason, stylelint complains that the patterns below don't follow BEM.
-  // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
-  // we would normally disable it (on combined selectors) as a workaround.
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field__input {
-    align-self: flex-end;
-    box-sizing: border-box;
-    height: 100%;
-    padding: 20px 16px 0;
-  }
-
-  .mdc-text-field__label {
-    @include mdc-rtl-reflexive-position(left, 16px);
-
-    position: absolute;
-    bottom: 20px;
-    width: calc(100% - #{$mdc-text-field-icon-padding});
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    pointer-events: none;
-    overflow: hidden;
-    // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
-    // when the ripple is activated behind it.
-    will-change: transform;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
-  }
-
-  .mdc-text-field__label--float-above {
-    transform: translateY(-50%) scale(.75);
-  }
-
-  .mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-box 250ms 1;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
+  @include mdc-text-field-box_;
 }
 
 .mdc-text-field--box.mdc-text-field--disabled {
