@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/toolbar/toolbar.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -55,26 +56,17 @@
     <footer class="demo-toolbar-floating-footer">
       <span>Flexible Expansion Ratio: <span id="ratio">0</span></span>
     </footer>
-    <script src="/assets/material-components-web.js"></script>
-    <script type="text/javascript">
-      (function() {
-        var pollId = 0;
-        pollId = setInterval(function() {
-          var pos = getComputedStyle(document.querySelector('.mdc-toolbar')).position;
-          if (pos === 'fixed' || pos === 'relative') {
-            init();
-            clearInterval(pollId);
-          }
-        }, 250);
-        function init() {
-          var ratioSpan = document.querySelector("#ratio");
-          var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
-          toolbar.listen('MDCToolbar:change', function(evt) {
-            var flexibleExpansionRatio = evt.detail.flexibleExpansionRatio;
-            ratioSpan.innerHTML = flexibleExpansionRatio.toFixed(2);
-          });
-        }
-      })();
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
+        var ratioSpan = document.querySelector("#ratio");
+        var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
+        toolbar.listen('MDCToolbar:change', function(evt) {
+          var flexibleExpansionRatio = evt.detail.flexibleExpansionRatio;
+          ratioSpan.innerHTML = flexibleExpansionRatio.toFixed(2);
+        });
+      });
     </script>
   </body>
 </html>

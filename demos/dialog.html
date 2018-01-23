@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/dialog.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -241,9 +242,10 @@
         </div>
       </section>
     </main>
-    <script src="/assets/material-components-web.js"></script>
+
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      (function() {
+      demoReady(function() {
         var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-default'));
         dialog.listen('MDCDialog:accept', function() {
           console.log('accepted');
@@ -265,10 +267,7 @@
           dialogColoredButton.lastFocusedTarget = evt.target;
           dialogColoredButton.show();
         });
-      })();
-    </script>
-    <script>
-      (function() {
+
         mdc.dialog.MDCDialog.attachTo(document.querySelector('.mdc-dialog'));
         var demoWrapper = document.querySelector('.demo-body');
         var hero = document.querySelector('.hero');
@@ -281,13 +280,10 @@
             hero.removeAttribute('dir');
           }
         });
-        // Hack to work around style-loader async loading styles
-        setTimeout(function() {
-          mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));
-          mdc.ripple.MDCRipple.attachTo(document.querySelector('#dialog-with-list-activation'));
-          mdc.ripple.MDCRipple.attachTo(document.querySelector('#colored-footer-button-dialog-activation'));
-        }, 200);
-      })();
+        mdc.ripple.MDCRipple.attachTo(document.querySelector('#default-dialog-activation'));
+        mdc.ripple.MDCRipple.attachTo(document.querySelector('#dialog-with-list-activation'));
+        mdc.ripple.MDCRipple.attachTo(document.querySelector('#colored-footer-button-dialog-activation'));
+      });
     </script>
   </body>
 </html>

@@ -77,26 +77,6 @@ Un-styled Content (**FOUC**).
   <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
-> _NOTE_: Only place an `mdc-text-field__label` inside of `mdc-text-field` _if you plan on using
-> JavaScript_. Otherwise, the label must go outside of `mdc-text-field`, as shown below.
-
-#### CSS Only
-
-```html
-<label for="text-field-no-js">TextField with no JS: </label>
-<div class="mdc-text-field">
-  <input type="text" id="text-field-no-js" class="mdc-text-field__input" placeholder="Hint text">
-</div>
-```
-
-> _NOTE_: Do not use `mdc-text-field__bottom-line`, `mdc-text-field__outline`, or `mdc-text-field__idle-outline` inside of `mdc-text-field` _if you plan on using `mdc-text-field--box` or `mdc-text-field--outlined` without using JavaScript_. Bottom line and outline should not be included as part of the DOM structure of a CSS-only text field.
-
-```html
-<label for="css-only-text-field-box">Your name:</label>
-<div class="mdc-text-field mdc-text-field--box">
-  <input type="text" class="mdc-text-field__input" id="css-only-text-field-box" placeholder="Name">
-</div>
-```
 
 #### Full Width
 
@@ -118,19 +98,6 @@ included as part of the DOM structure of a full width text field.
 <div class="mdc-text-field mdc-text-field--textarea">
   <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
   <label for="textarea" class="mdc-text-field__label">Textarea Label</label>
-</div>
-```
-
-> _NOTE_: Only use `mdc-text-field__label` within `mdc-text-field--textarea` _if you plan on using
-> Javascript_. Otherwise, use the `placeholder` attribute, as shown below.
-
-```html
-<div class="mdc-text-field mdc-text-field--textarea">
-  <textarea id="textarea-css-only"
-    class="mdc-text-field__input"
-    rows="8"
-    cols="40"
-    placeholder="Enter something about yourself"></textarea>
 </div>
 ```
 
@@ -205,12 +172,21 @@ Mixin | Description
 --- | ---
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
+`mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
 `mdc-text-field-bottom-line-color($color)` | Customizes the color of the default bottom line of the text-field.
 `mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover color of the bottom line of the text-field. 
 `mdc-text-field-focused-bottom-line-color($color)` | Customizes the bottom-line ripple color when the text-field is focused.  
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
-`mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
-}
+`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field. 
+`mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
+`mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
+`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text-field box. 
+`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea. 
+`mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea. 
+`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the bottom line under a fullwidth text field. Doesn't apply to a textarea.
+`mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
+`mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
+`mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
 
 ### `MDCTextField`
 
