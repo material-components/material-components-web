@@ -25,8 +25,7 @@
 // Private
 
 @mixin mdc-text-field-label-color_($color) {
-  .mdc-text-field__label,
-  .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
+  .mdc-text-field__label {
     @include mdc-theme-prop(color, $color);
   }
 }
