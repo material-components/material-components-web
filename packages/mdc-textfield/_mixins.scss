@@ -345,7 +345,6 @@
   // However, it seems to emit the wrong selector for that pattern. Thus, we disable it above where
   // we would normally disable it (on combined selectors) as a workaround.
 
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input {
     align-self: flex-end;
     box-sizing: border-box;
@@ -379,7 +378,6 @@
   .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-box 250ms 1;
   }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 @mixin mdc-text-field-box-disabled_ {
