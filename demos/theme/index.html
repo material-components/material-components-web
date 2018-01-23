@@ -968,6 +968,18 @@
         });
 
         /*
+         * Radio
+         */
+
+        [].forEach.call(document.querySelectorAll('.demo-radio-form-field'), function(formField) {
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
+          var radio = formField.querySelector('.mdc-radio');
+          if (radio) {
+            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
+          }
+        });
+
+        /*
          * Select
          */
 
@@ -997,18 +1009,6 @@
 
         [].forEach.call(document.querySelectorAll('.mdc-text-field'), function(textField) {
           mdc.textField.MDCTextField.attachTo(textField);
-        });
-
-        /*
-         * Radio
-         */
-
-        [].forEach.call(document.querySelectorAll('.demo-radio-form-field'), function(formField) {
-          var formFieldInstance = new mdc.formField.MDCFormField(formField);
-          var radio = formField.querySelector('.mdc-radio');
-          if (radio) {
-            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
-          }
         });
       });
     </script>
