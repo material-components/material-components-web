@@ -205,7 +205,7 @@ class MDCSliderFoundation extends MDCFoundation {
   /** @param {number} max */
   setMax(max) {
     if (max < this.min_) {
-      throw new Error("Cannot set max to be less than the slider's minimum value");
+      throw new Error('Cannot set max to be less than the slider\'s minimum value');
     }
     this.max_ = max;
     this.setValue_(this.value_, false, true);
@@ -221,7 +221,7 @@ class MDCSliderFoundation extends MDCFoundation {
   /** @param {number} min */
   setMin(min) {
     if (min > this.max_) {
-      throw new Error("Cannot set min to be greater than the slider's maximum value");
+      throw new Error('Cannot set min to be less than the slider\'s minimum value');
     }
     this.min_ = min;
     this.setValue_(this.value_, false, true);
