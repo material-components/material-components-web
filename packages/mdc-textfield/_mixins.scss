@@ -248,7 +248,7 @@
     transform: translateY(-145%) scale(.923);
   }
 
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-outlined-dense 250ms 1;
   }
 
@@ -293,7 +293,7 @@
     transform: translateY(-130%) scale(.75);
   }
 
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-outlined 250ms 1;
   }
 
@@ -343,7 +343,7 @@
     transform: translateY(-90%) scale(.923);
   }
 
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-box-dense 250ms 1;
   }
 }
@@ -420,7 +420,7 @@
     transform: translateY(-50%) scale(.923);
   }
 
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-textarea 250ms 1;
   }
 

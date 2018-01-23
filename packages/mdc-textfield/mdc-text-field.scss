@@ -177,17 +177,13 @@
     @include mdc-theme-dark(".mdc-text-field") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
-
-    &--float-above {
-      transform: translateY(-50%) scale(.75);
-    }
   }
 
   .mdc-text-field__label--float-above {
     transform: translateY(-50%) scale(.75);
   }
 
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-box 250ms 1;
   }
   // stylelint-enable plugin/selector-bem-pattern
@@ -222,10 +218,10 @@
       @include mdc-rtl {
         transform: translateX(27%) translateY(-130%) scale(.75);
       }
+    }
 
-      &.mdc-text-field__label--shake {
-        animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
-      }
+    .mdc-text-field__label--shake {
+      animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
     }
 
     &.mdc-text-field--dense {
@@ -236,12 +232,10 @@
         @include mdc-rtl {
           transform: translateX(25%) translateY(-145%) scale(.923);
         }
+      }
 
-        // stylelint-disable-next-line selector-max-specificity
-        &.mdc-text-field__label--shake {
-          animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
-        }
-        // stylelint-enable max-nesting-depth
+      .mdc-text-field__label--shake {
+        animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
       }
     }
   }

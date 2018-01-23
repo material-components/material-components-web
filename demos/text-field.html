@@ -286,7 +286,9 @@
 
             document.getElementById('box-required').addEventListener('change', function(evt) {
               var target = evt.target;
-              tfEl.querySelector('.mdc-text-field__input').required = target.checked;
+              var input = tfEl.querySelector('.mdc-text-field__input');
+              input.required = target.checked;
+              input.pattern = evt.target.checked ? '.{8,}' : '.*';
             });
           });
         </script>
