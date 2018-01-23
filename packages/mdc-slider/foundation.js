@@ -35,10 +35,6 @@ const KEY_IDS = {
 // Events that can constitute the user releasing drag on a slider
 const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
 
-const numberIsFinite = Number.isFinite || function(value) {
-  return typeof value === 'number' && isFinite(value);
-};
-
 /**
  * @extends {MDCFoundation<!MDCSliderAdapter>}
  */
@@ -206,12 +202,8 @@ class MDCSliderFoundation extends MDCFoundation {
     return this.max_;
   }
 
-  /** @param {number|string} max */
+  /** @param {number} max */
   setMax(max) {
-    max = parseFloat(max);
-    if (!numberIsFinite(max)) {
-      throw new Error('Value for max must be a finite number');
-    }
     if (max < this.min_) {
       throw new Error("Cannot set max to be less than the slider's minimum value");
     }
@@ -226,12 +218,8 @@ class MDCSliderFoundation extends MDCFoundation {
     return this.min_;
   }
 
-  /** @param {number|string} min */
+  /** @param {number} min */
   setMin(min) {
-    min = parseFloat(min);
-    if (!numberIsFinite(min)) {
-      throw new Error('Value for min must be a finite number');
-    }
     if (min > this.max_) {
       throw new Error("Cannot set min to be greater than the slider's maximum value");
     }
@@ -246,16 +234,12 @@ class MDCSliderFoundation extends MDCFoundation {
     return this.step_;
   }
 
-  /** @param {number|string} step */
+  /** @param {number} step */
   setStep(step) {
-    step = parseFloat(step);
-    if (!numberIsFinite(step)) {
-      throw new Error('Value for step must be a finite number');
-    }
     if (step < 0) {
       throw new Error('Step cannot be set to a negative number');
     }
-    if (this.isDiscrete_ && step < 1) {
+    if (this.isDiscrete_ && (typeof(step) !== 'number' || step < 1)) {
       step = 1;
     }
     this.step_ = step;
@@ -454,16 +438,11 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Sets the value of the slider
-   * @param {number|string} value
+   * @param {number} value
    * @param {boolean} shouldFireInput
    * @param {boolean=} force
    */
   setValue_(value, shouldFireInput, force = false) {
-    value = parseFloat(value);
-    if (!numberIsFinite(value)) {
-      throw new Error('Value for value must be a finite number');
-    }
-
     if (value === this.value_ && !force) {
       return;
     }
