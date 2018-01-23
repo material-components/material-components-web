@@ -87,7 +87,7 @@
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
 
   display: inline-block;
   position: relative;

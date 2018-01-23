@@ -143,7 +143,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 .mdc-tab.mdc-ripple-upgraded {
   @include mdc-ripple-surface;
   @include mdc-states;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
 
   @include mdc-theme-dark(".mdc-tab-bar") {
     @include mdc-states(text-primary-on-dark);
