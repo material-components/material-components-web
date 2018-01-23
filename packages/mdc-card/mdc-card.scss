@@ -24,7 +24,7 @@
 // postcss-bem-linter: define card
 
 .mdc-card {
-  @include mdc-elevation(2, text-primary-on-background);
+  @include mdc-elevation(2);
   @include mdc-card-fill-color(background);
   @include mdc-card-corner-radius(2px);
 
