@@ -27,6 +27,7 @@
   @include mdc-text-field-bottom-line-color($idle-border);
   @include mdc-text-field-hover-bottom-line-color($hover-border);
   @include mdc-bottom-line-color($focused-border);
+  @include mdc-text-field-ink-color(black);
   @include mdc-text-field-label-color(rgba(blue, .5));
   @include mdc-text-field-outline-color($idle-border);
   @include mdc-text-field-hover-outline-color($hover-border);

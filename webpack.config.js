@@ -183,6 +183,7 @@ if (!IS_DEV) {
       animation: [path.resolve('./packages/mdc-animation/index.js')],
       autoInit: [path.resolve('./packages/mdc-auto-init/index.js')],
       base: [path.resolve('./packages/mdc-base/index.js')],
+      bottomline: [path.resolve('./packages/mdc-bottom-line/index.js')],
       checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
       dialog: [path.resolve('./packages/mdc-dialog/index.js')],
       drawer: [path.resolve('./packages/mdc-drawer/index.js')],

@@ -14,10 +14,20 @@
 // limitations under the License.
 //
 
-//Public
+// Public
 
 @mixin mdc-bottom-line-color($color) {
   .mdc-bottom-line {
     @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+// Private
+
+@mixin mdc-bottom-line-trigger-element_($element) {
+  // Both of these selectors are needed for mdc-select, since css bottom-line is a
+  // sibling, but the JS version is a child element.
+  #{$element}:focus ~ .mdc-bottom-line {
+    opacity: 1;
   }
 }

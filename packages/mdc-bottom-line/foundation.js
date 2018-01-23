@@ -116,6 +116,7 @@ class MDCBottomLineFoundation extends MDCFoundation {
     // before emitting the animation end event
     if (!this.isActive_ && evt.propertyName === 'opacity') {
       this.deactivate();
+      this.adapter_.notifyAnimationEnd();
     }
   }
 }

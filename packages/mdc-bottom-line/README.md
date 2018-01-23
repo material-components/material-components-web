@@ -9,7 +9,7 @@ path: /catalog/input-controls/text-field/bottom-line/
 
 # Text Field Bottom Line
 
-The bottom line indicates where to enter text, displayed below the label. When a text field is active or contains an error, the line’s color and thickness vary.
+The bottom line indicates the selected element or text, displayed below the label. When a text field/select is active, the line’s color and thickness vary.
 
 ## Design & API Documentation
 
@@ -41,16 +41,16 @@ The bottom line indicates where to enter text, displayed below the label. When a
 
 CSS Class | Description
 --- | ---
-`mdc-text-field-bottom-line` | Mandatory
-`mdc-text-field-bottom-line--active` | Styles the bottom line as an active bottom line
+`mdc-bottom-line` | Mandatory
+`mdc-bottom-line--active` | Styles the bottom line as an active bottom line
 
-### `MDCTextFieldBottomLine`
+### `MDCBottomLine`
 
-##### `MDCTextFieldBottomLine.foundation`
+##### `MDCBottomLine.foundation`
 
-This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldBottomLineFoundation` class.
+This allows the parent component to access the public methods on the `MDCBottomLineFoundation` class.
 
-### `MDCTextFieldBottomLineAdapter`
+### `MDCBottomLineAdapter`
 
 Method Signature | Description
 --- | ---
@@ -59,13 +59,14 @@ Method Signature | Description
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the root element
 `registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element for a given event
 `deregisterEventHandler(handler: EventListener) => void` | Deregisters an event listener on the root element for a given event
-`notifyAnimationEnd() => void` | Emits a custom event "MDCTextFieldBottomLine:animation-end" denoting the bottom line has finished its animation; either the activate or deactivate animation
+`notifyAnimationEnd() => void` | Emits a custom event "MDCBottomLine:animation-end" denoting the bottom line has finished its animation; either the activate or deactivate animation
 
-### `MDCTextFieldBottomLineFoundation`
+### `MDCBottomLineFoundation`
 
 Method Signature | Description
 --- | ---
 `activate() => void` | Activates the bottom line
-`deactivate => void` | Deactivates the bottom line
+`deactivate() => void` | Immediately deactivates the bottom line
+`deactivateFocus() => void` | Sets `isActive_` flag to false, allowing the animation to finish before deactivating. 
 `setTransformOrigin(evt: Event) => void` | Sets the transform origin given a user's click location
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event
