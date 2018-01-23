@@ -44,7 +44,7 @@
     <div class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <span>
+          <span class="catalog-back">
             <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
           <button class="demo-menu material-icons mdc-toolbar__menu-icon">menu</button>
@@ -149,8 +149,8 @@
         var activatedClass = 'mdc-list-item--selected';
         document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
           var el = event.target;
-          while (!el.classList.contains('mdc-list-item') && el) {
-            el = el.parentNode;
+          while (el && !el.classList.contains('mdc-list-item')) {
+            el = el.parentElement;
           }
           if (el) {
             var activatedItem = document.querySelector('.' + activatedClass);

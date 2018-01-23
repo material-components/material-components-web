@@ -41,10 +41,10 @@ By default, this will position the label after the input. You can change this be
 
 Now the label will be positioned before the checkbox.
 
-### Usage with MDC-Web Components
+### Usage with MDC Web Components
 
 `mdc-form-field` works not just with `input` elements, but with _any_ immediate child element as long as its
-successive sibling is a `label` element. This means it will work for MDC-Web form controls such as Checkbox and Radio:
+successive sibling is a `label` element. This means it will work for MDC Web form controls such as Checkbox and Radio:
 
 ```html
 <div class="mdc-form-field">
@@ -130,10 +130,10 @@ The `MDCFormField` functionality is exposed through a single accessor method.
 
 #### MDCFormField.input
 
-Read-write property that works with an instance of an MDC-Web input element.
+Read-write property that works with an instance of an MDC Web input element.
 
 In order for the label ripple integration to work correctly, this property needs to be set to a
-valid instance of an MDC-Web input element which exposes a `ripple` getter.
+valid instance of an MDC Web input element which exposes a `ripple` getter.
 
 ```javascript
 const formField = new MDCFormField(document.querySelector('.mdc-form-field'));

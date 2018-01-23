@@ -30,3 +30,10 @@
     @include mdc-theme-prop(color, $color);
   }
 }
+
+// Used for textarea in case of scrolling
+@mixin mdc-text-field-label-background-color_($color) {
+  .mdc-text-field__label {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}

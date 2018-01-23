@@ -86,6 +86,27 @@ icon-only, and text with icon. An example of each is available on the demo site.
 </nav>
 ```
 
+#### CSS Only Support
+
+In order for the indicator to appear, you will need to change your mark up if you are using CSS Only. Each `.mdc-tab` will have a child element with the class `.mdc-tab__indicator` as shown below:
+
+```html
+<nav id="basic-tab-bar" class="mdc-tab-bar">
+  <a class="mdc-tab mdc-tab--active" href="#one">
+    Home
+    <span class="mdc-tab__indicator"></span>
+  </a>
+  <a class="mdc-tab" href="#two">
+    Merchandise
+    <span class="mdc-tab__indicator"></span>
+  </a>
+  <a class="mdc-tab" href="#three">
+    About Us
+    <span class="mdc-tab__indicator"></span>
+  </a>
+</nav>
+```
+
 #### RTL Support
 
 Tab Bars will reverse the order of their tabs if they are placed within an
@@ -105,7 +126,7 @@ ancestor element with attribute `dir="rtl"`.
 
 #### Dark Mode Support
 
-Like other MDC-Web components, tabs support dark mode either when an
+Like other MDC Web components, tabs support dark mode either when an
 `mdc-tab-bar--theme-dark` class is attached to the root element, or the element has
 an ancestor with class `mdc-theme--dark`.
 
@@ -130,7 +151,7 @@ provides a minimal example of how to do so using JavaScript, also shown below.
 #### Markup:
 ```html
 <section id="dynamic-demo-toolbar">
-  <nav id="dynamic-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent" role="tablist">
+  <nav id="dynamic-tab-bar" class="mdc-tab-bar" role="tablist">
     <a role="tab" aria-controls="panel-1"
        class="mdc-tab mdc-tab--active" href="#panel-1">Item One</a>
     <a role="tab" aria-controls="panel-2"
@@ -223,6 +244,9 @@ This mixin customizes the icon ink color.
 
 #### `mdc-tab-label-ink-color`
 This mixin customizes the label ink color.
+
+#### `mdc-tab-bar-indicator-ink-color`
+This mixin customizes the indicator ink color.
 
 ### Using the CSS-Only Component
 

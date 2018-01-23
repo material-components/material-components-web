@@ -9,20 +9,20 @@ path: /docs/theming/
 
 ## Overview
 
-MDC-Web includes a theming system designed to make it easy to change your application's colors. It provides multiple options
-for implementing themes, allowing for maximum flexibility. At the moment, MDC-Web supports theming with Sass and with CSS
+MDC Web includes a theming system designed to make it easy to change your application's colors. It provides multiple options
+for implementing themes, allowing for maximum flexibility. At the moment, MDC Web supports theming with Sass and with CSS
 Custom Property, with plans for CDN support as well, once that service is available.
 
 ## Colors
 
-MDC-Web theming, like Material Design theming, uses two main colors: **primary** and **secondary**. The primary color is used
+MDC Web theming, like Material Design theming, uses two main colors: **primary** and **secondary**. The primary color is used
 throughout most of the application and components, as the main color for your application. The secondary color is used
 for floating action buttons and other interactive elements, serving as visual contrast to the primary.
 
-In addition to the primary and secondary colors, MDC-Web also defines a _background_ color, which is used as a background in
+In addition to the primary and secondary colors, MDC Web also defines a _background_ color, which is used as a background in
 components, and usually as the page background as well.
 
-Finally, MDC-Web has a number of text colors, which are used for rendering text and other shapes on top of the primary,
+Finally, MDC Web has a number of text colors, which are used for rendering text and other shapes on top of the primary,
 secondary and background colors. These are specified as either dark or light, in order to provide sufficient contrast to
 what's behind them, and have
 [different levels of opacity depending on usage](https://material.io/guidelines/style/color.html#color-color-schemes):
@@ -35,12 +35,12 @@ what's behind them, and have
 ## Building a themed application
 
 Let's start with a simple application, which displays several cards for different categories. We ultimately want each
-card to have a color scheme that matches its category, but we'll start with the default theming provided by MDC-Web.
+card to have a color scheme that matches its category, but we'll start with the default theming provided by MDC Web.
 
 You can [take a look at the end result here](https://plnkr.co/edit/qxt7qpPsXgkt9UbMnE36?p=preview), but let's start from
 scratch.
 
-> Note: We won't cover the basics of starting an MDC-Web project in this guide, so please take a look at the
+> Note: We won't cover the basics of starting an MDC Web project in this guide, so please take a look at the
 [getting started guide](./getting-started.md) if you need more information.
 
 ### Step 1: No theming
@@ -140,7 +140,7 @@ Here's the markup:
 You'll see that we have a number of pretty empty looking cards, with black text on a white background. The only hint of color comes from the FAB, which adopts the secondary color by default.
 
 
-### Step 2: Use the MDC-Web colors in your own markup
+### Step 2: Use the MDC Web colors in your own markup
 
 Not everything has a `--primary` option, though, particularly where it comes to your own markup.
 
@@ -155,10 +155,10 @@ used as the primary:
 }
 ```
 
-However, that would not take advantage of MDC-Web's theming and would thus be brittle; changes to theming would need to be
+However, that would not take advantage of MDC Web's theming and would thus be brittle; changes to theming would need to be
 copied to your CSS rules, adding a maintenance cost.
 
-MDC-Web provides a number of CSS classes as part of the `mdc-theme` module to help you tackle this problem in a more
+MDC Web provides a number of CSS classes as part of the `mdc-theme` module to help you tackle this problem in a more
 maintainable way. Here are the classes that deal with primary, secondary and background colors:
 
 | Class                           | Description                                                             |
@@ -248,7 +248,7 @@ however, the text would be dark again, for the same reason. So how _do_ we chang
 
 The application-wide theme colors that are used as the default across your entire application can be set in Sass.
 This is as easy as defining three variables (`$mdc-theme-primary`, `$mdc-theme-secondary` and `$mdc-theme-background`) in
-your Sass file, before importing any MDC-Web modules.
+your Sass file, before importing any MDC Web modules.
 
 ```scss
 // My main Sass file.
@@ -276,11 +276,11 @@ board. What we want here is slightly different, though: we want each card to hav
 So how do we keep all the current theme color "plumbing" for maintainability, while having different themes in different
 places? CSS Custom properties to the rescue!
 
-The generated MDC-Web CSS uses CSS Custom Properties with hardcoded fallbacks, which are set to the colors provided in Sass.
+The generated MDC Web CSS uses CSS Custom Properties with hardcoded fallbacks, which are set to the colors provided in Sass.
 This means that you can define your default theme in Sass (like we did above), but override it in CSS, dependent on
 context or user preference.
 
-Let's take a closer look at how MDC-Web does things. Here's an excerpt of a compiled MDC-Web CSS rule:
+Let's take a closer look at how MDC Web does things. Here's an excerpt of a compiled MDC Web CSS rule:
 
 ```css
 .mdc-fab {
@@ -289,11 +289,11 @@ Let's take a closer look at how MDC-Web does things. Here's an excerpt of a comp
 }
 ```
 
-Here, you can see that MDC-Web sets a fallback for the color, for browsers that don't support CSS Custom Properties. If
+Here, you can see that MDC Web sets a fallback for the color, for browsers that don't support CSS Custom Properties. If
 they do, however, that declaration gets overriden by a `var()` lookup, using the same fallback as the default value
 (in case the custom property definition isn't found).
 
-As such, you can easily override the colors that get used in MDC-Web components by simply redefining the custom property at
+As such, you can easily override the colors that get used in MDC Web components by simply redefining the custom property at
 some level. So if we want to apply it to our cards, we can take advantage of the element classes we had set up:
 
 ```css
@@ -317,7 +317,7 @@ some level. So if we want to apply it to our cards, we can take advantage of the
 It works! You can see that the colors get applied to the backgrounds. If the cards had any other
 components, they'd use the correct colors as well.
 
-The custom properties used by MDC-Web follow a similar naming convention to the Sass variables and CSS classes:
+The custom properties used by MDC Web follow a similar naming convention to the Sass variables and CSS classes:
 
 | Custom property               | Description                                 |
 | ----------------------------- | ------------------------------------------- |
@@ -402,7 +402,7 @@ In addition, we also define custom properties for known dark and light backgroun
 | `--mdc-theme-text-icon-on-dark`           | Icons on top of a dark-colored background.                |
 
 
-Ideally, we should set all of the text colors on primary, since we never know which one an MDC-Web component might use.
+Ideally, we should set all of the text colors on primary, since we never know which one an MDC Web component might use.
 Since our cards only contain text and no components, let's keep it simple for now:
 
 ```css
@@ -433,12 +433,12 @@ use-case easier.
 
 ## Dark Themes
 
-Beyond what we've covered in this document so far, there's also the concept of a _dark theme_. All MDC-Web components have
+Beyond what we've covered in this document so far, there's also the concept of a _dark theme_. All MDC Web components have
 been designed to work with both light themes (that assume a light-colored background) and dark themes (with dark-colored
 backgrounds), but the default is always light.
 
 > Note: When using a dark theme, you probably want to choose a dark color as the background for your page, and adjust
-the MDC-Web `background` color to match.
+the MDC Web `background` color to match.
 
 In order to apply a dark theme to a single element, you can use its `--theme-dark` class. For example, for a button:
 
