@@ -187,6 +187,17 @@
   }
 }
 
+@mixin mdc-text-field-dense_ {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: .813rem;
+
+  .mdc-text-field__label--float-above {
+    // NOTE: This is an eyeball'd approximation of what's in the mocks.
+    transform: translateY(-110%) scale(.923);
+  }
+}
+
 @mixin mdc-required-text-field-label-asterix_() {
   .mdc-text-field__input:required + .mdc-text-field__label::after {
     @content;
@@ -419,6 +430,20 @@
 
   .mdc-text-field__label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
+  }
+}
+
+@mixin mdc-text-field-dense-with-leading-icon_ {
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position);
+  }
+
+  .mdc-text-field__icon {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-position);
+  }
+
+  .mdc-text-field__label {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
   }
 }
 
