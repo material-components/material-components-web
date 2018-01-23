@@ -14,26 +14,18 @@
 // limitations under the License.
 //
 
-// Public
+// Public mixins
 
-@mixin mdc-text-field-label-color($color) {
+@mixin mdc-text-field-icon-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-label-color_($color);
+    @include mdc-text-field-icon-color_($color);
   }
 }
 
-// Private
+// Private mixins
 
-@mixin mdc-text-field-label-color_($color) {
-  .mdc-text-field__label,
-  .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
+@mixin mdc-text-field-icon-color_($color) {
+  .mdc-text-field__icon {
     @include mdc-theme-prop(color, $color);
-  }
-}
-
-// Used for textarea in case of scrolling
-@mixin mdc-text-field-label-background-color_($color) {
-  .mdc-text-field__label {
-    @include mdc-theme-prop(background-color, $color);
   }
 }
