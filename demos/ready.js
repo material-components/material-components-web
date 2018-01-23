@@ -64,6 +64,9 @@ window.demoReady = (function(root) {
     }
     startTimeMs = Date.now();
     pollTimer = setInterval(tick, POLL_INTERVAL_MS);
+    window.addEventListener('load', function() {
+      tick();
+    });
   }
 
   function tick() {
@@ -78,7 +81,7 @@ window.demoReady = (function(root) {
     if (elapsedTimeMs > POLL_MAX_WAIT_MS) {
       clearInterval(pollTimer);
       removeDetectionDom();
-      console.error('Timed out waiting for JS and CSS to load');
+      console.error('Timed out waiting for JS and CSS to load after ' + POLL_MAX_WAIT_MS + ' ms');
       return;
     }
   }
@@ -87,6 +90,7 @@ window.demoReady = (function(root) {
     handlers.forEach(function(handler) {
       handler(root);
     });
+    handlers.length = 0;
   }
 
   return function addHandler(handler) {

@@ -80,11 +80,12 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
    * @param {boolean} isBadInput The input's `validity.badInput` value.
    */
   styleFloat(value, isFocused, isBadInput) {
-    const {LABEL_FLOAT_ABOVE} = MDCTextFieldLabelFoundation.cssClasses;
+    const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldLabelFoundation.cssClasses;
     if (!!value || isFocused) {
       this.adapter_.addClass(LABEL_FLOAT_ABOVE);
     } else if (!isBadInput) {
       this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
+      this.adapter_.removeClass(LABEL_SHAKE);
     }
   }
 }
