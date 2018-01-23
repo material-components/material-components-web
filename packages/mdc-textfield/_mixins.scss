@@ -449,7 +449,7 @@
     animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
   }
 }
-    
+
 @mixin mdc-text-field-with-trailing-icon_ {
   .mdc-text-field__input {
     @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
