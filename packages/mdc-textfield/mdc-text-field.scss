@@ -159,21 +159,11 @@
   bottom: 16px;
   transform: scale(.8);
 }
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--with-leading-icon.mdc-text-field--dense {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-position);
-  }
-
-  .mdc-text-field__label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
-  }
+  @include mdc-text-field-dense-with-leading-icon_;
 }
-// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--with-trailing-icon.mdc-text-field--dense {
   @include mdc-text-field-dense-with-trailing-icon_;
