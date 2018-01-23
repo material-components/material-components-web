@@ -47,6 +47,7 @@ fieldset {
   border: 0;
 }
 
+// TODO mgoo: remove these dark theme when complete with removing other components
 .mdc-button {
   @include mdc-theme-dark {
     @include mdc-button-ink-color($dark-button-color);
