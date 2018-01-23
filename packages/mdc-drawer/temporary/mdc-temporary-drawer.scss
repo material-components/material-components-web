@@ -83,12 +83,6 @@
     }
   }
 
-  @include mdc-rtl {
-    .mdc-drawer__drawer {
-      @include mdc-slideable-drawer-rtl;
-    }
-  }
-
   .mdc-drawer__content {
     flex-grow: 1;
     box-sizing: border-box;
