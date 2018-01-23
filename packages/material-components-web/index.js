@@ -16,6 +16,7 @@
 
 import autoInit from '@material/auto-init';
 import * as base from '@material/base';
+import * as bottomLine from '@material/bottom-line';
 import * as checkbox from '@material/checkbox';
 import * as dialog from '@material/dialog';
 import * as drawer from '@material/drawer';
@@ -35,6 +36,7 @@ import * as textField from '@material/textfield';
 import * as toolbar from '@material/toolbar';
 
 // Register all components
+autoInit.register('MDCBottomLine', bottomLine.MDCBottomLine);
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCDialog', dialog.MDCDialog);
 autoInit.register('MDCPersistentDrawer', drawer.MDCPersistentDrawer);
@@ -58,6 +60,7 @@ autoInit.register('MDCToolbar', toolbar.MDCToolbar);
 export {
   autoInit,
   base,
+  bottomLine,
   checkbox,
   dialog,
   drawer,

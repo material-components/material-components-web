@@ -20,7 +20,8 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldBottomLine, MDCTextFieldHelperText,
+import {MDCBottomLine} from '../../../packages/mdc-bottom-line';
+import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
   MDCTextFieldIcon, MDCTextFieldLabel, MDCTextFieldOutline} from '../../../packages/mdc-textfield';
 
 const {cssClasses} = MDCTextFieldFoundation;
@@ -30,7 +31,7 @@ const getFixture = () => bel`
     <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
     <input type="text" class="mdc-text-field__input" id="my-text-field">
     <label class="mdc-text-field__label" for="my-text-field">My Label</label>
-    <div class="mdc-text-field__bottom-line"></div>
+    <div class="mdc-bottom-line"></div>
   </div>
 `;
 
@@ -131,10 +132,10 @@ test('#constructor when given a `mdc-text-field--outlined` element, initializes 
   assert.instanceOf(component.ripple, MDCRipple);
 });
 
-test('#constructor instantiates a bottom line on the `.mdc-text-field__bottom-line` element if present', () => {
+test('#constructor instantiates a bottom line on the `.mdc-bottom-line` element if present', () => {
   const root = getFixture();
   const component = new MDCTextField(root);
-  assert.instanceOf(component.bottomLine_, MDCTextFieldBottomLine);
+  assert.instanceOf(component.bottomLine_, MDCBottomLine);
 });
 
 const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;

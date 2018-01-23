@@ -59,8 +59,6 @@ class MDCBottomLineFoundation extends MDCFoundation {
 
     /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
-    /** @private {boolean} */
-    this.isActive_ = false;
   }
 
   init() {
@@ -75,7 +73,6 @@ class MDCBottomLineFoundation extends MDCFoundation {
    * Activates the bottom line
    */
   activate() {
-    this.isActive_ = true;
     this.adapter_.addClass(cssClasses.BOTTOM_LINE_ACTIVE);
   }
 
@@ -101,21 +98,13 @@ class MDCBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets our active flag to false to prepare to deactivate.
-   */
-  deactivateFocus() {
-    this.isActive_ = false;
-  }
-
-  /**
    * Handles a transition end event
    * @param {!Event} evt
    */
   handleTransitionEnd(evt) {
     // Wait for the bottom line to be either transparent or opaque
     // before emitting the animation end event
-    if (!this.isActive_ && evt.propertyName === 'opacity') {
-      this.deactivate();
+    if (evt.propertyName === 'opacity') {
       this.adapter_.notifyAnimationEnd();
     }
   }

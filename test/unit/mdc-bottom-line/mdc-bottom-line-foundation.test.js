@@ -19,29 +19,29 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
+import MDCBottomLineFoundation from '../../../packages/mdc-bottom-line/foundation';
 
-const {cssClasses} = MDCTextFieldBottomLineFoundation;
+const {cssClasses} = MDCBottomLineFoundation;
 
-suite('MDCTextFieldBottomLineFoundation');
+suite('MDCBottomLineFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextFieldBottomLineFoundation);
+  assert.isOk('cssClasses' in MDCBottomLineFoundation);
 });
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextFieldBottomLineFoundation);
+  assert.isOk('strings' in MDCBottomLineFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCTextFieldBottomLineFoundation, [
+  verifyDefaultAdapter(MDCBottomLineFoundation, [
     'addClass', 'removeClass', 'setAttr',
     'registerEventHandler', 'deregisterEventHandler',
     'notifyAnimationEnd',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTextFieldBottomLineFoundation);
+const setupTest = () => setupFoundationTest(MDCBottomLineFoundation);
 
 test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -57,14 +57,14 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test(`activate adds ${MDCTextFieldBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
+test(`activate adds ${MDCBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.activate();
   td.verify(mockAdapter.addClass(cssClasses.BOTTOM_LINE_ACTIVE));
 });
 
-test(`deactivate removes ${MDCTextFieldBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
+test(`deactivate removes ${MDCBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.deactivate();

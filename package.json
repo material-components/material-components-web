@@ -164,6 +164,7 @@
   "closureWhitelist": [
     "mdc-animation",
     "mdc-base",
+    "mdc-bottom-line",
     "mdc-checkbox",
     "mdc-form-field",
     "mdc-icon-toggle",

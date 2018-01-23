@@ -19,21 +19,21 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from '../../../packages/mdc-textfield/bottom-line';
+import {MDCBottomLine, MDCBottomLineFoundation} from '../../../packages/mdc-bottom-line';
 
 const getFixture = () => bel`
-  <div class="mdc-textfield__bottom-line"></div>
+  <div class="mdc-bottom-line"></div>
 `;
 
-suite('MDCTextFieldBottomLine');
+suite('MDCBottomLine');
 
-test('attachTo returns an MDCTextFieldBottomLine instance', () => {
-  assert.isOk(MDCTextFieldBottomLine.attachTo(getFixture()) instanceof MDCTextFieldBottomLine);
+test('attachTo returns an MDCBottomLine instance', () => {
+  assert.isOk(MDCBottomLine.attachTo(getFixture()) instanceof MDCBottomLine);
 });
 
 function setupTest() {
   const root = getFixture();
-  const component = new MDCTextFieldBottomLine(root);
+  const component = new MDCBottomLine(root);
   return {root, component};
 }
 
@@ -78,12 +78,12 @@ test('#adapter.deregisterEventHandler removes event listener for a given event f
 });
 
 test('#adapter.notifyAnimationEnd emits ' +
-  `${MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT}`, () => {
+  `${MDCBottomLineFoundation.strings.ANIMATION_END_EVENT}`, () => {
   const {component} = setupTest();
   const handler = td.func('leadingHandler');
 
   component.listen(
-    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, handler);
+    MDCBottomLineFoundation.strings.ANIMATION_END_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyAnimationEnd();
 
   td.verify(handler(td.matchers.anything()));

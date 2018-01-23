@@ -17,8 +17,8 @@
 
 import MDCFoundation from '@material/base/foundation';
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
-import MDCBottomLineFoundation from '@material/bottom-line/foundation';
 /* eslint-disable no-unused-vars */
+import MDCBottomLineFoundation from '@material/bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
@@ -131,6 +131,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.adapter_.registerBottomLineEventHandler(
+      MDCBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   destroy() {
@@ -144,6 +146,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.adapter_.deregisterBottomLineEventHandler(
+      MDCBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   /**
@@ -215,6 +219,19 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * Handles when bottom line animation ends, performing actions that must wait
+   * for animations to finish.
+   */
+  handleBottomLineAnimationEnd() {
+    // We need to wait for the bottom line to be entirely transparent
+    // before removing the class. If we do not, we see the line start to
+    // scale down before disappearing
+    if (!this.isFocused_ && this.bottomLine_) {
+      this.bottomLine_.deactivate();
+    }
+  }
+
+  /**
    * Deactivates the Text Field's focus state.
    */
   deactivateFocus() {
@@ -231,9 +248,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
-    }
-    if(this.bottomLine_) {
-      this.bottomLine_.deactivateFocus();
     }
   }
 
