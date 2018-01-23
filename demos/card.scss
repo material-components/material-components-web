@@ -19,3 +19,149 @@
 @import "../packages/mdc-card/mdc-card";
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
+@import "../packages/mdc-icon-toggle/mdc-icon-toggle";
+@import "../packages/mdc-list/mdc-list";
+@import "../packages/mdc-ripple/mixins";
+
+.hero {
+  height: auto;
+  padding: 24px;
+}
+
+.demo-card-collection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.demo-card {
+  width: 350px;
+  margin: 48px;
+}
+
+.demo-card--photo-album {
+  width: 200px;
+}
+
+.demo-card-toggles {
+  margin: 24px;
+  padding: 24px;
+  text-align: center;
+}
+
+//
+// Small
+//
+
+.demo-card__action-icons--centered {
+  justify-content: center;
+}
+
+.demo-card__action-buttons--text {
+  padding: 8px;
+}
+
+//
+// Music
+//
+
+.demo-card__music-row {
+  display: flex;
+}
+
+.demo-card__media--music {
+  width: 110px;
+}
+
+.demo-card__music-info {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+}
+
+//
+// Text
+//
+
+.demo-card__primary {
+  padding: 1rem;
+}
+
+.demo-card__title {
+  margin: 0;
+}
+
+.demo-card__subtitle {
+  @include mdc-theme-prop(color, text-secondary-on-background);
+
+  margin: 0;
+}
+
+.demo-card__secondary {
+  @include mdc-theme-prop(color, text-secondary-on-background);
+
+  padding: 0 1rem 8px 1rem;
+}
+
+//
+// Images
+//
+
+.demo-card__media {
+  background-image: url("/images/1-1.jpg");
+}
+
+.demo-card__media--16-9 {
+  background-image: url("/images/16-9.jpg");
+}
+
+.demo-card__media-content--with-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.demo-card__media-title {
+  padding: 8px 16px;
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.5) 100%);
+  color: white;
+}
+
+// TODO(acdvorak): Delete images/4-3.jpg - 4:3 ratio is not in spec
+
+//
+// News headlines
+//
+
+.demo-card-article-group-heading {
+  @include mdc-theme-prop(color, text-secondary-on-light);
+
+  padding: 8px 16px;
+}
+
+.demo-card-article {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states;
+
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.demo-card-article__title {
+  margin: 0 0 4px 0;
+}
+
+.demo-card-article__snippet {
+  @include mdc-theme-prop(color, text-secondary-on-light);
+
+  margin: 0;
+}
