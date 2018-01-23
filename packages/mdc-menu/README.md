@@ -40,6 +40,8 @@ npm install --save @material/<MODULE_NAME>
 
 ## Usage
 
+### HTML Structure 
+
 A simple menu is usually closed, appearing when opened. It is appropriate for any display size.
 
 ```html
@@ -54,37 +56,20 @@ A simple menu is usually closed, appearing when opened. It is appropriate for an
   </ul>
 </div>
 ```
-> Note: adding a `tabindex` of `0` to the menu items places them in the tab order.
-  Adding a `tabindex` of `-1` to the root element makes it programmatically focusable, without
-  placing it in the tab order. This allows the menu to be focused on open, so that the next Tab
-  keypress moves to the first menu item. If you would like the first menu item to be automatically
-  focused instead, remove `tabindex="-1"` from the root element.
 
-```js
-let menu = new mdc.menu.MDCSimpleMenu(document.querySelector('.mdc-simple-menu'));
-// Add event listener to some button to toggle the menu on and off.
-document.querySelector('.some-button').addEventListener('click', () => menu.open = !menu.open);
-```
+#### Opened Menu
 
-You can start the menu in its open state by adding the `mdc-simple-menu--open` class to your HTML:
-
+The menu can be configured to start in the opened state by adding the `mdc-simple-menu--open` class to the element.
+ 
 ```html
 <div class="mdc-simple-menu mdc-simple-menu--open">
 ...
 </div>
 ```
 
-### Positioning the menu
+#### Anchor To Parent
 
-The menu can either be positioned manually, or automatically, by anchoring it to an element.
-
-#### Positioning
-
-The menu can use an anchor to determine how to automatically position itself in relation to the anchored element. 
-
-##### Anchor To Parent Wrapper
-
-The anchor can be a visible element that the menu is a child of:
+The menu can be positioned to automatically anchor to a parent element when opened. 
 
 ```html
 <div id="toolbar" class="toolbar mdc-menu-anchor">
@@ -94,9 +79,9 @@ The anchor can be a visible element that the menu is a child of:
 </div>
 ```
 
-##### Anchor To Element Within Wrapper
+#### Anchor To Element Within Wrapper
 
-The anchor can also be a wrapper element that contains the actual visible element to attach to:
+The menu can be positioned to automatically anchor to another element, by wrapping the other element with the anchor class. 
 
 ```html
 <div id="demo-menu" class="mdc-menu-anchor">
@@ -107,7 +92,7 @@ The anchor can also be a wrapper element that contains the actual visible elemen
 </div>
 ```
 
-##### Manual Positioning
+#### Manual Positioning
 
 The menu is absolutely positioned by default. It must be positioned by using the style attribute or a class with position properties. 
 
