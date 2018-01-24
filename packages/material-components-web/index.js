@@ -17,6 +17,7 @@
 import autoInit from '@material/auto-init';
 import * as base from '@material/base';
 import * as checkbox from '@material/checkbox';
+import * as chips from '@material/chips';
 import * as dialog from '@material/dialog';
 import * as drawer from '@material/drawer';
 import * as formField from '@material/form-field';
@@ -36,6 +37,8 @@ import * as toolbar from '@material/toolbar';
 
 // Register all components
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
+autoInit.register('MDCChip', chips.MDCChip);
+autoInit.register('MDCChipSet', chips.MDCChipSet);
 autoInit.register('MDCDialog', dialog.MDCDialog);
 autoInit.register('MDCPersistentDrawer', drawer.MDCPersistentDrawer);
 autoInit.register('MDCTemporaryDrawer', drawer.MDCTemporaryDrawer);
@@ -59,6 +62,7 @@ export {
   autoInit,
   base,
   checkbox,
+  chips,
   dialog,
   drawer,
   formField,
