@@ -25,6 +25,11 @@
 // Private mixins
 
 @mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding) {
+  .mdc-text-field__icon {
+    @include mdc-rtl-reflexive-position($position-property, $position);
+  }
+
+  // Move the input's position, to allow room for the icon
   @if ($position-property == left) {
     .mdc-text-field__input {
       @include mdc-rtl-reflexive-property(padding, $padding /* left-value */, $position  /* right-value */);
@@ -35,12 +40,8 @@
     }
   }
 
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position($position-property, $position);
-  }
-
-  // Only change the label's position if the icon is on the same side as the label,
-  // aka the left side in a LTR context
+  // Only move the label's position to allow room for the icon, if the icon is on the same
+  // side as the label. Aka the icon is on left side in a LTR context.
   @if ($position-property == left) {
     .mdc-text-field__label {
 	  @include mdc-rtl-reflexive-position($position-property, $padding);
