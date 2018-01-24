@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {HotSwapper, InteractivityProvider, ToolbarProvider} from '../interactivity.js';
+import {HotSwapper, InteractivityProvider, ToolbarProvider, init as initInteractivity} from '../interactivity.js';
 import * as dom from '../dom.js';
 import * as pony from '../ponyfill.js';
 
@@ -206,6 +206,7 @@ class ThemePicker extends InteractivityProvider {
 }
 
 demoReady((root) => {
+  initInteractivity(root);
   Permalinker.attachTo(root);
   ThemePicker.attachTo(root, HotSwapper.getInstance(root), ToolbarProvider.attachTo(root));
 });
