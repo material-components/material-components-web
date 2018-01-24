@@ -56,8 +56,8 @@ Fully-featured:
   </div>
   <div class="mdc-card__actions">
     <div class="mdc-card__action-buttons">
-      <div class="mdc-button mdc-card__action">Action 1</div>
-      <div class="mdc-button mdc-card__action">Action 2</div>
+      <button class="mdc-button mdc-card__action">Action 1</button>
+      <button class="mdc-button mdc-card__action">Action 2</button>
     </div>
     <div class="mdc-card__action-icons">
       <i class="material-icons mdc-card__action" role="button" title="Share">share</i>
@@ -87,7 +87,7 @@ Cards are composed of different content blocks, which are typically laid out ver
 
 Because every app is different, there are no "standard" layouts for card content; each app should define their own.
 
-However, MDC Card _does_ provide styles for two common card elements: _rich media_ (images or video) and _action bars_.
+However, MDC Card _does_ provide styles for two common card elements: _rich media_ (images or video) and _actions_.
 
 ##### Rich media
 
@@ -148,7 +148,7 @@ above, or with icon buttons, as below:
 Be sure to include the `mdc-card__action` class on every action for correct positioning. In addition, icon actions
 should use the `mdc-card__action--icon` class.
 
-To have a single action button take up the entire width of the action bar, use the `--full-bleed` modifier:
+To have a single action button take up the entire width of the action row, use the `--full-bleed` modifier:
 
 ```html
 <div class="mdc-card__actions mdc-card__actions--full-bleed">
