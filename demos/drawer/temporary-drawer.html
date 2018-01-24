@@ -35,6 +35,7 @@
 
       .demo-main {
         padding-left: 16px;
+        padding-right: 16px;
         padding-bottom: 16px;
         overflow: auto;
       }
@@ -44,9 +45,6 @@
     <div class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          </span>
           <button class="demo-menu material-icons mdc-toolbar__menu-icon">menu</button>
           <span class="mdc-toolbar__title catalog-title">Temporary Drawer</span>
         </section>
@@ -95,7 +93,7 @@
     <main class="demo-main mdc-toolbar-fixed-adjust">
       <h1 class="mdc-typography--display1">Temporary Drawer</h1>
       <p class="mdc-typography--body1">Click the menu icon above to open.</p>
-      <div id="demo-radio-buttons">
+      <div id="demo-radio-buttons" class="theme-radio-buttons">
         <div class="mdc-form-field">
           <div class="mdc-radio">
             <input class="mdc-radio__native-control" type="radio" id="theme-radio-default" name="theme" checked>
@@ -126,6 +124,9 @@
           </div>
           <label for="theme-radio-accessible">Accessible Theme</label>
         </div>
+      </div>
+      <div class="extra-content-wrapper">
+        <button type="button" class="mdc-button mdc-button--stroked mdc-button--dense demo-toolbar-example-heading__rtl-toggle-button">Toggle RTL</button>
       </div>
     </main>
 
@@ -171,6 +172,11 @@
           } else if(e.target.id === 'theme-radio-custom') {
             drawerEl.classList.add('demo-drawer--custom');
           }
+        });
+
+        var rtlToggleBtn = document.querySelector('.demo-toolbar-example-heading__rtl-toggle-button');
+        rtlToggleBtn.addEventListener('click', function(event) {
+          document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
         });
       });
     </script>
