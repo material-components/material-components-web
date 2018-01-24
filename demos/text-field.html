@@ -525,7 +525,7 @@
         });
 
         document.getElementById('unclickable-leading-trailing').addEventListener('change', function(evt) {
-          [].slice.call(tfIcons).forEach(function (icon) {
+          [].forEach.call(tfIcons, function (icon) {
             icon.setAttribute('tabindex', evt.target.checked ? '-1' : '0');
           });
         });

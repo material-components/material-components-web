@@ -50,8 +50,8 @@ npm install --save @material/select
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
   </div>
-  <div class="mdc-simple-menu mdc-select__menu">
-    <ul class="mdc-list mdc-simple-menu__items">
+  <div class="mdc-menu mdc-select__menu">
+    <ul class="mdc-list mdc-menu__items">
       <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -104,8 +104,8 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
   </div>
-  <div class="mdc-simple-menu mdc-select__menu">
-    <ul class="mdc-list mdc-simple-menu__items">
+  <div class="mdc-menu mdc-select__menu">
+    <ul class="mdc-list mdc-menu__items">
       <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -138,8 +138,8 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
   </div>
-  <div class="mdc-simple-menu mdc-select__menu">
-    <ul class="mdc-list mdc-simple-menu__items">
+  <div class="mdc-menu mdc-select__menu">
+    <ul class="mdc-list mdc-menu__items">
       <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -175,8 +175,8 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
   </div>
-  <div class="mdc-simple-menu mdc-select__menu">
-    <ul class="mdc-list mdc-simple-menu__items">
+  <div class="mdc-menu mdc-select__menu">
+    <ul class="mdc-list mdc-menu__items">
       <li class="mdc-list-item" role="option" tabindex="0">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -278,15 +278,15 @@ is outlined below.
 The MDC Select JS component emits an `MDCSelect:change` event when the selected option changes as
 the result of a user action.
 
-#### Instantiating using a custom `MDCSimpleMenu` component.
+#### Instantiating using a custom `MDCMenu` component.
 
-`MDCSelect` controls an [MDCSimpleMenu](../mdc-menu) instance under the hood in order to display
+`MDCSelect` controls an [MDCMenu](../mdc-menu) instance under the hood in order to display
 its options. If you'd like to instantiate a custom menu instance, you can provide an optional 3rd
 `menuFactory` argument to `MDCSelect`'s constructor.
 
 ```js
 const menuFactory = menuEl => {
-  const menu = new MDCSimpleMenu(menuEl);
+  const menu = new MDCMenu(menuEl);
   // Do stuff with menu...
   return menu;
 };
@@ -294,7 +294,7 @@ const selectEl = document.querySelector('.mdc-select');
 const select = new MDCSelect(selectEl, /* foundation */ undefined, menuFactory);
 ```
 
-The `menuFactory` function is passed an `HTMLElement` and is expected to return an `MDCSimpleMenu`
+The `menuFactory` function is passed an `HTMLElement` and is expected to return an `MDCMenu`
 instance attached to that element. This is mostly used for testing purposes, but it's there if you
 need it nonetheless.
 
@@ -311,10 +311,10 @@ The `MDCSelectFoundation` expects that the select component conforms to the foll
 
 1. The component owns an element that's used as its select menu, e.g. its **menu element**.
 
-2. The component controls an instance of `MDCSimpleMenu`, which is attached to its menu element.
+2. The component controls an instance of `MDCMenu`, which is attached to its menu element.
 
 We achieve this by accepting a `menuFactory` optional constructor parameter, which is a function
-which is passed our menu element, and is expected to return an `MDCSimpleMenu` component instance.
+which is passed our menu element, and is expected to return an `MDCMenu` component instance.
 If you are attempting to implement mdc-select for your framework, and you find that this approach
 does not work for you, and there is no suitable way to satisfy the above two requirements, please
 [open an issue](https://github.com/material-components/material-components-web/issues/new).
@@ -361,7 +361,7 @@ within `componentDidUpdate`.
 | `setAttrForOptionAtIndex(index: number, attr: string, value: string) => void` | Sets an attribute `attr` to value `value` for the option at the specified index within the select's menu. |
 | `rmAttrForOptionAtIndex(index: number, attr: string) => void` | Removes an attribute `attr` for the option at the specified index within the select's menu. |
 | `getOffsetTopForOptionAtIndex(index: number) => number` | Returns the `offsetTop` of the option element at the specified index. The index is guaranteed to be in bounds. |
-| `registerMenuInteractionHandler(type: string, handler: EventListener) => void` | Registers an event listener on the menu component's root element. Note that we will always listen for `MDCSimpleMenu:selected` for change events, and `MDCSimpleMenu:cancel` to know that we need to close the menu. If you are using a different events system, you could check the event type for either one of these strings and take the necessary steps to wire it up. |
+| `registerMenuInteractionHandler(type: string, handler: EventListener) => void` | Registers an event listener on the menu component's root element. Note that we will always listen for `MDCMenu:selected` for change events, and `MDCMenu:cancel` to know that we need to close the menu. If you are using a different events system, you could check the event type for either one of these strings and take the necessary steps to wire it up. |
 | `deregisterMenuInteractionHandler(type: string, handler: EventListener) => void` | Opposite of `registerMenuInteractionHandler`. |
 | `notifyChange() => void` | Broadcast a change event, similar to the `change` event emitted by an `HTMLSelectElement`. While we use custom events in our implementation for this, you can use any mechanism desired for notifications, such as callbacks, reactive streams, etc. Note that you can also pass data within your event if you'd like via `foundation.getValue()` and `foundation.getSelectedIndex()`. |
 | `getWindowInnerHeight() => number` | Returns the `innerHeight` property of the `window` element. |
@@ -414,8 +414,8 @@ First, wrap both a custom select and a native select within a wrapper element, l
       <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__bottom-line"></div>
     </div>
-    <div class="mdc-simple-menu mdc-select__menu">
-      <ul class="mdc-list mdc-simple-menu__items">
+    <div class="mdc-menu mdc-select__menu">
+      <ul class="mdc-list mdc-menu__items">
         <li id="a" class="mdc-list-item" role="option" tabindex="0">A</li>
         <li id="b" class="mdc-list-item" role="option" tabindex="0">B</li>
         <li id="c" class="mdc-list-item" role="option" tabindex="0">C</li>

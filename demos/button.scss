@@ -25,31 +25,16 @@
 .mdc-button.secondary-text-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-states(secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-states(secondary);
-  }
 }
 
 .mdc-button.secondary-filled-button {
   @include mdc-button-filled-accessible($mdc-theme-secondary);
-
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-filled-accessible($mdc-theme-secondary);
-  }
 }
 
 .mdc-button.secondary-stroked-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
   @include mdc-button-stroke-color($mdc-theme-secondary);
-  @include mdc-states(secondary);
 
-  @include mdc-theme-dark(".mdc-button") {
-    @include mdc-button-ink-color($mdc-theme-secondary);
-    @include mdc-button-stroke-color($mdc-theme-secondary);
-    @include mdc-states(secondary);
-  }
 }
 
 .mdc-button.big-round-corner-button {
