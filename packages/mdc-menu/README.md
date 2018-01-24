@@ -92,18 +92,6 @@ The menu can be positioned to automatically anchor to another element, by wrappi
 </div>
 ```
 
-#### Manual Positioning
-
-The menu is absolutely positioned by default. It must be positioned by using the style attribute or a class with position properties. 
-
-```html
-<div class="container">
-  <div class="mdc-simple-menu" style="top: 0; left: 0;">
-  ...
-  </div>
-</div>
-```
-
 #### Disabled menu items
 
 When used in components such as MDC Menu, list items can be disabled.
