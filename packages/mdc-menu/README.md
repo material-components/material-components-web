@@ -11,14 +11,14 @@ path: /catalog/menus/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/simple-menu.html">
+     href="https://material-components-web.appspot.com/menu.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="178" alt="Menus screenshot">
   </a>
 </div>-->
 
 The MDC Menu component is a spec-aligned menu component adhering to the
 [Material Design menu specification](https://material.io/guidelines/components/menus.html).
-It implements simple menus. Menus require JavaScript to work correctly, but the open and closed states are correct on
+It implements menus. Menus require JavaScript to work correctly, but the open and closed states are correct on
 first render.
 
 ## Design & API Documentation
@@ -28,7 +28,7 @@ first render.
     <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/simple-menu.html">Demo</a>
+    <a href="https://material-components-web.appspot.com/menu.html">Demo</a>
   </li>
 </ul>
 
@@ -38,13 +38,13 @@ first render.
 npm install --save @material/menu
 ```
 
-## Simple menu usage
+## Menu usage
 
-A simple menu is usually closed, appearing when opened. It is appropriate for any display size.
+A menu is usually closed, appearing when opened. It is appropriate for any display size.
 
 ```html
-<div class="mdc-simple-menu" tabindex="-1">
-  <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+<div class="mdc-menu" tabindex="-1">
+  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
     <li class="mdc-list-item" role="menuitem" tabindex="0">
       A Menu Item
     </li>
@@ -61,15 +61,15 @@ A simple menu is usually closed, appearing when opened. It is appropriate for an
   focused instead, remove `tabindex="-1"` from the root element.
 
 ```js
-let menu = new mdc.menu.MDCSimpleMenu(document.querySelector('.mdc-simple-menu'));
+let menu = new mdc.menu.MDCMenu(document.querySelector('.mdc-menu'));
 // Add event listener to some button to toggle the menu on and off.
 document.querySelector('.some-button').addEventListener('click', () => menu.open = !menu.open);
 ```
 
-You can start the menu in its open state by adding the `mdc-simple-menu--open` class to your HTML:
+You can start the menu in its open state by adding the `mdc-menu--open` class to your HTML:
 
 ```html
-<div class="mdc-simple-menu mdc-simple-menu--open">
+<div class="mdc-menu mdc-menu--open">
 ...
 </div>
 ```
@@ -87,7 +87,7 @@ The anchor can either be a visible element that the menu is a child of:
 
 ```html
 <div class="toolbar mdc-menu-anchor">
-  <div class="mdc-simple-menu">
+  <div class="mdc-menu">
   ...
   </div>
 </div>
@@ -98,7 +98,7 @@ or a wrapper element that contains the actual visible element to attach to:
 ```html
 <div class="mdc-menu-anchor">
   <button>Open Menu</button>
-  <div class="mdc-simple-menu">
+  <div class="mdc-menu">
   ...
   </div>
 </div>
@@ -118,7 +118,7 @@ The menu is `position: absolute` by default, and must be positioned by the user 
 
 ```html
 <div class="container">
-  <div class="mdc-simple-menu" style="top:0; left: 0;">
+  <div class="mdc-menu" style="top:0; left: 0;">
   ...
   </div>
 </div>
@@ -135,8 +135,8 @@ When used in components such as MDC Menu, `mdc-list-item`'s can be disabled.
 To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `"-1"`.
 
 ```html
-<div class="mdc-simple-menu" tabindex="-1">
-  <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+<div class="mdc-menu" tabindex="-1">
+  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
     <li class="mdc-list-item" role="menuitem" tabindex="0">
       A Menu Item
     </li>
@@ -149,7 +149,7 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
 
 ### Using the JS Component
 
-MDC Simple Menu ships with a Component / Foundation combo which allows for frameworks to richly integrate the
+MDC Menu ships with a Component / Foundation combo which allows for frameworks to richly integrate the
 correct menu behaviors into idiomatic components.
 
 The component has a read-write property, `open`, which keeps track of the visual state of the component.
@@ -188,15 +188,15 @@ console.log(`Menu is ${menu.open ? 'open' : 'closed'}.`);
 ##### ES2015
 
 ```javascript
-import {MDCSimpleMenu, MDCSimpleMenuFoundation, util} from '@material/menu';
+import {MDCMenu, MDCMenuFoundation, util} from '@material/menu';
 ```
 
 ##### CommonJS
 
 ```javascript
 const mdcMenu = require('mdc-menu');
-const MDCSimpleMenu = mdcMenu.MDCSimpleMenu;
-const MDCSimpleMenuFoundation = mdcMenu.MDCSimpleMenuFoundation;
+const MDCMenu = mdcMenu.MDCMenu;
+const MDCMenuFoundation = mdcMenu.MDCMenuFoundation;
 const util = mdcMenu.util;
 ```
 
@@ -204,8 +204,8 @@ const util = mdcMenu.util;
 
 ```javascript
 require(['path/to/mdc-menu'], mdcMenu => {
-  const MDCSimpleMenu = mdcMenu.MDCSimpleMenu;
-  const MDCSimpleMenuFoundation = mdcMenu.MDCSimpleMenuFoundation;
+  const MDCMenu = mdcMenu.MDCMenu;
+  const MDCMenuFoundation = mdcMenu.MDCMenuFoundation;
   const util = mdcMenu.util;
 });
 ```
@@ -213,33 +213,33 @@ require(['path/to/mdc-menu'], mdcMenu => {
 ##### Global
 
 ```javascript
-const MDCSimpleMenu = mdc.menu.MDCSimpleMenu;
-const MDCSimpleMenuFoundation = mdc.menu.MDCSimpleMenuFoundation;
+const MDCMenu = mdc.menu.MDCMenu;
+const MDCMenuFoundation = mdc.menu.MDCMenuFoundation;
 const util = mdc.menu.util;
 ```
 
 #### Automatic Instantiation
 
-If you do not care about retaining the component instance for the simple menu, simply call `attachTo()` and pass it a
+If you do not care about retaining the component instance for the menu, simply call `attachTo()` and pass it a
 DOM element.
 
 ```javascript
-mdc.MDCSimpleMenu.attachTo(document.querySelector('.mdc-simple-menu'));
+mdc.MDCMenu.attachTo(document.querySelector('.mdc-menu'));
 ```
 
 #### Manual Instantiation
 
-Simple menus can easily be initialized using their default constructors as well, similar to `attachTo`.
+menus can easily be initialized using their default constructors as well, similar to `attachTo`.
 
 ```javascript
-import {MDCSimpleMenu} from '@material/menu';
+import {MDCMenu} from '@material/menu';
 
-const menu = new MDCSimpleMenu(document.querySelector('.mdc-simple-menu'));
+const menu = new MDCMenu(document.querySelector('.mdc-menu'));
 ```
 
 #### Handling selection events
 
-When a menu item is selected, the menu component will emit a `MDCSimpleMenu:selected` custom event
+When a menu item is selected, the menu component will emit a `MDCMenu:selected` custom event
 with the following `detail` data:
 
 | property name | type | description |
@@ -247,20 +247,20 @@ with the following `detail` data:
 | `item` | `HTMLElement` | The DOM element for the selected item |
 | `index` | `number` | The index of the selected item |
 
-If the menu is closed with no selection made (for example, if the user hits `Escape` while it's open), a `MDCSimpleMenu:cancel` custom event is emitted instead, with no data attached.
+If the menu is closed with no selection made (for example, if the user hits `Escape` while it's open), a `MDCMenu:cancel` custom event is emitted instead, with no data attached.
 
 ### Using the Foundation Class
 
-MDC Simple Menu ships with an `MDCSimpleMenuFoundation` class that external frameworks and libraries can use to
+MDC Menu ships with an `MDCMenuFoundation` class that external frameworks and libraries can use to
 integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for simple menu must provide the following functions, with correct signatures:
+The adapter for menu must provide the following functions, with correct signatures:
 
 | Method Signature | Description |
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
-| `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-simple-menu__items` container). |
+| `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-menu__items` container). |
 | `getAttributeForEventTarget(target: EventTarget, attributeName: string) => string` | Returns the value of a given attribute on an event target. |
 | `eventTargetHasClass: (target: EventTarget, className: string) => boolean` | Returns true if the event target has a given class. |
 | `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height |
@@ -277,8 +277,8 @@ The adapter for simple menu must provide the following functions, with correct s
 | `notifyCancel() => void` | Dispatches an event notifying listeners that the menu has been closed with no selection made. |
 | `saveFocus() => void` | Stores the currently focused element on the document, for restoring with `restoreFocus`. |
 | `restoreFocus() => void` | Restores the previously saved focus state, by making the previously focused element the active focus again. |
-| `isFocused() => boolean` | Returns a boolean value indicating whether the root element of the simple menu is focused. |
-| `focus() => void` | Focuses the root element of the simple menu. |
+| `isFocused() => boolean` | Returns a boolean value indicating whether the root element of the menu is focused. |
+| `focus() => void` | Focuses the root element of the menu. |
 | `getFocusedItemIndex() => number` | Returns the index of the currently focused menu item (-1 if none). |
 | `focusItemAtIndex(index: number) => void` | Focuses the menu item with the provided index. |
 | `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
@@ -288,19 +288,19 @@ The adapter for simple menu must provide the following functions, with correct s
 
 ### The full foundation API
 
-#### MDCSimpleMenuFoundation.open({focusIndex: number} = {}) => void
+#### MDCMenuFoundation.open({focusIndex: number} = {}) => void
 
 Opens the menu. Takes an options object containing a `focusIndex` property that specifies the index of the menu item to be focused. If the options object or `focusIndex` is omitted, no menu item will be focused.
 
-#### MDCSimpleMenuFoundation.close() => void
+#### MDCMenuFoundation.close() => void
 
 Closes the menu.
 
-#### MDCSimpleMenuFoundation.isOpen() => boolean
+#### MDCMenuFoundation.isOpen() => boolean
 
 Returns whether or not the menu is open.
 
-#### MDCSimpleMenuFoundation.setAnchorCorner(Corner = Corner.TOP_START) => void
+#### MDCMenuFoundation.setAnchorCorner(Corner = Corner.TOP_START) => void
 
 Specifies the anchor corner to which top start of the menu (top left in ltr, top right in rtl) should align given there
 is enough space to show the full menu.
@@ -310,7 +310,7 @@ above the anchor. In such cases maximum height of the menu is enforced.
 When specifying `TOP_START` and `TOP_END` positions, the menu is allowed to be taller if it does not fit below
 or above the anchor.
 
-#### MDCSimpleMenuFoundation.setAnchorMargin({top: number, right: number, bottom: number, left: number}) => void
+#### MDCMenuFoundation.setAnchorMargin({top: number, right: number, bottom: number, left: number}) => void
 
 Specifies pixel margins that the menu should be offset from all four sides of an anchor. When menu overlaps an
 anchor (default anchor corner) and menu is taller than would fit (not extending beyond viewport edges), margin is

@@ -17,18 +17,18 @@
 
 /** @enum {string} */
 const cssClasses = {
-  ROOT: 'mdc-simple-menu',
-  OPEN: 'mdc-simple-menu--open',
-  ANIMATING_OPEN: 'mdc-simple-menu--animating-open',
-  ANIMATING_CLOSED: 'mdc-simple-menu--animating-closed',
+  ROOT: 'mdc-menu',
+  OPEN: 'mdc-menu--open',
+  ANIMATING_OPEN: 'mdc-menu--animating-open',
+  ANIMATING_CLOSED: 'mdc-menu--animating-closed',
   LIST_ITEM: 'mdc-list-item',
 };
 
 /** @enum {string} */
 const strings = {
-  ITEMS_SELECTOR: '.mdc-simple-menu__items',
-  SELECTED_EVENT: 'MDCSimpleMenu:selected',
-  CANCEL_EVENT: 'MDCSimpleMenu:cancel',
+  ITEMS_SELECTOR: '.mdc-menu__items',
+  SELECTED_EVENT: 'MDCMenu:selected',
+  CANCEL_EVENT: 'MDCMenu:cancel',
   ARIA_DISABLED_ATTR: 'aria-disabled',
 };
 
