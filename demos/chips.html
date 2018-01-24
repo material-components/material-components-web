@@ -78,8 +78,7 @@
           '.mdc-chip-set:not([data-demo-no-auto-js])'
         );
         for (var i = 0, chipSet; chipSet = chipSets[i]; i++) {
-          new mdc.chips.MDCChipSet(chipSet);
-          // mdc.chips.MDCChipSet.attachTo(chipSet);
+          mdc.chips.MDCChipSet.attachTo(chipSet);
         }
       });
     </script>
