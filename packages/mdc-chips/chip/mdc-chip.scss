@@ -14,7 +14,14 @@
 // limitations under the License.
 //
 
+@import "@material/ripple/common";
+@import "@material/ripple/mixins";
+
 .mdc-chip {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states;
+
   display: inline-block;
   border-radius: 16px;
   background: rgba(0, 0, 0, 0.08);
@@ -22,6 +29,7 @@
   padding: 7px 12px;
   margin: 5px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .mdc-chip__text {

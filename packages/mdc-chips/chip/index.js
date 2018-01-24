@@ -60,10 +60,7 @@ class MDCChip extends MDCComponent {
     return new MDCChipFoundation(/** @type {!MDCChipAdapter} */ (Object.assign({
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyInteraction: () => {
-        this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */);
-        console.log("MDCChip Interaction");
-      },
+      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
       getText: () => this.root_.querySelector(strings.TEXT_SELECTOR).textContent,
     })));
   }
