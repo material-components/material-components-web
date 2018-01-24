@@ -194,14 +194,6 @@
 }
 
 @mixin mdc-text-field-outlined-focused_ {
-  .mdc-text-field__idle-outline {
-    opacity: 0;
-  }
-
-  .mdc-text-field__outline {
-    opacity: 1;
-  }
-
   .mdc-text-field__outline-path {
     stroke-width: 2px;
   }
@@ -271,14 +263,6 @@
 
   .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
     border: 1px solid $mdc-text-field-outlined-hover-border;
-  }
-
-  .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
-    opacity: 0;
-  }
-
-  .mdc-text-field__label--float-above ~ .mdc-text-field__outline {
-    opacity: 1;
   }
 
   // stylelint-enable plugin/selector-bem-pattern
