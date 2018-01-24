@@ -232,14 +232,23 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        document.addEventListener('change', function(evt) {
-          var target = evt.target;
-          if (target.id !== 'toggle-rtl') {
-            return;
+        function closest(elem, selector) {
+          if (elem.closest) {
+            return elem.closest(selector);
           }
+          while (elem) {
+            if (matches(elem, selector)) {
+              return elem;
+            }
+            elem = elem.parentElement;
+          }
+          return null;
+        }
 
+        var rtlToggle = document.getElementById('toggle-rtl');
+        rtlToggle.addEventListener('change', function() {
           var docEl = document.documentElement;
-          if (target.checked) {
+          if (rtlToggle.checked) {
             docEl.setAttribute('dir', 'rtl');
           } else {
             docEl.removeAttribute('dir');
@@ -262,19 +271,6 @@
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
         });
-
-        function closest(elem, selector) {
-          if (elem.closest) {
-            return elem.closest(selector);
-          }
-          while (elem) {
-            if (matches(elem, selector)) {
-              return elem;
-            }
-            elem = elem.parentElement;
-          }
-          return null;
-        }
 
         document.addEventListener('click', function(evt) {
           if (closest(evt.target, 'a[href="#"]')) {
