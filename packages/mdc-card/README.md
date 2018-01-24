@@ -163,7 +163,7 @@ To have a single action button take up the entire width of the action row, use t
 
 CSS Class | Description
 --- | ---
-`mdc-card` | A card
+`mdc-card` | Mandatory, for the card element
 `mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
 `mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
