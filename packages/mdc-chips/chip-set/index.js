@@ -32,7 +32,7 @@ class MDCChipSet extends MDCComponent {
   constructor(...args) {
     super(...args);
     /** @private {!Array<!Element>} */
-    this.chips_;
+    this.chips;
   }
 
   /**
@@ -43,15 +43,8 @@ class MDCChipSet extends MDCComponent {
     return new MDCChipSet(root);
   }
 
-  /**
-   * @return {!Array<!MDCChip>}
-   */
-  get chips() {
-    return this.chips_;
-  }
-
   initialize(chipFactory = (el) => new MDCChip(el)) {
-    this.chips_ = this.instantiateChips_(chipFactory);
+    this.chips = this.instantiateChips_(chipFactory);
   }
 
   /**
@@ -59,7 +52,6 @@ class MDCChipSet extends MDCComponent {
    */
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
-      hasClass: (className) => this.root_.classList.contains(className),
     })));
   }
 

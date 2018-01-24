@@ -38,7 +38,6 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
-      hasClass: () => {},
     });
   }
 
