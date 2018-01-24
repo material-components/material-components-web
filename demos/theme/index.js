@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {HotSwapper, InteractivityProvider, ToolbarProvider} from '../interactivity.js';
+import {HotSwapper, InteractivityProvider, ToolbarProvider, init as initInteractivity} from '../interactivity.js';
 import * as dom from '../dom.js';
 import * as pony from '../ponyfill.js';
 
@@ -39,7 +39,7 @@ const ids = {
 };
 
 const events = {
-  MDC_SIMPLE_MENU_SELECTED: 'MDCSimpleMenu:selected',
+  MDC_MENU_SELECTED: 'MDCMenu:selected',
 };
 
 class Permalinker extends InteractivityProvider {
@@ -132,14 +132,14 @@ class ThemePicker extends InteractivityProvider {
 
   /** @private */
   registerThemeMenuOpenHandler_() {
-    const menu = new mdc.menu.MDCSimpleMenu(this.themeMenuEl_);
+    const menu = new mdc.menu.MDCMenu(this.themeMenuEl_);
     const actionEl = this.root_.getElementById(ids.THEME_COLOR_MENU_ACTION);
     actionEl.addEventListener('click', () => menu.open = !menu.open);
   }
 
   /** @private */
   registerThemeMenuChangeHandler_() {
-    this.themeMenuEl_.addEventListener(events.MDC_SIMPLE_MENU_SELECTED, (evt) => {
+    this.themeMenuEl_.addEventListener(events.MDC_MENU_SELECTED, (evt) => {
       const safeNewTheme = getSafeDemoTheme(evt.detail.item.getAttribute(attributes.THEME_NAME));
       this.swapTheme_(safeNewTheme);
       this.pushHistoryState_(safeNewTheme);
@@ -206,6 +206,7 @@ class ThemePicker extends InteractivityProvider {
 }
 
 demoReady((root) => {
+  initInteractivity(root);
   Permalinker.attachTo(root);
   ThemePicker.attachTo(root, HotSwapper.getInstance(root), ToolbarProvider.attachTo(root));
 });

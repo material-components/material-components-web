@@ -46,8 +46,8 @@ function getFixture() {
         <div class="mdc-select__selected-text"></div>
         <div class="mdc-select__bottom-line"></div>
       </div>
-      <div class="mdc-simple-menu mdc-select__menu">
-        <ul class="mdc-list mdc-simple-menu__items">
+      <div class="mdc-menu mdc-select__menu">
+        <ul class="mdc-list mdc-menu__items">
           <li class="mdc-list-item" role="option" aria-disabled="true">
             Pick a food group
           </li>

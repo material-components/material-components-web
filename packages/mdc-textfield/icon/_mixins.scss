@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,18 @@
 // limitations under the License.
 //
 
-@import "@material/rtl/mixins";
+// Public mixins
 
-@mixin mdc-slideable-drawer {
-  height: 100%;
-  transform: translateX(-107%);
-  transform: translateX(calc(-100% - 20px));
-  will-change: transform;
-
-  @include mdc-rtl {
-    transform: translateX(107%);
-    transform: translateX(calc(100% + 20px));
+@mixin mdc-text-field-icon-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-icon-color_($color);
   }
 }
 
-@mixin mdc-slideable-drawer-open {
-  transform: none;
+// Private mixins
+
+@mixin mdc-text-field-icon-color_($color) {
+  .mdc-text-field__icon {
+    @include mdc-theme-prop(color, $color);
+  }
 }
