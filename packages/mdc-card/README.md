@@ -179,6 +179,6 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-card-fill-color($color)` | Sets the fill color of a `mdc-card`
+`mdc-card-fill-color($color)` | Sets the fill color of a card
 `mdc-card-corner-radius($radius)` | Sets the corner radius of a card
-`mdc-card-media-aspect-ratio($width-unitless, $height-unitless)` | Automatically sets the height of the `mdc-card__media` subelement to maintain a given aspect ratio based on its width
+`mdc-card-media-aspect-ratio($x, $y)` | Automatically sets the height of the `mdc-card__media` subelement to maintain a given aspect ratio relative to its width
