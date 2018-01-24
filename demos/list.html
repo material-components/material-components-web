@@ -96,7 +96,7 @@
           </p>
         </aside>
         <div class="mdc-form-field">
-          <div class="mdc-checkbox">
+          <div class="mdc-checkbox" id="toggle-rtl-checkbox">
             <input type="checkbox"
                    class="mdc-checkbox__native-control"
                    id="toggle-rtl"
@@ -308,12 +308,13 @@
           </section>
           <section>
             <h3>Leading Checkbox</h3>
-            <ul class="mdc-list demo-list">
+            <ul class="mdc-list demo-list" id="leading-checkbox-list">
               <li class="mdc-list-item">
                 <span class="mdc-list-item__graphic">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
-                           class="mdc-checkbox__native-control"/>
+                           class="mdc-checkbox__native-control"
+                           label="leading-checkbox-blueberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -326,13 +327,14 @@
                     </div>
                   </div>
                 </span>
-                Blueberries
+                <label for="leading-checkbox-blueberries">Blueberries</label>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__graphic">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
-                           class="mdc-checkbox__native-control"/>
+                           class="mdc-checkbox__native-control"
+                           id="leading-checkbox-boysenberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -345,13 +347,14 @@
                     </div>
                   </div>
                 </span>
-                Boysenberries
+                <label for="leading-checkbox-boysenberries">Boysenberries</label>
               </li>
               <li class="mdc-list-item">
                 <span class="mdc-list-item__graphic">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
-                           class="mdc-checkbox__native-control"/>
+                           class="mdc-checkbox__native-control"
+                           id="leading-checkbox-strawberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -364,7 +367,7 @@
                     </div>
                   </div>
                 </span>
-                Strawberries
+                <label for="leading-checkbox-strawberries">Strawberries</label>
               </li>
             </ul>
           </section>
@@ -484,13 +487,14 @@
           </section>
           <section>
             <h3>Trailing Checkbox</h3>
-            <ul class="mdc-list demo-list">
+            <ul class="mdc-list demo-list" id="trailing-checkbox-list">
               <li class="mdc-list-item">
-                Blueberries
+                <label for="leading-checkbox-blueberries">Blueberries</label>
                 <span class="mdc-list-item__meta">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
-                           class="mdc-checkbox__native-control"/>
+                           class="mdc-checkbox__native-control"
+                           label="leading-checkbox-blueberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -505,11 +509,12 @@
                 </span>
               </li>
               <li class="mdc-list-item">
-                Boysenberries
+                <label for="leading-checkbox-boysenberries">Boysenberries</label>
                 <span class="mdc-list-item__meta">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
-                           class="mdc-checkbox__native-control"/>
+                           class="mdc-checkbox__native-control"
+                           label="leading-checkbox-boysenberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -524,11 +529,12 @@
                 </span>
               </li>
               <li class="mdc-list-item">
-                Strawberries
+                <label for="leading-checkbox-strawberries">Strawberries</label>
                 <span class="mdc-list-item__meta">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
-                           class="mdc-checkbox__native-control"/>
+                           class="mdc-checkbox__native-control"
+                           label="leading-checkbox-strawberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -1300,7 +1306,7 @@
     <script>
       demoReady(function() {
         var formField = new mdc.formField.MDCFormField(document.querySelector('.mdc-form-field'));
-        var cb = mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
+        var cb = mdc.checkbox.MDCCheckbox.attachTo(document.getElementById('toggle-rtl-checkbox'));
         formField.input = cb;
         var demoWrapper = document.getElementById('demo-wrapper');
         var hero = document.querySelector('.hero');
@@ -1324,6 +1330,24 @@
             evt.preventDefault();
           });
         }
+
+        var clickHandler = function(e) {
+          var checkbox = this.querySelector('input[type="checkbox"]');
+          if(e.target !== checkbox) {
+            checkbox.checked = !checkbox.checked;
+          }
+        }
+
+        var integrateCheckboxListItems = function(list) {
+          list.querySelectorAll('.mdc-list-item').forEach(function(listItem) {
+            listItem.addEventListener('click', clickHandler.bind(listItem));
+          });
+        }
+
+        var leadingCheckboxList = document.getElementById('leading-checkbox-list');
+        var trailingCheckboxList = document.getElementById('trailing-checkbox-list');
+        integrateCheckboxListItems(leadingCheckboxList);
+        integrateCheckboxListItems(trailingCheckboxList);
       });
     </script>
   </body>
