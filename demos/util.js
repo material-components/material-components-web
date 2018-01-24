@@ -34,8 +34,8 @@ export function objectForEach(obj, func) {
  * From https://davidwalsh.name/javascript-debounce-function (MIT license).
  *
  * @param {function(...args)} func
- * @param {number} waitInMs
- * @param {boolean} runImmediately
+ * @param {number=} waitInMs
+ * @param {boolean=} runImmediately
  * @return {function(...args)}
  */
 export function debounce(func, waitInMs = 300, runImmediately = false) {
