@@ -102,6 +102,11 @@ class MDCMenuFoundation extends MDCFoundation {
       setTransformOrigin: () => {},
       setPosition: () => {},
       setMaxHeight: () => {},
+      getOptionAtIndex: () => {},
+      setAttrForOptionAtIndex: () => {},
+      rmAttrForOptionAtIndex: () => {},
+      addClassForOptionAtIndex: () => {},
+      rmClassForOptionAtIndex: () => {},
     });
   }
 
@@ -137,6 +142,12 @@ class MDCMenuFoundation extends MDCFoundation {
     this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
     /** @private {?AutoLayoutMeasurements} */
     this.measures_ = null;
+    /** @private {?number} */
+    this.selectedIndex_ = -1;
+    /** @private {boolean} */
+    this.rememberSelection_ = false;
+    /** @private {boolean} */
+    this.keyDownWithinMenu_ = false;
   }
 
   init() {
@@ -188,13 +199,24 @@ class MDCMenuFoundation extends MDCFoundation {
     this.anchorMargin_.left = typeof margin.left === 'number' ? margin.left : 0;
   }
 
+  /** @param {boolean} rememberSelection */
+  setRememberSelection(rememberSelection) {
+    this.rememberSelection_ = rememberSelection;
+    this.setSelectedIndex(-1);
+  }
+
   /**
    * @param {?number} focusIndex
    * @private
    */
   focusOnOpen_(focusIndex) {
     if (focusIndex === null) {
-      // First, try focusing the menu.
+      // First focus the last selected item if we're remembering selections and it has been set
+      if (this.rememberSelection_ && this.selectedIndex_ >= 0) {
+        this.adapter_.focusItemAtIndex(this.selectedIndex_);
+        return;
+      }
+      // Then, try focusing the menu.
       this.adapter_.focus();
       // If that doesn't work, focus first item instead.
       if (!this.adapter_.isFocused()) {
@@ -241,6 +263,7 @@ class MDCMenuFoundation extends MDCFoundation {
     const isArrowUp = key === 'ArrowUp' || keyCode === 38;
     const isArrowDown = key === 'ArrowDown' || keyCode === 40;
     const isSpace = key === 'Space' || keyCode === 32;
+    const isEnter = key === 'Enter' || keyCode === 13;
 
     const focusedItemIndex = this.adapter_.getFocusedItemIndex();
     const lastItemIndex = this.adapter_.getNumberOfItems() - 1;
@@ -276,6 +299,8 @@ class MDCMenuFoundation extends MDCFoundation {
       }
     }
 
+    this.keyDownWithinMenu_ = isEnter || isSpace;
+
     return true;
   }
 
@@ -297,7 +322,12 @@ class MDCMenuFoundation extends MDCFoundation {
     const isEscape = key === 'Escape' || keyCode === 27;
 
     if (isEnter || isSpace) {
-      this.handlePossibleSelected_(evt);
+      // If our menu didn't catch the keydown, then the user likely hit the
+      // enter or space key to open the menu (button)
+      if (this.keyDownWithinMenu_) {
+        this.handlePossibleSelected_(evt);
+      }
+      this.keyDownWithinMenu_ = false;
     }
 
     if (isEscape) {
@@ -327,6 +357,9 @@ class MDCMenuFoundation extends MDCFoundation {
     this.selectedTriggerTimerId_ = setTimeout(() => {
       this.selectedTriggerTimerId_ = 0;
       this.close();
+      if (this.rememberSelection_) {
+        this.setSelectedIndex(targetIndex);
+      }
       this.adapter_.notifySelected({index: targetIndex});
     }, numbers.SELECTED_TRIGGER_DELAY);
   }
@@ -563,6 +596,32 @@ class MDCMenuFoundation extends MDCFoundation {
   /** @return {boolean} */
   isOpen() {
     return this.isOpen_;
+  }
+  /** @return {Element} */
+  getSelectedValue() {
+    const element = this.adapter_.getOptionAtIndex(this.selectedIndex_);
+    return element ? element : null;
+  }
+  /** @return {number} */
+  getSelectedIndex() {
+    return this.selectedIndex_;
+  }
+
+  /**
+   * @param {number} index Index of the item to set as selected.
+   */
+  setSelectedIndex(index) {
+    const prevSelectedIndex = this.selectedIndex_;
+    if (prevSelectedIndex >= 0) {
+      this.adapter_.rmAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected');
+      this.adapter_.rmClassForOptionAtIndex(this.selectedIndex_, cssClasses.SELECTED_LIST_ITEM);
+    }
+
+    this.selectedIndex_ = index >= 0 && index < this.adapter_.getNumberOfItems() ? index : -1;
+    if (this.selectedIndex_ >= 0) {
+      this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
+      this.adapter_.addClassForOptionAtIndex(this.selectedIndex_, cssClasses.SELECTED_LIST_ITEM);
+    }
   }
 }
 

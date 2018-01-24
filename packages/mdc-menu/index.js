@@ -96,6 +96,19 @@ class MDCMenu extends MDCComponent {
     return [].slice.call(itemsContainer.querySelectorAll('.mdc-list-item[role]'));
   }
 
+  /**
+   * Return the item within the menu that is selected.
+   * @return {!Element}
+   */
+  get selectedItem() {
+    return this.foundation_.getSelectedValue();
+  }
+
+  /** @param {boolean} rememberSelection */
+  set rememberSelection(rememberSelection) {
+    this.foundation_.setRememberSelection(rememberSelection);
+  }
+
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
     return new MDCMenuFoundation({
@@ -150,6 +163,11 @@ class MDCMenu extends MDCComponent {
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;
       },
+      getOptionAtIndex: (index) => this.items[index],
+      setAttrForOptionAtIndex: (index, attr, value) => this.items[index].setAttribute(attr, value),
+      rmAttrForOptionAtIndex: (index, attr) => this.items[index].removeAttribute(attr),
+      addClassForOptionAtIndex: (index, className) => this.items[index].classList.add(className),
+      rmClassForOptionAtIndex: (index, className) => this.items[index].classList.remove(className),
     });
   }
 }
