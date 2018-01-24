@@ -109,6 +109,8 @@
 //   }
 // }
 // ```
+
+// TODO: matt goo - remove this once all dark theme is removed
 @mixin mdc-theme-dark($root-selector: null, $compound: false) {
   @if ($root-selector) {
     @at-root {
