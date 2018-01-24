@@ -96,7 +96,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     };
     this.blurHandler_ = () => {
       if (!this.active_) {
-        // User clicked on the action
         return;
       }
       clearTimeout(this.timeoutId_);
