@@ -52,6 +52,30 @@
   }
 }
 
+@mixin mdc-select-menu-item-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-menu-item-color_($color);
+  }
+}
+
+@mixin mdc-select-menu-selected-item-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-menu-selected-item-color_($color);
+  }
+}
+
+@mixin mdc-select-menu-group-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-menu-group-color_($color);
+  }
+}
+
+@mixin mdc-select-menu-group-item-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-menu-group-item-color_($color);
+  }
+}
+
 // Private
 
 @mixin mdc-select-focused-bottom-line_ {
@@ -111,6 +135,30 @@
 
   .mdc-select__bottom-line::after {
     @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-select-menu-item-color_($color) {
+  .mdc-select__menu .mdc-list-item:not([aria-disabled="true"]) {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-select-menu-selected-item-color_($color) {
+  .mdc-select__menu .mdc-list-item[aria-selected="true"] {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-select-menu-group-color_($color) {
+  .mdc-select__menu .mdc-list-group {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-select-menu-group-item-color_($color) {
+  .mdc-select__menu .mdc-list-group .mdc-list-item {
+    @include mdc-theme-prop(color, $color);
   }
 }
 

@@ -29,8 +29,9 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
 // postcss-bem-linter: define select
 .mdc-select {
+  @include mdc-typography(subheading2);
   @include mdc-select-dd-arrow-svg-bg_;
-  @include mdc-select-container-fill-color(rgba(white, .1));
+  @include mdc-select-container-fill-color(rgba(black, .04));
   @include mdc-select-ink-color(text-primary-on-light);
   @include mdc-select-label-color(rgba(black, .6));
   @include mdc-select-bottom-line-color(rgba(black, .5));
@@ -38,7 +39,12 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   // Focused state colors
   @include mdc-select-focused-bottom-line-color(primary);
   @include mdc-select-focused-label-color(primary);
-  @include mdc-typography(subheading2);
+
+  // Menu colors
+  @include mdc-select-menu-item-color(text-secondary-on-light);
+  @include mdc-select-menu-selected-item-color(text-primary-on-light);
+  @include mdc-select-menu-group-color(text-hint-on-light);
+  @include mdc-select-menu-group-item-color(text-primary-on-light);
 
   display: inline-flex;
   position: relative;
@@ -222,11 +228,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 .mdc-select__menu {
   .mdc-list-item {
     @include mdc-typography(subheading2);
-    @include mdc-theme-prop(color, text-secondary-on-light);
-
-    &[aria-selected="true"] {
-      @include mdc-theme-prop(color, text-primary-on-light);
-    }
 
     @include mdc-theme-dark(".mdc-select") {
       @include mdc-theme-prop(color, text-secondary-on-dark);
@@ -252,13 +253,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 
   .mdc-list-group {
-    @include mdc-theme-prop(color, text-hint-on-light);
-
     font-weight: normal;
-
-    .mdc-list-item {
-      @include mdc-theme-prop(color, text-primary-on-light);
-    }
   }
 
   @include mdc-theme-dark(".mdc-select") {
