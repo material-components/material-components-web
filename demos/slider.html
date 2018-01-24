@@ -219,11 +219,11 @@
         <div class="demo-param-field-group">
           <label class="demo-param-field">
             <span class="demo-param-input-label">Min:</span>
-            <input name="min" type="number" min="0" max="100" value="0">
+            <input name="min" type="number" min="-100" max="100" value="0">
           </label>
           <label class="demo-param-field">
-            <div class="demo-param-input-label">Max:</div>
-            <input name="max" type="number" min="0" max="100" value="50">
+            <span class="demo-param-input-label">Max:</span>
+            <input name="max" type="number" min="-100" max="100" value="50">
           </label>
           <label class="demo-param-field">
             <span class="demo-param-input-label">Step:</span>
@@ -256,9 +256,13 @@
       demoReady(function() {
         mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
 
+        var numberIsFinite = Number.isFinite || function(value) {
+          return typeof value === 'number' && isFinite(value);
+        };
+
         var demoRoot = document.getElementById('slider-example')
-        var min = demoRoot.querySelector('[name="min"]');
-        var max = demoRoot.querySelector('[name="max"]');
+        var minInput = demoRoot.querySelector('[name="min"]');
+        var maxInput = demoRoot.querySelector('[name="max"]');
         var step = demoRoot.querySelector('[name="step"]');
         var darkTheme = demoRoot.querySelector('[name="dark-theme"]');
         var disabled = demoRoot.querySelector('[name="disabled"]');
@@ -309,25 +313,37 @@
           customDiscreteWMarkerCommittedValue.textContent = customDiscreteWMarkerSlider.value;
         });
 
-        min.addEventListener('input', function() {
-          continuousSlider.min = parseFloat(min.value);
-          discreteSlider.min = parseFloat(min.value);
-          discreteWMarkerSlider.min = parseFloat(min.value);
-          customDiscreteWMarkerSlider.min = parseFloat(min.value);
+        minInput.addEventListener('input', function() {
+          var minValue = parseFloat(minInput.value);
+          if (!numberIsFinite(minValue)) {
+            return;
+          }
+          continuousSlider.min = minValue;
+          discreteSlider.min = minValue;
+          discreteWMarkerSlider.min = minValue;
+          customDiscreteWMarkerSlider.min = minValue;
         });
 
-        max.addEventListener('input', function() {
-          continuousSlider.max = parseFloat(max.value);
-          discreteSlider.max = parseFloat(max.value);
-          discreteWMarkerSlider.max = parseFloat(max.value);
-          customDiscreteWMarkerSlider.max = parseFloat(max.value);
+        maxInput.addEventListener('input', function() {
+          var maxValue = parseFloat(maxInput.value);
+          if (!numberIsFinite(maxValue)) {
+            return;
+          }
+          continuousSlider.max = maxValue;
+          discreteSlider.max = maxValue;
+          discreteWMarkerSlider.max = maxValue;
+          customDiscreteWMarkerSlider.max = maxValue;
         });
 
         step.addEventListener('input', function() {
-          continuousSlider.step = parseFloat(step.value);
-          discreteSlider.step = parseFloat(step.value);
-          discreteWMarkerSlider.step = parseFloat(step.value);
-          customDiscreteWMarkerSlider.step = parseFloat(step.value);
+          var stepValue = parseFloat(step.value);
+          if (!numberIsFinite(stepValue)) {
+            return;
+          }
+          continuousSlider.step = stepValue;
+          discreteSlider.step = stepValue;
+          discreteWMarkerSlider.step = stepValue;
+          customDiscreteWMarkerSlider.step = stepValue;
         });
 
         darkTheme.addEventListener('change', function() {
