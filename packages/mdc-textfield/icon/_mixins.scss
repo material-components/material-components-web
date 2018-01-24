@@ -26,25 +26,25 @@
 
 @mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding) {
   @if ($position-property == left) {
-  	.mdc-text-field__input {
-    	@include mdc-rtl-reflexive-property(padding, $padding /* left-value */, $position  /* right-value */);
-  	}
+    .mdc-text-field__input {
+      @include mdc-rtl-reflexive-property(padding, $padding /* left-value */, $position  /* right-value */);
+    }
   } @else {
   	.mdc-text-field__input {
-    	@include mdc-rtl-reflexive-property(padding, $position /* left-value */, $padding  /* right-value */);
-  	}
+      @include mdc-rtl-reflexive-property(padding, $position /* left-value */, $padding  /* right-value */);
+    }
   }
 
   .mdc-text-field__icon {
     @include mdc-rtl-reflexive-position($position-property, $position);
   }
 
-  // Only change the label's padding if the icon is on the same side as the label,
+  // Only change the label's position if the icon is on the same side as the label,
   // aka the left side in a LTR context
   @if ($position-property == left) {
-	.mdc-text-field__label {
+    .mdc-text-field__label {
 	  @include mdc-rtl-reflexive-position($position-property, $padding);
-	}
+    }
   }
 }
 
