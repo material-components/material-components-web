@@ -1,0 +1,19 @@
+{
+  "name": "@material/shape",
+  "description": "The set of Material shape components",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "dependencies": {
+    "@material/base": "^0.24.0",
+    "@material/elevation": "^0.1.13"
+  },
+  "private": "true",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -339,4 +339,35 @@ if (IS_DEV) {
       createBannerPlugin(),
     ],
   });
+
+  const demoJsEntry = {};
+  glob.sync('demos/**/*.js').forEach((filename) => {
+    demoJsEntry[filename.slice(6, -3)] = path.resolve(filename);
+  });
+
+  module.exports.push({
+    name: 'demo-js',
+    entry: demoJsEntry,
+    output: {
+      path: OUT_PATH,
+      publicPath: PUBLIC_PATH,
+      filename: '[name].js',
+      libraryTarget: 'umd',
+      library: ['mdc', '[name]'],
+    },
+    devtool: DEVTOOL,
+    module: {
+      rules: [{
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        },
+      }],
+    },
+    plugins: [
+      createBannerPlugin(),
+    ],
+  });
 }
