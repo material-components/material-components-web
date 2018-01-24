@@ -62,6 +62,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
     this.active_ = false;
     this.actionWasClicked_ = false;
+    this.visibilityWasChanged_ = false;
     this.dismissOnAction_ = true;
     this.firstFocus_ = true;
     this.pointerDownRecognized_ = false;
@@ -73,11 +74,14 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       this.invokeAction_();
     };
     this.visibilitychangeHandler_ = () => {
+      if (!this.active_) {
+        return;
+      }
       clearTimeout(this.timeoutId_);
-      this.snackbarHasFocus_ = true;
+      this.visibilityWasChanged_ = true;
 
       if (!this.adapter_.visibilityIsHidden()) {
-        setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || numbers.MESSAGE_TIMEOUT);
+        this.timeoutId_ = setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || numbers.MESSAGE_TIMEOUT);
       }
     };
     this.interactionHandler_ = (evt) => {
@@ -91,6 +95,10 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       }
     };
     this.blurHandler_ = () => {
+      if (!this.active_) {
+        // User clicked on the action
+        return;
+      }
       clearTimeout(this.timeoutId_);
       this.snackbarHasFocus_ = false;
       this.timeoutId_ = setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || numbers.MESSAGE_TIMEOUT);
@@ -185,6 +193,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   setFocusOnAction_() {
+    clearTimeout(this.timeoutId_);
     this.adapter_.setFocus();
     this.snackbarHasFocus_ = true;
     this.firstFocus_ = false;
@@ -205,7 +214,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   cleanup_() {
-    const allowDismissal = !this.snackbarHasFocus_ || this.actionWasClicked_;
+    const allowDismissal = !this.snackbarHasFocus_ || this.actionWasClicked_ || this.visibilityWasChanged_;
 
     if (allowDismissal) {
       const {ACTIVE, MULTILINE, ACTION_ON_BOTTOM} = cssClasses;
@@ -221,6 +230,8 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
         this.adapter_.setAriaHidden();
         this.active_ = false;
         this.snackbarHasFocus_ = false;
+        this.actionWasClicked_ = false;
+        this.visibilityWasChanged_ = false;
         this.adapter_.notifyHide();
         this.showNext_();
       };
