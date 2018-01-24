@@ -94,6 +94,8 @@
 }
 
 .mdc-card__action-icons {
+  @include mdc-theme-prop(color, text-icon-on-background);
+
   flex-grow: 1;
   justify-content: flex-end;
 }
@@ -111,12 +113,12 @@
   align-items: center;
   box-sizing: border-box;
   min-width: auto;
-  margin: 0;
+  margin: 0 10px;
   cursor: pointer;
-}
 
-.mdc-card__action:not(:last-child) {
-  @include mdc-rtl-reflexive-box(margin, right, 8px);
+  &:focus {
+    outline: none;
+  }
 }
 
 //
@@ -134,6 +136,7 @@
   width: 100%;
   height: auto;
   max-height: none;
+  margin: 0;
   padding: 8px 16px;
   text-align: left;
 
@@ -147,13 +150,7 @@
 //
 
 .mdc-card__action--icon:not(:disabled) {
-  @include mdc-theme-prop(color, text-icon-on-background);
-  @include mdc-states;
-}
-
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action--icon.mdc-button {
-  padding: 0 4px;
+  color: inherit;
 }
 
 // Icon toggles are taller than buttons, so we need to adjust their margins to prevent the action row from expanding.

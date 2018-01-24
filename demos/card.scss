@@ -36,15 +36,6 @@
   padding: 0 24px;
 }
 
-.demo-card {
-  width: 350px;
-  margin: 48px;
-}
-
-.demo-card--photo-album {
-  width: 200px;
-}
-
 .demo-card-toggles {
   margin: 24px;
   padding: 24px;
@@ -52,57 +43,16 @@
 }
 
 //
-// Small
+// Card container
 //
 
-.demo-card__action-icons--centered {
-  justify-content: center;
+.demo-card {
+  width: 350px;
+  margin: 48px;
 }
 
-.demo-card__action-buttons--text {
-  padding: 8px;
-}
-
-//
-// Music
-//
-
-.demo-card__music-row {
-  display: flex;
-}
-
-.demo-card__media--music {
-  width: 110px;
-}
-
-.demo-card__music-info {
-  display: flex;
-  flex-direction: column;
-  padding: 8px 16px;
-}
-
-//
-// Text
-//
-
-.demo-card__primary {
-  padding: 1rem;
-}
-
-.demo-card__title {
-  margin: 0;
-}
-
-.demo-card__subtitle {
-  @include mdc-theme-prop(color, text-secondary-on-background);
-
-  margin: 0;
-}
-
-.demo-card__secondary {
-  @include mdc-theme-prop(color, text-secondary-on-background);
-
-  padding: 0 1rem 8px 1rem;
+.demo-card--photo-album {
+  width: 200px;
 }
 
 //
@@ -129,10 +79,51 @@
   color: white;
 }
 
-// TODO(acdvorak): Delete images/4-3.jpg - 4:3 ratio is not in spec
+//
+// Focusable child elements
+//
+
+.demo-card__ripple-surface {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states;
+
+  &:not([data-mdc-ripple-is-unbounded]) {
+    position: relative; // IE and Edge ignore `overflow: hidden` if the element is positioned statically
+    overflow: hidden;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
 
 //
-// News headlines
+// Book card
+//
+
+.demo-card__primary {
+  padding: 1rem;
+}
+
+.demo-card__title {
+  margin: 0;
+}
+
+.demo-card__subtitle {
+  @include mdc-theme-prop(color, text-secondary-on-background);
+
+  margin: 0;
+}
+
+.demo-card__secondary {
+  @include mdc-theme-prop(color, text-secondary-on-background);
+
+  padding: 0 1rem 8px 1rem;
+}
+
+//
+// Headlines card
 //
 
 .demo-card-article-group-heading {
@@ -142,19 +133,9 @@
 }
 
 .demo-card-article {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
-  @include mdc-states;
-
-  position: relative; // IE and Edge ignore `overflow: hidden` if the element is positioned statically
-  overflow: hidden;
   padding: 16px;
   text-decoration: none;
   color: inherit;
-
-  &:focus {
-    outline: none;
-  }
 }
 
 .demo-card-article__title {
@@ -165,4 +146,40 @@
   @include mdc-theme-prop(color, text-secondary-on-light);
 
   margin: 0;
+}
+
+//
+// Photo card
+//
+
+.demo-card__action-icons--centered {
+  justify-content: center;
+}
+
+//
+// Music card
+//
+
+.demo-card__music-row {
+  display: flex;
+}
+
+.demo-card__media--music {
+  width: 110px;
+}
+
+.demo-card__music-info {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+}
+
+.demo-card__action-buttons--text-only {
+  margin-left: 8px;
+}
+
+.demo-card__action-icon--star {
+  margin-left: 4px;
+  margin-right: 4px;
+  cursor: pointer;
 }
