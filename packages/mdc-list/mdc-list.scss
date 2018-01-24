@@ -155,20 +155,20 @@
   }
 }
 
-.mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
-  height: 48px;
-}
-
-.mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
-  @include mdc-list-graphic-size_(36px);
-}
-
 .mdc-list--two-line .mdc-list-item {
   height: 72px;
 }
 
 .mdc-list--two-line.mdc-list--dense .mdc-list-item {
   height: 60px;
+}
+
+.mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
+  height: 48px;
+}
+
+.mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
+  @include mdc-list-graphic-size_(36px);
 }
 // postcss-bem-linter: end
 
