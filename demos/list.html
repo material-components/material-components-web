@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/list.css">
+    <link rel="stylesheet" href="/assets/ripple.css">
     <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
@@ -308,13 +309,13 @@
           </section>
           <section>
             <h3>Leading Checkbox</h3>
-            <ul class="mdc-list demo-list" id="leading-checkbox-list">
+            <ul class="mdc-list mdc-list--non-interactive demo-list" id="leading-checkbox-list">
               <li class="mdc-list-item">
                 <span class="mdc-list-item__graphic">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
                            class="mdc-checkbox__native-control"
-                           label="leading-checkbox-blueberries"/>
+                           id="leading-checkbox-blueberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -489,12 +490,31 @@
             <h3>Trailing Checkbox</h3>
             <ul class="mdc-list demo-list" id="trailing-checkbox-list">
               <li class="mdc-list-item">
-                <label for="leading-checkbox-blueberries">Blueberries</label>
+                <label for="trailing-checkbox-blueberries">Blueberries</label>
                 <span class="mdc-list-item__meta">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
                            class="mdc-checkbox__native-control"
-                           label="leading-checkbox-blueberries"/>
+                           id="trailing-checkbox-blueberries"/>
+                    <div class="mdc-checkbox__background">
+                      <svg class="mdc-checkbox__checkmark"
+                           viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark__path"
+                              fill="none"
+                              stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                      </svg>
+                      <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                  </div>
+                </span>
+              </li>
+              <li class="mdc-list-item">
+                <label for="trailing-checkbox-boysenberries">Boysenberries</label>
+                <span class="mdc-list-item__meta">
+                  <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"
+                           id="trailing-checkbox-boysenberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -509,32 +529,12 @@
                 </span>
               </li>
               <li class="mdc-list-item">
-                <label for="leading-checkbox-boysenberries">Boysenberries</label>
+                <label for="trailing-checkbox-strawberries">Strawberries</label>
                 <span class="mdc-list-item__meta">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
                            class="mdc-checkbox__native-control"
-                           label="leading-checkbox-boysenberries"/>
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark"
-                           viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark__path"
-                              fill="none"
-                              stroke="white"
-                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                  </div>
-                </span>
-              </li>
-              <li class="mdc-list-item">
-                <label for="leading-checkbox-strawberries">Strawberries</label>
-                <span class="mdc-list-item__meta">
-                  <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           label="leading-checkbox-strawberries"/>
+                           id="trailing-checkbox-strawberries"/>
                     <div class="mdc-checkbox__background">
                       <svg class="mdc-checkbox__checkmark"
                            viewBox="0 0 24 24">
@@ -1331,23 +1331,33 @@
           });
         }
 
-        var clickHandler = function(e) {
-          var checkbox = this.querySelector('input[type="checkbox"]');
-          if(e.target !== checkbox) {
-            checkbox.checked = !checkbox.checked;
+        var clickHandler = function(evt, rippleFoundation, li) {
+          var checkbox = li.querySelector('.mdc-checkbox__native-control');
+          if(evt.target !== checkbox) {
+            rippleFoundation.activate();
+            console.log('ACTIVATED')
           }
         }
 
-        var integrateCheckboxListItems = function(list) {
-          list.querySelectorAll('.mdc-list-item').forEach(function(listItem) {
-            listItem.addEventListener('click', clickHandler.bind(listItem));
+        var addRippleToListItems = function(list) {
+          list.querySelectorAll('.mdc-list-item').forEach(function(li) {
+            var rippleAdapter = mdc.ripple.MDCRipple.createAdapter({
+              unbounded: false,
+              disabled: false,
+              root_: li
+            });
+
+            var rippleFoundation = new mdc.ripple.MDCRippleFoundation(rippleAdapter);
+            rippleFoundation.init();
+
+            li.addEventListener('click', e => clickHandler(e, rippleFoundation, li));
           });
         }
 
         var leadingCheckboxList = document.getElementById('leading-checkbox-list');
         var trailingCheckboxList = document.getElementById('trailing-checkbox-list');
-        integrateCheckboxListItems(leadingCheckboxList);
-        integrateCheckboxListItems(trailingCheckboxList);
+        addRippleToListItems(leadingCheckboxList);
+        addRippleToListItems(trailingCheckboxList);
       });
     </script>
   </body>
