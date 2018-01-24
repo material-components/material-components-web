@@ -146,10 +146,11 @@
   @include mdc-ripple-radius;
   @include mdc-states;
 
+  position: relative; // IE and Edge ignore `overflow: hidden` if the element is positioned statically
+  overflow: hidden;
   padding: 16px;
   text-decoration: none;
   color: inherit;
-  overflow: hidden;
 
   &:focus {
     outline: none;
