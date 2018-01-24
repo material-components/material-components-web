@@ -17,10 +17,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Simple Menu - Material Components Catalog</title>
+    <title>Menu - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <link rel="stylesheet" href="/assets/simple-menu.css">
+    <link rel="stylesheet" href="/assets/menu.css">
     <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
@@ -33,7 +33,7 @@
         flex-direction: column;
       }
 
-      .hero .mdc-simple-menu {
+      .hero .mdc-menu {
         z-index: initial;
       }
 
@@ -108,7 +108,7 @@
           <span class="catalog-back">
             <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           </span>
-          <span class="mdc-toolbar__title catalog-title">Simple Menu</span>
+          <span class="mdc-toolbar__title catalog-title">Menu</span>
         </section>
       </div>
     </header>
@@ -116,8 +116,8 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-simple-menu mdc-simple-menu--open">
-          <ul class="mdc-simple-menu__items mdc-list">
+        <div class="mdc-menu mdc-menu--open">
+          <ul class="mdc-menu__items mdc-list">
             <li class="mdc-list-item" role="menuitem">Back</li>
             <li class="mdc-list-item" role="menuitem">Forward</li>
             <li class="mdc-list-item" role="menuitem">Reload</li>
@@ -134,8 +134,8 @@
               Show<span class="demo-button__normal-text"> Menu</span><span class="demo-button__long-text"> From Here Now!</span>
             </button>
 
-            <div class="mdc-simple-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
-              <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+            <div class="mdc-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
+              <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
                 <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
@@ -259,7 +259,7 @@
     <script>
       demoReady(function() {
         var menuEl = document.querySelector('#demo-menu');
-        var menu = new mdc.menu.MDCSimpleMenu(menuEl);
+        var menu = new mdc.menu.MDCMenu(menuEl);
         var menuButtonEl = document.querySelector('#menu-button');
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
@@ -270,10 +270,10 @@
           var contentEl = document.querySelector('.demo-content');
           if (evt.target.checked) {
             contentEl.classList.add('mdc-theme--dark');
-            menuEl.classList.add('mdc-simple-menu--theme-dark');
+            menuEl.classList.add('mdc-menu--theme-dark');
           } else {
             contentEl.classList.remove('mdc-theme--dark');
-            menuEl.classList.remove('mdc-simple-menu--theme-dark');
+            menuEl.classList.remove('mdc-menu--theme-dark');
           }
         });
 
@@ -310,16 +310,16 @@
             if (evt.target.checked) {
               switch (evt.target.value) {
                 case "top start":
-                  menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.TOP_START);
+                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_START);
                   break;
                 case "bottom start":
-                  menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.BOTTOM_START);
+                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_START);
                   break;
                 case "top end":
-                  menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.TOP_END);
+                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_END);
                   break;
                 case "bottom end":
-                  menu.setAnchorCorner(mdc.menu.MDCSimpleMenuFoundation.Corner.BOTTOM_END);
+                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_END);
                   break;
               }
             }
@@ -397,7 +397,7 @@
         }
 
         var lastSelected = document.getElementById('last-selected');
-        menuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
+        menuEl.addEventListener('MDCMenu:selected', function(evt) {
           var detail = evt.detail;
           lastSelected.textContent = '"' + detail.item.textContent.trim() +
             '" at index ' + detail.index;

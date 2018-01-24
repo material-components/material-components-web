@@ -19,14 +19,14 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCSimpleMenu} from '../../../packages/mdc-menu/simple';
-import {strings, Corner} from '../../../packages/mdc-menu/simple/constants';
+import {MDCMenu} from '../../../packages/mdc-menu/index';
+import {strings, Corner} from '../../../packages/mdc-menu/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu/util';
 
 function getFixture(open) {
   return bel`
-    <div class="mdc-simple-menu ${open ? 'mdc-simple-menu--open' : ''}" tabindex="-1">
-      <ul class="mdc-simple-menu__items mdc-list" role="menu">
+    <div class="mdc-menu ${open ? 'mdc-menu--open' : ''}" tabindex="-1">
+      <ul class="mdc-menu__items mdc-list" role="menu">
         <li class="mdc-list-item" role="menuitem" tabindex="0">Item</a>
         <li role="separator"></li>
         <li class="mdc-list-item" role="menuitem" tabindex="0">Another Item</a>
@@ -38,14 +38,14 @@ function getFixture(open) {
 function setupTest(open = false) {
   const root = getFixture(open);
   const listItem = root.querySelector('.mdc-list-item');
-  const component = new MDCSimpleMenu(root);
+  const component = new MDCMenu(root);
   return {root, listItem, component};
 }
 
-suite('MDCSimpleMenu');
+suite('MDCMenu');
 
-test('attachTo initializes and returns a MDCSimpleMenu instance', () => {
-  assert.isOk(MDCSimpleMenu.attachTo(getFixture()) instanceof MDCSimpleMenu);
+test('attachTo initializes and returns a MDCMenu instance', () => {
+  assert.isOk(MDCMenu.attachTo(getFixture()) instanceof MDCMenu);
 });
 
 test('get/set open', () => {
