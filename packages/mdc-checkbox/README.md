@@ -61,9 +61,6 @@ The checkbox component is driven by an underlying native checkbox element. This 
 positioned the same way as the checkbox component itself, allowing for proper behavior of assistive
 devices.
 
-You can also add an `mdc-checkbox--theme-dark` modifier class to the component to use the dark theme
-checkbox styles.
-
 Additionally, the checkbox can be used in conjunction with [mdc-form-field](../mdc-form-field) to
 easily position checkboxes and their labels.
 
@@ -257,7 +254,7 @@ not return an object.
 
 ## Theming
 
-MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate), and are completely dark theme aware.
+MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate).
 
 ### Sass Mixins
 
