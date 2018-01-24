@@ -36,6 +36,7 @@
   &::before {
     // This clever trick brought to you by: http://www.mademyday.de/css-height-equals-width-with-pure-css.html
     margin-top: percentage($height-unitless / $width-unitless);
+  }
 }
 
 //
