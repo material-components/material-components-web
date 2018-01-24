@@ -11,14 +11,14 @@ path: /catalog/menus/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/simple-menu.html">
+     href="https://material-components-web.appspot.com/menu.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="178" alt="Menus screenshot">
   </a>
 </div>-->
 
 The MDC Menu component is a spec-aligned menu component adhering to the
 [Material Design menu specification](https://material.io/guidelines/components/menus.html).
-It implements simple menus. Menus require JavaScript to work correctly, but the open and closed states are correct on
+Menus require JavaScript to work correctly, but the open and closed states are correct on
 first render.
 
 ## Design & API Documentation
@@ -28,7 +28,7 @@ first render.
     <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/simple-menu.html">Demo</a>
+    <a href="https://material-components-web.appspot.com/menu.html">Demo</a>
   </li>
 </ul>
 
@@ -42,11 +42,11 @@ npm install --save @material/menu
 
 ### HTML Structure 
 
-A simple menu is usually closed, appearing when opened. It is appropriate for any display size.
+A menu is usually closed, appearing when opened. It is appropriate for any display size.
 
 ```html
-<div class="mdc-simple-menu" tabindex="-1">
-  <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+<div class="mdc-menu" tabindex="-1">
+  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
     <li class="mdc-list-item" role="menuitem" tabindex="0">
       A Menu Item
     </li>
@@ -59,10 +59,10 @@ A simple menu is usually closed, appearing when opened. It is appropriate for an
 
 #### Opened Menu
 
-The menu can be configured to start in the opened state by adding the `mdc-simple-menu--open` class to the element.
+The menu can be configured to start in the opened state by adding the `mdc-menu--open` class to the element.
  
 ```html
-<div class="mdc-simple-menu mdc-simple-menu--open">
+<div class="mdc-menu mdc-menu--open">
 ...
 </div>
 ```
@@ -73,7 +73,7 @@ The menu can be positioned to automatically anchor to a parent element when open
 
 ```html
 <div id="toolbar" class="toolbar mdc-menu-anchor">
-  <div class="mdc-simple-menu">
+  <div class="mdc-menu">
   ...
   </div>
 </div>
@@ -86,7 +86,7 @@ The menu can be positioned to automatically anchor to another element, by wrappi
 ```html
 <div id="demo-menu" class="mdc-menu-anchor">
   <button id="menu-button">Open Menu</button>
-  <div class="mdc-simple-menu">
+  <div class="mdc-menu">
   ...
   </div>
 </div>
@@ -98,8 +98,8 @@ When used in components such as MDC Menu, list items can be disabled.
 To disable a list item, set `aria-disabled` property to `"true"`, and set `tabindex` to `"-1"`.
 
 ```html
-<div class="mdc-simple-menu" tabindex="-1">
-  <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+<div class="mdc-menu" tabindex="-1">
+  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
     <li class="mdc-list-item" role="menuitem" tabindex="0">
       A Menu Item
     </li>
@@ -114,17 +114,17 @@ To disable a list item, set `aria-disabled` property to `"true"`, and set `tabin
 
 CSS Class | Description
 --- | ---
-`mdc-simple-menu` | Mandatory
-`mdc-simple-menu--animating-open` | Indicates the menu is currently animating open. This class is removed once the animation completes. 
-`mdc-simple-menu--open` | Indicates the menu is currently open, or is currently animating open. 
-`mdc-simple-menu--animating-closed` | Indicates the menu is currently animating closed. This class is removed once the animation completes. 
+`mdc-menu` | Mandatory
+`mdc-menu--animating-open` | Indicates the menu is currently animating open. This class is removed once the animation completes. 
+`mdc-menu--open` | Indicates the menu is currently open, or is currently animating open. 
+`mdc-menu--animating-closed` | Indicates the menu is currently animating closed. This class is removed once the animation completes. 
 
 ### JS Examples
 
 ```js
   // Instantiation
   var menuEl = document.querySelector('#toolbar');
-  var menu = new mdc.menu.MDCSimpleMenu(menuEl);
+  var menu = new mdc.menu.MDCMenu(menuEl);
   var menuButtonEl = document.querySelector('#menu-button');
   
   // Toggle menu open
@@ -133,7 +133,7 @@ CSS Class | Description
   });
   
   // Listen for selected item
-  menuEl.addEventListener('MDCSimpleMenu:selected', function(evt) {
+  menuEl.addEventListener('MDCMenu:selected', function(evt) {
      var detail = evt.detail;
   });
   
@@ -141,7 +141,7 @@ CSS Class | Description
   menu.setAnchorCorner(Corner.BOTTOM_END); 
 ```
 
-### `MDCSimpleMenu`
+### `MDCMenu`
 
 See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
@@ -149,7 +149,7 @@ Property | Value Type | Description
 --- | --- | ---
 `open` | Boolean | Proxies to the foundation's `isOpen`/(`open`, `close`) methods. 
 `items` | Array<Element> | Proxies to the foundation's container to query for all `.mdc-list-item[role]` elements.
-`itemsContainer` | Element | Queries the foundation's root element for the `mdc-simple-menu__items` container element.
+`itemsContainer` | Element | Queries the foundation's root element for the `mdc-menu__items` container element.
 
 Method Signature | Description
 --- | ---
@@ -157,16 +157,16 @@ Method Signature | Description
 `hide() => void` | Proxies to the foundation's `close()` method.
 `setAnchorCorner(Corner) => void` | Proxies to the foundation's `setAnchorCorner(Corner)` method.
 `setAnchorMargin(AnchorMargin) => void` | Proxies to the foundation's `setAnchorMargin(AnchorMargin)` method.
-`getDefaultFoundation() => MDCSimpleMenuFoundation` | Returns the foundation. 
+`getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation. 
 
-### `MDCSimpleMenuAdapter`
+### `MDCMenuAdapter`
 
 Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
 `hasClass(className: string) => boolean` | Returns a boolean indicating whether the root element has a given class.
-`hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-simple-menu__items` container).
+`hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-menu__items` container).
 `getAttributeForEventTarget(target: EventTarget, attributeName: string) => string` | Returns the value of a given attribute on an event target.
 `eventTargetHasClass: (target: EventTarget, className: string) => boolean` | Returns true if the event target has a given class.
 `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height.
@@ -183,8 +183,8 @@ Method Signature | Description
 `notifyCancel() => void` | Dispatches an event notifying listeners that the menu has been closed with no selection made.
 `saveFocus() => void` | Stores the currently focused element on the document, for restoring with `restoreFocus`.
 `restoreFocus() => void` | Restores the previously saved focus state, by making the previously focused element the active focus again.
-`isFocused() => boolean` | Returns a boolean value indicating whether the root element of the simple menu is focused.
-`focus() => void` | Focuses the root element of the simple menu.
+`isFocused() => boolean` | Returns a boolean value indicating whether the root element of the menu is focused.
+`focus() => void` | Focuses the root element of the menu.
 `getFocusedItemIndex() => number` | Returns the index of the currently focused menu item (-1 if none).
 `focusItemAtIndex(index: number) => void` | Focuses the menu item with the provided index.
 `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL.
@@ -192,11 +192,11 @@ Method Signature | Description
 `setPosition(position: {top: string, right: string, bottom: string, left: string}) => void` | Sets the position of the menu element.
 `setMaxHeight(value: string) => void` | Sets `max-height` style for the menu element.
 
-### `MDCSimpleMenuFoundation`
+### `MDCMenuFoundation`
 
 Method Signature | Description
 --- | ---
-`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu will be anchored to. See [constants.js](https://github.com/material-components/material-components-web/blob/cc299230728ba5a994866ebd31aaaf1a0f4cc87f/packages/mdc-menu/simple/constants.js#L73)
+`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu will be anchored to. See [constants.js](https://github.com/material-components/material-components-web/blob/cc299230728ba5a994866ebd31aaaf1a0f4cc87f/packages/mdc-menu/constants.js#L73)
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu should be shown. 
 `open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened. 
 `close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.  
@@ -206,5 +206,5 @@ Method Signature | Description
 
 Event Name | Data | Description
 --- | --- | ---
-`MDCSimpleMenu:selected` | `{detail: {item: HTMLElement, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
-`MDCSimpleMenu:cancel` | none | Event emitted when the menu is closed with no selection made (e.g. if the user hits `Esc` while it's open, or clicks somewhere else on the page). 
+`MDCMenu:selected` | `{detail: {item: HTMLElement, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
+`MDCMenu:cancel` | none | Event emitted when the menu is closed with no selection made (e.g. if the user hits `Esc` while it's open, or clicks somewhere else on the page). 
