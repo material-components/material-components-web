@@ -1331,15 +1331,15 @@
           });
         }
 
-        var clickHandler = function(evt, rippleFoundation, li) {
+        function clickHandler(evt, rippleFoundation, li) {
           var checkbox = li.querySelector('.mdc-checkbox__native-control');
           if(evt.target !== checkbox) {
             rippleFoundation.activate();
             console.log('ACTIVATED')
           }
-        }
+        };
 
-        var addRippleToListItems = function(list) {
+         function addRippleToListItems(list) {
           list.querySelectorAll('.mdc-list-item').forEach(function(li) {
             var rippleAdapter = mdc.ripple.MDCRipple.createAdapter({
               unbounded: false,
@@ -1352,7 +1352,7 @@
 
             li.addEventListener('click', e => clickHandler(e, rippleFoundation, li));
           });
-        }
+        };
 
         var leadingCheckboxList = document.getElementById('leading-checkbox-list');
         var trailingCheckboxList = document.getElementById('trailing-checkbox-list');
