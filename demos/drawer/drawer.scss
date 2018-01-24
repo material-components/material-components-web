@@ -21,6 +21,44 @@
 @import "../../packages/mdc-drawer/mixins";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-list/mdc-list";
+@import "../../packages/mdc-button/mdc-button";
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.example {
+  margin: 24px;
+}
+
+.example iframe {
+  height: 600px;
+  width: 100vw;
+  max-width: 780px;
+}
+
+.intro {
+  padding: 48px 24px;
+}
+
+.drawer-example-heading {
+  span {
+    flex-grow: 1;
+  }
+
+  @include mdc-typography(display2);
+  font-size: 24px;
+  display: flex;
+}
+
+.theme-radio-buttons {
+  margin: 24px 0;
+}
+
+.extra-content-wrapper {
+  padding: 10px;
+}
 
 .demo-drawer--custom {
   @include mdc-drawer-fill-color($material-color-teal-900);

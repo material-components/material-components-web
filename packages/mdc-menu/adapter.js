@@ -18,7 +18,7 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Simple Menu. Provides an interface for managing
+ * Adapter for MDC Menu. Provides an interface for managing
  * - classes
  * - dom
  * - focus
@@ -36,7 +36,7 @@
  *
  * @record
  */
-class MDCSimpleMenuAdapter {
+class MDCMenuAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -143,4 +143,4 @@ class MDCSimpleMenuAdapter {
   setMaxHeight(height) {}
 }
 
-export {MDCSimpleMenuAdapter};
+export {MDCMenuAdapter};

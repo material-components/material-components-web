@@ -19,7 +19,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {captureHandlers} from '../helpers/foundation';
-import {strings as menuStrings} from '../../../packages/mdc-menu/simple/constants';
+import {strings as menuStrings} from '../../../packages/mdc-menu/constants';
 import {createMockRaf} from '../helpers/raf';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
