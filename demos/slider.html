@@ -325,14 +325,14 @@
         });
 
         maxInput.addEventListener('input', function() {
-          var minValue = parseFloat(maxInput.value);
-          if (!numberIsFinite(minValue)) {
+          var maxValue = parseFloat(maxInput.value);
+          if (!numberIsFinite(maxValue)) {
             return;
           }
-          continuousSlider.max = minValue;
-          discreteSlider.max = minValue;
-          discreteWMarkerSlider.max = minValue;
-          customDiscreteWMarkerSlider.max = minValue;
+          continuousSlider.max = maxValue;
+          discreteSlider.max = maxValue;
+          discreteWMarkerSlider.max = maxValue;
+          customDiscreteWMarkerSlider.max = maxValue;
         });
 
         step.addEventListener('input', function() {
