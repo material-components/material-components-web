@@ -24,6 +24,37 @@
 
 // Private
 
+@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $positionX: 0%, $scale: .75) {
+  @keyframes invalid-shake-float-above-#{$modifier} {
+    0% {
+      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+    }
+
+    33% {
+      animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
+      transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+    }
+
+    66% {
+      animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
+      transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+    }
+
+    100% {
+      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+    }
+  }
+}
+
+@include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
+@include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
+@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 27%);
+@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
+@include mdc-text-field-invalid-label-shake-keyframes_(textarea, 50%, 0%, .923);
+
 @mixin mdc-text-field-label-color_($color) {
   .mdc-text-field__label,
   .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
