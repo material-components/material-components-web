@@ -20,11 +20,11 @@ import td from 'testdouble';
 import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {createMockRaf} from '../helpers/raf';
-import {MDCSimpleMenuFoundation} from '../../../packages/mdc-menu/simple/foundation';
-import {cssClasses, strings, numbers, Corner} from '../../../packages/mdc-menu/simple/constants';
+import {MDCMenuFoundation} from '../../../packages/mdc-menu/foundation';
+import {cssClasses, strings, numbers, Corner} from '../../../packages/mdc-menu/constants';
 
 function setupTest() {
-  const {foundation, mockAdapter} = setupFoundationTest(MDCSimpleMenuFoundation);
+  const {foundation, mockAdapter} = setupFoundationTest(MDCMenuFoundation);
   const size = {width: 500, height: 200};
   td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(false);
@@ -70,22 +70,22 @@ function testFoundation(desc, runTests) {
   });
 }
 
-suite('MDCSimpleMenuFoundation');
+suite('MDCMenuFoundation');
 
 test('exports strings', () => {
-  assert.deepEqual(MDCSimpleMenuFoundation.strings, strings);
+  assert.deepEqual(MDCMenuFoundation.strings, strings);
 });
 
 test('exports cssClasses', () => {
-  assert.deepEqual(MDCSimpleMenuFoundation.cssClasses, cssClasses);
+  assert.deepEqual(MDCMenuFoundation.cssClasses, cssClasses);
 });
 
 test('exports numbers', () => {
-  assert.deepEqual(MDCSimpleMenuFoundation.numbers, numbers);
+  assert.deepEqual(MDCMenuFoundation.numbers, numbers);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCSimpleMenuFoundation, [
+  verifyDefaultAdapter(MDCMenuFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'eventTargetHasClass',
     'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions',
     'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
@@ -96,19 +96,19 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 });
 
 test('#init throws error when the root class is not present', () => {
-  const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
+  const mockAdapter = td.object(MDCMenuFoundation.defaultAdapter);
   td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(false);
 
-  const foundation = new MDCSimpleMenuFoundation(mockAdapter);
+  const foundation = new MDCMenuFoundation(mockAdapter);
   assert.throws(() => foundation.init());
 });
 
 test('#init throws error when the necessary DOM is not present', () => {
-  const mockAdapter = td.object(MDCSimpleMenuFoundation.defaultAdapter);
+  const mockAdapter = td.object(MDCMenuFoundation.defaultAdapter);
   td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
   td.when(mockAdapter.hasNecessaryDom()).thenReturn(false);
 
-  const foundation = new MDCSimpleMenuFoundation(mockAdapter);
+  const foundation = new MDCMenuFoundation(mockAdapter);
   assert.throws(() => foundation.init());
 });
 
@@ -1003,7 +1003,7 @@ test('on document click cancels and closes the menu', () => {
   td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
     .thenReturn(false);
 
-  td.when(mockAdapter.hasClass(MDCSimpleMenuFoundation.cssClasses.OPEN)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCMenuFoundation.cssClasses.OPEN)).thenReturn(true);
 
   foundation.init();
   foundation.open();

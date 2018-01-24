@@ -49,7 +49,7 @@ autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab', tabs.MDCTab);
 autoInit.register('MDCTabBar', tabs.MDCTabBar);
 autoInit.register('MDCTextField', textField.MDCTextField);
-autoInit.register('MDCSimpleMenu', menu.MDCSimpleMenu);
+autoInit.register('MDCMenu', menu.MDCMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCToolbar', toolbar.MDCToolbar);
