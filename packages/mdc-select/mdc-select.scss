@@ -219,64 +219,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
 // postcss-bem-linter: end
 
-.mdc-select__menu {
-  .mdc-list-item {
-    @include mdc-typography(subheading2);
-    @include mdc-theme-prop(color, text-secondary-on-light);
-
-    &[aria-selected="true"] {
-      @include mdc-theme-prop(color, text-primary-on-light);
-    }
-
-    @include mdc-theme-dark(".mdc-select") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-
-      &[aria-selected="true"] {
-        @include mdc-theme-prop(color, text-primary-on-dark);
-      }
-    }
-
-    // Styles to override mdc-ripple-radius from mdc-list, which causes display glitches in Chrome
-    // (See https://github.com/material-components/material-components-web/pull/1737#issuecomment-351105800)
-    @include mdc-ripple-radius(50%);
-
-    &::before,
-    &::after {
-      border-radius: 0;
-    }
-  }
-
-  .mdc-list-group,
-  .mdc-list-group > .mdc-list-item:first-child {
-    margin-top: 12px;
-  }
-
-  .mdc-list-group {
-    @include mdc-theme-prop(color, text-hint-on-light);
-
-    font-weight: normal;
-
-    .mdc-list-item {
-      @include mdc-theme-prop(color, text-primary-on-light);
-    }
-  }
-
-  @include mdc-theme-dark(".mdc-select") {
-    .mdc-list-group {
-      @include mdc-theme-prop(color, text-hint-on-dark);
-
-      .mdc-list-item {
-        @include mdc-theme-prop(color, text-primary-on-dark);
-      }
-    }
-  }
-}
-
-// height for option elements cannot be controlled
-// with CSS. Use the font-size rule instead.
-
-// postcss-bem-linter: end
-
 .mdc-select-scroll-lock {
   overflow: hidden;
 }
