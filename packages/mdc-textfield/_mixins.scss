@@ -117,7 +117,6 @@
   }
 
   .mdc-text-field__label {
-    bottom: 8px;
     cursor: default;
   }
 }
@@ -185,10 +184,6 @@
 
   .mdc-text-field__outline-path {
     stroke-width: 1px;
-  }
-
-  .mdc-text-field__label {
-    bottom: 20px;
   }
 }
 
@@ -362,19 +357,11 @@
   @include mdc-text-field-label-color(text-hint-on-light);
 
   border-bottom: none;
-
-  .mdc-text-field__label {
-    bottom: 20px;
-  }
 }
 
 @mixin mdc-text-field-box-dense_ {
   .mdc-text-field__input {
     padding: 12px 12px 0;
-  }
-
-  .mdc-text-field__label {
-    bottom: 20px;
   }
 
   .mdc-text-field__label--float-above {
