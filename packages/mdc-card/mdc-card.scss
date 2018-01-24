@@ -37,6 +37,8 @@
 //
 
 .mdc-card__media {
+  @include mdc-card-media-aspect-ratio-base_;
+
   position: relative;
   background-repeat: no-repeat;
   background-size: cover;
@@ -54,12 +56,10 @@
 
 .mdc-card__media--square {
   @include mdc-card-media-aspect-ratio(1, 1);
-  @include mdc-card-media-aspect-ratio-base_;
 }
 
 .mdc-card__media--16-9 {
   @include mdc-card-media-aspect-ratio(16, 9);
-  @include mdc-card-media-aspect-ratio-base_;
 }
 
 .mdc-card__media-content {
