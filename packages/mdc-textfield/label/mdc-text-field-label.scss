@@ -39,8 +39,11 @@
 }
 
 .mdc-text-field__label--float-above {
-  transform: translateY(-100%) scale(.75);
   cursor: auto;
+}
+
+@at-root {
+  @include mdc-text-field-label-float_($mdc-text-field-label-position-y);
 }
 
 .mdc-text-field__label--shake {
