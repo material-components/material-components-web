@@ -27,21 +27,20 @@ export function objectForEach(obj, func) {
 }
 
 /**
- * Returns a function, that, as long as it continues to be invoked, will not be triggered.
- * The function will be called after it stops being called for N milliseconds.
- * If `runImmediately` is passed, trigger the function on the leading edge, instead of the trailing.
+ * Returns a function that, as long as it continues to be invoked, will not be triggered.
+ * The function will be called after it stops being called for `waitInMs` milliseconds.
+ * If `runImmediately` is `true`, the function will be triggered on the leading edge, instead of the trailing.
  *
  * From https://davidwalsh.name/javascript-debounce-function (MIT license).
  *
- * @param {function(this:?, ...args)} func
+ * @param {function(...args)} func
  * @param {number} waitInMs
  * @param {boolean} runImmediately
- * @return {function(this:?)}
+ * @return {function(...args)}
  */
 export function debounce(func, waitInMs = 300, runImmediately = false) {
   let timeout;
 
-  /** @this {?} Inherits the `this` context from `func`, which could be `undefined` in strict mode. */
   return function(...args) {
     const callNow = runImmediately && !timeout;
 
@@ -49,12 +48,12 @@ export function debounce(func, waitInMs = 300, runImmediately = false) {
     timeout = setTimeout(() => {
       timeout = null;
       if (!runImmediately) {
-        func.apply(this, args);
+        func(...args);
       }
     }, waitInMs);
 
     if (callNow) {
-      func.apply(this, args);
+      func(...args);
     }
   };
 }
