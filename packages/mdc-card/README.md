@@ -54,7 +54,7 @@ Fully-featured:
   <div class="mdc-card__media mdc-card__media--square">
     <div class="mdc-card__media-content">Title</div>
   </div>
-  <div class="mdc-card__action-bar">
+  <div class="mdc-card__actions">
     <div class="mdc-card__action-buttons">
       <div class="mdc-button mdc-card__action">Action 1</div>
       <div class="mdc-button mdc-card__action">Action 2</div>
@@ -109,7 +109,7 @@ and the optional modifier classes shown below.
 ##### Actions
 
 ```html
-<section class="mdc-card__action-bar">
+<section class="mdc-card__actions">
   <button class="mdc-button mdc-card__action">Action 1</button>
   <button class="mdc-button mdc-card__action">Action 2</button>
 </section>
@@ -119,7 +119,7 @@ This area is used for showing different actions the user can take. It's typicall
 above, or with icon buttons, as below:
 
 ```html
-<div class="mdc-card__action-bar">
+<div class="mdc-card__actions">
   <div class="mdc-card__action-buttons">
     <button class="mdc-button mdc-card__action">Read</button>
     <button class="mdc-button mdc-card__action">Bookmark</button>
@@ -151,7 +151,7 @@ should use the `mdc-card__action--icon` class.
 To have a single action button take up the entire width of the action bar, use the `--full-bleed` modifier:
 
 ```html
-<div class="mdc-card__action-bar mdc-card__action-bar--full-bleed">
+<div class="mdc-card__actions mdc-card__actions--full-bleed">
   <a class="mdc-button mdc-card__action" href="javascript:">
     <span>All Business Headlines</span>
     <i class="material-icons">arrow_forward</i>
@@ -169,8 +169,8 @@ CSS Class | Description
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
 `mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
 `mdc-card__media-content` | An absolutely-positioned box the same size as the media area, for displaying a title or icon on top of the `background-image`
-`mdc-card__action-bar` | Row of primary and supplemental actions
-`mdc-card__action-bar--full-bleed` | Eliminates the action bar's padding padding, and causes its child `mdc-card__action` to consume 100% of the action bar's width
+`mdc-card__actions` | Row containing action buttons and/or icons
+`mdc-card__actions--full-bleed` | Removes the action area's padding and causes its only child (an `mdc-card__action` element) to consume 100% of the action area's width
 `mdc-card__action-buttons` | A group of action buttons, displayed on the left side of the card (in LTR), adjacent to `mdc-card__action-icons`
 `mdc-card__action-icons` | A group of supplemental action icons, displayed on the right side of the card (in LTR), adjacent to `__action-buttons`
 `mdc-card__action` | An individual action button or icon
@@ -178,10 +178,10 @@ CSS Class | Description
 
 ### Sass Mixins
 
-
 Mixin | Description
 --- | ---
 `mdc-card-fill-color($color)` | Sets the fill color of a `mdc-card`
-`mdc-card-media-aspect-ratio($width-unitless, $height-unitless)` | Automatically sets the height of the `mdc-card__media` subelement to maintain a given aspect ratio based on its width
 `mdc-card-stroke($color, $thickness)` | Sets the color and thickness of a card's stroke
+`mdc-card-corner-radius($radius)` | Sets the corner radius of a card
+`mdc-card-media-aspect-ratio($width-unitless, $height-unitless)` | Automatically sets the height of the `mdc-card__media` subelement to maintain a given aspect ratio based on its width
 

@@ -24,7 +24,7 @@
 // postcss-bem-linter: define card
 
 .mdc-card {
-  @include mdc-elevation(2, text-primary-on-background);
+  @include mdc-elevation(2);
   @include mdc-card-fill-color(background);
 
   display: flex;
@@ -79,10 +79,10 @@
 }
 
 //
-// Action bar
+// Action row
 //
 
-.mdc-card__action-bar {
+.mdc-card__actions {
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -90,7 +90,7 @@
   padding: 8px;
 }
 
-.mdc-card__action-bar--full-bleed {
+.mdc-card__actions--full-bleed {
   padding: 0;
 }
 
@@ -111,7 +111,7 @@
 }
 
 //
-// Actions
+// Action items
 //
 
 .mdc-card__action {
@@ -136,7 +136,7 @@
   padding: 0 8px;
 }
 
-.mdc-card__action-bar--full-bleed .mdc-card__action {
+.mdc-card__actions--full-bleed .mdc-card__action {
   display: flex;
   justify-content: space-between;
   width: 100%;
