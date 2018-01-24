@@ -347,11 +347,11 @@
 }
 
 @mixin mdc-text-field-box-dense_ {
+  @include mdc-text-field-label-float_($mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+
   .mdc-text-field__input {
     padding: 12px 12px 0;
   }
-
-  @include mdc-text-field-label-float_($mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
 
   .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-box-dense 250ms 1;
