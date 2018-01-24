@@ -39,7 +39,7 @@ const ids = {
 };
 
 const events = {
-  MDC_SIMPLE_MENU_SELECTED: 'MDCSimpleMenu:selected',
+  MDC_MENU_SELECTED: 'MDCMenu:selected',
 };
 
 class Permalinker extends InteractivityProvider {
@@ -132,14 +132,14 @@ class ThemePicker extends InteractivityProvider {
 
   /** @private */
   registerThemeMenuOpenHandler_() {
-    const menu = new mdc.menu.MDCSimpleMenu(this.themeMenuEl_);
+    const menu = new mdc.menu.MDCMenu(this.themeMenuEl_);
     const actionEl = this.root_.getElementById(ids.THEME_COLOR_MENU_ACTION);
     actionEl.addEventListener('click', () => menu.open = !menu.open);
   }
 
   /** @private */
   registerThemeMenuChangeHandler_() {
-    this.themeMenuEl_.addEventListener(events.MDC_SIMPLE_MENU_SELECTED, (evt) => {
+    this.themeMenuEl_.addEventListener(events.MDC_MENU_SELECTED, (evt) => {
       const safeNewTheme = getSafeDemoTheme(evt.detail.item.getAttribute(attributes.THEME_NAME));
       this.swapTheme_(safeNewTheme);
       this.pushHistoryState_(safeNewTheme);
