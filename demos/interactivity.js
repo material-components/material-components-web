@@ -292,10 +292,10 @@ export class HotSwapper extends InteractivityProvider {
   }
 }
 
-class DummyLinker extends InteractivityProvider {
+class HashLinker extends InteractivityProvider {
   /** @param {!Document|!Element} root */
   static attachTo(root) {
-    const instance = new DummyLinker(root);
+    const instance = new HashLinker(root);
     instance.lazyInit();
     return instance;
   }
@@ -318,5 +318,5 @@ class DummyLinker extends InteractivityProvider {
 /** @param {!Document|!Element} root */
 export function init(root) {
   HotSwapper.getInstance(root);
-  DummyLinker.attachTo(root);
+  HashLinker.attachTo(root);
 }
