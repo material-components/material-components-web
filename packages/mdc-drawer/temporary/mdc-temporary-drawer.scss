@@ -59,12 +59,6 @@
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
 
-    @include mdc-theme-dark(".mdc-drawer--temporary") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-
-      background: #303030;
-    }
-
     @include mdc-slideable-drawer;
 
     display: flex;
