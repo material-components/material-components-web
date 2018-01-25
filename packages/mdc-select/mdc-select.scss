@@ -18,7 +18,6 @@
 @import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/typography/mixins";
-@import "@material/theme/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
@@ -73,10 +72,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     @include mdc-ripple-surface;
     @include mdc-ripple-radius;
     @include mdc-states;
-
-    @include mdc-theme-dark(".mdc-select") {
-      @include mdc-states(white);
-    }
 
     &::-ms-expand {
       display: none;
@@ -166,10 +161,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 .mdc-select--open {
   .mdc-select__surface::before {
     opacity: map-get($mdc-ripple-dark-ink-opacities, "focus");
-
-    @include mdc-theme-dark(".mdc-select") {
-      opacity: map-get($mdc-ripple-light-ink-opacities, "focus");
-    }
   }
 
   .mdc-select__selected-text {
@@ -203,17 +194,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
   .mdc-select__bottom-line {
     display: none;
-  }
-}
-
-@each $sel in ("mdc-select--disabled", "mdc-select[disabled]") {
-  .#{$sel} {
-    @include mdc-theme-dark(".mdc-select", true) {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-      @include mdc-select-dd-arrow-svg-bg_(ffffff, .38);
-
-      border-bottom: 1px dotted rgba(white, .38);
-    }
   }
 }
 
