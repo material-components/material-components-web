@@ -434,6 +434,28 @@ testFoundation('#open anchors the menu to the bottom left in RTL when close to t
     td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
   });
 
+testFoundation('opening menu should automatically select the last selected item if rememberSelection is true',
+  ({foundation, mockAdapter, mockRaf}) => {
+    const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+    const clock = lolex.install();
+    const target = {};
+    const expectedIndex = 2;
+    td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+    td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+    foundation.init();
+    foundation.setRememberSelection(true);
+    handlers.click({target});
+
+    clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+    foundation.open();
+    mockRaf.flush();
+
+    td.verify(mockAdapter.focusItemAtIndex(expectedIndex), {times: 1});
+
+    clock.uninstall();
+  });
+
 testFoundation('#close does nothing if event target has aria-disabled set to true',
   ({foundation, mockAdapter}) => {
     const mockEvt = {
@@ -1210,3 +1232,4 @@ test('getSelectedValue should return the last selected item', () => {
 
   clock.uninstall();
 });
+

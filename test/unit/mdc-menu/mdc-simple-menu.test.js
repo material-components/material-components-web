@@ -387,6 +387,12 @@ test('adapter#setPosition sets the correct position on the menu element', () => 
   assert.equal(root.style.right, '11px');
 });
 
+test('adapter#setMaxHeight sets the maxHeight style on the menu element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setMaxHeight('100px');
+  assert.equal(root.style.maxHeight, '100px');
+});
+
 test('adapter#getOptionAtIndex returns the option at the index specified', () => {
   const {root, component} = setupTest();
   const item1 = root.querySelectorAll('[role="menuitem"]')[1];
