@@ -16,7 +16,7 @@
 
 import {MDCComponent} from '@material/base';
 import {MDCRipple} from '@material/ripple';
-import {MDCSimpleMenu} from '@material/menu';
+import {MDCMenu} from '@material/menu';
 
 import MDCSelectFoundation from './foundation';
 import {strings} from './constants';
@@ -70,7 +70,7 @@ export class MDCSelect extends MDCComponent {
     return null;
   }
 
-  initialize(menuFactory = (el) => new MDCSimpleMenu(el)) {
+  initialize(menuFactory = (el) => new MDCMenu(el)) {
     this.surface_ = this.root_.querySelector(strings.SURFACE_SELECTOR);
     this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
