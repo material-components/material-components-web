@@ -124,12 +124,11 @@
 // Action buttons
 //
 
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action.mdc-button {
+.mdc-card__action--button {
   padding: 0 8px;
 }
 
-.mdc-card__actions--full-bleed .mdc-card__action {
+.mdc-card__actions--full-bleed .mdc-card__action--button {
   display: flex;
   justify-content: space-between;
   width: 100%;

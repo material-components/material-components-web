@@ -173,7 +173,8 @@ CSS Class | Description
 `mdc-card__action-buttons` | A group of action buttons, displayed on the left side of the card (in LTR), adjacent to `mdc-card__action-icons`
 `mdc-card__action-icons` | A group of supplemental action icons, displayed on the right side of the card (in LTR), adjacent to `__action-buttons`
 `mdc-card__action` | An individual action button or icon
-`mdc-card__action--icon` | An icon action
+`mdc-card__action--button` | An action button with text
+`mdc-card__action--icon` | An icon-only action
 
 ### Sass Mixins
 
