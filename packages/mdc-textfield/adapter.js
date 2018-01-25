@@ -74,6 +74,7 @@ class MDCTextFieldAdapter {
   /**
    * Returns true if the root element contains the given class name.
    * @param {string} className
+   * @return {boolean}
    */
   hasClass(className) {}
 
