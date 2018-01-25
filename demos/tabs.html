@@ -144,10 +144,10 @@
         right: auto;
         left: 0;
       }
-
     </style>
   </head>
-  <body class="mdc-typography">
+
+  <body class="mdc-typography" data-demo-disable-hash-link-navigation>
     <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
@@ -655,6 +655,7 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
         window.demoTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#demo-tab-bar'));

@@ -16,6 +16,7 @@
  */
 
 import * as dom from './dom.js';
+import * as pony from './ponyfill.js';
 import * as util from './util.js';
 
 const classes = {
@@ -291,7 +292,31 @@ export class HotSwapper extends InteractivityProvider {
   }
 }
 
+class HashLinker extends InteractivityProvider {
+  /** @param {!Document|!Element} root */
+  static attachTo(root) {
+    const instance = new HashLinker(root);
+    instance.lazyInit();
+    return instance;
+  }
+
+  /** @override */
+  lazyInit() {
+    this.root_.addEventListener('click', (evt) => {
+      if (this.shouldPreventDefault_(evt)) {
+        evt.preventDefault();
+      }
+    });
+  }
+
+  /** @private */
+  shouldPreventDefault_(evt) {
+    return pony.closest(evt.target, 'a[href="#"], [data-demo-disable-hash-link-navigation] a[href^="#"]');
+  }
+}
+
 /** @param {!Document|!Element} root */
 export function init(root) {
   HotSwapper.getInstance(root);
+  HashLinker.attachTo(root);
 }
