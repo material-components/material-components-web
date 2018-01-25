@@ -472,24 +472,6 @@ testFoundation('#close removes the animation class at the end of the animation',
     mockRaf.flush();
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED));
   });
-testFoundation('#setRememberSelection causes the foundation to save the last selected index',
-  ({foundation, mockAdapter, mockRaf}) => {
-    const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
-    const clock = lolex.install();
-    const target = {};
-    const expectedIndex = 2;
-    td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
-    td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
-
-    foundation.init();
-    foundation.setRememberSelection(true);
-    handlers.click({target});
-
-    clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-    mockRaf.flush();
-
-    assert.isOk(foundation.getSelectedValue() >= 0);
-  });
 
 test('#isOpen returns true when the menu is open', () => {
   const {foundation} = setupTest();
@@ -1161,4 +1143,49 @@ test('should remove previously selected elements when new elements are selected'
   clock.uninstall();
 });
 
+test('should do nothing when the same item is selected twice in a row', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
 
+  foundation.init();
+  foundation.setRememberSelection(true);
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  td.verify(mockAdapter.rmClassForOptionAtIndex(expectedIndex, td.matchers.anything()),
+    {times: 0});
+  td.verify(mockAdapter.addClassForOptionAtIndex(expectedIndex, td.matchers.anything()),
+    {times: 1});
+
+  clock.uninstall();
+});
+
+
+test('getSelectedIndex should return the last selected index', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+  foundation.init();
+  foundation.setRememberSelection(true);
+  handlers.click({target});
+
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  assert.isOk(foundation.getSelectedIndex() === expectedIndex);
+  clock.uninstall();
+});

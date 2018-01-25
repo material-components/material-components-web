@@ -611,6 +611,10 @@ class MDCMenuFoundation extends MDCFoundation {
    * @param {number} index Index of the item to set as selected.
    */
   setSelectedIndex(index) {
+    if (index === this.selectedIndex_) {
+      return;
+    }
+
     const prevSelectedIndex = this.selectedIndex_;
     if (prevSelectedIndex >= 0) {
       this.adapter_.rmAttrForOptionAtIndex(prevSelectedIndex, 'aria-selected');
