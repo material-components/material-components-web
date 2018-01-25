@@ -72,7 +72,7 @@ Property | Value Type | Description
 --- | --- | ---
 `chips` | Array<`MDCChip`> | An array of the `MDCChip` objects that represent chips in the set
 
-### `MDCChipAdapter` and `MDCChipSetAdapter`
+### Adapters: `MDCChipAdapter` and `MDCChipSetAdapter`
 
 #### `MDCChipAdapter`
 Method Signature | Description
@@ -87,7 +87,7 @@ Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 
-### `MDCChipFoundation` and `MDCChipSetFoundation`
+### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
 #### `MDCChipFoundation`
 Method Signature | Description
