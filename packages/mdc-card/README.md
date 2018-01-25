@@ -174,7 +174,7 @@ CSS Class | Description
 `mdc-card__action-icons` | A group of supplemental action icons, displayed on the right side of the card (in LTR), adjacent to `__action-buttons`
 `mdc-card__action` | An individual action button or icon
 `mdc-card__action--button` | An action button with text
-`mdc-card__action--icon` | An icon-only action
+`mdc-card__action--icon` | An action icon with no text
 
 ### Sass Mixins
 
@@ -182,4 +182,4 @@ Mixin | Description
 --- | ---
 `mdc-card-fill-color($color)` | Sets the fill color of a card
 `mdc-card-corner-radius($radius)` | Sets the corner radius of a card
-`mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement so that its height is dynamically calculated based on its width
+`mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width
