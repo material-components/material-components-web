@@ -125,7 +125,13 @@
 //
 
 .mdc-card__action--button {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
   padding: 0 8px;
+
+  &:last-child {
+    @include mdc-rtl-reflexive-box(margin, right, 0);
+  }
 }
 
 .mdc-card__actions--full-bleed .mdc-card__action--button {
