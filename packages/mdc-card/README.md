@@ -120,28 +120,18 @@ above, or with icon buttons, as below:
 
 ```html
 <div class="mdc-card__actions">
-  <div class="mdc-card__action-buttons">
-    <button class="mdc-button mdc-card__action">Read</button>
-    <button class="mdc-button mdc-card__action">Bookmark</button>
-  </div>
-  <div class="mdc-card__action-icons">
-    <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
-       tabindex="0"
-       role="button"
-       aria-pressed="false"
-       aria-label="Add to favorites"
-       title="Add to favorites"
-       data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
-       data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
-      favorite_border
-    </i>
-    <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
-      <i class="material-icons" role="presentation">share</i>
-    </button>
-    <button class="mdc-button mdc-card__action mdc-card__action--icon" title="More options">
-      <i class="material-icons" role="presentation">more_vert</i>
-    </button>
-  </div>
+  <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+     tabindex="0"
+     role="button"
+     aria-pressed="false"
+     aria-label="Add to favorites"
+     title="Add to favorites"
+     data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+     data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+    favorite_border
+  </i>
+  <i class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="Share">share</i>
+  <i class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="More options">more_vert</i>
 </div>
 ```
 
