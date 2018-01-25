@@ -25,13 +25,21 @@ import {MDCIconToggle, MDCIconToggleFoundation} from '../../../packages/mdc-icon
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
-function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
-  const root = document.createElement(useInnerIconElement ? 'span' : 'i');
+function setupTest({tabIndex = undefined, useInnerIconElement = false, useSVGIcon = false} = {}) {
+  const root = document.createElement(useInnerIconElement || useSVGIcon ? 'span' : 'i');
   if (useInnerIconElement) {
     const icon = document.createElement('i');
     icon.id = 'icon';
     root.dataset.iconInnerSelector = `#${icon.id}`;
     root.appendChild(icon);
+  }
+  if (useSVGIcon) {
+    const svg = document.createElement('svg');
+    svg.id = 'svg-icon';
+    root.dataset.iconInnerSelector = `#${svg.id}`;
+    root.appendChild(svg);
+    const path = document.createElement('path');
+    svg.appendChild(path);
   }
   if (tabIndex !== undefined) {
     root.tabIndex = tabIndex;
@@ -197,6 +205,19 @@ test('#adapter.setText sets the text content of the inner icon element when used
   const {root, component} = setupTest({useInnerIconElement: true});
   component.getDefaultFoundation().adapter_.setText('foo');
   assert.equal(root.querySelector('#icon').textContent, 'foo');
+});
+
+test('#adapter.setPath sets the d attribute of the nested <path> element if present', () => {
+  const {root, component} = setupTest({useSVGIcon: true});
+  component.getDefaultFoundation().adapter_.setPath('M6 6h12v12H6z');
+  assert.equal(root.querySelector('#svg-icon path').getAttribute('d'), 'M6 6h12v12H6z');
+});
+
+test('#adapter.setPath does nothing if there is no nested <path> element present', () => {
+  const {root, component} = setupTest({useInnerIconElement: true});
+  const innerHTMLBefore = root.innerHTML;
+  component.getDefaultFoundation().adapter_.setPath('M6 6h12v12H6z');
+  assert.equal(root.innerHTML, innerHTMLBefore);
 });
 
 test('#adapter.getTabIndex returns the tabIndex of the element', () => {
