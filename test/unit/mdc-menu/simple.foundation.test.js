@@ -1170,7 +1170,6 @@ test('should do nothing when the same item is selected twice in a row', () => {
   clock.uninstall();
 });
 
-
 test('getSelectedIndex should return the last selected index', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
@@ -1187,5 +1186,27 @@ test('getSelectedIndex should return the last selected index', () => {
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
 
   assert.isOk(foundation.getSelectedIndex() === expectedIndex);
+  clock.uninstall();
+});
+
+test('getSelectedValue should return the last selected item', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+  foundation.init();
+  foundation.setRememberSelection(true);
+  handlers.click({target});
+
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  foundation.getSelectedValue();
+
+  td.verify(mockAdapter.getOptionAtIndex(expectedIndex), {times: 1});
+
   clock.uninstall();
 });

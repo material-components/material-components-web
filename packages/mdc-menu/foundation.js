@@ -597,11 +597,13 @@ class MDCMenuFoundation extends MDCFoundation {
   isOpen() {
     return this.isOpen_;
   }
+
   /** @return {?Element} */
   getSelectedValue() {
     const element = this.adapter_.getOptionAtIndex(this.selectedIndex_);
     return element ? element : null;
   }
+
   /** @return {number} */
   getSelectedIndex() {
     return this.selectedIndex_;
