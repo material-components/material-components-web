@@ -230,19 +230,6 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        function closest(elem, selector) {
-          if (elem.closest) {
-            return elem.closest(selector);
-          }
-          while (elem) {
-            if (matches(elem, selector)) {
-              return elem;
-            }
-            elem = elem.parentElement;
-          }
-          return null;
-        }
-
         var rtlToggle = document.getElementById('toggle-rtl');
         rtlToggle.addEventListener('change', function() {
           var docEl = document.documentElement;
@@ -268,12 +255,6 @@
         [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
         });
-
-        document.addEventListener('click', function(evt) {
-          if (closest(evt.target, 'a[href="#"]')) {
-            evt.preventDefault();
-          }
-        })
       });
     </script>
   </body>
