@@ -52,6 +52,7 @@ class MDCChipSet extends MDCComponent {
    */
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
+      hasClass: (className) => this.root_.classList.contains(className),
     })));
   }
 

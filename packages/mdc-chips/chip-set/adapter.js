@@ -28,6 +28,11 @@
  * @record
  */
 class MDCChipSetAdapter {
+  /**
+   * Returns true if the root element contains the given class name.
+   * @param {string} className
+   */
+  hasClass(className) {}
 }
 
-export {MDCChipAdapter};
+export {MDCChipSetAdapter};

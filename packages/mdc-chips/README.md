@@ -83,7 +83,9 @@ Method Signature | Description
 `getText() => string` | Returns the text content of the chip
 
 #### `MDCChipSetAdapter`
-None yet, coming soon.
+Method Signature | Description
+--- | ---
+`hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 
 ### `MDCChipFoundation` and `MDCChipSetFoundation`
 

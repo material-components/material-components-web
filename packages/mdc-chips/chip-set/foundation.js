@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-import bel from 'bel';
-
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 import {strings} from './constants';
@@ -38,6 +36,7 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
+      hasClass: () => {},
     });
   }
 
