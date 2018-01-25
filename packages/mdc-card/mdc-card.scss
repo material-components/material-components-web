@@ -157,7 +157,7 @@
 //
 
 .mdc-card__action--icon {
-  margin: 0 10px;
+  padding: 12px; // Same padding as mdc-icon-toggle
 }
 
 .mdc-card__action--icon:not(:disabled) {
