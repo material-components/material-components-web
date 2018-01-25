@@ -54,14 +54,15 @@ Fully-featured:
   <div class="mdc-card__media mdc-card__media--square">
     <div class="mdc-card__media-content">Title</div>
   </div>
+  <!-- ... content ... -->
   <div class="mdc-card__actions">
     <div class="mdc-card__action-buttons">
       <button class="mdc-button mdc-card__action mdc-card__action--button">Action 1</button>
       <button class="mdc-button mdc-card__action mdc-card__action--button">Action 2</button>
     </div>
     <div class="mdc-card__action-icons">
-      <i class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="Share">share</i>
-      <i class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="More">more_vert</i>
+      <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
+      <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
     </div>
   </div>
 </div>
@@ -104,7 +105,7 @@ However, MDC Card _does_ provide styles for two common card elements: _rich medi
 ```
 
 This area is used for showing rich media in cards, and optionally as a container. Use the `mdc-card__media` CSS class
-and the optional modifier classes shown below.
+and the [optional modifier classes](#css-classes).
 
 ##### Actions
 
@@ -130,15 +131,15 @@ above, or with icon buttons, as below:
      data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
     favorite_border
   </i>
-  <i class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="Share">share</i>
-  <i class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="More options">more_vert</i>
+  <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
+  <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
 </div>
 ```
 
-Be sure to include the `mdc-card__action` class on every action for correct positioning. In addition, icon actions
-should use the `mdc-card__action--icon` class.
+Be sure to include the `mdc-card__action` class on every action for correct positioning. In addition, _button_ icons
+should use the `mdc-card__action--button` class, and _icon_ actions should use the `mdc-card__action--icon` class.
 
-To have a single action button take up the entire width of the action row, use the `--full-bleed` modifier:
+To have a single action button take up the entire width of the action row, use the `--full-bleed` modifier on the row:
 
 ```html
 <div class="mdc-card__actions mdc-card__actions--full-bleed">
@@ -146,6 +147,22 @@ To have a single action button take up the entire width of the action row, use t
     All Business Headlines
     <i class="material-icons" aria-hidden="true">arrow_forward</i>
   </a>
+</div>
+```
+
+To display buttons _and_ icons in the same row, wrap them in `mdc-card__action-buttons` and `mdc-card__action-icons`
+elements:
+
+```html
+<div class="mdc-card__actions">
+  <div class="mdc-card__action-buttons">
+    <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+    <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
+  </div>
+  <div class="mdc-card__action-icons">
+    <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
+    <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
+  </div>
 </div>
 ```
 
