@@ -16,6 +16,7 @@
  */
 
 import * as dom from './dom.js';
+import * as pony from './ponyfill.js';
 import * as util from './util.js';
 
 const classes = {
@@ -291,7 +292,26 @@ export class HotSwapper extends InteractivityProvider {
   }
 }
 
+class DummyLinker extends InteractivityProvider {
+  /** @param {!Document|!Element} root */
+  static attachTo(root) {
+    const instance = new DummyLinker(root);
+    instance.lazyInit();
+    return instance;
+  }
+
+  /** @override */
+  lazyInit() {
+    this.root_.addEventListener('click', function(evt) {
+      if (pony.closest(evt.target, 'a[href="#"]')) {
+        evt.preventDefault();
+      }
+    });
+  }
+}
+
 /** @param {!Document|!Element} root */
 export function init(root) {
   HotSwapper.getInstance(root);
+  DummyLinker.attachTo(root);
 }
