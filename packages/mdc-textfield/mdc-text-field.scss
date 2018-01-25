@@ -84,22 +84,6 @@
     box-shadow: none;
   }
 
-  @include mdc-theme-dark {
-    border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
-
-    &:hover {
-      border-bottom: 1px solid;
-    }
-
-    &::placeholder {
-      @include mdc-theme-prop(color, text-hint-on-dark);
-    }
-
-    &:focus::placeholder {
-      @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
-    }
-  }
-
   // Move label when text-field gets autofilled in Chrome
   // stylelint-disable plugin/selector-bem-pattern
   &:-webkit-autofill + .mdc-text-field__label {

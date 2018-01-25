@@ -94,28 +94,10 @@
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon-on-light);
   @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider-on-light);
 
-  @include mdc-theme-dark(".mdc-text-field") {
-    @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-dark);
-    @include mdc-text-field-ink-color_(text-disabled-on-dark);
-    @include mdc-text-field-label-color_(text-disabled-on-dark);
-  }
-
   pointer-events: none;
 
   .mdc-text-field__input {
     border-bottom: 1px dotted;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      border-bottom: 1px dotted;
-    }
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    // stylelint-disable plugin/selector-bem-pattern
-    + .mdc-text-field-helper-text {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
-    // stylelint-enable plugin/selector-bem-pattern
   }
 
   .mdc-text-field__label {
@@ -133,12 +115,6 @@
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
   }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    + .mdc-text-field-helper-text--validation-msg {
-      color: $mdc-text-field-error-on-dark;
-    }
-  }
 }
 
 @mixin mdc-text-field-focused_ {
@@ -146,10 +122,6 @@
 
   @include mdc-required-text-field-label-asterix_ {
     color: $mdc-text-field-error-on-light;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      color: $mdc-text-field-error-on-dark;
-    }
   }
 
   + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
@@ -301,14 +273,6 @@
   margin-top: 16px;
   overflow: hidden;
 
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    background-color: $mdc-text-field-box-background-dark;
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    @include mdc-states(text-primary-on-dark, $has-nested-focusable-element: true);
-  }
-
   .mdc-text-field__input {
     align-self: flex-end;
     box-sizing: border-box;
@@ -329,10 +293,6 @@
     // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
   }
 
   .mdc-text-field__label--shake {
@@ -421,10 +381,6 @@
   .mdc-text-field__input {
     resize: vertical;
   }
-
-  @include mdc-theme-dark {
-    border-bottom: 1px solid $mdc-text-field-divider-on-dark;
-  }
 }
 
 // Textarea
@@ -438,10 +394,6 @@
 
   .mdc-text-field__input {
     border: 1px solid transparent;
-  }
-
-  @include mdc-theme-dark(".mdc-text-field") {
-    background-color: $mdc-textarea-disabled-background-on-dark;
   }
 }
 
@@ -469,10 +421,6 @@
   border: 1px solid;
   overflow: hidden;
 
-  @include mdc-theme-dark(".mdc-text-field") {
-    border-color: $mdc-textarea-border-on-dark;
-  }
-
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input {
     margin: 0;
@@ -490,10 +438,6 @@
     margin-left: 8px;
     padding: 8px;
     line-height: 1.15;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      background-color: $mdc-textarea-dark-background;
-    }
   }
 
   .mdc-text-field__label--shake {
