@@ -31,14 +31,6 @@ npm install --save @material/chips
 
 ### HTML Structure
 
-#### A single chip
-```html
-<div class="mdc-chip">
-  <div class="mdc-chip__text">Chip content</div>
-</div>
-```
-
-#### A set of chips
 ```html
 <div class="mdc-chip-set">
   <div class="mdc-chip">
@@ -57,7 +49,7 @@ npm install --save @material/chips
 
 CSS Class | Description
 --- | ---
-`mdc-chip` | Mandatory
+`mdc-chip` | Mandatory.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to.
 
@@ -85,12 +77,12 @@ Property | Value Type | Description
 #### `MDCChipAdapter`
 Method Signature | Description
 --- | ---
-`registerInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the root element
-`deregisterInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the root element
+`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
+`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `notifyInteraction() => void` | Emits a custom event "MDCChip:interaction" denoting the chip has been interacted with
 `getText() => string` | Returns the text content of the chip
 
-#### `MDCChipSet`
+#### `MDCChipSetAdapter`
 None yet, coming soon.
 
 ### `MDCChipFoundation` and `MDCChipSetFoundation`
