@@ -75,6 +75,10 @@
   @include mdc-states(black);
 }
 
+#custom-on-dark {
+  background-color: #6200ee;
+}
+
 #custom-on-dark .mdc-icon-toggle {
   @include mdc-icon-toggle-ink-color(#de442c);
   @include mdc-states-base-color(#de442c);
