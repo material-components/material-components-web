@@ -55,6 +55,7 @@
 @mixin mdc-card-row-layout_($display: flex) {
   display: $display;
   flex-direction: row;
+  align-items: center;
 }
 
 @mixin mdc-card-media-aspect-ratio-base_ {

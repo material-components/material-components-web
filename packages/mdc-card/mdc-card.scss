@@ -82,7 +82,6 @@
   @include mdc-card-box-sizing_;
   @include mdc-card-row-layout_;
 
-  align-items: center;
   min-height: 52px;
   padding: 8px;
 }
@@ -95,8 +94,6 @@
 .mdc-card__action-icons {
   @include mdc-card-box-sizing_;
   @include mdc-card-row-layout_;
-
-  align-items: center;
 }
 
 .mdc-card__action-icons {
@@ -118,7 +115,6 @@
   @include mdc-card-box-sizing_;
   @include mdc-card-row-layout_(inline-flex);
 
-  align-items: center;
   min-width: auto;
   cursor: pointer;
 
@@ -142,9 +138,6 @@
 }
 
 .mdc-card__actions--full-bleed .mdc-card__action--button {
-  @include mdc-card-box-sizing_;
-  @include mdc-card-row-layout_;
-
   justify-content: space-between;
   width: 100%;
   height: auto;
