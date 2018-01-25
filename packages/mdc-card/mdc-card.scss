@@ -117,6 +117,7 @@
 
   min-width: auto;
   cursor: pointer;
+  user-select: none;
 
   &:focus {
     outline: none;
