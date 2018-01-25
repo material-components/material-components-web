@@ -39,7 +39,25 @@
 // Private
 //
 
-@mixin mdc-card-media-aspect-ratio-base_() {
+@mixin mdc-card-box-sizing_ {
+  &,
+  &::before,
+  &::after {
+    box-sizing: border-box;
+  }
+}
+
+@mixin mdc-card-column-layout_($display: flex) {
+  display: $display;
+  flex-direction: column;
+}
+
+@mixin mdc-card-row-layout_($display: flex) {
+  display: $display;
+  flex-direction: row;
+}
+
+@mixin mdc-card-media-aspect-ratio-base_ {
   &::before {
     display: block;
     content: "";

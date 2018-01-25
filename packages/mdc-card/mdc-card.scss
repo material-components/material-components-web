@@ -24,12 +24,11 @@
 // postcss-bem-linter: define card
 
 .mdc-card {
-  @include mdc-elevation(2);
+  @include mdc-card-box-sizing_;
+  @include mdc-card-column-layout_;
   @include mdc-card-fill-color(background);
   @include mdc-card-corner-radius(2px);
-
-  display: flex;
-  flex-direction: column;
+  @include mdc-elevation(2);
 }
 
 //
@@ -37,6 +36,8 @@
 //
 
 .mdc-card__media {
+  @include mdc-card-box-sizing_;
+  @include mdc-card-column-layout_;
   @include mdc-card-media-aspect-ratio-base_;
 
   position: relative;
@@ -63,6 +64,9 @@
 }
 
 .mdc-card__media-content {
+  @include mdc-card-box-sizing_;
+  @include mdc-card-column-layout_;
+
   position: absolute;
   top: 0;
   right: 0;
@@ -75,9 +79,10 @@
 //
 
 .mdc-card__actions {
-  display: flex;
+  @include mdc-card-box-sizing_;
+  @include mdc-card-row-layout_;
+
   align-items: center;
-  box-sizing: border-box;
   min-height: 52px;
   padding: 8px;
 }
@@ -88,9 +93,10 @@
 
 .mdc-card__action-buttons,
 .mdc-card__action-icons {
-  display: flex;
+  @include mdc-card-box-sizing_;
+  @include mdc-card-row-layout_;
+
   align-items: center;
-  box-sizing: border-box;
 }
 
 .mdc-card__action-icons {
@@ -109,9 +115,10 @@
 //
 
 .mdc-card__action {
-  display: inline-flex;
+  @include mdc-card-box-sizing_;
+  @include mdc-card-row-layout_(inline-flex);
+
   align-items: center;
-  box-sizing: border-box;
   min-width: auto;
   cursor: pointer;
 
@@ -135,7 +142,9 @@
 }
 
 .mdc-card__actions--full-bleed .mdc-card__action--button {
-  display: flex;
+  @include mdc-card-box-sizing_;
+  @include mdc-card-row-layout_;
+
   justify-content: space-between;
   width: 100%;
   height: auto;
