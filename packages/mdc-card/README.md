@@ -153,8 +153,8 @@ To have a single action button take up the entire width of the action row, use t
 ```html
 <div class="mdc-card__actions mdc-card__actions--full-bleed">
   <a class="mdc-button mdc-card__action" href="#">
-    <span>All Business Headlines</span>
-    <i class="material-icons">arrow_forward</i>
+    All Business Headlines
+    <i class="material-icons" aria-hidden="true">arrow_forward</i>
   </a>
 </div>
 ```
