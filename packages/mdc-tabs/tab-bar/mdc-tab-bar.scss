@@ -41,10 +41,6 @@
   &__indicator {
     width: 100%;
 
-    @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(background-color, text-primary-on-dark);
-    }
-
     transform-origin: left top;
     transition: mdc-animation-enter(transform, 240ms);
     will-change: transform;

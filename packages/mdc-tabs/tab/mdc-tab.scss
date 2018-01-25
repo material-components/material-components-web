@@ -58,18 +58,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
     @include mdc-theme-prop(outline-color, text-secondary-on-light);
   }
 
-  @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-theme-prop(color, text-secondary-on-dark);
-
-    &:hover {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    &:focus {
-      @include mdc-theme-prop(outline-color, text-secondary-on-dark);
-    }
-  }
-
   // TODO: Replace with breakpoint variable
   @media screen and (max-width: 600px) {
     min-width: 72px;
@@ -100,10 +88,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
 
 .mdc-tab--active {
   @include mdc-tab-ink-color(text-primary-on-light);
-
-  @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-  }
 
   &::before {
     bottom: 0;
@@ -144,10 +128,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
   @include mdc-ripple-surface;
   @include mdc-states;
   @include mdc-ripple-radius;
-
-  @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-states(text-primary-on-dark);
-  }
 
   // stylelint-disable plugin/selector-bem-pattern
   &:focus {
