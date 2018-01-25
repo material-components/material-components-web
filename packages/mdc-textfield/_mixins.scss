@@ -20,6 +20,7 @@
 @import "label/variables";
 @import "helper-text/mixins";
 @import "icon/mixins";
+@import "icon/variables";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
@@ -362,31 +363,11 @@
 // Icons
 
 @mixin mdc-text-field-with-leading-icon_ {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-padding, $mdc-text-field-icon-position);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-position);
-  }
-
-  .mdc-text-field__label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
-  }
+  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
 }
 
 @mixin mdc-text-field-dense-with-leading-icon_ {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-position);
-  }
-
-  .mdc-text-field__label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
-  }
+  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
 }
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
@@ -406,23 +387,11 @@
 }
 
 @mixin mdc-text-field-with-trailing-icon_ {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(right, $mdc-text-field-icon-position);
-  }
+  @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
 }
 
 @mixin mdc-text-field-dense-with-trailing-icon_ {
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
-  }
-
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position(right, $mdc-text-field-dense-icon-position);
-  }
+  @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
 }
 
 // Full Width
