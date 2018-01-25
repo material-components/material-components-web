@@ -58,11 +58,6 @@
         margin: 16px;
       }
 
-      .mdc-theme--dark {
-        background-color: #333;
-        color: #ddd;
-      }
-
       .margin-inputs input {
         width: 2em;
       }
@@ -217,9 +212,6 @@
             <div class="left-column-controls">
               <label><input type="checkbox" name="is-rtl"> RTL</label>
             </div>
-            <div class="right-column-controls">
-              <label><input type="checkbox" name="dark"> Dark mode</label>
-            </div>
             <p>
               <div class="left-column-controls">
                 Menu Sizes:
@@ -263,18 +255,6 @@
         var menuButtonEl = document.querySelector('#menu-button');
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
-        });
-
-        var dark = document.querySelector('input[name="dark"]');
-        dark.addEventListener('change', function(evt) {
-          var contentEl = document.querySelector('.demo-content');
-          if (evt.target.checked) {
-            contentEl.classList.add('mdc-theme--dark');
-            menuEl.classList.add('mdc-menu--theme-dark');
-          } else {
-            contentEl.classList.remove('mdc-theme--dark');
-            menuEl.classList.remove('mdc-menu--theme-dark');
-          }
         });
 
         var radios = document.querySelectorAll('input[name="position"]');
