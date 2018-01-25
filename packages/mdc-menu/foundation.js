@@ -142,7 +142,7 @@ class MDCMenuFoundation extends MDCFoundation {
     this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
     /** @private {?AutoLayoutMeasurements} */
     this.measures_ = null;
-    /** @private {?number} */
+    /** @private {number} */
     this.selectedIndex_ = -1;
     /** @private {boolean} */
     this.rememberSelection_ = false;
@@ -265,6 +265,8 @@ class MDCMenuFoundation extends MDCFoundation {
     const isSpace = key === 'Space' || keyCode === 32;
     const isEnter = key === 'Enter' || keyCode === 13;
 
+    this.keyDownWithinMenu_ = isEnter || isSpace;
+
     const focusedItemIndex = this.adapter_.getFocusedItemIndex();
     const lastItemIndex = this.adapter_.getNumberOfItems() - 1;
 
@@ -298,8 +300,6 @@ class MDCMenuFoundation extends MDCFoundation {
         this.adapter_.focusItemAtIndex(focusedItemIndex + 1);
       }
     }
-
-    this.keyDownWithinMenu_ = isEnter || isSpace;
 
     return true;
   }
@@ -597,7 +597,7 @@ class MDCMenuFoundation extends MDCFoundation {
   isOpen() {
     return this.isOpen_;
   }
-  /** @return {Element} */
+  /** @return {?Element} */
   getSelectedValue() {
     const element = this.adapter_.getOptionAtIndex(this.selectedIndex_);
     return element ? element : null;
@@ -613,8 +613,8 @@ class MDCMenuFoundation extends MDCFoundation {
   setSelectedIndex(index) {
     const prevSelectedIndex = this.selectedIndex_;
     if (prevSelectedIndex >= 0) {
-      this.adapter_.rmAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected');
-      this.adapter_.rmClassForOptionAtIndex(this.selectedIndex_, cssClasses.SELECTED_LIST_ITEM);
+      this.adapter_.rmAttrForOptionAtIndex(prevSelectedIndex, 'aria-selected');
+      this.adapter_.rmClassForOptionAtIndex(prevSelectedIndex, cssClasses.SELECTED_LIST_ITEM);
     }
 
     this.selectedIndex_ = index >= 0 && index < this.adapter_.getNumberOfItems() ? index : -1;

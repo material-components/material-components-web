@@ -98,13 +98,13 @@ class MDCMenu extends MDCComponent {
 
   /**
    * Return the item within the menu that is selected.
-   * @return {!Element}
+   * @return {?Element}
    */
   get selectedItem() {
     return this.foundation_.getSelectedValue();
   }
 
-  /** @param {boolean} rememberSelection */
+  /** @param {!boolean} rememberSelection */
   set rememberSelection(rememberSelection) {
     this.foundation_.setRememberSelection(rememberSelection);
   }
