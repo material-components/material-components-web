@@ -15,18 +15,12 @@
 //
 
 @import "@material/rtl/mixins";
-@import "@material/theme/mixins";
 @import "../mixins";
 @import "../variables";
 @import "../slidable/mixins";
 @import "../slidable/variables";
 
 $mdc-persistent-drawer-width: 240px;
-$mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
-
-:root {
-  --mdc-persistent-drawer-dark-theme-bg-color: #{$mdc-persistent-drawer-dark-theme-bg-color};
-}
 
 .mdc-drawer--persistent {
   @include mdc-drawer-base_;
@@ -38,14 +32,6 @@ $mdc-persistent-drawer-dark-theme-bg-color: #212121 !default;
   .mdc-drawer__drawer {
     @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
     @include mdc-rtl-reflexive-position(left, 0);
-
-    @include mdc-theme-dark {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-      @include mdc-rtl-reflexive-box(border, right, 1px solid rgba(white, .12));
-
-      background-color: $mdc-persistent-drawer-dark-theme-bg-color;
-      background-color: var(--mdc-persistent-drawer-dark-theme-bg-color, #{$mdc-persistent-drawer-dark-theme-bg-color});
-    }
 
     @include mdc-slideable-drawer;
 
