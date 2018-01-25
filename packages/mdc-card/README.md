@@ -98,9 +98,9 @@ However, MDC Card _does_ provide styles for two common card elements: _rich medi
 ```
 
 ```html
-<section class="my-card__media mdc-card__media mdc-card__media--16-9">
+<div class="my-card__media mdc-card__media mdc-card__media--16-9">
   <div class="mdc-card__media-content">Title</div>
-</section>
+</div>
 ```
 
 This area is used for showing rich media in cards, and optionally as a container. Use the `mdc-card__media` CSS class
@@ -109,10 +109,10 @@ and the optional modifier classes shown below.
 ##### Actions
 
 ```html
-<section class="mdc-card__actions">
+<div class="mdc-card__actions">
   <button class="mdc-button mdc-card__action">Action 1</button>
   <button class="mdc-button mdc-card__action">Action 2</button>
-</section>
+</div>
 ```
 
 This area is used for showing different actions the user can take. It's typically used with buttons, as in the example
