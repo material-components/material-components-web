@@ -16,7 +16,6 @@
 
 @import "@material/animation/functions";
 @import "@material/animation/variables";
-@import "@material/theme/mixins";
 @import "@material/theme/variables";
 @import "@material/typography/mixins";
 
@@ -31,10 +30,6 @@
     height: 56px;
     padding: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, .12);
-
-    @include mdc-theme-dark(quote(#{&})) {
-      border-bottom: 1px solid rgba(255, 255, 255, .12);
-    }
 
     /* TODO(sgomes): replace with global breakpoints when we have them */
     @media (min-width: 600px) {
@@ -83,10 +78,6 @@
 
   .mdc-list-item__graphic {
     color: rgba(0, 0, 0, .54);
-
-    @include mdc-theme-dark(#{&}) {
-      color: rgba(255, 255, 255, .54);
-    }
   }
 }
 
