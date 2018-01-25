@@ -302,11 +302,16 @@ class DummyLinker extends InteractivityProvider {
 
   /** @override */
   lazyInit() {
-    this.root_.addEventListener('click', function(evt) {
-      if (pony.closest(evt.target, 'a[href="#"]')) {
+    this.root_.addEventListener('click', (evt) => {
+      if (this.shouldPreventDefault_(evt)) {
         evt.preventDefault();
       }
     });
+  }
+
+  /** @private */
+  shouldPreventDefault_(evt) {
+    return pony.closest(evt.target, 'a[href="#"], [data-demo-disable-hash-link-navigation] a[href^="#"]');
   }
 }
 
