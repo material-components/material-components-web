@@ -17,15 +17,8 @@
 @import "@material/animation/functions";
 @import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
-@import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
-
-$mdc-dialog-dark-theme-bg-color: #303030 !default;
-
-:root {
-  --mdc-dialog-dark-theme-bg-color: #{$mdc-dialog-dark-theme-bg-color};
-}
 
 // postcss-bem-linter: define dialog
 
@@ -69,13 +62,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
   border-radius: 2px;
   opacity: 0;
 
-  @include mdc-theme-dark(".mdc-dialog") {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-
-    background-color: $mdc-dialog-dark-theme-bg-color;
-    background-color: var(--mdc-dialog-dark-theme-bg-color, #{$mdc-dialog-dark-theme-bg-color});
-  }
-
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
   }
@@ -108,10 +94,6 @@ $mdc-dialog-dark-theme-bg-color: #303030 !default;
 
   margin-top: 20px;
   padding: 0 24px 24px;
-
-  @include mdc-theme-dark(".mdc-dialog") {
-    @include mdc-theme-prop(color, text-secondary-on-dark);
-  }
 }
 
 .mdc-dialog__body--scrollable {
