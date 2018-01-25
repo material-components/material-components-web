@@ -113,7 +113,6 @@
   align-items: center;
   box-sizing: border-box;
   min-width: auto;
-  margin: 0 10px;
   cursor: pointer;
 
   &:focus {
@@ -148,6 +147,10 @@
 //
 // Action icons
 //
+
+.mdc-card__action--icon {
+  margin: 0 10px;
+}
 
 .mdc-card__action--icon:not(:disabled) {
   color: inherit;
