@@ -56,12 +56,12 @@ Fully-featured:
   </div>
   <div class="mdc-card__actions">
     <div class="mdc-card__action-buttons">
-      <button class="mdc-button mdc-card__action">Action 1</button>
-      <button class="mdc-button mdc-card__action">Action 2</button>
+      <button class="mdc-button mdc-card__action mdc-card__action--button">Action 1</button>
+      <button class="mdc-button mdc-card__action mdc-card__action--button">Action 2</button>
     </div>
     <div class="mdc-card__action-icons">
-      <i class="material-icons mdc-card__action" role="button" title="Share">share</i>
-      <i class="material-icons mdc-card__action" role="button" title="More">more_vert</i>
+      <i class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="Share">share</i>
+      <i class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="More">more_vert</i>
     </div>
   </div>
 </div>
@@ -110,8 +110,8 @@ and the optional modifier classes shown below.
 
 ```html
 <div class="mdc-card__actions">
-  <button class="mdc-button mdc-card__action">Action 1</button>
-  <button class="mdc-button mdc-card__action">Action 2</button>
+  <button class="mdc-button mdc-card__action mdc-card__action--button">Action 1</button>
+  <button class="mdc-button mdc-card__action mdc-card__action--button">Action 2</button>
 </div>
 ```
 
@@ -152,7 +152,7 @@ To have a single action button take up the entire width of the action row, use t
 
 ```html
 <div class="mdc-card__actions mdc-card__actions--full-bleed">
-  <a class="mdc-button mdc-card__action" href="#">
+  <a class="mdc-button mdc-card__action mdc-card__action--button" href="#">
     All Business Headlines
     <i class="material-icons" aria-hidden="true">arrow_forward</i>
   </a>
