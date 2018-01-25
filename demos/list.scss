@@ -29,31 +29,14 @@ a.material-icons {
   max-width: 600px;
 }
 
-.mdc-theme--dark {
-  background: #303030;
-}
-
-.mdc-theme--dark > h3 {
-  color: white;
-}
-
 .demo-list--icon-placeholders,
 .demo-list--with-avatars {
   @include mdc-list-item-graphic-ink-color(white);
   @include mdc-list-item-graphic-fill-color(text-icon-on-background);
-
-  @include mdc-theme-dark {
-    @include mdc-list-item-graphic-ink-color(#303030);
-    @include mdc-list-item-graphic-fill-color(text-icon-on-dark);
-  }
 }
 
 .demo-list--avatar-and-meta-icon {
   @include mdc-list-item-meta-ink-color($material-color-pink-a200);
-
-  @include mdc-theme-dark {
-    @include mdc-list-item-meta-ink-color($material-color-pink-a200);
-  }
 }
 
 .demo-list-group--custom,
@@ -87,9 +70,7 @@ a.material-icons {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#demo-wrapper .mdc-list-group .mdc-list,
-#demo-wrapper .mdc-theme--dark .mdc-list,
-#demo-wrapper .mdc-theme--dark .mdc-list-group {
+#demo-wrapper .mdc-list-group .mdc-list {
   border: none;
 }
 
