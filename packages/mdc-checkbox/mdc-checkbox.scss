@@ -74,6 +74,10 @@
   @include mdc-checkbox--anim_;
 }
 
+.mdc-checkbox__native-control:not(:checked) ~ .mdc-checkbox__background {
+  @include mdc-checkbox__background--unmarked_;
+}
+
 .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
 .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
   @include mdc-checkbox__background--marked_;

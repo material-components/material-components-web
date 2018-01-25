@@ -273,6 +273,10 @@
   will-change: background-color, border-color;
 }
 
+@mixin mdc-checkbox__background--unmarked_ {
+  transition-delay: $mdc-checkbox-transition-duration;
+}
+
 @mixin mdc-checkbox__background--marked_ {
   transition:
     mdc-checkbox-transition-enter(border-color),
