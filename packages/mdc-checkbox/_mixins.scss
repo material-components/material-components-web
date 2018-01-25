@@ -69,9 +69,7 @@
 
 @mixin mdc-checkbox-ink-color($color) {
   .mdc-checkbox__checkmark__path {
-    // !important is needed here because a stroke must be set as an attribute on the SVG in order
-    // for line animation to work properly.
-    @include mdc-theme-prop(stroke, $color, $important: true);
+    @include mdc-theme-prop(stroke, $color);
   }
 
   .mdc-checkbox__mixedmark {
@@ -137,11 +135,7 @@
 }
 
 @mixin mdc-checkbox__child--upgraded_ {
-  // Due to the myriad of selector combos used to properly style a CSS-only checkbox, all of
-  // which have varying selector precedence and make use of transitions, it is cleaner and more
-  // efficient here to simply use !important, since the mdc-checkbox--anim-* classes will take
-  // over from here.
-  transition: none !important;
+  transition: none;
 }
 
 // Animation
