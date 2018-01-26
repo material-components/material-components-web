@@ -309,7 +309,7 @@
           <section>
             <h3>Leading Checkbox</h3>
             <ul class="mdc-list mdc-list--non-interactive demo-list" id="leading-checkbox-list">
-              <li class="mdc-list-item">
+              <li class="mdc-list-item checkbox-list-ripple-surface">
                 <span class="mdc-list-item__graphic">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
@@ -329,7 +329,7 @@
                 </span>
                 <label for="leading-checkbox-blueberries">Blueberries</label>
               </li>
-              <li class="mdc-list-item">
+              <li class="mdc-list-item checkbox-list-ripple-surface">
                 <span class="mdc-list-item__graphic">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
@@ -349,7 +349,7 @@
                 </span>
                 <label for="leading-checkbox-boysenberries">Boysenberries</label>
               </li>
-              <li class="mdc-list-item">
+              <li class="mdc-list-item checkbox-list-ripple-surface">
                 <span class="mdc-list-item__graphic">
                   <div class="mdc-checkbox">
                     <input type="checkbox"
@@ -488,7 +488,7 @@
           <section>
             <h3>Trailing Checkbox</h3>
             <ul class="mdc-list mdc-list--non-interactive demo-list" id="trailing-checkbox-list">
-              <li class="mdc-list-item">
+              <li class="mdc-list-item checkbox-list-ripple-surface">
                 <label for="trailing-checkbox-blueberries">Blueberries</label>
                 <span class="mdc-list-item__meta">
                   <div class="mdc-checkbox">
@@ -507,7 +507,7 @@
                   </div>
                 </span>
               </li>
-              <li class="mdc-list-item">
+              <li class="mdc-list-item checkbox-list-ripple-surface">
                 <label for="trailing-checkbox-boysenberries">Boysenberries</label>
                 <span class="mdc-list-item__meta">
                   <div class="mdc-checkbox">
@@ -527,7 +527,7 @@
                   </div>
                 </span>
               </li>
-              <li class="mdc-list-item">
+              <li class="mdc-list-item checkbox-list-ripple-surface">
                 <label for="trailing-checkbox-strawberries">Strawberries</label>
                 <span class="mdc-list-item__meta">
                   <div class="mdc-checkbox">
@@ -1330,47 +1330,33 @@
           });
         }
 
-        var deactivateRippleHandler = null;
-        var checkboxListRippleSurfaceClass = 'checkbox-list-ripple-surface';
-
         function clickHandler(evt, rippleFoundation, li) {
           var checkbox = li.querySelector('.mdc-checkbox__native-control');
-          var isLabel = Array.prototype.some.call(checkbox.labels, function(label) { return label === evt.target; });
-          if(evt.target !== checkbox && !isLabel) {
+          var label = li.querySelector('label');
+          if(evt.target !== checkbox && evt.target !== label) {
             checkbox.checked = !checkbox.checked;
-            li.classList.add(checkboxListRippleSurfaceClass);
-            rippleFoundation.activate();
-
-            deactivateRippleHandler = e => deactivateRipple(e, rippleFoundation, li);
-            li.addEventListener('mouseup', deactivateRippleHandler);
+          }
+          if(evt.target !== checkbox) {
+            rippleFoundation.activate(evt);
           }
         };
 
-        function deactivateRipple(evt, rippleFoundation, li) {
-          li.classList.remove(checkboxListRippleSurfaceClass);
-          rippleFoundation.deactivate();
-          li.removeEventListener('mouseup', deactivateRippleHandler);
-        };
-
         function addRippleToListItems(list) {
-          list.querySelectorAll('.mdc-list-item').forEach(function(li) {
-            var rippleAdapter = mdc.ripple.MDCRipple.createAdapter({
-              unbounded: false,
-              disabled: false,
-              root_: li
-            });
+          var listItems = list.querySelectorAll('.mdc-list-item');
+          [].forEach.call(listItems, function(li) {
+            var rippleFoundation = new mdc.ripple.MDCRippleFoundation(
+              mdc.ripple.MDCRipple.createAdapter({
+                unbounded: false, disabled: false, root_: li
+              })
+            );
 
-            var rippleFoundation = new mdc.ripple.MDCRippleFoundation(rippleAdapter);
-            rippleFoundation.layout();
-
-            li.addEventListener('mousedown', e => clickHandler(e, rippleFoundation, li));
+            li.addEventListener('mousedown',
+              function(e) {clickHandler(e, rippleFoundation, li)});
           });
         };
 
-        var leadingCheckboxList = document.getElementById('leading-checkbox-list');
-        var trailingCheckboxList = document.getElementById('trailing-checkbox-list');
-        addRippleToListItems(leadingCheckboxList);
-        addRippleToListItems(trailingCheckboxList);
+        addRippleToListItems(document.getElementById('leading-checkbox-list'));
+        addRippleToListItems(document.getElementById('trailing-checkbox-list'));
       });
     </script>
   </body>
