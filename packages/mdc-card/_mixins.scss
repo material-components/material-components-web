@@ -39,19 +39,6 @@
 // Private
 //
 
-@mixin mdc-card-box-sizing_ {
-  &,
-  &::before,
-  &::after {
-    box-sizing: border-box;
-  }
-}
-
-@mixin mdc-card-column-layout_($display: flex) {
-  display: $display;
-  flex-direction: column;
-}
-
 @mixin mdc-card-row-layout_($display: flex) {
   display: $display;
   flex-direction: row;

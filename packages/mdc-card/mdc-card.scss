@@ -24,11 +24,13 @@
 // postcss-bem-linter: define card
 
 .mdc-card {
-  @include mdc-card-box-sizing_;
-  @include mdc-card-column-layout_;
   @include mdc-card-fill-color(background);
   @include mdc-card-corner-radius(2px);
   @include mdc-elevation(2);
+
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 //
@@ -36,8 +38,6 @@
 //
 
 .mdc-card__media {
-  @include mdc-card-box-sizing_;
-  @include mdc-card-column-layout_;
   @include mdc-card-media-aspect-ratio-base_;
 
   position: relative;
@@ -65,14 +65,12 @@
 }
 
 .mdc-card__media-content {
-  @include mdc-card-box-sizing_;
-  @include mdc-card-column-layout_;
-
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  box-sizing: border-box;
 }
 
 //
@@ -80,8 +78,6 @@
 //
 
 .mdc-card__primary-action {
-  @include mdc-card-box-sizing_;
-  @include mdc-card-column-layout_;
   @include mdc-ripple-surface;
   @include mdc-ripple-radius;
   @include mdc-states;
@@ -110,9 +106,9 @@
 //
 
 .mdc-card__actions {
-  @include mdc-card-box-sizing_;
   @include mdc-card-row-layout_;
 
+  box-sizing: border-box;
   min-height: 52px;
   padding: 8px;
 }
@@ -123,8 +119,9 @@
 
 .mdc-card__action-buttons,
 .mdc-card__action-icons {
-  @include mdc-card-box-sizing_;
   @include mdc-card-row-layout_;
+
+  box-sizing: border-box;
 }
 
 .mdc-card__action-icons {
@@ -143,9 +140,9 @@
 //
 
 .mdc-card__action {
-  @include mdc-card-box-sizing_;
   @include mdc-card-row-layout_(inline-flex);
 
+  box-sizing: border-box;
   min-width: auto;
   cursor: pointer;
   user-select: none;
