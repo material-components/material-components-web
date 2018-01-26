@@ -15,174 +15,157 @@
 //
 
 @import "@material/elevation/mixins";
+@import "@material/icon-toggle/mixins";
 @import "@material/theme/mixins";
-@import "@material/typography/mixins";
+@import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
+@import "./mixins";
 
 // postcss-bem-linter: define card
+
 .mdc-card {
+  @include mdc-card-fill-color(background);
+  @include mdc-card-corner-radius(2px);
   @include mdc-elevation(2);
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   box-sizing: border-box;
+}
+
+//
+// Media
+//
+
+.mdc-card__media {
+  @include mdc-card-media-aspect-ratio-base_;
+
+  position: relative;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.mdc-card__media:first-child {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.mdc-card__media:last-child {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+.mdc-card__media--square {
+  @include mdc-card-media-aspect-ratio(1, 1);
+}
+
+.mdc-card__media--16-9 {
+  @include mdc-card-media-aspect-ratio(16, 9);
+}
+
+.mdc-card__media-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
+//
+// Action row
+//
+
+.mdc-card__actions {
+  @include mdc-card-row-layout_;
+
+  box-sizing: border-box;
+  min-height: 52px;
+  padding: 8px;
+}
+
+.mdc-card__actions--full-bleed {
   padding: 0;
-  border-radius: 2px;
-  overflow: hidden;
+}
 
-  &__primary {
-    padding: 16px;
+.mdc-card__action-buttons,
+.mdc-card__action-icons {
+  @include mdc-card-row-layout_;
 
-    // Add extra space before large title.
-    .mdc-card__title--large {
-      padding-top: 8px;
-    }
+  box-sizing: border-box;
+}
 
-    // Add extra padding if this is the last block.
-    &:last-child {
-      padding-bottom: 24px;
-    }
+.mdc-card__action-icons {
+  @include mdc-theme-prop(color, text-icon-on-background);
+
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.mdc-card__action-buttons + .mdc-card__action-icons {
+  @include mdc-rtl-reflexive-box(margin, left, 16px);
+}
+
+//
+// Action items
+//
+
+.mdc-card__action {
+  @include mdc-card-row-layout_(inline-flex);
+
+  box-sizing: border-box;
+  min-width: auto;
+  cursor: pointer;
+  user-select: none;
+
+  &:focus {
+    outline: none;
   }
+}
 
-  &__supporting-text {
-    @include mdc-typography(body1);
-    @include mdc-theme-prop(color, text-primary-on-light);
+//
+// Action buttons
+//
 
-    box-sizing: border-box;
-    padding: 8px 16px;
+.mdc-card__action--button {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
 
-    @include mdc-theme-dark(".mdc-card") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
+  padding: 0 8px;
 
-    // Remove top padding if immediately preceded by a primary block.
-    .mdc-card__primary + & {
-      margin-top: -8px;
-      padding-top: 0;
-    }
-
-    // Add extra padding if this is the last block.
-    &:last-child {
-      padding-bottom: 24px;
-    }
+  &:last-child {
+    @include mdc-rtl-reflexive-box(margin, right, 0);
   }
+}
 
-  &__actions {
-    display: flex;
-    box-sizing: border-box;
-    padding: 8px;
+.mdc-card__actions--full-bleed .mdc-card__action--button {
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  padding: 8px 16px;
+  text-align: left;
 
-    // Adjust text color for dark theme.
-    @include mdc-theme-dark(".mdc-card") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    // Tweak button paddings and margins when they're used as actions
-    .mdc-card__action {
-      margin: 0 8px 0 0;
-
-      @include mdc-rtl {
-        margin: 0 0 0 8px;
-      }
-    }
-
-    .mdc-card__action:last-child {
-      @include mdc-rtl-reflexive-box(margin, right, 0);
-    }
-
-    // Vertical actions (one per line)
-    &--vertical {
-      flex-flow: column;
-      align-items: flex-start;
-
-      .mdc-card__action {
-        margin: 0 0 4px;
-      }
-
-      .mdc-card__action:last-child {
-        margin-bottom: 0;
-      }
-    }
+  @include mdc-rtl {
+    text-align: right;
   }
+}
 
-  &__media {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    box-sizing: border-box;
-    padding: 16px;
-  }
+//
+// Action icons
+//
 
-  &__media-item {
-    display: inline-block;
-    width: auto;
-    height: 80px;
-    margin: 16px 0 0;
-    padding: 0;
+.mdc-card__action--icon {
+  // Icon toggles are taller than buttons, so we need to adjust their margins to prevent the action row from expanding.
+  margin: -6px 0;
 
-    @each $mult, $name in (1.5: "1dot5", 2: "2", 3: "3") {
-      // postcss-bem-linter: ignore
-      &--#{$name}x {
-        width: auto;
-        height: $mult * 80px;
-      }
-    }
-  }
+  // Same padding as mdc-icon-toggle.
+  padding: 12px;
+}
 
-  &__title {
-    @include mdc-typography(body2);
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    // Adjust text color for dark theme.
-    @include mdc-theme-dark(".mdc-card") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    margin: -.063rem 0; // -1sp 0
-  }
-
-  &__title--large {
-    @include mdc-typography(headline);
-
-    margin: 0;
-  }
-
-  &__subtitle {
-    @include mdc-typography(body1);
-    @include mdc-theme-prop(color, text-primary-on-light);
-
-    // Adjust text color for dark theme.
-    @include mdc-theme-dark(".mdc-card") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    margin: -.063rem 0; // -1sp 0
-  }
-
-  &__horizontal-block {
-    @include mdc-rtl-reflexive-property(padding, 0, 16px);
-
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    box-sizing: border-box;
-
-    // postcss-bem-linter: ignore
-    .mdc-card__actions--vertical {
-      margin: 16px;
-    }
-
-    .mdc-card__media-item {
-      @include mdc-rtl-reflexive-box(margin, left, 16px);
-    }
-
-    // postcss-bem-linter: ignore
-    .mdc-card__media-item--3x {
-      margin-bottom: 16px;
-    }
-  }
+.mdc-card__action--icon:not(:disabled) {
+  @include mdc-theme-prop(color, text-icon-on-background);
 }
 
 // postcss-bem-linter: end
