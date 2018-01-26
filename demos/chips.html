@@ -74,12 +74,10 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var chipSets = document.querySelectorAll(
-          '.mdc-chip-set:not([data-demo-no-auto-js])'
-        );
-        for (var i = 0, chipSet; chipSet = chipSets[i]; i++) {
+        var chipSets = document.querySelectorAll('.mdc-chip-set');
+        [].forEach.call(chipSets, function(chipSet) {
           mdc.chips.MDCChipSet.attachTo(chipSet);
-        }
+        });
       });
     </script>
   </body>
