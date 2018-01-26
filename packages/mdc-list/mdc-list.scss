@@ -170,7 +170,13 @@ a.mdc-list-item {
 }
 
 @at-root {
-  @include mdc-list-divider-color($mdc-list-divider-color-light);
+  $divider-color: if(
+    mdc-theme-contrast-tone($mdc-theme-background) == "dark",
+    $mdc-list-divider-color-dark,
+    $mdc-list-divider-color-light
+  );
+
+  @include mdc-list-divider-color($divider-color);
 }
 
 .mdc-list-divider--padded {
