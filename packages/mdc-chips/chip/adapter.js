@@ -47,12 +47,6 @@ class MDCChipAdapter {
    * interacted with (typically on click or keydown).
    */
   notifyInteraction() {}
-
-  /**
-   * Returns the text content in the chip.
-   * @return {string}
-   */
-  getText() {}
 }
 
 export {MDCChipAdapter};

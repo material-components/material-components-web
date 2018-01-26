@@ -39,11 +39,6 @@ function setupTest() {
   return {root, component};
 }
 
-test('#adapter.getText returns text from the text element', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getText(), 'Chip content');
-});
-
 test('#adapter.registerInteractionHandler adds event listener for a given event to the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('click handler');

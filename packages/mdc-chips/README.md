@@ -64,7 +64,6 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 #### `MDCChip`
 Property | Value Type | Description
 --- | --- | ---
-`text` | String | Proxies to the foundation's `getText` method.
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
 
 #### `MDCChipSet`
@@ -80,7 +79,6 @@ Method Signature | Description
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `notifyInteraction() => void` | Emits a custom event "MDCChip:interaction" denoting the chip has been interacted with, which bubbles to the top-level text field element
-`getText() => string` | Returns the text content of the chip
 
 #### `MDCChipSetAdapter`
 Method Signature | Description
@@ -90,9 +88,7 @@ Method Signature | Description
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
 #### `MDCChipFoundation`
-Method Signature | Description
---- | ---
-`getText() => string` | Returns the text content of the chip
+None yet, coming soon.
 
 #### `MDCChipSetFoundation`
 None yet, coming soon.

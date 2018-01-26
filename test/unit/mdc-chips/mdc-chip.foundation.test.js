@@ -30,7 +30,6 @@ test('exports strings', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
     'registerInteractionHandler', 'deregisterInteractionHandler', 'notifyInteraction',
-    'getText',
   ]);
 });
 
@@ -50,14 +49,6 @@ test('#destroy removes event listeners', () => {
 
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
-});
-
-test('#getText returns text content', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getText()).thenReturn('hello');
-
-  foundation.init();
-  assert.equal(foundation.getText(), 'hello');
 });
 
 test('on click, emit custom event', () => {

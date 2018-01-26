@@ -61,20 +61,12 @@ class MDCChip extends MDCComponent {
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
-      getText: () => this.root_.querySelector(strings.TEXT_SELECTOR).textContent,
     })));
   }
 
   /** @return {!MDCRipple} */
   get ripple() {
     return this.ripple_;
-  }
-
-  /**
-   * @return {string}
-   */
-  get text() {
-    return this.foundation_.getText();
   }
 }
 

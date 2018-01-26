@@ -40,7 +40,6 @@ class MDCChipFoundation extends MDCFoundation {
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       notifyInteraction: () => {},
-      getText: () => {},
     });
   }
 
@@ -64,10 +63,6 @@ class MDCChipFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
-  }
-
-  getText() {
-    return this.adapter_.getText();
   }
 
   /**
