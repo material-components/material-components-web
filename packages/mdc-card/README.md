@@ -171,7 +171,7 @@ elements:
 CSS Class | Description
 --- | ---
 `mdc-card` | Mandatory, for the card element
-`mdc-card__primary-action` | The main tappable area of the card, which typically wraps everything in the card except `mdc-card__actions`
+`mdc-card__primary-action` | The main tappable area of the card. Typically contains most (or all) card content _except_ `mdc-card__actions`.
 `mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
 `mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
