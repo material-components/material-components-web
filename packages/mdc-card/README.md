@@ -133,7 +133,7 @@ above, or with icon buttons, as below:
     </i>
   <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
   <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
-  </div>
+</div>
 ```
 
 Be sure to include the `mdc-card__action` class on every action for correct positioning. In addition, _button_ icons
@@ -162,7 +162,7 @@ elements:
   <div class="mdc-card__action-icons">
     <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
     <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
-</div>
+  </div>
 </div>
 ```
 
