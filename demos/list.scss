@@ -81,14 +81,10 @@ a.material-icons {
   @include mdc-ripple-radius;
   @include mdc-states;
   @include mdc-states-base-color(black);
-
-  position: relative;
-  outline: none;
-  overflow: hidden;
 }
 
 .checkbox-list-ripple-surface:not(.mdc-ripple-upgraded):active::after {
-  // disable checkbox click activating ripple effect
+  // Prevent checkbox clicks from activating a second ripple on the list item.
   opacity: 0;
 }
 
