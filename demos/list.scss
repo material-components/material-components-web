@@ -19,6 +19,7 @@
 @import "../packages/mdc-elevation/mixins";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-list/mdc-list";
+@import "../packages/mdc-ripple/mixins";
 
 a.material-icons {
   text-decoration: none;
@@ -73,6 +74,12 @@ a.material-icons {
   max-width: 600px;
   margin-top: 48px;
   margin-left: 72px;
+}
+
+.checkbox-list-ripple-surface {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states;
 }
 
 #demo-wrapper {

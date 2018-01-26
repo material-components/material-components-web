@@ -1329,6 +1329,48 @@
             evt.preventDefault();
           });
         }
+
+        var deactivateRippleHandler = null;
+        var checkboxListRippleSurfaceClass = 'checkbox-list-ripple-surface';
+
+        function clickHandler(evt, rippleFoundation, li) {
+          var checkbox = li.querySelector('.mdc-checkbox__native-control');
+          var isLabel = Array.prototype.some.call(checkbox.labels, function(label) { return label === evt.target; });
+          if(evt.target !== checkbox && !isLabel) {
+            checkbox.checked = !checkbox.checked;
+            li.classList.add(checkboxListRippleSurfaceClass);
+            rippleFoundation.activate();
+
+            deactivateRippleHandler = e => deactivateRipple(e, rippleFoundation, li);
+            li.addEventListener('mouseup', deactivateRippleHandler);
+          }
+        };
+
+        function deactivateRipple(evt, rippleFoundation, li) {
+          li.classList.remove(checkboxListRippleSurfaceClass);
+          rippleFoundation.deactivate();
+          li.removeEventListener('mouseup', deactivateRippleHandler);
+        };
+
+        function addRippleToListItems(list) {
+          list.querySelectorAll('.mdc-list-item').forEach(function(li) {
+            var rippleAdapter = mdc.ripple.MDCRipple.createAdapter({
+              unbounded: false,
+              disabled: false,
+              root_: li
+            });
+
+            var rippleFoundation = new mdc.ripple.MDCRippleFoundation(rippleAdapter);
+            rippleFoundation.layout();
+
+            li.addEventListener('mousedown', e => clickHandler(e, rippleFoundation, li));
+          });
+        };
+
+        var leadingCheckboxList = document.getElementById('leading-checkbox-list');
+        var trailingCheckboxList = document.getElementById('trailing-checkbox-list');
+        addRippleToListItems(leadingCheckboxList);
+        addRippleToListItems(trailingCheckboxList);
       });
     </script>
   </body>
