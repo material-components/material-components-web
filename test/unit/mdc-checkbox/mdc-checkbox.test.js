@@ -38,7 +38,7 @@ function getFixture() {
       <div class="mdc-checkbox__background">
         <svg class="mdc-checkbox__checkmark"
              viewBox="0 0 24 24">
-          <path class="mdc-checkbox__checkmark__path"
+          <path class="mdc-checkbox__checkmark-path"
                 fill="none"
                 stroke="white"
                 d="M4.1,12.7 9,17.6 20.3,6.3"/>
