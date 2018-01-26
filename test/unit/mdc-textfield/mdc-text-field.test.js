@@ -49,11 +49,14 @@ class FakeRipple {
   }
 }
 
-class FakeBottomLine {
+class FakeLineRipple {
   constructor() {
     this.listen = td.func('lineRipple.listen');
     this.unlisten = td.func('lineRipple.unlisten');
     this.destroy = td.func('.destroy');
+    this.activate = td.func('lineRipple.activate');
+    this.deactivate = td.func('lineRipple.deactivate');
+    this.setTransformOrigin = td.func('lineRipple.setTransformOrigin');
   }
 }
 
@@ -180,6 +183,7 @@ test('#constructor handles undefined optional sub-elements gracefully', () => {
 });
 
 function setupTest(root = getFixture()) {
+  const lineRipple = new FakeLineRipple();
   const helperText = new FakeHelperText();
   const icon = new FakeIcon();
   const label = new FakeLabel();
@@ -188,12 +192,13 @@ function setupTest(root = getFixture()) {
     root,
     undefined,
     (el) => new FakeRipple(el),
+    () => lineRipple,
     () => helperText,
     () => icon,
     () => label,
     () => outline
   );
-  return {root, component, helperText, icon, label, outline};
+  return {root, component, lineRipple, helperText, icon, label, outline};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -297,17 +302,17 @@ test('#layout recomputes all dimensions and positions for the ripple element', (
   td.verify(component.ripple.layout());
 });
 
-test('#adapter.registerBottomLineEventHandler adds event listener to line ripple', () => {
+test('#adapter.registerLineRippleEventHandler adds event listener to line ripple', () => {
   const {component, lineRipple} = setupTest();
   const handler = () => {};
-  component.getDefaultFoundation().adapter_.registerBottomLineEventHandler('evt', handler);
+  component.getDefaultFoundation().adapter_.registerLineRippleEventHandler('evt', handler);
   td.verify(lineRipple.listen('evt', handler));
 });
 
-test('#adapter.deregisterBottomLineEventHandler removes event listener for "transitionend" from line ripple', () => {
+test('#adapter.deregisterLineRippleEventHandler removes event listener for "transitionend" from line ripple', () => {
   const {component, lineRipple} = setupTest();
   const handler = () => {};
-  component.getDefaultFoundation().adapter_.deregisterBottomLineEventHandler('evt', handler);
+  component.getDefaultFoundation().adapter_.deregisterLineRippleEventHandler('evt', handler);
   td.verify(lineRipple.unlisten('evt', handler));
 });
 
@@ -370,7 +375,7 @@ test('#adapter.getNativeInput returns the component input element', () => {
 });
 
 test('#adapter.isRtl returns true when the root element is in an RTL context' +
-  'and false otherwise', () => {
+    'and false otherwise', () => {
   const wrapper = bel`<div dir="rtl"></div>`;
   const {root, component} = setupTest();
   assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
@@ -380,6 +385,24 @@ test('#adapter.isRtl returns true when the root element is in an RTL context' +
   assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
 
   document.body.removeChild(wrapper);
+});
+
+test('#adapter.activateLineRipple calls the activate method on the line ripple', () => {
+  const {component, lineRipple} = setupTest();
+  component.getDefaultFoundation().adapter_.activateLineRipple();
+  td.verify(lineRipple.activate());
+});
+
+test('#adapter.deactivateLineRipple calls the deactivate method on the line ripple', () => {
+  const {component, lineRipple} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateLineRipple();
+  td.verify(lineRipple.deactivate());
+});
+
+test('#adapter.setLineRippleTransformOrigin calls the setTransformOrigin method on the line ripple', () => {
+  const {component, lineRipple} = setupTest();
+  component.getDefaultFoundation().adapter_.setLineRippleTransformOrigin(100);
+  td.verify(lineRipple.setTransformOrigin(100));
 });
 
 function setupMockFoundationTest(root = getFixture()) {

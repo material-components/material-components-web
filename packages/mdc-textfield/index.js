@@ -248,12 +248,12 @@ class MDCTextField extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-        registerBottomLineEventHandler: (evtType, handler) => {
+        registerLineRippleEventHandler: (evtType, handler) => {
           if (this.lineRipple_) {
             this.lineRipple_.listen(evtType, handler);
           }
         },
-        deregisterBottomLineEventHandler: (evtType, handler) => {
+        deregisterLineRippleEventHandler: (evtType, handler) => {
           if (this.lineRipple_) {
             this.lineRipple_.unlisten(evtType, handler);
           }
@@ -272,9 +272,9 @@ class MDCTextField extends MDCComponent {
             this.lineRipple_.deactivate();
           }
         },
-        setLineRippleTransformOrigin: (evt) => {
+        setLineRippleTransformOrigin: (normalizedX) => {
           if (this.lineRipple_) {
-            this.lineRipple_.setTransformOrigin(evt);
+            this.lineRipple_.setTransformOrigin(normalizedX);
           }
         },
       },
@@ -303,7 +303,6 @@ class MDCTextField extends MDCComponent {
    */
   getFoundationMap_() {
     return {
-      lineRipple: this.lineRipple_ ? this.lineRipple_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       icon: this.icon_ ? this.icon_.foundation : undefined,
       label: this.label_ ? this.label_.foundation : undefined,

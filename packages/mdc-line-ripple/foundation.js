@@ -44,6 +44,7 @@ class MDCLineRippleFoundation extends MDCFoundation {
     return /** @type {!MDCLineRippleAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
+      hasClass: () => {},
       setAttr: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
@@ -79,12 +80,9 @@ class MDCLineRippleFoundation extends MDCFoundation {
 
   /**
    * Sets the transform origin given a user's click location.
-   * @param {!Event} evt
+   * @param {!number} normalizedX
    */
-  setTransformOrigin(evt) {
-    const targetClientRect = evt.target.getBoundingClientRect();
-    const evtCoords = {x: evt.clientX, y: evt.clientY};
-    const normalizedX = evtCoords.x - targetClientRect.left;
+  setTransformOrigin(normalizedX) {
     const attributeString =
         `transform-origin: ${normalizedX}px center`;
 

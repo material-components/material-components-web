@@ -44,6 +44,8 @@ CSS Class | Description
 `mdc-line-ripple--active` | Styles the line ripple as an active line ripple
 `mdc-line-ripple--deactivating` | Styles the line ripple as a deactivating line ripple. 
 
+### Sass Mixins
+
 ### `MDCLineRipple`
 
 `activate() => void` | Proxies to the foundations `activate()` method.

@@ -41,6 +41,12 @@ class MDCLineRippleAdapter {
   removeClass(className) {}
 
   /**
+   * @param {string} className
+   * @return {boolean}
+   */
+  hasClass(className) {}
+
+  /**
    * Sets an attribute with a given value on the line ripple element.
    * @param {string} attr
    * @param {string} value

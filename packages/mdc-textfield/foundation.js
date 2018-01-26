@@ -61,11 +61,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
-      registerBottomLineEventHandler: () => {},
-      deregisterBottomLineEventHandler: () => {},
+      registerLineRippleEventHandler: () => {},
+      deregisterLineRippleEventHandler: () => {},
       getNativeInput: () => {},
       isFocused: () => {},
       isRtl: () => {},
+      activateLineRipple: () => {},
+      deactivateLineRipple: () => {},
+      setLineRippleTransformOrigin: () => {},
     });
   }
 
@@ -77,8 +80,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
 
-    /** @type {!MDCLineRippleFoundation|undefined} */
-    this.lineRipple_ = foundationMap.lineRipple;
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
@@ -106,8 +107,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
-    /** @private {function(!Event): undefined} */
-    this.lineRippleAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
   }
 
   init() {
@@ -131,8 +130,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.registerBottomLineEventHandler(
-      MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, this.lineRippleAnimationEndHandler_);
   }
 
   destroy() {
@@ -146,8 +143,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.deregisterBottomLineEventHandler(
-      MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, this.lineRippleAnimationEndHandler_);
   }
 
   /**
@@ -201,7 +196,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   setTransformOrigin(evt) {
-    this.adapter_.setLineRippleTransformOrigin(evt);
+    const targetClientRect = evt.target.getBoundingClientRect();
+    const evtCoords = {x: evt.clientX, y: evt.clientY};
+    const normalizedX = evtCoords.x - targetClientRect.left;
+    this.adapter_.setLineRippleTransformOrigin(normalizedX);
   }
 
   /**
@@ -212,19 +210,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (!this.receivedUserInput_) {
       this.activateFocus();
     }
-  }
-
-  /**
-   * Handles when line ripple animation ends, performing actions that must wait
-   * for animations to finish.
-   */
-  handleBottomLineAnimationEnd() {
-    // We need to wait for the line ripple to be entirely transparent
-    // before removing the class. If we do not, we see the line start to
-    // scale down before disappearing
-    // if (!this.isFocused_ && this.lineRipple_) {
-    //   this.lineRipple_.deactivate();
-    // }
   }
 
   /**

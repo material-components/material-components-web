@@ -19,7 +19,6 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
-import MDCLineRippleFoundation from '../../../packages/mdc-line-ripple/foundation';
 
 const {cssClasses, numbers} = MDCTextFieldFoundation;
 
@@ -42,7 +41,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass',
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
-    'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
+    'registerLineRippleEventHandler', 'deregisterLineRippleEventHandler',
     'getNativeInput', 'isFocused', 'isRtl', 'activateLineRipple', 'deactivateLineRipple',
     'setLineRippleTransformOrigin',
   ]);
@@ -322,8 +321,6 @@ test('#init adds event listeners', () => {
   td.verify(mockAdapter.registerInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerBottomLineEventHandler(
-    MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -337,8 +334,6 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterBottomLineEventHandler(
-    MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#init floats label if the input contains a value', () => {
@@ -632,24 +627,6 @@ test('on click does not set receivedUserInput if input is disabled', () => {
   assert.equal(foundation.receivedUserInput_, false);
 });
 
-test('on transition end deactivates the line ripple if this.isFocused_ is false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const mockEvt = {
-    propertyName: 'opacity',
-  };
-  let transitionEnd;
-
-  td.when(mockAdapter.registerBottomLineEventHandler(td.matchers.isA(String), td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      transitionEnd = handler;
-    });
-
-  foundation.init();
-  transitionEnd(mockEvt);
-
-  td.verify(mockAdapter.deactivateLineRipple());
-});
-
 test('mousedown on the input sets the line ripple origin', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
@@ -672,7 +649,7 @@ test('mousedown on the input sets the line ripple origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(mockAdapter.setLineRippleTransformOrigin(mockEvt));
+  td.verify(mockAdapter.setLineRippleTransformOrigin(td.matchers.anything()));
 });
 
 test('touchstart on the input sets the line ripple origin', () => {
@@ -697,5 +674,5 @@ test('touchstart on the input sets the line ripple origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(mockAdapter.setLineRippleTransformOrigin(mockEvt));
+  td.verify(mockAdapter.setLineRippleTransformOrigin(td.matchers.anything()));
 });

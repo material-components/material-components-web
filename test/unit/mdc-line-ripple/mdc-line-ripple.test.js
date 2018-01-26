@@ -50,6 +50,13 @@ test('#adapter.removeClass removes a class from the element', () => {
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
 });
+test('#adapter.hasClass returns true if a class is on the element', () => {
+  const {root, component} = setupTest();
+
+  root.classList.add('foo');
+  const hasClass = component.getDefaultFoundation().adapter_.hasClass('foo');
+  assert.isTrue(hasClass);
+});
 
 test('#adapter.setAttr adds a given attribute to the element', () => {
   const {root, component} = setupTest();
@@ -87,4 +94,32 @@ test('#adapter.notifyAnimationEnd emits ' +
   component.getDefaultFoundation().adapter_.notifyAnimationEnd();
 
   td.verify(handler(td.matchers.anything()));
+});
+
+function setupMockFoundationTest(root = getFixture()) {
+  const MockFoundationConstructor = td.constructor(MDCLineRippleFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCLineRipple(
+    root,
+    mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+test('activate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.activate();
+  td.verify(mockFoundation.activate(), {times: 1});
+});
+
+test('deactivate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.deactivate();
+  td.verify(mockFoundation.deactivate(), {times: 1});
+});
+
+
+test('setTransformOrigin', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.setTransformOrigin(100);
+  td.verify(mockFoundation.setTransformOrigin(100), {times: 1});
 });

@@ -14,6 +14,9 @@
     "type": "git",
     "url": "git+https://github.com/material-components/material-components-web.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@material/animation": "^0.25.0",
     "@material/base": "^0.29.0",

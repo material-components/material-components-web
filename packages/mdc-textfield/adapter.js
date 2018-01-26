@@ -111,14 +111,14 @@ class MDCTextFieldAdapter {
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerBottomLineEventHandler(evtType, handler) {}
+  registerLineRippleEventHandler(evtType, handler) {}
 
   /**
    * Deregisters an event listener on the line ripple element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterBottomLineEventHandler(evtType, handler) {}
+  deregisterLineRippleEventHandler(evtType, handler) {}
 
   /**
    * Returns an object representing the native text input element, with a
@@ -157,8 +157,9 @@ class MDCTextFieldAdapter {
 
   /**
    * Sets the transform origin of the line ripple.
+   * @param {number} normalizedX
    */
-  setLineRippleTransformOrigin() {}
+  setLineRippleTransformOrigin(normalizedX) {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

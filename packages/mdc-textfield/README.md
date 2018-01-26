@@ -170,7 +170,7 @@ these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--foc
 and `.foo-tab.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields, 
 apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--invalid`.
 
-> _NOTE_: the `mdc-text-field-focused-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`). 
+> _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`). 
 
 Mixin | Description
 --- | ---
@@ -224,8 +224,8 @@ Method Signature | Description
 `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event handler on the root element for a given event
 `registerInputInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the native input element for a given event
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the native input element for a given event
-`registerBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the line ripple element for a given event
-`deregisterBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the line ripple element for a given event
+`registerLineRippleEventHandler(evtType: string, handler: EventListener)` => void | Proxies to MDCLineRipple to register an event listener on the line ripple element for a given event
+`deregisterLineRippleEventHandler(evtType: string, handler: EventListener)` => void | Proxies to MDCLineRipple to deregister an event listener on the line ripple element for a given event
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
 `isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
@@ -253,7 +253,6 @@ Method Signature | Description
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
-`handleBottomLineAnimationEnd(evt: Event) => void` | Handles the end of the line ripple animation, performing actions that must wait for animations to finish. Expects a transition-end event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text
 `updateOutline() => void` | Updates the focus outline for outlined text fields
 

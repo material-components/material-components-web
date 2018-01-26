@@ -64,27 +64,19 @@ test(`activate adds ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_ACTIVE} cla
   td.verify(mockAdapter.addClass(cssClasses.LINE_RIPPLE_ACTIVE));
 });
 
-test(`deactivate removes ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_ACTIVE} class`, () => {
+test(`deactivate removes ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_DEACTIVATING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.deactivate();
-  td.verify(mockAdapter.removeClass(cssClasses.LINE_RIPPLE_ACTIVE));
+  td.verify(mockAdapter.addClass(cssClasses.LINE_RIPPLE_DEACTIVATING));
 });
 
 test('setTransformOrigin sets style attribute', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockEvt = {
-    target: {
-      getBoundingClientRect: () => {
-        return {};
-      },
-    },
-    clientX: 200,
-    clientY: 200,
-  };
+  const transformOriginValue = 100;
 
   foundation.init();
-  foundation.setTransformOrigin(mockEvt);
+  foundation.setTransformOrigin(transformOriginValue);
 
   td.verify(mockAdapter.setAttr('style', td.matchers.isA(String)));
 });

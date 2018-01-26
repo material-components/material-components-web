@@ -34,28 +34,26 @@ class MDCLineRipple extends MDCComponent {
   }
 
   /**
-   * @return {!MDCLineRippleFoundation}
+   * Activates the line ripple
    */
-  get foundation() {
-    return this.foundation_;
-  }
-
   activate() {
     this.foundation_.activate();
   }
 
+  /**
+   * Deactivates the line ripple
+   */
   deactivate() {
     this.foundation_.deactivate();
   }
 
   /**
    * Sets the transform origin given a user's click location.
-   * @param {!Event} evt
+   * @param {!number} normalizedX
    */
-  setTransformOrigin(evt) {
-    this.foundation_.setTransformOrigin(evt);
+  setTransformOrigin(normalizedX) {
+    this.foundation_.setTransformOrigin(normalizedX);
   }
-
 
   /**
    * @return {!MDCLineRippleFoundation}
