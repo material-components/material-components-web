@@ -44,8 +44,8 @@
                 <span class="demo-theme-color-radio__inner"></span>
               </i>
             </button>
-            <div class="mdc-simple-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
-              <ul class="mdc-simple-menu__items mdc-list demo-theme-list"
+            <div class="mdc-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
+              <ul class="mdc-menu__items mdc-list demo-theme-list"
                   role="menu"
                   aria-hidden="true"
                   style="list-style-type: none"><!-- Inline style needed to fix IE 11 rendering bug (see https://stackoverflow.com/a/23717689/467582) -->
@@ -359,21 +359,12 @@
         </h3>
 
         <div class="demo-card-wrapper">
-          <div class="mdc-card demo-card">
-            <section class="mdc-card__media mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></section>
-            <section>
-              <div class="demo-card__primary">
-                <h2 class="demo-card__title mdc-typography--title">Our Changing Planet</h2>
-                <h3 class="demo-card__subtitle mdc-typography--subheading1">by Kurt Wagner</h3>
-              </div>
-              <div class="demo-card__secondary mdc-typography--body1">
-                Visit ten places on our planet that are undergoing the biggest changes today.
-              </div>
-            </section>
-            <section class="mdc-card__actions">
+          <div class="mdc-card">
+            <div class="mdc-card__media mdc-card__media--16-9 demo-card__media"></div>
+            <div class="mdc-card__actions">
               <div class="mdc-card__action-buttons">
-                <button class="mdc-button mdc-card__action">Read</button>
-                <button class="mdc-button mdc-card__action">Bookmark</button>
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
               </div>
               <div class="mdc-card__action-icons">
                 <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
@@ -386,18 +377,18 @@
                    data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
                   favorite_border
                 </i>
-                <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
-                  <i class="material-icons" role="presentation">
-                    share
-                  </i>
-                </button>
-                <button class="mdc-button mdc-card__action mdc-card__action--icon" title="More options">
-                  <i class="material-icons" role="presentation">
-                    more_vert
-                  </i>
-                </button>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="Share">share</i>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="More options">more_vert</i>
               </div>
-            </section>
+            </div>
           </div>
         </div>
       </section>
@@ -418,7 +409,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -437,7 +428,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -457,7 +448,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -685,8 +676,8 @@
             <div class="mdc-select__selected-text"></div>
             <div class="mdc-select__bottom-line"></div>
           </div>
-          <div class="mdc-simple-menu mdc-select__menu">
-            <ul class="mdc-list mdc-simple-menu__items">
+          <div class="mdc-menu mdc-select__menu">
+            <ul class="mdc-list mdc-menu__items">
               <li class="mdc-list-item" role="option" id="none" aria-disabled="true">
                 Pick a food group
               </li>

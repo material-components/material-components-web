@@ -21,7 +21,7 @@
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-icon-toggle/mdc-icon-toggle";
 @import "../packages/mdc-list/mdc-list";
-@import "../packages/mdc-ripple/mixins";
+@import "../packages/mdc-ripple/mdc-ripple";
 
 .hero {
   height: auto;
@@ -36,15 +36,6 @@
   padding: 0 24px;
 }
 
-.demo-card {
-  width: 350px;
-  margin: 48px;
-}
-
-.demo-card--photo-album {
-  width: 200px;
-}
-
 .demo-card-toggles {
   margin: 24px;
   padding: 24px;
@@ -52,57 +43,16 @@
 }
 
 //
-// Small
+// Card container
 //
 
-.demo-card__action-icons--centered {
-  justify-content: center;
+.demo-card {
+  width: 350px;
+  margin: 48px;
 }
 
-.demo-card__action-buttons--text {
-  padding: 8px;
-}
-
-//
-// Music
-//
-
-.demo-card__music-row {
-  display: flex;
-}
-
-.demo-card__media--music {
-  width: 110px;
-}
-
-.demo-card__music-info {
-  display: flex;
-  flex-direction: column;
-  padding: 8px 16px;
-}
-
-//
-// Text
-//
-
-.demo-card__primary {
-  padding: 1rem;
-}
-
-.demo-card__title {
-  margin: 0;
-}
-
-.demo-card__subtitle {
-  @include mdc-theme-prop(color, text-secondary-on-background);
-
-  margin: 0;
-}
-
-.demo-card__secondary {
-  @include mdc-theme-prop(color, text-secondary-on-background);
-
-  padding: 0 1rem 8px 1rem;
+.demo-card--photo {
+  width: 200px;
 }
 
 //
@@ -129,10 +79,32 @@
   color: white;
 }
 
-// TODO(acdvorak): Delete images/4-3.jpg - 4:3 ratio is not in spec
+//
+// Book card
+//
+
+.demo-card__primary {
+  padding: 1rem;
+}
+
+.demo-card__title {
+  margin: 0;
+}
+
+.demo-card__subtitle {
+  @include mdc-theme-prop(color, text-secondary-on-background);
+
+  margin: 0;
+}
+
+.demo-card__secondary {
+  @include mdc-theme-prop(color, text-secondary-on-background);
+
+  padding: 0 1rem 8px 1rem;
+}
 
 //
-// News headlines
+// Headlines card
 //
 
 .demo-card-article-group-heading {
@@ -142,18 +114,9 @@
 }
 
 .demo-card-article {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
-  @include mdc-states;
-
   padding: 16px;
   text-decoration: none;
   color: inherit;
-  overflow: hidden;
-
-  &:focus {
-    outline: none;
-  }
 }
 
 .demo-card-article__title {
@@ -164,4 +127,52 @@
   @include mdc-theme-prop(color, text-secondary-on-light);
 
   margin: 0;
+}
+
+//
+// Music card
+//
+
+.demo-card--music {
+  @include mdc-card-corner-radius(24px 4px);
+
+  @include mdc-rtl {
+    @include mdc-card-corner-radius(4px 24px);
+  }
+}
+
+.demo-card__music-row {
+  display: flex;
+  border-top-left-radius: inherit;
+
+  @include mdc-rtl {
+    border-top-left-radius: 0;
+    border-top-right-radius: inherit;
+  }
+}
+
+.demo-card__media--music {
+  width: 110px;
+  border-top-left-radius: inherit; // for music card
+
+  @include mdc-rtl {
+    border-top-left-radius: 0;
+    border-top-right-radius: inherit;
+  }
+}
+
+.demo-card__music-info {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+}
+
+.demo-card__action-buttons--text-only {
+  margin-left: 8px;
+}
+
+.demo-card__action-icon--star {
+  margin-left: 4px;
+  margin-right: 4px;
+  cursor: pointer;
 }

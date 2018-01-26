@@ -24,12 +24,13 @@
 // postcss-bem-linter: define card
 
 .mdc-card {
-  @include mdc-elevation(2);
   @include mdc-card-fill-color(background);
+  @include mdc-card-corner-radius(2px);
+  @include mdc-elevation(2);
 
   display: flex;
   flex-direction: column;
-  border-radius: 2px;
+  box-sizing: border-box;
 }
 
 .mdc-card--stroked {
@@ -45,7 +46,10 @@
 //
 
 .mdc-card__media {
+  @include mdc-card-media-aspect-ratio-base_;
+
   position: relative;
+  box-sizing: border-box;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -62,12 +66,10 @@
 
 .mdc-card__media--square {
   @include mdc-card-media-aspect-ratio(1, 1);
-  @include mdc-card-media-aspect-ratio-base_;
 }
 
 .mdc-card__media--16-9 {
   @include mdc-card-media-aspect-ratio(16, 9);
-  @include mdc-card-media-aspect-ratio-base_;
 }
 
 .mdc-card__media-content {
@@ -76,6 +78,7 @@
   right: 0;
   bottom: 0;
   left: 0;
+  box-sizing: border-box;
 }
 
 //
@@ -83,8 +86,8 @@
 //
 
 .mdc-card__actions {
-  display: flex;
-  align-items: center;
+  @include mdc-card-row-layout_;
+
   box-sizing: border-box;
   min-height: 52px;
   padding: 8px;
@@ -96,12 +99,14 @@
 
 .mdc-card__action-buttons,
 .mdc-card__action-icons {
-  display: flex;
-  align-items: center;
+  @include mdc-card-row-layout_;
+
   box-sizing: border-box;
 }
 
 .mdc-card__action-icons {
+  @include mdc-theme-prop(color, text-icon-on-background);
+
   flex-grow: 1;
   justify-content: flex-end;
 }
@@ -115,33 +120,38 @@
 //
 
 .mdc-card__action {
-  display: inline-flex;
-  align-items: center;
+  @include mdc-card-row-layout_(inline-flex);
+
   box-sizing: border-box;
   min-width: auto;
-  margin: 0;
   cursor: pointer;
-}
+  user-select: none;
 
-.mdc-card__action:not(:last-child) {
-  @include mdc-rtl-reflexive-box(margin, right, 8px);
+  &:focus {
+    outline: none;
+  }
 }
 
 //
 // Action buttons
 //
 
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action.mdc-button {
+.mdc-card__action--button {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
   padding: 0 8px;
+
+  &:last-child {
+    @include mdc-rtl-reflexive-box(margin, right, 0);
+  }
 }
 
-.mdc-card__actions--full-bleed .mdc-card__action {
-  display: flex;
+.mdc-card__actions--full-bleed .mdc-card__action--button {
   justify-content: space-between;
   width: 100%;
   height: auto;
   max-height: none;
+  margin: 0;
   padding: 8px 16px;
   text-align: left;
 
@@ -154,20 +164,16 @@
 // Action icons
 //
 
+.mdc-card__action--icon {
+  // Icon toggles are taller than buttons, so we need to adjust their margins to prevent the action row from expanding.
+  margin: -6px 0;
+
+  // Same padding as mdc-icon-toggle.
+  padding: 12px;
+}
+
 .mdc-card__action--icon:not(:disabled) {
   @include mdc-theme-prop(color, text-icon-on-background);
-  @include mdc-states;
-}
-
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action--icon.mdc-button {
-  padding: 0 4px;
-}
-
-// Icon toggles are taller than buttons, so we need to adjust their margins to prevent the action bar from expanding.
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action--icon.mdc-icon-toggle {
-  margin: -6px 0;
 }
 
 // postcss-bem-linter: end
