@@ -38,7 +38,7 @@
 
   @keyframes mdc-checkbox-fade-out-background-#{$uid} {
     0%,
-    80% {
+    50% {
       @include mdc-theme-prop(border-color, $to-stroke-color);
       @include mdc-theme-prop(background-color, $to-fill-color);
     }
