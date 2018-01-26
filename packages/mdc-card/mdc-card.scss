@@ -25,10 +25,12 @@
 
 .mdc-card {
   @include mdc-card-box-sizing_;
-  @include mdc-card-column-layout_;
   @include mdc-card-fill-color(background);
   @include mdc-card-corner-radius(2px);
   @include mdc-elevation(2);
+
+  display: flex;
+  flex-direction: column;
 }
 
 //
@@ -37,7 +39,6 @@
 
 .mdc-card__media {
   @include mdc-card-box-sizing_;
-  @include mdc-card-column-layout_;
   @include mdc-card-media-aspect-ratio-base_;
 
   position: relative;
@@ -65,7 +66,6 @@
 
 .mdc-card__media-content {
   @include mdc-card-box-sizing_;
-  @include mdc-card-column-layout_;
 
   position: absolute;
   top: 0;
