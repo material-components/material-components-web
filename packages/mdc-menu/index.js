@@ -98,10 +98,27 @@ class MDCMenu extends MDCComponent {
 
   /**
    * Return the item within the menu that is selected.
+   * @param {number} index
    * @return {?Element}
    */
-  get selectedItem() {
-    return this.foundation_.getSelectedValue();
+  getOptionByIndex(index) {
+    const items = this.items;
+
+    if (index < items.length) {
+      return this.items[index];
+    } else {
+      return null;
+    }
+  }
+
+  /** @param {number} index */
+  set selectedItemIndex(index) {
+    this.foundation_.setSelectedIndex(index);
+  }
+
+  /** @return {number} */
+  get selectedItemIndex() {
+    return this.foundation_.getSelectedIndex();
   }
 
   /** @param {!boolean} rememberSelection */
@@ -163,7 +180,6 @@ class MDCMenu extends MDCComponent {
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;
       },
-      getOptionAtIndex: (index) => this.items[index],
       setAttrForOptionAtIndex: (index, attr, value) => this.items[index].setAttribute(attr, value),
       rmAttrForOptionAtIndex: (index, attr) => this.items[index].removeAttribute(attr),
       addClassForOptionAtIndex: (index, className) => this.items[index].classList.add(className),

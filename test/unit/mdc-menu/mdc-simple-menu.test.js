@@ -393,11 +393,11 @@ test('adapter#setMaxHeight sets the maxHeight style on the menu element', () => 
   assert.equal(root.style.maxHeight, '100px');
 });
 
-test('adapter#getOptionAtIndex returns the option at the index specified', () => {
+test('adapter#getOptionByIndex returns the option at the index specified', () => {
   const {root, component} = setupTest();
   const item1 = root.querySelectorAll('[role="menuitem"]')[1];
   document.body.appendChild(root);
-  const element = component.getDefaultFoundation().adapter_.getOptionAtIndex(1);
+  const element = component.getOptionByIndex(1);
   assert.equal(element, item1);
   document.body.removeChild(root);
 });

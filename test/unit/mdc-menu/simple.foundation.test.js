@@ -91,7 +91,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
     'deregisterBodyClickHandler', 'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus',
     'restoreFocus', 'isFocused', 'focus', 'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin',
-    'setPosition', 'setMaxHeight', 'getOptionAtIndex', 'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex',
+    'setPosition', 'setMaxHeight', 'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex',
     'addClassForOptionAtIndex', 'rmClassForOptionAtIndex',
   ]);
 });
@@ -1226,10 +1226,7 @@ test('getSelectedValue should return the last selected item', () => {
 
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
 
-  foundation.getSelectedValue();
-
-  td.verify(mockAdapter.getOptionAtIndex(expectedIndex), {times: 1});
-
+  assert.isTrue(foundation.getSelectedIndex() === expectedIndex);
   clock.uninstall();
 });
 

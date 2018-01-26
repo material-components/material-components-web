@@ -102,7 +102,6 @@ class MDCMenuFoundation extends MDCFoundation {
       setTransformOrigin: () => {},
       setPosition: () => {},
       setMaxHeight: () => {},
-      getOptionAtIndex: () => {},
       setAttrForOptionAtIndex: () => {},
       rmAttrForOptionAtIndex: () => {},
       addClassForOptionAtIndex: () => {},
@@ -146,6 +145,10 @@ class MDCMenuFoundation extends MDCFoundation {
     this.selectedIndex_ = -1;
     /** @private {boolean} */
     this.rememberSelection_ = false;
+
+    // A keyup event on the menu needs to have a corresponding keydown
+    // event on the menu. If the user opens the menu with a keydown event on a
+    // button, the menu will only get the key up event causing buggy behavior with selected elements.
     /** @private {boolean} */
     this.keyDownWithinMenu_ = false;
   }
@@ -211,12 +214,13 @@ class MDCMenuFoundation extends MDCFoundation {
    */
   focusOnOpen_(focusIndex) {
     if (focusIndex === null) {
-      // First focus the last selected item if we're remembering selections and it has been set
+      // If this instance of MDCMenu remembers selections, and the user has
+      // made a selection, then focus the last selected item
       if (this.rememberSelection_ && this.selectedIndex_ >= 0) {
         this.adapter_.focusItemAtIndex(this.selectedIndex_);
         return;
       }
-      // Then, try focusing the menu.
+
       this.adapter_.focus();
       // If that doesn't work, focus first item instead.
       if (!this.adapter_.isFocused()) {
@@ -264,7 +268,7 @@ class MDCMenuFoundation extends MDCFoundation {
     const isArrowDown = key === 'ArrowDown' || keyCode === 40;
     const isSpace = key === 'Space' || keyCode === 32;
     const isEnter = key === 'Enter' || keyCode === 13;
-
+    // The menu needs to know if the keydown event was triggered on the menu
     this.keyDownWithinMenu_ = isEnter || isSpace;
 
     const focusedItemIndex = this.adapter_.getFocusedItemIndex();
@@ -322,8 +326,8 @@ class MDCMenuFoundation extends MDCFoundation {
     const isEscape = key === 'Escape' || keyCode === 27;
 
     if (isEnter || isSpace) {
-      // If our menu didn't catch the keydown, then the user likely hit the
-      // enter or space key to open the menu (button)
+      // If the keydown event didn't occur on the menu, then it should
+      // disregard the possible selected event.
       if (this.keyDownWithinMenu_) {
         this.handlePossibleSelected_(evt);
       }
@@ -596,12 +600,6 @@ class MDCMenuFoundation extends MDCFoundation {
   /** @return {boolean} */
   isOpen() {
     return this.isOpen_;
-  }
-
-  /** @return {?Element} */
-  getSelectedValue() {
-    const element = this.adapter_.getOptionAtIndex(this.selectedIndex_);
-    return element ? element : null;
   }
 
   /** @return {number} */
