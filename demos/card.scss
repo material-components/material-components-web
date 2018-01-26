@@ -51,7 +51,7 @@
   margin: 48px;
 }
 
-.demo-card--photo-album {
+.demo-card--photo {
   width: 200px;
 }
 
@@ -65,6 +65,7 @@
 
 .demo-card__media--16-9 {
   background-image: url("/images/16-9.jpg");
+  border-top-left-radius: inherit; // for music card
 }
 
 .demo-card__media-content--with-title {
@@ -141,8 +142,13 @@
 // Music card
 //
 
+.demo-card--music {
+  @include mdc-card-corner-radius(24px 4px)
+}
+
 .demo-card__music-row {
   display: flex;
+  border-top-left-radius: inherit;
 }
 
 .demo-card__media--music {
