@@ -40,7 +40,9 @@
 .mdc-card__media {
   @include mdc-card-media-aspect-ratio-base_;
 
+  display: flex;
   position: relative;
+  flex-direction: column;
   width: 100%;
   background-repeat: no-repeat;
   background-size: cover;
