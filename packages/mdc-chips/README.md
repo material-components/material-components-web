@@ -9,7 +9,7 @@ path: /catalog/chips/
 
 # Chips
 
-Chips are compact elements that represent an attribute, text, entity, or action. They allow users to enter information, select a choice, filter content, or trigger an action.
+Chips are compact elements that allow users to enter information, select a choice, filter content, or trigger an action.
 
 ## Design & API Documentation
 
@@ -57,7 +57,7 @@ CSS Class | Description
 
 The MDC Chips module is comprised of two JavaScript classes: 
 * `MDCChip` defines the behavior of a single chip
-* `MDCChipSet` defines the behavior of a chip within a specific set. For example, chips in an entry chip set behave differently from those in a filter chip set.
+* `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an entry chip set behave differently from those in a filter chip set.
 
 To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.md) both classes from `@material/chips`.
 
@@ -79,7 +79,7 @@ Method Signature | Description
 --- | ---
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`notifyInteraction() => void` | Emits a custom event "MDCChip:interaction" denoting the chip has been interacted with
+`notifyInteraction() => void` | Emits a custom event "MDCChip:interaction" denoting the chip has been interacted with, which bubbles to the top-level text field element
 `getText() => string` | Returns the text content of the chip
 
 #### `MDCChipSetAdapter`
