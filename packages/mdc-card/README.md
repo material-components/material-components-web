@@ -54,14 +54,15 @@ Fully-featured:
   <div class="mdc-card__media mdc-card__media--square">
     <div class="mdc-card__media-content">Title</div>
   </div>
-  <div class="mdc-card__action-bar">
+  <!-- ... content ... -->
+  <div class="mdc-card__actions">
     <div class="mdc-card__action-buttons">
-      <div class="mdc-button mdc-card__action">Action 1</div>
-      <div class="mdc-button mdc-card__action">Action 2</div>
+      <button class="mdc-button mdc-card__action mdc-card__action--button">Action 1</button>
+      <button class="mdc-button mdc-card__action mdc-card__action--button">Action 2</button>
     </div>
     <div class="mdc-card__action-icons">
-      <i class="material-icons mdc-card__action" role="button" title="Share">share</i>
-      <i class="material-icons mdc-card__action" role="button" title="More">more_vert</i>
+      <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
+      <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
     </div>
   </div>
 </div>
@@ -87,7 +88,7 @@ Cards are composed of different content blocks, which are typically laid out ver
 
 Because every app is different, there are no "standard" layouts for card content; each app should define their own.
 
-However, MDC Card _does_ provide styles for two common card elements: _rich media_ (images or video) and _action bars_.
+However, MDC Card _does_ provide styles for two common card elements: _rich media_ (images or video) and _actions_.
 
 ##### Rich media
 
@@ -98,33 +99,28 @@ However, MDC Card _does_ provide styles for two common card elements: _rich medi
 ```
 
 ```html
-<section class="my-card__media mdc-card__media mdc-card__media--16-9">
+<div class="my-card__media mdc-card__media mdc-card__media--16-9">
   <div class="mdc-card__media-content">Title</div>
-</section>
+</div>
 ```
 
 This area is used for showing rich media in cards, and optionally as a container. Use the `mdc-card__media` CSS class
-and the optional modifier classes shown below.
+and the [optional modifier classes](#css-classes).
 
 ##### Actions
 
 ```html
-<section class="mdc-card__action-bar">
-  <button class="mdc-button mdc-card__action">Action 1</button>
-  <button class="mdc-button mdc-card__action">Action 2</button>
-</section>
+<div class="mdc-card__actions">
+  <button class="mdc-button mdc-card__action mdc-card__action--button">Action 1</button>
+  <button class="mdc-button mdc-card__action mdc-card__action--button">Action 2</button>
+</div>
 ```
 
 This area is used for showing different actions the user can take. It's typically used with buttons, as in the example
 above, or with icon buttons, as below:
 
 ```html
-<div class="mdc-card__action-bar">
-  <div class="mdc-card__action-buttons">
-    <button class="mdc-button mdc-card__action">Read</button>
-    <button class="mdc-button mdc-card__action">Bookmark</button>
-  </div>
-  <div class="mdc-card__action-icons">
+<div class="mdc-card__actions">
     <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
        tabindex="0"
        role="button"
@@ -135,27 +131,38 @@ above, or with icon buttons, as below:
        data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
       favorite_border
     </i>
-    <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
-      <i class="material-icons" role="presentation">share</i>
-    </button>
-    <button class="mdc-button mdc-card__action mdc-card__action--icon" title="More options">
-      <i class="material-icons" role="presentation">more_vert</i>
-    </button>
+  <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
+  <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
   </div>
+```
+
+Be sure to include the `mdc-card__action` class on every action for correct positioning. In addition, _button_ icons
+should use the `mdc-card__action--button` class, and _icon_ actions should use the `mdc-card__action--icon` class.
+
+To have a single action button take up the entire width of the action row, use the `--full-bleed` modifier on the row:
+
+```html
+<div class="mdc-card__actions mdc-card__actions--full-bleed">
+  <a class="mdc-button mdc-card__action mdc-card__action--button" href="#">
+    All Business Headlines
+    <i class="material-icons" aria-hidden="true">arrow_forward</i>
+  </a>
 </div>
 ```
 
-Be sure to include the `mdc-card__action` class on every action for correct positioning. In addition, icon actions
-should use the `mdc-card__action--icon` class.
-
-To have a single action button take up the entire width of the action bar, use the `--full-bleed` modifier:
+To display buttons _and_ icons in the same row, wrap them in `mdc-card__action-buttons` and `mdc-card__action-icons`
+elements:
 
 ```html
-<div class="mdc-card__action-bar mdc-card__action-bar--full-bleed">
-  <a class="mdc-button mdc-card__action" href="javascript:">
-    <span>All Business Headlines</span>
-    <i class="material-icons">arrow_forward</i>
-  </a>
+<div class="mdc-card__actions">
+  <div class="mdc-card__action-buttons">
+    <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+    <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
+  </div>
+  <div class="mdc-card__action-icons">
+    <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
+    <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
+</div>
 </div>
 ```
 
@@ -163,22 +170,24 @@ To have a single action button take up the entire width of the action bar, use t
 
 CSS Class | Description
 --- | ---
-`mdc-card` | A card
+`mdc-card` | Mandatory, for the card element
 `mdc-card__primary-action` | The main tappable area of the card, which typically wraps everything in the card except `mdc-card__action-bar`
 `mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
 `mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
 `mdc-card__media-content` | An absolutely-positioned box the same size as the media area, for displaying a title or icon on top of the `background-image`
-`mdc-card__action-bar` | Row of primary and supplemental actions
-`mdc-card__action-bar--full-bleed` | Eliminates the action bar's padding padding, and causes its child `mdc-card__action` to consume 100% of the action bar's width
+`mdc-card__actions` | Row containing action buttons and/or icons
+`mdc-card__actions--full-bleed` | Removes the action area's padding and causes its only child (an `mdc-card__action` element) to consume 100% of the action area's width
 `mdc-card__action-buttons` | A group of action buttons, displayed on the left side of the card (in LTR), adjacent to `mdc-card__action-icons`
 `mdc-card__action-icons` | A group of supplemental action icons, displayed on the right side of the card (in LTR), adjacent to `__action-buttons`
 `mdc-card__action` | An individual action button or icon
-`mdc-card__action--icon` | An icon action
+`mdc-card__action--button` | An action button with text
+`mdc-card__action--icon` | An action icon with no text
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
-`mdc-card-fill-color($color)` | Sets the fill color of a `mdc-card`
-`mdc-card-media-aspect-ratio($width-unitless, $height-unitless)` | Automatically sets the height of the `mdc-card__media` subelement to maintain a given aspect ratio based on its width
+`mdc-card-fill-color($color)` | Sets the fill color of a card
+`mdc-card-corner-radius($radius)` | Sets the corner radius of a card
+`mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width

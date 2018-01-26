@@ -39,7 +39,6 @@
 @import "../../packages/mdc-theme/variables";
 @import "../../packages/mdc-toolbar/variables";
 @import "../common";
-@import "../card";
 @import "./menu";
 
 // stylelint-disable selector-class-pattern, selector-max-type, scss/dollar-variable-pattern
@@ -269,8 +268,12 @@ figure {
   vertical-align: top;
 }
 
-.demo-card {
-  margin: 0;
+.demo-card__media {
+  background-image: url("/images/1-1.jpg");
+}
+
+.demo-card__media--16-9 {
+  background-image: url("/images/16-9.jpg");
 }
 
 //

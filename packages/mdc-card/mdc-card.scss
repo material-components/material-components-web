@@ -24,12 +24,11 @@
 // postcss-bem-linter: define card
 
 .mdc-card {
-  @include mdc-elevation(2, text-primary-on-background);
+  @include mdc-card-box-sizing_;
+  @include mdc-card-column-layout_;
   @include mdc-card-fill-color(background);
-
-  display: flex;
-  flex-direction: column;
-  border-radius: 2px;
+  @include mdc-card-corner-radius(2px);
+  @include mdc-elevation(2);
 }
 
 //
@@ -37,7 +36,12 @@
 //
 
 .mdc-card__media {
+  @include mdc-card-box-sizing_;
+  @include mdc-card-column-layout_;
+  @include mdc-card-media-aspect-ratio-base_;
+
   position: relative;
+  width: 100%;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -54,15 +58,16 @@
 
 .mdc-card__media--square {
   @include mdc-card-media-aspect-ratio(1, 1);
-  @include mdc-card-media-aspect-ratio-base_;
 }
 
 .mdc-card__media--16-9 {
   @include mdc-card-media-aspect-ratio(16, 9);
-  @include mdc-card-media-aspect-ratio-base_;
 }
 
 .mdc-card__media-content {
+  @include mdc-card-box-sizing_;
+  @include mdc-card-column-layout_;
+
   position: absolute;
   top: 0;
   right: 0;
@@ -75,12 +80,12 @@
 //
 
 .mdc-card__primary-action {
+  @include mdc-card-box-sizing_;
+  @include mdc-card-column-layout_;
   @include mdc-ripple-surface;
   @include mdc-ripple-radius;
   @include mdc-states;
 
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
 
   &:focus {
@@ -99,29 +104,30 @@
 }
 
 //
-// Action bar
+// Action row
 //
 
-.mdc-card__action-bar {
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
+.mdc-card__actions {
+  @include mdc-card-box-sizing_;
+  @include mdc-card-row-layout_;
+
   min-height: 52px;
   padding: 8px;
 }
 
-.mdc-card__action-bar--full-bleed {
+.mdc-card__actions--full-bleed {
   padding: 0;
 }
 
 .mdc-card__action-buttons,
 .mdc-card__action-icons {
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
+  @include mdc-card-box-sizing_;
+  @include mdc-card-row-layout_;
 }
 
 .mdc-card__action-icons {
+  @include mdc-theme-prop(color, text-icon-on-background);
+
   flex-grow: 1;
   justify-content: flex-end;
 }
@@ -131,37 +137,42 @@
 }
 
 //
-// Actions
+// Action items
 //
 
 .mdc-card__action {
-  display: inline-flex;
-  align-items: center;
-  box-sizing: border-box;
-  min-width: auto;
-  margin: 0;
-  cursor: pointer;
-}
+  @include mdc-card-box-sizing_;
+  @include mdc-card-row-layout_(inline-flex);
 
-.mdc-card__action:not(:last-child) {
-  @include mdc-rtl-reflexive-box(margin, right, 8px);
+  min-width: auto;
+  cursor: pointer;
+  user-select: none;
+
+  &:focus {
+    outline: none;
+}
 }
 
 //
 // Action buttons
 //
 
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action.mdc-button {
+.mdc-card__action--button {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
   padding: 0 8px;
+
+  &:last-child {
+    @include mdc-rtl-reflexive-box(margin, right, 0);
+  }
 }
 
-.mdc-card__action-bar--full-bleed .mdc-card__action {
-  display: flex;
+.mdc-card__actions--full-bleed .mdc-card__action--button {
   justify-content: space-between;
   width: 100%;
   height: auto;
   max-height: none;
+  margin: 0;
   padding: 8px 16px;
   text-align: left;
 
@@ -174,20 +185,16 @@
 // Action icons
 //
 
+.mdc-card__action--icon {
+  // Icon toggles are taller than buttons, so we need to adjust their margins to prevent the action row from expanding.
+  margin: -6px 0;
+
+  // Same padding as mdc-icon-toggle.
+  padding: 12px;
+}
+
 .mdc-card__action--icon:not(:disabled) {
   @include mdc-theme-prop(color, text-icon-on-background);
-  @include mdc-states;
-}
-
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action--icon.mdc-button {
-  padding: 0 4px;
-}
-
-// Icon toggles are taller than buttons, so we need to adjust their margins to prevent the action bar from expanding.
-// stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-card__action--icon.mdc-icon-toggle {
-  margin: -6px 0;
 }
 
 // postcss-bem-linter: end

@@ -44,8 +44,8 @@
                 <span class="demo-theme-color-radio__inner"></span>
               </i>
             </button>
-            <div class="mdc-simple-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
-              <ul class="mdc-simple-menu__items mdc-list demo-theme-list"
+            <div class="mdc-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
+              <ul class="mdc-menu__items mdc-list demo-theme-list"
                   role="menu"
                   aria-hidden="true"
                   style="list-style-type: none"><!-- Inline style needed to fix IE 11 rendering bug (see https://stackoverflow.com/a/23717689/467582) -->
@@ -359,21 +359,12 @@
         </h3>
 
         <div class="demo-card-wrapper">
-          <div class="mdc-card demo-card">
-            <section class="mdc-card__media mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></section>
-            <section>
-              <div class="demo-card__primary">
-                <h2 class="demo-card__title mdc-typography--title">Our Changing Planet</h2>
-                <h3 class="demo-card__subtitle mdc-typography--subheading1">by Kurt Wagner</h3>
-              </div>
-              <div class="demo-card__secondary mdc-typography--body1">
-                Visit ten places on our planet that are undergoing the biggest changes today.
-              </div>
-            </section>
-            <section class="mdc-card__action-bar">
+          <div class="mdc-card">
+            <div class="mdc-card__media mdc-card__media--16-9 demo-card__media"></div>
+            <div class="mdc-card__actions">
               <div class="mdc-card__action-buttons">
-                <button class="mdc-button mdc-card__action">Read</button>
-                <button class="mdc-button mdc-card__action">Bookmark</button>
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
               </div>
               <div class="mdc-card__action-icons">
                 <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
@@ -386,18 +377,18 @@
                    data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
                   favorite_border
                 </i>
-                <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
-                  <i class="material-icons" role="presentation">
-                    share
-                  </i>
-                </button>
-                <button class="mdc-button mdc-card__action mdc-card__action--icon" title="More options">
-                  <i class="material-icons" role="presentation">
-                    more_vert
-                  </i>
-                </button>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="Share">share</i>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="More options">more_vert</i>
               </div>
-            </section>
+            </div>
           </div>
         </div>
       </section>
@@ -685,8 +676,8 @@
             <div class="mdc-select__selected-text"></div>
             <div class="mdc-select__bottom-line"></div>
           </div>
-          <div class="mdc-simple-menu mdc-select__menu">
-            <ul class="mdc-list mdc-simple-menu__items">
+          <div class="mdc-menu mdc-select__menu">
+            <ul class="mdc-list mdc-menu__items">
               <li class="mdc-list-item" role="option" id="none" aria-disabled="true">
                 Pick a food group
               </li>
@@ -884,7 +875,6 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
-    <script src="/assets/common.js" async></script>
     <script src="/assets/theme/index.js" async></script>
     <script>
       demoReady(function() {
@@ -892,7 +882,7 @@
          * Button
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-button')).forEach(function(button) {
+        [].forEach.call(document.querySelectorAll('.mdc-button'), function(button) {
           mdc.ripple.MDCRipple.attachTo(button);
         });
 
@@ -903,17 +893,17 @@
         document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
         document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function() {
-          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'))
-            .forEach(function(checkbox) {
+          [].forEach.call(
+            document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'),
+            function(checkbox) {
               checkbox.indeterminate = !checkbox.indeterminate;
             });
         });
 
         document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function() {
-          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper'))
-            .forEach(function(formField) {
-              formField.classList.toggle('mdc-form-field--align-end');
-            });
+          [].forEach.call(document.querySelectorAll('.demo-checkbox-wrapper'), function(formField) {
+            formField.classList.toggle('mdc-form-field--align-end');
+          });
         });
 
         /*
@@ -923,7 +913,7 @@
         var drawerEl = document.querySelector('.mdc-drawer--temporary');
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        [].slice.call(document.querySelectorAll('.demo-drawer-toggle')).forEach(function(toggleElem) {
+        [].forEach.call(document.querySelectorAll('.demo-drawer-toggle'), function(toggleElem) {
           toggleElem.addEventListener('click', function() {
             drawer.open = true;
           });
@@ -941,7 +931,7 @@
          * FAB
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-fab')).forEach(function(fab) {
+        [].forEach.call(document.querySelectorAll('.mdc-fab'), function(fab) {
           mdc.ripple.MDCRipple.attachTo(fab);
         });
 
@@ -949,7 +939,7 @@
          * Icon Toggle
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-icon-toggle')).forEach(function(iconToggleEl) {
+        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggleEl) {
           mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
         });
 
@@ -957,7 +947,7 @@
          * Linear Progress
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-linear-progress')).forEach(function(progressEl) {
+        [].forEach.call(document.querySelectorAll('.mdc-linear-progress'), function(progressEl) {
           var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
           linearProgress.progress = 0.5;
           if (progressEl.dataset.buffer) {
@@ -966,10 +956,22 @@
         });
 
         /*
+         * Radio
+         */
+
+        [].forEach.call(document.querySelectorAll('.demo-radio-form-field'), function(formField) {
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
+          var radio = formField.querySelector('.mdc-radio');
+          if (radio) {
+            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
+          }
+        });
+
+        /*
          * Select
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-select:not(select)')).forEach(function(select) {
+        [].forEach.call(document.querySelectorAll('.mdc-select:not(select)'), function(select) {
           mdc.select.MDCSelect.attachTo(select);
         });
 
@@ -977,7 +979,7 @@
          * Slider
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-slider')).forEach(function(slider) {
+        [].forEach.call(document.querySelectorAll('.mdc-slider'), function(slider) {
           mdc.slider.MDCSlider.attachTo(slider);
         });
 
@@ -985,7 +987,7 @@
          * Tab Bar
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-tab-bar')).forEach(function(tabBar) {
+        [].forEach.call(document.querySelectorAll('.mdc-tab-bar'), function(tabBar) {
           mdc.tabs.MDCTabBar.attachTo(tabBar);
         });
 
@@ -993,20 +995,8 @@
          * Text Field
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-text-field')).forEach(function(textField) {
+        [].forEach.call(document.querySelectorAll('.mdc-text-field'), function(textField) {
           mdc.textField.MDCTextField.attachTo(textField);
-        });
-
-        /*
-         * Radio
-         */
-
-        [].slice.call(document.querySelectorAll('.demo-radio-form-field')).forEach(function(formField) {
-          var formFieldInstance = new mdc.formField.MDCFormField(formField);
-          var radio = formField.querySelector('.mdc-radio');
-          if (radio) {
-            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
-          }
         });
       });
     </script>

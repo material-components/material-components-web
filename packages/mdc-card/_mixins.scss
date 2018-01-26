@@ -24,10 +24,14 @@
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-card-media-aspect-ratio($width-unitless, $height-unitless) {
+@mixin mdc-card-corner-radius($radius) {
+  border-radius: $radius;
+}
+
+@mixin mdc-card-media-aspect-ratio($x, $y) {
   &::before {
     // This clever trick brought to you by: http://www.mademyday.de/css-height-equals-width-with-pure-css.html
-    margin-top: percentage($height-unitless / $width-unitless);
+    margin-top: percentage($y / $x);
   }
 }
 
@@ -35,7 +39,26 @@
 // Private
 //
 
-@mixin mdc-card-media-aspect-ratio-base_() {
+@mixin mdc-card-box-sizing_ {
+  &,
+  &::before,
+  &::after {
+    box-sizing: border-box;
+  }
+}
+
+@mixin mdc-card-column-layout_($display: flex) {
+  display: $display;
+  flex-direction: column;
+}
+
+@mixin mdc-card-row-layout_($display: flex) {
+  display: $display;
+  flex-direction: row;
+  align-items: center;
+}
+
+@mixin mdc-card-media-aspect-ratio-base_ {
   &::before {
     display: block;
     content: "";

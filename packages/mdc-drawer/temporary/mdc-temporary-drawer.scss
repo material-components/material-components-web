@@ -17,7 +17,6 @@
 @import "@material/animation/functions";
 @import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
-@import "@material/theme/mixins";
 @import "../mixins";
 @import "../variables";
 @import "../slidable/mixins";
@@ -59,17 +58,7 @@
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
 
-    @include mdc-theme-dark(".mdc-drawer--temporary") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-
-      background: #303030;
-    }
-
     @include mdc-slideable-drawer;
-
-    @include mdc-rtl(".mdc-drawer--temporary") {
-      @include mdc-slideable-drawer-rtl;
-    }
 
     display: flex;
     position: absolute;

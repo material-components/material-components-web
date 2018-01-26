@@ -21,10 +21,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/card.css">
-    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
   </head>
 
   <body class="mdc-typography">
@@ -44,8 +44,8 @@
 
       <section class="hero">
         <div class="mdc-card demo-card">
-          <a class="mdc-card__primary-action" href="javascript:">
-            <section class="mdc-card__media mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></section>
+          <a class="mdc-card__primary-action" href="#">
+            <div class="mdc-card__media mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></div>
             <div class="demo-card__primary">
               <h2 class="demo-card__title mdc-typography--title">Our Changing Planet</h2>
               <h3 class="demo-card__subtitle mdc-typography--subheading1">by Kurt Wagner</h3>
@@ -54,10 +54,10 @@
               Visit ten places on our planet that are undergoing the biggest changes today.
             </div>
           </a>
-          <div class="mdc-card__action-bar">
+          <div class="mdc-card__actions">
             <div class="mdc-card__action-buttons">
-              <button class="mdc-button mdc-card__action">Read</button>
-              <button class="mdc-button mdc-card__action">Bookmark</button>
+              <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+              <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
             </div>
             <div class="mdc-card__action-icons">
               <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
@@ -70,12 +70,16 @@
                  data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
                 favorite_border
               </i>
-              <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
-                <i class="material-icons" role="presentation">share</i>
-              </button>
-              <button class="mdc-button mdc-card__action mdc-card__action--icon" title="More options">
-                <i class="material-icons" role="presentation">more_vert</i>
-              </button>
+              <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                 tabindex="0"
+                 role="button"
+                 data-mdc-ripple-is-unbounded
+                 title="Share">share</i>
+              <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                 tabindex="0"
+                 role="button"
+                 data-mdc-ripple-is-unbounded
+                 title="More options">more_vert</i>
             </div>
           </div>
         </div>
@@ -102,7 +106,7 @@
 
           <hr class="mdc-list-divider">
 
-          <a class="demo-card-article mdc-ripple-surface" href="javascript:">
+          <a class="demo-card-article mdc-ripple-surface" href="#">
             <h2 class="demo-card-article__title mdc-typography--headline">Copper on the rise</h2>
             <p class="demo-card-article__snippet mdc-typography--body1">
               Copper price soars amid global market optimism and increased demand.
@@ -111,7 +115,7 @@
 
           <hr class="mdc-list-divider">
 
-          <a class="demo-card-article mdc-ripple-surface" href="javascript:">
+          <a class="demo-card-article mdc-ripple-surface" href="#">
             <h2 class="demo-card-article__title mdc-typography--headline">U.S. tech startups rebound</h2>
             <p class="demo-card-article__snippet mdc-typography--body1">
               Favorable business conditions have allowed startups to secure more fundraising deals compared to last
@@ -121,7 +125,7 @@
 
           <hr class="mdc-list-divider">
 
-          <a class="demo-card-article mdc-ripple-surface" href="javascript:">
+          <a class="demo-card-article mdc-ripple-surface" href="#">
             <h2 class="demo-card-article__title mdc-typography--headline">Asia's clean energy ambitions</h2>
             <p class="demo-card-article__snippet mdc-typography--body1">
               China plans to invest billions of dollars for the development of over 300 clean energy projects in
@@ -131,26 +135,26 @@
 
           <hr class="mdc-list-divider">
 
-          <div class="mdc-card__action-bar mdc-card__action-bar--full-bleed">
-            <a class="mdc-button mdc-card__action demo-card-action" href="javascript:">
-              <span class="demo-card-action__text">All Business Headlines</span>
-              <i class="material-icons">arrow_forward</i>
+          <div class="mdc-card__actions mdc-card__actions--full-bleed">
+            <a class="mdc-button mdc-card__action mdc-card__action--button demo-card-action" href="#">
+              All Business Headlines
+              <i class="material-icons" aria-hidden="true">arrow_forward</i>
             </a>
           </div>
         </div>
 
         <div class="mdc-card demo-card demo-card--photo-album">
-          <a class="mdc-card__primary-action demo-card__primary-action" href="javascript:">
-            <section class="mdc-card__media mdc-card__media--square demo-card__media">
+          <a class="mdc-card__primary-action demo-card__primary-action" href="#">
+            <div class="mdc-card__media mdc-card__media--square demo-card__media">
               <div class="mdc-card__media-content demo-card__media-content--with-title">
                 <div class="demo-card__media-title mdc-typography--subheading2">
                   Vacation Photos
                 </div>
               </div>
-            </section>
+            </div>
           </a>
-          <section class="mdc-card__action-bar">
-            <div class="mdc-card__action-icons demo-card__action-icons--centered">
+          <div class="mdc-card__action-bar">
+            <div class="mdc-card__actions demo-card__actions--centered">
               <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
                  tabindex="0"
                  role="button"
@@ -171,77 +175,74 @@
                  data-toggle-off='{"content": "bookmark_border", "label": "Add bookmark"}'>
                 bookmark_border
               </i>
-              <button class="mdc-button mdc-card__action mdc-card__action--icon" title="Share">
-                <i class="material-icons" role="presentation">
-                  share
-                </i>
-              </button>
+              <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                 tabindex="0"
+                 role="button"
+                 data-mdc-ripple-is-unbounded
+                 title="Share">share</i>
             </div>
-          </section>
+          </div>
         </div>
 
         <div class="mdc-card demo-card demo-card--music-album">
-          <a class="mdc-card__primary-action demo-card__primary-action" href="javascript:">
-            <section class="demo-card__music-row">
+          <a class="mdc-card__primary-action demo-card__primary-action" href="#">
+            <div class="demo-card__music-row">
               <div class="mdc-card__media mdc-card__media--square demo-card__media demo-card__media--music"></div>
               <div class="demo-card__music-info">
                 <div class="demo-card__music-title mdc-typography--headline">Rozes</div>
                 <div class="demo-card__music-artist mdc-typography--body1">Under the Grave</div>
                 <div class="demo-card__music-year mdc-typography--body1">(2016)</div>
               </div>
-            </section>
+            </div>
           </a>
           <hr class="mdc-list-divider">
-          <section class="mdc-card__action-bar">
-            <div class="mdc-card__action-buttons demo-card__action-buttons--text">Rate this album</div>
+          <div class="mdc-card__actions">
+            <div class="mdc-card__action-buttons demo-card__action-buttons--text-only">Rate this album</div>
             <div class="mdc-card__action-icons">
-              <i class="material-icons mdc-card__action mdc-card__action--icon"
+              <i class="material-icons demo-card__action-icon--star"
                  tabindex="0"
                  role="button"
                  title="1 star">
                 star_border
               </i>
-              <i class="material-icons mdc-card__action mdc-card__action--icon"
+              <i class="material-icons demo-card__action-icon--star"
                  tabindex="0"
                  role="button"
                  title="2 stars">
                 star_border
               </i>
-              <i class="material-icons mdc-card__action mdc-card__action--icon"
+              <i class="material-icons demo-card__action-icon--star"
                  tabindex="0"
                  role="button"
                  title="3 stars">
                 star_border
               </i>
-              <i class="material-icons mdc-card__action mdc-card__action--icon"
+              <i class="material-icons demo-card__action-icon--star"
                  tabindex="0"
                  role="button"
                  title="4 stars">
                 star_border
               </i>
-              <i class="material-icons mdc-card__action mdc-card__action--icon"
+              <i class="material-icons demo-card__action-icon--star"
                  tabindex="0"
                  role="button"
                  title="5 stars">
                 star_border
               </i>
             </div>
-          </section>
+          </div>
         </div>
       </section>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
-        document.addEventListener('change', function(evt) {
-          var target = evt.target;
-          if (target.id !== 'toggle-rtl') {
-            return;
-          }
-
+        var rtlToggle = document.getElementById('toggle-rtl');
+        rtlToggle.addEventListener('change', function() {
           var docEl = document.documentElement;
-          if (target.checked) {
+          if (rtlToggle.checked) {
             docEl.setAttribute('dir', 'rtl');
           } else {
             docEl.removeAttribute('dir');
@@ -257,7 +258,6 @@
         });
 
         document.addEventListener('MDCIconToggle:change', function(evt) {
-          // TODO(acdvorak): Do this in icon-toggle
           evt.target.setAttribute('title', evt.target.getAttribute('aria-label'));
         });
 
