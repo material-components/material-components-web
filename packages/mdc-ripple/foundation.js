@@ -489,13 +489,18 @@ class MDCRippleFoundation extends MDCFoundation {
 
     // Surface diameter is treated differently for unbounded vs. bounded ripples.
     // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
-    // to extend the pointer target, and the ripple is expected to meet the edges of the padded hitbox
-    // (which is typically square). Bounded ripples, on the other hand, are fully expected to expand beyond the
-    // surface's longest diameter (calculated based on the diagonal plus a constant padding).
-    this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim :
-      Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2)) + MDCRippleFoundation.numbers.PADDING;
+    // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
+    // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
+    // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
+    // `overflow: hidden`.
+    const getBoundedRadius = () => {
+      const hypotenuse = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
+      return hypotenuse + MDCRippleFoundation.numbers.PADDING;
+    };
 
-    // Ripple starts as a fraction of the largest dimension of the surface and scales from 1x to a value based on radius
+    this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
+
+    // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
     this.initialSize_ = maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE;
     this.fgScale_ = this.maxRadius_ / this.initialSize_;
 
