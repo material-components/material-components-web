@@ -84,13 +84,10 @@
   @include mdc-ripple-radius;
   @include mdc-states;
 
+  outline: 0 none;
   color: inherit;
   text-decoration: none;
   overflow: hidden;
-
-  &:focus {
-    outline: 0 none;
-  }
 }
 
 .mdc-card__primary-action:first-child {
