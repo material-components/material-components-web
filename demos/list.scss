@@ -76,16 +76,9 @@ a.material-icons {
   margin-left: 72px;
 }
 
-.checkbox-list-ripple-surface {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
-  @include mdc-states;
-  @include mdc-states-base-color(black);
-}
-
 .checkbox-list-ripple-surface:not(.mdc-ripple-upgraded):active::after {
   // Prevent checkbox clicks from activating a second ripple on the list item.
-  opacity: 0;
+  opacity: 0 !important;
 }
 
 #demo-wrapper {
