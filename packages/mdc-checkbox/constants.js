@@ -43,7 +43,7 @@ const strings = {
 
 /** @enum {number} */
 const numbers = {
-  ANIM_END_LATCH_MS: 150,
+  ANIM_END_LATCH_MS: 200,
 };
 
 export {cssClasses, strings, numbers};
