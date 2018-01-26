@@ -65,7 +65,6 @@
 
 .demo-card__media--16-9 {
   background-image: url("/images/16-9.jpg");
-  border-top-left-radius: inherit; // for music card
 }
 
 .demo-card__media-content--with-title {
@@ -75,8 +74,6 @@
 }
 
 .demo-card__media-title {
-  display: flex;
-  flex-direction: column;
   padding: 8px 16px;
   background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.5) 100%);
   color: white;
@@ -133,14 +130,6 @@
 }
 
 //
-// Photo card
-//
-
-.demo-card__actions--centered {
-  justify-content: center;
-}
-
-//
 // Music card
 //
 
@@ -164,7 +153,7 @@
 
 .demo-card__media--music {
   width: 110px;
-  border-top-left-radius: inherit; // for music card
+  border-top-left-radius: inherit;
 
   @include mdc-rtl {
     border-top-left-radius: 0;
