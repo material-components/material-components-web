@@ -84,6 +84,7 @@
   @include mdc-ripple-radius;
   @include mdc-states;
 
+  box-sizing: border-box;
   outline: 0 none;
   color: inherit;
   text-decoration: none;
