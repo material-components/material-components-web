@@ -24,96 +24,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .hero .demo-card {
-        width: 320px;
-        background-color: white;
-      }
-
-      .hero {
-        min-height: 480px;
-      }
-
-      .demo-card {
-        max-width: 21.875rem;
-        /* 350sp */
-        margin-bottom: 48px;
-      }
-
-      @media(min-width: 768px) {
-        .demo-card {
-          margin-bottom: 24px;
-        }
-      }
-
-      .demo-card--with-avatar .mdc-card__primary {
-        position: relative;
-      }
-
-      .demo-card--with-avatar .demo-card__avatar {
-        position: absolute;
-        background: #bdbdbd;
-        height: 2.5rem;
-        /* 40sp */
-        width: 2.5rem;
-        /* 40sp */
-        border-radius: 50%;
-      }
-
-      .demo-card--with-avatar .mdc-card__title,
-      .demo-card--with-avatar .mdc-card__subtitle {
-        margin-left: 56px;
-      }
-
-      [dir="rtl"] .demo-card--with-avatar .mdc-card__title,
-      [dir="rtl"] .demo-card--with-avatar .mdc-card__subtitle {
-        margin-right: 56px;
-        margin-left: initial;
-      }
-
-      .demo-card__16-9-media {
-        background-image: url("images/16-9.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 12.313rem;
-        /* 197sp, for 16:9 ratio with 350sp demo card width */
-      }
-
-      .demo-card--small .mdc-card__media {
-        background-image: url("images/1-1.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 10.938rem;
-        /* 175sp, for 1:1 ratio with 175sp demo card width */
-      }
-
-      .demo-card--bg-demo {
-        height: 21.875rem;
-        /* 350sp */
-        background-image: url("images/1-1.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-      }
-
-      .demo-card--bg-demo .mdc-card__primary,
-      .demo-card--bg-demo .mdc-card__actions {
-        background: rgba(0, 0, 0, .4);
-      }
-
-      #demo-wrapper {
-        margin: 24px;
-        display: flex;
-        flex-flow: row wrap;
-        align-content: left;
-        justify-content: left;
-      }
-
-      #demo-wrapper .demo-card {
-        margin: 24px;
-        min-width: 320px;
-      }
-
-    </style>
+    <script src="/ready.js"></script>
   </head>
 
   <body class="mdc-typography">
@@ -127,210 +38,224 @@
         </section>
       </div>
     </header>
+
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
+
       <section class="hero">
         <div class="mdc-card demo-card">
-          <section class="mdc-card__media demo-card__16-9-media"></section>
-          <section class="mdc-card__primary">
-            <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-            <h2 class="mdc-card__subtitle">Subtitle here</h2>
-          </section>
-          <section class="mdc-card__actions">
-            <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-            <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-          </section>
+          <div class="mdc-card__media mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></div>
+          <div class="demo-card__primary">
+            <h2 class="demo-card__title mdc-typography--title">Our Changing Planet</h2>
+            <h3 class="demo-card__subtitle mdc-typography--subheading1">by Kurt Wagner</h3>
+          </div>
+          <div class="demo-card__secondary mdc-typography--body1">
+            Visit ten places on our planet that are undergoing the biggest changes today.
+          </div>
+          <div class="mdc-card__actions">
+            <div class="mdc-card__action-buttons">
+              <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+              <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
+            </div>
+            <div class="mdc-card__action-icons">
+              <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+                 tabindex="0"
+                 role="button"
+                 aria-pressed="false"
+                 aria-label="Add to favorites"
+                 title="Add to favorites"
+                 data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+                 data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+                favorite_border
+              </i>
+              <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                 tabindex="0"
+                 role="button"
+                 data-mdc-ripple-is-unbounded
+                 title="Share">share</i>
+              <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                 tabindex="0"
+                 role="button"
+                 data-mdc-ripple-is-unbounded
+                 title="More options">more_vert</i>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="example">
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox">
-              <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
+      <section class="demo-card-toggles">
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
+        </div>
+      </section>
+
+      <section class="demo-card-collection">
+        <div class="mdc-card demo-card">
+          <div class="demo-card-article-group-heading mdc-typography--subheading2">Headlines</div>
+
+          <hr class="mdc-list-divider">
+
+          <a class="demo-card-article mdc-ripple-surface" href="#">
+            <h2 class="demo-card-article__title mdc-typography--headline">Copper on the rise</h2>
+            <p class="demo-card-article__snippet mdc-typography--body1">
+              Copper price soars amid global market optimism and increased demand.
+            </p>
+          </a>
+
+          <hr class="mdc-list-divider">
+
+          <a class="demo-card-article mdc-ripple-surface" href="#">
+            <h2 class="demo-card-article__title mdc-typography--headline">U.S. tech startups rebound</h2>
+            <p class="demo-card-article__snippet mdc-typography--body1">
+              Favorable business conditions have allowed startups to secure more fundraising deals compared to last
+              year.
+            </p>
+          </a>
+
+          <hr class="mdc-list-divider">
+
+          <a class="demo-card-article mdc-ripple-surface" href="#">
+            <h2 class="demo-card-article__title mdc-typography--headline">Asia's clean energy ambitions</h2>
+            <p class="demo-card-article__snippet mdc-typography--body1">
+              China plans to invest billions of dollars for the development of over 300 clean energy projects in
+              Southeast Asia.
+            </p>
+          </a>
+
+          <hr class="mdc-list-divider">
+
+          <div class="mdc-card__actions mdc-card__actions--full-bleed">
+            <a class="mdc-button mdc-card__action mdc-card__action--button demo-card-action" href="#">
+              All Business Headlines
+              <i class="material-icons" aria-hidden="true">arrow_forward</i>
+            </a>
+          </div>
+        </div>
+
+        <div class="mdc-card demo-card demo-card--photo">
+          <div class="mdc-card__media mdc-card__media--square demo-card__media">
+            <div class="mdc-card__media-content demo-card__media-content--with-title">
+              <div class="demo-card__media-title mdc-typography--subheading2">
+                Vacation Photos
               </div>
             </div>
-            <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
           </div>
+          <div class="mdc-card__actions mdc-card__action-icons">
+            <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+               tabindex="0"
+               role="button"
+               aria-pressed="false"
+               aria-label="Add to favorites"
+               title="Add to favorites"
+               data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+               data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+              favorite_border
+            </i>
+            <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+               tabindex="0"
+               role="button"
+               aria-pressed="false"
+               aria-label="Add bookmark"
+               title="Add bookmark"
+               data-toggle-on='{"content": "bookmark", "label": "Remove bookmark"}'
+               data-toggle-off='{"content": "bookmark_border", "label": "Add bookmark"}'>
+              bookmark_border
+            </i>
+            <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+               tabindex="0"
+               role="button"
+               data-mdc-ripple-is-unbounded
+               title="Share">share</i>
+          </div>
+        </div>
+
+        <div class="mdc-card demo-card demo-card--music">
+          <div class="demo-card__music-row">
+            <div class="mdc-card__media mdc-card__media--square demo-card__media demo-card__media--music"></div>
+            <div class="demo-card__music-info">
+              <div class="demo-card__music-title mdc-typography--headline">Rozes</div>
+              <div class="demo-card__music-artist mdc-typography--body1">Under the Grave</div>
+              <div class="demo-card__music-year mdc-typography--body1">(2016)</div>
+            </div>
+          </div>
+          <hr class="mdc-list-divider">
+          <div class="mdc-card__actions">
+            <div class="mdc-card__action-buttons demo-card__action-buttons--text-only">Rate this album</div>
+            <div class="mdc-card__action-icons">
+              <i class="material-icons demo-card__action-icon--star"
+                 tabindex="0"
+                 role="button"
+                 title="1 star">
+                star_border
+              </i>
+              <i class="material-icons demo-card__action-icon--star"
+                 tabindex="0"
+                 role="button"
+                 title="2 stars">
+                star_border
+              </i>
+              <i class="material-icons demo-card__action-icon--star"
+                 tabindex="0"
+                 role="button"
+                 title="3 stars">
+                star_border
+              </i>
+              <i class="material-icons demo-card__action-icon--star"
+                 tabindex="0"
+                 role="button"
+                 title="4 stars">
+                star_border
+              </i>
+              <i class="material-icons demo-card__action-icon--star"
+                 tabindex="0"
+                 role="button"
+                 title="5 stars">
+                star_border
+              </i>
+            </div>
+          </div>
+        </div>
       </section>
-
-      <section class="demo-typography--section" id="demo-wrapper">
-        <div>
-          <div class="mdc-card demo-card">
-            <section class="mdc-card__media demo-card__16-9-media"></section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card demo-card--with-avatar">
-            <section class="mdc-card__primary">
-              <div class="demo-card__avatar"></div>
-              <h1 class="mdc-card__title">Title</h1>
-              <h2 class="mdc-card__subtitle">Subhead</h2>
-            </section>
-            <section class="mdc-card__media demo-card__16-9-media"></section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card demo-card--with-avatar">
-            <section class="mdc-card__primary">
-              <div class="demo-card__avatar"></div>
-              <h1 class="mdc-card__title">Title</h1>
-              <h2 class="mdc-card__subtitle">Subhead</h2>
-            </section>
-            <section class="mdc-card__media demo-card__16-9-media"></section>
-            <section class="mdc-card__actions mdc-card__actions--vertical">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card">
-            <section class="mdc-card__media demo-card__16-9-media"></section>
-            <section class="mdc-card__primary">
-              <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-              <h2 class="mdc-card__subtitle">Subtitle here</h2>
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card">
-            <section class="mdc-card__primary">
-              <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-              <h2 class="mdc-card__subtitle">Subtitle here</h2>
-            </section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card mdc-card--theme-dark demo-card demo-card--bg-demo">
-            <section class="mdc-card__primary">
-              <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-              <h2 class="mdc-card__subtitle">Subtitle here</h2>
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-button--theme-dark mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-button--theme-dark mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card demo-card--small">
-            <section class="mdc-card__media">
-              <h1 class="mdc-card__title mdc-card__title--large">Title</h1>
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card">
-            <div class="mdc-card__horizontal-block">
-              <section class="mdc-card__primary">
-                <h1 class="mdc-card__title mdc-card__title--large">Title here</h1>
-                <h2 class="mdc-card__subtitle">Subtitle here</h2>
-              </section>
-              <img class="mdc-card__media-item" src="images/1-1.jpg">
-            </div>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card">
-            <div class="mdc-card__horizontal-block">
-              <section class="mdc-card__primary">
-                <h1 class="mdc-card__title mdc-card__title--large">Title here</h1>
-                <h2 class="mdc-card__subtitle">Subtitle here</h2>
-              </section>
-              <img class="mdc-card__media-item mdc-card__media-item--1dot5x" src="images/1-1.jpg">
-            </div>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card">
-            <div class="mdc-card__horizontal-block">
-              <section class="mdc-card__primary">
-                <h1 class="mdc-card__title mdc-card__title--large">Title here</h1>
-                <h2 class="mdc-card__subtitle">Subtitle here</h2>
-              </section>
-              <img class="mdc-card__media-item mdc-card__media-item--2x" src="images/1-1.jpg">
-            </div>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div>
-          <div class="mdc-card demo-card">
-            <div class="mdc-card__horizontal-block">
-              <img class="mdc-card__media-item mdc-card__media-item--3x" src="images/1-1.jpg">
-              <section class="mdc-card__actions mdc-card__actions--vertical">
-                <!-- TODO(sgomes): Replace with icon buttons when we have those. -->
-                <button class="mdc-button mdc-button--compact mdc-card__action">A1</button>
-                <button class="mdc-button mdc-button--compact mdc-card__action">A2</button>
-              </section>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
     </main>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
-      // var formField = new mdc.formField.MDCFormField(document.querySelector('.mdc-form-field'));
-      // var cb = mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
-      // formField.input = cb;
-      var demoWrapper = document.getElementById('demo-wrapper');
-      document.getElementById('toggle-rtl').addEventListener('change', function () {
-        if (this.checked) {
-          demoWrapper.setAttribute('dir', 'rtl');
-        } else {
-          demoWrapper.removeAttribute('dir');
-        }
+      demoReady(function() {
+        var rtlToggle = document.getElementById('toggle-rtl');
+        rtlToggle.addEventListener('change', function() {
+          var docEl = document.documentElement;
+          if (rtlToggle.checked) {
+            docEl.setAttribute('dir', 'rtl');
+          } else {
+            docEl.removeAttribute('dir');
+          }
+        });
+
+        [].forEach.call(document.querySelectorAll('.mdc-button'), function(surface) {
+          mdc.ripple.MDCRipple.attachTo(surface);
+        });
+
+        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggle) {
+          mdc.iconToggle.MDCIconToggle.attachTo(iconToggle);
+        });
+
+        document.addEventListener('MDCIconToggle:change', function(evt) {
+          evt.target.setAttribute('title', evt.target.getAttribute('aria-label'));
+        });
+
+        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
+          mdc.ripple.MDCRipple.attachTo(surface);
+        });
       });
     </script>
   </body>
