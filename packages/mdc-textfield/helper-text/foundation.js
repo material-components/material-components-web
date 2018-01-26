@@ -54,7 +54,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
   /**
    * @param {!MDCTextFieldHelperTextAdapter=} adapter
    */
-  constructor(adapter = /** @type {!MDCTextFieldHelperTextAdapter} */ ({})) {
+  constructor(adapter) {
     super(Object.assign(MDCTextFieldHelperTextFoundation.defaultAdapter, adapter));
   }
 
