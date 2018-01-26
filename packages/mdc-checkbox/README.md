@@ -47,7 +47,7 @@ npm install --save @material/checkbox
   <div class="mdc-checkbox__background">
     <svg class="mdc-checkbox__checkmark"
          viewBox="0 0 24 24">
-      <path class="mdc-checkbox__checkmark__path"
+      <path class="mdc-checkbox__checkmark-path"
             fill="none"
             stroke="white"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -76,7 +76,7 @@ easily position checkboxes and their labels.
     <div class="mdc-checkbox__background">
       <svg class="mdc-checkbox__checkmark"
            viewBox="0 0 24 24">
-        <path class="mdc-checkbox__checkmark__path"
+        <path class="mdc-checkbox__checkmark-path"
               fill="none"
               stroke="white"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -104,7 +104,7 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
   <div class="mdc-checkbox__background">
     <svg class="mdc-checkbox__checkmark"
          viewBox="0 0 24 24">
-      <path class="mdc-checkbox__checkmark__path"
+      <path class="mdc-checkbox__checkmark-path"
             fill="none"
             stroke="white"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
