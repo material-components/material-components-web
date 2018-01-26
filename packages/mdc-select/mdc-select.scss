@@ -188,8 +188,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 }
 
-.mdc-select--disabled,
-.mdc-select[disabled] {
+.mdc-select--disabled {
   @include mdc-select-label-color_(text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
 

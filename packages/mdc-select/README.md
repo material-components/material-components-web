@@ -200,37 +200,11 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
 </div>
 ```
 
-### Using the Pure CSS Select
-
-The `mdc-select` CSS classes also work with the browser's native `<select>` element, allowing for a
-seamless, un-invasive experience in browsers where a native select may be more appropriate, such as
-on a mobile device. It does not require any javascript, nor any CSS for `mdc-menu` or `mdc-list`.
-E.g.:
-
-1. Wrap the `<select>` with a block element that has an `mdc-select` class
-2. Add the `mdc-select__surface` class to the `<select>`
-3. Append `<div class="mdc-select__bottom-line"></div>` immediately after the `<select>`
-
-```html
-<div class="mdc-select">
-  <select class="mdc-select__surface">
-    <option value="" default selected>Pick a food group</option>
-    <option value="grains">Bread, Cereal, Rice, and Pasta</option>
-    <option value="vegetables" disabled>Vegetables</option>
-    <option value="fruit">Fruit</option>
-    <option value="dairy">Milk, Yogurt, and Cheese</option>
-    <option value="meat">Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts</option>
-    <option value="fats">Fats, Oils, and Sweets</option>
-  </select>
-  <div class="mdc-select__bottom-line"></div>
-</div>
-```
-
 #### CSS Classes
 
 | Class                    | Description                                     |
 | ------------------------ | ----------------------------------------------- |
-| `mdc-select`             | A pure css `select` element                     |
+| `mdc-select`             | Mandatory                                       |
 | `mdc-list-group`         | A group of options.                             |
 | `mdc-list-item`          | A list item.                                    |
 | `mdc-list-divider`       | A divider.                                      |
@@ -244,7 +218,7 @@ these mixins within CSS selectors like `.foo-select` to apply styling.
 
 Mixin | Description
 --- | ---
-`mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select. On the css version, this also customizes the color of the label.
+`mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select. 
 `mdc-select-container-fill-color($color)` | Customizes the background color of the select. 
 `mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state. This mixin is only used for the JS version of the select.
 `mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
