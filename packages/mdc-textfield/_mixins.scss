@@ -17,8 +17,10 @@
 @import "@material/line-ripple/mixins";
 @import "outline/mixins";
 @import "label/mixins";
+@import "label/variables";
 @import "helper-text/mixins";
 @import "icon/mixins";
+@import "icon/variables";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
@@ -46,37 +48,6 @@
     border-radius: max($radius - 2, 0);
   }
 }
-
-@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $positionX: 0%, $scale: .75) {
-  @keyframes invalid-shake-float-above-#{$modifier} {
-    0% {
-      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
-    }
-
-    33% {
-      animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
-      transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
-    }
-
-    66% {
-      animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
-      transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
-    }
-
-    100% {
-      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
-    }
-  }
-}
-
-@include mdc-text-field-invalid-label-shake_keyframes_(standard, 100%);
-@include mdc-text-field-invalid-label-shake-keyframes_(box, 50%);
-@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, 90%, 0%, .923);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, 130%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, 145%, 0%, .923);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, 130%, 27%);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, 145%, 25%, .923);
-@include mdc-text-field-invalid-label-shake-keyframes_(textarea, 50%, 0%, .923);
 
 @mixin mdc-text-field-ink-color($color) {
   &:not(.mdc-text-field--disabled) {
@@ -131,7 +102,7 @@
 
 // Private mixins
 
-// Common
+// Baseline
 
 @mixin mdc-text-field-disabled_ {
   @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-light);
@@ -166,7 +137,6 @@
   }
 
   .mdc-text-field__label {
-    bottom: 8px;
     cursor: default;
   }
 }
@@ -205,6 +175,15 @@
   }
 }
 
+@mixin mdc-text-field-dense_ {
+  // NOTE: This is an eyeball'd approximation of what's in the mocks.
+  @include mdc-text-field-label-float_(110%, 0%, $mdc-text-field-dense-label-scale);
+
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: .813rem;
+}
+
 @mixin mdc-required-text-field-label-asterix_() {
   .mdc-text-field__input:required + .mdc-text-field__label::after {
     @content;
@@ -223,10 +202,6 @@
 
   .mdc-text-field__outline-path {
     stroke-width: 1px;
-  }
-
-  .mdc-text-field__label {
-    bottom: 20px;
   }
 }
 
@@ -252,6 +227,8 @@
 }
 
 @mixin mdc-text-field-outlined-dense_ {
+  @include mdc-text-field-label-float_($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+
   height: 48px;
 
   .mdc-text-field__input {
@@ -262,11 +239,7 @@
     bottom: 18px;
   }
 
-  .mdc-text-field__label--float-above {
-    transform: translateY(-145%) scale(.923);
-  }
-
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-outlined-dense 250ms 1;
   }
 
@@ -276,10 +249,10 @@
 }
 
 @mixin mdc-text-field-outlined_ {
-  // Outline specific colors
   @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
+  @include mdc-text-field-label-float_($mdc-text-field-outlined-label-position-y);
 
   height: 56px;
   border: none;
@@ -293,10 +266,10 @@
     border: none;
     background-color: transparent;
     z-index: 1;
+  }
 
-    &:hover ~ .mdc-text-field__idle-outline {
-      border: 1px solid;
-    }
+  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid;
   }
 
   .mdc-text-field__label {
@@ -307,20 +280,16 @@
     transition: transform 260ms ease;
   }
 
-  .mdc-text-field__label--float-above {
-    transform: translateY(-130%) scale(.75);
-  }
-
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-outlined 250ms 1;
   }
 
   .mdc-text-field__icon {
     z-index: 2;
+  }
 
-    &:hover ~ .mdc-text-field__idle-outline {
-      border: 1px solid $mdc-text-field-outlined-hover-border;
-    }
+  .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid $mdc-text-field-outlined-hover-border;
   }
 
   .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
@@ -336,33 +305,143 @@
 
 // Box
 
+@mixin mdc-text-field-box_ {
+  @include mdc-ripple-surface;
+  @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
+  @include mdc-ripple-radius;
+  @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
+  @include mdc-text-field-label-float_($mdc-text-field-box-label-position-y);
+
+  display: inline-flex;
+  position: relative;
+  height: 56px;
+  margin-top: 16px;
+  overflow: hidden;
+
+  @include mdc-theme-dark(".mdc-text-field", true) {
+    background-color: $mdc-text-field-box-background-dark;
+  }
+
+  @include mdc-theme-dark(".mdc-text-field", true) {
+    @include mdc-states(text-primary-on-dark, $has-nested-focusable-element: true);
+  }
+
+  .mdc-text-field__input {
+    align-self: flex-end;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 20px 16px 0;
+  }
+
+  .mdc-text-field__label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    position: absolute;
+    bottom: 20px;
+    width: calc(100% - #{$mdc-text-field-icon-padding});
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    overflow: hidden;
+    // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
+    // when the ripple is activated behind it.
+    will-change: transform;
+
+    @include mdc-theme-dark(".mdc-text-field") {
+      @include mdc-theme-prop(color, text-secondary-on-dark);
+    }
+  }
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-box 250ms 1;
+  }
+}
+
 @mixin mdc-text-field-box-disabled_ {
   @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
   @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
   @include mdc-text-field-label-color(text-hint-on-light);
 
   border-bottom: none;
-
-  .mdc-text-field__label {
-    bottom: 20px;
-  }
 }
 
 @mixin mdc-text-field-box-dense_ {
+  @include mdc-text-field-label-float_($mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+
   .mdc-text-field__input {
     padding: 12px 12px 0;
   }
 
-  .mdc-text-field__label {
-    bottom: 20px;
-  }
-
-  .mdc-text-field__label--float-above {
-    transform: translateY(-90%) scale(.923);
-  }
-
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-box-dense 250ms 1;
+  }
+}
+
+// Icons
+
+@mixin mdc-text-field-with-leading-icon_ {
+  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+}
+
+@mixin mdc-text-field-dense-with-leading-icon_ {
+  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
+}
+
+@mixin mdc-text-field-outlined-with-leading-icon_ {
+  @include mdc-text-field-label-float_($mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
+  }
+}
+
+@mixin mdc-text-field-outlined-dense-with-leading-icon_ {
+  @include mdc-text-field-label-float_($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
+
+  .mdc-text-field__label--shake {
+    animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
+  }
+}
+
+@mixin mdc-text-field-with-trailing-icon_ {
+  @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+}
+
+@mixin mdc-text-field-dense-with-trailing-icon_ {
+  @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
+}
+
+// Full Width
+
+@mixin mdc-text-field-full-width_ {
+  width: 100%;
+
+  &:not(.mdc-text-field--textarea) {
+    display: block;
+    box-sizing: border-box;
+    height: 56px;
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid;
+    outline: none;
+
+    .mdc-text-field__input {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      resize: none;
+      // Use !important here to override all other border treatments
+      border: none !important;
+    }
+  }
+
+  .mdc-text-field__input {
+    resize: vertical;
+  }
+
+  @include mdc-theme-dark {
+    border-bottom: 1px solid $mdc-text-field-divider-on-dark;
   }
 }
 
@@ -392,6 +471,10 @@
   @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-label-background-color_($mdc-textarea-light-background);
   @include mdc-text-field-textarea-stroke-color($mdc-textarea-border-on-light);
+
+  // Translate above the top of the input, and compensate for the amount of offset needed
+  // to position the label within the bounds of the inset padding.
+  @include mdc-text-field-label-float_($mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);
 
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
@@ -431,21 +514,14 @@
     }
   }
 
-  .mdc-text-field__label--float-above {
-    // Translate above the top of the input, and compensate for the amount of offset needed
-    // to position the label within the bounds of the inset padding.
-    // Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
-    transform: translateY(-50%) scale(.923);
-  }
-
-  .mdc-text-field__label--float-above.mdc-text-field__label--shake {
+  .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-textarea 250ms 1;
   }
 
   // stylelint-enable plugin/selector-bem-pattern
 }
 
-// Private Color Mixins
+// Customization
 
 @mixin mdc-text-field-ink-color_($color) {
   .mdc-text-field__input {

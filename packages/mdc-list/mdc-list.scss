@@ -68,8 +68,6 @@
 // postcss-bem-linter: define list-item
 
 .mdc-list-item {
-  @include mdc-typography-overflow-ellipsis;
-
   display: flex;
   position: relative;
   align-items: center;
@@ -95,6 +93,7 @@
   @include mdc-list-graphic-size_(24px);
 
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
 }
@@ -103,9 +102,11 @@
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
 }
 
-.mdc-list-item__text {
-  display: inline-flex;
-  flex-direction: column;
+.mdc-list-item__text,
+.mdc-list-item__secondary-text {
+  @include mdc-typography-overflow-ellipsis;
+
+  display: block;
 }
 
 .mdc-list-item__secondary-text {

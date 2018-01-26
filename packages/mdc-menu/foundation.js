@@ -40,13 +40,13 @@ let AutoLayoutMeasurements;
 /* eslint-enable no-unused-vars */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCSimpleMenuAdapter} from './adapter';
+import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
 
 /**
- * @extends {MDCFoundation<!MDCSimpleMenuAdapter>}
+ * @extends {MDCFoundation<!MDCMenuAdapter>}
  */
-class MDCSimpleMenuFoundation extends MDCFoundation {
+class MDCMenuFoundation extends MDCFoundation {
   /** @return enum{cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -68,12 +68,12 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * {@see MDCSimpleMenuAdapter} for typing information on parameters and return
+   * {@see MDCMenuAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCSimpleMenuAdapter}
+   * @return {!MDCMenuAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCSimpleMenuAdapter} */ ({
+    return /** @type {!MDCMenuAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => false,
@@ -105,9 +105,9 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     });
   }
 
-  /** @param {!MDCSimpleMenuAdapter} adapter */
+  /** @param {!MDCMenuAdapter} adapter */
   constructor(adapter) {
-    super(Object.assign(MDCSimpleMenuFoundation.defaultAdapter, adapter));
+    super(Object.assign(MDCMenuFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event)} */
     this.clickHandler_ = (evt) => this.handlePossibleSelected_(evt);
@@ -140,7 +140,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 
   init() {
-    const {ROOT, OPEN} = MDCSimpleMenuFoundation.cssClasses;
+    const {ROOT, OPEN} = MDCMenuFoundation.cssClasses;
 
     if (!this.adapter_.hasClass(ROOT)) {
       throw new Error(`${ROOT} class required in root element.`);
@@ -425,7 +425,7 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   getVerticalOriginOffset_(corner) {
     const {viewport, viewportDistance, anchorHeight, menuHeight} = this.measures_;
     const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
-    const {MARGIN_TO_EDGE} = MDCSimpleMenuFoundation.numbers;
+    const {MARGIN_TO_EDGE} = MDCMenuFoundation.numbers;
     const avoidVerticalOverlap = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
     const canOverlapVertically = !avoidVerticalOverlap;
     let y = 0;
@@ -518,17 +518,17 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
    */
   open({focusIndex = null} = {}) {
     this.adapter_.saveFocus();
-    this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_OPEN);
+    this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
 
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.dimensions_ = this.adapter_.getInnerDimensions();
       this.autoPosition_();
-      this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.OPEN);
+      this.adapter_.addClass(MDCMenuFoundation.cssClasses.OPEN);
       this.focusOnOpen_(focusIndex);
       this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
       this.openAnimationEndTimerId_ = setTimeout(() => {
         this.openAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_OPEN);
+        this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
       }, numbers.TRANSITION_OPEN_DURATION);
     });
     this.isOpen_ = true;
@@ -548,12 +548,12 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
     }
 
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
-    this.adapter_.addClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_CLOSED);
+    this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
     requestAnimationFrame(() => {
-      this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.OPEN);
+      this.adapter_.removeClass(MDCMenuFoundation.cssClasses.OPEN);
       this.closeAnimationEndTimerId_ = setTimeout(() => {
         this.closeAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCSimpleMenuFoundation.cssClasses.ANIMATING_CLOSED);
+        this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
       }, numbers.TRANSITION_CLOSE_DURATION);
     });
     this.isOpen_ = false;
@@ -566,4 +566,4 @@ class MDCSimpleMenuFoundation extends MDCFoundation {
   }
 }
 
-export {MDCSimpleMenuFoundation, AnchorMargin};
+export {MDCMenuFoundation, AnchorMargin};

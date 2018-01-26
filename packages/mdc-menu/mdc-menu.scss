@@ -14,9 +14,158 @@
 // limitations under the License.
 //
 
-@import "./simple/mdc-simple-menu";
+@import "@material/animation/variables";
+@import "@material/elevation/mixins";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
 
+$mdc-menu-fade-in-duration: .03s;
+$mdc-menu-fade-out-duration: .075s;
+$mdc-menu-scale-duration: .12s;
+
+// postcss-bem-linter: define menu
+.mdc-menu {
+  @include mdc-elevation(2);
+
+  @include mdc-theme-dark {
+    background-color: #424242;
+  }
+
+  display: none;
+  position: absolute;
+  box-sizing: border-box;
+  min-width: 170px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  margin: 0;
+  padding: 0;
+  transform: scale(1);
+  transform-origin: top left;
+  border-radius: 2px;
+  background-color: white;
+  opacity: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: auto;
+  will-change: transform, opacity;
+  z-index: 4;
+
+  &:focus {
+    outline: none;
+  }
+
+  &--animating-open {
+    display: inline-block;
+    transform: scale(.8);
+    transition:
+      opacity $mdc-menu-fade-in-duration linear,
+      transform $mdc-menu-scale-duration $mdc-animation-deceleration-curve-timing-function;
+    opacity: 0;
+    overflow-y: hidden;
+
+    > .mdc-menu__items {
+      transform: scale(1.25);
+    }
+  }
+
+  &--open {
+    display: inline-block;
+    transform: scale(1);
+    opacity: 1;
+
+    > .mdc-menu__items {
+      transform: scale(1);
+    }
+  }
+
+  &--animating-closed {
+    display: inline-block;
+    transition: opacity $mdc-menu-fade-out-duration linear;
+    opacity: 0;
+    overflow-y: hidden;
+  }
+
+  &__items {
+    box-sizing: border-box;
+    transform: scale(1);
+    overflow-x: hidden;
+    overflow-y: auto;
+    will-change: transform;
+
+    // stylelint-disable plugin/selector-bem-pattern
+    > .mdc-list-item {
+      cursor: pointer;
+    }
+    // stylelint-enable plugin/selector-bem-pattern
+
+    .mdc-menu--animating & {
+      overflow-y: hidden;
+    }
+  }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  [dir="rtl"] & {
+    transform-origin: top right;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-list-group,
+  .mdc-list {
+    padding: 8px 0;
+  }
+
+  .mdc-list-item {
+    @include mdc-typography(subheading2);
+
+    @include mdc-theme-dark(".mdc-menu", true) {
+      color: white;
+    }
+
+    position: relative;
+    outline: none;
+    color: inherit;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .mdc-list-divider {
+    @include mdc-theme-dark(".mdc-menu", true) {
+      border-color: rgba(white, .12);
+    }
+  }
+
+  .mdc-list-item__graphic {
+    color: rgba(black, .54);
+
+    @include mdc-theme-dark(".mdc-menu", true) {
+      color: rgba(white, .54);
+    }
+  }
+
+  .mdc-list-item[aria-disabled="true"] {
+    @include mdc-theme-prop(color, text-disabled-on-light);
+
+    @include mdc-theme-dark(".mdc-menu") {
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+    }
+
+    cursor: default;
+    pointer-events: none;
+
+    // TODO(#1495): Disabled menu items shouldn't be focusable, so this style shouldn't be necessary.
+    &:focus::before {
+      opacity: 0;
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+}
+
+// stylelint-disable plugin/selector-bem-pattern
 .mdc-menu-anchor {
   position: relative;
   overflow: visible;
 }
+// stylelint-enable plugin/selector-bem-pattern
+
+// postcss-bem-linter: end
