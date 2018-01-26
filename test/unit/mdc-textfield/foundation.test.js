@@ -19,7 +19,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
-import MDCBottomLineFoundation from '../../../packages/mdc-bottom-line/foundation';
+import MDCLineRippleFoundation from '../../../packages/mdc-line-ripple/foundation';
 
 const {cssClasses, numbers} = MDCTextFieldFoundation;
 
@@ -43,18 +43,13 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'registerBottomLineEventHandler', 'deregisterBottomLineEventHandler',
-    'getNativeInput', 'isFocused', 'isRtl',
+    'getNativeInput', 'isFocused', 'isRtl', 'activateLineRipple', 'deactivateLineRipple',
+    'setLineRippleTransformOrigin',
   ]);
 });
 
 const setupTest = () => {
   const mockAdapter = td.object(MDCTextFieldFoundation.defaultAdapter);
-  const bottomLine = td.object({
-    activate: () => {},
-    deactivate: () => {},
-    setTransformOrigin: () => {},
-    handleTransitionEnd: () => {},
-  });
   const helperText = td.object({
     setContent: () => {},
     showToScreenReader: () => {},
@@ -78,14 +73,13 @@ const setupTest = () => {
     updateSvgPath: () => {},
   });
   const foundationMap = {
-    bottomLine: bottomLine,
     helperText: helperText,
     icon: icon,
     label: label,
     outline: outline,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, bottomLine, helperText, icon, label, outline};
+  return {foundation, mockAdapter, helperText, icon, label, outline};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -94,7 +88,7 @@ test('#constructor sets disabled to false', () => {
 });
 
 const setupValueTest = (value, optIsValid, optIsBadInput) => {
-  const {foundation, mockAdapter, bottomLine, helperText, label} = setupTest();
+  const {foundation, mockAdapter, helperText, label} = setupTest();
   const nativeInput = {
     value: value,
     validity: {
@@ -105,7 +99,7 @@ const setupValueTest = (value, optIsValid, optIsBadInput) => {
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
 
-  return {foundation, mockAdapter, bottomLine, helperText, label, nativeInput};
+  return {foundation, mockAdapter, helperText, label, nativeInput};
 };
 
 test('#getValue returns the field\'s value', () => {
@@ -329,7 +323,7 @@ test('#init adds event listeners', () => {
   td.verify(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerBottomLineEventHandler(
-    MDCBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
+    MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -344,7 +338,7 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterBottomLineEventHandler(
-    MDCBottomLineFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
+    MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, td.matchers.isA(Function)));
 });
 
 test('#init floats label if the input contains a value', () => {
@@ -477,8 +471,8 @@ test('on focus adds mdc-text-field--focused class', () => {
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED));
 });
 
-test('on focus activates bottom line', () => {
-  const {foundation, mockAdapter, bottomLine} = setupTest();
+test('on focus activates line ripple', () => {
+  const {foundation, mockAdapter} = setupTest();
   let focus;
   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
@@ -486,7 +480,7 @@ test('on focus activates bottom line', () => {
     });
   foundation.init();
   focus();
-  td.verify(bottomLine.activate());
+  td.verify(mockAdapter.activateLineRipple());
 });
 
 test('on focus styles label', () => {
@@ -638,8 +632,8 @@ test('on click does not set receivedUserInput if input is disabled', () => {
   assert.equal(foundation.receivedUserInput_, false);
 });
 
-test('on transition end deactivates the bottom line if this.isFocused_ is false', () => {
-  const {foundation, mockAdapter, bottomLine} = setupTest();
+test('on transition end deactivates the line ripple if this.isFocused_ is false', () => {
+  const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     propertyName: 'opacity',
   };
@@ -653,11 +647,11 @@ test('on transition end deactivates the bottom line if this.isFocused_ is false'
   foundation.init();
   transitionEnd(mockEvt);
 
-  td.verify(bottomLine.deactivate());
+  td.verify(mockAdapter.deactivateLineRipple());
 });
 
-test('mousedown on the input sets the bottom line origin', () => {
-  const {foundation, mockAdapter, bottomLine} = setupTest();
+test('mousedown on the input sets the line ripple origin', () => {
+  const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     target: {
       getBoundingClientRect: () => {
@@ -678,11 +672,11 @@ test('mousedown on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(bottomLine.setTransformOrigin(mockEvt));
+  td.verify(mockAdapter.setLineRippleTransformOrigin(mockEvt));
 });
 
-test('touchstart on the input sets the bottom line origin', () => {
-  const {foundation, mockAdapter, bottomLine} = setupTest();
+test('touchstart on the input sets the line ripple origin', () => {
+  const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     target: {
       getBoundingClientRect: () => {
@@ -703,5 +697,5 @@ test('touchstart on the input sets the bottom line origin', () => {
   foundation.init();
   clickHandler(mockEvt);
 
-  td.verify(bottomLine.setTransformOrigin(mockEvt));
+  td.verify(mockAdapter.setLineRippleTransformOrigin(mockEvt));
 });

@@ -16,7 +16,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import MDCBottomLineFoundation from '@material/bottom-line/foundation';
+import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
@@ -39,7 +39,7 @@ let NativeInputType;
 
 /**
  * @typedef {{
- *   bottomLine: (!MDCBottomLineFoundation|undefined),
+ *   lineRipple: (!MDCLineRippleFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
  *   label: (!MDCTextFieldLabelFoundation|undefined),
@@ -106,14 +106,14 @@ class MDCTextFieldAdapter {
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
-   * Registers an event listener on the bottom line element for a given event.
+   * Registers an event listener on the line ripple element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
   registerBottomLineEventHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the bottom line element for a given event.
+   * Deregisters an event listener on the line ripple element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
@@ -143,6 +143,21 @@ class MDCTextFieldAdapter {
    * @return {boolean}
    */
   isRtl() {}
+
+  /**
+   * Activates the line ripple.
+   */
+  activateLineRipple() {}
+
+  /**
+   * Deactivates the line ripple.
+   */
+  deactivateLineRipple() {}
+
+  /**
+   * Sets the transform origin of the line ripple.
+   */
+  setLineRippleTransformOrigin() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

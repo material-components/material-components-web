@@ -20,7 +20,7 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCBottomLine} from '../../../packages/mdc-bottom-line';
+import {MDCLineRipple} from '../../../packages/mdc-line-ripple';
 import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
   MDCTextFieldIcon, MDCTextFieldLabel, MDCTextFieldOutline} from '../../../packages/mdc-textfield';
 
@@ -31,7 +31,7 @@ const getFixture = () => bel`
     <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
     <input type="text" class="mdc-text-field__input" id="my-text-field">
     <label class="mdc-text-field__label" for="my-text-field">My Label</label>
-    <div class="mdc-bottom-line"></div>
+    <div class="mdc-line-ripple"></div>
   </div>
 `;
 
@@ -51,8 +51,8 @@ class FakeRipple {
 
 class FakeBottomLine {
   constructor() {
-    this.listen = td.func('bottomLine.listen');
-    this.unlisten = td.func('bottomLine.unlisten');
+    this.listen = td.func('lineRipple.listen');
+    this.unlisten = td.func('lineRipple.unlisten');
     this.destroy = td.func('.destroy');
   }
 }
@@ -132,10 +132,10 @@ test('#constructor when given a `mdc-text-field--outlined` element, initializes 
   assert.instanceOf(component.ripple, MDCRipple);
 });
 
-test('#constructor instantiates a bottom line on the `.mdc-bottom-line` element if present', () => {
+test('#constructor instantiates a line ripple on the `.mdc-line-ripple` element if present', () => {
   const root = getFixture();
   const component = new MDCTextField(root);
-  assert.instanceOf(component.bottomLine_, MDCBottomLine);
+  assert.instanceOf(component.lineRipple_, MDCLineRipple);
 });
 
 const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
@@ -180,7 +180,6 @@ test('#constructor handles undefined optional sub-elements gracefully', () => {
 });
 
 function setupTest(root = getFixture()) {
-  const bottomLine = new FakeBottomLine();
   const helperText = new FakeHelperText();
   const icon = new FakeIcon();
   const label = new FakeLabel();
@@ -189,13 +188,12 @@ function setupTest(root = getFixture()) {
     root,
     undefined,
     (el) => new FakeRipple(el),
-    () => bottomLine,
     () => helperText,
     () => icon,
     () => label,
     () => outline
   );
-  return {root, component, bottomLine, helperText, icon, label, outline};
+  return {root, component, helperText, icon, label, outline};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -206,10 +204,10 @@ test('#destroy cleans up the ripple if present', () => {
   td.verify(component.ripple.destroy());
 });
 
-test('#destroy cleans up the bottom line if present', () => {
-  const {component, bottomLine} = setupTest();
+test('#destroy cleans up the line ripple if present', () => {
+  const {component, lineRipple} = setupTest();
   component.destroy();
-  td.verify(bottomLine.destroy());
+  td.verify(lineRipple.destroy());
 });
 
 test('#destroy cleans up the helper text if present', () => {
@@ -299,18 +297,18 @@ test('#layout recomputes all dimensions and positions for the ripple element', (
   td.verify(component.ripple.layout());
 });
 
-test('#adapter.registerBottomLineEventHandler adds event listener to bottom line', () => {
-  const {component, bottomLine} = setupTest();
+test('#adapter.registerBottomLineEventHandler adds event listener to line ripple', () => {
+  const {component, lineRipple} = setupTest();
   const handler = () => {};
   component.getDefaultFoundation().adapter_.registerBottomLineEventHandler('evt', handler);
-  td.verify(bottomLine.listen('evt', handler));
+  td.verify(lineRipple.listen('evt', handler));
 });
 
-test('#adapter.deregisterBottomLineEventHandler removes event listener for "transitionend" from bottom line', () => {
-  const {component, bottomLine} = setupTest();
+test('#adapter.deregisterBottomLineEventHandler removes event listener for "transitionend" from line ripple', () => {
+  const {component, lineRipple} = setupTest();
   const handler = () => {};
   component.getDefaultFoundation().adapter_.deregisterBottomLineEventHandler('evt', handler);
-  td.verify(bottomLine.unlisten('evt', handler));
+  td.verify(lineRipple.unlisten('evt', handler));
 });
 
 test('#adapter.addClass adds a class to the root element', () => {

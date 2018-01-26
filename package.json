@@ -122,7 +122,7 @@
           "animation",
           "auto-init",
           "base",
-          "bottom-line",
+          "line-ripple",
           "button",
           "card",
           "checkbox",
@@ -164,7 +164,7 @@
   "closureWhitelist": [
     "mdc-animation",
     "mdc-base",
-    "mdc-bottom-line",
+    "mdc-line-ripple",
     "mdc-checkbox",
     "mdc-form-field",
     "mdc-icon-toggle",

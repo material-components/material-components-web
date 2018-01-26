@@ -16,15 +16,15 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCBottomLineAdapter from './adapter';
+import MDCLineRippleAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
 
 /**
- * @extends {MDCFoundation<!MDCBottomLineAdapter>}
+ * @extends {MDCFoundation<!MDCLineRippleAdapter>}
  * @final
  */
-class MDCBottomLineFoundation extends MDCFoundation {
+class MDCLineRippleFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
@@ -36,12 +36,12 @@ class MDCBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * {@see MDCBottomLineAdapter} for typing information on parameters and return
+   * {@see MDCLineRippleAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCBottomLineAdapter}
+   * @return {!MDCLineRippleAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCBottomLineAdapter} */ ({
+    return /** @type {!MDCLineRippleAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
       setAttr: () => {},
@@ -52,10 +52,10 @@ class MDCBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCBottomLineAdapter=} adapter
+   * @param {!MDCLineRippleAdapter=} adapter
    */
-  constructor(adapter = /** @type {!MDCBottomLineAdapter} */ ({})) {
-    super(Object.assign(MDCBottomLineFoundation.defaultAdapter, adapter));
+  constructor(adapter = /** @type {!MDCLineRippleAdapter} */ ({})) {
+    super(Object.assign(MDCLineRippleFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
@@ -70,10 +70,11 @@ class MDCBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Activates the bottom line
+   * Activates the line ripple
    */
   activate() {
-    this.adapter_.addClass(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
+    this.adapter_.addClass(cssClasses.LINE_RIPPLE_ACTIVE);
   }
 
   /**
@@ -91,10 +92,10 @@ class MDCBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Deactivates the bottom line
+   * Deactivates the line ripple
    */
   deactivate() {
-    this.adapter_.removeClass(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.addClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
   }
 
   /**
@@ -102,12 +103,18 @@ class MDCBottomLineFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTransitionEnd(evt) {
-    // Wait for the bottom line to be either transparent or opaque
+    // Wait for the line ripple to be either transparent or opaque
     // before emitting the animation end event
+    const isDeactivating = this.adapter_.hasClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
+
     if (evt.propertyName === 'opacity') {
       this.adapter_.notifyAnimationEnd();
+      if (isDeactivating) {
+        this.adapter_.removeClass(cssClasses.LINE_RIPPLE_ACTIVE);
+        this.adapter_.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
+      }
     }
   }
 }
 
-export default MDCBottomLineFoundation;
+export default MDCLineRippleFoundation;

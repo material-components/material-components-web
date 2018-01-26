@@ -183,7 +183,7 @@ if (!IS_DEV) {
       animation: [path.resolve('./packages/mdc-animation/index.js')],
       autoInit: [path.resolve('./packages/mdc-auto-init/index.js')],
       base: [path.resolve('./packages/mdc-base/index.js')],
-      bottomLine: [path.resolve('./packages/mdc-bottom-line/index.js')],
+      lineRipple: [path.resolve('./packages/mdc-line-ripple/index.js')],
       checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
       dialog: [path.resolve('./packages/mdc-dialog/index.js')],
       drawer: [path.resolve('./packages/mdc-drawer/index.js')],
@@ -229,7 +229,7 @@ if (!IS_DEV) {
       'material-components-web': path.resolve(
         './packages/material-components-web/material-components-web.scss'),
       'mdc.button': path.resolve('./packages/mdc-button/mdc-button.scss'),
-      'mdc.bottom-line': path.resolve('./packages/mdc-bottom-line/mdc-bottom-line.scss'),
+      'mdc.line-ripple': path.resolve('./packages/mdc-line-ripple/mdc-line-ripple.scss'),
       'mdc.card': path.resolve('./packages/mdc-card/mdc-card.scss'),
       'mdc.checkbox': path.resolve('./packages/mdc-checkbox/mdc-checkbox.scss'),
       'mdc.dialog': path.resolve('./packages/mdc-dialog/mdc-dialog.scss'),

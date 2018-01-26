@@ -19,21 +19,21 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCBottomLine, MDCBottomLineFoundation} from '../../../packages/mdc-bottom-line';
+import {MDCLineRipple, MDCLineRippleFoundation} from '../../../packages/mdc-line-ripple';
 
 const getFixture = () => bel`
-  <div class="mdc-bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 `;
 
-suite('MDCBottomLine');
+suite('MDCLineRipple');
 
-test('attachTo returns an MDCBottomLine instance', () => {
-  assert.isOk(MDCBottomLine.attachTo(getFixture()) instanceof MDCBottomLine);
+test('attachTo returns an MDCLineRipple instance', () => {
+  assert.isOk(MDCLineRipple.attachTo(getFixture()) instanceof MDCLineRipple);
 });
 
 function setupTest() {
   const root = getFixture();
-  const component = new MDCBottomLine(root);
+  const component = new MDCLineRipple(root);
   return {root, component};
 }
 
@@ -78,12 +78,12 @@ test('#adapter.deregisterEventHandler removes event listener for a given event f
 });
 
 test('#adapter.notifyAnimationEnd emits ' +
-  `${MDCBottomLineFoundation.strings.ANIMATION_END_EVENT}`, () => {
+  `${MDCLineRippleFoundation.strings.ANIMATION_END_EVENT}`, () => {
   const {component} = setupTest();
   const handler = td.func('leadingHandler');
 
   component.listen(
-    MDCBottomLineFoundation.strings.ANIMATION_END_EVENT, handler);
+    MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyAnimationEnd();
 
   td.verify(handler(td.matchers.anything()));

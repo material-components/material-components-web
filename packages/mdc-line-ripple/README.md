@@ -1,15 +1,14 @@
 <!--docs:
-title: "Text Field Bottom Line"
+title: "Line Ripple"
 layout: detail
 section: components
-excerpt: "The bottom line indicates where to enter text, displayed below the label"
-iconId: text_field
-path: /catalog/input-controls/text-field/bottom-line/
+excerpt: "The line ripple is used to indicate certain information, such as a line of text or a selected element"
+path: /catalog/input-controls/line-ripple/
 -->
 
-# Text Field Bottom Line
+# Line Ripple
 
-The bottom line indicates the selected element or text, displayed below the label. When a text field/select is active, the line’s color and thickness vary.
+The line ripple is used to indicate the selected element or text. When a the line ripple is active, the line’s color and thickness vary.
 
 ## Design & API Documentation
 
@@ -24,7 +23,7 @@ The bottom line indicates the selected element or text, displayed below the labe
 ### HTML Structure
 
 ```html
-<div class="mdc-bottom-line"></div>
+<div class="mdc-line-ripple"></div>
 ```
 
 ### Usage within `mdc-text-field`
@@ -33,7 +32,7 @@ The bottom line indicates the selected element or text, displayed below the labe
 <div class="mdc-text-field">
   <input type="text" id="my-text-field-id" class="mdc-text-field__input">
   <label class="mdc-text-field__label" for="my-text-field-id">Hint text</label>
-  <div class="mdc-bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -41,16 +40,17 @@ The bottom line indicates the selected element or text, displayed below the labe
 
 CSS Class | Description
 --- | ---
-`mdc-bottom-line` | Mandatory
-`mdc-bottom-line--active` | Styles the bottom line as an active bottom line
+`mdc-line-ripple` | Mandatory
+`mdc-line-ripple--active` | Styles the line ripple as an active line ripple
+`mdc-line-ripple--deactivating` | Styles the line ripple as a deactivating line ripple. 
 
-### `MDCBottomLine`
+### `MDCLineRipple`
 
-##### `MDCBottomLine.foundation`
+`activate() => void` | Proxies to the foundations `activate()` method.
+`deactivate() => void` |  Proxies to the foundations `deactivate()` method.
+`setTransformOrigin(evt: Event) => void` | Proxies to the foundations `setTransformOrigin(evt: Event)` method.
 
-This allows the parent component to access the public methods on the `MDCBottomLineFoundation` class.
-
-### `MDCBottomLineAdapter`
+### `MDCLineRippleAdapter`
 
 Method Signature | Description
 --- | ---
@@ -59,14 +59,13 @@ Method Signature | Description
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the root element
 `registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element for a given event
 `deregisterEventHandler(handler: EventListener) => void` | Deregisters an event listener on the root element for a given event
-`notifyAnimationEnd() => void` | Emits a custom event "MDCBottomLine:animation-end" denoting the bottom line has finished its animation; either the activate or deactivate animation
+`notifyAnimationEnd() => void` | Emits a custom event "MDCLineRipple:animation-end" denoting the line ripple has finished its animation; either the activate or deactivate animation
 
-### `MDCBottomLineFoundation`
+### `MDCLineRippleFoundation`
 
 Method Signature | Description
 --- | ---
-`activate() => void` | Activates the bottom line
-`deactivate() => void` | Immediately deactivates the bottom line
-`deactivateFocus() => void` | Sets `isActive_` flag to false, allowing the animation to finish before deactivating. 
+`activate() => void` | Activates the line ripple
+`deactivate() => void` |  Deactivates the line ripple
 `setTransformOrigin(evt: Event) => void` | Sets the transform origin given a user's click location
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event

@@ -18,55 +18,55 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC TextField Bottom Line.
+ * Adapter for MDC TextField Line Ripple.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the TextField or Select bottom line into your framework. See
+ * adapter to integrate the line ripple into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCBottomLineAdapter {
+class MDCLineRippleAdapter {
   /**
-   * Adds a class to the bottom line element.
+   * Adds a class to the line ripple element.
    * @param {string} className
    */
   addClass(className) {}
 
   /**
-   * Removes a class from the bottom line element.
+   * Removes a class from the line ripple element.
    * @param {string} className
    */
   removeClass(className) {}
 
   /**
-   * Sets an attribute with a given value on the bottom line element.
+   * Sets an attribute with a given value on the line ripple element.
    * @param {string} attr
    * @param {string} value
    */
   setAttr(attr, value) {}
 
   /**
-   * Registers an event listener on the bottom line element for a given event.
+   * Registers an event listener on the line ripple element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
   registerEventHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the bottom line element for a given event.
+   * Deregisters an event listener on the line ripple element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
   deregisterEventHandler(evtType, handler) {}
 
   /**
-   * Emits a custom event "MDCBottomLine:animation-end" denoting the
-   * bottom line has finished its animation; either the activate or
+   * Emits a custom event "MDCLineRipple:animation-end" denoting the
+   * line ripple has finished its animation; either the activate or
    * deactivate animation
    */
   notifyAnimationEnd() {}
 }
 
-export default MDCBottomLineAdapter;
+export default MDCLineRippleAdapter;

@@ -19,29 +19,29 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCBottomLineFoundation from '../../../packages/mdc-bottom-line/foundation';
+import MDCLineRippleFoundation from '../../../packages/mdc-line-ripple/foundation';
 
-const {cssClasses} = MDCBottomLineFoundation;
+const {cssClasses} = MDCLineRippleFoundation;
 
-suite('MDCBottomLineFoundation');
+suite('MDCLineRippleFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCBottomLineFoundation);
+  assert.isOk('cssClasses' in MDCLineRippleFoundation);
 });
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCBottomLineFoundation);
+  assert.isOk('strings' in MDCLineRippleFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCBottomLineFoundation, [
-    'addClass', 'removeClass', 'setAttr',
+  verifyDefaultAdapter(MDCLineRippleFoundation, [
+    'addClass', 'removeClass', 'hasClass', 'setAttr',
     'registerEventHandler', 'deregisterEventHandler',
     'notifyAnimationEnd',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCBottomLineFoundation);
+const setupTest = () => setupFoundationTest(MDCLineRippleFoundation);
 
 test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -57,18 +57,18 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test(`activate adds ${MDCBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
+test(`activate adds ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.activate();
-  td.verify(mockAdapter.addClass(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(mockAdapter.addClass(cssClasses.LINE_RIPPLE_ACTIVE));
 });
 
-test(`deactivate removes ${MDCBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
+test(`deactivate removes ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.deactivate();
-  td.verify(mockAdapter.removeClass(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(mockAdapter.removeClass(cssClasses.LINE_RIPPLE_ACTIVE));
 });
 
 test('setTransformOrigin sets style attribute', () => {

@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,28 @@
 // limitations under the License.
 //
 
-// Public
+@import "./functions";
+@import "./mixins";
+@import "@material/theme/mixins";
 
-@mixin mdc-bottom-line-color($color) {
-  .mdc-bottom-line {
-    @include mdc-theme-prop(background-color, $color);
-  }
+// postcss-bem-linter: define line-ripple
+.mdc-line-ripple {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transition: mdc-line-ripple-transition-value(transform), mdc-line-ripple-transition-value(opacity);
+  opacity: 0;
+  z-index: 2;
 }
 
-// Private
+.mdc-line-ripple--active {
+  transform: scaleX(1);
+  opacity: 1;
+}
 
-@mixin mdc-bottom-line-trigger-element_($element) {
-  // Both of these selectors are needed for mdc-select, since css bottom-line is a
-  // sibling, but the JS version is a child element.
-  #{$element}:focus ~ .mdc-bottom-line {
-    opacity: 1;
-  }
+.mdc-line-ripple--deactivating {
+  opacity: 0;
 }

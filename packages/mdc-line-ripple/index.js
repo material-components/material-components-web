@@ -17,44 +17,62 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCBottomLineAdapter from './adapter';
-import MDCBottomLineFoundation from './foundation';
+import MDCLineRippleAdapter from './adapter';
+import MDCLineRippleFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCBottomLineFoundation>}
+ * @extends {MDCComponent<!MDCLineRippleFoundation>}
  * @final
  */
-class MDCBottomLine extends MDCComponent {
+class MDCLineRipple extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCBottomLine}
+   * @return {!MDCLineRipple}
    */
   static attachTo(root) {
-    return new MDCBottomLine(root);
+    return new MDCLineRipple(root);
   }
 
   /**
-   * @return {!MDCBottomLineFoundation}
+   * @return {!MDCLineRippleFoundation}
    */
   get foundation() {
     return this.foundation_;
   }
 
+  activate() {
+    this.foundation_.activate();
+  }
+
+  deactivate() {
+    this.foundation_.deactivate();
+  }
+
   /**
-   * @return {!MDCBottomLineFoundation}
+   * Sets the transform origin given a user's click location.
+   * @param {!Event} evt
+   */
+  setTransformOrigin(evt) {
+    this.foundation_.setTransformOrigin(evt);
+  }
+
+
+  /**
+   * @return {!MDCLineRippleFoundation}
    */
   getDefaultFoundation() {
-    return new MDCBottomLineFoundation(/** @type {!MDCBottomLineAdapter} */ (Object.assign({
+    return new MDCLineRippleFoundation(/** @type {!MDCLineRippleAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyAnimationEnd: () => {
-        this.emit(MDCBottomLineFoundation.strings.ANIMATION_END_EVENT, {});
+        this.emit(MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, {});
       },
     })));
   }
 }
 
-export {MDCBottomLine, MDCBottomLineFoundation};
+export {MDCLineRipple, MDCLineRippleFoundation};

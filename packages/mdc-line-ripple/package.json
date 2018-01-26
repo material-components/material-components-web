@@ -1,13 +1,13 @@
 {
-  "name": "@material/bottom-line",
-  "description": "The Material Components for the web bottom-line component",
-  "version": "0.29.0",
+  "name": "@material/line-ripple",
+  "description": "The Material Components for the web line-ripple component",
+  "version": "0.0.0",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
     "material design",
-    "bottomline",
-    "bottom-line"
+    "lineripple",
+    "line-ripple"
   ],
   "main": "index.js",
   "repository": {
