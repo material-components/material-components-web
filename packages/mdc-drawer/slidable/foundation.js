@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import {MDCFoundation} from '@material/base/index';
 
 export class MDCSlidableDrawerFoundation extends MDCFoundation {
   static get defaultAdapter() {

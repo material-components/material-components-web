@@ -17,7 +17,7 @@
 import {cssClasses, strings, numbers} from './constants';
 import MDCSliderAdapter from './adapter';
 
-import {getCorrectEventName, getCorrectPropertyName} from '@material/animation';
+import {getCorrectEventName, getCorrectPropertyName} from '@material/animation/index';
 import MDCFoundation from '@material/base/foundation';
 
 /** @enum {string} */
