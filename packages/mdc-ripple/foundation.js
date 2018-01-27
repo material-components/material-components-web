@@ -66,6 +66,8 @@ const ACTIVATION_EVENT_TYPES = ['touchstart', 'pointerdown', 'mousedown', 'keydo
 // Deactivation events registered on documentElement when a pointer-related down event occurs
 const POINTER_DEACTIVATION_EVENT_TYPES = ['touchend', 'pointerup', 'mouseup'];
 
+let pageHasActiveRipple = false;
+
 /**
  * @extends {MDCFoundation<!MDCRippleAdapter>}
  */
@@ -290,12 +292,19 @@ class MDCRippleFoundation extends MDCFoundation {
       return;
     }
 
+    // Avoid creating ripples on parent elements if a child element is already displaying one.
+    if (pageHasActiveRipple) {
+      return;
+    }
+
     // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
     const previousActivationEvent = this.previousActivationEvent_;
     const isSameInteraction = previousActivationEvent && e && previousActivationEvent.type !== e.type;
     if (isSameInteraction) {
       return;
     }
+
+    pageHasActiveRipple = true;
 
     activationState.isActivated = true;
     activationState.isProgrammatic = e === null;
@@ -321,6 +330,7 @@ class MDCRippleFoundation extends MDCFoundation {
         // Reset activation state immediately if element was not made active.
         this.activationState_ = this.defaultActivationState_();
       }
+      pageHasActiveRipple = false;
     });
   }
 
