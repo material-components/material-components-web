@@ -36,6 +36,8 @@
     @include mdc-slider-thumb-color_($light-color);
     @include mdc-slider-thumb-stroke-cutout_($mdc-slider-default-assumed-bg-color);
 
+    cursor: auto;
+
     @include mdc-theme-dark(".mdc-slider", true) {
       @include mdc-slider-highlight-color_($dark-color);
       @include mdc-slider-rail-color_($dark-color);
@@ -184,10 +186,6 @@
     transform: scale3d(1.55, 1.55, 1.55);
     opacity: .25;
   }
-}
-
-.mdc-slider--disabled {
-  cursor: auto;
 }
 
 .mdc-slider--in-transit {
