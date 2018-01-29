@@ -16,7 +16,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 /* eslint-enable no-unused-vars */
 
 /**
