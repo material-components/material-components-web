@@ -76,8 +76,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
       this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
       this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
-      this.enableScroll_();
     }
+    this.enableScroll_();
   }
 
   open() {
