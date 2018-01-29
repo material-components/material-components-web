@@ -251,6 +251,8 @@ Mixin | Description
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 
+To customize the color of the list items, refer to the [List documentation](../mdc-list/README.md).
+
 ### MDC Select Component API
 
 The MDC Select component API is modeled after a subset of the `HTMLSelectElement` functionality, and
