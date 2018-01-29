@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {MDCSlidableDrawerFoundation} from '../slidable';
+import {MDCSlidableDrawerFoundation} from '../slidable/index';
 import {cssClasses, strings} from './constants';
 
 export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFoundation {

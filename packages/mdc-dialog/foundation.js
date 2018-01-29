@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import {MDCFoundation} from '@material/base/index';
 import {cssClasses, strings} from './constants';
 
 export default class MDCDialogFoundation extends MDCFoundation {
