@@ -45,7 +45,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextFieldIconAdapter=} adapter
+   * @param {!MDCTextFieldIconAdapter} adapter
    */
   constructor(adapter) {
     super(Object.assign(MDCTextFieldIconFoundation.defaultAdapter, adapter));

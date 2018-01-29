@@ -44,7 +44,7 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextFieldLabelAdapter=} adapter
+   * @param {!MDCTextFieldLabelAdapter} adapter
    */
   constructor(adapter) {
     super(Object.assign(MDCTextFieldLabelFoundation.defaultAdapter, adapter));

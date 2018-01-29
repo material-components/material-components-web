@@ -52,7 +52,7 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextFieldBottomLineAdapter=} adapter
+   * @param {!MDCTextFieldBottomLineAdapter} adapter
    */
   constructor(adapter) {
     super(Object.assign(MDCTextFieldBottomLineFoundation.defaultAdapter, adapter));
