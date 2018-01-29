@@ -29,14 +29,6 @@
       /* initialize it off screen. */
       .loading .example .mdc-snackbar { transform: translateY(200%); }
 
-      .mdc-theme--dark {
-        background-color: #333;
-      }
-
-      .mdc-theme--dark .hero {
-        background-color: #2d2d2d;
-      }
-
       /* Override style for hero example. */
       .hero .mdc-snackbar {
         position: relative;
@@ -128,9 +120,6 @@
           </div>
           <label for="dismiss-on-action" id="dismiss-on-action-label">Dismiss On Action</label>
         </div>
-        <br/>
-
-        <button type="button" class="mdc-button mdc-button--raised" id="toggle-dark-theme">Toggle Dark Theme</button>
         <br/>
 
         <div class="mdc-text-field">
@@ -276,10 +265,6 @@
 
         document.getElementById('show-start-aligned-rtl-snackbar').addEventListener('click', function() {
           show(alignStartRTLSnackbar);
-        });
-
-        document.getElementById('toggle-dark-theme').addEventListener('click', function() {
-          document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
         });
 
         [].forEach.call(document.querySelectorAll('.mdc-text-field'), function(tf) {
