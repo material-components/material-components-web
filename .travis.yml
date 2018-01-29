@@ -12,7 +12,7 @@ matrix:
         sauce_connect: true
         jwt:
           secure: PPzwed24vgtPpksTvbg+c2N3oZkHV8W5L7iYpON7HiqX1b+l5p+m0yyrHfBo+Ynkxvt/pZpboyUIVHStS3teZCW5VDtz0hBSG5lMcTurBDiHUxe6zJqjkdJQH+TKzpQi40m73x/ROhnOiM9nYwzSCJQ0tGrrPslz0KqPcZTFrrHQq2tnJwW2JpriB5tHRYInrMx8e8RWSNjhf2zwhmY8V3G08geFUf4OejT5vqFPiSqqPpg05wt2S4V3EF2o+M9/tFpk8acFDpEcg1knJs1UIo3FofrEXmckUSq6ah1/bF5DTNtWcoIfNuXKoG4nrA3EKAOGHKmMw2/UPOkdotcDSdYUhUiI/fMNisyWwKSk6x820ABMpNPh9bApwEEh1KKyt3cnMT4ubylPNs99kJpe88a3RXYyDRm7updSc8cnmGYtNunR/+7nuP+70dde9lY9jBfwZHvuCNULjBXd85TkB33TnRrz0s0rWn1d45BzPuguO+b//zsDGN0jj9Lzii+Iz4AxzV7TiaU18kz9wChxKScQV0gN6L3gD/L2luxCcv4xgF6M1rhjhRCskzz6wBHu9O6EBeaG3wZvwHPRXY/2dCGZU1dj48+3L2medBmbvOR91oWubcI8WcS9CtcyLLa+zvaqY5vTlzHqf4bdn0dA8CTt27/lN4UyhVHBMcgwe5s=
-      script: npm run pretest && npm run test:unit && npm run posttest
+      script: npm run build && npm run pretest && npm run test:unit && npm run posttest
       after_success:
         - codecov
     # Unit tests on LTS
@@ -23,7 +23,7 @@ matrix:
         sauce_connect: true
         jwt:
           secure: PPzwed24vgtPpksTvbg+c2N3oZkHV8W5L7iYpON7HiqX1b+l5p+m0yyrHfBo+Ynkxvt/pZpboyUIVHStS3teZCW5VDtz0hBSG5lMcTurBDiHUxe6zJqjkdJQH+TKzpQi40m73x/ROhnOiM9nYwzSCJQ0tGrrPslz0KqPcZTFrrHQq2tnJwW2JpriB5tHRYInrMx8e8RWSNjhf2zwhmY8V3G08geFUf4OejT5vqFPiSqqPpg05wt2S4V3EF2o+M9/tFpk8acFDpEcg1knJs1UIo3FofrEXmckUSq6ah1/bF5DTNtWcoIfNuXKoG4nrA3EKAOGHKmMw2/UPOkdotcDSdYUhUiI/fMNisyWwKSk6x820ABMpNPh9bApwEEh1KKyt3cnMT4ubylPNs99kJpe88a3RXYyDRm7updSc8cnmGYtNunR/+7nuP+70dde9lY9jBfwZHvuCNULjBXd85TkB33TnRrz0s0rWn1d45BzPuguO+b//zsDGN0jj9Lzii+Iz4AxzV7TiaU18kz9wChxKScQV0gN6L3gD/L2luxCcv4xgF6M1rhjhRCskzz6wBHu9O6EBeaG3wZvwHPRXY/2dCGZU1dj48+3L2medBmbvOR91oWubcI8WcS9CtcyLLa+zvaqY5vTlzHqf4bdn0dA8CTt27/lN4UyhVHBMcgwe5s=
-      script: npm run pretest && npm run test:unit && npm run posttest
+      script: npm run build && npm run pretest && npm run test:unit && npm run posttest
     # Closure compiler type checking. Note that TravisCI has Java 7 enabled by default which should
     # work for using closure.
     - node_js: node
