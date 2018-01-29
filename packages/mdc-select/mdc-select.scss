@@ -29,6 +29,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
 // postcss-bem-linter: define select
 .mdc-select {
+  @include mdc-typography(subheading2);
   @include mdc-select-dd-arrow-svg-bg_;
   @include mdc-select-container-fill-color(rgba(black, .04));
   @include mdc-select-ink-color(text-primary-on-light);
@@ -38,7 +39,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   // Focused state colors
   @include mdc-select-focused-bottom-line-color(primary);
   @include mdc-select-focused-label-color(primary);
-  @include mdc-typography(subheading2);
 
   display: inline-flex;
   position: relative;

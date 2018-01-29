@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base';
-import {MDCRipple} from '@material/ripple';
-import {MDCMenu} from '@material/menu';
+import {MDCComponent} from '@material/base/index';
+import {MDCRipple} from '@material/ripple/index';
+import {MDCMenu} from '@material/menu/index';
 
 import MDCSelectFoundation from './foundation';
 import {strings} from './constants';
