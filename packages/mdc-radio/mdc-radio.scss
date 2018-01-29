@@ -47,14 +47,6 @@
   cursor: pointer;
   will-change: opacity, transform, border-color, background-color, color;
 
-  // stylelint-disable plugin/selector-bem-pattern
-  &.mdc-ripple-upgraded {
-    .mdc-radio__background::before {
-      content: none;
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-
   // Container for radio circles and ripple.
   &__background {
     display: inline-block;
@@ -116,6 +108,14 @@
     cursor: inherit;
     z-index: 1;
   }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  &.mdc-ripple-upgraded {
+    .mdc-radio__background::before {
+      content: none;
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-radio__native-control:checked,
