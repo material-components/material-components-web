@@ -48,7 +48,7 @@ test('#destroy removes event listeners', () => {
   foundation.destroy();
 
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
 });
 
 test('on click, emit custom event', () => {
