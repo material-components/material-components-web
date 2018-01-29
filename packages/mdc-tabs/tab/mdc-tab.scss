@@ -34,7 +34,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 // postcss-bem-linter: define tab
 .mdc-tab {
   @include mdc-typography(body2);
-  @include mdc-tab-ink-color(text-secondary-on-light);
+  @include mdc-tab-ink-color(text-secondary-on-background);
 
   display: table-cell;
   position: relative;
@@ -51,11 +51,11 @@ $mdc-tab-with-icon-and-text-height: 72px;
 
 
   &:hover {
-    @include mdc-tab-ink-color(text-primary-on-light);
+    @include mdc-tab-ink-color(text-primary-on-background);
   }
 
   &:focus {
-    @include mdc-theme-prop(outline-color, text-secondary-on-light);
+    @include mdc-theme-prop(outline-color, text-secondary-on-background);
   }
 
   // TODO: Replace with breakpoint variable
@@ -87,7 +87,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 }
 
 .mdc-tab--active {
-  @include mdc-tab-ink-color(text-primary-on-light);
+  @include mdc-tab-ink-color(text-primary-on-background);
 
   &::before {
     bottom: 0;

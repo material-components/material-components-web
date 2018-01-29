@@ -28,7 +28,7 @@
 // postcss-bem-linter: define tab-bar
 
 @at-root {
-  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
+  @include mdc-tab-bar-indicator-ink-color(text-primary-on-background);
 }
 
 .mdc-tab-bar {
