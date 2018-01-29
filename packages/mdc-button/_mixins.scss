@@ -103,6 +103,11 @@
   overflow: hidden;
   vertical-align: middle;
 
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
   // postcss-bem-linter: ignore
   &:active {
     outline: none;
@@ -110,11 +115,6 @@
 
   &:hover {
     cursor: pointer;
-  }
-
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
   }
 
   &:disabled {
