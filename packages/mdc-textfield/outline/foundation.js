@@ -44,9 +44,9 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextFieldOutlineAdapter=} adapter
+   * @param {!MDCTextFieldOutlineAdapter} adapter
    */
-  constructor(adapter = /** @type {!MDCTextFieldOutlineAdapter} */ ({})) {
+  constructor(adapter) {
     super(Object.assign(MDCTextFieldOutlineFoundation.defaultAdapter, adapter));
   }
 
