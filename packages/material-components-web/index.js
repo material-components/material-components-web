@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-import autoInit from '@material/auto-init';
-import * as base from '@material/base';
-import * as checkbox from '@material/checkbox';
-import * as dialog from '@material/dialog';
-import * as drawer from '@material/drawer';
-import * as formField from '@material/form-field';
-import * as gridList from '@material/grid-list';
-import * as iconToggle from '@material/icon-toggle';
-import * as linearProgress from '@material/linear-progress';
-import * as menu from '@material/menu';
-import * as radio from '@material/radio';
-import * as ripple from '@material/ripple';
-import * as select from '@material/select';
-import * as selectionControl from '@material/selection-control';
-import * as slider from '@material/slider';
-import * as snackbar from '@material/snackbar';
-import * as tabs from '@material/tabs';
-import * as textField from '@material/textfield';
-import * as toolbar from '@material/toolbar';
+import autoInit from '@material/auto-init/index';
+import * as base from '@material/base/index';
+import * as checkbox from '@material/checkbox/index';
+import * as dialog from '@material/dialog/index';
+import * as drawer from '@material/drawer/index';
+import * as formField from '@material/form-field/index';
+import * as gridList from '@material/grid-list/index';
+import * as iconToggle from '@material/icon-toggle/index';
+import * as linearProgress from '@material/linear-progress/index';
+import * as menu from '@material/menu/index';
+import * as radio from '@material/radio/index';
+import * as ripple from '@material/ripple/index';
+import * as select from '@material/select/index';
+import * as selectionControl from '@material/selection-control/index';
+import * as slider from '@material/slider/index';
+import * as snackbar from '@material/snackbar/index';
+import * as tabs from '@material/tabs/index';
+import * as textField from '@material/textfield/index';
+import * as toolbar from '@material/toolbar/index';
 
 // Register all components
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);

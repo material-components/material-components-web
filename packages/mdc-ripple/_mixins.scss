@@ -175,6 +175,14 @@
     height: $radius * 2;
   }
 
+  &[data-mdc-ripple-is-unbounded]:not(.mdc-ripple-upgraded--unbounded)::before,
+  &[data-mdc-ripple-is-unbounded]:not(.mdc-ripple-upgraded--unbounded)::after {
+    top: calc(50% - #{$radius / 2});
+    left: calc(50% - #{$radius / 2});
+    width: $radius;
+    height: $radius;
+  }
+
   // Background ripple styles
 
   &.mdc-ripple-upgraded::before {
