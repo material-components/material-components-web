@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base';
+import {MDCComponent} from '@material/base/index';
 
 import MDCToolbarFoundation from './foundation';
 import * as util from './util';
