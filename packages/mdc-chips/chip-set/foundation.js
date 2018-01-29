@@ -41,9 +41,9 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCChipSetAdapter=} adapter
+   * @param {!MDCChipSetAdapter} adapter
    */
-  constructor(adapter = /** @type {!MDCChipSetAdapter} */ ({})) {
+  constructor(adapter) {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
   }
 }

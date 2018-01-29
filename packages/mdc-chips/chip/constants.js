@@ -18,7 +18,6 @@
 /** @enum {string} */
 const strings = {
   INTERACTION_EVENT: 'MDCChip:interaction',
-  TEXT_SELECTOR: '.mdc-chip__text',
 };
 
 export {strings};

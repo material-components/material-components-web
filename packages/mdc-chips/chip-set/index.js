@@ -43,8 +43,18 @@ class MDCChipSet extends MDCComponent {
     return new MDCChipSet(root);
   }
 
+  /**
+   * @param {(function(!Element): !MDCChip)=} chipFactory A function which
+   * creates a new MDCChip.
+   */
   initialize(chipFactory = (el) => new MDCChip(el)) {
     this.chips = this.instantiateChips_(chipFactory);
+  }
+
+  destroy() {
+    this.chips.forEach((chip) => {
+      chip.destroy();
+    });
   }
 
   /**
@@ -56,6 +66,10 @@ class MDCChipSet extends MDCComponent {
     })));
   }
 
+  /**
+   * Instantiates chip components on all of the chip set's child chip elements.
+   * @param {(function(!Element): !MDCChip)} chipFactory
+   */
   instantiateChips_(chipFactory) {
     const chipElements = [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));
     return chipElements.map((el) => chipFactory(el));

@@ -78,7 +78,7 @@ Method Signature | Description
 --- | ---
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`notifyInteraction() => void` | Emits a custom event "MDCChip:interaction" denoting the chip has been interacted with, which bubbles to the top-level text field element
+`notifyInteraction() => void` | Emits a custom event "MDCChip:interaction" denoting the chip has been interacted with, which bubbles to the parent `mdc-chip-set` element
 
 #### `MDCChipSetAdapter`
 Method Signature | Description

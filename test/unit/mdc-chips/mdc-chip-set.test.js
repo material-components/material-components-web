@@ -16,6 +16,7 @@
 
 import bel from 'bel';
 import {assert} from 'chai';
+import td from 'testdouble';
 
 import {MDCChipSet} from '../../../packages/mdc-chips/chip-set';
 
@@ -37,6 +38,30 @@ suite('MDCChipSet');
 
 test('attachTo returns an MDCChipSet instance', () => {
   assert.isOk(MDCChipSet.attachTo(getFixture()) instanceof MDCChipSet);
+});
+
+class FakeChip {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+test('#constructor instantiates child chip components', () => {
+  const root = getFixture();
+  const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
+  assert.isOk(component.chips.length === 3 &&
+    component.chips[0] instanceof FakeChip &&
+    component.chips[1] instanceof FakeChip &&
+    component.chips[2] instanceof FakeChip);
+});
+
+test('#destroy cleans up child chip components', () => {
+  const root = getFixture();
+  const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
+  component.destroy();
+  td.verify(component.chips[0].destroy());
+  td.verify(component.chips[1].destroy());
+  td.verify(component.chips[2].destroy());
 });
 
 function setupTest() {
