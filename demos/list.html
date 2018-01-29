@@ -1339,11 +1339,17 @@
 
         function addRippleToListItems(list) {
           var listItems = list.querySelectorAll('.mdc-list-item');
+          var checkboxes = list.querySelectorAll('.mdc-checkbox');
+
           [].forEach.call(listItems, function(li) {
             mdc.ripple.MDCRipple.attachTo(li);
             li.addEventListener('click', function(e) {
               clickHandler(e, li);
             });
+          });
+
+          [].forEach.call(checkboxes, function(checkbox) {
+            mdc.ripple.MDCRipple.attachTo(checkbox);
           });
         };
 
