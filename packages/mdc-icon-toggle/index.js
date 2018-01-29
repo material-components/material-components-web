@@ -17,7 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 import MDCIconToggleFoundation from './foundation';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
 /**
  * @extends {MDCComponent<!MDCIconToggleFoundation>}
