@@ -35,8 +35,10 @@ const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS === 'true' && IS_DEV;
 const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
-const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 const BUILD_STATIC_DEMO_ASSETS = process.env.MDC_BUILD_STATIC_DEMO_ASSETS === 'true';
+
+const SASS_DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
+const JS_DEVTOOL = 'source-map';
 
 const banner = [
   '/*!',
@@ -160,7 +162,7 @@ module.exports = [{
   devServer: {
     disableHostCheck: true,
   },
-  devtool: DEVTOOL,
+  devtool: JS_DEVTOOL,
   module: {
     rules: [{
       test: /\.js$/,
@@ -208,7 +210,7 @@ if (!IS_DEV) {
       libraryTarget: 'umd',
       library: ['mdc', '[name]'],
     },
-    devtool: DEVTOOL,
+    devtool: JS_DEVTOOL,
     module: {
       rules: [{
         test: /\.js$/,
@@ -258,7 +260,7 @@ if (!IS_DEV) {
       publicPath: DEMO_ASSET_DIR_REL,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
-    devtool: DEVTOOL,
+    devtool: SASS_DEVTOOL,
     module: {
       rules: [{
         test: /\.scss$/,
@@ -297,7 +299,7 @@ if (IS_DEV) {
       publicPath: DEMO_ASSET_DIR_REL,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
-    devtool: DEVTOOL,
+    devtool: SASS_DEVTOOL,
     module: {
       rules: [{
         test: /\.scss$/,
@@ -324,7 +326,7 @@ if (IS_DEV) {
       libraryTarget: 'umd',
       library: ['demo', '[name]'],
     },
-    devtool: DEVTOOL,
+    devtool: JS_DEVTOOL,
     module: {
       rules: [{
         test: /\.js$/,
