@@ -150,12 +150,12 @@
   -webkit-appearance: none;
   visibility: hidden;
 
-  &:hover {
-    cursor: pointer;
-  }
-
   &::-moz-focus-inner {
     border: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 
   &:not([aria-hidden]) {

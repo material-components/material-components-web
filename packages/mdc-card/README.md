@@ -171,6 +171,7 @@ elements:
 CSS Class | Description
 --- | ---
 `mdc-card` | Mandatory, for the card element
+`mdc-card--stroked` | Removes the shadow and displays a hairline stroke instead
 `mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
 `mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
@@ -188,5 +189,6 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-card-fill-color($color)` | Sets the fill color of a card
+`mdc-card-stroke($color, $thickness)` | Sets the color and thickness of a card's stroke (but does _not_ remove its shadow)
 `mdc-card-corner-radius($radius)` | Sets the corner radius of a card
 `mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width
