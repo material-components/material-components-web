@@ -96,7 +96,7 @@
           </p>
         </aside>
         <div class="mdc-form-field">
-          <div class="mdc-checkbox" id="toggle-rtl-checkbox">
+          <div class="mdc-checkbox">
             <input type="checkbox"
                    class="mdc-checkbox__native-control"
                    id="toggle-rtl"
@@ -1304,9 +1304,15 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var formField = new mdc.formField.MDCFormField(document.querySelector('.mdc-form-field'));
-        var cb = mdc.checkbox.MDCCheckbox.attachTo(document.getElementById('toggle-rtl-checkbox'));
-        formField.input = cb;
+        var checkboxes = document.querySelectorAll('.mdc-checkbox');
+        [].forEach.call(checkboxes, function(checkbox) {
+          var cbInstance = mdc.checkbox.MDCCheckbox.attachTo(checkbox);
+          if (checkbox.parentElement.classList.contains('mdc-form-field')) {
+            var ffInstance = mdc.formField.MDCFormField.attachTo(checkbox.parentElement);
+            ffInstance.input = cbInstance;
+          }
+        });
+
         var demoWrapper = document.getElementById('demo-wrapper');
         var hero = document.querySelector('.hero');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
@@ -1339,17 +1345,12 @@
 
         function addRippleToListItems(list) {
           var listItems = list.querySelectorAll('.mdc-list-item');
-          var checkboxes = list.querySelectorAll('.mdc-checkbox');
 
           [].forEach.call(listItems, function(li) {
             mdc.ripple.MDCRipple.attachTo(li);
             li.addEventListener('click', function(e) {
               clickHandler(e, li);
             });
-          });
-
-          [].forEach.call(checkboxes, function(checkbox) {
-            mdc.ripple.MDCRipple.attachTo(checkbox);
           });
         };
 
