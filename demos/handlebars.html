@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Button - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/assets/button.css">
+    <script src="/ready.js"></script>
+    <style>
+        .demo-wrapper {
+            padding-bottom: 100px;
+        }
+
+        fieldset {
+            padding: 24px;
+            padding-top: 0;
+            padding-bottom: 16px;
+        }
+        fieldset .mdc-button {
+            margin: 16px;
+        }
+
+        .hero button {
+            margin-left: 32px;
+            margin-right: 32px;
+        }
+
+        fieldset legend {
+            display: block;
+            padding: 16px;
+            padding-top: 48px;
+            padding-bottom: 24px;
+        }
+        h1 {
+            padding-left: 36px;
+            padding-top: 64px;
+            padding-bottom: 8px;
+        }
+
+        .mdc-form-field {
+            margin: 50px 0 -20px 30px;
+        }
+        .hero {
+            position: relative;
+        }
+        .hero .note {
+            position: absolute;
+            bottom: 10px;
+            left: 36px;
+            color: rgba(33, 33, 33, .38);
+        }
+    </style>
+</head>
+<body class="mdc-typography">
+<header class="mdc-toolbar mdc-toolbar--fixed">
+    <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="catalog-back">
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
+            <span class="mdc-toolbar__title catalog-title">Buttons</span>
+        </section>
+    </div>
+</header>
+
+<main class="mdc-toolbar-fixed-adjust">
+    <section class="hero">
+        <button class="mdc-button">
+            Flat
+        </button>
+        <button class="mdc-button mdc-button--raised">
+            Raised
+        </button>
+        <small class="note">Note: "secondary" was previously called "accent" in the Material spec.</small>
+    </section>
+
+    <section class="demo-wrapper">
+        <div class="mdc-form-field">
+            <div class="mdc-checkbox">
+                <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-disabled" aria-labelledby="toggle-disabled-label">
+                <div class="mdc-checkbox__background">
+                    <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
+                    </svg>
+                    <div class="mdc-checkbox__mixedmark"></div>
+                </div>
+            </div>
+            <label for="toggle-disabled" id="toggle-disabled-label">Disable buttons (excluding links)</label>
+        </div>
+
+        <script type="text/javascript" src="assets/handlebars-demo.js"></script>
+
+    </section>
+</main>
+
+<script src="/assets/material-components-web.js" async></script>
+<script>
+  demoReady(function() {
+    var btns = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
+    for (var i = 0, btn; btn = btns[i]; i++) {
+      mdc.ripple.MDCRipple.attachTo(btn);
+    }
+
+    document.getElementById('toggle-disabled').addEventListener('change', function() {
+      var isDisabled = this.checked;
+      [].forEach.call(document.querySelectorAll('button'), function(button) {
+        button.disabled = isDisabled;
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

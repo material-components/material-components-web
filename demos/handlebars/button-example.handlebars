@@ -1,0 +1,26 @@
+<h1 class="mdc-typography--display2">{{headline}}</h1>
+{{#each demo}}
+    <fieldset>
+        <legend class="mdc-typography--title">{{ name }}</legend>
+        <div>
+            {{#each states}}
+                <button class="{{../baseStyle}} {{style}}" {{#if css-only}}data-demo-no-js{{/if}}>
+                    {{name}}
+                </button>
+            {{/each}}
+
+            {{#if link}}
+                <button class="{{baseStyle}}" {{#if css-only}}data-demo-no-js{{/if}}>
+                    <i class="material-icons mdc-button__icon">favorite</i>
+                    Icon
+                </button>
+            {{/if}}
+
+            {{#if icon}}
+                <a href="javascript:void(0)" class="{{baseStyle}}" {{#if css-only}}data-demo-no-js{{/if}}>
+                    Link
+                </a>
+            {{/if}}
+        </div>
+    </fieldset>
+{{/each}}

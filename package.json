@@ -172,5 +172,10 @@
     "mdc-selection-control",
     "mdc-slider",
     "mdc-textfield"
-  ]
+  ],
+  "dependencies": {
+    "dev": "^0.1.3",
+    "handlebars-loader": "^1.6.0",
+    "run": "^1.4.0"
+  }
 }
