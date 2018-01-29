@@ -1330,28 +1330,19 @@
           });
         }
 
-        function clickHandler(evt, rippleFoundation, li) {
+        function clickHandler(evt, li) {
           var checkbox = li.querySelector('.mdc-checkbox__native-control');
-          var label = li.querySelector('label');
-          if(evt.target !== checkbox && evt.target !== label) {
+          if(evt.target === li) {
             checkbox.checked = !checkbox.checked;
-          }
-          if(evt.target !== checkbox) {
-            rippleFoundation.activate(evt);
           }
         };
 
         function addRippleToListItems(list) {
           var listItems = list.querySelectorAll('.mdc-list-item');
           [].forEach.call(listItems, function(li) {
-            var rippleFoundation = new mdc.ripple.MDCRippleFoundation(
-              mdc.ripple.MDCRipple.createAdapter({
-                unbounded: false, disabled: false, root_: li
-              })
-            );
-
-            li.addEventListener('mousedown', function(e) {
-              clickHandler(e, rippleFoundation, li);
+            mdc.ripple.MDCRipple.attachTo(li);
+            li.addEventListener('click', function(e) {
+              clickHandler(e, li);
             });
           });
         };
