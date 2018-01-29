@@ -176,7 +176,7 @@ function checkComponentImportedAddedInMDCPackage(ast) {
     'ImportDeclaration'({node}) {
       if (node.source) {
         const source = node.source.value;
-        if (source === pkg.name) {
+        if (source === pkg.name + '/index') {
           isImported = true;
         }
       }

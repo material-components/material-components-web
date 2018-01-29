@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {FOCUSABLE_ELEMENTS} from '../slidable';
+import {FOCUSABLE_ELEMENTS} from '../slidable/index';
 
 export const cssClasses = {
   ROOT: 'mdc-drawer--temporary',
