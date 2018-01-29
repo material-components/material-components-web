@@ -52,8 +52,8 @@
   @include mdc-checkbox__checkmark_;
 }
 
-.mdc-checkbox__checkmark__path {
-  @include mdc-checkbox__checkmark__path_;
+.mdc-checkbox__checkmark-path {
+  @include mdc-checkbox__checkmark-path_;
 }
 
 .mdc-checkbox__mixedmark {
@@ -64,7 +64,7 @@
 .mdc-checkbox--upgraded {
   .mdc-checkbox__background,
   .mdc-checkbox__checkmark,
-  .mdc-checkbox__checkmark__path,
+  .mdc-checkbox__checkmark-path,
   .mdc-checkbox__mixedmark {
     @include mdc-checkbox__child--upgraded_;
   }
@@ -78,8 +78,8 @@
 .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
   @include mdc-checkbox__background--marked_;
 
-  .mdc-checkbox__checkmark__path {
-    @include mdc-checkbox__checkmark__path--marked_;
+  .mdc-checkbox__checkmark-path {
+    @include mdc-checkbox__checkmark-path--marked_;
   }
 }
 
