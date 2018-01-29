@@ -38,19 +38,11 @@
         -webkit-user-select: none;
       }
 
-      .mdc-ripple-surface[data-mdc-ripple-is-unbounded] {
-        width: 40px;
-        height: 40px;
-        padding: 0;
-        border-radius: 50%;
-      }
-
-      .mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::before,
-      .mdc-ripple-surface[data-mdc-ripple-is-unbounded][data-demo-no-js]::after {
-        height: 100%;
-        left: 0;
-        top: 0;
-        width: 100%;
+      .demo-surface[data-mdc-ripple-is-unbounded] {
+        /* Override width/height from above to match icon size, and adjust padding for hitbox */
+        width: 24px;
+        height: 24px;
+        padding: 12px;
       }
 
       button.demo-surface {

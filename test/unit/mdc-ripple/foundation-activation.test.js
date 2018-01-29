@@ -17,7 +17,7 @@
 import td from 'testdouble';
 
 import {captureHandlers} from '../helpers/foundation';
-import {testFoundation} from './helpers';
+import {setupTest, testFoundation} from './helpers';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
 
 suite('MDCRippleFoundation - Activation Logic');
@@ -316,6 +316,25 @@ testFoundation('removes deactivation classes on activate to ensure ripples can b
     mockRaf.flush();
 
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+  });
+
+testFoundation('will not activate multiple ripples on same frame',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    // Simulate use case where a child and parent are both ripple surfaces, and the same event propagates to the
+    // parent after being handled on the child
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
   });
 
 testFoundation('displays the foreground ripple on activation when unbounded', ({foundation, adapter, mockRaf}) => {

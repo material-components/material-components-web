@@ -332,15 +332,3 @@ respectively within those methods.
 The `focusTrapFactory` can be used to override the `focus-trap` function used to create the focus
 trap. It's API is the same as focus-trap's [createFocusTrap](https://github.com/davidtheclark/focus-trap#focustrap--createfocustrapelement-createoptions) (which is what it defaults to). You can pass in a custom function for mocking out the
 actual function within tests, or to modify the arguments passed to the function before it's called.
-
-## Theming - Dark Theme Considerations
-
-When using `mdc-theme--dark` / `mdc-dialog--theme-dark`, the dialog by default sets its background color to `#303030`. You can override this by either overridding the
-`--mdc-dialog-dark-theme-bg-color`, overridding the `$mdc-dialog-dark-theme-bg-color` sass variable, or directly in CSS:
-
-```css
-.mdc-theme--dark .mdc-dialog__surface,
-.mdc-dialog--theme-dark .mdc-dialog__surface {
-  background-color: /* custom bg color */;
-}
-```
