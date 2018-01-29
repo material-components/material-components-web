@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import {MDCFoundation} from '@material/base/index';
 import {cssClasses, strings} from './constants';
-import {MDCMenuFoundation} from '@material/menu';
+import {MDCMenuFoundation} from '@material/menu/index';
 
 const OPENER_KEYS = [
   {key: 'ArrowUp', keyCode: 38, forType: 'keydown'},
