@@ -87,12 +87,12 @@
 // Baseline
 
 @mixin mdc-text-field-disabled_ {
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-light);
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
   @include mdc-text-field-ink-color_(text-disabled-on-light);
   @include mdc-text-field-label-color_(text-disabled-on-light);
   @include mdc-text-field-helper-text-color_(text-disabled-on-light);
-  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon-on-light);
-  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider-on-light);
+  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider);
 
   pointer-events: none;
 
@@ -106,11 +106,11 @@
 }
 
 @mixin mdc-text-field-invalid_ {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-focused-bottom-line-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-label-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-error);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error);
+  @include mdc-text-field-focused-bottom-line-color($mdc-text-field-error);
+  @include mdc-text-field-label-color($mdc-text-field-error);
+  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
 
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
@@ -121,7 +121,7 @@
   @include mdc-text-field-label-color(primary);
 
   @include mdc-required-text-field-label-asterix_ {
-    color: $mdc-text-field-error-on-light;
+    color: $mdc-text-field-error;
   }
 
   + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
@@ -147,7 +147,7 @@
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
-  @include mdc-text-field-ink-color_($mdc-text-field-light-placeholder);
+  @include mdc-text-field-ink-color_($mdc-text-field-placeholder);
   @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
 
   .mdc-text-field__input {
@@ -161,9 +161,9 @@
 
 @mixin mdc-text-field-outlined-invalid_ {
   // Outline specific mixins
-  @include mdc-text-field-outline-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-focused-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-outline-color($mdc-text-field-error);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-error);
+  @include mdc-text-field-focused-outline-color($mdc-text-field-error);
 }
 
 @mixin mdc-text-field-outlined-focused_ {
@@ -368,9 +368,9 @@
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-text-field-label-background-color_($mdc-textarea-disabled-background-on-light);
-  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border-on-light);
-  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background-on-light);
+  @include mdc-text-field-label-background-color_($mdc-textarea-disabled-background);
+  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border);
+  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
 
   border-style: solid;
 
@@ -380,13 +380,13 @@
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
-  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error);
 }
 
 @mixin mdc-text-field-textarea_ {
   @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
-  @include mdc-text-field-label-background-color_($mdc-textarea-light-background);
-  @include mdc-text-field-textarea-stroke-color($mdc-textarea-border-on-light);
+  @include mdc-text-field-label-background-color_($mdc-textarea-background);
+  @include mdc-text-field-textarea-stroke-color($mdc-textarea-border);
 
   // Translate above the top of the input, and compensate for the amount of offset needed
   // to position the label within the bounds of the inset padding.

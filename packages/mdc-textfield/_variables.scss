@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-$mdc-text-field-error-on-light: #d50000;
-$mdc-text-field-divider-on-light: rgba(black, .12);
-$mdc-text-field-disabled-border-on-light: rgba(#231f20, .26);
-$mdc-text-field-disabled-icon-on-light: rgba(black, .3);
-$mdc-text-field-underline-on-light: rgba(black, 1);
-$mdc-text-field-underline-on-light-idle: rgba(black, .5);
-$mdc-text-field-light-background: rgba(white, 1);
-$mdc-text-field-light-label: rgba(black, .6);
-$mdc-text-field-light-placeholder: rgba(black, .38);
+$mdc-text-field-error: #d50000;
+$mdc-text-field-divider: rgba(black, .12);
+$mdc-text-field-disabled-border: rgba(#231f20, .26);
+$mdc-text-field-disabled-icon: rgba(black, .3);
+$mdc-text-field-underline: rgba(black, 1);
+$mdc-text-field-underline: rgba(black, .5);
+$mdc-text-field-label: rgba(black, .6);
+$mdc-text-field-placeholder: rgba(black, .38);
 
 $mdc-text-field-box-background: rgba(black, .04);
 $mdc-text-field-box-disabled-background: rgba(black, .02);
@@ -32,10 +31,10 @@ $mdc-text-field-outlined-idle-border: rgba(black, .12);
 $mdc-text-field-outlined-disabled-border: rgba(black, .06);
 $mdc-text-field-outlined-hover-border: rgba(black, .87);
 
-$mdc-textarea-border-on-light: rgba(black, .73);
-$mdc-textarea-light-background: rgba(white, 1);
+$mdc-textarea-border: rgba(black, .73);
+$mdc-textarea-background: rgba(white, 1);
 // cannot be transparent because multiline textarea input
 // will make text unreadable
-$mdc-textarea-disabled-background-on-light: rgba(249, 249, 249, 1);
+$mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
 
 $mdc-text-field-border-radius: 4px !default;
