@@ -248,10 +248,6 @@
     z-index: 1;
   }
 
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border: 1px solid;
-  }
-
   .mdc-text-field__label {
     @include mdc-rtl-reflexive-position(left, 16px);
 
@@ -264,12 +260,16 @@
     z-index: 2;
   }
 
-  .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
-    border: 1px solid $mdc-text-field-outlined-hover-border;
-  }
-
   .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
     opacity: 0;
+  }
+
+  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid;
+  }
+
+  .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid $mdc-text-field-outlined-hover-border;
   }
 
   .mdc-text-field__label--float-above ~ .mdc-text-field__outline {
@@ -381,6 +381,10 @@
 @mixin mdc-text-field-full-width_ {
   width: 100%;
 
+  .mdc-text-field__input {
+    resize: vertical;
+  }
+
   &:not(.mdc-text-field--textarea) {
     display: block;
     box-sizing: border-box;
@@ -398,10 +402,6 @@
       // Use !important here to override all other border treatments
       border: none !important;
     }
-  }
-
-  .mdc-text-field__input {
-    resize: vertical;
   }
 
   @include mdc-theme-dark {
