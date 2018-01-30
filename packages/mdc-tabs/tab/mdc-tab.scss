@@ -127,7 +127,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 .mdc-tab.mdc-ripple-upgraded {
   @include mdc-ripple-surface;
   @include mdc-states;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
 
   // stylelint-disable plugin/selector-bem-pattern
   &:focus {
