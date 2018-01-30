@@ -24,7 +24,6 @@
   @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
   @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
   @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
-
   @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
   @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
   @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
