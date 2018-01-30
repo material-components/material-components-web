@@ -251,7 +251,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   close_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
-    this.adapter_.removeClassFromBottomLine(cssClasses.LINE_RIPPLE_ACTIVE);
+    this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.focus();
     this.enableScroll_();
   }

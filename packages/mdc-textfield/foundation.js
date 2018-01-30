@@ -61,8 +61,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
-      registerLineRippleEventHandler: () => {},
-      deregisterLineRippleEventHandler: () => {},
       getNativeInput: () => {},
       isFocused: () => {},
       isRtl: () => {},

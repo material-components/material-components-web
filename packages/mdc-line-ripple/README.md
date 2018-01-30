@@ -2,13 +2,13 @@
 title: "Line Ripple"
 layout: detail
 section: components
-excerpt: "The line ripple is used to indicate certain information, such as a line of text or a selected element"
+excerpt: "The line ripple is used to highight user specified text above it."
 path: /catalog/input-controls/line-ripple/
 -->
 
 # Line Ripple
 
-The line ripple is used to indicate the selected element or text. When a the line ripple is active, the line’s color and thickness vary.
+The line ripple is used to highlight user specified text above it. When a the line ripple is active, the line’s color and thickness vary.
 
 ## Design & API Documentation
 

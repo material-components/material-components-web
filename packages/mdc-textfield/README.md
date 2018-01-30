@@ -224,8 +224,6 @@ Method Signature | Description
 `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event handler on the root element for a given event
 `registerInputInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the native input element for a given event
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the native input element for a given event
-`registerLineRippleEventHandler(evtType: string, handler: EventListener)` => void | Proxies to MDCLineRipple to register an event listener on the line ripple element for a given event
-`deregisterLineRippleEventHandler(evtType: string, handler: EventListener)` => void | Proxies to MDCLineRipple to deregister an event listener on the line ripple element for a given event
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
 `isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL

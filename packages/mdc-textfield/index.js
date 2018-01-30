@@ -248,16 +248,6 @@ class MDCTextField extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-        registerLineRippleEventHandler: (evtType, handler) => {
-          if (this.lineRipple_) {
-            this.lineRipple_.listen(evtType, handler);
-          }
-        },
-        deregisterLineRippleEventHandler: (evtType, handler) => {
-          if (this.lineRipple_) {
-            this.lineRipple_.unlisten(evtType, handler);
-          }
-        },
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },

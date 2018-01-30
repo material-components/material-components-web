@@ -302,20 +302,6 @@ test('#layout recomputes all dimensions and positions for the ripple element', (
   td.verify(component.ripple.layout());
 });
 
-test('#adapter.registerLineRippleEventHandler adds event listener to line ripple', () => {
-  const {component, lineRipple} = setupTest();
-  const handler = () => {};
-  component.getDefaultFoundation().adapter_.registerLineRippleEventHandler('evt', handler);
-  td.verify(lineRipple.listen('evt', handler));
-});
-
-test('#adapter.deregisterLineRippleEventHandler removes event listener for "transitionend" from line ripple', () => {
-  const {component, lineRipple} = setupTest();
-  const handler = () => {};
-  component.getDefaultFoundation().adapter_.deregisterLineRippleEventHandler('evt', handler);
-  td.verify(lineRipple.unlisten('evt', handler));
-});
-
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
