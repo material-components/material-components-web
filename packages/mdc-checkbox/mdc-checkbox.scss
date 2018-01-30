@@ -25,7 +25,7 @@
   @include mdc-checkbox-base_;
   @include mdc-ripple-surface;
   @include mdc-states($mdc-checkbox-baseline-theme-color);
-  @include mdc-ripple-radius($mdc-checkbox-ripple-radius);
+  @include mdc-ripple-radius-unbounded;
 }
 
 @at-root {
