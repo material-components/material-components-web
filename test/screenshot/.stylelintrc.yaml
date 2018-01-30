@@ -1,0 +1,19 @@
+extends: ../../.stylelintrc.yaml
+ignoreFiles:
+  - node_modules/**/*
+  - out/**/*
+rules:
+  # Ensure any defined symbols are prefixed with "test-"
+  custom-media-pattern: ^test-.+
+  custom-property-pattern: ^test-.+
+  selector-class-pattern:
+    - ^test-.+
+    - resolveNestedSelectors: true
+  selector-id-pattern: ^test-.+
+  # SCSS naming patterns, just like our CSS conventions above.
+  scss/dollar-variable-pattern:
+    - ^test-.+
+    -
+      ignore: local
+  scss/at-function-pattern: ^test-.+
+  scss/at-mixin-pattern: ^test-.+
