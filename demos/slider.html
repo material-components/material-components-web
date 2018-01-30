@@ -34,18 +34,9 @@
         --mdc-slider-bg-color-behind-component: #f2f2f2;
       }
 
-      .mdc-theme--dark {
-        background-color: #333;
-      }
-
       .custom-bg {
         background-color: #eee;
         --mdc-slider-bg-color-behind-component: #eee;
-      }
-
-      .mdc-theme--dark.custom-bg {
-        background-color: #102027;
-        --mdc-slider-bg-color-behind-component: #102027;
       }
 
       .slider-example {
@@ -236,10 +227,6 @@
             Disabled
           </label>
           <label class="demo-param-field">
-            <input type="checkbox" name="dark-theme">
-            Dark Theme
-          </label>
-          <label class="demo-param-field">
             <input type="checkbox" name="use-custom-color">
             Use Custom BG Color
           </label>
@@ -264,7 +251,6 @@
         var minInput = demoRoot.querySelector('[name="min"]');
         var maxInput = demoRoot.querySelector('[name="max"]');
         var step = demoRoot.querySelector('[name="step"]');
-        var darkTheme = demoRoot.querySelector('[name="dark-theme"]');
         var disabled = demoRoot.querySelector('[name="disabled"]');
         var useCustomColor = demoRoot.querySelector('[name="use-custom-color"]');
         var rtl = demoRoot.querySelector('[name="rtl"]');
@@ -344,12 +330,6 @@
           discreteSlider.step = stepValue;
           discreteWMarkerSlider.step = stepValue;
           customDiscreteWMarkerSlider.step = stepValue;
-        });
-
-        darkTheme.addEventListener('change', function() {
-          [].forEach.call(demoRoot.querySelectorAll('.example-slider-wrapper'), function(example) {
-            example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
-          });
         });
 
         disabled.addEventListener('change', function() {

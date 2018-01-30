@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-@import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/rtl/mixins";
 @import "./keyframes";
@@ -27,24 +26,15 @@
   @include mdc-slider-color-accessible(secondary);
 
   &--disabled {
-    $light-color: #9a9a9a;
-    $dark-color: #787878;
+    $disabled-color: #9a9a9a;
 
-    @include mdc-slider-highlight-color_($light-color);
-    @include mdc-slider-rail-color_($light-color);
-    @include mdc-slider-rail-tick-mark-color_($light-color);
-    @include mdc-slider-thumb-color_($light-color);
-    @include mdc-slider-thumb-stroke-cutout_($mdc-slider-default-assumed-bg-color);
+    @include mdc-slider-highlight-color_($disabled-color);
+    @include mdc-slider-rail-color_($disabled-color);
+    @include mdc-slider-rail-tick-mark-color_($disabled-color);
+    @include mdc-slider-thumb-color_($disabled-color);
+    @include mdc-slider-thumb-stroke-cutout_(white);
 
     cursor: auto;
-
-    @include mdc-theme-dark(".mdc-slider", true) {
-      @include mdc-slider-highlight-color_($dark-color);
-      @include mdc-slider-rail-color_($dark-color);
-      @include mdc-slider-rail-tick-mark-color_($dark-color);
-      @include mdc-slider-thumb-color_($dark-color);
-      @include mdc-slider-thumb-stroke-cutout_($mdc-slider-dark-theme-assumed-bg-color);
-    }
   }
 
   position: relative;
