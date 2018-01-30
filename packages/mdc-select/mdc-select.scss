@@ -44,17 +44,17 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
-  height: 56px;
+  height: 48px;
   border: none;
   border-radius: 4px 4px 0 0;
   outline: none;
   background-repeat: no-repeat;
-  background-position: right 10px center;
+  background-position: right 10px bottom 16px;
   cursor: pointer;
   overflow: visible;
 
   @include mdc-rtl {
-    background-position: left 10px center;
+    background-position: left 10px bottom 16px;
   }
 
   &__menu {
@@ -81,7 +81,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     position: relative;
     flex-grow: 1;
     width: 100%;
-    height: 56px;
+    height: 48px;
     border: none;
     border-radius: 4px 4px 0 0;
     outline: none;
@@ -94,7 +94,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     @include mdc-rtl-reflexive-position(left, 16px);
 
     position: absolute;
-    bottom: 12px;
+    bottom: 8px;
     transform-origin: left top;
     transition: $mdc-select-menu-transition;
     pointer-events: none;
@@ -107,12 +107,15 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     &--float-above {
       transform: translateY(-40%) scale(.75, .75);
     }
+    
+    &:not(&--float-above) {
+      line-height: normal;
+    }
   }
 
   &__selected-text {
     display: flex;
     align-items: flex-end;
-    margin-bottom: 6px;
     transition:
       mdc-animation-exit-temporary(opacity, 125ms),
       mdc-animation-exit-temporary(transform, 125ms);
