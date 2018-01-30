@@ -157,11 +157,6 @@
         var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
 
-        // CSS
-        var selectCss = document.getElementById('demo-css-only-select');
-        var cssAlternateColors = document.getElementById('css-alternate-colors');
-        var cssDisabled = document.getElementById('css-disabled');
-
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
             boxDemoWrapper.setAttribute('dir', 'rtl');
@@ -174,13 +169,6 @@
         });
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
-        });
-
-        cssAlternateColors.addEventListener('change', function() {
-          selectCss.classList[cssAlternateColors.checked ? 'add' : 'remove']('demo-select-custom-colors');
-        });
-        cssDisabled.addEventListener('change', function() {
-          cssDisabled.checked ? selectCss.setAttribute('disabled', 'disabled') : selectCss.removeAttribute('disabled');
         });
       });
     </script>
