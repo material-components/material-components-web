@@ -111,16 +111,6 @@
     @include mdc-theme-prop(border-color, transparent);
     @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color);
   }
-
-  @include mdc-theme-dark {
-    @include mdc-checkbox-unmarked-background-selector-disabled_ {
-      @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color-dark);
-    }
-
-    @include mdc-checkbox-marked-background-selector-disabled_ {
-      @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color-dark);
-    }
-  }
 }
 
 @mixin mdc-checkbox--disabled_ {

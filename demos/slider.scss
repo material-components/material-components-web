@@ -25,8 +25,4 @@
   @include mdc-slider-thumb-color($material-color-orange-500);
   @include mdc-slider-focus-halo-color($material-color-yellow-900);
   @include mdc-slider-value-pin-fill-color-accessible($material-color-pink-500);
-
-  @include mdc-theme-dark {
-    @include mdc-slider-rail-tick-mark-color(black);
-  }
 }
