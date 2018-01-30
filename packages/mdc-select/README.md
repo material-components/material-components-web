@@ -100,7 +100,7 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 ```html
 <div class="mdc-select" role="listbox">
   <div class="mdc-select__surface" tabindex="0">
-    <div class="mdc-select__label">Pick a Food Group</div>
+    <div class="mdc-select__label mdc-select__label--float-above">Pick a Food Group</div>
     <div class="mdc-select__selected-text"></div>
     <div class="mdc-select__bottom-line"></div>
   </div>
@@ -128,6 +128,13 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
   </div>
 </div>
 ```
+
+#### Preventing [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)
+
+Because `MDCSelect` updates its UI based on the values it reads in when it is instantiated, there is
+potential for an incorrect first render before the script containing the `MDCSelect` initialization
+logic executes. To avoid this, you can manually add the `mdc-select__label--float-above` class to the
+label element whenever you are initializing the component with an option pre-selected
 
 #### Disabled select
 
