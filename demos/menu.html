@@ -290,7 +290,7 @@
 
         var animation = document.querySelector('input[name="animation"]');
         animation.addEventListener('change', function(evt) {
-          menu.quickOpen = !evt.target.checked;
+          menu.quickOpen = evt.target.checked;
         });
 
         var radios = document.querySelectorAll('input[name="position"]');

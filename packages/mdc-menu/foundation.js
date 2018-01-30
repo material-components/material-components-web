@@ -146,7 +146,7 @@ class MDCMenuFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.rememberSelection_ = false;
     /** @private {boolean} */
-    this.quickOpen_ = true;
+    this.quickOpen_ = false;
 
     // A keyup event on the menu needs to have a corresponding keydown
     // event on the menu. If the user opens the menu with a keydown event on a
@@ -563,7 +563,7 @@ class MDCMenuFoundation extends MDCFoundation {
   open({focusIndex = null} = {}) {
     this.adapter_.saveFocus();
 
-    if (this.quickOpen_) {
+    if (!this.quickOpen_) {
       this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
     }
 
@@ -596,7 +596,7 @@ class MDCMenuFoundation extends MDCFoundation {
 
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
 
-    if (this.quickOpen_) {
+    if (!this.quickOpen_) {
       this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
     }
 

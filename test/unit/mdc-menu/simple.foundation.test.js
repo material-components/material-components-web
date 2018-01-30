@@ -121,7 +121,7 @@ testFoundation('#open adds the animation class to start an animation',
 
 testFoundation('#open does not add the animation class to start an animation when quickOpen is false',
   ({foundation, mockAdapter}) => {
-    foundation.quickOpen(false);
+    foundation.quickOpen(true);
     foundation.open();
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 0});
   });
