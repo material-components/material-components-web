@@ -26,10 +26,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      .mdc-theme--dark {
-        background-color: #303030;
-      }
-
       #demo-wrapper {
         padding: 4px;
         padding-left: 0;
@@ -126,10 +122,6 @@
         </section>
         <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
         <div>
-          <input type="checkbox" id="dark-theme">
-          <label for="dark-theme">Dark Theme</label>
-        </div>
-        <div>
           <input type="checkbox" id="rtl">
           <label for="rtl">RTL</label>
         </div>
@@ -187,7 +179,6 @@
         });
 
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');
-        var darkThemeCb = document.getElementById('dark-theme');
         var rtlCb = document.getElementById('rtl');
         var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
@@ -197,9 +188,6 @@
         var cssAlternateColors = document.getElementById('css-alternate-colors');
         var cssDisabled = document.getElementById('css-disabled');
 
-        darkThemeCb.addEventListener('change', function() {
-          boxDemoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('mdc-theme--dark');
-        });
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
             boxDemoWrapper.setAttribute('dir', 'rtl');
