@@ -15,31 +15,16 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-@import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 @import "./mixins";
 @import "./variables";
-
-.mdc-list,
-.mdc-list-group {
-  @include mdc-theme-dark {
-    @include mdc-list-divider-color($mdc-list-divider-color-dark);
-  }
-}
 
 // postcss-bem-linter: define list
 
 .mdc-list {
   @include mdc-typography(subheading2);
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background);
-
-  @include mdc-theme-dark {
-    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
-    @include mdc-list-item-secondary-text-ink-color(text-secondary-on-dark);
-    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
-    @include mdc-list-item-meta-ink-color(text-hint-on-dark);
-  }
 
   margin: 0;
   padding: 8px 0;
@@ -147,12 +132,6 @@
   @include mdc-states;
   @include mdc-states-activated(primary);
   @include mdc-states-selected(primary);
-
-  @include mdc-theme-dark(".mdc-list") {
-    @include mdc-states(white);
-    @include mdc-states-activated(primary);
-    @include mdc-states-selected(primary);
-  }
 }
 
 .mdc-list--two-line .mdc-list-item {
@@ -191,7 +170,13 @@ a.mdc-list-item {
 }
 
 @at-root {
-  @include mdc-list-divider-color($mdc-list-divider-color-light);
+  $divider-color: if(
+    mdc-theme-tone($mdc-theme-background) == "dark",
+    $mdc-list-divider-color-on-dark-bg,
+    $mdc-list-divider-color-on-light-bg
+  );
+
+  @include mdc-list-divider-color($divider-color);
 }
 
 .mdc-list-divider--padded {
@@ -214,10 +199,6 @@ a.mdc-list-item {
 // postcss-bem-linter: define list-group
 
 .mdc-list-group {
-  @include mdc-theme-dark {
-    @include mdc-list-group-subheader-ink-color(text-primary-on-dark);
-  }
-
   // Cancel top/bottom padding on individual lists within group
   .mdc-list {
     padding: 0;
