@@ -171,9 +171,9 @@ a.mdc-list-item {
 
 @at-root {
   $divider-color: if(
-    mdc-theme-contrast-tone($mdc-theme-background) == "dark",
-    $mdc-list-divider-color-dark,
-    $mdc-list-divider-color-light
+    mdc-theme-tone($mdc-theme-background) == "dark",
+    $mdc-list-divider-color-on-dark-bg,
+    $mdc-list-divider-color-on-light-bg
   );
 
   @include mdc-list-divider-color($divider-color);
