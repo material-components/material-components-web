@@ -88,9 +88,9 @@
 
 @mixin mdc-text-field-disabled_ {
   @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
-  @include mdc-text-field-ink-color_(text-disabled-on-light);
-  @include mdc-text-field-label-color_(text-disabled-on-light);
-  @include mdc-text-field-helper-text-color_(text-disabled-on-light);
+  @include mdc-text-field-ink-color_(text-disabled-on-background);
+  @include mdc-text-field-label-color_(text-disabled-on-background);
+  @include mdc-text-field-helper-text-color_(text-disabled-on-background);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
   @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider);
 
@@ -237,7 +237,7 @@
 
 @mixin mdc-text-field-box_ {
   @include mdc-ripple-surface;
-  @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
+  @include mdc-states(text-primary-on-background, $has-nested-focusable-element: true);
   @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
@@ -276,7 +276,7 @@
 @mixin mdc-text-field-box-disabled_ {
   @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
   @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-label-color(text-hint-on-light);
+  @include mdc-text-field-label-color(text-hint-on-background);
 
   border-bottom: none;
 }
@@ -386,7 +386,6 @@
   border: 1px solid;
   overflow: hidden;
 
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input {
     margin: 0;
     padding: $padding-inset;

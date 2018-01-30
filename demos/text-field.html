@@ -197,7 +197,7 @@
         </script>
       </section>
 
-      <section class="example">
+      <section class="example" id="text-field-box-example">
         <h2>Text Field box</h2>
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
@@ -206,9 +206,8 @@
             <label for="tf-box" class="mdc-text-field__label">Your Name</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-             id="name-validation-msg">
-            Must be at least 8 characters
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
+            Helper Text (possibly validation message)
           </p>
         </div>
         <div>
@@ -231,11 +230,21 @@
           <input id="box-required" type="checkbox">
           <label for="box-required">Required</label>
         </div>
+        <div>
+          <input id="box-use-helper-text" type="checkbox">
+          <label for="box-use-helper-text">Use Helper Text</label>
+        </div>
+        <div>
+          <input id="box-persistent-helper-text" type="checkbox" disabled>
+          <label for="box-persistent-helper-text">Make helper text persistent</label>
+        </div>
         <script>
           demoReady(function() {
+            var section = document.getElementById('text-field-box-example');
             var tfEl = document.getElementById('tf-box-example');
             var tf = new mdc.textField.MDCTextField(tfEl);
             var wrapper = document.getElementById('demo-tf-box-wrapper');
+            var helperText = section.querySelector('.mdc-text-field-helper-text');
 
             document.getElementById('box-disable').addEventListener('change', function(evt) {
               tf.disabled = evt.target.checked;
@@ -264,8 +273,24 @@
             document.getElementById('box-required').addEventListener('change', function(evt) {
               var target = evt.target;
               var input = tfEl.querySelector('.mdc-text-field__input');
+              var requiredHelperText = 'Must be at least 8 characters';
+              var plainHelperText = 'Helper Text (possibly validation message)';
               input.required = target.checked;
               input.pattern = evt.target.checked ? '.{8,}' : '.*';
+              helperText.innerHTML = target.checked ? requiredHelperText : plainHelperText;
+            });
+
+            document.getElementById('box-use-helper-text').addEventListener('change', function(evt) {
+              var target = evt.target;
+              helperText.style.display = target.checked ? 'block' : 'none';
+              document.getElementById('box-persistent-helper-text').disabled = !target.checked;
+            });
+
+            document.getElementById('box-persistent-helper-text').addEventListener('change', function(evt) {
+              var target = evt.target;
+              helperText.classList[target.checked ? 'add' : 'remove'](
+                'mdc-text-field-helper-text--persistent'
+              );
             });
           });
         </script>
