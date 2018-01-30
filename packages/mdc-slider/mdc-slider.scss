@@ -33,6 +33,8 @@
     @include mdc-slider-rail-tick-mark-color_($disabled-color);
     @include mdc-slider-thumb-color_($disabled-color);
     @include mdc-slider-thumb-stroke-cutout_($mdc-slider-default-assumed-bg-color);
+
+    cursor: auto;
   }
 
   position: relative;
@@ -174,10 +176,6 @@
     transform: scale3d(1.55, 1.55, 1.55);
     opacity: .25;
   }
-}
-
-.mdc-slider--disabled {
-  cursor: auto;
 }
 
 .mdc-slider--in-transit {

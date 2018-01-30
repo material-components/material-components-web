@@ -17,7 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 /* eslint-enable no-unused-vars */
 import {getMatchesProperty} from '@material/ripple/util';
 
@@ -26,11 +26,11 @@ import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter, FoundationMapType} from './adapter';
 import MDCTextFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
-import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
-import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
-import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon';
-import {MDCTextFieldLabel, MDCTextFieldLabelFoundation} from './label';
-import {MDCTextFieldOutline, MDCTextFieldOutlineFoundation} from './outline';
+import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line/index';
+import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
+import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon/index';
+import {MDCTextFieldLabel, MDCTextFieldLabelFoundation} from './label/index';
+import {MDCTextFieldOutline, MDCTextFieldOutlineFoundation} from './outline/index';
 /* eslint-enable no-unused-vars */
 
 /**
