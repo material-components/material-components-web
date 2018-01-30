@@ -1337,8 +1337,8 @@
         }
 
         function clickHandler(evt, li) {
-          var checkbox = li.querySelector('.mdc-checkbox__native-control');
-          if(evt.target === li) {
+          if (evt.target === li) {
+            var checkbox = li.querySelector('.mdc-checkbox__native-control');
             checkbox.checked = !checkbox.checked;
           }
         };
