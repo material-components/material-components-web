@@ -18,6 +18,7 @@
 @import "../../packages/mdc-button/mdc-button";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-menu/mdc-menu";
+@import "../../packages/mdc-ripple/mdc-ripple";
 @import "../../packages/mdc-theme/color-palette";
 
 .demo-toolbar-example-heading {
@@ -62,6 +63,10 @@
   &:hover {
     @include mdc-toolbar-icon-ink-color(white);
   }
+}
+
+.demo-toolbar-surface {
+  @include mdc-states(text-primary-on-primary);
 }
 
 .demo-paragraph {
