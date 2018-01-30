@@ -16,7 +16,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 
 import {MDCChipAdapter} from './adapter';
 import MDCChipFoundation from './foundation';

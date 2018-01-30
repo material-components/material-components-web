@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {MDCChipFoundation, MDCChip} from './chip';
-import {MDCChipSetFoundation, MDCChipSet} from './chip-set';
+import {MDCChipFoundation, MDCChip} from './chip/index';
+import {MDCChipSetFoundation, MDCChipSet} from './chip-set/index';
 
 export {MDCChipFoundation, MDCChip, MDCChipSetFoundation, MDCChipSet};
