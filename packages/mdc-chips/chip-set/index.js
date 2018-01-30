@@ -17,7 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCChipSetAdapter from './adapter';
+import {MDCChipSetAdapter} from './adapter';
 import MDCChipSetFoundation from './foundation';
 import {MDCChip} from '../chip';
 
@@ -31,7 +31,8 @@ class MDCChipSet extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {!Array<!Element>} */
+
+    /** @private {!Array<!MDCChip>} */
     this.chips;
   }
 
@@ -69,6 +70,7 @@ class MDCChipSet extends MDCComponent {
   /**
    * Instantiates chip components on all of the chip set's child chip elements.
    * @param {(function(!Element): !MDCChip)} chipFactory
+   * @return {!Array<!MDCChip>}
    */
   instantiateChips_(chipFactory) {
     const chipElements = [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));

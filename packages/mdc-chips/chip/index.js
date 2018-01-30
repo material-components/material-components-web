@@ -18,7 +18,7 @@
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple';
 
-import MDCChipAdapter from './adapter';
+import {MDCChipAdapter} from './adapter';
 import MDCChipFoundation from './foundation';
 import {strings} from './constants';
 
@@ -32,8 +32,9 @@ class MDCChip extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @type {MDCRipple} */
-    this.ripple_;
+
+    /** @private {!MDCRipple} */
+    this.ripple_ = new MDCRipple(this.root_);
   }
 
   /**
@@ -42,10 +43,6 @@ class MDCChip extends MDCComponent {
    */
   static attachTo(root) {
     return new MDCChip(root);
-  }
-
-  initialize() {
-    this.ripple_ = new MDCRipple(this.root_);
   }
 
   destroy() {
