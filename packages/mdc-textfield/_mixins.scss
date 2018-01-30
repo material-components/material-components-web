@@ -229,8 +229,6 @@
   height: 56px;
   border: none;
 
-  // stylelint-disable plugin/selector-bem-pattern
-
   .mdc-text-field__input {
     display: flex;
     height: 30px;
@@ -238,10 +236,6 @@
     border: none;
     background-color: transparent;
     z-index: 1;
-  }
-
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border: 1px solid;
   }
 
   .mdc-text-field__label {
@@ -256,10 +250,14 @@
     z-index: 2;
   }
 
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid;
+  }
+
   .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
     border: 1px solid $mdc-text-field-outlined-hover-border;
   }
-
   // stylelint-enable plugin/selector-bem-pattern
 }
 
@@ -365,6 +363,10 @@
 @mixin mdc-text-field-full-width_ {
   width: 100%;
 
+  .mdc-text-field__input {
+    resize: vertical;
+  }
+
   &:not(.mdc-text-field--textarea) {
     display: block;
     box-sizing: border-box;
@@ -382,10 +384,6 @@
       // Use !important here to override all other border treatments
       border: none !important;
     }
-  }
-
-  .mdc-text-field__input {
-    resize: vertical;
   }
 
   @include mdc-theme-dark {
