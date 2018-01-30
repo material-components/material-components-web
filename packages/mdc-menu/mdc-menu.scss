@@ -17,6 +17,7 @@
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
+@import "@material/theme/variables";
 @import "@material/typography/mixins";
 
 $mdc-menu-fade-in-duration: .03s;
@@ -38,7 +39,7 @@ $mdc-menu-scale-duration: .12s;
   transform: scale(1);
   transform-origin: top left;
   border-radius: 2px;
-  background-color: white;
+  background-color: $mdc-theme-background;
   opacity: 0;
   white-space: nowrap;
   overflow-x: hidden;
@@ -122,11 +123,11 @@ $mdc-menu-scale-duration: .12s;
   }
 
   .mdc-list-item__graphic {
-    color: rgba(black, .54);
+    @include mdc-theme-prop(color, text-secondary-on-background);
   }
 
   .mdc-list-item[aria-disabled="true"] {
-    @include mdc-theme-prop(color, text-disabled-on-light);
+    @include mdc-theme-prop(color, text-disabled-on-background);
 
     cursor: default;
     pointer-events: none;
