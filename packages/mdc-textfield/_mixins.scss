@@ -21,6 +21,7 @@
 @import "helper-text/mixins";
 @import "icon/mixins";
 @import "icon/variables";
+@import "@material/theme/mixins";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
