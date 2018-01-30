@@ -214,12 +214,15 @@
                 <label>R: <input type="text" id="right-margin" value="0" size="3"></label>
               </div>
             </p>
-            <div class="left-column-controls">
+            <div>
               <label><input type="checkbox" name="is-rtl"> RTL</label>
             </div>
-            <div class="right-column-controls">
+            <div>
               <label><input type="checkbox" name="dark"> Dark mode</label>
             </div>
+            <div>
+            <label><input type="checkbox" name="remember"> Remember Selected Item</label>
+          </div>
             <p>
               <div class="left-column-controls">
                 Menu Sizes:
@@ -275,6 +278,11 @@
             contentEl.classList.remove('mdc-theme--dark');
             menuEl.classList.remove('mdc-menu--theme-dark');
           }
+        });
+
+        var remember = document.querySelector('input[name="remember"]');
+        remember.addEventListener('change', function(evt) {
+          menu.rememberSelection = evt.target.checked;
         });
 
         var radios = document.querySelectorAll('input[name="position"]');

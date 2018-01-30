@@ -88,6 +88,17 @@ test('setAnchorMargin', () => {
   // The method sets private variable on the foundation, nothing to verify.
 });
 
+test('selectedItem', () => {
+  const {component} = setupTest();
+  assert.isOk(!component.selectedItem);
+});
+
+test('rememberSelection', () => {
+  const {component} = setupTest();
+  component.rememberSelection = true;
+  // The method sets private variable on the foundation, nothing to verify.
+});
+
 test('items returns all menu items', () => {
   const {root, component} = setupTest();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
@@ -380,4 +391,49 @@ test('adapter#setMaxHeight sets the maxHeight style on the menu element', () => 
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setMaxHeight('100px');
   assert.equal(root.style.maxHeight, '100px');
+});
+
+test('adapter#getOptionByIndex returns the option at the index specified', () => {
+  const {root, component} = setupTest();
+  const item1 = root.querySelectorAll('[role="menuitem"]')[1];
+  document.body.appendChild(root);
+  const element = component.getOptionByIndex(1);
+  assert.equal(element, item1);
+  document.body.removeChild(root);
+});
+
+test('adapter#setAttrForOptionAtIndex sets an attribute on the option element at the index specified', () => {
+  const {root, component} = setupTest();
+  const item1 = root.querySelectorAll('[role="menuitem"]')[1];
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.setAttrForOptionAtIndex(1, 'aria-disabled', 'true');
+  assert.equal(root.querySelector('[aria-disabled="true"]'), item1);
+  document.body.removeChild(root);
+});
+
+test('adapter#rmAttrForOptionAtIndex removes an attribute on the option element at the index', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.setAttrForOptionAtIndex(1, 'aria-disabled', 'true');
+  component.getDefaultFoundation().adapter_.rmAttrForOptionAtIndex(1, 'aria-disabled');
+  assert.equal(root.querySelector('[aria-disabled="true"]'), null);
+  document.body.removeChild(root);
+});
+
+test('adapter#addClassForOptionAtIndex adds a class to the option at the index specified', () => {
+  const {root, component} = setupTest();
+  const item1 = root.querySelectorAll('[role="menuitem"]')[1];
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.addClassForOptionAtIndex(1, 'test-class');
+  assert.equal(root.querySelector('.test-class'), item1);
+  document.body.removeChild(root);
+});
+
+test('adapter#rmClassForOptionAtIndex removes a class from the option at the index specified', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.addClassForOptionAtIndex(1, 'test-class');
+  component.getDefaultFoundation().adapter_.rmClassForOptionAtIndex(1, 'test-class');
+  assert.equal(root.querySelector('.test-class'), null);
+  document.body.removeChild(root);
 });
