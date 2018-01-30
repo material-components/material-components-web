@@ -34,7 +34,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 // postcss-bem-linter: define tab
 .mdc-tab {
   @include mdc-typography(body2);
-  @include mdc-tab-ink-color(text-secondary-on-light);
+  @include mdc-tab-ink-color(text-secondary-on-background);
 
   display: table-cell;
   position: relative;
@@ -51,23 +51,11 @@ $mdc-tab-with-icon-and-text-height: 72px;
 
 
   &:hover {
-    @include mdc-tab-ink-color(text-primary-on-light);
+    @include mdc-tab-ink-color(text-primary-on-background);
   }
 
   &:focus {
-    @include mdc-theme-prop(outline-color, text-secondary-on-light);
-  }
-
-  @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-theme-prop(color, text-secondary-on-dark);
-
-    &:hover {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-    }
-
-    &:focus {
-      @include mdc-theme-prop(outline-color, text-secondary-on-dark);
-    }
+    @include mdc-theme-prop(outline-color, text-secondary-on-background);
   }
 
   // TODO: Replace with breakpoint variable
@@ -99,11 +87,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 }
 
 .mdc-tab--active {
-  @include mdc-tab-ink-color(text-primary-on-light);
-
-  @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-  }
+  @include mdc-tab-ink-color(text-primary-on-background);
 
   &::before {
     bottom: 0;
@@ -144,10 +128,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
   @include mdc-ripple-surface;
   @include mdc-states;
   @include mdc-ripple-radius;
-
-  @include mdc-theme-dark(".mdc-tab-bar") {
-    @include mdc-states(text-primary-on-dark);
-  }
 
   // stylelint-disable plugin/selector-bem-pattern
   &:focus {
