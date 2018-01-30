@@ -116,7 +116,14 @@ test('#init throws error when the necessary DOM is not present', () => {
 testFoundation('#open adds the animation class to start an animation',
   ({foundation, mockAdapter}) => {
     foundation.open();
-    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN));
+    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 1});
+  });
+
+testFoundation('#open does not add the animation class to start an animation when quickOpen is false',
+  ({foundation, mockAdapter}) => {
+    foundation.quickOpen(false);
+    foundation.open();
+    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 0});
   });
 
 testFoundation('#open adds the open class to the menu', ({foundation, mockAdapter, mockRaf}) => {
@@ -1229,4 +1236,3 @@ test('getSelectedValue should return the last selected item', () => {
   assert.isTrue(foundation.getSelectedIndex() === expectedIndex);
   clock.uninstall();
 });
-
