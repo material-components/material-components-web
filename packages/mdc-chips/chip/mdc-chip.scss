@@ -19,7 +19,7 @@
 
 .mdc-chip {
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
   @include mdc-states;
 
   display: inline-block;
