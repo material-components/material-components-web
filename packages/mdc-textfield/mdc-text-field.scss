@@ -194,7 +194,8 @@
     margin-bottom: 4px;
   }
 
-  .mdc-text-field--box + & {
+  .mdc-text-field--box + &,
+  .mdc-text-field--outlined + & {
     margin-right: 16px;
     margin-left: 16px;
   }
