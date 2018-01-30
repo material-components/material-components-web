@@ -73,10 +73,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     @include mdc-ripple-radius;
     @include mdc-states;
 
-    &::-ms-expand {
-      display: none;
-    }
-
     display: flex;
     position: relative;
     flex-grow: 1;
@@ -85,8 +81,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     border: none;
     border-radius: 4px 4px 0 0;
     outline: none;
-    // Resets for <select> element
-    appearance: none;
     overflow: hidden;
   }
 
