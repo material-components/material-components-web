@@ -28,7 +28,7 @@
 // postcss-bem-linter: define tab-bar
 
 @at-root {
-  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
+  @include mdc-tab-bar-indicator-ink-color(text-primary-on-background);
 }
 
 .mdc-tab-bar {
@@ -40,10 +40,6 @@
 
   &__indicator {
     width: 100%;
-
-    @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(background-color, text-primary-on-dark);
-    }
 
     transform-origin: left top;
     transition: mdc-animation-enter(transform, 240ms);
