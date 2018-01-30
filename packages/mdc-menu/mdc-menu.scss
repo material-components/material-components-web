@@ -59,20 +59,12 @@ $mdc-menu-scale-duration: .12s;
       transform $mdc-menu-scale-duration $mdc-animation-deceleration-curve-timing-function;
     opacity: 0;
     overflow-y: hidden;
-
-    > .mdc-menu__items {
-      transform: scale(1.25);
-    }
   }
 
   &--open {
     display: inline-block;
     transform: scale(1);
     opacity: 1;
-
-    > .mdc-menu__items {
-      transform: scale(1);
-    }
   }
 
   &--animating-closed {
@@ -98,6 +90,14 @@ $mdc-menu-scale-duration: .12s;
     .mdc-menu--animating & {
       overflow-y: hidden;
     }
+  }
+
+  &--animating-open > .mdc-menu__items {
+    transform: scale(1.25);
+  }
+
+  &--open > .mdc-menu__items {
+    transform: scale(1);
   }
 
   // stylelint-disable plugin/selector-bem-pattern

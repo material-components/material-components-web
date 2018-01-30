@@ -209,8 +209,10 @@
                 <label>R: <input type="text" id="right-margin" value="0" size="3"></label>
               </div>
             </p>
-            <div class="left-column-controls">
+            <div>
               <label><input type="checkbox" name="is-rtl"> RTL</label>
+            </div>
+            <div><label><input type="checkbox" name="remember"> Remember Selected Item</label>
             </div>
             <p>
               <div class="left-column-controls">
@@ -255,6 +257,11 @@
         var menuButtonEl = document.querySelector('#menu-button');
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
+        });
+
+        var remember = document.querySelector('input[name="remember"]');
+        remember.addEventListener('change', function(evt) {
+          menu.rememberSelection = evt.target.checked;
         });
 
         var radios = document.querySelectorAll('input[name="position"]');

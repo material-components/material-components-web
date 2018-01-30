@@ -16,7 +16,6 @@
 
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
-@import "@material/theme/mixins";
 @import "./mixins";
 @import "./variables";
 
@@ -26,11 +25,7 @@
   @include mdc-checkbox-base_;
   @include mdc-ripple-surface;
   @include mdc-states($mdc-checkbox-baseline-theme-color);
-  @include mdc-ripple-radius($mdc-checkbox-ripple-radius);
-
-  @include mdc-theme-dark {
-    @include mdc-checkbox-container-colors($unmarked-stroke-color: $mdc-checkbox-border-color-dark);
-  }
+  @include mdc-ripple-radius-unbounded;
 }
 
 @at-root {
@@ -52,8 +47,8 @@
   @include mdc-checkbox__checkmark_;
 }
 
-.mdc-checkbox__checkmark__path {
-  @include mdc-checkbox__checkmark__path_;
+.mdc-checkbox__checkmark-path {
+  @include mdc-checkbox__checkmark-path_;
 }
 
 .mdc-checkbox__mixedmark {
@@ -64,7 +59,7 @@
 .mdc-checkbox--upgraded {
   .mdc-checkbox__background,
   .mdc-checkbox__checkmark,
-  .mdc-checkbox__checkmark__path,
+  .mdc-checkbox__checkmark-path,
   .mdc-checkbox__mixedmark {
     @include mdc-checkbox__child--upgraded_;
   }
@@ -78,8 +73,8 @@
 .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
   @include mdc-checkbox__background--marked_;
 
-  .mdc-checkbox__checkmark__path {
-    @include mdc-checkbox__checkmark__path--marked_;
+  .mdc-checkbox__checkmark-path {
+    @include mdc-checkbox__checkmark-path--marked_;
   }
 }
 

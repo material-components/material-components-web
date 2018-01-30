@@ -80,6 +80,8 @@ Un-styled Content (**FOUC**).
 
 #### Full Width
 
+Full width text fields are useful for in-depth tasks or entering complex information.
+
 ```html
 <div class="mdc-text-field mdc-text-field--fullwidth">
   <input class="mdc-text-field__input"
@@ -88,6 +90,8 @@ Un-styled Content (**FOUC**).
          aria-label="Full-Width Text Field">
 </div>
 ```
+
+> _NOTE_: Do not use `mdc-text-field--box` or `mdc-text-field--outlined` to style a full width text field.
 
 > _NOTE_: Do not use `mdc-text-field__label` within `mdc-text-field--fullwidth`. Labels should not be
 included as part of the DOM structure of a full width text field.

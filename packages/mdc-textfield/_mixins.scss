@@ -195,14 +195,6 @@
 }
 
 @mixin mdc-text-field-outlined-focused_ {
-  .mdc-text-field__idle-outline {
-    opacity: 0;
-  }
-
-  .mdc-text-field__outline {
-    opacity: 1;
-  }
-
   .mdc-text-field__outline-path {
     stroke-width: 2px;
   }
@@ -210,6 +202,7 @@
 
 @mixin mdc-text-field-outlined-dense_ {
   @include mdc-text-field-label-float_($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+  @include mdc-text-field-label-shake_(outlined-dense);
 
   height: 48px;
 
@@ -219,10 +212,6 @@
 
   .mdc-text-field__label {
     bottom: 18px;
-  }
-
-  .mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-outlined-dense 250ms 1;
   }
 
   .mdc-text-field__icon {
@@ -235,11 +224,10 @@
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-text-field-label-float_($mdc-text-field-outlined-label-position-y);
+  @include mdc-text-field-label-shake_(outlined);
 
   height: 56px;
   border: none;
-
-  // stylelint-disable plugin/selector-bem-pattern
 
   .mdc-text-field__input {
     display: flex;
@@ -250,10 +238,6 @@
     z-index: 1;
   }
 
-  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
-    border: 1px solid;
-  }
-
   .mdc-text-field__label {
     @include mdc-rtl-reflexive-position(left, 16px);
 
@@ -262,26 +246,18 @@
     transition: transform 260ms ease;
   }
 
-  .mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-outlined 250ms 1;
-  }
-
   .mdc-text-field__icon {
     z-index: 2;
+  }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
+    border: 1px solid;
   }
 
   .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
     border: 1px solid $mdc-text-field-outlined-hover-border;
   }
-
-  .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
-    opacity: 0;
-  }
-
-  .mdc-text-field__label--float-above ~ .mdc-text-field__outline {
-    opacity: 1;
-  }
-
   // stylelint-enable plugin/selector-bem-pattern
 }
 
@@ -290,10 +266,11 @@
 @mixin mdc-text-field-box_ {
   @include mdc-ripple-surface;
   @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
   @include mdc-text-field-label-float_($mdc-text-field-box-label-position-y);
+  @include mdc-text-field-label-shake_(box);
 
   display: inline-flex;
   position: relative;
@@ -334,10 +311,6 @@
       @include mdc-theme-prop(color, text-secondary-on-dark);
     }
   }
-
-  .mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-box 250ms 1;
-  }
 }
 
 @mixin mdc-text-field-box-disabled_ {
@@ -350,13 +323,10 @@
 
 @mixin mdc-text-field-box-dense_ {
   @include mdc-text-field-label-float_($mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+  @include mdc-text-field-label-shake_(box-dense);
 
   .mdc-text-field__input {
     padding: 12px 12px 0;
-  }
-
-  .mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-box-dense 250ms 1;
   }
 }
 
@@ -372,18 +342,12 @@
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-text-field-label-float_($mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
-
-  .mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-outlined-leading-icon 250ms 1;
-  }
+  @include mdc-text-field-label-shake_(outlined-leading-icon);
 }
 
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
   @include mdc-text-field-label-float_($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
-
-  .mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-outlined-leading-icon-dense 250ms 1;
-  }
+  @include mdc-text-field-label-shake_(outlined-leading-icon-dense);
 }
 
 @mixin mdc-text-field-with-trailing-icon_ {
@@ -398,6 +362,10 @@
 
 @mixin mdc-text-field-full-width_ {
   width: 100%;
+
+  .mdc-text-field__input {
+    resize: vertical;
+  }
 
   &:not(.mdc-text-field--textarea) {
     display: block;
@@ -416,10 +384,6 @@
       // Use !important here to override all other border treatments
       border: none !important;
     }
-  }
-
-  .mdc-text-field__input {
-    resize: vertical;
   }
 
   @include mdc-theme-dark {
@@ -457,6 +421,7 @@
   // Translate above the top of the input, and compensate for the amount of offset needed
   // to position the label within the bounds of the inset padding.
   @include mdc-text-field-label-float_($mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);
+  @include mdc-text-field-label-shake_(textarea);
 
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
@@ -473,7 +438,6 @@
     border-color: $mdc-textarea-border-on-dark;
   }
 
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input {
     margin: 0;
     padding: $padding-inset;
@@ -495,12 +459,6 @@
       background-color: $mdc-textarea-dark-background;
     }
   }
-
-  .mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-textarea 250ms 1;
-  }
-
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 // Customization
