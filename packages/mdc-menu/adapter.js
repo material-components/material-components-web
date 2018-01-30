@@ -141,6 +141,31 @@ class MDCMenuAdapter {
 
   /** @param {string} height */
   setMaxHeight(height) {}
+
+  /**
+   * @param {number} index
+   * @param {string} attr
+   * @param {string} value
+   */
+  setAttrForOptionAtIndex(index, attr, value) {}
+
+  /**
+   * @param {number} index
+   * @param {string} attr
+   */
+  rmAttrForOptionAtIndex(index, attr) {}
+
+  /**
+   * @param {number} index
+   * @param {string} className
+   */
+  addClassForOptionAtIndex(index, className) {}
+
+  /**
+   * @param {number} index
+   * @param {string} className
+   */
+  rmClassForOptionAtIndex(index, className) {}
 }
 
 export {MDCMenuAdapter};
