@@ -206,7 +206,8 @@
             <label for="tf-box" class="mdc-text-field__label">Your Name</label>
             <div class="mdc-text-field__bottom-line"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+            id="box-text-field-helper-text">
             Helper Text (possibly validation message)
           </p>
         </div>
@@ -228,7 +229,7 @@
         </div>
         <div>
           <input id="box-required" type="checkbox">
-          <label for="box-required">Required</label>
+          <label for="box-required">Required and must be at least 8 characters</label></label>
         </div>
         <div>
           <input id="box-use-helper-text" type="checkbox">
@@ -240,11 +241,10 @@
         </div>
         <script>
           demoReady(function() {
-            var section = document.getElementById('text-field-box-example');
             var tfEl = document.getElementById('tf-box-example');
             var tf = new mdc.textField.MDCTextField(tfEl);
             var wrapper = document.getElementById('demo-tf-box-wrapper');
-            var helperText = section.querySelector('.mdc-text-field-helper-text');
+            var helperText = document.getElementById('box-text-field-helper-text');
 
             document.getElementById('box-disable').addEventListener('change', function(evt) {
               tf.disabled = evt.target.checked;
