@@ -50,18 +50,10 @@ $mdc-tab-bar-scroller-indicator-width: 48px;
     cursor: pointer;
     visibility: hidden;
 
-    @include mdc-theme-prop(color, text-secondary-on-light);
-
-    @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
+    @include mdc-theme-prop(color, text-secondary-on-background);
 
     &:hover {
-      @include mdc-theme-prop(color, text-primary-on-light);
-
-      @include mdc-theme-dark(".mdc-tab-bar") {
-        @include mdc-theme-prop(color, text-primary-on-dark);
-      }
+      @include mdc-theme-prop(color, text-primary-on-background);
     }
 
     &__inner {
@@ -80,10 +72,6 @@ $mdc-tab-bar-scroller-indicator-width: 48px;
 
     &__inner:hover {
       color: inherit;
-
-      @include mdc-theme-dark(".mdc-tab-bar") {
-        @include mdc-theme-prop(color, text-secondary-on-dark);
-      }
     }
   }
 

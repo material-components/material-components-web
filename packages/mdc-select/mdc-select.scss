@@ -70,7 +70,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     @include mdc-typography(subheading2);
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding, ".mdc-select");
     @include mdc-ripple-surface;
-    @include mdc-ripple-radius;
+    @include mdc-ripple-radius-bounded;
     @include mdc-states;
 
     &::-ms-expand {
