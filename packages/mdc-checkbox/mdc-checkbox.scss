@@ -16,7 +16,6 @@
 
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
-@import "@material/theme/mixins";
 @import "./mixins";
 @import "./variables";
 
@@ -27,10 +26,6 @@
   @include mdc-ripple-surface;
   @include mdc-states($mdc-checkbox-baseline-theme-color);
   @include mdc-ripple-radius-unbounded;
-
-  @include mdc-theme-dark {
-    @include mdc-checkbox-container-colors($unmarked-stroke-color: $mdc-checkbox-border-color-dark);
-  }
 }
 
 @at-root {
