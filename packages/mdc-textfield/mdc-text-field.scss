@@ -22,7 +22,6 @@
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
-@import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 @import "./bottom-line/mdc-text-field-bottom-line";
@@ -34,14 +33,14 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-underline-on-light-idle);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-on-light);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-underline-idle);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-hover);
   @include mdc-text-field-focused-bottom-line-color(primary);
-  @include mdc-text-field-ink-color(text-primary-on-light);
-  @include mdc-text-field-label-color($mdc-text-field-light-label);
-  @include mdc-text-field-helper-text-color(text-hint-on-light);
-  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider-on-light);
-  @include mdc-text-field-icon-color($mdc-text-field-underline-on-light);
+  @include mdc-text-field-ink-color(text-primary-on-background);
+  @include mdc-text-field-label-color($mdc-text-field-label);
+  @include mdc-text-field-helper-text-color(text-hint-on-background);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider);
+  @include mdc-text-field-icon-color($mdc-text-field-underline-hover);
 
   display: inline-block;
   position: relative;
@@ -82,22 +81,6 @@
   // Remove red outline on firefox
   &:invalid {
     box-shadow: none;
-  }
-
-  @include mdc-theme-dark {
-    border-bottom: 1px solid $mdc-text-field-underline-on-dark-idle;
-
-    &:hover {
-      border-bottom: 1px solid;
-    }
-
-    &::placeholder {
-      @include mdc-theme-prop(color, text-hint-on-dark);
-    }
-
-    &:focus::placeholder {
-      @include mdc-theme-prop(color, $mdc-text-field-dark-placeholder);
-    }
   }
 
   // Move label when text-field gets autofilled in Chrome
