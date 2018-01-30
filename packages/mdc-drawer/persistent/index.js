@@ -67,7 +67,7 @@ export class MDCPersistentDrawer extends MDCComponent {
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       getDrawerWidth: () => this.drawer.offsetWidth,
       setTranslateX: (value) => this.drawer.style.setProperty(
-        util.getTransformPropertyName(), value === null ? null : `translateX(${value}px)`),
+        util.getTransformPropertyName(), value === null ? null : `translateX(${value + 20}px)`),
       getFocusableElements: () => this.drawer.querySelectorAll(FOCUSABLE_ELEMENTS),
       saveElementTabState: (el) => util.saveElementTabState(el),
       restoreElementTabState: (el) => util.restoreElementTabState(el),

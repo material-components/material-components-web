@@ -32,7 +32,6 @@ $mdc-persistent-drawer-width: 240px;
   .mdc-drawer__drawer {
     @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
     @include mdc-rtl-reflexive-position(left, 0);
-
     @include mdc-slideable-drawer;
 
     display: inline-flex;
@@ -59,13 +58,6 @@ $mdc-persistent-drawer-width: 240px;
 
     .mdc-drawer__drawer {
       @include mdc-slideable-drawer-open;
-    }
-
-    // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
-    @include mdc-rtl {
-      .mdc-drawer__drawer {
-        @include mdc-slideable-drawer-open;
-      }
     }
   }
 }

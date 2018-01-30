@@ -16,18 +16,24 @@
 
 @import "@material/rtl/mixins";
 
+$mdc-slidable-drawer-offscreen-margin: 20px;
+
 @mixin mdc-slideable-drawer {
+  @include mdc-rtl-reflexive-box(margin, left, -$mdc-slidable-drawer-offscreen-margin);
+
   height: 100%;
-  transform: translateX(-107%);
-  transform: translateX(calc(-100% - 20px));
+  transform: translateX(-100%);
   will-change: transform;
 
   @include mdc-rtl {
-    transform: translateX(107%);
-    transform: translateX(calc(100% + 20px));
+    transform: translateX(100%);
   }
 }
 
 @mixin mdc-slideable-drawer-open {
-  transform: none;
+  transform: translateX($mdc-slidable-drawer-offscreen-margin);
+
+  @include mdc-rtl {
+    transform: translateX(-$mdc-slidable-drawer-offscreen-margin);
+  }
 }
