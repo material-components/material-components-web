@@ -47,7 +47,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
   @include mdc-elevation(6);
 
   display: inline-flex;
