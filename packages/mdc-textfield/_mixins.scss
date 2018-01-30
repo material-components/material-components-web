@@ -213,14 +213,6 @@
 }
 
 @mixin mdc-text-field-outlined-focused_ {
-  .mdc-text-field__idle-outline {
-    opacity: 0;
-  }
-
-  .mdc-text-field__outline {
-    opacity: 1;
-  }
-
   .mdc-text-field__outline-path {
     stroke-width: 2px;
   }
@@ -255,8 +247,6 @@
   height: 56px;
   border: none;
 
-  // stylelint-disable plugin/selector-bem-pattern
-
   .mdc-text-field__input {
     display: flex;
     height: 30px;
@@ -278,10 +268,7 @@
     z-index: 2;
   }
 
-  .mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
-    opacity: 0;
-  }
-
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input:hover ~ .mdc-text-field__idle-outline {
     border: 1px solid;
   }
@@ -289,11 +276,6 @@
   .mdc-text-field__icon:hover ~ .mdc-text-field__idle-outline {
     border: 1px solid $mdc-text-field-outlined-hover-border;
   }
-
-  .mdc-text-field__label--float-above ~ .mdc-text-field__outline {
-    opacity: 1;
-  }
-
   // stylelint-enable plugin/selector-bem-pattern
 }
 
