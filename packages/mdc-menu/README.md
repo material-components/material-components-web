@@ -141,7 +141,7 @@ CSS Class | Description
   menu.setAnchorCorner(Corner.BOTTOM_END); 
   
   // Turn off menu open animations
-  menu.showOpenAnimation = false;
+  menu.quickOpen = false;
 ```
 
 ### `MDCMenu`
