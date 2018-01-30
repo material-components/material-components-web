@@ -43,7 +43,7 @@
       <div class="mdc-toolbar-fixed-adjust"></div>
 
       <section class="hero">
-        <div class="mdc-card demo-card">
+        <div class="mdc-card mdc-card--with-primary-action demo-card">
           <a class="mdc-card__primary-action" href="#">
             <div class="mdc-card__media mdc-card__media--16-9 demo-card__media demo-card__media--16-9"></div>
             <div class="demo-card__primary">
@@ -143,7 +143,7 @@
           </div>
         </div>
 
-        <div class="mdc-card demo-card demo-card--photo">
+        <div class="mdc-card mdc-card--with-primary-action demo-card demo-card--photo">
           <a class="mdc-card__primary-action demo-card__primary-action" href="#">
             <div class="mdc-card__media mdc-card__media--square demo-card__media">
               <div class="mdc-card__media-content demo-card__media-content--with-title">
@@ -182,7 +182,7 @@
           </div>
         </div>
 
-        <div class="mdc-card demo-card demo-card--music">
+        <div class="mdc-card mdc-card--with-primary-action demo-card demo-card--music">
           <a class="mdc-card__primary-action demo-card__primary-action" href="#">
             <div class="demo-card__music-row">
               <div class="mdc-card__media mdc-card__media--square demo-card__media demo-card__media--music"></div>
@@ -263,8 +263,22 @@
           mdc.ripple.MDCRipple.attachTo(surface);
         });
 
-        [].forEach.call(document.querySelectorAll('.mdc-card__primary-action'), function(el) {
-          mdc.ripple.MDCRipple.attachTo(el);
+        [].forEach.call(document.querySelectorAll('.mdc-card__primary-action'), function(primaryActionEl) {
+//          mdc.ripple.MDCRipple.attachTo(primaryActionEl);
+
+          var cardEl = primaryActionEl.closest('.mdc-card');
+          const adapter = Object.assign(mdc.ripple.MDCRipple.createAdapter({
+            unbounded: false,
+            disabled: false,
+            root_: cardEl,
+          }), {
+            isUnbounded: () => false,
+            isSurfaceActive: () => primaryActionEl.matches(':active'),
+            registerInteractionHandler: (type, handler) => primaryActionEl.addEventListener(type, handler),
+            deregisterInteractionHandler: (type, handler) => primaryActionEl.removeEventListener(type, handler),
+          });
+          const foundation = new mdc.ripple.MDCRippleFoundation(adapter);
+          return new mdc.ripple.MDCRipple(cardEl, foundation);
         });
       });
     </script>

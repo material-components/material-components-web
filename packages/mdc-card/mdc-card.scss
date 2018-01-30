@@ -21,6 +21,31 @@
 @import "@material/rtl/mixins";
 @import "./mixins";
 
+@mixin mdc-card-common-states_($color) {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius;
+  @include mdc-states-base-color(mdc-theme-prop-value($color));
+
+  position: relative;
+  outline: none;
+  overflow: hidden;
+}
+
+@mixin mdc-card-surface-states_($color) {
+  $opacity-map: mdc-states-opacities_($color);
+
+  @include mdc-card-common-states_($color);
+  @include mdc-states-focus-opacity(map-get($opacity-map, "focus"), $has-nested-focusable-element: true);
+  @include mdc-states-press-opacity(map-get($opacity-map, "press"));
+}
+
+@mixin mdc-card-primary-action-states_($color) {
+  $opacity-map: mdc-states-opacities_($color);
+
+  @include mdc-card-common-states_($color);
+  @include mdc-states-hover-opacity(map-get($opacity-map, "hover"));
+}
+
 // postcss-bem-linter: define card
 
 .mdc-card {
@@ -39,6 +64,10 @@
 
   @include mdc-elevation(0);
   @include mdc-card-stroke($stroke-color);
+}
+
+.mdc-card--with-primary-action {
+  @include mdc-card-surface-states_(text-primary-on-background);
 }
 
 //
@@ -88,15 +117,11 @@
 //
 
 .mdc-card__primary-action {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
-  @include mdc-states;
+  @include mdc-card-primary-action-states_(text-primary-on-background);
 
   box-sizing: border-box;
-  outline: 0 none;
   color: inherit;
   text-decoration: none;
-  overflow: hidden;
 }
 
 .mdc-card__primary-action:first-child {
