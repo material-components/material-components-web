@@ -91,7 +91,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
     'deregisterBodyClickHandler', 'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus',
     'restoreFocus', 'isFocused', 'focus', 'getFocusedItemIndex', 'focusItemAtIndex', 'isRtl', 'setTransformOrigin',
-    'setPosition', 'setMaxHeight',
+    'setPosition', 'setMaxHeight', 'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex',
+    'addClassForOptionAtIndex', 'rmClassForOptionAtIndex',
   ]);
 });
 
@@ -433,6 +434,28 @@ testFoundation('#open anchors the menu to the bottom left in RTL when close to t
     td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
   });
 
+testFoundation('opening menu should automatically select the last selected item if rememberSelection is true',
+  ({foundation, mockAdapter, mockRaf}) => {
+    const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+    const clock = lolex.install();
+    const target = {};
+    const expectedIndex = 2;
+    td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+    td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+    foundation.init();
+    foundation.setRememberSelection(true);
+    handlers.click({target});
+
+    clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+    foundation.open();
+    mockRaf.flush();
+
+    td.verify(mockAdapter.focusItemAtIndex(expectedIndex), {times: 1});
+
+    clock.uninstall();
+  });
+
 testFoundation('#close does nothing if event target has aria-disabled set to true',
   ({foundation, mockAdapter}) => {
     const mockEvt = {
@@ -594,9 +617,11 @@ test('on ctrl+spacebar keyup does nothing', () => {
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const target = {};
   const expectedIndex = 2;
+  const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
 
   foundation.init();
+  handlers.keydown({target, key: 'Space', ctrlKey: true, preventDefault});
   handlers.keyup({target, key: 'Space', ctrlKey: true});
   td.verify(mockAdapter.notifySelected({index: expectedIndex}), {times: 0});
 });
@@ -607,9 +632,11 @@ test('on spacebar keyup notifies user of selection after allowing time for selec
   const clock = lolex.install();
   const target = {};
   const expectedIndex = 2;
+  const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
 
   foundation.init();
+  handlers.keydown({target, key: 'Space', preventDefault});
   handlers.keyup({target, key: 'Space'});
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 
@@ -625,9 +652,11 @@ test('on spacebar keyup closes the menu', () => {
   const clock = lolex.install();
   const raf = createMockRaf();
   const target = {};
+  const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
 
   foundation.init();
+  handlers.keydown({target, key: 'Space', preventDefault});
   handlers.keyup({target, key: 'Space'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
@@ -642,9 +671,11 @@ test('on spacebar keyup does not trigger selected if non menu item clicked', () 
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
   const target = {};
+  const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(-1);
 
   foundation.init();
+  handlers.keydown({target, key: 'Space', preventDefault});
   handlers.keyup({target, key: 'Space'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
@@ -657,10 +688,13 @@ test('on spacebar keyup does not trigger selected if selection is already queued
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
   const target = {};
+  const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0, 1);
 
   foundation.init();
+  handlers.keydown({target, key: 'Space', preventDefault});
   handlers.keyup({target, key: 'Space'});
+  handlers.keydown({target, key: 'Space', preventDefault});
   handlers.keyup({target, key: 'Space'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
@@ -673,9 +707,11 @@ test('on spacebar keyup does works if DOM3 keyboard events are not supported', (
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
   const target = {};
+  const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
 
   foundation.init();
+  handlers.keydown({target, keyCode: 32, preventDefault});
   handlers.keyup({target, keyCode: 32});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   td.verify(mockAdapter.notifySelected({index: 0}));
@@ -692,6 +728,7 @@ test('on enter keyup notifies user of selection after allowing time for selectio
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
 
   foundation.init();
+  handlers.keydown({target, key: 'Enter'});
   handlers.keyup({target, key: 'Enter'});
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 
@@ -710,6 +747,7 @@ test('on enter keyup closes the menu', () => {
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
 
   foundation.init();
+  handlers.keydown({target, key: 'Enter'});
   handlers.keyup({target, key: 'Enter'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
@@ -727,6 +765,7 @@ test('on enter keyup does not trigger selected if non menu item clicked', () => 
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(-1);
 
   foundation.init();
+  handlers.keydown({target, key: 'Enter'});
   handlers.keyup({target, key: 'Enter'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
@@ -742,7 +781,9 @@ test('on enter keyup does not trigger selected if selection is already queued up
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0, 1);
 
   foundation.init();
+  handlers.keydown({target, key: 'Enter'});
   handlers.keyup({target, key: 'Enter'});
+  handlers.keydown({target, key: 'Enter'});
   handlers.keyup({target, key: 'Enter'});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
@@ -758,6 +799,7 @@ test('on enter keyup does works if DOM3 keyboard events are not supported', () =
   td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(0);
 
   foundation.init();
+  handlers.keydown({target, keyCode: 13});
   handlers.keyup({target, keyCode: 13});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   td.verify(mockAdapter.notifySelected({index: 0}));
@@ -982,6 +1024,7 @@ test('on spacebar keydown prevents default on the event', () => {
 
   foundation.init();
   handlers.keydown({target, key: 'Space', preventDefault});
+  handlers.keyup({target, key: 'Space', preventDefault});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
   td.verify(preventDefault());
@@ -1056,3 +1099,134 @@ testFoundation('should cancel animation after destroy', ({foundation, mockAdapte
     {times: 0}
   );
 });
+
+test('should remember selected elements between menu openings', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+  foundation.init();
+  foundation.setRememberSelection(true);
+  handlers.click({target});
+
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  td.verify(mockAdapter.addClassForOptionAtIndex(expectedIndex, td.matchers.anything()),
+    {times: 1});
+
+  clock.uninstall();
+});
+
+test('should not remember selected elements between menu openings', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+  foundation.init();
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  td.verify(mockAdapter.addClassForOptionAtIndex(expectedIndex, td.matchers.anything()),
+    {times: 0});
+
+  clock.uninstall();
+});
+
+test('should remove previously selected elements when new elements are selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+  foundation.init();
+  foundation.setRememberSelection(true);
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex - 1);
+
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  td.verify(mockAdapter.rmClassForOptionAtIndex(expectedIndex, td.matchers.anything()),
+    {times: 1});
+
+  clock.uninstall();
+});
+
+test('should do nothing when the same item is selected twice in a row', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+  foundation.init();
+  foundation.setRememberSelection(true);
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+
+  handlers.click({target});
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  td.verify(mockAdapter.rmClassForOptionAtIndex(expectedIndex, td.matchers.anything()),
+    {times: 0});
+  td.verify(mockAdapter.addClassForOptionAtIndex(expectedIndex, td.matchers.anything()),
+    {times: 1});
+
+  clock.uninstall();
+});
+
+test('getSelectedIndex should return the last selected index', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+  foundation.init();
+  foundation.setRememberSelection(true);
+  handlers.click({target});
+
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  assert.isOk(foundation.getSelectedIndex() === expectedIndex);
+  clock.uninstall();
+});
+
+test('getSelectedValue should return the last selected item', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const clock = lolex.install();
+  const target = {};
+  const expectedIndex = 2;
+  td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
+  td.when(mockAdapter.getNumberOfItems()).thenReturn(3);
+
+  foundation.init();
+  foundation.setRememberSelection(true);
+  handlers.click({target});
+
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+
+  assert.isTrue(foundation.getSelectedIndex() === expectedIndex);
+  clock.uninstall();
+});
+
