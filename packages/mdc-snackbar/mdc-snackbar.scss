@@ -37,10 +37,6 @@
   pointer-events: none;
   will-change: transform;
 
-  @include mdc-theme-dark(".mdc-snackbar") {
-    background-color: $mdc-snackbar-background-color-on-dark;
-  }
-
   @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
     left: 0;
     width: 100%;
@@ -106,10 +102,6 @@
   opacity: 0;
   color: $mdc-snackbar-foreground-color;
 
-  @include mdc-theme-dark(".mdc-snackbar") {
-    @include mdc-theme-prop(color, text-primary-on-light);
-  }
-
   @media (min-width: $mdc-snackbar-tablet-breakpoint) {
     @include mdc-rtl-reflexive-property(padding, 0, 24px);
   }
@@ -135,10 +127,6 @@
 .mdc-snackbar__action-button {
   @include mdc-typography(button);
   @include mdc-theme-prop(color, secondary);
-
-  @include mdc-theme-dark(".mdc-snackbar") {
-    @include mdc-theme-prop(color, primary);
-  }
 
   padding: 0;
   transition: mdc-animation-exit-permanent(opacity, .3s);
