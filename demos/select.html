@@ -26,10 +26,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      .mdc-theme--dark {
-        background-color: #303030;
-      }
-
       #demo-wrapper {
         padding: 4px;
         padding-left: 0;
@@ -126,10 +122,6 @@
         </section>
         <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
         <div>
-          <input type="checkbox" id="dark-theme">
-          <label for="dark-theme">Dark Theme</label>
-        </div>
-        <div>
           <input type="checkbox" id="rtl">
           <label for="rtl">RTL</label>
         </div>
@@ -140,32 +132,6 @@
         <div>
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
-        </div>
-      </section>
-
-      <section class="example">
-        <h2 class="mdc-typography--title">CSS Only</h2>
-        <section class="box-demo-wrapper">
-          <div id="demo-css-only-select" class="mdc-select">
-            <select class="mdc-select__surface">
-              <option value="" selected>Pick a food group</option>
-              <option value="grains">Bread, Cereal, Rice, and Pasta</option>
-              <option value="vegetables" disabled>Vegetables</option>
-              <option value="fruit">Fruit</option>
-              <option value="dairy">Milk, Yogurt, and Cheese</option>
-              <option value="meat">Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts</option>
-              <option value="fats">Fats, Oils, and Sweets</option>
-            </select>
-            <div class="mdc-select__bottom-line"></div>
-          </div>
-        </section>
-        <div>
-          <input type="checkbox" id="css-alternate-colors">
-          <label for="css-alternate-colors">Alternate Colors</label>
-        </div>
-        <div>
-          <input type="checkbox" id="css-disabled">
-          <label for="css-disabled">Disabled</label>
         </div>
       </section>
     </main>
@@ -187,19 +153,10 @@
         });
 
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');
-        var darkThemeCb = document.getElementById('dark-theme');
         var rtlCb = document.getElementById('rtl');
         var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
 
-        // CSS
-        var selectCss = document.getElementById('demo-css-only-select');
-        var cssAlternateColors = document.getElementById('css-alternate-colors');
-        var cssDisabled = document.getElementById('css-disabled');
-
-        darkThemeCb.addEventListener('change', function() {
-          boxDemoWrapper.classList[darkThemeCb.checked ? 'add' : 'remove']('mdc-theme--dark');
-        });
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
             boxDemoWrapper.setAttribute('dir', 'rtl');
@@ -212,13 +169,6 @@
         });
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
-        });
-
-        cssAlternateColors.addEventListener('change', function() {
-          selectCss.classList[cssAlternateColors.checked ? 'add' : 'remove']('demo-select-custom-colors');
-        });
-        cssDisabled.addEventListener('change', function() {
-          cssDisabled.checked ? selectCss.setAttribute('disabled', 'disabled') : selectCss.removeAttribute('disabled');
         });
       });
     </script>

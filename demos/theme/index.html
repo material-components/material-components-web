@@ -360,46 +360,35 @@
 
         <div class="demo-card-wrapper">
           <div class="mdc-card">
-            <section class="mdc-card__primary">
-              <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-              <h3 class="mdc-card__subtitle">Subtitle here</h3>
-            </section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div class="demo-card-wrapper">
-          <div class="mdc-card demo-card--with-avatar">
-            <section class="mdc-card__primary">
-              <div class="demo-card__avatar"></div>
-              <h1 class="mdc-card__title">Title</h1>
-              <h3 class="mdc-card__subtitle">Subhead</h3>
-            </section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div class="demo-card-wrapper">
-          <div class="mdc-card demo-card--small">
-            <section class="mdc-card__media">
-              <h1 class="mdc-card__title mdc-card__title--large">Title</h1>
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-            </section>
+            <div class="mdc-card__media mdc-card__media--16-9 demo-card__media"></div>
+            <div class="mdc-card__actions">
+              <div class="mdc-card__action-buttons">
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
+              </div>
+              <div class="mdc-card__action-icons">
+                <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+                   tabindex="0"
+                   role="button"
+                   aria-pressed="false"
+                   aria-label="Add to favorites"
+                   title="Add to favorites"
+                   data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+                   data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+                  favorite_border
+                </i>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="Share">share</i>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="More options">more_vert</i>
+              </div>
+            </div>
           </div>
         </div>
       </section>

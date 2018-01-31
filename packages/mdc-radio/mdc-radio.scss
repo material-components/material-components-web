@@ -34,7 +34,7 @@
   @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius($mdc-radio-ripple-radius);
+  @include mdc-ripple-radius-unbounded;
   @include mdc-states($mdc-radio-baseline-theme-color);
 
   display: inline-block;
@@ -46,14 +46,6 @@
   padding: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;
   cursor: pointer;
   will-change: opacity, transform, border-color, background-color, color;
-
-  // stylelint-disable plugin/selector-bem-pattern
-  &.mdc-ripple-upgraded {
-    .mdc-radio__background::before {
-      content: none;
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 
   // Container for radio circles and ripple.
   &__background {
@@ -116,6 +108,14 @@
     cursor: inherit;
     z-index: 1;
   }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  &.mdc-ripple-upgraded {
+    .mdc-radio__background::before {
+      content: none;
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-radio__native-control:checked,

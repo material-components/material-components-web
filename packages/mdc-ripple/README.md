@@ -46,13 +46,17 @@ CSS Class | Description
 
 ### Sass Mixins
 
-In order to fully style the ripple effect for different states (hover/focus/pressed), both `mdc-ripple` mixins, as well as either the basic or advanced `mdc-states` mixins must be included.
+In order to fully style the ripple effect for different states (hover/focus/pressed), the following mixins must be included:
+
+* `mdc-ripple-surface`, for base styles
+* Either `mdc-ripple-radius-bounded` or `mdc-ripple-radius-unbounded`, to appropriately size the ripple on the surface
+* Either the basic or advanced `mdc-states` mixins, as explained below
 
 ##### Using basic states mixins
 ```css
 .my-surface {
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
   @include mdc-states;
 }
 ```
@@ -61,7 +65,7 @@ In order to fully style the ripple effect for different states (hover/focus/pres
 ```css
 .my-surface {
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
   @include mdc-states-base-color(black);
   @include mdc-states-hover-opacity(.1);
   @include mdc-states-focus-opacity(.3);
@@ -76,7 +80,10 @@ These APIs use pseudo-elements for the ripple effect: `::before` for the backgro
 Mixin | Description
 --- | ---
 `mdc-ripple-surface` | Mandatory. Adds base styles for a ripple surface
-`mdc-ripple-radius($radius)` | Mandatory. Adds styles for the radius of the ripple effect,<br>for both bounded and unbounded ripples
+`mdc-ripple-radius-bounded($radius)` | Adds styles for the radius of the ripple effect,<br>for bounded ripple surfaces
+`mdc-ripple-radius-unbounded($radius)` | Adds styles for the radius of the ripple effect,<br>for unbounded ripple surfaces
+
+> _NOTE_: It is mandatory to include _either_ `mdc-ripple-radius-bounded` or `mdc-ripple-radius-unbounded`. In both cases, `$radius` is optional and defaults to `100%`.
 
 #### Basic States Mixins
 
@@ -156,7 +163,7 @@ Method Signature | Description
 | `computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface |
 | `getWindowPageOffset() => {x: number, y: number}` | Returns the `page{X,Y}Offset` values for the window object |
 
-> _NOTE_: When implementing `browserSupportsCssVars`, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you. 
+> _NOTE_: When implementing `browserSupportsCssVars`, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you.
 
 ### `MDCRippleFoundation`
 
@@ -223,7 +230,7 @@ class MyMDCComponent extends MDCComponent {
 
 ### Handling keyboard events for custom UI components
 
-Different keyboard events activate different elements. For example, the space key activates buttons, while the enter key activates links. 
+Different keyboard events activate different elements. For example, the space key activates buttons, while the enter key activates links.
 
 `MDCRipple` uses the `adapter.isSurfaceActive()` method to detect whether or not a keyboard event has activated the surface the ripple is on. Our vanilla implementation of the adapter does this by checking whether the `:active` pseudo-class has been applied to the ripple surface. However, this approach will _not_ work for custom components that the browser does not apply this pseudo-class to.
 

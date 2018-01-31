@@ -275,8 +275,7 @@ use to build a custom MDCSlider component for their framework.
 
 ### Theming
 
-By default, all thematic elements of sliders make use of the **secondary theme color**, including when the
-component is used within a dark mode context.
+By default, all thematic elements of sliders make use of the **secondary theme color**.
 
 #### Sass Mixins
 
@@ -317,17 +316,6 @@ the color specified:
   --mdc-slider-bg-color-behind-component: #fafafa;
 }
 ```
-
-If you need to accomplish this in a browser which does not support custom properties (IE11 and
-older versions of Edge), you can override the Sass variables `$mdc-slider-default-assumed-bg-color`.
-
-```scss
-$mdc-slider-default-assumed-bg-color: #fafafa;
-
-@import "@material/slider/mdc-slider";
-```
-
-If you're using the `.mdc-theme--dark` classes, you'll want to override `$mdc-slider-dark-theme-assumed-bg-color` instead.
 
 ### Tips/Tricks
 
