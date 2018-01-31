@@ -119,11 +119,12 @@ testFoundation('#open adds the animation class to start an animation',
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 1});
   });
 
-testFoundation('#open does not add the animation class to start an animation when quickOpen is false',
+testFoundation('#open does not add the animation class to start an animation when setQuickOpen is false',
   ({foundation, mockAdapter}) => {
-    foundation.quickOpen(true);
+    foundation.setQuickOpen(true);
     foundation.open();
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 0});
+    td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN), {times: 0});
   });
 
 testFoundation('#open adds the open class to the menu', ({foundation, mockAdapter, mockRaf}) => {
@@ -481,6 +482,13 @@ testFoundation('#close does nothing if event target has aria-disabled set to tru
 testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter}) => {
   foundation.close();
   td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
+});
+
+testFoundation('#close does not add animation class if quickOpen is set to true', ({foundation, mockAdapter}) => {
+  foundation.setQuickOpen(true);
+  foundation.close();
+  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED), {times: 0});
 });
 
 testFoundation('#close removes the open class from the menu', ({foundation, mockAdapter, mockRaf}) => {

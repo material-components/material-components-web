@@ -128,7 +128,7 @@ class MDCMenu extends MDCComponent {
 
   /** @param {boolean} quickOpen */
   set quickOpen(quickOpen) {
-    this.foundation_.quickOpen(quickOpen);
+    this.foundation_.setQuickOpen(quickOpen);
   }
 
   /** @return {!MDCMenuFoundation} */

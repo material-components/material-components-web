@@ -99,7 +99,7 @@ test('rememberSelection', () => {
   // The method sets private variable on the foundation, nothing to verify.
 });
 
-test('quickOpen', () => {
+test('setQuickOpen', () => {
   const {component} = setupTest();
   component.quickOpen = false;
   // The method sets private variable on the foundation, nothing to verify.

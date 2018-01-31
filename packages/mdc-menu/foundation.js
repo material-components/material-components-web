@@ -211,7 +211,7 @@ class MDCMenuFoundation extends MDCFoundation {
   }
 
   /** @param {boolean} quickOpen */
-  quickOpen(quickOpen) {
+  setQuickOpen(quickOpen) {
     this.quickOpen_ = quickOpen;
   }
 
@@ -573,10 +573,12 @@ class MDCMenuFoundation extends MDCFoundation {
       this.adapter_.addClass(MDCMenuFoundation.cssClasses.OPEN);
       this.focusOnOpen_(focusIndex);
       this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
-      this.openAnimationEndTimerId_ = setTimeout(() => {
-        this.openAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
-      }, numbers.TRANSITION_OPEN_DURATION);
+      if (!this.quickOpen_) {
+        this.openAnimationEndTimerId_ = setTimeout(() => {
+          this.openAnimationEndTimerId_ = 0;
+          this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
+        }, numbers.TRANSITION_OPEN_DURATION);
+      }
     });
     this.isOpen_ = true;
   }
@@ -602,10 +604,12 @@ class MDCMenuFoundation extends MDCFoundation {
 
     requestAnimationFrame(() => {
       this.adapter_.removeClass(MDCMenuFoundation.cssClasses.OPEN);
-      this.closeAnimationEndTimerId_ = setTimeout(() => {
-        this.closeAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
-      }, numbers.TRANSITION_CLOSE_DURATION);
+      if (!this.quickOpen_) {
+        this.closeAnimationEndTimerId_ = setTimeout(() => {
+          this.closeAnimationEndTimerId_ = 0;
+          this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
+        }, numbers.TRANSITION_CLOSE_DURATION);
+      }
     });
     this.isOpen_ = false;
     this.adapter_.restoreFocus();
