@@ -50,7 +50,7 @@ CSS Class | Description
 
 `activate() => void` | Proxies to the foundations `activate()` method.
 `deactivate() => void` |  Proxies to the foundations `deactivate()` method.
-`setTransformOrigin(evt: Event) => void` | Proxies to the foundations `setTransformOrigin(evt: Event)` method.
+`setRippleCenter(evt: Event) => void` | Proxies to the foundations `setRippleCenter(evt: Event)` method.
 
 ### `MDCLineRippleAdapter`
 
@@ -61,7 +61,6 @@ Method Signature | Description
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the root element
 `registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element for a given event
 `deregisterEventHandler(handler: EventListener) => void` | Deregisters an event listener on the root element for a given event
-`notifyAnimationEnd() => void` | Emits a custom event "MDCLineRipple:animation-end" denoting the line ripple has finished its animation; either the activate or deactivate animation
 
 ### `MDCLineRippleFoundation`
 
@@ -69,5 +68,5 @@ Method Signature | Description
 --- | ---
 `activate() => void` | Activates the line ripple
 `deactivate() => void` |  Deactivates the line ripple
-`setTransformOrigin(evt: Event) => void` | Sets the transform origin given a user's click location
+`setRippleCenter(evt: Event) => void` | Sets the transform origin given a user's click location
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event

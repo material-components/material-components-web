@@ -66,13 +66,6 @@ class MDCLineRippleAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterEventHandler(evtType, handler) {}
-
-  /**
-   * Emits a custom event "MDCLineRipple:animation-end" denoting the
-   * line ripple has finished its animation; either the activate or
-   * deactivate animation
-   */
-  notifyAnimationEnd() {}
 }
 
 export default MDCLineRippleAdapter;

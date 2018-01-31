@@ -56,7 +56,7 @@ class FakeLineRipple {
     this.destroy = td.func('.destroy');
     this.activate = td.func('lineRipple.activate');
     this.deactivate = td.func('lineRipple.deactivate');
-    this.setTransformOrigin = td.func('lineRipple.setTransformOrigin');
+    this.setRippleCenter = td.func('lineRipple.setRippleCenter');
   }
 }
 
@@ -385,10 +385,10 @@ test('#adapter.deactivateLineRipple calls the deactivate method on the line ripp
   td.verify(lineRipple.deactivate());
 });
 
-test('#adapter.setLineRippleTransformOrigin calls the setTransformOrigin method on the line ripple', () => {
+test('#adapter.setLineRippleTransformOrigin calls the setRippleCenter method on the line ripple', () => {
   const {component, lineRipple} = setupTest();
   component.getDefaultFoundation().adapter_.setLineRippleTransformOrigin(100);
-  td.verify(lineRipple.setTransformOrigin(100));
+  td.verify(lineRipple.setRippleCenter(100));
 });
 
 function setupMockFoundationTest(root = getFixture()) {

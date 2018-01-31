@@ -52,8 +52,8 @@ class MDCLineRipple extends MDCComponent {
    * x-coordinate of the middle of the ripple.
    * @param {!number} rippleCenter
    */
-  setTransformOrigin(rippleCenter) {
-    this.foundation_.setTransformOrigin(rippleCenter);
+  setRippleCenter(rippleCenter) {
+    this.foundation_.setRippleCenter(rippleCenter);
   }
 
   /**
@@ -67,9 +67,6 @@ class MDCLineRipple extends MDCComponent {
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyAnimationEnd: () => {
-        this.emit(MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, {});
-      },
     })));
   }
 }

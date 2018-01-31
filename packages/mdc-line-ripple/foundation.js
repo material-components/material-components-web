@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCLineRippleAdapter from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses} from './constants';
 
 
 /**
@@ -28,11 +28,6 @@ class MDCLineRippleFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
-  }
-
-  /** @return enum {string} */
-  static get strings() {
-    return strings;
   }
 
   /**
@@ -48,7 +43,6 @@ class MDCLineRippleFoundation extends MDCFoundation {
       setAttr: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
-      notifyAnimationEnd: () => {},
     });
   }
 
@@ -79,10 +73,10 @@ class MDCLineRippleFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the transform origin given a user's click location.
+   * Sets the center of the ripple animation to the given X coordinate.
    * @param {!number} rippleCenter
    */
-  setTransformOrigin(rippleCenter) {
+  setRippleCenter(rippleCenter) {
     const attributeString =
         `transform-origin: ${rippleCenter}px center`;
 
@@ -106,7 +100,6 @@ class MDCLineRippleFoundation extends MDCFoundation {
     const isDeactivating = this.adapter_.hasClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
 
     if (evt.propertyName === 'opacity') {
-      this.adapter_.notifyAnimationEnd();
       if (isDeactivating) {
         this.adapter_.removeClass(cssClasses.LINE_RIPPLE_ACTIVE);
         this.adapter_.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING);

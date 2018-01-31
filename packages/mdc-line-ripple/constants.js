@@ -16,14 +16,9 @@
  */
 
 /** @enum {string} */
-const strings = {
-  ANIMATION_END_EVENT: 'MDCLineRipple:animation-end',
-};
-
-/** @enum {string} */
 const cssClasses = {
   LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
   LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
 
-export {strings, cssClasses};
+export {cssClasses};

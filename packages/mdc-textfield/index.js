@@ -264,7 +264,7 @@ class MDCTextField extends MDCComponent {
         },
         setLineRippleTransformOrigin: (normalizedX) => {
           if (this.lineRipple_) {
-            this.lineRipple_.setTransformOrigin(normalizedX);
+            this.lineRipple_.setRippleCenter(normalizedX);
           }
         },
       },

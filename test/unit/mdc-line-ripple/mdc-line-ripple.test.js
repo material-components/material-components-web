@@ -84,18 +84,6 @@ test('#adapter.deregisterEventHandler removes event listener for a given event f
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.notifyAnimationEnd emits ' +
-  `${MDCLineRippleFoundation.strings.ANIMATION_END_EVENT}`, () => {
-  const {component} = setupTest();
-  const handler = td.func('leadingHandler');
-
-  component.listen(
-    MDCLineRippleFoundation.strings.ANIMATION_END_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyAnimationEnd();
-
-  td.verify(handler(td.matchers.anything()));
-});
-
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCLineRippleFoundation);
   const mockFoundation = new MockFoundationConstructor();
@@ -117,9 +105,8 @@ test('deactivate', () => {
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
 
-
-test('setTransformOrigin', () => {
+test('setRippleCenter', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.setTransformOrigin(100);
-  td.verify(mockFoundation.setTransformOrigin(100), {times: 1});
+  component.setRippleCenter(100);
+  td.verify(mockFoundation.setRippleCenter(100), {times: 1});
 });
