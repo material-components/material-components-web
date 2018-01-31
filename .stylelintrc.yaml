@@ -267,13 +267,12 @@ rules:
   # Styles for components should never need the universal selector.
   selector-max-universal: 0
   # Ensure any defined symbols are prefixed with "mdc-"
-  # TODO: Remove "md-" pattern.
-  custom-media-pattern: ^mdc?-.+
-  custom-property-pattern: ^mdc?-.+
+  custom-media-pattern: ^mdc-.+
+  custom-property-pattern: ^mdc-.+
   selector-class-pattern:
-    - ^mdc?-.+
+    - ^mdc-.+
     - resolveNestedSelectors: true
-  selector-id-pattern: ^mdc?-.+
+  selector-id-pattern: ^mdc-.+
   # Names are more semantic than numbers
   font-weight-notation: named-where-possible
   # http://www.paulirish.com/2010/the-protocol-relative-url/
@@ -309,7 +308,7 @@ rules:
   plugin/selector-bem-pattern:
     componentName: ^[a-z]+(?:-[a-z]+)*$
     # <namespace>-<block>__<element>*--<modifier>*[<attribute>]*
-    componentSelectors: ^\.mdc?-{componentName}(?:__[a-z]+(?:-[a-z]+)*)*(?:--[a-z]+(?:-[a-z]+)*)*(?:\[.+\])*$
+    componentSelectors: ^\.mdc-{componentName}(?:__[a-z]+(?:-[a-z]+)*)*(?:--[a-z]+(?:-[a-z]+)*)*(?:\[.+\])*$
     ignoreSelectors:
       - ^fieldset
       - ^\[aria\-disabled=(?:.+)\]
