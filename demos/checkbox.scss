@@ -20,7 +20,6 @@
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-ripple/mixins";
 @import "../packages/mdc-theme/color-palette";
-@import "../packages/mdc-theme/mixins";
 
 .demo-checkbox--custom-all {
   $color: $material-color-red-500;
@@ -31,14 +30,6 @@
     $unmarked-stroke-color: $color,
     $unmarked-fill-color: rgba($color, .25),
     $marked-fill-color: $color);
-
-  @include mdc-theme-dark(".mdc-checkbox", $compound: true) {
-    @include mdc-checkbox-ink-color(black);
-    @include mdc-checkbox-container-colors(
-      $unmarked-stroke-color: $color,
-      $unmarked-fill-color: rgba($color, .35),
-      $marked-fill-color: $color);
-  }
 }
 
 .demo-checkbox--custom-stroke-and-fill {
