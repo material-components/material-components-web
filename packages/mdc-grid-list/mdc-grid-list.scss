@@ -50,10 +50,10 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 // postcss-bem-linter: define grid-list
 .mdc-grid-list {
   @include mdc-grid-list-tile-gutter(4px);
+  @include mdc-grid-list-tile-aspect(1);
 }
 
 @at-root {
-  @include mdc-grid-list-tile-aspect(1);
 }
 
 .mdc-grid-list__tiles {
