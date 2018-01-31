@@ -50,7 +50,7 @@ CSS Class | Description
 
 `activate() => void` | Proxies to the foundations `activate()` method.
 `deactivate() => void` |  Proxies to the foundations `deactivate()` method.
-`setRippleCenter(evt: Event) => void` | Proxies to the foundations `setRippleCenter(evt: Event)` method.
+`setRippleCenter(number: xCoordinate) => void` | Proxies to the foundations `setRippleCenter(number: xCoordinate)` method.
 
 ### `MDCLineRippleAdapter`
 
@@ -68,5 +68,5 @@ Method Signature | Description
 --- | ---
 `activate() => void` | Activates the line ripple
 `deactivate() => void` |  Deactivates the line ripple
-`setRippleCenter(evt: Event) => void` | Sets the transform origin given a user's click location
+`setRippleCenter(number: xCoordinate) => void` | Sets the center of the ripple to the `xCoordinate` given.
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event
