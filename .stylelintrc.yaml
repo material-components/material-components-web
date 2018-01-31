@@ -10,8 +10,8 @@ plugins:
 rules:
   # Follow best practices
   font-family-name-quotes: always-where-recommended
-  # http://stackoverflow.com/questions/2168855/is-quoting-the-value-of-url-really-necessary
-  function-url-quotes: never
+  # https://stackoverflow.com/a/34383157/467582
+  function-url-quotes: always
   # https://www.w3.org/TR/selectors/#attribute-selectors
   # http://stackoverflow.com/q/3851091
   selector-attribute-quotes: always
