@@ -66,6 +66,9 @@ const ACTIVATION_EVENT_TYPES = ['touchstart', 'pointerdown', 'mousedown', 'keydo
 // Deactivation events registered on documentElement when a pointer-related down event occurs
 const POINTER_DEACTIVATION_EVENT_TYPES = ['touchend', 'pointerup', 'mouseup'];
 
+// Tracks whether an activation has occurred on the current frame, to avoid multiple nested activations
+let isActivating = false;
+
 /**
  * @extends {MDCFoundation<!MDCRippleAdapter>}
  */
@@ -281,7 +284,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @private
    */
   activate_(e) {
-    if (this.adapter_.isSurfaceDisabled()) {
+    if (isActivating || this.adapter_.isSurfaceDisabled()) {
       return;
     }
 
@@ -308,6 +311,7 @@ class MDCRippleFoundation extends MDCFoundation {
       this.registerDeactivationHandlers_(e);
     }
 
+    isActivating = true;
     requestAnimationFrame(() => {
       // This needs to be wrapped in an rAF call b/c web browsers
       // report active states inconsistently when they're called within
@@ -321,6 +325,9 @@ class MDCRippleFoundation extends MDCFoundation {
         // Reset activation state immediately if element was not made active.
         this.activationState_ = this.defaultActivationState_();
       }
+
+      // Reset flag on next frame to avoid any ancestors from also triggering ripple from the same interaction
+      isActivating = false;
     });
   }
 
