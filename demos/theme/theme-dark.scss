@@ -39,7 +39,7 @@ $mdc-theme-background: $material-color-grey-900;
 .demo-text-field {
   @include mdc-text-field-ink-color(text-primary-on-dark);
   @include mdc-text-field-label-color(text-secondary-on-dark);
-  @include mdc-text-field-bottom-line-color(text-hint-on-dark);
+  @include mdc-text-field-line-ripple-color(text-hint-on-dark);
 }
 
 .demo-checkbox-wrapper,
