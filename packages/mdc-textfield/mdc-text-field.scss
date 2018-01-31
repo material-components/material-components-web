@@ -24,7 +24,7 @@
 @import "@material/theme/variables";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
-@import "./bottom-line/mdc-text-field-bottom-line";
+@import "@material/line-ripple/mdc-line-ripple";
 @import "./helper-text/mdc-text-field-helper-text";
 @import "./icon/mdc-text-field-icon";
 @import "./label/mdc-text-field-label";
@@ -35,7 +35,7 @@
 .mdc-text-field {
   @include mdc-text-field-bottom-line-color($mdc-text-field-underline-idle);
   @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-hover);
-  @include mdc-text-field-focused-bottom-line-color(primary);
+  @include mdc-text-field-line-ripple-color_(primary);
   @include mdc-text-field-ink-color(text-primary-on-background);
   @include mdc-text-field-label-color($mdc-text-field-label);
   @include mdc-text-field-helper-text-color(text-hint-on-background);

@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-@import "bottom-line/mixins";
+@import "@material/line-ripple/mixins";
 @import "outline/mixins";
 @import "label/mixins";
 @import "label/variables";
@@ -83,6 +83,24 @@
   }
 }
 
+@mixin mdc-text-field-bottom-line-color($color) {
+  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+    @include mdc-text-field-bottom-line-color_($color);
+  }
+}
+
+@mixin mdc-text-field-hover-bottom-line-color($color) {
+  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+    @include mdc-text-field-hover-bottom-line-color_($color);
+  }
+}
+
+@mixin mdc-text-field-line-ripple-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-line-ripple-color_($color);
+  }
+}
+
 // Private mixins
 
 // Baseline
@@ -109,7 +127,7 @@
 @mixin mdc-text-field-invalid_ {
   @include mdc-text-field-bottom-line-color($mdc-text-field-error);
   @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error);
-  @include mdc-text-field-focused-bottom-line-color($mdc-text-field-error);
+  @include mdc-text-field-line-ripple-color($mdc-text-field-error);
   @include mdc-text-field-label-color($mdc-text-field-error);
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
 
@@ -433,5 +451,23 @@
 @mixin mdc-text-field-fullwidth-bottom-line-color_($color) {
   &:not(.mdc-text-field--textarea) {
     @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-bottom-line-color_($color) {
+  .mdc-text-field__input {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-hover-bottom-line-color_($color) {
+  .mdc-text-field__input:hover {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-line-ripple-color_($color) {
+  .mdc-line-ripple {
+    @include mdc-line-ripple-color($color);
   }
 }
