@@ -55,9 +55,7 @@
 // Private
 
 @mixin mdc-select-focused-bottom-line_ {
-  // JS-enhanced and CSS-only Selects require different selectors for focused bottom-line due to different DOM structure
-  .mdc-select__surface:focus .mdc-select__bottom-line,
-  .mdc-select__surface:focus ~ .mdc-select__bottom-line {
+  .mdc-select__surface:focus .mdc-select__bottom-line {
     @content;
   }
 }
