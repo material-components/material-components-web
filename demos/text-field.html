@@ -26,11 +26,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      .mdc-theme--dark {
-        --mdc-theme-primary: var(--mdc-theme-secondary, #64dd17);
-        background-color: #303030;
-      }
-
       input[type="checkbox"]:disabled + label {
         opacity: .4;
       }
@@ -76,12 +71,6 @@
         </div>
       </section>
 
-      <section class="example"><em>
-        Note that in browsers that support custom properties, we alter theme's primary
-        color when using the dark theme toggles so that the text fields appears more
-        visible.
-      </em></section>
-
       <section class="example">
         <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
         <section id="demo-text-field-wrapper">
@@ -102,10 +91,6 @@
         <div>
           <input id="rtl" type="checkbox">
           <label for="rtl">RTL</label>
-        </div>
-        <div>
-          <input id="dark-theme" type="checkbox">
-          <label for="dark-theme">Dark Theme</label>
         </div>
         <div>
           <input id="dense" type="checkbox">
@@ -212,7 +197,7 @@
         </script>
       </section>
 
-      <section class="example">
+      <section class="example" id="text-field-box-example">
         <h2>Text Field box</h2>
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
@@ -222,8 +207,8 @@
             <div class="mdc-text-field__bottom-line"></div>
           </div>
           <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-             id="name-validation-msg">
-            Must be at least 8 characters
+            id="box-text-field-helper-text">
+            Helper Text (possibly validation message)
           </p>
         </div>
         <div>
@@ -235,10 +220,6 @@
           <label for="box-rtl">RTL</label>
         </div>
         <div>
-          <input id="box-dark-theme" type="checkbox">
-          <label for="box-dark-theme">Dark Theme</label>
-        </div>
-        <div>
           <input id="box-dense" type="checkbox">
           <label for="box-dense">Dense</label>
         </div>
@@ -248,13 +229,22 @@
         </div>
         <div>
           <input id="box-required" type="checkbox">
-          <label for="box-required">Required</label>
+          <label for="box-required">Required and must be at least 8 characters</label>
+        </div>
+        <div>
+          <input id="box-use-helper-text" type="checkbox">
+          <label for="box-use-helper-text">Use Helper Text</label>
+        </div>
+        <div>
+          <input id="box-persistent-helper-text" type="checkbox" disabled>
+          <label for="box-persistent-helper-text">Make helper text persistent</label>
         </div>
         <script>
           demoReady(function() {
             var tfEl = document.getElementById('tf-box-example');
             var tf = new mdc.textField.MDCTextField(tfEl);
             var wrapper = document.getElementById('demo-tf-box-wrapper');
+            var helperText = document.getElementById('box-text-field-helper-text');
 
             document.getElementById('box-disable').addEventListener('change', function(evt) {
               tf.disabled = evt.target.checked;
@@ -267,10 +257,6 @@
                 wrapper.removeAttribute('dir');
               }
               tf.layout();
-            });
-
-            document.getElementById('box-dark-theme').addEventListener('change', function(evt) {
-              wrapper.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
             });
 
             document.getElementById('box-dense').addEventListener('change', function(evt) {
@@ -287,8 +273,24 @@
             document.getElementById('box-required').addEventListener('change', function(evt) {
               var target = evt.target;
               var input = tfEl.querySelector('.mdc-text-field__input');
+              var requiredHelperText = 'Must be at least 8 characters';
+              var plainHelperText = 'Helper Text (possibly validation message)';
               input.required = target.checked;
               input.pattern = evt.target.checked ? '.{8,}' : '.*';
+              helperText.innerHTML = target.checked ? requiredHelperText : plainHelperText;
+            });
+
+            document.getElementById('box-use-helper-text').addEventListener('change', function(evt) {
+              var target = evt.target;
+              helperText.style.display = target.checked ? 'block' : 'none';
+              document.getElementById('box-persistent-helper-text').disabled = !target.checked;
+            });
+
+            document.getElementById('box-persistent-helper-text').addEventListener('change', function(evt) {
+              var target = evt.target;
+              helperText.classList[target.checked ? 'add' : 'remove'](
+                'mdc-text-field-helper-text--persistent'
+              );
             });
           });
         </script>
@@ -351,10 +353,6 @@
           <label for="rtl-leading-trailing">RTL</label>
         </div>
         <div>
-          <input id="dark-theme-leading-trailing" type="checkbox">
-          <label for="dark-theme-leading-trailing">Dark Theme</label>
-        </div>
-        <div>
           <input id="dense-leading-trailing" type="checkbox">
           <label for="dense-leading-trailing">Dense</label>
         </div>
@@ -400,10 +398,6 @@
           <label for="textarea-rtl">RTL</label>
         </div>
         <div>
-          <input id="textarea-dark-theme" type="checkbox">
-          <label for="textarea-dark-theme">Dark Theme</label>
-        </div>
-        <div>
           <input id="textarea-alternate-colors" type="checkbox">
           <label for="textarea-alternate-colors">Alternate Colors</label>
         </div>
@@ -432,10 +426,6 @@
         <div>
           <input type="checkbox" id="fullwidth-dense">
           <label for="fullwidth-dense">Dense</label>
-        </div>
-        <div>
-          <input type="checkbox" id="fullwidth-dark-theme">
-          <label for="fullwidth-dark-theme">Dark Theme</label>
         </div>
         <div>
           <input id="fullwidth-required" type="checkbox">
@@ -506,13 +496,6 @@
           tfOutlinedTrailing.layout();
         });
 
-        document.getElementById('dark-theme-leading-trailing').addEventListener('change', function(evt) {
-          wrapperBoxLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
-          wrapperBoxTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
-          wrapperOutlinedLeading.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
-          wrapperOutlinedTrailing.classList[evt.target.checked ? 'add' : 'remove']('mdc-theme--dark');
-        });
-
         document.getElementById('dense-leading-trailing').addEventListener('change', function(evt) {
           tfBoxLeadingEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
           tfBoxLeading.layout();
@@ -571,10 +554,6 @@
             section.removeAttribute('dir');
           }
         });
-        document.getElementById('dark-theme').addEventListener('change', function(evt) {
-          var target = evt.target;
-          section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
-        });
         document.getElementById('dense').addEventListener('change', function(evt) {
           var target = evt.target;
           tfRoot.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
@@ -624,10 +603,6 @@
             section.removeAttribute('dir');
           }
         });
-        document.getElementById('textarea-dark-theme').addEventListener('change', function(evt) {
-          var target = evt.target;
-          section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
-        });
 
         document.getElementById('textarea-alternate-colors').addEventListener('change', function (evt) {
           var target = evt.target;
@@ -662,11 +637,6 @@
           [tfRoot, tfMultiRoot].forEach(function(el) {
             el.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
           });
-        });
-
-        document.getElementById('fullwidth-dark-theme').addEventListener('change', function(evt) {
-          var target = evt.target;
-          section.classList[target.checked ? 'add' : 'remove']('mdc-theme--dark');
         });
 
         document.getElementById('fullwidth-required').addEventListener('change', function(evt) {
