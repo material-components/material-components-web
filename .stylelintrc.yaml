@@ -308,7 +308,7 @@ rules:
   plugin/selector-bem-pattern:
     componentName: ^[a-z]+(?:-[a-z]+)*$
     # <namespace>-<block>__<element>*--<modifier>*[<attribute>]*
-    componentSelectors: ^\.mdc?-{componentName}(?:__[a-z]+(?:-[a-z]+)*)*(?:--[a-z]+(?:-[a-z]+)*)*(?:\[.+\])*$
+    componentSelectors: ^\.mdc-{componentName}(?:__[a-z]+(?:-[a-z]+)*)*(?:--[a-z]+(?:-[a-z]+)*)*(?:\[.+\])*$
     ignoreSelectors:
       - ^fieldset
       - ^\[aria\-disabled=(?:.+)\]
