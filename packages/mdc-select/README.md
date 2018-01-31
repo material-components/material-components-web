@@ -200,37 +200,11 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
 </div>
 ```
 
-### Using the Pure CSS Select
-
-The `mdc-select` CSS classes also work with the browser's native `<select>` element, allowing for a
-seamless, un-invasive experience in browsers where a native select may be more appropriate, such as
-on a mobile device. It does not require any javascript, nor any CSS for `mdc-menu` or `mdc-list`.
-E.g.:
-
-1. Wrap the `<select>` with a block element that has an `mdc-select` class
-2. Add the `mdc-select__surface` class to the `<select>`
-3. Append `<div class="mdc-select__bottom-line"></div>` immediately after the `<select>`
-
-```html
-<div class="mdc-select">
-  <select class="mdc-select__surface">
-    <option value="" default selected>Pick a food group</option>
-    <option value="grains">Bread, Cereal, Rice, and Pasta</option>
-    <option value="vegetables" disabled>Vegetables</option>
-    <option value="fruit">Fruit</option>
-    <option value="dairy">Milk, Yogurt, and Cheese</option>
-    <option value="meat">Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts</option>
-    <option value="fats">Fats, Oils, and Sweets</option>
-  </select>
-  <div class="mdc-select__bottom-line"></div>
-</div>
-```
-
 #### CSS Classes
 
 | Class                    | Description                                     |
 | ------------------------ | ----------------------------------------------- |
-| `mdc-select`             | A pure css `select` element                     |
+| `mdc-select`             | Mandatory.                                      |
 | `mdc-list-group`         | A group of options.                             |
 | `mdc-list-item`          | A list item.                                    |
 | `mdc-list-divider`       | A divider.                                      |
@@ -244,7 +218,7 @@ these mixins within CSS selectors like `.foo-select` to apply styling.
 
 Mixin | Description
 --- | ---
-`mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select. On the css version, this also customizes the color of the label.
+`mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select.
 `mdc-select-container-fill-color($color)` | Customizes the background color of the select.
 `mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state. This mixin is only used for the JS version of the select.
 `mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
@@ -393,96 +367,3 @@ Enables/disables the select.
 ## Theming
 
 The select's bottom border is set to the current theme's primary color when focused.
-
-## Tips / Tricks
-
-### Switching between selects for better cross-device UX
-
-Selects are a tricky beast on the web. Many times, a custom select component will work well on large
-devices with mouse/keyboard capability, but fail miserably on smaller-scale devices without
-fine-grained pointer capability, such as a phone. Because `mdc-select` works on native selects, you
-can easily switch between a custom select on larger devices and a native element on smaller ones.
-
-First, wrap both a custom select and a native select within a wrapper element, let's call it the
-`select-manager`.
-
-```html
-<div class="select-manager">
-  <!-- Custom MDC Select, shown on desktop -->
-  <div class="mdc-select" role="listbox">
-    <div class="mdc-select__surface" tabindex="0">
-      <div class="mdc-select__label">Pick One</div>
-      <div class="mdc-select__selected-text"></div>
-      <div class="mdc-select__bottom-line"></div>
-    </div>
-    <div class="mdc-menu mdc-select__menu">
-      <ul class="mdc-list mdc-menu__items">
-        <li id="a" class="mdc-list-item" role="option" tabindex="0">A</li>
-        <li id="b" class="mdc-list-item" role="option" tabindex="0">B</li>
-        <li id="c" class="mdc-list-item" role="option" tabindex="0">C</li>
-      </ul>
-    </div>
-  </div>
-  <!-- Native element, shown on mobile devices -->
-  <div class="mdc-select">
-    <select class="mdc-select__surface">
-      <option value="" selected disabled>Pick one</option>
-      <option value="a">A</option>
-      <option value="b">B</option>
-      <option value="c">C</option>
-    </select>
-    <div class="mdc-select__bottom-line"></div>
-  <div>
-</div>
-```
-
-Then, write some CSS that implements a media query checking for a small screen as well as
-[course pointer interaction](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer). This
-will ensure that the custom select will still be present on smaller devices that do have
-mouse/keyboard capability, such as a hybrid tablet or a small browser window on a desktop.
-
-```css
-.select-manager > select.mdc-select {
-  display: none;
-}
-
-@media (max-width: 600px) and (pointer: coarse) {
-  .select-manager > .mdc-select[role="listbox"] {
-    display: none;
-  }
-
-  .select-manager > select.mdc-select {
-    display: block;
-  }
-}
-```
-
-Finally, we need to be able to react to events and keep each component in sync. We can do this in
-a few lines of JS, and check where the event came from by looking at its `type`. If it came from the
-custom component, the type will be `MDCSelect:change`, otherwise it will simply be `change`.
-
-```js
-const selectManager = document.querySelector('.select-manager');
-const selects = {
-  custom: MDCSelect.attachTo(selectManager.querySelector('.mdc-select[role="listbox"]')),
-  native: MDCSelect.attachTo(selectManager.querySelector('select.mdc-select__surface'))
-};
-const changeHandler = ({type}) =>  {
-  let changedSelect, selectToUpdate, value;
-  if (type === 'MDCSelect:change') {
-    changedSelect = selects.custom;
-    selectToUpdate = selects.native;
-    value = changedSelect.selectedOptions[0].id;
-  } else {
-    changedSelect = selects.native;
-    selectToUpdate = selects.custom;
-    value = changedSelect.selectedOptions[0].value;
-  }
-  selectToUpdate.selectedIndex = changedSelect.selectedIndex;
-  console.info('Selected value', value);
-};
-selects.custom.listen('MDCSelect:change', changeHandler);
-selects.native.addEventListener('change', changeHandler);
-```
-
-We are looking into building this functionality into `MDCSelect` in the future.
