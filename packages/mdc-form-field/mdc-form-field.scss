@@ -29,10 +29,6 @@ $mdc-form-field-item-spacing: 4px;
   align-items: center;
   vertical-align: middle;
 
-  @include mdc-theme-dark {
-    @include mdc-theme-prop(color, text-primary-on-dark);
-  }
-
   > label {
     order: 0;
     margin-right: auto;
