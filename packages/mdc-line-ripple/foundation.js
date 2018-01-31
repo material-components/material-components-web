@@ -16,46 +16,41 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTextFieldBottomLineAdapter from './adapter';
-import {cssClasses, strings} from './constants';
+import MDCLineRippleAdapter from './adapter';
+import {cssClasses} from './constants';
 
 
 /**
- * @extends {MDCFoundation<!MDCTextFieldBottomLineAdapter>}
+ * @extends {MDCFoundation<!MDCLineRippleAdapter>}
  * @final
  */
-class MDCTextFieldBottomLineFoundation extends MDCFoundation {
+class MDCLineRippleFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {string} */
-  static get strings() {
-    return strings;
-  }
-
   /**
-   * {@see MDCTextFieldBottomLineAdapter} for typing information on parameters and return
+   * {@see MDCLineRippleAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCTextFieldBottomLineAdapter}
+   * @return {!MDCLineRippleAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTextFieldBottomLineAdapter} */ ({
+    return /** @type {!MDCLineRippleAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
+      hasClass: () => {},
       setAttr: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
-      notifyAnimationEnd: () => {},
     });
   }
 
   /**
-   * @param {!MDCTextFieldBottomLineAdapter} adapter
+   * @param {!MDCLineRippleAdapter=} adapter
    */
-  constructor(adapter) {
-    super(Object.assign(MDCTextFieldBottomLineFoundation.defaultAdapter, adapter));
+  constructor(adapter = /** @type {!MDCLineRippleAdapter} */ ({})) {
+    super(Object.assign(MDCLineRippleFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
@@ -70,31 +65,29 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Activates the bottom line
+   * Activates the line ripple
    */
   activate() {
-    this.adapter_.addClass(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
+    this.adapter_.addClass(cssClasses.LINE_RIPPLE_ACTIVE);
   }
 
   /**
-   * Sets the transform origin given a user's click location.
-   * @param {!Event} evt
+   * Sets the center of the ripple animation to the given X coordinate.
+   * @param {!number} xCoordinate
    */
-  setTransformOrigin(evt) {
-    const targetClientRect = evt.target.getBoundingClientRect();
-    const evtCoords = {x: evt.clientX, y: evt.clientY};
-    const normalizedX = evtCoords.x - targetClientRect.left;
+  setRippleCenter(xCoordinate) {
     const attributeString =
-      `transform-origin: ${normalizedX}px center`;
+        `transform-origin: ${xCoordinate}px center`;
 
     this.adapter_.setAttr('style', attributeString);
   }
 
   /**
-   * Deactivates the bottom line
+   * Deactivates the line ripple
    */
   deactivate() {
-    this.adapter_.removeClass(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.addClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
   }
 
   /**
@@ -102,12 +95,17 @@ class MDCTextFieldBottomLineFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTransitionEnd(evt) {
-    // Wait for the bottom line to be either transparent or opaque
+    // Wait for the line ripple to be either transparent or opaque
     // before emitting the animation end event
+    const isDeactivating = this.adapter_.hasClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
+
     if (evt.propertyName === 'opacity') {
-      this.adapter_.notifyAnimationEnd();
+      if (isDeactivating) {
+        this.adapter_.removeClass(cssClasses.LINE_RIPPLE_ACTIVE);
+        this.adapter_.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
+      }
     }
   }
 }
 
-export default MDCTextFieldBottomLineFoundation;
+export default MDCLineRippleFoundation;
