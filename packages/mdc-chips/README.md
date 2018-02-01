@@ -69,11 +69,13 @@ The MDC Chips module is comprised of two JavaScript classes:
 To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.md) both classes from `@material/chips`.
 
 #### `MDCChip`
+
 Property | Value Type | Description
 --- | --- | ---
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
 
 #### `MDCChipSet`
+
 Property | Value Type | Description
 --- | --- | ---
 `chips` | Array<`MDCChip`> | An array of the `MDCChip` objects that represent chips in the set
@@ -81,6 +83,7 @@ Property | Value Type | Description
 ### Adapters: `MDCChipAdapter` and `MDCChipSetAdapter`
 
 #### `MDCChipAdapter`
+
 Method Signature | Description
 --- | ---
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
@@ -88,6 +91,7 @@ Method Signature | Description
 `notifyInteraction() => void` | Emits a custom event "MDCChip:interaction" denoting the chip has been interacted with, which bubbles to the parent `mdc-chip-set` element
 
 #### `MDCChipSetAdapter`
+
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
