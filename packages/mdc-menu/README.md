@@ -141,7 +141,7 @@ CSS Class | Description
   menu.setAnchorCorner(Corner.BOTTOM_END); 
   
   // Turn off menu open animations
-  menu.setQuickOpen = false;
+  menu.quickOpen = false;
 ```
 
 ### `MDCMenu`
@@ -153,7 +153,7 @@ Property | Value Type | Description
 `open` | Boolean | Proxies to the foundation's `isOpen`/(`open`, `close`) methods. 
 `items` | Array<Element> | Proxies to the foundation's container to query for all `.mdc-list-item[role]` elements.
 `itemsContainer` | Element | Queries the foundation's root element for the `mdc-menu__items` container element.
-`setQuickOpen` | Boolean | Proxies to the foundation's `setQuickOpen()` method. 
+`quickOpen` | Boolean | Proxies to the foundation's `setQuickOpen()` method. 
 
 Method Signature | Description
 --- | ---
