@@ -205,7 +205,7 @@ Method Signature | Description
 `open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened. 
 `close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.  
 `isOpen() => boolean` | Returns a boolean indicating whether the menu is open. 
-`setQuickOpen(quickOpen: boolean) => void` | Sets the menu to open and close without animation when the `open/close` methods are called. 
+`setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu should open and close without animation when the `open`/`close` methods are called. 
 
 ### Events
 
