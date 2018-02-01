@@ -97,7 +97,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 .mdc-tab__indicator {
   @include mdc-tab-bar-indicator-mixin_;
 
-  bottom: 2px;
+  left: 2px;
   width: calc(100% - 4px);
 }
 
