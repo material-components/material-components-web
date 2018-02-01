@@ -28,7 +28,13 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
 // postcss-bem-linter: define select
 .mdc-select {
-  //@include mdc-typography(subheading2);
+  @include mdc-typography-base;
+  // We use only a subset of the MDC typography values here as changing things such as line-height
+  // affects how the labels are transformed.
+  @each $prop in (letter-spacing) {
+    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
+  }
+
   @include mdc-select-dd-arrow-svg-bg_;
   @include mdc-select-ink-color(text-primary-on-light);
   @include mdc-select-label-color(rgba(black, .6));
