@@ -95,11 +95,10 @@ $mdc-tab-with-icon-and-text-height: 72px;
 }
 
 .mdc-tab__indicator {
-  $mdc-tab-indicator-horizontal-padding: 2px;
   @include mdc-tab-bar-indicator-mixin_;
 
-  left: $mdc-tab-indicator-horizontal-padding;
-  width: calc(100% - #{$mdc-tab-indicator-horizontal-padding * 2});
+  left: 2px;
+  width: calc(100% - 4px);
 }
 
 .mdc-tab-bar:not(.mdc-tab-bar-upgraded) {
