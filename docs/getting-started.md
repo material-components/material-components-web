@@ -115,7 +115,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
           <label for="firstname" class="mdc-text-field__label">
             First Name
           </label>
-          <div class="mdc-text-field__bottom-line"></div>
+          <div class="mdc-line-ripple"></div>
         </div>
       </div>
 
@@ -125,7 +125,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
           <label for="lastname" class="mdc-text-field__label">
             Last Name
           </label>
-          <div class="mdc-text-field__bottom-line"></div>
+          <div class="mdc-line-ripple"></div>
         </div>
       </div>
     </div>

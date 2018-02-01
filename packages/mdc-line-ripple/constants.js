@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,9 @@
  */
 
 /** @enum {string} */
-const strings = {
-  ANIMATION_END_EVENT: 'MDCTextFieldBottomLine:animation-end',
-};
-
-/** @enum {string} */
 const cssClasses = {
-  BOTTOM_LINE_ACTIVE: 'mdc-text-field__bottom-line--active',
+  LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
+  LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
 
-export {strings, cssClasses};
+export {cssClasses};
