@@ -48,7 +48,7 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 }
 
 // postcss-bem-linter: define grid-list
-.mdc-grid-list {
+@at-root {
   @include mdc-grid-list-tile-aspect(1);
   @include mdc-grid-list-tile-gutter(4px);
 }
@@ -56,7 +56,6 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 .mdc-grid-list__tiles {
   display: flex;
   flex-flow: row wrap;
-  margin: 0;
   padding: 0;
 }
 
