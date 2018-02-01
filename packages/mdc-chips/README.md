@@ -3,7 +3,7 @@ title: "Chips"
 layout: detail
 section: components
 excerpt: "Chips are compact elements that represent an attribute, text, entity, or action."
-iconId: text_field
+iconId: chip
 path: /catalog/chips/
 -->
 
