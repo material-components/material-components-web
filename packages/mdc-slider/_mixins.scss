@@ -116,11 +116,14 @@
 @mixin mdc-slider-thumb-color_($color) {
   .mdc-slider__thumb {
     @include mdc-theme-prop(fill, $color);
-    @include mdc-slider-thumb-stroke-cutout_($color);
+    @include mdc-theme-prop(stroke, $color);
   }
 }
 
 @mixin mdc-slider-thumb-stroke-cutout_($color) {
-  @include mdc-theme-prop(stroke, $color);
-  stroke: var(--mdc-slider-bg-color-behind-component, $color);
+  .mdc-slider__thumb {
+    /* @alternate */
+    stroke: $color;
+    stroke: var(--mdc-slider-bg-color-behind-component, $color);
+  }
 }
