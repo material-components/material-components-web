@@ -72,10 +72,10 @@ class MDCCheckboxFoundation extends MDCFoundation {
     this.animEndLatchTimer_ = 0;
 
     this.animEndHandler_ = /** @private {!EventListener} */ (
-      () => this.handleAnimationEnd_());
+      () => this.handleAnimationEnd());
 
     this.changeHandler_ = /** @private {!EventListener} */ (
-      () => this.transitionCheckState_());
+      () => this.handleChange());
   }
 
   init() {
@@ -144,6 +144,13 @@ class MDCCheckboxFoundation extends MDCFoundation {
       this.adapter_.removeClass(this.currentAnimationClass_);
       this.adapter_.deregisterAnimationEndHandler(this.animEndHandler_);
     }, numbers.ANIM_END_LATCH_MS);
+  }
+
+  /**
+   * Handles the change event for the checkbox
+   */
+  handleChange() {
+    this.transitionCheckState_();
   }
 
   /** @private */
