@@ -141,7 +141,7 @@ CSS Class | Description
   menu.setAnchorCorner(Corner.BOTTOM_END); 
   
   // Turn off menu open animations
-  menu.quickOpen = false;
+  menu.setQuickOpen = false;
 ```
 
 ### `MDCMenu`
@@ -153,7 +153,7 @@ Property | Value Type | Description
 `open` | Boolean | Proxies to the foundation's `isOpen`/(`open`, `close`) methods. 
 `items` | Array<Element> | Proxies to the foundation's container to query for all `.mdc-list-item[role]` elements.
 `itemsContainer` | Element | Queries the foundation's root element for the `mdc-menu__items` container element.
-`quickOpen` | Boolean | Proxies to the foundation's `quickOpen()` method. 
+`setQuickOpen` | Boolean | Proxies to the foundation's `setQuickOpen()` method. 
 
 Method Signature | Description
 --- | ---
@@ -205,6 +205,7 @@ Method Signature | Description
 `open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened. 
 `close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.  
 `isOpen() => boolean` | Returns a boolean indicating whether the menu is open. 
+`setQuickOpen(quickOpen: boolean) => void` | Sets the menu to open and close without animation when the `open/close` methods are called. 
 
 ### Events
 
