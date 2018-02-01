@@ -35,4 +35,4 @@ class MDCChipSetAdapter {
   hasClass(className) {}
 }
 
-export {MDCChipSetAdapter};
+export default MDCChipSetAdapter;

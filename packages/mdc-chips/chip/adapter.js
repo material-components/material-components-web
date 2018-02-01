@@ -49,4 +49,4 @@ class MDCChipAdapter {
   notifyInteraction() {}
 }
 
-export {MDCChipAdapter};
+export default MDCChipAdapter;

@@ -16,7 +16,7 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCChipAdapter} from './adapter';
+import MDCChipAdapter from './adapter';
 import {strings} from './constants';
 
 
