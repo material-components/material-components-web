@@ -99,6 +99,12 @@ test('rememberSelection', () => {
   // The method sets private variable on the foundation, nothing to verify.
 });
 
+test('setQuickOpen', () => {
+  const {component} = setupTest();
+  component.quickOpen = false;
+  // The method sets private variable on the foundation, nothing to verify.
+});
+
 test('items returns all menu items', () => {
   const {root, component} = setupTest();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
