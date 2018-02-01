@@ -26,7 +26,7 @@ import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter, FoundationMapType} from './adapter';
 import MDCTextFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
-import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line/index';
+import {MDCLineRipple, MDCLineRippleFoundation} from '@material/line-ripple/index';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon/index';
 import {MDCTextFieldLabel, MDCTextFieldLabelFoundation} from './label/index';
@@ -47,8 +47,8 @@ class MDCTextField extends MDCComponent {
     this.input_;
     /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {?MDCTextFieldBottomLine} */
-    this.bottomLine_;
+    /** @private {?MDCLineRipple} */
+    this.lineRipple_;
     /** @private {?MDCTextFieldHelperText} */
     this.helperText_;
     /** @private {?MDCTextFieldIcon} */
@@ -70,8 +70,8 @@ class MDCTextField extends MDCComponent {
   /**
    * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which
    * creates a new MDCRipple.
-   * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
-   * creates a new MDCTextFieldBottomLine.
+   * @param {(function(!Element): !MDCLineRipple)=} lineRippleFactory A function which
+   * creates a new MDCLineRipple.
    * @param {(function(!Element): !MDCTextFieldHelperText)=} helperTextFactory A function which
    * creates a new MDCTextFieldHelperText.
    * @param {(function(!Element): !MDCTextFieldIcon)=} iconFactory A function which
@@ -83,7 +83,7 @@ class MDCTextField extends MDCComponent {
    */
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
+    lineRippleFactory = (el) => new MDCLineRipple(el),
     helperTextFactory = (el) => new MDCTextFieldHelperText(el),
     iconFactory = (el) => new MDCTextFieldIcon(el),
     labelFactory = (el) => new MDCTextFieldLabel(el),
@@ -93,9 +93,9 @@ class MDCTextField extends MDCComponent {
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
-    if (bottomLineElement) {
-      this.bottomLine_ = bottomLineFactory(bottomLineElement);
+    const lineRippleElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    if (lineRippleElement) {
+      this.lineRipple_ = lineRippleFactory(lineRippleElement);
     }
     const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
     if (outlineElement) {
@@ -134,8 +134,8 @@ class MDCTextField extends MDCComponent {
     if (this.ripple) {
       this.ripple.destroy();
     }
-    if (this.bottomLine_) {
-      this.bottomLine_.destroy();
+    if (this.lineRipple_) {
+      this.lineRipple_.destroy();
     }
     if (this.helperText_) {
       this.helperText_.destroy();
@@ -248,20 +248,25 @@ class MDCTextField extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-        registerBottomLineEventHandler: (evtType, handler) => {
-          if (this.bottomLine_) {
-            this.bottomLine_.listen(evtType, handler);
-          }
-        },
-        deregisterBottomLineEventHandler: (evtType, handler) => {
-          if (this.bottomLine_) {
-            this.bottomLine_.unlisten(evtType, handler);
-          }
-        },
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },
         isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+        activateLineRipple: () => {
+          if (this.lineRipple_) {
+            this.lineRipple_.activate();
+          }
+        },
+        deactivateLineRipple: () => {
+          if (this.lineRipple_) {
+            this.lineRipple_.deactivate();
+          }
+        },
+        setLineRippleTransformOrigin: (normalizedX) => {
+          if (this.lineRipple_) {
+            this.lineRipple_.setRippleCenter(normalizedX);
+          }
+        },
       },
       this.getInputAdapterMethods_())),
       this.getFoundationMap_());
@@ -288,7 +293,6 @@ class MDCTextField extends MDCComponent {
    */
   getFoundationMap_() {
     return {
-      bottomLine: this.bottomLine_ ? this.bottomLine_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       icon: this.icon_ ? this.icon_.foundation : undefined,
       label: this.label_ ? this.label_.foundation : undefined,
@@ -298,7 +302,6 @@ class MDCTextField extends MDCComponent {
 }
 
 export {MDCTextField, MDCTextFieldFoundation,
-  MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation,
   MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation,
   MDCTextFieldIcon, MDCTextFieldIconFoundation,
   MDCTextFieldLabel, MDCTextFieldLabelFoundation,
