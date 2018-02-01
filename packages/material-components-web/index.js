@@ -24,6 +24,7 @@ import * as formField from '@material/form-field/index';
 import * as gridList from '@material/grid-list/index';
 import * as iconToggle from '@material/icon-toggle/index';
 import * as linearProgress from '@material/linear-progress/index';
+import * as lineRipple from '@material/line-ripple/index';
 import * as menu from '@material/menu/index';
 import * as radio from '@material/radio/index';
 import * as ripple from '@material/ripple/index';
@@ -36,6 +37,7 @@ import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
 
 // Register all components
+autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCChip', chips.MDCChip);
 autoInit.register('MDCChipSet', chips.MDCChipSet);
@@ -61,6 +63,7 @@ autoInit.register('MDCToolbar', toolbar.MDCToolbar);
 export {
   autoInit,
   base,
+  lineRipple,
   checkbox,
   chips,
   dialog,

@@ -185,6 +185,7 @@ if (!IS_DEV) {
       animation: [path.resolve('./packages/mdc-animation/index.js')],
       autoInit: [path.resolve('./packages/mdc-auto-init/index.js')],
       base: [path.resolve('./packages/mdc-base/index.js')],
+      lineRipple: [path.resolve('./packages/mdc-line-ripple/index.js')],
       checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
       chips: [path.resolve('./packages/mdc-chips/index.js')],
       dialog: [path.resolve('./packages/mdc-dialog/index.js')],
@@ -231,6 +232,7 @@ if (!IS_DEV) {
       'material-components-web': path.resolve(
         './packages/material-components-web/material-components-web.scss'),
       'mdc.button': path.resolve('./packages/mdc-button/mdc-button.scss'),
+      'mdc.line-ripple': path.resolve('./packages/mdc-line-ripple/mdc-line-ripple.scss'),
       'mdc.card': path.resolve('./packages/mdc-card/mdc-card.scss'),
       'mdc.checkbox': path.resolve('./packages/mdc-checkbox/mdc-checkbox.scss'),
       'mdc.chips': path.resolve('./packages/mdc-chips/mdc-chips.scss'),
