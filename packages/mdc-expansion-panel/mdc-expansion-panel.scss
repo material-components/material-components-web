@@ -1,0 +1,146 @@
+/**
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import "@material/elevation/mixins";
+@import "./mixins";
+@import "./variables";
+
+.mdc-expansion-panel {
+  @include mdc-elevation(2, $mdc-expansion-panel-elevation-color);
+  @include mdc-expansion-panel-transition($mdc-expansion-panel-transition-properties);
+
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
+  border-bottom: 1px solid $mdc-expansion-panel-border-bottom-color;
+  outline: none;
+  background-color: $mdc-expansion-panel-background-color;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:active,
+  &:focus {
+    background: $mdc-expansion-panel-background-active-color;
+  }
+
+  &__text-primary {
+    @include mdc-expansion-panel-primary-text;
+  }
+
+  &__text-secondary {
+    @include mdc-expansion-panel-secondary-text;
+  }
+
+  &__header {
+    @include mdc-expansion-panel-transition($mdc-expansion-panel__header-transition-properties);
+
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-start;
+    order: 0;
+    height: $mdc-expansion-panel__header-height;
+    padding: 12px 24px;
+
+    &__section {
+      margin-right: 16px;
+    }
+
+    .mdc-expansion-panel__expansion-icon {
+      @include mdc-expansion-panel-transform(rotate(0deg));
+      @include mdc-expansion-panel-transition($mdc-expansion-panel__expansion-icon-transition-properties);
+      @include mdc-expansion-panel-last-element;
+      @include mdc-expansion-panel-icon;
+    }
+  }
+
+  &__icon {
+    @include mdc-expansion-panel-icon;
+  }
+
+  &__body {
+    @include mdc-expansion-panel-transition(flex-shrink);
+
+    order: 1;
+    padding: 0 24px 16px;
+  }
+
+  &__footer {
+    @include mdc-expansion-panel-transition(padding flex-shrink);
+
+    @include mdc-expansion-panel-rtl {
+      padding-right: 24px;
+      padding-left: 8px;
+    }
+
+    display: flex;
+    align-items: center;
+    order: 2;
+    height: $mdc-expansion-panel__footer-height;
+    padding: 16px 8px 16px 24px;
+    border-top: 1px solid $mdc-expansion-panel__footer-border-top-color;
+
+    &__button-bar {
+      @include mdc-expansion-panel-last-element;
+    }
+  }
+
+  // collapsed
+  &--collapsed {
+    .mdc-expansion-panel__body,
+    .mdc-expansion-panel__footer {
+      display: none;
+    }
+  }
+
+  &--collapsing,
+  &--collapsed {
+    height: $mdc-expansion-panel--collapsed-height;
+    margin: 0;
+
+    .mdc-expansion-panel--details {
+      display: none;
+    }
+  }
+
+  // expanded
+  &--expanding,
+  &--expanded {
+    margin: $mdc-expansion-panel--expanded-vertical-margin 0;
+
+    .mdc-expansion-panel--summary {
+      display: none;
+    }
+
+    .mdc-expansion-panel__header {
+      padding: 20px 24px;
+    }
+
+    .mdc-expansion-panel__expansion-icon {
+      @include mdc-expansion-panel-transform(rotate(180deg));
+    }
+  }
+
+  &--expanding,
+  &--collapsing {
+    .mdc-expansion-panel__body,
+    .mdc-expansion-panel__footer {
+      flex-shrink: 1;
+    }
+  }
+}

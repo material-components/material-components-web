@@ -1,0 +1,28 @@
+{
+  "name": "@material/expansion-panel",
+  "version": "0.31.0",
+  "description": "The Material Components for the web expansion panel component",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "keywords": [
+    "material components",
+    "material design",
+    "expansion-panel",
+    "expansion",
+    "panel"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@material/base": "^0.29.0",
+    "@material/elevation": "^0.28.0",
+    "@material/rtl": "^0.1.8",
+    "@material/theme": "^0.30.0",
+    "@material/typography": "^0.28.0"
+  }
+}
