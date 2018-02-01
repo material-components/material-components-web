@@ -58,8 +58,8 @@
     bottom: 0;
     left: 0;
     transition:
-    mdc-switch-transition(opacity),
-    mdc-switch-transition(background-color);
+      mdc-switch-transition(opacity),
+      mdc-switch-transition(background-color);
     border-radius: 7px;
     opacity: .38;
     content: "";
@@ -78,8 +78,8 @@
   height: $mdc-switch-knob-diameter;
   transform: translateX(0);
   transition:
-  mdc-switch-transition(transform),
-  mdc-switch-transition(background-color);
+    mdc-switch-transition(transform),
+    mdc-switch-transition(background-color);
   border-radius: $mdc-switch-knob-diameter / 2;
   z-index: 1;
 
@@ -90,8 +90,8 @@
 
     transform: scale(0);
     transition:
-    mdc-switch-transition(transform),
-    mdc-switch-transition(background-color);
+      mdc-switch-transition(transform),
+      mdc-switch-transition(background-color);
     border-radius: $mdc-switch-focus-ring-diameter / 2;
     opacity: .2;
     content: "";
