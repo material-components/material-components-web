@@ -23,8 +23,6 @@
 // postcss-bem-linter: define slider
 
 .mdc-slider {
-  @include mdc-slider-color-accessible(secondary);
-
   &--disabled {
     $disabled-color: #9a9a9a;
 
@@ -159,6 +157,10 @@
 
     transform: rotate(45deg);
   }
+}
+
+@at-root {
+  @include mdc-slider-color-accessible(secondary);
 }
 
 .mdc-slider--active {
