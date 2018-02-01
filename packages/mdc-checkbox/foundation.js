@@ -135,6 +135,9 @@ class MDCCheckboxFoundation extends MDCFoundation {
     this.getNativeControl_().value = value;
   }
 
+  /**
+   * Handles the animationend event for the checkbox
+   */
   handleAnimationEnd() {
     clearTimeout(this.animEndLatchTimer_);
     this.animEndLatchTimer_ = setTimeout(() => {
