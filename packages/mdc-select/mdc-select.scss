@@ -79,10 +79,10 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     flex-grow: 1;
     width: 100%;
     height: 48px;
+    padding-bottom: 8px;
     border: none;
     outline: none;
     overflow: hidden;
-    padding-bottom: 8px;
   }
 
   &__label {
@@ -96,17 +96,16 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
     @include mdc-rtl(".mdc-select") {
       transform-origin: right top;
-      right: 0;
     }
 
     &--float-above {
-      transform: translateY(-100%) scale(0.75);
+      transform: translateY(-100%) scale(.75);
     }
   }
 
   &__selected-text {
-    position: absolute;
     display: flex;
+    position: absolute;
     bottom: 8px;
     align-items: flex-end;
     transition:
@@ -172,8 +171,8 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     @include mdc-typography(subheading2);
 
     height: 56px;
-    border-radius: 4px 4px 0 0;
     padding-bottom: 0;
+    border-radius: 4px 4px 0 0;
   }
 
   .mdc-select__label {
@@ -188,8 +187,8 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
   .mdc-select__selected-text {
     position: inherit;
-    margin-bottom: 6px;
     bottom: 0;
+    margin-bottom: 6px;
   }
 }
 
