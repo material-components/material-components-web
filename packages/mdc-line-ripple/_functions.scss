@@ -1,4 +1,5 @@
-// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,8 +12,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
 
-$mdc-list-divider-color-on-light-bg: rgba(0, 0, 0, .12) !default;
-$mdc-list-divider-color-on-dark-bg: rgba(255, 255, 255, .2) !default;
-$mdc-list-side-padding: 16px;
-$mdc-list-text-offset: 72px;
+@import "@material/animation/variables";
+
+@function mdc-line-ripple-transition-value($property) {
+  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
+}

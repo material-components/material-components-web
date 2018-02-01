@@ -16,6 +16,7 @@
     "@material/animation": "^0.25.0",
     "@material/auto-init": "^0.29.0",
     "@material/base": "^0.29.0",
+    "@material/line-ripple": "^0.0.0",
     "@material/button": "^0.29.0",
     "@material/card": "^0.29.0",
     "@material/checkbox": "^0.29.0",
