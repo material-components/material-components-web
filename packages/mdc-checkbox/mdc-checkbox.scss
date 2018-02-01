@@ -32,6 +32,7 @@
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
   @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
   @include mdc-checkbox-container-colors;
+  @include mdc-checkbox-disabled-container-color_;
 }
 
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes

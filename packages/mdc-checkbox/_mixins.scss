@@ -102,7 +102,9 @@
   white-space: nowrap;
   cursor: pointer;
   vertical-align: bottom;
+}
 
+@mixin mdc-checkbox-disabled-container-color_ {
   @include mdc-checkbox-unmarked-background-selector-disabled_ {
     @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color);
   }
