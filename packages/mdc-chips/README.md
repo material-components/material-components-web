@@ -62,6 +62,8 @@ CSS Class | Description
 
 ### Sass Mixins
 
+To customize the colors of any part of the chip, use the following mixins. 
+
 Mixin | Description
 --- | ---
 `mdc-chip-border-radius($radius)` | Customizes the border radius for a chip
