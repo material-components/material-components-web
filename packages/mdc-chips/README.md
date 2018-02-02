@@ -65,8 +65,8 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-chip-border-radius($radius)` | Customizes the border radius for a chip
-`mdc-chip-fill-color($radius)` | Customizes the background fill color for a chip
-`mdc-chip-ink-color($radius)` | Customizes the text ink color for a chip
+`mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
+`mdc-chip-ink-color($color)` | Customizes the text ink color for a chip
 `mdc-chip-stroke($width, $style, $color)` | Customizes the border stroke properties for a chip
 
 ### `MDCChip` and `MDCChipSet`
