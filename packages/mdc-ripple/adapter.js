@@ -57,6 +57,9 @@ class MDCRippleAdapter {
   /** @param {string} className */
   removeClass(className) {}
 
+  /** @param {!EventTarget} target */
+  containsEventTarget(target) {}
+
   /**
    * @param {string} evtType
    * @param {!Function} handler
