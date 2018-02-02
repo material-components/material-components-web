@@ -22,6 +22,7 @@
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/drawer/drawer.css">
     <link rel="stylesheet" href="/assets/radio.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -52,8 +53,7 @@
       }
 
       .demo-main {
-        padding-left: 16px;
-        padding-bottom: 16px;
+        padding: 16px;
       }
     </style>
   </head>
@@ -97,9 +97,6 @@
       <header class="mdc-toolbar mdc-elevation--z4">
         <div class="mdc-toolbar__row">
           <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-            <span>
-              <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-            </span>
             <button class="demo-menu material-icons mdc-toolbar__menu-icon">menu</button>
             <span class="mdc-toolbar__title catalog-title">Persistent Drawer</span>
           </section>
@@ -109,8 +106,7 @@
       <main class="demo-main">
         <h1 class="mdc-typography--display1">Persistent Drawer</h1>
         <p class="mdc-typography--body1">Click the menu icon above to open and close the drawer.</p>
-
-        <div id="demo-radio-buttons">
+        <div id="demo-radio-buttons" class="theme-radio-buttons">
           <div class="mdc-form-field">
             <div class="mdc-radio">
               <input class="mdc-radio__native-control" type="radio" id="theme-radio-default" name="theme" checked>
@@ -142,48 +138,56 @@
             <label for="theme-radio-accessible">Accessible Theme</label>
           </div>
         </div>
+        <button type="button" class="mdc-button mdc-button--stroked mdc-button--dense demo-toolbar-example-heading__rtl-toggle-button">Toggle RTL</button>
       </main>
 
-      <script src="/assets/material-components-web.js"></script>
+      <script src="/assets/material-components-web.js" async></script>
       <script>
-        var drawerEl = document.querySelector('.mdc-drawer');
-        var MDCPersistentDrawer = mdc.drawer.MDCPersistentDrawer;
-        var drawer = new MDCPersistentDrawer(drawerEl);
-        document.querySelector('.demo-menu').addEventListener('click', function() {
-          drawer.open = !drawer.open;
-        });
-        drawerEl.addEventListener('MDCPersistentDrawer:open', function() {
-          console.log('Received MDCPersistentDrawer:open');
-        });
-        drawerEl.addEventListener('MDCPersistentDrawer:close', function() {
-          console.log('Received MDCPersistentDrawer:close');
-        });
+        demoReady(function() {
+          var drawerEl = document.querySelector('.mdc-drawer');
+          var MDCPersistentDrawer = mdc.drawer.MDCPersistentDrawer;
+          var drawer = new MDCPersistentDrawer(drawerEl);
+          document.querySelector('.demo-menu').addEventListener('click', function() {
+            drawer.open = !drawer.open;
+          });
+          drawerEl.addEventListener('MDCPersistentDrawer:open', function() {
+            console.log('Received MDCPersistentDrawer:open');
+          });
+          drawerEl.addEventListener('MDCPersistentDrawer:close', function() {
+            console.log('Received MDCPersistentDrawer:close');
+          });
 
-        // Demonstrate application of --activated modifier to drawer menu items
-        var activatedClass = 'mdc-list-item--selected';
-        document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
-          var el = event.target;
-          while (!el.classList.contains('mdc-list-item') && el) {
-            el = el.parentNode;
-          }
-          if (el) {
-            var activatedItem = document.querySelector('.' + activatedClass);
-            if (activatedItem) {
-              activatedItem.classList.remove(activatedClass);
+          // Demonstrate application of --activated modifier to drawer menu items
+          var activatedClass = 'mdc-list-item--selected';
+          document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
+            var el = event.target;
+            while (el && !el.classList.contains('mdc-list-item')) {
+              el = el.parentElement;
             }
-            event.target.classList.add(activatedClass);
-          }
-        });
-        var radioEl = document.querySelector('#demo-radio-buttons');
-        radioEl.addEventListener('change', function(e) {
-          drawerEl.classList.remove('demo-drawer--custom');
-          drawerEl.classList.remove('demo-drawer--accessible');
+            if (el) {
+              var activatedItem = document.querySelector('.' + activatedClass);
+              if (activatedItem) {
+                activatedItem.classList.remove(activatedClass);
+              }
+              event.target.classList.add(activatedClass);
+            }
+          });
+          var radioEl = document.querySelector('#demo-radio-buttons');
+          radioEl.addEventListener('change', function(e) {
+            drawerEl.classList.remove('demo-drawer--custom');
+            drawerEl.classList.remove('demo-drawer--accessible');
 
-          if(e.target.id === 'theme-radio-accessible') {
-            drawerEl.classList.add('demo-drawer--accessible');
-          } else if(e.target.id === 'theme-radio-custom') {
-            drawerEl.classList.add('demo-drawer--custom');
-          }
+            if(e.target.id === 'theme-radio-accessible') {
+              drawerEl.classList.add('demo-drawer--accessible');
+            } else if(e.target.id === 'theme-radio-custom') {
+              drawerEl.classList.add('demo-drawer--custom');
+            }
+          });
+
+          var rtlToggleBtn = document.querySelector('.demo-toolbar-example-heading__rtl-toggle-button');
+          rtlToggleBtn.addEventListener('click', function(event) {
+            document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+          });
         });
       </script>
     </div>

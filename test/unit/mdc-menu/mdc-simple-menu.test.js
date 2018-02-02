@@ -19,14 +19,14 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCSimpleMenu} from '../../../packages/mdc-menu/simple';
-import {strings, Corner} from '../../../packages/mdc-menu/simple/constants';
+import {MDCMenu} from '../../../packages/mdc-menu/index';
+import {strings, Corner} from '../../../packages/mdc-menu/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu/util';
 
 function getFixture(open) {
   return bel`
-    <div class="mdc-simple-menu ${open ? 'mdc-simple-menu--open' : ''}" tabindex="-1">
-      <ul class="mdc-simple-menu__items mdc-list" role="menu">
+    <div class="mdc-menu ${open ? 'mdc-menu--open' : ''}" tabindex="-1">
+      <ul class="mdc-menu__items mdc-list" role="menu">
         <li class="mdc-list-item" role="menuitem" tabindex="0">Item</a>
         <li role="separator"></li>
         <li class="mdc-list-item" role="menuitem" tabindex="0">Another Item</a>
@@ -38,14 +38,14 @@ function getFixture(open) {
 function setupTest(open = false) {
   const root = getFixture(open);
   const listItem = root.querySelector('.mdc-list-item');
-  const component = new MDCSimpleMenu(root);
+  const component = new MDCMenu(root);
   return {root, listItem, component};
 }
 
-suite('MDCSimpleMenu');
+suite('MDCMenu');
 
-test('attachTo initializes and returns a MDCSimpleMenu instance', () => {
-  assert.isOk(MDCSimpleMenu.attachTo(getFixture()) instanceof MDCSimpleMenu);
+test('attachTo initializes and returns a MDCMenu instance', () => {
+  assert.isOk(MDCMenu.attachTo(getFixture()) instanceof MDCMenu);
 });
 
 test('get/set open', () => {
@@ -85,6 +85,23 @@ test('setAnchorCorner', () => {
 test('setAnchorMargin', () => {
   const {component} = setupTest();
   component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
+  // The method sets private variable on the foundation, nothing to verify.
+});
+
+test('selectedItem', () => {
+  const {component} = setupTest();
+  assert.isOk(!component.selectedItem);
+});
+
+test('rememberSelection', () => {
+  const {component} = setupTest();
+  component.rememberSelection = true;
+  // The method sets private variable on the foundation, nothing to verify.
+});
+
+test('setQuickOpen', () => {
+  const {component} = setupTest();
+  component.quickOpen = false;
   // The method sets private variable on the foundation, nothing to verify.
 });
 
@@ -380,4 +397,49 @@ test('adapter#setMaxHeight sets the maxHeight style on the menu element', () => 
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setMaxHeight('100px');
   assert.equal(root.style.maxHeight, '100px');
+});
+
+test('adapter#getOptionByIndex returns the option at the index specified', () => {
+  const {root, component} = setupTest();
+  const item1 = root.querySelectorAll('[role="menuitem"]')[1];
+  document.body.appendChild(root);
+  const element = component.getOptionByIndex(1);
+  assert.equal(element, item1);
+  document.body.removeChild(root);
+});
+
+test('adapter#setAttrForOptionAtIndex sets an attribute on the option element at the index specified', () => {
+  const {root, component} = setupTest();
+  const item1 = root.querySelectorAll('[role="menuitem"]')[1];
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.setAttrForOptionAtIndex(1, 'aria-disabled', 'true');
+  assert.equal(root.querySelector('[aria-disabled="true"]'), item1);
+  document.body.removeChild(root);
+});
+
+test('adapter#rmAttrForOptionAtIndex removes an attribute on the option element at the index', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.setAttrForOptionAtIndex(1, 'aria-disabled', 'true');
+  component.getDefaultFoundation().adapter_.rmAttrForOptionAtIndex(1, 'aria-disabled');
+  assert.equal(root.querySelector('[aria-disabled="true"]'), null);
+  document.body.removeChild(root);
+});
+
+test('adapter#addClassForOptionAtIndex adds a class to the option at the index specified', () => {
+  const {root, component} = setupTest();
+  const item1 = root.querySelectorAll('[role="menuitem"]')[1];
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.addClassForOptionAtIndex(1, 'test-class');
+  assert.equal(root.querySelector('.test-class'), item1);
+  document.body.removeChild(root);
+});
+
+test('adapter#rmClassForOptionAtIndex removes a class from the option at the index specified', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.addClassForOptionAtIndex(1, 'test-class');
+  component.getDefaultFoundation().adapter_.rmClassForOptionAtIndex(1, 'test-class');
+  assert.equal(root.querySelector('.test-class'), null);
+  document.body.removeChild(root);
 });

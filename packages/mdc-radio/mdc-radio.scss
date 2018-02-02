@@ -17,24 +17,18 @@
 @import "@material/animation/functions";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
-@import "@material/theme/mixins";
 @import "./functions";
 @import "./mixins";
 @import "./variables";
 
 // postcss-bem-linter: define radio
 .mdc-radio {
-  @include mdc-radio-unchecked-stroke-color(text-secondary-on-light);
-
-  @include mdc-theme-dark {
-    @include mdc-radio-unchecked-stroke-color(text-secondary-on-dark);
-  }
-
+  @include mdc-radio-unchecked-stroke-color(text-secondary-on-background);
   @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius($mdc-radio-ripple-radius);
+  @include mdc-ripple-radius-unbounded;
   @include mdc-states($mdc-radio-baseline-theme-color);
 
   display: inline-block;
@@ -46,14 +40,6 @@
   padding: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;
   cursor: pointer;
   will-change: opacity, transform, border-color, background-color, color;
-
-  // stylelint-disable plugin/selector-bem-pattern
-  &.mdc-ripple-upgraded {
-    .mdc-radio__background::before {
-      content: none;
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 
   // Container for radio circles and ripple.
   &__background {
@@ -116,6 +102,14 @@
     cursor: inherit;
     z-index: 1;
   }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  &.mdc-ripple-upgraded {
+    .mdc-radio__background::before {
+      content: none;
+    }
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-radio__native-control:checked,
@@ -154,18 +148,10 @@
 
     .mdc-radio__outer-circle {
       border-color: rgba(black, .26);
-
-      @include mdc-theme-dark(".mdc-radio") {
-        border-color: rgba(white, .3);
-      }
     }
 
     .mdc-radio__inner-circle {
       background-color: rgba(black, .26);
-
-      @include mdc-theme-dark(".mdc-radio") {
-        background-color: rgba(white, .3);
-      }
     }
   }
 }

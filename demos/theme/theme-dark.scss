@@ -1,0 +1,58 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "../../packages/mdc-theme/color-palette";
+
+// TODO: Use theme mixin(s) instead
+$mdc-theme-primary: $material-color-amber-300;
+$mdc-theme-secondary: $material-color-pink-400;
+$mdc-theme-background: $material-color-grey-900;
+
+@import "./theme-shared";
+@import "../../packages/mdc-checkbox/mixins";
+@import "../../packages/mdc-radio/mixins";
+@import "../../packages/mdc-textfield/mixins";
+
+// TODO: Call theme mixins for mdc-select
+
+.demo-checkbox {
+  @include mdc-checkbox-container-colors(text-secondary-on-dark);
+}
+
+.demo-radio {
+  @include mdc-radio-unchecked-stroke-color(text-secondary-on-dark);
+}
+
+.demo-text-field {
+  @include mdc-text-field-ink-color(text-primary-on-dark);
+  @include mdc-text-field-label-color(text-secondary-on-dark);
+  @include mdc-text-field-line-ripple-color(text-hint-on-dark);
+}
+
+.demo-checkbox-wrapper,
+.demo-radio-form-field {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+}
+
+.demo-tab {
+  @include mdc-tab-label-ink-color(text-secondary-on-dark);
+  @include mdc-tab-icon-ink-color(text-icon-on-dark);
+
+  &:hover {
+    @include mdc-tab-label-ink-color(text-primary-on-dark);
+    @include mdc-tab-icon-ink-color(text-secondary-on-dark);
+  }
+}

@@ -66,6 +66,9 @@ const ACTIVATION_EVENT_TYPES = ['touchstart', 'pointerdown', 'mousedown', 'keydo
 // Deactivation events registered on documentElement when a pointer-related down event occurs
 const POINTER_DEACTIVATION_EVENT_TYPES = ['touchend', 'pointerup', 'mouseup'];
 
+// Tracks whether an activation has occurred on the current frame, to avoid multiple nested activations
+let isActivating = false;
+
 /**
  * @extends {MDCFoundation<!MDCRippleAdapter>}
  */
@@ -113,9 +116,6 @@ class MDCRippleFoundation extends MDCFoundation {
 
     /** @private {!ActivationStateType} */
     this.activationState_ = this.defaultActivationState_();
-
-    /** @private {number} */
-    this.xfDuration_ = 0;
 
     /** @private {number} */
     this.initialSize_ = 0;
@@ -284,7 +284,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @private
    */
   activate_(e) {
-    if (this.adapter_.isSurfaceDisabled()) {
+    if (isActivating || this.adapter_.isSurfaceDisabled()) {
       return;
     }
 
@@ -295,8 +295,7 @@ class MDCRippleFoundation extends MDCFoundation {
 
     // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
     const previousActivationEvent = this.previousActivationEvent_;
-    const isSameInteraction = previousActivationEvent && e && previousActivationEvent.type !== e.type &&
-      previousActivationEvent.clientX === e.clientX && previousActivationEvent.clientY === e.clientY;
+    const isSameInteraction = previousActivationEvent && e && previousActivationEvent.type !== e.type;
     if (isSameInteraction) {
       return;
     }
@@ -312,6 +311,7 @@ class MDCRippleFoundation extends MDCFoundation {
       this.registerDeactivationHandlers_(e);
     }
 
+    isActivating = true;
     requestAnimationFrame(() => {
       // This needs to be wrapped in an rAF call b/c web browsers
       // report active states inconsistently when they're called within
@@ -325,6 +325,9 @@ class MDCRippleFoundation extends MDCFoundation {
         // Reset activation state immediately if element was not made active.
         this.activationState_ = this.defaultActivationState_();
       }
+
+      // Reset flag on next frame to avoid any ancestors from also triggering ripple from the same interaction
+      isActivating = false;
     });
   }
 
@@ -428,7 +431,7 @@ class MDCRippleFoundation extends MDCFoundation {
     this.activationState_ = this.defaultActivationState_();
     // Touch devices may fire additional events for the same interaction within a short time.
     // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-    setTimeout(() => this.previousActivationEvent_ = null, 100);
+    setTimeout(() => this.previousActivationEvent_ = null, MDCRippleFoundation.numbers.TAP_DELAY_MS);
   }
 
   /**
@@ -489,17 +492,25 @@ class MDCRippleFoundation extends MDCFoundation {
   /** @private */
   layoutInternal_() {
     this.frame_ = this.adapter_.computeBoundingRect();
-
     const maxDim = Math.max(this.frame_.height, this.frame_.width);
-    const surfaceDiameter = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
 
-    // 60% of the largest dimension of the surface
+    // Surface diameter is treated differently for unbounded vs. bounded ripples.
+    // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
+    // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
+    // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
+    // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
+    // `overflow: hidden`.
+    const getBoundedRadius = () => {
+      const hypotenuse = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
+      return hypotenuse + MDCRippleFoundation.numbers.PADDING;
+    };
+
+    this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
+
+    // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
     this.initialSize_ = maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE;
-
-    // Diameter of the surface + 10px
-    this.maxRadius_ = surfaceDiameter + MDCRippleFoundation.numbers.PADDING;
     this.fgScale_ = this.maxRadius_ / this.initialSize_;
-    this.xfDuration_ = 1000 * Math.sqrt(this.maxRadius_ / 1024);
+
     this.updateLayoutCssVars_();
   }
 

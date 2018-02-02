@@ -36,17 +36,18 @@ $mdc-theme-secondary: #018786 !default; // baseline teal, 600 tone
 
 $dark-button-color: $material-color-light-green-a200;
 
+// Used by ready.js to test whether the CSS has finished loading.
+.demo-ready-detect {
+  position: relative;
+}
+
 fieldset {
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-.mdc-toolbar__icon,
-.mdc-toolbar__menu-icon {
-  @include mdc-toolbar-icon-ink-color(#f0f0f0);
-}
-
+// TODO mgoo: remove these dark theme when complete with removing other components
 .mdc-button {
   @include mdc-theme-dark {
     @include mdc-button-ink-color($dark-button-color);

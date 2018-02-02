@@ -19,8 +19,6 @@
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-menu/mdc-menu";
 @import "../../packages/mdc-theme/color-palette";
-@import "../../packages/mdc-toolbar/mdc-toolbar";
-@import "../../packages/mdc-typography/mdc-typography";
 
 .demo-toolbar-example-heading {
   @include mdc-typography(display2);

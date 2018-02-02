@@ -35,8 +35,10 @@ const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS === 'true' && IS_DEV;
 const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
-const DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 const BUILD_STATIC_DEMO_ASSETS = process.env.MDC_BUILD_STATIC_DEMO_ASSETS === 'true';
+
+const SASS_DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
+const JS_DEVTOOL = 'source-map';
 
 const banner = [
   '/*!',
@@ -160,7 +162,7 @@ module.exports = [{
   devServer: {
     disableHostCheck: true,
   },
-  devtool: DEVTOOL,
+  devtool: JS_DEVTOOL,
   module: {
     rules: [{
       test: /\.js$/,
@@ -183,7 +185,9 @@ if (!IS_DEV) {
       animation: [path.resolve('./packages/mdc-animation/index.js')],
       autoInit: [path.resolve('./packages/mdc-auto-init/index.js')],
       base: [path.resolve('./packages/mdc-base/index.js')],
+      lineRipple: [path.resolve('./packages/mdc-line-ripple/index.js')],
       checkbox: [path.resolve('./packages/mdc-checkbox/index.js')],
+      chips: [path.resolve('./packages/mdc-chips/index.js')],
       dialog: [path.resolve('./packages/mdc-dialog/index.js')],
       drawer: [path.resolve('./packages/mdc-drawer/index.js')],
       formField: [path.resolve('./packages/mdc-form-field/index.js')],
@@ -208,7 +212,7 @@ if (!IS_DEV) {
       libraryTarget: 'umd',
       library: ['mdc', '[name]'],
     },
-    devtool: DEVTOOL,
+    devtool: JS_DEVTOOL,
     module: {
       rules: [{
         test: /\.js$/,
@@ -228,8 +232,10 @@ if (!IS_DEV) {
       'material-components-web': path.resolve(
         './packages/material-components-web/material-components-web.scss'),
       'mdc.button': path.resolve('./packages/mdc-button/mdc-button.scss'),
+      'mdc.line-ripple': path.resolve('./packages/mdc-line-ripple/mdc-line-ripple.scss'),
       'mdc.card': path.resolve('./packages/mdc-card/mdc-card.scss'),
       'mdc.checkbox': path.resolve('./packages/mdc-checkbox/mdc-checkbox.scss'),
+      'mdc.chips': path.resolve('./packages/mdc-chips/mdc-chips.scss'),
       'mdc.dialog': path.resolve('./packages/mdc-dialog/mdc-dialog.scss'),
       'mdc.drawer': path.resolve('./packages/mdc-drawer/mdc-drawer.scss'),
       'mdc.elevation': path.resolve('./packages/mdc-elevation/mdc-elevation.scss'),
@@ -258,7 +264,7 @@ if (!IS_DEV) {
       publicPath: DEMO_ASSET_DIR_REL,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
-    devtool: DEVTOOL,
+    devtool: SASS_DEVTOOL,
     module: {
       rules: [{
         test: /\.scss$/,
@@ -297,7 +303,7 @@ if (IS_DEV) {
       publicPath: DEMO_ASSET_DIR_REL,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
-    devtool: DEVTOOL,
+    devtool: SASS_DEVTOOL,
     module: {
       rules: [{
         test: /\.scss$/,
@@ -308,6 +314,35 @@ if (IS_DEV) {
       createCssExtractTextPlugin(),
       createBannerPlugin(),
       createStaticDemoPlugin(),
+    ],
+  });
+
+  module.exports.push({
+    name: 'demo-js',
+    entry: {
+      'common': [path.resolve('./demos/common.js')],
+      'theme/index': [path.resolve('./demos/theme/index.js')],
+    },
+    output: {
+      path: OUT_DIR_ABS,
+      publicPath: DEMO_ASSET_DIR_REL,
+      filename: '[name].js',
+      libraryTarget: 'umd',
+      library: ['demo', '[name]'],
+    },
+    devtool: JS_DEVTOOL,
+    module: {
+      rules: [{
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        },
+      }],
+    },
+    plugins: [
+      createBannerPlugin(),
     ],
   });
 }
