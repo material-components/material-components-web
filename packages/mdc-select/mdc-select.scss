@@ -28,9 +28,14 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
 // postcss-bem-linter: define select
 .mdc-select {
-  @include mdc-typography(subheading2);
+  @include mdc-typography-base;
+  // We use only a subset of the MDC typography values here as changing things such as line-height
+  // affects how the labels are transformed.
+  @each $prop in (letter-spacing) {
+    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
+  }
+
   @include mdc-select-dd-arrow-svg-bg_;
-  @include mdc-select-container-fill-color(rgba(black, .04));
   @include mdc-select-ink-color(text-primary-on-light);
   @include mdc-select-label-color(rgba(black, .6));
   @include mdc-select-bottom-line-color(rgba(black, .5));
@@ -44,17 +49,16 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
-  height: 56px;
+  height: 48px;
   border: none;
-  border-radius: 4px 4px 0 0;
   outline: none;
   background-repeat: no-repeat;
-  background-position: right 10px center;
+  background-position: right 8px bottom 8px;
   cursor: pointer;
   overflow: visible;
 
   @include mdc-rtl {
-    background-position: left 10px center;
+    background-position: left 8px bottom 8px;
   }
 
   &__menu {
@@ -67,28 +71,26 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 
   &__surface {
-    @include mdc-typography(subheading2);
-    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding, ".mdc-select");
-    @include mdc-ripple-surface;
-    @include mdc-ripple-radius-bounded;
+    @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
     @include mdc-states;
 
     display: flex;
     position: relative;
     flex-grow: 1;
     width: 100%;
-    height: 56px;
+    height: 48px;
+    padding-bottom: 8px;
     border: none;
-    border-radius: 4px 4px 0 0;
     outline: none;
     overflow: hidden;
   }
 
   &__label {
-    @include mdc-rtl-reflexive-position(left, 16px);
+    @include mdc-rtl-reflexive-position(left, 0);
 
     position: absolute;
-    bottom: 12px;
+    bottom: 8px;
+    left: 0;
     transform-origin: left top;
     transition: $mdc-select-menu-transition;
     pointer-events: none;
@@ -99,14 +101,15 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     }
 
     &--float-above {
-      transform: translateY(-40%) scale(.75, .75);
+      transform: translateY(-100%) scale(.75);
     }
   }
 
   &__selected-text {
     display: flex;
+    position: absolute;
+    bottom: 8px;
     align-items: flex-end;
-    margin-bottom: 6px;
     transition:
       mdc-animation-exit-temporary(opacity, 125ms),
       mdc-animation-exit-temporary(transform, 125ms);
@@ -149,6 +152,45 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
       transform: scale(1, 2);
       opacity: 1;
     }
+  }
+}
+
+.mdc-select--box {
+  @include mdc-select-container-fill-color(rgba(black, .04));
+
+  height: 56px;
+  border-radius: 4px 4px 0 0;
+  background-position: right 10px center;
+
+  @include mdc-rtl {
+    background-position: left 10px center;
+  }
+
+  .mdc-select__surface {
+    @include mdc-typography(subheading2);
+    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
+    @include mdc-ripple-surface;
+    @include mdc-ripple-radius-bounded;
+
+    height: 56px;
+    padding-bottom: 0;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .mdc-select__label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    bottom: 12px;
+
+    &--float-above {
+      transform: translateY(-40%) scale(.75, .75);
+    }
+  }
+
+  .mdc-select__selected-text {
+    position: inherit;
+    bottom: 0;
+    margin-bottom: 6px;
   }
 }
 
