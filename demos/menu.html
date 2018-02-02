@@ -215,6 +215,9 @@
             <div>
               <label><input type="checkbox" name="remember"> Remember Selected Item</label>
             </div>
+            <div>
+              <label><input type="checkbox" name="animation"> Disable Open Animation</label>
+            </div>
             <p>
               <div class="left-column-controls">
                 Menu Sizes:
@@ -263,6 +266,11 @@
         var remember = document.querySelector('input[name="remember"]');
         remember.addEventListener('change', function(evt) {
           menu.rememberSelection = evt.target.checked;
+        });
+
+        var animation = document.querySelector('input[name="animation"]');
+        animation.addEventListener('change', function(evt) {
+          menu.quickOpen = evt.target.checked;
         });
 
         var radios = document.querySelectorAll('input[name="position"]');

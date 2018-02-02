@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,44 +17,58 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCTextFieldBottomLineAdapter from './adapter';
-import MDCTextFieldBottomLineFoundation from './foundation';
+import MDCLineRippleAdapter from './adapter';
+import MDCLineRippleFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCTextFieldBottomLineFoundation>}
+ * @extends {MDCComponent<!MDCLineRippleFoundation>}
  * @final
  */
-class MDCTextFieldBottomLine extends MDCComponent {
+class MDCLineRipple extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextFieldBottomLine}
+   * @return {!MDCLineRipple}
    */
   static attachTo(root) {
-    return new MDCTextFieldBottomLine(root);
+    return new MDCLineRipple(root);
   }
 
   /**
-   * @return {!MDCTextFieldBottomLineFoundation}
+   * Activates the line ripple
    */
-  get foundation() {
-    return this.foundation_;
+  activate() {
+    this.foundation_.activate();
   }
 
   /**
-   * @return {!MDCTextFieldBottomLineFoundation}
+   * Deactivates the line ripple
+   */
+  deactivate() {
+    this.foundation_.deactivate();
+  }
+
+  /**
+   * Sets the transform origin given a user's click location. The `rippleCenter` is the
+   * x-coordinate of the middle of the ripple.
+   * @param {!number} xCoordinate
+   */
+  setRippleCenter(xCoordinate) {
+    this.foundation_.setRippleCenter(xCoordinate);
+  }
+
+  /**
+   * @return {!MDCLineRippleFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextFieldBottomLineFoundation(/** @type {!MDCTextFieldBottomLineAdapter} */ (Object.assign({
+    return new MDCLineRippleFoundation(/** @type {!MDCLineRippleAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyAnimationEnd: () => {
-        this.emit(MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, {});
-      },
     })));
   }
 }
 
-export {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation};
+export {MDCLineRipple, MDCLineRippleFoundation};

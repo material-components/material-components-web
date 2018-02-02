@@ -19,21 +19,21 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from '../../../packages/mdc-textfield/bottom-line';
+import {MDCLineRipple, MDCLineRippleFoundation} from '../../../packages/mdc-line-ripple';
 
 const getFixture = () => bel`
-  <div class="mdc-textfield__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 `;
 
-suite('MDCTextFieldBottomLine');
+suite('MDCLineRipple');
 
-test('attachTo returns an MDCTextFieldBottomLine instance', () => {
-  assert.isOk(MDCTextFieldBottomLine.attachTo(getFixture()) instanceof MDCTextFieldBottomLine);
+test('attachTo returns an MDCLineRipple instance', () => {
+  assert.isOk(MDCLineRipple.attachTo(getFixture()) instanceof MDCLineRipple);
 });
 
 function setupTest() {
   const root = getFixture();
-  const component = new MDCTextFieldBottomLine(root);
+  const component = new MDCLineRipple(root);
   return {root, component};
 }
 
@@ -49,6 +49,13 @@ test('#adapter.removeClass removes a class from the element', () => {
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
+});
+test('#adapter.hasClass returns true if a class is on the element', () => {
+  const {root, component} = setupTest();
+
+  root.classList.add('foo');
+  const hasClass = component.getDefaultFoundation().adapter_.hasClass('foo');
+  assert.isTrue(hasClass);
 });
 
 test('#adapter.setAttr adds a given attribute to the element', () => {
@@ -77,14 +84,29 @@ test('#adapter.deregisterEventHandler removes event listener for a given event f
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.notifyAnimationEnd emits ' +
-  `${MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT}`, () => {
-  const {component} = setupTest();
-  const handler = td.func('leadingHandler');
+function setupMockFoundationTest(root = getFixture()) {
+  const MockFoundationConstructor = td.constructor(MDCLineRippleFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCLineRipple(
+    root,
+    mockFoundation);
+  return {root, component, mockFoundation};
+}
 
-  component.listen(
-    MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyAnimationEnd();
+test('activate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.activate();
+  td.verify(mockFoundation.activate(), {times: 1});
+});
 
-  td.verify(handler(td.matchers.anything()));
+test('deactivate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.deactivate();
+  td.verify(mockFoundation.deactivate(), {times: 1});
+});
+
+test('setRippleCenter', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.setRippleCenter(100);
+  td.verify(mockFoundation.setRippleCenter(100), {times: 1});
 });

@@ -20,11 +20,6 @@
 @import "./mixins";
 @import "../mixins";
 
-.mdc-tab-bar__indicator {
-  @include mdc-tab-bar-indicator-mixin_;
-  bottom: 0;
-}
-
 // postcss-bem-linter: define tab-bar
 
 @at-root {
@@ -37,14 +32,16 @@
   height: 48px;
   margin: 0 auto;
   text-transform: uppercase;
+}
 
-  &__indicator {
-    width: 100%;
+.mdc-tab-bar__indicator {
+  @include mdc-tab-bar-indicator-mixin_;
 
-    transform-origin: left top;
-    transition: mdc-animation-enter(transform, 240ms);
-    will-change: transform;
-  }
+  width: 100%;
+  left: 0;
+  transform-origin: left top;
+  transition: mdc-animation-enter(transform, 240ms);
+  will-change: transform;
 }
 
 .mdc-tab-bar--icons-with-text {
