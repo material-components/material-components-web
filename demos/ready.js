@@ -38,7 +38,7 @@ window.demoReady = (function(root) {
     }
     ensureDetectionDom();
     isReadyCached = getComputedStyle(testDom).position === 'relative' &&
-      (Boolean(window.mdc) || !root.querySelector('script[src$="material-components-web.js"]'));
+      (Boolean(window.mdc) || !root.querySelector('script[src*="material-components-web.js"]'));
     return isReadyCached;
   }
 
