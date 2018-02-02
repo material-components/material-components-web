@@ -139,6 +139,9 @@ CSS Class | Description
   
   // Set Anchor Corner to Bottom End
   menu.setAnchorCorner(Corner.BOTTOM_END); 
+  
+  // Turn off menu open animations
+  menu.quickOpen = false;
 ```
 
 ### `MDCMenu`
@@ -150,6 +153,7 @@ Property | Value Type | Description
 `open` | Boolean | Proxies to the foundation's `isOpen`/(`open`, `close`) methods. 
 `items` | Array<Element> | Proxies to the foundation's container to query for all `.mdc-list-item[role]` elements.
 `itemsContainer` | Element | Queries the foundation's root element for the `mdc-menu__items` container element.
+`quickOpen` | Boolean | Proxies to the foundation's `setQuickOpen()` method. 
 
 Method Signature | Description
 --- | ---
@@ -168,7 +172,6 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns a boolean indicating whether the root element has a given class.
 `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-menu__items` container).
 `getAttributeForEventTarget(target: EventTarget, attributeName: string) => string` | Returns the value of a given attribute on an event target.
-`eventTargetHasClass: (target: EventTarget, className: string) => boolean` | Returns true if the event target has a given class.
 `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height.
 `hasAnchor: () => boolean` | Returns whether the menu has an anchor for positioning.
 `getAnchorDimensions() => {width: number, height: number, top: number, right: number, bottom: number, left: number}` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`).
@@ -201,6 +204,7 @@ Method Signature | Description
 `open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened. 
 `close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.  
 `isOpen() => boolean` | Returns a boolean indicating whether the menu is open. 
+`setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu should open and close without animation when the `open`/`close` methods are called. 
 
 ### Events
 

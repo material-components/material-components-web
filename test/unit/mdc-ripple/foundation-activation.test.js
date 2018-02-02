@@ -318,23 +318,40 @@ testFoundation('removes deactivation classes on activate to ensure ripples can b
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
   });
 
-testFoundation('will not activate multiple ripples on same frame',
+testFoundation('will not activate multiple ripples on same frame if one surface descends from another',
   ({foundation, adapter, mockRaf}) => {
     const secondRipple = setupTest();
     const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
     const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(true);
     foundation.init();
     secondRipple.foundation.init();
     mockRaf.flush();
 
-    // Simulate use case where a child and parent are both ripple surfaces, and the same event propagates to the
-    // parent after being handled on the child
     firstHandlers.mousedown();
     secondHandlers.mousedown();
     mockRaf.flush();
 
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
     td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+  });
+
+testFoundation('will activate multiple ripples on same frame for surfaces without an ancestor/descendant relationship',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(false);
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION));
   });
 
 testFoundation('displays the foreground ripple on activation when unbounded', ({foundation, adapter, mockRaf}) => {
