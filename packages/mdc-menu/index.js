@@ -126,6 +126,11 @@ class MDCMenu extends MDCComponent {
     this.foundation_.setRememberSelection(rememberSelection);
   }
 
+  /** @param {boolean} quickOpen */
+  set quickOpen(quickOpen) {
+    this.foundation_.setQuickOpen(quickOpen);
+  }
+
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
     return new MDCMenuFoundation({
