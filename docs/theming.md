@@ -432,32 +432,22 @@ use-case easier.
 
 ## Custom Sass Mixins
 
-We also have provided a way to customize on a per component basis. We realize that you may want a button with a
-blue background and another with a red background on the same page. Each component's package is documented with all
-our provided sass mixins and what arguments to pass them. For example, here is a link to our [Button Sass Mixins docs](https://github.com/material-components/material-components-web/tree/master/packages/mdc-button#advanced-sass-mixins).
+For example, let's say you want to make particular
+buttons stand out by changing their fill color. Each component's package is documented with all available
+sass mixins and what parameters they accept. See the [MDC Button Sass mixins](../packages/mdc-button/README.md#advanced-sass-mixins) for example.
 
-If we continue the example stated above, here is what the sass would like:
+Here is an example of how we could add styles to change the color of some buttons:
 
 ```css
-.red-bg-button {
-  @include mdc-button-container-fill-color(red);
-}
-
-.blue-bg-button {
-  @include mdc-button-container-fill-color(blue);
-  @include mdc-button-ink-color(white); // for better contrast
+.accessible-button {
+  @include mdc-button-filled-accessible(blue);
 }
 ```
 
-Html Markup would then look like:
+Then apply the custom class to some of our buttons, like so:
 
 ```html
-<button class="mdc-button red-bg-button">
-  <i class="material-icons mdc-button__icon">favorite</i>
-  Button
-</button>
-
-<button class="mdc-button blue-bg-button">
+<button class="mdc-button accessible-button">
   <i class="material-icons mdc-button__icon">favorite</i>
   Button
 </button>
