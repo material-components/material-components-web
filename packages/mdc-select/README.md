@@ -205,6 +205,7 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
 | Class                    | Description                                     |
 | ------------------------ | ----------------------------------------------- |
 | `mdc-select`             | Mandatory.                                      |
+| `mdc-select--box`        | Styles the select as a box select.              |
 | `mdc-list-group`         | A group of options.                             |
 | `mdc-list-item`          | A list item.                                    |
 | `mdc-list-divider`       | A divider.                                      |

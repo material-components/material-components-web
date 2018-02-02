@@ -21,7 +21,6 @@
 
 // stylelint-disable selector-class-pattern
 .demo-select-custom-colors {
-  @include mdc-select-container-fill-color(rgba(blue, .1));
   @include mdc-select-ink-color(blue);
   @include mdc-select-label-color(rgba(blue, .6));
   @include mdc-select-bottom-line-color(rgba(blue, .5));
@@ -29,5 +28,9 @@
   // Focused colors
   @include mdc-select-focused-bottom-line-color(green);
   @include mdc-select-focused-label-color(green);
+}
+
+.demo-select-custom-colors.mdc-select--box {
+  @include mdc-select-container-fill-color(rgba(blue, .1));
 }
 // stylelint-enable selector-class-pattern
