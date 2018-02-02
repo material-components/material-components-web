@@ -1,0 +1,22 @@
+{
+  "name": "@material/chips",
+  "description": "The Material Components for the Web chips component",
+  "version": "0.0.0",
+  "license": "Apache 2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "chips"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@material/base": "^0.29.0",
+    "@material/ripple": "^0.29.0"
+  }
+}
