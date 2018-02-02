@@ -430,37 +430,35 @@ Since our cards only contain text and no components, let's keep it simple for no
 > Note: in the future we plan to provide a Javascript utility method for changing all derived colors and making this
 use-case easier.
 
+## Custom Sass Mixins
 
-## Dark Themes
+We also have provided a way to customize on a per component basis. We realize that you may want a button with a
+blue background and another with a red background on the same page. Each component's package is documented with all
+our provided sass mixins and what arguments to pass them. For example, here is a link to our [Button Sass Mixins docs](https://github.com/material-components/material-components-web/tree/master/packages/mdc-button#advanced-sass-mixins).
 
-Beyond what we've covered in this document so far, there's also the concept of a _dark theme_. All MDC Web components have
-been designed to work with both light themes (that assume a light-colored background) and dark themes (with dark-colored
-backgrounds), but the default is always light.
+If we continue the example stated above, here is what the sass would like:
 
-> Note: When using a dark theme, you probably want to choose a dark color as the background for your page, and adjust
-the MDC Web `background` color to match.
+```css
+.red-bg-button {
+  @include mdc-button-container-fill-color(red);
+}
 
-In order to apply a dark theme to a single element, you can use its `--theme-dark` class. For example, for a button:
+.blue-bg-button {
+  @include mdc-button-container-fill-color(blue);
+  @include mdc-button-ink-color(white); // for better contrast
+}
+```
+
+Html Markup would then look like:
 
 ```html
-<button class="mdc-button mdc-button--raised mdc-button--theme-dark">
-  Raised dark button
+<button class="mdc-button red-bg-button">
+  <i class="material-icons mdc-button__icon">favorite</i>
+  Button
+</button>
+
+<button class="mdc-button blue-bg-button">
+  <i class="material-icons mdc-button__icon">favorite</i>
+  Button
 </button>
 ```
-
-Alternatively, you can set your entire page (or a portion of it) to a dark theme by using the `mdc-theme--dark` class:
-
-```html
-<section class="mdc-theme--dark">
-  <button class="mdc-button mdc-button--raised">
-    Still dark
-  </button>
-
-  <button class="mdc-button">
-    Me too!
-  </button>
-</section>
-```
-
-> Note: there's currently no way to set a light portion inside of a dark one, so if you want to achieve that effect
-you'll need to selectively apply dark classes to everything except the light bits.

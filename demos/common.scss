@@ -30,8 +30,6 @@ $mdc-theme-secondary: #018786 !default; // baseline teal, 600 tone
 @import "../packages/mdc-toolbar/mdc-toolbar";
 @import "../packages/mdc-typography/mdc-typography";
 
-$dark-button-color: $material-color-light-green-a200;
-
 // Used by ready.js to test whether the CSS has finished loading.
 .demo-ready-detect {
   position: relative;
