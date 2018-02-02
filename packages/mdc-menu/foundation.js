@@ -79,7 +79,6 @@ class MDCMenuFoundation extends MDCFoundation {
       hasClass: () => false,
       hasNecessaryDom: () => false,
       getAttributeForEventTarget: () => {},
-      eventTargetHasClass: () => {},
       getInnerDimensions: () => ({}),
       hasAnchor: () => false,
       getAnchorDimensions: () => ({}),
@@ -239,7 +238,7 @@ class MDCMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * Handle clicks and cancel the menu if not a list item
+   * Handle clicks and cancel the menu if not a child list-item
    * @param {!Event} evt
    * @private
    */
@@ -247,7 +246,7 @@ class MDCMenuFoundation extends MDCFoundation {
     let el = evt.target;
 
     while (el && el !== document.documentElement) {
-      if (this.adapter_.eventTargetHasClass(el, cssClasses.LIST_ITEM)) {
+      if (this.adapter_.getIndexForEventTarget(el) !== -1) {
         return;
       }
       el = el.parentNode;

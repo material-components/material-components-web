@@ -153,6 +153,7 @@ Method Signature | Description
 | `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component |
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
 | `removeClass(className: string) => void` | Removes a class from the ripple surface |
+| `containsEventTarget(target: EventTarget) => boolean` | Whether or not the ripple surface contains the given event target |
 | `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the ripple surface |
 | `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler on the ripple surface |
 | `registerDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the documentElement |

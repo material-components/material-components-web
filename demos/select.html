@@ -94,9 +94,9 @@
       </section>
 
       <section class="example">
-        <h2 class="mdc-typography--title">Fully-Featured Component</h2>
-        <section id="box-demo-wrapper">
-          <div id="js-select-box" class="mdc-select" role="listbox">
+        <h2 class="mdc-typography--title">Fully-Featured JS Component</h2>
+        <section id="demo-wrapper">
+          <div id="js-select" class="mdc-select" role="listbox">
             <div class="mdc-select__surface" tabindex="0">
               <div class="mdc-select__label">Food Group</div>
               <div class="mdc-select__selected-text"></div>
@@ -120,7 +120,7 @@
             </div>
           </div>
         </section>
-        <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
+        <p>Currently selected: <span id="currently-selected">(none)</span></p>
         <div>
           <input type="checkbox" id="rtl">
           <label for="rtl">RTL</label>
@@ -134,6 +134,48 @@
           <label for="disabled">Disabled</label>
         </div>
       </section>
+
+      <section class="example">
+        <h2 class="mdc-typography--title">Select box</h2>
+        <section id="box-demo-wrapper">
+          <div id="box-js-select" class="mdc-select mdc-select--box" role="listbox">
+            <div class="mdc-select__surface" tabindex="0">
+              <div class="mdc-select__label">Food Group</div>
+              <div class="mdc-select__selected-text"></div>
+              <div class="mdc-select__bottom-line"></div>
+            </div>
+            <div class="mdc-menu mdc-select__menu">
+              <ul class="mdc-list mdc-menu__items">
+                <li class="mdc-list-item" role="option" id="fruit-roll-ups2" tabindex="0">
+                  Fruit Roll Ups
+                </li>
+                <li class="mdc-list-item" role="option" id="cotton-candy2" tabindex="0">
+                  Candy (cotton)
+                </li>
+                <li class="mdc-list-item" role="option" id="vegetables2" aria-disabled="true" tabindex="0">
+                  Vegetables
+                </li>
+                <li class="mdc-list-item" role="option" id="noodles2" tabindex="0">
+                  Noodles
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
+        <div>
+          <input type="checkbox" id="box-rtl">
+          <label for="box-rtl">RTL</label>
+        </div>
+        <div>
+          <input type="checkbox" id="box-alternate-colors">
+          <label for="box-alternate-colors">Alternate Colors</label>
+        </div>
+        <div>
+          <input type="checkbox" id="box-disabled">
+          <label for="box-disabled">Disabled</label>
+        </div>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -141,8 +183,8 @@
       demoReady(function() {
         mdc.select.MDCSelect.attachTo(document.getElementById('hero-js-select'));
 
-        var root = document.getElementById('js-select-box');
-        var boxCurrentlySelected = document.getElementById('box-currently-selected');
+        var root = document.getElementById('js-select');
+        var boxCurrentlySelected = document.getElementById('currently-selected');
         var select = new mdc.select.MDCSelect(root);
 
         root.addEventListener('MDCSelect:change', function() {
@@ -152,7 +194,7 @@
             ' with value "' + select.value + '"';
         });
 
-        var boxDemoWrapper = document.getElementById('box-demo-wrapper');
+        var boxDemoWrapper = document.getElementById('demo-wrapper');
         var rtlCb = document.getElementById('rtl');
         var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
@@ -171,6 +213,39 @@
           select.disabled = disabledCb.checked;
         });
       });
+
+      demoReady(function() {
+        var root = document.getElementById('box-js-select');
+        var boxCurrentlySelected = document.getElementById('box-currently-selected');
+        var select = new mdc.select.MDCSelect(root);
+
+        root.addEventListener('MDCSelect:change', function() {
+          var item = select.selectedOptions[0];
+          var index = select.selectedIndex;
+          boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
+            ' with value "' + select.value + '"';
+        });
+
+        var boxDemoWrapper = document.getElementById('box-demo-wrapper');
+        var rtlCb = document.getElementById('box-rtl');
+        var alternateColorsCb = document.getElementById('box-alternate-colors');
+        var disabledCb = document.getElementById('box-disabled');
+
+        rtlCb.addEventListener('change', function() {
+          if (rtlCb.checked) {
+            boxDemoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            boxDemoWrapper.removeAttribute('dir');
+          }
+        });
+        alternateColorsCb.addEventListener('change', function() {
+          root.classList[alternateColorsCb.checked ? 'add' : 'remove']('demo-select-custom-colors');
+        });
+        disabledCb.addEventListener('change', function() {
+          select.disabled = disabledCb.checked;
+        });
+      });
+
     </script>
   </body>
 </html>
