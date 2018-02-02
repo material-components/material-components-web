@@ -71,7 +71,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 
   &__surface {
-    @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding, ".mdc-select");
+    @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
     @include mdc-states;
 
     display: flex;
@@ -86,6 +86,8 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 
   &__label {
+    @include mdc-rtl-reflexive-position(left, 0);
+
     position: absolute;
     bottom: 8px;
     left: 0;
@@ -165,10 +167,10 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 
   .mdc-select__surface {
-    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding, ".mdc-select");
+    @include mdc-typography(subheading2);
+    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
     @include mdc-ripple-surface;
     @include mdc-ripple-radius-bounded;
-    @include mdc-typography(subheading2);
 
     height: 56px;
     padding-bottom: 0;
