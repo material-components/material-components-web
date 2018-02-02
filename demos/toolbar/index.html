@@ -95,9 +95,9 @@
                 <span class="mdc-toolbar__title">Toolbar</span>
               </section>
               <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-                <a href="#" class="material-icons mdc-toolbar__icon mdc-ripple-surface demo-toolbar-surface" data-mdc-ripple-is-unbounded aria-label="Download" alt="Download">file_download</a>
-                <a href="#" class="material-icons mdc-toolbar__icon mdc-ripple-surface demo-toolbar-surface" data-mdc-ripple-is-unbounded aria-label="Print this page" alt="Print this page">print</a>
-                <a href="#" class="material-icons mdc-toolbar__icon mdc-ripple-surface demo-toolbar-surface" data-mdc-ripple-is-unbounded aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
+                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
+                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
               </section>
             </div>
           </header>
@@ -190,18 +190,13 @@
         </div>
       </section>
     </main>
+    <script src="/assets/common.js" async></script>
     <script src="/assets/material-components-web.js" async></script>
     <script>
       [].forEach.call(document.querySelectorAll('.examples button'), function(button) {
         button.addEventListener('click', function(event) {
           var iframeMainEl = event.target.parentNode.parentNode.querySelector('iframe').contentWindow.document.querySelector('body');
           iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
-        });
-      });
-
-      demoReady(function() {
-        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
-          mdc.ripple.MDCRipple.attachTo(surface);
         });
       });
     </script>

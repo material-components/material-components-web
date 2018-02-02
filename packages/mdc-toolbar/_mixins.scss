@@ -32,10 +32,15 @@
 @mixin mdc-toolbar-fill-color-accessible($color) {
   @include mdc-toolbar-fill-color($color);
   @include mdc-toolbar-ink-color(mdc-theme-accessible-ink-color($color));
+
+  .mdc-toolbar__icon {
+    @include mdc-toolbar-icon-ink-color(mdc-theme-accessible-ink-color($color));
+  }
 }
 
 @mixin mdc-toolbar-icon-ink-color($color) {
   @include mdc-theme-prop(color, $color);
+  @include mdc-states($color);
 }
 
 //
@@ -46,6 +51,11 @@
 // Both .mdc-toolbar__icon and .mdc-toolbar__menu-icon share all styles except for
 // horizontal padding.
 @mixin mdc-toolbar-icon_() {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-unbounded;
+
+  // mdc-states is included within the mdc-toolbar-icon-ink-color mixin
+
   display: flex;
   align-items: start;
   justify-content: center;
