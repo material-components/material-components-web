@@ -1,5 +1,4 @@
 /**
- * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +14,19 @@
  * limitations under the License.
  */
 
-/** @enum {string} */
-const strings = {
-  ANIMATION_END_EVENT: 'MDCTextFieldBottomLine:animation-end',
-};
+import {assert} from 'chai';
 
-/** @enum {string} */
-const cssClasses = {
-  BOTTOM_LINE_ACTIVE: 'mdc-text-field__bottom-line--active',
-};
+import {verifyDefaultAdapter} from '../helpers/foundation';
+import MDCChipSetFoundation from '../../../packages/mdc-chips/chip-set/foundation';
 
-export {strings, cssClasses};
+suite('MDCChipSetFoundation');
+
+test('exports strings', () => {
+  assert.isOk('strings' in MDCChipSetFoundation);
+});
+
+test('defaultAdapter returns a complete adapter implementation', () => {
+  verifyDefaultAdapter(MDCChipSetFoundation, [
+    'hasClass',
+  ]);
+});
