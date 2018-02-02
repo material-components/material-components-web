@@ -46,9 +46,10 @@ export class MDCToolbar extends MDCComponent {
   }
 
   initialize() {
-    this.ripples_ = this.root_.querySelectorAll(MDCToolbarFoundation.strings.ICON_SELECTOR).forEach((icon) => {
+    this.ripples_ = [].map.call(this.root_.querySelectorAll(MDCToolbarFoundation.strings.ICON_SELECTOR), (icon) => {
       const ripple = MDCRipple.attachTo(icon);
       ripple.unbounded = true;
+      return ripple;
     });
   }
 

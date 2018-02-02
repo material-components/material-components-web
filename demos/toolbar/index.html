@@ -199,6 +199,10 @@
           iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
         });
       });
+
+      demoReady(function() {
+        mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.hero .mdc-toolbar'));
+      });
     </script>
   </body>
 </html>
