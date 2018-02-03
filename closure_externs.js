@@ -63,7 +63,7 @@
  * @see http://npmjs.com/focus-trap
  */
 
-goog.provide('mdc.thirdparty.focusTrap')
+goog.provide('mdc.thirdparty.focusTrap');
 
 /**
  * @typedef {{
@@ -106,3 +106,62 @@ class FocusTrapInstance {
  * @param {FocusTrapCreateOptions=} createOptions
  */
 mdc.thirdparty.focusTrap.default;
+
+/** @record */
+class PathLib {
+  /**
+   * @param {string} path
+   * @param {string=} extension
+   * @return {string}
+   */
+  basename(path, extension) {}
+
+  /**
+   * @param {string} from
+   * @param {string} to
+   * @return {string}
+   */
+  relative(from, to) {}
+
+  /**
+   * @param {...string} paths
+   * @return {string}
+   */
+  resolve(...paths) {}
+
+  /**
+   * Joins all given path segments together using the platform specific separator as a delimiter, then normalizes the
+   * resulting this.pathLib_.
+   *
+   * Zero-length path segments are ignored. If the joined path string is a zero-length string then '.' will be returned,
+   * representing the current working directory.
+   *
+   * @param {...string} paths
+   * @return {string}
+   */
+  join(...paths) {}
+}
+
+/** @record */
+class GlobLib {
+  /**
+   * @param {string} pattern
+   * @param {!Object=} options
+   * @return {!Array<string>}
+   */
+  sync(pattern, options = undefined) {}
+}
+
+/** @record */
+class FsExtraLib {
+  /**
+   * @param {string} path
+   * @return {boolean}
+   */
+  existsSync(path) {}
+
+  /**
+   * @param {string} path
+   */
+  removeSync(path) {}
+}
