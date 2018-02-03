@@ -430,21 +430,23 @@ Since our cards only contain text and no components, let's keep it simple for no
 > Note: in the future we plan to provide a Javascript utility method for changing all derived colors and making this
 use-case easier.
 
-## Custom Sass Mixins
+## Custom Themes
 
-For example, let's say you want to make particular
-buttons stand out by changing their fill color. Each component's package is documented with all available
-sass mixins and what parameters they accept. See the [MDC Button Sass mixins](../packages/mdc-button/README.md#advanced-sass-mixins) for example.
+Most MDC Web components provide a set of Sass mixins to customize their appearance,
+such as changing the fill color, ink color, stroke width, etc.
+These mixins are documented in each component's README file
+(e.g., the [Button readme](../packages/mdc-button/README.md#advanced-sass-mixins)).
 
-Here is an example of how we could add styles to change the color of some buttons:
+For example, to change the fill color of a button and automatically select an accessible ink color,
+simply call the `mdc-button-filled-accessible` mixin inside a custom CSS class:
 
-```css
+```scss
 .accessible-button {
   @include mdc-button-filled-accessible(blue);
 }
 ```
 
-Then apply the custom class to some of our buttons, like so:
+Then apply the custom class to the button elements:
 
 ```html
 <button class="mdc-button accessible-button">
