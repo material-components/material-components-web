@@ -79,7 +79,8 @@ function requireFresh(module) {
 }
 
 /**
- * Stringifies the given JS object to a serializable JSON format. Cyclical references are omitted.
+ * Stringifies the given object to JSON. Only the object's own enumerable properties are serialized, and circular
+ * references are safely ignored.
  * @param {!Object|!Array} obj
  * @return {string}
  */
