@@ -32,7 +32,6 @@ describe('webpack.config.js', function() {
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-no-env.golden.json'),
         mdcEnv: '',
-        bootstrapGolden: true,
       });
       assert.equal(generatedWebpackConfig, expectedWebpackConfig);
     });
@@ -44,7 +43,6 @@ describe('webpack.config.js', function() {
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-prod-env.golden.json'),
         mdcEnv: 'production',
-        bootstrapGolden: true,
       });
       assert.equal(generatedWebpackConfig, expectedWebpackConfig);
     });
@@ -56,7 +54,6 @@ describe('webpack.config.js', function() {
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-dev-env.golden.json'),
         mdcEnv: 'development',
-        bootstrapGolden: true,
       });
       assert.equal(generatedWebpackConfig, expectedWebpackConfig);
     });
