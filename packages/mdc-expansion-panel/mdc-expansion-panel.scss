@@ -66,6 +66,10 @@
       @include mdc-expansion-panel-transition($mdc-expansion-panel__expansion-icon-transition-properties);
       @include mdc-expansion-panel-last-element;
       @include mdc-expansion-panel-icon;
+
+      &:empty::before {
+        content: "expand_more";
+      }
     }
   }
 

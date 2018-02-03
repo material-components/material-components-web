@@ -230,7 +230,6 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `notifyChange() => {}` | Broadcasts a "change" event notifying clients that a change to the expansion panel’s state has been triggered. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for. |
 | `notifyExpand() => {}` | Broadcasts an "expand" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyChange()` |
 | `notifyCollapse() => {}` | Broadcasts a "collapse" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyChange()`. |
-| `setExpansionIconInnerHTML(innerHTML: string) => void` | Sets the inner HTML of any and all expansion icons to the value of `innerHTML`. |
 | `shouldRespondToClickEvent(event: MouseEvent) => boolean` | Returns true if the expansion panel should respond (by toggling the expansion state) to the given click event. |
 
 ### The full foundation API

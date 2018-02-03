@@ -76,23 +76,6 @@ test('.attachTo returns a component instance', () => {
     getFixture().querySelector(rootSelector)) instanceof MDCExpansionPanel);
 });
 
-test('#initialize stores all expansion icons', () => {
-  const {component, expansionIcons} = setupTest();
-
-  component.initialize();
-
-  assert.sameMembers(component.expansionIcons_, expansionIcons);
-});
-
-test('#destroy removes all expansion icons references', () => {
-  const {component} = setupTest();
-
-  component.initialize();
-  component.destroy();
-
-  assert.isEmpty(component.expansionIcons_);
-});
-
 test(`adapter#notifyChange emits ${strings.CHANGE_EVENT}`, () => {
   const {component} = setupTest();
 
@@ -130,8 +113,6 @@ test('adapter#registerInteractionHandler adds an event listener on its included 
   const {component, root} = setupTest();
   const handler = td.func('handler');
 
-  component.initialize();
-
   component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
 
   domEvents.emit(root, 'click');
@@ -142,8 +123,6 @@ test('adapter#registerInteractionHandler adds an event listener on its included 
 test('adapter#deregisterInteractionHandler removes an event listener from its included children elements', () => {
   const {component, root} = setupTest();
   const handler = td.func('handler');
-
-  component.initialize();
 
   root.addEventListener('click', handler);
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
@@ -157,8 +136,6 @@ test('adapter#blur blurs the root element', () => {
   const {component} = setupTest();
   const handler = td.func('handler');
 
-  component.initialize();
-
   component.listen('blur', handler);
   component.getDefaultFoundation().adapter_.blur();
 
@@ -171,8 +148,6 @@ test('adapter#blur blurs the root element', () => {
 test('adapter#hasClass returns correct values', () => {
   const {component} = setupTest();
 
-  component.initialize();
-
   assert.isTrue(component.getDefaultFoundation().adapter_.hasClass(cssClasses.ROOT));
   assert.isFalse(component.getDefaultFoundation().adapter_.hasClass('wubba-lubba-dub-dub!!'));
 });
@@ -180,8 +155,6 @@ test('adapter#hasClass returns correct values', () => {
 test('adapter#removeClass removes class from root element', () => {
   const {component, root} = setupTest();
   const testClass = 'test-class';
-
-  component.initialize();
 
   root.classList.add(testClass);
   assert.isTrue(root.classList.contains(testClass));
@@ -193,8 +166,6 @@ test('adapter#removeClass removes class from root element', () => {
 test('adapter#addClass adds class to root element', () => {
   const {component, root} = setupTest();
   const testClass = 'test-class';
-
-  component.initialize();
 
   assert.isFalse(root.classList.contains(testClass));
 
@@ -218,8 +189,6 @@ test('adapter#getStyle gets style on root element', () => {
     'overflow',
   ];
 
-  component.initialize();
-
   styles.forEach((style) => {
     assert.equal(component.getDefaultFoundation().adapter_.getStyle(style), root.style[style]);
   });
@@ -227,8 +196,6 @@ test('adapter#getStyle gets style on root element', () => {
 
 test('adapter#setStyle sets style on root element', () => {
   const {component, root} = setupTest();
-
-  component.initialize();
 
   assert.notEqual(root.style.color, 'red');
 
@@ -240,8 +207,6 @@ test('adapter#setStyle sets style on root element', () => {
 test('adapter#setAttribute sets attribute on root element', () => {
   const {component, root} = setupTest();
   const attribute = 'testattribute';
-
-  component.initialize();
 
   assert.isNotOk(root.getAttribute(attribute));
 

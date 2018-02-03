@@ -41,7 +41,6 @@ class MDCExpansionPanelFoundation extends MDCFoundation {
       notifyChange: () => {},
       notifyExpand: () => {},
       notifyCollapse: () => {},
-      setExpansionIconInnerHTML: (/* innerHTML: string */) => {},
       shouldRespondToClickEvent: (/* event: MouseEvent */) => true,
     });
   }
@@ -130,7 +129,6 @@ class MDCExpansionPanelFoundation extends MDCFoundation {
     // needed for keyboard navigation
     this.adapter_.setAttribute('tabindex', '0');
 
-    this.adapter_.setExpansionIconInnerHTML('expand_more');
     this.adapter_.registerInteractionHandler('click', this.clickHandler_);
     this.adapter_.registerInteractionHandler('transitionend', this.transitionEndHandler_);
     this.adapter_.registerInteractionHandler('keypress', this.keyPressHandler_);

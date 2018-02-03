@@ -43,27 +43,6 @@ class MDCExpansionPanel extends MDCComponent {
   }
 
   /**
-   * @param {...?} args
-   */
-  constructor(...args) {
-    super(...args);
-
-    /**
-     * All the elements that have been marked as expansion icons by the user.
-     * @private {?Array<Element>}
-     */
-    this.expansionIcons_;
-  }
-
-  initialize() {
-    this.expansionIcons_ = util.toArray(this.root_.querySelectorAll(strings.EXPANSION_ICON_SELECTOR));
-  }
-
-  destroy() {
-    this.expansionIcons_ = [];
-  }
-
-  /**
    * Expands the panel.
    */
   expand() {
@@ -89,7 +68,6 @@ class MDCExpansionPanel extends MDCComponent {
       setAttribute: (attributeName, value) => this.root_.setAttribute(attributeName, value),
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      setExpansionIconInnerHTML: (innerHTML) => this.expansionIcons_.forEach((e) => e.innerHTML = innerHTML.toString()),
       notifyChange: () => this.emit(strings.CHANGE_EVENT, this),
       notifyExpand: () => this.emit(strings.EXPAND_EVENT, this),
       notifyCollapse: () => this.emit(strings.COLLAPSE_EVENT, this),

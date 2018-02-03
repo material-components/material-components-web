@@ -56,7 +56,6 @@ test('default adapter returns a complete adapter implementation', () => {
     'notifyChange',
     'notifyExpand',
     'notifyCollapse',
-    'setExpansionIconInnerHTML',
     'shouldRespondToClickEvent',
   ]);
 });
@@ -87,14 +86,6 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerInteractionHandler('click', isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('transitionend', isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('keypress', isA(Function)));
-});
-
-test('#init sets the expansion icon content', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-
-  td.verify(mockAdapter.setExpansionIconInnerHTML('expand_more'));
 });
 
 test('#destroy calls event deregistrations', () => {

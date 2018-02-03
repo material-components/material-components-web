@@ -102,11 +102,6 @@ class MDCExpansionPanelAdapter {
   notifyCollapse() {}
 
   /**
-   * @param {string} innerHTML
-   */
-  setExpansionIconInnerHTML(innerHTML) {}
-
-  /**
    * @param {Event} event
    * @return {boolean}
    */
