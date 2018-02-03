@@ -25,9 +25,9 @@ const path = require('path');
 const WebpackConfigLoader = require('./webpack-config-loader');
 const webpackConfigLoader = new WebpackConfigLoader();
 
-describe('webpack.config.js', function() {
-  describe('MDC_ENV=""', function() {
-    it('module exports should match build-config-no-env.golden.json', function() {
+describe('webpack.config.js', () => {
+  describe('MDC_ENV=""', () => {
+    it('module exports should match build-config-no-env.golden.json', () => {
       const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-no-env.golden.json'),
@@ -37,8 +37,8 @@ describe('webpack.config.js', function() {
     });
   });
 
-  describe('MDC_ENV="production"', function() {
-    it('module exports should match build-config-prod-env.golden.json', function() {
+  describe('MDC_ENV="production"', () => {
+    it('module exports should match build-config-prod-env.golden.json', () => {
       const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-prod-env.golden.json'),
@@ -48,8 +48,8 @@ describe('webpack.config.js', function() {
     });
   });
 
-  describe('MDC_ENV="development"', function() {
-    it('module exports should match build-config-dev-env.golden.json', function() {
+  describe('MDC_ENV="development"', () => {
+    it('module exports should match build-config-dev-env.golden.json', () => {
       const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-dev-env.golden.json'),
