@@ -60,6 +60,26 @@ $mdc-expansion-panel--collapsed-height: 48px !default;
 // padding/margins
 // if you change this value, also change numbers.EXPANDED_VERTICAL_MARGIN in constants.js
 $mdc-expansion-panel--expanded-vertical-margin: 16px !default;
+$mdc-expansion-panel--collapsed-margin: 0 !default;
+
+$mdc-expansion-panel__header-padding-vertical: 12px !default;
+$mdc-expansion-panel__header-padding-horizontal: 24px !default;
+$mdc-expansion-panel__header-expanded-padding-vertical: 20px !default;
+$mdc-expansion-panel__header-expanded-padding-horizontal: $mdc-expansion-panel__header-padding-horizontal !default;
+$mdc-expansion-panel__header__section-margin: 16px !default;
+
+$mdc-expansion-body-padding-top: 0 !default;
+$mdc-expansion-body-padding-horizontal: 24px !default;
+$mdc-expansion-body-padding-bottom: 16px !default;
+
+$mdc-expansion-panel__footer-padding-vertical: 16px !default;
+$mdc-expansion-panel__footer-padding-start: 24px !default;
+$mdc-expansion-panel__footer-padding-end: 8px !default;
 
 // ordering
 $mdc-expansion-panel-last-element-order: 10 !default;
+
+// borders
+$mdc-expansion-panel-border-width: 1px !default;
+$mdc-expansion-panel__footer-border-top-width: $mdc-expansion-panel-border-width !default;
+$mdc-expansion-panel-border-bottom-width: $mdc-expansion-panel-border-width !default;

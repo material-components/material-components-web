@@ -26,7 +26,7 @@
   position: relative;
   flex-direction: column;
   width: 100%;
-  border-bottom: 1px solid $mdc-expansion-panel-border-bottom-color;
+  border-bottom: $mdc-expansion-panel-border-bottom-width solid $mdc-expansion-panel-border-bottom-color;
   outline: none;
   background-color: $mdc-expansion-panel-background-color;
   cursor: pointer;
@@ -55,10 +55,10 @@
     justify-content: flex-start;
     order: 0;
     height: $mdc-expansion-panel__header-height;
-    padding: 12px 24px;
+    padding: $mdc-expansion-panel__header-padding-vertical $mdc-expansion-panel__header-padding-horizontal;
 
     &__section {
-      margin-right: 16px;
+      margin-right: $mdc-expansion-panel__header__section-margin;
     }
 
     .mdc-expansion-panel__expansion-icon {
@@ -81,23 +81,23 @@
     @include mdc-expansion-panel-transition(flex-shrink);
 
     order: 1;
-    padding: 0 24px 16px;
+    padding: $mdc-expansion-body-padding-top $mdc-expansion-body-padding-horizontal $mdc-expansion-body-padding-bottom;
   }
 
   &__footer {
     @include mdc-expansion-panel-transition(padding flex-shrink);
 
     @include mdc-expansion-panel-rtl {
-      padding-right: 24px;
-      padding-left: 8px;
+      padding-right: $mdc-expansion-panel__footer-padding-start;
+      padding-left: $mdc-expansion-panel__footer-padding-end;
     }
 
     display: flex;
     align-items: center;
     order: 2;
     height: $mdc-expansion-panel__footer-height;
-    padding: 16px 8px 16px 24px;
-    border-top: 1px solid $mdc-expansion-panel__footer-border-top-color;
+    padding: $mdc-expansion-panel__footer-padding-vertical $mdc-expansion-panel__footer-padding-end $mdc-expansion-panel__footer-padding-vertical $mdc-expansion-panel__footer-padding-start;
+    border-top: $mdc-expansion-panel__footer-border-top-width solid $mdc-expansion-panel__footer-border-top-color;
 
     &__button-bar {
       @include mdc-expansion-panel-last-element;
@@ -105,17 +105,10 @@
   }
 
   // collapsed
-  &--collapsed {
-    .mdc-expansion-panel__body,
-    .mdc-expansion-panel__footer {
-      display: none;
-    }
-  }
-
   &--collapsing,
   &--collapsed {
     height: $mdc-expansion-panel--collapsed-height;
-    margin: 0;
+    margin: $mdc-expansion-panel--collapsed-margin;
 
     .mdc-expansion-panel--details {
       display: none;
@@ -132,7 +125,7 @@
     }
 
     .mdc-expansion-panel__header {
-      padding: 20px 24px;
+      padding: $mdc-expansion-panel__header-expanded-padding-vertical $mdc-expansion-panel__header-expanded-padding-horizontal;
     }
 
     .mdc-expansion-panel__expansion-icon {
