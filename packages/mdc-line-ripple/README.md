@@ -2,13 +2,13 @@
 title: "Line Ripple"
 layout: detail
 section: components
-excerpt: "The line ripple is used to highight user specified text above it."
+excerpt: "The line ripple is used to highlight user-specified text above it."
 path: /catalog/input-controls/line-ripple/
 -->
 
 # Line Ripple
 
-The line ripple is used to highlight user specified text above it. When a the line ripple is active, the line’s color and thickness vary.
+The line ripple is used to highlight user-specified text above it. When a line ripple is active, the line’s color and thickness vary.
 
 ## Design & API Documentation
 
@@ -42,15 +42,21 @@ CSS Class | Description
 --- | ---
 `mdc-line-ripple` | Mandatory
 `mdc-line-ripple--active` | Styles the line ripple as an active line ripple
-`mdc-line-ripple--deactivating` | Styles the line ripple as a deactivating line ripple. 
+`mdc-line-ripple--deactivating` | Styles the line ripple as a deactivating line ripple
 
 ### Sass Mixins
 
+Mixin | Description
+--- | ---
+`mdc-line-ripple-color($color)` | Customizes the color of the line ripple when active
+
 ### `MDCLineRipple`
 
-`activate() => void` | Proxies to the foundations `activate()` method.
-`deactivate() => void` |  Proxies to the foundations `deactivate()` method.
-`setRippleCenter(number: xCoordinate) => void` | Proxies to the foundations `setRippleCenter(number: xCoordinate)` method.
+Method Signature | Description
+--- | ---
+`activate() => void` | Proxies to the foundation's `activate()` method
+`deactivate() => void` | Proxies to the foundation's `deactivate()` method
+`setRippleCenter(xCoordinate: number) => void` | Proxies to the foundation's `setRippleCenter(xCoordinate: number)` method
 
 ### `MDCLineRippleAdapter`
 
@@ -68,5 +74,5 @@ Method Signature | Description
 --- | ---
 `activate() => void` | Activates the line ripple
 `deactivate() => void` |  Deactivates the line ripple
-`setRippleCenter(number: xCoordinate) => void` | Sets the center of the ripple to the `xCoordinate` given.
-`handleTransitionEnd(evt: Event) => void` | Handles a transition end event
+`setRippleCenter(xCoordinate: number) => void` | Sets the center of the ripple to the `xCoordinate` given
+`handleTransitionEnd(evt: Event) => void` | Handles a `transitionend` event
