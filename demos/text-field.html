@@ -394,12 +394,12 @@
 
       demoReady(function() {
         var tfEl = document.getElementById('tf-box-example');
-        var tfBox = new mdc.textField.MDCTextField(tfEl);
+        var tf = new mdc.textField.MDCTextField(tfEl);
         var wrapper = document.getElementById('demo-tf-box-wrapper');
         var helperText = document.getElementById('box-text-field-helper-text');
 
         document.getElementById('box-disable').addEventListener('change', function(evt) {
-          tfBox.disabled = evt.target.checked;
+          tf.disabled = evt.target.checked;
         });
 
         document.getElementById('box-rtl').addEventListener('change', function(evt) {
@@ -408,12 +408,12 @@
           } else {
             wrapper.removeAttribute('dir');
           }
-          tfBox.layout();
+          tf.layout();
         });
 
         document.getElementById('box-dense').addEventListener('change', function(evt) {
           tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-          tfBox.layout();
+          tf.layout();
         });
 
         document.getElementById('box-alternate-colors').addEventListener('change', function (evt) {
@@ -427,7 +427,7 @@
           var input = tfEl.querySelector('.mdc-text-field__input');
           var requiredHelperText = 'Must be at least 8 characters';
           var plainHelperText = 'Helper Text (possibly validation message)';
-          tfBox.required = target.checked;
+          tf.required = target.checked;
           input.pattern = evt.target.checked ? '.{8,}' : '.*';
           helperText.innerHTML = target.checked ? requiredHelperText : plainHelperText;
         });
