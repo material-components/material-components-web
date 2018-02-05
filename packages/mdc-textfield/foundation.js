@@ -301,9 +301,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
    */
   setRequired(isRequired) {
     this.getNativeInput_().required = isRequired;
-    // Addition of the asterisk is automatic based on CSS, but validity checking
-    // needs to be manually run.
-    this.styleValidity_(this.isValid());
   }
 
   /**
