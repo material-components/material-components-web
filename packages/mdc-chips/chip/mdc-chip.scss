@@ -16,6 +16,7 @@
 
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
+@import "../variables";
 
 .mdc-chip {
   @include mdc-ripple-surface;
@@ -32,15 +33,14 @@
   overflow: hidden;
 }
 
-// TODO(bonniez): Add icon constants to variables.scss
 .mdc-chip--with-leading-icon {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
+  padding-top: $mdc-chip-with-icon-padding;
+  padding-bottom: $mdc-chip-with-icon-padding;
+  padding-left: $mdc-chip-with-icon-padding;
 }
 
 .mdc-chip--with-trailing-icon {
-  padding-right: 4px;
+  padding-right: $mdc-chip-with-icon-padding;
 }
 
 .mdc-chip__text {
@@ -50,28 +50,24 @@
   line-height: 17px;
 }
 
-// TODO(bonniez): Add icon constants to variables.scss
 .mdc-chip__icon {
-  width: 24px;
-  height: 24px;
-  color: rgba(0, 0, 0, 0.54);
+  color: $mdc-chip-icon-color;
   vertical-align: middle;
-  margin-right: 4px;
+  margin: 0 4px;
   border-radius: 16px;
   outline: none;
 }
 
 .mdc-chip__icon.mdc-chip__icon--trailing {
-  width: 18px;
-  height: 18px;
-  font-size: 18px;
-  margin-left: 4px;
+  width: $mdc-chip-trailing-icon-size;
+  height: $mdc-chip-trailing-icon-size;
+  font-size: $mdc-chip-trailing-icon-size;
 
   &:hover {
-    color: rgba(0, 0, 0, 0.62);
+    color: $mdc-chip-trailing-icon-hover;
   }
 
   &:focus {
-    color: rgba(0, 0, 0, 0.87);
+    color: $mdc-chip-trailing-icon-focus;
   }
 }
