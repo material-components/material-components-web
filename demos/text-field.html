@@ -139,7 +139,7 @@
         <h2>Outlined Text Field</h2>
         <div id="demo-tf-outlined-wrapper">
           <div id="tf-outlined-example" class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
-            <input required pattern=".{8,}" type="text" id="tf-outlined-input" class="mdc-text-field__input"
+            <input pattern=".{8,}" type="text" id="tf-outlined-input" class="mdc-text-field__input"
                    aria-controls="name-validation-message">
             <label for="tf-outlined-input" class="mdc-text-field__label">Your Name</label>
             <div class="mdc-text-field__outline">
@@ -168,6 +168,10 @@
         <div>
           <input id="outlined-dense" type="checkbox">
           <label for="outlined-dense">Dense</label>
+        </div>
+        <div>
+          <input id="outlined-required" type="checkbox">
+          <label for="outlined-required">Required and must be at least 8 characters</label>
         </div>
       </section>
 
@@ -382,16 +386,20 @@
           tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
           tf.layout();
         });
+        document.getElementById('outlined-required').addEventListener('change', function(evt) {
+          var checked = evt.target.checked;
+          tf.required = checked;
+        });
       });
 
       demoReady(function() {
         var tfEl = document.getElementById('tf-box-example');
-        var tf = new mdc.textField.MDCTextField(tfEl);
+        var tfBox = new mdc.textField.MDCTextField(tfEl);
         var wrapper = document.getElementById('demo-tf-box-wrapper');
         var helperText = document.getElementById('box-text-field-helper-text');
 
         document.getElementById('box-disable').addEventListener('change', function(evt) {
-          tf.disabled = evt.target.checked;
+          tfBox.disabled = evt.target.checked;
         });
 
         document.getElementById('box-rtl').addEventListener('change', function(evt) {
@@ -400,12 +408,12 @@
           } else {
             wrapper.removeAttribute('dir');
           }
-          tf.layout();
+          tfBox.layout();
         });
 
         document.getElementById('box-dense').addEventListener('change', function(evt) {
           tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-          tf.layout();
+          tfBox.layout();
         });
 
         document.getElementById('box-alternate-colors').addEventListener('change', function (evt) {
@@ -419,7 +427,7 @@
           var input = tfEl.querySelector('.mdc-text-field__input');
           var requiredHelperText = 'Must be at least 8 characters';
           var plainHelperText = 'Helper Text (possibly validation message)';
-          input.required = target.checked;
+          tfBox.required = target.checked;
           input.pattern = evt.target.checked ? '.{8,}' : '.*';
           helperText.innerHTML = target.checked ? requiredHelperText : plainHelperText;
         });
@@ -512,10 +520,14 @@
         });
 
         document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
+          var checked = evt.target.checked;
+          tfBoxLeading.required = checked;
+          tfBoxTrailing.required = checked;
+          tfOutlinedLeading.required = checked;
+          tfOutlinedTrailing.required = checked;
           [].slice.call(tfInputs).forEach(function(input) {
-                input.required = evt.target.checked;
-                input.pattern = evt.target.checked ? '.{8,}' : '.*';
-              });
+            input.pattern = evt.target.checked ? '.{8,}' : '.*';
+          });
         });
 
         document.getElementById('leading-trailing-alternate-colors').addEventListener('change', function(evt) {
@@ -558,7 +570,7 @@
         });
         document.getElementById('required').addEventListener('change', function(evt) {
           var target = evt.target;
-          tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
+          tf.required = target.checked;
         });
         document.getElementById('alternate-colors').addEventListener('change', function (evt) {
           var target = evt.target;
@@ -608,11 +620,8 @@
         });
 
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
-          var target = evt.target;
-          [].slice.call(tfRoot.querySelectorAll('.mdc-text-field__input'))
-              .forEach(function(input) {
-                input.required = target.checked;
-              })
+          var checked = evt.target.checked;
+          tf.required = checked;
         });
       });
 
@@ -638,11 +647,9 @@
         });
 
         document.getElementById('fullwidth-required').addEventListener('change', function(evt) {
-          var target = evt.target;
-          [].slice.call(section.querySelectorAll('.mdc-text-field__input'))
-              .forEach(function(input) {
-                input.required = target.checked;
-              })
+          var checked = evt.target.checked;
+          tf.required = checked;
+          tfMulti.required = checked;
         });
 
         document.getElementById('fullwidth-alternate-colors').addEventListener('change', function (evt) {
