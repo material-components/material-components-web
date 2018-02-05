@@ -37,6 +37,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       setActionText: (/* actionText: string */) => {},
       setMessageText: (/* message: string */) => {},
       setFocus: () => {},
+      isFocused: () => /* boolean */ false,
       visibilityIsHidden: () => /* boolean */ false,
       registerCapturedBlurHandler: (/* handler: EventListener */) => {},
       deregisterCapturedBlurHandler: (/* handler: EventListener */) => {},
@@ -81,6 +82,9 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       }
     };
     this.interactionHandler_ = (evt) => {
+      if (evt.type == 'focus' && !this.adapter_.isFocused()) {
+        return;
+      }
       if (evt.type == 'touchstart' || evt.type == 'mousedown') {
         this.pointerDownRecognized_ = true;
       }
