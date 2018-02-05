@@ -204,19 +204,15 @@ test('#setValid updates classes', () => {
 
 test('#setRequired updates CSS classes', () => {
   // Native validity checking does not apply in unittests, so manually mark as valid or invalid.
-  const {foundation, mockAdapter, nativeInput, helperText} =
+  const {foundation, mockAdapter, nativeInput} =
     setupValueTest('', /* isValid */ false);
 
   foundation.setRequired(true);
   assert.isOk(foundation.isRequired());
-  td.verify(mockAdapter.addClass(cssClasses.INVALID));
-  td.verify(helperText.setValidity(false));
 
   nativeInput.validity.valid = true;
   foundation.setRequired(false);
   assert.isNotOk(foundation.isRequired());
-  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
-  td.verify(helperText.setValidity(true));
 
   // None of these is affected by setRequired.
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
