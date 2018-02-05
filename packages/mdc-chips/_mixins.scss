@@ -15,10 +15,25 @@
 //
 
 @import "@material/ripple/mixins";
+@import "@material/theme/functions";
 @import "@material/theme/mixins";
 
 @mixin mdc-chip-corner-radius($radius) {
   border-radius: $radius;
+}
+
+@mixin mdc-chip-accessible($fill-color) {
+  $fill-tone: mdc-theme-tone($fill-color);
+
+  @include mdc-chip-fill-color($fill-color);
+
+  @if ($fill-tone == "dark") {
+    @include mdc-chip-ink-color(text-primary-on-dark);
+    @include mdc-states(text-primary-on-dark);
+  } @else {
+    @include mdc-chip-ink-color(text-primary-on-light);
+    @include mdc-states(text-primary-on-light);
+  }
 }
 
 @mixin mdc-chip-fill-color($color) {
@@ -28,6 +43,12 @@
 @mixin mdc-chip-ink-color($color) {
   @include mdc-states-base-color($color);
   @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-chip-stroke($width: 0, $style: solid, $color: black) {
+  @include mdc-chip-stroke-width($width);
+  @include mdc-chip-stroke-style($style);
+  @include mdc-chip-stroke-color($color);
 }
 
 @mixin mdc-chip-stroke-color($color) {
@@ -48,10 +69,4 @@
   padding-top: $vertical-padding-value;
   padding-bottom: $vertical-padding-value;
   border-width: $width;
-}
-
-@mixin mdc-chip-stroke($width: 0, $style: solid, $color: black) {
-  @include mdc-chip-stroke-width($width);
-  @include mdc-chip-stroke-style($style);
-  @include mdc-chip-stroke-color($color);
 }
