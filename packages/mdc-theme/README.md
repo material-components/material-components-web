@@ -34,10 +34,6 @@ and five text styles:
 
 > **A note about Primary and Secondary**, don't confuse primary/secondary _color_ with primary/secondary _text_. The former refers to the primary/secondary _theme_ color that is used to establish a visual identity and color many parts of your application. The latter refers to the style of text that is most prominent (low opacity, high contrast), and used to display most content.
 
-Some components can change their appearance when in a Dark Theme context, aka placed on top of a dark background. There are two ways to specify if a component is in a Dark Theme context. The first is to add `mdc-theme--dark` to a *container* element, which holds the component. The second way is to add `<component_name>--theme-dark` modifier class to the actual component element. For example, `mdc-button--theme-dark` would put the MDC Button in a Dark Theme context.
-
-> **A note about Dark Theme context**, don't confuse Dark Theme context with a component that has a dark color. Dark Theme context means the component sits on top of a dark background.
-
 ## Design & API Documentation
 
 <ul class="icon-list">
@@ -141,11 +137,6 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-theme-prop($property, $style, $important, $edgeOptOut)` | Applies a theme color or a custom color to a CSS property, optionally with `!important`. If `$edgeOptOut` is `true` and a theme color is passed, the style will be wrapped in a `@supports` clause to exclude the style in Edge to avoid issues with its buggy CSS variable support.
-`mdc-theme-dark($root-selector, $compound)` | Creates a rule that is applied when the current selector is within an Dark Theme context
-
-#### `mdc-theme-dark($root-selector, $compound)`
-
-Creates a rule that is applied when the current selector is within an Dark Theme context. If you are using the mixin on anything other than the base selector of the component, e.g. `.mdc-button`, you need to specify `$root-selector` as the base selector as a parameter. You can also specify `$compound` to true if the the current selector is a compound selector with the base selector, e.g. a modifier class to the component root element.
 
 #### `mdc-theme-prop` Properties
 
