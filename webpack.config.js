@@ -22,16 +22,12 @@ const glob = require('glob');
 const PluginFactory = require('./scripts/webpack/plugin-factory');
 const pluginFactory = new PluginFactory();
 
+const Environment = require('./scripts/build/environment');
+const env = new Environment();
+env.setBabelEnv();
+
 const OUT_DIR_ABS = path.resolve('./build');
 const DEMO_ASSET_DIR_REL = '/assets/'; // Used by webpack-dev-server
-
-const IS_DEV = process.env.MDC_ENV === 'development';
-const IS_PROD = process.env.MDC_ENV === 'production';
-
-const LIFECYCLE_EVENT = process.env.npm_lifecycle_event;
-if (LIFECYCLE_EVENT == 'test' || LIFECYCLE_EVENT == 'test:watch') {
-  process.env.BABEL_ENV = 'test';
-}
 
 const CSS_LOADER_CONFIG = [
   {
@@ -59,8 +55,8 @@ const CSS_LOADER_CONFIG = [
 // In development, stylesheets are emitted as JS files to facilitate hot module replacement.
 // In all other cases, ExtractTextPlugin is used to generate the final CSS, so these files are
 // given a dummy ".js-entry" extension.
-const CSS_JS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${IS_DEV ? '.js' : '.js-entry'}`;
-const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css`;
+const CSS_JS_FILENAME_OUTPUT_PATTERN = `[name]${env.isProd() ? '.min' : ''}.css${env.isDev() ? '.js' : '.js-entry'}`;
+const CSS_FILENAME_OUTPUT_PATTERN = `[name]${env.isProd() ? '.min' : ''}.css`;
 
 const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssExtractionPlugin = pluginFactory.createCssExtractionPlugin(CSS_FILENAME_OUTPUT_PATTERN);
@@ -77,7 +73,7 @@ module.exports = [{
   output: {
     path: OUT_DIR_ABS,
     publicPath: DEMO_ASSET_DIR_REL,
-    filename: 'material-components-web.' + (IS_PROD ? 'min.' : '') + 'js',
+    filename: 'material-components-web.' + (env.isProd() ? 'min.' : '') + 'js',
     libraryTarget: 'umd',
     library: 'mdc',
   },
@@ -103,7 +99,7 @@ module.exports = [{
   ],
 }];
 
-if (!IS_DEV) {
+if (!env.isDev()) {
   module.exports.push({
     name: 'js-components',
     entry: {
@@ -133,7 +129,7 @@ if (!IS_DEV) {
     output: {
       path: OUT_DIR_ABS,
       publicPath: DEMO_ASSET_DIR_REL,
-      filename: 'mdc.[name].' + (IS_PROD ? 'min.' : '') + 'js',
+      filename: 'mdc.[name].' + (env.isProd() ? 'min.' : '') + 'js',
       libraryTarget: 'umd',
       library: ['mdc', '[name]'],
     },
@@ -203,7 +199,7 @@ if (!IS_DEV) {
   });
 }
 
-if (IS_DEV) {
+if (env.isDev()) {
   const demoStyleEntry = {};
   glob.sync('demos/**/*.scss').forEach((relativeFilePath) => {
     const filename = path.basename(relativeFilePath);
