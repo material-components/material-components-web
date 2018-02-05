@@ -17,11 +17,24 @@
 'use strict';
 
 const CopyrightBannerPlugin = require('./copyright-banner-plugin');
+const CssCleanupPlugin = require('../../scripts/webpack/css-cleanup-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = class {
+  constructor({pathResolver, globber} = {}) {
+    this.pathResolver_ = pathResolver;
+    this.globber_ = globber;
+  }
+
   createCopyrightBannerPlugin() {
     return new CopyrightBannerPlugin();
+  }
+
+  createCssCleanupPlugin({cleanupDirRelativePath} = {}) {
+    return new CssCleanupPlugin({
+      cleanupDirRelativePath,
+      globber: this.globber_,
+    });
   }
 
   createCssExtractionPlugin(outputFilenamePattern) {
