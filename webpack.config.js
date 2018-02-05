@@ -23,19 +23,10 @@ const PluginFactory = require('./scripts/webpack/plugin-factory');
 const pluginFactory = new PluginFactory();
 
 const OUT_DIR_ABS = path.resolve('./build');
-const DEMO_ASSET_DIR_REL = '/assets/'; // Used by webpack-dev-server and MDC_BUILD_STATIC_DEMO_ASSETS
+const DEMO_ASSET_DIR_REL = '/assets/'; // Used by webpack-dev-server
 
 const IS_DEV = process.env.MDC_ENV === 'development';
 const IS_PROD = process.env.MDC_ENV === 'production';
-
-const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS === 'true' && IS_DEV;
-// Source maps break extract-text-webpack-plugin, so they need to be disabled when WRAP_CSS_IN_JS is set to false.
-const GENERATE_SOURCE_MAPS =
-    process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
-    (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
-
-const SASS_DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
-const JS_DEVTOOL = 'source-map';
 
 const LIFECYCLE_EVENT = process.env.npm_lifecycle_event;
 if (LIFECYCLE_EVENT == 'test' || LIFECYCLE_EVENT == 'test:watch') {
@@ -46,20 +37,20 @@ const CSS_LOADER_CONFIG = [
   {
     loader: 'css-loader',
     options: {
-      sourceMap: GENERATE_SOURCE_MAPS,
+      sourceMap: true,
     },
   },
   {
     loader: 'postcss-loader',
     options: {
-      sourceMap: GENERATE_SOURCE_MAPS,
+      sourceMap: true,
       plugins: () => [require('autoprefixer')({grid: false})],
     },
   },
   {
     loader: 'sass-loader',
     options: {
-      sourceMap: GENERATE_SOURCE_MAPS,
+      sourceMap: true,
       includePaths: glob.sync('packages/*/node_modules').map((d) => path.join(__dirname, d)),
     },
   },
@@ -75,12 +66,10 @@ const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssExtractionPlugin = pluginFactory.createCssExtractionPlugin(CSS_FILENAME_OUTPUT_PATTERN);
 
 const createCssLoaderConfig = () =>
-  WRAP_CSS_IN_JS ?
-    [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG) :
-    cssExtractionPlugin.extract({
-      fallback: 'style-loader',
-      use: CSS_LOADER_CONFIG,
-    });
+  cssExtractionPlugin.extract({
+    fallback: 'style-loader',
+    use: CSS_LOADER_CONFIG,
+  });
 
 module.exports = [{
   name: 'js-all',
@@ -98,7 +87,7 @@ module.exports = [{
   devServer: {
     disableHostCheck: true,
   },
-  devtool: JS_DEVTOOL,
+  devtool: 'source-map',
   module: {
     rules: [{
       test: /\.js$/,
@@ -148,7 +137,7 @@ if (!IS_DEV) {
       libraryTarget: 'umd',
       library: ['mdc', '[name]'],
     },
-    devtool: JS_DEVTOOL,
+    devtool: 'source-map',
     module: {
       rules: [{
         test: /\.js$/,
@@ -200,7 +189,7 @@ if (!IS_DEV) {
       publicPath: DEMO_ASSET_DIR_REL,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
-    devtool: SASS_DEVTOOL,
+    devtool: 'source-map',
     module: {
       rules: [{
         test: /\.scss$/,
@@ -239,7 +228,7 @@ if (IS_DEV) {
       publicPath: DEMO_ASSET_DIR_REL,
       filename: CSS_JS_FILENAME_OUTPUT_PATTERN,
     },
-    devtool: SASS_DEVTOOL,
+    devtool: 'source-map',
     module: {
       rules: [{
         test: /\.scss$/,
@@ -265,7 +254,7 @@ if (IS_DEV) {
       libraryTarget: 'umd',
       library: ['demo', '[name]'],
     },
-    devtool: JS_DEVTOOL,
+    devtool: 'source-map',
     module: {
       rules: [{
         test: /\.js$/,
