@@ -16,10 +16,7 @@
 
 'use strict';
 
-const os = require('os');
 const path = require('path');
-
-const fsx = require('fs-extra');
 const glob = require('glob');
 
 const PluginFactory = require('./scripts/webpack/plugin-factory');
@@ -36,7 +33,6 @@ const WRAP_CSS_IN_JS = process.env.MDC_WRAP_CSS_IN_JS === 'true' && IS_DEV;
 const GENERATE_SOURCE_MAPS =
     process.env.MDC_GENERATE_SOURCE_MAPS === 'true' ||
     (process.env.MDC_GENERATE_SOURCE_MAPS !== 'false' && IS_DEV && WRAP_CSS_IN_JS);
-const BUILD_STATIC_DEMO_ASSETS = process.env.MDC_BUILD_STATIC_DEMO_ASSETS === 'true';
 
 const SASS_DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 const JS_DEVTOOL = 'source-map';
@@ -85,54 +81,6 @@ const createCssLoaderConfig = () =>
       fallback: 'style-loader',
       use: CSS_LOADER_CONFIG,
     });
-
-class PostCompilePlugin {
-  constructor(fn) {
-    this.fn = fn;
-  }
-
-  apply(compiler) {
-    compiler.plugin('done', (stats) => this.fn(stats));
-  }
-}
-
-const createStaticDemoPlugin = () => {
-  return new PostCompilePlugin(() => {
-    if (!BUILD_STATIC_DEMO_ASSETS || !fsx.existsSync(OUT_DIR_ABS)) {
-      return;
-    }
-
-    const demosDirAbs = path.resolve('./demos');
-    const tmpDirAbs = fsx.mkdtempSync(path.join(os.tmpdir(), 'mdc-web-demo-output-'));
-
-    const copyOptions = {
-      filter: (src) => {
-        return !/\.(scss|css.js)$/.test(src);
-      },
-    };
-
-    fsx.copySync(demosDirAbs, tmpDirAbs, copyOptions);
-    fsx.copySync(OUT_DIR_ABS, path.join(tmpDirAbs, DEMO_ASSET_DIR_REL), copyOptions);
-
-    if (!WRAP_CSS_IN_JS) {
-      glob.sync(path.join(tmpDirAbs, '**/*.html'))
-        .forEach((absPath) => {
-          const oldHtml = fsx.readFileSync(absPath, {encoding: 'utf8'});
-          const newHtml = oldHtml.replace(
-            /<script src="([^"]+\.css)\.js"><\/script>/ig,
-            '<link rel="stylesheet" href="$1">');
-          fsx.writeFileSync(absPath, newHtml, {encoding: 'utf8'});
-        });
-    }
-
-    // The `npm run build` command emits JS/CSS files directly to the $REPO/build/ directory (for distribution via npm).
-    // The `npm run build:demo` command, however, outputs _all_ static demo files (including HTML and images).
-    // Because the demo site expects JS/CSS files to be in /assets/, we need to reorganize the output folders to combine
-    // $REPO/demos/ and $REPO/build/ such that the demo site's import paths don't need to change.
-    fsx.removeSync(OUT_DIR_ABS);
-    fsx.moveSync(tmpDirAbs, OUT_DIR_ABS);
-  });
-};
 
 module.exports = [{
   name: 'js-all',
@@ -301,7 +249,6 @@ if (IS_DEV) {
     plugins: [
       cssExtractionPlugin,
       copyrightBannerPlugin,
-      createStaticDemoPlugin(),
     ],
   });
 
