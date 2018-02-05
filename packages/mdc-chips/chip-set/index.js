@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 
 import MDCChipSetAdapter from './adapter';
 import MDCChipSetFoundation from './foundation';
-import {MDCChip} from '../chip/index';
+import {MDCChip, MDCChipFoundation} from '../chip/index';
 
 /**
  * @extends {MDCComponent<!MDCChipSetFoundation>}
@@ -32,8 +32,10 @@ class MDCChipSet extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {!Array<!MDCChip>} */
+    /** @type {!Array<!MDCChip>} */
     this.chips;
+    /** @private {function(!Event): undefined} */
+    this.chipInteractionHandler_;
   }
 
   /**
@@ -50,6 +52,7 @@ class MDCChipSet extends MDCComponent {
    */
   initialize(chipFactory = (el) => new MDCChip(el)) {
     this.chips = this.instantiateChips_(chipFactory);
+    this.chipInteractionHandler_ = (evt) => this.foundation_.handleChipInteraction(evt);
   }
 
   destroy() {
@@ -64,6 +67,10 @@ class MDCChipSet extends MDCComponent {
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
+      bindOnChipInteractionEvent: () => this.listen(
+        MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_),
+      unbindOnChipInteractionEvent: () => this.unlisten(
+        MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_),
     })));
   }
 

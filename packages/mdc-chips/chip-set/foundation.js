@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCChipSetAdapter>}
@@ -29,6 +29,11 @@ class MDCChipSetFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /**
    * {@see MDCChipSetAdapter} for typing information on parameters and return
    * types.
@@ -37,6 +42,8 @@ class MDCChipSetFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
+      bindOnChipInteractionEvent: () => {},
+      unbindOnChipInteractionEvent: () => {},
     });
   }
 
@@ -45,6 +52,28 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
+
+    /** @private {!Array<!MDCChip>} */
+    this.selectedChips_ = [];
+  }
+
+  init() {
+    this.adapter_.bindOnChipInteractionEvent();
+  }
+
+  destroy() {
+    this.adapter_.unbindOnChipInteractionEvent();
+  }
+
+  /**
+   * Handles a chip interaction event
+   * @param {!Object} evt
+   */
+  handleChipInteraction(evt) {
+    const {chip} = evt.detail;
+    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
+      console.log("Chip selected!");
+    }
   }
 }
 
