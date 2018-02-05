@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 
 @mixin mdc-chip-corner-radius($radius) {
@@ -25,6 +26,7 @@
 }
 
 @mixin mdc-chip-ink-color($color) {
+  @include mdc-states-base-color($color);
   @include mdc-theme-prop(color, $color);
 }
 
