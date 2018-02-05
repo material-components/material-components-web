@@ -101,7 +101,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
   width: calc(100% - 4px);
 }
 
-:not(.mdc-tab-bar-upgraded) {
+.mdc-tab-bar:not(.mdc-tab-bar-upgraded) {
   .mdc-tab--active,
   .mdc-tab:hover,
   .mdc-tab:active {
