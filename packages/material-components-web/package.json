@@ -20,6 +20,7 @@
     "@material/button": "^0.29.0",
     "@material/card": "^0.29.0",
     "@material/checkbox": "^0.29.0",
+    "@material/chips": "^0.0.0",
     "@material/dialog": "^0.29.0",
     "@material/drawer": "^0.29.0",
     "@material/elevation": "^0.28.0",

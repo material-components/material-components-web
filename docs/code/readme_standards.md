@@ -41,9 +41,6 @@ CSS Class | Description
 `mdc-foo` | Sets the foo
 ```
 
-Remember to document `<COMPONENT_NAME>--theme-dark` CSS class if the component
-changes its appearance in Dark Theme context.
-
 ### Sass Variables and Mixins
 
 Sass variables are documented in a tabular format (See Tabular Format section).
