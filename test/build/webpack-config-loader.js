@@ -94,11 +94,22 @@ function serialize(obj) {
 
 /**
  * Removes strings that can vary across machines, such as the path to the local MDC Web repo.
- * @param {string} str
+ * @param {string} configString
  * @return {string}
  */
-function normalizeForDiffing(str) {
-  return ensureTrailingNewline(str.split(PROJECT_ROOT_ABSOLUTE_PATH).join(''));
+function normalizeForDiffing(configString) {
+  return ensureTrailingNewline(replaceAll(configString, PROJECT_ROOT_ABSOLUTE_PATH, ''));
+}
+
+/**
+ * Replaces all occurrences of `find` with `replace` in the given string (`str`).
+ * @param {string} str
+ * @param {string} find
+ * @param {string} replace
+ * @return {string}
+ */
+function replaceAll(str, find, replace) {
+  return str.split(find).join(replace);
 }
 
 /**
