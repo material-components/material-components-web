@@ -52,7 +52,7 @@ module.exports = class {
       env.mock('npm_lifecycle_event', npmCmd);
       env.mock('MDC_ENV', mdcEnv);
 
-      const generatedWebpackConfig = normalizeForDiffing(serialize(requireFresh(configPath)));
+      const generatedWebpackConfig = normalizeForDiffing(serialize(requireUncached(configPath)));
 
       if (bootstrapGolden) {
         fsx.writeFileSync(goldenPath, generatedWebpackConfig, {encoding: 'utf8'});
@@ -77,14 +77,14 @@ module.exports = class {
  * @param {string} module
  * @return {*}
  */
-function requireFresh(module) {
+function requireUncached(module) {
   delete require.cache[require.resolve(module)];
   return require(module);
 }
 
 /**
- * Stringifies the given object to JSON. Only the object's own enumerable properties are serialized, and circular
- * references are safely ignored.
+ * Stringifies the given object to JSON. Only the object's own enumerable properties are serialized. Circular references
+ * and function values are omitted.
  * @param {!Object|!Array} obj
  * @return {string}
  */
