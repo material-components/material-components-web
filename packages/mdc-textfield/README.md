@@ -144,8 +144,8 @@ See [here](helper-text/) for more information on using helper text.
 
 #### Leading and Trailing Icons
 
-Leading and trailing icons can be added to MDC Text Fields as visual indicators as well as interaction targets.
-See [here](icon/) for more information on using icons.
+Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
+well as interaction targets. See [here](icon/) for more information on using icons.
 
 ### CSS Classes
 
@@ -165,28 +165,28 @@ CSS Class | Description
 
 ### Sass Mixins
 
-To customize the colors of any part of the text-field, use the following mixins. We recommend you apply 
-these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--focused)` to select your unfocused text fields, 
-and `.foo-tab.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields, 
+To customize the colors of any part of the text-field, use the following mixins. We recommend you apply
+these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--focused)` to select your unfocused text fields,
+and `.foo-tab.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields,
 apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--invalid`.
 
-> _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`). 
+> _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`).
 
 Mixin | Description
 --- | ---
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
-`mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field.
+`mdc-text-field-label-color($color)` | Customizes the label color of the text-field.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text-field.
-`mdc-text-field-hover-line-ripple-color($color)` | Customizes the hover color of the line ripple of the text-field. 
-`mdc-text-field-focused-line-ripple-color($color)` | Customizes the line-ripple ripple color when the text-field is focused.  
-`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field. 
+`mdc-text-field-hover-line-ripple-color($color)` | Customizes the hover color of the line ripple of the text-field.
+`mdc-text-field-focused-line-ripple-color($color)` | Customizes the line-ripple ripple color when the text-field is focused.
+`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field.
 `mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
 `mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
-`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text-field box. 
-`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea. 
-`mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea. 
+`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text-field box.
+`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
+`mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
 `mdc-text-field-fullwidth-line-ripple-color($color)` | Customizes the line ripple under a fullwidth text field. Doesn't apply to a textarea.
 `mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
 `mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
