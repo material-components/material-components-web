@@ -15,7 +15,7 @@
  */
 
 /**
- * @fileoverview Executes a webpack config file and returns its module exports as a string.
+ * @fileoverview Runs a webpack config file and returns its module exports as a string.
  */
 
 const fsx = require('fs-extra');
@@ -28,13 +28,14 @@ const PROJECT_ROOT_ABSOLUTE_PATH = path.resolve(__dirname, '../../');
 
 module.exports = class {
   /**
-   * Simulates the `npm run build`, `npm run build:min`, and `npm run dev` commands, returning both the
-   * actual generated config object exported by the webpack config file, as well as the expected (golden) config object.
+   * Simulates a build command (`npm run build`, `npm run build:min`, or `npm run dev`), and returns both the generated
+   * config object exported by the webpack config file as well as the expected (golden) config object.
+   *
    * @param {string} configPath Path to a webpack.config.js file
    * @param {string} goldenPath Path to a JSON file containing the expected module exports
-   * @param {string} npmCmd Command passed to `npm run` - e.g., `dev`, `build:min`, `test:buildconfig`
+   * @param {string} npmCmd Command passed to `npm run` (e.g., `dev`, `build:min`, `test:buildconfig`)
    * @param {string=} mdcEnv One of ["", "development", "production"]
-   * @param {boolean=} bootstrapGolden If `true`, the actual config exports are written to the golden file
+   * @param {boolean=} bootstrapGolden If `true`, the actual generated config exports will be written to the golden file
    * @return {{generatedWebpackConfig: string, expectedWebpackConfig: string}} Stringified JSON representations of both
    *   the actual and expected webpack config exports.
    */
@@ -47,29 +48,32 @@ module.exports = class {
   }) {
     const env = new MockEnv();
 
-    env.mock('npm_lifecycle_event', npmCmd);
-    env.mock('MDC_ENV', mdcEnv);
+    try {
+      env.mock('npm_lifecycle_event', npmCmd);
+      env.mock('MDC_ENV', mdcEnv);
 
-    const fsTextOpts = {encoding: 'utf8'};
-    const generatedWebpackConfig = redactProjectRootPath(serialize(requireFresh(configPath)));
+      const generatedWebpackConfig = normalizeForDiffing(serialize(requireFresh(configPath)));
 
-    if (bootstrapGolden) {
-      fsx.writeFileSync(goldenPath, generatedWebpackConfig, fsTextOpts);
+      if (bootstrapGolden) {
+        fsx.writeFileSync(goldenPath, generatedWebpackConfig, {encoding: 'utf8'});
+      }
+
+      const expectedWebpackConfig = normalizeForDiffing(fsx.readFileSync(goldenPath, {encoding: 'utf8'}));
+
+      return {
+        generatedWebpackConfig,
+        expectedWebpackConfig,
+      };
+    } finally {
+      env.restoreAll();
     }
-
-    const expectedWebpackConfig = redactProjectRootPath(fsx.readFileSync(goldenPath, fsTextOpts));
-
-    env.restoreAll();
-
-    return {
-      generatedWebpackConfig,
-      expectedWebpackConfig,
-    };
   }
 };
 
 /**
- * Same as `require`, but bypasses the module cache, forcing Node to reevaluate the requested module file.
+ * Same as `require()`, but bypasses the module cache, forcing Node to reevaluate the requested module file.
+ * This is necessary to allow tests to set their own environment variables.
+ * Note that only the requested module is purged from the cache, not its dependencies.
  * @param {string} module
  * @return {*}
  */
@@ -89,10 +93,19 @@ function serialize(obj) {
 }
 
 /**
- * Removes all occurrences of the MDC Web repo's root directory path from the given string.
+ * Removes strings that can vary across machines, such as the path to the local MDC Web repo.
  * @param {string} str
  * @return {string}
  */
-function redactProjectRootPath(str) {
-  return str.split(PROJECT_ROOT_ABSOLUTE_PATH).join('');
+function normalizeForDiffing(str) {
+  return ensureTrailingNewline(str.split(PROJECT_ROOT_ABSOLUTE_PATH).join(''));
+}
+
+/**
+ * Ensures that the given string ends with a newline character (`\n`).
+ * @param {string} str
+ * @return {string}
+ */
+function ensureTrailingNewline(str) {
+  return str.endsWith('\n') ? str : str + '\n';
 }
