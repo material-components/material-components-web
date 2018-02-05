@@ -78,13 +78,13 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 
 CSS Class | Description
 --- | ---
-`mdc-chip` | Mandatory
+`mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to
+`mdc-chip` | Mandatory.
 `mdc-chip--with-leading-icon` | Optional. Indicates the chip contains a leading icon
 `mdc-chip--with-trailing-icon` | Optional. Indicates the chip contains a trailing icon
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip
 `mdc-chip__icon` | Optional. Indicates a leading or trailing icon in the chip
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip
-`mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to
 
 ### `MDCChip` and `MDCChipSet`
 
