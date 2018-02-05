@@ -66,8 +66,9 @@ const ACTIVATION_EVENT_TYPES = ['touchstart', 'pointerdown', 'mousedown', 'keydo
 // Deactivation events registered on documentElement when a pointer-related down event occurs
 const POINTER_DEACTIVATION_EVENT_TYPES = ['touchend', 'pointerup', 'mouseup'];
 
-// Tracks whether an activation has occurred on the current frame, to avoid multiple nested activations
-let isActivating = false;
+// Tracks activations that have occurred on the current frame, to avoid simultaneous nested activations
+/** @type {!Array<!EventTarget>} */
+let activatedTargets = [];
 
 /**
  * @extends {MDCFoundation<!MDCRippleAdapter>}
@@ -93,6 +94,7 @@ class MDCRippleFoundation extends MDCFoundation {
       isSurfaceDisabled: () => /* boolean */ {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      containsEventTarget: (/* target: !EventTarget */) => {},
       registerInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
       registerDocumentInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
@@ -284,11 +286,11 @@ class MDCRippleFoundation extends MDCFoundation {
    * @private
    */
   activate_(e) {
-    if (isActivating || this.adapter_.isSurfaceDisabled()) {
+    if (this.adapter_.isSurfaceDisabled()) {
       return;
     }
 
-    const {activationState_: activationState} = this;
+    const activationState = this.activationState_;
     if (activationState.isActivated) {
       return;
     }
@@ -307,11 +309,19 @@ class MDCRippleFoundation extends MDCFoundation {
       e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown'
     );
 
+    const hasActivatedChild =
+      e && activatedTargets.length > 0 && activatedTargets.some((target) => this.adapter_.containsEventTarget(target));
+    if (hasActivatedChild) {
+      // Immediately reset activation state, while preserving logic that prevents touch follow-on events
+      this.resetActivationState_();
+      return;
+    }
+
     if (e) {
+      activatedTargets.push(/** @type {!EventTarget} */ (e.target));
       this.registerDeactivationHandlers_(e);
     }
 
-    isActivating = true;
     requestAnimationFrame(() => {
       // This needs to be wrapped in an rAF call b/c web browsers
       // report active states inconsistently when they're called within
@@ -326,8 +336,8 @@ class MDCRippleFoundation extends MDCFoundation {
         this.activationState_ = this.defaultActivationState_();
       }
 
-      // Reset flag on next frame to avoid any ancestors from also triggering ripple from the same interaction
-      isActivating = false;
+      // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
+      activatedTargets = [];
     });
   }
 
@@ -372,8 +382,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @return {{startPoint: PointType, endPoint: PointType}}
    */
   getFgTranslationCoordinates_() {
-    const {activationState_: activationState} = this;
-    const {activationEvent, wasActivatedByPointer} = activationState;
+    const {activationEvent, wasActivatedByPointer} = this.activationState_;
 
     let startPoint;
     if (wasActivatedByPointer) {
