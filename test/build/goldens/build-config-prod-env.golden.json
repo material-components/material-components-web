@@ -1,0 +1,262 @@
+[
+  {
+    "name": "js-all",
+    "entry": "/packages/material-components-web/index.js",
+    "output": {
+      "path": "/build",
+      "publicPath": "/assets/",
+      "filename": "material-components-web.min.js",
+      "libraryTarget": "umd",
+      "library": "mdc"
+    },
+    "devServer": {
+      "disableHostCheck": true
+    },
+    "devtool": "source-map",
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "exclude": {},
+          "loader": "babel-loader",
+          "options": {
+            "cacheDirectory": true
+          }
+        }
+      ]
+    },
+    "plugins": [
+      {
+        "options": {
+          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "raw": true,
+          "entryOnly": true
+        },
+        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+      }
+    ]
+  },
+  {
+    "name": "js-components",
+    "entry": {
+      "animation": [
+        "/packages/mdc-animation/index.js"
+      ],
+      "autoInit": [
+        "/packages/mdc-auto-init/index.js"
+      ],
+      "base": [
+        "/packages/mdc-base/index.js"
+      ],
+      "lineRipple": [
+        "/packages/mdc-line-ripple/index.js"
+      ],
+      "checkbox": [
+        "/packages/mdc-checkbox/index.js"
+      ],
+      "chips": [
+        "/packages/mdc-chips/index.js"
+      ],
+      "dialog": [
+        "/packages/mdc-dialog/index.js"
+      ],
+      "drawer": [
+        "/packages/mdc-drawer/index.js"
+      ],
+      "formField": [
+        "/packages/mdc-form-field/index.js"
+      ],
+      "gridList": [
+        "/packages/mdc-grid-list/index.js"
+      ],
+      "iconToggle": [
+        "/packages/mdc-icon-toggle/index.js"
+      ],
+      "linearProgress": [
+        "/packages/mdc-linear-progress/index.js"
+      ],
+      "menu": [
+        "/packages/mdc-menu/index.js"
+      ],
+      "radio": [
+        "/packages/mdc-radio/index.js"
+      ],
+      "ripple": [
+        "/packages/mdc-ripple/index.js"
+      ],
+      "select": [
+        "/packages/mdc-select/index.js"
+      ],
+      "selectionControl": [
+        "/packages/mdc-selection-control/index.js"
+      ],
+      "slider": [
+        "/packages/mdc-slider/index.js"
+      ],
+      "snackbar": [
+        "/packages/mdc-snackbar/index.js"
+      ],
+      "tabs": [
+        "/packages/mdc-tabs/index.js"
+      ],
+      "textfield": [
+        "/packages/mdc-textfield/index.js"
+      ],
+      "toolbar": [
+        "/packages/mdc-toolbar/index.js"
+      ]
+    },
+    "output": {
+      "path": "/build",
+      "publicPath": "/assets/",
+      "filename": "mdc.[name].min.js",
+      "libraryTarget": "umd",
+      "library": [
+        "mdc",
+        "[name]"
+      ]
+    },
+    "devtool": "source-map",
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "exclude": {},
+          "loader": "babel-loader",
+          "options": {
+            "cacheDirectory": true
+          }
+        }
+      ]
+    },
+    "plugins": [
+      {
+        "options": {
+          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "raw": true,
+          "entryOnly": true
+        },
+        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+      }
+    ]
+  },
+  {
+    "name": "css",
+    "entry": {
+      "material-components-web": "/packages/material-components-web/material-components-web.scss",
+      "mdc.button": "/packages/mdc-button/mdc-button.scss",
+      "mdc.line-ripple": "/packages/mdc-line-ripple/mdc-line-ripple.scss",
+      "mdc.card": "/packages/mdc-card/mdc-card.scss",
+      "mdc.checkbox": "/packages/mdc-checkbox/mdc-checkbox.scss",
+      "mdc.chips": "/packages/mdc-chips/mdc-chips.scss",
+      "mdc.dialog": "/packages/mdc-dialog/mdc-dialog.scss",
+      "mdc.drawer": "/packages/mdc-drawer/mdc-drawer.scss",
+      "mdc.elevation": "/packages/mdc-elevation/mdc-elevation.scss",
+      "mdc.fab": "/packages/mdc-fab/mdc-fab.scss",
+      "mdc.form-field": "/packages/mdc-form-field/mdc-form-field.scss",
+      "mdc.grid-list": "/packages/mdc-grid-list/mdc-grid-list.scss",
+      "mdc.icon-toggle": "/packages/mdc-icon-toggle/mdc-icon-toggle.scss",
+      "mdc.layout-grid": "/packages/mdc-layout-grid/mdc-layout-grid.scss",
+      "mdc.linear-progress": "/packages/mdc-linear-progress/mdc-linear-progress.scss",
+      "mdc.list": "/packages/mdc-list/mdc-list.scss",
+      "mdc.menu": "/packages/mdc-menu/mdc-menu.scss",
+      "mdc.radio": "/packages/mdc-radio/mdc-radio.scss",
+      "mdc.ripple": "/packages/mdc-ripple/mdc-ripple.scss",
+      "mdc.select": "/packages/mdc-select/mdc-select.scss",
+      "mdc.slider": "/packages/mdc-slider/mdc-slider.scss",
+      "mdc.snackbar": "/packages/mdc-snackbar/mdc-snackbar.scss",
+      "mdc.switch": "/packages/mdc-switch/mdc-switch.scss",
+      "mdc.tabs": "/packages/mdc-tabs/mdc-tabs.scss",
+      "mdc.textfield": "/packages/mdc-textfield/mdc-text-field.scss",
+      "mdc.theme": "/packages/mdc-theme/mdc-theme.scss",
+      "mdc.toolbar": "/packages/mdc-toolbar/mdc-toolbar.scss",
+      "mdc.typography": "/packages/mdc-typography/mdc-typography.scss"
+    },
+    "output": {
+      "path": "/build",
+      "publicPath": "/assets/",
+      "filename": "[name].min.css.js-entry"
+    },
+    "devtool": false,
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            {
+              "loader": "/node_modules/extract-text-webpack-plugin/dist/loader.js",
+              "options": {
+                "omit": 1,
+                "remove": true
+              }
+            },
+            {
+              "loader": "style-loader"
+            },
+            {
+              "loader": "css-loader",
+              "options": {
+                "sourceMap": false
+              }
+            },
+            {
+              "loader": "postcss-loader",
+              "options": {
+                "sourceMap": false
+              }
+            },
+            {
+              "loader": "sass-loader",
+              "options": {
+                "sourceMap": false,
+                "includePaths": [
+                  "/packages/material-components-web/node_modules",
+                  "/packages/mdc-button/node_modules",
+                  "/packages/mdc-card/node_modules",
+                  "/packages/mdc-checkbox/node_modules",
+                  "/packages/mdc-chips/node_modules",
+                  "/packages/mdc-dialog/node_modules",
+                  "/packages/mdc-drawer/node_modules",
+                  "/packages/mdc-elevation/node_modules",
+                  "/packages/mdc-fab/node_modules",
+                  "/packages/mdc-form-field/node_modules",
+                  "/packages/mdc-grid-list/node_modules",
+                  "/packages/mdc-icon-toggle/node_modules",
+                  "/packages/mdc-line-ripple/node_modules",
+                  "/packages/mdc-linear-progress/node_modules",
+                  "/packages/mdc-list/node_modules",
+                  "/packages/mdc-menu/node_modules",
+                  "/packages/mdc-radio/node_modules",
+                  "/packages/mdc-ripple/node_modules",
+                  "/packages/mdc-select/node_modules",
+                  "/packages/mdc-selection-control/node_modules",
+                  "/packages/mdc-slider/node_modules",
+                  "/packages/mdc-snackbar/node_modules",
+                  "/packages/mdc-switch/node_modules",
+                  "/packages/mdc-tabs/node_modules",
+                  "/packages/mdc-textfield/node_modules",
+                  "/packages/mdc-toolbar/node_modules"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "plugins": [
+      {
+        "filename": "[name].min.css",
+        "id": 2,
+        "options": {}
+      },
+      {
+        "options": {
+          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "raw": true,
+          "entryOnly": true
+        },
+        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+      }
+    ]
+  }
+]
