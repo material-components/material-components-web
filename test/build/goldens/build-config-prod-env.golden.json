@@ -186,6 +186,7 @@
             {
               "loader": "/node_modules/extract-text-webpack-plugin/dist/loader.js",
               "options": {
+                "id": 2,
                 "omit": 1,
                 "remove": true
               }

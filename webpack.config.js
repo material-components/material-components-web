@@ -21,8 +21,9 @@ const path = require('path');
 
 const fsx = require('fs-extra');
 const glob = require('glob');
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const PluginFactory = require('./scripts/webpack/plugin-factory');
+const pluginFactory = new PluginFactory();
 
 const OUT_DIR_ABS = path.resolve('./build');
 const DEMO_ASSET_DIR_REL = '/assets/'; // Used by webpack-dev-server and MDC_BUILD_STATIC_DEMO_ASSETS
@@ -39,20 +40,6 @@ const BUILD_STATIC_DEMO_ASSETS = process.env.MDC_BUILD_STATIC_DEMO_ASSETS === 't
 
 const SASS_DEVTOOL = GENERATE_SOURCE_MAPS ? 'source-map' : false;
 const JS_DEVTOOL = 'source-map';
-
-const banner = [
-  '/*!',
-  ' Material Components for the web',
-  ` Copyright (c) ${new Date().getFullYear()} Google Inc.`,
-  ' License: Apache-2.0',
-  '*/',
-].join('\n');
-
-const createBannerPlugin = () => new webpack.BannerPlugin({
-  banner: banner,
-  raw: true,
-  entryOnly: true,
-});
 
 const LIFECYCLE_EVENT = process.env.npm_lifecycle_event;
 if (LIFECYCLE_EVENT == 'test' || LIFECYCLE_EVENT == 'test:watch') {
@@ -88,15 +75,16 @@ const CSS_LOADER_CONFIG = [
 const CSS_JS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css${IS_DEV ? '.js' : '.js-entry'}`;
 const CSS_FILENAME_OUTPUT_PATTERN = `[name]${IS_PROD ? '.min' : ''}.css`;
 
+const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
+const cssExtractionPlugin = pluginFactory.createCssExtractionPlugin(CSS_FILENAME_OUTPUT_PATTERN);
+
 const createCssLoaderConfig = () =>
   WRAP_CSS_IN_JS ?
     [{loader: 'style-loader'}].concat(CSS_LOADER_CONFIG) :
-    ExtractTextPlugin.extract({
+    cssExtractionPlugin.extract({
       fallback: 'style-loader',
       use: CSS_LOADER_CONFIG,
     });
-
-const createCssExtractTextPlugin = () => new ExtractTextPlugin(CSS_FILENAME_OUTPUT_PATTERN);
 
 class PostCompilePlugin {
   constructor(fn) {
@@ -174,7 +162,7 @@ module.exports = [{
     }],
   },
   plugins: [
-    createBannerPlugin(),
+    copyrightBannerPlugin,
   ],
 }];
 
@@ -224,7 +212,7 @@ if (!IS_DEV) {
       }],
     },
     plugins: [
-      createBannerPlugin(),
+      copyrightBannerPlugin,
     ],
   }, {
     name: 'css',
@@ -272,8 +260,8 @@ if (!IS_DEV) {
       }],
     },
     plugins: [
-      createCssExtractTextPlugin(),
-      createBannerPlugin(),
+      cssExtractionPlugin,
+      copyrightBannerPlugin,
     ],
   });
 }
@@ -311,8 +299,8 @@ if (IS_DEV) {
       }],
     },
     plugins: [
-      createCssExtractTextPlugin(),
-      createBannerPlugin(),
+      cssExtractionPlugin,
+      copyrightBannerPlugin,
       createStaticDemoPlugin(),
     ],
   });
@@ -342,7 +330,7 @@ if (IS_DEV) {
       }],
     },
     plugins: [
-      createBannerPlugin(),
+      copyrightBannerPlugin,
     ],
   });
 }
