@@ -22,17 +22,15 @@
   border-radius: $radius;
 }
 
-@mixin mdc-chip-accessible($fill-color) {
+@mixin mdc-chip-accessible-color($fill-color) {
   $fill-tone: mdc-theme-tone($fill-color);
 
   @include mdc-chip-fill-color($fill-color);
 
   @if ($fill-tone == "dark") {
     @include mdc-chip-ink-color(text-primary-on-dark);
-    @include mdc-states(text-primary-on-dark);
   } @else {
     @include mdc-chip-ink-color(text-primary-on-light);
-    @include mdc-states(text-primary-on-light);
   }
 }
 
@@ -41,7 +39,7 @@
 }
 
 @mixin mdc-chip-ink-color($color) {
-  @include mdc-states-base-color($color);
+  @include mdc-states($color);
   @include mdc-theme-prop(color, $color);
 }
 
