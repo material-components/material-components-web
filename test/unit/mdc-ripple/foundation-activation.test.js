@@ -336,6 +336,28 @@ testFoundation('will not activate multiple ripples on same frame if one surface 
     td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
   });
 
+testFoundation('will not activate multiple ripples on same frame for parent surface w/ touch follow-on events',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(true);
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    firstHandlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
+    secondHandlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
+    // Simulated mouse events on touch devices always happen after a delay, not on the same frame
+    mockRaf.flush();
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+  });
+
 testFoundation('will activate multiple ripples on same frame for surfaces without an ancestor/descendant relationship',
   ({foundation, adapter, mockRaf}) => {
     const secondRipple = setupTest();

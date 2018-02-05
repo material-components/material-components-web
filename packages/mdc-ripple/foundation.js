@@ -290,13 +290,7 @@ class MDCRippleFoundation extends MDCFoundation {
       return;
     }
 
-    const hasActivatedChild =
-      e && activatedTargets.length > 0 && activatedTargets.some((target) => this.adapter_.containsEventTarget(target));
-    if (hasActivatedChild) {
-      return;
-    }
-
-    const {activationState_: activationState} = this;
+    const activationState = this.activationState_;
     if (activationState.isActivated) {
       return;
     }
@@ -314,6 +308,14 @@ class MDCRippleFoundation extends MDCFoundation {
     activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : (
       e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown'
     );
+
+    const hasActivatedChild =
+      e && activatedTargets.length > 0 && activatedTargets.some((target) => this.adapter_.containsEventTarget(target));
+    if (hasActivatedChild) {
+      // Immediately reset activation state, while preserving logic that prevents touch follow-on events
+      this.resetActivationState_();
+      return;
+    }
 
     if (e) {
       activatedTargets.push(/** @type {!EventTarget} */ (e.target));
@@ -380,8 +382,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @return {{startPoint: PointType, endPoint: PointType}}
    */
   getFgTranslationCoordinates_() {
-    const {activationState_: activationState} = this;
-    const {activationEvent, wasActivatedByPointer} = activationState;
+    const {activationEvent, wasActivatedByPointer} = this.activationState_;
 
     let startPoint;
     if (wasActivatedByPointer) {
