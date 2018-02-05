@@ -32,9 +32,46 @@
   overflow: hidden;
 }
 
+// TODO(bonniez): Add icon constants to variables.scss
+.mdc-chip--with-leading-icon {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+}
+
+.mdc-chip--with-trailing-icon {
+  padding-right: 4px;
+}
+
 .mdc-chip__text {
   display: inline-block;
   vertical-align: middle;
   // Set line-height to be <18px to force the content height of mdc-chip to be 18px.
   line-height: 17px;
+}
+
+// TODO(bonniez): Add icon constants to variables.scss
+.mdc-chip__icon {
+  width: 24px;
+  height: 24px;
+  color: rgba(0, 0, 0, 0.54);
+  vertical-align: middle;
+  margin-right: 4px;
+  border-radius: 16px;
+  outline: none;
+}
+
+.mdc-chip__icon.mdc-chip__icon--trailing {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  margin-left: 4px;
+
+  &:hover {
+    color: rgba(0, 0, 0, 0.62);
+  }
+
+  &:focus {
+    color: rgba(0, 0, 0, 0.87);
+  }
 }
