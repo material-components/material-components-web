@@ -14,20 +14,42 @@
 // limitations under the License.
 //
 
-@import "./variables";
+@import "@material/theme/mixins";
 
-@mixin mdc-chip-border-radius($radius: $mdc-chip-border-radius-default) {
+@mixin mdc-chip-corner-radius($radius) {
   border-radius: $radius;
 }
 
-@mixin mdc-chip-fill-color($color: $mdc-chip-fill-color-default) {
-  background: $color;
+@mixin mdc-chip-fill-color($color) {
+  @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-chip-ink-color($color: $mdc-chip-ink-color-default) {
-  color: $color;
+@mixin mdc-chip-ink-color($color) {
+  @include mdc-theme-prop(color, $color);
 }
 
-@mixin mdc-chip-stroke($width: 0, $style: solid, $color: transparent) {
-  border: $width $style $color;
+@mixin mdc-chip-stroke-color($color) {
+  @include mdc-theme-prop(border-color, $color);
+}
+
+@mixin mdc-chip-stroke-style($style) {
+  border-style: $style;
+}
+
+@mixin mdc-chip-stroke-width($width) {
+  // Note: Adjust padding to maintain consistent width with non-stroked chips
+  $horizontal-padding-value: max($mdc-chip-horizontal-padding - $width, 0);
+  $vertical-padding-value: max($mdc-chip-vertical-padding - $width, 0);
+
+  padding-right: $horizontal-padding-value;
+  padding-left: $horizontal-padding-value;
+  padding-top: $vertical-padding-value;
+  padding-bottom: $vertical-padding-value;
+  border-width: $width;
+}
+
+@mixin mdc-chip-stroke($width: 0, $style: solid, $color: black) {
+  @include mdc-chip-stroke-width($width);
+  @include mdc-chip-stroke-style($style);
+  @include mdc-chip-stroke-color($color);
 }
