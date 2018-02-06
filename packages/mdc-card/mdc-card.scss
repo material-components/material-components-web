@@ -28,8 +28,6 @@
   @include mdc-card-corner-radius(2px);
   @include mdc-elevation(2);
   @include mdc-card-container-layout_;
-
-  box-sizing: border-box;
 }
 
 .mdc-card--stroked {
@@ -91,7 +89,6 @@
   @include mdc-card-container-layout_;
 
   position: relative; // Needed to prevent the ripple wash from overflowing the container in IE and Edge
-  box-sizing: border-box;
   outline: none;
   color: inherit;
   text-decoration: none;
@@ -115,7 +112,6 @@
 .mdc-card__actions {
   @include mdc-card-actions-layout_;
 
-  box-sizing: border-box;
   min-height: 52px;
   padding: 8px;
 }
@@ -127,8 +123,6 @@
 .mdc-card__action-buttons,
 .mdc-card__action-icons {
   @include mdc-card-actions-layout_;
-
-  box-sizing: border-box;
 }
 
 .mdc-card__action-icons {
@@ -149,7 +143,6 @@
 .mdc-card__action {
   @include mdc-card-actions-layout_(inline-flex);
 
-  box-sizing: border-box;
   min-width: 0;
   cursor: pointer;
   user-select: none;
