@@ -76,7 +76,7 @@
       "publicPath": "/assets/",
       "filename": "[name].css.js"
     },
-    "devtool": false,
+    "devtool": "source-map",
     "module": {
       "rules": [
         {
@@ -85,6 +85,7 @@
             {
               "loader": "/node_modules/extract-text-webpack-plugin/dist/loader.js",
               "options": {
+                "id": 3,
                 "omit": 1,
                 "remove": true
               }
@@ -95,19 +96,19 @@
             {
               "loader": "css-loader",
               "options": {
-                "sourceMap": false
+                "sourceMap": true
               }
             },
             {
               "loader": "postcss-loader",
               "options": {
-                "sourceMap": false
+                "sourceMap": true
               }
             },
             {
               "loader": "sass-loader",
               "options": {
-                "sourceMap": false,
+                "sourceMap": true,
                 "includePaths": [
                   "/packages/material-components-web/node_modules",
                   "/packages/mdc-button/node_modules",
@@ -155,8 +156,7 @@
           "entryOnly": true
         },
         "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
-      },
-      {}
+      }
     ]
   },
   {
