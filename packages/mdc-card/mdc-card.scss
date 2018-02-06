@@ -143,7 +143,6 @@
 .mdc-card__action {
   @include mdc-card-actions-layout_(inline-flex);
 
-  min-width: 0;
   cursor: pointer;
   user-select: none;
 
