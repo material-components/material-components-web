@@ -20,19 +20,19 @@
 
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
-const fsx = require('fs-extra');
 
 module.exports = class {
   constructor({
     pathLib = path,
-    fsExtraLib = fsx,
+    fsLib = fs,
   } = {}) {
-    /** @type {!PathLib} */
+    /** @type {!path} */
     this.pathLib_ = pathLib;
 
-    /** @type {!FsExtraLib} */
-    this.fsExtraLib_ = fsExtraLib;
+    /** @type {!fs} */
+    this.fsLib_ = fsLib;
   }
 
   /**
@@ -69,7 +69,7 @@ module.exports = class {
    */
   getAbsolutePath(...pathPartsRelativeToProjectRoot) {
     // First argument is already an absolute path
-    if (this.fsExtraLib_.existsSync(pathPartsRelativeToProjectRoot[0])) {
+    if (this.fsLib_.existsSync(pathPartsRelativeToProjectRoot[0])) {
       return this.pathLib_.resolve(this.pathLib_.join(...pathPartsRelativeToProjectRoot));
     }
 

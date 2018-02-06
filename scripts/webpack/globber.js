@@ -33,7 +33,7 @@ module.exports = class {
     /** @type {!PathResolver} */
     this.pathResolver_ = pathResolver;
 
-    /** @type {!GlobLib} */
+    /** @type {!glob} */
     this.globLib_ = globLib;
   }
 
