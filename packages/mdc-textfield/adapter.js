@@ -19,7 +19,7 @@
 import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
-import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
 import MDCTextFieldOutlineFoundation from './outline/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
@@ -42,7 +42,7 @@ let NativeInputType;
  *   lineRipple: (!MDCLineRippleFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
- *   label: (!MDCTextFieldLabelFoundation|undefined),
+ *   label: (!MDCFloatingLabelFoundation|undefined),
  *   outline: (!MDCTextFieldOutlineFoundation|undefined)
  * }}
  */

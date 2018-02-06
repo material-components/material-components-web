@@ -1,15 +1,14 @@
 <!--docs:
-title: "Text Field Label"
+title: "Floating Label"
 layout: detail
 section: components
-excerpt: "The label is a text caption or description for the text field."
-iconId: text_field
-path: /catalog/input-controls/text-field/label/
+excerpt: "The label is a text caption or description for the text field or select."
+path: /catalog/input-controls/floating-label/
 -->
 
-# Text Field Label
+# Floating Label
 
-Text field labels display the type of input a field requires. Every text field should have a label. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the text field.
+Floating labels display the type of input a field requires. Every text field and select should have a label. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the text field.
 
 ## Design & API Documentation
 
@@ -36,6 +35,8 @@ Text field labels display the type of input a field requires. Every text field s
   <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
+
+<!-- TODO(mattgoo): add ### Usage within `mdc-select` once select uses mdc-floating-label -->
 
 #### Avoid Dynamic ID Generation
 
@@ -70,13 +71,15 @@ CSS Class | Description
 `mdc-text-field__label--float-above` | Indicates the label is floating above the text field
 `mdc-text-field__label--shake` | Shakes the label
 
-### `MDCTextFieldLabel`
+<!-- TODO(mattgoo): add ### SCSS Classes -->
 
-##### `MDCTextFieldLabel.foundation`
+### `MDCFloatingLabel`
 
-This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldLabelFoundation` class.
+##### `MDCFloatingLabel.foundation`
 
-### `MDCTextFieldLabelAdapter`
+This allows the parent `MDCTextField` or `MDCSelect` component to access the public methods on the `MDCFloatingLabelFoundation` class.
+
+### `MDCFloatingLabelAdapter`
 
 Method Signature | Description
 --- | ---
@@ -84,7 +87,7 @@ Method Signature | Description
 `removeClass(className: string) => void` | Removes a class from the label element
 `getWidth() => number` | Returns the width of the label element
 
-### `MDCTextFieldLabelFoundation`
+### `MDCFloatingLabelFoundation`
 
 Method Signature | Description
 --- | ---

@@ -177,7 +177,7 @@ Mixin | Description
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
 `mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field.
-`mdc-text-field-label-color($color)` | Customizes the label color of the text-field.
+`mdc-floating-label-color($color)` | Customizes the label color of the text-field.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text-field.
 `mdc-text-field-hover-line-ripple-color($color)` | Customizes the hover color of the line ripple of the text-field.
 `mdc-text-field-focused-line-ripple-color($color)` | Customizes the line-ripple ripple color when the text-field is focused.

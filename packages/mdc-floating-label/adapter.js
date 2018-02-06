@@ -27,7 +27,7 @@
  *
  * @record
  */
-class MDCTextFieldLabelAdapter {
+class MDCFloatingLabelAdapter {
   /**
    * Adds a class to the label element.
    * @param {string} className
@@ -47,4 +47,4 @@ class MDCTextFieldLabelAdapter {
   getWidth() {}
 }
 
-export default MDCTextFieldLabelAdapter;
+export default MDCFloatingLabelAdapter;

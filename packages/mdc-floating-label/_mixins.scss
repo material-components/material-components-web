@@ -18,15 +18,15 @@
 
 // Public
 
-@mixin mdc-text-field-label-color($color) {
+@mixin mdc-floating-label-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-label-color_($color);
+    @include mdc-floating-label-color_($color);
   }
 }
 
 // Private
 
-@mixin mdc-text-field-invalid-label-shake-keyframes_($modifier, $positionY, $positionX: 0%, $scale: .75) {
+@mixin mdc-floating-label-invalid-shake-keyframes_($modifier, $positionY, $positionX: 0%, $scale: .75) {
   @keyframes invalid-shake-float-above-#{$modifier} {
     0% {
       transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
@@ -48,16 +48,16 @@
   }
 }
 
-@include mdc-text-field-invalid-label-shake_keyframes_(standard, $mdc-text-field-label-position-y);
-@include mdc-text-field-invalid-label-shake-keyframes_(box, $mdc-text-field-box-label-position-y);
-@include mdc-text-field-invalid-label-shake-keyframes_(box-dense, $mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined, $mdc-text-field-outlined-label-position-y);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-dense, $mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon, $mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
-@include mdc-text-field-invalid-label-shake_keyframes_(outlined-leading-icon-dense, $mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
-@include mdc-text-field-invalid-label-shake-keyframes_(textarea, $mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);
+@include mdc-floating-label-invalid-shake-keyframes_(standard, $mdc-floating-label-position-y);
+@include mdc-floating-label-invalid-shake-keyframes_(box, $mdc-floating-label-box-position-y);
+@include mdc-floating-label-invalid-shake-keyframes_(box-dense, $mdc-floating-label-box-dense-position-y, 0%, $mdc-floating-label-dense-scale);
+@include mdc-floating-label-invalid-shake-keyframes_(outlined, $mdc-floating-label-outlined-position-y);
+@include mdc-floating-label-invalid-shake-keyframes_(outlined-dense, $mdc-floating-label-outlined-dense-position-y, 0%, $mdc-floating-label-dense-scale);
+@include mdc-floating-label-invalid-shake-keyframes_(outlined-leading-icon, $mdc-floating-label-outlined-position-y, $mdc-floating-label-outlined-with-leading-icon-position-x);
+@include mdc-floating-label-invalid-shake-keyframes_(outlined-leading-icon-dense, $mdc-floating-label-outlined-dense-position-y, $mdc-floating-label-outlined-dense-with-leading-icon-position-x, $mdc-floating-label-dense-scale);
+@include mdc-floating-label-invalid-shake-keyframes_(textarea, $mdc-floating-label-textarea-position-y, 0%, $mdc-floating-label-textarea-scale);
 
-@mixin mdc-text-field-label-float_($positionY, $positionX: 0%, $scale: .75) {
+@mixin mdc-floating-label-position_($positionY, $positionX: 0%, $scale: .75) {
   @if $positionX == 0 {
     .mdc-text-field__label--float-above {
       transform: translateY(-1 * $positionY) scale($scale);
@@ -73,13 +73,13 @@
   }
 }
 
-@mixin mdc-text-field-label-shake_($modifier) {
+@mixin mdc-floating-label-shake_($modifier) {
   .mdc-text-field__label--shake {
     animation: invalid-shake-float-above-#{$modifier} 250ms 1;
   }
 }
 
-@mixin mdc-text-field-label-color_($color) {
+@mixin mdc-floating-label-color_($color) {
   .mdc-text-field__label,
   .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
     @include mdc-theme-prop(color, $color);
@@ -87,7 +87,7 @@
 }
 
 // Used for textarea in case of scrolling
-@mixin mdc-text-field-label-background-color_($color) {
+@mixin mdc-floating-label-background-color_($color) {
   .mdc-text-field__label {
     @include mdc-theme-prop(background-color, $color);
   }

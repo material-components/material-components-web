@@ -16,27 +16,27 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTextFieldLabelAdapter from './adapter';
+import MDCFloatingLabelAdapter from './adapter';
 import {cssClasses} from './constants';
 
 
 /**
- * @extends {MDCFoundation<!MDCTextFieldLabelAdapter>}
+ * @extends {MDCFoundation<!MDCFloatingLabelAdapter>}
  * @final
  */
-class MDCTextFieldLabelFoundation extends MDCFoundation {
+class MDCFloatingLabelFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
   /**
-   * {@see MDCTextFieldLabelAdapter} for typing information on parameters and return
+   * {@see MDCFloatingLabelAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCTextFieldLabelAdapter}
+   * @return {!MDCFloatingLabelAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTextFieldLabelAdapter} */ ({
+    return /** @type {!MDCFloatingLabelAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
       getWidth: () => {},
@@ -44,10 +44,10 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextFieldLabelAdapter} adapter
+   * @param {!MDCFloatingLabelAdapter} adapter
    */
   constructor(adapter) {
-    super(Object.assign(MDCTextFieldLabelFoundation.defaultAdapter, adapter));
+    super(Object.assign(MDCFloatingLabelFoundation.defaultAdapter, adapter));
   }
 
   /**
@@ -65,7 +65,7 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
    * @param {boolean} isFocused Whether the input is focused.
    */
   styleShake(isValid, isFocused) {
-    const {LABEL_SHAKE} = MDCTextFieldLabelFoundation.cssClasses;
+    const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (isValid || isFocused) {
       this.adapter_.removeClass(LABEL_SHAKE);
     } else {
@@ -80,7 +80,7 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
    * @param {boolean} isBadInput The input's `validity.badInput` value.
    */
   styleFloat(value, isFocused, isBadInput) {
-    const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCTextFieldLabelFoundation.cssClasses;
+    const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (!!value || isFocused) {
       this.adapter_.addClass(LABEL_FLOAT_ABOVE);
     } else if (!isBadInput) {
@@ -90,4 +90,4 @@ class MDCTextFieldLabelFoundation extends MDCFoundation {
   }
 }
 
-export default MDCTextFieldLabelFoundation;
+export default MDCFloatingLabelFoundation;

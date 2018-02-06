@@ -17,34 +17,35 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCTextFieldLabelAdapter from './adapter';
-import MDCTextFieldLabelFoundation from './foundation';
+import MDCFloatingLabelAdapter from './adapter';
+import MDCFloatingLabelFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCTextFieldLabelFoundation>}
+ * @extends {MDCComponent<!MDCFloatingLabelFoundation>}
  * @final
  */
-class MDCTextFieldLabel extends MDCComponent {
+class MDCFloatingLabel extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextFieldLabel}
+   
+   * @return {!MDCFloatingLabel}
    */
   static attachTo(root) {
-    return new MDCTextFieldLabel(root);
+    return new MDCFloatingLabel(root);
   }
 
   /**
-   * @return {!MDCTextFieldLabelFoundation}.
+   * @return {!MDCFloatingLabelFoundation}.
    */
   get foundation() {
     return this.foundation_;
   }
 
   /**
-   * @return {!MDCTextFieldLabelFoundation}
+   * @return {!MDCFloatingLabelFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextFieldLabelFoundation(/** @type {!MDCTextFieldLabelAdapter} */ (Object.assign({
+    return new MDCFloatingLabelFoundation(/** @type {!MDCFloatingLabelAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       getWidth: () => this.root_.offsetWidth,
@@ -52,4 +53,4 @@ class MDCTextFieldLabel extends MDCComponent {
   }
 }
 
-export {MDCTextFieldLabel, MDCTextFieldLabelFoundation};
+export {MDCFloatingLabel, MDCFloatingLabelFoundation};

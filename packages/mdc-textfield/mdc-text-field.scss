@@ -27,7 +27,7 @@
 @import "@material/line-ripple/mdc-line-ripple";
 @import "./helper-text/mdc-text-field-helper-text";
 @import "./icon/mdc-text-field-icon";
-@import "./label/mdc-text-field-label";
+@import "@material/floating-label/mdc-floating-label";
 @import "./outline/mdc-text-field-outline";
 
 // postcss-bem-linter: define text-field
@@ -37,7 +37,7 @@
   @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-hover);
   @include mdc-text-field-line-ripple-color_(primary);
   @include mdc-text-field-ink-color(text-primary-on-background);
-  @include mdc-text-field-label-color($mdc-text-field-label);
+  @include mdc-floating-label-color($mdc-text-field-label);
   @include mdc-text-field-helper-text-color(text-hint-on-background);
   @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider);
   @include mdc-text-field-icon-color($mdc-text-field-underline-hover);
