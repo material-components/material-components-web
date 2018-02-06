@@ -22,10 +22,10 @@
   border-radius: $radius;
 }
 
-@mixin mdc-chip-accessible-color($fill-color) {
-  $fill-tone: mdc-theme-tone($fill-color);
+@mixin mdc-chip-fill-color-accessible($color) {
+  $fill-tone: mdc-theme-tone($color);
 
-  @include mdc-chip-fill-color($fill-color);
+  @include mdc-chip-fill-color($color);
 
   @if ($fill-tone == "dark") {
     @include mdc-chip-ink-color(text-primary-on-dark);

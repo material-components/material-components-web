@@ -67,7 +67,7 @@ To customize the colors of any part of the chip, use the following mixins.
 Mixin | Description
 --- | ---
 `mdc-chip-corner-radius($radius)` | Customizes the corner radius for a chip
-`mdc-chip-accessible-color($fill-color)` | Customizes the background fill color for a chip, and updates the chip's ink and ripple color to meet accessibility standards
+`mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink and ripple color to meet accessibility standards
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
 `mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
 `mdc-chip-stroke($width, $style, $color)` | Customizes the border stroke properties for a chip
