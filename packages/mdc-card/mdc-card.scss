@@ -90,6 +90,7 @@
   @include mdc-states;
   @include mdc-card-container-layout_;
 
+  position: relative; // Needed to prevent the ripple wash from overflowing the container in IE and Edge
   box-sizing: border-box;
   outline: none;
   color: inherit;
@@ -149,7 +150,7 @@
   @include mdc-card-actions-layout_(inline-flex);
 
   box-sizing: border-box;
-  min-width: auto;
+  min-width: 0;
   cursor: pointer;
   user-select: none;
 
