@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Creates Webpack bundle config objects to compile Sass files to CSS.
+ */
+
 'use strict';
 
 const autoprefixer = require('autoprefixer');

@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Scans the filesystem for files whose path matches a glob pattern, and creates a Webpack chunk object to
+ * compile those files.
+ *
+ * See https://github.com/isaacs/node-glob for supported glob syntax.
+ */
+
 'use strict';
 
 const glob = require('glob');
@@ -41,17 +48,17 @@ module.exports = class {
   }
 
   /**
-   * Finds all files that match the given `filePathPattern` and returns a Webpack entry object containing each file as a
+   * Finds all files that match the given path glob pattern and returns a Webpack entry object containing each file as a
    * separate "chunk" (key/value pair).
    *
    * The "name" (key) of each chunk is the chunk's input file path (relative to the project root) without a file
-   * extension; the value is the absolute path to the input file.
+   * extension, and the value is the absolute path to the input file.
    *
    * Import-only files (i.e., those with a leading underscore in their name) are excluded.
    *
    * @param {string} filePathPattern
    * @param {string=} inputDirectory
-   * @return {!Object<string, string>}
+   * @return {!Object<string, string>} Map of chunk names to their absolute filesystem paths
    */
   getChunks({filePathPattern, inputDirectory = this.pathResolver_.getProjectRootAbsolutePath()}) {
     const chunks = {};

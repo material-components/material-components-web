@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Parses and resolves filesystem paths.
+ */
+
 'use strict';
 
 const path = require('path');

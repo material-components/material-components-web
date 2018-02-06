@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Webpack plugin that adds a copyright notice at the top of all output files.
+ */
+
 'use strict';
 
 const webpack = require('webpack');

@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * Factory for Webpack plugins. Allows us to more easily mock and test our config generator code.
+ */
+
 'use strict';
 
 const CopyrightBannerPlugin = require('./copyright-banner-plugin');
