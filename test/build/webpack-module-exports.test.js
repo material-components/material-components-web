@@ -28,34 +28,34 @@ const webpackConfigLoader = new WebpackConfigLoader();
 describe('webpack.config.js', () => {
   describe('MDC_ENV=""', () => {
     it('module exports should match build-config-no-env.golden.json', () => {
-      const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
+      const {expectedWebpackConfig, generatedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-no-env.golden.json'),
         mdcEnv: '',
       });
-      assert.equal(generatedWebpackConfig, expectedWebpackConfig);
+      assert.equal(expectedWebpackConfig, generatedWebpackConfig);
     });
   });
 
   describe('MDC_ENV="production"', () => {
     it('module exports should match build-config-prod-env.golden.json', () => {
-      const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
+      const {expectedWebpackConfig, generatedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-prod-env.golden.json'),
         mdcEnv: 'production',
       });
-      assert.equal(generatedWebpackConfig, expectedWebpackConfig);
+      assert.equal(expectedWebpackConfig, generatedWebpackConfig);
     });
   });
 
   describe('MDC_ENV="development"', () => {
     it('module exports should match build-config-dev-env.golden.json', () => {
-      const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
+      const {expectedWebpackConfig, generatedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-dev-env.golden.json'),
         mdcEnv: 'development',
       });
-      assert.equal(generatedWebpackConfig, expectedWebpackConfig);
+      assert.equal(expectedWebpackConfig, generatedWebpackConfig);
     });
   });
 });

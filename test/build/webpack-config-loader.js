@@ -61,8 +61,8 @@ module.exports = class {
       const expectedWebpackConfig = normalizeForDiffing(fsx.readFileSync(goldenPath, {encoding: 'utf8'}));
 
       return {
-        generatedWebpackConfig,
         expectedWebpackConfig,
+        generatedWebpackConfig,
       };
     } finally {
       env.restoreAll();
