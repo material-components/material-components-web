@@ -37,7 +37,7 @@ module.exports = class {
     });
   }
 
-  createCssExtractionPlugin(outputFilenamePattern) {
+  createCssExtractorPlugin(outputFilenamePattern) {
     return new ExtractTextPlugin(outputFilenamePattern);
   }
 };
