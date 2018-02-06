@@ -27,9 +27,8 @@
   @include mdc-card-fill-color(background);
   @include mdc-card-corner-radius(2px);
   @include mdc-elevation(2);
+  @include mdc-card-container-layout_;
 
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
 }
 
@@ -89,9 +88,8 @@
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-states;
+  @include mdc-card-container-layout_;
 
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
   outline: none;
   color: inherit;
@@ -114,7 +112,7 @@
 //
 
 .mdc-card__actions {
-  @include mdc-card-row-layout_;
+  @include mdc-card-actions-layout_;
 
   box-sizing: border-box;
   min-height: 52px;
@@ -127,7 +125,7 @@
 
 .mdc-card__action-buttons,
 .mdc-card__action-icons {
-  @include mdc-card-row-layout_;
+  @include mdc-card-actions-layout_;
 
   box-sizing: border-box;
 }
@@ -148,7 +146,7 @@
 //
 
 .mdc-card__action {
-  @include mdc-card-row-layout_(inline-flex);
+  @include mdc-card-actions-layout_(inline-flex);
 
   box-sizing: border-box;
   min-width: auto;

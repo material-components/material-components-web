@@ -43,7 +43,12 @@
 // Private
 //
 
-@mixin mdc-card-row-layout_($display: flex) {
+@mixin mdc-card-container-layout_ {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin mdc-card-actions-layout_($display: flex) {
   display: $display;
   flex-direction: row;
   align-items: center;
