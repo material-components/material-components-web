@@ -15,7 +15,6 @@
 //
 
 @import "@material/elevation/mixins";
-@import "@material/theme/mixins";
 @import "./functions";
 @import "./mixins";
 @import "./variables";
@@ -25,13 +24,6 @@
   @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
   @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
   @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
-
-  @include mdc-theme-dark {
-    @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color-dark);
-    @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color-dark);
-    @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color-dark);
-  }
-
   @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
   @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
   @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
@@ -77,10 +69,6 @@
       border-radius: 7px;
       opacity: .38;
       content: "";
-
-      @include mdc-theme-dark(".mdc-switch") {
-        opacity: .3;
-      }
     }
 
     // postcss-bem-linter: ignore
@@ -129,10 +117,6 @@
         mdc-switch-transition(transform),
         mdc-switch-transition(background-color);
       border-radius: $mdc-switch-focus-ring-diameter / 2;
-
-      @include mdc-theme-dark(".mdc-switch") {
-        opacity: .14;
-      }
     }
   }
 }
@@ -167,18 +151,9 @@
   &::before {
     background-color: $mdc-switch-unchecked-track-color;
     opacity: .12;
-
-    @include mdc-theme-dark(".mdc-switch") {
-      background-color: $mdc-switch-unchecked-track-color-dark;
-      opacity: .1;
-    }
   }
 
   .mdc-switch__knob {
     background-color: $mdc-switch-disabled-knob-color;
-
-    @include mdc-theme-dark(".mdc-switch") {
-      background-color: $mdc-switch-disabled-knob-color-dark;
-    }
   }
 }

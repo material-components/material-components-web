@@ -79,7 +79,6 @@ class MDCMenuFoundation extends MDCFoundation {
       hasClass: () => false,
       hasNecessaryDom: () => false,
       getAttributeForEventTarget: () => {},
-      eventTargetHasClass: () => {},
       getInnerDimensions: () => ({}),
       hasAnchor: () => false,
       getAnchorDimensions: () => ({}),
@@ -102,6 +101,10 @@ class MDCMenuFoundation extends MDCFoundation {
       setTransformOrigin: () => {},
       setPosition: () => {},
       setMaxHeight: () => {},
+      setAttrForOptionAtIndex: () => {},
+      rmAttrForOptionAtIndex: () => {},
+      addClassForOptionAtIndex: () => {},
+      rmClassForOptionAtIndex: () => {},
     });
   }
 
@@ -137,6 +140,18 @@ class MDCMenuFoundation extends MDCFoundation {
     this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
     /** @private {?AutoLayoutMeasurements} */
     this.measures_ = null;
+    /** @private {number} */
+    this.selectedIndex_ = -1;
+    /** @private {boolean} */
+    this.rememberSelection_ = false;
+    /** @private {boolean} */
+    this.quickOpen_ = false;
+
+    // A keyup event on the menu needs to have a corresponding keydown
+    // event on the menu. If the user opens the menu with a keydown event on a
+    // button, the menu will only get the key up event causing buggy behavior with selected elements.
+    /** @private {boolean} */
+    this.keyDownWithinMenu_ = false;
   }
 
   init() {
@@ -188,13 +203,30 @@ class MDCMenuFoundation extends MDCFoundation {
     this.anchorMargin_.left = typeof margin.left === 'number' ? margin.left : 0;
   }
 
+  /** @param {boolean} rememberSelection */
+  setRememberSelection(rememberSelection) {
+    this.rememberSelection_ = rememberSelection;
+    this.setSelectedIndex(-1);
+  }
+
+  /** @param {boolean} quickOpen */
+  setQuickOpen(quickOpen) {
+    this.quickOpen_ = quickOpen;
+  }
+
   /**
    * @param {?number} focusIndex
    * @private
    */
   focusOnOpen_(focusIndex) {
     if (focusIndex === null) {
-      // First, try focusing the menu.
+      // If this instance of MDCMenu remembers selections, and the user has
+      // made a selection, then focus the last selected item
+      if (this.rememberSelection_ && this.selectedIndex_ >= 0) {
+        this.adapter_.focusItemAtIndex(this.selectedIndex_);
+        return;
+      }
+
       this.adapter_.focus();
       // If that doesn't work, focus first item instead.
       if (!this.adapter_.isFocused()) {
@@ -206,7 +238,7 @@ class MDCMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * Handle clicks and cancel the menu if not a list item
+   * Handle clicks and cancel the menu if not a child list-item
    * @param {!Event} evt
    * @private
    */
@@ -214,7 +246,7 @@ class MDCMenuFoundation extends MDCFoundation {
     let el = evt.target;
 
     while (el && el !== document.documentElement) {
-      if (this.adapter_.eventTargetHasClass(el, cssClasses.LIST_ITEM)) {
+      if (this.adapter_.getIndexForEventTarget(el) !== -1) {
         return;
       }
       el = el.parentNode;
@@ -241,6 +273,9 @@ class MDCMenuFoundation extends MDCFoundation {
     const isArrowUp = key === 'ArrowUp' || keyCode === 38;
     const isArrowDown = key === 'ArrowDown' || keyCode === 40;
     const isSpace = key === 'Space' || keyCode === 32;
+    const isEnter = key === 'Enter' || keyCode === 13;
+    // The menu needs to know if the keydown event was triggered on the menu
+    this.keyDownWithinMenu_ = isEnter || isSpace;
 
     const focusedItemIndex = this.adapter_.getFocusedItemIndex();
     const lastItemIndex = this.adapter_.getNumberOfItems() - 1;
@@ -297,7 +332,12 @@ class MDCMenuFoundation extends MDCFoundation {
     const isEscape = key === 'Escape' || keyCode === 27;
 
     if (isEnter || isSpace) {
-      this.handlePossibleSelected_(evt);
+      // If the keydown event didn't occur on the menu, then it should
+      // disregard the possible selected event.
+      if (this.keyDownWithinMenu_) {
+        this.handlePossibleSelected_(evt);
+      }
+      this.keyDownWithinMenu_ = false;
     }
 
     if (isEscape) {
@@ -327,6 +367,9 @@ class MDCMenuFoundation extends MDCFoundation {
     this.selectedTriggerTimerId_ = setTimeout(() => {
       this.selectedTriggerTimerId_ = 0;
       this.close();
+      if (this.rememberSelection_) {
+        this.setSelectedIndex(targetIndex);
+      }
       this.adapter_.notifySelected({index: targetIndex});
     }, numbers.SELECTED_TRIGGER_DELAY);
   }
@@ -518,7 +561,10 @@ class MDCMenuFoundation extends MDCFoundation {
    */
   open({focusIndex = null} = {}) {
     this.adapter_.saveFocus();
-    this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
+
+    if (!this.quickOpen_) {
+      this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
+    }
 
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.dimensions_ = this.adapter_.getInnerDimensions();
@@ -526,10 +572,12 @@ class MDCMenuFoundation extends MDCFoundation {
       this.adapter_.addClass(MDCMenuFoundation.cssClasses.OPEN);
       this.focusOnOpen_(focusIndex);
       this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
-      this.openAnimationEndTimerId_ = setTimeout(() => {
-        this.openAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
-      }, numbers.TRANSITION_OPEN_DURATION);
+      if (!this.quickOpen_) {
+        this.openAnimationEndTimerId_ = setTimeout(() => {
+          this.openAnimationEndTimerId_ = 0;
+          this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
+        }, numbers.TRANSITION_OPEN_DURATION);
+      }
     });
     this.isOpen_ = true;
   }
@@ -548,13 +596,19 @@ class MDCMenuFoundation extends MDCFoundation {
     }
 
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
-    this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
+
+    if (!this.quickOpen_) {
+      this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
+    }
+
     requestAnimationFrame(() => {
       this.adapter_.removeClass(MDCMenuFoundation.cssClasses.OPEN);
-      this.closeAnimationEndTimerId_ = setTimeout(() => {
-        this.closeAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
-      }, numbers.TRANSITION_CLOSE_DURATION);
+      if (!this.quickOpen_) {
+        this.closeAnimationEndTimerId_ = setTimeout(() => {
+          this.closeAnimationEndTimerId_ = 0;
+          this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
+        }, numbers.TRANSITION_CLOSE_DURATION);
+      }
     });
     this.isOpen_ = false;
     this.adapter_.restoreFocus();
@@ -563,6 +617,32 @@ class MDCMenuFoundation extends MDCFoundation {
   /** @return {boolean} */
   isOpen() {
     return this.isOpen_;
+  }
+
+  /** @return {number} */
+  getSelectedIndex() {
+    return this.selectedIndex_;
+  }
+
+  /**
+   * @param {number} index Index of the item to set as selected.
+   */
+  setSelectedIndex(index) {
+    if (index === this.selectedIndex_) {
+      return;
+    }
+
+    const prevSelectedIndex = this.selectedIndex_;
+    if (prevSelectedIndex >= 0) {
+      this.adapter_.rmAttrForOptionAtIndex(prevSelectedIndex, 'aria-selected');
+      this.adapter_.rmClassForOptionAtIndex(prevSelectedIndex, cssClasses.SELECTED_LIST_ITEM);
+    }
+
+    this.selectedIndex_ = index >= 0 && index < this.adapter_.getNumberOfItems() ? index : -1;
+    if (this.selectedIndex_ >= 0) {
+      this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
+      this.adapter_.addClassForOptionAtIndex(this.selectedIndex_, cssClasses.SELECTED_LIST_ITEM);
+    }
   }
 }
 

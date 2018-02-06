@@ -27,6 +27,7 @@ window.demoReady = (function(root) {
   var POLL_MAX_WAIT_MS = 60 * 1000;
 
   var isReadyCached = false;
+  var isDomLoaded = false;
   var handlers = [];
   var testDom = null;
   var startTimeMs = null;
@@ -37,7 +38,8 @@ window.demoReady = (function(root) {
       return true;
     }
     ensureDetectionDom();
-    isReadyCached = Boolean(window.mdc) && getComputedStyle(testDom).position === 'relative';
+    isReadyCached = getComputedStyle(testDom).position === 'relative' &&
+      (Boolean(window.mdc) || (isDomLoaded && !root.querySelector('script[src*="material-components-web.js"]')));
     return isReadyCached;
   }
 
@@ -92,6 +94,10 @@ window.demoReady = (function(root) {
     });
     handlers.length = 0;
   }
+
+  root.addEventListener('DOMContentLoaded', function() {
+    isDomLoaded = true;
+  });
 
   return function addHandler(handler) {
     if (isReady()) {

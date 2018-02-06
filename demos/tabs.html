@@ -36,22 +36,6 @@
         margin: 16px;
       }
 
-      .mdc-theme--dark fieldset {
-        background-color: #333;
-      }
-
-      .mdc-theme--dark fieldset legend {
-        color: #f0f0f0;
-      }
-
-      .mdc-theme--dark .demo-tabs__scroller {
-        background-color: #333;
-      }
-
-      .mdc-theme--dark .demo-tabs__scroller .demo-title {
-        color: #f0f0f0;
-      }
-
       .demo-header-toolbar {
         z-index: 10;
       }
@@ -171,7 +155,6 @@
 
       <section class="demo-buttons">
         <button type="button" class="mdc-button mdc-button--raised" id="toggle-rtl">Toggle RTL</button>
-        <button type="button" class="mdc-button mdc-button--raised" id="toggle-dark-theme">Toggle Dark Theme</button>
       </section>
 
       <section>
@@ -742,9 +725,6 @@
           window.customIndicatorToolbarTabBar.layout();
           window.dynamicTabBar.layout();
           toolbarTabBarModified.layout();
-        });
-        document.getElementById('toggle-dark-theme').addEventListener('click', function(evt) {
-          document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
         });
       });
     </script>

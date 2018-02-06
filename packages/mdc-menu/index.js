@@ -96,6 +96,41 @@ class MDCMenu extends MDCComponent {
     return [].slice.call(itemsContainer.querySelectorAll('.mdc-list-item[role]'));
   }
 
+  /**
+   * Return the item within the menu that is selected.
+   * @param {number} index
+   * @return {?Element}
+   */
+  getOptionByIndex(index) {
+    const items = this.items;
+
+    if (index < items.length) {
+      return this.items[index];
+    } else {
+      return null;
+    }
+  }
+
+  /** @param {number} index */
+  set selectedItemIndex(index) {
+    this.foundation_.setSelectedIndex(index);
+  }
+
+  /** @return {number} */
+  get selectedItemIndex() {
+    return this.foundation_.getSelectedIndex();
+  }
+
+  /** @param {!boolean} rememberSelection */
+  set rememberSelection(rememberSelection) {
+    this.foundation_.setRememberSelection(rememberSelection);
+  }
+
+  /** @param {boolean} quickOpen */
+  set quickOpen(quickOpen) {
+    this.foundation_.setQuickOpen(quickOpen);
+  }
+
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
     return new MDCMenuFoundation({
@@ -104,7 +139,6 @@ class MDCMenu extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.itemsContainer_),
       getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
-      eventTargetHasClass: (target, className) => target.classList.contains(className),
       getInnerDimensions: () => {
         const {itemsContainer_: itemsContainer} = this;
         return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};
@@ -150,6 +184,10 @@ class MDCMenu extends MDCComponent {
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;
       },
+      setAttrForOptionAtIndex: (index, attr, value) => this.items[index].setAttribute(attr, value),
+      rmAttrForOptionAtIndex: (index, attr) => this.items[index].removeAttribute(attr),
+      addClassForOptionAtIndex: (index, className) => this.items[index].classList.add(className),
+      rmClassForOptionAtIndex: (index, className) => this.items[index].classList.remove(className),
     });
   }
 }
