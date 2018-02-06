@@ -89,7 +89,7 @@
 
 .mdc-card__primary-action {
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
   @include mdc-states;
 
   box-sizing: border-box;
