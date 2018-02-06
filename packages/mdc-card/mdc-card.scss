@@ -48,9 +48,7 @@
 .mdc-card__media {
   @include mdc-card-media-aspect-ratio-base_;
 
-  display: flex;
-  position: relative;
-  flex-direction: column;
+  position: relative; // Child element `__media-content` has `position: absolute`
   box-sizing: border-box;
   background-repeat: no-repeat;
   background-size: cover;
@@ -92,6 +90,8 @@
   @include mdc-ripple-radius-bounded;
   @include mdc-states;
 
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   outline: none;
   color: inherit;
