@@ -19,6 +19,9 @@
 module.exports = class {
   setBabelEnv() {
     const event = this.getNpmLifecycleEvent_();
+    // TODO: Figure out if this `if` check should include all `test:*` targets.
+    // See discussion on https://github.com/material-components/material-components-web/pull/2192#discussion_r166330231
+    // for context.
     if (event === 'test' || event === 'test:watch') {
       process.env.BABEL_ENV = 'test';
     }
