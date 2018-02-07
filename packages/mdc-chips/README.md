@@ -60,6 +60,21 @@ CSS Class | Description
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to.
 
+### Sass Mixins
+
+To customize the colors of any part of the chip, use the following mixins. 
+
+Mixin | Description
+--- | ---
+`mdc-chip-corner-radius($radius)` | Customizes the corner radius for a chip
+`mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink and ripple color to meet accessibility standards
+`mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
+`mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
+`mdc-chip-stroke($width, $style, $color)` | Customizes the border stroke properties for a chip
+`mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
+`mdc-chip-stroke-style($style)` | Customizes the border stroke style for a chip
+`mdc-chip-stroke-color($color)` | Customizes the border stroke color for a chip
+
 ### `MDCChip` and `MDCChipSet`
 
 The MDC Chips module is comprised of two JavaScript classes: 
