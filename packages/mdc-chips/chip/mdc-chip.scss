@@ -27,8 +27,8 @@
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
 
   display: inline-block;
-  padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
   margin: 5px;
+  padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
   cursor: pointer;
   overflow: hidden;
 }

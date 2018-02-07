@@ -43,7 +43,7 @@
   @include mdc-theme-prop(color, $color);
 }
 
-@mixin mdc-chip-stroke($width: 0, $style: solid, $color: black) {
+@mixin mdc-chip-stroke($width: 1, $style: solid, $color: black) {
   @include mdc-chip-stroke-width($width);
   @include mdc-chip-stroke-style($style);
   @include mdc-chip-stroke-color($color);
