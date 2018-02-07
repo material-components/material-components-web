@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-@import './variables';
+@import "./variables";
 
 // Public
 
@@ -59,11 +59,11 @@
 
 @mixin mdc-floating-label-position_($positionY, $positionX: 0%, $scale: .75) {
   @if $positionX == 0 {
-    .mdc-text-field__label--float-above {
+    .mdc-floating-label--float-above {
       transform: translateY(-1 * $positionY) scale($scale);
     }
   } @else {
-    .mdc-text-field__label--float-above {
+    .mdc-floating-label--float-above {
       transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
 
       @include mdc-rtl {
@@ -74,13 +74,13 @@
 }
 
 @mixin mdc-floating-label-shake_($modifier) {
-  .mdc-text-field__label--shake {
+  .mdc-floating-label--shake {
     animation: invalid-shake-float-above-#{$modifier} 250ms 1;
   }
 }
 
 @mixin mdc-floating-label-color_($color) {
-  .mdc-text-field__label,
+  .mdc-floating-label,
   .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
     @include mdc-theme-prop(color, $color);
   }
@@ -88,7 +88,7 @@
 
 // Used for textarea in case of scrolling
 @mixin mdc-floating-label-background-color_($color) {
-  .mdc-text-field__label {
+  .mdc-floating-label {
     @include mdc-theme-prop(background-color, $color);
   }
 }

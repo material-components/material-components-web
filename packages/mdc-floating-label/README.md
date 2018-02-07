@@ -23,7 +23,7 @@ Floating labels display the type of input a field requires. Every text field and
 ### HTML Structure
 
 ```html
-<label class="mdc-text-field__label" for="my-text-field-id">Hint text</label>
+<label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
 ```
 
 ### Usage within `mdc-text-field`
@@ -31,7 +31,7 @@ Floating labels display the type of input a field requires. Every text field and
 ```html
 <div class="mdc-text-field">
   <input type="text" id="my-text-field-id" class="mdc-text-field__input">
-  <label class="mdc-text-field__label" for="my-text-field-id">Hint text</label>
+  <label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
@@ -45,12 +45,12 @@ It's also possible to wrap `mdc-text-field__input` within a `<label>` to avoid d
 ```html
 <label class="mdc-text-field">
   <input type="text" class="mdc-text-field__input">
-  <span class="mdc-text-field__label">Hint Text</span>
+  <span class="mdc-floating-label">Hint Text</span>
   <div class="mdc-text-field__bottom-line"></div>
 </label>
 ```
 
-> _NOTE_: Only place an `mdc-text-field__label` inside of a text field _if you plan on using
+> _NOTE_: Only place an `mdc-floating-label` inside of a text field _if you plan on using
 > Javascript_. Otherwise, the label must go outside of the text-field, as shown below.
 
 #### Single Line, CSS Only
@@ -67,9 +67,9 @@ It's also possible to wrap `mdc-text-field__input` within a `<label>` to avoid d
 
 CSS Class | Description
 --- | ---
-`mdc-text-field__label` | Mandatory
-`mdc-text-field__label--float-above` | Indicates the label is floating above the text field
-`mdc-text-field__label--shake` | Shakes the label
+`mdc-floating-label` | Mandatory
+`mdc-floating-label--float-above` | Indicates the label is floating above the text field
+`mdc-floating-label--shake` | Shakes the label
 
 <!-- TODO(mattgoo): add ### SCSS Classes -->
 

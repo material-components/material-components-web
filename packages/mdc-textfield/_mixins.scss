@@ -34,7 +34,7 @@
 @mixin mdc-text-field-textarea-corner-radius($radius) {
   border-radius: $radius;
 
-  .mdc-text-field__label {
+  .mdc-floating-label {
     // Bottom corners are square to prevent weird edge cases
     // where text would be visible outside of the curve.
     border-radius: $radius $radius 0 0;
@@ -119,7 +119,7 @@
     border-bottom: 1px dotted;
   }
 
-  .mdc-text-field__label {
+  .mdc-floating-label {
     cursor: default;
   }
 }
@@ -159,7 +159,7 @@
 
 // TODO(mattgoo): can this be placed into the mdc-floating-label repo?
 @mixin mdc-required-text-field-label-asterix_() {
-  .mdc-text-field__input:required + .mdc-text-field__label::after {
+  .mdc-text-field__input:required + .mdc-floating-label::after {
     @content;
   }
 }
@@ -202,7 +202,7 @@
     padding: 12px 12px 7px;
   }
 
-  .mdc-text-field__label {
+  .mdc-floating-label {
     bottom: 18px;
   }
 
@@ -230,7 +230,7 @@
     z-index: 1;
   }
 
-  .mdc-text-field__label {
+  .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 16px);
 
     position: absolute;
@@ -277,7 +277,7 @@
     padding: 20px 16px 0;
   }
 
-  .mdc-text-field__label {
+  .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 16px);
 
     position: absolute;
@@ -413,7 +413,7 @@
     border: 1px solid transparent;
   }
 
-  .mdc-text-field__label {
+  .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 1px);
 
     top: $label-offset-y;

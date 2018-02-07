@@ -85,7 +85,7 @@
 
   // Move label when text-field gets autofilled in Chrome
   // stylelint-disable plugin/selector-bem-pattern
-  &:-webkit-autofill + .mdc-text-field__label {
+  &:-webkit-autofill + .mdc-floating-label {
     transform: translateY(-100%) scale(.75);
     cursor: auto;
   }
@@ -164,7 +164,7 @@
     height: 48px;
   }
 
-  .mdc-text-field__label {
+  .mdc-floating-label {
     pointer-events: none;
   }
 }
@@ -242,12 +242,12 @@
 
 // Never show the idle outline when the label is floating, otherwise the label
 // will collide with the idle outline.
-.mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
+.mdc-floating-label--float-above ~ .mdc-text-field__idle-outline {
   opacity: 0;
 }
 
 // Show the outline when the label is floating, since the outline has a
 // notch for the label to fit into.
-.mdc-text-field__label--float-above ~ .mdc-text-field__outline {
+.mdc-floating-label--float-above ~ .mdc-text-field__outline {
   opacity: 1;
 }

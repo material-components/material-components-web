@@ -32,7 +32,7 @@ Helper text gives context about a field’s input, such as how the input will be
 ```html
 <div class="mdc-text-field">
   <input type="text" id="username" class="mdc-text-field__input">
-  <label for="username" class="mdc-text-field__label">Username</label>
+  <label for="username" class="mdc-floating-label">Username</label>
   <div class="mdc-line-ripple"></div>
 </div>
 <p class="mdc-text-field-helper-text" aria-hidden="true">
@@ -51,7 +51,7 @@ the input element.
 ```html
 <div class="mdc-text-field">
   <input type="text" id="username" class="mdc-text-field__input" aria-controls="username-helper-text">
-  <label for="username" class="mdc-text-field__label">Username</label>
+  <label for="username" class="mdc-floating-label">Username</label>
   <div class="mdc-line-ripple"></div>
 </div>
 <p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">

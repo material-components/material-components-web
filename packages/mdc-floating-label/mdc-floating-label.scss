@@ -20,8 +20,8 @@
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
 
-// postcss-bem-linter: define text-field-label
-.mdc-text-field__label {
+// postcss-bem-linter: define floating-label
+.mdc-floating-label {
   position: absolute;
   bottom: 8px;
   left: 0;
@@ -38,7 +38,7 @@
   // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-text-field__label--float-above {
+.mdc-floating-label--float-above {
   cursor: auto;
 }
 

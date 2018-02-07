@@ -37,7 +37,7 @@ The outline is a border around all sides of the text field. This is used for the
 ```html
 <div class="mdc-text-field mdc-text-field--outlined">
   <input class="mdc-text-field__input" id="my-text-field-id" type="text">
-  <label class="mdc-text-field__label" for="my-text-field-id">Label</label>
+  <label class="mdc-floating-label" for="my-text-field-id">Label</label>
   <div class="mdc-text-field__outline">
     <svg>
       <path class="mdc-text-field__outline-path"/>

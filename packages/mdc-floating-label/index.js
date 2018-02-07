@@ -27,7 +27,6 @@ import MDCFloatingLabelFoundation from './foundation';
 class MDCFloatingLabel extends MDCComponent {
   /**
    * @param {!Element} root
-   
    * @return {!MDCFloatingLabel}
    */
   static attachTo(root) {

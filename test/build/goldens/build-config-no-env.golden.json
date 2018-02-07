@@ -63,6 +63,9 @@
       "drawer": [
         "/packages/mdc-drawer/index.js"
       ],
+      "floatingLabel": [
+        "/packages/mdc-floating-label/index.js"
+      ],
       "formField": [
         "/packages/mdc-form-field/index.js"
       ],

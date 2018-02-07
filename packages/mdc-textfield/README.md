@@ -41,7 +41,7 @@ npm install --save @material/textfield
 ```html
 <div class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-text-field__label" for="my-text-field">Hint text</label>
+  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -54,7 +54,7 @@ by HTML5's form validation API.
 ```html
 <div class="mdc-text-field">
   <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
-  <label for="pw" class="mdc-text-field__label">Password</label>
+  <label for="pw" class="mdc-floating-label">Password</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -64,14 +64,14 @@ by HTML5's form validation API.
 #### Pre-filled
 
 When dealing with JS-driven text fields that already have values, you'll want to ensure that you
-render `mdc-text-field__label` with the `mdc-text-field__label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
+render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
 ensure that the label moves out of the way of the text field's value and prevents a Flash Of
 Un-styled Content (**FOUC**).
 
 ```html
 <div class="mdc-text-field mdc-text-field--upgraded">
   <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
-  <label class="mdc-text-field__label mdc-text-field__label--float-above" for="pre-filled">
+  <label class="mdc-floating-label mdc-floating-label--float-above" for="pre-filled">
     Label in correct place
   </label>
   <div class="mdc-line-ripple"></div>
@@ -93,7 +93,7 @@ Full width text fields are useful for in-depth tasks or entering complex informa
 
 > _NOTE_: Do not use `mdc-text-field--box` or `mdc-text-field--outlined` to style a full width text field.
 
-> _NOTE_: Do not use `mdc-text-field__label` within `mdc-text-field--fullwidth`. Labels should not be
+> _NOTE_: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
 included as part of the DOM structure of a full width text field.
 
 #### Textarea
@@ -101,7 +101,7 @@ included as part of the DOM structure of a full width text field.
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">
   <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
-  <label for="textarea" class="mdc-text-field__label">Textarea Label</label>
+  <label for="textarea" class="mdc-floating-label">Textarea Label</label>
 </div>
 ```
 
@@ -112,7 +112,7 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 ```html
 <div class="mdc-text-field mdc-text-field--disabled">
   <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
-  <label class="mdc-text-field__label" for="disabled-text-field">Disabled text field</label>
+  <label class="mdc-floating-label" for="disabled-text-field">Disabled text field</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -122,7 +122,7 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 ```html
 <div class="mdc-text-field mdc-text-field--outlined">
   <input type="text" id="tf-outlined" class="mdc-text-field__input">
-  <label for="tf-outlined" class="mdc-text-field__label">Your Name</label>
+  <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
   <div class="mdc-text-field__outline">
     <svg>
       <path class="mdc-text-field__outline-path"/>

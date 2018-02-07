@@ -19,23 +19,23 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldLabelFoundation from '../../../packages/mdc-textfield/label/foundation';
+import MDCFloatingLabelFoundation from '../../../packages/mdc-floating-label/foundation';
 
-const {cssClasses} = MDCTextFieldLabelFoundation;
+const {cssClasses} = MDCFloatingLabelFoundation;
 
-suite('MDCTextFieldLabelFoundation');
+suite('MDCFloatingLabelFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextFieldLabelFoundation);
+  assert.isOk('cssClasses' in MDCFloatingLabelFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCTextFieldLabelFoundation, [
+  verifyDefaultAdapter(MDCFloatingLabelFoundation, [
     'addClass', 'removeClass', 'getWidth',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTextFieldLabelFoundation);
+const setupTest = () => setupFoundationTest(MDCFloatingLabelFoundation);
 
 test('#getWidth returns the width of the label element scaled by 75%', () => {
   const {foundation, mockAdapter} = setupTest();

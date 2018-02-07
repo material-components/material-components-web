@@ -119,6 +119,7 @@
                   "/packages/mdc-drawer/node_modules",
                   "/packages/mdc-elevation/node_modules",
                   "/packages/mdc-fab/node_modules",
+                  "/packages/mdc-floating-label/node_modules",
                   "/packages/mdc-form-field/node_modules",
                   "/packages/mdc-grid-list/node_modules",
                   "/packages/mdc-icon-toggle/node_modules",
