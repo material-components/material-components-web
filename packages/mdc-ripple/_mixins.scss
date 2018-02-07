@@ -41,6 +41,7 @@
 
   &::before {
     transition: opacity $mdc-states-wash-duration linear;
+    z-index: 1; // Ensure that the ripple wash for hover/focus states is displayed on top of positioned child elements
   }
 
   // Common styles for upgraded surfaces (some of these depend on custom properties set via JS or other mixins)
